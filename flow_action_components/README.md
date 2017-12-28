@@ -13,6 +13,8 @@ This folder is an sfdx project. However, you don't have to use SFDX in order to 
 
 https://developer.salesforce.com/platform/dx
 
+https://trailhead.salesforce.com/en/trails/sfdx_get_started
+
 You may also want to check out the Lightning Flow Screen Components, which are designed to be inserted into flow screens. They're available elsewhere in this repo.
 
 # Submissions Encouraged!

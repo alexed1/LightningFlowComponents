@@ -7,6 +7,8 @@ flow_action_components contains lightning components (aura classes) that have be
 
 Flow Action Components generally do not have a visual focus, although they have to run in Screen Flows to ensure the presence of a client-side javascript runtime.
 
+# Requesting Pilot Access
+
 Flow Action Components are available in pilot status as of Spring '18. You can request that your org be enabled for them by contacting customer support. Tell customer support that you're a very responsible person and would like your org to be enabled with the "“**Flows Can Use Local (JavaScript) Elements**” permission.
 
 # A Note about SFDX

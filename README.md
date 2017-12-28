@@ -22,11 +22,7 @@ Flow Action Components generally do not have a visual focus, although they have 
 Flow Action Components are available in pilot status as of Spring '18. For information on the pilot see https://github.com/alexed1/LightningFlowComponents/blob/master/flow_action_components/README.md
 
 # A Note about SFDX
-You don't have to use SFDX in order to access these components. Each component has its own folder inside force_app/default/main/aura, and you can simply copy and paste the component files to your development environment and deploy your usual way. However, we recommend you give SFDX a try. It makes deployment of components like these a matter of a few command line keystrokes, and we think it's wonderful. Also, it's free. Learn more at:
-
-https://developer.salesforce.com/platform/dx
-
-https://trailhead.salesforce.com/en/trails/sfdx_get_started
+See http://sfdxintro.md
 
 # Submissions Encouraged!
 Have you built a useful or interesting Flow Component? We encourage you to make a pull request and add it to this repo. Also feel free to enhance or fix any existing component.

@@ -29,3 +29,4 @@ https://trailhead.salesforce.com/en/trails/sfdx_get_started
 
 Submissions Encouraged!
 Have you built a useful or interesting Flow Component? We encourage you to make a pull request and add it to this repo. Also feel free to enhance or fix any existing component.
+â

@@ -1,5 +1,5 @@
 
-This folder contains two separate sfdx projects. 
+This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce.
 
 
 # Lightning Flow Screen Components

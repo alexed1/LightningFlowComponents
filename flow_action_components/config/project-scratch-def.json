@@ -1,7 +1,6 @@
 {
     "orgName": "Demo Company",
-    "sourceOrg": "00DB0000000LRppMAG",
-    "instance": "gs0",
+    "edition": "Developer"
     "orgPreferences" : {
         "enabled": ["S1DesktopEnabled"]
     }

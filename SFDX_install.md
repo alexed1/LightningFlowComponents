@@ -1,4 +1,4 @@
-#Installing with SFDX
+# Installing with SFDX
 
 Starting in the root of one of the sfdx projects (either the screen component one or the actions component one, and not the same as the root of the github parent project):
  

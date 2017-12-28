@@ -9,7 +9,7 @@ Flow Action Components generally do not have a visual focus, although they have 
 Flow Action Components are available in pilot status as of Spring '18. You can request that your org be enabled for them by contacting customer support. Tell customer support that you're a very responsible person and would like your org to be enabled with the "“**Flows Can Use Local (JavaScript) Elements**” permission.
 
 # A Note about SFDX
-This folder is an sfdx project. You don't have to use SFDX in order to access these components. Each component has its own folder inside force_app/default/main/aura, and you can simply copy and paste the component files to your development environment and deploy your usual way. However, we recommend you give SFDX a try. It makes deployment of components like these a matter of a few command line keystrokes, and we think it's wonderful. Also, it's free. Learn more at:
+This folder is an sfdx project. However, you don't have to use SFDX in order to access these components. Each component has its own folder inside force_app/default/main/aura, and you can simply copy and paste the component files to your development environment and deploy your usual way. However, we recommend you give SFDX a try. It makes deployment of components like these a matter of a few command line keystrokes, and we think it's wonderful. Also, it's free. Learn more at:
 
 https://developer.salesforce.com/platform/dx
 

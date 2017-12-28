@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForRecordHome,flowruntime:availableForLocalInvocableActions">
+	
+	<aura:attribute name="objId" type="string" />
+
+
+</aura:component>

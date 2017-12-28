@@ -1,0 +1,3 @@
+<design:component >
+	<design:attribute name="message" label="Message"/>
+</design:component>

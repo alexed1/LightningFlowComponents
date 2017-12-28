@@ -1,0 +1,4 @@
+<design:component >
+	<design:attribute name="destination" label="destination URL" />
+
+</design:component>

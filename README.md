@@ -1,5 +1,5 @@
 
-This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce.
+This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Designer! You can install them with a few commands by using the new Salesforce DX deployment tools. (See "Installation")
 
 
 # Lightning Flow Screen Components

@@ -1,0 +1,219 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+	
+    
+    <!-- the parent question  value determines all child visibility -->
+    <aura:attribute name="parentQuestionLabel" type="String" default="You Must Set the Value of the Parent Question Label!"/>
+	<aura:attribute name="parentQuestion_options" type="List" default="[
+                    {'label': 'No', 'value': 'false'},
+                    {'label': 'Yes', 'value': 'true'}
+                    ]"/>
+    <aura:attribute name="parentQuestion_value" type="Boolean" default="no"/>
+ 	    
+        
+    <!-- *************************************************** -->
+    <aura:attribute name="childComponentList" type="String" default="r1 r2 c1"/>
+    <aura:attribute name="curName" type="String" />
+    
+    
+ 	<!-- the child controls are defined here -->
+    <aura:attribute name="availableChildTextFieldControls" type="List" default="['v.childTextField1','v.childTextField2','v.childTextField3','v.childTextField4']"/>
+    <aura:attribute name="availableChildRadioControls" type="List" default="['v.childRadio1', 'v.childRadio2','v.childRadio3','v.childRadio4']"/>
+    <aura:attribute name="availableChildCheckboxControls" type="List" default="['v.childCheckbox1', 'v.childCheckbox2','v.childCheckbox3','v.childCheckbox4']"/>
+                    
+    <aura:attribute name="childCheckbox1_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childCheckbox1_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox1_storage" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox1_label" type="String" default="Needs a label assigned via a flow input"/>
+    
+    <aura:attribute name="childCheckbox2_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childCheckbox2_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox2_storage" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox2_label" type="String" default="Needs a label assigned via a flow input"/>
+    
+    <aura:attribute name="childCheckbox3_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childCheckbox3_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox3_storage" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox3_label" type="String" default="Needs a label assigned via a flow input"/>
+    
+    
+    <aura:attribute name="childCheckbox4_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childCheckbox4_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox4_storage" type="Boolean" default="false"/>
+    <aura:attribute name="childCheckbox4_label" type="String" default="Needs a label assigned via a flow input"/>
+    
+    <aura:attribute name="childRadio1_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childRadio1_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childRadio1_storage" type="String" />
+    <aura:attribute name="childRadio1_label" type="String" default="Needs a label assigned via a flow input"/>
+	<aura:attribute name="childRadio1_optionsInputString" type="String" />
+    <aura:attribute name="childRadio1_options" type="List" />
+    <aura:attribute name="childRadio1_controlType" type="String" default="radio" />
+    
+    <aura:attribute name="childRadio2_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childRadio2_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childRadio2_storage" type="String"/>
+    <aura:attribute name="childRadio2_label" type="String" default="Needs a label assigned via a flow input"/>
+	<aura:attribute name="childRadio2_optionsInputString" type="String" />
+    <aura:attribute name="childRadio2_options" type="List" />
+    <aura:attribute name="childRadio2_controlType" type="String" default="radio" />
+    
+    <aura:attribute name="childRadio3_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childRadio3_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childRadio3_storage" type="String" />
+    <aura:attribute name="childRadio3_label" type="String" default="Needs a label assigned via a flow input"/>
+	<aura:attribute name="childRadio3_optionsInputString" type="String" />
+    <aura:attribute name="childRadio3_options" type="List" />
+    <aura:attribute name="childRadio3_controlType" type="String" default="radio" />
+    
+    <aura:attribute name="childRadio4_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childRadio4_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childRadio4_storage" type="String" />
+    <aura:attribute name="childRadio4_label" type="String" default="Needs a label assigned via a flow input"/>
+	<aura:attribute name="childRadio4_optionsInputString" type="String" />
+    <aura:attribute name="childRadio4_options" type="List" />
+    <aura:attribute name="childRadio4_controlType" type="String" default="radio" />
+    
+    
+    <aura:attribute name="childTextField1_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childTextField1_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childTextField1_storage" type="String" default="false"/>
+    <aura:attribute name="childTextField1_label" type="String" default="Needs a label assigned via a flow input"/>
+    
+    <aura:attribute name="childTextField2_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childTextField2_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childTextField2_storage" type="String" default="false"/>
+    <aura:attribute name="childTextField2_label" type="String" default="Needs a label assigned via a flow input"/>
+
+    <aura:attribute name="childTextField3_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childTextField3_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childTextField3_storage" type="String" default="false"/>
+    <aura:attribute name="childTextField3_label" type="String" default="Needs a label assigned via a flow input"/>
+
+    <aura:attribute name="childTextField4_conditionalRelationship" type="String" default="false"/>
+    <aura:attribute name="childTextField4_nowVisible" type="Boolean" default="false"/>
+    <aura:attribute name="childTextField4_storage" type="String" default="false"/>
+    <aura:attribute name="childTextField4_label" type="String" default="Needs a label assigned via a flow input"/>
+
+    
+    
+	<aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    
+    <!-- when the value of a child control changes, an event gets fired. this handler 
+		intercepts that event so the storage attributes (which are what downstream flow nodes 
+		will have access to) can be updated -->
+    <aura:handler name="ChildControlClicked" event="c:ChildControlClickEvent"
+    				action="{!c.handleChildControlClickedEvent}"/>
+    
+    <!-- When this parent control has its value changed, we may need to hide or show some child events. 
+		 This event tells the appropriate events to update their visiblity -->
+    <aura:registerEvent name="childControlVisibilityUpdateEvent" type="c:ChildControlVisibilityUpdateEvent"/>
+ 	<aura:registerEvent name="myEvent" type="c:myEvent"/>
+ 
+	<aura:handler name="childControlVisibilityUpdateEvent" event="c:ChildControlVisibilityUpdateEvent"
+    action="{!c.test}"/>
+
+    <!-- *************************************************** -->
+    <!-- markup -->
+    
+    <lightning:radioGroup aura:id="parentQuestionRadioGroup"
+                            name="parentQuestion"
+                            label="{! v.parentQuestionLabel }"
+                            options="{! v.parentQuestion_options }"
+                            value="{! v.parentQuestion_value }"
+                            onchange="{! c.onParentClick }"
+                            required="true" />	
+   
+        <div class="slds-card">
+            <aura:if isTrue="{!v.childCheckbox1_nowVisible}">
+                <div>     
+                     <ui:inputCheckbox aura:id="childCheckbox1" label="{! v.childCheckbox1_label }"
+                                                    name="childCheckbox1" change="{!c.onChildControlClick}"/>
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.childCheckbox2_nowVisible}">
+                <div>               
+                    <ui:inputCheckbox aura:id="childCheckbox2" label="{! v.childCheckbox2_label }"
+                                                    name="childCheckbox2" change="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+            
+                <aura:if isTrue="{!v.childCheckbox3_nowVisible}">
+                <div>               
+                    <ui:inputCheckbox aura:id="childCheckbox3" label="{! v.childCheckbox3_label }"
+                                                    name="childCheckbox3" change="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.childCheckbox4_nowVisible}">
+                <div>               
+                    <ui:inputCheckbox aura:id="childCheckbox4" label="{! v.childCheckbox4_label }"
+                                      name="childCheckbox4" change="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+           
+            <aura:if isTrue="{!v.childRadio1_nowVisible}">
+                <div>               
+                    <lightning:radioGroup aura:id="childRadio1" label="{! v.childRadio1_label }"
+                                          options="{! v.childRadio1_options}"
+                                      name="childRadio1" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.childRadio2_nowVisible}">
+                <div>               
+                    <lightning:radioGroup aura:id="childRadio2" label="{! v.childRadio2_label }"
+                                          options="{! v.childRadio2_options}"
+                                      name="childRadio2" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+
+            
+            <aura:if isTrue="{!v.childRadio3_nowVisible}">
+                <div>               
+                    <lightning:radioGroup aura:id="childRadio3" label="{! v.childRadio3_label }"
+                                          options="{! v.childRadio3_options}"
+                                      name="childRadio3" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+            
+          
+            <aura:if isTrue="{!v.childRadio4_nowVisible}">
+                <div>               
+                    <lightning:radioGroup aura:id="childRadio4" label="{! v.childRadio4_label }"
+                                          options="{! v.childRadio4_options}"
+                                      name="childRadio4" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+            
+            <aura:if isTrue="{!v.childTextField1_nowVisible}">
+                <div>               
+                    <lightning:input aura:id="childTextField1" label="{! v.childTextField1_label }"
+                                      name="childTextField1" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+             <aura:if isTrue="{!v.childTextField2_nowVisible}">
+                <div>               
+                    <lightning:input aura:id="childTextField2" label="{! v.childTextField2_label }"
+                                      name="childTextField2" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+             <aura:if isTrue="{!v.childTextField3_nowVisible}">
+                <div>               
+                    <lightning:input aura:id="childTextField3" label="{! v.childTextField3_label }"
+                                      name="childTextField3" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+             <aura:if isTrue="{!v.childTextField4_nowVisible}">
+                <div>               
+                    <lightning:input aura:id="childTextField4" label="{! v.childTextField4_label }"
+                                      name="childTextField4" onchange="{!c.onChildControlClick}"/>      		            
+                </div>
+            </aura:if>
+         	
+
+        </div>
+          
+	{!v.body}
+    
+</aura:component>

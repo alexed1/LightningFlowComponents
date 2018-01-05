@@ -1,0 +1,4 @@
+<design:component >
+	<design:attribute name="recordId" label="RecordId"/>
+    <design:attribute name="recordError" label="RecordError"/>
+</design:component>

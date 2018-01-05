@@ -1,7 +1,7 @@
-UpdateScreen Flow Action Component
+# UpdateScreen Flow Action Component
 
-**Writeup is temporarily located [here](https://medium.com/@alexedelstein/the-update-screen-flow-action-component-2738e55498ff)
+## Writeup is temporarily located [here](https://medium.com/@alexedelstein/the-update-screen-flow-action-component-2738e55498ff)
 
-**Installation
+### Installation
 
 Follow the general instructions [here](../Install.md)

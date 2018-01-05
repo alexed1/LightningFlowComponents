@@ -1,14 +1,7 @@
-# SFDX  App
+UpdateScreen Flow Action Component
 
-## Dev, Build and Test
+**Writeup is temporarily located [here](https://medium.com/@alexedelstein/the-update-screen-flow-action-component-2738e55498ff)
 
+**Installation
 
-## Resources
-
-
-## Description of Files and Directories
-
-
-## Issues
-
-
+Follow the general instructions [here](../Install.md)

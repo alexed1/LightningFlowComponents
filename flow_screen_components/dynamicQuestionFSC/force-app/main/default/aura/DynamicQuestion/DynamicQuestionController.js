@@ -22,10 +22,15 @@
     
     },
     
+    stopPropagation: function(component, event, helper) {
+    	event.stopPropagation();
+        console.log("stopping propagation");
+	},
+    
     //when a parent control is clicked, we check how each child control has been set in the flow to respond
     //depending on that passed in status value, we fire an event to tell the appropriate child controls to update their nowVisible settings
     onParentClick: function(cmp, evt, helper) {
-       
+        console.log ("entering parent click for component label: " + cmp.get('v.parentQuestionLabel'));
         var parentValue = cmp.get('v.parentQuestion_value');
         
         var childControlsList = cmp.get('v.childComponentsArrayLinkedToYes')
@@ -56,6 +61,7 @@
                 var updateEvent = $A.get("e.c:ChildControlVisibilityUpdateEvent");
             	updateEvent.setParams({"childControlName" : childComponentVisibilityAttributeName});
          		updateEvent.setParams({"childControlVisibilityChanged" : true});
+                updateEvent.setParams({"parentLabel" : cmp.get("v.parentQuestionLabel")});
                 updateEvent.fire();
             };
             

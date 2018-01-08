@@ -39,7 +39,11 @@
     //when something happens on the parent control that should toggle this control's visibility, this handler will get called
     handleVisibilityUpdate : function(cmp, evt) {
         
-        if (evt.getParam("childControlName") == ("v." + cmp.get("v.name") + "_nowVisible")) {
+        var thisControlParentLabel = cmp.get("v.parentLabel");
+        var eventParentLabel = evt.getParam("parentLabel");
+        
+        if (thisControlParentLabel == eventParentLabel) {
+             if (evt.getParam("childControlName") == ("v." + cmp.get("v.name") + "_nowVisible")) {
             //this control is affected by the parent change   
             //toggle visibility
             if (cmp.get("v.nowVisible") == "true"){
@@ -49,5 +53,8 @@
             }
         	 
    		 }
+        }
+        
+       
     }
 })

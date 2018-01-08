@@ -92,7 +92,8 @@
              "options": cmp.get("v." + childName + "_options"),
              "label": cmp.get("v." + childName + "_label"),
              "controlType": cmp.get("v." + childName + "_controlType"),
-             "name": childName
+             "name": childName,
+             "parentLabel" : cmp.get("v.parentQuestionLabel")
   			 },
             
             function(newCmp) {

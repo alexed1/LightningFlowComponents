@@ -161,13 +161,15 @@
 		 This event flows from parent to children and tells the appropriate child controls to update their visiblity -->
     <aura:registerEvent name="childControlVisibilityUpdateEvent" type="c:ChildControlVisibilityUpdateEvent"/>
  	
-   
+    <aura:handler name="childControlVisibilityUpdateEvent" event="c:ChildControlVisibilityUpdateEvent"
+    				action="{!c.stopPropagation}"/>
+    
 
     <!-- *************************************************** -->
     <!-- markup -->
     <!-- only the parent control is defined here. all of the child controls are dynamically inserted with createControl calls during init -->
-    <lightning:radioGroup aura:id="parentQuestionRadioGroup"
-                            name="parentQuestion"
+    <lightning:radioGroup aura:id="{! 'id_ ' + v.parentQuestionLabel }"
+                            name="{! 'name_ ' + v.parentQuestionLabel }"
                             label="{! v.parentQuestionLabel }"
                             options="{! v.parentQuestion_options }"
                             value="{! v.parentQuestion_value }"

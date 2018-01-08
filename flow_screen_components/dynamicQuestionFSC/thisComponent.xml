@@ -6,7 +6,10 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     
     <!-- These are all the lightning components. -->
-    <types>   	
+    <types>  
+        <members>ChildControlClickEvent</members>
+        <members>ChildControlVisibilityUpdateEvent</members> 	
+    	<members>DynamicQuestion</members>
         <members>DynamicQuestionChild</members>
         <name>AuraDefinitionBundle</name>
     </types>

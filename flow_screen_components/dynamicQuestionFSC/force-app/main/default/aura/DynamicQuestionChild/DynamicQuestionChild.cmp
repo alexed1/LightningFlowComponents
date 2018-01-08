@@ -11,6 +11,8 @@
     <aura:attribute name="value" type="String" />
     <aura:attribute name="controlType" type="String" />
     
+    <aura:attribute name="parentLabel" type="String"/>
+    
     <!-- when the value of any of these controls changes, the onChildControlValueChange event causes the value attribute to update.
          this handler detects the change in the main value attribute -->
     <!-- REFACTOR: this can probably be simplified -->

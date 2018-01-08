@@ -1,0 +1,71 @@
+<!-- this component is designed to work with the 'parent' DynamicQuestion control. It represents
+     a single UI control intended to be injected as markup into a dynamic flow question -->
+
+<aura:component >
+    
+    <aura:attribute name="nowVisible" type="Boolean" default="false"/>
+    
+    <aura:attribute name="options" type="List" /> <!-- only used if the controlType is radio -->
+    <aura:attribute name="label" type="String" default="Needs a label assigned via a flow input"/>
+	<aura:attribute name="name" type="String" default="NO NAME PROVIDED"/>
+    <aura:attribute name="value" type="String" />
+    <aura:attribute name="controlType" type="String" />
+    
+    <!-- when the value of any of these controls changes, the onChildControlValueChange event causes the value attribute to update.
+         this handler detects the change in the main value attribute -->
+    <!-- REFACTOR: this can probably be simplified -->
+    <aura:handler name="change" value="{!v.value}" action="{!c.handleValueChange}"/>
+    
+    
+    <!-- the visibility of this control depends on stuff happening up at the parent level. This
+		 event provides the update --> 
+    <aura:handler event="c:ChildControlVisibilityUpdateEvent" action="{!c.handleVisibilityUpdate}"/>
+    
+    <!-- this event gets fired to notify the parent that a value was changed --> 
+    <!-- REFACTOR rename this as the name is misleading -->
+    <aura:registerEvent name="ChildControlClicked" type="c:ChildControlClickEvent"/>
+    
+    <div class="slds-p-left_medium"> 
+        <aura:if isTrue="{!  v.controlType == 'checkbox'}"  > 
+            <aura:if isTrue="{!v.nowVisible}">       
+                <div class="slds-p-top_x-small">               
+                    <ui:inputCheckbox aura:id="no ID" label="{! v.label }"
+                                      name="" change="{!c.onChildControlValueChange}"/>      		            
+                </div>
+            </aura:if>
+        </aura:if>
+        
+        <aura:if isTrue="{!  v.controlType == 'radio'}" >
+            <aura:if isTrue="{!v.nowVisible}">    
+                <div class="slds-p-top_x-small">               
+                    <lightning:radioGroup aura:id="radio" label="{! v.label }"
+                                          options="{! v.options}"
+                                      name="" onchange="{!c.onChildControlValueChange}"/>      		            
+                </div>
+            </aura:if>
+        </aura:if>
+        
+        <!-- //was having trouble getting this control to generate an onchange event, so added onblur -->
+        <aura:if isTrue="{!  v.controlType == 'textField'}" >
+            <aura:if isTrue="{!v.nowVisible}">
+                <div class="slds-p-top_x-small">               
+                    <lightning:input aura:id="no ID" label="{! v.label }"
+                                      name="" onblur="{!c.onChildControlValueChange}" onchange="{!c.handleValueChange}"/>      		            
+                </div>
+             </aura:if>
+        </aura:if>
+        
+        <aura:if isTrue="{!  v.controlType == 'listBox'}" >
+            <aura:if isTrue="{!v.nowVisible}">
+                <div class="slds-p-top_x-small">               
+                    <lightning:select aura:id="no ID" label="{! v.label }"
+                                      name=""  onchange="{!c.onChildControlValueChange}">
+                    	<aura:iteration items="{!v.options}" var="item">
+							<option text="{!item.label}" value="{!item.value}" />
+                    	</aura:iteration>
+                    </lightning:select>      		            
+                </div>
+             </aura:if>
+        </aura:if>
+    </div>
+</aura:component>

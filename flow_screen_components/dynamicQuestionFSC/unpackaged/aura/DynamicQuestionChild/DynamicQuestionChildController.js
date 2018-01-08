@@ -4,10 +4,7 @@
     
     init : function(cmp, evt, helper) {
         console.log("child control initing");
-         var updateEvent = cmp.getEvent("childControlVisibilityUpdateEvent");
-            //updateEvent.setParams({"childControlName" : childComponentVisibilityAttributeName});
-            //updateEvent.setParams({"childControlVisbility" : newVisibility});
-            updateEvent.fire();
+       
     },
     
 	onChildControlClick : function(cmp, evt, helper) {
@@ -40,14 +37,23 @@
     
     handleVisibilityUpdate : function(cmp, evt) {
         console.log("in handleVisbilityUpdate");
-        console.log(evt.getParam("childControlName"));
-        console.log(cmp.get("v.name"));
-        console.log(cmp.get("v.nowVisible"));
-        console.log(evt.getParam("childControlVisbility"));
         
-        if (evt.getParam("childControlName") == cmp.get("v.name")) {
-            //this control is affected by the parent change          
-        	cpm.set("v.nowVisible", evt.getParam("childControlVisbility"));
+        //console.log("name: " + cmp.get("v.name"));
+        //console.log(cmp.get("v.nowVisible"));
+        //console.log(evt.getParam("childControlVisibilityChanged"));
+        
+       
+        if (evt.getParam("childControlName") == ("v." + cmp.get("v.name") + "_nowVisible")) {
+            //this control is affected by the parent change   
+            console.log("Changing visibility for control: " + cmp.get("v.name") ) ;      
+            //toggle visibility
+            if (cmp.get("v.nowVisible") == "true"){
+                cmp.set("v.nowVisible", "false");
+            } else {
+                cmp.set("v.nowVisible", "true");
+            }
+        	 
    		 }
+        console.log( "visibility of: " + cmp.get("v.name") + "is " + cmp.get("v.nowVisible") );
     }
 })

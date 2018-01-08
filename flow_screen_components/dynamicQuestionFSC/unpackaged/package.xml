@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-
-
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
-    
-    <!-- These are all the lightning components. -->
     <types>
-        <members>dynQuestionBuilder</members>
-        <members>childControl</members>
+        <members>DynamicQuestion</members>
+        <members>DynamicQuestionChild</members>
         <name>AuraDefinitionBundle</name>
     </types>
-    
-    
     <version>42.0</version>
 </Package>
-
-

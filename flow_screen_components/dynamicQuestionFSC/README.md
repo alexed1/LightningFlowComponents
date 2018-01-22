@@ -1,6 +1,7 @@
 # Dynamic Questions #
 
-*** A Flow Component solution  (Watch the video (https://drive.google.com/file/d/1tDPVNvz2XHPurOnkS6ErHNRtjMN1ykvX/view?usp=sharing))***
+### A Flow Component solution 
+### [Watch the video](https://youtu.be/KBcmWM9KEWc) ###
 
 It’s now possible to create dynamic questions, where child questions appear and disappear based on the selection made in the parent question and you can do this without writing any code.
 

@@ -1,7 +1,5 @@
 
 
-
-
 # Datatable #
 
 ### A [Flow Screen Component](flow_screen_components/README.md)  ###

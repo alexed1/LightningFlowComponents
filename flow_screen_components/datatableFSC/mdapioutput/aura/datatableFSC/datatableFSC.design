@@ -1,0 +1,26 @@
+<design:component >
+    <design:attribute name="mydata" label="inputData"/>
+     
+    
+    <design:attribute name="selectedRows" label="selectedRows" />
+    
+	<design:attribute name="column1_label" label="column1_label"/>
+    <design:attribute name="column1_fieldName" label="column1_fieldName"/>
+    <design:attribute name="column1_type" label="column1_type"/>
+    
+    <design:attribute name="column2_label" label="column2_label"/>
+    <design:attribute name="column2_fieldName" label="column2_fieldName"/>
+    <design:attribute name="column2_type" label="column2_type"/>
+    
+    <design:attribute name="column3_label" label="column3_label"/>
+    <design:attribute name="column3_fieldName" label="column3_fieldName"/>
+    <design:attribute name="column3_type" label="column3_type"/>
+    
+    <design:attribute name="column4_label" label="column4_label"/>
+    <design:attribute name="column4_fieldName" label="column4_fieldName"/>
+    <design:attribute name="column4_type" label="column4_type"/>
+    
+    <design:attribute name="column5_label" label="column5_label"/>
+    <design:attribute name="column5_fieldName" label="column5_fieldName"/>
+    <design:attribute name="column5_type" label="column5_type"/>
+</design:component>

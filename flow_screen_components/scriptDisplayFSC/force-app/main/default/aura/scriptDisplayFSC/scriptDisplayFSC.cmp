@@ -1,0 +1,13 @@
+<aura:component implements="lightning:availableForFlowScreens">
+	<aura:attribute name="scriptText" type="String" default="No Script Text Available"/>
+    
+    <div class="scriptBorder">
+        <span class="scriptBody">
+            Script:
+            <p></p>
+            {!v.scriptText} 
+        </span>
+    	  
+    </div>
+    <p></p>
+</aura:component>	

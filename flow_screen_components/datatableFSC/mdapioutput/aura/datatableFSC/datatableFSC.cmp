@@ -1,0 +1,33 @@
+<aura:component implements="lightning:availableForFlowScreens">
+    <aura:attribute name="mydata" type="Custom_Debit_Card__c[]"/>
+    <aura:attribute name="selectedRows" type="Custom_Debit_Card__c[]"/>
+  
+    
+    <aura:attribute name="mycolumns" type="List"/>
+    
+    <aura:attribute name="column1_label" type="String"/>
+    <aura:attribute name="column1_fieldName" type="String"/>
+    <aura:attribute name="column1_type" type="String"/>
+    
+    <aura:attribute name="column2_label" type="String"/>
+    <aura:attribute name="column2_fieldName" type="String"/>
+    <aura:attribute name="column2_type" type="String"/>
+    
+    <aura:attribute name="column3_label" type="String"/>
+    <aura:attribute name="column3_fieldName" type="String"/>
+    <aura:attribute name="column3_type" type="String"/>
+    
+    <aura:attribute name="column4_label" type="String"/>
+    <aura:attribute name="column4_fieldName" type="String"/>
+    <aura:attribute name="column4_type" type="String"/>
+    
+    <aura:attribute name="column5_label" type="String"/>
+    <aura:attribute name="column5_fieldName" type="String"/>
+    <aura:attribute name="column5_type" type="String"/>
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:datatable data="{! v.mydata }" 
+        columns="{! v.mycolumns }" 
+        keyField="id"
+        onrowselection="{! c.getSelectedName }"/>
+</aura:component>

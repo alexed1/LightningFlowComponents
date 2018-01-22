@@ -1,0 +1,10 @@
+.THIS.scriptBorder {
+    border-color: coral;
+    border-style: solid;
+    margin-bottom: 20px;
+}
+
+.THIS .scriptBody {
+    font-size: 200%;
+    font-weight: bold;
+}

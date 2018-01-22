@@ -1,0 +1,5 @@
+<aura:event type="APPLICATION" description="when a parent control gets changed it affects the visibility of some child controls. this is how they find out.">
+	<aura:attribute name="childControlName" type="String"/>
+    <aura:attribute name="childControlVisibilityChanged" type="Boolean"/>
+    <aura:attribute name="parentLabel" type="String" />
+</aura:event>

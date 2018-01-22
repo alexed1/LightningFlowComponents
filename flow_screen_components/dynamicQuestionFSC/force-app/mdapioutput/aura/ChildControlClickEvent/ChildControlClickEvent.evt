@@ -1,0 +1,4 @@
+<aura:event type="COMPONENT" description="Fired when a child control is clicked on">
+	<aura:attribute name="childControlName" type="String"/>
+    <aura:attribute name="childControlValue" type="String"/>
+</aura:event>

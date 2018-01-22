@@ -1,8 +1,8 @@
 # Date Time Picker#
 
-*** A Flow Component solution  ***
+### A Flow Component solution  ###
 
-This is an extremely simple port of the {standard DateTimePicker}(https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_ui_inputDateTime.htm) to work as a Flow Screen Component.
+This is an extremely simple port of the [standard DateTimePicker](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_ui_inputDateTime.htm) to work as a Flow Screen Component.
 
 
 
@@ -10,7 +10,7 @@ This is an extremely simple port of the {standard DateTimePicker}(https://develo
 
 If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
 
-See the full set of installation options {here}(https://github.com/alexed1/LightningFlowComponents/blob/master/install.md).
+See the full set of installation options [here](https://github.com/alexed1/LightningFlowComponents/blob/master/install.md).
 
 ## How It Works ##
 
@@ -22,9 +22,9 @@ Most of the functionality of the underlying base component has not yet been expo
 
 ## Resources ##
 
-Want to suggest an improvement or report a bug? Do that here.  (https://github.com/alexed1/LightningFlowComponents/issues)
+Want to suggest an improvement or report a bug? Do that [here](/LightningFlowComponents/issues)
 
-{Learn more about how Flow Components work}(/blob/master/README.md)
+[Learn more about how Flow Components work](/blob/master/README.md)
 
 Know a little javascript and want to add some improvements? {Pull requests are welcome}(/pulls) If you're thinking of adding much complexity to the user interface, though, you probably should fork the repo, because we want to keep this baseline version easy-to-use.
 

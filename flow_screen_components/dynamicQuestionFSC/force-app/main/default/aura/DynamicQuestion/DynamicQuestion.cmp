@@ -4,7 +4,7 @@
      for more information, see [] 
 -->
 
-<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:component implements="lightning:availableForFlowScreens" access="global">
 	
     
     <!-- the parent question  value determines which child controls will be visibile -->
@@ -148,7 +148,7 @@
     <!-- used as a hacky global in places where we probably should be using promises -->
     <aura:attribute name="output" type="List" />
     
-	<aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     
     <!-- when the value of a child control changes, an event gets fired. this handler 
 		intercepts that event so the storage attribute (which are what downstream flow nodes 
@@ -176,9 +176,9 @@
                             onchange="{! c.onParentClick }"
                             required="true" />	
    
-        <div class="slds-card">
+    <div class="slds-card">
   	 {!v.body}
-        </div>
+    </div>
           
 	
     

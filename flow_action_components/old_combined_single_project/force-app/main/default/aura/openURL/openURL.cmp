@@ -1,7 +1,0 @@
-<aura:component implements="flexipage:availableForRecordHome,flowruntime:availableForLocalInvocableActions">
-	<aura:attribute name="destination" type="string" />
-foo
-bar
-foo
-bar
-</aura:component>

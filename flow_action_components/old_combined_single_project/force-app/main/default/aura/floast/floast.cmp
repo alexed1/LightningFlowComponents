@@ -1,5 +1,0 @@
-<aura:component implements="flexipage:availableForRecordHome,flowruntime:availableForLocalInvocableActions">
-    <aura:attribute name="message" type="string" />
-   
-   
-</aura:component>

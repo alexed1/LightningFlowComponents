@@ -4,7 +4,7 @@
 
 This is an extremely simple port of the [standard DateTimePicker](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_ui_inputDateTime.htm) to work as a Flow Screen Component.
 
-
+<img width="1007" alt="screen shot 2018-01-21 at 9 05 54 pm" src="https://user-images.githubusercontent.com/3140883/35206269-57dc84a0-fef0-11e7-80f5-a49bf358dd47.png">
 
 ## Install this Component Into Your Org ##
 

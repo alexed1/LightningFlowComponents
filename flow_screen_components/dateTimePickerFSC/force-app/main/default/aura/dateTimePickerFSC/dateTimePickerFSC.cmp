@@ -1,0 +1,7 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+	<aura:attribute name="selectedDateTime" type="String" />
+    
+	<ui:inputDateTime aura:id="expdate" label="Schedule Call: " class="form-control"
+  					 value="{!v.selectedDateTime}" displayDatePicker="true" />
+
+</aura:component>

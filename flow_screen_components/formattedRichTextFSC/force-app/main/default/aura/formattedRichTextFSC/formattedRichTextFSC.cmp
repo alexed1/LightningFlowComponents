@@ -1,0 +1,4 @@
+<aura:component implements="lightning:availableForFlowScreens">
+	<aura:attribute name="richtext" type="String"/>
+	<lightning:formattedRichText value="{!v.richtext}" />
+</aura:component>	

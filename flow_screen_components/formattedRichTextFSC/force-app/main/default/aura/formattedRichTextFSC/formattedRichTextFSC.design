@@ -1,0 +1,3 @@
+<design:component >
+	<design:attribute name="richtext" label="value"/>
+</design:component>

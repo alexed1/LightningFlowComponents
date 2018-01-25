@@ -16,7 +16,9 @@ See the full set of installation options [here](/install.md).
 
 This component exposes a single attribute called "value". It can be used both as an input parameter to set the starting values and as an output parameter to pass out the selected time. 
 
-Note that the standard Flow Display Text field is capable of displaying some of the rich text effects, but not all:
+You can display the rich text output of these components in Flows, using either the standard Display Text Field or the new [formattedRichText Flow Screen Component](https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/formattedRichTextFSC)
+
+Note, though, that the standard Flow Display Text field is capable of displaying some of the rich text effects, but not all:
 
 <img width="581" alt="screen shot 2018-01-24 at 9 05 12 pm" src="https://user-images.githubusercontent.com/3140883/35371661-548492a0-014a-11e8-929e-e27030bcc029.png">
 

@@ -1,4 +1,4 @@
-# Rich Text Edit Control #
+# Rich Text Output Display Control #
 
 ### A Flow Component solution  ###
 

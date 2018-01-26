@@ -84,7 +84,7 @@ Once the user has encountered your dynamic question and filled out or selected c
 
 ## Resources ##
 
-Watch the video tutorial. (https://drive.google.com/file/d/1tDPVNvz2XHPurOnkS6ErHNRtjMN1ykvX/view?usp=sharing)
+Watch the [video introduction](https://www.youtube.com/watch?v=KBcmWM9KEWc&feature=youtu.be).
 
 Want to suggest an improvement or report a bug? Do that here.  (https://github.com/alexed1/LightningFlowComponents/issues)
 undefined

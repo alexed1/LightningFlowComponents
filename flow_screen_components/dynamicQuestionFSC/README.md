@@ -18,7 +18,7 @@ Here are the steps to using a dynamic question in your Flow
 
 If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install Dynamic Questions.
 
-Component installation requires the use of developer tools, but we've made a video of a way that non-developers can install Dynamic Questions with nothing more than copy and paste (https://drive.google.com/file/d/1f1ibaWk1ooeIbMLZXddJ2TRsSC0MSHB9/view?usp=sharing). See the full installation options here (https://github.com/alexed1/LightningFlowComponents/blob/master/install.md).
+See the full installation options [here](https://github.com/alexed1/LightningFlowComponents/blob/master/install.md).
 
 ## Add a Dynamic Question to a Flow Screen ##
 

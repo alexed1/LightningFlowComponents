@@ -1,13 +1,14 @@
-<aura:component implements="lightning:availableForFlowScreens">
-	<aura:attribute name="scriptText" type="String" default="No Script Text Available"/>
-    
-    <div class="scriptBorder">
-        <span class="scriptBody">
-            Script:
-            <p></p>
-            {!v.scriptText} 
-        </span>
-    	  
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="callscript" type="String" default="Hello" access="global" />
+    <div>
+        <div style="padding: 25px; border-style: solid; border-width: 3px; border-color:
+        orange;">
+            <div style="float:left; margin-right:15px;">
+            <lightning:icon iconName="utility:chat" variant="error"/>
+            </div>
+            
+            <span style="font-size: 20px; line-height:2;" class="greeting">{!v.callscript}
+            </span>
+        </div>
     </div>
-    <p></p>
-</aura:component>	
+</aura:component>

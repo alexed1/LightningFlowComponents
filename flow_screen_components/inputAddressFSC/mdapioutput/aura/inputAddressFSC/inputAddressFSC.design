@@ -1,0 +1,14 @@
+<design:component >
+	<design:attribute name="id" label="id" />
+	<design:attribute name="addressLabel"  label="label-Address"/>
+	<design:attribute name="streetLabel" label="label-Street" />
+	<design:attribute name="cityLabel"  label="label-city"/>
+	<design:attribute name="countryLabel" label="label-country" />
+	<design:attribute name="provinceLabel"  label="label-province"/>
+	<design:attribute name="postalCodeLabel"  label="label-postalCode"/>
+	<design:attribute name="street"  label="Street"/>
+	<design:attribute name="city"  label="City" />
+	<design:attribute name="country" label="Country" />
+	<design:attribute name="province" label="Province" />
+	<design:attribute name="postalCode"  label="PostalCode"/>
+</design:component>

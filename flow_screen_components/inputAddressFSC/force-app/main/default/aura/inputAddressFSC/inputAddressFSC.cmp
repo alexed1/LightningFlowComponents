@@ -1,0 +1,34 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+
+	<aura:attribute name="id" type="String" />
+	<aura:attribute name="addressLabel" type="String" default="Address" />
+	<aura:attribute name="streetLabel" type="String" default="Street"/>
+	<aura:attribute name="cityLabel" type="String" default="City"/>
+	<aura:attribute name="countryLabel" type="String" default="Country"/>
+	<aura:attribute name="provinceLabel" type="String" default="State"/>
+	<aura:attribute name="postalCodeLabel" type="String" default="Zip Code" />
+	<aura:attribute name="street" type="String" />
+	<aura:attribute name="city" type="String" />
+	<aura:attribute name="country" type="String" />
+	<aura:attribute name="province" type="String" />
+	<aura:attribute name="postalCode" type="String" />
+	
+
+    <div style="max-width: 400px;">
+        <lightning:inputAddress
+            aura:id="{!v.id}"
+            addressLabel="{!v.addressLabel}"
+            streetLabel="{!v.streetLabel}"
+            cityLabel="{!v.cityLabel}"
+            countryLabel="{!v.countryLabel}"
+            provinceLabel="{!v.provinceLabel}"
+            postalCodeLabel="{!v.postalCodeLabel}"
+            street="{!v.street}"
+            city="{!v.city}"
+            country="{!v.country}"
+            province="{!v.province}"
+            postalCode="{!v.postalCode}"
+            
+        />
+    </div>
+</aura:component>

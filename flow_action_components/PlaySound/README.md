@@ -15,7 +15,7 @@ See the full set of installation options [here](/install.md).
 
 ## How It Works ##
 
-...on the way
+This Flow Action installs with several sample Flows. Run them to explore the capabilities of this component.
 
 
 ## Resources ##

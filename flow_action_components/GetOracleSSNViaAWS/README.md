@@ -15,8 +15,7 @@ We are making a request to an external (non-Salesforce) server so we needed to a
 
 
 ## Install this Component Into Your Org ##
-
-If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
+To use this, you must be a participant in the local Flow Actions pilot, aka the "Local Actions" pilot. Request access from customer support. 
 
 See the full set of installation options [here](/install.md).
 

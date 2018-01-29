@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="type" />
+    <design:attribute name="message" />
+</design:component>

@@ -1,12 +1,12 @@
 ({
-    fetchPickListVal: function(component, fieldName, elementId) {
+    fetchPickListVal: function(component, objectName, fieldName, elementId) {
         var action = component.get("c.getSelectOptions");
 
         action.setParams({
-            "objObject": component.get("v.objInfo"),
+            "objObject": objectName,
             "fld": fieldName
         });
-        
+
         var opts = [];
         action.setCallback(this, function(response) {
             if (response.getState() == "SUCCESS") {

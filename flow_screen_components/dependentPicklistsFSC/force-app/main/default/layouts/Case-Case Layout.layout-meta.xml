@@ -196,19 +196,7 @@
         </layoutColumns>
         <style>OneColumn</style>
     </layoutSections>
-    <layoutSections>
-        <customLabel>false</customLabel>
-        <detailHeading>false</detailHeading>
-        <editHeading>false</editHeading>
-        <layoutColumns>
-            <layoutItems>
-                <customLink>UpsellCrosssellOpportunity</customLink>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns/>
-        <layoutColumns/>
-        <style>CustomLinks</style>
-    </layoutSections>
+    
     <quickActionList>
         <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>

@@ -17,5 +17,4 @@
     <layoutAssignments>
         <layout>CaseClose-Close Case Layout</layout>
     </layoutAssignments>
-    
 </Profile>

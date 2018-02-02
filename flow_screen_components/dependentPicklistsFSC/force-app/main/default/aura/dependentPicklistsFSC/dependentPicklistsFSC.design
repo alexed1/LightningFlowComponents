@@ -1,3 +1,12 @@
 <design:component >
-	
+   <design:attribute name="choice1_parentName"  label="choice1_parentName" />
+   <design:attribute name="choice1_dependentFieldName" label="choice1_dependentFieldName"/>
+   <design:attribute name="choice2_parentName" label="choice2_parentName" />
+   <design:attribute name="choice2_dependentFieldName" label="choice2_dependentFieldName"  />
+   <design:attribute name="choice3_parentName"   label="choice3_parentName"/>
+   <design:attribute name="choice3_dependentFieldName"  label="choice3_dependentFieldName" />
+   <design:attribute name="choice4_parentName"  label="choice4_parentName" />
+   <design:attribute name="choice4_dependentFieldName"  label="choice4_dependentFieldName" />
+   <design:attribute name="choice5_parentName"  label="choice5_parentName" />
+   <design:attribute name="choice5_dependentFieldName" label="choice5_dependentFieldName"  />
 </design:component>

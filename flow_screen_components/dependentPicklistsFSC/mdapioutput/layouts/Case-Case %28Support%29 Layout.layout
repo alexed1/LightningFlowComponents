@@ -196,7 +196,6 @@
         </layoutColumns>
         <style>OneColumn</style>
     </layoutSections>
-   
     <quickActionList>
         <quickActionListItems>
             <quickActionName>FeedItem.TextPost</quickActionName>

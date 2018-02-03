@@ -5,12 +5,15 @@
 
    <design:attribute name="choice1_parentValue"  label="Parent Choice 1" />
    <design:attribute name="choice1_dependentFieldName" label="Choice1 Field Name"/>
-   <design:attribute name="choice2_parentValue" label="choice2_parentName" />
+   <design:attribute name="choice2_parentValue" label="Parent Choice 2" />
    <design:attribute name="choice2_dependentFieldName" label="Choice2 Field Name"  />
-   <design:attribute name="choice3_parentValue"   label="choice3_parentName"/>
+   <design:attribute name="choice3_parentValue"   label="Parent Choice 3"/>
    <design:attribute name="choice3_dependentFieldName"  label="Choice3 Field Name" />
-   <design:attribute name="choice4_parentValue"  label="choice4_parentName" />
+   <design:attribute name="choice4_parentValue"  label="Parent Choice 4" />
    <design:attribute name="choice4_dependentFieldName"  label="Choice4 Field Name" />
-   <design:attribute name="choice5_parentValue"  label="choice5_parentName" />
+   <design:attribute name="choice5_parentValue"  label="Parent Choice 5" />
    <design:attribute name="choice5_dependentFieldName" label="Choice5 Field Name"  />
+
+   <design:attribute name="parentValue" label="Parent Output Value" />
+   <design:attribute name="dependentValue" label="Dependent Output Value" />
 </design:component>

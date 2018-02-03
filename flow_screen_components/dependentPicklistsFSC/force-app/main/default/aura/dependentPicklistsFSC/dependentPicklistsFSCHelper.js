@@ -17,7 +17,7 @@
                     opts.push({
                         class: "optionClass",
                         label: "--- None ---",
-                        value: ""
+                        value: "none"
                     });
                 }
                 for (var i = 0; i < allValues.length; i++) {

@@ -10,6 +10,7 @@
    <aura:attribute name="dependentParentFieldValue" type="String"  />
    <aura:attribute name="dependentOptions" type="String[]" />
    <aura:attribute name="dependentValue" type="String" />
+   <aura:attribute name="showDependentSelect" type="Boolean" default="false"/>
    <aura:handler name="change" value="{!v.dependentParentFieldValue}" action="{!c.handleDependentParentFieldValueChanged}"/>
 
    <aura:attribute name="choice1_parentValue" type="String" default="Mechanical" />
@@ -25,27 +26,33 @@
 
    
 
-   <div class="slds-form-element">
+  
      
-      <div class="slds-select_container">
-         <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-select"  onchange="{!c.onParentValueChange}">
+  
+         <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-size_small"  onchange="{!c.onParentValueChange}">
             <aura:iteration items="{!v.parentOptions}" var="option">
                <option value="{!option.value}" text="{!option.label}"></option>
            </aura:iteration>
          </lightning:select>
-      </div>
+   
       
-      <div class="slds-select_container">
-         <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-select"  onchange="{!c.onDependentValueChange}">
-            <aura:iteration items="{!v.dependentOptions}" var="option">
-               <option value="{!option.value}" text="{!option.label}"></option>
-           </aura:iteration>
-         </lightning:select>
-      </div>
+         <aura:if isTrue="{!v.showDependentSelect}">
+            <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-size_small" onchange="{!c.onDependentValueChange}">
+               <aura:iteration items="{!v.dependentOptions}" var="option">
+                  <option value="{!option.value}" text="{!option.label}"></option>
+              </aura:iteration>
+            </lightning:select>
+
+         </aura:if>
+      
+     
+         
+      
+   
 
 
 
-   </div>
+  
 
 
 </aura:component>	

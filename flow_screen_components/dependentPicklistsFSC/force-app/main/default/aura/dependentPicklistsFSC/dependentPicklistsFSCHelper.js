@@ -1,17 +1,18 @@
 ({
-    fetchPickListVal: function(component, objectName, fieldName, elementId) {
+    fetchPickListVal: function(component, objectName, fieldName, targetControl) {
         var action = component.get("c.getSelectOptions");
 
         action.setParams({
-            "objObject": objectName,
+            "objectName": objectName,
             "fld": fieldName
         });
 
         var opts = [];
         action.setCallback(this, function(response) {
             if (response.getState() == "SUCCESS") {
+                console.log("returning successfully");
                 var allValues = response.getReturnValue();
- 
+                console.log("response is: " + response); 
                 if (allValues != undefined && allValues.length > 0) {
                     opts.push({
                         class: "optionClass",
@@ -26,7 +27,8 @@
                         value: allValues[i]
                     });
                 }
-                component.find(elementId).set("v.options", opts);
+                console.log(opts);
+                component.set(targetControl, opts);
             }
         });
         $A.enqueueAction(action);

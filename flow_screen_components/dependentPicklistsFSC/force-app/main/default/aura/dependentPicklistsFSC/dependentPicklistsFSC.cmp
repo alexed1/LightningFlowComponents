@@ -1,36 +1,46 @@
 <aura:component implements="lightning:availableForFlowScreens" access="global" controller="DependentPicklistController">
 
    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-   <aura:attribute name="objectName" type="String" default="Case"  />
-   //is this working? doesn't look like it
-   <aura:attribute name="objInfo" type="case" default="{! 'sobjectType:' + v.objectName}" />
- 
-   <aura:attribute name="targetObject" type="String"  />
-   <aura:attribute name="parentLookupField" type="String"  />
-   <aura:attribute name="dependentLookupFieldName" type="String"  />
-   <aura:handler name="change" value="{!v.dependentLookupFieldName}" action="{!c.dependentLookupFieldValueChanged}"/>
 
-   <aura:attribute name="choice1_parentName" type="String"  />
-   <aura:attribute name="choice1_dependentFieldName" type="String"  />
-   <aura:attribute name="choice2_parentName" type="String"  />
+   <aura:attribute name="parentObjectName" type="String" default="Case" />
+   <aura:attribute name="parentFieldName" type="String" default="IssueType__c" />
+   <aura:attribute name="parentOptions" type="String[]" />
+   <aura:attribute name="parentValue" type="String" />
+
+   <aura:attribute name="dependentParentFieldValue" type="String"  />
+   <aura:attribute name="dependentOptions" type="String[]" />
+   <aura:attribute name="dependentValue" type="String" />
+   <aura:handler name="change" value="{!v.dependentParentFieldValue}" action="{!c.handleDependentParentFieldValueChanged}"/>
+
+   <aura:attribute name="choice1_parentValue" type="String" default="Mechanical" />
+   <aura:attribute name="choice1_dependentFieldName" type="String" default="MechanicalCategories__c"  />
+   <aura:attribute name="choice2_parentValue" type="String"  />
    <aura:attribute name="choice2_dependentFieldName" type="String"  />
-   <aura:attribute name="choice3_parentName" type="String"  />
+   <aura:attribute name="choice3_parentValue" type="String"  />
    <aura:attribute name="choice3_dependentFieldName" type="String"  />
-   <aura:attribute name="choice4_parentName" type="String"  />
+   <aura:attribute name="choice4_parentValue" type="String"  />
    <aura:attribute name="choice4_dependentFieldName" type="String"  />
-   <aura:attribute name="choice5_parentName" type="String"  />
+   <aura:attribute name="choice5_parentValue" type="String"  />
    <aura:attribute name="choice5_dependentFieldName" type="String"  />
 
    
 
    <div class="slds-form-element">
-      <label class="slds-form-element__label" for="select-01">Choose Issue Type</label>
+     
       <div class="slds-select_container">
-         <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-select"  onChange="{!c.onParentPicklistChange}"/>
+         <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-select"  onchange="{!c.onParentValueChange}">
+            <aura:iteration items="{!v.parentOptions}" var="option">
+               <option value="{!option.value}" text="{!option.label}"></option>
+           </aura:iteration>
+         </lightning:select>
       </div>
       
       <div class="slds-select_container">
-         <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-select"  onChange="{!c.onDependentPicklistChange}"/>
+         <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-select"  onchange="{!c.onDependentValueChange}">
+            <aura:iteration items="{!v.dependentOptions}" var="option">
+               <option value="{!option.value}" text="{!option.label}"></option>
+           </aura:iteration>
+         </lightning:select>
       </div>
 
 

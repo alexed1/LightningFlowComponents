@@ -14,21 +14,9 @@ Here are the steps to using a dynamic question in your Flow
 3. Configure your “Yes” child questions and your “No” child questions
 4. Setup some output variables to hold the user’s answers
 
-## Install the Dynamic Questions Component Into Your Org ##
+## Install this Component Into Your Org ##
 
-If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install Dynamic Questions.
-
-See the full installation options [here](https://github.com/alexed1/LightningFlowComponents/blob/master/install.md).
-
-## Add a Dynamic Question to a Flow Screen ##
-
-1. Create a new flow and drag a screen element to the canvas.
-2. From the Add a Field tab, drag a Lightning Component field onto the design area.
-
-undefined
-3. Link your lightning component field to the Dynamic Question lightning component.
-
-undefined
+[Installation instructions](/flow_screen_components/InstallScreenComponents.md)
 
 ## Define your Parent Question ##
 

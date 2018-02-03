@@ -8,9 +8,7 @@
 
 ## Install this Component Into Your Org ##
 
-If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
-
-See the full set of installation options [here](/install.md).
+[Installation instructions](/flow_screen_components/InstallScreenComponents.md)
 
 ## Resources ##
 

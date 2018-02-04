@@ -16,7 +16,9 @@ Here are the steps to using a dynamic question in your Flow
 
 ## Install this Component Into Your Org ##
 
-[Installation instructions](/flow_screen_components/InstallScreenComponents.md)
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/fsc-dynamic-question)
+
+[General Installation options](/flow_screen_components/InstallScreenComponents.md)
 
 ## Define your Parent Question ##
 

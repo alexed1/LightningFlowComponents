@@ -3,7 +3,7 @@ public with sharing class DependentPicklistController {
 
     }
 
-    //from http://sfdcmonkey.com/2016/12/05/how-to-fetch-picklist-value-from-sobject-and-set-in-uiinputselect/
+    //all credit to http://sfdcmonkey.com/2016/12/05/how-to-fetch-picklist-value-from-sobject-and-set-in-uiinputselect/
     @AuraEnabled
 	public static List<String> getSelectOptions(string objectName, string fld) {
 	  system.debug('object Name --->' + objectName);

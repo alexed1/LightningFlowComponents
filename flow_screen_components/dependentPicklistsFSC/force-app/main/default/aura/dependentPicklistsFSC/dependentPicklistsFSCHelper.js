@@ -1,4 +1,5 @@
 ({
+    //all credit to: http://sfdcmonkey.com/2016/12/05/how-to-fetch-picklist-value-from-sobject-and-set-in-uiinputselect/
     fetchPickListVal: function(component, objectName, fieldName, targetControl) {
         var action = component.get("c.getSelectOptions");
 

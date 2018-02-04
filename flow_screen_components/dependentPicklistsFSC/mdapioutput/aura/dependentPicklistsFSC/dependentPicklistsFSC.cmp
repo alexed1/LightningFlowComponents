@@ -13,8 +13,8 @@
    <aura:attribute name="showDependentSelect" type="Boolean" default="false"/>
    <aura:handler name="change" value="{!v.dependentParentFieldValue}" action="{!c.handleDependentParentFieldValueChanged}"/>
 
-   <aura:attribute name="choice1_parentValue" type="String" default="Mechanical" />
-   <aura:attribute name="choice1_dependentFieldName" type="String" default="MechanicalCategories__c"  />
+   <aura:attribute name="choice1_parentValue" type="String"  />
+   <aura:attribute name="choice1_dependentFieldName" type="String"  />
    <aura:attribute name="choice2_parentValue" type="String"  />
    <aura:attribute name="choice2_dependentFieldName" type="String"  />
    <aura:attribute name="choice3_parentValue" type="String"  />
@@ -23,36 +23,30 @@
    <aura:attribute name="choice4_dependentFieldName" type="String"  />
    <aura:attribute name="choice5_parentValue" type="String"  />
    <aura:attribute name="choice5_dependentFieldName" type="String"  />
+   <aura:attribute name="choice6_parentValue" type="String"  />
+   <aura:attribute name="choice6_dependentFieldName" type="String"  />
+   <aura:attribute name="choice7_parentValue" type="String"  />
+   <aura:attribute name="choice7_dependentFieldName" type="String"  />
+   <aura:attribute name="choice8_parentValue" type="String"  />
+   <aura:attribute name="choice8_dependentFieldName" type="String"  />
+   <aura:attribute name="choice9_parentValue" type="String"  />
+   <aura:attribute name="choice9_dependentFieldName" type="String"  />
+   <aura:attribute name="choice10_parentValue" type="String"  />
+   <aura:attribute name="choice10_dependentFieldName" type="String"  />
 
-   
-
-  
-     
-  
-         <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-size_small"  onchange="{!c.onParentValueChange}">
-            <aura:iteration items="{!v.parentOptions}" var="option">
-               <option value="{!option.value}" text="{!option.label}"></option>
-           </aura:iteration>
-         </lightning:select>
-   
-      
-         <aura:if isTrue="{!v.showDependentSelect}">
-            <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-size_small" onchange="{!c.onDependentValueChange}">
-               <aura:iteration items="{!v.dependentOptions}" var="option">
-                  <option value="{!option.value}" text="{!option.label}"></option>
-              </aura:iteration>
-            </lightning:select>
-
-         </aura:if>
-      
-     
-         
-      
-   
+   <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-size_small"  onchange="{!c.onParentValueChange}">
+      <aura:iteration items="{!v.parentOptions}" var="option">
+         <option value="{!option.value}" text="{!option.label}"></option>
+     </aura:iteration>
+   </lightning:select>
 
 
-
-  
-
+   <aura:if isTrue="{!v.showDependentSelect}">
+      <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-size_small" onchange="{!c.onDependentValueChange}">
+         <aura:iteration items="{!v.dependentOptions}" var="option">
+            <option value="{!option.value}" text="{!option.label}"></option>
+        </aura:iteration>
+      </lightning:select>
+   </aura:if>
 
 </aura:component>	

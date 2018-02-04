@@ -30,9 +30,23 @@
                 case (component.get("v.choice5_parentValue")):
                     component.set("v.dependentParentFieldValue", component.get("v.choice5_dependentFieldName"));
                 break;
+                case (component.get("v.choice6_parentValue")):
+                    component.set("v.dependentParentFieldValue", component.get("v.choice6_dependentFieldName"));
+                break;
+                case (component.get("v.choice7_parentValue")):
+                    component.set("v.dependentParentFieldValue", component.get("v.choice7_dependentFieldName"));
+                break;
+                case (component.get("v.choice8_parentValue")):
+                    component.set("v.dependentParentFieldValue", component.get("v.choice8_dependentFieldName"));
+                break;
+                case (component.get("v.choice9_parentValue")):
+                    component.set("v.dependentParentFieldValue", component.get("v.choice9_dependentFieldName"));
+                break;
+                case (component.get("v.choice10_parentValue")):
+                    component.set("v.dependentParentFieldValue", component.get("v.choice10_dependentFieldName"));
+                break;
                 default:
                     alert( "No dependent list found for parent value: " + parentSelectValue + ". This probably means that the Dependent Picklist component in this Flow screen is not configured correctly or that the underlying picklist values were changed. Contact your salesforce adminstrator and make sure to tip the error message guy.");
-
             } 
         }
         
@@ -59,12 +73,6 @@
             targetObjectName = component.get("v.parentObjectName");
             targetFieldName = targetFieldString;
         }
-
-        
-
-        console.log("targetObjectName is: " + targetObjectName);
-        console.log("targetFieldName is: " + targetFieldName);
-
 
         helper.fetchPickListVal(component, targetObjectName, targetFieldName, 'v.dependentOptions');
     },

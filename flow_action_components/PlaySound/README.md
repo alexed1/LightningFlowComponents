@@ -9,7 +9,7 @@
 
 ## Install this Component Into Your Org ##
 
-To use this, you must be a participant in the local Flow Actions pilot, aka the "Local Actions" pilot. [Learn more here](https://sites.google.com/view/flowunofficial/pilot-flow-action-components)
+To use this, you must be a participant in the local Flow Actions pilot, aka the "Local Actions" pilot. [Learn more](https://sites.google.com/view/flowunofficial/pilot-flow-action-components)
 
 [Install this component](https://sites.google.com/view/flowunofficial/flow-action-components/play-sound).
 

@@ -11,7 +11,7 @@ The ScriptDisplay component is small and simple. It mainly highlights the potent
 
 ## Install this Component Into Your Org ##
 
-If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
+[Install this component](https://sites.google.com/view/flowunofficial/flow-screen-components/speaking-script).
 
 See the full set of installation options [here](/install.md).
 

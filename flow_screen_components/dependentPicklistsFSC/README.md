@@ -8,6 +8,8 @@
 
 ## Install this Component Into Your Org ##
 
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/dependent-picklist).
+
 [Installation instructions](/flow_screen_components/InstallScreenComponents.md)
 
 ## Resources ##

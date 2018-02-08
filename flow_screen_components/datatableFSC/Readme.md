@@ -22,6 +22,7 @@ The selected rows are made available to the Flow via the selectedRows attribute,
 ## Install this Component Into Your Org ##
 
 If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
+[Installation information for this component](https://sites.google.com/view/flowunofficial/flow-screen-components/datatable).
 
 See the full set of installation options [here](/install.md).
 

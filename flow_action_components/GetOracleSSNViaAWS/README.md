@@ -15,7 +15,9 @@ We are making a request to an external (non-Salesforce) server so we needed to a
 
 
 ## Install this Component Into Your Org ##
-To use this, you must be a participant in the local Flow Actions pilot, aka the "Local Actions" pilot. Request access from customer support. 
+To use this, you must be a participant in the local Flow Actions pilot, aka the "Local Actions" pilot. [Learn more here](https://sites.google.com/view/flowunofficial/pilot-flow-action-components)
+
+[Install this component](https://sites.google.com/view/flowunofficial/flow-action-components/getoraclessnviaaws).
 
 See the full set of installation options [here](/install.md).
 

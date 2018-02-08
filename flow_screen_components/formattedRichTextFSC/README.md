@@ -9,9 +9,9 @@ This is an extremely simple port of the [standard formattedRichText control](htt
 
 ## Install this Component Into Your Org ##
 
-If your org is running Spring '18 (or the Lightning Components in Flow Screens Pilot),  you can install this component.
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/rich-text-display)
 
-See the full set of installation options [here](/install.md).
+[General Installation options](/flow_screen_components/InstallScreenComponents.md)
 
 ## How It Works ##
 

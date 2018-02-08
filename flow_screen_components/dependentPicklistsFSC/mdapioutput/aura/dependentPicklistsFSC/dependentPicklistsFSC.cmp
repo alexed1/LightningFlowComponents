@@ -6,10 +6,12 @@
    <aura:attribute name="parentFieldName" type="String" default="IssueType__c" />
    <aura:attribute name="parentOptions" type="String[]" />
    <aura:attribute name="parentValue" type="String" />
+   <aura:attribute name="parentLabel" type="String" default="Select:" />
 
    <aura:attribute name="dependentParentFieldValue" type="String"  />
    <aura:attribute name="dependentOptions" type="String[]" />
    <aura:attribute name="dependentValue" type="String" />
+   <aura:attribute name="dependentLabel" type="String" default="Select:"/>
    <aura:attribute name="showDependentSelect" type="Boolean" default="false"/>
    <aura:handler name="change" value="{!v.dependentParentFieldValue}" action="{!c.handleDependentParentFieldValueChanged}"/>
 
@@ -34,7 +36,7 @@
    <aura:attribute name="choice10_parentValue" type="String"  />
    <aura:attribute name="choice10_dependentFieldName" type="String"  />
 
-   <lightning:select  aura:id="parentSelect" label="Choose Issue Type" class="slds-size_small"  onchange="{!c.onParentValueChange}">
+   <lightning:select  aura:id="parentSelect" label="{!v.parentLabel}" class="slds-size_small"  onchange="{!c.onParentValueChange}">
       <aura:iteration items="{!v.parentOptions}" var="option">
          <option value="{!option.value}" text="{!option.label}"></option>
      </aura:iteration>
@@ -42,7 +44,7 @@
 
 
    <aura:if isTrue="{!v.showDependentSelect}">
-      <lightning:select  aura:id="dependentSelect" label="Choose Subcategory" class="slds-size_small" onchange="{!c.onDependentValueChange}">
+      <lightning:select  aura:id="dependentSelect" label="{!v.dependentLabel}" class="slds-size_small" onchange="{!c.onDependentValueChange}">
          <aura:iteration items="{!v.dependentOptions}" var="option">
             <option value="{!option.value}" text="{!option.label}"></option>
         </aura:iteration>

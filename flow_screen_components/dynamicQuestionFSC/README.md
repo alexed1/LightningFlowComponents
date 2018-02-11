@@ -5,7 +5,6 @@
 
 It’s now possible to create dynamic questions, where child questions appear and disappear based on the selection made in the parent question and you can do this without writing any code.
 
-undefinedundefined
 The implementation of dynamic questions takes advantage of Lightning Flow’s new ability, as of Spring ’18, to insert lightning components into flow screens. Using this, we’ve built a lightning component that produces dynamic questions upon request, and packaged it so that you can use it without touching code.
 Here are the steps to using a dynamic question in your Flow
 

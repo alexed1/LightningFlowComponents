@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>TestFlow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>TestFlow</label>
+    <processType>Flow</processType>
+    <screens>
+        <name>Screen1</name>
+        <label>Screen1</label>
+        <locationX>124</locationX>
+        <locationY>31</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>mypowercombo</name>
+            <extensionName>c:powerCombo</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Screen1</startElementReference>
+</Flow>

@@ -12,6 +12,7 @@ Carefully copy and paste one file at a time into your own developer console
 Each component has a download link in its Readme page that will download the entire component as a single zip file. Workbench is a website operated by Salesforce that allows you to upload zipped metadata files to your org. For several video introductions to Workbench, look [here](https://www.youtube.com/results?search_query=salesforce+workbench). Workbench is quite ugly but it's really straightforward to use, so if you haven't used it before, this might be a great time to learn. 
 
 The key things to remember are:
+1) Workbench has a selector for the API version, and it needs to be set to 42.0 or higher.(as of 2/11/18, it still hasn't been updated to support that version;    )
 1) The org you're installing to needs to be Spring '18 or later.
 2) Check the "Single Package" checkbox in Workbench
 3) Keep in mind that some Flow Components consist of more than 1 Lightning Component, and the package may include additional metadata useful or necessary to use the Component (for example, the GetOracleViaAWS Action Component includes a CSP metadata that instructs your org to let Salesforce contact a public AWS endpoint). To see everything that's involved, check inside the mdapioutput folder

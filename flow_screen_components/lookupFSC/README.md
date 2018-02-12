@@ -17,12 +17,17 @@ See the full set of installation options [here](/install.md).
 This component exposes the following attributes that can be set in Flow:
 
 label="Object Name" This is the actual object that will be looked up
+
 label="Display Which Field?" This is the field that will show up in the list box to represent a record. It's usually set to "Name"
+
 label="Output Which Field as Value?" Here you can set which field you actually want saved into the Output Value attribute.
+
 label="Field Label"  This is just the label that appears next to the lookup control
+
 label="Output Value" This will hold the selection field. 
 
 label="Use Pills?" Supposed to display selections in pill format. still working on this.
+
 label="Required?"  This does make the field turn red. However, full validation does not currently work with Screen Components, so use this judiciously. If the field is truly critical, check for the presence of a value and use a Decision element to circle back if necessary.
 
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">

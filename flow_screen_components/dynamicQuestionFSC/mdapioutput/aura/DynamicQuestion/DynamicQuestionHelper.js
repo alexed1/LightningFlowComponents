@@ -84,12 +84,19 @@
         //first set the conditionalRelationship on the parent       
         var conditionalRelationshipAttributeName = "v." + childName + '_conditionalRelationship';
         cmp.set(conditionalRelationshipAttributeName, conditionalRelationship);
+
+        var optionParam = "";
+        //only set an options parameter if the control has an options attribute
+        //if name stripped of the final char
+        if (childName.slice(0,-1) != "childListbox" || "childRadio") {
+            optionParam = cmp.get("v." + childName + "_options")
+        }
         
         //then create the child component     
         $A.createComponent(
             "c:DynamicQuestionChild",
             {"nowVisible": cmp.get("v." + childName + "_nowVisible"),
-             "options": cmp.get("v." + childName + "_options"),
+             "options": optionParam,
              "label": cmp.get("v." + childName + "_label"),
              "controlType": cmp.get("v." + childName + "_controlType"),
              "name": childName,

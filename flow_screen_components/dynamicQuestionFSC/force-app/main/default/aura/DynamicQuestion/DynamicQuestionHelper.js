@@ -88,7 +88,7 @@
         var optionParam = "";
         //only set an options parameter if the control has an options attribute
         //if name stripped of the final char
-        if (childName.slice(0,-1) == "childListbox" || "childRadio") {
+        if (childName.slice(0,-1) != "childListbox" || "childRadio") {
             optionParam = cmp.get("v." + childName + "_options")
         }
         

@@ -176,7 +176,7 @@
                             onchange="{! c.onParentClick }"
                             required="true" />	
    
-    <div class="slds-card">
+    <div class="slds-card slds-m-top_x-small slds-m-left_large">
   	 {!v.body}
     </div>
           

@@ -7,26 +7,7 @@
   <types>
     <name>ApexClass</name>
     <members>DependentPicklistController</members>
-  </types>
-  <types>
-    <name>Layout</name>
-    <members>Case-Case %28Marketing%29 Layout</members>
-    <members>Case-Case %28Sales%29 Layout</members>
-    <members>Case-Case %28Support%29 Layout</members>
-    <members>Case-Case Layout</members>
-    <members>CaseClose-Close Case Layout</members>
-  </types>
-  <types>
-    <name>CustomField</name>
-    <members>Case.ElectricalCategories__c</members>
-    <members>Case.MechanicalCategories__c</members>
-  </types>
-  <types>
-    <name>Profile</name>
-    <members>Admin</members>
-    <members>Custom%3A Marketing Profile</members>
-    <members>Custom%3A Sales Profile</members>
-    <members>Custom%3A Support Profile</members>
+    <members>DependentPicklistControllerTest</members>
   </types>
   <version>41.0</version>
 </Package>

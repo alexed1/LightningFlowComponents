@@ -50,7 +50,7 @@
         <!-- //was having trouble getting this control to generate an onchange event, so added onblur -->
         <aura:if isTrue="{!  v.controlType == 'textField'}" >
             <aura:if isTrue="{!v.nowVisible}">
-                <div class="slds-p-top_x-small">               
+                <div class="slds-p-top_x-small slds-p-right_x-small">               
                     <lightning:input aura:id="no ID" label="{! v.label }"
                                       name="" onblur="{!c.onChildControlValueChange}" onchange="{!c.handleValueChange}"/>      		            
                 </div>
@@ -59,7 +59,7 @@
         
         <aura:if isTrue="{!  v.controlType == 'listBox'}" >
             <aura:if isTrue="{!v.nowVisible}">
-                <div class="slds-p-top_x-small">               
+                <div class="slds-p-top_x-small slds-p-right_x-small slds-p-bottom_x-small">               
                     <lightning:select aura:id="no ID" label="{! v.label }"
                                       name=""  onchange="{!c.onChildControlValueChange}">
                     	<aura:iteration items="{!v.options}" var="item">

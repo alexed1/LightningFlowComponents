@@ -88,8 +88,8 @@
         var optionParam = "";
         //only set an options parameter if the control has an options attribute
         //if name stripped of the final char
-        if (childName.slice(0,-1) != "childListbox" || "childRadio") {
-            optionParam = cmp.get("v." + childName + "_options")
+        if ((childName.slice(0,-1) == "childListbox") || (childName.slice(0,-1) == "childRadio")) {
+            optionParam = cmp.get("v." + childName + "_options");
         }
         
         //then create the child component     

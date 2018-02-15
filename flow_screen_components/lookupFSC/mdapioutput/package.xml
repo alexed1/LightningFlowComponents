@@ -15,14 +15,6 @@
     <members>LightningLookupControllerTest</members>
   </types>
   <types>
-    <name>FlowDefinition</name>
-    <members>TestFlow</members>
-  </types>
-  <types>
-    <name>Flow</name>
-    <members>TestFlow-1</members>
-  </types>
-  <types>
     <name>StaticResource</name>
     <members>jQuery_LookupCmp</members>
   </types>

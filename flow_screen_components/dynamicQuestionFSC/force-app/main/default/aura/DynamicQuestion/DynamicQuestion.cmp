@@ -168,16 +168,19 @@
     <!-- *************************************************** -->
     <!-- markup -->
     <!-- only the parent control is defined here. all of the child controls are dynamically inserted with createControl calls during init -->
-    <lightning:radioGroup aura:id="{! 'id_ ' + v.parentQuestionLabel }"
-                            name="{! 'name_ ' + v.parentQuestionLabel }"
-                            label="{! v.parentQuestionLabel }"
-                            options="{! v.parentQuestion_options }"
-                            value="{! v.parentQuestion_value }"
-                            onchange="{! c.onParentClick }"
-                            required="true" />	
-   
-    <div class="slds-card slds-m-top_x-small slds-m-left_large">
-  	 {!v.body}
+    <div class="slds-m-top_x-small">
+        <lightning:radioGroup aura:id="{! 'id_ ' + v.parentQuestionLabel }"
+                                name="{! 'name_ ' + v.parentQuestionLabel }"
+                                label="{! v.parentQuestionLabel }"
+                                options="{! v.parentQuestion_options }"
+                                value="{! v.parentQuestion_value }"
+                                onchange="{! c.onParentClick }"
+                                required="true" />	
+       
+        <!--TODO: aura if to make this conditional will prevent it from showing artifacts when collapsed -->
+        <div class="slds-card slds-m-top_x-small slds-m-left_large slds-form slds-form_stacked slds-p-around_small">
+      	 {!v.body}
+        </div>
     </div>
           
 	

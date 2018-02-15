@@ -27,47 +27,47 @@
     <!-- REFACTOR rename this as the name is misleading -->
     <aura:registerEvent name="ChildControlClicked" type="c:ChildControlClickEvent"/>
     
-    <div class="slds-p-left_medium"> 
+   
         <aura:if isTrue="{!  v.controlType == 'checkbox'}"  > 
             <aura:if isTrue="{!v.nowVisible}">       
-                <div class="slds-p-top_x-small">               
+                           
                     <ui:inputCheckbox aura:id="no ID" label="{! v.label }"
                                       name="" change="{!c.onChildControlValueChange}"/>      		            
-                </div>
+                
             </aura:if>
         </aura:if>
         
         <aura:if isTrue="{!  v.controlType == 'radio'}" >
             <aura:if isTrue="{!v.nowVisible}">    
-                <div class="slds-p-top_x-small">               
-                    <lightning:radioGroup aura:id="radio" label="{! v.label }"
+                         
+                    <lightning:radioGroup aura:id="radio" class="slds-form-element" label="{! v.label }"
                                           options="{! v.options}"
                                       name="" onchange="{!c.onChildControlValueChange}"/>      		            
-                </div>
+                
             </aura:if>
         </aura:if>
         
         <!-- //was having trouble getting this control to generate an onchange event, so added onblur -->
         <aura:if isTrue="{!  v.controlType == 'textField'}" >
             <aura:if isTrue="{!v.nowVisible}">
-                <div class="slds-p-top_x-small slds-p-right_x-small">               
-                    <lightning:input aura:id="no ID" label="{! v.label }"
+                               
+                    <lightning:input aura:id="no ID" label="{! v.label }" class="slds-medium-size_1-of-2 slds-size_1-of-1"
                                       name="" onblur="{!c.onChildControlValueChange}" onchange="{!c.handleValueChange}"/>      		            
-                </div>
+               
              </aura:if>
         </aura:if>
         
         <aura:if isTrue="{!  v.controlType == 'listBox'}" >
             <aura:if isTrue="{!v.nowVisible}">
-                <div class="slds-p-top_x-small slds-p-right_x-small slds-p-bottom_x-small">               
-                    <lightning:select aura:id="no ID" label="{! v.label }"
+                           
+                    <lightning:select aura:id="no ID" label="{! v.label }" class="slds-medium-size_1-of-2 slds-size_1-of-1"
                                       name=""  onchange="{!c.onChildControlValueChange}">
                     	<aura:iteration items="{!v.options}" var="item">
 							<option text="{!item.label}" value="{!item.value}" />
                     	</aura:iteration>
                     </lightning:select>      		            
-                </div>
+              
              </aura:if>
         </aura:if>
-    </div>
+    
 </aura:component>

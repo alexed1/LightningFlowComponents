@@ -1,0 +1,28 @@
+<design:component >
+
+   <design:attribute name="parentObjectName" label="Parent Object Name" />
+   <design:attribute name="parentFieldName" label="Parent Field Name" />
+
+   <design:attribute name="choice1_parentValue"  label="Parent Choice 1" />
+   <design:attribute name="choice1_dependentFieldName" label="depPicklist 1 Name"/>
+   <design:attribute name="choice2_parentValue" label="Parent Choice 2" />
+   <design:attribute name="choice2_dependentFieldName" label="depPicklist 2 Name"  />
+   <design:attribute name="choice3_parentValue"   label="Parent Choice 3"/>
+   <design:attribute name="choice3_dependentFieldName"  label="depPicklist 3 Name" />
+   <design:attribute name="choice4_parentValue"  label="Parent Choice 4" />
+   <design:attribute name="choice4_dependentFieldName"  label="depPicklist 4 Name" />
+   <design:attribute name="choice5_parentValue"  label="Parent Choice 5" />
+   <design:attribute name="choice5_dependentFieldName" label="depPicklist 5 Name"  />
+   <design:attribute name="choice6_parentValue"  label="Parent Choice 6" />
+   <design:attribute name="choice6_dependentFieldName" label="depPicklist 6 Name"/>
+   <design:attribute name="choice7_parentValue" label="Parent Choice 7" />
+   <design:attribute name="choice7_dependentFieldName" label="depPicklist 7 Name"  />
+   <design:attribute name="choice8_parentValue"   label="Parent Choice 8"/>
+   <design:attribute name="choice8_dependentFieldName"  label="depPicklist 8 Name" />
+   <design:attribute name="choice9_parentValue"  label="Parent Choice 9" />
+   <design:attribute name="choice9_dependentFieldName"  label="depPicklist 9 Name" />
+   <design:attribute name="choice10_parentValue"  label="Parent Choice 10" />
+   <design:attribute name="choice10_dependentFieldName" label="depPicklist 10 Name"  />
+   <design:attribute name="parentValue" label="Parent Output Value" />
+   <design:attribute name="dependentValue" label="Dependent Output Value" />
+</design:component>

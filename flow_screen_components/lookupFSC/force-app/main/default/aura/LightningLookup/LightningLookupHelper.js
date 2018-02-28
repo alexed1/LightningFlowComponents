@@ -327,7 +327,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         if(label && val){
             this.populateField(component,label,val);
         }
-        else{
+        else if (val) {
             action.setParams({
                 'obj' : component.get('v.sObjectName'),
                 'objId' : val,

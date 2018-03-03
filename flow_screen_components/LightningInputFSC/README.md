@@ -1,11 +1,11 @@
 # Lightning Input
 This is a port of the [Lightning Input](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_input.htm) component, which includes the following input types:
 
-checkbox | checkbox-button | color | date | datetime-local | email | month | number | password | radio | range | search | tel | time | toggle | url | week
+checkbox | checkbox-button | color | date | datetime-local | email | month | number | password | radio | range | tel | time | toggle | url | week
 
 ## How It Works ##
 
-The component has two required attributs: `type` (possibile values noted above) and `label`, which must be set in the Flow. There are also several type-specific attributes and validation attributes available ([see here for full documentation]((https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_input.htm)))
+The component has two required attributs: `type` (possible values noted above) and `label`, which must be set in the Flow. There are also several type-specific attributes and validation attributes available ([see here for full documentation]((https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_input.htm)))
 
 A `value` attribute captures the user's input and can be used to set a Flow variable.
 
@@ -95,10 +95,7 @@ For checkboxes and radio buttons, setting the "Group Name" attribute in the Flow
 * type: "range"
    * label: "Number" 
    * min: "0" 
-   * max: "10" 
-
-* type: "search"
-   * label: "Search" 
+   * max: "10"
 
 * type: "tel"
    * label: "Telephone" 

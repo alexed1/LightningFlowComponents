@@ -31,7 +31,8 @@ label="Output Value" This will hold the selection field.
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 
-
+## Lookup Filters ##
+This control does not currently support Lookup Filters. That's on the roadmap. The design will probably allow the user to specify, in Flow, for each Lookup control,two additional strings: the name of an existing Lookup field and the name of an existing Object where that field lives. The control will then apply the LookupFilter associated with that field. 
 
 ## Resources ##
 

@@ -1,4 +1,4 @@
-# Multishim - Pad Your Screens With Extra Lines #
+# MultiShim - Pad Your Screens With Extra Lines #
 
 ### A Flow Component solution  ###
 

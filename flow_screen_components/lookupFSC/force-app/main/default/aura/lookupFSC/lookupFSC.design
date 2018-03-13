@@ -1,9 +1,10 @@
 <design:component >
-	
-
+	<design:attribute name="usePills" label="Use Pills?" />
+	<design:attribute name="required" label="Required?" />
 
 	<design:attribute name="objectName"  label="Object Name" />
 	<design:attribute name="displayFieldName" label="Display Which Field?"/>
+	<design:attribute name="whereClause" label="Where Clause"/>
 	<design:attribute name="valueFieldName" label="Output Which Field as Value?" />
 	<design:attribute name="label" label="Field Label" />
 	<design:attribute name="selectedValue" label="Output Value" />

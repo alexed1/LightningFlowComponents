@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <name>AuraDefinitionBundle</name>
+    <members>getRESTData</members>
+    <members>jasmineTests</members>
+  </types>
+  <types>
+    <name>CspTrustedSite</name>
+    <members>aws_url</members>
+  </types>
+  <types>
+    <name>FlexiPage</name>
+    <members>Account_Record_Page</members>
+  </types>
+  <types>
+    <name>FlowDefinition</name>
+    <members>churn</members>
+  </types>
+  <types>
+    <name>Flow</name>
+    <members>churn-3</members>
+  </types>
+  <types>
+    <name>StaticResource</name>
+    <members>getRESTDataTests</members>
+  </types>
+  <version>41.0</version>
+</Package>

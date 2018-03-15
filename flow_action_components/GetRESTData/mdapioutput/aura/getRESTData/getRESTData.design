@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="customerId"/>
+	<design:attribute name="churnVal"/>
+</design:component>

@@ -1,3 +1,0 @@
-<aura:documentation>
-	<aura:description>Application that passes jasmine test spec files to LTS test Runner</aura:description>
-</aura:documentation>

@@ -1,4 +1,0 @@
-<design:component >
-	<design:attribute name="userId" />
-	<design:attribute name="ssn"/>
-</design:component>

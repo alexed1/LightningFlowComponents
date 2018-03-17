@@ -10,11 +10,14 @@
     <!-- the parent question  value determines which child controls will be visibile -->
     <aura:attribute name="parentQuestionLabel" type="String" default="You Must Set the Value of the Parent Question Label!"/>
 	<aura:attribute name="parentQuestion_options" type="List" default="[
-                    {'label': 'Yes', 'value': 'true'},
-                    {'label': 'No', 'value': 'false'}
+                    {'label': 'Yes', 'value': 'yes'},
+                    {'label': 'No', 'value': 'no'}
                     ]"/>
-    <aura:attribute name="parentQuestion_value" type="Boolean"/>
- 	    
+    <aura:attribute name="parentQuestion_value" type="String" />
+    <aura:attribute name="parentQuestion_defaultValue" type="String"/>
+ 
+    <aura:attribute name="curHelper" type="Object"/>
+   
         
     <!-- *************************************************** -->
     <aura:attribute name="childComponentsLinkedToYes" type="String" default="none" />
@@ -38,24 +41,28 @@
     <aura:attribute name="childCheckbox1_label" type="String" default="Needs a label assigned via a flow input"/>
     <!-- the default setting is used here to tell the initialization code what control-specific actions need to be taken (i.e. populating the choices of a list box -->
     <aura:attribute name="childCheckbox1_controlType" type="String" default="checkbox"/>
-    
+    <aura:attribute name="childCheckbox1_defaultValue" type="Boolean" default="checkbox" />
+
     <aura:attribute name="childCheckbox2_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childCheckbox2_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox2_storage" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox2_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childCheckbox2_controlType" type="String" default="checkbox"/>
+    <aura:attribute name="childCheckbox2_defaultValue" type="Boolean" default="checkbox" />
 
     <aura:attribute name="childCheckbox3_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childCheckbox3_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox3_storage" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox3_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childCheckbox3_controlType" type="String" default="checkbox" />
-    
+    <aura:attribute name="childCheckbox3_defaultValue" type="Boolean" default="checkbox" />
+
     <aura:attribute name="childCheckbox4_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childCheckbox4_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox4_storage" type="Boolean" default="false"/>
     <aura:attribute name="childCheckbox4_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childCheckbox4_controlType" type="String" default="checkbox" />
+    <aura:attribute name="childCheckbox4_defaultValue" type="Boolean" default="checkbox" />
 
     <aura:attribute name="childRadio1_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childRadio1_nowVisible" type="Boolean" default="false"/>
@@ -64,7 +71,8 @@
 	<aura:attribute name="childRadio1_optionsInputString" type="String" />
     <aura:attribute name="childRadio1_options" type="List" />
     <aura:attribute name="childRadio1_controlType" type="String" default="radio" />
-    
+    <aura:attribute name="childRadio1_defaultValue" type="String" default="radio" />
+
     <aura:attribute name="childRadio2_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childRadio2_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childRadio2_storage" type="String"/>
@@ -72,7 +80,8 @@
 	<aura:attribute name="childRadio2_optionsInputString" type="String" />
     <aura:attribute name="childRadio2_options" type="List" />
     <aura:attribute name="childRadio2_controlType" type="String" default="radio" />
-    
+    <aura:attribute name="childRadio2_defaultValue" type="String" default="radio" />
+
     <aura:attribute name="childRadio3_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childRadio3_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childRadio3_storage" type="String" />
@@ -80,7 +89,8 @@
 	<aura:attribute name="childRadio3_optionsInputString" type="String" />
     <aura:attribute name="childRadio3_options" type="List" />
     <aura:attribute name="childRadio3_controlType" type="String" default="radio" />
-    
+    <aura:attribute name="childRadio3_defaultValue" type="String" default="radio" />
+
     <aura:attribute name="childRadio4_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childRadio4_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childRadio4_storage" type="String" />
@@ -88,31 +98,36 @@
 	<aura:attribute name="childRadio4_optionsInputString" type="String" />
     <aura:attribute name="childRadio4_options" type="List" />
     <aura:attribute name="childRadio4_controlType" type="String" default="radio" />
+    <aura:attribute name="childRadio4_defaultValue" type="String" default="radio" />
     
     <aura:attribute name="childTextField1_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childTextField1_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childTextField1_storage" type="String" default=""/>
     <aura:attribute name="childTextField1_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childTextField1_controlType" type="String" default="textField" />
-    
+    <aura:attribute name="childTextField1_defaultValue" type="String"  />
+
     <aura:attribute name="childTextField2_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childTextField2_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childTextField2_storage" type="String" default=""/>
     <aura:attribute name="childTextField2_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childTextField2_controlType" type="String" default="textField" />
+    <aura:attribute name="childTextField2_defaultValue" type="String"  />
 
     <aura:attribute name="childTextField3_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childTextField3_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childTextField3_storage" type="String" default=""/>
     <aura:attribute name="childTextField3_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childTextField3_controlType" type="String" default="textField" />
+    <aura:attribute name="childTextField3_defaultValue" type="String"  />
 
     <aura:attribute name="childTextField4_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childTextField4_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childTextField4_storage" type="String" default=""/>
     <aura:attribute name="childTextField4_label" type="String" default="Needs a label assigned via a flow input"/>
     <aura:attribute name="childTextField4_controlType" type="String" default="textField" />    
-    
+    <aura:attribute name="childTextField4_defaultValue" type="String"  />
+
     <aura:attribute name="childListbox1_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childListbox1_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childListbox1_storage" type="String" default=""/>
@@ -120,7 +135,8 @@
     <aura:attribute name="childListbox1_controlType" type="String" default="listBox" />    
  	<aura:attribute name="childListbox1_options" type="List" />
     <aura:attribute name="childListbox1_optionsInputString" type="String" />
-    
+    <aura:attribute name="childListbox1_defaultValue" type="String" />
+
     <aura:attribute name="childListbox2_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childListbox2_nowVisible" type="Boolean" default="false"/>
     <aura:attribute name="childListbox2_storage" type="String" default=""/>
@@ -128,6 +144,7 @@
     <aura:attribute name="childListbox2_controlType" type="String" default="listBox" />    
 	<aura:attribute name="childListbox2_options" type="List" />
     <aura:attribute name="childListbox2_optionsInputString" type="String" />
+    <aura:attribute name="childListbox2_defaultValue" type="String" />
     
     <aura:attribute name="childListbox3_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childListbox3_nowVisible" type="Boolean" default="false"/>
@@ -136,6 +153,7 @@
     <aura:attribute name="childListbox3_controlType" type="String" default="listBox" />    
 	<aura:attribute name="childListbox3_options" type="List" />
     <aura:attribute name="childListbox3_optionsInputString" type="String" />
+    <aura:attribute name="childListbox3_defaultValue" type="String" />
     
     <aura:attribute name="childListbox4_conditionalRelationship" type="String" default="false"/>
     <aura:attribute name="childListbox4_nowVisible" type="Boolean" default="false"/>
@@ -144,6 +162,7 @@
     <aura:attribute name="childListbox4_controlType" type="String" default="listBox" />    
 	<aura:attribute name="childListbox4_options" type="List" />
     <aura:attribute name="childListbox4_optionsInputString" type="String" />
+    <aura:attribute name="childListbox4_defaultValue" type="String" />
     
     <!-- used as a hacky global in places where we probably should be using promises -->
     <aura:attribute name="output" type="List" />

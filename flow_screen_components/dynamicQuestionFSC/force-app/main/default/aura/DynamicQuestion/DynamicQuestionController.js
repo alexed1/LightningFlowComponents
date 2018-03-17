@@ -2,7 +2,6 @@
     
     init: function(cmp,evt, helper){
         
-        
         //in the flow, the user is expected to enter the child questions as space delimited strings
         //here we convert them to more useful Lists
         //REFACTOR: should probably do all the lookup and name transformation one time here at init
@@ -18,8 +17,30 @@
                     	
         helper.initRadioOptions(cmp,evt);
         helper.initListboxOptions(cmp,evt);
+        
+        var defaultValue= cmp.get("v.parentQuestion_defaultValue");
+        cmp.set("v.parentQuestion_value", defaultValue);
+
         helper.initChildControls(cmp,evt);
-    
+        
+        /*//first init the child controls....
+        var promise = new Promise($A.getCallback(function(resolve, reject) {
+          // do a thing, possibly async, then…
+          helper.initChildControls(cmp,evt);
+
+          if (true) {
+            resolve("Stuff worked!");
+          }
+          else {
+            reject(Error("It broke"));
+          }
+        }));
+
+        promise.then($A.getCallback(function(){
+            return helper.updateChildControls(cmp, helper);
+        }))*/
+
+
     },
     
     stopPropagation: function(component, event, helper) {
@@ -31,44 +52,7 @@
     //depending on that passed in status value, we fire an event to tell the appropriate child controls to update their nowVisible settings
     onParentClick: function(cmp, evt, helper) {
         console.log ("entering parent click for component label: " + cmp.get('v.parentQuestionLabel'));
-        var parentValue = cmp.get('v.parentQuestion_value');
-        
-        var childControlsList = cmp.get('v.childComponentsArrayLinkedToYes')
-        	.concat(cmp.get('v.childComponentsArrayLinkedToNo'));
-        
-        childControlsList.forEach(function(element) {
-            //find out whether this child control should show on a Yes or a No
-            helper.lookupName(cmp,element);
-            var childName = cmp.get("v.curName");
-    		var statusAttributeName = 'v.' + childName + '_conditionalRelationship';
-            var conditionalRelationship = cmp.get(statusAttributeName).toLowerCase();
-            
-            //if the current parent value matches the conditional relationship passed in from the flow, show this child control
-            var curVisibility = "";         
-            if ((parentValue == "true" && conditionalRelationship == 'yes') ||
-                (parentValue == "false" && conditionalRelationship == 'no') ) {             	
-                	curVisibility = "true";
-                	
-            } else {
-                    curVisibility = "false";
-            };
-           
-            
-            //if the visibility has changed (cur vis != old vis) fire an event to notify this child control
-            //REFACTOR: probably should gather up all the changes and fire a single event that can be read by all child controls
-            var childComponentVisibilityAttributeName = 'v.' + childName  + '_nowVisible';
-            if (cmp.get(childComponentVisibilityAttributeName).toString() != curVisibility){
-                var updateEvent = $A.get("e.c:ChildControlVisibilityUpdateEvent");
-            	updateEvent.setParams({"childControlName" : childComponentVisibilityAttributeName});
-         		updateEvent.setParams({"childControlVisibilityChanged" : true});
-                updateEvent.setParams({"parentLabel" : cmp.get("v.parentQuestionLabel")});
-                updateEvent.fire();
-            };
-            
-            //persist the visibility status of the child component for the next time this method gets called
-            cmp.set(childComponentVisibilityAttributeName, curVisibility);
-            
-        });  
+        helper.updateChildControls(cmp, helper);
  	},
     
     //when a child control value changes, we need to update the storage attribute here in the parent for use by the flow downstream

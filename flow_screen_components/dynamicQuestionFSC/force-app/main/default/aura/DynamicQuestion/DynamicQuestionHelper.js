@@ -67,17 +67,19 @@
         
         curArray = cmp.get("v.childComponentsArrayLinkedToYes");
         curArray.forEach(function(element) {   
-            self.createControl(cmp, element, "yes");
+            self.createControl(cmp, element, "yes", helper);
         });
         curArray = cmp.get("v.childComponentsArrayLinkedToNo");
         curArray.forEach(function(element) {   
-            self.createControl(cmp, element, "no");
+            self.createControl(cmp, element, "no", helper);
         });      
               
     },
     
     //dynamic injection is code efficient, encourages encapsulation, and allows custom ordering of the elements
-    createControl : function(cmp,element,conditionalRelationship) {
+    createControl : function(cmp,element,conditionalRelationship, helper) {
+        var self = helper;
+
         this.lookupName(cmp,element);
         var childName = cmp.get("v.curName");
 
@@ -91,6 +93,26 @@
         if ((childName.slice(0,-1) == "childListbox") || (childName.slice(0,-1) == "childRadio")) {
             optionParam = cmp.get("v." + childName + "_options");
         }
+
+        //at design time, user can specify a default value for a field. They can specify either text or a merge field (which gets resolved before it gets here)
+        var defaultValue="";
+        var requestedDefaultValue = cmp.get("v." + childName + "_defaultValue");
+        if (requestedDefaultValue != null) {
+            defaultValue = requestedDefaultValue;
+        }
+
+        //set initial visibility, which depends on the presence of a default value for the parent
+        //if the current parent value matches the conditional relationship passed in from the flow, show this child control
+        var parentValue = cmp.get('v.parentQuestion_value');       
+        if ((parentValue == "yes" && conditionalRelationship == 'yes') ||
+            (parentValue == "no" && conditionalRelationship == 'no') ) {                
+                cmp.set("v." + childName + "_nowVisible", "true");
+                
+        } else {
+                cmp.set("v." + childName + "_nowVisible", "false");
+        };
+
+
         
         //then create the child component     
         $A.createComponent(
@@ -100,7 +122,8 @@
              "label": cmp.get("v." + childName + "_label"),
              "controlType": cmp.get("v." + childName + "_controlType"),
              "name": childName,
-             "parentLabel" : cmp.get("v.parentQuestionLabel")
+             "parentLabel" : cmp.get("v.parentQuestionLabel"),
+             "value" : defaultValue
   			 },
             
             function(newCmp) {
@@ -108,6 +131,7 @@
                     var body = cmp.get("v.body");
                     body.push(newCmp);
                     cmp.set("v.body", body);
+
                 }
             });
     },
@@ -170,6 +194,54 @@
          //we assemble the name of the storage attribute that we'll use to publish the value to the flow
          var attributeName = "v." + clickedControl.get("v.name")+ "_storage";
          cmp.set(attributeName, clickedControl.get("v.value"));
+    },
+
+    //this is called when the parent radio buttons are clicked and also at init time
+    updateChildControls: function(cmp, helper) {
+        var self=helper;
+
+        
+        var childControlsList = cmp.get('v.childComponentsArrayLinkedToYes')
+            .concat(cmp.get('v.childComponentsArrayLinkedToNo'));
+        
+        childControlsList.forEach(function(element) {
+            self.updateControlState(cmp,element,helper);         
+        });  
+    },
+
+    updateControlState : function(cmp, element, helper) {
+        //find out whether this child control should show on a Yes or a No
+            var self=helper;
+            self.lookupName(cmp,element);
+            var parentValue = cmp.get('v.parentQuestion_value');
+            var childName = cmp.get("v.curName");
+            var statusAttributeName = 'v.' + childName + '_conditionalRelationship';
+            var conditionalRelationship = cmp.get(statusAttributeName).toLowerCase();
+            
+            //if the current parent value matches the conditional relationship passed in from the flow, show this child control
+            var curVisibility = "";         
+            if ((parentValue == "yes" && conditionalRelationship == 'yes') ||
+                (parentValue == "no" && conditionalRelationship == 'no') ) {                
+                    curVisibility = "true";
+                    
+            } else {
+                    curVisibility = "false";
+            };
+           
+            
+            //if the visibility has changed (cur vis != old vis) fire an event to notify this child control
+            //REFACTOR: probably should gather up all the changes and fire a single event that can be read by all child controls
+            var childComponentVisibilityAttributeName = 'v.' + childName  + '_nowVisible';
+            if (cmp.get(childComponentVisibilityAttributeName).toString() != curVisibility){
+                var updateEvent = $A.get("e.c:ChildControlVisibilityUpdateEvent");
+                updateEvent.setParams({"childControlName" : childComponentVisibilityAttributeName});
+                updateEvent.setParams({"childControlVisibilityChanged" : true});
+                updateEvent.setParams({"parentLabel" : cmp.get("v.parentQuestionLabel")});
+                updateEvent.fire();
+            };
+            
+            //persist the visibility status of the child component for the next time this method gets called
+            cmp.set(childComponentVisibilityAttributeName, curVisibility);
     }
    
 })

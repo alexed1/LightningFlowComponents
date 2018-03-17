@@ -4,8 +4,8 @@
     <name>AuraDefinitionBundle</name>
     <members>ChildControlClickEvent</members>
     <members>ChildControlVisibilityUpdateEvent</members>
-    <members>DynamicQuestion</members>
     <members>DynamicQuestionChild</members>
+    <members>dynamicQuestionFSC</members>
   </types>
   <version>41.0</version>
 </Package>

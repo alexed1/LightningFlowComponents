@@ -69,8 +69,12 @@ Radio button groups and Listbox groups additionally require you to provide infor
 ## Set Default Values ##
 
 You can set default values for the following elements:
+
 ParentQuestion: this must be a STRING 'yes' or 'no'. 
+
 RadioButtonGroup, TextField, ListBox: set in Flow to a string value or a string variable
+
+Checkbox : set in Flow to a boolean value
 
 
 

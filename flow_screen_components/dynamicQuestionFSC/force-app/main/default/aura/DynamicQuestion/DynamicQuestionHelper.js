@@ -200,10 +200,14 @@
     updateChildControls: function(cmp, helper) {
         var self=helper;
 
+
         
         var childControlsList = cmp.get('v.childComponentsArrayLinkedToYes')
             .concat(cmp.get('v.childComponentsArrayLinkedToNo'));
         
+        //reset the visibility counter that is used to determine whether to render the card style
+        cmp.set("v.visibleCount", 0);
+
         childControlsList.forEach(function(element) {
             self.updateControlState(cmp,element,helper);         
         });  
@@ -223,6 +227,7 @@
             if ((parentValue == "yes" && conditionalRelationship == 'yes') ||
                 (parentValue == "no" && conditionalRelationship == 'no') ) {                
                     curVisibility = "true";
+                    cmp.set("v.visibleCount", cmp.get("v.visibleCount") + 1 );
                     
             } else {
                     curVisibility = "false";

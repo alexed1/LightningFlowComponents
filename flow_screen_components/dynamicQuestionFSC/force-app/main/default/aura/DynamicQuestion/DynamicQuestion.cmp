@@ -16,9 +16,9 @@
     <aura:attribute name="parentQuestion_value" type="String" />
     <aura:attribute name="parentQuestion_defaultValue" type="String"/>
  
-    <aura:attribute name="curHelper" type="Object"/>
+    <!-- certain styling only is rendered if at least one thing is visible -->
+    <aura:attribute name="visibleCount" type="Integer" />
    
-        
     <!-- *************************************************** -->
     <aura:attribute name="childComponentsLinkedToYes" type="String" default="none" />
 	<aura:attribute name="childComponentsLinkedToNo" type="String" default="none"/>
@@ -197,9 +197,13 @@
                                 required="true" />	
        
         <!--TODO: aura if to make this conditional will prevent it from showing artifacts when collapsed -->
-        <div class="slds-card slds-m-top_x-small slds-m-left_large slds-form slds-form_stacked slds-p-around_small">
-      	 {!v.body}
-        </div>
+        <aura:if isTrue="{!  v.visibleCount>0 }" >
+             <div class="slds-card slds-m-top_x-small slds-m-left_large slds-form slds-form_stacked slds-p-around_small">
+             {!v.body}
+            </div>
+        </aura:if>
+
+       
     </div>
           
 	

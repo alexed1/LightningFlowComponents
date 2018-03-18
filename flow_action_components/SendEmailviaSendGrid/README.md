@@ -8,7 +8,7 @@ This Flow Action makes SendGrid available to your Flows. Salesforce has a solid 
 
 ## Install this Component Into Your Org ##
 
-[Install this Component]().
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-action-components/send-email-via-sendgrid).
 
 
 

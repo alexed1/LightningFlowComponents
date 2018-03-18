@@ -4,7 +4,7 @@
 
 This Flow Action makes SendGrid available to your Flows. Salesforce has a solid Email solution built into Flow, but if your application needs to solve complex email scenarios, SendGrid may be the right tool. 
 
-
+<img width="554" alt="screen shot 2018-03-17 at 11 34 50 pm" src="https://user-images.githubusercontent.com/3140883/37563336-dc258830-2a3b-11e8-8319-5c2629123ce8.png">
 
 ## Install this Component Into Your Org ##
 

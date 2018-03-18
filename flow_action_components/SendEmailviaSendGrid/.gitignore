@@ -1,0 +1,13 @@
+.project
+.settings
+salesforce.schema
+Referenced Packages
+
+*DS_Store*
+config
+sendgrid-apex.sublime-workspace
+sendgrid-apex.sublime-project
+sendgrid-apex.sublime-settings
+deploy/
+debug/
+

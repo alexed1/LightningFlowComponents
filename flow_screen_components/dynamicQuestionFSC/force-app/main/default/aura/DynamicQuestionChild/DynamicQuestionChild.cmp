@@ -10,6 +10,7 @@
 	<aura:attribute name="name" type="String" default="NO NAME PROVIDED"/>
     <aura:attribute name="value" type="String" />
     <aura:attribute name="controlType" type="String" />
+
     
     <aura:attribute name="parentLabel" type="String"/>
     
@@ -31,8 +32,8 @@
         <aura:if isTrue="{!  v.controlType == 'checkbox'}"  > 
             <aura:if isTrue="{!v.nowVisible}">       
                            
-                    <ui:inputCheckbox aura:id="no ID" label="{! v.label }"
-                                      name="" change="{!c.onChildControlValueChange}"/>      		            
+                    <ui:inputCheckbox aura:id="no ID" label="{! v.label }" class="slds-form-element"
+                                      name="" value="{! v.value}" change="{!c.onChildControlValueChange}"/>      		            
                 
             </aura:if>
         </aura:if>
@@ -41,7 +42,7 @@
             <aura:if isTrue="{!v.nowVisible}">    
                          
                     <lightning:radioGroup aura:id="radio" class="slds-form-element" label="{! v.label }"
-                                          options="{! v.options}"
+                                          options="{! v.options}" value="{! v.value}"
                                       name="" onchange="{!c.onChildControlValueChange}"/>      		            
                 
             </aura:if>
@@ -51,7 +52,7 @@
         <aura:if isTrue="{!  v.controlType == 'textField'}" >
             <aura:if isTrue="{!v.nowVisible}">
                                
-                    <lightning:input aura:id="no ID" label="{! v.label }" class="slds-medium-size_1-of-2 slds-size_1-of-1"
+                    <lightning:input aura:id="no ID" label="{! v.label }" value="{! v.value}" class="slds-form-element slds-medium-size_1-of-2 slds-size_1-of-1"
                                       name="" onblur="{!c.onChildControlValueChange}" onchange="{!c.handleValueChange}"/>      		            
                
              </aura:if>
@@ -60,8 +61,8 @@
         <aura:if isTrue="{!  v.controlType == 'listBox'}" >
             <aura:if isTrue="{!v.nowVisible}">
                            
-                    <lightning:select aura:id="no ID" label="{! v.label }" class="slds-medium-size_1-of-2 slds-size_1-of-1"
-                                      name=""  onchange="{!c.onChildControlValueChange}">
+                    <lightning:select aura:id="no ID" label="{! v.label }" class="slds-form-element slds-medium-size_1-of-2 slds-size_1-of-1"
+                                      name=""  value="{! v.value}" onchange="{!c.onChildControlValueChange}">
                     	<aura:iteration items="{!v.options}" var="item">
 							<option text="{!item.label}" value="{!item.value}" />
                     	</aura:iteration>

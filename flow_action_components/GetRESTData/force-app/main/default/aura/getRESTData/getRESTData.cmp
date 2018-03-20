@@ -1,0 +1,20 @@
+<!--
+
+ Copyright (c) 2018, salesforce.com, inc.
+ All rights reserved.
+
+ Licensed under the BSD 3-Clause license.
+ For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
+
+-->
+<aura:component implements="flowruntime:availableForLocalInvocableActions">
+
+	<aura:attribute name="customerId" type="Integer"/>
+	<aura:attribute name="churnVal" type="Double"/>
+
+    <!-- This is only needed for tests. This won't be needed anymore once flowruntime:availableForLocalInvocableActions is moved to lightning namespace -->
+    <aura:method name="invoke" description="Invoke the local invocable action, using component attributes as input and output parameters">
+        <aura:attribute name="callback" type="Function" required="true" description="Function with signature function(status, errorMessage) where status is 'SUCCESS' or 'ERROR'. It MUST be invoked upon call completion"/>
+    </aura:method>
+
+</aura:component>

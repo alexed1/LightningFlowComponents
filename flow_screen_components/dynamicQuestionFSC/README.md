@@ -66,6 +66,19 @@ Radio button groups and Listbox groups additionally require you to provide infor
 
 “I'm the label for the first radio button choice”:”first”, “I'm the second radio button. Pick me instead!”: “second”
 
+## Set Default Values ##
+
+You can set default values for the following elements:
+
+ParentQuestion: this must be a STRING 'yes' or 'no'. 
+
+RadioButtonGroup, TextField, ListBox: set in Flow to a string value or a string variable
+
+Checkbox : set in Flow to a boolean value
+
+
+
+
 ## Map Your User Output Data ##
 
 
@@ -78,6 +91,14 @@ Watch the [video introduction](https://www.youtube.com/watch?v=KBcmWM9KEWc&featu
 Want to suggest an improvement or report a bug? Do that here.  (https://github.com/alexed1/LightningFlowComponents/issues)
 undefined
 Know a little javascript and want to add some improvements? Pull requests are welcome. (https://github.com/alexed1/LightningFlowComponents/pulls) If you're thinking of adding much complexity to the user interface, though, you probably should fork the repo, because we want to keep this baseline version easy-to-use.
+
+
+Changes
+
+v 1.1
+ParentQuestion now uses the values "yes" and "no" instead of "true" and "false" for its selected option.
+Can now set default values:
+ParentQuestion can be set with the new attribute "Parent Question Default Value". This should resolve to the string values "yes" or "no" 
 
 
 

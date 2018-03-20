@@ -1,0 +1,4 @@
+<aura:component implements="flowruntime:availableForLocalInvocableActions">
+	<aura:attribute name="recordId" type="String" />
+	<aura:attribute name="currentURL" type="String"/>
+</aura:component>	

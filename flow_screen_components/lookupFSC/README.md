@@ -16,23 +16,63 @@ See the full set of installation options [here](/install.md).
 
 This component exposes the following attributes that can be set in Flow:
 
-label="Object Name" This is the actual object that will be looked up
+label="I1_Object Name" This is the actual object that will be looked up
 
-label="Display Which Field?" This is the field that will show up in the list box to represent a record. It's usually set to "Name"
+label="I2_Display Which Field?" This is the field that will show up in the list box to represent a record. It's usually set to "Name"
 
-label="Output Which Field as Value?" Here you can set which field you actually want saved into the Output Value attribute.
+label="I3_Field Label"  This is just the label that appears next to the lookup control
 
-label="Field Label"  This is just the label that appears next to the lookup control
+label="I4_Output Which Field as Value?" Here you can set which field you actually want saved into the Output Value attribute.
 
-label="Output Value" This will hold the selection field. 
+label="I5_'Parent' or 'Child' Lookup?" If Child is entered, the filter value will be replaced by the value returned by the Parent lookup on the same screen.  The default for this attribute is Parent
+
+label="I6_Filter on which field?" This is the name of the field to filter the lookup on.
+
+label="I7_Filter Value" This is the filter value for the lookup.
+
+label="O1_Output Value" This will hold the selection field. 
 
 
 
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 
-## Lookup Filters ##
-This control does not currently support Lookup Filters. That's on the roadmap. The design will probably allow the user to specify, in Flow, for each Lookup control,two additional strings: the name of an existing Lookup field and the name of an existing Object where that field lives. The control will then apply the LookupFilter associated with that field. 
+## Filtered Lookup Examples ##
+
+Example 1: Lookup a Case filtered by an Account where the ID is passed into the flow variable vInputAcctId
+
+ Case Lookup
+  I1_Object Name                    Case
+  I2_Display Which Field?           Subject
+  I3_Field Label                    Select Case
+  I4_Output Which Field as Value?   Id
+  I6_Filter on which field?         AccountId
+  I7_Filter Value                   {!vInputAcctId}
+  ---
+  O1_Output Value                   {!vCaseId}
+
+
+Example 2: Lookup an Account and a Contact on the same screen and only select from Contacts from the selected Account
+
+Account Lookup
+  I1_Object Name                    Account
+  I2_Display Which Field?           Name
+  I3_Field Label                    Select Account
+  I4_Output Which Field as Value?   Id
+  I5_'Parent' or 'Child' Lookup?    Parent
+  ---
+  O1_Output Value                   {!vAccountId}
+  
+Contact Lookup
+  I1_Object Name                    Contact
+  I2_Display Which Field?           Name
+  I3_Field Label                    Select Contact
+  I4_Output Which Field as Value?   Id
+  I5_'Parent' or 'Child' Lookup?    Child
+  I6_Filter on which field?         AccountId
+  ---
+  O1_Output Value                   {!vContactId}      
+
 
 ## Resources ##
 

@@ -1,4 +1,0 @@
-<aura:component implements="flowruntime:availableForLocalInvocableActions">
-    <aura:attribute name="type" type="string" default="success" />
-    <aura:attribute name="message" type="string" />
-</aura:component>

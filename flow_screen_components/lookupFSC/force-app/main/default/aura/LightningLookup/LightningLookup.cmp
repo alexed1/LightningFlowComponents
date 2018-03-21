@@ -41,6 +41,14 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<aura:attribute name="toolTipPosition" type="String" access="public" default="position:absolute;top:40px;left:60px;"
 											description="position will be built based on label length and helpTextBelow"/>
 	<aura:attribute name="nubbinPosition" type="String" access="public" default="{!v.helpTextBelow ? 'slds-nubbin_top-left' : 'slds-nubbin_bottom-left'}"/>
+    
+    <aura:attribute name="filteredFieldName" type="String" access="public" required="true" description="Name of field to filter the selection list"/>
+    <aura:attribute name="filterFieldValue" type="String" access="public" required="true" description="Value for field to filter the selection list"/>
+	<aura:attribute name="selectedFilterName" type="String" access="public" required="false" description="Value of 'filteredFieldName' for the selected item"/>
+	<aura:attribute name="selectedFilterValue" type="String" access="public" required="false" description="Value of 'filterFieldValue' for the selected item"/>
+	<aura:attribute name="parentChild" type="String" access="public" required="true" description="Is this instance a Master or Releated lookup?"/>
+	<aura:attribute name="isParent" type="Boolean" access="public" required="true" description="True if parentChild==parent"/>
+	<aura:attribute name="masterFilterValue" type="String" access="public" required="false" description="Master recordId for Child filter values"/>
 
 	<aura:attribute name="matchedListDisplay" type="String[]" access="private" />
 	<aura:attribute name="matchedListValue" type="String[]" access="private" />
@@ -50,12 +58,17 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<aura:registerEvent name="updateLookup" type="c:EvtChangeLookup"/>
 	<aura:registerEvent name="clearLookup" type="c:EvtClearLookup"/>
 	<aura:registerEvent name="initLookup" type="c:EvtInitLookup"/>
+	<aura:registerEvent name="filtervalue" type="c:EvtFilterValue"/>
 
 	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 	<aura:handler name="change" value="{!v.whereClause}" action="{!c.doInit}" />
 	<aura:handler name="change" value="{!v.checkValidity}" action="{!c.checkValidity}" />
 	<aura:handler name="change" value="{!v.selectedName}" action="{!c.setInputValue}" />
-
+    <aura:handler name="change" value="{!v.selectedFilterName}" action="{!c.setFilterInputName}" />
+	<aura:handler name="change" value="{!v.selectedFilterValue}" action="{!c.setFilterInputValue}" />
+	<aura:handler name="change" value="{!v.masterFilterValue}" action="{!c.doInit}" />
+	<aura:handler event="c:EvtFilterValue" action="{!c.getMasterFilterValue}" />
+    
 	<div aura:id="dropDown" class="slds-form-element slds-lookup" data-select="single">
 		<label class="slds-form-element__label" for="lookup-65">
 			<abbr class="{!v.required ? 'slds-required' : 'slds-hide'}" title="required">*</abbr>

@@ -16,13 +16,14 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ({
 	doInit : function(component, event, helper) {
         helper.hlpGetFieldHelp(component);
-        helper.hlpGetField(component);
+		helper.hlpGetField(component);
+		component.set("v.isParent", component.get("v.parentChild") != 'Child');
 	},
 	performLookup : function(component, event, helper) {
 		helper.hlpPerformLookup(component);
 	},
 	selectItem : function(component, event, helper) {
-        var index = event.currentTarget.dataset.index;
+		var index = event.currentTarget.dataset.index;
 		helper.hlpSelectItem(component, index);
 	},
 	toggleMenu : function(component, event, helper) {
@@ -37,8 +38,23 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	setInputValue : function(component, event, helper) {
 		var selectedName = component.get("v.selectedName");
 		document.getElementById(component.getGlobalId() + "_myinput").value = selectedName;
+    },
+    setFilterInputName : function(component, event, helper) {
+		var selectedFilterName = component.get("v.selectedFilterName");
+		document.getElementById(component.getGlobalId() + "_myinput").value = selectedFilterName;
+    },
+    setFilterInputValue : function(component, event, helper) {
+		var selectedFilterValue = component.get("v.selectedFilterValue");
+		document.getElementById(component.getGlobalId() + "_myinput").value = selectedFilterValue;
 	},
-	clearField : function(component, event, helper){
+	getMasterFilterValue : function(component, event, helper) {
+		if(!component.get("v.isParent")){
+			component.set("v.masterFilterValue", event.getParam("MasterFilterValue"));
+			helper.clearField(component,true);
+			helper.toggleIcons(component,true);
+		}
+	},
+    clearField : function(component, event, helper){
 		helper.clearField(component,true);
 		helper.toggleIcons(component,true);
 	},

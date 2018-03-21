@@ -1,5 +1,5 @@
 <aura:component implements="lightning:availableForFlowScreens" access="global">
-    <aura:attribute name="callscript" type="String" default="Hello" access="global" />
+   <!--  <aura:attribute name="callscript" type="String" default="Hello" access="global" />
     <div>
         <div style="padding: 25px; border-style: solid; border-width: 3px; border-color:
         orange;">
@@ -11,4 +11,32 @@
             </span>
         </div>
     </div>
+ -->
+
+    <aura:attribute name="scriptText" type="String" required="true" description="Script to be read by the service agent" />
+
+    <div class="slds-box script-box">
+        <lightning:icon iconName="utility:chat" />
+        <span class="slds-text-heading--medium script">
+            {!v.scriptText}
+        </span>
+    </div>
+
+    <style>
+        .script-box {
+            border: 2px solid rgb(0, 112, 210);
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+        .slds-icon {
+            fill: rgb(0, 112, 210);
+        }
+        .script {
+            padding-left: 1rem;
+            vertical-align: middle;
+        }
+    </style>
+
+
+
 </aura:component>

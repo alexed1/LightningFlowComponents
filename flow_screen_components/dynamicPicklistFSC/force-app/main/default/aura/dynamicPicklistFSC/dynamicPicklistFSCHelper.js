@@ -100,7 +100,7 @@
     helper.createComponent(compName, attributes, location, true);
   },
 
-  fireApexHelper: function (ApexFunctionName, params, resolve, reject, attributeName) {
+  fireApexHelper: function (ApexFunctionName, params, resolve, attributeName) {
     let component = this.component
     let helper = this;
     let action = component.get(ApexFunctionName);
@@ -112,7 +112,7 @@
       } else if (a.getState() === 'SUCCESS') {
         if (attributeName) component.set(attributeName, a.getReturnValue());
         resolve(a.getReturnValue());
-        if(component.get('v.verbose')) console.log(a.getReturnValue());
+        console.log(a.getReturnValue());
       }
 
     });
@@ -122,7 +122,7 @@
   fireApex: function (ApexFunctionName, params, attributeName) {
     let component = this.component
     let helper = this;
-    let p = new Promise((resolve, reject) => { helper.fireApexHelper(ApexFunctionName, params, resolve, reject, attributeName) });
+    let p = new Promise((resolve) => { helper.fireApexHelper(ApexFunctionName, params, resolve, attributeName) });
     return p
   },
 

@@ -5,7 +5,7 @@ checkbox | checkbox-button | color | date | datetime-local | email | month | num
 
 ## How It Works ##
 
-The component has two required attributs: `type` (possible values noted above) and `label`, which must be set in the Flow. There are also several type-specific attributes and validation attributes available ([see here for full documentation]((https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_input.htm)))
+The component has two required attributes: `type` (possible values noted above) and `label`, which must be set in the Flow. There are also several type-specific attributes and validation attributes available ([see here for full documentation]((https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_input.htm)))
 
 A `value` attribute captures the user's input and can be used to set a Flow variable.
 
@@ -78,19 +78,6 @@ For checkboxes and radio buttons, setting the "Group Name" attribute in the Flow
 * type: "radio"
    * label: "Blue" 
    * value: "blue" 
-
-* Radio Group
-  * type: "radio"
-    * label: "Red" 
-    * group name: "color" 
-    * value: "red" 
-    * checked: "true" 
-
-  * type: "radio"
-    * label: "Blue" 
-    * group name: "color" 
-    * value: "blue" 
-
 
 * type: "range"
    * label: "Number" 

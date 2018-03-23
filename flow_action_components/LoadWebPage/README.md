@@ -1,18 +1,6 @@
-# SFDX  App
+To use this Flow Extension, you need to be part of the [Local Actions Pilot](https://sites.google.com/view/flowunofficial/pilot-flow-action-components)
 
-This Local Action open a new browser window with an url given as parameter.
+Install from [here.](https://sites.google.com/view/flowunofficial/flow-action-components/load-web-page)
 
-## Dev, Build
-
-```
-sfdx force:org:create -s -f config/project-scratch-def.json -a loadWebPage-org
-```
-
-```
-sfdx force:source:push -u loadWebPage-org
-```
-
-## Description of Files and Directories
-
-force-app/main :
-* load web page component
+Usage instructions.
+Drag this element from the Local Actions section of the Cloud Flow Designer and assign it a URL value.

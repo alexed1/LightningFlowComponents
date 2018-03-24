@@ -69,7 +69,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	<aura:handler name="change" value="{!v.masterFilterValue}" action="{!c.doInit}" />
 	<aura:handler event="c:EvtFilterValue" action="{!c.getMasterFilterValue}" />
     
-	<div aura:id="dropDown" class="slds-form-element slds-lookup" data-select="single">
+	<div aura:id="dropDown" class="slds-scope slds-medium-size_1-of-2 slds-form-element slds-lookup" data-select="single">
 		<label class="slds-form-element__label" for="lookup-65">
 			<abbr class="{!v.required ? 'slds-required' : 'slds-hide'}" title="required">*</abbr>
 			{!v.label}

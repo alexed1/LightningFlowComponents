@@ -1,23 +1,12 @@
-# SFDX  App
+To use this Flow Extension, you need to be part of the [Local Actions Pilot](https://sites.google.com/view/flowunofficial/pilot-flow-action-components)
 
+Install from [here.](https://sites.google.com/view/flowunofficial/flow-action-components/show-toast)
 
-## Dev, Build and Test
-```
-sfdx force:org:create -f config/project-scratch-def.json -a MyToastLocalActionOrg  
-sfdx force:source:push -u MyToastLocalActionOrg  
-sfdx force:data:tree:import -f data/CollaborationGroup.json -u MyToastLocalActionOrg  
-```
-Assign as Org Default the custom Opportunity layout  
-  
-Go to any opportunity (desktop) and fill the form on the top
+*Usage instructions*
 
+Drag this element from the Local Actions section of the Cloud Flow Designer and assign it values.
 
-## Resources
+"message" is the text you want to appear.
 
-
-## Description of Files and Directories
-
-
-## Issues
-
+"type" can be "error", "warning", "success", or "info", as described [here.](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/ref_force_showToast.htm)
 

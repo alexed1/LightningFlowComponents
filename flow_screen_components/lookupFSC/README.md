@@ -14,6 +14,19 @@ See the full set of installation options [here](/install.md).
 
 ## How It Works ##
 
+There are several powerful filtering mechanisms now built into this component, and you probably won't need to use all of them at the same time.
+
+Filter Using Flow Variables
+This allows you to specify the name of the specific field you want to filter on. It's easy but basic.
+
+Filter using a SOQL 'where' clause
+This allows richer filtering. See 'Where Clause Usage' below
+
+Dependent Filtering
+You can stick two of these components on a screen and have the second component filter on the selection set in the first component. See example 2 
+below
+
+
 This component exposes the following attributes that can be set in Flow:
 
 label="I1_Object Name" This is the actual object that will be looked up
@@ -32,10 +45,17 @@ label="I7_Filter Value" This is the filter value for the lookup.
 
 label="O1_Output Value" This will hold the selection field. 
 
-
+label="Where Clause" allows the input of a "where" SOQL style filter to limit which values are available for selection.
 
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
+
+
+##Where Clause Usage##
+Input is dependent on the fields available for the object selected for "Object Name".
+
+For example, if you wish to return only accounts of type "Vendor" or "Partner" you could enter the Object Name: "Account" and the where clause: "Type='Vendor' or Type='Partner'"
+
 
 ## Filtered Lookup Examples ##
 
@@ -72,7 +92,6 @@ Contact Lookup
   I6_Filter on which field?         AccountId
   ---
   O1_Output Value                   {!vContactId}      
-
 
 ## Resources ##
 

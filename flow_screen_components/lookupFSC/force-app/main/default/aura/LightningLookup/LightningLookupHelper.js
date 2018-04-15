@@ -197,7 +197,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
 	hlpPerformLookup : function(component) {
         try{
-            // we need to reset selected value and and name because user is typing again, but since
+            // we need to reset selected value and and name because the user is typing again, but since
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
             // it after we change selectedName
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
@@ -207,7 +207,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				component.set("v.searchWhereClause", '');
                 component.set("v.selectedValue", '');
                 var selectedId;
-                component.set("v.selectedId", selectedId);
+                component.set("v.selectedValue", selectedId);
 			}
 			else{
 				var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +

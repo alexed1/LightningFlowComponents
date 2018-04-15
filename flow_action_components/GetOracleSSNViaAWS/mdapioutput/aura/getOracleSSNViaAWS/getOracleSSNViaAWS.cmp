@@ -1,5 +1,0 @@
-<aura:component implements="flowruntime:availableForLocalInvocableActions">
-	<aura:attribute name="userId" type="String" required="true"/>
-	<aura:attribute name="ssn" type="String"/>
-</aura:component>	
-

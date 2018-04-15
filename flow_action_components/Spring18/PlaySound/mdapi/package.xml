@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <name>AuraDefinitionBundle</name>
+    <members>playSound</members>
+  </types>
+  <types>
+    <name>CspTrustedSite</name>
+    <members>HearIt</members>
+  </types>
+  <types>
+    <name>FlowDefinition</name>
+    <members>PlaySoundInLocalAction</members>
+    <members>PlaySoundInScreen</members>
+    <members>PlaySoundInScreenAndLA</members>
+  </types>
+  <types>
+    <name>Flow</name>
+    <members>PlaySoundInLocalAction-1</members>
+    <members>PlaySoundInScreen-1</members>
+    <members>PlaySoundInScreenAndLA-1</members>
+  </types>
+  <types>
+    <name>StaticResource</name>
+    <members>crowcheering</members>
+    <members>wave</members>
+  </types>
+  <version>41.0</version>
+</Package>

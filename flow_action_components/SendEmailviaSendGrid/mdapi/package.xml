@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+	<types>
+		<members>SendGrid</members>
+		<members>SendGridResponseMock</members>
+		<members>SendGridTest</members>
+		<members>Smtpapi</members>
+		<members>SmtpapiTest</members>
+		<name>ApexClass</name>
+	</types>
+	<types>
+		<members>*</members>
+		<name>CustomObject</name>
+	</types>
+	<types>
+		<members>SendGrid</members>
+		<name>RemoteSiteSetting</name>
+	</types>
+	<version>28.0</version>
+</Package>

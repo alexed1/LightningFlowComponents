@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+
+ Copyright (c) 2018, salesforce.com, inc.
+ All rights reserved.
+
+ Licensed under the BSD 3-Clause license.
+ For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
+
+-->
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>PlaySoundInScreen {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>PlaySoundInScreen</label>
+    <processType>Flow</processType>
+    <screens>
+        <name>EndScreen</name>
+        <label>EndScreen</label>
+        <locationX>544</locationX>
+        <locationY>400</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>ThanksMsg</name>
+            <fieldText>Thank you for watching our demo!</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+    </screens>
+    <screens>
+        <name>PlaySoundAction</name>
+        <label>PlaySoundAction</label>
+        <locationX>537</locationX>
+        <locationY>251</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>EndScreen</targetReference>
+        </connector>
+        <fields>
+            <name>PlaySoundActionCmp</name>
+            <extensionName>c:playSound</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>source</name>
+                <value>
+                    <elementReference>Source</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>loop</name>
+                <value>
+                    <elementReference>Loop</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>muted</name>
+                <value>
+                    <elementReference>Muted</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showUI</name>
+                <value>
+                    <elementReference>ShowUI</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+    </screens>
+    <screens>
+        <name>PlaySoundInScreen</name>
+        <label>PlaySoundInScreen</label>
+        <locationX>537</locationX>
+        <locationY>126</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>PlaySoundAction</targetReference>
+        </connector>
+        <fields>
+            <name>Source</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>https://www.hear-it.org/sites/default/files/sound_files/Normal.mp3</stringValue>
+            </defaultValue>
+            <fieldText>Source</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>You can pass the source url here (and do not forget to add CSP Trusted Sites if needed)</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Muted</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Muted</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Loop</name>
+            <dataType>Boolean</dataType>
+            <fieldText>Loop</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>ShowUI</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>true</booleanValue>
+            </defaultValue>
+            <fieldText>ShowUI</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+    </screens>
+    <startElementReference>PlaySoundInScreen</startElementReference>
+</Flow>

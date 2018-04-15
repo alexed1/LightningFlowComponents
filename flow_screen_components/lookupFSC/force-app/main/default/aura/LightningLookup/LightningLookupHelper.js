@@ -52,6 +52,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         try{
             var action = component.get('c.getReference');
             var field = component.get('v.sObjectField');
+            var isParent = component.get('v.isParent');
             if(!field){
                 this.hlpGetRecords(component,true);
                 this.initField(component);
@@ -122,6 +123,16 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var otherFields = component.get("v.otherFields");
             var whereClause = component.get("v.whereClause");
             var searchWhereClause = component.get("v.searchWhereClause");
+            var filteredFieldName = component.get("v.filteredFieldName");
+            var filterFieldValue = component.get("v.filterFieldValue");
+            var isParent = component.get("v.isParent");
+            console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' isP_' + isParent +
+                ' I6_' + filteredFieldName + ' I7_' + filterFieldValue);
+
+            if(!isParent){
+                var filterFieldValue = component.get("v.masterFilterValue");
+            }
+
             if(searchWhereClause && searchWhereClause != ''){
                 whereClause = whereClause ? '(' + whereClause + ') AND (' + searchWhereClause + ')': searchWhereClause;
             }
@@ -130,7 +141,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                                 "valueFieldName" : valueFieldName,
                                 "otherFields" : otherFields,
                       		    "displayedFieldName" : displayedFieldName,
-                          		"whereClause" : whereClause});
+                          		"whereClause" : whereClause,
+                              	"filteredFieldName" : filteredFieldName,
+                                "filterFieldValue" : filterFieldValue,
+                                "isParent" : isParent});
 
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
@@ -218,6 +232,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var matchedListDisplay = component.get("v.matchedListDisplay");
             var matchedListValue = component.get("v.matchedListValue");
             var matchedListRecords = component.get("v.matchedListRecords");
+            var isParent = component.get("v.isParent");
             component.set("v.selectedRecord", matchedListRecords[index]);
             component.set("v.selectedValue", matchedListValue[index]);
             if(matchedListDisplay[index].toLowerCase() != 'no records found!'){
@@ -226,6 +241,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 this.fireUpdate(component.get('v.cmpId'), matchedListRecords[index],matchedListValue[index],matchedListDisplay[index]);
             }
             
+            /** 
+             * handle saving recordId for MasterFilterValue
+            */
+            if(isParent){
+                this.fireSaveFilter(matchedListValue[index]);
+            }
+
             this.hlpCheckValidity(component);
 			this.hideDropDown(component);
 		}
@@ -249,6 +271,19 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             'record' : record,
             'recordId' : recordId,
             'recordName' : recordName
+        });
+        ev.fire();
+    },
+
+    /**
+     * fire EvtFilterValue app event
+     * @param  {[String]} recordId   [Record Id]
+     */
+    fireSaveFilter : function(recordId){
+        console.log('EVENT: EvtFilterValue');
+        var ev = $A.getEvt('c:EvtFilterValue');
+        ev.setParams({
+            'MasterFilterValue' : recordId,
         });
         ev.fire();
     },

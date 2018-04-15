@@ -1,0 +1,3 @@
+<aura:component implements="lightning:availableForFlowActions">
+	<aura:attribute name="SObject" type="String" required="true"/>
+</aura:component>

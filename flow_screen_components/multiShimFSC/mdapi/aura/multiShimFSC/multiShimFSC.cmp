@@ -1,0 +1,6 @@
+<aura:component implements="lightning:availableForFlowScreens">
+    <aura:attribute name="lineCount" type="integer" />
+    <aura:attribute name="linebreakHTML" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+    <aura:unescapedHtml value="{!v.linebreakHTML}" />
+</aura:component>

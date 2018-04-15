@@ -1,0 +1,92 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+  <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+  <!--All types-->
+  <aura:attribute name="type" type="String" required="true" default="text" />
+  <aura:attribute name="label" type="String" required="true" default="Label" />
+  <aura:attribute name="value" type="String" default='' />
+  <aura:attribute name="class" type="String" />
+  <aura:attribute name="name" type="String" />
+  <aura:attribute name="readonly" type="String" />
+  <aura:attribute name="required" type="String" />
+
+  <!--Type Specific-->
+  <aura:attribute name="accesskey" type="String" />
+  <aura:attribute name="checked" type="Boolean" />
+  <aura:attribute name="disabled" type="String" />
+  <aura:attribute name="formatter" type="String" />
+  <aura:attribute name="isLoading" type="String" />
+  <aura:attribute name="max" type="String" />
+  <aura:attribute name="maxlength" type="String" />
+  <aura:attribute name="min" type="String" />
+  <aura:attribute name="minlength" type="String" />
+  <aura:attribute name="multiple" type="String" />
+  <aura:attribute name="pattern" type="String" />
+  <aura:attribute name="placeholder" type="String" />
+  <aura:attribute name="step" type="String" />
+  <aura:attribute name="tabindex" type="String" />
+  <aura:attribute name="title" type="String" />
+  <aura:attribute name="variant" type="String" />
+
+  <!--Validation-->
+  <aura:attribute name="messageToggleActive" type="String" />
+  <aura:attribute name="messageToggleInactive" type="String" />
+  <aura:attribute name="messageWhenBadInput" type="String" />
+  <aura:attribute name="messageWhenPatternMismatch" type="String" />
+  <aura:attribute name="messageWhenRangeOverflow" type="String" />
+  <aura:attribute name="messageWhenRangeUnderflow" type="String" />
+  <aura:attribute name="messageWhenStepMismatch" type="String" />
+  <aura:attribute name="messageWhenTooLong" type="String" />
+  <aura:attribute name="messageWhenTypeMismatch" type="String" />
+  <aura:attribute name="messageWhenValueMissing" type="String" />
+
+
+
+  <div class="slds-scope slds-medium-size_1-of-2">
+    <lightning:input 
+                         accesskey="{!v.accesskey}"
+                         body="{!v.body}"
+                         checked="{!v.checked}"
+                         class="{!v.class}"
+                         disabled="{!v.disabled}"
+                         formatter="{!v.formatter}"
+                         isLoading="{!v.isLoading}"
+                         label="{!v.label}"
+                         max="{!v.max}"
+                         maxlength="{!v.maxlength}"
+                         messageToggleActive="{!v.messageToggleActive}"
+                         messageToggleInactive="{!v.messageToggleInactive}"
+                         messageWhenBadInput="{!v.messageWhenBadInput}"
+                         messageWhenPatternMismatch="{!v.messageWhenPatternMismatch}"
+                         messageWhenRangeOverflow="{!v.messageWhenRangeOverflow}"
+                         messageWhenRangeUnderflow="{!v.messageWhenRangeUnderflow}"
+                         messageWhenStepMismatch="{!v.messageWhenStepMismatch}"
+                         messageWhenTooLong="{!v.messageWhenTooLong}"
+                         messageWhenTypeMismatch="{!v.messageWhenTypeMismatch}"
+                         messageWhenValueMissing="{!v.messageWhenValueMissing}"
+                         min="{!v.min}"
+                         minlength="{!v.minlength}"
+                         multiple="{!v.multiple}"
+                         name="{!v.name}"
+                         pattern="{!v.pattern}"
+                         placeholder="{!v.placeholder}"
+                         readonly="{!v.readonly}"
+                         required="{!v.required}"
+                         step="{!v.step}"
+                         tabindex="{!v.tabindex}"
+                         title="{!v.title}"
+                         type="{!v.type}"
+                         value="{!v.value}"
+                         variant="{!v.variant}"
+                         
+                         />
+
+      <aura:if isTrue="{!v.type == 'range'}">
+        <div class="range-value-container">
+          <div class="slds-slider-label__range">{!v.min}</div>
+          <div class="slds-slider__value">{!v.value}</div>
+          <div class="slds-slider-label__range">{!v.max}</div>
+        </div>
+      </aura:if>
+    </div>
+</aura:component>

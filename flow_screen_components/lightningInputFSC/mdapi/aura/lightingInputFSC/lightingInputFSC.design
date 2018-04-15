@@ -1,0 +1,37 @@
+<design:component>
+  <design:attribute name="accesskey" label="accesskey" default="" />
+  <design:attribute name="checked" label="checked" default="" />
+  <design:attribute name="class" label="class" default="" />
+  <design:attribute name="disabled" label="disabled" default="" />
+  <design:attribute name="formatter" label="formatter" default="" />
+  <design:attribute name="label" label="label" default="" />
+  <design:attribute name="max" label="max" default="" />
+  <design:attribute name="maxlength" label="maxlength" default="" />
+  <design:attribute name="min" label="min" default="" />
+  <design:attribute name="minlength" label="minlength" default="" />
+  <design:attribute name="multiple" label="multiple" default="" />
+  <design:attribute name="name" label="group name (radio)" default="" />
+  <design:attribute name="pattern" label="pattern" default="" />
+  <design:attribute name="placeholder" label="placeholder" default="" />
+  <design:attribute name="readonly" label="readonly" default="" />
+  <design:attribute name="required" label="required" default="" />
+  <design:attribute name="step" label="step" default="" />
+  <design:attribute name="tabindex" label="tabindex" default="" />
+  <design:attribute name="title" label="title" default="" />
+  <design:attribute name="type" label="type" default="" />
+  <design:attribute name="value" label="*value" default="" />
+  <design:attribute name="variant" label="variant" default="" />
+
+  <design:attribute name="messageToggleActive" label="msg: Toggle Active" default="" />
+  <design:attribute name="messageToggleInactive" label="msg: Toggle Inactive" default="" />
+  <design:attribute name="messageWhenBadInput" label="err: Bad Input" default="" />
+  <design:attribute name="messageWhenPatternMismatch" label="err: Pattern Mismatch" default="" />
+  <design:attribute name="messageWhenRangeOverflow" label="err: Range Overflow" default="" />
+  <design:attribute name="messageWhenRangeUnderflow" label="err: Range Underflow" default="" />
+  <design:attribute name="messageWhenStepMismatch" label="err: Step Mismatch" default="" />
+  <design:attribute name="messageWhenTooLong" label="err: Too Long" default="" />
+  <design:attribute name="messageWhenTypeMismatch" label="err: Type Mismatch" default="" />
+  <design:attribute name="messageWhenValueMissing" label="err: Value Missing" default="" />
+
+
+</design:component>

@@ -1,0 +1,3 @@
+<aura:event type="APPLICATION" description="Filter Value Changes" >
+    <aura:attribute name="MasterFilterValue" type="String" description="Value of the Master Filter Field" required="false"/>
+</aura:event>

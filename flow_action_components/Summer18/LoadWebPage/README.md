@@ -16,10 +16,12 @@ See the full set of installation options [here](/install.md).
 
 It takes a URL as an argument. You can pass a complete URL or construct one using flow variables and formulas.
 
-This action will only work on Lightning pages.
+IMPORTANT! This action will _only_ work in Flows executing in Lightning pages.
 It will not work if run from Flow Setup, even if you are in Lightning Experience mode.
 It will not work if run in a VF page in Classic.
 This is due to a limitation of the underlying event. For more information, see this [documentation](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/ref_force_navigateToURL.htm) 
+
+IMPORTANT! There are different versions for Spring '18 and Summer '18+. Make sure you install the correct version.
 
 ## Resources ##
 

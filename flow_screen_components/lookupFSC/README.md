@@ -51,7 +51,7 @@ Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 
 
-##Where Clause Usage##
+## Where Clause Usage ##
 Input is dependent on the fields available for the object selected for "Object Name".
 
 For example, if you wish to return only accounts of type "Vendor" or "Partner" you could enter the Object Name: "Account" and the where clause: "Type='Vendor' or Type='Partner'"
@@ -61,37 +61,11 @@ For example, if you wish to return only accounts of type "Vendor" or "Partner" y
 
 Example 1: Lookup a Case filtered by an Account where the ID is passed into the flow variable vInputAcctId
 
- Case Lookup
-  I1_Object Name                    Case
-  I2_Display Which Field?           Subject
-  I3_Field Label                    Select Case
-  I4_Output Which Field as Value?   Id
-  I6_Filter on which field?         AccountId
-  I7_Filter Value                   {!vInputAcctId}
-  ---
-  O1_Output Value                   {!vCaseId}
-
+<img width="389" alt="screen shot 2018-04-15 at 10 17 54 am" src="https://user-images.githubusercontent.com/3140883/38781178-5b03fd42-4096-11e8-83c0-209ff8714cc5.png">
 
 Example 2: Lookup an Account and a Contact on the same screen and only select from Contacts from the selected Account
 
-Account Lookup
-  I1_Object Name                    Account
-  I2_Display Which Field?           Name
-  I3_Field Label                    Select Account
-  I4_Output Which Field as Value?   Id
-  I5_'Parent' or 'Child' Lookup?    Parent
-  ---
-  O1_Output Value                   {!vAccountId}
-  
-Contact Lookup
-  I1_Object Name                    Contact
-  I2_Display Which Field?           Name
-  I3_Field Label                    Select Contact
-  I4_Output Which Field as Value?   Id
-  I5_'Parent' or 'Child' Lookup?    Child
-  I6_Filter on which field?         AccountId
-  ---
-  O1_Output Value                   {!vContactId}      
+<img width="384" alt="screen shot 2018-04-15 at 10 18 06 am" src="https://user-images.githubusercontent.com/3140883/38781180-5c2e98b2-4096-11e8-9275-99cefdfc53c6.png">    
 
 ## Resources ##
 

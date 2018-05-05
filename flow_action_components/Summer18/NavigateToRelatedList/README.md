@@ -8,12 +8,16 @@ This Flow element causes your web browser to load a related list page.
 
 ## Install this Component Into Your Org ##
 
-[Install this Component](https://sites.google.com/view/flowunofficial/flow-action-components/navigate-to-sobject).
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-local-actions/navigate-to-relatedlist).
 
 
 ## How It Works ##
 
-This component has a single attribute, called SObject, which takes a recordId. 
+This component requires:
+parentRecordId	String	The ID of the parent record.	Yes
+relatedListName	  String	The API name of the related list to display, such as “Contacts” or “Opportunities”. Note that for custom object lookup relationships, this gets expressed as "PartsRequests__r", with plural label and a 'r' suffix.
+
+[Watch an example](https://youtu.be/Yv8MD39B3n0)
 
 
 ## Resources ##

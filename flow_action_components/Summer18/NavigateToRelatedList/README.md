@@ -10,6 +10,10 @@ This Flow element causes your web browser to load a related list page.
 
 [Install this Component](https://sites.google.com/view/flowunofficial/flow-local-actions/navigate-to-relatedlist).
 
+Note these [Important Setup Notes](/README.md)
+
+Important Operations Notes:
+This flow action does NOT work when run from Flow Setup. It ONLY works when run on a Lightning Page. (Even if you're using Lightning Experience, the Flow Setup page is an old "Classic" page, and has some limitations in how it executes flows. )
 
 ## How It Works ##
 

@@ -1,0 +1,13 @@
+
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="label" type="String"/>
+    <aura:attribute name="destinationURL" type="String"/>
+    
+    <div id="aura-page">
+            <div class="container">
+                <ui:button label="{!v.label}" press="{!c.handleClick}" />
+            </div>
+            
+    </div>
+</aura:component>
+

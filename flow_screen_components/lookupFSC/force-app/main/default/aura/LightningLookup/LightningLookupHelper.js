@@ -52,7 +52,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         try{
             var action = component.get('c.getReference');
             var field = component.get('v.sObjectField');
-            var isParent = component.get('v.isParent');
+            
             if(!field){
                 this.hlpGetRecords(component,true);
                 this.initField(component);
@@ -125,9 +125,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchWhereClause = component.get("v.searchWhereClause");
             var filteredFieldName = component.get("v.filteredFieldName");
             var filterFieldValue = component.get("v.filterFieldValue");
-            var isParent = component.get("v.isParent");
-            console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' isP_' + isParent +
-                ' I6_' + filteredFieldName + ' I7_' + filterFieldValue);
+            var isParent = (component.get('v.parentChild') != 'Child');
+            console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' !isP_' + !isParent +
+                ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue"));
 
             if(!isParent){
                 var filterFieldValue = component.get("v.masterFilterValue");
@@ -232,7 +232,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var matchedListDisplay = component.get("v.matchedListDisplay");
             var matchedListValue = component.get("v.matchedListValue");
             var matchedListRecords = component.get("v.matchedListRecords");
-            var isParent = component.get("v.isParent");
+            var isParent = (component.get("v.parentChild") != 'Child');
             component.set("v.selectedRecord", matchedListRecords[index]);
             component.set("v.selectedValue", matchedListValue[index]);
             if(matchedListDisplay[index].toLowerCase() != 'no records found!'){

@@ -1,7 +1,7 @@
 ({
 	init : function(cmp, event, helper) {
         
-        var name="$Resource." + cmp.get("v.imageName");
+        var name=cmp.get("v.imageName");
         cmp.set("v.imageSourceString", $A.get(name)); 
         helper.validateFlowNavigationInputs(cmp);
         

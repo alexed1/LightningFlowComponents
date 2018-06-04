@@ -1,11 +1,11 @@
 <design:component>
-    <design:attribute name="imageName" label="staticResource name" required="true"/>
-    <design:attribute name="imageAlt" label="image Alt Text"/>
+    <design:attribute name="imageName" label="staticResource name"/>
+    <design:attribute name="imageAlt" label="image Alt text"/>
     <design:attribute name="imageWidth" label="image Width"/>
     <design:attribute name="imageHeight" label="image Height"/>
     
     
-    <design:attribute name="styleText" label="composite Style String"/> 
+    <design:attribute name="styleText" label="style text"/> 
     <design:attribute name="styleBorderRadius" label ="styleBorderRadius" />
     <design:attribute name="styleBorderStyle" label ="styleBorderStyle" />
     <design:attribute name="styleBorderWidth" label ="styleBorderWidth" />
@@ -24,15 +24,13 @@
     <design:attribute name="styleAsBlockFlag" label ="styleDisplayAsBlock" />
     
     <!-- //used to provide event-based navigation -->
-
+    <design:attribute name="actionName" label="action name"/>
+    <design:attribute name="destinationType" label="destType"  />
     <design:attribute name="destinationRecordId" label="destRecordId"  />
     <design:attribute name="destinationObjectName" label="destObjectName"  />
     <design:attribute name="destinationPageName" label="destPageName"  />
     <design:attribute name="destinationTabName" label="destTabName"  />
     <design:attribute name="destinationObjectView" label="destObjectView"  />
     <design:attribute name="destinationWebUrl" label="destWebUrl"  />
-    <design:attribute name="destinationFlowTransition" label="destFlowTransition"  />
-    
-    <design:attribute name="actionName" label="action name"/>
     
 </design:component>

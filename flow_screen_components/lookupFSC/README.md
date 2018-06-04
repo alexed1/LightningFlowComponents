@@ -8,9 +8,9 @@ This is a simple adaptation of the excellent [Lightning Lookup control](https://
 
 ## Install this Component Into Your Org ##
 
-[Install this Component](/flow_screen_components/lookupFSC/mdapioutput/lookupFSC.zip).
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/lookup).
 
-See the full set of installation options [here](/install.md).
+
 
 ## How It Works ##
 

@@ -30,6 +30,8 @@ You do not need to be using the lightning experience to use these flow extension
 
 # [A Note about SFDX](./sfdxintro.md)
 
+[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com/)
+
 # Submissions Encouraged!
 Have you built a useful or interesting Flow Component? We encourage you to make a pull request and add it to this repo. Also feel free to enhance or fix any existing component.
 

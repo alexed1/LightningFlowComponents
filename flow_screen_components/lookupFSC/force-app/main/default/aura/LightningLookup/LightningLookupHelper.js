@@ -125,11 +125,12 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchWhereClause = component.get("v.searchWhereClause");
             var filteredFieldName = component.get("v.filteredFieldName");
             var filterFieldValue = component.get("v.filterFieldValue");
-            var isParent = (component.get('v.parentChild') != 'Child');
-            console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' !isP_' + !isParent +
-                ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue"));
+            var isParent = (component.get('v.parentChild') == 'Parent');
+            var isChild = (component.get('v.parentChild') == 'Child');
+            console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' isP_' + isParent +
+                ' isC_' + isChild + ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue"));
 
-            if(!isParent){
+            if(isChild){
                 var filterFieldValue = component.get("v.masterFilterValue");
             }
 
@@ -232,7 +233,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var matchedListDisplay = component.get("v.matchedListDisplay");
             var matchedListValue = component.get("v.matchedListValue");
             var matchedListRecords = component.get("v.matchedListRecords");
-            var isParent = (component.get("v.parentChild") != 'Child');
+            var isParent = (component.get("v.parentChild") == 'Parent');
             component.set("v.selectedRecord", matchedListRecords[index]);
             component.set("v.selectedValue", matchedListValue[index]);
             if(matchedListDisplay[index].toLowerCase() != 'no records found!'){

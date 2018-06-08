@@ -10,7 +10,7 @@ This is a simple adaptation of the excellent [Lightning Lookup control](https://
 
 [Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/lookup).
 
-
+[![Deploy](https://deploy-to-sfdx.com/dist/assets/images/DeployToSFDX.svg)](https://deploy-to-sfdx.com/)
 
 ## How It Works ##
 

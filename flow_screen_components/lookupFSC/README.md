@@ -37,7 +37,7 @@ label="I3_Field Label"  This is just the label that appears next to the lookup c
 
 label="I4_Output Which Field as Value?" Here you can set which field you actually want saved into the Output Value attribute.
 
-label="I5_'Parent' or 'Child' Lookup?" If Child is entered, the filter value will be replaced by the value returned by the Parent lookup on the same screen.  The default for this attribute is Parent
+label="I5_'Parent' or 'Child' Lookup?" If Child is entered, the filter value will be replaced by the value returned by the Parent lookup on the same screen. 
 
 label="I6_Filter on which field?" This is the name of the field to filter the lookup on.
 

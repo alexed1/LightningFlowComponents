@@ -1,0 +1,5 @@
+<design:component >
+<design:attribute name="field" label="field" default=""/>
+<design:attribute name="object" label="object" default=""/>
+<design:attribute name="value" label="value" default=" "/>
+</design:component>

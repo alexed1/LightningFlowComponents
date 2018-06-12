@@ -34,6 +34,7 @@
     <aura:attribute name="destinationTabName" type="string"  />
     <aura:attribute name="destinationObjectView" type="string"  />
     <aura:attribute name="destinationWebUrl" type="string"  />
+    <aura:attribute name="destinationFlowTransition" type="string"  />
     
     <!-- Internal -->
     <aura:attribute name="imageSourceString" type="string"  />

@@ -1,6 +1,6 @@
 <design:component >
 
-	<design:attribute name="usePills" label="Use Pills?" />
+	
 	<design:attribute name="required" label="Required?" />
 
 	<design:attribute name="objectName"  label="I1_Object Name" />

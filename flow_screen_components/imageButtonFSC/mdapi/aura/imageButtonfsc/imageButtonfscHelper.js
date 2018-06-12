@@ -8,14 +8,21 @@
         inputs[1]=cmp.get("v.destinationRecordId");
         inputs[2]=cmp.get("v.destinationObjectName");
         inputs[3]=cmp.get("v.destinationPageName");
-        inputs[4]=cmp.get("v.destinationTabName");
+        //inputs[4]=cmp.get("v.destinationTabName");
         inputs[5]=cmp.get("v.destinationWebUrl");
+        inputs[6]=cmp.get("v.destinationFlowTransition");
 
         const checker = (accumulator, currentValue) => {
-            				if (currentValue != "" & currentValue)
-            					accumulator++;
-            					return accumulator;
-        					}
+            var impact = 0;
+            console.log("currentValue is: " + currentValue);
+            if (currentValue != "" & !(currentValue === undefined)) {
+            	console.log("accumulator is:" + accumulator);	
+            	impact++;
+            	console.log("impact is:" + impact);
+        	}	
+            return accumulator + impact;
+        	
+        }
         
         var totalInputs = inputs.reduce(checker, 0);
         if (totalInputs > 1) {
@@ -29,7 +36,7 @@
             	
     navigateFlow : function(cmp, helper) {
         var self=helper;
-       var navService = cmp.find("navService");
+        var navService = cmp.find("navService");
         //var destType =cmp.get("v.destinationType"); 
         var destName = "";
         var args = {};
@@ -66,31 +73,37 @@
             destName = "standard__namedPage";    
 		}
         
-        var tabName = cmp.get("v.destinationTabName");
-        if ((tabName != "") && tabName) {  
-            args["apiName"] = tabName;
-            destName = "standard__navItemPage";    
-        }
-        
-        var targetUrl = cmp.get("v.destinationWebUrl");
-        if ((targetUrl != "") && targetUrl) {  
-            self.navigateToUrl(targetUrl);   
-        }
-        else {
-            var pageReference = {
-                "type": destName,
-                "attributes": args, 
-                "state": state
-            };
-            console.log(JSON.stringify(pageReference, null, 4));
-            navService.navigate(pageReference);
-        }
-        
+       
+        //var tabName = cmp.get("v.destinationTabName");
+        //if ((tabName != "") && tabName) {  
+        //    args["apiName"] = tabName;
+        //    destName = "standard__navItemPage";    
+        //}
+        var flowTransition = cmp.get("v.destinationFlowTransition");
+        if ((flowTransition != "") && flowTransition) {
+            var navigate = cmp.get("v.navigateFlow");
+            navigate(flowTransition.toUpperCase());
+        } else {
+             var targetUrl = cmp.get("v.destinationWebUrl");
+             if ((targetUrl != "") && targetUrl) {  
+                self.navigateToUrl(cmp, targetUrl);   
+             }
+             else {
+                var pageReference = {
+                    "type": destName,
+                    "attributes": args, 
+                    "state": state
+                };
+                console.log(JSON.stringify(pageReference, null, 4));
+                navService.navigate(pageReference);
+             }
+            
+          }
         
     },
     
-    navigateToURL : function(cmp) {  
-		var destUrl = cmp.get("v.destinationWebUrl");
+    navigateToUrl : function(cmp, destUrl) {  
+		
 	    var pattern = new RegExp('^(http|https):\/\/[^ "]+$');
 	    if (!pattern.test(destUrl)) {
 	    		destUrl = 'http://' + destUrl;

@@ -9,6 +9,6 @@
 
 -->
 <AuraDefinitionBundle xmlns="urn:metadata.tooling.soap.sforce.com" fqn="getOracleSSNViaAWS">
-    <apiVersion>41.0</apiVersion>
+    <apiVersion>42.0</apiVersion>
     <description>A Lightning Component Bundle</description>
 </AuraDefinitionBundle>

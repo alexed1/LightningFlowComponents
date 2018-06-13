@@ -6,9 +6,9 @@ This local action makes a REST call to an endpoint running on AWS. The endpoint 
 
 ## Install this Component Into Your Org ##
 
-[Install this Component](https://sites.google.com/view/flowunofficial/flow-action-components/getoraclessnviaaws).
+[Install this Component](https://sites.google.com/view/flowunofficial/flow-local-actions/getoraclessnviaaws).
 
-See the full set of installation options [here](/install.md).
+
 
 ## How It Works ##
 

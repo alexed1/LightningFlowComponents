@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="parentRecordId" label="Id of the parent record"/>
+    <design:attribute name="relatedListName" label="API Name of the related list"/>
+</design:component>

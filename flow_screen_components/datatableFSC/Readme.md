@@ -47,7 +47,7 @@ Most of the functionality of this underlying base component has not yet been exp
 
 ## Resources ##
 
-Want to suggest an improvement or report a bug? Do that [here](/issues)
+Want to suggest an improvement or report a bug? Do that [here](https://github.com/alexed1/LightningFlowComponents/issues)
 
 [Learn more about how Flow Components work](/README.md)
 

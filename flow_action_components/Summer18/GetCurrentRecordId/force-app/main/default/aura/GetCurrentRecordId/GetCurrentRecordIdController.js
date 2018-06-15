@@ -1,20 +1,17 @@
 ({
   invoke : function(component, event, helper) {
-	       
-		var args = event.getParam("arguments");
-	
+	var args = event.getParam("arguments");
+		 
 
+	var currentUrlString = window.location.href;
+	console.log("currentURL is: "+ currentUrlString);
 
-		var currentUrl = window.location;
-		console.log("currentURL is: "+ currentUrl);
-
-    	var locations = windowlocation.split('/');
-
-    	var temprecordid = currentUrl.split('/')[length - 2];
-
-    	console.log("temprecordid is " + temprecordid);
-    	component.set("v.recordId", temprecordid);
+    	var urlSegments = currentUrlString.split('/');
+    	var recordid = urlSegments[urlSegments.length - 2];
+	console.log("recordid is " + recordid);
+    	
+      	component.set("v.recordId", recordid);
 	       
 
-	}
+   }
 })

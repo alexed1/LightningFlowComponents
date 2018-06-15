@@ -1,0 +1,5 @@
+<design:component >
+    <design:attribute name="label" label="Button Label"/>
+    <design:attribute name="destinationURL" label="Target Destination"/>
+
+</design:component>

@@ -1,0 +1,52 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="imageName" type="string"  />
+    
+    <aura:attribute name="imageAlt" type="string"  />
+    <aura:attribute name="imageWidth" type="string"  />
+    <aura:attribute name="imageHeight" type="string"  />
+   
+    <!-- Style -->
+    <aura:attribute name="styleBorderRadius" type="string" default="0" />
+    <aura:attribute name="styleBorderStyle" type="string" default="solid" />
+    <aura:attribute name="styleBorderWidth" type="string" default="0px" />
+    <aura:attribute name="styleBorderColor" type="string" default="" />
+    
+    <aura:attribute name="styleMarginTop" type="string" default="0" />
+    <aura:attribute name="styleMarginRight" type="string" default="0" />
+    <aura:attribute name="styleMarginBottom" type="string" default="0" />
+    <aura:attribute name="styleMarginLeft" type="string" default="0" />
+    <aura:attribute name="styleMargin" type="string" default="" />
+    
+    <aura:attribute name="stylePaddingTop" type="string" default="" />
+    <aura:attribute name="stylePaddingRight" type="string" default="" />
+    <aura:attribute name="stylePaddingBottom" type="string" default="" />
+    <aura:attribute name="stylePaddingLeft" type="string" default="" />
+    <aura:attribute name="styleAsBlockFlag" type="string"  />
+    
+    <!-- Navigation --> 
+    <!-- //used to provide event-based navigation via this component -->
+    <lightning:navigation aura:id="navService"/>
+    <aura:attribute name="destinationType" type="string"  />
+    <aura:attribute name="actionName" type="string"  />
+    <aura:attribute name="destinationRecordId" type="string"  />
+    <aura:attribute name="destinationObjectName" type="string"  />
+    <aura:attribute name="destinationPageName" type="string"  />
+    <aura:attribute name="destinationTabName" type="string"  />
+    <aura:attribute name="destinationObjectView" type="string"  />
+    <aura:attribute name="destinationWebUrl" type="string"  />
+    <aura:attribute name="destinationFlowTransition" type="string"  />
+    
+    <!-- Internal -->
+    <aura:attribute name="imageSourceString" type="string"  />
+	<aura:attribute name="staticImageFlag" type="boolean"  />
+    <aura:attribute name="styleText" type="string" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    
+	<span class="main"  >
+        <img src="{! v.imageSourceString }" alt="{! v.imageAlt }"
+              style="{! v.styleText}" onclick="{!c.handleClick}"/> 
+    </span>
+	
+
+</aura:component>

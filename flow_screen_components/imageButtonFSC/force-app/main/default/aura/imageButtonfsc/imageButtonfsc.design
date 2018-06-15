@@ -1,0 +1,38 @@
+<design:component>
+    <design:attribute name="imageName" label="staticResource name" required="true"/>
+    <design:attribute name="imageAlt" label="image Alt Text"/>
+    <design:attribute name="imageWidth" label="image Width"/>
+    <design:attribute name="imageHeight" label="image Height"/>
+    
+    
+    <design:attribute name="styleText" label="composite Style String"/> 
+    <design:attribute name="styleBorderRadius" label ="styleBorderRadius" />
+    <design:attribute name="styleBorderStyle" label ="styleBorderStyle" />
+    <design:attribute name="styleBorderWidth" label ="styleBorderWidth" />
+    <design:attribute name="styleBorderColor" label ="styleBorderColor" />
+    <design:attribute name="styleMarginTop" label ="styleMarginTop" />
+    <design:attribute name="styleMarginRight" label ="styleMarginRight" />
+    <design:attribute name="styleMarginBottom" label ="styleMarginBottom" />
+    <design:attribute name="styleMarginLeft" label ="styleMarginLeft" />
+    <design:attribute name="styleMargin" label ="styleMargin" />
+    
+    <design:attribute name="stylePaddingTop" label ="stylePaddingTop" />
+    <design:attribute name="stylePaddingRight" label ="stylePaddingRight" />
+    <design:attribute name="stylePaddingBottom" label ="stylePaddingBottom" />
+    <design:attribute name="stylePaddingLeft" label ="stylePaddingLeft" />
+    
+    <design:attribute name="styleAsBlockFlag" label ="styleDisplayAsBlock" />
+    
+    <!-- //used to provide event-based navigation -->
+
+    <design:attribute name="destinationRecordId" label="destRecordId"  />
+    <design:attribute name="destinationObjectName" label="destObjectName"  />
+    <design:attribute name="destinationPageName" label="destPageName"  />
+    <design:attribute name="destinationTabName" label="destTabName"  />
+    <design:attribute name="destinationObjectView" label="destObjectView"  />
+    <design:attribute name="destinationWebUrl" label="destWebUrl"  />
+    <design:attribute name="destinationFlowTransition" label="destFlowTransition"  />
+    
+    <design:attribute name="actionName" label="action name"/>
+    
+</design:component>

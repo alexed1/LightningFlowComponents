@@ -7,7 +7,7 @@
 	<aura:attribute name="whereClause" type="String" />
 	<aura:attribute name="objectName"  type="String" default="Opportunity" />
 	<aura:attribute name="displayFieldName" type="String" default="Name"/>
-	<aura:attribute name="valueFieldName" type="String" default="Select Opportunity" />
+	<aura:attribute name="valueFieldName" type="String" default="Id" />
 	<aura:attribute name="label" type="String" />
 	<aura:attribute name="selectedValue" type="String" />
 	<aura:attribute name="filterFieldName" type="String" default="AccountId" />

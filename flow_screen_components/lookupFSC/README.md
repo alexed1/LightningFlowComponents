@@ -29,22 +29,17 @@ below
 
 This component exposes the following attributes that can be set in Flow:
 
+Basic Attributes
 label="I1_Object Name" This is the actual object that will be looked up
-
-label="I2_Display Which Field?" This is the field that will show up in the list box to represent a record. It's usually set to "Name"
-
+label="I2_Display Which Field?" This is the field that will show up in the list box to represent a record. It defaults to "Name"
 label="I3_Field Label"  This is just the label that appears next to the lookup control
+label="I4_Output Which Field as Value?" This is the field you actually want saved into the Output Value attribute. It defaults to Id so you can hav ean Id to use for lookups, but you may want to change it to Name or some other value.
+label="O1_Output Value" This will hold the value that is selected, for use downstream in the flow.
 
-label="I4_Output Which Field as Value?" Here you can set which field you actually want saved into the Output Value attribute.
-
+Advanced Attributes
 label="I5_'Parent' or 'Child' Lookup?" If Child is entered, the filter value will be replaced by the value returned by the Parent lookup on the same screen. 
-
 label="I6_Filter on which field?" This is the name of the field to filter the lookup on.
-
 label="I7_Filter Value" This is the filter value for the lookup.
-
-label="O1_Output Value" This will hold the selection field. 
-
 label="Where Clause" allows the input of a "where" SOQL style filter to limit which values are available for selection.
 
 Here's an example of a configured component:

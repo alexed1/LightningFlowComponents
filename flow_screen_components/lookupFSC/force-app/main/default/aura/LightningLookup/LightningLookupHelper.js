@@ -134,7 +134,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             if(isChild){
                 var filterFieldValue = component.get("v.masterFilterValue");
             }
-            
+
             if(searchWhereClause && searchWhereClause != ''){
                 whereClause = whereClause ? '(' + whereClause + ') AND (' + searchWhereClause + ')': searchWhereClause;
             }
@@ -297,6 +297,19 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         ev.fire();
     },
     
+    /**
+     * fire EvtFilterValue app event
+     * @param  {[String]} recordId   [Record Id]
+     */
+    fireSaveFilter : function(recordId){
+        console.log('EVENT: EvtFilterValue');
+        var ev = $A.getEvt('c:EvtFilterValue');
+        ev.setParams({
+            'MasterFilterValue' : recordId,
+        });
+        ev.fire();
+    },
+
     /**
      * fire EvtFilterValue app event
      * @param  {[String]} recordId   [Record Id]

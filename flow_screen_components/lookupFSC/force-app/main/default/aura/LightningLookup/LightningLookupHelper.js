@@ -30,7 +30,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var helpButton = helpDiv.getElementsByTagName("button");
             var leftPos = helpButton[0].offsetLeft - 16;
             var helpTextBelow = component.get("v.helpTextBelow");
-
+            
             var toolTipPosition = 'position:absolute;';
             toolTipPosition += helpTextBelow ? 'top:40px;' : 'bottom:65px;';
             toolTipPosition += 'left:' + leftPos + 'px;';
@@ -39,9 +39,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         catch(e){
             this.showError(component, 'hlpSetHelpTextProperties - ' + e.message);
         }
-
+        
     },
-
+    
     /**
      * server call to describe field and set sObject Name
      * chains hlpGetRecords and initField
@@ -61,7 +61,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             action.setParams({
                 'field' : field
             });
-
+            
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
                     return;
@@ -94,7 +94,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             action.setParams({
                 'field' : field
             });
-
+            
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
                     return;
@@ -110,11 +110,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.showError(component,'hlpGetFieldHelp - ' + e.message)
         }
     },
-
-	// Description		: fetched records to display in pick list
-	// @param isInit	: Is this call from the init method ? (If so, the drop down will NOT be displayed)
-	hlpGetRecords : function(component, isInit) {
-
+    
+    // Description		: fetched records to display in pick list
+    // @param isInit	: Is this call from the init method ? (If so, the drop down will NOT be displayed)
+    hlpGetRecords : function(component, isInit) {
+        
         try{
             var action = component.get("c.getRecords");
             var sObjectName = component.get("v.sObjectName");
@@ -128,47 +128,48 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var isParent = (component.get('v.parentChild') == 'Parent');
             var isChild = (component.get('v.parentChild') == 'Child');
             console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' isP_' + isParent +
-                ' isC_' + isChild + ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue"));
-
+                        ' isC_' + isChild + ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue") + 
+                        ' W_' + whereClause + ' D_' + component.get("v.defaultValue"));
+            
             if(isChild){
                 var filterFieldValue = component.get("v.masterFilterValue");
             }
-
+            
             if(searchWhereClause && searchWhereClause != ''){
                 whereClause = whereClause ? '(' + whereClause + ') AND (' + searchWhereClause + ')': searchWhereClause;
             }
-
+            
             action.setParams({ "sObjectName" : sObjectName ,
-                                "valueFieldName" : valueFieldName,
-                                "otherFields" : otherFields,
-                      		    "displayedFieldName" : displayedFieldName,
-                          		"whereClause" : whereClause,
-                              	"filteredFieldName" : filteredFieldName,
-                                "filterFieldValue" : filterFieldValue,
-                                "isParent" : isParent});
-
+                              "valueFieldName" : valueFieldName,
+                              "otherFields" : otherFields,
+                              "displayedFieldName" : displayedFieldName,
+                              "whereClause" : whereClause,
+                              "filteredFieldName" : filteredFieldName,
+                              "filterFieldValue" : filterFieldValue,
+                              "isParent" : isParent});
+            
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
                     return;
                 }
-    			var resp = response.getReturnValue();
+                var resp = response.getReturnValue();
                 component.set("v.matchedListDisplay", resp.lstDisplay);
                 component.set("v.matchedListValue", resp.lstValue);
                 component.set("v.matchedListRecords", resp.lstRecords);
-
-              
-				if(resp.lstDisplay && resp.lstDisplay.length > 0 && !isInit){
-					this.showDropDown(component,false);
-				}
-
+                
+                
+                if(resp.lstDisplay && resp.lstDisplay.length > 0 && !isInit){
+                    this.showDropDown(component,false);
+                }
+                
             });
-             $A.enqueueAction(action);
+            $A.enqueueAction(action);
         }
         catch(e){
             this.showError(component, e.message);
         }
-
-	},
+        
+    },
     /**
      * validate lookup field
      * @param  {[aura]} component [description]
@@ -191,12 +192,12 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.showError(component, e.message);
         }
     },
-
+    
     /**
      * server call to query typeahead
      * @param  {[aura]} component []
      */
-	hlpPerformLookup : function(component) {
+    hlpPerformLookup : function(component) {
         try{
             // we need to reset selected value and and name because the user is typing again, but since
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
@@ -204,31 +205,36 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
             this.clearField(component,false);
             document.getElementById(component.getGlobalId() + "_myinput").value = searchString;
-			if(searchString.length < 2){
-				component.set("v.searchWhereClause", '');
+            
+            // since user is typing, clear the default value and reset the whereClause
+            component.set("v.defaultValue","");            
+            component.set("v.whereClause", component.get('v.saveWhereClause'));
+            
+            if(searchString.length < 2){
+                component.set("v.searchWhereClause", '');
                 component.set("v.selectedValue", '');
                 var selectedId;
                 component.set("v.selectedValue", selectedId);
-			}
-			else{
-				var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
-									searchString + "%'";
-				component.set("v.searchWhereClause", searchWhereClause);	
-			}
-	
-			this.hlpGetRecords(component, false);
-		}
+            }
+            else{
+                var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
+                    searchString + "%'";
+                component.set("v.searchWhereClause", searchWhereClause);	
+            }
+            
+            this.hlpGetRecords(component, false);
+        }
         catch(e){
             this.showError(component, e.message);
         }
-	},
-
+    },
+    
     /**
      * handles suggestion selection
      * @param  {[aura]} component []
      * @param  {[Int]} index     [Index of the suggestion list that was clicked]
      */
-	hlpSelectItem : function(component, index){
+    hlpSelectItem : function(component, index){
         try{
             var matchedListDisplay = component.get("v.matchedListDisplay");
             var matchedListValue = component.get("v.matchedListValue");
@@ -248,15 +254,15 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             if(isParent){
                 this.fireSaveFilter(matchedListValue[index]);
             }
-
+            
             this.hlpCheckValidity(component);
-			this.hideDropDown(component);
-		}
+            this.hideDropDown(component);
+        }
         catch(e){
             this.showError(component, e.message);
         }
-	},
-
+    },
+    
     /**
      * fire EvtChangeLookup app event
      * @param  {[String]} name       [component id]
@@ -267,6 +273,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     fireUpdate : function(name, record, recordId, recordName){
         console.log('EVENT: EvtChangeLookup');
         var ev = $A.getEvt('c:EvtChangeLookup');
+        /* var ev = component.get("e.updateLookup"); */
         ev.setParams({
             'name' : name,
             'record' : record,
@@ -275,7 +282,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         });
         ev.fire();
     },
-
+    
     /**
      * fire EvtFilterValue app event
      * @param  {[String]} recordId   [Record Id]
@@ -283,12 +290,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     fireSaveFilter : function(recordId){
         console.log('EVENT: EvtFilterValue');
         var ev = $A.getEvt('c:EvtFilterValue');
+        /*  ev = component.get("e.filtervalue"); */
         ev.setParams({
             'MasterFilterValue' : recordId,
         });
         ev.fire();
     },
-
+    
     /**
      * fire EvtClearLookup app event
      * @param  {[String]} name  [component id]
@@ -296,12 +304,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     fireClear : function(name){
         console.log('EVENT: EvtClearLookup');
         var ev = $A.getEvt('c:EvtClearLookup');
+        /* var ev = component.get("e.clearLookup"); */
         ev.setParams({
             'name' : name
         });
         ev.fire();
     },
-
+    
     /**
      * fire EvtInitLookup app event
      * @param  {[String]} name  [component id]
@@ -309,12 +318,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     fireInit : function(name){
         console.log('EVENT: EvtInitLookup');
         var ev = $A.getEvt('c:EvtInitLookup');
+        /* var ev = component.get("e.initLookup"); */
         ev.setParams({
             'name' : name
         });
         ev.fire();
     },
-
+    
     /**
      * populates lookup field based on record id given at component init
      * @param  {[aura]} component   []
@@ -335,15 +345,15 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 var a = component.getReference('c.clearField');
                 var i = component.get('v.svg')
                 $A.createComponent('c:CmpPills',
-                    {
-                        'label' : l ,
-                        'onremove' : a,
-                        'iconName': i
-                    },
-                    function(nc){
-                        component.find('pillsdiv').set('v.body',nc);
-                    }
-                );
+                                   {
+                                       'label' : l ,
+                                       'onremove' : a,
+                                       'iconName': i
+                                   },
+                                   function(nc){
+                                       component.find('pillsdiv').set('v.body',nc);
+                                   }
+                                  );
             }
             this.fireInit(component.get('v.cmpId'));
         }
@@ -351,7 +361,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.showError(component, e.message);
         }
     },
-
+    
     /**
      * gets the data needed for lookup based on record id given at component init
      * @param  {[aura]} component []
@@ -376,20 +386,20 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 var res = response.getReturnValue();
                 this.populateField(component,res.lstDisplay[0],res.lstValue[0]);
             })
-
+            
             $A.enqueueAction(action);
         }
     },
-
+    
     /**
      * toggle display of dropdown
      * @param  {[type]} component [description]
      * @return {[type]}           [description]
      */
-	hlpToggleMenu : function(component){
-		this.showDropDown(component,true);
-	},
-
+    hlpToggleMenu : function(component){
+        this.showDropDown(component,true);
+    },
+    
     /**
      * parses and handles server response
      * @param  {[aura]} component    []
@@ -422,20 +432,20 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             return false;
         }
     },
-
+    
     /**
      * shows/toggles dropdown for suggestions
      * @param  {[aura]} component []
      * @param  {[Bool]} toggle    [is toggle or show]
      */
-	showDropDown : function(component,toggle){
+    showDropDown : function(component,toggle){
         try{
-    		var dropDown = component.find("dropDown");
+            var dropDown = component.find("dropDown");
             if(toggle){
                 $A.util.toggleClass(dropDown, "slds-is-open");
             }
             else{
-		        $A.util.addClass(dropDown, "slds-is-open");
+                $A.util.addClass(dropDown, "slds-is-open");
             }
             this.toggleIcons(component,true);
             $A.util.addClass(component.find('diplayedul').get('v.body')[0].elements[0],'hlight');
@@ -443,42 +453,42 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         catch(e){
             this.showError(component, e.message);
         }
-	},
-
+    },
+    
     /**
      * hides dropdown box
      * @param  {[aura]} component []
      */
-	hideDropDown : function(component){
+    hideDropDown : function(component){
         try{
-    		var dropDown = component.find("dropDown");
-    		$A.util.removeClass(dropDown, "slds-is-open");
+            var dropDown = component.find("dropDown");
+            $A.util.removeClass(dropDown, "slds-is-open");
         }
         catch(e){
             this.showError(component, e.message);
         }
-	},
-
+    },
+    
     /**
      * shows toast error message
      * @param  {[aura]} component   []
      * @param  {[String]} message   [Error message]
      */
-	showError : function(component, message){
+    showError : function(component, message){
         try{
-    	    var toastEvent = $A.get("e.force:showToast");
-    	    toastEvent.setParams({
-    	        "type": "Error",
-    	        "mode": "sticky",
-    	        "message": message
-    	    });
-    	    toastEvent.fire(); 
+            var toastEvent = $A.get("e.force:showToast");
+            toastEvent.setParams({
+                "type": "Error",
+                "mode": "sticky",
+                "message": message
+            });
+            toastEvent.fire(); 
         }
         catch(e){
             this.showError(component, e.message);
         }   
-	},
-
+    },
+    
     /**
      * clears lookup field
      * @param  {[aura]} component []
@@ -498,7 +508,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.showError(component, e.message);
         }
     },
-
+    
     /**
      * Show/Hide icons (Search, downarrow)
      * @param  {[aura]} component []

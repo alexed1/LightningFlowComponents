@@ -19,7 +19,7 @@ flow_action_components contains lightning components (aura classes) that have be
 
 Flow Action Components generally do not have a visual focus, although they have to run in Screen Flows to ensure the presence of a client-side javascript runtime.
 
-Flow Actions are available in pilot status as of Spring '18. [Learn more about the pilot](https://sites.google.com/view/flowunofficial/pilot-flow-action-components?authuser=0) 
+Local Flow Actions are generally available.
 
 # Important Setup Notes
 Before adding any lightning component to your flow, your org must be enabled for lightning components. This means:

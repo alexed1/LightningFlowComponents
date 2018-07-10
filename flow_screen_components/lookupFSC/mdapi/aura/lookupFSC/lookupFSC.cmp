@@ -1,0 +1,22 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+
+	<aura:attribute name="defaultRecordId"  type="String"  />
+	<aura:attribute name="defaultFieldName" type="String" />
+	<aura:attribute name="required" type="Boolean" default="false" />
+	<aura:attribute name="usePills" type="Boolean" default="true" />
+	<aura:attribute name="whereClause" type="String" />
+	<aura:attribute name="objectName"  type="String" default="Opportunity" />
+	<aura:attribute name="displayFieldName" type="String" default="Name"/>
+	<aura:attribute name="valueFieldName" type="String" default="Select Opportunity" />
+	<aura:attribute name="label" type="String" />
+	<aura:attribute name="selectedValue" type="String" />
+	<aura:attribute name="filterFieldName" type="String" default="AccountId" />
+	<aura:attribute name="filterFieldValue" type="String" />
+	<aura:attribute name="parentChild" type="String" />
+
+	<!-- 99% of the awesomesauce in this component comes from this LightningLookup component, created by
+		John Pipkin and Opfocus https://opfocus.com/lightning-lookup-input-field-2/ -->
+		
+	<c:LightningLookup sObjectName='{!v.objectName}' displayedFieldName='{!v.displayFieldName}'  whereClause='{!v.whereClause}' valueFieldName='{!v.valueFieldName}' label='{!v.label}' selectedValue='{!v.selectedValue}' filteredFieldName='{!v.filterFieldName}' filterFieldValue='{!v.filterFieldValue}' parentChild='{!v.parentChild}' required='{!v.required}'/>
+ 
+</aura:component>	

@@ -1,0 +1,38 @@
+<!--
+
+ Copyright (c) 2018, salesforce.com, inc.
+ All rights reserved.
+
+ Licensed under the BSD 3-Clause license.
+ For full license text, see LICENSE.txt file in the repo root  or https://opensource.org/licenses/BSD-3-Clause
+
+-->
+<aura:component implements="flowruntime:availableForLocalInvocableActions,force:lightningQuickAction,lightning:availableForFlowScreens,flexipage:availableForRecordHome,force:hasRecordId"> <!--inherit recordId attribute-->
+
+  <aura:attribute name="record" type="Object"
+    description="The record object to be displayed"/>
+  <aura:attribute name="simpleRecord" type="Object"
+    description="A simplified view record object to be displayed"/>
+  <aura:attribute name="recordError" type="String"
+    description="An error message bound to force:recordData"/>
+
+  <force:recordData aura:id="recordLoader"
+      layoutType="FULL"
+      recordId="{!v.recordId}"
+      targetError="{!v.recordError}"
+      targetRecord="{!v.record}"
+      targetFields="{!v.simpleRecord}"
+      mode="EDIT"
+      recordUpdated="{!c.handleRecordUpdated}"
+  />
+
+
+
+
+  <!-- Display Lightning Data Service errors, if any -->
+  <aura:if isTrue="{!not(empty(v.recordError))}">
+      <div class="recordError">
+          {!v.recordError}</div>
+  </aura:if>
+
+</aura:component>

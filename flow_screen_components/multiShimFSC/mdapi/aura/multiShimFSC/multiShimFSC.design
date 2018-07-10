@@ -1,0 +1,3 @@
+<design:component >
+	<design:attribute name="lineCount" label="Number of Spacer Lines?"/>
+</design:component>

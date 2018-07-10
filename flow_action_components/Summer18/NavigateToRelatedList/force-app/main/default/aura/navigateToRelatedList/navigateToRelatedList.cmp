@@ -1,0 +1,4 @@
+<aura:component implements="lightning:availableForFlowActions">
+    <aura:attribute name="parentRecordId" type="String" required="true"/>
+    <aura:attribute name="relatedListName" type="String" required="true"/>
+</aura:component>

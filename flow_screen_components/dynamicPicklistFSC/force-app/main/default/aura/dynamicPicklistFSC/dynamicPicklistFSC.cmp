@@ -1,0 +1,15 @@
+<aura:component controller="PopulatePicklist" implements="lightning:availableForFlowScreens" access="global">
+
+  <aura:attribute name="field" type="String" />
+  <aura:attribute name="object" type="String" />
+  <aura:attribute name="options" type="List" />
+  <aura:attribute name="value" type="string"/>
+
+ <aura:handler name="init" value="{!this}" action="{!c.init}"/>
+  <lightning:select  class="slds-size_1-of-2" name="selectItem" label="Select an item" value="{!v.value}">
+    <aura:iteration items="{!v.options}" var="option">
+      <option value="{!option.value}">{!option.label}</option>
+    </aura:iteration>
+  </lightning:select>
+
+</aura:component>

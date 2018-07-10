@@ -1,0 +1,4 @@
+<design:component >
+  <design:attribute name="recordId"  />
+	<design:attribute name="currentURL" />
+</design:component>

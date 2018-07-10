@@ -1,0 +1,132 @@
+<!-- 
+Copyright 2017 OpFocus, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<aura:component controller="LightningLookupController">
+
+	<ltng:require scripts="/resource/jQuery_LookupCmp/jQuery1_11_2.js"/>
+	<!-- ltng:require scripts="{!$Resource.jQuery_LookupCmp + '/jQuery1_11_2.js'}"/ -->
+    
+	<aura:attribute name="sObjectName" type="String" access="public" required="false" description="Name of the sObjectName to gather records from"/>
+	<aura:attribute name="sObjectField" type="String" access="public" required="false" description="Full name of the SObject field the component is for"/>
+	<aura:attribute name="displayedFieldName" type="String" access="public" required="true"  description="Name of the field of the sObjectName that will be displayed in the list - normally 'Name'" />
+	<aura:attribute name="valueFieldName" type="String" access="public" required="true" description="Name of the field of the sObjectName that holds the 'value' of the selected item - normally 'Id'"/>
+	<aura:attribute name="whereClause" type="String" access="public" required="false" description="SOQL where clause to add to the query"/>
+	<aura:attribute name="label" type="String" access="public" default="Search" description="Label for the lookup field"/>
+	<aura:attribute name="required" type="Boolean" access="public" default="false" description="Whether the field is a required field"/>
+	<aura:attribute name="checkValidity" type="Boolean" access="public" default="false" description="Check Whether the field is valid "/>
+	<aura:attribute name="valid" type="Boolean" access="public" default="true" description="Whether the field is valid "/>
+	<aura:attribute name="disabled" type="Boolean" access="public" default="false" description="Whether the input is disabled "/>
+	<aura:attribute name="otherFields" type="String" access="public" default="" description="comma separated list of field names to select from object"/>
+	<aura:attribute name="record" type="Object" access="public" description="sObject record selected"/>
+	<aura:attribute name="cmpId" type="String" access="public" description="id of component" default="{!globalId}"/>
+	<aura:attribute name="pills" type="Boolean" access="public" default="false" description="Whether the input is in pill form "/>
+	<aura:attribute name="svg" type="String" access="public" description="icon name"/>
+	<aura:attribute name="showHelp" type="Boolean" access="public" default="false" description="Whether to show field help box"/>
+	<aura:attribute name="helpText" type="String" access="public" description="Help text for field"/>
+	<aura:attribute name="helpTextBelow" type="Boolean" access="public" default="true" description="Help text for field will show below icon"/>
+	<aura:attribute name="selectedValue" type="String" access="public" required="false" description="value of 'valueFieldName' for the selected item"/>
+	<aura:attribute name="selectedName" type="String" access="public" required="false" description="value of 'displayedFieldName' for the selected item"/>
+	<aura:attribute name="selectedRecord" type="Object" access="public" required="false" description="SObject record for the selected item"/>
+	<aura:attribute name="toolTipPosition" type="String" access="public" default="position:absolute;top:40px;left:60px;"
+											description="position will be built based on label length and helpTextBelow"/>
+	<aura:attribute name="nubbinPosition" type="String" access="public" default="{!v.helpTextBelow ? 'slds-nubbin_top-left' : 'slds-nubbin_bottom-left'}"/>
+    
+	<aura:attribute name="filteredFieldName" type="String" access="public" required="true" description="Name of field to filter the selection list"/>
+	<aura:attribute name="filterFieldValue" type="String" access="public" required="true" description="Value for field to filter the selection list"/>
+	<aura:attribute name="selectedFilterName" type="String" access="public" required="false" description="Value of 'filteredFieldName' for the selected item"/>
+	<aura:attribute name="selectedFilterValue" type="String" access="public" required="false" description="Value of 'filterFieldValue' for the selected item"/>
+	<aura:attribute name="parentChild" type="String" access="public" required="true" description="Is this instance a Master or Releated lookup?"/>
+	<aura:attribute name="isParent" type="Boolean" access="public" required="true" description="True if parentChild == Parent"/>
+	<aura:attribute name="masterFilterValue" type="String" access="public" required="false" description="Master recordId for Child filter values"/>
+
+	<aura:attribute name="matchedListDisplay" type="String[]" access="private" />
+	<aura:attribute name="matchedListValue" type="String[]" access="private" />
+	<aura:attribute name="matchedListRecords" type="Object[]" access="private" />
+	<aura:attribute name="searchWhereClause" type="String" access="private" />
+
+	<aura:registerEvent name="updateLookup" type="c:EvtChangeLookup"/>
+	<aura:registerEvent name="clearLookup" type="c:EvtClearLookup"/>
+	<aura:registerEvent name="initLookup" type="c:EvtInitLookup"/>
+	<aura:registerEvent name="filtervalue" type="c:EvtFilterValue"/>
+
+	<aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<aura:handler name="change" value="{!v.whereClause}" action="{!c.doInit}" />
+	<aura:handler name="change" value="{!v.checkValidity}" action="{!c.checkValidity}" />
+	<aura:handler name="change" value="{!v.selectedName}" action="{!c.setInputValue}" />
+	<aura:handler name="change" value="{!v.selectedFilterName}" action="{!c.setFilterInputName}" />
+	<aura:handler name="change" value="{!v.selectedFilterValue}" action="{!c.setFilterInputValue}" />
+	<aura:handler name="change" value="{!v.masterFilterValue}" action="{!c.doInit}" />
+	<aura:handler event="c:EvtFilterValue" action="{!c.getMasterFilterValue}" />
+    
+	<div aura:id="dropDown" class="slds-scope slds-medium-size_1-of-2 slds-form-element slds-lookup" data-select="single">
+		<label class="slds-form-element__label" for="lookup-65">
+			<abbr class="{!v.required ? 'slds-required' : 'slds-hide'}" title="required">*</abbr>
+			{!v.label}
+		</label>
+		<aura:renderIf isTrue="{!v.helpText != null}">
+			<aura:renderIf isTrue="{!v.showHelp}">
+				<div id="{!globalId + '_helpDiv'}" class="{!v.helpText ? '' : 'slds-hide'}" style="display:inline-block;">
+					<button class="slds-button slds-button slds-button--icon help" onmouseover="{!c.setHelpTextProperties}"
+							aria-describedby="{!globalId + '_help'}" >
+						<lightning:icon iconName="utility:info" size="xx-small" />
+					</button>
+					<div id="{!globalId + '_help'}" 
+							class="{!'slds-popover slds-popover_tooltip ' + v.nubbinPosition}" 
+							role="tooltip" aria-live="polite" 
+							style="{!v.toolTipPosition}">
+						<div class="slds-popover__body slds-text-longform">
+							<p id="{!globalId + '_toolTipBody'}">
+								{!v.helpText}
+							</p>
+						</div>
+					</div>
+				</div>
+			</aura:renderIf>
+		</aura:renderIf>
+		<div class="slds-form-element__control" >
+			<div class="slds-input-has-icon slds-input-has-icon--left-right">
+				<input type="search" class="slds-input lookup" id="{!globalId + '_myinput'}" aura:id="inputField"
+						aria-owns="lookup-65" role="combobox" 
+						aria-activedescendant="" aria-expanded="false" aria-autocomplete="list" 
+						disabled="{!v.disabled}" oninput="{!c.performLookup}" onclick="{!c.toggleMenu }"
+						onblur="{!c.checkValidity}" onkeydown="{!c.highlight}"/>
+				<div aura:id="pillsdiv"/>
+				<lightning:icon class="searchIcon" iconName="utility:search" size="x-small" aura:id="search_icon"
+								alternativeText="Search"/>
+				<lightning:buttonicon variant="bare" iconName="utility:close" class="alignButton move-left hide"
+										onclick="{!c.clearField}" alternativeText="remove" aura:id="removebtn"/>
+				<lightning:buttonicon variant="bare" iconName="utility:switch" class="alignButton" aura:id="dropdownicon"
+										onclick="{!c.toggleMenu }" alternativeText="toggle show"/>
+			</div>
+		</div>
+		<div class="slds-lookup__menu" id="lookup-65" >
+			<ul class="slds-lookup__list" role="listbox" aura:id="diplayedul">
+				<aura:iteration var="item" items="{!v.matchedListDisplay}" indexVar="idx">
+					<li role="presentation" data-index="{!idx}" onclick="{!c.selectItem}" onmouseover="{!c.hover}" class="push-down">
+						<aura:renderIf isTrue="{!v.svg != null}">
+							<lightning:icon iconName="{!v.svg}" size="x-small" />
+						</aura:renderIf>
+						<span class="slds-truncate">
+							{!item}
+						</span>
+					</li>
+				</aura:iteration>
+			</ul>
+		</div>
+		<div id="error-message" class="{!v.valid ? 'slds-hide' : 'slds-form-element__help'}">
+			Complete this field
+		</div>					
+	</div>      
+</aura:component>

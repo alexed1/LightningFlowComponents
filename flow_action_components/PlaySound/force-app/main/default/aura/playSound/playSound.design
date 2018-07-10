@@ -1,6 +1,0 @@
-<design:component >
-    <design:attribute name="source" label="Source" description="Source link" />
-    <design:attribute name="muted" label="Muted" />
-    <design:attribute name="loop" label="Loop" />
-    <design:attribute name="showUI" label="Show UI" />
-</design:component>

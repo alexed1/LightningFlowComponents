@@ -1,3 +1,0 @@
-<aura:component implements="flowruntime:availableForLocalInvocableActions">
-	<aura:attribute name="url" type="String" required="true"/>
-</aura:component>	

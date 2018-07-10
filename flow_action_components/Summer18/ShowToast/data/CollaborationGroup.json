@@ -1,0 +1,12 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "CollaborationGroup",
+                "referenceId": "CollaborationGroupRef1"
+            },
+            "Name": "New Opportunity Layout Feedback",
+            "CollaborationType": "Public"
+        }
+    ]
+}

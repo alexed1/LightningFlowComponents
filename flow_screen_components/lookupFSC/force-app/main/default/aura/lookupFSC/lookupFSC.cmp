@@ -30,5 +30,10 @@
                        required='{!v.required}'
                        defaultValue='{!v.defaultValue}'
                        />
+
+	<!-- 99% of the awesomesauce in this component comes from this LightningLookup component, created by
+		John Pipkin and Opfocus https://opfocus.com/lightning-lookup-input-field-2/ -->
+		
+	<c:LightningLookup sObjectName='{!v.objectName}' displayedFieldName='{!v.displayFieldName}'  whereClause='{!v.whereClause}' valueFieldName='{!v.valueFieldName}' label='{!v.label}' selectedValue='{!v.selectedValue}' filteredFieldName='{!v.filterFieldName}' filterFieldValue='{!v.filterFieldValue}' parentChild='{!v.parentChild}' required='{!v.required}'/>
  
 </aura:component>	

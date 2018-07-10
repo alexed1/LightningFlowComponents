@@ -337,6 +337,19 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     },
 
     /**
+     * fire EvtFilterValue app event
+     * @param  {[String]} recordId   [Record Id]
+     */
+    fireSaveFilter : function(recordId){
+        console.log('EVENT: EvtFilterValue');
+        var ev = $A.getEvt('c:EvtFilterValue');
+        ev.setParams({
+            'MasterFilterValue' : recordId,
+        });
+        ev.fire();
+    },
+
+    /**
      * fire EvtClearLookup app event
      * @param  {[String]} name  [component id]
      */

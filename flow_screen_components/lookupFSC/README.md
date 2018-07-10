@@ -58,7 +58,6 @@ For example, if you wish to return only accounts of type "Vendor" or "Partner" y
 ## NEW PARAMETER - Default Value Usage ##
 You can enter a default value for the input field (I2_Display Which Field).  When provided, it will override any WhereClause and display the default value as Placeholder text in the input field.  You will still need to select the dropdown then select the single value that is displayed. If you start to overtype the input field, the default value will be cleared and the WhereClause (if provided) will be reset and the field will act like a normal filtered lookup with search.
 
-
 ## Filtered Lookup Examples ##
 
 Example 1: Lookup a Case filtered by an Account where the ID is passed into the flow variable vInputAcctId

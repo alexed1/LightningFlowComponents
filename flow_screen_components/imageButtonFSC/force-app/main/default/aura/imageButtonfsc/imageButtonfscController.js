@@ -21,7 +21,9 @@
         styleText=styleText + "padding-right:" + cmp.get("v.stylePaddingRight") + ";";
         styleText=styleText + "padding-bottom:" + cmp.get("v.stylePaddingBottom") + ";";
         styleText=styleText + "padding-left:" + cmp.get("v.stylePaddingLeft") + ";";      
-        cmp.set("v.styleText", styleText);
+        
+        styleText=styleText + "width:" + cmp.get("v.styleWidth") + ";height:" + cmp.get("v.styleHeight") + ";";
+        styleText=styleText + "max-width:" + cmp.get("v.styleMaxWidth") + ";max-height:" + cmp.get("v.styleMaxHeight") + ";";  
         
         //normally the use of span elements instead of div elements in the markup
         //enables images to flow on the same screen.
@@ -30,7 +32,6 @@
         if(cmp.get("v.styleAsBlockFlag") == "true")
            styleText=styleText + "display:block;";
         
-        styleText=styleText + "width:" + cmp.get("v.imageWidth") + ";height:" + cmp.get("v.imageHeight") + ";";
         cmp.set("v.styleText", styleText);
         
 	},

@@ -46,6 +46,8 @@ Advanced Attributes
 
 - label="Where Clause" allows the input of a "where" SOQL style filter to limit which values are available for selection.
 
+- label="Default" You can specify a default value placeholder in the lookup field
+
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 

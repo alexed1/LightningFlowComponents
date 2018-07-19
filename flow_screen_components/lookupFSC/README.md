@@ -49,6 +49,9 @@ Advanced Attributes
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 
+## NEW PARAMETER - Default Value Usage ##
+
+You can enter a default value for the input field (I2_Display Which Field).  When provided, it will override any WhereClause and display the default value as Placeholder text in the input field.  You will still need to select the dropdown then select the single value that is displayed. If you start to overtype the input field, the default value will be cleared and the WhereClause (if provided) will be reset and the field will act like a normal filtered lookup with search.
 
 ## Where Clause Usage ##
 Input is dependent on the fields available for the object selected for "Object Name".

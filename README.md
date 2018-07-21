@@ -1,5 +1,5 @@
 
-This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Designer! You can install these components as packages over at the [LightningFlow.net site](https://lightningflow.net). (See "Installation")
+This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Designer! You can install these components as packages over at the [LightningFlow.net site](http://lightningflow.net). (See "Installation")
 
 
 # Lightning Flow Screen Components
@@ -19,7 +19,7 @@ flow_action_components contains lightning components (aura classes) that have be
 
 Flow Action Components generally do not have a visual focus, although they have to run in Screen Flows to ensure the presence of a client-side javascript runtime.
 
-Flow Actions are available in pilot status as of Spring '18. [Learn more about the pilot](https://sites.google.com/view/flowunofficial/pilot-flow-action-components?authuser=0) 
+Local Flow Actions are generally available.
 
 # Important Setup Notes
 Before adding any lightning component to your flow, your org must be enabled for lightning components. This means:

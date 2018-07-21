@@ -3,14 +3,10 @@
 ### A Flow Component solution  ###
 
 
-## How It Works ##
+## Installation and Documentation ##
 
+(https://sites.google.com/view/flowunofficial/flow-screen-components/dependent-picklist).
 
-## Install this Component Into Your Org ##
-
-[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/dependent-picklist).
-
-[Installation instructions](/flow_screen_components/InstallScreenComponents.md)
 
 ## Resources ##
 

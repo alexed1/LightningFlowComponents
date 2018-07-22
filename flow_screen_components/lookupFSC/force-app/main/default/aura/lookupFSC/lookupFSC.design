@@ -1,14 +1,14 @@
 <design:component >
-
 	<design:attribute name="objectName"  label="I1_Object Name" />
-	<design:attribute name="displayFieldName" label="I2_Display Which Field?"/>
-	<design:attribute name="valueFieldName" label="I4_Output Which Field as Value?" />
+	<design:attribute name="displayFieldName" label="I2_Display Which Field?"/>	
 	<design:attribute name="label" label="I3_Field Label" />
-	<design:attribute name="selectedValue" label="O1_Output Value" />
-	<design:attribute name="filterFieldName" label="I6_Filter on which field?" />
-	<design:attribute name="filterFieldValue" label="I7_Filter Value" /> 
+	<design:attribute name="valueFieldName" label="I4_Output Which Field as Value?" />
 	<design:attribute name="parentChild" label="I5_'Parent' or 'Child' Lookup?" />
-  <design:attribute name="whereClause" label="Where Clause"/>
-	
-</design:component>
+	<design:attribute name="filterFieldName" label="I6_Filter on which field?" />
+	<design:attribute name="filterFieldValue" label="I7_Filter Value" /> 	
+	<design:attribute name="selectedValue" label="O1_Output Value" />
+	<design:attribute name="required" label="Required?" />
+	<design:attribute name="defaultValue" label="Default Value"/>
+	<design:attribute name="whereClause" label="Where Clause"/>        
 
+</design:component>

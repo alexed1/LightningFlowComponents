@@ -7,6 +7,11 @@ This local action is designed to be put into flows that are run from record page
 
 This is a workaround that addresses the fact that the Quick Action interface lets you easily launch Flows but does not pass the recordId (or any other parameters) to the flow.
 
+[Watch the Video](https://drive.google.com/file/d/1XFWSRjKPdaBB1Rm3sTz1Pj--VH0OufJB/view?usp=sharing).
+
+
+
+
 <img width="1107" alt="screen shot 2018-07-21 at 5 12 55 pm" src="https://user-images.githubusercontent.com/3140883/43041031-80711d0c-8d09-11e8-969c-fb25f7a0e4ad.png">
 
 If you run the Flow via the Flow component container, by dragging it into the page in App Builder, you _can_ get the recordId passed in by clicking a checkbox in the configuration panel of the Flow component. But that approach won't help you if you want to launch the Flow from a button. Hence this solution

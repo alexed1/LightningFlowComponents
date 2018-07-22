@@ -7,7 +7,7 @@ This local action is designed to be put into flows that are run from record page
 
 This is a workaround that addresses the fact that the Quick Action interface lets you easily launch Flows but does not pass the recordId (or any other parameters) to the flow.
 
-[Watch the Video](https://drive.google.com/file/d/1XFWSRjKPdaBB1Rm3sTz1Pj--VH0OufJB/view?usp=sharing).
+[Watch the Video](https://youtu.be/R3hSOEVES8Y).
 
 
 

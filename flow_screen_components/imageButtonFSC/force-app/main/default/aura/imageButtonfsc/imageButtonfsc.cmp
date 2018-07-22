@@ -2,10 +2,13 @@
     <aura:attribute name="imageName" type="string"  />
     
     <aura:attribute name="imageAlt" type="string"  />
-    <aura:attribute name="imageWidth" type="string"  />
-    <aura:attribute name="imageHeight" type="string"  />
    
     <!-- Style -->
+    <aura:attribute name="styleWidth" type="string" default="" />
+    <aura:attribute name="styleHeight" type="string" default="" />
+    <aura:attribute name="styleMaxWidth" type="string" default="" />
+    <aura:attribute name="styleMaxHeight" type="string" default="" />
+    
     <aura:attribute name="styleBorderRadius" type="string" default="0" />
     <aura:attribute name="styleBorderStyle" type="string" default="solid" />
     <aura:attribute name="styleBorderWidth" type="string" default="0px" />

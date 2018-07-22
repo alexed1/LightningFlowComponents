@@ -16,7 +16,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 <aura:component controller="LightningLookupController">
 
 	<ltng:require scripts="{!$Resource.jQuery_LookupCmp + '/jQuery1_11_2.js'}" />
-    <!-- ltng:require scripts="/resource/jQuery_LookupCmp/jQuery1_11_2.js"/ -->
+
     
 	<aura:attribute name="sObjectName" type="String" access="public" required="false" description="Name of the sObjectName to gather records from"/>
 	<aura:attribute name="sObjectField" type="String" access="public" required="false" description="Full name of the SObject field the component is for"/>

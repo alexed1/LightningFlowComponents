@@ -48,6 +48,10 @@ Advanced Attributes
 
 - label="Default" You can specify a default value placeholder in the lookup field
 
+- label="Component ID"  You can group multiple Parent/Child components on a single Flow screen.  Add a unique value here for each Parent Lookup.
+
+- label="Parent ID"  For a Child Lookup, enter the Component ID of its Parent Lookup here to link them together.
+
 Here's an example of a configured component:
 <img width="353" alt="screen shot 2018-02-11 at 8 48 18 pm" src="https://user-images.githubusercontent.com/3140883/36083917-ed8c32ca-0f6c-11e8-956d-82c674a92495.png">
 

@@ -1,4 +1,3 @@
 <aura:component implements="lightning:availableForFlowActions">
 	<aura:attribute name="recordId" type="String" />
-	<aura:attribute name="currentURL" type="String"/>
 </aura:component>	

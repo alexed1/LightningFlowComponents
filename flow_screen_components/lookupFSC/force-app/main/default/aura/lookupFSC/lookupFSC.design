@@ -13,5 +13,5 @@
     <design:attribute name="cmpid" label="Component ID"/>
     <design:attribute name="parentId" label="Parent ID"/>        
     <design:attribute name="whereClause" label="Where Clause"/>    
-    
+
 </design:component>

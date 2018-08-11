@@ -1,9 +1,11 @@
 <design:component>
     <design:attribute name="imageName" label="staticResource name" required="true"/>
     <design:attribute name="imageAlt" label="image Alt Text"/>
-    <design:attribute name="imageWidth" label="image Width"/>
-    <design:attribute name="imageHeight" label="image Height"/>
-    
+
+    <design:attribute name="styleWidth" label ="styleWidth" />
+    <design:attribute name="styleHeight" label ="styleHeight" />
+    <design:attribute name="styleMaxWidth" label ="styleMaxWidth" />
+    <design:attribute name="styleMaxHeight" label ="styleMaxHeight" />
     
     <design:attribute name="styleText" label="composite Style String"/> 
     <design:attribute name="styleBorderRadius" label ="styleBorderRadius" />

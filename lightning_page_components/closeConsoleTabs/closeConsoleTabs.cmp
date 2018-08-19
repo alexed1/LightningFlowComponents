@@ -1,0 +1,12 @@
+<!-- 
+Lightning Component: Close Console Tabs
+Copyright 2018 - Eric R. Smith
+-->
+
+<aura:component implements="flexipage:availableForAllPageTypes" access="global" >
+    
+    <aura:attribute name="closePinned" type="Boolean" default="false" />
+    <lightning:workspaceAPI aura:id="workspace" />
+    <lightning:button label="Close Tabs" variant="destructive" onclick="{!c.closeTabs}" />
+    
+</aura:component>

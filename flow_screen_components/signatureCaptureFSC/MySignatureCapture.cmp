@@ -1,0 +1,6 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes,flexipage:availableForAllPageTypes">
+    <aura:attribute name="recordId" type="String" default=""/>
+
+<BGSIGCAP:SignatureCapture recordId="{!v.recordId}" startMsg="Click the button to get started" enterMsg="Please sign below" completeMsg="Here is the signature you entered" width="100%" height="100px"/>
+	
+</aura:component>

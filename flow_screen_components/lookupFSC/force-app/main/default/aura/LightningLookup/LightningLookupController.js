@@ -57,7 +57,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         document.getElementById(component.getGlobalId() + "_myinput").value = selectedFilterValue;
     },
     getMasterFilterValue : function(component, event, helper) {
-        if(component.get('v.parentChild') == 'Child'){
+        console.log('getMasterFilterValue')
+        console.log(component.get('v.parentChild') + ' == Child && ' + component.get('v.parentId') + ' == ' + event.getParam('parent'));
+        if(component.get('v.parentChild') == 'Child' && component.get('v.parentId') == event.getParam('parent')) {
             component.set("v.masterFilterValue", event.getParam("MasterFilterValue"));
             helper.clearField(component,true);
             helper.toggleIcons(component,true);

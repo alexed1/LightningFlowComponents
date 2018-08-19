@@ -1,0 +1,3 @@
+<design:component>
+	<design:attribute name="closePinned" label="Close Pinned Tabs?"/>
+</design:component>

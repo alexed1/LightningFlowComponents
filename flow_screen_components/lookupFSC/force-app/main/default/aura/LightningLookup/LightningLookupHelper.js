@@ -252,7 +252,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
              * handle saving recordId for MasterFilterValue
             */
             if(isParent){
-                this.fireSaveFilter(matchedListValue[index]);
+                this.fireSaveFilter(component, matchedListValue[index]);
             }
             
             this.hlpCheckValidity(component);
@@ -287,12 +287,15 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      * fire EvtFilterValue app event
      * @param  {[String]} recordId   [Record Id]
      */
-    fireSaveFilter : function(recordId){
+    fireSaveFilter : function(component, recordId){
         console.log('EVENT: EvtFilterValue');
         var ev = $A.getEvt('c:EvtFilterValue');
+        console.log(ev);
+        console.log(component.get('v.cmpId'));
         /*  ev = component.get("e.filtervalue"); */
         ev.setParams({
             'MasterFilterValue' : recordId,
+            'parent': component.get('v.cmpId')
         });
         ev.fire();
     },

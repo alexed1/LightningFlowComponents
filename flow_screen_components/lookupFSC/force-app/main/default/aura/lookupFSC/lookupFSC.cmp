@@ -14,10 +14,12 @@
 	<aura:attribute name="filterFieldValue" type="String" />
 	<aura:attribute name="parentChild" type="String" />
 	<aura:attribute name="defaultValue" type="String" />
+	<aura:attribute name="parentId" type="String" />
+	<aura:attribute name="cmpid" type="String" />
     
 	<!-- 99% of the awesomesauce in this component comes from this LightningLookup component, created by
 		John Pipkin and Opfocus https://opfocus.com/lightning-lookup-input-field-2/ -->
-		
+	
 	<c:LightningLookup sObjectName='{!v.objectName}' 
                        displayedFieldName='{!v.displayFieldName}'  
                        whereClause='{!v.whereClause}' 
@@ -29,6 +31,8 @@
                        parentChild='{!v.parentChild}' 
                        required='{!v.required}'
                        defaultValue='{!v.defaultValue}'
+                       parentId="{!v.parentId}"
+                       cmpId="{!v.cmpid}"
                        />
  
 </aura:component>

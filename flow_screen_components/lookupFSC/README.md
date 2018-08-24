@@ -23,9 +23,13 @@ Filter using a SOQL 'where' clause
 This allows richer filtering. See 'Where Clause Usage' below
 
 Dependent Filtering
+
 You can stick two of these components on a screen and have the second component filter on the selection set in the first component. See example 2 
 below
 
+Multiple Dependent Filtering
+
+You can include multiple Parent/Child groupings on a single screen by identifying each Parent component with a unique ID and specifying the related Parent ID for each Child component.
 
 This component exposes the following attributes that can be set in Flow:
 

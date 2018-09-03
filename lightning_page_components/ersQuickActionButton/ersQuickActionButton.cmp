@@ -1,0 +1,19 @@
+<!-- 
+Lightning Component: Quick Action Button
+Copyright 2018 - Eric R. Smith
+
+Allows placement of a Quick Action as a Button on a Record Page
+
+-->
+
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+    <lightning:quickActionAPI aura:id="quickActionAPI" />
+    
+    <aura:attribute name="buttonLabel" type="String" />
+    <aura:attribute name="objectName" type="String" />
+    <aura:attribute name="actionName" type="String" />
+    
+    <lightning:button label="{!v.buttonLabel}" onclick="{!c.selectAction}"/>
+    
+</aura:component>

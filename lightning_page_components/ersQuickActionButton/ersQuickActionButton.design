@@ -1,0 +1,5 @@
+<design:component>
+	<design:attribute name="buttonLabel" label="Button Label"/>
+	<design:attribute name="objectName" label="Quick Action's Object API Name"/>
+	<design:attribute name="actionName" label="Quick Action API Name"/>
+</design:component>

@@ -1,0 +1,6 @@
+<design:component >
+    <design:attribute name="nextButtonLabel" label="Next Button Label"/>
+    <design:attribute name="previousButtonLabel" label="Previous Button Label"/>
+    <design:attribute name="onFinalPage" label="on Final Page?"/>
+    <design:attribute name="onStartPage" label="on Start Page?"/>
+</design:component>

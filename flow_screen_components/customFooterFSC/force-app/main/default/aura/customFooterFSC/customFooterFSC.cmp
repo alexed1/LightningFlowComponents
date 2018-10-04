@@ -1,0 +1,17 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="nextButtonLabel" type="String" default="Next"/>
+    <aura:attribute name="previousButtonLabel" type="String" default = "Previous"/>
+    <aura:attribute name="onFinalPage" type="Boolean" default="false"/> <!--used to know when to do FINISH instead of NEXT -->
+	<aura:attribute name="onStartPage" type="Boolean" default="false"/> <!--used to know when to suppress the 'previous' button -->
+
+    <lightning:buttonGroup>    
+		<div class="buttonBar" >
+            <aura:if isTrue="{! not(v.onStartPage) }">
+             	<lightning:button  class="button" label="{!v.previousButtonLabel}" name="ButtonPrev" onclick="{!c.handleClick}" />                   		
+        	</aura:if>
+       
+       		<lightning:button  class="button" label="{!v.nextButtonLabel}" name="ButtonNext" onclick="{!c.handleClick}" />
+        </div>  
+    </lightning:buttonGroup>
+
+</aura:component>

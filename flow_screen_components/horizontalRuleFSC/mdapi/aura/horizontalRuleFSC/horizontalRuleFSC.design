@@ -1,0 +1,6 @@
+<design:component >
+    <design:attribute name="verticalMarginPixels" label="verticalMarginPixels"  />
+    <design:attribute name="rightMarginSizePercent" label="rightMarginSizePercent"  />    
+    <design:attribute name="thicknessPixels" label="thicknessPixels"  />
+    <design:attribute name="color" label="color"  />
+</design:component>

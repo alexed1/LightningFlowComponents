@@ -1,0 +1,14 @@
+<design:component >
+    <design:attribute name="city" label="City"  />
+    <design:attribute name="country" label="Country"  />
+    <design:attribute name="postalCode" label="PostalCode"  />
+    <design:attribute name="state" label="State"  />
+    <design:attribute name="street" label="Street"  />
+    <design:attribute name="latitude" label="Latitude"  />
+    <design:attribute name="longitude" label="Longitude"  />
+    <design:attribute name="icon" label="Icon"  />
+    <design:attribute name="description" label="Description"  />
+    <design:attribute name="title" label="Title"  />
+    <design:attribute name="zoomLevel" label="ZoomLevel(0-20)"  />
+    <design:attribute name="yarnBall" label="YarnBall" />
+</design:component>

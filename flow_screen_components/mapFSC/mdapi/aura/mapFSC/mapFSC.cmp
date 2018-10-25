@@ -1,0 +1,20 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    
+    <aura:handler name="init" value="{!this}" action="{!c.init}"/> 
+    <aura:attribute name="zoomLevel" type="Integer" default="15"/>
+    
+    <aura:attribute name="city" type="string"  />
+    <aura:attribute name="country" type="string"  />
+    <aura:attribute name="postalCode" type="string" default="94105" />
+    <aura:attribute name="state" type="string"  />
+    <aura:attribute name="street" type="string"  default="1 Market Street"/>
+    <aura:attribute name="latitude" type="string"  />
+    <aura:attribute name="longitude" type="string"  />
+    <aura:attribute name="icon" type="string"  />
+    <aura:attribute name="description" type="string"  />
+    <aura:attribute name="title" type="string"  />
+    <aura:attribute name="yarnBall" type="String" />
+    
+    <aura:attribute name="mapMarkers" type="String" />
+    <lightning:map  mapMarkers="{!v.mapMarkers}" zoomLevel="{!v.zoomLevel}"> </lightning:map>
+</aura:component>	

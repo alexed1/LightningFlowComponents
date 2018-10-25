@@ -48,10 +48,10 @@ global with sharing class GetRandomNumber {
     }
     
     global class Requests {
-        @InvocableVariable
+        @InvocableVariable(required=true)
     	global Integer startNumber;
         
-        @InvocableVariable
+        @InvocableVariable(required=true)
     	global Integer endNumber;
     }
     

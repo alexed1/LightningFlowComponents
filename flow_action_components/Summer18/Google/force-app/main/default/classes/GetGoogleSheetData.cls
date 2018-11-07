@@ -1,4 +1,4 @@
-public with sharing class GetGoogleSheetData {
+public class GetGoogleSheetData {
     public GetGoogleSheetData() {
 
     }

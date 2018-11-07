@@ -33,10 +33,9 @@
 - Specify the below mentioned values for the input fields:
   
 - - *Provider Type*: Google
-- - *Name*: google-sheets
-- - *Consumer Key*: < put your OAuth client Id from the previous step>
-- - *Consumer Secret*: < put your OAuth client secret from the previous step>
-- - *Default Scopes*: openid https://www.googleapis.com/auth/spreadsheets
+- - *Name*: google
+- - *Consumer Key*: < put your OAuth client Id from the previous step >
+- - *Consumer Secret*: < put your OAuth client secret from the previous step >
 
 - Click *Save*. A *Callback URL* field will be populated. Copy its value
 
@@ -44,18 +43,44 @@
 
 ### Salesforce Named Credentials
 
+Perform the following steps only if you are not going to push the named credentials that are part of this package
+
+#### Google Sheets
+
 - Click on *Setup* and type *Named Credential* in Quick Search Box
 
 - Select *Named Credential* and click on *New Named Credential* button
 
-- Specify the below mentioned values for the input fields:
+- Specify the below mentioned values for the input fields. **NOTE**: its very important to put the name exactly as specified below. This name will be used by activities to get data from Google API
 
-- - *Label*: put anything here
-- - *Name*: flow_action_components_gsheets 
-- - *URL*: https://sheets.googleapis.com/v4/spreadsheets/d
+- - *Label*: google-sheets
+- - *Name*: google_sheets
+- - *URL*: https://sheets.googleapis.com/v4
 - - *Identity Type*: Named Principal
 - - *Authentication Protocol*: OAuth 2.0
 - - *Authentication Provider*: < lookup the previously created provider (*google-sheets* in the example)>
+- - *Scope*: openid https://www.googleapis.com/auth/spreadsheets
+- - Check *Start Authentication Flow on Save* checkbox and click *Save*
+
+- You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
+
+NOTE: ignore the warning that application is not verified for now. You can follow Google instructions to verify it later. However if the access token is expired, you'll likely have to create the new named credential using the above approach
+
+#### Google Drive
+
+- Click on *Setup* and type *Named Credential* in Quick Search Box
+
+- Select *Named Credential* and click on *New Named Credential* button
+
+- Specify the below mentioned values for the input fields. **NOTE**: its very important to put the name exactly as specified below. This name will be used by activities to get data from Google API
+
+- - *Label*: google-drive
+- - *Name*: google_drive
+- - *URL*: https://www.googleapis.com/drive/v3
+- - *Identity Type*: Named Principal
+- - *Authentication Protocol*: OAuth 2.0
+- - *Authentication Provider*: < lookup the previously created provider (*google-sheets* in the example)>
+- - *Scope*: openid https://www.googleapis.com/auth/drive.readonly
 - - Check *Start Authentication Flow on Save* checkbox and click *Save*
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access

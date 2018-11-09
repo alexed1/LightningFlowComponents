@@ -29,7 +29,7 @@ public class GoogleAPI implements IGoogleAPI {
         }
         System.debug('Retrieving Google Sheets file with id = "' + id + '"');
         HttpRequest req = new HttpRequest();
-        String url = 'callout:' + GOOGLE_SHEETS_CREDENTIALS + 'spreadsheets/' + EncodingUtil.urlEncode(id, 'UTF-8') + '?includeGridData=true';
+        String url = 'callout:' + GOOGLE_SHEETS_CREDENTIALS + '/spreadsheets/' + EncodingUtil.urlEncode(id, 'UTF-8') + '?includeGridData=true';
         System.debug('Google Sheets URL: ' + url);
         req.setEndpoint(url);
         req.setMethod('GET');

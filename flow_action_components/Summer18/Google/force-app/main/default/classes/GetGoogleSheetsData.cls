@@ -5,39 +5,52 @@ global class GetGoogleSheetsData {
         return GetGoogleSheetsData.GetGoogleSheetsDataImpl(new GoogleDrive(new GoogleAPI()), requests);
     }
 
-    public static List<GoogleSheetsResponse> GetGoogleSheetsDataImpl(GoogleDrive drive, List<GoogleSheetsRequest> requests) {
+    public static List<GoogleSheetsResponse> GetGoogleSheetsDataImpl(IGoogleDrive drive, List<GoogleSheetsRequest> requests) {
         List<GoogleSheetsResponse> responses = new List<GoogleSheetsResponse>();
 
         for (GoogleSheetsRequest request : requests) {
-            String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
-            if (String.isBlank(spreadsheetId)) {
-                throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
-            }
             GoogleSheetsResponse response = new GoogleSheetsResponse();
+            response.IsSuccess = true;
             responses.add(response);
-            List<List<String>> spreadsheetData = drive.GetSpreadsheetData(spreadsheetId);
-            if (!String.isBlank(request.DataDirection1)) {
-                response.Value1 = LocateValue(spreadsheetData, request.DataDirection1, request.DataLocator1);
-            }
-            if (!String.isBlank(request.DataDirection2)) {
-                response.Value2 = LocateValue(spreadsheetData, request.DataDirection2, request.DataLocator2);
-            }
-            if (!String.isBlank(request.DataDirection3)) {
-                response.Value3 = LocateValue(spreadsheetData, request.DataDirection3, request.DataLocator3);
-            }
-            if (!String.isBlank(request.DataDirection4)) {
-                response.Value4 = LocateValue(spreadsheetData, request.DataDirection4, request.DataLocator4);
-            }
-            if (!String.isBlank(request.DataDirection5)) {
-                response.Value5 = LocateValue(spreadsheetData, request.DataDirection5, request.DataLocator5);
+            try {
+                String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
+                if (String.isBlank(spreadsheetId)) {
+                    throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
+                }
+                List<List<String>> spreadsheetData = drive.GetSpreadsheetData(spreadsheetId);
+                if (!String.isBlank(request.DataDirection1)) {
+                    response.Value1 = LocateValue(spreadsheetData, request.DataDirection1, request.DataLocator1);
+                }
+                if (!String.isBlank(request.DataDirection2)) {
+                    response.Value2 = LocateValue(spreadsheetData, request.DataDirection2, request.DataLocator2);
+                }
+                if (!String.isBlank(request.DataDirection3)) {
+                    response.Value3 = LocateValue(spreadsheetData, request.DataDirection3, request.DataLocator3);
+                }
+                if (!String.isBlank(request.DataDirection4)) {
+                    response.Value4 = LocateValue(spreadsheetData, request.DataDirection4, request.DataLocator4);
+                }
+                if (!String.isBlank(request.DataDirection5)) {
+                    response.Value5 = LocateValue(spreadsheetData, request.DataDirection5, request.DataLocator5);
+                }
+            } 
+            catch (GoogleException ex) {
+                response.IsSuccess = false;
+                response.ErrorMessage = ex.getMessage();
             }
         }
         return responses;
     }
 
     private static String LocateValue(List<List<String>> data, String direction, String search) {
+        Boolean isAddress = direction.equalsIgnoreCase('address');
+        Boolean isRight = direction.equalsIgnoreCase('right');
+        Boolean isBelow = direction.equalsIgnoreCase('below');
+        if (!isAddress && !isRight && !isBelow) {
+            throw new GoogleException('"' + direction + '" is not valid. Must be "Address", "Right" or "Below"');
+        }
         Address address = null;
-        if (direction.equalsIgnoreCase('address')) {
+        if (isAddress) {
             address = ParseAddress(search);
         }
         else {
@@ -55,9 +68,9 @@ global class GetGoogleSheetsData {
         if (address == null) {
             return null;
         }
-        if (direction.equalsIgnoreCase('right')) {
+        if (isRight) {
             address.column +=1;
-        } else if (direction.equalsIgnoreCase('below')) {
+        } else if (isBelow) {
             address.row += 1;
         }
         if (address.row >= 0 && address.row < data.size()) {
@@ -76,7 +89,7 @@ global class GetGoogleSheetsData {
             column = matcher.group().toLowerCase();
         }
         else {
-            return null;
+            throw new GoogleException('Address "' + address + '" doesn\'t contain column part');
         }
         matcher = Pattern.compile('\\d+$').matcher(address);
         Integer row = null;
@@ -84,7 +97,7 @@ global class GetGoogleSheetsData {
             row = Integer.valueOf(matcher.group()) - 1;
         }
         else {
-            return null;
+            throw new GoogleException('Address "' + address + '" doesn\'t contain row part');
         }
         Integer parsedColumn = 0;
         for (Integer i = 0; i < column.length(); i++) {
@@ -105,55 +118,61 @@ global class GetGoogleSheetsData {
 
     global class GoogleSheetsRequest {
 
-        @InvocableVariable(required=True label='The name of Google Sheets file (case-sensitive)')
+        @InvocableVariable(required=True label='Google Sheets File name (case-sensitive)')
         global String SpreadsheetName;
 
-        @InvocableVariable(required=True label='Where to look for the data. Valid values are "Address", "Right", "Below"')
+        @InvocableVariable(required=True label='Data Direction #1' description='Allowed values: Address, Right, Below')
         global String DataDirection1;
 
-        @InvocableVariable(required=True label='What value to compare the data location with. For data location "Address" it should be Excel-like cell address e.g. "A1"')
+        @InvocableVariable(required=True label='Data Locator #1' description='What value to search for')
         global String DataLocator1;
 
-        @InvocableVariable(label='Where to look for the data. Valid values are "Address", "Right", "Below"')
+        @InvocableVariable(label='Data Direction #2' description='Allowed values: Address, Right, Below')
         global String DataDirection2;
 
-        @InvocableVariable(label='What value to compare the data location with. For data location "Address" it should be Excel-like cell address e.g. "A1"')
+        @InvocableVariable(label='Data Locator #2' description='What value to search for')
         global String DataLocator2;
 
-        @InvocableVariable(label='Where to look for the data. Valid values are "Address", "Right", "Below"')
+        @InvocableVariable(label='Data Direction #3' description='Allowed values: Address, Right, Below')
         global String DataDirection3;
 
-        @InvocableVariable(label='What value to compare the data location with. For data location "Address" it should be Excel-like cell address e.g. "A1"')
+        @InvocableVariable(label='Data Locator #3' description='What value to search for')
         global String DataLocator3;
 
-        @InvocableVariable(label='Where to look for the data. Valid values are "Address", "Right", "Below"')
+        @InvocableVariable(label='Data Direction #4' description='Allowed values: Address, Right, Below')
         global String DataDirection4;
 
-        @InvocableVariable(label='What value to compare the data location with. For data location "Address" it should be Excel-like cell address e.g. "A1"')
+        @InvocableVariable(label='Data Locator #4' description='What value to search for')
         global String DataLocator4;
 
-        @InvocableVariable(label='Where to look for the data. Valid values are "Address", "Right", "Below"')
+        @InvocableVariable(label='Data Direction #5' description='Allowed values: Address, Right, Below')
         global String DataDirection5;
 
-        @InvocableVariable(label='What value to compare the data location with. For data location "Address" it should be Excel-like cell address e.g. "A1"')
+        @InvocableVariable(label='Data Locator #5' description='What value to search for')
         global String DataLocator5;
     }
 
     global class GoogleSheetsResponse {
         
-        @InvocableVariable(label='Value returned from the DataDirection1/DataLocator1 inputs')
+        @InvocableVariable(label='Value #1' required=True)
         global String Value1;
         
-        @InvocableVariable(label='Value returned from the DataDirection2/DataLocator2 inputs')
+        @InvocableVariable(label='Value #2')
         global String Value2;
         
-        @InvocableVariable(label='Value returned from the DataDirection3/DataLocator3 inputs')
+        @InvocableVariable(label='Value #3')
         global String Value3;
         
-        @InvocableVariable(label='Value returned from the DataDirection4/DataLocator4 inputs')
+        @InvocableVariable(label='Value #4')
         global String Value4;
         
-        @InvocableVariable(label='Value returned from the DataDirection5/DataLocator5 inputs')
+        @InvocableVariable(label='Value #5')
         global String Value5;
+
+        @InvocableVariable(label='Is Success')
+        global Boolean IsSuccess;
+
+        @InvocableVariable(label='Error Message')
+        global String ErrorMessage;
     }
 }

@@ -1,4 +1,4 @@
-public class GoogleDrive {
+public class GoogleDrive implements IGoogleDrive {
 
     private IGoogleAPI googleApi;
 

@@ -2,8 +2,6 @@ public class GoogleDrive {
 
     private IGoogleAPI googleApi;
 
-    private GoogleDrive() { }
-
     public GoogleDrive(IGoogleAPI googleApi) {
         if (googleApi == null) {
             throw new GoogleException('googleApi parameter is null');
@@ -51,7 +49,7 @@ public class GoogleDrive {
                 continue;
             }  
             for (SheetsSheetResponse.CellData cell : row.values) {
-                currentRow.add(cell.formattedValue);
+                currentRow.add(String.isBlank(cell.formattedValue) ? '' : cell.formattedValue);
             }
         }
         return result;        

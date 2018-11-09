@@ -1,1 +1,1 @@
-public class GoogleException extends Exception { }
+global class GoogleException extends Exception { }

@@ -4,15 +4,15 @@
 
 public virtual class ErrorResponse{
 
-	public Error error;
+	public Errors error;
 
-	public class Error {
-		public Errors[] errors;
+	public class Errors {
+		public Error[] errors;
 		public Integer code;	//400
 		public String message;	//Invalid Value
 	}
 
-	public class Errors {
+	public class Error {
 		public String domain;	//global
 		public String reason;	//invalid
 		public String message;	//Invalid Value

@@ -19,9 +19,10 @@ public class GoogleDrive implements IGoogleDrive {
         if (response.files.size() == 0) {
             return null;
         }
-        DriveFileListResponse.File file = response.files[0];
-        if (String.isBlank(fileType) || file.mimeType.equalsIgnoreCase(fileType)) {
-            return file.id;
+        for (DriveFileListResponse.File file: response.files) {            
+            if (String.isBlank(fileType) || file.mimeType.equalsIgnoreCase(fileType)) {
+                return file.id;
+            }
         }
         return null;
     }

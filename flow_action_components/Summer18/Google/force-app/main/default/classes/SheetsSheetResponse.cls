@@ -4,7 +4,7 @@
 public class SheetsSheetResponse extends ErrorResponse {
 	public String spreadsheetId;	//1A7Td7yl6wbxGhlsjouwO-N3sRyTDq-M5p579awuYTQo
 	public Properties properties;
-	public Sheets[] sheets;
+	public Sheet[] sheets;
 	public String spreadsheetUrl;	//https://docs.google.com/spreadsheets/d/1A7Td7yl6wbxGhlsjouwO-N3sRyTDq-M5p579awuYTQo/edit
 	
     public class Properties {
@@ -49,7 +49,7 @@ public class SheetsSheetResponse extends ErrorResponse {
 	public class ForegroundColor {
 	}
 
-	public class Sheets {
+	public class Sheet {
 		public Properties properties;
 		public Data[] data;
 	}

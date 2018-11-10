@@ -64,7 +64,7 @@ Perform the following steps only if you are not going to push the named credenti
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
 
-NOTE: ignore the warning that application is not verified for now. You can follow Google instructions to verify it later. However if the access token is expired, you'll likely have to create the new named credential using the above approach
+**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
 
 #### Google Drive
 
@@ -85,7 +85,7 @@ NOTE: ignore the warning that application is not verified for now. You can follo
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
 
-NOTE: ignore the warning that application is not verified for now. You can follow Google instructions to verify it later. However if the access token is expired, you'll likely have to create the new named credential using the above approach
+**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
   
 
 

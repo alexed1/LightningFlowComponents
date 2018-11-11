@@ -39,4 +39,32 @@ public class GoogleAPI implements IGoogleAPI {
         System.debug('Response status code: ' + String.valueOf(statusCode));
         return SheetsSheetResponse.parse(res.getBody());
     }
+
+    public ErrorResponse SheetsValuesBatchUpdate(String id, List<CellValue> values) {
+        if (String.isBlank(id)) {
+            throw new GoogleException('Spreadsheet Id can\'t be empty or contain only whitespaces');
+        }
+        SheetsValuesBatchUpdateRequest body = new SheetsValuesBatchUpdateRequest();
+        if (values != null) {
+            for (CellValue cellValue : values) {
+                SheetsValuesBatchUpdateRequest.Data data = new SheetsValuesBatchUpdateRequest.Data(cellValue.addr.toString());
+                data.values[0].add(cellValue.value);
+                body.data.add(data);
+            }
+        }
+        HttpRequest req = new HttpRequest();
+        String url = 'callout:' + GOOGLE_SHEETS_CREDENTIALS + '/spreadsheets/'  + EncodingUtil.urlEncode(id, 'UTF-8') + '/values:batchUpdate';
+        System.debug('Google Sheets URL: ' + url);
+        req.setEndpoint(url);
+        req.setMethod('POST');
+        req.setHeader('Accept', 'application/json, text/json');
+        req.setHeader('Content-Type', 'application/json');
+        req.setBody(JSON.serialize(body));
+        
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ErrorResponse.parse(res.getBody());
+    }
 }

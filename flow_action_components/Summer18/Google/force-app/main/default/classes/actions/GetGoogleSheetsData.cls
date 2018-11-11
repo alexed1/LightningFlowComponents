@@ -84,40 +84,6 @@ global class GetGoogleSheetsData {
         return '';
     }
 
-    private static Address ParseAddress(String address) {
-        Matcher matcher = Pattern.compile('^[A-Za-z]+').matcher(address);
-        String column = null;
-        if (matcher.find()) {
-            column = matcher.group().toLowerCase();
-        }
-        else {
-            throw new GoogleException('Address "' + address + '" doesn\'t contain column part');
-        }
-        matcher = Pattern.compile('\\d+$').matcher(address);
-        Integer row = null;
-        if (matcher.find()) {
-            row = Integer.valueOf(matcher.group()) - 1;
-        }
-        else {
-            throw new GoogleException('Address "' + address + '" doesn\'t contain row part');
-        }
-        Integer parsedColumn = 0;
-        for (Integer i = 0; i < column.length(); i++) {
-            parsedColumn = 26 * parsedColumn + column.charAt(i) - 'a'.charAt(0) + 1;        
-        }
-        parsedColumn--;
-        Address result = new Address();
-        result.row = row;
-        result.column = parsedColumn;
-        return result;
-    }
-
-    class Address {
-        public Integer row;
-
-        public Integer column;
-    }
-
     global class GoogleSheetsRequest {
 
         @InvocableVariable(required=True label='Sheets File Name' description='Case-sensitive, no extension, name only')

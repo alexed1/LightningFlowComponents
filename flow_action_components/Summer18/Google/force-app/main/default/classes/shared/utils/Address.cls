@@ -22,7 +22,23 @@ public class Address {
 
     private static final Integer A_CHAR_CODE = 'a'.charAt(0);
 
-    public static Address Parse(String address) {
+    public Address shiftRight(Integer deltaColumns) {
+        return new Address(column + deltaColumns, row);
+    }
+    
+    public Address shiftRight() {
+        return shiftRight(1);
+    }
+
+    public Address shiftBelow(Integer deltaRows) {
+        return new Address(column, row + deltaRows);
+    }
+
+    public Address shiftBelow() {
+        return shiftBelow(1);
+    }
+
+    public static Address parse(String address) {
         if (String.isBlank(address)) {
             return null;
         }

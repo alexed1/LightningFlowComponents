@@ -49,8 +49,9 @@ public class GetGoogleSheetsDataTest {
                     List<List<String>> result = new List<List<String>>();
                     return result;
                 }
+                return null;
             }
-            System.debug('Unknown method');
+            System.debug('Unknown method ' + stubbedMethodName);
             return null;
         }
     }
@@ -62,9 +63,7 @@ public class GetGoogleSheetsDataTest {
         request.SpreadsheetName = 'ByAddress';
         request.Direction1 = 'Address';
         request.Location1 = 'B2';
-        List<GetGoogleSheetsData.GoogleSheetsRequest> requests = new List<GetGoogleSheetsData.GoogleSheetsRequest>();
-        requests.add(request);
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, requests)[0];
+        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -78,9 +77,7 @@ public class GetGoogleSheetsDataTest {
         request.SpreadsheetName = 'ByRight';
         request.Direction2 = 'Right';
         request.Location2 = '1';
-        List<GetGoogleSheetsData.GoogleSheetsRequest> requests = new List<GetGoogleSheetsData.GoogleSheetsRequest>();
-        requests.add(request);
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, requests)[0];
+        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -94,9 +91,7 @@ public class GetGoogleSheetsDataTest {
         request.SpreadsheetName = 'ByBelow';
         request.Direction3 = 'Below';
         request.Location3 = '1';
-        List<GetGoogleSheetsData.GoogleSheetsRequest> requests = new List<GetGoogleSheetsData.GoogleSheetsRequest>();
-        requests.add(request);
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, requests)[0];
+        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -110,9 +105,7 @@ public class GetGoogleSheetsDataTest {
         request.SpreadsheetName = 'OutsideOfTheRange';
         request.Direction4 = 'Address';
         request.Location4 = 'A100';
-        List<GetGoogleSheetsData.GoogleSheetsRequest> requests = new List<GetGoogleSheetsData.GoogleSheetsRequest>();
-        requests.add(request);
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, requests)[0];
+        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -126,9 +119,7 @@ public class GetGoogleSheetsDataTest {
         request.SpreadsheetName = 'InvalidAddress';
         request.Direction5 = 'Address';
         request.Location5 = 'Invalid';
-        List<GetGoogleSheetsData.GoogleSheetsRequest> requests = new List<GetGoogleSheetsData.GoogleSheetsRequest>();
-        requests.add(request);
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, requests)[0];
+        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('Address "Invalid" doesn\'t contain row part', response.ErrorMessage);

@@ -2,86 +2,69 @@ global class GetGoogleSheetsData {
     
     @InvocableMethod(label='Get Google Sheets Data' description='Returns the values from Google Sheets cells that are located at specific address or relative to other specific values')
     global static List<GoogleSheetsResponse> GetGoogleSheetsData(List<GoogleSheetsRequest> requests) {
-        return GetGoogleSheetsData.GetGoogleSheetsDataImpl(new GoogleDrive(new GoogleAPI()), requests);
-    }
-
-    public static List<GoogleSheetsResponse> GetGoogleSheetsDataImpl(IGoogleDrive drive, List<GoogleSheetsRequest> requests) {
         List<GoogleSheetsResponse> responses = new List<GoogleSheetsResponse>();
-
+        IGoogleDrive drive = new GoogleDrive(new GoogleAPI());
         for (GoogleSheetsRequest request : requests) {
-            GoogleSheetsResponse response = new GoogleSheetsResponse();
-            response.IsSuccess = true;
+            GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
             responses.add(response);
-            try {
-                String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
-                if (String.isBlank(spreadsheetId)) {
-                    throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
-                }
-                List<List<String>> spreadsheetData = drive.GetSpreadsheetData(spreadsheetId);
-                if (!String.isBlank(request.Direction1)) {
-                    response.Value1 = LocateValue(spreadsheetData, request.Direction1, request.Location1);
-                }
-                if (!String.isBlank(request.Direction2)) {
-                    response.Value2 = LocateValue(spreadsheetData, request.Direction2, request.Location2);
-                }
-                if (!String.isBlank(request.Direction3)) {
-                    response.Value3 = LocateValue(spreadsheetData, request.Direction3, request.Location3);
-                }
-                if (!String.isBlank(request.Direction4)) {
-                    response.Value4 = LocateValue(spreadsheetData, request.Direction4, request.Location4);
-                }
-                if (!String.isBlank(request.Direction5)) {
-                    response.Value5 = LocateValue(spreadsheetData, request.Direction5, request.Location5);
-                }
-            } 
-            catch (GoogleException ex) {
-                response.IsSuccess = false;
-                response.ErrorMessage = ex.getMessage();
-            }
         }
         return responses;
     }
 
-    private static String LocateValue(List<List<String>> data, String direction, String search) {
-        Boolean isAddress = direction.equalsIgnoreCase('address');
-        Boolean isRight = direction.equalsIgnoreCase('right');
-        Boolean isBelow = direction.equalsIgnoreCase('below');
-        if (!isAddress && !isRight && !isBelow) {
-            throw new GoogleException('"' + direction + '" is not valid. Must be "Address", "Right" or "Below"');
+    public static GoogleSheetsResponse GetGoogleSheetsDataImpl(IGoogleDrive drive, GoogleSheetsRequest request) {
+        GoogleSheetsResponse response = new GoogleSheetsResponse();
+        try {
+            String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
+            if (String.isBlank(spreadsheetId)) {
+                throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
+            }
+            List<List<String>> spreadsheetData = drive.GetSpreadsheetData(spreadsheetId);
+            if (!String.isBlank(request.Direction1)) {
+                response.Value1 = LocateValue(spreadsheetData, request.Direction1, request.Location1);
+            }
+            if (!String.isBlank(request.Direction2)) {
+                response.Value2 = LocateValue(spreadsheetData, request.Direction2, request.Location2);
+            }
+            if (!String.isBlank(request.Direction3)) {
+                response.Value3 = LocateValue(spreadsheetData, request.Direction3, request.Location3);
+            }
+            if (!String.isBlank(request.Direction4)) {
+                response.Value4 = LocateValue(spreadsheetData, request.Direction4, request.Location4);
+            }
+            if (!String.isBlank(request.Direction5)) {
+                response.Value5 = LocateValue(spreadsheetData, request.Direction5, request.Location5);
+            }
+        } 
+        catch (GoogleException ex) {
+            response.IsSuccess = false;
+            response.ErrorMessage = ex.getMessage();
         }
-        Address address = null;
-        if (isAddress) {
-            address = ParseAddress(search);
+        return response;
+    }
+
+    private static String LocateValue(List<List<String>> data, String direct, String search) {
+        Direction dir = DirectionUtils.parse(direct);
+        Address addr = null;
+        SheetData sheetData = new SheetData(data);
+        if (dir == Direction.ADDRESS) {
+            addr = Address.parse(search);
         }
         else {
-            for (Integer rowIndex = 0; rowIndex < data.size(); rowIndex++) {
-                List<String> row = data[rowIndex];
-                for (Integer colIndex = 0; colIndex < row.size(); colIndex++) {
-                    if (row[colIndex].equalsIgnoreCase(search)) {
-                        address = new Address();
-                        address.row = rowIndex;
-                        address.column = colIndex;
-                    }
-                }
-            }
+            addr = sheetData.findAddressByValue(search);
         }        
         //This is for the case where we just couldn't find a value
-        if (address == null) {
+        if (addr == null) {
             return '';
         }
-        if (isRight) {
-            address.column +=1;
-        } else if (isBelow) {
-            address.row += 1;
+        if (dir == Direction.RIGHT) {
+            addr = addr.shiftRight();
         }
-        if (address.row >= 0 && address.row < data.size()) {
-            List<String> row = data[address.row];            
-            if (address.column >= 0 && address.column < row.size()) {
-                return row[address.column];
-            }
+        else if (dir == Direction.BELOW) {
+            addr = addr.shiftBelow();
         }
-        //This is the case where there requested address is located outside of the data area
-        return '';
+        System.debug('Looking for the value at ' + addr);
+        CellValue value = sheetData.getValueByAddress(addr);
+        return value.value;
     }
 
     global class GoogleSheetsRequest {
@@ -120,7 +103,7 @@ global class GetGoogleSheetsData {
         global String Location5;
     }
 
-    global class GoogleSheetsResponse {
+    global class GoogleSheetsResponse extends ActionResponse {
         
         @InvocableVariable(label='Value #1')
         global String Value1;
@@ -136,11 +119,5 @@ global class GetGoogleSheetsData {
         
         @InvocableVariable(label='Value #5')
         global String Value5;
-
-        @InvocableVariable(label='Is Success' description='"True" if retrieval was successful, otherwise "False"')
-        global Boolean IsSuccess;
-
-        @InvocableVariable(label='Error Message' description='Contains the description of error if "IsSuccess" field is "False"')
-        global String ErrorMessage;
     }
 }

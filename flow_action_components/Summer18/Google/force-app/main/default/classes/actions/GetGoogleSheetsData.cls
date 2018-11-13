@@ -14,25 +14,25 @@ global class GetGoogleSheetsData {
     public static GoogleSheetsResponse GetGoogleSheetsDataImpl(IGoogleDrive drive, GoogleSheetsRequest request) {
         GoogleSheetsResponse response = new GoogleSheetsResponse();
         try {
-            String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
+            String spreadsheetId = drive.FindFileIdByName(request.aSpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
             if (String.isBlank(spreadsheetId)) {
-                throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
+                throw new GoogleException('Spreadsheet with the name "' + request.aSpreadsheetName + '" was not found');
             }
             List<List<String>> spreadsheetData = drive.GetSpreadsheetData(spreadsheetId);
-            if (!String.isBlank(request.Direction1)) {
-                response.Value1 = LocateValue(spreadsheetData, request.Direction1, request.Location1);
+            if (!String.isBlank(request.RelativeDirection1)) {
+                response.Value1 = LocateValue(spreadsheetData, request.RelativeDirection1, request.TargetLabel1);
             }
-            if (!String.isBlank(request.Direction2)) {
-                response.Value2 = LocateValue(spreadsheetData, request.Direction2, request.Location2);
+            if (!String.isBlank(request.RelativeDirection2)) {
+                response.Value2 = LocateValue(spreadsheetData, request.RelativeDirection2, request.TargetLabel2);
             }
-            if (!String.isBlank(request.Direction3)) {
-                response.Value3 = LocateValue(spreadsheetData, request.Direction3, request.Location3);
+            if (!String.isBlank(request.RelativeDirection3)) {
+                response.Value3 = LocateValue(spreadsheetData, request.RelativeDirection3, request.TargetLabel3);
             }
-            if (!String.isBlank(request.Direction4)) {
-                response.Value4 = LocateValue(spreadsheetData, request.Direction4, request.Location4);
+            if (!String.isBlank(request.RelativeDirection4)) {
+                response.Value4 = LocateValue(spreadsheetData, request.RelativeDirection4, request.TargetLabel4);
             }
-            if (!String.isBlank(request.Direction5)) {
-                response.Value5 = LocateValue(spreadsheetData, request.Direction5, request.Location5);
+            if (!String.isBlank(request.RelativeDirection5)) {
+                response.Value5 = LocateValue(spreadsheetData, request.RelativeDirection5, request.TargetLabel5);
             }
         } 
         catch (GoogleException ex) {
@@ -69,38 +69,38 @@ global class GetGoogleSheetsData {
 
     global class GoogleSheetsRequest {
 
-        @InvocableVariable(required=True label='Sheets File Name' description='Case-sensitive, no extension, name only')
-        global String SpreadsheetName;
+        @InvocableVariable(required=True label='Spreadsheet Name' description='Case-sensitive, no extension, name only')
+        global String aSpreadsheetName;
 
-        @InvocableVariable(required=True label='#1 Direction' description='Allowed values: Address, Right, Below')
-        global String Direction1;
+        @InvocableVariable(required=True label='#1 Relative Direction' description='Allowed values: Address, Right, Below')
+        global String RelativeDirection1;
 
-        @InvocableVariable(required=True label='#1 Location' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String Location1;
+        @InvocableVariable(required=True label='#1 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
+        global String TargetLabel1;
 
-        @InvocableVariable(label='#2 Direction' description='Allowed values: Address, Right, Below')
-        global String Direction2;
+        @InvocableVariable(label='#2 Relative Direction' description='Allowed values: Address, Right, Below')
+        global String RelativeDirection2;
 
-        @InvocableVariable(label='#2 Location' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String Location2;
+        @InvocableVariable(label='#2 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
+        global String TargetLabel2;
 
-        @InvocableVariable(label='#3 Direction' description='Allowed values: Address, Right, Below')
-        global String Direction3;
+        @InvocableVariable(label='#3 Relative Direction' description='Allowed values: Address, Right, Below')
+        global String RelativeDirection3;
 
-        @InvocableVariable(label='#3 Location' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String Location3;
+        @InvocableVariable(label='#3 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
+        global String TargetLabel3;
 
-        @InvocableVariable(label='#4 Direction' description='Allowed values: Address, Right, Below')
-        global String Direction4;
+        @InvocableVariable(label='#4 Relative Direction' description='Allowed values: Address, Right, Below')
+        global String RelativeDirection4;
 
-        @InvocableVariable(label='#4 Location' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String Location4;
+        @InvocableVariable(label='#4 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
+        global String TargetLabel4;
 
-        @InvocableVariable(label='#5 Direction' description='Allowed values: Address, Right, Below')
-        global String Direction5;
+        @InvocableVariable(label='#5 Relative Direction' description='Allowed values: Address, Right, Below')
+        global String RelativeDirection5;
 
-        @InvocableVariable(label='#5 Location' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String Location5;
+        @InvocableVariable(label='#5 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
+        global String TargetLabel5;
     }
 
     global class GoogleSheetsResponse extends ActionResponse {

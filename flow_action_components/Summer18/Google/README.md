@@ -43,7 +43,7 @@
 
 ### Salesforce Named Credentials
 
-Perform the following steps only if you are not going to push the named credentials that are part of this package
+You can skip the creation of the named credentials if they are pushed as a part of this package, but you'll still have to open them and click *Save* in order to run Google authentication process
 
 #### Google Sheets
 
@@ -58,13 +58,13 @@ Perform the following steps only if you are not going to push the named credenti
 - - *URL*: https://sheets.googleapis.com/v4
 - - *Identity Type*: Named Principal
 - - *Authentication Protocol*: OAuth 2.0
-- - *Authentication Provider*: < lookup the previously created provider (*google-sheets* in the example)>
+- - *Authentication Provider*: < lookup the previously created provider (*google* in the example)>
 - - *Scope*: openid https://www.googleapis.com/auth/spreadsheets
 - - Check *Start Authentication Flow on Save* checkbox and click *Save*
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
 
-**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
+**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you may see an error message *'Invalid Credentials'*
 
 #### Google Drive
 
@@ -79,13 +79,13 @@ Perform the following steps only if you are not going to push the named credenti
 - - *URL*: https://www.googleapis.com/drive/v3
 - - *Identity Type*: Named Principal
 - - *Authentication Protocol*: OAuth 2.0
-- - *Authentication Provider*: < lookup the previously created provider (*google-sheets* in the example)>
+- - *Authentication Provider*: < lookup the previously created provider (*google* in the example)>
 - - *Scope*: openid https://www.googleapis.com/auth/drive.readonly
 - - Check *Start Authentication Flow on Save* checkbox and click *Save*
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
 
-**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
+**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you may see an error message *'Invalid Credentials'*
   
 
 

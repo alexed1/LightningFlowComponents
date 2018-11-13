@@ -60,9 +60,9 @@ public class GetGoogleSheetsDataTest {
     public static void GetGoogleSheetsData_CanFindByAddress() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
         GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
-        request.SpreadsheetName = 'ByAddress';
-        request.Direction1 = 'Address';
-        request.Location1 = 'B2';
+        request.aSpreadsheetName = 'ByAddress';
+        request.RelativeDirection1 = 'Address';
+        request.TargetLabel1 = 'B2';
         GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
@@ -74,9 +74,9 @@ public class GetGoogleSheetsDataTest {
     public static void GetGoogleSheetsData_CanFindByRight() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
         GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
-        request.SpreadsheetName = 'ByRight';
-        request.Direction2 = 'Right';
-        request.Location2 = '1';
+        request.aSpreadsheetName = 'ByRight';
+        request.RelativeDirection2 = 'Right';
+        request.TargetLabel2 = '1';
         GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
@@ -88,9 +88,9 @@ public class GetGoogleSheetsDataTest {
     public static void GetGoogleSheetsData_CanFindByBelow() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
         GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
-        request.SpreadsheetName = 'ByBelow';
-        request.Direction3 = 'Below';
-        request.Location3 = '1';
+        request.aSpreadsheetName = 'ByBelow';
+        request.RelativeDirection3 = 'Below';
+        request.TargetLabel3 = '1';
         GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
@@ -102,9 +102,9 @@ public class GetGoogleSheetsDataTest {
     public static void GetGoogleSheetsData_OutsideOfTheRange_ReturnsEmptyString() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
         GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
-        request.SpreadsheetName = 'OutsideOfTheRange';
-        request.Direction4 = 'Address';
-        request.Location4 = 'A100';
+        request.aSpreadsheetName = 'OutsideOfTheRange';
+        request.RelativeDirection4 = 'Address';
+        request.TargetLabel4 = 'A100';
         GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
@@ -116,9 +116,9 @@ public class GetGoogleSheetsDataTest {
     public static void GetGoogleSheetsData_InvalidAddress_ThrowsException() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
         GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
-        request.SpreadsheetName = 'InvalidAddress';
-        request.Direction5 = 'Address';
-        request.Location5 = 'Invalid';
+        request.aSpreadsheetName = 'InvalidAddress';
+        request.RelativeDirection5 = 'Address';
+        request.TargetLabel5 = 'Invalid';
         GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(false, response.IsSuccess);

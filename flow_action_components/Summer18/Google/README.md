@@ -34,6 +34,7 @@
   
 - - *Provider Type*: Google
 - - *Name*: google
+- - *URL Suffix*: google
 - - *Consumer Key*: < put your OAuth client Id from the previous step >
 - - *Consumer Secret*: < put your OAuth client secret from the previous step >
 

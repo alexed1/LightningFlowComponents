@@ -4,6 +4,7 @@
 
 1) Create a Google Auth Provider if your org does not already have one. This will require creating a Google Developer Account. See below.
 2) Deploy/Install the GoogleFlowActions package
+3) Authorize the installed Named Credentials by editing and saving them OR create your own Named Credentials, as described below.
 
 
 
@@ -47,7 +48,7 @@
 
 - Click *Save*. A *Callback URL* field will be populated. Copy its value
 
-- Navigate to your Google Project and its Web Client you've created 
+- Navigate to your Google Project and its Web Client you've created, and paste the Callback URL from the Auth Provider into the Google Project's Redirect URL field.
 
 ### Salesforce Named Credentials
 

@@ -2,6 +2,13 @@
 
 ## Installation
 
+1) Create a Google Auth Provider if your org does not already have one. This will require creating a Google Developer Account. See below.
+2) Deploy/Install the GoogleFlowActions package
+
+
+
+
+##Creating a Google Auth Provider##
 ### Google Developer Account and OAuth Application
 
 - You need to have Google Developer account for your organization. You can get one [here](https://developers.google.com/)

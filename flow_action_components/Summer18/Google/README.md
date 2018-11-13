@@ -5,7 +5,7 @@
 1) Create a Google Auth Provider if your org does not already have one. This will require creating a Google Developer Account. See below.
 2) Deploy/Install the GoogleFlowActions package
 3) Authorize the installed Named Credentials by editing and saving them OR create your own Named Credentials, as described below.
-
+4)Verify your OAuth client with Google (just follow their instructions at https://support.google.com/googleapi/answer/7454865?hl=en&authuser=0). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
 
 
 
@@ -16,7 +16,7 @@
    
 - Open Google Developer Console [here](https://console.developers.google.com/projectselector/apis/library?supportedpurview=project%20)
 
-- Create a new project, name is not significant however try to avoid using name that can be mistakingly taken as belonging to Google (e.g. Google Sheets). Otherwise you may see an error message about your public project name
+- Create a new project.
 
 - Open the newly created project. Go to *Credentials* tab and navigate to its *OAuth Consent screen* subtab
 
@@ -75,7 +75,7 @@ Perform the following steps only if you are not going to push the named credenti
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access
 
-**IMPORTANT NOTE**: you'll have to verify your connected app with Google (just follow their instructions). You still can proceed without the verification, but in this case Google doesn't provide the refresh token and their access token lives no longer than 24 hour (most likely less). If the token is expired you'll have to open the specific Named Credential and re-authorize it (open credentials and click *Save*). Otherwise, during the execution of Google activities you will see an error message *'Invalid Credentials'*
+
 
 #### Google Drive
 

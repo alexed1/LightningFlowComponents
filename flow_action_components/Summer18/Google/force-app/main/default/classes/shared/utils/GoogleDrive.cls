@@ -55,4 +55,17 @@ public class GoogleDrive implements IGoogleDrive {
         }
         return result;        
     }
+
+    public void SaveSpreadsheetData(String id, List<CellValue> values) {        
+        SheetsValuesBatchUpdateRequest body = new SheetsValuesBatchUpdateRequest();
+        if (values != null) {
+            for (CellValue cellValue : values) {
+                SheetsValuesBatchUpdateRequest.Data data = new SheetsValuesBatchUpdateRequest.Data(cellValue.addr.toString());
+                data.values[0].add(cellValue.value);
+                body.data.add(data);
+            }
+        }
+        ErrorResponse response = googleApi.SheetsValuesBatchUpdate(id, body);
+        response.ThrowOnError();
+    }
 }

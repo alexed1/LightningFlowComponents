@@ -25,7 +25,7 @@ public class GoogleAPITest {
                     ' ]'+
                     '}');
             }
-            else if (endpoint.contains('spreadsheets')) {
+            else if (endpoint.contains('spreadsheets') && endpoint.contains('?includeGridData=true')) {
                 res.setBody(
                     '{'+
                     ' "spreadsheetId": "1A7Td7yl6wbxGhlsjouwO-N3sRyTDq-M5p579awuYTQo",'+
@@ -59,6 +59,9 @@ public class GoogleAPITest {
                     '}'
                 );
             }
+            else if (endpoint.contains('spreadsheets') && endpoint.contains('values:batchUpdate')) {
+                res.setBody(JSON.serialize(new ErrorResponse()));
+            }
             return res;
         }
     }
@@ -77,5 +80,13 @@ public class GoogleAPITest {
         GoogleAPI api = new GoogleAPI();
         SheetsSheetResponse response = api.SheetsSpreadsheetsGet('Id');
         System.assertEquals('test', response.sheets[0].data[0].rowData[1].values[1].formattedValue);
+    }
+
+    @isTest
+    public static void SheetsValuesBatchUpdate_ParsedData() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        ErrorResponse response = api.SheetsValuesBatchUpdate('Id', new SheetsValuesBatchUpdateRequest());
+        System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

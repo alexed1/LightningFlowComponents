@@ -15,6 +15,8 @@
 ### Google Developer Account and OAuth Application
 
 - You need to have Google Developer account for your organization. You can get one [here](https://developers.google.com/)
+
+- For you developer account you must enable *Google Drive* and *Google Sheets* API
    
 - Open Google Developer Console [here](https://console.developers.google.com/projectselector/apis/library?supportedpurview=project%20)
 

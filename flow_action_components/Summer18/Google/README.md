@@ -54,9 +54,7 @@
 
 ### Salesforce Named Credentials
 
-If you are using the Named Credentials in the package, edit them and then save them to trigger authorization
-
-Perform the following steps only if you are not going to push the named credentials that are part of this package
+If you are using the Named Credentials in the package, edit them and then save them to trigger authorization. Perform the following steps only if you are not going to push the named credentials that are part of this package
 
 #### Google Sheets
 

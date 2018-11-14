@@ -63,6 +63,14 @@ public class GoogleDriveTests {
                 }
                 System.debug('Unknown file Id: ' + fileId);
             }
+            if (stubbedMethodName == 'SheetsValuesBatchUpdate') {
+                String id = listOfArgs[0].toString();
+                SheetsValuesBatchUpdateRequest body = (SheetsValuesBatchUpdateRequest)listOfArgs[1];
+                SheetsValuesBatchUpdateRequest.Data data = body.data[0];
+                System.assertEquals('A1', data.range);
+                System.assertEquals('test', data.values[0][0]);
+                return new ErrorResponse();
+            }
             System.debug('Unknown method: ' + stubbedMethodName);
             return null;
         }
@@ -120,5 +128,12 @@ public class GoogleDriveTests {
         } catch (GoogleException ex) {
             System.assertEquals('Exception', ex.getMessage());
         }
+    }
+
+    @isTest
+    public static void SaveSpreadsheetData_SavesData() {
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        drive.SaveSpreadsheetData('Anything', new List<CellValue> { new CellValue(Address.parse('A1'), 'test') });
     }
 }

@@ -7,4 +7,6 @@ public interface IGoogleDrive {
     List<List<String>> GetSpreadsheetData(String id);
 
     void SaveSpreadsheetData(String id, List<CellValue> values);
+
+    ClonedFile CloneFile(String id, String newName);
 }

@@ -61,15 +61,15 @@ public class StoreDataInGoogleSheetTest {
     }
 
     @isTest
-    public static void StoreDataInGoogleSheet_CanStoreByAddress() {
+    public static void StoreDataInGoogleSheetImpl_CanStoreByAddress() {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite));
-        StoreDataInGoogleSheet.GoogleSheetsRequest request = new StoreDataInGoogleSheet.GoogleSheetsRequest();
+        StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
         request.aSpreadsheetName = 'ByAddress';
         request.RelativeDirection1 = 'Address';
         request.TargetLabel1 = 'B2';
         request.Value1 = 'test';
-        ActionResponse response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
+        StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
         System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty');
         System.assertEquals('B2', valuesToWrite[0].addr.toString());
@@ -77,15 +77,15 @@ public class StoreDataInGoogleSheetTest {
     }
 
     @isTest
-    public static void StoreDataInGoogleSheet_CanStoreByBelow() {
+    public static void StoreDataInGoogleSheetImpl_CanStoreByBelow() {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite));
-        StoreDataInGoogleSheet.GoogleSheetsRequest request = new StoreDataInGoogleSheet.GoogleSheetsRequest();
+        StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
         request.aSpreadsheetName = 'ByBelow';
         request.RelativeDirection1 = 'Below';
         request.TargetLabel1 = 'B1';
         request.Value1 = 'test';
-        ActionResponse response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
+        StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
         System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty');
         System.assertEquals('B2', valuesToWrite[0].addr.toString());
@@ -93,18 +93,30 @@ public class StoreDataInGoogleSheetTest {
     }
 
     @isTest
-    public static void StoreDataInGoogleSheet_CanStoreByRight() {
+    public static void StoreDataInGoogleSheetImpl_CanStoreByRight() {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite)); 
-        StoreDataInGoogleSheet.GoogleSheetsRequest request = new StoreDataInGoogleSheet.GoogleSheetsRequest();
+        StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
         request.aSpreadsheetName = 'ByRight';
         request.RelativeDirection1 = 'Right';
         request.TargetLabel1 = 'B1';
         request.Value1 = 'test';
-        ActionResponse response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
+        StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
         System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty');
         System.assertEquals('C1', valuesToWrite[0].addr.toString());
         System.assertEquals('test', valuesToWrite[0].value);
+    }
+
+    @isTest
+    public static void StoreDataInGoogleSheet_ReturnsResponses() {
+        Test.setMock(HttpCalloutMock.class, new BadHttpResponseMock());
+        StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
+        request.aSpreadsheetName = 'test';
+        List<StoreDataInGoogleSheet.Request> requests = new List<StoreDataInGoogleSheet.Request> { request };
+        List<StoreDataInGoogleSheet.Response> responses = StoreDataInGoogleSheet.StoreDataInGoogleSheet(requests);
+        System.assertEquals(1, responses.size());
+        System.assert(!responses[0].IsSuccess);
+        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

@@ -68,4 +68,28 @@ public class GoogleDrive implements IGoogleDrive {
         ErrorResponse response = googleApi.SheetsValuesBatchUpdate(id, body);
         response.ThrowOnError();
     }
+
+    public ClonedFile CloneFile(String idOrName, String newName) {
+        if (String.isBlank(idOrName)) {
+            throw new GoogleException('Id or Name can\'t be blank');
+        }
+        if (String.isBlank(newName)) {
+            throw new GoogleException('New name can\'t be blank');
+        }
+        DriveFilesCopyResponse response = null;
+        //If the value seems to be Id, we try to clone the file with this Id
+        if (googleApi.LikeId(idOrName)) {
+            response = googleApi.CopyFile(idOrName, newName);
+        }
+        //If it is not Id for sure (e.g. contains spaces) or we didn't find a file with this Id, we try to treat it as file name
+        if (response == null || (response.error != null && response.error.code == 404)) {
+            String id = FindFileIdByName(idOrName);
+            if (String.isBlank(id)) {
+                throw new GoogleException('File "' + idOrName + '" doesn\'t exist');
+            }
+            response = googleApi.CopyFile(id, newName);
+        }
+        response.ThrowOnError();
+        return new ClonedFile(response.id, response.webViewLink);
+    }
 }

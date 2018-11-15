@@ -57,13 +57,13 @@ public class GetGoogleSheetsDataTest {
     }
 
     @isTest
-    public static void GetGoogleSheetsData_CanFindByAddress() {
+    public static void GetGoogleSheetsDataImpl_CanFindByAddress() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
-        GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
         request.aSpreadsheetName = 'ByAddress';
         request.RelativeDirection1 = 'Address';
         request.TargetLabel1 = 'B2';
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -71,13 +71,13 @@ public class GetGoogleSheetsDataTest {
     }
 
     @isTest
-    public static void GetGoogleSheetsData_CanFindByRight() {
+    public static void GetGoogleSheetsDataImpl_CanFindByRight() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
-        GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
         request.aSpreadsheetName = 'ByRight';
         request.RelativeDirection2 = 'Right';
         request.TargetLabel2 = '1';
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -85,13 +85,13 @@ public class GetGoogleSheetsDataTest {
     }
 
     @isTest
-    public static void GetGoogleSheetsData_CanFindByBelow() {
+    public static void GetGoogleSheetsDataImpl_CanFindByBelow() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
-        GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
         request.aSpreadsheetName = 'ByBelow';
         request.RelativeDirection3 = 'Below';
         request.TargetLabel3 = '1';
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -99,13 +99,13 @@ public class GetGoogleSheetsDataTest {
     }
     
     @isTest
-    public static void GetGoogleSheetsData_OutsideOfTheRange_ReturnsEmptyString() {
+    public static void GetGoogleSheetsDataImpl_OutsideOfTheRange_ReturnsEmptyString() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
-        GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
         request.aSpreadsheetName = 'OutsideOfTheRange';
         request.RelativeDirection4 = 'Address';
         request.TargetLabel4 = 'A100';
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -113,16 +113,28 @@ public class GetGoogleSheetsDataTest {
     }    
     
     @isTest
-    public static void GetGoogleSheetsData_InvalidAddress_ThrowsException() {
+    public static void GetGoogleSheetsDataImpl_InvalidAddress_ThrowsException() {
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
-        GetGoogleSheetsData.GoogleSheetsRequest request = new GetGoogleSheetsData.GoogleSheetsRequest();
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
         request.aSpreadsheetName = 'InvalidAddress';
         request.RelativeDirection5 = 'Address';
         request.TargetLabel5 = 'Invalid';
-        GetGoogleSheetsData.GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
         System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('Address "Invalid" doesn\'t contain row part', response.ErrorMessage);
         System.assert(String.isBlank(response.Value5));
+    }
+
+    @isTest
+    public static void GetGoogleSheetsData_ReturnsResponses() {
+        Test.setMock(HttpCalloutMock.class, new BadHttpResponseMock());
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
+        request.aSpreadsheetName = 'test';
+        List<GetGoogleSheetsData.Request> requests = new List<GetGoogleSheetsData.Request> { request };
+        List<GetGoogleSheetsData.Response> responses = GetGoogleSheetsData.GetGoogleSheetsData(requests);
+        System.assertEquals(1, responses.size());
+        System.assert(!responses[0].IsSuccess);
+        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

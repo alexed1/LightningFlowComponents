@@ -62,6 +62,9 @@ public class GoogleAPITest {
             else if (endpoint.contains('spreadsheets') && endpoint.contains('values:batchUpdate')) {
                 res.setBody(JSON.serialize(new ErrorResponse()));
             }
+            else if (endpoint.contains('copy?fields')) {
+                res.setBody('{ "id": "test copy", "webViewLink": "test link" }');
+            }
             return res;
         }
     }
@@ -87,6 +90,38 @@ public class GoogleAPITest {
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         GoogleAPI api = new GoogleAPI();
         ErrorResponse response = api.SheetsValuesBatchUpdate('Id', new SheetsValuesBatchUpdateRequest());
+        System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void CopyFile_FailsOnEmptyId() {
+        try {
+            new GoogleApi().CopyFile(null, 'test');
+            System.assert(false, 'Must fail');
+        }
+        catch (GoogleException ex) {
+            System.assertEquals('Id can\'t be empty or contain only whitespaces', ex.getMessage());
+        }
+    }
+
+    @isTest
+    public static void CopyFile_FailsOnEmptyName() {
+        try {
+            new GoogleApi().CopyFile('test', null);
+            System.assert(false, 'Must fail');
+        }
+        catch (GoogleException ex) {
+            System.assertEquals('New name can\'t be empty or contain only whitespaces', ex.getMessage());
+        }
+    }   
+
+    @isTest
+    public static void CopyFile_ReturnsDataOnCopiedFile() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        DriveFilesCopyResponse response = api.CopyFile('test id', 'test name');
+        System.assertEquals('test copy', response.id);
+        System.assertEquals('test url', response.webViewLink);
         System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

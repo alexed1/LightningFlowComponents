@@ -1,18 +1,18 @@
 global class StoreDataInGoogleSheet {
     
     @InvocableMethod(label='Store Data in Google Sheet' description='Saves values to Google Sheet at specific cells or relatively to other specific values')
-    global static List<ActionResponse> StoreDataInGoogleSheet(List<GoogleSheetsRequest> requests) {
+    global static List<Response> StoreDataInGoogleSheet(List<Request> requests) {
         IGoogleDrive googleDrive = new GoogleDrive(new GoogleAPI());
-        List<ActionResponse> responses = new List<ActionResponse>();
-        for (GoogleSheetsRequest request: requests) {
-            ActionResponse response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(googleDrive, request);
+        List<Response> responses = new List<Response>();
+        for (Request request: requests) {
+            Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(googleDrive, request);
             responses.add(response);
         }
         return responses;
     }
 
-    public static ActionResponse StoreDataInGoogleSheetImpl(IGoogleDrive googleDrive, GoogleSheetsRequest request) {
-        ActionResponse response = new ActionResponse();
+    public static Response StoreDataInGoogleSheetImpl(IGoogleDrive googleDrive, Request request) {
+        Response response = new Response();
         try {
             String spreadsheetId = googleDrive.FindFileIdByName(request.aSpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
             if (String.isBlank(spreadsheetId)) {
@@ -78,7 +78,7 @@ global class StoreDataInGoogleSheet {
         return response;
     }
 
-    global class GoogleSheetsRequest {
+    global class Request {
 
         @InvocableVariable(required=True label='Spreadsheet Name' description='Case-sensitive, no extension, name only')
         global String aSpreadsheetName;
@@ -127,5 +127,19 @@ global class StoreDataInGoogleSheet {
 
         @InvocableVariable(label='#5 Value' description='Value to write to the sheet')
         global String Value5;
+    }
+
+    global class Response {       
+
+        global Response() {
+            IsSuccess = true;
+            ErrorMessage = '';
+        }
+
+        @InvocableVariable(label='Is Success' description='"True" if action was successful, otherwise "False"')
+        global Boolean IsSuccess;
+
+        @InvocableVariable(label='Error Message' description='Contains the description of error if action was not successfull"')
+        global String ErrorMessage;
     }
 }

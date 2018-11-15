@@ -1,18 +1,18 @@
 global class GetGoogleSheetsData {
     
     @InvocableMethod(label='Get Google Sheets Data' description='Returns the values from Google Sheets cells that are located at specific address or relative to other specific values')
-    global static List<GoogleSheetsResponse> GetGoogleSheetsData(List<GoogleSheetsRequest> requests) {
-        List<GoogleSheetsResponse> responses = new List<GoogleSheetsResponse>();
+    global static List<Response> GetGoogleSheetsData(List<Request> requests) {
+        List<Response> responses = new List<Response>();
         IGoogleDrive drive = new GoogleDrive(new GoogleAPI());
-        for (GoogleSheetsRequest request : requests) {
-            GoogleSheetsResponse response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        for (Request request : requests) {
+            Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
             responses.add(response);
         }
         return responses;
     }
 
-    public static GoogleSheetsResponse GetGoogleSheetsDataImpl(IGoogleDrive drive, GoogleSheetsRequest request) {
-        GoogleSheetsResponse response = new GoogleSheetsResponse();
+    public static Response GetGoogleSheetsDataImpl(IGoogleDrive drive, Request request) {
+        Response response = new Response();
         try {
             String spreadsheetId = drive.FindFileIdByName(request.aSpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
             if (String.isBlank(spreadsheetId)) {
@@ -67,7 +67,7 @@ global class GetGoogleSheetsData {
         return value.value;
     }
 
-    global class GoogleSheetsRequest {
+    global class Request {
 
         @InvocableVariable(required=True label='Spreadsheet Name' description='Case-sensitive, no extension, name only')
         global String aSpreadsheetName;
@@ -103,7 +103,18 @@ global class GetGoogleSheetsData {
         global String TargetLabel5;
     }
 
-    global class GoogleSheetsResponse extends ActionResponse {
+    global class Response {
+
+        global Response() {
+            IsSuccess = true;
+            ErrorMessage = '';
+        }
+
+        @InvocableVariable(label='Is Success' description='"True" if action was successful, otherwise "False"')
+        global Boolean IsSuccess;
+
+        @InvocableVariable(label='Error Message' description='Contains the description of error if action was not successfull"')
+        global String ErrorMessage;
         
         @InvocableVariable(label='Value #1')
         global String Value1;

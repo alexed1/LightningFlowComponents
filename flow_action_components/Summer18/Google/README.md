@@ -91,7 +91,7 @@ If you are using the Named Credentials in the package, edit them and then save t
 - - *Identity Type*: Named Principal
 - - *Authentication Protocol*: OAuth 2.0
 - - *Authentication Provider*: < lookup the previously created provider (*google* in the example)>
-- - *Scope*: openid https://www.googleapis.com/auth/drive.readonly
+- - *Scope*: openid https://www.googleapis.com/auth/drive
 - - Check *Start Authentication Flow on Save* checkbox and click *Save*
 
 - You'll be redirected to a Google authorization page. Use your Google account credentials to login and allow the application access

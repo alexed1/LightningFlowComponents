@@ -5,6 +5,6 @@ public class DirectionUtils {
                 return dir;
             }
         }
-        throw new GoogleException('"' + value + '" is not valid. Must be one of these: ' + String.join(Direction.values(), ', '));
+        throw new GoogleException('"' + value + '" is not valid');
     }
 }

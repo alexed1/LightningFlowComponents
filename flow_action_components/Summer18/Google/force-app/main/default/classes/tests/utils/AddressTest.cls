@@ -12,4 +12,32 @@ public class AddressTest {
         Address a = new Address(26, 1);
         System.assertEquals('AA2', a.toString());
     }
+
+    @isTest
+    public static void Parse_NullForEmptyString() {
+        Address a = Address.parse('');
+        System.assertEquals(null, a);
+    }
+
+    @isTest
+    public static void Parse_ThrowsExceptionWhenNoColumn() {
+        try {
+            Address a = Address.parse('123');
+            System.assert(false, 'Must throw exception');
+        }
+        catch (GoogleException ex) {
+            //Expected scenario
+        }
+    }
+
+    @isTest
+    public static void Parse_ThrowsExceptionWhenNoRow() {
+        try {
+            Address a = Address.parse('AA');
+            System.assert(false, 'Must throw exception');
+        }
+        catch (GoogleException ex) {
+            System.assertEquals('Address "AA" doesn\'t contain row part', ex.getMessage());
+        }
+    }
 }

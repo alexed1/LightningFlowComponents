@@ -4,8 +4,12 @@ public virtual class Response {
     public Integer error_code;
     public String error_description;
 
+    public Boolean isSuccess() {
+        return error_code == 0;
+    }
+
     public void throwOnError() {
-        if (error_code != 0) {
+        if (!isSuccess()) {
             throw new QuipException(String.isBlank(error_description) ? error : error_description);
         }
     }

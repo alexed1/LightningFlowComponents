@@ -1,4 +1,4 @@
-public class FolderResponse {
+public class FolderResponse extends Response {
 
     public Folder folder;
     public List<ThreadOrFolder> children;

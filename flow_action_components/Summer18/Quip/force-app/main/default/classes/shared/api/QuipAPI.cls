@@ -3,6 +3,8 @@ public class QuipAPI {
     //We'll store it somewhere else later
     private static final String QUIP_URL = 'https://platform.quip.com/1';
 
+    private static final Integer ID_LENGTH = 12;
+
     private String apiKey;
 
     public QuipAPI(String apiKey) {
@@ -12,7 +14,20 @@ public class QuipAPI {
         this.apiKey = apiKey;
     }
 
-    public UserResponse GetCurrentUser() {   
+    public Boolean likeId(String id) {
+        if (String.isBlank(id)) {
+            return false;
+        }
+        if (id.length() != ID_LENGTH) {
+            return false;
+        }
+        if (id.contains(' ')) {
+            return false;
+        }
+        return true;
+    }
+
+    public UserResponse getCurrentUser() {   
         String url = QUIP_URL + '/users/current';
         HttpRequest req = newRequest(url);
         Http http = new Http();
@@ -22,7 +37,7 @@ public class QuipAPI {
         return UserResponse.parse(res.getBody());
     }
 
-    public ThreadResponse GetThread(String id) {
+    public ThreadResponse getThread(String id) {
         String url = QUIP_URL + '/threads/' + EncodingUtil.urlEncode(id, 'UTF-8');
         HttpRequest req = newRequest(url);
         Http http = new Http();
@@ -32,7 +47,7 @@ public class QuipAPI {
         return ThreadResponse.parse(res.getBody());
     }
 
-    public ThreadListResponse GetThreadList(List<String> id) {
+    public ThreadListResponse getThreadList(List<String> id) {
         List<String> idList = new List<String>();
         for (String rawId: id) {
             idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
@@ -46,7 +61,7 @@ public class QuipAPI {
         return ThreadListResponse.parse(res.getBody());
     }
 
-    public FolderResponse GetFolder(String id) {
+    public FolderResponse getFolder(String id) {
         String url = QUIP_URL + '/folders/' + EncodingUtil.urlEncode(id, 'UTF-8');
         HttpRequest req = newRequest(url);
         Http http = new Http();
@@ -56,7 +71,7 @@ public class QuipAPI {
         return FolderResponse.parse(res.getBody());
     }
 
-    public FolderListResponse GetFolderList(List<String> id) {
+    public FolderListResponse getFolderList(List<String> id) {
         List<String> idList = new List<String>();
         for (String rawId: id) {
             idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));

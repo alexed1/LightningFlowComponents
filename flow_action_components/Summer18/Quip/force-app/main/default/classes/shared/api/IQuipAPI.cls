@@ -1,12 +1,14 @@
 public interface IQuipAPI {
 
-    UserResponse GetCurrentUser();
+    Boolean likeId(String id);
 
-    ThreadResponse GetThread(String id);
+    UserResponse getCurrentUser();
 
-    ThreadListResponse GetThreadList(List<String> id);
+    ThreadResponse getThread(String id);
 
-    FolderResponse GetFolder(String id);
+    ThreadListResponse getThreadList(List<String> id);
 
-    FolderListResponse GetFolderList(List<String> id);
+    FolderResponse getFolder(String id);
+
+    FolderListResponse getFolderList(List<String> id);
 }

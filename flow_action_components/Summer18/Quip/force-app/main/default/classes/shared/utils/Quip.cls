@@ -1,4 +1,4 @@
-public class Quip {
+public class Quip implements IQuip {
     
     private IQuipAPI quipApi;
     
@@ -51,7 +51,7 @@ public class Quip {
         return null;
     }
 
-    private static final Pattern tablePattern = Pattern.compile('<table.*?\\/table>');
+    private static final Pattern tablePattern = Pattern.compile('(?s)<table.*?\\/table>');
 
     private Thread toThread(ThreadResponse response) {
         Thread result = new Thread();

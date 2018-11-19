@@ -8,11 +8,13 @@ public class ThreadSheet {
         data = new List<List<String>>();
     }
 
-    private static final Pattern rowPattern = Pattern.compile('<tr.*?\\/tr>');
+    private static final Pattern bodyPattern = Pattern.compile('(?s)<tbody.*?\\/tbody>');
 
-    private static final Pattern cellPattern = Pattern.compile('<span.*?\\/span>');
+    private static final Pattern rowPattern = Pattern.compile('(?s)<tr.*?\\/tr>');
 
-    private static final Pattern titlePattern = Pattern.compile('title=[\'"](.*?)[\'"]');
+    private static final Pattern cellPattern = Pattern.compile('(?s)<span.*?\\/span>');
+
+    private static final Pattern titlePattern = Pattern.compile('(?s)title=[\'"](.*?)[\'"]');
 
     //Due to the way Quip stores its data, we can't parse its HTML using Dom.Xml* classes
     //E.g. it may look like this "<tr><td><span><b>Bold</b> not bold</span></td></tr>"
@@ -25,8 +27,14 @@ public class ThreadSheet {
             title = title == null ? titleMatcher.group().substringBetween('"') : title;
             result.title = title;
         }
-        Matcher rowMatcher = rowPattern.matcher(htmlTable);
+        Matcher bodyMatcher = bodyPattern.matcher(htmlTable);
+        String tableBody = '';
+        if (bodyMatcher.find()) {
+            tableBody = bodyMatcher.group();
+        }
+        Matcher rowMatcher = rowPattern.matcher(tableBody);
         while (rowMatcher.find()) {
+            System.debug('Row html is: ' + rowMatcher.group());
             List<String> dataRow = new List<String>();
             Matcher cellMatcher = cellPattern.matcher(rowMatcher.group());
             while (cellMatcher.find()) {

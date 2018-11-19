@@ -1,17 +1,12 @@
-public class QuipAPI {
+public class QuipAPI implements IQuipAPI {
     
-    //We'll store it somewhere else later
-    private static final String QUIP_URL = 'https://platform.quip.com/1';
+    private static final String QUIP_URL = 'quip';
 
     private static final Integer ID_LENGTH = 12;
 
     private String apiKey;
 
-    public QuipAPI(String apiKey) {
-        if (String.isBlank(apiKey)) {
-            throw new QuipException('Api key can\'t be empty or blank');
-        }
-        this.apiKey = apiKey;
+    public QuipAPI() {
     }
 
     public Boolean likeId(String id) {
@@ -28,7 +23,7 @@ public class QuipAPI {
     }
 
     public UserResponse getCurrentUser() {   
-        String url = QUIP_URL + '/users/current';
+        String url = 'callout:' + QUIP_URL + '/users/current';
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
@@ -38,7 +33,7 @@ public class QuipAPI {
     }
 
     public ThreadResponse getThread(String id) {
-        String url = QUIP_URL + '/threads/' + EncodingUtil.urlEncode(id, 'UTF-8');
+        String url = 'callout:' + QUIP_URL + '/threads/' + EncodingUtil.urlEncode(id, 'UTF-8');
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
@@ -52,7 +47,7 @@ public class QuipAPI {
         for (String rawId: id) {
             idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
         }
-        String url = QUIP_URL + '/threads/?ids=' + String.join(idList, ',');
+        String url = 'callout:' + QUIP_URL + '/threads/?ids=' + String.join(idList, ',');
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
@@ -62,7 +57,7 @@ public class QuipAPI {
     }
 
     public FolderResponse getFolder(String id) {
-        String url = QUIP_URL + '/folders/' + EncodingUtil.urlEncode(id, 'UTF-8');
+        String url = 'callout:' + QUIP_URL + '/folders/' + EncodingUtil.urlEncode(id, 'UTF-8');
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
@@ -76,14 +71,14 @@ public class QuipAPI {
         for (String rawId: id) {
             idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
         }
-        String url = QUIP_URL + '/folders/?ids=' + String.join(idList, ',');
+        String url = 'callout:' + QUIP_URL + '/folders/?ids=' + String.join(idList, ',');
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
         return FolderListResponse.parse(res.getBody());
-    }    
+    } 
 
     private HttpRequest newRequest(String url) {
         HttpRequest req = new HttpRequest();
@@ -91,7 +86,25 @@ public class QuipAPI {
         req.setMethod('GET');        
         req.setHeader('Accept', 'application/json, text/json');
         req.setHeader('Content-Type', 'application/json');
-        req.setHeader('Authorization', 'Bearer ' + apiKey);
+        req.setHeader('Authorization', 'Bearer ' + getApiKey());
         return req;
+    }
+
+    private static final String TOKEN_LABEL = 'Token';
+
+    private static final String TOKEN_PLACEHOLDER = 'Put your token here';
+
+    private String getApiKey() {
+        if (String.isBlank(apiKey)) {
+            List<Quip_Access_Token__mdt> tokens = [SELECT Token__c FROM Quip_Access_Token__mdt WHERE Label = 'Token'];
+            if (tokens.size() == 0) {
+                throw new QuipException('The item labeled "' + TOKEN_LABEL + '" of "Quip Access Token" custom metadata type was not found');
+            }
+            if (tokens[0].Token__c == TOKEN_PLACEHOLDER) {
+                throw new QuipException('You should set your Quip API key on the item of "Quip Access Token" type labeled "' + TOKEN_LABEL + '"');
+            }
+            apiKey = tokens[0].Token__c;
+        }
+        return apiKey;
     }
 }

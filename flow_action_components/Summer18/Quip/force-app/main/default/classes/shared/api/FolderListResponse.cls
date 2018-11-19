@@ -11,6 +11,7 @@ public class FolderListResponse extends Response {
         if (!result.isSuccess()) {
             return result;
         }
+        result.folders = new List<FolderResponse>();
         Map<String, Object> deserializedJson = (Map<String, Object>)System.JSON.deserializeUntyped(json);
         for (String folderId : deserializedJson.keySet()) {
             result.folders.add(FolderResponse.parse((Map<String, Object>)deserializedJson.get(folderId)));

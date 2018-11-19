@@ -5,7 +5,7 @@ public virtual class Response {
     public String error_description;
 
     public Boolean isSuccess() {
-        return error_code == 0;
+        return error_code == null;
     }
 
     public void throwOnError() {

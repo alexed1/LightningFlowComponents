@@ -4,14 +4,9 @@ public class ThreadResponse extends Response {
     public String html;
 
     public class Thread {
-        public String thread_class;
         public String id;
         public String type;
         public String title;
-
-        public Boolean isSpreadsheet() {
-            return thread_class == 'spreadsheet';
-        }
     }
 
     public static ThreadResponse parse(String json) {
@@ -20,7 +15,6 @@ public class ThreadResponse extends Response {
 
     private static Thread parseThread(Map<String, Object> rawJson) {
         Thread result = new Thread();
-        result.thread_class = rawJson.get('thread_class').toString();
         result.id = rawJson.get('id').toString();
         result.type = rawJson.get('type').toString();
         result.title = rawJson.get('title').toString();

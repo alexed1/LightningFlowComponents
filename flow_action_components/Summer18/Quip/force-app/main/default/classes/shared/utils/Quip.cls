@@ -23,6 +23,9 @@ public class Quip implements IQuip {
         folderQueue.add(currentUser.archive_folder_id);
         while (folderQueue.size() > 0) {
             String folderId = folderQueue.remove(0);
+            if (String.isBlank(folderId)) {
+                continue;
+            }
             if (!processedFolders.add(folderId)) {
                 //It means that this folder for some reason has been already processed
                 continue;
@@ -69,7 +72,7 @@ public class Quip implements IQuip {
         ThreadResponse threadResponse = null;
         //If the value seems to be Id, we try to directly retrieve the thread with this Id
         if (quipApi.LikeId(idOrName)) {
-            threadResponse = quipApi.GetThread(idOrName);
+            threadResponse = quipApi.getThread(idOrName);
         }
         //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name
         if (threadResponse == null || threadResponse.error_code == 400 || threadResponse.error_code == 404) {

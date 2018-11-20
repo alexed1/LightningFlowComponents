@@ -9,6 +9,4 @@ public interface IQuipAPI {
     ThreadListResponse getThreadList(List<String> id);
 
     FolderResponse getFolder(String id);
-
-    FolderListResponse getFolderList(List<String> id);
 }

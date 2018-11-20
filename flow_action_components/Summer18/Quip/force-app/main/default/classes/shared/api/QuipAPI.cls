@@ -66,20 +66,6 @@ public class QuipAPI implements IQuipAPI {
         return FolderResponse.parse(res.getBody());
     }
 
-    public FolderListResponse getFolderList(List<String> id) {
-        List<String> idList = new List<String>();
-        for (String rawId: id) {
-            idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
-        }
-        String url = 'callout:' + QUIP_URL + '/folders/?ids=' + String.join(idList, ',');
-        HttpRequest req = newRequest(url);
-        Http http = new Http();
-        HTTPResponse res = http.send(req);
-        Integer statusCode = res.getStatusCode();
-        System.debug('Response status code: ' + String.valueOf(statusCode));
-        return FolderListResponse.parse(res.getBody());
-    } 
-
     private HttpRequest newRequest(String url) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);

@@ -1,0 +1,81 @@
+@isTest
+public class QuipAPITest {
+
+    class HttpResponseMock implements HttpCalloutMock {
+        
+        public HTTPResponse respond(HTTPRequest req) {
+            String endpoint = req.getEndpoint();
+            System.debug('Test call for: ' + endpoint);
+            HttpResponse res = new HttpResponse();
+            res.setStatusCode(200);      
+            if (endPoint.endsWith('/users/current')) {
+                res.setBody('{ "id": "id" }');
+            } else if (endpoint.endsWith('threads/1')) {
+                res.setBody('{ "html": "html", "thread": { "id" : "id", "type" : "type", "title" : "title" } }');
+            } else if (endpoint.endsWith('threads/?ids=1,2')) {
+                res.setBody('{ "1" : { "html" : "html", "thread": { "id" : "id", "type" : "type", "title" : "title" } }, "2": { "html" : "html", "thread": { "id" : "id", "type" : "type", "title" : "title" } } }');
+            } else if (endpoint.endsWith('folders/1')) {
+                res.setBody('{ "folder": { "id" : "id" } }');
+            }
+            //TODO: res.setBody()
+            return res;
+        }
+    }
+
+    @isTest
+    public static void likeId_Blank_ReturnsFalse() {
+        Boolean likeId = new QuipAPI().likeId('');
+        System.assert(!likeId);
+    }
+
+    @isTest
+    public static void likeId_WrongLength_ReturnsFalse() {
+        Boolean likeId = new QuipAPI().likeId('123');
+        System.assert(!likeId);
+    }
+
+    @isTest
+    public static void likeId_HasSpace_ReturnsFalse() {
+        Boolean likeId = new QuipAPI().likeId('1234567890 2');
+        System.assert(!likeId);
+    }
+
+    @isTest
+    public static void likeId_TrueId_ReturnsTrue() {
+        Boolean likeId = new QuipAPI().likeId('123456789012');
+        System.assert(likeId);
+    }
+
+    @isTest
+    public static void getCurrentUser_ReturnsCurrentUser() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        UserResponse user = api.getCurrentUser();
+        System.assertEquals('id', user.id);
+    }
+
+    @isTest
+    public static void getThread_ReturnsThread() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        ThreadResponse thread = api.getThread('1');
+        System.assertEquals('html', thread.html);
+    }
+
+    @isTest
+    public static void getThreadList_ReturnsThreadList() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        List<String> idList = new List<String> { '1', '2' };
+        ThreadListResponse response = api.getThreadList(idList);
+        System.assertEquals(2, response.threads.size());
+    }
+
+    @isTest
+    public static void getFolder_ReturnsFolder() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        FolderResponse folder = api.getFolder('1');
+        System.assertEquals('id', folder.folder.id);
+    }
+}

@@ -22,6 +22,7 @@ global class GetQuipSheetData {
             }
             ThreadSheet sheet = null;
             for (ThreadSheet threadSheet : thread.sheets) {
+                System.debug('Found sheet with the name: ' + threadSheet.title);
                 if (String.isBlank(request.SheetName) || threadSheet.title == request.SheetName) {
                     sheet = threadSheet;
                     break;
@@ -31,6 +32,8 @@ global class GetQuipSheetData {
                 response.IsSuccess = false;
                 if (String.isBlank(request.SheetName)) {
                     response.ErrorMessage = 'File "' + request.FileName + '" doesn\'t contain child sheets';
+                } else {
+                    response.ErrorMessage = 'File "' + request.Filename + '" doesn\'t contain sheet "' + request.SheetName + '"';
                 }
                 return response;
             }

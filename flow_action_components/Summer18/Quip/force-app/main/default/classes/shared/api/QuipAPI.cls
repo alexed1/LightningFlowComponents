@@ -73,6 +73,7 @@ public class QuipAPI implements IQuipAPI {
         req.setHeader('Accept', 'application/json, text/json');
         req.setHeader('Content-Type', 'application/json');
         req.setHeader('Authorization', 'Bearer ' + getApiKey());
+        req.setTimeout(20 * 1000);
         return req;
     }
 

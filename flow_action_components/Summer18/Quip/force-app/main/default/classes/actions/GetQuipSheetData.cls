@@ -35,19 +35,19 @@ global class GetQuipSheetData {
                 return response;
             }
             if (!String.isBlank(request.RelativeDirection1)) {
-                response.Value1 = LocateValue(sheet.data, request.RelativeDirection1, request.TargetLabel1);
+                response.Value1 = LocateValue(sheet, request.RelativeDirection1, request.TargetLabel1);
             }
             if (!String.isBlank(request.RelativeDirection2)) {
-                response.Value2 = LocateValue(sheet.data, request.RelativeDirection2, request.TargetLabel2);
+                response.Value2 = LocateValue(sheet, request.RelativeDirection2, request.TargetLabel2);
             }
             if (!String.isBlank(request.RelativeDirection3)) {
-                response.Value3 = LocateValue(sheet.data, request.RelativeDirection3, request.TargetLabel3);
+                response.Value3 = LocateValue(sheet, request.RelativeDirection3, request.TargetLabel3);
             }
             if (!String.isBlank(request.RelativeDirection4)) {
-                response.Value4 = LocateValue(sheet.data, request.RelativeDirection4, request.TargetLabel4);
+                response.Value4 = LocateValue(sheet, request.RelativeDirection4, request.TargetLabel4);
             }
             if (!String.isBlank(request.RelativeDirection5)) {
-                response.Value5 = LocateValue(sheet.data, request.RelativeDirection5, request.TargetLabel5);
+                response.Value5 = LocateValue(sheet, request.RelativeDirection5, request.TargetLabel5);
             }
         } 
         catch (QuipException ex) {
@@ -57,15 +57,14 @@ global class GetQuipSheetData {
         return response;
     }
 
-    private static String LocateValue(List<List<String>> data, String direct, String search) {
+    private static String LocateValue(ThreadSheet data, String direct, String search) {
         Direction dir = DirectionUtils.parse(direct);
         Address addr = null;
-        SheetData sheetData = new SheetData(data);
         if (dir == Direction.ADDRESS) {
             addr = Address.parse(search);
         }
         else {
-            addr = sheetData.findAddressByValue(search);
+            addr = data.findAddressByValue(search);
         }        
         //This is for the case where we just couldn't find a value
         if (addr == null) {
@@ -77,8 +76,8 @@ global class GetQuipSheetData {
         else if (dir == Direction.BELOW) {
             addr = addr.shiftBelow();
         }
-        CellValue value = sheetData.getValueByAddress(addr);
-        return value.value;
+        ThreadCell cell = data.findCellByAddress(addr);
+        return cell.value;
     }
 
     global class Request {

@@ -57,7 +57,7 @@ public class Quip implements IQuip {
     private static final Pattern tablePattern = Pattern.compile('(?s)<table.*?\\/table>');
 
     private Thread toThread(ThreadResponse response) {
-        Thread result = new Thread();
+        Thread result = new Thread(response.thread.id);
         Matcher match = tablePattern.matcher(response.html);
         while (match.find()) {
             result.sheets.add(ThreadSheet.parseHtml(match.group()));

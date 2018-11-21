@@ -12,7 +12,7 @@ public class QuipTest {
             thread.type = 'document';
             thread.title = '01';
             response.thread = thread;
-            response.html = '<table title="Sheet1"><tbody><tr><td><span>Text</span></td></tr></tbody></table>';
+            response.html = '<table title="Sheet1"><tbody><tr id="1"><td id="1-1"><span>Text</span></td></tr></tbody></table>';
             threads.put(thread.id, response);
 
             
@@ -22,7 +22,7 @@ public class QuipTest {
             thread.type = 'document';
             thread.title = '02';
             response.thread = thread;
-            response.html = '<table title="Sheet2"><tbody><tr><td><span>Text</span></td></tr></tbody></table>';
+            response.html = '<table title="Sheet2"><tbody><tr id="1"><td id="1-1"><span>Text</span></td></tr></tbody></table>';
             threads.put(thread.id, response);
         }
 

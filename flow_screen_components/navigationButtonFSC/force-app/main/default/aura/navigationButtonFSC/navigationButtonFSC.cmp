@@ -5,8 +5,7 @@
     <aura:attribute name="targetRecordId" type="String" />
     <aura:attribute name="navigationType" type="String" />
     <aura:attribute name="fire" type="Boolean" default="false" />
-	<aura:handler name="change" value="{!v.fire}" action="{!c.navigateout}" />
-    
+	
     <div class="slds-form-element">
             <div class="container">
                 <ui:button label="{!v.label}" press="{!c.handleClick}" />

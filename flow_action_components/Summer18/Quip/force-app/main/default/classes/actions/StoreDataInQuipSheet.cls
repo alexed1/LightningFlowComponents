@@ -11,71 +11,97 @@ global class StoreDataInQuipSheet {
         return responses;
     }
 
-    public static Response StoreDataInQuipSheetImpl(IQuip Quip, Request request) {
+    public static Response StoreDataInQuipSheetImpl(IQuip quip, Request request) {
         Response response = new Response();
-        response.IsSuccess = false;
-        response.ErrorMessage = 'Not implemented yet';
+        try {
+            Thread thread = quip.findThread(request.FileName);            
+            if (thread == null) {
+                response.IsSuccess = false;
+                response.ErrorMessage = 'File with the name "' + request.FileName + '" was not found';
+                return response;
+            }
+            ThreadSheet sheet = null;
+            for (ThreadSheet threadSheet : thread.sheets) {
+                if (String.isBlank(request.SheetName) || threadSheet.title == request.SheetName) {
+                    sheet = threadSheet;
+                    break;
+                }
+            }
+            if (sheet == null) {
+                response.IsSuccess = false;
+                if (String.isBlank(request.SheetName)) {
+                    response.ErrorMessage = 'File "' + request.FileName + '" doesn\'t contain child sheets';
+                } else {
+                    response.ErrorMessage = 'File "' + request.Filename + '" doesn\'t contain sheet "' + request.SheetName + '"';
+                }
+                return response;
+            }
+            List<String> directions = new List<String> { 
+                request.RelativeDirection1,
+                request.RelativeDirection2,
+                request.RelativeDirection3,
+                request.RelativeDirection4,
+                request.RelativeDirection5
+            };
+            List<String> locations = new List<String> { 
+                request.TargetLabel1,
+                request.TargetLabel2,
+                request.TargetLabel3,
+                request.TargetLabel4,
+                request.TargetLabel5
+            };
+            List<String> values = new List<String> { 
+                request.Value1,
+                request.Value2,
+                request.Value3,
+                request.Value4,
+                request.Value5
+            };
+            List<ThreadCell> cellsToUpdate = new List<ThreadCell>();
+            for (Integer i = 0; i < directions.size(); i++) {
+                String dirStr = directions[i];
+                if (String.isBlank(dirStr)) {
+                    continue;
+                }
+                String location = locations[i];
+                if (String.isEmpty(locations[i])) {
+                    continue;
+                }
+                Direction dir = DirectionUtils.parse(dirStr);
+                Address addr = null;
+                if (dir == Direction.ADDRESS) {
+                    Taddr = Address.parse(location);
+                } else {
+                    addr = sheet.findAddressByValue(location);
+                    if (addr == null) {
+                        continue;
+                    }
+                    if (dir == Direction.RIGHT) {
+                        addr = addr.shiftRight();
+                    } else if (dir == Direction.BELOW) {
+                        addr = addr.shiftBelow();
+                    }
+                }
+                ThreadCell cell = sheet.findCellByAddress(addr);
+                cell.value = values[i];
+                cellsToUpdate.add(cell);
+            }
+            quip.saveSpreadsheetData(thread, sheet, cellsToUpdate);
+        }
+        catch (QuipException ex) {
+            response.IsSuccess = false;
+            response.ErrorMessage = ex.getMessage();
+        }       
         return response;
-        // try {
-        //     List<String> directions = new List<String> { 
-        //         request.RelativeDirection1,
-        //         request.RelativeDirection2,
-        //         request.RelativeDirection3,
-        //         request.RelativeDirection4,
-        //         request.RelativeDirection5
-        //     };
-        //     List<String> locations = new List<String> { 
-        //         request.TargetLabel1,
-        //         request.TargetLabel2,
-        //         request.TargetLabel3,
-        //         request.TargetLabel4,
-        //         request.TargetLabel5
-        //     };
-        //     List<String> values = new List<String> { 
-        //         request.Value1,
-        //         request.Value2,
-        //         request.Value3,
-        //         request.Value4,
-        //         request.Value5
-        //     };
-            // List<CellValue> valuesToWrite = new List<CellValue>();
-            // SheetData data = null;
-            // for (Integer i = 0; i < directions.size(); i++) {
-            //     String dirStr = directions[i];
-            //     if (String.isBlank(dirStr)) {
-            //         continue;
-            //     }
-            //     String location = locations[i];
-            //     if (String.isEmpty(locations[i])) {
-            //         continue;
-            //     }
-            //     Direction dir = DirectionUtils.parse(dirStr);
-            //     if (dir == Direction.ADDRESS) {
-            //         valuesToWrite.add(new CellValue(Address.parse(location), values[i]));
-            //     } else {
-            //         if (data == null) {
-            //             data = new SheetData(Quip.GetSpreadsheetData(spreadsheetId));
-            //         }
-            //         Address addr = data.findAddressByValue(location);
-            //         if (addr == null) {
-            //             continue;
-            //         }
-            //         if (dir == Direction.RIGHT) {
-            //             addr = addr.shiftRight();
-            //         } else if (dir == Direction.BELOW) {
-            //             addr = addr.shiftBelow();
-            //         }
-            //         valuesToWrite.add(new CellValue(addr, values[i]));
-            //     }
-            // }
-            // Quip.SaveSpreadsheetData(spreadsheetId, valuesToWrite);
-        // }
-        // catch (QuipException ex) {
-        //     response.IsSuccess = false;
-        //     response.ErrorMessage = ex.getMessage();
-        // }       
-        // return response;
     }   
+
+    class RequestToWrite {
+        public Direction direction;
+        
+        public String targetLabel;
+
+        public String value;
+    }
 
     global class Request {
 

@@ -66,6 +66,22 @@ public class QuipAPI implements IQuipAPI {
         return FolderResponse.parse(res.getBody());
     }
 
+    public ThreadResponse editDocument(String threadId, String content, String sectionId, SectionLocation location) {
+        String url = 'callout:' + QUIP_URL + '/threads/edit-document'; 
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'thread_id=' + threadId 
+                    + '&content=' + EncodingUtil.urlEncode(content, 'UTF-8')
+                    + '&format=html&section_id=' + sectionId
+                    + '&location=' + String.valueOf(location.valueOf());
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
     private HttpRequest newRequest(String url) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);

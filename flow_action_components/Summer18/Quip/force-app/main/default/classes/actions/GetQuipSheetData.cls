@@ -22,7 +22,6 @@ global class GetQuipSheetData {
             }
             ThreadSheet sheet = null;
             for (ThreadSheet threadSheet : thread.sheets) {
-                System.debug('Found sheet with the name: ' + threadSheet.title);
                 if (String.isBlank(request.SheetName) || threadSheet.title == request.SheetName) {
                     sheet = threadSheet;
                     break;

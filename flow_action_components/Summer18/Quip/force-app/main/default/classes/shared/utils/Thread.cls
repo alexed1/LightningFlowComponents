@@ -1,7 +1,7 @@
 public class Thread {
     public List<ThreadSheet> sheets;
 
-    public string id;
+    public String id;
 
     public Thread(String id) {
         this.id = id; 

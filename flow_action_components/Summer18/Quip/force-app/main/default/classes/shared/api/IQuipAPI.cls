@@ -9,4 +9,6 @@ public interface IQuipAPI {
     ThreadListResponse getThreadList(List<String> id);
 
     FolderResponse getFolder(String id);
+
+    ThreadResponse editDocument(String threadId, String content, String sectionId, SectionLocation location); 
 }

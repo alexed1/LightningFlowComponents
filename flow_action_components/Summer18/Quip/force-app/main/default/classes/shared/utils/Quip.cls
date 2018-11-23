@@ -84,4 +84,72 @@ public class Quip implements IQuip {
         threadResponse.ThrowOnError();
         return toThread(threadResponse);
     }
+
+    public void saveSpreadsheetData(Thread thread, ThreadSheet sheet, List<ThreadCell> cellsToUpdate) {
+        if (thread == null) {
+            throw new QuipException('Thread is null');
+        }
+        if (sheet == null) {
+            throw new QuipException('Sheet is null');
+        }
+        if (cellsToUpdate == null || cellsToUpdate.size() == 0) {
+            return;
+        }
+        //It is very important to understand how exactly the update is performed
+        //First of all, we can't just specify the address and the desired value. We need to make and update based on the known section Id.
+        //E.g. we can pick a cell Id and tell Quip to put value before/after/instead of it. For this we need to get the Id of the cell 
+        //Second, the quip sheet has a finite number of cells returned (e.g. by default its something like 50 x 16)
+        //It means that there is no cell Id we could use to insert any values outside of this range
+        //Third, Quip doesn't support multiple changes per request. Moreover, for every update request it respond with a new state of the sheet
+        //Considering all these facts here is the approach I'm going to use:
+        //1. We reparse the sheet after each response
+        //2. If a row has to be extended, we take the last cell Id and add HTML after it (e.g. <td></td><td></td><td>New value</td>)
+        //3. If a sheet has to be extended, we take the last row Id and add HTML after it (e.g. <tr></tr><tr></tr><tr><td>New Value</td></tr>)
+        for (ThreadCell cellToUpdate: cellsToUpdate) {
+            SectionLocation location = SectionLocation.AFTER_SECTION;
+            String sectionId = '';
+            String value = '';
+            //Updating existing cell
+            if (!String.isBlank(cellToUpdate.id)) {
+                location = SectionLocation.REPLACE_SECTION;
+                sectionId = cellToUpdate.id;
+                value = cellToUpdate.value;
+            }
+            //Expanding existing row
+            else if (cellToUpdate.addr.row < sheet.rows.size()) {
+                ThreadRow row = sheet.rows[cellToUpdate.addr.row];
+                ThreadCell lastCell = row.cells[row.cells.size() - 1];
+                Integer colIndex = lastCell.addr.column + 1;
+                while (colIndex < cellToUpdate.addr.column) {
+                    value += '<td></td>';
+                    colIndex++;
+                }
+                sectionId = lastCell.id;
+                value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td>';
+            }
+            //Creating new row
+            else {
+                ThreadRow lastRow = sheet.rows[sheet.rows.size() - 1];
+                for (Integer row = sheet.rows.size() - 1; row < cellToUpdate.addr.row - 1; row++) {
+                    value += '<tr></tr>';
+                }
+                value += '<tr>';
+                for (Integer col = 0; col < cellToUpdate.addr.column - 1; col++) {
+                    value += '<td></td>';
+                }
+                sectionId = lastRow.id;
+                value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td></tr>';
+            }
+            //Sending request, parsing response and finding the sheet again
+            ThreadResponse response = quipApi.editDocument(thread.id, value, sectionId, location);
+            response.throwOnError();
+            thread = toThread(response);
+            for (ThreadSheet threadSheet : thread.sheets) {
+                if (threadSheet.title == sheet.title) {
+                    sheet = threadSheet;
+                    break;
+                }
+            }
+        }
+    }
 }

@@ -75,6 +75,7 @@ public class QuipAPI implements IQuipAPI {
                     + '&content=' + EncodingUtil.urlEncode(content, 'UTF-8')
                     + '&format=html&section_id=' + sectionId
                     + '&location=' + String.valueOf(location.valueOf());
+        req.setBody(body);
         Http http = new Http();
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();

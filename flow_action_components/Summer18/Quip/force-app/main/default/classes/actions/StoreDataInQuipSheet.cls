@@ -70,7 +70,7 @@ global class StoreDataInQuipSheet {
                 Direction dir = DirectionUtils.parse(dirStr);
                 Address addr = null;
                 if (dir == Direction.ADDRESS) {
-                    Taddr = Address.parse(location);
+                    addr = Address.parse(location);
                 } else {
                     addr = sheet.findAddressByValue(location);
                     if (addr == null) {
@@ -93,15 +93,7 @@ global class StoreDataInQuipSheet {
             response.ErrorMessage = ex.getMessage();
         }       
         return response;
-    }   
-
-    class RequestToWrite {
-        public Direction direction;
-        
-        public String targetLabel;
-
-        public String value;
-    }
+    }  
 
     global class Request {
 

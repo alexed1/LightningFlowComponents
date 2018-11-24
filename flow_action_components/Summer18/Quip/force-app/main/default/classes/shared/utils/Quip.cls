@@ -103,7 +103,7 @@ public class Quip implements IQuip {
         //Third, Quip doesn't support multiple changes per request. Moreover, for every update request it respond with a new state of the sheet
         //Considering all these facts here is the approach I'm going to use:
         //1. We reparse the sheet after each response
-        //2. If a row has to be extended, we take the last cell Id and add HTML after it (e.g. <td></td><td></td><td>New value</td>)
+        //2. If a row has to be extended, unfortunately, we can't do anything. Quip doesn't allow to add new cells to the existings rows
         //3. If a sheet has to be extended, we take the last row Id and add HTML after it (e.g. <tr></tr><tr></tr><tr><td>New Value</td></tr>)
         for (ThreadCell cellToUpdate: cellsToUpdate) {
             SectionLocation location = SectionLocation.AFTER_SECTION;
@@ -115,20 +115,8 @@ public class Quip implements IQuip {
                 sectionId = cellToUpdate.id;
                 value = cellToUpdate.value;
             }
-            //Expanding existing row
-            else if (cellToUpdate.addr.row < sheet.rows.size()) {
-                ThreadRow row = sheet.rows[cellToUpdate.addr.row];
-                ThreadCell lastCell = row.cells[row.cells.size() - 1];
-                Integer colIndex = lastCell.addr.column + 1;
-                while (colIndex < cellToUpdate.addr.column) {
-                    value += '<td></td>';
-                    colIndex++;
-                }
-                sectionId = lastCell.id;
-                value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td>';
-            }
-            //Creating new row
-            else {
+            //Creating new row(s)
+            else if (cellToUpdate.addr.column < sheet.rows[0].cells.size()) {
                 ThreadRow lastRow = sheet.rows[sheet.rows.size() - 1];
                 for (Integer row = sheet.rows.size() - 1; row < cellToUpdate.addr.row - 1; row++) {
                     value += '<tr></tr>';
@@ -139,6 +127,10 @@ public class Quip implements IQuip {
                 }
                 sectionId = lastRow.id;
                 value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td></tr>';
+            }
+            //Can't expand existing row - throw exception
+            else {
+                throw new QuipException('The target column doesn\'t belong to the spreadsheet. Add it manually and try again');
             }
             //Sending request, parsing response and finding the sheet again
             ThreadResponse response = quipApi.editDocument(thread.id, value, sectionId, location);

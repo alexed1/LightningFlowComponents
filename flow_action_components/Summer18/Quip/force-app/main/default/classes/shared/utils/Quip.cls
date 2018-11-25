@@ -130,7 +130,7 @@ public class Quip implements IQuip {
             }
             //Can't expand existing row - throw exception
             else {
-                throw new QuipException('The target column doesn\'t belong to the spreadsheet. Add it manually and try again');
+                throw new QuipException('The cell "' + cellToUpdate.addr.toString() + '" doesn\'t belong to the spreadsheet. Add it manually and try again');
             }
             //Sending request, parsing response and finding the sheet again
             ThreadResponse response = quipApi.editDocument(thread.id, value, sectionId, location);

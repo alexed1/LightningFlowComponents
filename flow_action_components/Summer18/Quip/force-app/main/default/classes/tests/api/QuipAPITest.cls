@@ -16,6 +16,8 @@ public class QuipAPITest {
                 res.setBody('{ "1" : { "html" : "html", "thread": { "id" : "id", "type" : "type", "title" : "title" } }, "2": { "html" : "html", "thread": { "id" : "id", "type" : "type", "title" : "title" } } }');
             } else if (endpoint.endsWith('folders/1')) {
                 res.setBody('{ "folder": { "id" : "id" } }');
+            } else if (endpoint.endsWith('threads/edit-document')) {
+                res.setBody('{ "html": "html", "thread": { "id" : "1", "type" : "type", "title" : "title" } }');
             }
             //TODO: res.setBody()
             return res;
@@ -77,5 +79,13 @@ public class QuipAPITest {
         QuipAPI api = new QuipAPI();
         FolderResponse folder = api.getFolder('1');
         System.assertEquals('id', folder.folder.id);
+    }
+
+    @isTest
+    public static void editDocument_ReturnsThread() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        ThreadResponse thread = api.editDocument('1', 'content', 'sectionId', SectionLocation.REPLACE_SECTION);
+        System.assertEquals('1', thread.thread.id);
     }
 }

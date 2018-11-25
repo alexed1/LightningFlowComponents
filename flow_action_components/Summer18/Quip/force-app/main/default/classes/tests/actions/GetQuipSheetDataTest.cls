@@ -22,11 +22,11 @@ public class GetQuipSheetDataTest {
                     row.cells.add(cell);
                     cell = new ThreadCell(Address.parse('B2'), '2', 'test');
                     row.cells.add(cell);
-                    Thread thread = new Thread();
+                    Thread thread = new Thread('1');
                     thread.sheets.add(sheet);
                     return thread;
                 } else if (threadId == 'ByRight') {
-                    ThreadSheet sheet = new ThreadSheet();
+                    ThreadSheet sheet = new ThreadSheet(); 
                     ThreadRow row = new ThreadRow('1');
                     sheet.rows.add(row);
                     row = new ThreadRow('2');
@@ -35,7 +35,7 @@ public class GetQuipSheetDataTest {
                     row.cells.add(cell);
                     cell = new ThreadCell(Address.parse('B2'), '2', 'test');
                     row.cells.add(cell);
-                    Thread thread = new Thread();
+                    Thread thread = new Thread('1');
                     thread.sheets.add(sheet);
                     return thread;
                 } else if (threadId == 'ByBelow') {
@@ -50,12 +50,23 @@ public class GetQuipSheetDataTest {
                     sheet.rows.add(row);
                     cell = new ThreadCell(Address.parse('A2'), '2', 'test');
                     row.cells.add(cell);
-                    Thread thread = new Thread();
+                    Thread thread = new Thread('1');
                     thread.sheets.add(sheet);
                     return thread;
                 } else if (threadId == 'OutsideOfTheRange' || threadId == 'InvalidAddress') {
-                    Thread thread = new Thread();
+                    Thread thread = new Thread('1');
                     ThreadSheet sheet = new ThreadSheet();
+                    thread.sheets.add(sheet);
+                    return thread;
+                } else if (threadId == 'DoesntExist') {
+                    return null;
+                } else if (threadId == 'NoSheet') {
+                    Thread thread = new Thread('NoSheet');
+                    return thread;
+                } else if (threadId == 'NoNamedSheet') {
+                    Thread thread = new Thread('NoNamedSheet');
+                    ThreadSheet sheet = new ThreadSheet();
+                    sheet.title = 'DoesntMatch';
                     thread.sheets.add(sheet);
                     return thread;
                 }
@@ -74,7 +85,6 @@ public class GetQuipSheetDataTest {
         request.RelativeDirection1 = 'Address';
         request.TargetLabel1 = 'B2';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
-        System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value1);
@@ -88,7 +98,6 @@ public class GetQuipSheetDataTest {
         request.RelativeDirection2 = 'Right';
         request.TargetLabel2 = '1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
-        System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value2);
@@ -102,7 +111,6 @@ public class GetQuipSheetDataTest {
         request.RelativeDirection3 = 'Below';
         request.TargetLabel3 = '1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
-        System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value3);
@@ -116,7 +124,6 @@ public class GetQuipSheetDataTest {
         request.RelativeDirection4 = 'Address';
         request.TargetLabel4 = 'A100';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
-        System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assert(String.isBlank(response.Value4));
@@ -130,10 +137,49 @@ public class GetQuipSheetDataTest {
         request.RelativeDirection5 = 'Address';
         request.TargetLabel5 = 'Invalid';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
-        System.debug('Error message: ' + response.ErrorMessage);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('Address "Invalid" doesn\'t contain row part', response.ErrorMessage);
         System.assert(String.isBlank(response.Value5));
+    }
+
+    @isTest
+    public static void GetQuipSheetDataImpl_WhenFileDoesntExist_ThrowsException() {
+        IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
+        GetQuipSheetData.Request request = new GetQuipSheetData.Request();
+        request.FileName = 'DoesntExist';
+        request.RelativeDirection1 = 'Address';
+        request.TargetLabel1 = 'A1';
+        GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
+        System.assertEquals(false, response.IsSuccess);
+        System.assertEquals('File with the name "DoesntExist" was not found', response.ErrorMessage);
+        System.assert(String.isBlank(response.Value1));
+    }
+
+    @isTest
+    public static void GetQuipSheetDataImpl_WhenFileDoesntContainSheets_ThrowsException() {
+        IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
+        GetQuipSheetData.Request request = new GetQuipSheetData.Request();
+        request.FileName = 'NoSheet';
+        request.RelativeDirection1 = 'Address';
+        request.TargetLabel1 = 'A1';
+        GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
+        System.assertEquals(false, response.IsSuccess);
+        System.assertEquals('File "NoSheet" doesn\'t contain child sheets', response.ErrorMessage);
+        System.assert(String.isBlank(response.Value1));
+    }
+
+    @isTest
+    public static void GetQuipSheetDataImpl_WhenFileDoesntContainSheetWithSpecificName_ThrowsException() {
+        IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
+        GetQuipSheetData.Request request = new GetQuipSheetData.Request();
+        request.FileName = 'NoNamedSheet';
+        request.SheetName = 'Test';
+        request.RelativeDirection1 = 'Address';
+        request.TargetLabel1 = 'A1';
+        GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
+        System.assertEquals(false, response.IsSuccess);
+        System.assertEquals('File "NoNamedSheet" doesn\'t contain sheet "Test"', response.ErrorMessage);
+        System.assert(String.isBlank(response.Value1));
     }
 
     @isTest

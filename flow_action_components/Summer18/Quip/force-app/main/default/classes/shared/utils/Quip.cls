@@ -122,7 +122,7 @@ public class Quip implements IQuip {
                     value += '<tr></tr>';
                 }
                 value += '<tr>';
-                for (Integer col = 0; col < cellToUpdate.addr.column - 1; col++) {
+                for (Integer col = 0; col < cellToUpdate.addr.column; col++) {
                     value += '<td></td>';
                 }
                 sectionId = lastRow.id;

@@ -57,7 +57,13 @@ public class Quip implements IQuip {
     private static final Pattern tablePattern = Pattern.compile('(?s)<table.*?\\/table>');
 
     private Thread toThread(ThreadResponse response) {
-        Thread result = new Thread(response.thread.id);
+        Thread result = new Thread(
+            response.thread.id,
+            response.thread.type,
+            response.thread.title,
+            response.thread.link,
+            response.html        
+        );
         Matcher match = tablePattern.matcher(response.html);
         while (match.find()) {
             result.sheets.add(ThreadSheet.parseHtml(match.group()));
@@ -143,5 +149,12 @@ public class Quip implements IQuip {
                 }
             }
         }
+    }
+
+    public Thread cloneThread(String idOrName, String copyName) {
+        Thread source = findThread(idOrName);
+        ThreadResponse copy = quipApi.createDocument(source.title, source.html, source.type);
+        copy.throwOnError();
+        return toThread(copy);
     }
 }

@@ -7,6 +7,7 @@ public class ThreadResponse extends Response {
         public String id;
         public String type;
         public String title;
+        public String link;
     }
 
     public static ThreadResponse parse(String json) {
@@ -18,6 +19,7 @@ public class ThreadResponse extends Response {
         result.id = rawJson.get('id').toString();
         result.type = rawJson.get('type').toString();
         result.title = rawJson.get('title').toString();
+        result.title = rawJson.get('link').toString();
         return result;
     }
 

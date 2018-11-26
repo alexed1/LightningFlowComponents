@@ -1,6 +1,6 @@
 global class CloneGoogleFile {
     
-    @InvocableMethod(label='Clone Google File' description='Clone Google file with specific name or Id and returns an Id of the clone and URL to view it')
+    @InvocableMethod(label='Clone Google File' description='Clones Google file with specific name or Id and returns an Id of the clone and URL to view it')
     global static List<Response> CloneGoogleFile(List<Request> requests) {
         List<Response> responses = new List<Response>();
         IGoogleDrive drive = new GoogleDrive(new GoogleAPI());

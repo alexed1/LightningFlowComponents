@@ -16,16 +16,16 @@ public class ThreadResponse extends Response {
 
     private static Thread parseThread(Map<String, Object> rawJson) {
         Thread result = new Thread();
-        result.id = rawJson.get('id').toString();
-        result.type = rawJson.get('type').toString();
-        result.title = rawJson.get('title').toString();
-        result.title = rawJson.get('link').toString();
+        result.id = (String)rawJson.get('id');
+        result.type = (String)rawJson.get('type');
+        result.title = (String)rawJson.get('title');
+        result.link = (String)rawJson.get('link');
         return result;
     }
 
     public static ThreadResponse parse(Map<String, Object> rawJson) {
         ThreadResponse result = new ThreadResponse();
-        result.html = rawJson.get('html').toString();
+        result.html = (String)rawJson.get('html');
         result.thread = ThreadResponse.parseThread((Map<String, Object>)rawJson.get('thread'));
         return result;
     }

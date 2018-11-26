@@ -153,7 +153,7 @@ public class Quip implements IQuip {
 
     public Thread cloneThread(String idOrName, String copyName) {
         Thread source = findThread(idOrName);
-        ThreadResponse copy = quipApi.createDocument(source.title, source.html, source.type);
+        ThreadResponse copy = quipApi.createDocument(copyName, source.html, source.type);
         copy.throwOnError();
         return toThread(copy);
     }

@@ -11,4 +11,6 @@ public interface IQuipAPI {
     FolderResponse getFolder(String id);
 
     ThreadResponse editDocument(String threadId, String content, String sectionId, SectionLocation location); 
+
+    ThreadResponse createDocument(String title, String content, String type,  List<String> usersAndFolders);
 }

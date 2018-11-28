@@ -83,6 +83,25 @@ public class QuipAPI implements IQuipAPI {
         return ThreadResponse.parse(res.getBody());
     }
 
+    public ThreadResponse createDocument(String title, String content, String type, List<String> usersAndFolders) {
+        String url = 'callout:' + QUIP_URL + '/threads/new-document';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'title=' + EncodingUtil.urlEncode(title, 'UTF-8')
+                    + '&content=' + EncodingUtil.urlEncode(content, 'UTF-8')
+                    + '&format=html&type=' + type;
+        if (usersAndFolders != null && usersAndFolders.size() > 0) {
+            body += '&member_ids=' + String.join(usersAndFolders,',');
+        }
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
     private HttpRequest newRequest(String url) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);
@@ -96,7 +115,7 @@ public class QuipAPI implements IQuipAPI {
 
     private static final String TOKEN_LABEL = 'Token';
 
-    private static final String TOKEN_PLACEHOLDER = 'Put your token here';
+    private static final String TOKEN_PLACEHOLDER = 'Replace with Valid Token';
 
     private String getApiKey() {
         if (String.isBlank(apiKey)) {

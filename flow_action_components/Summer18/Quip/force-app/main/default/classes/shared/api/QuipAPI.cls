@@ -83,7 +83,7 @@ public class QuipAPI implements IQuipAPI {
         return ThreadResponse.parse(res.getBody());
     }
 
-    public ThreadResponse createDocument(String title, String content, String type) {
+    public ThreadResponse createDocument(String title, String content, String type, List<String> usersAndFolders) {
         String url = 'callout:' + QUIP_URL + '/threads/new-document';
         HttpRequest req = newRequest(url);
         req.setMethod('POST');
@@ -91,6 +91,9 @@ public class QuipAPI implements IQuipAPI {
         String body = 'title=' + EncodingUtil.urlEncode(title, 'UTF-8')
                     + '&content=' + EncodingUtil.urlEncode(content, 'UTF-8')
                     + '&format=html&type=' + type;
+        if (usersAndFolders != null && usersAndFolders.size() > 0) {
+            body += '&member_ids=' + String.join(usersAndFolders,',');
+        }
         req.setBody(body);
         Http http = new Http();
         HTTPResponse res = http.send(req);

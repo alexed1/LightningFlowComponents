@@ -6,14 +6,11 @@ public class Quip implements IQuip {
         this.quipApi = quipApi;
     }
 
-    private ThreadResponse findThreadByName(String name) {
+    private ThreadResponse findThreadByNameOrId(String nameOrId, Boolean isName) {
         UserResponse currentUser = quipApi.getCurrentUser();
         currentUser.ThrowOnError();
         Set<String> processedFolders = new Set<String>();
         List<String> folderQueue = new List<String>();
-        folderQueue.add(currentUser.starred_folder_id);
-        folderQueue.add(currentUser.desktop_folder_id);
-        folderQueue.add(currentUser.private_folder_id);
         for (String sharedFolder : currentUser.shared_folder_ids) {
             folderQueue.add(sharedFolder);
         }
@@ -21,8 +18,11 @@ public class Quip implements IQuip {
             folderQueue.add(groupFolder);
         }
         folderQueue.add(currentUser.archive_folder_id);
+        folderQueue.add(currentUser.desktop_folder_id);
+        folderQueue.add(currentUser.starred_folder_id);
+        folderQueue.add(currentUser.private_folder_id);
         while (folderQueue.size() > 0) {
-            String folderId = folderQueue.remove(0);
+            String folderId = folderQueue.remove(folderQueue.size() - 1);
             if (String.isBlank(folderId)) {
                 continue;
             }
@@ -44,7 +44,14 @@ public class Quip implements IQuip {
                 ThreadListResponse threads = quipApi.getThreadList(threadIdList);
                 threads.throwOnError();
                 for (ThreadResponse thread : threads.threads) {
-                    if (thread.thread.title == name) {
+                    if (isName) {
+                        if (thread.thread.title == nameOrId) {
+                            thread.folder_id = folderId;
+                            return thread;
+                        }
+                    //No idea why, but all threads have two Ids (one in Id and one in the link) and you can access them by any of those
+                    } else if (thread.thread.id == nameOrId || thread.thread.link.endsWith('/' + nameOrId)) {
+                        thread.folder_id = folderId;
                         return thread;
                     }
                 }
@@ -52,6 +59,14 @@ public class Quip implements IQuip {
         }
         //It means that we've looked through all the folders and didn't find a thread with this name
         return null;
+    }
+
+    private ThreadResponse findThreadByName(String name) {
+        return findThreadByNameOrId(name, true);
+    }
+
+    private ThreadResponse findThreadById(String id) {
+        return findThreadByNameOrId(id, false);
     }
 
     private static final Pattern tablePattern = Pattern.compile('(?s)<table.*?\\/table>');
@@ -62,7 +77,9 @@ public class Quip implements IQuip {
             response.thread.type,
             response.thread.title,
             response.thread.link,
-            response.html        
+            response.html,
+            response.user_ids,
+            response.folder_id
         );
         Matcher match = tablePattern.matcher(response.html);
         while (match.find()) {
@@ -78,15 +95,15 @@ public class Quip implements IQuip {
         ThreadResponse threadResponse = null;
         //If the value seems to be Id, we try to directly retrieve the thread with this Id
         if (quipApi.LikeId(idOrName)) {
-            threadResponse = quipApi.getThread(idOrName);
+            threadResponse = findThreadById(idOrName);
         }
         //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name
-        if (threadResponse == null || threadResponse.error_code == 400 || threadResponse.error_code == 404) {
+        if (threadResponse == null) {
             threadResponse = findThreadByName(idOrName);
-            if (threadResponse == null) {
-                throw new QuipException('File "' + idOrName + '" doesn\'t exist');
-            }
         }
+        if (threadResponse == null) {
+            throw new QuipException('File "' + idOrName + '" doesn\'t exist');
+        }        
         threadResponse.ThrowOnError();
         return toThread(threadResponse);
     }
@@ -153,7 +170,10 @@ public class Quip implements IQuip {
 
     public Thread cloneThread(String idOrName, String copyName) {
         Thread source = findThread(idOrName);
-        ThreadResponse copy = quipApi.createDocument(copyName, source.html, source.type);
+        List<String> usersAndFolders = new List<String>(source.userIds);
+        usersAndFolders.add(source.parentFolderId);
+        System.debug('Users and folders: ' + String.join(usersAndFolders, ','));
+        ThreadResponse copy = quipApi.createDocument(copyName, source.html, source.type, usersAndFolders);
         copy.throwOnError();
         return toThread(copy);
     }

@@ -12,5 +12,5 @@ public interface IQuipAPI {
 
     ThreadResponse editDocument(String threadId, String content, String sectionId, SectionLocation location); 
 
-    ThreadResponse createDocument(String title, String content, String type);
+    ThreadResponse createDocument(String title, String content, String type,  List<String> usersAndFolders);
 }

@@ -129,6 +129,17 @@ public class QuipTest {
                 System.debug('Unhandled arguments for method: ' + stubbedMethodName);
                 return null;
             }
+            if (stubbedMethodName == 'createDocument') {
+                ThreadResponse response = new ThreadResponse();
+                ThreadResponse.Thread thread = new ThreadResponse.Thread();
+                thread.id = 'newDocument';
+                thread.title = 'newDocument';
+                thread.type = 'document';
+                response.thread = thread;
+                response.html = '<table title="Title"><tbody><tr id="row0"><td id="row0-col0"><span>Test</span></td></tr></tbody></table>';
+                return response;                
+            }
+
             System.debug('Unhandled method call: ' + stubbedMethodName);
             return null;
         }
@@ -270,5 +281,25 @@ public class QuipTest {
         catch (QuipException ex) {
             System.assertEquals('The cell "C1" doesn\'t belong to the spreadsheet. Add it manually and try again', ex.getMessage());
         }
+    }
+
+    @isTest
+    public static void cloneThread_findsAndClonesThread() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        Thread copy = quip.cloneThread('Thread000001', 'newDocument');
+        //createDocument(String title, String content, String type,  List<String> usersAndFolders);
+        List<List<Object>> calls = methodCalls.get('createDocument');
+        System.assert(calls != null, 'createDocument method was not called');
+        List<Object> args = calls[0];
+        String title = args[0].toString();
+        String content = args[1].toString();
+        String type = args[2].toString();
+        List<String> usersAndFolders = (List<String>)args[3];
+        System.assertEquals('newDocument', title);
+        System.assertEquals('<table title="Sheet1"><tbody><tr id="1"><td id="1-1"><span>Text</span></td></tr></tbody></table>', content);
+        System.assertEquals('document', type);
+        System.assertEquals('Folder000001', usersAndFolders[0]);
     }
 }

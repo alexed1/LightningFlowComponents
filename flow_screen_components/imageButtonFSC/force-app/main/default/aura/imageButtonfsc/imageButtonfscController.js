@@ -1,15 +1,21 @@
 ({
-	init : function(cmp, event, helper) {
+    init : function(cmp, event, helper) {
         
         var name="$Resource." + cmp.get("v.imageName");
         cmp.set("v.imageSourceString", $A.get(name)); 
+        if(cmp.get("v.imageNameHover") == ""){
+            cmp.set("v.imageNameHover", cmp.get("v.imageName"))
+        }
+        if(cmp.get("v.imageNamePress") == ""){
+            cmp.set("v.imageNamePress", cmp.get("v.imageNameHover"))
+        }        
         helper.validateFlowNavigationInputs(cmp);
         
         var styleText = "";       
         styleText=styleText + "border-radius:" + cmp.get("v.styleBorderRadius") + ";";
         styleText=styleText + "border-style:" + cmp.get("v.styleBorderStyle") + ";";
         styleText=styleText + "border-width:" + cmp.get("v.styleBorderWidth") + ";";
-		styleText=styleText + "border-color:" + cmp.get("v.styleBorderColor") + ";";
+        styleText=styleText + "border-color:" + cmp.get("v.styleBorderColor") + ";";
         
         styleText=styleText + "margin-top:" + cmp.get("v.styleMarginTop") + ";";
         styleText=styleText + "margin-right:" + cmp.get("v.styleMarginRight") + ";";
@@ -30,13 +36,33 @@
         //sometimes, though, you want to use the entire width and do things like centering.
         //by setting this flag, the image span gets treated as a full-width block
         if(cmp.get("v.styleAsBlockFlag") == "true")
-           styleText=styleText + "display:block;";
+            styleText=styleText + "display:block;";
         
         cmp.set("v.styleText", styleText);
         
-	},
+    },
     
     handleClick : function(cmp, event, helper) {
         helper.navigateFlow(cmp,helper);
-    }
+    },
+    
+    handleMouseOver : function(cmp, event, helper) {
+        var name="$Resource." + cmp.get("v.imageNameHover");
+        cmp.set("v.imageSourceString", $A.get(name));     
+    },
+    
+    handleMouseOut : function(cmp, event, helper) {
+        var name="$Resource." + cmp.get("v.imageName");
+        cmp.set("v.imageSourceString", $A.get(name));     
+    },
+    
+    handleMouseDown : function(cmp, event, helper) {
+        var name="$Resource." + cmp.get("v.imageNamePress");
+        cmp.set("v.imageSourceString", $A.get(name));     
+    },
+    
+    handleMouseUp : function(cmp, event, helper) {
+        var name="$Resource." + cmp.get("v.imageNameHover");
+        cmp.set("v.imageSourceString", $A.get(name));     
+    },
 })

@@ -1,5 +1,7 @@
 <design:component>
-    <design:attribute name="imageName" label="staticResource name" required="true"/>
+    <design:attribute name="imageName" label="Image(Display) Name" required="true"/>
+    <design:attribute name="imageNameHover" label="Image(Hover) Name" required="false"/>
+    <design:attribute name="imageNamePress" label="Image(Press) Name" required="false"/>
     <design:attribute name="imageAlt" label="image Alt Text"/>
 
     <design:attribute name="styleWidth" label ="styleWidth" />

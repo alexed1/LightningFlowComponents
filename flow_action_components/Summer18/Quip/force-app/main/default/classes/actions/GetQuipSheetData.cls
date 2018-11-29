@@ -82,46 +82,46 @@ global class GetQuipSheetData {
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found file will be used')
         global String SheetName;
 
-        @InvocableVariable(label='#1 To the Right of' description='Gets the value located directly to the right of the specified one. If used together with "From Below of" then gets the value that is located at the intersection of these two')
+        @InvocableVariable(label='#1 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
         global String Right1;
 
-        @InvocableVariable(label='#1 From Below of' description='Get the value located directly under the specified one. If used together with "To the Right of" then gets the values that is located at the intersection of these two')
+        @InvocableVariable(label='#1 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the values that is located at the intersection of these two')
         global String Below1;
 
         @InvocableVariable(label='#1 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
         global String Address1;
 
-        @InvocableVariable(label='#2 To the Right of' description='Gets the value located directly to the right of the specified one. If used together with "From Below of" then gets the value that is located at the intersection of these two')
+        @InvocableVariable(label='#2 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
         global String Right2;
 
-        @InvocableVariable(label='#2 From Below of' description='Get the value located directly under the specified one. If used together with "To the Right of" then gets the values that is located at the intersection of these two')
+        @InvocableVariable(label='#2 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the values that is located at the intersection of these two')
         global String Below2;
 
         @InvocableVariable(label='#2 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
         global String Address2;        
 
-        @InvocableVariable(label='#3 To the Right of' description='Gets the value located directly to the right of the specified one. If used together with "From Below of" then gets the value that is located at the intersection of these two')
+        @InvocableVariable(label='#3 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
         global String Right3;
 
-        @InvocableVariable(label='#3 From Below of' description='Get the value located directly under the specified one. If used together with "To the Right of" then gets the values that is located at the intersection of these two')
+        @InvocableVariable(label='#3 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the values that is located at the intersection of these two')
         global String Below3;
 
         @InvocableVariable(label='#3 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
         global String Address3;
 
-        @InvocableVariable(label='#4 To the Right of' description='Gets the value located directly to the right of the specified one. If used together with "From Below of" then gets the value that is located at the intersection of these two')
+        @InvocableVariable(label='#4 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
         global String Right4;
 
-        @InvocableVariable(label='#4 From Below of' description='Get the value located directly under the specified one. If used together with "To the Right of" then gets the values that is located at the intersection of these two')
+        @InvocableVariable(label='#4 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the values that is located at the intersection of these two')
         global String Below4;
 
         @InvocableVariable(label='#4 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
         global String Address4;
 
-        @InvocableVariable(label='#5 To the Right of' description='Gets the value located directly to the right of the specified one. If used together with "From Below of" then gets the value that is located at the intersection of these two')
+        @InvocableVariable(label='#5 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
         global String Right5;
 
-        @InvocableVariable(label='#5 From Below of' description='Get the value located directly under the specified one. If used together with "To the Right of" then gets the values that is located at the intersection of these two')
+        @InvocableVariable(label='#5 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the values that is located at the intersection of these two')
         global String Below5;
 
         @InvocableVariable(label='#5 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')

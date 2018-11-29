@@ -131,7 +131,7 @@ public class ThreadSheet {
     public ThreadCell findCell(String addr, String rightOf, String belowOf) {
         ThreadCell result = null;
         if (!String.isBlank(addr)) {
-            return findCellByAddress(Address.parse(addr));
+            return findCellByAddress(Address.parse(addr, this));
         } else {
             List<ThreadCell> rightTargets = String.isBlank(rightOf) ? new List<ThreadCell>() : findCellsByValue(rightOf);
             List<ThreadCell> belowTargets = String.isBlank(belowOf) ? new List<ThreadCell>() : findCellsByValue(belowOf);

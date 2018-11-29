@@ -84,6 +84,7 @@ public class GetQuipSheetDataTest {
         request.FileName = 'ByAddress';
         request.Address1 = 'B2';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
+        System.debug(response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value1);

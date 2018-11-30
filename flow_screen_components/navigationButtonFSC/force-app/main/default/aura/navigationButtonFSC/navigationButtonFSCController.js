@@ -1,76 +1,39 @@
 ({
-    handleClick : function(component, event, helper) {
-        		console.log('entering handleclick');
-        		component.set("v.fire", true);
-              	var destType = component.get("v.destinationType");
-              	if (destType == 'url') {
-                    console.log('destType is url');
-                    var urlEvent = $A.get("e.force:navigateToURL");
-             		console.log('destination is url');
-    				var destUrl = component.get("v.destinationURL");
-             		console.log('url is '+destUrl)	
-          			if( (typeof sforce != 'undefined') && (sforce.one != null) ) {
-						//handle lightning experience on desktop
-						console.log("running navigation for lightning desktop");
-                		urlEvent.setParams({
-            				"url": destUrl
-        	 			});      
-                        console.log("Firing urlEvent: "+urlEvent)
-                    //appears to be broken
-            		urlEvent.fire();
-        			}
-    				else {
-            			var device = $A.get("$Browser.formFactor");
-            			if (device=="DESKTOP") {
-             		   		console.log("running navigation for classic desktop");
-            		    	window.location = destUrl;
-           				}
-					}
-                }
-            	else {
-                    if (destType == 'record') {
-                        var urlEvent = $A.get("e.force:navigateToSObject");
-                        console.log('destination is record');
-                        var destObject = component.get("v.targetRecordId");
-                        console.log('recordId is:' +destObject)
-                        urlEvent.setParams({
-                            "recordId": destObject,
-                            "slideDevName": "related",
-                            "isredirect": true
-                        });
-                        console.log("running urlEvent for Record ID")
-                        if( (typeof sforce != 'undefined') && (sforce.one != null) ) {
-                            //handle lightning experience on desktop
-                            console.log("running navigation for lightning desktop");
-                            //appears to be broken
-                            urlEvent.fire();
-                        }
-                        else {
-                            console.log("running navigation for classic")
-                            window.location = '/'+destObject; 
-                        }
-                    }
-                    
-                    else {
-                        if (destType == 'standard') {
-                            console.log('entering standard');
-                            var navigationGoal = component.get("v.navigationType");
+    doInit : function(component, event, helper) {
+        console.log('Label 2: [' + component.get("v.label2") + ']');
+        if(component.get("v.label2"))
+            component.set("v.Buttons2", true);
         
-                            //component.set("v.fire", true);
-                            var navigate = component.get('v.navigateFlow');
-                            
-                            if (navigationGoal.toLowerCase() == 'finish') {
-                              navigate("FINISH");  
-                            }
-                            
-                            if (navigationGoal.toLowerCase() == 'next') {
-                              navigate("NEXT");  
-                            }  
-                            if (navigationGoal.toLowerCase() == 'back') {
-                              navigate("BACK");  
-                            }  
-                        }
-                    }
-            	}
-    }  
+        var action = component.get("c.getUIThemeDescription");
+        action.setCallback(this, function(a) {
+            component.set("v.Theme", a.getReturnValue());
+            if(a.getReturnValue()=='Salesforce Classic'){
+                component.set("v.isLEX",false);
+            }else if(a.getReturnValue()=='Lightning Experience'){
+                component.set("v.isLEX",true);
+            }else if(a.getReturnValue()=='Salesforce1 Mobile'){
+                component.set("v.isLEX",false);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    
+    handleClick : function(component, event, helper) {
+        component.set("v.h_destinationURL", component.get("v.destinationURL"));
+        component.set("v.h_destinationType", component.get("v.destinationType"));
+        component.set("v.h_targetRecordId", component.get("v.destinationType"));
+        component.set("v.h_navigationType", component.get("v.navigationType"));
+        helper.handleClick(component, event, helper);
+        component.set("v.fire", true);
+    },
+    
+    handleClick2 : function(component, event, helper) {
+        component.set("v.h_destinationURL", component.get("v.destinationURL2"));
+        component.set("v.h_destinationType", component.get("v.destinationType2"));
+        component.set("v.h_targetRecordId", component.get("v.destinationType2"));
+        component.set("v.h_navigationType", component.get("v.navigationType2"));
+        helper.handleClick(component, event, helper);
+        component.set("v.fire2", true);        
+    },
+    
 })

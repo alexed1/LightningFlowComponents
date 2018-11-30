@@ -94,26 +94,6 @@ public class ThreadSheet {
         return result;
     }
 
-    public ThreadCell findCellByValue(String value) {
-        for (Integer rowIndex = 0; rowIndex < rows.size(); rowIndex++) {
-            List<ThreadCell> row = rows[rowIndex].cells;
-            for (Integer colIndex = 0; colIndex < row.size(); colIndex++) {
-                if (row[colIndex].value.equalsIgnoreCase(value)) {
-                    return row[colIndex];
-                }
-            }
-        }
-        return null;
-    }    
-
-    public Address findAddressByValue(String value) {
-        ThreadCell cell = findCellByValue(value);
-        if (cell == null) {
-            return null;
-        }
-        return cell.addr;
-    }
-
     public ThreadCell findCellByAddress(Address address) {   
         ThreadCell result = null; 
         if (address.row >= 0 && address.row < rows.size()) {

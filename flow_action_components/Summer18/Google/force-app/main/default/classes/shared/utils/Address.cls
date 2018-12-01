@@ -14,6 +14,18 @@ public class Address {
         this.row = row;
     }
 
+    public Integer hashCode() {
+        return 10000 * column + row;
+    }
+
+    public Boolean equals(Object obj) {
+        if (obj instanceof Address) {
+            Address other = (Address)obj;
+            return row == other.row && column == other.column;
+        }
+        return false;
+    }
+
     private static Pattern columnPattern = Pattern.compile('^[A-Za-z]+');
 
     private static Pattern rowPattern = Pattern.compile('\\d+$');  

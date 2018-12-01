@@ -10,7 +10,7 @@ public class GoogleDriveTests {
             List<Type> listOfParamTypes,
             List<String> listOfParamNames,
             List<Object> listOfArgs) {
-            if (stubbedMethodName == 'DriveFilesList') {
+            if (stubbedMethodName.equalsIgnoreCase('driveFilesList')) {
                 String fileName = listOfArgs[0].toString();
                 if (fileName == 'Exists') {
                     DriveFileListResponse response = new DriveFileListResponse();
@@ -33,7 +33,7 @@ public class GoogleDriveTests {
                 System.debug('Unexpected argument: ' + fileName);
                 return null;
             }
-            if (stubbedMethodName == 'SheetsSpreadsheetsGet') {
+            if (stubbedMethodName.equalsIgnoreCase('sheetsSpreadsheetsGet')) {
                 String fileId = listOfArgs[0].toString();
                 if (fileId == 'Exists') {
                     SheetsSheetResponse response = new SheetsSheetResponse();
@@ -63,7 +63,7 @@ public class GoogleDriveTests {
                 }
                 System.debug('Unknown file Id: ' + fileId);
             }
-            if (stubbedMethodName == 'SheetsValuesBatchUpdate') {
+            if (stubbedMethodName.equalsIgnoreCase('sheetsValuesBatchUpdate')) {
                 String id = listOfArgs[0].toString();
                 SheetsValuesBatchUpdateRequest body = (SheetsValuesBatchUpdateRequest)listOfArgs[1];
                 SheetsValuesBatchUpdateRequest.Data data = body.data[0];
@@ -80,7 +80,7 @@ public class GoogleDriveTests {
     public static void FindFileIdByName_WhenFileExists_RetrievesFileId() {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
-        String id = drive.FindFileIdByName('Exists');
+        String id = drive.findFileIdByName('Exists');
         System.assertEquals('test', id);
     }
 
@@ -88,7 +88,7 @@ public class GoogleDriveTests {
     public static void FindFileIdByName_WhenFileDoesntExist_ReturnsNull() {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
-        String id = drive.FindFileIdByName('DoesntExist');
+        String id = drive.findFileIdByName('DoesntExist');
         System.assert(String.isBlank(id));
     }
 
@@ -97,7 +97,7 @@ public class GoogleDriveTests {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
         try {
-            String id = drive.FindFileIdByName('Exception');
+            String id = drive.findFileIdByName('Exception');
             System.assert(false, 'Exception was not thrown');
         } catch (GoogleException ex) {
             System.assertEquals('Exception', ex.getMessage());
@@ -108,7 +108,7 @@ public class GoogleDriveTests {
     public static void GetSpreadsheetData_ReturnsData() {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
-        List<List<String>> data = drive.GetSpreadsheetData('Exists');
+        List<List<String>> data = drive.getSpreadsheetData('Exists', null);
         System.assertEquals(3, data.size());
         System.assertEquals(0, data[0].size());
         System.assertEquals(1, data[1].size());
@@ -123,7 +123,7 @@ public class GoogleDriveTests {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
         try {
-            List<List<String>> data = drive.GetSpreadsheetData('Exception');
+            List<List<String>> data = drive.getSpreadsheetData('Exception', null);
             System.assert(false, 'Exception was not thrown');
         } catch (GoogleException ex) {
             System.assertEquals('Exception', ex.getMessage());
@@ -134,6 +134,6 @@ public class GoogleDriveTests {
     public static void SaveSpreadsheetData_SavesData() {
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
-        drive.SaveSpreadsheetData('Anything', new List<CellValue> { new CellValue(Address.parse('A1'), 'test') });
+        drive.saveSpreadsheetData('Anything', null, new List<CellValue> { new CellValue(Address.parse('A1'), 'test') });
     }
 }

@@ -1,12 +1,12 @@
 public interface IGoogleDrive {
     
-    String FindFileIdByName(String name);
+    String findFileIdByName(String name);
 
-    String FindFileIdByName(String name, String fileType); 
+    String findFileIdByName(String name, String fileType); 
 
-    List<List<String>> GetSpreadsheetData(String id);
+    List<List<String>> getSpreadsheetData(String id, String sheetTitle);
 
-    void SaveSpreadsheetData(String id, List<CellValue> values);
+    void saveSpreadsheetData(String id, String sheetTitle, List<CellValue> values);
 
-    ClonedFile CloneFile(String id, String newName);
+    ClonedFile cloneFile(String id, String newName);
 }

@@ -38,6 +38,22 @@ public class Address {
         return shiftBelow(1);
     }
 
+    public static Address parse(String addr, ThreadSheet sheet) {
+        if (sheet.headers != null) {
+            for (Integer col = 0; col < sheet.headers.size(); col++) {
+                String header = sheet.headers[col].trim();
+                if (addr.startsWith(header)) {
+                    String rowStr = addr.removeStart(header).trim();
+                    if (!String.isBlank(rowStr) && rowStr.isNumeric()) {
+                        return new Address(col, Integer.valueOf(rowStr) - 1);
+                    }
+                }
+            }
+        }
+        //If we failed to find custom header, we try to parse address as it would be in Excel-like form
+        return Address.parse(addr);
+    }
+
     public static Address parse(String address) {
         if (String.isBlank(address)) {
             return null;
@@ -57,6 +73,9 @@ public class Address {
         }
         else {
             throw new QuipException('Address "' + address + '" doesn\'t contain row part');
+        }
+        if (!address.equalsIgnoreCase(column + matcher.group())) {
+            throw new QuipException('Address "' + address + '" has some invalid symbols');
         }
         Integer parsedColumn = 0;
         for (Integer i = 0; i < column.length(); i++) {

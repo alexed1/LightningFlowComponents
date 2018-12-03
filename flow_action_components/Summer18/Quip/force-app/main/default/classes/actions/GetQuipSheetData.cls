@@ -36,20 +36,30 @@ global class GetQuipSheetData {
                 }
                 return response;
             }
-            if (!String.isBlank(request.RelativeDirection1)) {
-                response.Value1 = LocateValue(sheet, request.RelativeDirection1, request.TargetLabel1);
+            if (!String.isBlank(request.Right1) 
+                || !String.isBlank(request.Below1)
+                || !String.isBlank(request.Address1)) {
+                response.Value1 = LocateValue(sheet, request.Address1, request.Right1, request.Below1);
             }
-            if (!String.isBlank(request.RelativeDirection2)) {
-                response.Value2 = LocateValue(sheet, request.RelativeDirection2, request.TargetLabel2);
+            if (!String.isBlank(request.Right2) 
+                || !String.isBlank(request.Below2)
+                || !String.isBlank(request.Address2)) {
+                response.Value2 = LocateValue(sheet, request.Address2, request.Right2, request.Below2);
             }
-            if (!String.isBlank(request.RelativeDirection3)) {
-                response.Value3 = LocateValue(sheet, request.RelativeDirection3, request.TargetLabel3);
+            if (!String.isBlank(request.Right3) 
+                || !String.isBlank(request.Below3)
+                || !String.isBlank(request.Address3)) {
+                response.Value3 = LocateValue(sheet, request.Address3, request.Right3, request.Below3);
             }
-            if (!String.isBlank(request.RelativeDirection4)) {
-                response.Value4 = LocateValue(sheet, request.RelativeDirection4, request.TargetLabel4);
+            if (!String.isBlank(request.Right4) 
+                || !String.isBlank(request.Below4)
+                || !String.isBlank(request.Address4)) {
+                response.Value4 = LocateValue(sheet, request.Address4, request.Right4, request.Below4);
             }
-            if (!String.isBlank(request.RelativeDirection5)) {
-                response.Value5 = LocateValue(sheet, request.RelativeDirection5, request.TargetLabel5);
+            if (!String.isBlank(request.Right5) 
+                || !String.isBlank(request.Below5)
+                || !String.isBlank(request.Address5)) {
+                response.Value5 = LocateValue(sheet, request.Address5, request.Right5, request.Below5);
             }
         } 
         catch (QuipException ex) {
@@ -59,27 +69,9 @@ global class GetQuipSheetData {
         return response;
     }
 
-    private static String LocateValue(ThreadSheet data, String direct, String search) {
-        Direction dir = DirectionUtils.parse(direct);
-        Address addr = null;
-        if (dir == Direction.ADDRESS) {
-            addr = Address.parse(search);
-        }
-        else {
-            addr = data.findAddressByValue(search);
-        }        
-        //This is for the case where we just couldn't find a value
-        if (addr == null) {
-            return '';
-        }
-        if (dir == Direction.RIGHT) {
-            addr = addr.shiftRight();
-        }
-        else if (dir == Direction.BELOW) {
-            addr = addr.shiftBelow();
-        }
-        ThreadCell cell = data.findCellByAddress(addr);
-        return cell.value;
+    private static String LocateValue(ThreadSheet data, String address, String rightOf, String belowOf) {
+        ThreadCell cell = data.findCell(address, rightOf, belowOf);
+        return cell == null ? '' : cell.value;
     }
 
     global class Request {
@@ -90,35 +82,50 @@ global class GetQuipSheetData {
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found file will be used')
         global String SheetName;
 
-        @InvocableVariable(required=True label='#1 Relative Direction' description='Allowed values: Address, Right, Below')
-        global String RelativeDirection1;
+        @InvocableVariable(label='#1 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
+        global String Right1;
 
-        @InvocableVariable(required=True label='#1 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String TargetLabel1;
+        @InvocableVariable(label='#1 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the value that is located at the intersection of these two')
+        global String Below1;
 
-        @InvocableVariable(label='#2 Relative Direction' description='Allowed values: Address, Right, Below')
-        global String RelativeDirection2;
+        @InvocableVariable(label='#1 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
+        global String Address1;
 
-        @InvocableVariable(label='#2 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String TargetLabel2;
+        @InvocableVariable(label='#2 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
+        global String Right2;
 
-        @InvocableVariable(label='#3 Relative Direction' description='Allowed values: Address, Right, Below')
-        global String RelativeDirection3;
+        @InvocableVariable(label='#2 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the value that is located at the intersection of these two')
+        global String Below2;
 
-        @InvocableVariable(label='#3 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String TargetLabel3;
+        @InvocableVariable(label='#2 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
+        global String Address2;        
 
-        @InvocableVariable(label='#4 Relative Direction' description='Allowed values: Address, Right, Below')
-        global String RelativeDirection4;
+        @InvocableVariable(label='#3 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
+        global String Right3;
 
-        @InvocableVariable(label='#4 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String TargetLabel4;
+        @InvocableVariable(label='#3 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the value that is located at the intersection of these two')
+        global String Below3;
 
-        @InvocableVariable(label='#5 Relative Direction' description='Allowed values: Address, Right, Below')
-        global String RelativeDirection5;
+        @InvocableVariable(label='#3 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
+        global String Address3;
 
-        @InvocableVariable(label='#5 Target Label' description='What value to search for. If related direction is set to "Address", the format should be Excel-like (e.g. "A1")')
-        global String TargetLabel5;
+        @InvocableVariable(label='#4 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
+        global String Right4;
+
+        @InvocableVariable(label='#4 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the value that is located at the intersection of these two')
+        global String Below4;
+
+        @InvocableVariable(label='#4 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
+        global String Address4;
+
+        @InvocableVariable(label='#5 Cell To The Right of Which Label' description='Gets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')
+        global String Right5;
+
+        @InvocableVariable(label='#5 Cell Below Which Label' description='Get the value located directly under the specified one. If used together with "Cell To The Right of Which Label" then gets the value that is located at the intersection of these two')
+        global String Below5;
+
+        @InvocableVariable(label='#5 At Cell' description='Get the value located at the specified Excel-like address (e.g. B2)')
+        global String Address5;
     }
 
     global class Response {

@@ -1,7 +1,7 @@
 @isTest
 public class GetQuipSheetDataTest {
 
-    class QuipMock implements StubProvider {
+    class QuipMock implements StubProvider { 
 
         public Object handleMethodCall(
             Object stubbedObject, 
@@ -82,9 +82,9 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'ByAddress';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'B2';
+        request.Address1 = 'B2';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
+        System.debug(response.ErrorMessage);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value1);
@@ -95,8 +95,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'ByRight';
-        request.RelativeDirection2 = 'Right';
-        request.TargetLabel2 = '1';
+        request.Right2 = '1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -108,8 +107,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'ByBelow';
-        request.RelativeDirection3 = 'Below';
-        request.TargetLabel3 = '1';
+        request.Below3 = '1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -121,8 +119,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'OutsideOfTheRange';
-        request.RelativeDirection4 = 'Address';
-        request.TargetLabel4 = 'A100';
+        request.Address4 = 'A100';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
@@ -134,8 +131,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'InvalidAddress';
-        request.RelativeDirection5 = 'Address';
-        request.TargetLabel5 = 'Invalid';
+        request.Address5 = 'Invalid';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('Address "Invalid" doesn\'t contain row part', response.ErrorMessage);
@@ -147,8 +143,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'DoesntExist';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('File with the name "DoesntExist" was not found', response.ErrorMessage);
@@ -160,8 +155,7 @@ public class GetQuipSheetDataTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock());
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'NoSheet';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('File "NoSheet" doesn\'t contain child sheets', response.ErrorMessage);
@@ -174,8 +168,7 @@ public class GetQuipSheetDataTest {
         GetQuipSheetData.Request request = new GetQuipSheetData.Request();
         request.FileName = 'NoNamedSheet';
         request.SheetName = 'Test';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         GetQuipSheetData.Response response = GetQuipSheetData.GetQuipSheetDataImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('File "NoNamedSheet" doesn\'t contain sheet "Test"', response.ErrorMessage);

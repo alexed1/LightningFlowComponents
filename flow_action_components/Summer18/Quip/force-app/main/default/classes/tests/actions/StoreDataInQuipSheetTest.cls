@@ -61,8 +61,7 @@ public class StoreDataInQuipSheetTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock(null));
         StoreDataInQuipSheet.Request request = new StoreDataInQuipSheet.Request();
         request.FileName = 'DoesntExist';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         StoreDataInQuipSheet.Response response = StoreDataInQuipSheet.StoreDataInQuipSheetImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('File with the name "DoesntExist" was not found', response.ErrorMessage);
@@ -73,8 +72,7 @@ public class StoreDataInQuipSheetTest {
         IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock(null));
         StoreDataInQuipSheet.Request request = new StoreDataInQuipSheet.Request();
         request.FileName = 'NoSheet';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         StoreDataInQuipSheet.Response response = StoreDataInQuipSheet.StoreDataInQuipSheetImpl(quip, request);
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('File "NoSheet" doesn\'t contain child sheets', response.ErrorMessage);
@@ -86,8 +84,7 @@ public class StoreDataInQuipSheetTest {
         StoreDataInQuipSheet.Request request = new StoreDataInQuipSheet.Request();
         request.FileName = 'NoNamedSheet';
         request.SheetName = 'Sheet';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         request.Value1 = 'Test1';
         StoreDataInQuipSheet.Response response = StoreDataInQuipSheet.StoreDataInQuipSheetImpl(quip, request);
         System.assert(!response.IsSuccess);
@@ -101,14 +98,11 @@ public class StoreDataInQuipSheetTest {
         StoreDataInQuipSheet.Request request = new StoreDataInQuipSheet.Request();
         request.FileName = 'Valid';
         request.SheetName = 'Sheet';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'A1';
+        request.Address1 = 'A1';
         request.Value1 = 'Test1';
-        request.RelativeDirection2 = 'Right';
-        request.TargetLabel2 = 'BOne';
+        request.Right2 = 'BOne';
         request.Value2 = 'Test2';
-        request.RelativeDirection3 = 'Below';
-        request.TargetLabel3 = 'BOne';
+        request.Below3 = 'BOne';
         request.Value3 = 'Test3';
         StoreDataInQuipSheet.Response response = StoreDataInQuipSheet.StoreDataInQuipSheetImpl(quip, request);
         System.assert(response.IsSuccess);

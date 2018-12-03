@@ -9,7 +9,7 @@ public class GoogleAPI implements IGoogleAPI {
     public GoogleAPI() { }
     //Google file Id is a string 44 symbols long, no whitespaces
     //This method is used for some shortcuts so it doesn't necessary mean a real existing file Id
-    public Boolean LikeId(String id) {
+    public Boolean likeId(String id) {
         if (String.isBlank(id)) {
             return false;
         }
@@ -22,7 +22,7 @@ public class GoogleAPI implements IGoogleAPI {
         return true;
     }
 
-    public DriveFileListResponse DriveFilesList(String name) {
+    public DriveFileListResponse driveFilesList(String name) {
         if (String.isBlank(name)) {
             throw new GoogleException('Name can\'t be empty or blank');
         }
@@ -39,7 +39,7 @@ public class GoogleAPI implements IGoogleAPI {
         return DriveFileListResponse.parse(res.getBody());
     }
 
-    public SheetsSheetResponse SheetsSpreadsheetsGet(String id) {
+    public SheetsSheetResponse sheetsSpreadsheetsGet(String id) {
         if (String.isBlank(id)) {
             throw new GoogleException('Spreadsheet Id can\'t be empty or contain only whitespaces');
         }
@@ -56,7 +56,7 @@ public class GoogleAPI implements IGoogleAPI {
         return SheetsSheetResponse.parse(res.getBody());
     }
 
-    public ErrorResponse SheetsValuesBatchUpdate(String id, SheetsValuesBatchUpdateRequest request) {
+    public ErrorResponse sheetsValuesBatchUpdate(String id, SheetsValuesBatchUpdateRequest request) {
         if (String.isBlank(id)) {
             throw new GoogleException('Spreadsheet Id can\'t be empty or contain only whitespaces');
         }
@@ -76,7 +76,7 @@ public class GoogleAPI implements IGoogleAPI {
         return ErrorResponse.parse(res.getBody());
     }
 
-    public DriveFilesCopyResponse CopyFile(String id, String newName) {
+    public DriveFilesCopyResponse copyFile(String id, String newName) {
         if (String.isBlank(id)) {
             throw new GoogleException('Id can\'t be empty or contain only whitespaces');
         }

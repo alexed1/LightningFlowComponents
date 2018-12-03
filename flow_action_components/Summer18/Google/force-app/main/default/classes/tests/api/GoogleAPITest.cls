@@ -8,7 +8,7 @@ public class GoogleAPITest {
             System.debug('Test call for: ' + endpoint);
             HttpResponse res = new HttpResponse();
             res.setStatusCode(200);       
-            if (endpoint.contains('files')) {
+            if (endpoint.contains('files?q=name')) {
                 res.setBody(
                     '{'+
                     ' "kind": "drive#fileList",'+
@@ -64,7 +64,10 @@ public class GoogleAPITest {
             }
             else if (endpoint.contains('copy?fields')) {
                 res.setBody('{ "id": "test copy", "webViewLink": "test link" }');
+            } else {
+                System.debug('Unknown endpoint: ' + endpoint);
             }
+
             return res;
         }
     }
@@ -121,7 +124,7 @@ public class GoogleAPITest {
         GoogleAPI api = new GoogleAPI();
         DriveFilesCopyResponse response = api.CopyFile('test id', 'test name');
         System.assertEquals('test copy', response.id);
-        System.assertEquals('test url', response.webViewLink);
+        System.assertEquals('test link', response.webViewLink);
         System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

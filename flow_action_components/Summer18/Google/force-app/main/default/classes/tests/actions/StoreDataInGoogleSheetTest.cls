@@ -21,7 +21,7 @@ public class StoreDataInGoogleSheetTest {
                 return listOfArgs[0];
             }
             if (stubbedMethodName == 'SaveSpreadsheetData') {
-                List<CellValue> newValues = (List<CellValue>)listOfArgs[1];
+                List<CellValue> newValues = (List<CellValue>)listOfArgs[2];
                 for (CellValue value: newValues) {
                     cellValues.add(value);
                 }
@@ -65,9 +65,8 @@ public class StoreDataInGoogleSheetTest {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite));
         StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
-        request.aSpreadsheetName = 'ByAddress';
-        request.RelativeDirection1 = 'Address';
-        request.TargetLabel1 = 'B2';
+        request.SpreadsheetName = 'ByAddress';
+        request.Address1 = 'B2';
         request.Value1 = 'test';
         StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
@@ -81,9 +80,8 @@ public class StoreDataInGoogleSheetTest {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite));
         StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
-        request.aSpreadsheetName = 'ByBelow';
-        request.RelativeDirection1 = 'Below';
-        request.TargetLabel1 = 'B1';
+        request.SpreadsheetName = 'ByBelow';
+        request.Below1 = 'B1';
         request.Value1 = 'test';
         StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
@@ -97,9 +95,8 @@ public class StoreDataInGoogleSheetTest {
         List<CellValue> valuesToWrite = new List<CellValue>();
         IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite)); 
         StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
-        request.aSpreadsheetName = 'ByRight';
-        request.RelativeDirection1 = 'Right';
-        request.TargetLabel1 = 'B1';
+        request.SpreadsheetName = 'ByRight';
+        request.Right1 = 'B1';
         request.Value1 = 'test';
         StoreDataInGoogleSheet.Response response = StoreDataInGoogleSheet.StoreDataInGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
@@ -112,7 +109,7 @@ public class StoreDataInGoogleSheetTest {
     public static void StoreDataInGoogleSheet_ReturnsResponses() {
         Test.setMock(HttpCalloutMock.class, new BadHttpResponseMock());
         StoreDataInGoogleSheet.Request request = new StoreDataInGoogleSheet.Request();
-        request.aSpreadsheetName = 'test';
+        request.SpreadsheetName = 'test';
         List<StoreDataInGoogleSheet.Request> requests = new List<StoreDataInGoogleSheet.Request> { request };
         List<StoreDataInGoogleSheet.Response> responses = StoreDataInGoogleSheet.StoreDataInGoogleSheet(requests);
         System.assertEquals(1, responses.size());

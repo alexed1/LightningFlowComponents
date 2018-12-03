@@ -1,8 +1,18 @@
 <design:component >
-    <design:attribute name="label" label="Button Label"/>
-    <design:attribute name="destinationURL" label="Target Destination"/>
-	<design:attribute name="destinationType" label="Target Type"/>
-    <design:attribute name="targetRecordId" label="Target RecordId"/>
-    <design:attribute name="navigationType" label="Navigation Type"/>
-    <design:attribute name="fire" label="Button Clicked?"/>
+    <design:attribute name="label" label="B1_Button Label"/>
+    <design:attribute name="destinationURL" label="B1_Target Destination"/>
+    <design:attribute name="destinationType" label="B1_Target Type"/>
+    <design:attribute name="targetRecordId" label="B1_Target RecordId"/>
+    <design:attribute name="navigationType" label="B1_Navigation Type"/>
+    <design:attribute name="fire" label="B1_Button Clicked?"/>
+    <design:attribute name="label2" label="B2_Button Label"/>
+    <design:attribute name="destinationURL2" label="B2_Target Destination"/>
+    <design:attribute name="destinationType2" label="B2_Target Type"/>
+    <design:attribute name="targetRecordId2" label="B2_Target RecordId"/>
+    <design:attribute name="navigationType2" label="B2_Navigation Type"/>
+    <design:attribute name="fire2" label="B2_Button Clicked?"/>
+    
+    <design:attribute name="Theme" label="Current Theme Name" />
+    <design:attribute name="isLEX" label="In Lightning?" />
+    
 </design:component>

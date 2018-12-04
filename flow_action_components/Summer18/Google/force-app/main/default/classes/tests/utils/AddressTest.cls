@@ -40,4 +40,12 @@ public class AddressTest {
             System.assertEquals('Address "AA" doesn\'t contain row part', ex.getMessage());
         }
     }
+
+    @isTest
+    public static void Equals_VerifySuccess() {
+        Set<Address> result = new Set<Address>();
+        result.add(new Address(1, 1));
+        System.assert(result.contains(new Address(1, 1)));
+        System.assert(!result.contains(new Address(2, 1)));
+    }
 }

@@ -45,7 +45,14 @@ public class GetGoogleSheetsDataTest {
                     row.add('test');
                     result.add(row);
                     return result;
-                } else if (fileId == 'OutsideOfTheRange') {
+                } else if (fileId == 'ByRightAndBelow') {
+                    List<List<String>> result = new List<List<String>> {
+                        new List<String> { '', 'test', '' },
+                        new List<String> { '1', 'test1', '' }
+                    };
+                    return result;
+                }                
+                 else if (fileId == 'OutsideOfTheRange') {
                     List<List<String>> result = new List<List<String>>();
                     return result;
                 }
@@ -93,6 +100,20 @@ public class GetGoogleSheetsDataTest {
         System.assertEquals(true, response.IsSuccess);
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('test', response.Value3);
+    }
+
+    @isTest
+    public static void GetGoogleSheetsDataImpl_CanFindByRightAndBelow() {
+        IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
+        request.SpreadsheetName = 'ByRightAndBelow';
+        request.Below1 = 'test';
+        request.Right1 = '1';
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        System.debug('Error message: ' + response.ErrorMessage);
+        System.assertEquals(true, response.IsSuccess);
+        System.assert(String.isBlank(response.ErrorMessage));
+        System.assertEquals('test1', response.Value1);
     }
     
     @isTest

@@ -138,23 +138,33 @@ public class Quip implements IQuip {
                 sectionId = cellToUpdate.id;
                 value = cellToUpdate.value;
             }
-            //Creating new row(s)
-            else if (cellToUpdate.addr.column < sheet.rows[0].cells.size()) {
-                ThreadRow lastRow = sheet.rows[sheet.rows.size() - 1];
-                for (Integer row = sheet.rows.size() - 1; row < cellToUpdate.addr.row - 1; row++) {
-                    value += '<tr></tr>';
-                }
-                value += '<tr>';
-                for (Integer col = 0; col < cellToUpdate.addr.column; col++) {
-                    value += '<td></td>';
-                }
-                sectionId = lastRow.id;
-                value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td></tr>';
-            }
-            //Can't expand existing row - throw exception
             else {
-                throw new QuipException('The cell "' + cellToUpdate.addr.toString() + '" doesn\'t belong to the spreadsheet. Add it manually and try again');
+                //This is for the case where our previous update created new cells but still don't know their Id
+                ThreadCell actualCellToUpdate = sheet.findCellByAddress(cellToUpdate.addr);
+                if (!String.isBlank(actualCellToUpdate.id)) {
+                    location = SectionLocation.REPLACE_SECTION;
+                    sectionId = actualCellToUpdate.id;
+                    value = cellToUpdate.value;
+                }
+                //Creating new row(s)
+                else if (cellToUpdate.addr.column < sheet.rows[0].cells.size()) {
+                    ThreadRow lastRow = sheet.rows[sheet.rows.size() - 1];
+                    for (Integer row = sheet.rows.size() - 1; row < cellToUpdate.addr.row - 1; row++) {
+                        value += '<tr></tr>';
+                    }
+                    value += '<tr>';
+                    for (Integer col = 0; col < cellToUpdate.addr.column; col++) {
+                        value += '<td></td>';
+                    }
+                    sectionId = lastRow.id;
+                    value += '<td>' + cellToUpdate.value.escapeHtml4() + '</td></tr>';
+                }
+                //Can't expand existing row - throw exception
+                else {
+                    throw new QuipException('The cell "' + cellToUpdate.addr.toString() + '" doesn\'t belong to the spreadsheet. Add it manually and try again');
+                }
             }
+            
             //Sending request, parsing response and finding the sheet again
             ThreadResponse response = quipApi.editDocument(thread.id, value, sectionId, location);
             response.throwOnError();

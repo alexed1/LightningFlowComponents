@@ -41,7 +41,7 @@ public class ThreadSheet {
         Matcher headerMatcher = headerPattern.matcher(htmlTable);
         while (headerMatcher.find()) {
             String header = headerMatcher.group().replaceAll('<.*?>', '').unescapeHtml4();
-            result.headers.add(header);
+            result.headers.add(header.trim());
         }
         //Table body
         Matcher bodyMatcher = bodyPattern.matcher(htmlTable);
@@ -79,6 +79,11 @@ public class ThreadSheet {
             rowIndex++;          
         }
         return result;
+    }
+
+    public ThreadCell findCellByValue(String value) {
+        List<ThreadCell> result = findCellsByValue(value);
+        return result.size() > 0 ? result[0] : null;
     }
 
     public List<ThreadCell> findCellsByValue(String value) {

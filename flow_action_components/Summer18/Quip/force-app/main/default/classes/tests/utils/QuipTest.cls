@@ -44,18 +44,18 @@ public class QuipTest {
                 }
                 calls.add(new List<Object>(listOfArgs));
             }
-            if (stubbedMethodName == 'likeId') {
+            if (stubbedMethodName.equalsIgnoreCase('likeId')) {
                 String idOrName = listOfArgs[0].toString();
                 if (idOrName.length() == 12) {
                     return true;
                 }
                 return false;
             }
-            if (stubbedMethodName == 'getThread') {
+            if (stubbedMethodName.equalsIgnoreCase('getThread')) {
                 String id = listOfArgs[0].toString();
                 return threads.get(id);
             }
-            if (stubbedMethodName == 'getThreadList') {
+            if (stubbedMethodName.equalsIgnoreCase('getThreadList')) {
                 List<String> idList = (List<String>)listOfArgs[0];
                 ThreadListResponse response = new ThreadListResponse();
                 for (String id : idList) {
@@ -63,7 +63,7 @@ public class QuipTest {
                 }
                 return response;
             }
-            if (stubbedMethodName == 'getCurrentUser') {
+            if (stubbedMethodName.equalsIgnoreCase('getCurrentUser')) {
                 UserResponse user = new UserResponse();
                 user.starred_folder_id = 'Folder000001';
                 user.desktop_folder_id = 'Folder000001';
@@ -72,7 +72,7 @@ public class QuipTest {
                 user.group_folder_ids.add('Folder000001');
                 return user;
             }
-            if (stubbedMethodName == 'getFolder') {
+            if (stubbedMethodName.equalsIgnoreCase('getFolder')) {
                 System.debug('getFolder got the following arguments: ' + String.valueOf(listOfArgs));
                 String id = listOfArgs[0].toString();
                 if (id == 'Folder000001') {
@@ -103,7 +103,32 @@ public class QuipTest {
                 System.debug('Unhandled arguments for method: ' + stubbedMethodName);
                 return null;
             }
-            if (stubbedMethodName == 'editDocument') {
+            if (stubbedMethodName.equalsIgnoreCase('getFolderList')) {
+                FolderListResponse response = FolderListResponse.parse(
+                    '{' +
+                        '"1": {' +
+                            '"folder": {' +
+                                '"title": "One",' +
+                                '"id": "1"' +
+                            '},' + 
+                            '"children": [' +
+                            '    {' +
+                            '        "folder_id": "2"' + 
+                            '    }' +           
+                            ']' +
+                        '},' +
+                        '"3": {' +
+                            '"folder": {    ' +        
+                                '"id": "3",' +
+                                '"title": "Three"' + 
+                            '},' +
+                            '"children": []' +
+                        '}' +
+                    '}'
+                );
+                return response;
+            }
+            if (stubbedMethodName.equalsIgnoreCase('editDocument')) {
                 //(thread.id, value, sectionId, location)
                 String threadId = listOfArgs[0].toString();
                 if (threadId == 'UpdateCell') {
@@ -129,7 +154,7 @@ public class QuipTest {
                 System.debug('Unhandled arguments for method: ' + stubbedMethodName);
                 return null;
             }
-            if (stubbedMethodName == 'createDocument') {
+            if (stubbedMethodName.equalsIgnoreCase('createDocument')) {
                 ThreadResponse response = new ThreadResponse();
                 ThreadResponse.Thread thread = new ThreadResponse.Thread();
                 thread.id = 'newDocument';
@@ -301,5 +326,22 @@ public class QuipTest {
         System.assertEquals('<table title="Sheet1"><tbody><tr id="1"><td id="1-1"><span>Text</span></td></tr></tbody></table>', content);
         System.assertEquals('document', type);
         System.assertEquals('Folder000001', usersAndFolders[0]);
+    }
+
+    @isTest
+    public static void findFolder_findsFolder() {
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(null));
+        Quip quip = new Quip(api);
+        Folder folder = quip.findFolder('Folder000002');
+        System.assertEquals('folder', folder.name);
+    }
+
+    @isTest
+    public static void getFolders_retrievesFolders() { 
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(null));
+        Quip quip = new Quip(api);
+        List<Folder> folders = quip.getFolders(new List<String> { '1', '3' });
+        System.assertEquals('One', folders[0].name);
+        System.assertEquals('Three', folders[1].name);
     }
 }

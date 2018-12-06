@@ -187,4 +187,84 @@ public class Quip implements IQuip {
         copy.throwOnError();
         return toThread(copy);
     }
+
+    public Thread createThread(String title, String content, String type, String parentFolderId) {
+        ThreadResponse thread = quipApi.createDocument(title, content, type, new List<String> { parentFolderId });
+        thread.throwOnError();
+        return toThread(thread);
+    }
+
+    private Folder toFolder(FolderResponse response) {
+        Folder result = new Folder(response.folder.id, response.folder.title);
+        for (FolderResponse.ThreadOrFolder child : response.children) {
+            if (child.isFolder()) {
+                result.subFolders.add(new FolderRef(child.folder_id));
+            } else {
+                result.threads.add(new ThreadRef(child.thread_id));
+            }
+        }
+        return result;
+    }
+
+    public Folder findFolder(String idOrName) {
+        UserResponse currentUser = quipApi.getCurrentUser();
+        currentUser.ThrowOnError();
+        if (String.isBlank(idOrName)) {
+            FolderResponse folder = quipApi.getFolder(currentUser.private_folder_id);
+            folder.ThrowOnError();
+            return toFolder(folder);
+        }
+        Set<String> processedFolders = new Set<String>();
+        List<String> folderQueue = new List<String>();
+        for (String sharedFolder : currentUser.shared_folder_ids) {
+            folderQueue.add(sharedFolder);
+        }
+        for (String groupFolder : currentUser.group_folder_ids) {
+            folderQueue.add(groupFolder);
+        }
+        folderQueue.add(currentUser.archive_folder_id);
+        folderQueue.add(currentUser.desktop_folder_id);
+        folderQueue.add(currentUser.starred_folder_id);
+        folderQueue.add(currentUser.private_folder_id);
+        while (folderQueue.size() > 0) {
+            String folderId = folderQueue.remove(folderQueue.size() - 1);
+            if (String.isBlank(folderId)) {
+                continue;
+            }
+            if (!processedFolders.add(folderId)) {
+                //It means that this folder for some reason has been already processed
+                continue;
+            }
+            FolderResponse folder = quipApi.getFolder(folderId);
+            folder.throwOnError();
+            if (folder.folder.id == idOrName || folder.folder.title == idOrName) {
+                return toFolder(folder);
+            }
+            for (FolderResponse.ThreadOrFolder child : folder.children) {
+                if (child.isFolder()) {
+                    folderQueue.add(child.folder_id);
+                }
+            }
+        }
+        return null;
+    }
+    
+    public List<Folder> getFolders(List<String> foldersId) {
+        if (foldersId.size() == 0) {
+            return new List<Folder>();
+        }
+        FolderListResponse response = quipApi.getFolderList(foldersId);
+        response.throwOnError();
+        List<Folder> result = new List<Folder>();
+        for (FolderResponse folderResponse : response.folders) {
+            result.add(toFolder(folderResponse));
+        }
+        return result;
+    }
+
+    public Folder createFolder(String name, String parentFolderId) {
+        FolderResponse folder = quipApi.createFolder(name, parentFolderId);
+        folder.throwOnError();
+        return toFolder(folder);
+    }
 }

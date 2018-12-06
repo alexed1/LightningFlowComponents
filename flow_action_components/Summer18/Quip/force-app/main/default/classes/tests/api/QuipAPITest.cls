@@ -20,6 +20,10 @@ public class QuipAPITest {
                 res.setBody('{ "html": "html", "thread": { "id" : "1", "type" : "type", "title" : "title" } }');
             } else if (endpoint.endsWith('threads/new-document')) {
                 res.setBody('{ "html": "html", "thread": { "id" : "1", "type" : "type", "title" : "title" } }');
+            } else if (endpoint.endsWith('folders/new')) {
+                res.setBody('{ "folder": { "id": "id", "title" : "title" }, "children": [ { "folder_id" : "1" } ]}');
+            } else if (endpoint.endsWith('folders/?ids=1,2')) {
+                res.setBody('{ "1" : { "folder": { "id": "1", "title" : "title" }, "children": [] }, "2": { "folder": { "id": "2", "title" : "title" }, "children": [] } }');
             }
             return res;
         }
@@ -96,5 +100,21 @@ public class QuipAPITest {
         QuipAPI api = new QuipAPI();
         ThreadResponse thread = api.createDocument('title', 'content', 'document', null);
         System.assertEquals('1', thread.thread.id);
+    }
+
+    @isTest
+    public static void createFolder_ReturnsFolder() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        FolderResponse folder = api.createFolder('title', 'id');
+        System.assertEquals('id', folder.folder.id);
+    }
+
+    @isTest
+    public static void getFolderList_ReturnsFolderList() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        FolderListResponse folders = api.getFolderList(new List<String> { '1', '2' });
+        System.assertEquals(2, folders.folders.size());
     }
 }

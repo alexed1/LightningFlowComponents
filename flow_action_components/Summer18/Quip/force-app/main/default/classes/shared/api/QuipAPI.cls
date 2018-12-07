@@ -22,14 +22,14 @@ public class QuipAPI implements IQuipAPI {
         return true;
     }
 
-    public UserResponse getCurrentUser() {   
+    public CurrentUserResponse getCurrentUser() {   
         String url = 'callout:' + QUIP_URL + '/users/current';
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
-        return UserResponse.parse(res.getBody());
+        return CurrentUserResponse.parse(res.getBody());
     }
 
     public ThreadResponse getThread(String id) {
@@ -129,6 +129,55 @@ public class QuipAPI implements IQuipAPI {
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
         return FolderResponse.parse(res.getBody());
+    }
+
+    public Response addMembers(String threadId, List<String> usersAndFolders) {
+        if (usersAndFolders == null || usersAndFolders.size() == 0) {
+            return new Response();
+        }
+        String url = 'callout:' + QUIP_URL + '/threads/add-members';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'thread_id=' + EncodingUtil.urlEncode(threadId, 'UTF-8')
+                    + '&member_ids=' + String.join(usersAndFolders,',');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
+    public Response removeMembers(String threadId, List<String> usersAndFolders) {
+        if (usersAndFolders == null || usersAndFolders.size() == 0) {
+            return new Response();
+        }
+        String url = 'callout:' + QUIP_URL + '/threads/remove-members';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'thread_id=' + EncodingUtil.urlEncode(threadId, 'UTF-8')
+                    + '&member_ids=' + String.join(usersAndFolders,',');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
+    public UserListResponse getUsers(List<String> idsOrEmails) {
+        if (idsOrEmails == null || idsOrEmails.size() == 0) {
+            return new UserListResponse();
+        }
+        String url = 'callout:' + QUIP_URL + '/users/?ids=' + String.join(idsOrEmails, ',');
+        HttpRequest req = newRequest(url);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return UserListResponse.parse(res.getBody());
     }
 
     private HttpRequest newRequest(String url) {

@@ -2,7 +2,7 @@ public interface IQuipAPI {
 
     Boolean likeId(String id);
 
-    UserResponse getCurrentUser();
+    CurrentUserResponse getCurrentUser();
 
     ThreadResponse getThread(String id);
 
@@ -17,4 +17,10 @@ public interface IQuipAPI {
     ThreadResponse createDocument(String title, String content, String type,  List<String> usersAndFolders);
 
     FolderResponse createFolder(String title, String parentId);
+
+    Response addMembers(String threadId, List<String> usersAndFolders);
+
+    Response removeMembers(String threadId, List<String> usersAndFolders);
+
+    UserListResponse getUsers(List<String> idsOrEmails);
 }

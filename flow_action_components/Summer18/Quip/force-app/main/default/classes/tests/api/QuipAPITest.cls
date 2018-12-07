@@ -24,6 +24,12 @@ public class QuipAPITest {
                 res.setBody('{ "folder": { "id": "id", "title" : "title" }, "children": [ { "folder_id" : "1" } ]}');
             } else if (endpoint.endsWith('folders/?ids=1,2')) {
                 res.setBody('{ "1" : { "folder": { "id": "1", "title" : "title" }, "children": [] }, "2": { "folder": { "id": "2", "title" : "title" }, "children": [] } }');
+            } else if (endpoint.endsWith('users/?ids=1')) {
+                res.setBody('{ "1" : { "id": "1", "name" : "name" } }');
+            } else if (endpoint.endsWith('threads/add-members')) {
+                res.setBody('{ "html": "html", "thread": { "id" : "1", "type" : "type", "title" : "title" } }');
+            } else if (endpoint.endsWith('threads/remove-members')) {
+                res.setBody('{ "html": "html", "thread": { "id" : "1", "type" : "type", "title" : "title" } }');
             }
             return res;
         }
@@ -57,7 +63,7 @@ public class QuipAPITest {
     public static void getCurrentUser_ReturnsCurrentUser() {
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         QuipAPI api = new QuipAPI();
-        UserResponse user = api.getCurrentUser();
+        CurrentUserResponse user = api.getCurrentUser();
         System.assertEquals('id', user.id);
     }
 
@@ -116,5 +122,29 @@ public class QuipAPITest {
         QuipAPI api = new QuipAPI();
         FolderListResponse folders = api.getFolderList(new List<String> { '1', '2' });
         System.assertEquals(2, folders.folders.size());
+    }
+
+    @isTest
+    public static void getUsers_ReturnsFolderList() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        UserListResponse users = api.getUsers(new List<String> { '1' });
+        System.assertEquals(1, users.users.size());
+    }
+
+    @isTest
+    public static void addMembers_ReturnsFolderList() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        ThreadResponse thread = (ThreadResponse)api.addMembers('1', new List<String> { '1', '2' });
+        System.assertEquals('1', thread.thread.id);
+    }
+
+    @isTest
+    public static void removeMembers_ReturnsFolderList() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        QuipAPI api = new QuipAPI();
+        ThreadResponse thread = (ThreadResponse)api.removeMembers('1', new List<String> { '1', '2' });
+        System.assertEquals('1', thread.thread.id);
     }
 }

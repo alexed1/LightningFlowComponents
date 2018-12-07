@@ -13,4 +13,8 @@ public interface IQuip {
     Folder createFolder(String name, String parentFolderId);
 
     List<Folder> getFolders(List<String> foldersId);
+
+    void grantAccess(String threadIdOrName, List<String> userIdsOrEmails);
+
+    void revokeAccess(String threadIdOrName, List<String> userIdsOrEmails);
 }

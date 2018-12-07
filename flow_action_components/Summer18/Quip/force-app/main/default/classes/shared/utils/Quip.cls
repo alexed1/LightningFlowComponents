@@ -7,7 +7,7 @@ public class Quip implements IQuip {
     }
 
     private ThreadResponse findThreadByNameOrId(String nameOrId, Boolean isName) {
-        UserResponse currentUser = quipApi.getCurrentUser();
+        CurrentUserResponse currentUser = quipApi.getCurrentUser();
         currentUser.ThrowOnError();
         Set<String> processedFolders = new Set<String>();
         List<String> folderQueue = new List<String>();
@@ -207,7 +207,7 @@ public class Quip implements IQuip {
     }
 
     public Folder findFolder(String idOrName) {
-        UserResponse currentUser = quipApi.getCurrentUser();
+        CurrentUserResponse currentUser = quipApi.getCurrentUser();
         currentUser.ThrowOnError();
         if (String.isBlank(idOrName)) {
             FolderResponse folder = quipApi.getFolder(currentUser.private_folder_id);
@@ -266,5 +266,41 @@ public class Quip implements IQuip {
         FolderResponse folder = quipApi.createFolder(name, parentFolderId);
         folder.throwOnError();
         return toFolder(folder);
+    }
+
+    public void grantAccess(String threadIdOrName, List<String> userIdsOrEmails) {
+        if (userIdsOrEmails == null || userIdsOrEmails.size() == 0) {
+            return;
+        }
+        ThreadResponse thread = quipApi.getThread(threadIdOrName);
+        if (!thread.isSuccess()) {
+            thread = findThreadByName(threadIdOrName);
+        }
+        UserListResponse userList = quipApi.getUsers(userIdsOrEmails);
+        userList.throwOnError();
+        List<String> userIds = new List<String>();
+        for (UserResponse user : userList.users) {
+            userIds.add(user.id);
+        }
+        Response response = quipApi.addMembers(thread.thread.id, userIds);
+        response.throwOnError();
+    }
+
+    public void revokeAccess(String threadIdOrName, List<String> userIdsOrEmails) {
+        if (userIdsOrEmails == null || userIdsOrEmails.size() == 0) {
+            return;
+        }
+        ThreadResponse thread = quipApi.getThread(threadIdOrName);
+        if (!thread.isSuccess()) {
+            thread = findThreadByName(threadIdOrName);
+        }
+        UserListResponse userList = quipApi.getUsers(userIdsOrEmails);
+        userList.throwOnError();
+        List<String> userIds = new List<String>();
+        for (UserResponse user : userList.users) {
+            userIds.add(user.id);
+        }
+        Response response = quipApi.removeMembers(thread.thread.id, userIds);
+        response.throwOnError();
     }
 }

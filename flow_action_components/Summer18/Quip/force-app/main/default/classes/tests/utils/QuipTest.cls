@@ -64,7 +64,7 @@ public class QuipTest {
                 return response;
             }
             if (stubbedMethodName.equalsIgnoreCase('getCurrentUser')) {
-                UserResponse user = new UserResponse();
+                CurrentUserResponse user = new CurrentUserResponse();
                 user.starred_folder_id = 'Folder000001';
                 user.desktop_folder_id = 'Folder000001';
                 user.private_folder_id = 'Folder000001';
@@ -164,7 +164,20 @@ public class QuipTest {
                 response.html = '<table title="Title"><tbody><tr id="row0"><td id="row0-col0"><span>Test</span></td></tr></tbody></table>';
                 return response;                
             }
-
+            if (stubbedMethodName.equalsIgnoreCase('getUsers')) {
+                UserListResponse response = new UserListResponse();
+                UserResponse user = new UserResponse();
+                user.id = 'user1';
+                user.name = 'name1';
+                response.users.add(user);
+                return response;
+            }
+            if (stubbedMethodName.equalsIgnoreCase('addMembers')) {
+                return new Response();
+            }
+            if (stubbedMethodName.equalsIgnoreCase('removeMembers')) {
+                return new Response();
+            }
             System.debug('Unhandled method call: ' + stubbedMethodName);
             return null;
         }
@@ -343,5 +356,31 @@ public class QuipTest {
         List<Folder> folders = quip.getFolders(new List<String> { '1', '3' });
         System.assertEquals('One', folders[0].name);
         System.assertEquals('Three', folders[1].name);
+    }
+
+    @isTest
+    public static void grantAccess_callsApi() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        quip.grantAccess('Thread000001', new List<String> { 'user1' });
+        List<List<Object>> calls = methodCalls.get('addMembers');
+        System.assert(calls != null, 'addMembers method was not called');
+        List<Object> args = calls[0];
+        List<String> users = (List<String>)args[1];
+        System.assertEquals(1, users.size());
+    }
+
+    @isTest
+    public static void revokeAccess_callsApi() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        quip.revokeAccess('Thread000001', new List<String> { 'user1' });
+        List<List<Object>> calls = methodCalls.get('removeMembers');
+        System.assert(calls != null, 'removeMembers method was not called');
+        List<Object> args = calls[0];
+        List<String> users = (List<String>)args[1];
+        System.assertEquals(1, users.size());
     }
 }

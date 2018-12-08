@@ -33,6 +33,7 @@
                        defaultValue='{!v.defaultValue}'
                        parentId="{!v.parentId}"
                        cmpId="{!v.cmpid}"
+                       performLookupOnFocus="true"
                        />
- 
+ 	
 </aura:component>

@@ -17,4 +17,10 @@ public interface IQuip {
     void grantAccess(String threadIdOrName, List<String> userIdsOrEmails);
 
     void revokeAccess(String threadIdOrName, List<String> userIdsOrEmails);
+
+    Folder getFolderByPath(String path, Boolean createIfNotExists);
+
+    void addDocumentToFolder(String threadIdOrName, String folderPath);
+
+    void renameFolder(Folder folder, String newName);
 }

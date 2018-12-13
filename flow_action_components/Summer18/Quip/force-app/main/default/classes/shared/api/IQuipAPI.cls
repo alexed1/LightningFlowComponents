@@ -22,5 +22,7 @@ public interface IQuipAPI {
 
     Response removeMembers(String threadId, List<String> usersAndFolders);
 
+    Response editFolder(String folderId, String newName);
+
     UserListResponse getUsers(List<String> idsOrEmails);
 }

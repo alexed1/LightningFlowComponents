@@ -88,8 +88,8 @@ public class Quip implements IQuip {
         return result;
     }
 
-    public Thread findThread(String idOrName) {
-        if (String.isBlank(idOrName)) {
+    private ThreadResponse findThreadImpl(String idOrName) {
+         if (String.isBlank(idOrName)) {
             throw new QuipException('Id or Name can\'t be blank');
         }
         ThreadResponse threadResponse = null;
@@ -105,7 +105,12 @@ public class Quip implements IQuip {
             throw new QuipException('File "' + idOrName + '" doesn\'t exist');
         }        
         threadResponse.ThrowOnError();
-        return toThread(threadResponse);
+        return threadResponse;
+    }
+
+    public Thread findThread(String idOrName) {
+        ThreadResponse response = findThreadImpl(idOrName);
+        return toThread(response);
     }
 
     public void saveSpreadsheetData(Thread thread, ThreadSheet sheet, List<ThreadCell> cellsToUpdate) {
@@ -301,6 +306,58 @@ public class Quip implements IQuip {
             userIds.add(user.id);
         }
         Response response = quipApi.removeMembers(thread.thread.id, userIds);
+        response.throwOnError();
+    }
+
+    public Folder getFolderByPath(String path, Boolean createIfNotExists) {
+        //If no path is provided then we return private folder
+        Folder folder = findFolder(null);
+        if (String.isBlank(path)) {
+            return folder;
+        }
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        for (String folderName : folderNames) {
+            if (String.isBlank(folderName)) {
+                continue;
+            }
+            List<String> subFoldersId = new List<String>();
+            for (FolderRef subFolderRef : folder.subFolders) {
+                subFoldersId.add(subFolderRef.id);
+            }
+            List<Folder> subFolders = getFolders(subFoldersId);
+            Integer subFolderIndex = -1;
+            for (Integer i = 0; i < subFolders.size(); i++) {
+                if (subFolders[0].name == folderName) {
+                    subFolderIndex = i;
+                    break;
+                }
+            }
+            //If subfolder already exists we take it
+            if (subFolderIndex != -1) {
+                folder = subFolders[subFolderIndex];
+            }
+            //otherwise we create a new subfolder 
+            else if (createIfNotExists) {
+                folder = createFolder(folderName, folder.id);
+            } else {
+                return null;
+            }
+        }
+        return folder;
+    }
+
+    public void addDocumentToFolder(String threadIdOrName, String folderPath) {
+        Folder folder = getFolderByPath(folderPath, true);
+        ThreadResponse thread = findThreadImpl(threadIdOrName);
+        Response response = quipApi.addMembers(thread.Thread.id, new List<String> { folder.id });
+        response.throwOnError();
+    }
+
+    public void renameFolder(Folder folder, String newName) {
+        if (String.isBlank(newName)) {
+            throw new QuipException('Can\'t give an empty name to a folder');
+        }
+        Response response = quipApi.editFolder(folder.id, newName);
         response.throwOnError();
     }
 }

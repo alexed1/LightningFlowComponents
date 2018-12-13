@@ -178,6 +178,22 @@ public class QuipTest {
             if (stubbedMethodName.equalsIgnoreCase('removeMembers')) {
                 return new Response();
             }
+            if (stubbedMethodName.equalsIgnoreCase('createFolder')) {
+                FolderResponse response = new FolderResponse();
+                FolderResponse.Folder folder = new FolderResponse.Folder();
+                folder.id = 'Folder000003';
+                folder.title = 'Folder000003';
+                response.folder = folder;
+                return response;
+            }
+            if (stubbedMethodName.equalsIgnoreCase('editFolder')) {
+                FolderResponse response = new FolderResponse();
+                FolderResponse.Folder folder = new FolderResponse.Folder();
+                folder.id = 'Folder000002';
+                folder.title = 'folder';
+                response.folder = folder;
+                return response;
+            }
             System.debug('Unhandled method call: ' + stubbedMethodName);
             return null;
         }
@@ -382,5 +398,34 @@ public class QuipTest {
         List<Object> args = calls[0];
         List<String> users = (List<String>)args[1];
         System.assertEquals(1, users.size());
+    }
+
+    @isTest
+    public static void getFolderByPath_retrievesFolder() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        Folder folder = quip.getFolderByPath('Folder000002/Folder000003', true);
+        System.assertEquals('Folder000003', folder.id);
+    }
+
+    @isTest
+    public static void addDocumentToFolder_callsApi() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        quip.addDocumentToFolder('Thread000001', 'Folder000001');
+        List<List<Object>> calls = methodCalls.get('addMembers');
+        System.assert(calls != null, 'addMembers method was not called');
+    }
+
+    @isTest
+    public static void renameFolder_callsApi() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(methodCalls));
+        Quip quip = new Quip(api);
+        quip.renameFolder(new Folder('Folder000001', 'Folder000001'), 'Folder000001');
+        List<List<Object>> calls = methodCalls.get('editFolder');
+        System.assert(calls != null, 'editFolder method was not called');
     }
 }

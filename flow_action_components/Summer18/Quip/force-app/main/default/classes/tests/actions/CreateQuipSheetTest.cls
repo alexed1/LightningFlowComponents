@@ -20,7 +20,9 @@ public class CreateQuipSheetTest {
                 return new Folder('3', 'Level 2');
             } else if (stubbedMethodName.equalsIgnoreCase('createThread')) {
                 return new Thread('4');
-            }            
+            } else if (stubbedMethodName.equalsIgnoreCase('getFolderByPath')) {
+                return new Folder('3', 'Level 2');
+            }     
             System.debug('Unknown method ' + stubbedMethodName);
             return null;
         }

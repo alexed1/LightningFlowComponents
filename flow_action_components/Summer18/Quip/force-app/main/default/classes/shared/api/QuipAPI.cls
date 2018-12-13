@@ -167,6 +167,21 @@ public class QuipAPI implements IQuipAPI {
         return ThreadResponse.parse(res.getBody());
     }
 
+    public Response editFolder(String folderId, String newName) {        
+        String url = 'callout:' + QUIP_URL + '/folders/update';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'folder_id=' + EncodingUtil.urlEncode(folderId, 'UTF-8')
+                    + '&title=' + EncodingUtil.urlEncode(newName, 'UTF-8');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return FolderResponse.parse(res.getBody());
+    }
+
     public UserListResponse getUsers(List<String> idsOrEmails) {
         if (idsOrEmails == null || idsOrEmails.size() == 0) {
             return new UserListResponse();

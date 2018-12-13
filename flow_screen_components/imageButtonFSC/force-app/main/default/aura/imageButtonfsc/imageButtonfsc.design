@@ -36,7 +36,8 @@
     <design:attribute name="destinationObjectView" label="destObjectView"  />
     <design:attribute name="destinationWebUrl" label="destWebUrl"  />
     <design:attribute name="destinationFlowTransition" label="destFlowTransition"  />
-    
+    <design:attribute name="fire" label="Image Clicked?"/>
+
     <design:attribute name="actionName" label="action name"/>
     
 </design:component>

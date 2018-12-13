@@ -44,6 +44,7 @@
     
     handleClick : function(cmp, event, helper) {
         helper.navigateFlow(cmp,helper);
+        cmp.set("v.fire", true);
     },
     
     handleMouseOver : function(cmp, event, helper) {

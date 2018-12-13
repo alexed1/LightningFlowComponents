@@ -5,6 +5,9 @@
 		The other for when the mouse button is pressed while over the image
 		
 		This allows for 3-phase or 3D type image buttons to be supported
+
+        12/8/18 - Eric Smith - Added Image Clicked? output attribute for parity with the Navigation component
+
 -->
 
 <aura:component implements="lightning:availableForFlowScreens" access="global">
@@ -48,6 +51,7 @@
     <aura:attribute name="destinationObjectView" type="string"  />
     <aura:attribute name="destinationWebUrl" type="string"  />
     <aura:attribute name="destinationFlowTransition" type="string"  />
+    <aura:attribute name="fire" type="Boolean" default="false" />
     
     <!-- Internal -->
     <aura:attribute name="imageSourceString" type="string"  />

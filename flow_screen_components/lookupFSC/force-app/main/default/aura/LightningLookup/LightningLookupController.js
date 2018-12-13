@@ -15,7 +15,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 ({
     doInit : function(component, event, helper) {
-        
+        console.log('llu init');
         // If a default value is specified, override the whereClause to select it
         component.set("v.saveWhereClause", component.get('v.whereClause'));
         var defaultV = component.get('v.defaultValue');   
@@ -36,6 +36,17 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         helper.hlpSelectItem(component, index);
     },
     toggleMenu : function(component, event, helper) {
+        if(component.get('v.performLookupOnFocus') === true && !helper.isDropDownOpen(component)){
+            var defaultV = component.get('v.defaultValue'); 
+            if(!(!defaultV || defaultV == '')){
+                var newWhere = component.get('v.displayedFieldName')+"='"+defaultV+"'"
+                component.set("v.whereClause", newWhere);
+            }
+            helper.hlpPerformLookup(component, true);
+        }
+        else if(component.get('v.availableRecords')){
+            helper.getRecordsFromList(component);
+        }
         helper.hlpToggleMenu(component);
     },
     checkValidity : function(component, event, helper) {
@@ -46,7 +57,11 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     },
     setInputValue : function(component, event, helper) {
         var selectedName = component.get("v.selectedName");
-        document.getElementById(component.getGlobalId() + "_myinput").value = selectedName;            
+        console.log('selectedName: ' + selectedName);
+        if(document.getElementById(component.getGlobalId() + "_myinput")){
+            document.getElementById(component.getGlobalId() + "_myinput").value = selectedName;   
+        }
+        console.log('selectedName changed: ' + selectedName);         
     },
     setFilterInputName : function(component, event, helper) {
         var selectedFilterName = component.get("v.selectedFilterName");
@@ -69,6 +84,15 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         helper.clearField(component,true);
         helper.toggleIcons(component,true);
     },
+
+    selectValueChange : function(component, event, helper){
+        var selectedValue = component.get("v.selectedValue");
+        if(!selectedValue){
+            component.clearField(component,true);
+            // helper.toggleIcons(component,true);
+        }
+    },
+
     /**
 	 * support for highlighting suggestions using the up and down arrow
 	 * support for selecting highlighted record by pressing Enter

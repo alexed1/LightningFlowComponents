@@ -64,6 +64,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
+                  console.log('bad getField')
                     return;
                 }
                 if($A.util.isUndefinedOrNull(component.get('v.sObjectName'))){
@@ -97,6 +98,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
+                  console.log('bad getFieldHelp')
                     return;
                 }
                 if($A.util.isUndefinedOrNull(component.get('v.helpText'))){
@@ -116,13 +118,19 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     hlpGetRecords : function(component, isInit) {
         
         try{
-            var action = component.get("c.getRecords");
-            var sObjectName = component.get("v.sObjectName");
+            var records = component.get('v.availableRecords');
+            var searchWhereClause = component.get("v.searchWhereClause");
             var displayedFieldName = component.get("v.displayedFieldName");
             var valueFieldName = component.get("v.valueFieldName");
+            if(!document.getElementById(component.getGlobalId() + "_myinput")){
+                return;
+            }
+            
+            var action = component.get("c.getRecords");
+            var sObjectName = component.get("v.sObjectName");
+            if(!sObjectName) return;
             var otherFields = component.get("v.otherFields");
             var whereClause = component.get("v.whereClause");
-            var searchWhereClause = component.get("v.searchWhereClause");
             var filteredFieldName = component.get("v.filteredFieldName");
             var filterFieldValue = component.get("v.filterFieldValue");
             var isParent = (component.get('v.parentChild') == 'Parent');
@@ -147,9 +155,18 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                               "filteredFieldName" : filteredFieldName,
                               "filterFieldValue" : filterFieldValue,
                               "isParent" : isParent});
+            console.log({ "sObjectName" : sObjectName ,
+                              "valueFieldName" : valueFieldName,
+                              "otherFields" : otherFields,
+                              "displayedFieldName" : displayedFieldName,
+                              "whereClause" : whereClause,
+                              "filteredFieldName" : filteredFieldName,
+                              "filterFieldValue" : filterFieldValue,
+                              "isParent" : isParent});
             
             action.setCallback(this, function(response){
                 if(!this.handleResponse(component, response)){
+                  console.log('bad getRecords')
                     return;
                 }
                 var resp = response.getReturnValue();
@@ -166,9 +183,45 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             $A.enqueueAction(action);
         }
         catch(e){
+            console.error(e);
             this.showError(component, e.message);
         }
         
+    },
+
+    getRecordsFromList : function(component){
+      var records = component.get('v.availableRecords');
+      var searchWhereClause = component.get("v.searchWhereClause");
+      var displayedFieldName = component.get("v.displayedFieldName");
+      var valueFieldName = component.get("v.valueFieldName");
+      if(!document.getElementById(component.getGlobalId() + "_myinput")){
+          return;
+      }
+      var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
+      if(records){
+          var ld = [], lv = [], lr = [];
+          for(var i in records){
+            var r = records[i];
+            var reg = RegExp('.*' + searchString + '.*');
+            if(reg.test(r[displayedFieldName])){
+              ld.push(r[displayedFieldName]);
+              lv.push(r[valueFieldName]);
+              lr.push(r);
+            }
+
+          }
+          var sn = component.get('v.selectedName');
+          var sv = component.get('v.selectedValue');
+          var sr = component.get('v.selectedRecord');
+          if(sn && sv && sr){
+              ld.push(sn);
+              lv.push(sv);
+              lr.push(sr);
+          }
+          component.set("v.matchedListDisplay", ld);
+          component.set("v.matchedListValue", lv);
+          component.set("v.matchedListRecords", lr);
+      }
     },
     /**
      * validate lookup field
@@ -197,7 +250,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      * server call to query typeahead
      * @param  {[aura]} component []
      */
-    hlpPerformLookup : function(component) {
+    hlpPerformLookup : function(component, fromToggle) {
         try{
             // we need to reset selected value and and name because the user is typing again, but since
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
@@ -205,12 +258,16 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
             this.clearField(component,false);
             document.getElementById(component.getGlobalId() + "_myinput").value = searchString;
+
+            
             
             // since user is typing, clear the default value and reset the whereClause
-            component.set("v.defaultValue","");            
-            component.set("v.whereClause", component.get('v.saveWhereClause'));
+            if(!fromToggle){
+              component.set("v.defaultValue","");            
+              component.set("v.whereClause", component.get('v.saveWhereClause'));
+            }
             
-            if(searchString.length < 2){
+            if(searchString.length < 2 && !fromToggle){
                 component.set("v.searchWhereClause", '');
                 component.set("v.selectedValue", '');
                 var selectedId;
@@ -304,12 +361,14 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      * fire EvtClearLookup app event
      * @param  {[String]} name  [component id]
      */
-    fireClear : function(name){
+    fireClear : function(name, rid, rname){
         console.log('EVENT: EvtClearLookup');
         var ev = $A.getEvt('c:EvtClearLookup');
         /* var ev = component.get("e.clearLookup"); */
         ev.setParams({
-            'name' : name
+            'name' : name,
+            'recordId' : rid,
+            'recordName' : rname
         });
         ev.fire();
     },
@@ -382,12 +441,16 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 'objId' : val,
                 'label' : component.get('v.displayedFieldName')
             });
+            
             action.setCallback(this,function(response){
                 if(!this.handleResponse(component, response)){
+                  console.log('bad init field');
                     return;
                 }
                 var res = response.getReturnValue();
-                this.populateField(component,res.lstDisplay[0],res.lstValue[0]);
+                if(res.lstDisplay && res.lstValue){
+                  this.populateField(component,res.lstDisplay[0],res.lstValue[0]);
+                }
             })
             
             $A.enqueueAction(action);
@@ -457,6 +520,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             this.showError(component, e.message);
         }
     },
+
+    isDropDownOpen : function (component){
+        return $A.util.hasClass(component.find("dropDown"),'slds-is-open');
+    },
     
     /**
      * hides dropdown box
@@ -499,13 +566,21 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     clearField : function(component, fireEvent){
         try{
+          var ov = component.get('v.selectedValue');
+          var oname = component.get('v.selectedName');
             component.set('v.selectedName',null);
             component.set('v.selectedValue',null);
+            component.set('v.selectedRecord',null);
             component.find('pillsdiv').set('v.body',null);
+            component.set("v.matchedListDisplay", null);
+            component.set("v.matchedListValue", null);
+            component.set("v.matchedListRecords", null);
             $A.util.removeClass(component.find("inputField"),'hide');
             $A.util.addClass(component.find('removebtn'),'hide');
+            
+            
             if(fireEvent)
-                this.fireClear(component.get('v.cmpId'));
+                this.fireClear(component.get('v.cmpId'), ov, oname);
         }
         catch(e){
             this.showError(component, e.message);

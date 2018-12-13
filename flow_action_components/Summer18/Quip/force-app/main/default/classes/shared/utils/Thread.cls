@@ -1,7 +1,5 @@
-public class Thread {
+public class Thread extends ThreadRef {
     public List<ThreadSheet> sheets;
-
-    public String id;
 
     public String type;
 
@@ -20,7 +18,7 @@ public class Thread {
     }
 
     public Thread(String id, String type, String title, String link, String html, List<String> userIds, String parentFolderId) {
-        this.id = id;
+        super(id);
         this.type = type;
         this.title = title;
         this.link = link;

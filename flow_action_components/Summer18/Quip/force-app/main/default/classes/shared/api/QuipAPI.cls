@@ -22,14 +22,14 @@ public class QuipAPI implements IQuipAPI {
         return true;
     }
 
-    public UserResponse getCurrentUser() {   
+    public CurrentUserResponse getCurrentUser() {   
         String url = 'callout:' + QUIP_URL + '/users/current';
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
-        return UserResponse.parse(res.getBody());
+        return CurrentUserResponse.parse(res.getBody());
     }
 
     public ThreadResponse getThread(String id) {
@@ -66,6 +66,20 @@ public class QuipAPI implements IQuipAPI {
         return FolderResponse.parse(res.getBody());
     }
 
+    public FolderListResponse getFolderList(List<String> id) {
+        List<String> idList = new List<String>();
+        for (String rawId: id) {
+            idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
+        }
+        String url = 'callout:' + QUIP_URL + '/folders/?ids=' + String.join(idList, ',');
+        HttpRequest req = newRequest(url);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return FolderListResponse.parse(res.getBody());
+    }
+
     public ThreadResponse editDocument(String threadId, String content, String sectionId, SectionLocation location) {
         String url = 'callout:' + QUIP_URL + '/threads/edit-document'; 
         HttpRequest req = newRequest(url);
@@ -100,6 +114,85 @@ public class QuipAPI implements IQuipAPI {
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
         return ThreadResponse.parse(res.getBody());
+    }
+
+    public FolderResponse createFolder(String title, String parentId) {
+        String url = 'callout:' + QUIP_URL + '/folders/new';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'title=' + EncodingUtil.urlEncode(title, 'UTF-8')
+                    + '&parent_id=' + EncodingUtil.urlEncode(parentId, 'UTF-8');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return FolderResponse.parse(res.getBody());
+    }
+
+    public Response addMembers(String threadId, List<String> usersAndFolders) {
+        if (usersAndFolders == null || usersAndFolders.size() == 0) {
+            return new Response();
+        }
+        String url = 'callout:' + QUIP_URL + '/threads/add-members';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'thread_id=' + EncodingUtil.urlEncode(threadId, 'UTF-8')
+                    + '&member_ids=' + String.join(usersAndFolders,',');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
+    public Response removeMembers(String threadId, List<String> usersAndFolders) {
+        if (usersAndFolders == null || usersAndFolders.size() == 0) {
+            return new Response();
+        }
+        String url = 'callout:' + QUIP_URL + '/threads/remove-members';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'thread_id=' + EncodingUtil.urlEncode(threadId, 'UTF-8')
+                    + '&member_ids=' + String.join(usersAndFolders,',');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return ThreadResponse.parse(res.getBody());
+    }
+
+    public Response editFolder(String folderId, String newName) {        
+        String url = 'callout:' + QUIP_URL + '/folders/update';
+        HttpRequest req = newRequest(url);
+        req.setMethod('POST');
+        req.setHeader('Content-Type', 'application/x-www-form-urlencoded');
+        String body = 'folder_id=' + EncodingUtil.urlEncode(folderId, 'UTF-8')
+                    + '&title=' + EncodingUtil.urlEncode(newName, 'UTF-8');
+        req.setBody(body);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return FolderResponse.parse(res.getBody());
+    }
+
+    public UserListResponse getUsers(List<String> idsOrEmails) {
+        if (idsOrEmails == null || idsOrEmails.size() == 0) {
+            return new UserListResponse();
+        }
+        String url = 'callout:' + QUIP_URL + '/users/?ids=' + String.join(idsOrEmails, ',');
+        HttpRequest req = newRequest(url);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return UserListResponse.parse(res.getBody());
     }
 
     private HttpRequest newRequest(String url) {

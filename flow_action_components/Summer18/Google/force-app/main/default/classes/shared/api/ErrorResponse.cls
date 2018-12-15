@@ -20,7 +20,7 @@ public virtual class ErrorResponse{
 		public String location;	//q
 	}
 
-    public void ThrowOnError() {
+    public void throwOnError() {
         if (error != null) {
             throw new GoogleException(error.message);
         }

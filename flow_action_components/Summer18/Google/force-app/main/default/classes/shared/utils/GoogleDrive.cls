@@ -14,15 +14,16 @@ public class GoogleDrive implements IGoogleDrive {
     }
 
     public String findFileIdByName(String name, String fileType) {
-        DriveFileListResponse response = googleApi.driveFilesList(name);
+        DriveFileListResponse response = googleApi.driveFilesList(name, fileType, null);
         response.ThrowOnError();
         if (response.files.size() == 0) {
             return null;
         }
-        for (DriveFileListResponse.File file: response.files) {            
-            if (String.isBlank(fileType) || file.mimeType.equalsIgnoreCase(fileType)) {
-                return file.id;
-            }
+        for (FileResponse file: response.files) {  
+            if (file.trashed) {
+                continue;
+            }          
+            return file.id;
         }
         return null;
     }
@@ -103,4 +104,53 @@ public class GoogleDrive implements IGoogleDrive {
         response.ThrowOnError();
         return new ClonedFile(response.id, response.webViewLink);
     }
-}
+
+    public File getFolder(String path, Boolean forceCreate) { 
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1;  
+        String parentFolder = isPath ? 'root' : null;
+        File result = null;
+        for (String folderName : folderNames) {
+            if (String.isBlank(folderName)) {
+                continue;
+            }
+            DriveFileListResponse response = googleApi.driveFilesList(folderName, FileMimeTypes.GOOGLE_FOLDER, parentFolder);
+            response.throwOnError();
+            List<FileResponse> files = response.getNonTrashedFiles();
+            if (files.size() > 0) {
+                parentFolder = files[0].id;
+                result = toFile(files[0]);
+                
+            } else if (forceCreate) {
+                FileResponse fileResponse = googleApi.createFile(folderName, FileMimeTypes.GOOGLE_FOLDER, parentFolder);
+                fileResponse.throwOnError();
+                parentFolder = fileResponse.id;
+                result = toFile(fileResponse);
+            } else {
+                return null;
+            }
+        }
+        return result;
+    }
+
+    public File createSpreadsheet(String path) {
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1; 
+        String parent = null;
+        if (isPath) {
+            List<String> subFolders = new List<String>();
+            for (Integer i = 0; i < folderNames.size() - 1; i++) {
+                subFolders.add(folderNames[i]);
+            }
+            File parentFolder = getFolder(String.join(subFolders,'/'), true);
+            parent = parentFolder.id;
+        }
+        FileResponse result = googleApi.createFile(folderNames[folderNames.size() - 1], FileMimeTypes.GOOGLE_SHEET, parent);
+        result.throwOnError(); 
+        return toFile(result);
+    }
+
+    private File toFile(FileResponse response) {
+        return new File(response.id, response.name, response.mimeType, response.webViewLink);
+    }
+}   

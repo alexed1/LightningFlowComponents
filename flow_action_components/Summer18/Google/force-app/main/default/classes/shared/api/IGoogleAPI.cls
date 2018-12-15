@@ -1,12 +1,14 @@
 public interface IGoogleAPI {
 
-    Boolean LikeId(String id);
+    Boolean likeId(String id);
 
-    DriveFileListResponse DriveFilesList(String name);
+    DriveFileListResponse driveFilesList(String name, String mimeType, String parentId);
 
-    SheetsSheetResponse SheetsSpreadsheetsGet(String id);
+    SheetsSheetResponse sheetsSpreadsheetsGet(String id);
 
-    ErrorResponse SheetsValuesBatchUpdate(String id, SheetsValuesBatchUpdateRequest request);
+    ErrorResponse sheetsValuesBatchUpdate(String id, SheetsValuesBatchUpdateRequest request);
 
-    DriveFilesCopyResponse CopyFile(String id, String newName);
+    DriveFilesCopyResponse copyFile(String id, String newName);
+
+    FileResponse createFile(String name, String mimeType, String parentId);
 }

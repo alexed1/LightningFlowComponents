@@ -9,4 +9,8 @@ public interface IGoogleDrive {
     void saveSpreadsheetData(String id, String sheetTitle, List<CellValue> values);
 
     ClonedFile cloneFile(String id, String newName);
+
+    File getFolder(String path, Boolean forceCreate);
+
+    File createSpreadsheet(String path); 
 }

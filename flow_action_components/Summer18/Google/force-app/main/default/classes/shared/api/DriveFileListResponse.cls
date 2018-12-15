@@ -4,16 +4,20 @@
 public class DriveFileListResponse extends ErrorResponse{
 	public String kind;	//drive#fileList
 	public boolean incompleteSearch;
-	public File[] files;
-
-	public class File {
-		public String kind;	//drive#file
-		public String id;	//1A7Td7yl6wbxGhlsjouwO-N3sRyTDq-M5p579awuYTQo
-		public String name;	//Api Test
-		public String mimeType;	//application/vnd.google-apps.spreadsheet
-	}
+	public FileResponse[] files;
 
 	public static DriveFileListResponse parse(String json){
 		return (DriveFileListResponse) System.JSON.deserialize(json, DriveFileListResponse.class);
+	}
+
+	public List<FileResponse> getNonTrashedFiles() {
+		List<FileResponse> result = new List<FileResponse>();
+		for (FileResponse file : files) {
+			if (file.trashed) {
+				continue;
+			}
+			result.add(file);
+		}
+		return result;
 	}
 }

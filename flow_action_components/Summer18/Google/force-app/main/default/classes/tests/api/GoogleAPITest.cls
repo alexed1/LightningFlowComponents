@@ -8,7 +8,7 @@ public class GoogleAPITest {
             System.debug('Test call for: ' + endpoint);
             HttpResponse res = new HttpResponse();
             res.setStatusCode(200);       
-            if (endpoint.contains('files?q=name')) {
+            if (endpoint.contains('files?q=name') && req.getMethod() == 'GET') {
                 res.setBody(
                     '{'+
                     ' "kind": "drive#fileList",'+
@@ -24,6 +24,9 @@ public class GoogleAPITest {
                     '  }'+
                     ' ]'+
                     '}');
+            }
+            else if (endpoint.contains('files?fields=') && req.getMethod() == 'POST') {
+                res.setBody('{ "id" : "test", "name" : "test name", "mimeType" : "type", "webViewLink": "link", "parents" : [ "parent" ], "trashed": false }');
             }
             else if (endpoint.contains('spreadsheets') && endpoint.contains('?includeGridData=true')) {
                 res.setBody(
@@ -73,15 +76,15 @@ public class GoogleAPITest {
     }
 
     @isTest
-    public static void DriveFilesList_ParsedData() {
+    public static void driveFilesList_ParsedData() {
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         GoogleAPI api = new GoogleAPI();
-        DriveFileListResponse response = api.DriveFilesList('Name');
+        DriveFileListResponse response = api.driveFilesList('Name', null, null);
         System.assertEquals('id', response.files[0].id);
     }
 
     @isTest
-    public static void SheetsSpreadsheetsGet_ParsedData() {
+    public static void sheetsSpreadsheetsGet_ParsedData() {
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         GoogleAPI api = new GoogleAPI();
         SheetsSheetResponse response = api.SheetsSpreadsheetsGet('Id');
@@ -89,7 +92,7 @@ public class GoogleAPITest {
     }
 
     @isTest
-    public static void SheetsValuesBatchUpdate_ParsedData() {
+    public static void sheetsValuesBatchUpdate_ParsedData() {
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         GoogleAPI api = new GoogleAPI();
         ErrorResponse response = api.SheetsValuesBatchUpdate('Id', new SheetsValuesBatchUpdateRequest());
@@ -97,7 +100,7 @@ public class GoogleAPITest {
     }
 
     @isTest
-    public static void CopyFile_FailsOnEmptyId() {
+    public static void copyFile_FailsOnEmptyId() {
         try {
             new GoogleApi().CopyFile(null, 'test');
             System.assert(false, 'Must fail');
@@ -108,7 +111,7 @@ public class GoogleAPITest {
     }
 
     @isTest
-    public static void CopyFile_FailsOnEmptyName() {
+    public static void copyFile_FailsOnEmptyName() {
         try {
             new GoogleApi().CopyFile('test', null);
             System.assert(false, 'Must fail');
@@ -119,12 +122,24 @@ public class GoogleAPITest {
     }   
 
     @isTest
-    public static void CopyFile_ReturnsDataOnCopiedFile() {
+    public static void copyFile_ReturnsDataOnCopiedFile() { 
         Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
         GoogleAPI api = new GoogleAPI();
         DriveFilesCopyResponse response = api.CopyFile('test id', 'test name');
         System.assertEquals('test copy', response.id);
         System.assertEquals('test link', response.webViewLink);
+        System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void createFile_createsFile() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        FileResponse response = api.createFile('test name', 'type', 'parent');
+        System.assertEquals('test', response.id);
+        System.assertEquals('type', response.mimeType);
+        System.assertEquals('link', response.webViewLink);
+        System.assertEquals(1, response.parents.size());
         System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

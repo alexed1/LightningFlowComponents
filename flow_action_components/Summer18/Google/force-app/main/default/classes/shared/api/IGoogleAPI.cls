@@ -13,4 +13,6 @@ public interface IGoogleAPI {
     FileResponse createFile(String name, String mimeType, String parentId);
 
     FileResponse renameFile(String id, String newName);
+
+    ErrorResponse deleteFile(String id);
 }

@@ -16,5 +16,7 @@ public interface IGoogleDrive {
 
     void renameFile(File file, String newName);
 
+    void deleteFile(File file);
+
     File createSpreadsheet(String path); 
 }

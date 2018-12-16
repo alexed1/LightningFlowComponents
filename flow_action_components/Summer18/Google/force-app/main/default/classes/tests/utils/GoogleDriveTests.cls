@@ -25,6 +25,14 @@ public class GoogleDriveTests {
                     response.files = new List<FileResponse>();
                     return response;
                 }
+                if (fileName == 'Trashed') {
+                    DriveFileListResponse response = new DriveFileListResponse(); 
+                    response.files = new List<FileResponse>();
+                    response.files.Add(new FileResponse());
+                    response.files[0].id = 'One';
+                    response.files[0].trashed = true;
+                    return response;
+                }
                 if (fileName == 'Exception') {
                     DriveFileListResponse response = new DriveFileListResponse();
                     response.error = new ErrorResponse.Errors();
@@ -154,6 +162,14 @@ public class GoogleDriveTests {
         } catch (GoogleException ex) {
             System.assertEquals('Exception', ex.getMessage());
         }
+    }
+
+    @isTest
+    public static void findFileIdByName_WhenAllFilesAreInTrash_ReturnsNull() {
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        String id = drive.findFileIdByName('Trashed');
+        System.assert(String.isBlank(id));
     }
 
     @isTest

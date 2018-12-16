@@ -159,6 +159,11 @@ public class GoogleDrive implements IGoogleDrive {
         response.throwOnError();
     }
 
+    public void deleteFile(File file) {
+        ErrorResponse response = googleApi.deleteFile(file.id);
+        response.throwOnError();
+    }
+
     public File createSpreadsheet(String path) {
         List<String> folderNames = path.trim().split('[\\\\\\/]');
         Boolean isPath = folderNames.size() > 1; 

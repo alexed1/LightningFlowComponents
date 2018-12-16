@@ -65,12 +65,14 @@ public class GoogleAPITest {
                 res.setBody(JSON.serialize(new ErrorResponse()));
             } else if (endpoint.contains('copy?fields')) {
                 res.setBody('{ "id": "test copy", "webViewLink": "test link" }');
-            } else if(endpoint.endsWith('files/rename')) {
+            } else if (endpoint.endsWith('files/rename')) {
                 res.setBody('{ "id": "rename", "webViewLink": "test link" }');
-            } else {
+            } else if (endpoint.endsWith('files/delete')) {
+                res.setBody('{}');
+            }
+            else {
                 System.debug('Unknown endpoint: ' + endpoint);
             }
-
             return res;
         }
     }
@@ -149,6 +151,14 @@ public class GoogleAPITest {
         GoogleAPI api = new GoogleAPI();
         FileResponse response = api.renameFile('rename', 'rename');
         System.assertEquals('rename', response.id);
+        System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void deleteFile_deletesFile() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        ErrorResponse response = api.deleteFile('delete');
         System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

@@ -126,6 +126,19 @@ public class GoogleAPI implements IGoogleAPI {
         return FileResponse.parse(res.getBody());
     }
 
+    public ErrorResponse deleteFile(String id) {
+        System.debug('Deleting Google file with id "' + id + '"');
+        String url = 'callout:' + GOOGLE_DRIVE_CREDENTIALS + '/files/' + id;
+        System.debug('Google Drive URL: ' + url);
+        Http http = new Http();
+        HttpRequest req = newRequest(url, 'DELETE', null);
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        String responseBody = res.getBody();
+        return String.isBlank(responseBody) ? new ErrorResponse() : ErrorResponse.parse(res.getBody());
+    }
+
     private HttpRequest newRequest(String url) {
         return newRequest(url, 'GET', null);
     }

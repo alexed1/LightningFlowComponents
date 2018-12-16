@@ -12,5 +12,9 @@ public interface IGoogleDrive {
 
     File getFolder(String path, Boolean forceCreate);
 
+    File getFile(String path, String mimeType);
+
+    void renameFile(File file, String newName);
+
     File createSpreadsheet(String path); 
 }

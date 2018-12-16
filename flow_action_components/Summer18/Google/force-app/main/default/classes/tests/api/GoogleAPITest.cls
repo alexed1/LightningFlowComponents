@@ -61,12 +61,12 @@ public class GoogleAPITest {
                     ' ]'+
                     '}'
                 );
-            }
-            else if (endpoint.contains('spreadsheets') && endpoint.contains('values:batchUpdate')) {
+            } else if (endpoint.contains('spreadsheets') && endpoint.contains('values:batchUpdate')) {
                 res.setBody(JSON.serialize(new ErrorResponse()));
-            }
-            else if (endpoint.contains('copy?fields')) {
+            } else if (endpoint.contains('copy?fields')) {
                 res.setBody('{ "id": "test copy", "webViewLink": "test link" }');
+            } else if(endpoint.endsWith('files/rename')) {
+                res.setBody('{ "id": "rename", "webViewLink": "test link" }');
             } else {
                 System.debug('Unknown endpoint: ' + endpoint);
             }
@@ -140,6 +140,15 @@ public class GoogleAPITest {
         System.assertEquals('type', response.mimeType);
         System.assertEquals('link', response.webViewLink);
         System.assertEquals(1, response.parents.size());
+        System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void renameFile_renamesFile() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        FileResponse response = api.renameFile('rename', 'rename');
+        System.assertEquals('rename', response.id);
         System.assertEquals(null, response.error, 'Error must be empty');
     }
 }

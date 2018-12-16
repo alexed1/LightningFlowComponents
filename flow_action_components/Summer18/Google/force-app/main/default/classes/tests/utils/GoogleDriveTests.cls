@@ -52,6 +52,14 @@ public class GoogleDriveTests {
                     response.files = new List<FileResponse>();
                     return response;
                 }
+                if (fileName == 'File') {
+                    DriveFileListResponse response = new DriveFileListResponse(); 
+                    response.files = new List<FileResponse>();response.files = new List<FileResponse>();
+                    response.files.Add(new FileResponse());
+                    response.files[0].id = 'File';
+                    response.files[0].trashed = false;
+                    return response;
+                }
 
                 System.debug('Unexpected argument: ' + fileName);
                 return null;
@@ -63,6 +71,14 @@ public class GoogleDriveTests {
                     response.id = 'Three';
                     return response;
                 }
+                if (fileName == 'Two') {
+                    FileResponse response = new FileResponse();
+                    response.id = 'Two';
+                    return response;
+                }
+            }
+            if (stubbedMethodName.equalsIgnoreCase('renameFile')) {
+                String fileName = listOfArgs[0].toString();
                 if (fileName == 'Two') {
                     FileResponse response = new FileResponse();
                     response.id = 'Two';
@@ -187,5 +203,20 @@ public class GoogleDriveTests {
         GoogleDrive drive = new GoogleDrive(api);
         File file = drive.createSpreadsheet('One/Two');
         System.assertEquals('Two', file.id); 
+    }
+
+    @isTest
+    public static void renameSpreadsheet_renamesFile() {        
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        drive.renameFile(new File('Two', null, null, null), 'NewName');
+    }
+
+    @isTest
+    public static void getFile_returnsFile() {        
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        File file = drive.getFile('One/Two/File', 'type');
+        System.assertEquals('File', file.id);
     }
 }

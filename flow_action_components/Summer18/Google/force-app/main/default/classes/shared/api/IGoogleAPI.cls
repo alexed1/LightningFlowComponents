@@ -11,4 +11,6 @@ public interface IGoogleAPI {
     DriveFilesCopyResponse copyFile(String id, String newName);
 
     FileResponse createFile(String name, String mimeType, String parentId);
+
+    FileResponse renameFile(String id, String newName);
 }

@@ -133,6 +133,32 @@ public class GoogleDrive implements IGoogleDrive {
         return result;
     }
 
+    public File getFile(String path, String mimeType) {
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1; 
+        String parent = null;
+        if (isPath) {
+            List<String> subFolders = new List<String>();
+            for (Integer i = 0; i < folderNames.size() - 1; i++) {
+                subFolders.add(folderNames[i]);
+            }
+            File parentFolder = getFolder(String.join(subFolders,'/'), true);
+            parent = parentFolder.id;
+        }
+        String fileName = folderNames[folderNames.size() - 1];
+        DriveFileListResponse fileListResponse = googleApi.driveFilesList(fileName, mimeType, parent);
+        fileListResponse.throwOnError();
+        for (FileResponse fileResponse : fileListResponse.files) {
+            return toFile(fileResponse);
+        }
+        return null; 
+    }
+
+    public void renameFile(File file, String newName) { 
+        FileResponse response = googleApi.renameFile(file.id, newName);
+        response.throwOnError();
+    }
+
     public File createSpreadsheet(String path) {
         List<String> folderNames = path.trim().split('[\\\\\\/]');
         Boolean isPath = folderNames.size() > 1; 

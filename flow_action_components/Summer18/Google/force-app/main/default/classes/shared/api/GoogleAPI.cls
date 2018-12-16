@@ -112,6 +112,20 @@ public class GoogleAPI implements IGoogleAPI {
         return FileResponse.parse(res.getBody());
     }
 
+    public FileResponse renameFile(String id, String newName) {
+        System.debug('Renaming Google file with id "' + id + '". New name will be "' + newName + '"');
+        String url = 'callout:' + GOOGLE_DRIVE_CREDENTIALS + '/files/' + id;
+        System.debug('Google Drive URL: ' + url);
+        Map<String, Object> body = new Map<String, Object>();
+        body.put('name', newName);
+        Http http = new Http();
+        HttpRequest req = newRequest(url, 'PATCH', body);
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        return FileResponse.parse(res.getBody());
+    }
+
     private HttpRequest newRequest(String url) {
         return newRequest(url, 'GET', null);
     }
@@ -119,7 +133,12 @@ public class GoogleAPI implements IGoogleAPI {
     private HttpRequest newRequest(String url, String method, Object body) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);
-        req.setMethod(method);
+        if (method == 'PATCH') {
+            req.setMethod('POST');
+            req.setHeader('X-HTTP-Method-Override','PATCH');
+        } else {
+            req.setMethod(method);
+        }
         req.setHeader('Accept', 'application/json, text/json');
         req.setHeader('Content-Type', 'application/json');
         if (body != null) {

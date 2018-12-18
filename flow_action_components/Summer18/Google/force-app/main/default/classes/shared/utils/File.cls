@@ -14,4 +14,8 @@ public class File {
         this.mimeType = mimeType;
         this.webViewLink = webViewUrl;
     }
+
+    public File(String id) {
+        this(id, null, null, null);
+    }
 }

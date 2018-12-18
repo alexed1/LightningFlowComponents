@@ -11,8 +11,12 @@ public class GetGoogleSheetsDataTest {
             List<String> listOfParamNames,
             List<Object> listOfArgs) {
             //Pretend that file Id equals file name requested
-            if (stubbedMethodName == 'FindFileIdByName') {
-                return listOfArgs[0];
+            if (stubbedMethodName == 'getFile') {
+                String fileId = listOfArgs[0].toString();
+                if (fileId == 'DoesntExist') {
+                    return null;
+                }
+                return new File(fileId);
             }
             if (stubbedMethodName == 'GetSpreadsheetData') {
                 String fileId = listOfArgs[0].toString();
@@ -140,6 +144,16 @@ public class GetGoogleSheetsDataTest {
         System.assertEquals(false, response.IsSuccess);
         System.assertEquals('Address "Invalid" doesn\'t contain row part', response.ErrorMessage);
         System.assert(String.isBlank(response.Value5));
+    } 
+    
+    @isTest
+    public static void GetGoogleSheetsDataImpl_WhenFileDoesntExist_ThrowsException() {
+        IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
+        GetGoogleSheetsData.Request request = new GetGoogleSheetsData.Request();
+        request.SpreadsheetName = 'DoesntExist';
+        GetGoogleSheetsData.Response response = GetGoogleSheetsData.GetGoogleSheetsDataImpl(drive, request);
+        System.assert(!response.IsSuccess);
+        System.assertEquals('Google Sheet with the name "DoesntExist" doesn\'t exist' , response.ErrorMessage);
     }
 
     @isTest

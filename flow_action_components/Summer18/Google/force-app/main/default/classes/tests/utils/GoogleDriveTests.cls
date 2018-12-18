@@ -72,6 +72,12 @@ public class GoogleDriveTests {
                 System.debug('Unexpected argument: ' + fileName);
                 return null;
             }
+            if (stubbedMethodName.equalsIgnoreCase('copyFile')) {
+                DriveFilesCopyResponse response = new DriveFilesCopyResponse();
+                response.id = 'clone';
+                response.webViewLink = 'clone';
+                return response;
+            }
             if (stubbedMethodName.equalsIgnoreCase('createFile')) {
                 String fileName = listOfArgs[0].toString();
                 if (fileName == 'Three') {
@@ -92,6 +98,24 @@ public class GoogleDriveTests {
                     response.id = 'Two';
                     return response;
                 }
+            }
+            if (stubbedMethodName.equalsIgnoreCase('getPermissions')) {
+                PermissionListResponse response = new PermissionListResponse();
+                PermissionResponse permission = new PermissionResponse();
+                permission.id = 'permission';
+                permission.emailAddress = 'email';
+                response.permissions.add(permission);
+                return response;
+            }
+            if (stubbedMethodName.equalsIgnoreCase('deletePermission')) {
+                String fileId = listOfArgs[0].toString();
+                String permissionid = listOfArgs[1].toString();
+                if (fileId == 'One' && permissionid == 'permission') {
+                    return new ErrorResponse();
+                }
+            }
+            if (stubbedMethodName.equalsIgnoreCase('createPermission')) {
+                return new PermissionResponse();
             }
             if (stubbedMethodName.equalsIgnoreCase('sheetsSpreadsheetsGet')) {
                 String fileId = listOfArgs[0].toString();
@@ -134,42 +158,6 @@ public class GoogleDriveTests {
             System.debug('Unknown method: ' + stubbedMethodName);
             return null;
         }
-    }
-
-    @isTest
-    public static void findFileIdByName_WhenFileExists_RetrievesFileId() {
-        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
-        GoogleDrive drive = new GoogleDrive(api);
-        String id = drive.findFileIdByName('Exists');
-        System.assertEquals('test', id);
-    }
-
-    @isTest
-    public static void findFileIdByName_WhenFileDoesntExist_ReturnsNull() {
-        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
-        GoogleDrive drive = new GoogleDrive(api);
-        String id = drive.findFileIdByName('DoesntExist');
-        System.assert(String.isBlank(id));
-    }
-
-    @isTest
-    public static void findFileIdByName_WhenGoogleReturnsError_ThrowsException() {
-        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
-        GoogleDrive drive = new GoogleDrive(api);
-        try {
-            String id = drive.findFileIdByName('Exception');
-            System.assert(false, 'Exception was not thrown');
-        } catch (GoogleException ex) {
-            System.assertEquals('Exception', ex.getMessage());
-        }
-    }
-
-    @isTest
-    public static void findFileIdByName_WhenAllFilesAreInTrash_ReturnsNull() {
-        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
-        GoogleDrive drive = new GoogleDrive(api);
-        String id = drive.findFileIdByName('Trashed');
-        System.assert(String.isBlank(id));
     }
 
     @isTest
@@ -222,6 +210,14 @@ public class GoogleDriveTests {
     }
 
     @isTest
+    public static void cloneFile_clonesFile() {
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        ClonedFile file = drive.cloneFile('File', 'New name');
+        System.assertEquals('clone', file.id);
+    }
+
+    @isTest
     public static void renameSpreadsheet_renamesFile() {        
         IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
         GoogleDrive drive = new GoogleDrive(api);
@@ -234,5 +230,19 @@ public class GoogleDriveTests {
         GoogleDrive drive = new GoogleDrive(api);
         File file = drive.getFile('One/Two/File', 'type');
         System.assertEquals('File', file.id);
+    }
+
+    @isTest
+    public static void grantAccess_grantsAccess() {     
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        drive.grantAccess('One', new List<String> { 'email' }, true);
+    }
+
+    @isTest
+    public static void revokeAccess_revokesAccess() { 
+        IGoogleAPI api = (IGoogleAPI)Test.createStub(IGoogleAPI.class, new GoogleAPIMock());
+        GoogleDrive drive = new GoogleDrive(api);
+        drive.revokeAccess('One', new List<String> { 'email' });
     }
 }

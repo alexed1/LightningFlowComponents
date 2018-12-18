@@ -3,24 +3,8 @@ public class GoogleAPI implements IGoogleAPI {
     public static final String GOOGLE_DRIVE_CREDENTIALS = 'google_drive';
 
     public static final String GOOGLE_SHEETS_CREDENTIALS = 'google_sheets';
-    
-    private static final Integer ID_LENGTH = 44;
 
     public GoogleAPI() { }
-    //Google file Id is a string 44 symbols long, no whitespaces
-    //This method is used for some shortcuts so it doesn't necessary mean a real existing file Id
-    public Boolean likeId(String id) {
-        if (String.isBlank(id)) {
-            return false;
-        }
-        if (id.length() != ID_LENGTH) {
-            return false;
-        }
-        if (id.contains(' ')) {
-            return false;
-        }
-        return true;
-    }
 
     public DriveFileListResponse driveFilesList(String name, String mimeType, String parentId) {
         if (String.isBlank(name)) {
@@ -139,6 +123,49 @@ public class GoogleAPI implements IGoogleAPI {
         return String.isBlank(responseBody) ? new ErrorResponse() : ErrorResponse.parse(res.getBody());
     }
 
+    public PermissionResponse createPermission(String fileId, String email, Boolean readonly) {
+        System.debug('Adding permission for file Id ' + fileId + ' and user email ' + email);
+        String url = 'callout:' + GOOGLE_DRIVE_CREDENTIALS + '/files/' + fileId + '/permissions';
+        System.debug('Google Drive URL: ' + url);
+        Map<String, Object> body = new Map<String, Object>();
+        body.put('role', readonly ? 'reader': 'writer');
+        body.put('type', 'user');
+        body.put('emailAddress', email);
+        Http http = new Http();
+        HttpRequest req = newRequest(url, 'POST', body);
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        String responseBody = res.getBody();
+        return PermissionResponse.parse(res.getBody());
+    }
+
+    public PermissionListResponse getPermissions(String fileId) {
+        System.debug('Retrieving all permissions for file with id "' + fileId + '"');
+        String url = 'callout:' + GOOGLE_DRIVE_CREDENTIALS + '/files/' + fileId + '/permissions?fields=nextPageToken%2Cpermissions(emailAddress%2Cid)';
+        System.debug('Google Drive URL: ' + url);
+        Http http = new Http();
+        HttpRequest req = newRequest(url);
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        String responseBody = res.getBody();
+        return PermissionListResponse.parse(res.getBody());
+    }
+
+    public ErrorResponse deletePermission(String fileId, String permissionId) {
+        System.debug('Deleting Google file with id "' + fileId + '"');
+        String url = 'callout:' + GOOGLE_DRIVE_CREDENTIALS + '/files/' + fileId + '/permissions/' + permissionId;
+        System.debug('Google Drive URL: ' + url);
+        Http http = new Http();
+        HttpRequest req = newRequest(url, 'DELETE', null);
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        String responseBody = res.getBody();
+        return String.isBlank(responseBody) ? new ErrorResponse() : ErrorResponse.parse(res.getBody());
+    }
+
     private HttpRequest newRequest(String url) {
         return newRequest(url, 'GET', null);
     }
@@ -157,6 +184,7 @@ public class GoogleAPI implements IGoogleAPI {
         if (body != null) {
             req.setBody(JSON.serialize(body));
         }
+        req.setTimeout(20 * 1000);
         return req;
     }
 }

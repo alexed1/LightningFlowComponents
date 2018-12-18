@@ -9,25 +9,6 @@ public class GoogleDrive implements IGoogleDrive {
         this.googleApi = googleApi;
     }
 
-    public String findFileIdByName(String name) {
-        return findFileIdByName(name, null);
-    }
-
-    public String findFileIdByName(String name, String fileType) {
-        DriveFileListResponse response = googleApi.driveFilesList(name, fileType, null);
-        response.ThrowOnError();
-        if (response.files.size() == 0) {
-            return null;
-        }
-        for (FileResponse file: response.files) {  
-            if (file.trashed) {
-                continue;
-            }          
-            return file.id;
-        }
-        return null;
-    }
-
     public List<List<String>> getSpreadsheetData(String id, String sheetTitle) {
         SheetsSheetResponse response = googleApi.sheetsSpreadsheetsGet(id);
         response.throwOnError();
@@ -81,26 +62,12 @@ public class GoogleDrive implements IGoogleDrive {
         response.ThrowOnError();
     }
 
-    public ClonedFile cloneFile(String idOrName, String newName) {
-        if (String.isBlank(idOrName)) {
-            throw new GoogleException('Id or Name can\'t be blank');
+    public ClonedFile cloneFile(String filePath, String newName) {
+        File file = getFile(filePath, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + filePath + '" doesn\'t exist');
         }
-        if (String.isBlank(newName)) {
-            throw new GoogleException('New name can\'t be blank');
-        }
-        DriveFilesCopyResponse response = null;
-        //If the value seems to be Id, we try to clone the file with this Id
-        if (googleApi.LikeId(idOrName)) {
-            response = googleApi.copyFile(idOrName, newName);
-        }
-        //If it is not Id for sure (e.g. contains spaces) or we didn't find a file with this Id, we try to treat it as file name
-        if (response == null || (response.error != null && response.error.code == 404)) {
-            String id = findFileIdByName(idOrName);
-            if (String.isBlank(id)) {
-                throw new GoogleException('File "' + idOrName + '" doesn\'t exist');
-            }
-            response = googleApi.copyFile(id, newName);
-        }
+        DriveFilesCopyResponse response = googleApi.copyFile(file.id, newName);
         response.ThrowOnError();
         return new ClonedFile(response.id, response.webViewLink);
     }
@@ -179,6 +146,40 @@ public class GoogleDrive implements IGoogleDrive {
         FileResponse result = googleApi.createFile(folderNames[folderNames.size() - 1], FileMimeTypes.GOOGLE_SHEET, parent);
         result.throwOnError(); 
         return toFile(result);
+    }
+
+    public void grantAccess(String path, List<String> emails, Boolean readonly) {
+        File file = getFile(path, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + path + '" doesn\'t exist');
+        }
+        for (String email : emails) {
+            PermissionResponse response = googleApi.createPermission(file.Id, email, readonly);
+            response.throwOnError();
+        }
+    }
+
+    public void revokeAccess(String path, List<String> emails) {
+        File file = getFile(path, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + path + '" doesn\'t exist');
+        }
+        PermissionListResponse permissions = googleApi.getPermissions(file.id);
+        permissions.throwOnError();
+        List<String> permissionsToDelete = new List<String>();
+        Set<String> permissionsSet = new Set<String>(emails);
+        for (PermissionResponse permission : permissions.permissions) {
+            if (String.isBlank(permission.emailAddress)) {
+                continue;
+            }
+            if (permissionsSet.contains(permission.emailAddress)) {
+                permissionsToDelete.add(permission.id);
+            }
+        }
+        for (String permissionId : permissionsToDelete) {
+            ErrorResponse response = googleApi.deletePermission(file.id, permissionId);
+            response.throwOnError();
+        }
     }
 
     private File toFile(FileResponse response) {

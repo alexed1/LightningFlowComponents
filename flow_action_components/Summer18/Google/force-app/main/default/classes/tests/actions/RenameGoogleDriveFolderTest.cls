@@ -12,6 +12,10 @@ public class RenameGoogleDriveFolderTest {
             List<Object> listOfArgs) {
             //Pretend that file Id equals file name requested
             if (stubbedMethodName.equalsIgnoreCase('getFolder')) {
+                String fileId = listOfArgs[0].toString();
+                if (fileId == 'DoesntExist') {
+                    return null;
+                }
                 return new File('id', 'name', 'mimeType', 'url');
             }
             if (stubbedMethodName.equalsIgnoreCase('renameFile')) {
@@ -31,6 +35,16 @@ public class RenameGoogleDriveFolderTest {
         RenameGoogleDriveFolder.Response response = RenameGoogleDriveFolder.RenameGoogleDriveFolderImpl(drive, request);
         System.assert(response.IsSuccess);
         System.assertEquals('url', response.WebviewURL);
+    }
+
+    @isTest
+    public static void renameGoogleDriveFolder_WhenFileDoesntExist_ThrowsException() {
+        IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock());
+        RenameGoogleDriveFolder.Request request = new RenameGoogleDriveFolder.Request();
+        request.FolderPath = 'DoesntExist';
+        RenameGoogleDriveFolder.Response response = RenameGoogleDriveFolder.RenameGoogleDriveFolderImpl(drive, request);
+         System.assert(!response.IsSuccess);
+        System.assertEquals('Google Drive folder with the name "DoesntExist" doesn\'t exist' , response.ErrorMessage);
     }
 
     @isTest

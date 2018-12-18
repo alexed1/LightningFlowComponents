@@ -1,7 +1,5 @@
 public interface IGoogleAPI {
 
-    Boolean likeId(String id);
-
     DriveFileListResponse driveFilesList(String name, String mimeType, String parentId);
 
     SheetsSheetResponse sheetsSpreadsheetsGet(String id);
@@ -15,4 +13,10 @@ public interface IGoogleAPI {
     FileResponse renameFile(String id, String newName);
 
     ErrorResponse deleteFile(String id);
+
+    PermissionResponse createPermission(String fileId, String email, Boolean readonly);
+
+    PermissionListResponse getPermissions(String fileId);
+
+    ErrorResponse deletePermission(String fileId, String permissionId);
 }

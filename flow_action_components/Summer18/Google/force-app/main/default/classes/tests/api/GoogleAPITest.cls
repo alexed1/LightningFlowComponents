@@ -69,6 +69,12 @@ public class GoogleAPITest {
                 res.setBody('{ "id": "rename", "webViewLink": "test link" }');
             } else if (endpoint.endsWith('files/delete')) {
                 res.setBody('{}');
+            } else if (endpoint.endsWith('files/permission/permissions')) {
+                res.setBody('{}');
+            } else if (endpoint.contains('files/getperm/permissions')) {
+                res.setBody('{ "permissions" : [ { "id": "id", "emailAddress": "email" }]}');
+            } else if (endpoint.endsWith('files/delperm/permissions/id')) {
+                res.setBody('{}');
             }
             else {
                 System.debug('Unknown endpoint: ' + endpoint);
@@ -160,5 +166,31 @@ public class GoogleAPITest {
         GoogleAPI api = new GoogleAPI();
         ErrorResponse response = api.deleteFile('delete');
         System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void createPermission_createsPermission() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        PermissionResponse response = api.createPermission('permission', 'email', true);
+        System.assertEquals(null, response.error, 'Error must be empty');
+    }
+
+    @isTest
+    public static void getPermissions_returnsPermissions() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        PermissionListResponse response = api.getPermissions('getperm');
+        System.assertEquals(null, response.error, 'Error must be empty');
+        System.assertEquals(1, response.permissions.size());
+    }
+
+    @isTest
+    public static void deletePermission_deletesPermission() {
+        Test.setMock(HttpCalloutMock.class, new HttpResponseMock());
+        GoogleAPI api = new GoogleAPI();
+        ErrorResponse response = api.deletePermission('delperm', 'id');
+        System.assertEquals(null, response.error, 'Error must be empty');
+
     }
 }

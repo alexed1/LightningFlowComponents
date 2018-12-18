@@ -1,9 +1,5 @@
 public interface IGoogleDrive {
     
-    String findFileIdByName(String name);
-
-    String findFileIdByName(String name, String fileType); 
-
     List<List<String>> getSpreadsheetData(String id, String sheetTitle);
 
     void saveSpreadsheetData(String id, String sheetTitle, List<CellValue> values);
@@ -19,4 +15,8 @@ public interface IGoogleDrive {
     void deleteFile(File file);
 
     File createSpreadsheet(String path); 
+
+    void grantAccess(String path, List<String> emails, Boolean readonly);
+
+    void revokeAccess(String path, List<String> emails);
 }

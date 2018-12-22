@@ -1,0 +1,28 @@
+
+    <aura:component implements="flexipage:availableForAllPageTypes,force:appHostable,force:hasRecordId" access="global"  >
+        <ltng:require scripts="{!$Resource.cometdjs}" afterScriptsLoaded="{!c.onCometdLoaded}"/>
+    
+        <aura:attribute name="recordId" type="String"/>
+        <aura:attribute name="showButton" type="Boolean"/>
+        <aura:attribute name="sessionId" type="String"/>
+        <aura:attribute name="cometd" type="Object"/>
+        <aura:attribute name="cometdSubscriptions" type="Object[]"/>
+        
+        <aura:registerEvent name="refreshEvent" type="markup://lightning:nextBestActionsRefresh"/>
+        <aura:handler name="init" value="{!this}" action="{!c.init}" />    
+        <aura:if isTrue="{!  v.showButton}">
+            <div class="slds-card ">
+        
+                <div class="slds-m-top_xx-small slds-m-bottom_xx-small slds-m-left_small">
+                 <lightning:button variant="brand" label="Refresh Recommendations" title="x" onclick="{! c.handleClick }"/>
+                    
+                </div>
+    
+                
+        
+               
+            </div>
+        </aura:if>
+        
+</aura:component>
+

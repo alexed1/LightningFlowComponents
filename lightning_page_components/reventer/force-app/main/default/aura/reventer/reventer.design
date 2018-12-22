@@ -1,0 +1,7 @@
+<design:component>
+	
+    <design:attribute name="showButton" label="Show Refresh Button"/>
+    
+    
+   
+</design:component>

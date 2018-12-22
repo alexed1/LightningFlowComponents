@@ -9,24 +9,6 @@ public class GoogleDrive implements IGoogleDrive {
         this.googleApi = googleApi;
     }
 
-    public String findFileIdByName(String name) {
-        return findFileIdByName(name, null);
-    }
-
-    public String findFileIdByName(String name, String fileType) {
-        DriveFileListResponse response = googleApi.driveFilesList(name);
-        response.ThrowOnError();
-        if (response.files.size() == 0) {
-            return null;
-        }
-        for (DriveFileListResponse.File file: response.files) {            
-            if (String.isBlank(fileType) || file.mimeType.equalsIgnoreCase(fileType)) {
-                return file.id;
-            }
-        }
-        return null;
-    }
-
     public List<List<String>> getSpreadsheetData(String id, String sheetTitle) {
         SheetsSheetResponse response = googleApi.sheetsSpreadsheetsGet(id);
         response.throwOnError();
@@ -80,27 +62,127 @@ public class GoogleDrive implements IGoogleDrive {
         response.ThrowOnError();
     }
 
-    public ClonedFile cloneFile(String idOrName, String newName) {
-        if (String.isBlank(idOrName)) {
-            throw new GoogleException('Id or Name can\'t be blank');
+    public ClonedFile cloneFile(String filePath, String newName) {
+        File file = getFile(filePath, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + filePath + '" doesn\'t exist');
         }
-        if (String.isBlank(newName)) {
-            throw new GoogleException('New name can\'t be blank');
-        }
-        DriveFilesCopyResponse response = null;
-        //If the value seems to be Id, we try to clone the file with this Id
-        if (googleApi.LikeId(idOrName)) {
-            response = googleApi.copyFile(idOrName, newName);
-        }
-        //If it is not Id for sure (e.g. contains spaces) or we didn't find a file with this Id, we try to treat it as file name
-        if (response == null || (response.error != null && response.error.code == 404)) {
-            String id = findFileIdByName(idOrName);
-            if (String.isBlank(id)) {
-                throw new GoogleException('File "' + idOrName + '" doesn\'t exist');
-            }
-            response = googleApi.copyFile(id, newName);
-        }
+        DriveFilesCopyResponse response = googleApi.copyFile(file.id, newName);
         response.ThrowOnError();
         return new ClonedFile(response.id, response.webViewLink);
     }
-}
+
+    public File getFolder(String path, Boolean forceCreate) { 
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1;  
+        String parentFolder = isPath ? 'root' : null;
+        File result = null;
+        for (String folderName : folderNames) {
+            if (String.isBlank(folderName)) {
+                continue;
+            }
+            DriveFileListResponse response = googleApi.driveFilesList(folderName, FileMimeTypes.GOOGLE_FOLDER, parentFolder);
+            response.throwOnError();
+            List<FileResponse> files = response.getNonTrashedFiles();
+            if (files.size() > 0) {
+                parentFolder = files[0].id;
+                result = toFile(files[0]);
+                
+            } else if (forceCreate) {
+                FileResponse fileResponse = googleApi.createFile(folderName, FileMimeTypes.GOOGLE_FOLDER, parentFolder);
+                fileResponse.throwOnError();
+                parentFolder = fileResponse.id;
+                result = toFile(fileResponse);
+            } else {
+                return null;
+            }
+        }
+        return result;
+    }
+
+    public File getFile(String path, String mimeType) {
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1; 
+        String parent = null;
+        if (isPath) {
+            List<String> subFolders = new List<String>();
+            for (Integer i = 0; i < folderNames.size() - 1; i++) {
+                subFolders.add(folderNames[i]);
+            }
+            File parentFolder = getFolder(String.join(subFolders,'/'), true);
+            parent = parentFolder.id;
+        }
+        String fileName = folderNames[folderNames.size() - 1];
+        DriveFileListResponse fileListResponse = googleApi.driveFilesList(fileName, mimeType, parent);
+        fileListResponse.throwOnError();
+        for (FileResponse fileResponse : fileListResponse.files) {
+            return toFile(fileResponse);
+        }
+        return null; 
+    }
+
+    public void renameFile(File file, String newName) { 
+        FileResponse response = googleApi.renameFile(file.id, newName);
+        response.throwOnError();
+    }
+
+    public void deleteFile(File file) {
+        ErrorResponse response = googleApi.deleteFile(file.id);
+        response.throwOnError();
+    }
+
+    public File createSpreadsheet(String path) {
+        List<String> folderNames = path.trim().split('[\\\\\\/]');
+        Boolean isPath = folderNames.size() > 1; 
+        String parent = null;
+        if (isPath) {
+            List<String> subFolders = new List<String>();
+            for (Integer i = 0; i < folderNames.size() - 1; i++) {
+                subFolders.add(folderNames[i]);
+            }
+            File parentFolder = getFolder(String.join(subFolders,'/'), true);
+            parent = parentFolder.id;
+        }
+        FileResponse result = googleApi.createFile(folderNames[folderNames.size() - 1], FileMimeTypes.GOOGLE_SHEET, parent);
+        result.throwOnError(); 
+        return toFile(result);
+    }
+
+    public void grantAccess(String path, List<String> emails, Boolean readonly) {
+        File file = getFile(path, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + path + '" doesn\'t exist');
+        }
+        for (String email : emails) {
+            PermissionResponse response = googleApi.createPermission(file.Id, email, readonly);
+            response.throwOnError();
+        }
+    }
+
+    public void revokeAccess(String path, List<String> emails) {
+        File file = getFile(path, FileMimeTypes.GOOGLE_SHEET);
+        if (file == null) {
+            throw new GoogleException('Google sheet with the name "' + path + '" doesn\'t exist');
+        }
+        PermissionListResponse permissions = googleApi.getPermissions(file.id);
+        permissions.throwOnError();
+        List<String> permissionsToDelete = new List<String>();
+        Set<String> permissionsSet = new Set<String>(emails);
+        for (PermissionResponse permission : permissions.permissions) {
+            if (String.isBlank(permission.emailAddress)) {
+                continue;
+            }
+            if (permissionsSet.contains(permission.emailAddress)) {
+                permissionsToDelete.add(permission.id);
+            }
+        }
+        for (String permissionId : permissionsToDelete) {
+            ErrorResponse response = googleApi.deletePermission(file.id, permissionId);
+            response.throwOnError();
+        }
+    }
+
+    private File toFile(FileResponse response) {
+        return new File(response.id, response.name, response.mimeType, response.webViewLink);
+    }
+}   

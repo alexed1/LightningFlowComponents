@@ -17,8 +17,8 @@ public class AddRowToGoogleSheetTest {
             List<String> listOfParamNames,
             List<Object> listOfArgs) {
             //Pretend that file Id equals file name requested
-            if (stubbedMethodName.equalsIgnoreCase('findFileIdByName')) {
-                return listOfArgs[0];
+            if (stubbedMethodName.equalsIgnoreCase('getFile')) {
+                return new File(listOfArgs[0].toString());
             }
             if (stubbedMethodName.equalsIgnoreCase('saveSpreadsheetData')) {
                 List<CellValue> newValues = (List<CellValue>)listOfArgs[2];

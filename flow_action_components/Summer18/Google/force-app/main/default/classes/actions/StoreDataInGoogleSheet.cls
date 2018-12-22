@@ -14,8 +14,8 @@ global class StoreDataInGoogleSheet {
     public static Response StoreDataInGoogleSheetImpl(IGoogleDrive googleDrive, Request request) {
         Response response = new Response();
         try {
-            String spreadsheetId = googleDrive.findFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
-            if (String.isBlank(spreadsheetId)) {
+            File file = googleDrive.getFile(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
+            if (file == null) {
                 throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
             }            
             List<String> addresses = new List<String> { 
@@ -56,7 +56,7 @@ global class StoreDataInGoogleSheet {
                     continue;
                 }
                 if (data == null) {
-                    data = new SheetData(googleDrive.getSpreadsheetData(spreadsheetId, request.SheetName));
+                    data = new SheetData(googleDrive.getSpreadsheetData(file.id, request.SheetName));
                 }
                 CellValue cell = data.locateValue(addr, right, below);
                 if (cell == null) {
@@ -65,7 +65,7 @@ global class StoreDataInGoogleSheet {
                 cell.value = values[i];
                 valuesToWrite.add(cell);
             }
-            googleDrive.saveSpreadsheetData(spreadsheetId, request.SheetName, valuesToWrite);
+            googleDrive.saveSpreadsheetData(file.id, request.SheetName, valuesToWrite);
         }
         catch (GoogleException ex) {
             response.IsSuccess = false;
@@ -76,7 +76,7 @@ global class StoreDataInGoogleSheet {
 
     global class Request {
 
-        @InvocableVariable(required=True label='Spreadsheet Name' description='Case-sensitive, no extension, name only')
+        @InvocableVariable(required=True label='File Name' description='A name of the file or a path to the file')
         global String SpreadsheetName;
 
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found spreadsheet will be used')

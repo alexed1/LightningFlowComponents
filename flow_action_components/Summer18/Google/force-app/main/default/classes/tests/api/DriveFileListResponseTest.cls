@@ -20,4 +20,18 @@ public class DriveFileListResponseTest {
 		DriveFileListResponse obj = DriveFileListResponse.parse(json);
 		System.assert(obj != null);
 	}
+
+	@isTest
+	static void getNonTrashedFiles_returnsNonTrashedFiles() {
+		DriveFileListResponse response = new DriveFileListResponse();
+		response.files = new List<FileResponse>();
+		FileResponse file = new FileResponse();
+		file.trashed = True;
+		response.files.add(file);
+		file = new FileResponse();
+		file.trashed = False;
+		response.files.add(file);
+		List<FileResponse> nonTrashedFiles = response.getNonTrashedFiles();
+		System.assertEquals(1, nonTrashedFiles.size());
+	}
 }

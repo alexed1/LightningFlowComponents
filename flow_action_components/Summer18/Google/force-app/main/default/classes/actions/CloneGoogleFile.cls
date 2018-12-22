@@ -37,7 +37,7 @@ global class CloneGoogleFile {
 
     global class Request {
 
-        @InvocableVariable(required=True label='File Id/File Name' description='Id or name of the Google file to clone')
+        @InvocableVariable(required=True label='File Name' description='A name of the file or a path to the file')
         global String FileIdOrName;
 
         @InvocableVariable(required=True label='Copy Name' description='The name to assign to the newly created copy')

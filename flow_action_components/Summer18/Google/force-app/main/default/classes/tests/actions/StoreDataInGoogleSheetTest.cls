@@ -17,17 +17,17 @@ public class StoreDataInGoogleSheetTest {
             List<String> listOfParamNames,
             List<Object> listOfArgs) {
             //Pretend that file Id equals file name requested
-            if (stubbedMethodName == 'FindFileIdByName') {
-                return listOfArgs[0];
+            if (stubbedMethodName.equalsIgnoreCase('getFile')) {
+                return new File(listOfArgs[0].toString());
             }
-            if (stubbedMethodName == 'SaveSpreadsheetData') {
+            if (stubbedMethodName.equalsIgnoreCase('SaveSpreadsheetData')) {
                 List<CellValue> newValues = (List<CellValue>)listOfArgs[2];
                 for (CellValue value: newValues) {
                     cellValues.add(value);
                 }
                 return null;
             }
-            if (stubbedMethodName == 'GetSpreadsheetData') {
+            if (stubbedMethodName.equalsIgnoreCase('GetSpreadsheetData')) {
                 String fileId = listOfArgs[0].toString();
                 if (fileId == 'ByAddress') {
                     List<List<String>> result = new List<List<String>>();

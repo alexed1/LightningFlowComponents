@@ -14,11 +14,11 @@ global class GetGoogleSheetsData {
     public static Response GetGoogleSheetsDataImpl(IGoogleDrive drive, Request request) {
         Response response = new Response();
         try {
-            String spreadsheetId = drive.FindFileIdByName(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
-            if (String.isBlank(spreadsheetId)) {
-                throw new GoogleException('Spreadsheet with the name "' + request.SpreadsheetName + '" was not found');
+            File file = drive.getFile(request.SpreadsheetName, FileMimeTypes.GOOGLE_SHEET);
+            if (file == null) {
+                throw new GoogleException('Google Sheet with the name "' + request.SpreadsheetName + '" doesn\'t exist');
             }
-            SheetData spreadsheetData = new SheetData(drive.GetSpreadsheetData(spreadsheetId, request.SheetName));   
+            SheetData spreadsheetData = new SheetData(drive.GetSpreadsheetData(file.id, request.SheetName));   
             CellValue value = null;         
             if (!String.isBlank(request.Right1) 
                 || !String.isBlank(request.Below1)
@@ -60,7 +60,7 @@ global class GetGoogleSheetsData {
 
     global class Request {
 
-        @InvocableVariable(required=True label='Spreadsheet Name' description='Case-sensitive, no extension, name only')
+        @InvocableVariable(required=True label='File Name' description='A name of the file or a path to the file')
         global String SpreadsheetName;
 
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found spreadsheet will be used')

@@ -11,7 +11,7 @@ public class CloneGoogleFileTest {
             List<String> listOfParamNames,
             List<Object> listOfArgs) {
             //Pretend that file Id equals file name requested
-            if (stubbedMethodName == 'CloneFile') {
+            if (stubbedMethodName.equalsIgnoreCase('CloneFile')) {
                 String fileId = listOfArgs[0].toString();
                 if (fileId == 'test') {
                     return new ClonedFile('test id', 'test url');

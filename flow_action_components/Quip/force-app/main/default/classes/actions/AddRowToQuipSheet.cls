@@ -60,6 +60,7 @@ global class AddRowToQuipSheet {
                 request.Value9,
                 request.Value10
             };
+            Boolean isUpdate = request.IsUpdate == null ? false : request.IsUpdate;
             //First we need to find the columns to write values to
             List<ThreadCell> columnHeaders = new List<ThreadCell>();  
             for (Integer i = 0; i < columns.size(); i++) {
@@ -79,36 +80,53 @@ global class AddRowToQuipSheet {
                 }
                 columnHeaders.add(cell);
             }
-            //Now we need to find the first empty row that lies below all column headers
+            //Now we check if it is update
+            //We always use only first column as index
+            Boolean rowFound = false;            
             Integer row = 0;
-            for (ThreadCell columnHeader: columnHeaders) {
-                if (columnHeader == null){
-                    continue;
-                }
-                if (columnHeader.addr.row > row) {
-
-                    row = columnHeader.addr.row;
+            if (isUpdate) {
+                ThreadCell indexColumnHeader = columnHeaders[0];
+                if (isUpdate && indexColumnHeader != null) {
+                    for (Integer i = indexColumnHeader.addr.row + 1; i < sheet.rows.size(); i++) {
+                        if (sheet.rows[i].cells[indexColumnHeader.addr.column].value.equals(values[0])) {
+                            rowFound = true;
+                            row = i;
+                            break;
+                        }
+                    }
                 }
             }
-            while (true) {
-                Boolean rowIsEmpty = true;
-                for (Integer i = 0; i < columnHeaders.size(); i++) {
-                    ThreadCell columnHeader = columnHeaders[i];
-                    if (columnHeader == null) {
+            if (!rowFound) {
+                //If it was not update, or we just couldn't find a specified index, then we need to find the first empty row that is located below all column headers
+                for (ThreadCell columnHeader: columnHeaders) {
+                    if (columnHeader == null){
                         continue;
                     }
-                    ThreadCell rowValue = sheet.findCellByAddress(new Address(columnHeader.addr.column, row));
-                    //This is very strange behavior by Apex. It doesn't treat Unicode 8203 (Zero-width Space) as space symbol
-                    //Thus it doesn't consider a string with only this symbol to be an empty string
-                    if (!String.isBlank(rowValue.value) && rowValue.value.length() != 1 && rowValue.value.codePointAt(0) != 8203) {
-                        rowIsEmpty = false;
-                        break;
+                    if (columnHeader.addr.row > row) {
+
+                        row = columnHeader.addr.row;
                     }
                 }
-                if (rowIsEmpty) {
-                    break;
+                while (true) {
+                    rowFound = true;
+                    for (Integer i = 0; i < columnHeaders.size(); i++) {
+                        ThreadCell columnHeader = columnHeaders[i];
+                        if (columnHeader == null) {
+                            continue;
+                        }
+                        ThreadCell rowValue = sheet.findCellByAddress(new Address(columnHeader.addr.column, row));
+                        //This is very strange behavior by Apex. It doesn't treat Unicode 8203 (Zero-width Space) as space symbol
+                        //Thus it doesn't consider a string with only this symbol to be an empty string
+                        if (!String.isBlank(rowValue.value) && rowValue.value.length() != 1 && rowValue.value.codePointAt(0) != 8203) {
+                            rowFound = false;
+                            break;
+                        }
+                    }
+                    if (rowFound) {
+                        break;
+                    }
+                    row++;
                 }
-                row++;
             }
             List<ThreadCell> valuesToWrite = new List<ThreadCell>();
             for (Integer i = 0; i < columnHeaders.size(); i++) {
@@ -143,6 +161,9 @@ global class AddRowToQuipSheet {
 
         @InvocableVariable(required=True label='#1 Value')
         global String Value1;
+
+        @InvocableVariable(label='#1 Use Value as Index for Updates')
+        global Boolean IsUpdate;
 
         @InvocableVariable(label='#2 Column Name')
         global String TargetColumnName2;

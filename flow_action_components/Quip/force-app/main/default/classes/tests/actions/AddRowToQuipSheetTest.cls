@@ -37,6 +37,22 @@ public class AddRowToQuipSheetTest {
                     row.cells.add(new ThreadCell(Address.parse('C1'), 'col2', 'COne'));
                     sheet.rows.add(row);
                     return thread;
+                } else if (threadId == 'Update') {
+                    Thread thread = new Thread('Update');
+                    ThreadSheet sheet = new ThreadSheet();
+                    sheet.title = 'Sheet';
+                    thread.sheets.add(sheet);
+                    ThreadRow row = new ThreadRow('row0');
+                    row.cells.add(new ThreadCell(Address.parse('A1'), 'col0', 'AOne'));
+                    row.cells.add(new ThreadCell(Address.parse('B1'), 'col1', 'BOne'));
+                    row.cells.add(new ThreadCell(Address.parse('C1'), 'col2', 'COne'));
+                    sheet.rows.add(row);
+                    row = new ThreadRow('row0');
+                    row.cells.add(new ThreadCell(Address.parse('A2'), 'col0-1', 'ATwo'));
+                    row.cells.add(new ThreadCell(Address.parse('B2'), 'col1-1', ''));
+                    row.cells.add(new ThreadCell(Address.parse('C2'), 'col2-1', ''));
+                    sheet.rows.add(row);
+                    return thread;
                 } else if (threadId == 'DoesntExist') {
                     return null;
                 } else if (threadId == 'NoSheet') {
@@ -105,6 +121,32 @@ public class AddRowToQuipSheetTest {
         ThreadCell cell = cellsToUpdate[0];
         System.assertEquals('B2', cell.addr.toString());
         System.assertEquals('Test1', cell.value);
+    }
+
+    @isTest
+    public static void AddRowToQuipSheetImpl_WhenUpdateIsRequired_CallsApi() {
+        Map<String, List<List<Object>>> methodCalls = new Map<String, List<List<Object>>>();
+        IQuip quip = (IQuip)Test.createStub(IQuip.class, new QuipMock(methodCalls));
+        AddRowToQuipSheet.Request request = new AddRowToQuipSheet.Request();
+        request.FileName = 'Update';
+        request.SheetName = 'Sheet';
+        request.TargetColumnName1 = 'AOne';
+        request.Value1 = 'ATwo';
+        request.IsUpdate = True;
+        request.TargetColumnName2 = 'BOne';
+        request.Value2 = 'BTwo';
+        AddRowToQuipSheet.Response response = AddRowToQuipSheet.AddRowToQuipSheetImpl(quip, request);
+        System.assert(response.IsSuccess);
+        List<List<Object>> calls = methodCalls.get('saveSpreadsheetData');
+        System.assert(calls != null, 'saveSpreadsheetData method was not called');
+        List<Object> args = calls[0];
+        List<ThreadCell> cellsToUpdate = (List<ThreadCell>)args[2];
+        ThreadCell cell = cellsToUpdate[0];
+        System.assertEquals('A2', cell.addr.toString());
+        System.assertEquals('ATwo', cell.value);
+        cell = cellsToUpdate[1];
+        System.assertEquals('B2', cell.addr.toString());
+        System.assertEquals('BTwo', cell.value);
     }
 
     @isTest

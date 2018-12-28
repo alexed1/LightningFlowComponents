@@ -28,10 +28,19 @@ public class AddRowToGoogleSheetTest {
                 return null;
             }
             if (stubbedMethodName.equalsIgnoreCase('getSpreadsheetData')) {
-                List<List<String>> result = new List<List<String>>();
-                List<String> row = new List<String> { 'Header1' };
-                result.add(row);
-                return result;
+                String id = listOfArgs[0].toString();
+                if (id == 'Test') {
+                    List<List<String>> result = new List<List<String>>();
+                    result.add(new List<String> { 'Header1' });
+                    return result;
+                } else if (id == 'Update') {
+                    List<List<String>> result = new List<List<String>>();
+                    result.add(new List<String> { 'AOne', 'BOne' });
+                    result.add(new List<String> { 'ATwo', '' });
+                    return result;
+                }
+                System.debug('Unknown file Id: ' + id);
+                return null;
             }
             System.debug('Unknown method ' + stubbedMethodName);
             return null;
@@ -50,11 +59,31 @@ public class AddRowToGoogleSheetTest {
         request.Value2 = 'test2';
         AddRowToGoogleSheet.Response response = AddRowToGoogleSheet.AddRowToGoogleSheetImpl(drive, request);
         System.assert(response.IsSuccess, 'IsSuccess must be true');
-        System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty');
+        System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty'); 
         System.assertEquals('A2', valuesToWrite[0].addr.toString());
         System.assertEquals('test1', valuesToWrite[0].value);
         System.assertEquals('B2', valuesToWrite[1].addr.toString());
         System.assertEquals('test2', valuesToWrite[1].value);
+    }
+
+    @isTest
+    public static void AddRowToGoogleSheetImpl_UpdatesValue() {
+        List<CellValue> valuesToWrite = new List<CellValue>();
+        IGoogleDrive drive = (IGoogleDrive)Test.createStub(IGoogleDrive.class, new GoogleDriveMock(valuesToWrite));
+        AddRowToGoogleSheet.Request request = new AddRowToGoogleSheet.Request();
+        request.SpreadsheetName = 'Update';
+        request.TargetColumnName1 = 'AOne';
+        request.Value1 = 'ATwo';
+        request.IsUpdate = True;
+        request.TargetColumnName2 = 'BOne';
+        request.Value2 = 'BTwo';
+        AddRowToGoogleSheet.Response response = AddRowToGoogleSheet.AddRowToGoogleSheetImpl(drive, request);
+        System.assert(response.IsSuccess, 'IsSuccess must be true');
+        System.assert(String.isBlank(response.ErrorMessage), 'Error message is not empty'); 
+        System.assertEquals('A2', valuesToWrite[0].addr.toString());
+        System.assertEquals('ATwo', valuesToWrite[0].value);
+        System.assertEquals('B2', valuesToWrite[1].addr.toString());
+        System.assertEquals('BTwo', valuesToWrite[1].value);
     }
 
     @isTest

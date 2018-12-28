@@ -1,6 +1,6 @@
 public class SheetData {
 
-    private List<List<String>> data;
+    public List<List<String>> data;
 
     public SheetData(List<List<String>> data) {
         this.data = data;

@@ -1,4 +1,4 @@
-global class AddRowToGoogleSheet {
+global class AddRowToGoogleSheet { 
     
     @InvocableMethod(label='Add Row to Google Sheet' description='Adds a new row after the last non-empty one using the specified column labels and values')
     global static List<Response> AddRowToGoogleSheet(List<Request> requests) {
@@ -42,7 +42,8 @@ global class AddRowToGoogleSheet {
                 request.Value9,
                 request.Value10
             };
-            SheetData data = null;
+            SheetData data = null;            
+            Boolean isUpdate = request.IsUpdate == null ? false : request.IsUpdate;
             //First we need to find the columns to write values to
             List<CellValue> columnHeaders = new List<CellValue>();            
             for (Integer i = 0; i < columns.size(); i++) {
@@ -67,33 +68,50 @@ global class AddRowToGoogleSheet {
                 }
                 columnHeaders.add(cell);
             }
-            //Now we need to find the first empty row that lies below all column headers
+            //Now we check if it is update
+            //We always use only first column as index
+            Boolean rowFound = false;            
             Integer row = 0;
-            for (CellValue columnHeader: columnHeaders) {
-                if (columnHeader == null){
-                    continue;
-                }
-                if (columnHeader.addr.row > row) {
-                    row = columnHeader.addr.row;
+            if (isUpdate) {
+                CellValue indexColumnHeader = columnHeaders[0];
+                if (isUpdate && indexColumnHeader != null) {
+                    for (Integer i = indexColumnHeader.addr.row + 1; i < data.data.size(); i++) {
+                        if (data.getValueByAddress(new Address(indexColumnHeader.addr.column, i)).value.equals(values[0])) {
+                            rowFound = true;
+                            row = i;
+                            break;
+                        }
+                    }
                 }
             }
-            while (true) {
-                Boolean rowIsEmpty = true;
-                for (Integer i = 0; i < columnHeaders.size(); i++) {
-                    CellValue columnHeader = columnHeaders[i];
-                    if (columnHeader == null) {
+            if (!rowFound) {
+                //If it was not update, or we just couldn't find a specified index, then we need to find the first empty row that is located below all column headers
+                for (CellValue columnHeader: columnHeaders) {
+                    if (columnHeader == null){
                         continue;
                     }
-                    CellValue rowValue = data.getValueByAddress(new Address(columnHeader.addr.column, row));
-                    if (!String.isBlank(rowValue.value)) {
-                        rowIsEmpty = false;
-                        break;
+                    if (columnHeader.addr.row > row) {
+                        row = columnHeader.addr.row;
                     }
                 }
-                if (rowIsEmpty) {
-                    break;
+                while (true) {
+                    rowFound = true;
+                    for (Integer i = 0; i < columnHeaders.size(); i++) {
+                        CellValue columnHeader = columnHeaders[i];
+                        if (columnHeader == null) {
+                            continue;
+                        }
+                        CellValue rowValue = data.getValueByAddress(new Address(columnHeader.addr.column, row));
+                        if (!String.isBlank(rowValue.value)) {
+                            rowFound = false;
+                            break;
+                        }
+                    }
+                    if (rowFound) {
+                        break;
+                    }
+                    row++;
                 }
-                row++;
             }
             List<CellValue> valuesToWrite = new List<CellValue>();
             for (Integer i = 0; i < columnHeaders.size(); i++) {
@@ -127,6 +145,9 @@ global class AddRowToGoogleSheet {
 
         @InvocableVariable(required=True label='#1 Value')
         global String Value1;
+
+        @InvocableVariable(label='#1 Use Value as Index for Updates')
+        global Boolean IsUpdate;
 
         @InvocableVariable(label='#2 Column Name')
         global String TargetColumnName2;

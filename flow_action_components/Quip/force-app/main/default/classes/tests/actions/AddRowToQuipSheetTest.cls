@@ -169,6 +169,5 @@ public class AddRowToQuipSheetTest {
         List<AddRowToQuipSheet.Response> responses = AddRowToQuipSheet.AddRowToQuipSheet(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

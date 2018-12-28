@@ -6,7 +6,14 @@ public class QuipAPI implements IQuipAPI {
 
     private String apiKey;
 
+    private Boolean allowEmptyToken;
+
     public QuipAPI() {
+        this(false);
+    }
+
+    public QuipApi(Boolean allowEmptyToken) {
+        this.allowEmptyToken = allowEmptyToken;
     }
 
     public Boolean likeId(String id) {
@@ -211,7 +218,7 @@ public class QuipAPI implements IQuipAPI {
     private static final String TOKEN_PLACEHOLDER = 'Replace with Valid Token';
 
     private String getApiKey() {
-        if (String.isBlank(apiKey)) {
+        if (String.isBlank(apiKey) && !allowEmptyToken) {
             List<Quip_Access_Token__mdt> tokens = [SELECT Token__c FROM Quip_Access_Token__mdt WHERE Label = 'Token'];
             if (tokens.size() == 0) {
                 throw new QuipException('The item labeled "' + TOKEN_LABEL + '" of "Quip Access Token" custom metadata type was not found');

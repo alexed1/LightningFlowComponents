@@ -49,6 +49,5 @@ public class CreateQuipSheetTest {
         List<CreateQuipSheet.Response> responses = CreateQuipSheet.CreateQuipSheet(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

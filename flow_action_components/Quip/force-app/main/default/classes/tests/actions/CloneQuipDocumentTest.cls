@@ -60,6 +60,5 @@ public class CloneQuipDocumentTest {
         List<CloneQuipDocument.Response> responses = CloneQuipDocument.CloneQuipDocument(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

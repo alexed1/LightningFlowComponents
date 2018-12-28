@@ -56,6 +56,5 @@ public class RevokeAccessToQuipDocumentTest {
         List<RevokeAccessToQuipDocument.Response> responses = RevokeAccessToQuipDocument.RevokeAccessToQuipDocument(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

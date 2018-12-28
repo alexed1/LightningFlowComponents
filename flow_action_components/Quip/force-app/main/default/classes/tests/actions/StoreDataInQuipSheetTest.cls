@@ -130,6 +130,5 @@ public class StoreDataInQuipSheetTest {
         List<StoreDataInQuipSheet.Response> responses = StoreDataInQuipSheet.StoreDataInQuipSheet(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

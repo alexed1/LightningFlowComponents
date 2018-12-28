@@ -70,7 +70,10 @@ public class ThreadSheet {
                 //Then we strip all html tags from it (e.g. anchors, bold, italic etc) and unescape things like &lt;
                 //to get the text visible to the user
                 String cellContent = cellContentMatcher.group().replaceAll('<.*?>', '').unescapeHtml4();
-                Address addr = new Address(colIndex, rowIndex);
+                cellContent = cellContent == '☑' 
+                                ? 'True' 
+                                : cellContent == '☐' ? 'False' : cellContent;
+                Address addr = new Address(colIndex, rowIndex);                
                 ThreadCell cell = new ThreadCell(addr, cellId, cellContent);
                 row.cells.add(cell);
                 colIndex++;

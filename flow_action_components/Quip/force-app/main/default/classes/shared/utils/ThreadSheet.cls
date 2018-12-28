@@ -70,11 +70,13 @@ public class ThreadSheet {
                 //Then we strip all html tags from it (e.g. anchors, bold, italic etc) and unescape things like &lt;
                 //to get the text visible to the user
                 String cellContent = cellContentMatcher.group().replaceAll('<.*?>', '').unescapeHtml4();
-                cellContent = cellContent == '☑' 
+                Boolean isCheckbox = cellContent == ThreadCell.TRUE_CHECK_BOX || cellContent == ThreadCell.FALSE_CHECK_BOX;
+                cellContent = cellContent == ThreadCell.TRUE_CHECK_BOX
                                 ? 'True' 
-                                : cellContent == '☐' ? 'False' : cellContent;
+                                : cellContent == ThreadCell.FALSE_CHECK_BOX ? 'False' : cellContent;
                 Address addr = new Address(colIndex, rowIndex);                
                 ThreadCell cell = new ThreadCell(addr, cellId, cellContent);
+                //cell.valueTypeIsCheckbox = isCheckbox;
                 row.cells.add(cell);
                 colIndex++;
             }

@@ -47,10 +47,15 @@ public class AddRowToQuipSheetTest {
                     row.cells.add(new ThreadCell(Address.parse('B1'), 'col1', 'BOne'));
                     row.cells.add(new ThreadCell(Address.parse('C1'), 'col2', 'COne'));
                     sheet.rows.add(row);
-                    row = new ThreadRow('row0');
+                    row = new ThreadRow('row1');
                     row.cells.add(new ThreadCell(Address.parse('A2'), 'col0-1', 'ATwo'));
                     row.cells.add(new ThreadCell(Address.parse('B2'), 'col1-1', ''));
                     row.cells.add(new ThreadCell(Address.parse('C2'), 'col2-1', ''));
+                    sheet.rows.add(row);
+                    row = new ThreadRow('row2');
+                    row.cells.add(new ThreadCell(Address.parse('A3'), 'col0-2', 'ATwo'));
+                    row.cells.add(new ThreadCell(Address.parse('B3'), 'col1-2', 'BTwo'));
+                    row.cells.add(new ThreadCell(Address.parse('C3'), 'col2-2', ''));
                     sheet.rows.add(row);
                     return thread;
                 } else if (threadId == 'DoesntExist') {
@@ -132,9 +137,12 @@ public class AddRowToQuipSheetTest {
         request.SheetName = 'Sheet';
         request.TargetColumnName1 = 'AOne';
         request.Value1 = 'ATwo';
-        request.IsUpdate = True;
+        request.IsUpdate1 = True;
         request.TargetColumnName2 = 'BOne';
         request.Value2 = 'BTwo';
+        request.IsUpdate2 = True;
+        request.TargetColumnName3 = 'COne';
+        request.Value3 = 'CTwo';
         AddRowToQuipSheet.Response response = AddRowToQuipSheet.AddRowToQuipSheetImpl(quip, request);
         System.assert(response.IsSuccess);
         List<List<Object>> calls = methodCalls.get('saveSpreadsheetData');
@@ -142,11 +150,14 @@ public class AddRowToQuipSheetTest {
         List<Object> args = calls[0];
         List<ThreadCell> cellsToUpdate = (List<ThreadCell>)args[2];
         ThreadCell cell = cellsToUpdate[0];
-        System.assertEquals('A2', cell.addr.toString());
+        System.assertEquals('A3', cell.addr.toString());
         System.assertEquals('ATwo', cell.value);
         cell = cellsToUpdate[1];
-        System.assertEquals('B2', cell.addr.toString());
+        System.assertEquals('B3', cell.addr.toString());
         System.assertEquals('BTwo', cell.value);
+        cell = cellsToUpdate[2];
+        System.assertEquals('C3', cell.addr.toString());
+        System.assertEquals('CTwo', cell.value);
     }
 
     @isTest

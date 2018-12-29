@@ -74,7 +74,7 @@ public class AddRowToGoogleSheetTest {
         request.SpreadsheetName = 'Update';
         request.TargetColumnName1 = 'AOne';
         request.Value1 = 'ATwo';
-        request.IsUpdate = True;
+        request.IsUpdate1 = True;
         request.TargetColumnName2 = 'BOne';
         request.Value2 = 'BTwo';
         AddRowToGoogleSheet.Response response = AddRowToGoogleSheet.AddRowToGoogleSheetImpl(drive, request);

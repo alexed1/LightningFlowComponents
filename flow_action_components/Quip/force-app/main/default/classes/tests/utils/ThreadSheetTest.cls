@@ -8,4 +8,13 @@ public class ThreadSheetTest {
         System.assertEquals('True', sheet.rows[0].cells[0].value);
         System.assertEquals('False', sheet.rows[1].cells[0].value);
     }
+
+    @isTest
+    public static void findCellByAddress_NegativeRowReturnsHeader() {
+        ThreadSheet sheet = new ThreadSheet();
+        sheet.headers.add('Test1');
+        sheet.headers.add('Test2');
+        ThreadCell cell = sheet.findCellByAddress(new Address(1, -1));
+        System.assertEquals('Test2', cell.value);
+    }
 }

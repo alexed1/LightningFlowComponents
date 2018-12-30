@@ -141,10 +141,10 @@ global class AddRowToGoogleSheet {
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found spreadsheet will be used')
         global String SheetName;
 
-        @InvocableVariable(required=True label='#1 Column Name')
+        @InvocableVariable(label='#1 Column Name')
         global String TargetColumnName1;
 
-        @InvocableVariable(required=True label='#1 Value')
+        @InvocableVariable(label='#1 Value')
         global String Value1;
 
         @InvocableVariable(label='#1 Use Value as Index for Updates')

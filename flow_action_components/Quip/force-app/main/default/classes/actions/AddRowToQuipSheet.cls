@@ -63,7 +63,7 @@ global class AddRowToQuipSheet {
                         columnValues.remove(i);
                         continue;
                     }
-                    cell = sheet.findCellByAddress(new Address(columnIndex, 0));
+                    cell = sheet.findCellByAddress(new Address(columnIndex, -1));
                 }
                 columnValue.headerCell = cell;
                 if (columnValue.isUpdate) {
@@ -73,7 +73,7 @@ global class AddRowToQuipSheet {
             Boolean isUpdate = updateValues.size() > 0;
             //Now, if this is update, we need to find the row with the matching index columns
             Boolean rowFound = false;      
-            Integer headerRow = 0;            
+            Integer headerRow = -1;            
             for (ColumnValue columnValue: columnValues) {
                 if (columnValue.headerCell.addr.row > headerRow) {
                     headerRow = columnValue.headerCell.addr.row;
@@ -175,10 +175,10 @@ global class AddRowToQuipSheet {
         @InvocableVariable(label='Sheet Name' description='Case-sensitive. If left blank, the first sheet of the found document will be used')
         global String SheetName;
 
-        @InvocableVariable(required=True label='#1 Column Name')
+        @InvocableVariable(label='#1 Column Name')
         global String TargetColumnName1;
 
-        @InvocableVariable(required=True label='#1 Value')
+        @InvocableVariable(label='#1 Value')
         global String Value1;
 
         @InvocableVariable(label='#1 Use Value as Index for Updates')

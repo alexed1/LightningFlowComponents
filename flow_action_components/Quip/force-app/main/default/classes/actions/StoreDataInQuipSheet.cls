@@ -102,7 +102,7 @@ global class StoreDataInQuipSheet {
         @InvocableVariable(label='#1 At Cell' description='Sets the value located at the specified Excel-like address (e.g. B2)')
         global String Address1;
 
-        @InvocableVariable(required=True label='#1 Value' description='Value to write to the sheet')
+        @InvocableVariable(label='#1 Value' description='Value to write to the sheet')
         global String Value1;
 
         @InvocableVariable(label='#2 Cell To The Right of Which Label' description='Sets the value located directly Cell To The Right of Which Label the specified one. If used together with "Cell Below Which Label" then gets the value that is located at the intersection of these two')

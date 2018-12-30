@@ -36,7 +36,5 @@ public class CreateQuipFolderTest {
         List<CreateQuipFolder.Request> requests = new List<CreateQuipFolder.Request> { request };
         List<CreateQuipFolder.Response> responses = CreateQuipFolder.CreateQuipFolder(requests);
         System.assertEquals(1, responses.size());
-        System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

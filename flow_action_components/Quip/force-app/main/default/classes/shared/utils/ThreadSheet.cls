@@ -104,7 +104,12 @@ public class ThreadSheet {
         return result;
     }
 
-    public ThreadCell findCellByAddress(Address address) {   
+    public ThreadCell findCellByAddress(Address address) {
+        if (address.row == -1) {
+            if (address.column >= 0 && address.column < headers.size()) {
+                return new ThreadCell(address, null, headers[address.column]);
+            }
+        }   
         ThreadCell result = null; 
         if (address.row >= 0 && address.row < rows.size()) {
             List<ThreadCell> row = rows[address.row].cells;     

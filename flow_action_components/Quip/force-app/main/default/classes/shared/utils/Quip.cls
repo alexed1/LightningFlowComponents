@@ -94,8 +94,14 @@ public class Quip implements IQuip {
         }
         ThreadResponse threadResponse = null;
         //If the value seems to be Id, we try to directly retrieve the thread with this Id
+        //Even though we can get thread by id directly, we still have to find it in folder tree (otherwise we are not aware of the exact location of this file)
         if (quipApi.LikeId(idOrName)) {
-            threadResponse = findThreadById(idOrName);
+            threadResponse = quipApi.getThread(idOrName);
+            if (threadResponse.isSuccess()) {
+                threadResponse = findThreadById(idOrName);
+            } else {
+                threadResponse = null;
+            }
         }
         //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name
         if (threadResponse == null) {

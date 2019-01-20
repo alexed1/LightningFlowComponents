@@ -2,8 +2,6 @@ public class QuipAPI implements IQuipAPI {
     
     private static final String QUIP_URL = 'quip';
 
-    private static final Integer ID_LENGTH = 12;
-
     private String apiKey;
 
     private Boolean allowEmptyToken;
@@ -18,9 +16,6 @@ public class QuipAPI implements IQuipAPI {
 
     public Boolean likeId(String id) {
         if (String.isBlank(id)) {
-            return false;
-        }
-        if (id.length() != ID_LENGTH) {
             return false;
         }
         if (id.contains(' ')) {
@@ -46,6 +41,13 @@ public class QuipAPI implements IQuipAPI {
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();
         System.debug('Response status code: ' + String.valueOf(statusCode));
+        if (statusCode == 400) {
+            ThreadResponse result = new ThreadResponse();
+            result.error = 'application_error';
+            result.error_code = 400;
+            result.error_description = 'Invalid thread ID: ' + id;
+            return result;
+        }
         return ThreadResponse.parse(res.getBody());
     }
 

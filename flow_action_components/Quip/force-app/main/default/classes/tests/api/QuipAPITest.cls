@@ -42,12 +42,6 @@ public class QuipAPITest {
     }
 
     @isTest
-    public static void likeId_WrongLength_ReturnsFalse() {
-        Boolean likeId = new QuipAPI().likeId('123');
-        System.assert(!likeId);
-    }
-
-    @isTest
     public static void likeId_HasSpace_ReturnsFalse() {
         Boolean likeId = new QuipAPI().likeId('1234567890 2');
         System.assert(!likeId);

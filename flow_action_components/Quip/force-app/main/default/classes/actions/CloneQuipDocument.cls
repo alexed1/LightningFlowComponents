@@ -8,6 +8,12 @@ global class CloneQuipDocument {
             Response response = CloneQuipDocument.CloneQuipDocumentImpl(quip, request);
             responses.add(response);
         }
+        //Introduce artificial delay to workaround Quip API issues
+        Long startingTime = System.now().getTime(); // Num milliseconds since Jan 1 1970
+        Integer delayInMilliseconds = 3 * 1000; //Several seconds delay
+        while (System.now().getTime() - startingTime < delayInMilliseconds)  {
+            // Do nothing until desired delay has passed
+        }
         return responses;
     }
 

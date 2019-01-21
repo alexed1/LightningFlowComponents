@@ -100,7 +100,11 @@ public class Quip implements IQuip {
             if (threadResponse.isSuccess()) {
                 threadResponse = findThreadById(idOrName);
             } else {
-                threadResponse = null;
+                //If file is not found, it is expected failure, so we'll just try to get thread by name
+                if (threadResponse.error_code == 404 || threadResponse.error_code == 400) {
+                    threadResponse = null;
+                }
+                //otherwise we'll fail gracefully
             }
         }
         //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name

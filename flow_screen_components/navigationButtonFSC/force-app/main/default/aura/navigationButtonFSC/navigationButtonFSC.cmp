@@ -1,6 +1,8 @@
 <!-- 
         Eric Smith - 11/30/2018		Removed typeOf test for Classic and added support for a second button
          							Added Apex Class to check for Classic/Lightning Theme
+
+    	Eric Smith - 1/22/2019		Changed from ui:button to lightning:button to support button variant style	
 -->
 
 <aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" controller="UIThemeController" access="global">
@@ -9,12 +11,14 @@
     <aura:attribute name="destinationType" type="String" default="url"/>
     <aura:attribute name="targetRecordId" type="String" />
     <aura:attribute name="navigationType" type="String" />
+    <aura:attribute name="variantType" type="String" default="neutral" />
     <aura:attribute name="fire" type="Boolean" default="false" />
     <aura:attribute name="label2" type="String"/>
     <aura:attribute name="destinationURL2" type="String" default="https://salesforce.com/" />
     <aura:attribute name="destinationType2" type="String" default="url"/>
     <aura:attribute name="targetRecordId2" type="String" />
     <aura:attribute name="navigationType2" type="String" />
+    <aura:attribute name="variantType2" type="String" default="neutral" />
     <aura:attribute name="fire2" type="Boolean" default="false" />
     <aura:attribute name="Buttons2" type="Boolean" default="false" />
     <aura:attribute name="h_destinationURL" type="String" />
@@ -29,9 +33,9 @@
     
     <div class="slds-form-element">
         <div class="container">
-            <ui:button label="{!v.label}" press="{!c.handleClick}" />
+            <lightning:button variant="{!v.variantType}" label="{!v.label}" onclick="{!c.handleClick}" />
             <aura:if isTrue="{!v.Buttons2}">
-                <ui:button label="{!v.label2}" press="{!c.handleClick2}" />
+                <lightning:button variant="{!v.variantType2}" label="{!v.label2}" onclick="{!c.handleClick2}" />
             </aura:if>
         </div>
         

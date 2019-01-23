@@ -4,6 +4,8 @@ public class QuipAPI implements IQuipAPI {
 
     private String apiKey;
 
+    private Quip_Access_Token__mdt accessToken;
+
     private Boolean allowEmptyToken;
 
     public QuipAPI() {
@@ -56,13 +58,46 @@ public class QuipAPI implements IQuipAPI {
         for (String rawId: id) {
             idList.add(EncodingUtil.urlEncode(rawId, 'UTF-8'));
         }
-        String url = 'callout:' + QUIP_URL + '/threads/?ids=' + String.join(idList, ',');
-        HttpRequest req = newRequest(url);
-        Http http = new Http();
-        HTTPResponse res = http.send(req);
-        Integer statusCode = res.getStatusCode();
-        System.debug('Response status code: ' + String.valueOf(statusCode));
-        return ThreadListResponse.parse(res.getBody());
+        Integer batchSize = getBatchSize();
+        List<List<String>> batches = new List<List<String>>();
+        if (batchSize <= 0 || idList.size() <= batchSize) {
+            batches.add(idList);
+        } else {
+            List<String> currentBatch = new List<String>();
+            for (Integer i = 0; i < idList.size(); i++) {
+                if (currentBatch.size() < batchSize) {
+                    currentBatch.add(idList[i]);
+                } else {
+                    batches.add(currentBatch);
+                    currentBatch = new List<String>();
+                }
+            }
+            if (currentBatch.size() > 0) {
+                batches.add(currentBatch);
+            }
+        }
+        List<ThreadListResponse> responses = new List<ThreadListResponse>();
+        for (List<String> batch : batches) {
+            String url = 'callout:' + QUIP_URL + '/threads/?ids=' + String.join(batch, ',');
+            HttpRequest req = newRequest(url);
+            Http http = new Http();
+            HTTPResponse res = http.send(req);
+            Integer statusCode = res.getStatusCode();
+            System.debug('Response status code: ' + String.valueOf(statusCode));
+            ThreadListResponse response = ThreadListResponse.parse(res.getBody());
+            responses.add(response);
+        }
+        if (responses.size() == 1) {
+            return responses[0];
+        }
+        ThreadListResponse result = new ThreadListResponse();
+        for (ThreadListResponse response : responses) {
+            if (!response.isSuccess()) {
+                return response;
+            }
+            result.threads.addAll(response.threads);
+        }
+        return result;
     }
 
     public FolderResponse getFolder(String id) {
@@ -220,16 +255,34 @@ public class QuipAPI implements IQuipAPI {
     private static final String TOKEN_PLACEHOLDER = 'Replace with Valid Token';
 
     private String getApiKey() {
-        if (String.isBlank(apiKey) && !allowEmptyToken) {
-            List<Quip_Access_Token__mdt> tokens = [SELECT Token__c FROM Quip_Access_Token__mdt WHERE Label = 'Token'];
+        if (allowEmptyToken) {
+            return '';
+        }
+        if (accessToken == null) {
+            List<Quip_Access_Token__mdt> tokens = [SELECT Token__c,Max_Batch_Size__c FROM Quip_Access_Token__mdt WHERE Label = 'Token'];
             if (tokens.size() == 0) {
                 throw new QuipException('The item labeled "' + TOKEN_LABEL + '" of "Quip Access Token" custom metadata type was not found');
             }
+            
             if (tokens[0].Token__c == TOKEN_PLACEHOLDER) {
                 throw new QuipException('You should set your Quip API key on the item of "Quip Access Token" type labeled "' + TOKEN_LABEL + '"');
             }
-            apiKey = tokens[0].Token__c;
+            accessToken = tokens[0];            
         }
-        return apiKey;
+        return accessToken.Token__c;
+    }
+
+    private Integer getBatchSize() {
+        if (allowEmptyToken) {
+            return 0;
+        }
+        if (accessToken == null) {
+            List<Quip_Access_Token__mdt> tokens = [SELECT Token__c,Max_Batch_Size__c FROM Quip_Access_Token__mdt WHERE Label = 'Token'];
+            if (tokens.size() == 0) {
+                throw new QuipException('The item labeled "' + TOKEN_LABEL + '" of "Quip Access Token" custom metadata type was not found');
+            }
+           accessToken = tokens[0];            
+        }
+        return accessToken.Max_Batch_Size__c == null ? 0 : accessToken.Max_Batch_Size__c.intValue();
     }
 }

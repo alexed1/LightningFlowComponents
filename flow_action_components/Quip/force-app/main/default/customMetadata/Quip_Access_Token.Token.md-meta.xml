@@ -3,6 +3,10 @@
     <label>Token</label>
     <protected>true</protected>
     <values>
+        <field>Max_Batch_Size__c</field>
+        <value xsi:type="xsd:double">50.0</value>
+    </values>
+    <values>
         <field>Token__c</field>
         <value xsi:type="xsd:string">Replace with Valid Token</value>
     </values>

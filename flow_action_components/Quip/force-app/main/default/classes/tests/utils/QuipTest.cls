@@ -44,6 +44,20 @@ public class QuipTest {
                 }
                 calls.add(new List<Object>(listOfArgs));
             }
+            if (stubbedMethodName.equalsIgnoreCase('searchThreads')) {
+                String idOrName = listOfArgs[0].toString();
+                if (idOrName == 'DoesntExist') {
+                    return new ThreadSearchResponse();
+                } else {
+                    System.debug('Found a thread for ' + idOrName);
+                    ThreadSearchResponse result = new ThreadSearchResponse();
+                    result.threads.add(new ThreadSearchResponse.SearchResult());
+                    result.threads[0].thread = new ThreadSearchResponse.Thread();
+                    result.threads[0].thread.id = 'Thread000001';
+                    result.threads[0].thread.title = idOrName;
+                    return result;
+                }
+            }            
             if (stubbedMethodName.equalsIgnoreCase('likeId')) {
                 String idOrName = listOfArgs[0].toString();
                 if (idOrName.length() == 12) {
@@ -98,35 +112,62 @@ public class QuipTest {
                     FolderResponse.ThreadOrFolder thread = new FolderResponse.ThreadOrFolder();
                     thread.thread_id = 'Thread000002';
                     response.children.add(thread);
+                    FolderResponse.ThreadOrFolder subFolder = new FolderResponse.ThreadOrFolder();
+                    subFolder.folder_id = 'Folder000003';                    
+                    response.children.add(subFolder);
+                    return response;
+                }
+                if (id == 'Folder000003') {
+                    FolderResponse response = new FolderResponse();
+                    FolderResponse.Folder folder = new FolderResponse.Folder();
+                    folder.id = 'Folder000003';
+                    folder.title = 'folder';
+                    response.folder = folder;
                     return response;
                 }
                 System.debug('Unhandled arguments for method: ' + stubbedMethodName);
                 return null;
             }
             if (stubbedMethodName.equalsIgnoreCase('getFolderList')) {
-                FolderListResponse response = FolderListResponse.parse(
-                    '{' +
-                        '"1": {' +
-                            '"folder": {' +
-                                '"title": "One",' +
-                                '"id": "1"' +
-                            '},' + 
-                            '"children": [' +
-                            '    {' +
-                            '        "folder_id": "2"' + 
-                            '    }' +           
-                            ']' +
-                        '},' +
-                        '"3": {' +
-                            '"folder": {    ' +        
-                                '"id": "3",' +
-                                '"title": "Three"' + 
-                            '},' +
-                            '"children": []' +
-                        '}' +
-                    '}'
-                );
-                return response;
+                List<String> ids = (List<String>)listOfArgs[0];
+                FolderListResponse listResponse = new FolderListResponse();
+                for (String folderId : ids) {
+                    if (folderId == 'Folder000001') {
+                        FolderResponse response = new FolderResponse();
+                        FolderResponse.Folder folder = new FolderResponse.Folder();
+                        folder.id = 'Folder000001';
+                        folder.title = 'folder';
+                        response.folder = folder;
+                        FolderResponse.ThreadOrFolder thread = new FolderResponse.ThreadOrFolder();
+                        thread.thread_id = 'Thread000001';
+                        response.children.add(thread);
+                        FolderResponse.ThreadOrFolder subFolder = new FolderResponse.ThreadOrFolder();
+                        subFolder.folder_id = 'Folder000002';                    
+                        response.children.add(subFolder);
+                        listResponse.folders.add(response);
+                    } else if (folderId == 'Folder000002') {
+                        FolderResponse response = new FolderResponse();
+                        FolderResponse.Folder folder = new FolderResponse.Folder();
+                        folder.id = 'Folder000002';
+                        folder.title = 'folder';
+                        response.folder = folder;
+                        FolderResponse.ThreadOrFolder thread = new FolderResponse.ThreadOrFolder();
+                        thread.thread_id = 'Thread000002';
+                        response.children.add(thread);
+                        FolderResponse.ThreadOrFolder subFolder = new FolderResponse.ThreadOrFolder();
+                        subFolder.folder_id = 'Folder000003';                    
+                        response.children.add(subFolder);
+                        listResponse.folders.add(response);
+                    } else if (folderId == 'Folder000003') {
+                        FolderResponse response = new FolderResponse();
+                        FolderResponse.Folder folder = new FolderResponse.Folder();
+                        folder.id = 'Folder000003';
+                        folder.title = 'folder';
+                        response.folder = folder;
+                        listResponse.folders.add(response);
+                    }
+                }
+                return listResponse;
             }
             if (stubbedMethodName.equalsIgnoreCase('editDocument')) {
                 //(thread.id, value, sectionId, location)
@@ -208,7 +249,7 @@ public class QuipTest {
             System.assert(false, 'Must throw exception');
         }
         catch (QuipException ex) {
-            System.assertEquals('Id or Name can\'t be blank', ex.getMessage());
+            System.assertEquals('Id or name can\'t be empty', ex.getMessage());
         }
     }
 
@@ -369,9 +410,9 @@ public class QuipTest {
     public static void getFolders_retrievesFolders() { 
         IQuipAPI api = (IQuipAPI)Test.createStub(IQuipAPI.class, new QuipAPIMock(null));
         Quip quip = new Quip(api);
-        List<Folder> folders = quip.getFolders(new List<String> { '1', '3' });
-        System.assertEquals('One', folders[0].name);
-        System.assertEquals('Three', folders[1].name);
+        List<Folder> folders = quip.getFolders(new List<String> { 'Folder000001', 'Folder000003' });
+        System.assertEquals('folder', folders[0].name);
+        System.assertEquals('folder', folders[1].name);
     }
 
     @isTest

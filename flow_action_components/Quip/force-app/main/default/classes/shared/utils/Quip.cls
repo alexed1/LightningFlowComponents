@@ -3,70 +3,7 @@ public class Quip implements IQuip {
     private IQuipAPI quipApi;
     
     public Quip(IQuipAPI quipApi) {
-        this.quipApi = quipApi;
-    }
-
-    private ThreadResponse findThreadByNameOrId(String nameOrId, Boolean isName) {
-        CurrentUserResponse currentUser = quipApi.getCurrentUser();
-        currentUser.ThrowOnError();
-        Set<String> processedFolders = new Set<String>();
-        List<String> folderQueue = new List<String>();
-        for (String sharedFolder : currentUser.shared_folder_ids) {
-            folderQueue.add(sharedFolder);
-        }
-        for (String groupFolder : currentUser.group_folder_ids) {
-            folderQueue.add(groupFolder);
-        }
-        folderQueue.add(currentUser.archive_folder_id);
-        folderQueue.add(currentUser.desktop_folder_id);
-        folderQueue.add(currentUser.starred_folder_id);
-        folderQueue.add(currentUser.private_folder_id);
-        while (folderQueue.size() > 0) {
-            String folderId = folderQueue.remove(folderQueue.size() - 1);
-            if (String.isBlank(folderId)) {
-                continue;
-            }
-            if (!processedFolders.add(folderId)) {
-                //It means that this folder for some reason has been already processed
-                continue;
-            }
-            FolderResponse folder = quipApi.getFolder(folderId);
-            folder.throwOnError();
-            List<String> threadIdList = new List<String>();
-            for (FolderResponse.ThreadOrFolder child : folder.children) {
-                if (child.isFolder()) {
-                    folderQueue.add(child.folder_id);
-                } else {
-                    threadIdList.add(child.thread_id);
-                }
-            }
-            if (threadIdList.size() > 0) {
-                ThreadListResponse threads = quipApi.getThreadList(threadIdList);
-                threads.throwOnError();
-                for (ThreadResponse thread : threads.threads) {
-                    if (isName) {
-                        if (thread.thread.title == nameOrId) {
-                            thread.folder_id = folderId;
-                            return thread;
-                        }
-                    //No idea why, but all threads have two Ids (one in Id and one in the link) and you can access them by any of those
-                    } else if (thread.thread.id == nameOrId || thread.thread.link.endsWith('/' + nameOrId)) {
-                        thread.folder_id = folderId;
-                        return thread;
-                    }
-                }
-            }
-        }
-        //It means that we've looked through all the folders and didn't find a thread with this name
-        return null;
-    }
-
-    private ThreadResponse findThreadByName(String name) {
-        return findThreadByNameOrId(name, true);
-    }
-
-    private ThreadResponse findThreadById(String id) {
-        return findThreadByNameOrId(id, false);
+        this.quipApi = quipApi; 
     }
 
     private static final Pattern tablePattern = Pattern.compile('(?s)<table.*?\\/table>');
@@ -86,41 +23,6 @@ public class Quip implements IQuip {
             result.sheets.add(ThreadSheet.parseHtml(match.group()));
         }
         return result;
-    }
-
-    private ThreadResponse findThreadImpl(String idOrName) {
-         if (String.isBlank(idOrName)) {
-            throw new QuipException('Id or Name can\'t be blank');
-        }
-        ThreadResponse threadResponse = null;
-        //If the value seems to be Id, we try to directly retrieve the thread with this Id
-        //Even though we can get thread by id directly, we still have to find it in folder tree (otherwise we are not aware of the exact location of this file)
-        if (quipApi.LikeId(idOrName)) {
-            threadResponse = quipApi.getThread(idOrName);
-            if (threadResponse.isSuccess()) {
-                threadResponse = findThreadById(idOrName);
-            } else {
-                //If file is not found, it is expected failure, so we'll just try to get thread by name
-                if (threadResponse.error_code == 404 || threadResponse.error_code == 400) {
-                    threadResponse = null;
-                }
-                //otherwise we'll fail gracefully
-            }
-        }
-        //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name
-        if (threadResponse == null) {
-            threadResponse = findThreadByName(idOrName);
-        }
-        if (threadResponse == null) {
-            throw new QuipException('File "' + idOrName + '" doesn\'t exist');
-        }        
-        threadResponse.ThrowOnError();
-        return threadResponse;
-    }
-
-    public Thread findThread(String idOrName) {
-        ThreadResponse response = findThreadImpl(idOrName);
-        return toThread(response);
     }
 
     public void saveSpreadsheetData(Thread thread, ThreadSheet sheet, List<ThreadCell> cellsToUpdate) {
@@ -222,6 +124,11 @@ public class Quip implements IQuip {
     }
 
     public Folder findFolder(String idOrName) {
+        Boolean isPath = idOrName.containsAny('\\/');
+        if (isPath) {
+            return findFolderByPath(idOrName, null, false);
+        }
+
         CurrentUserResponse currentUser = quipApi.getCurrentUser();
         currentUser.ThrowOnError();
         if (String.isBlank(idOrName)) {
@@ -237,8 +144,6 @@ public class Quip implements IQuip {
         for (String groupFolder : currentUser.group_folder_ids) {
             folderQueue.add(groupFolder);
         }
-        folderQueue.add(currentUser.archive_folder_id);
-        folderQueue.add(currentUser.desktop_folder_id);
         folderQueue.add(currentUser.starred_folder_id);
         folderQueue.add(currentUser.private_folder_id);
         while (folderQueue.size() > 0) {
@@ -287,17 +192,14 @@ public class Quip implements IQuip {
         if (userIdsOrEmails == null || userIdsOrEmails.size() == 0) {
             return;
         }
-        ThreadResponse thread = quipApi.getThread(threadIdOrName);
-        if (!thread.isSuccess()) {
-            thread = findThreadByName(threadIdOrName);
-        }
+        Thread thread = findThread(threadIdOrName);
         UserListResponse userList = quipApi.getUsers(userIdsOrEmails);
         userList.throwOnError();
         List<String> userIds = new List<String>();
         for (UserResponse user : userList.users) {
             userIds.add(user.id);
         }
-        Response response = quipApi.addMembers(thread.thread.id, userIds);
+        Response response = quipApi.addMembers(thread.id, userIds);
         response.throwOnError();
     }
 
@@ -305,61 +207,21 @@ public class Quip implements IQuip {
         if (userIdsOrEmails == null || userIdsOrEmails.size() == 0) {
             return;
         }
-        ThreadResponse thread = quipApi.getThread(threadIdOrName);
-        if (!thread.isSuccess()) {
-            thread = findThreadByName(threadIdOrName);
-        }
+        Thread thread = findThread(threadIdOrName);
         UserListResponse userList = quipApi.getUsers(userIdsOrEmails);
         userList.throwOnError();
         List<String> userIds = new List<String>();
         for (UserResponse user : userList.users) {
             userIds.add(user.id);
         }
-        Response response = quipApi.removeMembers(thread.thread.id, userIds);
+        Response response = quipApi.removeMembers(thread.id, userIds);
         response.throwOnError();
     }
 
-    public Folder getFolderByPath(String path, Boolean createIfNotExists) {
-        //If no path is provided then we return private folder
-        Folder folder = findFolder(null);
-        if (String.isBlank(path)) {
-            return folder;
-        }
-        List<String> folderNames = path.trim().split('[\\\\\\/]');
-        for (String folderName : folderNames) {
-            if (String.isBlank(folderName)) {
-                continue;
-            }
-            List<String> subFoldersId = new List<String>();
-            for (FolderRef subFolderRef : folder.subFolders) {
-                subFoldersId.add(subFolderRef.id);
-            }
-            List<Folder> subFolders = getFolders(subFoldersId);
-            Integer subFolderIndex = -1;
-            for (Integer i = 0; i < subFolders.size(); i++) {
-                if (subFolders[0].name == folderName) {
-                    subFolderIndex = i;
-                    break;
-                }
-            }
-            //If subfolder already exists we take it
-            if (subFolderIndex != -1) {
-                folder = subFolders[subFolderIndex];
-            }
-            //otherwise we create a new subfolder 
-            else if (createIfNotExists) {
-                folder = createFolder(folderName, folder.id);
-            } else {
-                return null;
-            }
-        }
-        return folder;
-    }
-
     public void addDocumentToFolder(String threadIdOrName, String folderPath) {
-        Folder folder = getFolderByPath(folderPath, true);
-        ThreadResponse thread = findThreadImpl(threadIdOrName);
-        Response response = quipApi.addMembers(thread.Thread.id, new List<String> { folder.id });
+        Folder folder = findFolderByPath(folderPath, null, true);
+        Thread thread = findThread(threadIdOrName);
+        Response response = quipApi.addMembers(thread.id, new List<String> { folder.id });
         response.throwOnError();
     }
 
@@ -369,5 +231,232 @@ public class Quip implements IQuip {
         }
         Response response = quipApi.editFolder(folder.id, newName);
         response.throwOnError();
+    }
+
+    public Folder getFolderByPath(String path, Boolean createIfNotExists) {
+        return findFolderByPath(path, null, createIfNotExists);
+    }
+
+    private Folder getFolder(String name, Folder parentFolder) {
+        //Looking among root folders
+        if (parentFolder == null) {
+            CurrentUserResponse currentUser = quipApi.getCurrentUser();
+            currentUser.throwOnError();
+            if (String.isBlank(name)) {
+                FolderResponse folder = quipApi.getFolder(currentUser.private_folder_id);
+                return toFolder(folder);
+            }
+            System.debug('Looking for the folder ' + name + ' among the root folders');
+            Set<String> foldersIds = new Set<String>();
+            foldersIds.add(currentUser.private_folder_id);
+            for (String sharedFolder : currentUser.shared_folder_ids) {
+                foldersIds.add(sharedFolder);
+            }
+            for (String groupFolder : currentUser.group_folder_ids) {
+                foldersIds.add(groupFolder);
+            }
+            FolderListResponse foldersResponse = quipApi.getFolderList(new List<String>(foldersIds));
+            foldersResponse.throwOnError();
+            List<Folder> result = new List<Folder>();
+            List<String> rootFolderNames = new List<String>();
+            for (FolderResponse folder : foldersResponse.folders) {
+                if (folder.folder.title == name) {
+                    return toFolder(folder);
+                }
+                rootFolderNames.add(folder.folder.title);
+            }
+            System.debug('Failed to find the root folder ' + name);
+            System.debug('Only these root folders exist: ' + rootFolderNames);
+            return null;
+        }
+        //Looking among subfolders of the specific folder
+        if (parentFolder.subfolders.size() == 0) {
+            System.debug('Folder '+ name + ' has no subfolder');
+            return null;
+        }
+        System.debug('Looking for the folder ' + name + ' among the ' + parentFolder.subfolders.size() + ' subfolders of '+ parentFolder.name);
+        List<String> subFolderIds = new List<String>();
+        for (FolderRef subFolder : parentFolder.subFolders) {
+            subFolderIds.add(subFolder.id);
+        }
+        FolderListResponse subFoldersResponse = quipApi.getFolderList(subFolderIds);
+        subFoldersResponse.throwOnError();
+        List<String> subFolderNames = new List<String>();
+        for (FolderResponse folder : subFoldersResponse.folders) {
+            if (folder.folder.title == name) {
+                return toFolder(folder);
+            }
+            subFolderNames.add(folder.folder.title);
+        }
+        System.debug('Failed to find the subfolder ' + name);
+        System.debug('Only these subfolders exist: ' + subFolderNames);
+        return null;
+    }
+
+    private Folder findFolderByPath(String path, List<String> pathNames, Boolean createIfNotExists) {
+        Folder privateFolder = getFolder(null, null);
+        if (String.isBlank(path) && pathNames == null) {
+            return privateFolder;
+        }
+        pathNames = pathNames != null ? pathNames : path.trim().split('[\\\\\\/]');
+        Folder parentFolder = null;
+        for (Integer i = 0; i < pathNames.size(); i++) {
+            String folderName = pathNames[i].trim();
+            if (String.isBlank(folderName)) {
+                continue;
+            }
+            System.debug('Looking for ' + folderName + ' folder among ' + (parentFolder == null ? 'root folders' : parentFolder.name));
+            Folder thisFolder = null;
+            //If we search for the first folder in the path, we try to search it among the root folders first
+            if (parentFolder == null) {
+                thisFolder = getFolder(folderName, null);
+                //If there is no root folder with a name like this, we try to search for it in user's private folder
+                if (thisFolder == null) {
+                    System.debug('Folder ' + folderName + ' was not found among root folders');
+                    thisFolder = getFolder(folderName, privateFolder);
+                }
+            } else {
+                thisFolder = getFolder(folderName, parentFolder);
+            }
+            if (thisFolder == null) {
+                if (createIfNotExists) {
+                    thisFolder = createFolder(folderName, parentFolder == null ? privateFolder.id : parentFolder.id);
+                } else {
+                    System.debug('Folder ' + folderName + ' was not found among children of ' + (parentFolder == null ? privateFolder.name : parentFolder.name));
+                    return null;
+                }
+            }
+            parentFolder = thisFolder;
+        }
+        return parentFolder;
+    }
+
+    private ThreadResponse findThreadByPath(String path) {
+        System.debug('Looking for a thread by path: ' + path);
+        List<String> pathNames = path.trim().split('[\\\\\\/]');
+        String threadName = pathNames[pathNames.size() - 1].trim();
+        if (String.isBlank(threadName)) {
+            throw new QuipException('Can\'t use empty thread name in the path');
+        }
+        System.debug('Thread name should be: ' + threadName);
+        pathNames.remove(pathNames.size() - 1);
+        Folder parentFolder = findFolderByPath(null, pathNames, false);
+        if (parentFolder == null) {
+            System.debug('Couldn\'t find a folder for thread: ' + path);
+            return null;
+        }
+        ThreadSearchResponse searchResponse = quipApi.searchThreads(threadName);
+        searchResponse.throwOnError();
+        System.debug('Found ' + searchResponse.threads.size() + ' threads');
+        for (ThreadSearchResponse.SearchResult thread : searchResponse.threads) {
+            System.debug('Found thread with the name ' + thread.thread.title + ' while looking for a thread ' + path);
+            if (thread.thread.title == threadName) {
+                ThreadResponse result = quipApi.getThread(thread.thread.id);
+                result.throwOnError();
+                result.folder_id = parentFolder.id;
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private ThreadResponse findThreadByName(String name) {
+        ThreadSearchResponse searchResponse = quipApi.searchThreads(name);
+        searchResponse.throwOnError();
+        for (ThreadSearchResponse.SearchResult thread : searchResponse.threads) {
+            if (thread.thread.title == name) {
+                ThreadResponse result = quipApi.getThread(thread.thread.id);
+                result.throwOnError();
+                return result;
+            }
+        }
+        return null;
+    }
+
+    private ThreadResponse findThreadById(String id) {
+        ThreadResponse threadResponse = quipApi.getThread(id);
+        if (threadResponse.isSuccess()) {
+            return threadResponse;
+        }
+        //If file is not found, it is expected failure, so we'll just try to get thread by name
+        if (threadResponse.error_code != 404 && threadResponse.error_code != 400) {
+            threadResponse.throwOnError();
+        }
+        return null;
+    }
+
+    private Folder findParentFolderByThreadId(String id) {
+        CurrentUserResponse currentUser = quipApi.getCurrentUser();
+        currentUser.ThrowOnError();
+        Set<String> processedFolders = new Set<String>();
+        List<String> folderQueue = new List<String>();
+        for (String sharedFolder : currentUser.shared_folder_ids) {
+            folderQueue.add(sharedFolder);
+        }
+        for (String groupFolder : currentUser.group_folder_ids) {
+            folderQueue.add(groupFolder);
+        }
+        folderQueue.add(currentUser.starred_folder_id);
+        folderQueue.add(currentUser.private_folder_id);
+        while (folderQueue.size() > 0) {
+            String folderId = folderQueue.remove(folderQueue.size() - 1);
+            if (String.isBlank(folderId)) {
+                continue;
+            }
+            if (!processedFolders.add(folderId)) {
+                //It means that this folder for some reason has been already processed
+                continue;
+            }
+            FolderResponse folder = quipApi.getFolder(folderId);
+            folder.throwOnError();
+            for (FolderResponse.ThreadOrFolder child : folder.children) {
+                if (child.thread_id == id) {
+                    return toFolder(folder);
+                }
+                if (child.isFolder()) {
+                    folderQueue.add(child.folder_id);
+                }
+            }
+        }
+        throw new QuipException('Failed to find parent folder of the thread with Id ' + id);
+    }
+
+    private ThreadResponse findThreadImpl(String idOrName) {
+        //If the value seems to be Id, we try to directly retrieve the thread with this Id
+        //Even though we can get thread by id directly, we still have to find it in folder tree (otherwise we are not aware of the exact location of this file)
+        ThreadResponse threadResponse = null;
+        if (quipApi.LikeId(idOrName)) {
+            threadResponse = findThreadById(idOrName);
+            if (threadResponse != null) {
+                return threadResponse;
+            }
+            //otherwise we'll fail gracefully
+        }
+        //If it is not Id for sure (e.g. contains spaces) or we didn't find a thread with this Id, we try to treat it as thread name
+        if (threadResponse == null) {
+            threadResponse = findThreadByName(idOrName);
+        }        
+        if (threadResponse == null) {
+            throw new QuipException('File "' + idOrName + '" doesn\'t exist');
+        }
+        return threadResponse;
+    }
+
+    public Thread findThread(String idOrName) {
+        if (String.isBlank(idOrName)) {
+            throw new QuipException('Id or name can\'t be empty');
+        }
+        ThreadResponse threadResponse = null;
+        Boolean isPath = idOrName.containsAny('\\/');
+        if (isPath) {
+            threadResponse = findThreadByPath(idOrName);
+            if (threadResponse == null) {
+                throw new QuipException('File "' + idOrName + '" doesn\'t exist');
+            }
+            return toThread(threadResponse);
+        }
+        threadResponse = findThreadImpl(idOrName);
+        threadResponse.folder_id = findParentFolderByThreadId(threadResponse.thread.id).id;
+        return toThread(threadResponse);
     }
 }

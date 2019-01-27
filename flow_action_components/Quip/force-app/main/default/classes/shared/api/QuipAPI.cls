@@ -239,17 +239,8 @@ public class QuipAPI implements IQuipAPI {
         return UserListResponse.parse(res.getBody());
     }
 
-    private List<String> split(String str) {
-        if (String.isBlank(str)) {
-            return new List<String>();
-        }
-        List<String> parts = str.split('[,\\s]');
-        return parts;
-    }
-
     public ThreadSearchResponse searchThreads(String name) {
-        List<String> parts = split(name);
-        String url = 'callout:' + QUIP_URL + '/threads/search?only_match_titles=true&query=' + String.join(parts, ',');
+        String url = 'callout:' + QUIP_URL + '/threads/search?only_match_titles=true&query=' + EncodingUtil.urlEncode(name, 'UTF-8');
         HttpRequest req = newRequest(url);
         Http http = new Http();
         HTTPResponse res = http.send(req);

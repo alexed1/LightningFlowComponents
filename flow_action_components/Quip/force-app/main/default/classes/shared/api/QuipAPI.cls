@@ -16,14 +16,14 @@ public class QuipAPI implements IQuipAPI {
         this.allowEmptyToken = allowEmptyToken;
     }
 
+    private static final Pattern idPattern = Pattern.compile('^\\w{10,15}$');
+
     public Boolean likeId(String id) {
         if (String.isBlank(id)) {
             return false;
         }
-        if (id.contains(' ')) {
-            return false;
-        }
-        return true;
+        Matcher idMatcher = idPattern.matcher(id);
+        return idMatcher.find();
     }
 
     public CurrentUserResponse getCurrentUser() {   
@@ -239,6 +239,32 @@ public class QuipAPI implements IQuipAPI {
         return UserListResponse.parse(res.getBody());
     }
 
+    private List<String> split(String str) {
+        if (String.isBlank(str)) {
+            return new List<String>();
+        }
+        List<String> parts = str.split('[,\\s]');
+        return parts;
+    }
+
+    public ThreadSearchResponse searchThreads(String name) {
+        List<String> parts = split(name);
+        String url = 'callout:' + QUIP_URL + '/threads/search?only_match_titles=true&query=' + String.join(parts, ',');
+        HttpRequest req = newRequest(url);
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        System.debug('Response status code: ' + String.valueOf(statusCode));
+        String body = res.getBody();
+        if (body.startsWith('[')) {
+            List<ThreadSearchResponse.SearchResult> threads = (List<ThreadSearchResponse.SearchResult>)System.JSON.deserialize(body, List<ThreadSearchResponse.SearchResult>.class);
+            ThreadSearchResponse result = new ThreadSearchResponse();
+            result.threads = threads;
+            return result;
+        }
+        return (ThreadSearchResponse)System.JSON.deserialize(body, ThreadSearchResponse.class);
+    }
+
     private HttpRequest newRequest(String url) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(url);
@@ -254,7 +280,7 @@ public class QuipAPI implements IQuipAPI {
 
     private static final String TOKEN_PLACEHOLDER = 'Replace with Valid Token';
 
-    private String getApiKey() {
+    private String getApiKey() { 
         if (allowEmptyToken) {
             return '';
         }

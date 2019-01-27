@@ -22,5 +22,5 @@ public interface IQuip {
 
     void addDocumentToFolder(String threadIdOrName, String folderPath);
 
-    void renameFolder(Folder folder, String newName);
+    void renameFolder(Folder folder, String newName); 
 }

@@ -8,7 +8,7 @@
  <aura:handler name="init" value="{!this}" action="{!c.init}"/>
   <lightning:select  class="slds-size_1-of-2" name="selectItem" label="Select an item" value="{!v.value}">
     <aura:iteration items="{!v.options}" var="option">
-      <option value="{!option.value}">{!option.label}</option>
+      <option value="{!option.value}" selected="{!option.selected}">{!option.label}</option>
     </aura:iteration>
   </lightning:select>
 

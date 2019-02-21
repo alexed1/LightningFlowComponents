@@ -6,7 +6,7 @@ This component grabs picklist values and creates a Lightning Design System style
 
 ## How It Works ##
 
-This component exposes two input attributes "object" and "field". Simply pass the desired sObject name and picklist field name on that object and the picklist values will populate. The selected value is passed to an output attribute called "value".
+This component exposes three input attributes "object", "field", and "value". Simply pass the desired sObject name and picklist field name on that object and the picklist values will populate. The selected value is passed to an output attribute called "value". If "value" is supplied a valid input value, it will be used as the default value.
 
 
 

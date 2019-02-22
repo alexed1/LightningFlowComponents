@@ -9,9 +9,16 @@
 			helper
 				.fireApex('c.getPicklistValues', { fld: field, obj: object })
 				.then(newOptions => {
-					newOptions.forEach(v => {
-						v.selected = v.value === value
-					})
+					if (value) {
+						newOptions.forEach(o => {
+							o.selected = o.value.toLowerCase() === value.toLowerCase()
+						})
+					} else {
+						newOptions[0].selected = true
+					}
+
+					const selectedOption = newOptions.find(o => o.selected) || {}
+					component.set('v.value', selectedOption.value || '')
 					component.set('v.options', newOptions)
 				})
 		}

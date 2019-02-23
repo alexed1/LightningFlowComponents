@@ -275,7 +275,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             }
             else{
                 var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
-                    searchString + "%'";
+                    searchString.replace(/'/g,'\\\'') + "%'";
                 component.set("v.searchWhereClause", searchWhereClause);	
             }
             

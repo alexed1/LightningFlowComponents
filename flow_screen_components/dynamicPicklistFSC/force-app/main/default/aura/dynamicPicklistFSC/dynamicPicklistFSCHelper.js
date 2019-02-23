@@ -100,7 +100,7 @@
     helper.createComponent(compName, attributes, location, true);
   },
 
-  fireApexHelper: function (ApexFunctionName, params, resolve, attributeName) {
+  fireApexHelper: function (ApexFunctionName, params, resolve, attributeName, defaultVal) {
     let component = this.component
     let helper = this;
     let action = component.get(ApexFunctionName);
@@ -110,19 +110,24 @@
         console.log("There was an error:");
         console.log(a.getError());
       } else if (a.getState() === 'SUCCESS') {
+        var options = a.getReturnValue();
+        for (var option of options) {
+            if (option.value === defaultVal) {
+                option.selected = true;
+            }
+        }
         if (attributeName) component.set(attributeName, a.getReturnValue());
         resolve(a.getReturnValue());
-        console.log(a.getReturnValue());
       }
 
     });
     $A.enqueueAction(action);
   },
 
-  fireApex: function (ApexFunctionName, params, attributeName) {
+  fireApex: function (ApexFunctionName, params, attributeName, defaultVal) {
     let component = this.component
     let helper = this;
-    let p = new Promise((resolve) => { helper.fireApexHelper(ApexFunctionName, params, resolve, attributeName) });
+    let p = new Promise((resolve) => { helper.fireApexHelper(ApexFunctionName, params, resolve, attributeName, defaultVal) });
     return p
   },
 

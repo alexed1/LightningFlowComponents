@@ -1,2 +1,3 @@
 .sfdx
 .DS_store
+/flow_action_components/Summer18/Google/force-app/main/default/profiles/Admin.profile-meta.xml

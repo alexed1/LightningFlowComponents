@@ -26,6 +26,10 @@ public class RoutesResponse extends GoogleMapsResponse {
     public class Row {
 
         public RoutesResponse.Element[] elements;
+
+        public Row() {
+            elements = new List<RoutesResponse.Element>();
+        }
     }
     
     public String[] destination_addresses;
@@ -40,7 +44,7 @@ public class RoutesResponse extends GoogleMapsResponse {
         rows = new List<RoutesResponse.Row>();
     }
 
-    public RoutesResponse parseJson(String json) {
+    public static RoutesResponse parseJson(String json) {
         return (RoutesResponse) System.JSON.deserialize(json, RoutesResponse.class);
     }
 }

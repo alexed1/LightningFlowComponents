@@ -31,7 +31,6 @@ public class GoogleMaps implements IGoogleMaps{
         return new Route(
             response.origin_addresses[0],
             response.destination_addresses[0],
-            result.distance.value,
-            result.duration.value);
+            result.distance.value);
     }
 }

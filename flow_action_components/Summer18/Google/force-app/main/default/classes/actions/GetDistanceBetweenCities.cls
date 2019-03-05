@@ -17,8 +17,8 @@ global class GetDistanceBetweenCities {
             Route route = googleMaps.findRoute(request.Source, request.Destination);
             response.Source = route.source;
             response.Destination = route.destination;
-            response.Distance = route.distance;
-            response.TravelTime = route.duration;
+            response.DistanceInMiles = route.getDistanceInMiles();
+            response.DistanceInKilometers = route.getDistanceInKilometers();
             return response;            
         } 
         catch (GoogleException ex) {
@@ -56,10 +56,10 @@ global class GetDistanceBetweenCities {
         @InvocableVariable(label='Destination Location' description='The actual destination location used')
         global String Destination;
 
-        @InvocableVariable(label='Distance' description='Distance (in meters) between source and destination cities')
-        global Integer Distance;
+        @InvocableVariable(label='Distance in Miles' description='Distance (in miles) between source and destination cities')
+        global Decimal DistanceInMiles;
 
-        @InvocableVariable(label='Travel Time' description='Travel time (in seconds) required to get from the source city to the destination city')
-        global Integer TravelTime;
+        @InvocableVariable(label='Distance in Kilometers' description='Distance (in kilometers) between source and destination cities')
+        global Decimal DistanceInKilometers;
     }
 }

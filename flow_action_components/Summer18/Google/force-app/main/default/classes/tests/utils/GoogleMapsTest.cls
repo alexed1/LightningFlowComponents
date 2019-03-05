@@ -15,7 +15,7 @@ public class GoogleMapsTest {
                 String destination = listOfArgs[1].toString();
                 if (source == 'no') {
                     RoutesResponse response = new RoutesResponse();
-                    response.destination_addresses.add('destination');
+                    response.destination_addresses.add('destination'); 
                     return response;
                 }
                 if (destination == 'no') {
@@ -95,6 +95,5 @@ public class GoogleMapsTest {
         System.assertEquals('source', route.source);
         System.assertEquals('destination', route.destination);
         System.assertEquals(100, route.distance);
-        System.assertEquals(200, route.duration);
     }
 }

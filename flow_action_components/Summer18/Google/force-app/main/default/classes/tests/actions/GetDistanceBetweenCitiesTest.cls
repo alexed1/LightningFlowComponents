@@ -14,7 +14,7 @@ public class GetDistanceBetweenCitiesTest {
             if (stubbedMethodName.equalsIgnoreCase('findRoute')) {
                 String source = listOfArgs[0].toString();
                 if (source == 'source') {
-                    return new Route('source', 'destination', 100, 200);
+                    return new Route('source', 'destination', 1609.344);
                 }
                 throw new GoogleException('No route');
             }
@@ -34,8 +34,8 @@ public class GetDistanceBetweenCitiesTest {
         System.assert(String.isBlank(response.ErrorMessage));
         System.assertEquals('source', response.Source);
         System.assertEquals('destination', response.Destination);
-        System.assertEquals(100, response.Distance);
-        System.assertEquals(200, response.TravelTime);
+        System.assertEquals(1, response.DistanceInMiles);
+        System.assertEquals(1.609, response.DistanceInKilometers);
     }
 
     @isTest

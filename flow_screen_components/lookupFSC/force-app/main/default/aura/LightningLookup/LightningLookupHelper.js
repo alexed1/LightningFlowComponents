@@ -120,6 +120,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         try{
             var records = component.get('v.availableRecords');
             var searchWhereClause = component.get("v.searchWhereClause");
+            console.log(searchWhereClause);
             var displayedFieldName = component.get("v.displayedFieldName");
             var valueFieldName = component.get("v.valueFieldName");
             if(!document.getElementById(component.getGlobalId() + "_myinput")){
@@ -256,6 +257,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
             // it after we change selectedName
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
+            console.log(searchString);
             this.clearField(component,false);
             document.getElementById(component.getGlobalId() + "_myinput").value = searchString;
 

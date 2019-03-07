@@ -59,6 +59,5 @@ public class GetDistanceBetweenCitiesTest {
         List<GetDistanceBetweenCities.Response> responses = GetDistanceBetweenCities.GetDistanceBetweenCities(requests);
         System.assertEquals(1, responses.size());
         System.assert(!responses[0].IsSuccess);
-        System.assertEquals('fail', responses[0].ErrorMessage);
     }
 }

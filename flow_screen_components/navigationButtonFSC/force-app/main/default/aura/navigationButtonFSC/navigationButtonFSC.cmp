@@ -2,42 +2,63 @@
         Eric Smith - 11/30/2018		Removed typeOf test for Classic and added support for a second button
          							Added Apex Class to check for Classic/Lightning Theme
 
-    	Eric Smith - 1/22/2019		Changed from ui:button to lightning:button to support button variant style	
+        Eric Smith - 1/22/2019		Changed from ui:button to lightning:button to support button variant style	
+        
+        Eric Smith - 3/9/2019       Added support for 3rd button
 -->
 
-<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" controller="UIThemeController" access="global">
-    <aura:attribute name="label" type="String"/>
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" controller="UIThemeController"
+    access="global">
+    <aura:attribute name="label" type="String" />
     <aura:attribute name="destinationURL" type="String" default="https://salesforce.com/" />
-    <aura:attribute name="destinationType" type="String" default="url"/>
+    <aura:attribute name="destinationType" type="String" default="url" />
     <aura:attribute name="targetRecordId" type="String" />
     <aura:attribute name="navigationType" type="String" />
     <aura:attribute name="variantType" type="String" default="neutral" />
     <aura:attribute name="fire" type="Boolean" default="false" />
-    <aura:attribute name="label2" type="String"/>
+    <aura:attribute name="label2" type="String" />
     <aura:attribute name="destinationURL2" type="String" default="https://salesforce.com/" />
-    <aura:attribute name="destinationType2" type="String" default="url"/>
+    <aura:attribute name="destinationType2" type="String" default="url" />
     <aura:attribute name="targetRecordId2" type="String" />
     <aura:attribute name="navigationType2" type="String" />
     <aura:attribute name="variantType2" type="String" default="neutral" />
     <aura:attribute name="fire2" type="Boolean" default="false" />
     <aura:attribute name="Buttons2" type="Boolean" default="false" />
+    <aura:attribute name="label3" type="String" />
+    <aura:attribute name="destinationURL3" type="String" default="https://salesforce.com/" />
+    <aura:attribute name="destinationType3" type="String" default="url" />
+    <aura:attribute name="targetRecordId3" type="String" />
+    <aura:attribute name="navigationType3" type="String" />
+    <aura:attribute name="variantType3" type="String" default="neutral" />
+    <aura:attribute name="fire3" type="Boolean" default="false" />
+    <aura:attribute name="Buttons3" type="Boolean" default="false" />    
     <aura:attribute name="h_destinationURL" type="String" />
     <aura:attribute name="h_destinationType" type="String" />
     <aura:attribute name="h_targetRecordId" type="String" />
     <aura:attribute name="h_navigationType" type="String" />
-    
+
     <aura:attribute name="Theme" type="String" />
     <aura:attribute name="isLEX" type="Boolean" />
-    
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> 
-    
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
     <div class="slds-form-element">
         <div class="container">
-            <lightning:button variant="{!v.variantType}" label="{!v.label}" onclick="{!c.handleClick}" />
-            <aura:if isTrue="{!v.Buttons2}">
-                <lightning:button variant="{!v.variantType2}" label="{!v.label2}" onclick="{!c.handleClick2}" />
-            </aura:if>
+            <lightning:layout>
+                <lightning:layoutItem padding="around-small">
+                    <lightning:button variant="{!v.variantType}" label="{!v.label}" onclick="{!c.handleClick}" />
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <aura:if isTrue="{!v.Buttons2}">
+                        <lightning:button variant="{!v.variantType2}" label="{!v.label2}" onclick="{!c.handleClick2}" />
+                    </aura:if>
+                </lightning:layoutItem>
+                <lightning:layoutItem padding="around-small">
+                    <aura:if isTrue="{!v.Buttons3}">
+                        <lightning:button variant="{!v.variantType3}" label="{!v.label3}" onclick="{!c.handleClick3}" />
+                    </aura:if>
+                </lightning:layoutItem>
+            </lightning:layout>
         </div>
-        
     </div>
 </aura:component>

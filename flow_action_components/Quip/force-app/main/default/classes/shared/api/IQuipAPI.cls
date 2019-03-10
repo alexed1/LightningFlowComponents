@@ -4,7 +4,7 @@ public interface IQuipAPI {
 
     CurrentUserResponse getCurrentUser();
 
-    ThreadResponse getThread(String id);
+    ThreadResponse getThread(String id); 
 
     ThreadListResponse getThreadList(List<String> id);
 
@@ -25,4 +25,6 @@ public interface IQuipAPI {
     Response editFolder(String folderId, String newName);
 
     UserListResponse getUsers(List<String> idsOrEmails);
+
+    ThreadSearchResponse searchThreads(String name);
 }

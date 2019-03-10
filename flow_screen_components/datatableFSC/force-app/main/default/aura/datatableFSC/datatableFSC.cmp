@@ -17,8 +17,8 @@
 
 <aura:component implements="lightning:availableForFlowScreens">
 
-	<aura:attribute name="obj" type="String" />
-	<aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="obj" type="String" />
+    <aura:attribute name="mydata" type="SObject[]"/>
     <aura:attribute name="selectedRows" type="SObject[]"/>
     <aura:attribute name="sortedBy" type="String" />
     <aura:attribute name="sortedDirection" type="String" />
@@ -113,6 +113,7 @@
     <aura:attribute name="column10_align" type="String"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
     <lightning:datatable data="{! v.mydata }" 
         columns="{! v.mycolumns }" 
         keyField="id"

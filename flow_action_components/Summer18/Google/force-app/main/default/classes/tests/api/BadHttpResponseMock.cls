@@ -16,7 +16,9 @@ public class BadHttpResponseMock implements HttpCalloutMock {
                     '  ],'+
                     '  "code": 500,'+
                     '  "message": "fail"'+
-                    ' }'+
+                    ' },'+
+                    '  "status" : "NOT_FOUND", ' + 
+                    '  "error_message": "fail" ' +
                     '}');
         return res;
     }

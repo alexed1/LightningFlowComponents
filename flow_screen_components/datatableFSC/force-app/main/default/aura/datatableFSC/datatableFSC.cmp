@@ -41,12 +41,15 @@
 
         <aura:attribute name="mydata_standard6" type="Opportunity[]"/>
         <aura:attribute name="selectedRows_standard6" type="Opportunity[]"/>
-        
+		
+    	<!--        
         <aura:attribute name="mydata_custom1" type="Service_Address__c[]"/>
         <aura:attribute name="selectedRows_custom1" type="Service_Address__c[]"/>
         
         <aura:attribute name="mydata_custom2" type="Service_Number__c[]"/>
         <aura:attribute name="selectedRows_custom2" type="Service_Number__c[]"/>
+		-->
+    
     <!-- -->
     
     <aura:attribute name="mycolumns" type="List"/>

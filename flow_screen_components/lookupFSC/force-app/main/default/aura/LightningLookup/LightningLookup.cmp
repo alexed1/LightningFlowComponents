@@ -141,9 +141,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</aura:iteration>
 				</ul>
 			</div>
-			<div id="error-message" class="{!v.valid ? 'slds-hide' : 'slds-form-element__help'}">
+			<!-- Error message is manage by the flow runtime -->
+			<!-- <div id="error-message" class="{!v.valid ? 'slds-hide' : 'slds-form-element__help'}">
 				Complete this field
-			</div>	
+			</div>	 -->
 		</div>				
 	</div>      
 </aura:component>

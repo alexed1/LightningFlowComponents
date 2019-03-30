@@ -19,11 +19,14 @@
         <design:attribute name="mydata_standard6" label="Collection - Opportunitys"/>
         <design:attribute name="selectedRows_standard6" label="Output Selected Opportunitys"/>
 
+    	<!--
         <design:attribute name="mydata_custom1" label="Collection - Service Addresses"/>
         <design:attribute name="selectedRows_custom1" label="Output Selected Service Addresses"/>
 
         <design:attribute name="mydata_custom2" label="Collection - Service Numbers"/>
         <design:attribute name="selectedRows_custom2" label="Output Selected Service Numbers"/>
+		-->
+    
     <!-- -->
 
     <design:attribute name="column01_icon" label="Column01_iconName"/>
@@ -31,60 +34,60 @@
     <design:attribute name="column01_fieldName" label="Column01_fieldName"/>
     <design:attribute name="column01_type" label="Column01_type"/>
     <design:attribute name="column01_width" label="Column01_width"/>
-    <design:attribute name="column01_align" label="Column01_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column01_align" label="Column01_align __________C1" datasource="left,right,center" default="left"/>
     
     <design:attribute name="column02_label" label="Column02_label"/>
     <design:attribute name="column02_fieldName" label="Column02_fieldName"/>
     <design:attribute name="column02_type" label="Column02_type"/>
     <design:attribute name="column02_width" label="Column02_width"/>
-    <design:attribute name="column02_align" label="Column02_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column02_align" label="Column02_align __________C2" datasource="left,right,center" default="left"/>
     
     <design:attribute name="column03_label" label="Column03_label"/>
     <design:attribute name="column03_fieldName" label="Column03_fieldName"/>
     <design:attribute name="column03_type" label="Column03_type"/>
     <design:attribute name="column03_width" label="Column03_width"/>
-    <design:attribute name="column03_align" label="Column03_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column03_align" label="Column03_align __________C3" datasource="left,right,center" default="left"/>
     
     <design:attribute name="column04_label" label="Column04_label"/>
     <design:attribute name="column04_fieldName" label="Column04_fieldName"/>
     <design:attribute name="column04_type" label="Column04_type"/>
     <design:attribute name="column04_width" label="Column04_width"/>
-    <design:attribute name="column04_align" label="Column04_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column04_align" label="Column04_align __________C4" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column05_label" label="Column05_label"/>
     <design:attribute name="column05_fieldName" label="Column05_fieldName"/>
     <design:attribute name="column05_type" label="Column05_type"/>
     <design:attribute name="column05_width" label="Column05_width"/>
-    <design:attribute name="column05_align" label="Column05_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column05_align" label="Column05_align __________C5" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column06_label" label="Column06_label"/>
     <design:attribute name="column06_fieldName" label="Column06_fieldName"/>
     <design:attribute name="column06_type" label="Column06_type"/>
     <design:attribute name="column06_width" label="Column06_width"/>
-    <design:attribute name="column06_align" label="Column06_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column06_align" label="Column06_align __________C6" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column07_label" label="Column07_label"/>
     <design:attribute name="column07_fieldName" label="Column07_fieldName"/>
     <design:attribute name="column07_type" label="Column07_type"/>
     <design:attribute name="column07_width" label="Column07_width"/>
-    <design:attribute name="column07_align" label="Column07_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column07_align" label="Column07_align __________C7" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column08_label" label="Column08_label"/>
     <design:attribute name="column08_fieldName" label="Column08_fieldName"/>
     <design:attribute name="column08_type" label="Column08_type"/>
     <design:attribute name="column08_width" label="Column08_width"/>
-    <design:attribute name="column08_align" label="Column08_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column08_align" label="Column08_align __________C8" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column09_label" label="Column09_label"/>
     <design:attribute name="column09_fieldName" label="Column09_fieldName"/>
     <design:attribute name="column09_type" label="Column09_type"/>
     <design:attribute name="column09_width" label="Column09_width"/>
-    <design:attribute name="column09_align" label="Column09_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column09_align" label="Column09_align __________C9" datasource="left,right,center" default="left"/>
 
     <design:attribute name="column10_label" label="Column10_label"/>
     <design:attribute name="column10_fieldName" label="Column10_fieldName"/>
     <design:attribute name="column10_type" label="Column10_type"/>
     <design:attribute name="column10_width" label="Column10_width"/>
-    <design:attribute name="column10_align" label="Column10_align" datasource="left,right,center" default="left"/>
+    <design:attribute name="column10_align" label="Column10_align __________C10" datasource="left,right,center" default="left"/>
 
 </design:component>

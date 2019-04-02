@@ -120,6 +120,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         try{
             var records = component.get('v.availableRecords');
             var searchWhereClause = component.get("v.searchWhereClause");
+            console.log(searchWhereClause);
             var displayedFieldName = component.get("v.displayedFieldName");
             var valueFieldName = component.get("v.valueFieldName");
             if(!document.getElementById(component.getGlobalId() + "_myinput")){
@@ -256,6 +257,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
             // it after we change selectedName
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
+            console.log(searchString);
             this.clearField(component,false);
             document.getElementById(component.getGlobalId() + "_myinput").value = searchString;
 
@@ -275,7 +277,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             }
             else{
                 var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
-                    searchString + "%'";
+                    searchString.replace(/'/g,'\\\'') + "%'";
                 component.set("v.searchWhereClause", searchWhereClause);	
             }
             
@@ -329,8 +331,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     fireUpdate : function(name, record, recordId, recordName){
         console.log('EVENT: EvtChangeLookup');
-        var ev = $A.getEvt('c:EvtChangeLookup');
-        /* var ev = component.get("e.updateLookup"); */
+         var ev = $A.get('e.c:EvtChangeLookup'); 
+        // var ev = component.get("e.updateLookup"); 
         ev.setParams({
             'name' : name,
             'record' : record,
@@ -346,10 +348,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     fireSaveFilter : function(component, recordId){
         console.log('EVENT: EvtFilterValue');
-        var ev = $A.getEvt('c:EvtFilterValue');
+        var ev = $A.get('e.c:EvtFilterValue'); 
         console.log(ev);
         console.log(component.get('v.cmpId'));
-        /*  ev = component.get("e.filtervalue"); */
+        // var ev = component.get("e.filtervalue"); 
         ev.setParams({
             'MasterFilterValue' : recordId,
             'parent': component.get('v.cmpId')
@@ -363,8 +365,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     fireClear : function(name, rid, rname){
         console.log('EVENT: EvtClearLookup');
-        var ev = $A.getEvt('c:EvtClearLookup');
-        /* var ev = component.get("e.clearLookup"); */
+        var ev = $A.get('e.c:EvtClearLookup'); 
+        // var ev = component.get("e.clearLookup");
         ev.setParams({
             'name' : name,
             'recordId' : rid,
@@ -379,8 +381,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     fireInit : function(name){
         console.log('EVENT: EvtInitLookup');
-        var ev = $A.getEvt('c:EvtInitLookup');
-        /* var ev = component.get("e.initLookup"); */
+        var ev = $A.get('e.c:EvtInitLookup'); 
+        // var ev = component.get("e.initLookup");
         ev.setParams({
             'name' : name
         });
@@ -514,7 +516,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 $A.util.addClass(dropDown, "slds-is-open");
             }
             this.toggleIcons(component,true);
-            $A.util.addClass(component.find('diplayedul').get('v.body')[0].elements[0],'hlight');
+            // $A.util.addClass(component.find('diplayedul').get('v.body')[0].elements[0],'hlight');
         }
         catch(e){
             this.showError(component, e.message);

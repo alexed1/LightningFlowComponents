@@ -1,33 +1,128 @@
+<!--
+    datatableFSC Lightning Flow Screen Component
+    Enhanced by Eric Smith - 3/9/19
+
+    Created to display a datatable in a Flow screen
+
+    Supports: 
+        Up to 8 predefined Standard or Custom objects
+        Up to 10 columns
+        All columns are sortable
+        Parameters for Column Width and Alignment
+        Icon available for first column header
+
+    To change the predefined Objects, edit the Object names in datatableFSC.cmp and in datatableFSC.design
+
+-->
+
 <aura:component implements="lightning:availableForFlowScreens">
-    <aura:attribute name="mydata" type="Custom_Debit_Card__c[]"/>
-    <aura:attribute name="selectedRows" type="Custom_Debit_Card__c[]"/>
-  
+
+    <aura:attribute name="obj" type="String" />
+    <aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="selectedRows" type="SObject[]"/>
+    <aura:attribute name="sortedBy" type="String" />
+    <aura:attribute name="sortedDirection" type="String" />
+
+    <!-- CHANGE THE OBJECT NAMES HERE AND IN THE DESIGN FILE TO SUPPORT DIFFERENT OBJECTS -->
+        <aura:attribute name="mydata_standard1" type="Account[]"/>
+        <aura:attribute name="selectedRows_standard1" type="Account[]"/>
+
+        <aura:attribute name="mydata_standard2" type="Asset[]"/>
+        <aura:attribute name="selectedRows_standard2" type="Asset[]"/>
+
+        <aura:attribute name="mydata_standard3" type="Case[]"/>
+        <aura:attribute name="selectedRows_standard3" type="Case[]"/>
+
+        <aura:attribute name="mydata_standard4" type="Contact[]"/>
+        <aura:attribute name="selectedRows_standard4" type="Contact[]"/>
+        
+        <aura:attribute name="mydata_standard5" type="Contract[]"/>
+        <aura:attribute name="selectedRows_standard5" type="Contract[]"/>
+
+        <aura:attribute name="mydata_standard6" type="Opportunity[]"/>
+        <aura:attribute name="selectedRows_standard6" type="Opportunity[]"/>
+		
+    	<!--        
+        <aura:attribute name="mydata_custom1" type="Service_Address__c[]"/>
+        <aura:attribute name="selectedRows_custom1" type="Service_Address__c[]"/>
+        
+        <aura:attribute name="mydata_custom2" type="Service_Number__c[]"/>
+        <aura:attribute name="selectedRows_custom2" type="Service_Number__c[]"/>
+		-->
+    
+    <!-- -->
     
     <aura:attribute name="mycolumns" type="List"/>
     
-    <aura:attribute name="column1_label" type="String"/>
-    <aura:attribute name="column1_fieldName" type="String"/>
-    <aura:attribute name="column1_type" type="String"/>
+    <aura:attribute name="column01_icon" type="String"/>
+    <aura:attribute name="column01_label" type="String"/>
+    <aura:attribute name="column01_fieldName" type="String"/>
+    <aura:attribute name="column01_type" type="String" default="text"/>
+    <aura:attribute name="column01_width" type="Integer"/>
+    <aura:attribute name="column01_align" type="String"/>
     
-    <aura:attribute name="column2_label" type="String"/>
-    <aura:attribute name="column2_fieldName" type="String"/>
-    <aura:attribute name="column2_type" type="String"/>
-    
-    <aura:attribute name="column3_label" type="String"/>
-    <aura:attribute name="column3_fieldName" type="String"/>
-    <aura:attribute name="column3_type" type="String"/>
-    
-    <aura:attribute name="column4_label" type="String"/>
-    <aura:attribute name="column4_fieldName" type="String"/>
-    <aura:attribute name="column4_type" type="String"/>
-    
-    <aura:attribute name="column5_label" type="String"/>
-    <aura:attribute name="column5_fieldName" type="String"/>
-    <aura:attribute name="column5_type" type="String"/>
-    
+    <aura:attribute name="column02_label" type="String"/>
+    <aura:attribute name="column02_fieldName" type="String"/>
+    <aura:attribute name="column02_type" type="String" default="text"/>
+    <aura:attribute name="column02_width" type="Integer"/>
+    <aura:attribute name="column02_align" type="String"/>
+
+    <aura:attribute name="column03_label" type="String"/>
+    <aura:attribute name="column03_fieldName" type="String"/>
+    <aura:attribute name="column03_type" type="String" default="text"/>
+    <aura:attribute name="column03_width" type="Integer"/>
+    <aura:attribute name="column03_align" type="String"/>
+
+    <aura:attribute name="column04_label" type="String"/>
+    <aura:attribute name="column04_fieldName" type="String"/>
+    <aura:attribute name="column04_type" type="String" default="text"/>
+    <aura:attribute name="column04_width" type="Integer"/>
+    <aura:attribute name="column04_align" type="String"/>
+
+    <aura:attribute name="column05_label" type="String"/>
+    <aura:attribute name="column05_fieldName" type="String"/>
+    <aura:attribute name="column05_type" type="String" default="text"/>
+    <aura:attribute name="column05_width" type="Integer"/>
+    <aura:attribute name="column05_align" type="String"/>
+
+    <aura:attribute name="column06_label" type="String"/>
+    <aura:attribute name="column06_fieldName" type="String"/>
+    <aura:attribute name="column06_type" type="String" default="text"/>
+    <aura:attribute name="column06_width" type="Integer"/>
+    <aura:attribute name="column06_align" type="String"/>
+
+    <aura:attribute name="column07_label" type="String"/>
+    <aura:attribute name="column07_fieldName" type="String"/>
+    <aura:attribute name="column07_type" type="String" default="text"/>
+    <aura:attribute name="column07_width" type="Integer"/>
+    <aura:attribute name="column07_align" type="String"/>
+
+    <aura:attribute name="column08_label" type="String"/>
+    <aura:attribute name="column08_fieldName" type="String"/>
+    <aura:attribute name="column08_type" type="String" default="text"/>
+    <aura:attribute name="column08_width" type="Integer"/>
+    <aura:attribute name="column08_align" type="String"/>
+
+    <aura:attribute name="column09_label" type="String"/>
+    <aura:attribute name="column09_fieldName" type="String"/>
+    <aura:attribute name="column09_type" type="String" default="text"/>
+    <aura:attribute name="column09_width" type="Integer"/>
+    <aura:attribute name="column09_align" type="String"/>
+
+    <aura:attribute name="column10_label" type="String"/>
+    <aura:attribute name="column10_fieldName" type="String"/>
+    <aura:attribute name="column10_type" type="String" default="text"/>
+    <aura:attribute name="column10_width" type="Integer"/>
+    <aura:attribute name="column10_align" type="String"/>
+
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
     <lightning:datatable data="{! v.mydata }" 
         columns="{! v.mycolumns }" 
         keyField="id"
-        onrowselection="{! c.getSelectedName }"/>
+        sortedBy="{! v.sortedBy }"
+        sortedDirection="{! v.sortedDirection }"
+        onrowselection="{! c.getSelectedName }"
+        onsort="{! c.updateColumnSorting }"/>
+
 </aura:component>

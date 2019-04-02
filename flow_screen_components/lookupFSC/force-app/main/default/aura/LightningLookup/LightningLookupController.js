@@ -97,28 +97,28 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	 * support for highlighting suggestions using the up and down arrow
 	 * support for selecting highlighted record by pressing Enter
 	 */
-    highlight : function(component, event, helper){
-        var el = $('#lookup-65 ul li');
-        var highlighted = $('#lookup-65 ul li.hlight');
-        if(event.code == 'ArrowDown'){
-            highlighted.removeClass('hlight').next().addClass('hlight');
-            if(highlighted.next().length == 0){
-                el.eq(0).addClass('hlight');
-            }
-        }
-        else if(event.code == 'ArrowUp'){
-            highlighted.removeClass('hlight').prev().addClass('hlight');
-            if(highlighted.prev().length == 0){
-                el.eq(-1).addClass('hlight')
-            }
-        }
-            else if(event.code == 'Enter'){
-                if($A.util.hasClass(component.find("dropDown"),'slds-is-open')){
-                    highlighted.click();
-                }
-            }
-    },
-    hover : function(component, event, helper){
-        $('#lookup-65 ul li').removeClass('hlight')
-    }
+    // highlight : function(component, event, helper){
+    //     var el = $('#lookup-65 ul li');
+    //     var highlighted = $('#lookup-65 ul li.hlight');
+    //     if(event.code == 'ArrowDown'){
+    //         highlighted.removeClass('hlight').next().addClass('hlight');
+    //         if(highlighted.next().length == 0){
+    //             el.eq(0).addClass('hlight');
+    //         }
+    //     }
+    //     else if(event.code == 'ArrowUp'){
+    //         highlighted.removeClass('hlight').prev().addClass('hlight');
+    //         if(highlighted.prev().length == 0){
+    //             el.eq(-1).addClass('hlight')
+    //         }
+    //     }
+    //         else if(event.code == 'Enter'){
+    //             if($A.util.hasClass(component.find("dropDown"),'slds-is-open')){
+    //                 highlighted.click();
+    //             }
+    //         }
+    // },
+    // hover : function(component, event, helper){
+    //     $('#lookup-65 ul li').removeClass('hlight')
+    // }
 })

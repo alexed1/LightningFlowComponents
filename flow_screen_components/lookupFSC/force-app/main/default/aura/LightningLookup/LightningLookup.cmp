@@ -15,8 +15,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <aura:component controller="LightningLookupController">
 
-	<ltng:require scripts="{!$Resource.jQuery_LookupCmp + '/jQuery1_11_2.js'}" />
-    	<!-- ltng:require scripts="/resource/jQuery_LookupCmp/jQuery1_11_2.js"/ -->
+	<!-- ltng:require scripts="{!$Resource.jQuery_LookupCmp + '/jQuery1_11_2.js'}" / -->
+    <!-- <ltng:require scripts="/resource/jQuery_LookupCmp/jQuery1_11_2.js"/> -->
     
 	<aura:attribute name="sObjectName" type="String" access="public" required="false" description="Name of the sObjectName to gather records from"/>
 	<aura:attribute name="sObjectField" type="String" access="public" required="false" description="Full name of the SObject field the component is for"/>
@@ -93,7 +93,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<aura:renderIf isTrue="{!v.helpText != null}">
 				<aura:renderIf isTrue="{!v.showHelp}">
 					<div id="{!globalId + '_helpDiv'}" class="{!v.helpText ? '' : 'slds-hide'}" style="display:inline-block;">
-						<button class="slds-button slds-button slds-button--icon help" onmouseover="{!c.setHelpTextProperties}"
+						<button class="slds-button slds-button slds-button_icon help" onmouseover="{!c.setHelpTextProperties}"
 								aria-describedby="{!globalId + '_help'}" >
 							<lightning:icon iconName="utility:info" size="xx-small" />
 						</button>
@@ -111,12 +111,12 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</aura:renderIf>
 			</aura:renderIf>
 			<div class="slds-form-element__control" >
-				<div class="slds-input-has-icon slds-input-has-icon--left-right">
+				<div class="slds-input-has-icon slds-input-has-icon_left-right">
 					<input type="search" class="slds-input lookup" id="{!globalId + '_myinput'}" aura:id="inputField"
 							aria-owns="lookup-65" role="combobox" 
 							aria-activedescendant="" aria-expanded="false" aria-autocomplete="list" 
 							disabled="{!v.disabled}" oninput="{!c.performLookup}" onclick="{!c.toggleMenu }"
-							onblur="{!c.checkValidity}" onkeydown="{!c.highlight}"
+							onblur="{!c.checkValidity}" 
 	                        placeholder="{!v.defaultValue}"/>
 					<div aura:id="pillsdiv"/>
 					<lightning:icon class="searchIcon" iconName="utility:search" size="x-small" aura:id="search_icon"
@@ -130,7 +130,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 			<div class="slds-lookup__menu" id="lookup-65" >
 				<ul class="slds-lookup__list" role="listbox" aura:id="diplayedul">
 					<aura:iteration var="item" items="{!v.matchedListDisplay}" indexVar="idx">
-						<li role="presentation" data-index="{!idx}" onclick="{!c.selectItem}" onmouseover="{!c.hover}" class="push-down">
+						<li role="presentation" data-index="{!idx}" onclick="{!c.selectItem}"  class="push-down">
 							<aura:renderIf isTrue="{!v.svg != null}">
 								<lightning:icon iconName="{!v.svg}" size="x-small" class="{!v.svgclass}"/>
 							</aura:renderIf>
@@ -141,9 +141,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 					</aura:iteration>
 				</ul>
 			</div>
-			<div id="error-message" class="{!v.valid ? 'slds-hide' : 'slds-form-element__help'}">
+			<!-- Error message is manage by the flow runtime -->
+			<!-- <div id="error-message" class="{!v.valid ? 'slds-hide' : 'slds-form-element__help'}">
 				Complete this field
-			</div>	
+			</div>	 -->
 		</div>				
 	</div>      
 </aura:component>

@@ -62,7 +62,12 @@ public class ThreadSheet {
             while (cellMatcher.find()) {
                 String cellHtml = cellMatcher.group();
                 Matcher cellIdMatcher = idPattern.matcher(cellHtml);
-                cellIdMatcher.find();
+                //Latest version of API returns fake cell which represents row header
+                //This cell has no Id and thus you can't reference it inside API calls
+                //But it should be fine because Quip also doesn't allow to edit it in web UI
+                if (!cellIdMatcher.find()) {
+                    continue;
+                }
                 String cellId = cellIdMatcher.group().substring(4, cellIdMatcher.group().length()- 1);
                 Matcher cellContentMatcher = cellContentPattern.matcher(cellHtml);
                 cellContentMatcher.find();

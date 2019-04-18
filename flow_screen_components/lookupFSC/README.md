@@ -61,26 +61,10 @@ Here's an example of a configured component:
 
 ## NEW PARAMETER - Default Value Usage ##
 
+**OPTION 1**
 You can enter a default value for the input field (I2_Display Which Field).  When provided, it will override any WhereClause and display the default value as Placeholder text in the input field.  You will still need to select the dropdown then select the single value that is displayed. If you start to overtype the input field, the default value will be cleared and the WhereClause (if provided) will be reset and the field will act like a normal filtered lookup with search.
 
-## Where Clause Usage ##
-Input is dependent on the fields available for the object selected for "Object Name".
-
-For example, if you wish to return only accounts of type "Vendor" or "Partner" you could enter the Object Name: "Account" and the where clause: "Type='Vendor' or Type='Partner'"
-
-
-## Filtered Lookup Examples ##
-
-Example 1: Lookup a Case filtered by an Account where the ID is passed into the flow variable vInputAcctId
-
-<img width="389" alt="screen shot 2018-04-15 at 10 17 54 am" src="https://user-images.githubusercontent.com/3140883/38781178-5b03fd42-4096-11e8-83c0-209ff8714cc5.png">
-
-Example 2: Lookup an Account and a Contact on the same screen and only select from Contacts from the selected Account
-
-<img width="384" alt="screen shot 2018-04-15 at 10 18 06 am" src="https://user-images.githubusercontent.com/3140883/38781180-5c2e98b2-4096-11e8-9275-99cefdfc53c6.png">    
-
-## Default Value Example ##
-
+**OPTION 2**
 Provide INPUT values for the following two parameters:
 
 **Default Value:** (whatever placeholder text you want displayed in the input box)
@@ -103,6 +87,23 @@ I7_Filter Value:
 
 **[Output Section]** 
 O1_Output Value: {!vSelectedAccountId} (a text variable)
+
+## Where Clause Usage ##
+Input is dependent on the fields available for the object selected for "Object Name".
+
+For example, if you wish to return only accounts of type "Vendor" or "Partner" you could enter the Object Name: "Account" and the where clause: "Type='Vendor' or Type='Partner'"
+
+
+## Filtered Lookup Examples ##
+
+Example 1: Lookup a Case filtered by an Account where the ID is passed into the flow variable vInputAcctId
+
+<img width="389" alt="screen shot 2018-04-15 at 10 17 54 am" src="https://user-images.githubusercontent.com/3140883/38781178-5b03fd42-4096-11e8-83c0-209ff8714cc5.png">
+
+Example 2: Lookup an Account and a Contact on the same screen and only select from Contacts from the selected Account
+
+<img width="384" alt="screen shot 2018-04-15 at 10 18 06 am" src="https://user-images.githubusercontent.com/3140883/38781180-5c2e98b2-4096-11e8-9275-99cefdfc53c6.png">    
+
 
 ## Resources ##
 

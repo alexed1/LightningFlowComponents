@@ -38,7 +38,7 @@ Basic Attributes
 - label="I2_Display Which Field?" This is the field that will show up in the list box to represent a record. It defaults to "Name"
 - label="I3_Field Label"  This is just the label that appears next to the lookup control
 - label="I4_Output Which Field as Value?" This is the field you actually want saved into the Output Value attribute. It defaults to Id so you can hav ean Id to use for lookups, but you may want to change it to Name or some other value.
-- label="O1_Output Value" This will hold the value that is selected, for use downstream in the flow.
+- label="O1_Output Value" This will hold the value that is selected, for use downstream in the flow.  If a value is provided as an Input parameter, it will be passed to the O1_Output Value Output parameter if no record is selected.
 
 Advanced Attributes
 
@@ -50,7 +50,7 @@ Advanced Attributes
 
 - label="Where Clause" allows the input of a "where" SOQL style filter to limit which values are available for selection.
 
-- label="Default" You can specify a default value placeholder in the lookup field
+- label="Default" You can specify a default value **placeholder** in the lookup field
 
 - label="Component ID"  You can group multiple Parent/Child components on a single Flow screen.  Add a unique value here for each Parent Lookup.
 
@@ -78,6 +78,31 @@ Example 1: Lookup a Case filtered by an Account where the ID is passed into the 
 Example 2: Lookup an Account and a Contact on the same screen and only select from Contacts from the selected Account
 
 <img width="384" alt="screen shot 2018-04-15 at 10 18 06 am" src="https://user-images.githubusercontent.com/3140883/38781180-5c2e98b2-4096-11e8-9275-99cefdfc53c6.png">    
+
+## Default Value Example ##
+
+Provide INPUT values for the following two parameters:
+
+**Default Value:** (whatever placeholder text you want displayed in the input box)
+**O1_Output Value:** The value to be passed out through the O1_Output Value OUTPUT parameter if no value is selected in the input box
+
+**Example:**  Looking up an Account, defaulting to the Account Name of "ACME Company".  Assume the RecordId for ACME Company is stored in the flow variable vDefaultId.
+
+**[Input Section]**
+API Name: AcctLookup
+Component ID: 
+**Default Value: ACME Company**
+I1_Object Name: Account
+I2_Display Which Field? Name
+I3_Field Label: Account
+I4_Output Which Field as Value? Id
+I5_ Parent or Child Lookup? 
+I6_Filter on which field? 
+I7_Filter Value: 
+**O1_Output Value: {!vDefaultId}**
+
+**[Output Section]** 
+O1_Output Value: {!vSelectedAccountId} (a text variable)
 
 ## Resources ##
 

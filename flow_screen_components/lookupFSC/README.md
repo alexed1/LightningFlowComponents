@@ -62,31 +62,52 @@ Here's an example of a configured component:
 ## NEW PARAMETER - Default Value Usage ##
 
 **OPTION 1**
+
 You can enter a default value for the input field (I2_Display Which Field).  When provided, it will override any WhereClause and display the default value as Placeholder text in the input field.  You will still need to select the dropdown then select the single value that is displayed. If you start to overtype the input field, the default value will be cleared and the WhereClause (if provided) will be reset and the field will act like a normal filtered lookup with search.
 
+
 **OPTION 2**
+
 Provide INPUT values for the following two parameters:
 
 **Default Value:** (whatever placeholder text you want displayed in the input box)
+
 **O1_Output Value:** The value to be passed out through the O1_Output Value OUTPUT parameter if no value is selected in the input box
+
 
 **Example:**  Looking up an Account, defaulting to the Account Name of "ACME Company".  Assume the RecordId for ACME Company is stored in the flow variable vDefaultId.
 
+
 **[Input Section]**
+
 API Name: AcctLookup
+
 Component ID: 
+
 **Default Value: ACME Company**
+
 I1_Object Name: Account
+
 I2_Display Which Field? Name
+
 I3_Field Label: Account
+
 I4_Output Which Field as Value? Id
+
 I5_ Parent or Child Lookup? 
+
 I6_Filter on which field? 
+
 I7_Filter Value: 
+
 **O1_Output Value: {!vDefaultId}**
 
+
 **[Output Section]** 
+
 O1_Output Value: {!vSelectedAccountId} (a text variable)
+
+
 
 ## Where Clause Usage ##
 Input is dependent on the fields available for the object selected for "Object Name".

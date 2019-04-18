@@ -79,33 +79,21 @@ Provide INPUT values for the following two parameters:
 
 
 **[Input Section]**
-
-API Name: AcctLookup
-
-Component ID: 
-
-**Default Value: ACME Company**
-
-I1_Object Name: Account
-
-I2_Display Which Field? Name
-
-I3_Field Label: Account
-
-I4_Output Which Field as Value? Id
-
-I5_ Parent or Child Lookup? 
-
-I6_Filter on which field? 
-
-I7_Filter Value: 
-
-**O1_Output Value: {!vDefaultId}**
+- API Name: AcctLookup
+- Component ID: 
+- **Default Value: ACME Company**
+- I1_Object Name: Account
+- I2_Display Which Field? Name
+- I3_Field Label: Account
+- I4_Output Which Field as Value? Id
+- I5_ Parent or Child Lookup? 
+- I6_Filter on which field? 
+- I7_Filter Value: 
+- **O1_Output Value: {!vDefaultId}**
 
 
 **[Output Section]** 
-
-O1_Output Value: {!vSelectedAccountId} (a text variable)
+- O1_Output Value: {!vSelectedAccountId} (a text variable)
 
 
 

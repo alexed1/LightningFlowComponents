@@ -16,18 +16,15 @@
         <design:attribute name="mydata_standard5" label="Collection - Contracts"/>
         <design:attribute name="selectedRows_standard5" label="Output Selected Contracts"/>
 
-        <design:attribute name="mydata_standard6" label="Collection - Opportunitys"/>
-        <design:attribute name="selectedRows_standard6" label="Output Selected Opportunitys"/>
+        <design:attribute name="mydata_standard6" label="Collection - Opportunities"/>
+        <design:attribute name="selectedRows_standard6" label="Output Selected Opportunities"/>
+<!--
+        <design:attribute name="mydata_custom1" label="Collection - Rate Structures"/>
+        <design:attribute name="selectedRows_custom1" label="Output Selected Rate Structures"/>
 
-    	<!--
-        <design:attribute name="mydata_custom1" label="Collection - Service Addresses"/>
-        <design:attribute name="selectedRows_custom1" label="Output Selected Service Addresses"/>
-
-        <design:attribute name="mydata_custom2" label="Collection - Service Numbers"/>
-        <design:attribute name="selectedRows_custom2" label="Output Selected Service Numbers"/>
-		-->
-    
-    <!-- -->
+        <design:attribute name="mydata_custom2" label="Collection - Plat Details"/>
+        <design:attribute name="selectedRows_custom2" label="Output Selected Plat Details"/>
+ -->
 
     <design:attribute name="column01_icon" label="Column01_iconName"/>
     <design:attribute name="column01_label" label="Column01_label"/>
@@ -46,7 +43,7 @@
     <design:attribute name="column03_fieldName" label="Column03_fieldName"/>
     <design:attribute name="column03_type" label="Column03_type"/>
     <design:attribute name="column03_width" label="Column03_width"/>
-    <design:attribute name="column03_align" label="Column03_align __________C3" datasource="left,right,center" default="left"/>
+	<design:attribute name="column03_align" label="Column03_align __________C3" datasource="left,right,center" default="left"/>
     
     <design:attribute name="column04_label" label="Column04_label"/>
     <design:attribute name="column04_fieldName" label="Column04_fieldName"/>
@@ -90,4 +87,7 @@
     <design:attribute name="column10_width" label="Column10_width"/>
     <design:attribute name="column10_align" label="Column10_align __________C10" datasource="left,right,center" default="left"/>
 
+    <design:attribute name="hideShow" label="Show or Hide Checkbox Column" datasource="show,hide" default="show"/>    
+    <design:attribute name="singleSelection" label="Single or Multi-Row Selection (Set to 1 for Single)"/>
+    
 </design:component>

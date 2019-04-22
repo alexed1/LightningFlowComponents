@@ -1,0 +1,18 @@
+<aura:component controller="ComboOfFlowsController" implements="lightning:availableForFlowScreens" access="global" >
+	
+    <aura:attribute name="endpoint" type="String" />
+    <aura:attribute name="showActiveFlowsOnly" type="Boolean" default='false' />  
+    
+    <!-- intermediate values -->
+    <aura:attribute name="comboBoxOptionObject" type="Object" />
+   
+    <!-- outputs-->
+    <aura:attribute name="flowNames" type="String[]" />
+    <aura:attribute name="responseJSON" type="String" />
+    <aura:attribute name="selectedFlowApiName" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    
+    <lightning:combobox name="flowSelector" label="Select a Flow:" options="{! v.comboBoxOptionObject }" onchange="{! c.handleChange }"/>
+
+    
+</aura:component>	

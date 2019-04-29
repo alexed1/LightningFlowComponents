@@ -5,6 +5,7 @@
     <design:attribute name="targetRecordId" label="B1_Target RecordId"/>
     <design:attribute name="navigationType" label="B1_Navigation Type" datasource="next,finish,back"/>
     <design:attribute name="variantType" label="B1_Variant Type" datasource="base,neutral,brand,destructive,success"/>
+    <design:attribute name="disabledFlag" label="B1_Disabled Flag"/>
     <design:attribute name="fire" label="B1_Button Clicked?"/>
     <design:attribute name="label2" label="B2_Button Label"/>
     <design:attribute name="destinationURL2" label="B2_Target Destination"/>
@@ -12,6 +13,7 @@
     <design:attribute name="targetRecordId2" label="B2_Target RecordId"/>
     <design:attribute name="navigationType2" label="B2_Navigation Type" datasource="next,finish,back"/>
     <design:attribute name="variantType2" label="B2_Variant Type" datasource="base,neutral,brand,destructive,success"/>
+    <design:attribute name="disabledFlag2" label="B2_Disabled Flag"/>
     <design:attribute name="fire2" label="B2_Button Clicked?"/>
     <design:attribute name="label3" label="B3_Button Label"/>
     <design:attribute name="destinationURL3" label="B3_Target Destination"/>
@@ -19,6 +21,7 @@
     <design:attribute name="targetRecordId3" label="B3_Target RecordId"/>
     <design:attribute name="navigationType3" label="B3_Navigation Type" datasource="next,finish,back"/>
     <design:attribute name="variantType3" label="B3_Variant Type" datasource="base,neutral,brand,destructive,success"/>
+    <design:attribute name="disabledFlag3" label="B3_Disabled Flag"/>
     <design:attribute name="fire3" label="B3_Button Clicked?"/>
     
     <design:attribute name="Theme" label="Current Theme Name" />

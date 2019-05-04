@@ -1,8 +1,7 @@
 ({
-    processResponse : function(responseString, cmp, helper) {
+	processResponse : function(responseString, cmp, helper) {
 		var flowSet = JSON.parse(responseString).records;
-        console.log('flowSet is: ');
-        console.log(flowSet);
+        console.log('flowSet is: ' + flowSet);
         
         helper.generateComboBoxOptionsObject(flowSet, cmp, helper);
         

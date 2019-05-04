@@ -1,5 +1,5 @@
-public with sharing class FlowListController {
-    
+global with sharing class FlowListController { 
+  
    @AuraEnabled
    public static String getFlowData(String orgURL, String endpoint )
        {
@@ -7,14 +7,19 @@ public with sharing class FlowListController {
             HttpRequest request = new HttpRequest();
            
             String sessionId = getSessionIdFromVFPage();
-
+                       
+            System.debug('url is: ' + orgURL + endpoint);
             request.setEndpoint(orgURL + endpoint );
             request.setMethod('GET');
             request.setHeader('Authorization', 'Bearer ' + sessionId);
            
             HttpResponse response = http.send(request);
+            System.debug('#### Response Status '+response.getStatus());
+            System.debug('#### Response Status Code '+response.getStatusCOde());
             
             String res = response.getBody();       
+            System.debug('response is: ' + res);
+            
             return res;
        }
     
@@ -30,5 +35,6 @@ public with sharing class FlowListController {
            return pageContent.substring(startIndex, endIndex);
        }
     }
+    
     
 }

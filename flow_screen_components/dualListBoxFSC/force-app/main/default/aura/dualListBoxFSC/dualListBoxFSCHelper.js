@@ -25,6 +25,8 @@
          component.set(targetAttribute ,selectedValuesCSV);
     },
     
+  
+    
     //the user can pass in either a csv string of the items or a string array (from a flow collection of strings)
     //determine which one is in use and set the appropriate attribute to pass to the dualListBoxt base class
     initializeItemLists: function(csvString, stringList, targetAttribute, component) {

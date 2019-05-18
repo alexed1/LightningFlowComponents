@@ -1,16 +1,27 @@
 ({     
     init : function(component, event, helper) {
         console.log('Entering DualListBox');
+        
+        //convert the inputs into the form expected for the selected list in the base dualListBox
         var selectedItemsCSV = component.get('v.SelectedItemsCSV');
-        var fullItemsCSV = component.get('v.FullItemSet');
+        var selectedItemsStringList = component.get('v.SelectedItemsStringList');
+        helper.initializeItemLists(selectedItemsCSV, selectedItemsStringList, 'v.values', component);
         
-        var selectedList = [];
-        if (selectedItemsCSV) {
-            selectedList = selectedItemsCSV.split(';');
-        }
+        //convert the inputs into the form expected for the full list of possible items in the base dualListBox
+        var fullItemsCSV = component.get('v.FullItemSetCSV');
+        var fullItemsStringList = component.get('v.FullItemSetStringList');
+        helper.initializeItemLists(fullItemsCSV, fullItemsStringList, 'v.FullItemSetStringList', component);
+
         
-        helper.setOptionsArray(fullItemsCSV.split(';'), "v.options", component);
-        component.set('v.values', selectedList);
+        
+        //TODO: clone the above code for Available Items
+        //TODO: support default values
+        //TODO: add auraif to display the error message
+        
+                
+        
+        helper.setOptionsArray(component.get('v.FullItemSetStringList'), "v.options", component);
+        
                     
      },
 

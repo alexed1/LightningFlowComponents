@@ -18,11 +18,33 @@
                 if(selectedValuesCSV.length <=0){
                    selectedValuesCSV = curStringArray[i];
                 }else{
-                     selectedValuesCSV = selectedValuesCSV + ";" + curStringArray[i];
+                     selectedValuesCSV = selectedValuesCSV + "," + curStringArray[i];
                 }
          }
         		
          component.set(targetAttribute ,selectedValuesCSV);
+    },
+    
+    //the user can pass in either a csv string of the items or a string array (from a flow collection of strings)
+    //determine which one is in use and set the appropriate attribute to pass to the dualListBoxt base class
+    initializeItemLists: function(csvString, stringList, targetAttribute, component) {
+        var selectedList = [];
+        
+        //Assemble a list of the selected items. 
+        if ((csvString && stringList.length>0) || (!csvString && !stringList.length>0 && (targetAttribute == 'v.options')))  {
+        	component.set('v.errorMessage', 'Error in DualListBox Flow Screen Component: You need to pass in either a comma-separated list of items or a Flow String Collection resource. You cannot pass in both or neither.');
+            component.set('v.errorState', true);
+            console.log('error detected');
+		 } 
+        else {        
+            if (csvString) {
+                selectedList = csvString.split(',');
+            }
+            if (stringList.length>0) {
+                selectedList = stringList;
+            }   
+        }
+        component.set(targetAttribute, selectedList);
     }
     
 

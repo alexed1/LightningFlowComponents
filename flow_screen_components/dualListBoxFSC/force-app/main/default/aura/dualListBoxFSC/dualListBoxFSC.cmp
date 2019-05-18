@@ -1,19 +1,33 @@
 <aura:component implements="lightning:availableForFlowScreens" access="global">
     <aura:handler value="{!this}" name="init" action="{!c.init}"/>
-	<aura:attribute name="label" type="String" default="Unlabeled DualListbox"/>
-    <aura:attribute name="FullItemSet" type="String" description="Full Item Set"/>
+	
+    <aura:attribute name="FullItemSetStringList" type="String[]" description="Full Item Set (Array)"/>
+    <aura:attribute name="SelectedItemsStringList" type="String[]" description="Selected Items (Array)"/>
+    <aura:attribute name="FullItemSetCSV" type="String" description="Full Item Set"/>
     <aura:attribute name="SelectedItemsCSV" type="String" description="Selected Items"/>
-    <aura:attribute name="options" type="List" default="[]" description="Options To Show in Dual List Box"/>
+
+    <aura:attribute name="errorMessage" type="String" default="An unspecified error occurred in the DualListBox Flow Screen Component" />
+   	<aura:attribute name="errorState" type="Boolean" default="false" />
+	<aura:attribute name="options" type="List" default="[]" description="Options To Show in Dual List Box"/>
     <aura:attribute name="values" type="List" default="[]" description="Selected Value From Dual List Box"/>
-   
+    <aura:attribute name="label" type="String" default="Unlabeled DualListbox"/>
+
     <!-- Dual List Box for case plan flow component -->
-    <lightning:dualListbox name="baseDualListBox"
-                           label= "{!v.label}"
-                           sourceLabel="Available" 
-                           selectedLabel="Selected" 
-                           fieldLevelHelp="No help is available"
-                           options="{!v.options}"
-                           value="{!v.values}"
-                           onchange="{! c.handleChange }"
-                           />
+    
+    <aura:if isTrue="{! v.errorState}">
+        {!v.errorMessage}
+        <aura:set attribute="else">
+            <lightning:dualListbox name="baseDualListBox"
+                               label= "{!v.label}"
+                               sourceLabel="Available" 
+                               selectedLabel="Selected" 
+                               fieldLevelHelp="No help is available"
+                               options="{!v.options}"
+                               value="{!v.values}"
+                               onchange="{! c.handleChange }"
+                               />
+    	</aura:set>
+    
+    </aura:if>
+    
 </aura:component>

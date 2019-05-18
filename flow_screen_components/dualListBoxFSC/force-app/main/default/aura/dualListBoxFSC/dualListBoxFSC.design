@@ -1,5 +1,7 @@
 <design:component>
-    <design:attribute name="FullItemSet" label="Available Items"/>
-    <design:attribute name="SelectedItemsCSV" label="Selected Items"/>
+    <design:attribute name="FullItemSetStringList" label="Full Set of Items (String Collection)"/>
+    <design:attribute name="FullItemSetCSV" label="Full Set of Items (Comma-Separated String)"/>
+	<design:attribute name="SelectedItemsStringList" label="Selected Items (String Collection)"/>
+    <design:attribute name="SelectedItemsCSV" label="Selected Items (Comma-Separated String)"/>
     <design:attribute name="label" label="Label"/>
 </design:component>

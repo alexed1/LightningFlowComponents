@@ -1,0 +1,19 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <aura:handler value="{!this}" name="init" action="{!c.init}"/>
+	<aura:attribute name="label" type="String" default="Unlabeled DualListbox"/>
+    <aura:attribute name="FullItemSet" type="String" description="Full Item Set"/>
+    <aura:attribute name="SelectedItemsCSV" type="String" description="Selected Items"/>
+    <aura:attribute name="options" type="List" default="[]" description="Options To Show in Dual List Box"/>
+    <aura:attribute name="values" type="List" default="[]" description="Selected Value From Dual List Box"/>
+   
+    <!-- Dual List Box for case plan flow component -->
+    <lightning:dualListbox name="baseDualListBox"
+                           label= "{!v.label}"
+                           sourceLabel="Available" 
+                           selectedLabel="Selected" 
+                           fieldLevelHelp="No help is available"
+                           options="{!v.options}"
+                           value="{!v.values}"
+                           onchange="{! c.handleChange }"
+                           />
+</aura:component>

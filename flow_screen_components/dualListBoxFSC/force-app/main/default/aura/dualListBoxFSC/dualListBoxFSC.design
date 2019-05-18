@@ -1,0 +1,5 @@
+<design:component>
+    <design:attribute name="FullItemSet" label="Available Items"/>
+    <design:attribute name="SelectedItemsCSV" label="Selected Items"/>
+    <design:attribute name="label" label="Label"/>
+</design:component>

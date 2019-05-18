@@ -48,42 +48,42 @@
         cmp.set('v.mycolumns', cols);
 
         // Object Selection
-        if(cmp.get('v.mydata_standard1').length > 0){
+        if(cmp.get('v.mydata_standard1') && cmp.get('v.mydata_standard1').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard1'));
             cmp.set('v.obj', 'standard1');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard1'));
         }
-        if(cmp.get('v.mydata_standard2').length > 0){
+        if(cmp.get('v.mydata_standard2') && cmp.get('v.mydata_standard2').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard2'));
             cmp.set('v.obj', 'standard2');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard2'));
         }
-        if(cmp.get('v.mydata_standard3').length > 0){
+        if(cmp.get('v.mydata_standard3') && cmp.get('v.mydata_standard3').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard3'));
             cmp.set('v.obj', 'standard3');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard3'));
         }
-        if(cmp.get('v.mydata_standard4').length > 0){
+        if(cmp.get('v.mydata_standard4') && cmp.get('v.mydata_standard4').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard4'));
             cmp.set('v.obj', 'standard4');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard4'));
         }
-        if(cmp.get('v.mydata_standard5').length > 0){
+        if(cmp.get('v.mydata_standard5') && cmp.get('v.mydata_standard5').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard5'));
             cmp.set('v.obj', 'standard5');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard5'));
         }
-        if(cmp.get('v.mydata_standard6').length > 0){
+        if(cmp.get('v.mydata_standard6') && cmp.get('v.mydata_standard6').length > 0){
             cmp.set('v.mydata', cmp.get('v.mydata_standard6'));
             cmp.set('v.obj', 'standard6');
             cmp.set('v.preSelection', cmp.get('v.selectedRows_standard6'));
         }
-//        if(cmp.get('v.mydata_custom1').length > 0){
+//        if(cmp.get('v.mydata_custom1') && cmp.get('v.mydata_custom1').length > 0){
 //            cmp.set('v.mydata', cmp.get('v.mydata_custom1'));
 //            cmp.set('v.obj', 'custom1');
 //            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom1'));
 //        }
-//        if(cmp.get('v.mydata_custom2').length > 0){
+//        if(cmp.get('v.mydata_custom2') && cmp.get('v.mydata_custom2').length > 0){
 //            cmp.set('v.mydata', cmp.get('v.mydata_custom2'));
 //            cmp.set('v.obj', 'custom2');
 //            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom2'));

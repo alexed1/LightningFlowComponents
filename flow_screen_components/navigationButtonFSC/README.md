@@ -5,7 +5,6 @@
 
 ## How It Works ##
 [Documentation]( https://unofficialsf.com/fsc-navigation-button/#top)
-[Install](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tB000000066f3)
 
 ## Resources ##
 

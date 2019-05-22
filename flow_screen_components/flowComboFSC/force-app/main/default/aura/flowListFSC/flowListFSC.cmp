@@ -1,17 +1,16 @@
 <aura:component controller="FlowListController" implements="lightning:availableForFlowScreens" access="global" >
 	
-    <!--baseURL is the orgURL. This is used to call back to Salesforce from Apex to get the Flow metadata via REST -->
-    <aura:attribute name="baseURL" type="String" />
+  
     <!--flowNames is the list of api names of the flows returned from the org -->
     <aura:attribute name="flowNames" type="String[]" />
     <!--the comboBox control takes options in a specific form -->
     <aura:attribute name="comboBoxOptionObject" type="Object" />
-    <aura:attribute name="responseJSON" type="String" />
     <aura:attribute name="selectedFlowApiName" type="String" />
     <aura:attribute name="showActiveFlowsOnly" type="Boolean" default='false' />
+    <aura:attribute name="label" type="String" default="Select a Flow:" />
     <aura:handler name="init" value="{!this}" action="{!c.init}" />
     
-    <lightning:combobox name="flowSelector" label="Select a Flow:" options="{! v.comboBoxOptionObject }" onchange="{! c.handleChange }"/>
+    <lightning:combobox name="flowSelector" value="{! v.selectedFlowApiName }" label="{! v.label }" options="{! v.comboBoxOptionObject }" onchange="{! c.handleChange }"/>
 
     
 </aura:component>

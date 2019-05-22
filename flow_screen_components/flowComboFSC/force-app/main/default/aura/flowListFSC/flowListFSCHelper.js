@@ -1,16 +1,16 @@
 ({
-	processResponse : function(responseString, cmp, helper) {
-		var flowSet = JSON.parse(responseString).records;
-        console.log('flowSet is: ' + flowSet);
+	processResponse : function(responseArray, cmp, helper) {
+		//var flowSet = JSON.parse(responseString).records;
+        console.log('responseArray is: ' + responseArray);
         
-        helper.generateComboBoxOptionsObject(flowSet, cmp, helper);
+        helper.generateComboBoxOptionsObject(responseArray, cmp, helper);
         
 	},
     
-    generateComboBoxOptionsObject : function(flowSet, cmp, helper) {
+    generateComboBoxOptionsObject : function(responseArray, cmp, helper) {
         var optionList = [];
-        while (flowSet.length > 0) {
-            var curFlow = flowSet.shift();
+        while (responseArray.length > 0) {
+            var curFlow = responseArray.shift();
             
             //configure an option as expected by the comboBox (https://developer.salesforce.com/docs/component-library/bundle/lightning:combobox/example):
             //var optionString =  {'label': 'New', 'value': 'new'}

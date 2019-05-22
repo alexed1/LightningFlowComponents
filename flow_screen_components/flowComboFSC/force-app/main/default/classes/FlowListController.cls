@@ -1,27 +1,19 @@
 global with sharing class FlowListController { 
-  
-   @AuraEnabled
-   public static String getFlowData(String orgURL, String endpoint )
-       {
-            Http http = new Http();
-            HttpRequest request = new HttpRequest();
-           
-            String sessionId = getSessionIdFromVFPage();
-                       
-            System.debug('url is: ' + orgURL + endpoint);
-            request.setEndpoint(orgURL + endpoint );
-            request.setMethod('GET');
-            request.setHeader('Authorization', 'Bearer ' + sessionId);
-           
-            HttpResponse response = http.send(request);
-            System.debug('#### Response Status '+response.getStatus());
-            System.debug('#### Response Status Code '+response.getStatusCOde());
-            
-            String res = response.getBody();       
-            System.debug('response is: ' + res);
-            
-            return res;
-       }
+    
+    @AuraEnabled
+    public static List<FlowDefinitionView> getFlowNamesApex(Boolean showActivesOnly ) {
+        System.debug('entering getFlowNamesApex');
+        List<FlowDefinitionView> curFlows;
+        
+        if (showActivesOnly){
+            curFlows = [SELECT Id,ApiName,Label FROM FlowDefinitionView WHERE ActiveVersionId!=NULL];
+        } else {
+            curFlows = [SELECT Id,ApiName,Label FROM FlowDefinitionView];
+        }
+        
+        System.debug('curFlows is: ' + curFlows);
+        return curFlows;
+    }
     
    public static String getSessionIdFromVFPage() {
        if(Test.isRunningTest()) {

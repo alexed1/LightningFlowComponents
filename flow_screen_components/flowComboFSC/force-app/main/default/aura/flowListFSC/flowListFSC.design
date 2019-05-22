@@ -1,0 +1,5 @@
+<design:component>
+	<design:attribute name="baseURL" label="Base URL" />  
+    <design:attribute name="selectedFlowApiName" label="Selected Flow ApiName" />
+    <design:attribute name="showActiveFlowsOnly" label="Show Only Active Flows" />
+</design:component>

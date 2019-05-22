@@ -70,9 +70,9 @@ You can enter a default value for the input field (I2_Display Which Field).  Whe
 
 Provide INPUT values for the following two parameters:
 
-**Default Value:** (whatever placeholder text you want displayed in the input box)
+**Default Value:** (whatever placeholder text you want displayed in the input box - this should match the format of the I2_Display Which Field? parameter)
 
-**O1_Output Value:** The value to be passed out through the O1_Output Value OUTPUT parameter if no value is selected in the input box
+**O1_Output Value:** The value to be passed out through the O1_Output Value OUTPUT parameter if no value is selected in the input box (This should match the format of the I4_Output Which Field as Value? paraameter)
 
 
 **Example:**  Looking up an Account, defaulting to the Account Name of "ACME Company".  Assume the RecordId for ACME Company is stored in the flow variable vDefaultId.

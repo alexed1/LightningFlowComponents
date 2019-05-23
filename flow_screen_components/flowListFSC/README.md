@@ -1,5 +1,5 @@
-# Flow Names Combobox
+# FlowList
 
- This is a combobox that fetches and displays the orgs Flows, allowing one to be selected. 
+ This is a picklist that fetches and displays the org's Flows, allowing one to be selected. 
  
- https://unofficialsf.com/flow-list-combo-box-flow-screen-component/
+https://unofficialsf.com/?p=12174

@@ -6,19 +6,15 @@
         //convert the inputs into the form expected for the full list of possible items in the base dualListBox
         var fullItemsCSV = component.get('v.FullItemSetCSV');
         var fullItemsStringList = component.get('v.FullItemSetStringList');
-        helper.initializeItemLists(fullItemsCSV, fullItemsStringList, 'v.FullItemSetStringList', component);
+        helper.setFullStringAttribute(fullItemsCSV, fullItemsStringList, 'v.FullItemSetStringList', component);
 
-        var selectedList = [];
-
-        component.set('v.values', selectedList);
-    
-    
+        //handle the selected items
+        var selectedItemsCSV = component.get('v.SelectedItemsCSV');
+        var selectedStringList = component.get('v.SelectedItemsStringList');
+        helper.setSelectedStringAttribute(selectedItemsCSV, selectedStringList, 'v.SelectedItemsStringList', component);
         
         //TODO: support default values
-   
-        
-                
-        
+ 
         helper.setOptionsArray(component.get('v.FullItemSetStringList'), "v.options", component);
         
                     

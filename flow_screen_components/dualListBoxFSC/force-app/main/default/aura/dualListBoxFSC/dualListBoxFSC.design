@@ -4,4 +4,10 @@
 	<design:attribute name="SelectedItemsStringList" label="Selected Items (String Collection)"/>
     <design:attribute name="SelectedItemsCSV" label="Selected Items (Comma-Separated String)"/>
     <design:attribute name="label" label="Label"/>
+    <design:attribute name="helpMessage" label="Help Message"/>
+    <design:attribute name="minSelections" label="Minimum Selections"/>
+    <design:attribute name="maxSelections" label="Maximum Selections"/>
+    <design:attribute name="disableReordering" label="Disable Reordering"/>
+    <design:attribute name="required" label="Require Input"/>
+    <design:attribute name="size" label="Number of Items to Display"/>
 </design:component>

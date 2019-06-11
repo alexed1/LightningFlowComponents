@@ -11,6 +11,13 @@
 	<aura:attribute name="options" type="List" default="[]" description="Options To Show in Dual List Box"/>
     <aura:attribute name="values" type="List" default="[]" description="Selected Value From Dual List Box"/>
     <aura:attribute name="label" type="String" default="Unlabeled DualListbox"/>
+    
+    <aura:attribute name="helpMessage" type="String" default="No help is available" description="The message to display in the help bubble"/>
+    <aura:attribute name="minSelections" type="Integer" description="The minimum number of selections required"/>
+    <aura:attribute name="maxSelections" type="Integer" description="The maximum number of selections allowed"/>
+    <aura:attribute name="disableReordering" type="Boolean" description="Set to true to hide the Up and Down buttons used for reordering the Selected list items"/>
+    <aura:attribute name="required" type="Boolean" description="Specifies that an input field must be filled out before submitting the form"/>
+    <aura:attribute name="size" type="Integer" description="Number of items that display before vertical scrollbars are displayed for the listboxes"/>
 
     <!-- Dual List Box for case plan flow component -->
     
@@ -21,10 +28,15 @@
                                label= "{!v.label}"
                                sourceLabel="Available" 
                                selectedLabel="Selected" 
-                               fieldLevelHelp="No help is available"
+                               fieldLevelHelp="{!v.helpMessage}"
                                options="{!v.options}"
                                value="{!v.values}"
                                onchange="{! c.handleChange }"
+			       min="{!v.minSelections}"
+                               max="{!v.maxSelections}"
+                               disableReordering="{!v.disableReordering}"
+                               required="{!v.required}"
+                               size="{!v.size}"
                                />
     	</aura:set>
     

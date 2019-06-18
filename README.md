@@ -1,5 +1,5 @@
 
-This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Designer! You can install these components as packages over at the [LightningFlow.net site](http://lightningflow.net). (See "Installation")
+This folder contains a collection of Lightning Components that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Designer! You can install many of these components as packages over at the [UnofficialSF site](http://unofficialsf.com). (See "Installation")
 
 
 # Lightning Flow Screen Components
@@ -9,11 +9,13 @@ flow_screen_components contains lightning components (aura classes) that have be
 
 Flow Screen Components generally have a visual focus, although they don't absolutely have to.
 
-Flow Screen Components are generally available as of Spring '18. 
+Flow Screen Components are generally available.
 
 
-# Lightning Flow Action Components
-flow_action_components contains lightning components (aura classes) that have been optimized to be added to Lightning Flows as standalone actions. This mainly means that they:
+# Lightning Flow Actions
+flow_action_components contains lightning components (aura classes) that have been optimized to be added to Lightning Flows as standalone actions, and also contain Apex Classes that implement InvocableAction interface.
+
+For the aura lightning components, this mainly means that they:
 1) implement the "flowruntime:availableForLocalInvocableActions" interface so they show up in the tools palette of Cloud Flow Designer as Local Actions that can be dragged onto the canvas and added to flows as discrete actions. 
 2) provide an #invoke method that allows the Flow engine to call them at the appropriate point during flow execution, and make a callback to the engine when they're done
 
@@ -26,7 +28,10 @@ Before adding any lightning component to your flow, your org must be enabled for
 1) you must have My Domain enabled and deployed
 2) you must have the "Enable Lightning Runtime for Flows" checkbox enabled in Setup - Process Automation Settings
 
-You do not need to be using the lightning experience to use these flow extensions
+You do not need to be using the lightning experience to use these flow extensions.
+
+# Validation
+If you want to carry out your own custom component validation when the user clicks Next on a Flow screen, and want to be able to prevent Flow from proceeding, add a Validate function as described [here](https://wordpress.com/block-editor/post/unofficialsf.com)
 
 # [A Note about SFDX](./sfdxintro.md)
 

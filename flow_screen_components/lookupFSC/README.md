@@ -8,7 +8,7 @@ This is a simple adaptation of the excellent [Lightning Lookup control](https://
 
 ## Install this Component Into Your Org ##
 
-[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/lookup).
+[Install this Component](https://unofficialsf.com/lookup/).
 
 
 

@@ -76,5 +76,19 @@
         component.set('v.values', selectedList);
     }
     
+    //Set the function and error message for the validate attribute
+    setValidation: function(component) {
+        component.set('v.validate', function() {
+            if (!component.get('v.required') || component.get('v.values').length>0) {
+                return { isValid: true };
+            }
+            else {
+                return {
+                    isValid: false,
+                    errorMessage: 'Please enter some valid input. Input is not optional.'
+                };
+            }
+        });
+    }
 
 })

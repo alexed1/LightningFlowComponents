@@ -16,11 +16,7 @@
 	<aura:attribute name="defaultValue" type="String" />
 	<aura:attribute name="parentId" type="String" />
 	<aura:attribute name="cmpid" type="String" />
-	
-	<aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
-
-	<aura:attribute name="validate" type="Aura.Action"/> 
-	
+    
 	<!-- 99% of the awesomesauce in this component comes from this LightningLookup component, created by
 		John Pipkin and Opfocus https://opfocus.com/lightning-lookup-input-field-2/ -->
 	

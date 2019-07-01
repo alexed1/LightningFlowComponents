@@ -37,9 +37,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     },
     toggleMenu : function(component, event, helper) {
         if(component.get('v.performLookupOnFocus') === true && !helper.isDropDownOpen(component)){
+            console.log('performLookupOnFocus');
             var defaultV = component.get('v.defaultValue'); 
             if(!(!defaultV || defaultV == '')){
-                var newWhere = component.get('v.displayedFieldName')+"='"+defaultV+"'"
+                var newWhere = component.get('v.displayedFieldName')+"='"+defaultV.replace(/'/g,'\\\'') +"'"
                 component.set("v.whereClause", newWhere);
             }
             helper.hlpPerformLookup(component, true);

@@ -18,6 +18,7 @@
     <aura:attribute name="disableReordering" type="Boolean" description="Set to true to hide the Up and Down buttons used for reordering the Selected list items"/>
     <aura:attribute name="required" type="Boolean" description="Specifies that an input field must be filled out before submitting the form"/>
     <aura:attribute name="size" type="Integer" description="Number of items that display before vertical scrollbars are displayed for the listboxes"/>
+    <aura:attribute name="validate" type="Aura.Action" description="Stores a validation function and handles displaying an error message"/>
 
     <!-- Dual List Box for case plan flow component -->
     
@@ -32,7 +33,7 @@
                                options="{!v.options}"
                                value="{!v.values}"
                                onchange="{! c.handleChange }"
-			       min="{!v.minSelections}"
+                               min="{!v.minSelections}"
                                max="{!v.maxSelections}"
                                disableReordering="{!v.disableReordering}"
                                required="{!v.required}"

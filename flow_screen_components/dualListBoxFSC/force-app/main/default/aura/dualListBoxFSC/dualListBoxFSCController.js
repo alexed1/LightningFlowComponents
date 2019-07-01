@@ -17,6 +17,8 @@
  
         helper.setOptionsArray(component.get('v.FullItemSetStringList'), "v.options", component);
         
+        //handle requiredness
+        helper.setValidation(component);
                     
      },
 

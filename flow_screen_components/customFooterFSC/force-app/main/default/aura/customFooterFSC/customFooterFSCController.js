@@ -6,7 +6,7 @@
         
         if (buttonName == 'ButtonNext')
             if (component.get("v.onFinalPage") == true)
-                action="FINAL";
+                action="FINISH";
         	else
             	action="NEXT";
         else 

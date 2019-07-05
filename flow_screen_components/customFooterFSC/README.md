@@ -1,14 +1,1 @@
-# SFDX  App
-
-## Dev, Build and Test
-
-
-## Resources
-
-
-## Description of Files and Directories
-
-
-## Issues
-
-
+For information about this component, see https://unofficialsf.com/custom-footer-button/

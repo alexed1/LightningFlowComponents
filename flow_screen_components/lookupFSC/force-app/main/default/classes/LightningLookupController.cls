@@ -1,4 +1,3 @@
-
 /* 
 Copyright 2017 OpFocus, Inc
 
@@ -40,6 +39,13 @@ public with sharing class LightningLookupController
 			{
 				return null;
 			}
+			if(sObjectName != null) sObjectName = String.escapeSingleQuotes(sObjectName); 
+			if(valueFieldName != null) valueFieldName = String.escapeSingleQuotes(valueFieldName); 
+			if(displayedFieldName != null) displayedFieldName = String.escapeSingleQuotes(displayedFieldName); 
+			if(otherFields != null) otherFields = String.escapeSingleQuotes(otherFields); 
+			//if(whereClause != null) whereClause = String.escapeSingleQuotes(whereClause); 
+			if(filteredFieldName != null) filteredFieldName = String.escapeSingleQuotes(filteredFieldName); 
+			if(filterFieldValue != null) filterFieldValue = String.escapeSingleQuotes(filterFieldValue); 
 			LookupRecords retVal = new LookupRecords();
 
 			String soql = 'Select ' + valueFieldName + ',' + displayedFieldName;

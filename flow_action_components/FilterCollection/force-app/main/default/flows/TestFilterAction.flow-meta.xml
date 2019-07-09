@@ -3,7 +3,7 @@
     <actionCalls>
         <name>FilterCollection</name>
         <label>FilterCollection</label>
-        <locationX>290</locationX>
+        <locationX>285</locationX>
         <locationY>50</locationY>
         <actionName>FilterCollection</actionName>
         <actionType>apex</actionType>
@@ -95,8 +95,8 @@
     <screens>
         <name>InputScreen</name>
         <label>InputScreen</label>
-        <locationX>134</locationX>
-        <locationY>49</locationY>
+        <locationX>184</locationX>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

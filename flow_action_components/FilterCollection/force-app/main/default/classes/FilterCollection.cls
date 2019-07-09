@@ -138,7 +138,7 @@ global with sharing class FilterCollection {
         System.debug('entering hasValue');
         System.debug('valueFound is: ' + valueFound);
         System.debug('testCollection is:' + testCollection);
-        if (testCollection != null) {
+        if (!testCollection.isEmpty()) {
             if (valueFound)
                 throw new FlowActionException('More than one input to Filter has a value.');
             else {
@@ -150,6 +150,16 @@ global with sharing class FilterCollection {
     
     
     global class Requests {
+        
+        public Requests() {
+            sourceAccountCollection = new List<Account>();
+            sourceCaseCollection = new List<Case>();
+            sourceLeadCollection = new List<Lead>();
+            sourceOpportunityCollection = new List<Opportunity>(); 
+            sourceContactCollection = new List<Contact>();
+            
+        }
+       
         @InvocableVariable
     	global String filterField;
         
@@ -200,4 +210,3 @@ global with sharing class FilterCollection {
 
     }
 }
-

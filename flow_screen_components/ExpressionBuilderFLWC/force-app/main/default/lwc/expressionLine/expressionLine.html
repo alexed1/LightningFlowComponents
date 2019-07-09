@@ -1,0 +1,9 @@
+<template>
+    <div class="slds-grid slds-gutters slds-grid_vertical-align-start slds-gutters_xx-small">
+        <lightning-combobox name="field" label="Field" value={value} placeholder="Select Field" options={options}
+        onchange={handleChange} ></lightning-combobox>
+        <lightning-combobox name="operator" label="Operator" value={value} placeholder="" options={options}
+        onchange={handleChange} ></lightning-combobox>
+        <lightning-input label="Value" onchange={handleChange}> </lightning-input>
+    </div>
+</template>

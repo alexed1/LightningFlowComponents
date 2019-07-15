@@ -1,0 +1,17 @@
+{
+  "name": "expressionbuilderflwc",
+  "version": "1.0.0",
+  "description": "## Dev, Build and Test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:unit": "lwc-jest",
+    "test:unit:watch": "lwc-jest --watch",
+    "test:unit:debug": "lwc-jest --debug"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@salesforce/lwc-jest": "^0.5.1"
+  }
+}

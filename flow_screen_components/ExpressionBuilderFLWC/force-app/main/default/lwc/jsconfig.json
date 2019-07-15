@@ -8,6 +8,12 @@
             ],
             "c/multiline": [
                 "multiline/multiline.js"
+            ],
+            "c/ExpressionBuilder": [
+                "ExpressionBuilder/ExpressionBuilder.js"
+            ],
+            "c/expressionBuilder": [
+                "../../../../mdapi/lwc/expressionBuilder/expressionBuilder.js"
             ]
         }
     },

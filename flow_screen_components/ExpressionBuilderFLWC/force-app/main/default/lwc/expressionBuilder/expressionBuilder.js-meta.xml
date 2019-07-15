@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="ExpressionBuilder">
+    <apiVersion>46.0</apiVersion>
+    <isExposed>false</isExposed>
+
+
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+      </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen" category="some random category">
+            <property name="logicType" type="String"  />
+            <property name="value" type="String"  />
+            <property name="availableLHSObjectFields" type="String" role="inputOnly" />
+            <property name="availableRHSMergeFields"  type="String" role="inputOnly" />
+            <property name="addButtonLabel" type="String" role="inputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

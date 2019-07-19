@@ -1,9 +1,11 @@
 public with sharing class String_Encode {
 
+     @invocableMethod(label='URL Encode String' description='This replaces spaces and other characters that are not allowed in urls with placeholders')
      public static List<Response> encodeStringForURL(List<Request> request) {
         Response response = new Response();
         String inputStr = request[0].inputStr;
         String curEncoding = request[0].curEncoding;
+     
 
         response.outputStr = EncodingUtil.urlEncode(inputStr, curEncoding);
 
@@ -19,7 +21,7 @@ public with sharing class String_Encode {
         public String inputStr;
 
         @invocableVariable
-        public String curEncoding;
+        public String curEncoding = 'UTF-8';
 
     }
 

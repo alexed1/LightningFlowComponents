@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_HTML_Email</name>
+        <label>Send HTML Email</label>
+        <locationX>382</locationX>
+        <locationY>202</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>body</name>
+            <value>
+                <elementReference>HTMLTextTemplateCreated</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisStringCollectionOfEmailAddresses</name>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>this is the subject</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send HTML Email Testflow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Contacts</name>
+        <label>Get Contacts</label>
+        <locationX>240</locationX>
+        <locationY>197</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Send_HTML_Email</targetReference>
+        </connector>
+        <filters>
+            <field>LastName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Contact</stringValue>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Email</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Users</name>
+        <label>Get Users</label>
+        <locationX>117</locationX>
+        <locationY>194</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Contacts</targetReference>
+        </connector>
+        <filters>
+            <field>LastName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>User</stringValue>
+            </value>
+        </filters>
+        <object>User</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Email</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+    </recordLookups>
+    <startElementReference>Get_Users</startElementReference>
+    <status>Draft</status>
+    <textTemplates>
+        <name>HTMLPasteIn</name>
+        <text>&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Hi Geoff Minor,&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;We received a request to reset the password for your account. Click here to set up a new one.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;href&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;https://www.salesforce.com/&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;target&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;_blank&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Create a password&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;If you don’t want to reset your password, you can ignore this email and we won’t change it.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>HTMLTextTemplateCreated</name>
+        <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

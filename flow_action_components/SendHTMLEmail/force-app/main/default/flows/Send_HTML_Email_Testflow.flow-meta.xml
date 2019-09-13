@@ -3,35 +3,112 @@
     <actionCalls>
         <name>Send_HTML_Email</name>
         <label>Send HTML Email</label>
-        <locationX>382</locationX>
-        <locationY>202</locationY>
+        <locationX>710</locationX>
+        <locationY>216</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <inputParameters>
-            <name>body</name>
+            <name>subject</name>
             <value>
-                <elementReference>HTMLTextTemplateCreated</elementReference>
+                <stringValue>This is my email subject!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
+            <value>
+                <elementReference>curUsers</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <elementReference>plainTextVersion</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <stringValue>baz@bar.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCthisOneEmailAddress</name>
+            <value>
+                <stringValue>foo@bar.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
+            <value>
+                <elementReference>curUsers</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfUsers</name>
+            <value>
+                <elementReference>curUsers</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>HTMLbody</name>
+            <value>
+                <elementReference>HTMLTextTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCthisOneEmailAddress</name>
+            <value>
+                <stringValue>bar@bar.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
-        </inputParameters>
-        <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
-        </inputParameters>
-        <inputParameters>
-            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
         </inputParameters>
         <inputParameters>
             <name>SendTOthisStringCollectionOfEmailAddresses</name>
-        </inputParameters>
-        <inputParameters>
-            <name>subject</name>
             <value>
-                <stringValue>this is the subject</stringValue>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
             </value>
         </inputParameters>
     </actionCalls>
+    <assignments>
+        <name>Build_List_of_String_Addresses</name>
+        <label>Build List of String Addresses</label>
+        <locationX>170</locationX>
+        <locationY>50</locationY>
+        <assignmentItems>
+            <assignToReference>stringCollectionEmailAddresses</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>alexsalesforcedemo@gmail.com</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>stringCollectionEmailAddresses</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>fribble@edelstein.org</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Template_ID</targetReference>
+        </connector>
+    </assignments>
     <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Send HTML Email Testflow</label>
     <processMetadataValues>
@@ -50,55 +127,147 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>240</locationX>
-        <locationY>197</locationY>
+        <locationX>710</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Send_HTML_Email</targetReference>
         </connector>
         <filters>
-            <field>LastName</field>
-            <operator>EqualTo</operator>
+            <field>Email</field>
+            <operator>Contains</operator>
             <value>
-                <stringValue>Contact</stringValue>
+                <stringValue>edelstein</stringValue>
             </value>
         </filters>
         <object>Contact</object>
+        <outputReference>curContacts</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Email</queriedFields>
         <queriedFields>FirstName</queriedFields>
         <queriedFields>LastName</queriedFields>
     </recordLookups>
     <recordLookups>
+        <name>Get_Template_ID</name>
+        <label>Get Template ID</label>
+        <locationX>309</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Template_Target_Record</targetReference>
+        </connector>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>ApproveStep2</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EmailTemplate</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Template_Target_Record</name>
+        <label>Get Template Target Record</label>
+        <locationX>466</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Users</targetReference>
+        </connector>
+        <filters>
+            <field>FirstName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Diana</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>FirstName</queriedFields>
+        <queriedFields>LastName</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>117</locationX>
-        <locationY>194</locationY>
+        <locationX>591</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
         </connector>
         <filters>
-            <field>LastName</field>
+            <field>FirstName</field>
             <operator>EqualTo</operator>
             <value>
-                <stringValue>User</stringValue>
+                <stringValue>George</stringValue>
             </value>
         </filters>
         <object>User</object>
+        <outputReference>curUsers</outputReference>
         <queriedFields>Id</queriedFields>
         <queriedFields>Email</queriedFields>
         <queriedFields>FirstName</queriedFields>
         <queriedFields>LastName</queriedFields>
     </recordLookups>
-    <startElementReference>Get_Users</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Build_List_of_String_Addresses</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
     <textTemplates>
         <name>HTMLPasteIn</name>
         <text>&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Hi Geoff Minor,&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;We received a request to reset the password for your account. Click here to set up a new one.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;href&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;https://www.salesforce.com/&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;target&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;_blank&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Create a password&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;If you don’t want to reset your password, you can ignore this email and we won’t change it.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
-        <name>HTMLTextTemplateCreated</name>
-        <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;</text>
+        <name>HTMLTextTemplate</name>
+        <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
     </textTemplates>
+    <textTemplates>
+        <name>plainTextBody</name>
+        <text>&lt;p&gt;This is some body text created using the rich text editor in the Text Template resource in Flow.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>plainTextVersion</name>
+        <text>This is the plaintext version of the message.</text>
+    </textTemplates>
+    <variables>
+        <name>curContacts</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>curLeads</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Lead</objectType>
+    </variables>
+    <variables>
+        <name>curUsers</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>stringCollectionEmailAddresses</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

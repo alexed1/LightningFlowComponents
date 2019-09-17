@@ -1,0 +1,5 @@
+<apex:page standardStylesheets="false" lightningStylesheets="false">
+    <span style="display: none">
+        SESSION_ID_START{!$Api.Session_ID}SESSION_ID_END
+    </span>
+</apex:page>

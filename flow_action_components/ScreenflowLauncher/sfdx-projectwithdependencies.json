@@ -1,0 +1,29 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "DynamicFlowLauncher",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "dependencies": [
+        {
+            "package": "openURLFlowAction",
+            "versionNumber": "1.0.0.LATEST"
+        },
+        {
+            "package": "flowPickerFSC",
+            "versionNumber": "1.0.0.LATEST"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "47.0",
+    "packageAliases": {
+        "openURLFlowAction": "04tf4000004MfAn",
+        "flowPickerFSC": "04tB0000000U3ek",
+        "DynamicFlowLauncher": "0HoB00000008P9yKAE"
+    }
+}

@@ -1,0 +1,42 @@
+<template>
+    <div class="slds-form-element" role="group" aria-labelledby="picklist-group-label">
+        <span id="picklist-group-label" class="slds-form-element__label slds-form-element__legend">{label}</span>
+        <div class="slds-form-element__control">
+            <div class="slds-dueling-list">
+                <div class="slds-assistive-text" id="drag-live-region" aria-live="assertive"></div>
+                <div class="slds-dueling-list__column">
+                    <div class="slds-dueling-list__options">
+                        <ul aria-describedby="option-drag-label" aria-labelledby="label-102" aria-multiselectable="true"
+                            class="slds-listbox slds-listbox_vertical" role="listbox">
+                            <template for:each={records} for:item="record">
+                                <li data-recordid={record.value} onclick={setSelected} key={record.value} role="presentation"
+                                    class="slds-listbox__item">
+                                    <div class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_inline"
+                                         aria-selected={record.selected} role="option" tabindex="0">
+                                        <span class="slds-media__body">
+                                        <span class="slds-truncate" title="Option 4">{record.label}</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+                <div class="slds-dueling-list__column">
+                    <button class="slds-button slds-button_icon slds-button_icon-container"
+                            title="Move Selection to Second Category"
+                            onclick={moveUp}>
+                        <lightning-icon icon-name="utility:chevronup" size="x-small"
+                                        alternative-text="Up"></lightning-icon>
+                    </button>
+                    <button class="slds-button slds-button_icon slds-button_icon-container"
+                            title="Move Selection to First Category"
+                            onclick={moveDown}>
+                        <lightning-icon icon-name="utility:chevrondown" size="x-small"
+                                        alternative-text="Down"></lightning-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

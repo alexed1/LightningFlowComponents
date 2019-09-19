@@ -24,3 +24,7 @@ The component takes three parameters
 ## Setup
 
 Drag the Action Element onto your Flow Canvas, select ersNavigateToRecord and provide Input Values for the 3 parameters.  If this element is the last one in your Flow, the user will be redirected to the defined record screen in the selected mode.
+
+##Important Operations Notes
+
+This flow action does NOT work when run from Flow Setup. It ONLY works when run on a Lightning Page. 

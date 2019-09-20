@@ -16,6 +16,6 @@
 <aura:component implements="lightning:availableForFlowActions">
     <aura:attribute name="recordId" type="String"/>
     <aura:attribute name="sObject" type="String"/>
-    <aura:attribute name="mode" type="String"/>
+    <aura:attribute name="mode" type="String" default="view"/>
     <lightning:navigation aura:id="navService"/>
 </aura:component>

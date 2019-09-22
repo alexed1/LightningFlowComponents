@@ -1,0 +1,11 @@
+<template>
+    <template if:true={tableData}>
+        <lightning-datatable
+                data={tableData}
+                columns={columns}
+                key-field="UserOrGroupId"
+                hide-checkbox-column="true"
+                onrowaction={handleRowAction}>
+        </lightning-datatable>
+    </template>
+</template>

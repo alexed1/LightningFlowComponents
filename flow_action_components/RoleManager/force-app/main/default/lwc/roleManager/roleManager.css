@@ -1,0 +1,15 @@
+.container {
+    position: relative;
+}
+
+.role-manager {
+    height: 100%;
+}
+
+.toast-message {
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: 10;
+}

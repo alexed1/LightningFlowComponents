@@ -1,16 +1,15 @@
 <template>
     <div>
         <div class="container">
-            <div class="role-manager">
+            <div class="role-manager slds-p-bottom--x-small">
                 <template if:true={showError}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
                         <h2> {errorMessage} </h2>
                     </div>
                 </template>
                 <template if:true={showMarkup}>
-                    <lightning-card title={cardTitle}>
-                        <div class="slds-m-horizontal_medium">
-                            <lightning-tabset variant="scoped" active-tab-value={defaultTab}>
+                        <div>
+                            <lightning-tabset variant="scoped" active-tab-value={editTabName}>
                                 <template if:true={showExistingTab}>
                                     <lightning-tab label={editTabName} value={editTabName}>
                                         <c-view-edit-members
@@ -19,6 +18,9 @@
                                                 existing-members={existingMembers}
                                                 manager-name={managerName}
                                                 supported-buttons={supportedButtons}
+                                                member-data={memberData}
+                                                object-data={objectData}
+                                                type-mapping={typeMapping}
                                                 onsearchrefresh={refresh}
                                                 ondataerror={showToast}
                                         ></c-view-edit-members>
@@ -33,14 +35,15 @@
                                             manager-name={managerName}
                                             existing-members={existingMembers}
                                             supported-buttons={supportedButtons}
+                                            member-data={memberData}
+                                            object-data={objectData}
+                                            type-mapping={typeMapping}
                                             onsearchrefresh={refresh}
                                             ondataerror={showToast}
                                     ></c-add-new-members>
                                 </lightning-tab>
-
                             </lightning-tabset>
                         </div>
-                    </lightning-card>
                 </template>
             </div>
             <div class="toast-message">

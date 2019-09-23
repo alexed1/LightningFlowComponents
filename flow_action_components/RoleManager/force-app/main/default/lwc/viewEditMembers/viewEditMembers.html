@@ -1,5 +1,5 @@
 <template>
-    <template if:true={tableData}>
+    <template if:false={isNoResults}>
         <lightning-datatable
                 data={tableData}
                 columns={columns}
@@ -7,5 +7,8 @@
                 hide-checkbox-column="true"
                 onrowaction={handleRowAction}>
         </lightning-datatable>
+    </template>
+    <template if:true= {isNoResults}>
+        <div class="slds-align_absolute-center">{labels.NoMembersAddedMessage}</div>
     </template>
 </template>

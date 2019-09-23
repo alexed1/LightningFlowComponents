@@ -40,11 +40,11 @@ global with sharing class RoleManagerController {
     global class MemberInfo {
 
         @AuraEnabled global Id memberId;
-        @AuraEnabled global Id recordId;
+        @AuraEnabled global String recordId;
         @AuraEnabled global String name;
         @AuraEnabled global String label;
         @AuraEnabled global SObject record;
-        public MemberInfo(Id memberId, Id recordId, String name, String label, SObject record) {
+        public MemberInfo(Id memberId, String recordId, String name, String label, SObject record) {
             this.memberId = memberId;
             this.recordId = recordId;
             this.name = name;

@@ -44,7 +44,8 @@ const buttonStyling = (supportedButtonSettings, selectedButtonNames, id, existin
 
 
     let resultButtonSettings = {};
-    selectedButtonNames.replace(/ /g, '').split(',').forEach(buttonName => {
+    let buttonList = selectedButtonNames.replace(/ /g, '').split(',');
+    buttonList.forEach(buttonName => {
         let allbs = supportedButtonSettings.filter(curSetting => curSetting.name == buttonName);
         let isDisabled = false;
         if (allbs && allbs.length > 0) {
@@ -80,7 +81,7 @@ const buttonStyling = (supportedButtonSettings, selectedButtonNames, id, existin
             }
         }
 
-        resultButtonSettings[buttonName.replace(/ /g, '') + 'buttonIconName'] = isDisabled ? 'utility:check' : ' ';
+        resultButtonSettings[buttonName.replace(/ /g, '') + 'buttonIconName'] = isDisabled ? 'utility:check' : (buttonList.length > 1 ? ' ' : '');
         resultButtonSettings[buttonName.replace(/ /g, '') + 'buttonDisabled'] = isDisabled;
     });
     return resultButtonSettings;

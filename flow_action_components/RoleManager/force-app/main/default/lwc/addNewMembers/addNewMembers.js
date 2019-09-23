@@ -4,16 +4,9 @@ import Search from '@salesforce/label/c.Search';
 import For from '@salesforce/label/c.For';
 import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
 import NoSearchResultsMessage from '@salesforce/label/c.NoSearchResultsMessage';
-import Queues from '@salesforce/label/c.Queues';
-import RelatedUsers from '@salesforce/label/c.RelatedUsers';
-import PublicGroups from '@salesforce/label/c.PublicGroups';
-import Roles from '@salesforce/label/c.Roles';
-import Users from '@salesforce/label/c.Users';
-
 import searchMemberByType from '@salesforce/apex/SearchUtils.searchMemberByType';
 
 import {logger, logError} from 'c/lwcLogger';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 import {
     buttonStyling,
@@ -21,14 +14,6 @@ import {
     generateCapabilityColumns,
     splitValues
 } from 'c/buttonUtils';
-
-const typeMapping = {
-    Group: PublicGroups,
-    Role: Roles,
-    User: Users,
-    Queue: Queues,
-    RelatedUsers: RelatedUsers
-};
 
 export default class addNewMembers extends LightningElement {
     @api log = false;
@@ -44,6 +29,9 @@ export default class addNewMembers extends LightningElement {
     @api existingMembers;
     @api supportedButtons;
     @api memberParams;
+    @api memberData;
+    @api objectData;
+    @api typeMapping;
     @track label = {
         Search,
         TooManyResultsMessage,
@@ -64,7 +52,6 @@ export default class addNewMembers extends LightningElement {
         }
     }
 
-
     get objectTypes() {
         return splitValues(this.availableObjectTypes).map(curTypeName => {
             return this.getTypeDescriptor(curTypeName);
@@ -72,7 +59,7 @@ export default class addNewMembers extends LightningElement {
     }
 
     getTypeDescriptor(typeName) {
-        return {value: typeName, label: typeMapping[typeName]};
+        return {value: typeName, label: this.typeMapping[typeName]};
     }
 
     get tooManyResults() {
@@ -97,17 +84,46 @@ export default class addNewMembers extends LightningElement {
         this.searchResults = [];
     }
 
+    searchRelatedUsers(searchString) {
+        let fields = this.objectData.fields;
+        let searchableFields = [];
+        for (let fieldName in fields) {
+            if (fields[fieldName].referenceToInfos.length !== 0) {
+                fields[fieldName].referenceToInfos.forEach(curReference => {
+                    if (curReference.apiName === 'User' && (!searchString || fields[fieldName].label.includes(searchString))) {
+                        searchableFields.push({
+                            label: fields[fieldName].label,
+                            value: fieldName
+                        });
+                    }
+                });
+            }
+        }
+        return searchableFields;
+    }
+
     async actuallySearch() {
 
         logger(this.log, this.source, 'actually searching!');
         this.searchResults = [];
         this.searchDisabled = true;
-
-        const results =
-            await searchMemberByType({
-                searchString: this.searchString,
-                memberTypes: [this.selectedType]
-            });
+        let results = new Object();
+        if (this.selectedType === 'RelatedUsers') {
+            results[this.selectedType] = this.searchRelatedUsers(this.searchString);
+        } else if (this.selectedType === 'Owner') {
+            results[this.selectedType] = [this.searchRelatedUsers().find(curUser => curUser.value === 'OwnerId')];
+        } else if (this.selectedType === 'Creator') {
+            results[this.selectedType] = [{
+                label: this.memberData.fields.CreatedBy.displayValue,
+                value: this.memberData.fields.CreatedBy.value.id
+            }];
+        } else {
+            results =
+                await searchMemberByType({
+                    searchString: this.searchString,
+                    memberTypes: [this.selectedType]
+                });
+        }
 
         logger(this.log, this.source, 'search results', results);
 
@@ -122,10 +138,6 @@ export default class addNewMembers extends LightningElement {
             .trim()
             .replace(/\*/g)
             .toLowerCase();
-
-        if (searchString.length <= 1) {
-            return;
-        }
 
         this.isSearchApplied = true;
         this.searchString = searchString;
@@ -155,7 +167,7 @@ export default class addNewMembers extends LightningElement {
     }
 
     get isNoSearchResultsMessageVisible() {
-        return (this.searchResults && this.searchResults.length == 0 && this.searchString && this.isSearchApplied)
+        return (!this.searchDisabled && this.searchResults && this.searchResults.length == 0 && this.searchString && this.isSearchApplied)
     }
 
     async handleRowAction(event) {

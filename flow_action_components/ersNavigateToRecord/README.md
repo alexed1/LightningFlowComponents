@@ -1,5 +1,5 @@
-# ersNavigateToRecord
-This is a generic Lightning Flow Action Component that can be used at the end of a Flow to load a Salesforce Record page.  Unlike the Navigate to SObject component, you can specify whether to open the record in Edit or View mode.
+# navigateToRecord
+This is a generic Lightning Flow Action Component that can be used at the end of a Flow to load a Salesforce Record page.  You can specify whether to open the record in Edit or View mode.
 
 I wrote this component to solve the issue raised in this idea:
 
@@ -7,10 +7,10 @@ I wrote this component to solve the issue raised in this idea:
 
 ## Installation
 
-In your Developer Console, select File > New > Lightning Component > Name: ersNavigateToRecord > Submit
-- For Component, replace everything shown with the contents of **ersNavigateToRecord.cmp**
-- For Controller, replace everything shown with the contents of **ersNavigateToRecordController.js**
-- For Design, replace everything shown with the contents of **ersNavigateToRecord.design**
+In your Developer Console, select File > New > Lightning Component > Name: navigateToRecord > Submit
+- For Component, replace everything shown with the contents of **navigateToRecord.cmp**
+- For Controller, replace everything shown with the contents of **navigateToRecordController.js**
+- For Design, replace everything shown with the contents of **navigateToRecord.design**
 
 Then select File > Save All
 
@@ -23,7 +23,7 @@ The component takes three parameters
 
 ## Setup
 
-Drag the Action Element onto your Flow Canvas, select ersNavigateToRecord and provide Input Values for the 3 parameters.  If this element is the last one in your Flow, the user will be redirected to the defined record screen in the selected mode.
+Drag the Action Element onto your Flow Canvas, select navigateToRecord and provide Input Values for the 3 parameters.  If this element is the last one in your Flow, the user will be redirected to the defined record screen in the selected mode.
 
 ## Important Operations Notes
 

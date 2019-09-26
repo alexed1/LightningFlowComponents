@@ -71,13 +71,13 @@
             <inputParameters>
                 <name>supportedAddCapabilities</name>
                 <value>
-                    <stringValue>Read/Write, Read, None</stringValue>
+                    <stringValue>Read/Write, Read, Remove</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>supportedEditCapabilities</name>
                 <value>
-                    <stringValue>Read/Write, Read, None</stringValue>
+                    <stringValue>Read/Write, Read, Remove</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -96,7 +96,7 @@
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Set_Sharing_Settings</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

@@ -1,0 +1,54 @@
+<template>
+    <div>
+        <div class="container">
+            <div class="role-manager slds-p-bottom--x-small">
+                <template if:true={showError}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+                        <h2> {errorMessage} </h2>
+                    </div>
+                </template>
+                <template if:true={showMarkup}>
+                        <div>
+                            <lightning-tabset variant="scoped" active-tab-value={editTabName}>
+                                <template if:true={showExistingTab}>
+                                    <lightning-tab label={editTabName} value={editTabName}>
+                                        <c-view-edit-members
+                                                record-id={recordId}
+                                                supported-edit-capabilities={supportedEditCapabilities}
+                                                existing-members={existingMembers}
+                                                manager-name={managerName}
+                                                supported-buttons={supportedButtons}
+                                                member-data={memberData}
+                                                object-data={objectData}
+                                                type-mapping={typeMapping}
+                                                onsearchrefresh={refresh}
+                                                ondataerror={showToast}
+                                        ></c-view-edit-members>
+                                    </lightning-tab>
+                                </template>
+                                <lightning-tab label={addTabName} value={addTabName}>
+                                    <c-add-new-members
+                                            member-params={memberParams}
+                                            record-id={recordId}
+                                            available-object-types={availableObjectTypes}
+                                            supported-add-capabilities={supportedAddCapabilities}
+                                            manager-name={managerName}
+                                            existing-members={existingMembers}
+                                            supported-buttons={supportedButtons}
+                                            member-data={memberData}
+                                            object-data={objectData}
+                                            type-mapping={typeMapping}
+                                            onsearchrefresh={refresh}
+                                            ondataerror={showToast}
+                                    ></c-add-new-members>
+                                </lightning-tab>
+                            </lightning-tabset>
+                        </div>
+                </template>
+            </div>
+            <div class="toast-message">
+                <c-toast-message></c-toast-message>
+            </div>
+        </div>
+    </div>
+</template>

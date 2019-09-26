@@ -202,14 +202,14 @@ global with sharing class ManageSharingSettings implements RoleManagerProvider {
 
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting('Remove', new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.NOTEXISTS)));
 
-//        supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
-//                'None',
-//                new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
-//                        'RowCause' => (new List<String>{
-//                                'Owner', 'ImplicitChild', 'ImplicitParent'
-//                        })
-//                })
-//        ));
+        supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
+               'None',
+              new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
+                      'RowCause' => (new List<String>{
+                               'Owner', 'ImplicitChild', 'ImplicitParent'
+                       })
+                })
+       )); 
 
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
                 'Read/Write',

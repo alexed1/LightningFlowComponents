@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Sharing Settings Demo {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Sharing Settings Demo</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Display</name>
+        <label>Display</label>
+        <locationX>358</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Set_Sharing_Settings</targetReference>
+        </connector>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Set_Sharing_Settings</name>
+        <label>Set Sharing Settings</label>
+        <locationX>199</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Display</targetReference>
+        </connector>
+        <fields>
+            <name>sharingSettingControl</name>
+            <extensionName>c:roleManager</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>addTabName</name>
+                <value>
+                    <stringValue>Add Sharing Setting</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>editTabName</name>
+                <value>
+                    <stringValue>Edit Sharing Setting</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>availableObjectTypes</name>
+                <value>
+                    <stringValue>Role, User, Group</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>managerName</name>
+                <value>
+                    <stringValue>ManageSharingSettings</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedAddCapabilities</name>
+                <value>
+                    <stringValue>Read/Write, Read, None</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>supportedEditCapabilities</name>
+                <value>
+                    <stringValue>Read/Write, Read, None</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>recordId</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Set_Sharing_Settings</startElementReference>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+</Flow>

@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
+            ],
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ],
+            "c/lwcLogger": [
+                "lwcLogger/lwcLogger.js"
+            ],
+            "c/roleManager": [
+                "roleManager/roleManager.js"
+            ],
+            "c/toastMessage": [
+                "toastMessage/toastMessage.js"
+            ],
+            "c/viewEditMembers": [
+                "viewEditMembers/viewEditMembers.js"
+            ]
+        }
+    }
+}

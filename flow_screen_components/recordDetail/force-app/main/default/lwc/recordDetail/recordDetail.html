@@ -1,0 +1,54 @@
+<template>
+<!--    <lightning-input type="search" label="Fields" name="search" value={fields}-->
+<!--                     onchange={searchEventHandler}></lightning-input>-->
+    <template if:true={loadFinished}>
+        <div class="slds-box slds-theme_default">
+            <template if:true={isError}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+                    <template for:each={errors} for:item="error">
+                        <h2 key={error}> {error} </h2>
+                    </template>
+                </div>
+            </template>
+            <template if:false={isError}>
+                <template if:true={isViewMode}>
+                    <lightning-record-view-form
+                            record-id={recordId}
+                            object-api-name={recordData.apiName}>
+                        <lightning-layout multiple-rows="true">
+                            <template for:each={fieldsToDisplay} for:item="field">
+                                <lightning-layout-item key={field} size={elementSize}>
+                                    <lightning-output-field field-name={field}>
+                                    </lightning-output-field>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </lightning-record-view-form>
+                </template>
+                <template if:false={isViewMode}>
+                    <lightning-record-edit-form
+                            record-id={recordId}
+                            object-api-name={recordData.apiName}>
+                        <lightning-layout multiple-rows="true">
+                            <template for:each={fieldsToDisplay} for:item="field">
+                                <lightning-layout-item key={field} size={elementSize}>
+                                    <lightning-input-field field-name={field}>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                            </template>
+                            <lightning-layout-item size=12>
+                                <lightning-button
+                                        class="slds-m-top_small slds-float--right"
+                                        variant="neutral"
+                                        type="submit"
+                                        name="save"
+                                        label="Save">
+                                </lightning-button>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </lightning-record-edit-form>
+                </template>
+            </template>
+        </div>
+    </template>
+</template>

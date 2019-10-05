@@ -1,0 +1,21 @@
+<!--
+    navigateToRecord Lightning Flow Action
+    
+	Eric Smith - 9/19/19
+	https://success.salesforce.com/ProfileView?u=005300000095v5FAAQ
+	https://github.com/ericrsmith35
+
+    Created to allow for the redirection at the end of a Flow to a Record page in either Edit or View mode.
+	
+	This component uses lightning:navigation rather than the deprecated force:navigateToSObject that is in 
+	the Navigate to SObject component.
+
+	Parameters include defining the Object Name, Record Id and Mode (View or Edit)
+-->
+
+<aura:component implements="lightning:availableForFlowActions">
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="sObject" type="String"/>
+    <aura:attribute name="mode" type="String" default="view"/>
+    <lightning:navigation aura:id="navService"/>
+</aura:component>

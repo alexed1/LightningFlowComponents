@@ -1,0 +1,5 @@
+<design:component >
+    <design:attribute name="sObject" label="Object" default="" />
+    <design:attribute name="recordId" label="Record Id" default="" />
+    <design:attribute name="mode" label="View or Edit?" default="View" />
+</design:component>

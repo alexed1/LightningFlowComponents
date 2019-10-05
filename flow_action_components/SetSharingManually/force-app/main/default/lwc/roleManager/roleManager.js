@@ -64,7 +64,7 @@ export default class RoleManager extends LightningElement {
 
     @wire(getSupportedButtons, {managerName: '$managerName', recordId: '$recordId'})
     _getSupportedButtons(result) {
-        this._refreshable = result;
+        
         if (result.error) {
             this.errors.push(result.error.body.message);
             logError(this.log, this.source, 'getSupportedButtons', result.error);

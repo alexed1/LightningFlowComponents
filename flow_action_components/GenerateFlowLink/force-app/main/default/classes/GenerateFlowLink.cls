@@ -12,6 +12,20 @@ public with sharing class GenerateFlowLink {
         String baseURL = Url.getOrgDomainUrl().toExternalForm();
         flowLink = baseURL + '/flow/' + flowName;
         
+        String params = '';
+        params = generateParam(requestList[0].param1Name, requestList[0].param1Value);
+        System.debug('params is: ' + params);
+        String nextParam = generateParam(requestList[0].param2Name, requestList[0].param2Value);
+        if (nextParam != '')
+          params = params + '&' + nextParam;
+        System.debug('params is: ' + params);
+        nextParam = generateParam(requestList[0].param3Name, requestList[0].param3Value);
+        if (nextParam != '')
+          params = params + '&' + nextParam;
+        System.debug('params is: ' + params);
+        if (params != '')
+          flowLink = flowLink + '?' + params;
+
         //Create a Results object to hold the return values
         Results response = new Results();
 
@@ -29,6 +43,24 @@ public with sharing class GenerateFlowLink {
 
       @InvocableVariable
       public String flowName;
+
+       @InvocableVariable
+      public String param1Name;
+
+      @InvocableVariable
+      public String param1Value;
+
+      @InvocableVariable
+      public String param2Name;
+
+      @InvocableVariable
+      public String param2Value;
+
+      @InvocableVariable
+      public String param3Name;
+
+      @InvocableVariable
+      public String param3Value;
         
     }
     

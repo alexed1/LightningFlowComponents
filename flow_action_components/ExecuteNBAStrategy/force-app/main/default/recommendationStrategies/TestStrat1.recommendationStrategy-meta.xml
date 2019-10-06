@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextRecordType>Account</contextRecordType>
+    <label>TestStrat1</label>
+    <recommendationLoad>
+        <label>Load Recs</label>
+        <name>Load_Recs</name>
+        <condition>
+            <field>AcceptanceLabel</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Accept</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+    </recommendationLoad>
+    <union>
+        <childNode>Load_Recs</childNode>
+        <label>Output</label>
+        <name>Output_aed2e04bcc83438e974e2fdf7784781c</name>
+    </union>
+</RecommendationStrategy>

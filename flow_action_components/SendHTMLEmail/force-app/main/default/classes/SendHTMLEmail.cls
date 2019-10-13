@@ -11,7 +11,7 @@ public with sharing class SendHTMLEmail {
         String senderDisplayName = requests[0].senderDisplayName;
         String templateID = requests[0].templateID;
         String templateTargetObjectId = requests[0].templateTargetObjectId;
-            
+        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;    
        
         //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
@@ -43,11 +43,16 @@ public with sharing class SendHTMLEmail {
         mail.setCcAddresses(ccAddresses);
         mail.setBccAddresses(bccAddresses);
 
-        // Specify the address used when the recipients reply to the email. 
-        mail.setReplyTo(replyEmailAddress);
+        //outgoing email can either use an orgWideEmailAddress or specify it here, but not both
+        if (orgWideEmailAddressId != null && orgWideEmailAddressId != '') {
+            mail.setOrgWideEmailAddressId(orgWideEmailAddressId);
+        } else {
+            // Specify the address used when the recipients reply to the email. 
+            mail.setReplyTo(replyEmailAddress);
 
-        // Specify the name used as the display name.
-        mail.setSenderDisplayName(senderDisplayName);
+            // Specify the name used as the display name.
+            mail.setSenderDisplayName(senderDisplayName);
+        }
 
         // Specify the subject line for your email address.
         mail.setSubject(subject);
@@ -63,12 +68,13 @@ public with sharing class SendHTMLEmail {
         } else {
             mail.setUseSignature(true);
         }
-             
-		 
+
+        mail = AddAttachments(mail, requests[0].attachments);
+         
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
             throw new FlowEmailActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
            
-		if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
+        if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
             throw new FlowEmailActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
             
         mail.setTemplateID(templateID);
@@ -79,7 +85,7 @@ public with sharing class SendHTMLEmail {
         mail.setPlainTextBody(plainTextBody);
 
         mail.setHtmlBody(HTMLbody);
-		System.debug('mail is:' + mail);
+        System.debug('mail is:' + mail);
         Messaging.SendEmailResult[] emailResponse;
         Boolean completed;
         String error;
@@ -126,6 +132,22 @@ public with sharing class SendHTMLEmail {
         return responseList;
     }
 
+    //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
+    public static Messaging.SingleEmailMessage AddAttachments(Messaging.SingleEmailMessage mail, List<Attachment> curAttachments) {
+        List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();
+        if (curAttachments != null) {
+            for (Attachment file: curAttachments) {
+                Messaging.EmailFileAttachment efa = new Messaging.EmailFileAttachment();
+                efa.setFileName(file.Name);
+                efa.setBody(file.Body);
+                efa.setContentType(file.ContentType);
+                attachments.add(efa);
+            }
+            mail.setFileAttachments(attachments);
+        } 
+        return mail;
+    }
+
     public static String[] BuildAddressList(string type, Map<String, Object> m) {
         
         String[] addressList = new List<String>();
@@ -148,7 +170,7 @@ public with sharing class SendHTMLEmail {
         
         
         //handle inputs involving collections of Contacts
- 		List<Contact> curContacts = (List<Contact>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfContacts');        
+        List<Contact> curContacts = (List<Contact>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfContacts');        
         if (curContacts != null) {
             List<String> extractedEmailAddresses = new List<String>();
             for (Contact curContact : curContacts) {
@@ -159,7 +181,7 @@ public with sharing class SendHTMLEmail {
             System.debug('address list is now:' + addressList); 
         }
         
-		//handle inputs involving collections of Contacts
+        //handle inputs involving collections of Contacts
         List<User> curUsers = (List<User>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfUsers');
         if (curUsers != null) {
             List<String> extractedEmailAddresses = new List<String>();
@@ -205,7 +227,7 @@ public with sharing class SendHTMLEmail {
            'SendBCCthisStringCollectionOfEmailAddresses'  => request.SendBCCthisStringCollectionOfEmailAddresses,
            'SendBCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendBCCtheEmailAddressesFromThisCollectionOfContacts,
            'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
-      	   'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
+           'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
   };
        
     }
@@ -235,6 +257,9 @@ public with sharing class SendHTMLEmail {
         
         @invocableVariable
         public String senderDisplayName;
+
+        @invocableVariable
+        public String orgWideEmailAddressId;
 
         @invocableVariable
         public String SendTOthisOneEmailAddress;
@@ -284,6 +309,9 @@ public with sharing class SendHTMLEmail {
         @invocableVariable
         public Boolean UseSalesforceSignature;
 
+        @invocableVariable
+        public List<Attachment> Attachments;
+
     }
 
     public class Response {
@@ -295,7 +323,6 @@ public with sharing class SendHTMLEmail {
 
     }
             
-	public class FlowEmailActionException extends Exception {}
-
+    public class FlowEmailActionException extends Exception {}
    
 }

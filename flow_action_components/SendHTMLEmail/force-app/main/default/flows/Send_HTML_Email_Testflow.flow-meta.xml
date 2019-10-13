@@ -1,50 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Convert_Files_to_Attachments</name>
+        <label>Convert Files to Attachments</label>
+        <locationX>312</locationX>
+        <locationY>210</locationY>
+        <actionName>ConvertFilesToAttachments</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Get_Template_ID</targetReference>
+        </connector>
+        <inputParameters>
+            <name>curContentDocumentLinks</name>
+            <value>
+                <elementReference>Get_Content_Document_Links</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>curAttachments</assignToReference>
+            <name>curAttachments</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Send_HTML_Email</name>
         <label>Send HTML Email</label>
-        <locationX>710</locationX>
+        <locationX>709</locationX>
         <locationY>216</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
         <inputParameters>
-            <name>subject</name>
-            <value>
-                <stringValue>This is my email subject!</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
-            <value>
-                <elementReference>curUsers</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendBCCtheEmailAddressesFromThisCollectionOfContacts</name>
-            <value>
-                <elementReference>curContacts</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>plainTextBody</name>
-            <value>
-                <elementReference>plainTextVersion</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendTOthisOneEmailAddress</name>
-            <value>
-                <stringValue>baz@bar.com</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendBCCthisOneEmailAddress</name>
-            <value>
-                <stringValue>foo@bar.com</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
             <value>
                 <elementReference>curContacts</elementReference>
             </value>
@@ -56,9 +44,48 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendCCtheEmailAddressesFromThisCollectionOfUsers</name>
+            <name>SendTOthisStringCollectionOfEmailAddresses</name>
             <value>
-                <elementReference>curUsers</elementReference>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCthisOneEmailAddress</name>
+            <value>
+                <stringValue>foo@bar.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>This is my email subject!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>orgWideEmailAddressId</name>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <elementReference>plainTextVersion</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <stringValue>myreply@edelstein.org</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -68,28 +95,36 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendCCthisOneEmailAddress</name>
+            <name>senderDisplayName</name>
             <value>
-                <stringValue>bar@bar.com</stringValue>
+                <stringValue>Thisbethe sender name</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
-                <elementReference>curContacts</elementReference>
+                <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOthisStringCollectionOfEmailAddresses</name>
+            <name>Attachments</name>
             <value>
-                <elementReference>stringCollectionEmailAddresses</elementReference>
+                <elementReference>curAttachments</elementReference>
             </value>
         </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
     </actionCalls>
     <assignments>
         <name>Build_List_of_String_Addresses</name>
         <label>Build List of String Addresses</label>
-        <locationX>170</locationX>
+        <locationX>171</locationX>
         <locationY>50</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
@@ -106,7 +141,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Template_ID</targetReference>
+            <targetReference>Get_Content_Document_Links</targetReference>
         </connector>
     </assignments>
     <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
@@ -146,6 +181,28 @@
         <queriedFields>Email</queriedFields>
         <queriedFields>FirstName</queriedFields>
         <queriedFields>LastName</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Content_Document_Links</name>
+        <label>Get Content Document Links</label>
+        <locationX>170</locationX>
+        <locationY>209</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Convert_Files_to_Attachments</targetReference>
+        </connector>
+        <filters>
+            <field>LinkedEntityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ContentDocumentLink</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>ContentDocumentId</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
         <name>Get_Template_ID</name>
@@ -215,6 +272,22 @@
         <queriedFields>FirstName</queriedFields>
         <queriedFields>LastName</queriedFields>
     </recordLookups>
+    <screens>
+        <name>screenConsole1</name>
+        <label>screenConsole1</label>
+        <locationX>712</locationX>
+        <locationY>345</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>dispResults</name>
+            <fieldText>&lt;p&gt;Email Send Results:&lt;/p&gt;&lt;p&gt;IsSuccess: {!isSuccess}&lt;/p&gt;&lt;p&gt;Errors: &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
@@ -240,6 +313,14 @@
         <text>This is the plaintext version of the message.</text>
     </textTemplates>
     <variables>
+        <name>curAttachments</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Attachment</objectType>
+    </variables>
+    <variables>
         <name>curContacts</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
@@ -262,6 +343,27 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>errorsFromEmail</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>isSuccess</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>stringCollectionEmailAddresses</name>

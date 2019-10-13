@@ -61,10 +61,10 @@ export default class RoleManager extends LightningElement {
         Owner: Owner,
         Creator: Creator
     };
+    customTypes = {RelatedUsers: null, Owner: 'OwnerId', Creator: 'CreatedById'};
 
     @wire(getSupportedButtons, {managerName: '$managerName', recordId: '$recordId'})
     _getSupportedButtons(result) {
-        
         if (result.error) {
             this.errors.push(result.error.body.message);
             logError(this.log, this.source, 'getSupportedButtons', result.error);

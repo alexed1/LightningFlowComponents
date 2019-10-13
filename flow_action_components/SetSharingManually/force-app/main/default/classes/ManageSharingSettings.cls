@@ -1,20 +1,24 @@
 global with sharing class ManageSharingSettings implements RoleManagerProvider {
 
+    static String BUTTON_REMOVE = 'None';
+    static String BUTTON_READ = 'Read';
+    static String BUTTON_READ_WRITE = 'Read/Write';
+
     static List<RoleManagerController.ButtonSetting> supportedButtonSettings;
     static Map<String, String> BUTTON_TO_ACCESS_TYPE = new Map<String, String>{
-            'Read' => 'Read', 'Read/Write' => 'Edit'
+            BUTTON_READ => 'Read', BUTTON_READ_WRITE => 'Edit'
     };
 
     public static String execute(String buttonName, String paramsString) {
 
         Map<String, String> params = (Map<String, String>) JSON.deserialize(paramsString, Map<String, String>.class);
 
-        if (buttonName == 'Read' || buttonName == 'Read/Write') {
+        if (buttonName == BUTTON_READ || buttonName == BUTTON_READ_WRITE) {
             return add(
                     params.get('userOrGroupID'),
                     params.get('recordId'),
                     BUTTON_TO_ACCESS_TYPE.get(buttonName));
-        } else if (buttonName == 'Remove') {
+        } else if (buttonName == BUTTON_REMOVE) {
             return remove(
                     params.get('userOrGroupID'),
                     params.get('recordId'));
@@ -154,22 +158,25 @@ global with sharing class ManageSharingSettings implements RoleManagerProvider {
             idToObjectType.put(curRecId, AdminTools.objectTypeFromId(curRecId));
         }
 
-        Map<String, SObject> recordData = getRecordData(idToObjectType.keySet());
+        Map<String, SObject> recordData = getRecordData(idToObjectType);
 
         for (sObject app : shares) {
-            String recordName = (String) recordData.get((Id) app.get('UserOrGroupId')).get('Name');
+            SObject shareObject = recordData.get((Id) app.get('UserOrGroupId'));
+            String shareRecordName = (String) shareObject.get('Name');
+            String shareRecordId = (String) shareObject.get('Id');
             results.add(new RoleManagerController.MemberInfo(
                     (Id) app.get('Id'),
-                    (Id) app.get('UserOrGroupId'),
-                    recordName,
-                    recordName + ' (' + idToObjectType.get((Id) app.get('UserOrGroupId')) + ')',
+                    (Id) shareRecordId,
+                    shareRecordName,
+                    shareRecordName + ' (' + idToObjectType.get((Id) app.get('UserOrGroupId')) + ')',
                     app)
             );
         }
         return results;
     }
 
-    static Map<String, SObject> getRecordData(Set<Id> recordIds) {
+    static Map<String, SObject> getRecordData(Map<Id, String> idToObjectType) {
+        Set<Id> recordIds = idToObjectType.keySet();
         Map<String, List<Id>> typeToRecordIds = new Map<String, List<Id>>();
         Map<String, SObject> recordIdToRecord = new Map<String, SObject>();
         for (Id curId : recordIds) {
@@ -180,12 +187,42 @@ global with sharing class ManageSharingSettings implements RoleManagerProvider {
             typeToRecordIds.get(objectName).add(curId);
         }
         for (String curType : typeToRecordIds.keySet()) {
-            list<SObject> shares = database.query('SELECT Id, Name FROM ' + curType);
+            list<SObject> shares = database.query('SELECT Id, Name' + getTypeSpecificFields(curType) + ' FROM ' + curType + ' WHERE Id IN: recordIds');
+            Map<Id, Id> roleToRelatedGroupIds = new Map<Id, Id>();
             for (SObject share : shares) {
-                recordIdToRecord.put((String) share.get('Id'), share);
+                if (curType == 'Group') {
+                    String shareType = (String) share.get('Type');
+                    if (shareType != 'Regular') {
+                        idToObjectType.put((Id) share.get('Id'), shareType);
+                    }
+                    if (shareType == 'Role') {
+                        roleToRelatedGroupIds.put((Id) share.get('RelatedId'), (Id) share.get('Id'));
+                    } else{
+                        recordIdToRecord.put((String) share.get('Id'), share);
+                    }
+                } else {
+                    recordIdToRecord.put((String) share.get('Id'), share);
+                }
+            }
+            //Some groups are representing roles
+            if (!roleToRelatedGroupIds.isEmpty()) {
+                List<UserRole> relatedRoles = [SELECT Id, Name FROM UserRole WHERE Id IN :roleToRelatedGroupIds.keySet()];
+                if (!relatedRoles.isEmpty()) {
+                    for (UserRole ur : relatedRoles) {
+                        recordIdToRecord.put(roleToRelatedGroupIds.get(ur.Id), ur);
+                    }
+                }
             }
         }
+
         return recordIdToRecord;
+    }
+
+    static String getTypeSpecificFields(String sObjectType) {
+        if (sObjectType == 'Group') {
+            return ', RelatedId, Type';
+        }
+        return '';
     }
 
     private static void generateButtonSettings(String recordId) {
@@ -200,19 +237,19 @@ global with sharing class ManageSharingSettings implements RoleManagerProvider {
 
         supportedButtonSettings = new List<RoleManagerController.ButtonSetting>();
 
-        supportedButtonSettings.add(new RoleManagerController.ButtonSetting('Remove', new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.NOTEXISTS)));
+        supportedButtonSettings.add(new RoleManagerController.ButtonSetting(BUTTON_REMOVE, new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.NOTEXISTS)));
 
-        /* supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
-               'None',
-              new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
-                      'RowCause' => (new List<String>{
-                               'Owner', 'ImplicitChild', 'ImplicitParent'
-                       })
-                })
-       ));  */
+//        supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
+//                BUTTON_REMOVE,
+//                new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
+//                        'RowCause' => (new List<String>{
+//                                'Owner', 'ImplicitChild', 'ImplicitParent'
+//                        })
+//                })
+//        ));
 
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
-                'Read/Write',
+                BUTTON_READ_WRITE,
                 new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
                         accessLevelFieldName => (new List<String>{
                                 'Edit', 'All'
@@ -224,7 +261,7 @@ global with sharing class ManageSharingSettings implements RoleManagerProvider {
         ));
 
         supportedButtonSettings.add(new RoleManagerController.ButtonSetting(
-                'Read',
+                BUTTON_READ,
                 new RoleManagerController.ButtonMatchingRule(RoleManagerController.MatchingAction.VALUEEQUALS, new Map<String, List<String>>{
 //                        'RowCause' => (new List<String>{
 //                                'Owner'

@@ -23,7 +23,7 @@ export default class ViewEditMembers extends LightningElement {
         NoMembersAddedMessage: NoMembersAddedMessage
     };
 
-    customTypes = ['RelatedUsers', 'Owner'];
+    @api customTypes;
 
     // call this when you know the member table is out of sync
     @api refresh() {
@@ -54,10 +54,10 @@ export default class ViewEditMembers extends LightningElement {
     }
 
     setLabels(result) {
-        if (this.customTypes.includes(result.record.Type__c)) {
+        if (this.customTypes.hasOwnProperty(result.record.Type__c)) {
             return {
                 ...result,
-                label: this.objectData.fields[result.recordId].label.replace(' ID', '') + ' (' + this.typeMapping[result.record.Type__c] + ')'
+                label: this.objectData.fields[result.recordId].label.replace(' ID', '')
             }
         } else {
             return result;

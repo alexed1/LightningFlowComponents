@@ -11,14 +11,14 @@
             "c/lwcLogger": [
                 "lwcLogger/lwcLogger.js"
             ],
-            "c/roleManager": [
-                "roleManager/roleManager.js"
-            ],
             "c/toastMessage": [
                 "toastMessage/toastMessage.js"
             ],
             "c/viewEditMembers": [
                 "viewEditMembers/viewEditMembers.js"
+            ],
+            "c/setSharingFSC": [
+                "setSharingFSC/setSharingFSC.js"
             ]
         },
         "experimentalDecorators": true

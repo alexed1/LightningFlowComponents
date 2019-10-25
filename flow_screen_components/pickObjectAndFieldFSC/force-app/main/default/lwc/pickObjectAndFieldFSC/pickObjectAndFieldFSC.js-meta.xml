@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>46.0</apiVersion>
+    <description>Pick Object And Field FSC</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Pick Object And Field FSC</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="masterLabel" type="String" role="inputOnly"> </property>
+            <property name="objectLabel" type="String" role="inputOnly"> </property>
+            <property name="fieldLabel" type="String" role="inputOnly"> </property>
+            <property name="objectType" type="String"> </property>
+            <property name="field" type="String"> </property>
+            <property name="objectDisabled" type="Boolean" role="inputOnly"> </property>
+            <property name="supportedObjectTypes" type="String" role="inputOnly"> </property>
+            <property name="supportedFieldRelationTypes" type="String" role="inputOnly"> </property>
+            <property name="hideObjectTypeSelect" type="Boolean" role="inputOnly"> </property>
+            <property name="hideFieldSelect" type="Boolean" role="inputOnly"> </property>
+            <property name="showFieldType" type="Boolean" role="inputOnly"> </property>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="masterLabel" type="String"> </property>
+            <property name="objectLabel" type="String"> </property>
+            <property name="fieldLabel" type="String"> </property>
+            <property name="objectType" type="String"> </property>
+            <property name="field" type="String"> </property>
+            <property name="objectDisabled" type="Boolean"> </property>
+            <property name="supportedObjectTypes" type="String"> </property>
+            <property name="supportedFieldRelationTypes" type="String"> </property>
+            <property name="hideObjectTypeSelect" type="Boolean"> </property>
+            <property name="hideFieldSelect" type="Boolean"> </property>
+            <property name="showFieldType" type="Boolean" > </property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -12,13 +12,13 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     @api fieldLabel = 'Field';
     @api objectType;
     @api field;
-    @api supportedObjectTypes;
-    @api supportedFieldRelationTypes;
+    @api availableObjectTypes;
+    @api availableFields;
 
-    @api objectDisabled = false;
-    @api hideObjectTypeSelect = false;
-    @api hideFieldSelect = false;
-    @api showFieldType = false;
+    @api disableObjectPicklist = false;
+    @api hideObjectPicklist = false;
+    @api hideFieldPicklist = false;
+    @api displayFieldType = false;
 
 
     @track _objectType;
@@ -41,7 +41,7 @@ export default class pickObjectAndFieldFSC extends LightningElement {
             this._field = this.field;
     }
 
-    @wire(getObjects, {supportedObjectTypes: '$supportedObjectTypesList'})
+    @wire(getObjects, {availableObjectTypes: '$availableObjectTypesList'})
     _getObjects({error, data}) {
         if (error) {
             this.errors.push(error.body.message);
@@ -86,17 +86,17 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     }
 
     get isFieldTypeVisible() {
-        return (this.fieldType && this.showFieldType);
+        return (this.fieldType && this.displayFieldType);
     }
 
     isTypeSupported(field) {
         let result = false;
-        if (!this.supportedFieldRelationTypes) {
+        if (!this.availableFields) {
             result = true;
         }
         if (!result && field.referenceToInfos.length > 0) {
             field.referenceToInfos.forEach(curRef => {
-                if (this.supportedFieldRelationTypes.toLowerCase().includes(curRef.apiName.toLowerCase())) {
+                if (this.availableFields.toLowerCase().includes(curRef.apiName.toLowerCase())) {
                     result = true;
                 }
             });
@@ -104,9 +104,9 @@ export default class pickObjectAndFieldFSC extends LightningElement {
         return result;
     }
 
-    get supportedObjectTypesList() {
-        if (this.supportedObjectTypes) {
-            return this.splitValues(this.supportedObjectTypes.toLowerCase());
+    get availableObjectTypesList() {
+        if (this.availableObjectTypes) {
+            return this.splitValues(this.availableObjectTypes.toLowerCase());
         } else {
             return [];
         }

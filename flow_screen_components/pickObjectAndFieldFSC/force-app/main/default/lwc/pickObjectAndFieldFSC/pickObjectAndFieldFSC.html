@@ -11,17 +11,17 @@
             </div>
         </template>
         <template if:true={isLoadFinished}>
-            <template if:false={hideObjectTypeSelect}>
+            <template if:false={hideObjectPicklist}>
                 <lightning-combobox
                         name="objectTypeField"
                         label={objectLabel}
                         value={_objectType}
                         placeholder={labels.none}
                         options={objectTypes}
-                        disabled={objectDisabled}
+                        disabled={disableObjectPicklist}
                         onchange={handleObjectChange}></lightning-combobox>
             </template>
-            <template if:false= {hideFieldSelect}>
+            <template if:false= {hideFieldPicklist}>
                 <lightning-combobox
                         name="fieldField"
                         label={fieldLabel}

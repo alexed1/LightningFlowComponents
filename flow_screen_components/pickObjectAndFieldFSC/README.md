@@ -1,29 +1,29 @@
-# Pick Obkect And Field FSC
+# Pick Object And Field FSC
 
-This component allows to select object and a field on that object. Can be used in another lwc components, flexi pages or in lightning flows.
+It's often necessary when building Salesforce configuration UI to provide a way for a user to select an Object and/or select a field. This component provides an attractive lwc solution that can be used in another lwc components, flexipages or in Flows.
 
 ## Avaliable Parameters
 
-`masterLabel(optional)` - Master label of the component
+`masterLabel` - Master label of the component
 
-`objectLabel(optional;default "Object")`- Label for "choose Object" field 
+`objectLabel(default "Object")`- Label for "Choose Object" field 
 
-`fieldLabel(optional;default "Field")` - Label for "choose Field" field 
+`fieldLabel(default "Field")` - Label for "Choose Field" field 
 
-`objectType(optional) `- initialization value for object name, supports all standard and custom objects
+`objectType `- initialization value for object name, supports all standard and custom objects
 
-`field(optional)` - initialization value for field name, should be valid field on selected object, can not be specified if objectType is empty
+`field` - initialization value for field name, should be valid field on selected object, can not be specified if objectType is empty
 
-`supportedObjectTypes(optional) `- comma separated list of object names, which should be available to select in  objectType field. If not determined objectType will show all existing standard and custom objects
+`availableObjectTypes `- comma separated list of selectable object names, which should be available to select in  objectType field. If this value is not set, objectType will show all existing standard and custom objects
 
-`supportedFieldRelationTypes(optional)` - comma separated list of supported reference types, f.e. "User, Account" will result only fields of these types to be shown in "set field" component, all other references will be avoided.
+`availableFields()` - comma separated list of supported reference types, f.e. "User, Account" will result only fields of these types to be shown in "set field" component, all other references will be avoided.
 
-`objectDisabled(optional; default = false) `- will disable object select picklist, in this case objectType is required
+`disableObjectPicklist( default = false) `- Object picklist is visible, but disabled. If this is true, a value must be provided for objectType
 
-`hideObjectTypeSelect(optional; default = false)` - will not show object select picklist, in this case objectType is required
+`hideObjectPicklist( default = false)` - Object picklist is hidden. If this is true, a value must be provided for objectType
 
-`hideFieldSelect(optional; default = false)` - will show only object selection and field select will be hidden
+`hideFieldPicklist( default = false)` - will show only object selection and field select will be hidden
 
-`showFieldType(optional; default = false) `- if field is selected it will show field type
+`displayFieldType( default = false) `- if field is selected it will show field type
     
     

@@ -1,15 +1,15 @@
 global with sharing class FieldPickerController {
 
     @AuraEnabled(cacheable=true)
-    public static List<Member> getObjects(List<String> supportedObjectTypes) {
+    public static List<Member> getObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();
         Map<String, SObjectType> allTypes = Schema.getGlobalDescribe();
 
-        if (supportedObjectTypes == null || supportedObjectTypes.size() == 0) {
-            supportedObjectTypes = new List<String>(allTypes.keySet());
+        if (availableObjectTypes == null || availableObjectTypes.size() == 0) {
+            availableObjectTypes = new List<String>(allTypes.keySet());
         }
 
-        for (String objType : supportedObjectTypes) {
+        for (String objType : availableObjectTypes) {
 
             Schema.DescribeSObjectResult describeObject = allTypes.get(objType).getDescribe();
             String objectType = describeObject.getName();

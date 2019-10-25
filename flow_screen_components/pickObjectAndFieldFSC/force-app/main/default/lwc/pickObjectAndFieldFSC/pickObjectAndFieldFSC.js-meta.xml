@@ -15,12 +15,12 @@
             <property name="fieldLabel" type="String" role="inputOnly"> </property>
             <property name="objectType" type="String"> </property>
             <property name="field" type="String"> </property>
-            <property name="objectDisabled" type="Boolean" role="inputOnly"> </property>
-            <property name="supportedObjectTypes" type="String" role="inputOnly"> </property>
-            <property name="supportedFieldRelationTypes" type="String" role="inputOnly"> </property>
-            <property name="hideObjectTypeSelect" type="Boolean" role="inputOnly"> </property>
-            <property name="hideFieldSelect" type="Boolean" role="inputOnly"> </property>
-            <property name="showFieldType" type="Boolean" role="inputOnly"> </property>
+            <property name="disableObjectPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="availableObjectTypes" type="String" role="inputOnly"> </property>
+            <property name="availableFields" type="String" role="inputOnly"> </property>
+            <property name="hideObjectPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
         </targetConfig>
         <targetConfig targets="lightning__RecordPage">
             <property name="masterLabel" type="String"> </property>
@@ -28,12 +28,12 @@
             <property name="fieldLabel" type="String"> </property>
             <property name="objectType" type="String"> </property>
             <property name="field" type="String"> </property>
-            <property name="objectDisabled" type="Boolean"> </property>
-            <property name="supportedObjectTypes" type="String"> </property>
-            <property name="supportedFieldRelationTypes" type="String"> </property>
-            <property name="hideObjectTypeSelect" type="Boolean"> </property>
-            <property name="hideFieldSelect" type="Boolean"> </property>
-            <property name="showFieldType" type="Boolean" > </property>
+            <property name="disableObjectPicklist" type="Boolean"> </property>
+            <property name="availableObjectTypes" type="String"> </property>
+            <property name="availableFields" type="String"> </property>
+            <property name="hideObjectPicklist" type="Boolean"> </property>
+            <property name="hideFieldPicklist" type="Boolean"> </property>
+            <property name="displayFieldType" type="Boolean" > </property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

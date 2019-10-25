@@ -58,13 +58,13 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>hideFieldSelect</name>
+                <name>hideFieldPicklist</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>hideObjectTypeSelect</name>
+                <name>hideObjectPicklist</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
@@ -76,7 +76,7 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>objectDisabled</name>
+                <name>disableObjectPicklist</name>
                 <value>
                     <booleanValue>false</booleanValue>
                 </value>
@@ -88,7 +88,7 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>showFieldType</name>
+                <name>displayFieldType</name>
                 <value>
                     <booleanValue>true</booleanValue>
                 </value>

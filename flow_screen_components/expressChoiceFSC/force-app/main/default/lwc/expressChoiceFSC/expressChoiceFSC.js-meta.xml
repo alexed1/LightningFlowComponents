@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="expressChoiceFSC">
+    <apiVersion>46.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Express Choice</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="masterLabel" label="Master Label" type="String" required="true" default="Label"></property>
+            <property name="choiceLabels" label="Choice Labels" type="String"></property>
+            <property name="required" label="Required" type="Boolean" default="false"></property>
+            <property name="choiceValues" label="Choice Values" type="String"></property>
+            <property name="value" label="Value" type="String"></property>
+            <property name="displayMode" label="Display Mode" type="String" datasource="Radio,Picklist" default="Radio"></property>
+            <property name="approvalProcessStepDefinitions" label="Approval Process Step Definitions" type="String"></property>
+            <property name="approvalProcessDefinitions" label="Approval Process Definitions" type="String"></property>
+            <property name="useWhichFieldForValue" label="Use Which Field for Value" type="String"></property>
+            <property name="useWhichFieldForLabel" label="User Which Field for Label" type="String"></property>
+            <property name="inputMode" label="Input Mode" type="String" datasource="Choice labels,Approval process step definitions,Approval process definitions"></property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

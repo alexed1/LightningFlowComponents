@@ -1,0 +1,10 @@
+<aura:component implements='lightning:availableForFlowScreens'>
+    <aura:attribute name="strategyName" type="String" required="true"> </aura:attribute>
+    <aura:attribute name="label" type="String"> </aura:attribute>
+    <aura:attribute name="orientation" type="String"> </aura:attribute>
+    <aura:attribute name="recordId" type="String"> </aura:attribute>
+    <aura:attribute name="maxPropositions" type="Integer" default="4"> </aura:attribute>
+    <lightning:nextBestActions strategyName="{!v.strategyName}" recordId="{!v.recordId}"
+                 orientation="{!v.orientation}" maxPropositions="{!v.maxPropositions}" 
+                 label="{!v.label}"> </lightning:nextBestActions>
+</aura:component>	

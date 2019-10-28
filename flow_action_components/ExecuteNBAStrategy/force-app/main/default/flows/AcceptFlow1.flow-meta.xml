@@ -10,7 +10,7 @@
         <inputParameters>
             <name>text</name>
             <value>
-                <stringValue>Flow Executed</stringValue>
+                <elementReference>textSummary</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -31,8 +31,8 @@
         <dataType>String</dataType>
         <expression>{!$User.Username}</expression>
     </formulas>
-    <interviewLabel>TestNBAActionFromFlow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>TestNBAActionFromFlow</label>
+    <interviewLabel>Accept Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Accept Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -47,5 +47,40 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <startElementReference>Post_Update</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
+    <textTemplates>
+        <name>textSummary</name>
+        <text>A running Flow did the following:
+1) executed the NBA Strategy {!strategyName}
+2)   &#39;approved&#39; the  Next Best Action recommendation {!recommendationName} 
+3) and launched its associated flow, which generated this message</text>
+    </textTemplates>
+    <variables>
+        <name>curRecommendationDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recommendationName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>strategyName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

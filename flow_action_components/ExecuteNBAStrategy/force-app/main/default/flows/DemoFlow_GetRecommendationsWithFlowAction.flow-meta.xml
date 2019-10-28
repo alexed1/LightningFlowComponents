@@ -73,6 +73,13 @@
                 <elementReference>curRecommendation.acceptFlowName</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>resultsString</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&#39;         &#39;</stringValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Iterate_over_Recommendations</targetReference>
         </connector>
@@ -85,13 +92,16 @@
         <assignmentItems>
             <assignToReference>returnedRecs</assignToReference>
             <operator>Assign</operator>
+            <value>
+                <elementReference>recommendationResponseData.recommendations</elementReference>
+            </value>
         </assignmentItems>
         <connector>
             <targetReference>Iterate_over_Recommendations</targetReference>
         </connector>
     </assignments>
-    <interviewLabel>GetRecommendations {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>GetRecommendations</label>
+    <interviewLabel>DemoFlow_GetRecommendationsWithFlowAction {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DemoFlow_GetRecommendationsWithFlowAction</label>
     <loops>
         <name>Iterate_over_Recommendations</name>
         <label>Iterate over Recommendations</label>
@@ -129,15 +139,15 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>dispResults</name>
-            <fieldText>&lt;p&gt;Results:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!resultsString}&lt;/p&gt;</fieldText>
+            <name>dispShowReturnedRecs</name>
+            <fieldText>&lt;p&gt;Returned Recommendations: {!returnedRecs}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Get_Recommendations</startElementReference>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>curRecommendation</name>
         <apexClass>NBARecommendation</apexClass>
@@ -160,6 +170,9 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <stringValue>0011k00000UhJvoAAF</stringValue>
+        </value>
     </variables>
     <variables>
         <name>resultsString</name>
@@ -182,5 +195,8 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+        <value>
+            <stringValue>TestStrat1</stringValue>
+        </value>
     </variables>
 </Flow>

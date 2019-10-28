@@ -6,13 +6,14 @@ public with sharing class ExecuteNBAStrategy {
         Integer maxResults = requests[0].maxResults;
         String strategyName = requests[0].strategyName;
 
-        ConnectApi.NBARecommendations curRecs = ConnectApi.NextBestAction.executeStrategy(strategyName, maxResults, contextRecordId);
+        ConnectApi.NBARecommendations curRecs = ConnectApi.NextBestAction.executeStrategy(strategyName, maxResults, contextRecordId, true);
+        System.debug('trace is: ' + curRecs.trace);
         NBARecommendationsList curApexDefinedRecList = MapToApexDefinedRecList(curRecs);
         //Create a Results object to hold the return values
         Results response = new Results();
 
         //add the return values to the Results object
-        //response.curRecs = curRecs;
+        response.curRecs = curApexDefinedRecList;
         
         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper= new List<Results>();

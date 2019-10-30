@@ -18,8 +18,8 @@
     <screens>
         <name>screenResults</name>
         <label>screenResults</label>
-        <locationX>293</locationX>
-        <locationY>38</locationY>
+        <locationX>288</locationX>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -36,7 +36,7 @@
             <inputParameters>
                 <name>maxPropositions</name>
                 <value>
-                    <numberValue>4.0</numberValue>
+                    <numberValue>6.0</numberValue>
                 </value>
             </inputParameters>
             <inputParameters>

@@ -97,7 +97,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Iterate_over_Recommendations</targetReference>
+            <targetReference>Display_Recommendations</targetReference>
         </connector>
     </assignments>
     <interviewLabel>DemoFlow_GetRecommendationsWithFlowAction {!$Flow.CurrentDateTime}</interviewLabel>
@@ -130,6 +130,59 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <screens>
+        <name>Display_Recommendations</name>
+        <label>Display Recommendations</label>
+        <locationX>468</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Display_NBA_Recommendations</name>
+            <extensionName>c:displayNBARecommendationsFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recommendations</name>
+                <value>
+                    <elementReference>recommendationResponseData</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayTitle</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayDescription</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>ShowPages</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>strategyName</name>
+                <value>
+                    <elementReference>strategyName</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <screens>
         <name>screenResults</name>
         <label>screenResults</label>
@@ -171,7 +224,7 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>0011k00000UhJvoAAF</stringValue>
+            <stringValue>0pr0R0000004CgzQAE</stringValue>
         </value>
     </variables>
     <variables>

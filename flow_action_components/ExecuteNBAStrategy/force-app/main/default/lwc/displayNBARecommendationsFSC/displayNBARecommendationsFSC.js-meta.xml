@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>46.0</apiVersion>
+    <description>Display NBA Recommendations FSC</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Display NBA Recommendations FSC</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+    <targetConfig targets="lightning__FlowScreen">
+        <property name="displayDescription" label="Display Description" type="Boolean" default="false" role="inputOnly"></property>
+        <property name="displayTitle" label="Display Title" type="Boolean" default="true" role="inputOnly"></property>
+        <property name="recordId" label="Record Id" type="String" role="inputOnly"></property>
+        <property name="strategyName" label="Strategy Name" type="String" role="inputOnly"></property>
+        <property name="displayMode" label="Display Mode" type="String" datasource="ShowAll, ShowPages" default="ShowAll" role="inputOnly"></property>
+        <property name="maxRecommendations" label="Max Recommendations" type="Integer" default="25" role="inputOnly"></property>
+        <property name="recommendations" label="Recommendations" type="apex://NBARecommendationsList" role="inputOnly"></property>
+       </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

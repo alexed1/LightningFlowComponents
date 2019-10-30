@@ -1,7 +1,7 @@
 <aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens">
     <aura:handler name="init" value="{!this}" action="{!c.init}"/>
     
-	<aura:attribute name="verticalMarginPixels" type="String" default="6"  />
+    <aura:attribute name="verticalMarginPixels" type="String" default="6"  />
     <aura:attribute name="rightMarginSizePercent" type="String" default="auto" />
     <aura:attribute name="thicknessPixels" type="String" default="1" />
     <aura:attribute name="color" type="String" default="Gray" />

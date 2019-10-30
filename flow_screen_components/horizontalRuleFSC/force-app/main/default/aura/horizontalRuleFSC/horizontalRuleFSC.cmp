@@ -8,4 +8,5 @@
     <aura:attribute name="styleText" type="String"  />
     
     <hr style="{! v.styleText}"></hr>
+	
 </aura:component>

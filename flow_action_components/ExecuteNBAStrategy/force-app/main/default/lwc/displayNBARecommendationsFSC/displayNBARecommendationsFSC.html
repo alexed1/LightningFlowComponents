@@ -1,0 +1,63 @@
+<template>
+    <div>
+        <div class="container">
+            <div if:true={errorMessage} class="slds-p-around--small slds-text-color_destructive">
+                {errorMessage}
+            </div>
+            <template for:each={recs} for:item="rec">
+                <div class="slds-box--border slds-m-top--xxx-small slds-grid" key={rec.Id}>
+                    <div class="slds-col slds-p-around--xx-small">
+                        <div if:true={displayTitle} title={rec.title}>
+                            {rec.displayText}
+                        </div>
+                        <div if:true={displayDescription} class="slds-text-body_small">
+                            {rec.description}
+                        </div>
+                        <div if:true={rec.errorMessage} class="slds-text-color_destructive">
+                            {rec.errorMessage}
+                        </div>
+                    </div>
+                    <div class="slds-col_bump-right slds-align-middle">
+                        <div class="slds-align_absolute-center">
+                            <lightning-icon class="action-item approve" variant="success"
+                                            icon-name="utility:like"
+                                            size="small"
+                                            alternative-text="Approve"
+                                            onclick={handleAction}
+                                            data-action-name={labels.actionApprove}
+                                            data-record-id={rec.Id}
+                            ></lightning-icon>
+
+                            <lightning-icon class="action-item reject" variant="error"
+                                            icon-name="utility:dislike"
+                                            size="small"
+                                            alternative-text="Reject"
+                                            onclick={handleAction}
+                                            data-action-name={labels.actionReject}
+                                            data-record-id={rec.Id}
+                            ></lightning-icon>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <div if:true={isNavigationButtonsAvailable}>
+                <div class="slds-grid slds-grid_align-spread slds-p-top--xx-small">
+                    <div class="slds-col">
+                        <lightning-button label={labels.previous} variant="neutral" data-navigation-direction="-1"
+                                          onclick={navigate} disabled={isPreviousButtonDisabled}></lightning-button>
+                    </div>
+                    <div>
+                        {labels.page} {curPage} {labels.outOf} {totalPages}
+                    </div>
+                    <div class="slds-col">
+                        <lightning-button label={labels.next} variant="neutral" data-navigation-direction="1"
+                                          onclick={navigate} disabled={isNextButtonDisabled}></lightning-button>
+                    </div>
+                </div>
+            </div>
+            <div class="toast-message">
+                <c-toast-message></c-toast-message>
+            </div>
+        </div>
+    </div>
+</template>

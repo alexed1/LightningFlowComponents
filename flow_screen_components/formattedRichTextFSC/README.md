@@ -2,7 +2,7 @@
 
 ### A Flow Component solution  ###
 
-This is an extremely simple port of the [standard formattedRichText control](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/aura_compref_lightning_formattedRichText.htm) to work as a Flow Screen Component.
+This is an extremely simple port of the [standard formattedRichText control](https://developer.salesforce.com/docs/component-library/bundle/lightning:formattedRichText/example) to work as a Flow Screen Component.
 
 
 <img width="557" alt="screen shot 2018-01-24 at 9 35 03 pm" src="https://user-images.githubusercontent.com/3140883/35372394-8355b92a-014e-11e8-9333-92fb3bf0f4b5.png">

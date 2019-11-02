@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="controllableDisplayTextFSC">
+    <apiVersion>47.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Controllable Display Text</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+                <property name="string1"   type="String" ></property>
+                <property name="sizetag1"    type="String"></property>
+                <property name="bold1"     type="Boolean"></property>   
+                <property name="italics1"     type="Boolean"></property>    
+                <property name="color1"     type="String"></property> 
+                <property name="url1"     type="String"></property> 
+                <property name="fontfamily1"    type="String"></property> 
+                <property name="textalign1"    type="String"></property>  
+                <property name="addbreak1"    type="Boolean"></property>          
+         </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

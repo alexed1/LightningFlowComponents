@@ -4,23 +4,23 @@ export default class ControllableDisplayTextFSC extends LightningElement {
     masterString;
     @api string1='This ControllableDisplayText Flow Screen Component has not been assigned a value';
     @api fontfamily1;
-    @api sizetag1="p";
+    @api fontsizepct1;
+    @api sizetag1="h2";
     @api color1;
     @api bold1;
     @api italics1;
     @api url1;
     @api textalign1;
     @api addbreak1;
-    @api bold2;
-    @api string2;
+
     
 
     connectedCallback() {
            this.masterString = this.formatString(this.string1, this.bold1, this.sizetag1, this.italics1,
-             this.color1, this.url1, this.fontfamily1, this.textalign1, this.addbreak1);
+             this.color1, this.url1, this.fontfamily1, this.textalign1, this.addbreak1, this.fontsizepct1);
           }
 
-    formatString(curString, boldBoolean, sizetag, italicsBoolean, color='', url, fontfamily, textalign, addbreak) {
+    formatString(curString, boldBoolean, sizetag, italicsBoolean, color='', url, fontfamily, textalign, addbreak, fontsizepct) {
         var outerStyleString = 'style="';
         var outerColorString = '';
         var anchorlinkColorString = '';
@@ -57,6 +57,9 @@ export default class ControllableDisplayTextFSC extends LightningElement {
             outerStyleString = outerStyleString + " font-family:" + fontfamily + "; ";
         if (textalign)
             outerStyleString = outerStyleString + " text-align:" + textalign + "; ";
+        if (fontsizepct)
+            outerStyleString = outerStyleString + " font-size:" + fontsizepct + "%; ";
+
         outerStyleString = outerStyleString + '"';
 
         if (sizetag)

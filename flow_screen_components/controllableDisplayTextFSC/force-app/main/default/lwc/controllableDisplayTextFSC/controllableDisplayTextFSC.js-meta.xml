@@ -16,7 +16,8 @@
                 <property name="color1"     type="String"></property> 
                 <property name="url1"     type="String"></property> 
                 <property name="fontfamily1"    type="String"></property> 
-                <property name="textalign1"    type="String"></property>  
+                <property name="fontsizepct1"    type="String"></property> 
+                <property name="textalign1"    type="String"></property> 
                 <property name="addbreak1"    type="Boolean"></property>          
          </targetConfig>
     </targetConfigs>

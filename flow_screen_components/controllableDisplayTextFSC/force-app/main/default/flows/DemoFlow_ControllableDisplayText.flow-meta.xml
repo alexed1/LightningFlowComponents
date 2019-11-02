@@ -18,13 +18,13 @@
     <screens>
         <name>screenDemo</name>
         <label>Demo Screen</label>
-        <locationX>264</locationX>
-        <locationY>50</locationY>
+        <locationX>265</locationX>
+        <locationY>51</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>control1</name>
+            <name>cdisp1</name>
             <extensionName>c:controllableDisplayTextFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -34,15 +34,51 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>string1</name>
+                <name>color1</name>
                 <value>
-                    <stringValue>My Test String</stringValue>
+                    <stringValue>blue</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>fontsize1</name>
+                <name>sizetag1</name>
                 <value>
-                    <stringValue>h1</stringValue>
+                    <stringValue>p</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>string1</name>
+                <value>
+                    <stringValue>Here is the main body of text</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>addbreak1</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>textalign1</name>
+                <value>
+                    <stringValue>center</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fontfamily1</name>
+                <value>
+                    <stringValue>bangers</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fontsizepct1</name>
+                <value>
+                    <stringValue>200</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>url1</name>
+                <value>
+                    <stringValue>www.salesforce.com</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>

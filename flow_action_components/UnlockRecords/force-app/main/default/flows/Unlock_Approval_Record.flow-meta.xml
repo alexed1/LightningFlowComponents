@@ -21,20 +21,7 @@
             <name>locked</name>
         </outputParameters>
     </actionCalls>
-    <actionCalls>
-        <name>Show_Toast</name>
-        <label>Show Toast</label>
-        <locationX>647</locationX>
-        <locationY>49</locationY>
-        <actionName>c:showToast</actionName>
-        <actionType>component</actionType>
-        <inputParameters>
-            <name>message</name>
-            <value>
-                <stringValue>Record Unlocked.</stringValue>
-            </value>
-        </inputParameters>
-    </actionCalls>
+    
     <actionCalls>
         <description>Unlocks a record that is locked by an Approval Process. You need to either be an admin or have been given specific rights to unlock by the specific approval process definition.</description>
         <name>Unlock_Record</name>
@@ -81,7 +68,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Show_Toast</targetReference>
+                <targetReference>Show_Errors</targetReference>
             </connector>
             <label>Successfully unlocked</label>
         </rules>

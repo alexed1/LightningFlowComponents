@@ -2,7 +2,14 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "c/displayNBARecommendationsFSC": [
+                "displayNBARecommendationsFSC/displayNBARecommendationsFSC.js"
+            ],
+            "c/toastMessage": [
+                "toastMessage/toastMessage.js"
+            ]
+        }
     },
     "include": [
         "**/*",

@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Post_to_Chatter</name>
         <label>Post to Chatter</label>
-        <locationX>174</locationX>
-        <locationY>58</locationY>
+        <locationX>175</locationX>
+        <locationY>50</locationY>
         <actionName>chatterPost</actionName>
         <actionType>chatterPost</actionType>
         <connector>
@@ -35,7 +35,7 @@
         <expression>{!$User.Username}</expression>
     </formulas>
     <interviewLabel>TestFlow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>TestFlow</label>
+    <label>Post Recommendation Screen Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -53,18 +53,18 @@
         <name>console1</name>
         <label>console1</label>
         <locationX>309</locationX>
-        <locationY>60</locationY>
+        <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>disp1</name>
-            <fieldText>&lt;p&gt;TestFlow is running.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Followup flow is running.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <startElementReference>Post_to_Chatter</startElementReference>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

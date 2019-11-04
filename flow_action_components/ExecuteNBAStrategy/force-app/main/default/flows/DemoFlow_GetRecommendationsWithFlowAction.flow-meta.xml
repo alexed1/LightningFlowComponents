@@ -34,57 +34,6 @@
         </outputParameters>
     </actionCalls>
     <assignments>
-        <name>Add_to_Result_String</name>
-        <label>Add to Result String</label>
-        <locationX>681</locationX>
-        <locationY>331</locationY>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>curRecommendation.name</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&#39; &#39;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>curRecommendation.description</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&#39; &#39;</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>curRecommendation.acceptFlowName</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>resultsString</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>&#39;         &#39;</stringValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Iterate_over_Recommendations</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Extract_Recommendations_from_Response</name>
         <label>Extract Recommendations from Response</label>
         <locationX>370</locationX>
@@ -102,21 +51,6 @@
     </assignments>
     <interviewLabel>DemoFlow_GetRecommendationsWithFlowAction {!$Flow.CurrentDateTime}</interviewLabel>
     <label>DemoFlow_GetRecommendationsWithFlowAction</label>
-    <loops>
-        <name>Iterate_over_Recommendations</name>
-        <label>Iterate over Recommendations</label>
-        <locationX>562</locationX>
-        <locationY>52</locationY>
-        <assignNextValueToReference>curRecommendation</assignNextValueToReference>
-        <collectionReference>returnedRecs</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Add_to_Result_String</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>screenResults</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -133,7 +67,7 @@
     <screens>
         <name>Display_Recommendations</name>
         <label>Display Recommendations</label>
-        <locationX>468</locationX>
+        <locationX>511</locationX>
         <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -180,24 +114,8 @@
             </inputParameters>
             <isRequired>true</isRequired>
         </fields>
-        <showFooter>true</showFooter>
+        <showFooter>false</showFooter>
         <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>screenResults</name>
-        <label>screenResults</label>
-        <locationX>746</locationX>
-        <locationY>58</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>dispShowReturnedRecs</name>
-            <fieldText>&lt;p&gt;Returned Recommendations: {!returnedRecs}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
     </screens>
     <startElementReference>Get_Recommendations</startElementReference>
     <status>Active</status>

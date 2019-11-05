@@ -40,7 +40,7 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
         let reaction = event.currentTarget.dataset.actionName;
         let removedId = event.currentTarget.dataset.recordId;
         let curRecommendation = this._recommendations.recommendations.find(curRec => curRec.Id === removedId);
-        if (curRecommendation && curRecommendation.acceptFlowType === 'Flow') {
+        if (curRecommendation && curRecommendation.acceptFlowType === 'Flow' && reaction === 'Accepted') {
             window.open(this.buildFlowURL(curRecommendation.acceptFlowName), '_blank');
         }
         setRecommendationReaction({

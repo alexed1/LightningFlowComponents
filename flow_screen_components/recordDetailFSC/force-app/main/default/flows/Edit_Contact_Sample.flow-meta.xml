@@ -25,7 +25,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>edit_contact</name>
-            <extensionName>c:recordDetail</extensionName>
+            <extensionName>c:recordDetailFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordId</name>

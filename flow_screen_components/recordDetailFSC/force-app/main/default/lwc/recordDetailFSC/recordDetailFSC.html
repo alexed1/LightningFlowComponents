@@ -1,6 +1,4 @@
 <template>
-<!--    <lightning-input type="search" label="Fields" name="search" value={fields}-->
-<!--                     onchange={searchEventHandler}></lightning-input>-->
     <template if:true={loadFinished}>
         <div class="slds-box slds-theme_default">
             <template if:true={isError}>
@@ -16,10 +14,13 @@
                             record-id={recordId}
                             object-api-name={recordData.apiName}>
                         <lightning-layout multiple-rows="true">
-                            <template for:each={fieldsToDisplay} for:item="field">
-                                <lightning-layout-item key={field} size={elementSize}>
-                                    <lightning-output-field field-name={field}>
+                            <template for:each={fieldData} for:item="field">
+                                <lightning-layout-item key={field.fieldName} size={elementSize}>
+                                    <lightning-output-field if:false={field.isError} field-name={field.fieldName}>
                                     </lightning-output-field>
+                                    <div if:true={field.isError} class="slds-text-color_destructive">
+                                        {field.errorMessage}
+                                    </div>
                                 </lightning-layout-item>
                             </template>
                         </lightning-layout>
@@ -30,10 +31,13 @@
                             record-id={recordId}
                             object-api-name={recordData.apiName}>
                         <lightning-layout multiple-rows="true">
-                            <template for:each={fieldsToDisplay} for:item="field">
-                                <lightning-layout-item key={field} size={elementSize}>
-                                    <lightning-input-field field-name={field}>
+                            <template for:each={fieldData} for:item="field">
+                                <lightning-layout-item key={field.fieldName} size={elementSize}>
+                                    <lightning-input-field if:false={field.isError} field-name={field.fieldName}>
                                     </lightning-input-field>
+                                    <div if:true={field.isError} class="slds-text-color_destructive slds-align_absolute-center">
+                                        {field.errorMessage}
+                                    </div>
                                 </lightning-layout-item>
                             </template>
                             <lightning-layout-item size=12>

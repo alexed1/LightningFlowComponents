@@ -1,15 +1,17 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import {getRecord} from 'lightning/uiRecordApi';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
+import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
 
-export default class recordDetail extends LightningElement {
+export default class recordDetailFSC extends LightningElement {
     @api recordId;
     @api mode = 'view';
-    @api elementSize = 6;
 
+    @track elementSize = 6;
     @track objectData;
     @track recordData;
     @track fieldsToDisplay = [];
+    @track notSupportedFields = [];
     @track loadFinished = false;
     @track objectApiName;
     @track errors = [];
@@ -19,6 +21,17 @@ export default class recordDetail extends LightningElement {
         return this.fieldsToDisplay.join();
     }
 
+    get fieldData() {
+        return this.fieldsToDisplay.map(curField => {
+            let isError = !!this.notSupportedFields.find(curNSField => curNSField === curField) || !curField;
+            return {
+                fieldName: curField,
+                isError: isError,
+                errorMessage: isError ? NotSupportedMessage + ' ' + (curField ? curField : 'null') : ''
+            }
+        });
+    }
+
     searchEventHandler(event) {
         this.fields = event.detail.value;
     }
@@ -26,13 +39,8 @@ export default class recordDetail extends LightningElement {
     set fields(value) {
         this.errors = [];
         if (value) {
-            let fieldsArray = value.replace(/ /g, '').split(',');
-            let notSupportedFields = this.getNotSupportedField(fieldsArray);
-            if (notSupportedFields.length === 0) {
-                this.fieldsToDisplay = fieldsArray;
-            } else {
-                this.errors.push('Following fields are not supported: ' + notSupportedFields.join(', '));
-            }
+            let fieldsArray = value.replace(/^[,\s]+|[,\s]+$/g, '').replace(/\s*,\s*/g, ',').split(',');
+            this.fieldsToDisplay = fieldsArray;
         } else {
             this.fieldsToDisplay = [];
         }
@@ -54,6 +62,12 @@ export default class recordDetail extends LightningElement {
             console.log(error.body[0].message);
         } else if (data) {
             this.objectData = data;
+
+            if (this.objectData && this.fieldsToDisplay && this.fieldsToDisplay.length === 0) {
+                this.fieldsToDisplay = Object.values(this.objectData.fields).map(curField => curField.apiName);
+            }
+
+            this.notSupportedFields = this.getNotSupportedField(this.fieldsToDisplay);
             this.loadFinished = true;
         }
     }

@@ -34,12 +34,6 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>elementSize</name>
-                <value>
-                    <numberValue>4.0</numberValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>fields</name>
                 <value>
                     <stringValue>AccountId, AssistantName, AssistantPhone, Birthdate, CleanStatus, CreatedById, CreatedDate, Department, Description, DoNotCall, Email, EmailBouncedDate, EmailBouncedReason, Fax, FirstName, HasOptedOutOfEmail, HasOptedOutOfFax, HomePhone, Id, IndividualId, IsDeleted, IsEmailBounced, Jigsaw, JigsawContactId, LastActivityDate, LastCURequestDate, LastCUUpdateDate, LastModifiedById, LastModifiedDate, LastName, LastReferencedDate, LastViewedDate, LeadSource, MailingCity, MailingCountry, MailingGeocodeAccuracy, MailingLatitude, MailingLongitude, MailingPostalCode, MailingState, MailingStreet, MasterRecordId, MobilePhone, Name, OtherCity, OtherCountry, OtherGeocodeAccuracy, OtherLatitude, OtherLongitude, OtherPhone, OtherPostalCode, OtherState, OtherStreet, OwnerId, Phone, PhotoUrl, ReportsToId, Salutation, SystemModstamp, Title</stringValue>

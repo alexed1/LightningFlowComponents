@@ -74,7 +74,7 @@
         component.set(targetAttribute, selectedList);
         
         component.set('v.values', selectedList);
-    }
+    },
     
     //Set the function and error message for the validate attribute
     setValidation: function(component) {

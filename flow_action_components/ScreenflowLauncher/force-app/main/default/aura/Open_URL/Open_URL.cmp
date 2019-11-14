@@ -1,0 +1,4 @@
+<aura:component implements="lightning:availableForFlowActions">
+	<aura:attribute name="url" type="String" required="true"/>
+    <aura:attribute name="mode" type="String" />
+</aura:component>	

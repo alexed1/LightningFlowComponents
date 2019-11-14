@@ -1,0 +1,6 @@
+<design:component>
+	
+    <design:attribute name="selectedFlowApiName" label="Selected Flow ApiName" />
+    <design:attribute name="showActiveFlowsOnly" label="Show Only Active Flows" />
+    <design:attribute name="label" label="Label" />
+</design:component>

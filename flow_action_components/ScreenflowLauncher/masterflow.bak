@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <actionCalls>
+ <actionCalls>
         <name>Open_URL</name>
         <label>Open URL</label>
         <locationX>439</locationX>
         <locationY>50</locationY>
-        <actionName>c:OpenURL</actionName>
+        <actionName>c:Open_URL</actionName>
         <actionType>component</actionType>
         <inputParameters>
             <name>url</name>
@@ -20,6 +18,14 @@
             </value>
         </inputParameters>
     </actionCalls>
+     <formulas>
+        <name>FlowURL</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Api.Partner_Server_URL_340}, FIND( &#39;/services&#39;, {!$Api.Partner_Server_URL_340}))  + &#39;flow/&#39; + {!flowList.selectedFlowApiName}</expression>
+    </formulas>
+    <?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+   
     <choices>
         <name>NewTab</name>
         <choiceText>Open in a New Tab</choiceText>
@@ -47,7 +53,7 @@
     <formulas>
         <name>FlowURL</name>
         <dataType>String</dataType>
-        <expression>LEFT({!$Api.Partner_Server_URL_340}, FIND( &#39;/services&#39;, {!$Api.Partner_Server_URL_340}))  + &#39;flow/&#39; + {!flowList.selectedFlowApiName}</expression>
+        <expression>foo</expression>
     </formulas>
     <interviewLabel>Master Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Master Flow</label>

@@ -1,0 +1,13 @@
+<design:component>
+	
+    <design:attribute name="selectedFlowApiName" label="Selected Flow ApiName" />
+    <design:attribute name="selectedFlowProcessType"/>
+    <design:attribute name="selectedFlowNamespacePrefix" />
+    <design:attribute name="selectedFlowLabel"/>
+    <design:attribute name="selectedFlowIsTemplate"/>
+    <design:attribute name="selectedFlowIsActive"/>
+    <design:attribute name="selectedFlowDescription"/>
+
+    <design:attribute name="showActiveFlowsOnly" label="Show Only Active Flows" />
+    <design:attribute name="label" label="Label" />
+</design:component>

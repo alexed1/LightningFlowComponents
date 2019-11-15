@@ -6,9 +6,9 @@ global with sharing class FlowListController {
         List<FlowDefinitionView> curFlows;
         
         if (showActivesOnly){
-            curFlows = [SELECT Id,ApiName,Label,ProcessType FROM FlowDefinitionView WHERE ActiveVersionId!=NULL];
+            curFlows = [SELECT Id,ApiName,Label,ProcessType, NamespacePrefix, IsTemplate, IsActive, Description FROM FlowDefinitionView WHERE ActiveVersionId != NULL];
         } else {
-            curFlows = [SELECT Id,ApiName,Label,ProcessType FROM FlowDefinitionView];
+            curFlows = [SELECT Id,ApiName,Label,ProcessType, NamespacePrefix, IsTemplate, IsActive, Description FROM FlowDefinitionView];
         }
         
         System.debug('curFlows is: ' + curFlows);

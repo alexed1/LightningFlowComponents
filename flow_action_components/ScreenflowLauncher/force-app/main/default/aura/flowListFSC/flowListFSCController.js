@@ -30,8 +30,7 @@
     handleChange : function(component, event, helper) {
         var selectedFlowApiName = event.getParam("value");
         component.set('v.selectedFlowApiName',selectedFlowApiName );
-        //get the process type and return it as well
-        //
+        helper.setComponentAttributes(selectedFlowApiName, component, helper);
     }
  
 })

@@ -12,10 +12,10 @@
     <aura:attribute name="selectedFlowApiName" type="String" />
     <aura:attribute name="selectedFlowProcessType" type="String"  />
     <aura:attribute name="selectedFlowNamespacePrefix" type="String"  />
-    <aura:attribute name="selectedLabel" type="String"  />
-    <aura:attribute name="selectedIsTemplate" type="Boolean"  />
-    <aura:attribute name="selectedIsActive" type="Boolean"  />
-    <aura:attribute name="selectedDescription" type="Boolean"  />
+    <aura:attribute name="selectedFlowLabel" type="String"  />
+    <aura:attribute name="selectedFlowIsTemplate" type="Boolean"  />
+    <aura:attribute name="selectedFlowIsActive" type="Boolean"  />
+    <aura:attribute name="selectedFlowDescription" type="Boolean"  />
 
     <aura:attribute name="showActiveFlowsOnly" type="Boolean" default='false' />
     <aura:attribute name="label" type="String" default="Select a Flow:" />

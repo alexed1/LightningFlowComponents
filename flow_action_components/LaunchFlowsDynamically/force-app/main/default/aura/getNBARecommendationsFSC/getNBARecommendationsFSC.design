@@ -1,0 +1,7 @@
+<design:component >
+    <design:attribute name="maxPropositions" label="Max Number of Recommendations"/>
+    <design:attribute name="strategyName" label="Strategy Name"/>
+    <design:attribute name="recordId" label="Context RecordId"/>
+    <design:attribute name="orientation" label="Orientation (horizontal or vertical)"/>
+    <design:attribute name="label" label="Label"/>
+</design:component>

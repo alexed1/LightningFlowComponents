@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <interviewLabel>Get Cupcakes Process {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Get Cupcakes Process</label>
+    <interviewLabel>Get Chocolate {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Get Chocolate</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -25,7 +25,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>dispCupcakes</name>
-            <fieldText>&lt;p&gt;&lt;b&gt;&lt;img src=&quot;https://platform-customer-3841-dev-ed--c.documentforce.com/servlet/rtaImage?refid=0EM1k000000D6cE&quot;&gt;Get Cupcakes Process&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;img src=&quot;https://platform-customer-3841-dev-ed--c.documentforce.com/servlet/rtaImage?refid=0EM1k000000D6cO&quot;&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Get Chocolate Process&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

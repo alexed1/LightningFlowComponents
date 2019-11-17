@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextRecordType>Contact</contextRecordType>
+    <label>NextStepsStrategy</label>
+    <recommendationLoad>
+        <label>Get Cupcakes</label>
+        <name>Get_Cupcakes</name>
+        <condition>
+            <field>Name</field>
+            <operator>CONTAINS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Cupcakes</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+    </recommendationLoad>
+    <recommendationLoad>
+        <label>Get Chocolate</label>
+        <name>Get_Chocolate</name>
+        <condition>
+            <field>Name</field>
+            <operator>CONTAINS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Chocolate</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+    </recommendationLoad>
+    <union>
+        <childNode>Get_Cupcakes</childNode>
+        <childNode>Get_Chocolate</childNode>
+        <label>Output</label>
+        <name>Output_57c480413c814f03ad4a073cc097b460</name>
+    </union>
+</RecommendationStrategy>

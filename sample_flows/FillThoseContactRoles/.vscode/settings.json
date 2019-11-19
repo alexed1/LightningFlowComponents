@@ -1,0 +1,8 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/.sfdx": true
+  },
+  "eslint.nodePath": "/Users/aedelstein/.vscode/extensions/salesforce.salesforcedx-vscode-lwc-47.6.0/node_modules"
+}

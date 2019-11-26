@@ -1,6 +1,16 @@
 @isTest
 public with sharing class SendHTMLEmailTest {
-
+	
+    private static Boolean EmailDeliverabilityEnabled(){
+        Boolean EmailDeliverabilityEnabled = true;
+        try {
+            Messaging.reserveSingleEmailCapacity(1);
+            Messaging.reserveMassEmailCapacity(1);
+        } catch (System.NoAccessException e) {
+            EmailDeliverabilityEnabled = false;
+        }
+        return EmailDeliverabilityEnabled;
+    }
 
     @isTest
     public static void CanSendEmail () {
@@ -16,9 +26,13 @@ public with sharing class SendHTMLEmailTest {
         reqList.add(testReq);
 
         List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        System.assertEquals(testResponseList[0].isSuccess,true);
-
-
+	    
+        Boolean EmailDeliverabilityEnabled = EmailDeliverabilityEnabled();
+        if(EmailDeliverabilityEnabled){
+            System.assertEquals(testResponseList[0].isSuccess,true);
+        } else {
+            System.assertEquals(EmailDeliverabilityEnabled,false);
+        }
 
     }
 

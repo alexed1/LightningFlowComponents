@@ -55,7 +55,7 @@ public with sharing class SendHTMLEmailTest {
         try {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         
-        } catch (SendHTMLEmail.FlowEmailActionException e) {
+        } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
         }
         System.assertEquals(true, exceptionHit);
@@ -79,7 +79,7 @@ public with sharing class SendHTMLEmailTest {
         try {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         
-        } catch (SendHTMLEmail.FlowEmailActionException e) {
+        } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
         }
         System.assertEquals(true, exceptionHit);

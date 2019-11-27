@@ -3,7 +3,6 @@ public with sharing class SendHTMLEmail {
     @invocableMethod(label='Send HTML Email')
     public static List<Response>  SendEmail(List<Request> requests) {
         
-      
         String HTMLbody = requests[0].HTMLbody;
         String plainTextBody = requests[0].plainTextBody;
         String subject = requests[0].subject;
@@ -72,11 +71,14 @@ public with sharing class SendHTMLEmail {
         mail = AddAttachments(mail, requests[0].attachments);
          
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
-            throw new FlowEmailActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
+            throw new InvocableActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
            
         if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
-            throw new FlowEmailActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
-            
+            throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
+        
+        if (templateID == null  && HTMLbody == null && plainTextBody == null)
+            throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
+    
         mail.setTemplateID(templateID);
         mail.setTargetObjectId(templateTargetObjectId);
         System.debug('templateID is:' + templateID);
@@ -94,7 +96,7 @@ public with sharing class SendHTMLEmail {
             emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
             System.debug('emailResponse is: ' + emailResponse);
             completed = true;
-        } catch (FlowEmailActionException e){
+        } catch (InvocableActionException e){
             System.debug ('exception occured: ' + e.getMessage());
             completed = false;
             error = e.getMessage();
@@ -125,8 +127,6 @@ public with sharing class SendHTMLEmail {
             response.isSuccess = false;
         }
         
-        
-       
         List<Response> responseList = new List<Response>();
         responseList.add(response);
         return responseList;
@@ -181,7 +181,7 @@ public with sharing class SendHTMLEmail {
             System.debug('address list is now:' + addressList); 
         }
         
-        //handle inputs involving collections of Contacts
+        //handle inputs involving collections of Users
         List<User> curUsers = (List<User>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfUsers');
         if (curUsers != null) {
             List<String> extractedEmailAddresses = new List<String>();
@@ -210,6 +210,8 @@ public with sharing class SendHTMLEmail {
 
     }
 
+    //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
+    //by making the lookup a string, we can composite the string in the m.get lines above
     private static Map<String, Object> GenerateMap(Request request) {
        
         return new Map<String, Object>{
@@ -323,6 +325,6 @@ public with sharing class SendHTMLEmail {
 
     }
             
-    public class FlowEmailActionException extends Exception {}
+    public class InvocableActionException extends Exception {}
    
 }

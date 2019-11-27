@@ -11,7 +11,9 @@ public with sharing class SendHTMLEmail {
         String templateID = requests[0].templateID;
         String templateTargetObjectId = requests[0].templateTargetObjectId;
         String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;    
-       
+        Boolean saveAsActivity = requests[0].saveAsActivity;
+        Id recordId = requests[0].recordId;
+
         //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
         // First, reserve email capacity for the current Apex transaction to ensure
@@ -68,7 +70,7 @@ public with sharing class SendHTMLEmail {
             mail.setUseSignature(true);
         }
 
-        mail = AddAttachments(mail, requests[0].attachments);
+        mail = AddAttachments(mail, requests[0].contentDocumentAttachments, null);
          
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
             throw new InvocableActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
@@ -78,7 +80,11 @@ public with sharing class SendHTMLEmail {
         
         if (templateID == null  && HTMLbody == null && plainTextBody == null)
             throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
-    
+              
+        if (saveAsActivity == true && recordId == null) {
+            throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
+        }
+        
         mail.setTemplateID(templateID);
         mail.setTargetObjectId(templateTargetObjectId);
         System.debug('templateID is:' + templateID);
@@ -93,7 +99,9 @@ public with sharing class SendHTMLEmail {
         String error;
         // Send the email you have created.
         try {
-            emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[] { mail });
+            emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{
+                    mail
+            });
             System.debug('emailResponse is: ' + emailResponse);
             completed = true;
         } catch (InvocableActionException e){
@@ -117,11 +125,20 @@ public with sharing class SendHTMLEmail {
                 }
                 response.errors = errorReport;
                 response.isSuccess = false;
-                }
-            else {
+            } else {
                 response.isSuccess = true;
             }
-          
+            if (saveAsActivity == true && recordId != null) {
+                if (recordId != null) {
+                    try {
+                        createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
+                    } catch (Exception ex) {
+                        response.errors = ex.getMessage();
+                        response.isSuccess = false;
+                    }
+                }
+            }
+
         } else {
             response.errors = error;
             response.isSuccess = false;
@@ -133,14 +150,28 @@ public with sharing class SendHTMLEmail {
     }
 
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
-    public static Messaging.SingleEmailMessage AddAttachments(Messaging.SingleEmailMessage mail, List<Attachment> curAttachments) {
+    public static Messaging.SingleEmailMessage AddAttachments(Messaging.SingleEmailMessage mail, List<ContentDocumentLink> contentDocumentLinks, String staticResourceNames) {
+        List<SObject> curAttachments = new List<SObject>();
+        if (staticResourceNames != null) {
+            List<String> staticResourceNamesList = staticResourceNames.replaceAll('[^A-Z0-9]+//ig', ',').split(',');
+            curAttachments.addAll([SELECT Id, Body, Name, ContentType FROM StaticResource WHERE Name IN:staticResourceNamesList]);
+        }
+        if (contentDocumentLinks != null && !contentDocumentLinks.isEmpty()) {
+            Set<Id> cdIds = new Set<Id>();
+            for (ContentDocumentLink cdl : contentDocumentLinks) {
+                cdIds.add(cdl.Id);
+            }
+            for (ContentVersion cv : [SELECT Id, PathOnClient, VersionData, FileType FROM ContentVersion]) {
+                curAttachments.add(new StaticResource(Name = cv.PathOnClient, Body = cv.VersionData));
+            }
+        }
         List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();
         if (curAttachments != null) {
-            for (Attachment file: curAttachments) {
+            for (SObject file : curAttachments) {
                 Messaging.EmailFileAttachment efa = new Messaging.EmailFileAttachment();
-                efa.setFileName(file.Name);
-                efa.setBody(file.Body);
-                efa.setContentType(file.ContentType);
+                efa.setFileName((String) file.get('Name'));
+                efa.setBody((BLOB) file.get('Body'));
+                efa.setContentType((String) file.get('ContentType'));
                 attachments.add(efa);
             }
             mail.setFileAttachments(attachments);
@@ -234,8 +265,15 @@ public with sharing class SendHTMLEmail {
        
     }
 
-  
-
+    private static void createActivity(Id recordId, String subject, String recipientList) {
+        Task t = new Task(OwnerId = UserInfo.getUserId(),
+                Subject = 'Sent Email: ' + subject,
+                Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientList.replaceAll('[()]|,\\(\\)+', ''),
+                Status = 'Closed',
+                Priority = 'Normal',
+                WhatId = recordId);
+        insert t;
+    }
 
 
     public class Request {
@@ -311,8 +349,23 @@ public with sharing class SendHTMLEmail {
         @invocableVariable
         public Boolean UseSalesforceSignature;
 
+        /*
+        Static resources do not store file extensions, thus email attachments will have file names without extensions,
+        which is inconvenient for an end user. Disabling this option for now.
+        Possible workarounds:
+        1. Specify full file name in Description of static resource
+        2. Let the user pass file names together with static resource names
+         */
+//        @invocableVariable
+//        public String staticResourceAttachmentNames;
+
         @invocableVariable
-        public List<Attachment> Attachments;
+        public List<ContentDocumentLink> contentDocumentAttachments;
+
+        @invocableVariable
+        public Boolean saveAsActivity;
+        @invocableVariable
+        public Id recordId;
 
     }
 
@@ -326,5 +379,6 @@ public with sharing class SendHTMLEmail {
     }
             
     public class InvocableActionException extends Exception {}
-   
+
+
 }

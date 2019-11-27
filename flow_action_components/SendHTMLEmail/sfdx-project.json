@@ -13,6 +13,7 @@
     "sourceApiVersion": "47.0",
     "packageAliases": {
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
-        "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG"
+        "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
+        "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO"
     }
 }

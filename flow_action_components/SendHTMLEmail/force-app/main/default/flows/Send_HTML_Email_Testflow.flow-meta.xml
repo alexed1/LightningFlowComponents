@@ -1,27 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Convert_Files_to_Attachments</name>
-        <label>Convert Files to Attachments</label>
-        <locationX>312</locationX>
-        <locationY>210</locationY>
-        <actionName>ConvertFilesToAttachments</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Get_Template_ID</targetReference>
-        </connector>
-        <inputParameters>
-            <name>curContentDocumentLinks</name>
-            <value>
-                <elementReference>Get_Content_Document_Links</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>curAttachments</assignToReference>
-            <name>curAttachments</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>Send_HTML_Email</name>
         <label>Send HTML Email</label>
         <locationX>709</locationX>
@@ -32,33 +11,15 @@
             <targetReference>screenConsole1</targetReference>
         </connector>
         <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>replyEmailAddress</name>
             <value>
-                <elementReference>curContacts</elementReference>
+                <stringValue>myreply@edelstein.org</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
+            <name>plainTextBody</name>
             <value>
-                <elementReference>curUsers</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendTOthisStringCollectionOfEmailAddresses</name>
-            <value>
-                <elementReference>stringCollectionEmailAddresses</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendBCCtheEmailAddressesFromThisCollectionOfContacts</name>
-            <value>
-                <elementReference>curContacts</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendBCCthisOneEmailAddress</name>
-            <value>
-                <stringValue>foo@bar.com</stringValue>
+                <elementReference>plainTextVersion</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -68,24 +29,24 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>orgWideEmailAddressId</name>
-        </inputParameters>
-        <inputParameters>
-            <name>plainTextBody</name>
+            <name>contentDocumentAttachments</name>
             <value>
-                <elementReference>plainTextVersion</elementReference>
+                <elementReference>Get_Content_Document_Links</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>orgWideEmailAddressId</name>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
             <value>
                 <elementReference>curContacts</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>replyEmailAddress</name>
+            <name>SendTOthisStringCollectionOfEmailAddresses</name>
             <value>
-                <stringValue>myreply@edelstein.org</stringValue>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -101,15 +62,45 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsActivity</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCthisOneEmailAddress</name>
+            <value>
+                <stringValue>foo@bar.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
                 <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>Attachments</name>
+            <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
-                <elementReference>curAttachments</elementReference>
+                <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -124,7 +115,7 @@
     <assignments>
         <name>Build_List_of_String_Addresses</name>
         <label>Build List of String Addresses</label>
-        <locationX>171</locationX>
+        <locationX>144</locationX>
         <locationY>50</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
@@ -185,11 +176,11 @@
     <recordLookups>
         <name>Get_Content_Document_Links</name>
         <label>Get Content Document Links</label>
-        <locationX>170</locationX>
-        <locationY>209</locationY>
+        <locationX>249</locationX>
+        <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Convert_Files_to_Attachments</targetReference>
+            <targetReference>Get_Template_ID</targetReference>
         </connector>
         <filters>
             <field>LinkedEntityId</field>
@@ -207,7 +198,7 @@
     <recordLookups>
         <name>Get_Template_ID</name>
         <label>Get Template ID</label>
-        <locationX>309</locationX>
+        <locationX>354</locationX>
         <locationY>50</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>

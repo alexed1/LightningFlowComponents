@@ -6,6 +6,9 @@
                     New parameter for # of selectable rows (Set number of selectable rows to 1 for Radio Buttons)
                     Provide an input collection to the Output Selected parameter to pre-select rows
 
+    11/27/19 - bkv  Editable Columns (Save changes in Flow)
+    11/27/19 - ers  Added Save/Cancel functionality while editing
+
     Created to display a datatable in a Flow screen
 
     Supports: 
@@ -15,6 +18,7 @@
         Parameters for Column Width and Alignment
         Optional Checkboxes or Radio Buttons
         Pre-selected Rows
+        Editable Columns
 
     To change the predefined Objects, edit the Object names in datatableFSC.cmp and in datatableFSC.design
 
@@ -23,7 +27,8 @@
 <aura:component implements="lightning:availableForFlowScreens">
 
 	<aura:attribute name="obj" type="String" />
-	<aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="budata" type="SObject[]"/>
     <aura:attribute name="selectedRows" type="SObject[]"/>
     <aura:attribute name="sortedBy" type="String" />
     <aura:attribute name="sortedDirection" type="String" />
@@ -140,7 +145,7 @@
     
     <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
         columns="{! v.mycolumns }" 
-        keyField="Id"
+        keyField="{! v.keyField }"
         sortedBy="{! v.sortedBy }"
         sortedDirection="{! v.sortedDirection }"
         maxRowSelection="{! v.maxRowSelection }"
@@ -148,7 +153,7 @@
         onrowselection="{! c.getSelectedName }"
         hideCheckboxColumn="{! v.hideCheckboxColumn }"
         onsort="{! c.updateColumnSorting }"
-        suppressBottomBar="true"
-        oncellchange="{! c.handleSave }"/>
+        onsave="{! c.handleSave }"
+        oncancel="{! c.cancelChanges }"/>
 
 </aura:component>

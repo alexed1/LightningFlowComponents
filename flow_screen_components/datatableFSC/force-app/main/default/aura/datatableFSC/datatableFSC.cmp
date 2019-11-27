@@ -66,63 +66,75 @@
     <aura:attribute name="column01_type" type="String" default="text"/>
     <aura:attribute name="column01_width" type="Integer"/>
     <aura:attribute name="column01_align" type="String"/>
+    <aura:attribute name="column01_editable" type="Boolean" default="false"/>
     
     <aura:attribute name="column02_label" type="String"/>
     <aura:attribute name="column02_fieldName" type="String"/>
     <aura:attribute name="column02_type" type="String" default="text"/>
     <aura:attribute name="column02_width" type="Integer"/>
     <aura:attribute name="column02_align" type="String"/>
+    <aura:attribute name="column02_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column03_label" type="String"/>
     <aura:attribute name="column03_fieldName" type="String"/>
     <aura:attribute name="column03_type" type="String" default="text"/>
     <aura:attribute name="column03_width" type="Integer"/>
     <aura:attribute name="column03_align" type="String"/>
+    <aura:attribute name="column03_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column04_label" type="String"/>
     <aura:attribute name="column04_fieldName" type="String"/>
     <aura:attribute name="column04_type" type="String" default="text"/>
     <aura:attribute name="column04_width" type="Integer"/>
     <aura:attribute name="column04_align" type="String"/>
+    <aura:attribute name="column04_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column05_label" type="String"/>
     <aura:attribute name="column05_fieldName" type="String"/>
     <aura:attribute name="column05_type" type="String" default="text"/>
     <aura:attribute name="column05_width" type="Integer"/>
     <aura:attribute name="column05_align" type="String"/>
+    <aura:attribute name="column05_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column06_label" type="String"/>
     <aura:attribute name="column06_fieldName" type="String"/>
     <aura:attribute name="column06_type" type="String" default="text"/>
     <aura:attribute name="column06_width" type="Integer"/>
     <aura:attribute name="column06_align" type="String"/>
+    <aura:attribute name="column06_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column07_label" type="String"/>
     <aura:attribute name="column07_fieldName" type="String"/>
     <aura:attribute name="column07_type" type="String" default="text"/>
     <aura:attribute name="column07_width" type="Integer"/>
     <aura:attribute name="column07_align" type="String"/>
+    <aura:attribute name="column07_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column08_label" type="String"/>
     <aura:attribute name="column08_fieldName" type="String"/>
     <aura:attribute name="column08_type" type="String" default="text"/>
     <aura:attribute name="column08_width" type="Integer"/>
     <aura:attribute name="column08_align" type="String"/>
+    <aura:attribute name="column08_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column09_label" type="String"/>
     <aura:attribute name="column09_fieldName" type="String"/>
     <aura:attribute name="column09_type" type="String" default="text"/>
     <aura:attribute name="column09_width" type="Integer"/>
     <aura:attribute name="column09_align" type="String"/>
+    <aura:attribute name="column09_editable" type="Boolean" default="false"/>
 
     <aura:attribute name="column10_label" type="String"/>
     <aura:attribute name="column10_fieldName" type="String"/>
     <aura:attribute name="column10_type" type="String" default="text"/>
     <aura:attribute name="column10_width" type="Integer"/>
     <aura:attribute name="column10_align" type="String"/>
+    <aura:attribute name="column10_editable" type="Boolean" default="false"/>
     
     <aura:attribute name="singleSelection" type="String" />
     <aura:attribute name="hideShow" type="String" default="show"/>
+
+    <aura:attribute name="keyField" type="String" default="Id"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     
@@ -135,6 +147,8 @@
         selectedRows="{! v.preSelectedIds }"                 
         onrowselection="{! c.getSelectedName }"
         hideCheckboxColumn="{! v.hideCheckboxColumn }"
-        onsort="{! c.updateColumnSorting }"/>
+        onsort="{! c.updateColumnSorting }"
+        suppressBottomBar="true"
+        oncellchange="{! c.handleSave }"/>
 
 </aura:component>

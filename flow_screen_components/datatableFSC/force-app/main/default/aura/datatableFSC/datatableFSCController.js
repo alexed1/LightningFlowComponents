@@ -28,7 +28,9 @@
                 		fieldName : cmp.get('v.column'+i.toString().substring(1)+'_fieldName') + 'class'
                 	}
             		:
-            		{};
+                    {};
+                    
+                var vEditable = (cmp.get('v.column'+i.toString().substring(1)+'_editable') == true);
             	                             
                 cols.push({
                     iconName: varIcon,
@@ -40,7 +42,8 @@
                     cellAttributes: {
                         alignment: cmp.get('v.column'+i.toString().substring(1)+'_align'),
                         class: cellClass                        	
-                    }
+                    },
+                    editable: vEditable
                 });                                   
             }
         }
@@ -140,6 +143,10 @@
         cmp.set("v.sortedBy", fieldName);
         cmp.set("v.sortedDirection", sortDirection);
         helper.sortData(cmp, fieldName, sortDirection);
+    },
+
+    handleSave: function(cmp, event, helper) {
+        helper.updateEditedValues(cmp, event);
     },
     
 })

@@ -1,0 +1,25 @@
+<template>
+    <c-dual-list-box if:true={isDataSet}
+           options-input-type={optionsInputType}
+           options-output-type={optionsOutputType}
+           options-type={optionsType}
+           value-field-name={valueFieldName}
+           label-field-name={labelFieldName}
+           onselected={handleSelected}
+           label={label}
+           source-label={sourceLabel}
+           field-level-help={fieldLevelHelp}
+           selected-label={selectedLabel}
+           min={min}
+           max={max}
+           disable-reordering={disableReordering}
+           size={size}
+           options={_options}
+           required-options={requiredOptions}
+           selected-values={_selectedValues}
+           use-value-as-output>
+    </c-dual-list-box>
+    <template if:false={isDataSet}>
+
+    </template>
+</template>

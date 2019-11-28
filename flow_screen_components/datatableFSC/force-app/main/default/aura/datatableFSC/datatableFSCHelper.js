@@ -16,10 +16,9 @@
             return a = key(a), b = key(b), reverse * ((a > b) - (b > a));
         }
     },
-    updateEditedValues: function(cmp, event) {
+    updateEditedValues: function(cmp, drafts) {
         var keyField = cmp.get("v.keyField");
         var data = cmp.get("v.mydata");
-        var drafts = event.getParam('draftValues');
 
         // apply drafts to mydata
         data = data.map(item => {

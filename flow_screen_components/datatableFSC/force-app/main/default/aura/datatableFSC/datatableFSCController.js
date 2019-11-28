@@ -102,7 +102,7 @@
         cmp.set('v.preSelectedIds', list);
 
         // Save pre-edit data
-        cmp.set('v.budata', cmp.get('v.mydata'));
+        cmp.set('v.saveMydata', cmp.get('v.mydata'));
     },
 
     // Return Selected Table Rows
@@ -149,15 +149,19 @@
 
     handleSave: function(cmp, event, helper) {
         helper.updateEditedValues(cmp, event.getParam('draftValues'));
-        if(cmp.get('v.buttons')) {
+        if(cmp.get('v.showButtons')) {
+            // Clear Buttons from the Table
             cmp.find('flowTable').set('v.draftValues', null);
-            cmp.set('v.budata', cmp.get('v.mydata'));
+            // Save current table data values
+            cmp.set('v.saveMydata', cmp.get('v.mydata'));
         }
     },
 
     cancelChanges: function (cmp, event, helper) {
+        // Clear Buttons from the Table
         cmp.find('flowTable').set('v.draftValues', null);
-        cmp.set('v.mydata', cmp.get('v.budata'));
+        // Replace current table data values with the saved values
+        cmp.set('v.mydata', cmp.get('v.saveMydata'));
     },    
     
 })

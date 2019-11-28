@@ -149,8 +149,10 @@
 
     handleSave: function(cmp, event, helper) {
         helper.updateEditedValues(cmp, event.getParam('draftValues'));
-        cmp.find('flowTable').set('v.draftValues', null);
-        cmp.set('v.budata', cmp.get('v.mydata'));
+        if(cmp.get('v.buttons')) {
+            cmp.find('flowTable').set('v.draftValues', null);
+            cmp.set('v.budata', cmp.get('v.mydata'));
+        }
     },
 
     cancelChanges: function (cmp, event, helper) {

@@ -91,7 +91,7 @@
 //            cmp.set('v.obj', 'custom2');
 //            cmp.set('v.preSelection', cmp.get('v.selectedRows_custom2'));
 //        }
-        console.log('Init - ',cmp.get('v.mydata'));
+        console.log(cmp.get('v.mydata'));
      	
         // Pre-selected Rows
         var rows = cmp.get('v.preSelection');
@@ -100,9 +100,7 @@
             list.push(rows[i].Id);
         }
         cmp.set('v.preSelectedIds', list);
-
-        // Save pre-edit data
-        cmp.set('v.budata', cmp.get('v.mydata'));
+        
     },
 
     // Return Selected Table Rows
@@ -148,16 +146,7 @@
     },
 
     handleSave: function(cmp, event, helper) {
-        helper.updateEditedValues(cmp, event.getParam('draftValues'));
-        if(cmp.get('v.buttons')) {
-            cmp.find('flowTable').set('v.draftValues', null);
-            cmp.set('v.budata', cmp.get('v.mydata'));
-        }
+        helper.updateEditedValues(cmp, event);
     },
-
-    cancelChanges: function (cmp, event, helper) {
-        cmp.find('flowTable').set('v.draftValues', null);
-        cmp.set('v.mydata', cmp.get('v.budata'));
-    },    
     
 })

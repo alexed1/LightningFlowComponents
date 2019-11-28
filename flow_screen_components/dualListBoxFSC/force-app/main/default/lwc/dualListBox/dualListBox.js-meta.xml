@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <description>Dual List Box FSC</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Dual List Box FSC</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="label" type="String"> </property>
+            <property name="sourceLabel" type="String" > </property>
+            <property name="fieldLevelHelp" type="String" > </property>
+            <property name="selectedLabel" type="String"> </property>
+            <property name="selectedValues" type="String"> </property>
+            <property name="min" type="Integer"> </property>
+            <property name="max" type="Integer"> </property>
+            <property name="disableReordering" type="Boolean"> </property>
+            <property name="size" type="Integer"> </property>
+            <property name="required" type="Boolean"> </property>
+            <property name="requiredOptions" type="String"> </property>
+            <property name="optionsInputType" type="String" > </property>
+            <property name="optionsOutputType" type="String"> </property>
+            <property name="valueFieldName" type="String" default="value"> </property>
+            <property name="labelFieldName" type="String" default="label"> </property>
+            <property name="useValueAsOutput" type="Boolean"> </property>
+            <property name="options" type="String"> </property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

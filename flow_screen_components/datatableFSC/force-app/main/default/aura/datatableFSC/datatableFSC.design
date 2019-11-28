@@ -101,6 +101,6 @@
     <design:attribute name="singleSelection" label="Single or Multi-Row Selection (Set to 1 for Single)"/>
 
     <design:attribute name="keyField" label="Key Field" default="Id"/>
-    <design:attribute name="buttons" label="Show Save and Cancel Buttons?"/>
+    <design:attribute name="showButtons" label="Show Save and Cancel Buttons?"/>
     
 </design:component>

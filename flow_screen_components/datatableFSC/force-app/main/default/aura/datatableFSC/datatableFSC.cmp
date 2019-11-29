@@ -22,8 +22,9 @@
 
 <aura:component implements="lightning:availableForFlowScreens">
 
-	<aura:attribute name="obj" type="String" />
-	<aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="obj" type="String" />
+    <aura:attribute name="mydata" type="SObject[]"/>
+    <aura:attribute name="saveMydata" type="SObject[]"/>
     <aura:attribute name="selectedRows" type="SObject[]"/>
     <aura:attribute name="sortedBy" type="String" />
     <aura:attribute name="sortedDirection" type="String" />
@@ -135,20 +136,37 @@
     <aura:attribute name="hideShow" type="String" default="show"/>
 
     <aura:attribute name="keyField" type="String" default="Id"/>
+    <aura:attribute name="showButtons" type="Boolean" default="false"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     
-    <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
-        columns="{! v.mycolumns }" 
-        keyField="Id"
-        sortedBy="{! v.sortedBy }"
-        sortedDirection="{! v.sortedDirection }"
-        maxRowSelection="{! v.maxRowSelection }"
-        selectedRows="{! v.preSelectedIds }"                 
-        onrowselection="{! c.getSelectedName }"
-        hideCheckboxColumn="{! v.hideCheckboxColumn }"
-        onsort="{! c.updateColumnSorting }"
-        suppressBottomBar="true"
-        oncellchange="{! c.handleSave }"/>
+    <aura:if isTrue="{! v.showButtons}" >
+        <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
+            columns="{! v.mycolumns }" 
+            keyField="{! v.keyField }"
+            sortedBy="{! v.sortedBy }"
+            sortedDirection="{! v.sortedDirection }"
+            maxRowSelection="{! v.maxRowSelection }"
+            selectedRows="{! v.preSelectedIds }"                 
+            onrowselection="{! c.getSelectedName }"
+            hideCheckboxColumn="{! v.hideCheckboxColumn }"
+            onsort="{! c.updateColumnSorting }"
+            onsave="{! c.handleSave }"
+            oncancel="{! c.cancelChanges }"/>
+        <aura:set attribute="else">
+            <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
+                columns="{! v.mycolumns }" 
+                keyField="{! v.keyField }"
+                sortedBy="{! v.sortedBy }"
+                sortedDirection="{! v.sortedDirection }"
+                maxRowSelection="{! v.maxRowSelection }"
+                selectedRows="{! v.preSelectedIds }"                 
+                onrowselection="{! c.getSelectedName }"
+                hideCheckboxColumn="{! v.hideCheckboxColumn }"
+                onsort="{! c.updateColumnSorting }"
+                suppressBottomBar="true"
+                oncellchange="{! c.handleSave }"/>
+        </aura:set>
+    </aura:if>
 
 </aura:component>

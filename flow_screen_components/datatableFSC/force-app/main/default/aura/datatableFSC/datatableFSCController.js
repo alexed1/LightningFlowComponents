@@ -100,7 +100,9 @@
             list.push(rows[i].Id);
         }
         cmp.set('v.preSelectedIds', list);
-        
+
+        // Save pre-edit data
+        cmp.set('v.saveMydata', cmp.get('v.mydata'));
     },
 
     // Return Selected Table Rows
@@ -146,7 +148,20 @@
     },
 
     handleSave: function(cmp, event, helper) {
-        helper.updateEditedValues(cmp, event);
+        helper.updateEditedValues(cmp, event.getParam('draftValues'));
+        if(cmp.get('v.showButtons')) {
+            // Clear Buttons from the Table
+            cmp.find('flowTable').set('v.draftValues', null);
+            // Save current table data values
+            cmp.set('v.saveMydata', cmp.get('v.mydata'));
+        }
     },
+
+    cancelChanges: function (cmp, event, helper) {
+        // Clear Buttons from the Table
+        cmp.find('flowTable').set('v.draftValues', null);
+        // Replace current table data values with the saved values
+        cmp.set('v.mydata', cmp.get('v.saveMydata'));
+    },    
     
 })

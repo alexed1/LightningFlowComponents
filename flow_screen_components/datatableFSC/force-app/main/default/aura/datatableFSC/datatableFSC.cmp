@@ -28,7 +28,7 @@
 
     <aura:attribute name="obj" type="String" />
     <aura:attribute name="mydata" type="SObject[]"/>
-    <aura:attribute name="budata" type="SObject[]"/>
+    <aura:attribute name="saveMydata" type="SObject[]"/>
     <aura:attribute name="selectedRows" type="SObject[]"/>
     <aura:attribute name="sortedBy" type="String" />
     <aura:attribute name="sortedDirection" type="String" />
@@ -140,11 +140,11 @@
     <aura:attribute name="hideShow" type="String" default="show"/>
 
     <aura:attribute name="keyField" type="String" default="Id"/>
-    <aura:attribute name="buttons" type="Boolean" default="false"/>
+    <aura:attribute name="showButtons" type="Boolean" default="false"/>
 
     <aura:handler name="init" value="{! this }" action="{! c.init }"/>
     
-    <aura:if isTrue="{! v.buttons}" >
+    <aura:if isTrue="{! v.showButtons}" >
         <lightning:datatable aura:id="flowTable" data="{! v.mydata }" 
             columns="{! v.mycolumns }" 
             keyField="{! v.keyField }"

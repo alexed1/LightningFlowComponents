@@ -49,7 +49,7 @@
         </connector>
         <fields>
             <name>dual_list_box_lwc</name>
-            <extensionName>c:dualListBoxFSC</extensionName>
+            <extensionName>c:enhancedDualListBoxFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>disableReordering</name>
@@ -58,25 +58,25 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>valueFieldName</name>
+                <name>useWhichObjectKeyForData</name>
                 <value>
                     <stringValue>name</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>labelFieldName</name>
+                <name>useWhichObjectKeyForLabel</name>
                 <value>
                     <stringValue>label</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>options</name>
+                <name>allOptionsFieldDescriptorList</name>
                 <value>
                     <elementReference>field_descriptors</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>selectedItemsCSV</name>
+                <name>selectedOptionsCSV</name>
                 <value>
                     <elementReference>selected_items_csv</elementReference>
                 </value>
@@ -84,7 +84,7 @@
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>selected_items_csv</assignToReference>
-                <name>selectedItemsCSV</name>
+                <name>selectedOptionsCSV</name>
             </outputParameters>
         </fields>
         <showFooter>true</showFooter>

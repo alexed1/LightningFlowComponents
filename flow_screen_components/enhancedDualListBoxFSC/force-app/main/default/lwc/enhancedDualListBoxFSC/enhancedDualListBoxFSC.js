@@ -21,71 +21,67 @@ export default class dualListBoxFSC extends LightningElement {
     @api size;
     @api required;
     @api requiredOptions;
-    @api valueFieldName = defaults.valueField;
-    @api labelFieldName = defaults.labelField;
-    @api useValueAsOutput = false;
+    @api useWhichObjectKeyForData = defaults.valueField;
+    @api useWhichObjectKeyForLabel = defaults.labelField;
+    @api useObjectValueAsOutput = false;
 
-    @track optionsInputType;
-    @track optionsOutputType;
+    @track selectedValuesStringFormat;
+    @track allOptionsStringFormat;
     @track _options;
     @track _selectedValues;
-    @track optionsType;
-
 
     @api
-    get options() {
+    get allOptionsFieldDescriptorList() {
         return this.getOptions(defaults.originalObject);
     }
 
-    set options(value) {
+    set allOptionsFieldDescriptorList(value) {
         this._options = value;
-        this.optionsType = defaults.originalObject;
+        this.allOptionsStringFormat = defaults.originalObject;
     }
 
     @api
-    get fullItemSetStringList() {
+    get allOptionsStringCollection() {
         return this.getOptions(defaults.list);
     }
 
-    set fullItemSetStringList(value) {
+    set allOptionsStringCollection(value) {
         this._options = value;
-        this.optionsType = defaults.list;
+        this.allOptionsStringFormat = defaults.list;
     }
 
     @api
-    get fullItemSetCSV() {
+    get allOptionsCSV() {
         return this.getOptions(defaults.csv);
     }
 
-    set fullItemSetCSV(value) {
+    set allOptionsCSV(value) {
         this._options = value;
-        this.optionsType = defaults.csv;
+        this.allOptionsStringFormat = defaults.csv;
     }
 
     @api
-    get selectedItemsStringList() {
-        this.optionsOutputType = defaults.list;
+    get selectedOptionsStringList() {
         return this.getValues(defaults.list);
     }
 
-    set selectedItemsStringList(value) {
+    set selectedOptionsStringList(value) {
         this._selectedValues = value;
-        this.optionsInputType = defaults.list;
+        this.selectedValuesStringFormat = defaults.list;
     }
 
     @api
-    get selectedItemsCSV() {
-        this.optionsOutputType = defaults.csv;
+    get selectedOptionsCSV() {
         return this.getValues(defaults.csv);
     }
 
-    set selectedItemsCSV(value) {
+    set selectedOptionsCSV(value) {
         this._selectedValues = value;
-        this.optionsInputType = defaults.csv;
+        this.selectedValuesStringFormat = defaults.csv;
     }
 
     get isDataSet() {
-        return  this.optionsType && this.valueFieldName && this.labelFieldName;
+        return  this.allOptionsStringFormat && this.useWhichObjectKeyForData && this.useWhichObjectKeyForLabel;
     }
 
     handleSelected(event) {
@@ -93,28 +89,27 @@ export default class dualListBoxFSC extends LightningElement {
     }
 
     getValues(valueType) {
-        let listBox = this.template.querySelector('c-dual-list-box');
+        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
         if (listBox) {
             return listBox.getValues(valueType);
         }
     }
 
     getOptions(valueType) {
-        let listBox = this.template.querySelector('c-dual-list-box');
+        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
         if (listBox) {
             return listBox.getOptions(valueType);
         }
     }
 
     @api
-    get values() {
-        this.optionsOutputType = defaults.csv;
+    get selectedOptionsFieldDescriptorList() {
         return this.getValues(defaults.originalObject);
     }
 
-    set values(value) {
+    set selectedOptionsFieldDescriptorList(value) {
         this._selectedValues = value;
-        this.optionsInputType = defaults.originalObject;
+        this.selectedValuesStringFormat = defaults.originalObject;
     }
 
 }

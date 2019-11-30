@@ -2,10 +2,11 @@
     datatableFSC Lightning Flow Screen Component
     Enhanced by Eric Smith - 3/9/19
 
+ 	Version: 2.7 (11/30/19)
+
     4/8/19 - ers    New parameter to Show/Hide Checkboxes
                     New parameter for # of selectable rows (Set number of selectable rows to 1 for Radio Buttons)
                     Provide an input collection to the Output Selected parameter to pre-select rows
-
     11/27/19 - bkv  Editable Columns (Save changes in Flow)
     11/27/19 - ers  Added Save/Cancel functionality while editing
 

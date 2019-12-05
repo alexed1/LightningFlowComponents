@@ -13,10 +13,10 @@ Flow Screen Components generally have a visual focus, although they don't absolu
 # Lightning Flow Actions
 /flow_action_components contains Apex classes and Lightning Components  that have been optimized to be added to Lightning Flows as standalone actions. 
 
-##Apex Actions
+### Apex Actions
 The Apex Classes are [Invocable Actions](https://unofficialsf.com/developing-flow-actions/). They are non-visual and execute entirely in the Salesforce cloud.
 
-##Lightning Component (Javascript) Actions
+### Lightning Component (Javascript) Actions
 Lightning Components that are designed to act as actions are referred to as Local actions. 
 
 This mainly means that they:

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>47.0</apiVersion>
-    <description>dualListBoxFSC</description>
+    <description>Enhanced Dual List Box FSC</description>
     <isExposed>true</isExposed>
-    <masterLabel>dualListBoxFSC</masterLabel>
+    <masterLabel>Enhanced Dual List Box FSC</masterLabel>
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
@@ -19,15 +19,15 @@
             <property name="size" type="Integer" role="inputOnly"> </property>
             <property name="required" type="Boolean" role="inputOnly"> </property>
             <property name="requiredOptions" type="String" role="inputOnly"> </property>
-            <property name="options" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
-            <property name="useValueAsOutput" type="Boolean" role="inputOnly"> </property>
-            <property name="fullItemSetStringList" type="String[]" role="inputOnly"> </property>
-            <property name="valueFieldName" type="String" role="inputOnly"> </property>
-            <property name="labelFieldName" type="String" role="inputOnly"> </property>
-            <property name="fullItemSetCSV" type="String" role="inputOnly"> </property>
-            <property name="values" type="apex://FieldDescriptor[]"> </property>
-            <property name="selectedItemsCSV" type="String"> </property>
-            <property name="selectedItemsStringList" type="String[]"> </property>
+            <property name="useObjectValueAsOutput" type="Boolean" role="inputOnly"> </property>
+            <property name="useWhichObjectKeyForData" type="String" role="inputOnly"> </property>
+            <property name="useWhichObjectKeyForLabel" type="String" role="inputOnly"> </property>
+            <property name="allOptionsFieldDescriptorList" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
+            <property name="allOptionsCSV" type="String" role="inputOnly"> </property>
+            <property name="allOptionsStringCollection" type="String[]" role="inputOnly"> </property>
+            <property name="selectedOptionsFieldDescriptorList" type="apex://FieldDescriptor[]"> </property>
+            <property name="selectedOptionsCSV" type="String"> </property>
+            <property name="selectedOptionsStringList" type="String[]"> </property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

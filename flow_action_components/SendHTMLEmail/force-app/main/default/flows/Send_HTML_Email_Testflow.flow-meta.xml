@@ -3,39 +3,30 @@
     <actionCalls>
         <name>Send_HTML_Email</name>
         <label>Send HTML Email</label>
-        <locationX>709</locationX>
-        <locationY>216</locationY>
+        <locationX>1140</locationX>
+        <locationY>215</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
         </connector>
         <inputParameters>
-            <name>replyEmailAddress</name>
+            <name>senderDisplayName</name>
             <value>
-                <stringValue>myreply@edelstein.org</stringValue>
+                <stringValue>Thisbethe sender name</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>plainTextBody</name>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
-                <elementReference>plainTextVersion</elementReference>
+                <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>subject</name>
+            <name>saveAsActivity</name>
             <value>
-                <stringValue>This is my email subject!</stringValue>
+                <booleanValue>true</booleanValue>
             </value>
-        </inputParameters>
-        <inputParameters>
-            <name>contentDocumentAttachments</name>
-            <value>
-                <elementReference>Get_Content_Document_Links</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>orgWideEmailAddressId</name>
         </inputParameters>
         <inputParameters>
             <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
@@ -44,33 +35,9 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOthisStringCollectionOfEmailAddresses</name>
-            <value>
-                <elementReference>stringCollectionEmailAddresses</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>HTMLbody</name>
-            <value>
-                <elementReference>HTMLTextTemplate</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>senderDisplayName</name>
-            <value>
-                <stringValue>Thisbethe sender name</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
             <value>
                 <elementReference>curContacts</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>saveAsActivity</name>
-            <value>
-                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -86,21 +53,54 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendBCCthisOneEmailAddress</name>
+            <name>contentDocumentAttachments</name>
             <value>
-                <stringValue>foo@bar.com</stringValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
-            <value>
-                <elementReference>curUsers</elementReference>
+                <elementReference>filterred_cdls</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
                 <elementReference>curUsers</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>orgWideEmailAddressId</name>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <elementReference>plainTextVersion</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>This is my email subject!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendBCCthisOneEmailAddress</name>
+            <value>
+                <stringValue>foo@bar.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <stringValue>myreply@edelstein.org</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>HTMLbody</name>
+            <value>
+                <elementReference>HTMLTextTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisStringCollectionOfEmailAddresses</name>
+            <value>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -113,10 +113,49 @@
         </outputParameters>
     </actionCalls>
     <assignments>
+        <name>Add_All_Attached_Files</name>
+        <label>Add All Attached Files</label>
+        <locationX>637</locationX>
+        <locationY>55</locationY>
+        <assignmentItems>
+            <assignToReference>filterred_cdls</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Content_Document_Links</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Template_ID</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_CDL_in_Filtered_List</name>
+        <label>Add CDL in Filtered List</label>
+        <locationX>991</locationX>
+        <locationY>267</locationY>
+        <assignmentItems>
+            <assignToReference>filterred_cdls</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>cur_cdl</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>cd_counter</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>All_Uploaded_CD_Ids</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Build_List_of_String_Addresses</name>
         <label>Build List of String Addresses</label>
-        <locationX>144</locationX>
-        <locationY>50</locationY>
+        <locationX>229</locationX>
+        <locationY>54</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
             <operator>Add</operator>
@@ -135,8 +174,88 @@
             <targetReference>Get_Content_Document_Links</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>Any_Files_Uploaded</name>
+        <label>Any Files Uploaded?</label>
+        <locationX>694</locationX>
+        <locationY>274</locationY>
+        <defaultConnector>
+            <targetReference>Add_All_Attached_Files</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Any_Files_Uploaded_yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>cd_counter</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Template_ID</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CDL_In_Just_Uploaded_Files</name>
+        <label>CDL In Just Uploaded Files</label>
+        <locationX>982</locationX>
+        <locationY>425</locationY>
+        <defaultConnector>
+            <targetReference>All_Uploaded_CD_Ids</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>CDL_In_Just_Uploaded_Files_yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>cur_cdl.ContentDocumentId</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>cur_cd_id</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_CDL_in_Filtered_List</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Send HTML Email Testflow</label>
+    <loops>
+        <name>All_CDL</name>
+        <label>All CDL</label>
+        <locationX>478</locationX>
+        <locationY>416</locationY>
+        <assignNextValueToReference>cur_cdl</assignNextValueToReference>
+        <collectionReference>Get_Content_Document_Links</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>All_Uploaded_CD_Ids</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Any_Files_Uploaded</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>All_Uploaded_CD_Ids</name>
+        <label>All Uploaded CD Ids</label>
+        <locationX>821</locationX>
+        <locationY>419</locationY>
+        <assignNextValueToReference>cur_cd_id</assignNextValueToReference>
+        <collectionReference>content_document_ids</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>CDL_In_Just_Uploaded_Files</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>All_CDL</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -153,8 +272,8 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>710</locationX>
-        <locationY>50</locationY>
+        <locationX>1140</locationX>
+        <locationY>56</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Send_HTML_Email</targetReference>
@@ -176,11 +295,11 @@
     <recordLookups>
         <name>Get_Content_Document_Links</name>
         <label>Get Content Document Links</label>
-        <locationX>249</locationX>
-        <locationY>50</locationY>
+        <locationX>348</locationX>
+        <locationY>54</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Template_ID</targetReference>
+            <targetReference>All_CDL</targetReference>
         </connector>
         <filters>
             <field>LinkedEntityId</field>
@@ -198,8 +317,8 @@
     <recordLookups>
         <name>Get_Template_ID</name>
         <label>Get Template ID</label>
-        <locationX>354</locationX>
-        <locationY>50</locationY>
+        <locationX>784</locationX>
+        <locationY>56</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Template_Target_Record</targetReference>
@@ -220,8 +339,8 @@
     <recordLookups>
         <name>Get_Template_Target_Record</name>
         <label>Get Template Target Record</label>
-        <locationX>466</locationX>
-        <locationY>50</locationY>
+        <locationX>896</locationX>
+        <locationY>56</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Users</targetReference>
@@ -243,8 +362,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>591</locationX>
-        <locationY>50</locationY>
+        <locationX>1021</locationX>
+        <locationY>56</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
@@ -264,10 +383,52 @@
         <queriedFields>LastName</queriedFields>
     </recordLookups>
     <screens>
+        <name>File_Upload</name>
+        <label>File Upload</label>
+        <locationX>121</locationX>
+        <locationY>49</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Build_List_of_String_Addresses</targetReference>
+        </connector>
+        <fields>
+            <name>file_apload_sc</name>
+            <extensionName>forceContent:fileUpload</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>File Upload</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>multiple</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>content_document_ids</assignToReference>
+                <name>contentDocIds</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>screenConsole1</name>
         <label>screenConsole1</label>
-        <locationX>712</locationX>
-        <locationY>345</locationY>
+        <locationX>1140</locationX>
+        <locationY>347</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -280,13 +441,13 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>17</locationX>
+        <locationY>49</locationY>
         <connector>
-            <targetReference>Build_List_of_String_Addresses</targetReference>
+            <targetReference>File_Upload</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <textTemplates>
         <name>HTMLPasteIn</name>
         <text>&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Hi Geoff Minor,&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;We received a request to reset the password for your account. Click here to set up a new one.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;href&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;https://www.salesforce.com/&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;target&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;_blank&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Create a password&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;If you don’t want to reset your password, you can ignore this email and we won’t change it.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
@@ -303,6 +464,39 @@
         <name>plainTextVersion</name>
         <text>This is the plaintext version of the message.</text>
     </textTemplates>
+    <variables>
+        <name>cd_counter</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+    <variables>
+        <name>content_document_ids</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>cur_cd_id</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>cur_cdl</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ContentDocumentLink</objectType>
+    </variables>
     <variables>
         <name>curAttachments</name>
         <dataType>SObject</dataType>
@@ -341,6 +535,14 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>filterred_cdls</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>ContentDocumentLink</objectType>
     </variables>
     <variables>
         <name>isSuccess</name>

@@ -159,9 +159,10 @@ public with sharing class SendHTMLEmail {
         if (contentDocumentLinks != null && !contentDocumentLinks.isEmpty()) {
             Set<Id> cdIds = new Set<Id>();
             for (ContentDocumentLink cdl : contentDocumentLinks) {
-                cdIds.add(cdl.Id);
+                cdIds.add(cdl.ContentDocumentId);
             }
-            for (ContentVersion cv : [SELECT Id, PathOnClient, VersionData, FileType FROM ContentVersion]) {
+
+            for (ContentVersion cv : [SELECT Id, PathOnClient, VersionData, FileType FROM ContentVersion WHERE ContentDocumentId IN:cdIds]) {
                 curAttachments.add(new StaticResource(Name = cv.PathOnClient, Body = cv.VersionData));
             }
         }

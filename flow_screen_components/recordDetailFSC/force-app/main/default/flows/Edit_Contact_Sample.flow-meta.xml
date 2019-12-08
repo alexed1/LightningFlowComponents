@@ -17,12 +17,15 @@
     <processType>Flow</processType>
     <screens>
         <name>edit_account</name>
-        <label>Edit Account</label>
+        <label>Show Full Account</label>
         <locationX>390</locationX>
         <locationY>50</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Show_Specific_Fields</targetReference>
+        </connector>
         <fields>
             <name>edit_account2</name>
             <extensionName>c:recordDetailFSC</extensionName>
@@ -37,6 +40,42 @@
                 <name>mode</name>
                 <value>
                     <stringValue>view</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Edit_Fields</name>
+        <label>Edit Fields</label>
+        <locationX>688</locationX>
+        <locationY>48</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>showAccount2_0</name>
+            <extensionName>c:recordDetailFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>AccountId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>mode</name>
+                <value>
+                    <stringValue>edit</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fields</name>
+                <value>
+                    <stringValue>Name, Rating, Type, Industry</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -83,6 +122,45 @@
                 <assignToReference>AccountId</assignToReference>
                 <name>recordId</name>
             </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Show_Specific_Fields</name>
+        <label>Show Specific Fields</label>
+        <locationX>540</locationX>
+        <locationY>49</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Edit_Fields</targetReference>
+        </connector>
+        <fields>
+            <name>showAccount2</name>
+            <extensionName>c:recordDetailFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>AccountId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>mode</name>
+                <value>
+                    <stringValue>view</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fields</name>
+                <value>
+                    <stringValue>Name, Rating, Type, Industry</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>

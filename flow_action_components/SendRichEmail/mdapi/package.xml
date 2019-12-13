@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <name>ApexClass</name>
+    <members>SendRichEmail</members>
+    <members>SendRichEmailTest</members>
+  </types>
+  <types>
+    <name>Flow</name>
+    <members>Send_Rich_Email_Testflow</members>
+  </types>
+  <types>
+    <name>LightningComponentBundle</name>
+    <members>sendRichEmailCPE</members>
+  </types>
+  <version>47.0</version>
+</Package>

@@ -1,7 +1,11 @@
 {
     "compilerOptions": {
         "baseUrl": ".",
-        "paths": {},
+        "paths": {
+            "c/sendRichEmailCPE": [
+                "sendRichEmailCPE/sendRichEmailCPE.js"
+            ]
+        },
         "experimentalDecorators": true
     },
     "include": [

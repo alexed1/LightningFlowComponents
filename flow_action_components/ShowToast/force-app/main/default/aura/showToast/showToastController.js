@@ -19,13 +19,13 @@
         if(!isURL){
             helper.showToast(type, title, message, duration, mode, key);
         }
-		
+
         if(isURL){
           var messageUrl = message.replace('{url}', '{1}');
-          var urlLink = component.get("v.urlLink").toLowerCase();
+          var urlLink = component.get("v.urlLink")
           var urlLabel = component.get("v.urlLabel");
           //Add 'http://' to the URL if it is not already included
-          if(urlLink.indexOf('http') == -1){
+          if(urlLink.toLowerCase().indexOf('http') == -1){
               urlLink = 'http://' + urlLink;  
           }
           helper.showToastUrl(type, title, messageUrl, urlLink, urlLabel, duration, mode, key);

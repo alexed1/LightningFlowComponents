@@ -8,6 +8,12 @@
 
 -->
 <design:component >
-    <design:attribute name="type" />
-    <design:attribute name="message" />
+    <design:attribute name="type" label="Type (success, error, warning, info, other)" default="success" />
+    <design:attribute name="title" label="Title" />
+    <design:attribute name="message" label="Message" />
+    <design:attribute name="key" label="Icon (only for Type=other)" />
+    <design:attribute name="mode" label="Dismissal Mode (dismissible, pester, sticky)" default="dismissible" />
+    <design:attribute name="duration" label="Duration in Seconds (minimum is 5, default is 10)" default="10" />
+    <design:attribute name="urlLink" label="URL Link" />
+    <design:attribute name="urlLabel" label="URL Label" />
 </design:component>

@@ -148,7 +148,7 @@
     },
 
     handleSave: function(cmp, event, helper) {
-        helper.updateEditedValues(cmp, event.getParam('draftValues'));
+        helper.updateEditedValues(cmp, event);
         if(cmp.get('v.showButtons')) {
             // Clear Buttons from the Table
             cmp.find('flowTable').set('v.draftValues', null);

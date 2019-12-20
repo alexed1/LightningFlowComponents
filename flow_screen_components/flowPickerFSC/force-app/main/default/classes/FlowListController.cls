@@ -3,12 +3,15 @@
 
 Allows the selection of a Flow
 
-12/19/19 - Eric Smith - Added labels for the configuration attributes,
+12/20/19 - Eric Smith - Version 1.3
+                        Added labels for the configuration attributes,
                         added help text for the configuration attributes,
                         added support for changing the default placeholder text,  
-                        specifying a search string to filter the list of flows,
-                        displaying the list in alphabetical order by Flow Label,
-                        and specifying the width of the component
+                        added a search string to filter the list of flows,
+                        sorted the list to display in alphabetical order by Flow Label,
+                        added an attribute to specify the width of the component,
+                        added a method to expose the selected Flow API Name to a calling component,
+                        and created a Test Class so the component can be packaged
 
 */
 

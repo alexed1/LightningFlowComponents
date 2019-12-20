@@ -6,10 +6,12 @@ export default class flowPickerFSC extends LightningElement {
     @api label;
     @api selectedFlowApiName;
     @api showActiveFlowsOnly = false;
+    @api searchString;
     @api required;
     @api showWhichFlowTypes = 'Flow,AutolaunchedFlow';
+    @api placeholder = '- Select a Flow -';
+    @api componentWidth = '12';
     @track flowDefinitions;
-
 
     @wire(getFlowNamesApex, {filtersString: '$filters'})
     _getFlowNamesApex({error, data}) {
@@ -20,6 +22,12 @@ export default class flowPickerFSC extends LightningElement {
         }
     }
 
+    // Set the width of the component as a # out of 12
+    // 12 = 100% width, 6 = 50% width, 3 = 25%width, etc
+    get comboboxWidth() {
+        return 'slds-size_' + this.componentWidth + '-of-12 slds-form-element';
+    }
+
     get filters() {
         let filters = new Object();
 
@@ -28,6 +36,10 @@ export default class flowPickerFSC extends LightningElement {
         }
         if (this.showActiveFlowsOnly) {
             filters['!ActiveVersionId'] = ['null'];
+        }
+        // Add filter for Search String
+        if (this.searchString) {
+            filters['Label'] = ["\'%"+this.searchString+"%\'"];
         }
         return JSON.stringify(filters);
     }

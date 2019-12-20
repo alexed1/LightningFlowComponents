@@ -63,6 +63,12 @@ export default class flowPickerFSC extends LightningElement {
         this.dispatchEvent(attributeChangeEvent);
     }
 
+    // This is added to make the selected Flow API Name available to a calling Aura component
+    @api
+    flowApiName() {
+        return this.selectedFlowApiName;
+    }
+
     @api
     validate() {
         if (this.required && !this.selectedFlowApiName) {

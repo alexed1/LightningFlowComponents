@@ -6,6 +6,7 @@ import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
 export default class recordDetailFSC extends LightningElement {
     @api recordId;
     @api mode = 'view';
+    @api objectApiName;
 
     @track elementSize = 6;
     @track objectData;
@@ -13,8 +14,13 @@ export default class recordDetailFSC extends LightningElement {
     @track fieldsToDisplay = [];
     @track notSupportedFields = [];
     @track loadFinished = false;
-    @track objectApiName;
     @track errors = [];
+
+    labels = {
+        successMessage: 'Success',
+        errorMessage: 'Error',
+        recordSaveSuccessMessage: 'Record has been saved successfully'
+    };
 
     @api
     get fields() {
@@ -52,7 +58,9 @@ export default class recordDetailFSC extends LightningElement {
             console.log(error.body[0].message)
         } else if (data) {
             this.recordData = data;
-            this.objectApiName = this.recordData.apiName;
+            if (!this.objectApiName && this.recordData) {
+                this.objectApiName = this.recordData.apiName;
+            }
         }
     }
 
@@ -90,5 +98,22 @@ export default class recordDetailFSC extends LightningElement {
 
     get isError() {
         return this.errors.length > 0;
+    }
+
+    handleSuccess(event) {
+        this.recordId = event.detail.id;
+        this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
+    }
+
+    handleError(event) {
+        this.showToast(this.labels.errorMessage, event.detail.message + ': ' + event.detail.detail, 'error', true);
+    }
+
+    showToast(title, message, variant, autoClose) {
+        this.template.querySelector('c-toast-message').showCustomNotice({
+            detail: {
+                title: title, message: message, variant: variant, autoClose: autoClose
+            }
+        });
     }
 }

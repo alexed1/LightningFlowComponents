@@ -15,8 +15,9 @@
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" type="String"></property>
+            <property name="objectApiName" type="String"></property>
             <property name="fields" type="String"></property>
-            <property name="mode" type="String" datasource="View,Edit"></property>
+            <property name="mode" type="String"></property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

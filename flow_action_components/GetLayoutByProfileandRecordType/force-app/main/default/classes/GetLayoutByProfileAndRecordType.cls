@@ -47,10 +47,14 @@ public with sharing class GetLayoutByProfileAndRecordType {
         Map<String,Object> layout = (Map<String,Object>)objMap.get('Layout');
         Map<String,Object> responseAttributes = (Map<String, Object>)layout.get('attributes');
         String layoutURL = (String)responseAttributes.get('url');
+        String layoutName = (String)layout.get('Name');
+        System.debug ('responseAttributes ' + responseAttributes);
+        System.debug ('layoutName ' + layoutName);
+
         
         
         response.layoutId = layoutURL.substringAfterLast('/'); 
-
+        response.layoutName = layoutName;
         List<Results> responseWrapper = new List<Results>();
         responseWrapper.add(response);
         return responseWrapper;
@@ -70,9 +74,10 @@ public with sharing class GetLayoutByProfileAndRecordType {
     public class Results {
 
        
-        @InvocableVariable(required=true)
+        @InvocableVariable
         public String layoutId;
 
-    
+        @InvocableVariable
+        public String layoutName;
     }
 }

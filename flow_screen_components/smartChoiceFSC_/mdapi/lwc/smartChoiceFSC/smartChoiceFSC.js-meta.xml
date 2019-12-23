@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Smart Choice</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="value" label="Value" type="String"></property>
+            <property name="choiceValues" label="Choices (String Collection)" type="String[]"></property>
+            <property name="inputMode" label="Input Type" type="String" ></property>
+            <property name="masterLabel" label="Master Label" type="String" required="true" default="Select"></property>
+            <property name="required" label="Required" type="Boolean" default="false"></property>
+            <property name="displayMode" label="Display Mode" type="String" datasource="Radio,Picklist" default="Radio"></property>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -69,10 +69,16 @@ export default class SmartChoiceFSC extends LightningElement {
             });
 
             this.picklistOptionsStorage = picklistOptions;
-
+            if(this.inputMode === 'Picklist Field'){
+                this.setPicklistOptions();
+            }
         } else if (error) {
             this.error = JSON.stringify(error);
         }
+    }
+
+    setPicklistOptions() {
+        this.options = this.picklistOptionsStorage;
     }
 
 
@@ -117,13 +123,12 @@ export default class SmartChoiceFSC extends LightningElement {
                     });
                 break;
 
-                case 'Picklist Field' :
-                    console.log('entering input mode Picklist Field. picklistValues is: '  );
-                    //console.log('picklist options storage is' + this.picklistOptionsStorage.inspect());
-                    console.log (this.picklistOptionsStorage);
-                    options = this.picklistOptionsStorage;
-                break;
-
+                // case 'Picklist Field' :
+                //     console.log('entering input mode Picklist Field. picklistValues is: '  );
+                //     //console.log('picklist options storage is' + this.picklistOptionsStorage.inspect());
+                //     console.log (this.picklistOptionsStorage);
+                //     options = this.picklistOptionsStorage;
+                // break;
         
 
                 default:

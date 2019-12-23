@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Contact</application>
+        <default>false</default>
+        <visible>true</visible>
+    </applicationVisibilities>
     <classAccesses>
         <apexClass>ExtractFieldFromCollection</apexClass>
         <enabled>true</enabled>
@@ -158,8 +163,8 @@
         <readable>true</readable>
     </fieldPermissions>
     <layoutAssignments>
-        <layout>Account-Director - Account %28Medium%29</layout>
-        <recordType>Account.Director</recordType>
+        <layout>Account-ChannelOps - Account %28Medium%29</layout>
+        <recordType>Account.Channel_Ops</recordType>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Account-Exec Account %28Small%29</layout>
@@ -180,7 +185,7 @@
     </objectPermissions>
     <recordTypeVisibilities>
         <default>false</default>
-        <recordType>Account.Director</recordType>
+        <recordType>Account.Channel_Ops</recordType>
         <visible>true</visible>
     </recordTypeVisibilities>
     <recordTypeVisibilities>

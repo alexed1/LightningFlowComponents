@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Director</fullName>
+    <fullName>Channel_Ops</fullName>
     <active>true</active>
-    <label>Director</label>
+    <label>Channel Ops</label>
     <picklistValues>
         <picklist>AccountSource</picklist>
         <values>
@@ -199,22 +199,10 @@
         </values>
         <values>
             <fullName>Customer - Channel</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Customer - Direct</fullName>
-            <default>false</default>
+            <default>true</default>
         </values>
         <values>
             <fullName>Installation Partner</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Other</fullName>
-            <default>false</default>
-        </values>
-        <values>
-            <fullName>Prospect</fullName>
             <default>false</default>
         </values>
         <values>

@@ -3,14 +3,14 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/smartChoiceFSC": [
-                "smartChoiceFSC/smartChoiceFSC.js"
-            ],
             "c/recordDetailFSC": [
                 "recordDetailFSC/recordDetailFSC.js"
             ],
             "c/toastMessage": [
                 "toastMessage/toastMessage.js"
+            ],
+            "c/quickChoiceFSC": [
+                "quickChoiceFSC/quickChoiceFSC.js"
             ]
         }
     },

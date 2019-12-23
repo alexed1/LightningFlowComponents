@@ -8,7 +8,7 @@ public with sharing class ExtractFieldFromCollection {
     @InvocableMethod
     public static List <Results> extract(List<Requests> requestList) {
         Results response = new Results();
-        List<Account> inputCollection = requestList[0].inputAccountCollection;
+        List<Account> inputCollection = requestList[0].inputCollection;
         List<String> outputStringCollection = new List<String>();
         String fieldName = requestList[0].fieldName;
 
@@ -29,7 +29,7 @@ public with sharing class ExtractFieldFromCollection {
     }
     public class Requests {
         @InvocableVariable(required=true)
-        public List<Account> inputAccountCollection;
+        public List<Account> inputCollection;
 
         @InvocableVariable(required=true)
         public String fieldName;

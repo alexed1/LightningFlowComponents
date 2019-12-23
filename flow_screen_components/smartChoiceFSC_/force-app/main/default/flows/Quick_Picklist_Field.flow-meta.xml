@@ -1,68 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Layout_Fields</name>
-        <label>Get Layout Fields</label>
-        <locationX>657</locationX>
-        <locationY>55</locationY>
-        <actionName>GetLayoutFields</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Output</targetReference>
-        </connector>
-        <inputParameters>
-            <name>layoutName</name>
-            <value>
-                <elementReference>curLayoutName</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>objectName</name>
-            <value>
-                <elementReference>curObjectName</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>curLayoutFieldsCSV</assignToReference>
-            <name>layoutFieldsCSV</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Get_Layout_Id</name>
-        <label>Get Layout Id</label>
-        <locationX>524</locationX>
-        <locationY>55</locationY>
-        <actionName>GetLayoutByProfileAndRecordType</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Get_Layout_Fields</targetReference>
-        </connector>
-        <inputParameters>
-            <name>recordTypeId</name>
-            <value>
-                <elementReference>selectedRecordTypeId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>profileId</name>
-            <value>
-                <elementReference>curUserProfileId</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>curLayoutId</assignToReference>
-            <name>layoutId</name>
-        </outputParameters>
-        <outputParameters>
-            <assignToReference>curLayoutName</assignToReference>
-            <name>layoutName</name>
-        </outputParameters>
-        <outputParameters>
-            <assignToReference>curObjectName</assignToReference>
-            <name>objectName</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>Get_Record_Type_Info_by_Object</name>
         <label>Get Record Type Info by Object</label>
         <locationX>256</locationX>
@@ -92,8 +30,8 @@
         <dataType>String</dataType>
         <expression>{!$User.ProfileId}</expression>
     </formulas>
-    <interviewLabel>Quick Records {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Quick Records</label>
+    <interviewLabel>Quick Picklist Field {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quick Picklist Field</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -108,46 +46,6 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>Output</name>
-        <label>Output</label>
-        <locationX>808</locationX>
-        <locationY>55</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>QuickRecords</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Quick Records&lt;/b&gt; - Create New Record&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>curRecordDetail</name>
-            <extensionName>c:recordDetailFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>fields</name>
-                <value>
-                    <elementReference>curLayoutFieldsCSV</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>mode</name>
-                <value>
-                    <stringValue>Edit</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>objectApiName</name>
-                <value>
-                    <stringValue>Account</stringValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
         <name>Record_Type_Choice</name>
         <label>Record Type Choice</label>
         <locationX>400</locationX>
@@ -156,7 +54,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Get_Layout_Id</targetReference>
+            <targetReference>Select_Member</targetReference>
         </connector>
         <fields>
             <name>dispQuickRecord</name>
@@ -207,9 +105,71 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Select_Member</name>
+        <label>Select Member</label>
+        <locationX>400</locationX>
+        <locationY>205</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>quickchoiceShowFieldFiltered</name>
+            <extensionName>c:quickChoiceFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Select Value</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>fieldName</name>
+                <value>
+                    <elementReference>curFieldName</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <elementReference>curObjectName</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Picklist Field</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordTypeId</name>
+                <value>
+                    <elementReference>selectedRecordTypeId</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>selectedItem</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>dispSelectedItem</name>
+            <fieldText>&lt;p&gt;Selected Item is: {!selectedItem}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Specify_Object</name>
         <label>Specify Object</label>
-        <locationX>122</locationX>
+        <locationX>121</locationX>
         <locationY>190</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -222,12 +182,6 @@
             <extensionName>c:pickObjectAndFieldFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>hideFieldPicklist</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>objectLabel</name>
                 <value>
                     <stringValue>Select Object</stringValue>
@@ -238,6 +192,10 @@
                 <assignToReference>curObjectName</assignToReference>
                 <name>objectType</name>
             </outputParameters>
+            <outputParameters>
+                <assignToReference>curFieldName</assignToReference>
+                <name>field</name>
+            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -246,10 +204,10 @@
         <locationX>33</locationX>
         <locationY>48</locationY>
         <connector>
-            <targetReference>Get_Record_Type_Info_by_Object</targetReference>
+            <targetReference>Specify_Object</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>choiceNames</name>
         <dataType>String</dataType>
@@ -274,6 +232,13 @@
     </variables>
     <variables>
         <name>curErrors</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>curFieldName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -328,6 +293,13 @@
         <name>recordTypeNames</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedItem</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>

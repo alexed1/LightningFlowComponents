@@ -12,11 +12,24 @@ public with sharing class GetLayoutByProfileAndRecordType {
         HttpRequest req = new HttpRequest();
         req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID());
         req.setHeader('Content-Type', 'application/json');
-        req.setEndpoint(baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+recordTypeId=\'' + recordTypeId + '\'AND+profileId=\'' + profileId + '\'');
+
+        
+        String endpoint = baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'' ;
+        System.debug('endpoint starts as: ' + endpoint);
+        System.debug('recordTypeId is: ' + recordTypeId);
+        //When there's no record type, the Master recordTypeId of 012000000000000AAA is used. However, it is not used with ProfileLayout, and so we have to avoid passing it in as a recordTypeId
+        if (recordTypeId != '012000000000000AAA') {
+            endpoint = endpoint +  '+AND+recordTypeId=\'' + recordTypeId + '\'';
+            System.debug('after adding recordTypeId, endpoint is ' + endpoint);
+        }
+            
+        
+        //req.setEndpoint(baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'AND+recordTypeId=\'' + recordTypeId + '\'');
+        req.setEndpoint(endpoint);
         req.setMethod('GET'); 
         Http h = new Http();
         HttpResponse res = h.send(req);
-        system.debug(res.getBody()); 
+        system.debug('response body from tooling call to ProfileLayout: ' + res.getBody()); 
 
         //the data structure returned in the body of this Tooling API call includes the Layout Id we're looking for
         //but we have to drill down to get it:

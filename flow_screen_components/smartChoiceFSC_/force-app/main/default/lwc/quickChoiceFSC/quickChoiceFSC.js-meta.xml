@@ -14,8 +14,8 @@
             <property name="inputMode" label="Input Mode" type="String" ></property>
             <property name="masterLabel" label="Master Label" type="String" required="true" default="Select"></property>
             <property name="required" label="Required" type="Boolean" default="false"></property>
-            <property name="displayMode" label="Display Mode" type="String" datasource="Radio,Picklist" default="Radio"></property>
-            <property name="recordTypeId" label="Record Type Id" type="String" ></property>
+            <property name="displayMode" label="Display Mode" type="String"  default="Picklist"></property>
+            <property name="recordTypeId" label="Record Type Id" type="String" default="012000000000000AAA"></property>
             <property name="objectName" label="Object Name (for Picklist Field)" type="String" ></property>
             <property name="fieldName" label="Field Name (for Picklist Field)" type="String" ></property>
         </targetConfig>

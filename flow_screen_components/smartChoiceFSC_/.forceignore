@@ -1,3 +1,9 @@
+**/profiles
+**/layouts
+**/objects
+**/quickActions
+**/appMenus
+**flexipages
 **/jsconfig.json
 
 **/.eslintrc.json

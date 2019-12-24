@@ -29,31 +29,13 @@ export default class SmartChoiceFSC extends LightningElement {
     @track selectedValue;
     @track showRadio = true;
     @track legitInputModes = [
-        'String Collection',
         'Picklist Field',
-        'Simple String Collection',
+        'Single String Collection',
         'Dual String Collections'
     ];
     @track options = [];
    
-
-    /* @wire(getPicklistValues, {
-        recordTypeId: '0121F000001FlH6QAK',  
-        fieldApiName: TYPE_FIELD
-    })
-    picklistValues({error,data}){
-        console.log('error report from wire service:' + error);
-        let options = [];
-        let dataPair = {};
-         for (dataPair of data.values) {
-            options.push({label: dataPair.label, value: dataPair.value});
-            console.log('pushing label ' + dataPair.label + 'and value: ' + dataPair.value);
-        }  
-        console.log('data is: ' + data);
-        this.options=options;
-        console.log('this.options: ' + this.options);
-    }  */
-
+//possibility masster record type only works if there aren't other record types? 
     @wire(getPicklistValues, { recordTypeId: '$recordTypeId', fieldApiName: 'Account.Type'})
     picklistValues({error, data}) {
         if (data) {
@@ -122,14 +104,6 @@ export default class SmartChoiceFSC extends LightningElement {
                         index += 1;
                     });
                 break;
-
-                // case 'Picklist Field' :
-                //     console.log('entering input mode Picklist Field. picklistValues is: '  );
-                //     //console.log('picklist options storage is' + this.picklistOptionsStorage.inspect());
-                //     console.log (this.picklistOptionsStorage);
-                //     options = this.picklistOptionsStorage;
-                // break;
-        
 
                 default:
                 

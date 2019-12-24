@@ -63,8 +63,7 @@
         public Boolean onlyReturnActiveRecordTypes;
 
         @InvocableVariable
-        public Boolean
-         onlyReturnRecordTypesAvailableToCurrentUser;
+        public Boolean onlyReturnRecordTypesAvailableToCurrentUser;
 
     }
 

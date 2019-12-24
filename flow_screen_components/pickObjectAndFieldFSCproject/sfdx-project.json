@@ -1,0 +1,17 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "ObjectFieldPickerFSC",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "46.0",
+    "packageAliases": {
+        "ObjectFieldPickerFSC": "0HoB0000000CavsKAC"
+    }
+}

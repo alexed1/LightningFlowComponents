@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>NonePicklistValueLabel</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NonePicklistValueLabel</shortDescription>
+        <value>-- None --</value>
+    </labels>
+    <labels>
+        <fullName>FieldIsNotSupportedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>FieldIsNotSupportedMessage</shortDescription>
+        <value>Following fields are not supported: </value>
+    </labels>
+</CustomLabels>

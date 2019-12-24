@@ -1,3 +1,47 @@
 <template>
-    I am the Custom Property Editor for SendRichEmail!
+    <!--    TODO: implement value attribute once it is clear how to send value change events-->
+    <template if:true={isInitialized}>
+        <lightning-combobox label="Reply Email Address" name="replyEmailAddress" onchange={handleValueChange}
+                            options={stringOptions} value={inputValues.replyEmailAddress.value}></lightning-combobox>
+        <lightning-combobox label="Organization-Wide Email Address Id" name="orgWideEmailAddressId"
+                            onchange={handleValueChange}
+                            options={stringOptions}
+                            value={inputValues.orgWideEmailAddressId.value}></lightning-combobox>
+        <lightning-combobox label="Sender Display Name" name="senderDisplayName" onchange={handleValueChange}
+                            options={stringOptions} value={inputValues.senderDisplayName.value}></lightning-combobox>
+        <lightning-accordion allow-multiple-sections-open title class="example-accordion">
+            <template for:each={availableRecipients} for:item="curRecipient">
+                <lightning-accordion-section name={curRecipient.baseLabel} label={curRecipient.label}
+                                             key={curRecipient.baseLabel}>
+                    <c-add-new-members name={curRecipient.baseLabel} onvaluechanged={handleValueSelected}
+                                       custom-data-structure={convertedFlowContext}
+                                       value={curRecipient.value} single-select></c-add-new-members>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+        <lightning-combobox label="Subject" name="subject" onchange={handleValueChange}
+                            options={stringOptions} value={inputValues.subject.value}></lightning-combobox>
+        <lightning-radio-group name="bodyOption"
+                               label="Body"
+                               options={bodyOptions}
+                               value={inputValues.bodyOption.value}
+                               onchange={handleBodyOptionChange}
+                               type="radio"></lightning-radio-group>
+        <template if:true={isSpecifyBodyOption}>
+            <lightning-combobox label="HTML Body" name="HTMLbody" onchange={handleValueChange}
+                                options={stringAndTemplateOptions}
+                                value={inputValues.HTMLbody.value}></lightning-combobox>
+            <lightning-combobox label="Plain Text" name="plainTextBody" onchange={handleValueChange}
+                                options={stringAndTemplateOptions}
+                                value={inputValues.plainTextBody.value}></lightning-combobox>
+        </template>
+        <template if:false={isSpecifyBodyOption}>
+            <lightning-combobox label="Specify Target record ID" name="recordId" onchange={handleValueChange}
+                                options={stringOptions} value={inputValues.recordId.value}></lightning-combobox>
+            <lightning-input label="Select  Email Template" name="templateTargetObjectID"
+                             onchange={handleValueChange}
+                             value={inputValues.templateTargetObjectID.value}></lightning-input>
+        </template>
+        <div class="slds-p-bottom--xx-large"></div>
+    </template>
 </template>

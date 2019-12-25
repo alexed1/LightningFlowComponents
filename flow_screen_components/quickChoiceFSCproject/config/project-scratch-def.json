@@ -1,0 +1,11 @@
+{
+  "orgName": "Demo Company",
+  "edition": "Developer",
+  "features": [],
+  "settings": {
+    "orgPreferenceSettings": {
+      "s1DesktopEnabled": true,
+      "chatterEnabled": true
+    }
+  }
+}

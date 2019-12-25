@@ -62,9 +62,9 @@ export default class SmartChoiceFSC extends LightningElement {
         } else if (error) {
             this.error = JSON.stringify(error);
             console.log('getPicklistValues wire service returned error: ' + this.error);
-            console.log('object and field ' + this.objectPlusFieldName);
-            if (!this.objectPlusFieldName)
-                throw new Error('objectPlusFieldName is undefined. Needs a value like Account.Rating');
+            console.log('object and field ' + this.objectAndFieldName);
+            if (!this.objectAndFieldName)
+                throw new Error('objectAndFieldName is undefined. Needs a value like Account.Rating');
         }
     }
 

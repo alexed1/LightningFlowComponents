@@ -1,4 +1,0 @@
-# Quick Choice FSC
-
-
-    

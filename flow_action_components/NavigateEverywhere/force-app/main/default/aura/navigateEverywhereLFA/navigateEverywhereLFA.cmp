@@ -1,3 +1,4 @@
+
   
 <!--
     navigateToRecord Lightning Flow Action
@@ -13,12 +14,14 @@
 
 	Parameters include defining the Object Name, Record Id and Mode (View or Edit)
 -->
-
 <aura:component implements="lightning:availableForFlowActions">
-    <aura:attribute name="recordId" type="String"/>
-    <aura:attribute name="sObject" type="String"/>
+    <aura:attribute name="destinationRecordId" type="String"/>
+    <aura:attribute name="destinationName" type="String"/>
+    <aura:attribute name="destinationAction" type="String"/>
     <aura:attribute name="destinationType" type="String"/>
-    <aura:attribute name="mode" type="String" default="view"/>
+    <aura:attribute name="destinationActionFilter" type="String"/>
+    <aura:attribute name="destinationUrl" type="String" />
+    <aura:attribute name="relationshipName" type="String" />
     <lightning:navigation aura:id="navService"/>
 </aura:component>
 

@@ -1,6 +1,9 @@
 <design:component >
-    <design:attribute name="sObject" label="Object" default="" />
-    <design:attribute name="recordId" label="Record Id" default="" />
-    <design:attribute name="mode" label="View or Edit?" default="View" />
-    <design:attribute name="destinationType" label="Destination Type (Record or List)" default="Record" />
+    <design:attribute name="destinationName" label="Destination Name" default="" />
+    <design:attribute name="destinationRecordId" label="Destination Record Id" default="" />
+    <design:attribute name="destinationType" label="Destination Type" required='true' />
+    <design:attribute name="destinationAction" label="Destination Action"  />
+    <design:attribute name="destinationActionFilter" label="Destination Action Filter"  />
+    <design:attribute name="relationshipName" label="Relationship Name"  />
+    <design:attribute name="destinationUrl" label="Destination URL" default="www.salesforce.com" />
 </design:component>

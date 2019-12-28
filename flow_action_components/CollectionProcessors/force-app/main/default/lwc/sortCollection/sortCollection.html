@@ -1,0 +1,26 @@
+<template>
+    <div class="slds-card slds-p-around--small">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">
+                <template for:each={lines} for:item="line">
+                    <c-sort-collection-line key={line.position}
+                                            fields={fields}
+                                            position={line.position}
+                                            field={line.field}
+                                            direction={line.direction}
+                                            ondatachanged={handleDataChanged}
+                                            onreorder={handleReorder}>
+                    </c-sort-collection-line>
+                </template>
+            </div>
+            <div class="slds-p-top--medium">
+                <lightning-button
+                        label="Add"
+                        title="Add"
+                        icon-name="utility:add"
+                        onclick={handleAddLine}>
+                </lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

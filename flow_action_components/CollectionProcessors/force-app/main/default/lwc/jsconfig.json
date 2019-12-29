@@ -3,12 +3,6 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/expressionBuilder": [
-                "expressionBuilder/expressionBuilder.js"
-            ],
-            "c/expressionLine": [
-                "expressionLine/expressionLine.js"
-            ],
             "c/sortCollection": [
                 "sortCollection/sortCollection.js"
             ],

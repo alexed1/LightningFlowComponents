@@ -11,12 +11,12 @@ public with sharing class CountRecordsAndFields {
         Results response = new Results();
         try {
             for (SObject record : records) {
-                if (fieldName && fieldValue) {
+                if (!String.isBlank(fieldName) && !String.isBlank(fieldValue)) {
                     if (record.get(fieldName) == fieldValue) {
                         response.matchedNumber++;
                     }
                 }
-                
+
                 response.totalNumber++;
             }
         } catch (Exception ex) {

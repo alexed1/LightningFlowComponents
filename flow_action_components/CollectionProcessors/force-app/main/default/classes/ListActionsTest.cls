@@ -161,6 +161,46 @@ public with sharing class ListActionsTest {
         System.assertEquals(NUMBER_OF_TEST_RECORDS + 1, responseWrapper[0].outputCollection.size());
         System.assertNotEquals(((Account) responseWrapper[0].outputCollection[0]).Name, ((Account) responseWrapper[0].outputCollection[NUMBER_OF_TEST_RECORDS]).Name);
     }
+
+    @isTest
+    static void countRecordsAndFieldsTest() {
+        final Integer INDEX_TO_REMOVE = 0;
+        List<CountRecordsAndFields.Requests> requests = new List<CountRecordsAndFields.Requests>();
+        CountRecordsAndFields.Requests request = new CountRecordsAndFields.Requests();
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        request.inputCollection = testAccounts;
+        request.fieldName = 'Name';
+        request.fieldValue = TEST_RECORD_NAME + '0';
+        requests.add(request);
+
+        List<CountRecordsAndFields.Results> responseWrapper = CountRecordsAndFields.count(requests);
+        System.assertEquals(responseWrapper.size(), 1);
+        System.assertEquals(1, responseWrapper[0].matchedNumber);
+        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
+    }
+
+    @isTest
+    static void extractStringsFromCollectionTest() {
+        final Integer INDEX_TO_REMOVE = 0;
+        List<ExtractStringsFromCollection.Requests> requests = new List<ExtractStringsFromCollection.Requests>();
+        ExtractStringsFromCollection.Requests request = new ExtractStringsFromCollection.Requests();
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        request.inputCollection = testAccounts;
+        request.fieldName = 'Name';
+        requests.add(request);
+
+        List<ExtractStringsFromCollection.Results> responseWrapper = ExtractStringsFromCollection.extract(requests);
+        System.assertEquals(responseWrapper.size(), 1);
+        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].stringList.size());
+
+        String resultString = '';
+        for (Account curAcc : testAccounts) {
+            resultString += curAcc.Name + ',';
+        }
+        resultString = resultString.removeEnd(',');
+        System.assertEquals(resultString, String.join(responseWrapper[0].stringList, ','));
+    }
+
     @isTest
     static void sortCollectionTest() {
         final Map<String, String> sortDirection = new Map<String, String>{

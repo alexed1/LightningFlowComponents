@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <description>Sort Collection</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Sort Collection</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="contextRecordObjectName" type="String" role="inputOnly" required="true" default="Account"> </property>
+            <property name="sortKeys" type="String" > </property>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="contextRecordObjectName" type="String" required="true"> </property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

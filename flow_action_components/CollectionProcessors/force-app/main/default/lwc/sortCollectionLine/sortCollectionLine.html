@@ -1,0 +1,41 @@
+<template>
+    <div class="slds-grid">
+        <div class="slds-col">
+            <lightning-combobox name="field"
+                                label="Field"
+                                placeholder="Field"
+                                options={fields}
+                                value={_field}
+                                onchange={handleFieldChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-col slds-p-left--xx-small">
+            <lightning-combobox
+                    name="sortingDirection"
+                    label="Direction"
+                    value={_direction}
+                    placeholder="Direction"
+                    options={allDirections}
+                    onchange={handleDirectionChange}
+            ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-p-left--xx-small slds-align-bottom">
+            <div class="slds-dueling-list__column ">
+                <lightning-icon
+                        class="slds-p-bottom--small"
+                        icon-name="utility:up"
+                        size="x-small"
+                        onclick={handleMove}
+                        data-direction="-1">
+                </lightning-icon>
+                <lightning-icon
+                        icon-name="utility:down"
+                        size="x-small"
+                        onclick={handleMove}
+                        data-direction="1">
+                </lightning-icon>
+
+            </div>
+        </div>
+    </div>
+</template>

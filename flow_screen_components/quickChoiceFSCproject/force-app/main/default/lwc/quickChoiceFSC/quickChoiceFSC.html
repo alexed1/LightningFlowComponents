@@ -29,14 +29,14 @@ Additional components packaged with this LWC:
 <template>
 
     <template if:true={showVisual}>
-        <template if:true={includeIcons}>
+        <template if:true={showIcons}>
             <!-- Display Visual Choice with Icons-->
             <fieldset class="slds-form-element">
                 <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
                 <div class="slds-form-element__control">
                     <template for:each={items} for:item="item">
                         <div key={item.name} class="slds-visual-picker slds-visual-picker_vertical">
-                            <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleRadio} />
+                            <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleChange} />
                             <label for={item.name}>
                                 <span
                                     class="slds-visual-picker__figure slds-visual-picker__text class=slds-box slds-box_link slds-box_x-small slds-media"
@@ -65,14 +65,14 @@ Additional components packaged with this LWC:
             </fieldset>
         </template>
 
-        <template if:false={includeIcons}>
+        <template if:false={showIcons}>
             <!-- Display Visual Choice without Icons-->
             <fieldset class="slds-form-element">
                 <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
                 <div class="slds-form-element__control">
                     <template for:each={items} for:item="item">
                         <div key={item.name} class="slds-visual-picker slds-visual-picker_vertical">
-                            <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleRadio}/>
+                            <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleChange}/>
                             <label for={item.name}>
                                 <span
                                     class="slds-visual-picker__figure slds-visual-picker__text">

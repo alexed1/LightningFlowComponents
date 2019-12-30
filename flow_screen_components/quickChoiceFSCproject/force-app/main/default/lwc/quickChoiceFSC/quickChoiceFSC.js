@@ -15,6 +15,7 @@ export default class SmartChoiceFSC extends LightningElement {
     @api choiceLabels;
     @api choiceValues; //string collection
     @api displayMode;
+    @api allowNoneToBeChosen;
 
     @api recordTypeId; //used for picklist fields
     
@@ -42,7 +43,9 @@ export default class SmartChoiceFSC extends LightningElement {
         if (data) {
             console.log('inside picklist wiring');
             
-            let picklistOptions = [{ label: '--None--', value: 'None'}];
+            let picklistOptions = [];
+            if (this.allowNoneToBeChosen)
+                picklistOptions.push({ label: '--None--', value: 'None'});
 
             // Picklist values
             data.values.forEach(key => {

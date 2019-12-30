@@ -12,9 +12,9 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api choiceLabels;
 	@api choiceValues; //string collection
 	@api choiceIcons; 
-	@api includeIcons;
+	@api showIcons;
 	@api iconSize;
-	@api displayMode;
+	@api displayMode; //Picklist, Radio, Visual (3 different selection types)
 	@api allowNoneToBeChosen;
 
 	@api recordTypeId; //used for picklist fields
@@ -64,6 +64,7 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.picklistOptionsStorage = picklistOptions;
 			console.log("displayMode is" + this.displayMode);
 
+/* 			Redundant - removed v1.14 - Eric Smith
 			// Visual Picker Selection
 			if (this.displayMode === "Visual") {
 				this.showVisual = true;
@@ -72,20 +73,17 @@ export default class SmartChoiceFSC extends LightningElement {
 
 			if (this.displayMode === "Picklist") {
 				this.showRadio = false;
-			}
+			} */
+
 			if (this.inputMode === "Picklist Field") {
 				this.setPicklistOptions();
 			}
 		} else if (error) {
 			this.error = JSON.stringify(error);
-			console.log(
-				"getPicklistValues wire service returned error: " + this.error
-			);
+			console.log("getPicklistValues wire service returned error: " + this.error);
 			console.log("object and field " + this.objectAndFieldName);
 			if (!this.objectAndFieldName)
-				throw new Error(
-					"objectAndFieldName is undefined. Needs a value like Account.Rating"
-				);
+				throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
 		}
 	}
 
@@ -102,10 +100,9 @@ export default class SmartChoiceFSC extends LightningElement {
 		// Visual Picker Selection
 		if (this.displayMode === "Visual") {
 			this.showVisual = true;
-			this.showRadio = false;
 			console.log("showIcons is: " + this.showIcons);
 			console.log("choiceIcons is: " + this.choiceIcons);
-			if (!this.includeIcons || !this.choiceIcons) {
+			if (!this.showIcons || !this.choiceIcons) {
 				console.log("icons not needed");
 				this.choiceIcons = this.choiceLabels;
 			}
@@ -168,12 +165,8 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.options = options;
 			this.items = items;
 		} else {
-			console.log(
-				"SmartChoiceFSC: Need a valid Input Mode value. Didn't get one"
-			);
-			throw new Error(
-				"SmartChoiceFSC: Need a valid Input Mode value. Didn't get one"
-			);
+			console.log("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
+			throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
 		}
 	}
 
@@ -194,7 +187,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	}
 
 	handleChange(event) {
-		this.selectedValue = event.detail.value;
+		this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
 		console.log("selected value is: " + this.selectedValue);
 		const attributeChangeEvent = new FlowAttributeChangeEvent(
 			"value",
@@ -203,13 +196,4 @@ export default class SmartChoiceFSC extends LightningElement {
 		this.dispatchEvent(attributeChangeEvent);
 	}
 
-	handleRadio(event) {
-		this.selectedValue = event.target.value;
-		console.log("selected visual is: " + this.selectedValue);
-		const attributeChangeEvent = new FlowAttributeChangeEvent(
-			"value",
-			this.selectedValue
-		);
-		this.dispatchEvent(attributeChangeEvent);
-	}
 }

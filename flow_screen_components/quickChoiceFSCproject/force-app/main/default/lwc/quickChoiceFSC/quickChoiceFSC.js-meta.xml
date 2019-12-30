@@ -12,7 +12,7 @@
             <property name="choiceValues" label="Choice Values (String Collection)" type="String[]"></property>
             <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]"></property>
             <property name="choiceIcons" label="Choice Icons (String Collection)" type="String[]"></property>
-            <property name="includeIcons" label="Include Icons in Text Box?" type="Boolean"></property>
+            <property name="showIcons" label="Show Icons in Text Box?" type="Boolean"></property>
             <property name="iconSize" label="Icon Size" type="String"></property>
             <property name="inputMode" label="Input Mode" type="String" ></property>
             <property name="masterLabel" label="Master Label" type="String"  ></property>

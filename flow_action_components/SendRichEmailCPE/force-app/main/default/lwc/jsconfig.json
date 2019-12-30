@@ -2,6 +2,18 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
+            ],
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ],
+            "c/configEditorLwc": [
+                "configEditorLwc/configEditorLwc.js"
+            ],
+            "c/flowCombobox": [
+                "flowCombobox/flowCombobox.js"
+            ],
             "c/sendRichEmailCPE": [
                 "sendRichEmailCPE/sendRichEmailCPE.js"
             ]

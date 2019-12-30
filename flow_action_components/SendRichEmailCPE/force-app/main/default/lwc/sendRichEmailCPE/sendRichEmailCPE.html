@@ -7,6 +7,10 @@
                             onchange={handleValueChange}
                             options={stringOptions}
                             value={inputValues.orgWideEmailAddressId.value}></lightning-combobox>
+         <lightning-combobox label="Contact Collection" name="SendTOtheEmailAddressesFromThisCollectionOfContacts"
+                            onchange={handleValueChange}
+                            options={stringOptions}
+                            value={inputValues.SendTOtheEmailAddressesFromThisCollectionOfContacts.value}></lightning-combobox> 
         <lightning-combobox label="Sender Display Name" name="senderDisplayName" onchange={handleValueChange}
                             options={stringOptions} value={inputValues.senderDisplayName.value}></lightning-combobox>
         <lightning-accordion allow-multiple-sections-open title class="example-accordion">
@@ -38,7 +42,7 @@
         <template if:false={isSpecifyBodyOption}>
             <lightning-combobox label="Specify Target record ID" name="recordId" onchange={handleValueChange}
                                 options={stringOptions} value={inputValues.recordId.value}></lightning-combobox>
-            <lightning-input label="Select  Email Template" name="templateTargetObjectID"
+            <lightning-input label="Email Template Id" name="templateTargetObjectID"
                              onchange={handleValueChange}
                              value={inputValues.templateTargetObjectID.value}></lightning-input>
         </template>

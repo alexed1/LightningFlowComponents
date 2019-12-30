@@ -1,0 +1,23 @@
+div input[readonly] {
+    padding-left: 1.75rem !important;
+}
+.slds-input{
+    padding-left: 1.75rem !important;
+}
+
+.slds-input-has-icon .slds-input__icon {
+    top: 56% !important;
+}
+.slds-icon_small, .slds-icon--small {
+    width: 1.5rem;
+    height: 1.5rem;
+    line-height: 2;
+    fill: white;
+}
+
+.custom-text-transform_uppercase {
+    text-transform: uppercase;
+}
+.custom-width-full {
+    width: 100%;
+}

@@ -1,0 +1,291 @@
+{
+  "variables": [
+    {
+      "name": "curAttachments",
+      "description": "",
+      "objectType": "Attachment",
+      "dataType": "SObject",
+      "isCollection": true,
+      "isInput": false,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "curContacts",
+      "description": "",
+      "objectType": "Contact",
+      "dataType": "SObject",
+      "isCollection": true,
+      "isInput": false,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "curLeads",
+      "description": "",
+      "objectType": "Lead",
+      "dataType": "SObject",
+      "isCollection": true,
+      "isInput": true,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "curUsers",
+      "description": "",
+      "objectType": "User",
+      "dataType": "SObject",
+      "isCollection": true,
+      "isInput": false,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "errorsFromEmail",
+      "description": "",
+      "dataType": "String",
+      "isCollection": false,
+      "isInput": false,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "isSuccess",
+      "description": "",
+      "dataType": "Boolean",
+      "isCollection": false,
+      "isInput": false,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "recordId",
+      "description": "",
+      "dataType": "String",
+      "isCollection": false,
+      "isInput": true,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "stringCollectionEmailAddresses",
+      "description": "",
+      "dataType": "String",
+      "isCollection": true,
+      "isInput": true,
+      "isOutput": false,
+      "scale": 0
+    },
+    {
+      "name": "StringVariableTest",
+      "description": "",
+      "dataType": "String",
+      "isCollection": true,
+      "isInput": true,
+      "isOutput": true,
+      "scale": 0
+    },
+    {
+      "name": "TestUserVariable",
+      "description": "",
+      "objectType": "User",
+      "dataType": "SObject",
+      "isCollection": true,
+      "isInput": true,
+      "isOutput": true,
+      "scale": 0
+    }
+  ],
+  "constants": [],
+  "textTemplates": [
+    {
+      "name": "HTMLPasteIn",
+      "description": "",
+      "text": "<ol><li><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&lt;p&gt;</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\">Hi Geoff Minor,</span><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&lt;/p&gt;&lt;br/&gt;&lt;p&gt;</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\">We received a request to reset the password for your account. Click here to set up a new one.</span><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&lt;/p&gt;&lt;br/&gt;&lt;p&gt;&lt;a</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\"> </span><span style=\"color: var(--lwc-codeSnippetColorSlate,#68737C);\">href</span><span style=\"color: var(--lwc-codeSnippetColorBrown,#8F6D4D);\">=</span><span style=\"color: var(--lwc-codeSnippetColorGreen,#04844B);\">\"https://www.salesforce.com/\"</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\"> </span><span style=\"color: var(--lwc-codeSnippetColorSlate,#68737C);\">target</span><span style=\"color: var(--lwc-codeSnippetColorBrown,#8F6D4D);\">=</span><span style=\"color: var(--lwc-codeSnippetColorGreen,#04844B);\">\"_blank\"</span><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&gt;</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\">Create a password</span><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&lt;/a&gt;&lt;/p&gt;&lt;br/&gt;&lt;p&gt;</span><span style=\"color: var(--lwc-codeSnippetColorBlack,#000000);\">If you don’t want to reset your password, you can ignore this email and we won’t change it.</span><span style=\"color: var(--lwc-codeSnippetColorBlue,#005FB2);\">&lt;/p&gt;</span></li></ol><p><br></p>"
+    },
+    {
+      "name": "HTMLTextTemplate",
+      "description": "",
+      "text": "<p>This is some <span style=\"color: rgb(41, 25, 215);\">body text </span>created using the rich text editor in the <b>Text Template</b> resource in <u style=\"font-size: 22px;\">Flow</u>.</p><p><br></p><p>This email is being sent to this set of email addresses that came from a string collection:</p><p><br></p><p>{!stringCollectionEmailAddresses}</p>"
+    },
+    {
+      "name": "plainTextBody",
+      "description": "",
+      "text": "<p>This is some body text created using the rich text editor in the Text Template resource in Flow.</p><p><br></p><p><br></p><p><br></p><p>This email is being sent to this set of email addresses that came from a string collection:</p><p>{!stringCollectionEmailAddresses}</p>"
+    },
+    {
+      "name": "plainTextVersion",
+      "description": "",
+      "text": "This is the plaintext version of the message."
+    }
+  ],
+  "stages": [],
+  "screens": [
+    {
+      "name": "screenConsole1",
+      "description": "",
+      "label": "screenConsole1",
+      "locationX": 712,
+      "locationY": 345,
+      "pausedText": "",
+      "fields": [
+        {
+          "choiceReferences": [],
+          "fieldText": "<p>Email Send Results:</p><p>IsSuccess: {!isSuccess}</p><p>Errors: </p>",
+          "fieldType": "DisplayText",
+          "helpText": "",
+          "inputParameters": [],
+          "isRequired": false,
+          "name": "dispResults",
+          "outputParameters": [],
+          "scale": 0
+        }
+      ],
+      "allowBack": true,
+      "allowFinish": true,
+      "allowPause": true,
+      "helpText": "",
+      "showFooter": true,
+      "showHeader": true
+    }
+  ],
+  "recordUpdates": [],
+  "recordLookups": [
+    {
+      "name": "Get_Contacts",
+      "description": "",
+      "label": "Get Contacts",
+      "locationX": 710,
+      "locationY": 50,
+      "connector": { "targetReference": "Get_LEads" },
+      "object": "Contact",
+      "filters": [
+        {
+          "field": "Email",
+          "operator": "Contains",
+          "value": { "stringValue": "edelstein" }
+        }
+      ],
+      "queriedFields": ["Id", "Email", "FirstName", "LastName"],
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": false
+    },
+    {
+      "name": "Get_Content_Document_Links",
+      "description": "",
+      "label": "Get Content Document Links",
+      "locationX": 249,
+      "locationY": 50,
+      "connector": { "targetReference": "Get_Template_ID" },
+      "object": "ContentDocumentLink",
+      "filters": [
+        {
+          "field": "LinkedEntityId",
+          "operator": "EqualTo",
+          "value": { "elementReference": "recordId" }
+        }
+      ],
+      "queriedFields": ["Id", "ContentDocumentId"],
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": false
+    },
+    {
+      "name": "Get_LEads",
+      "description": "",
+      "label": "Get LEads",
+      "locationX": 806,
+      "locationY": 50,
+      "connector": { "targetReference": "Send_Rich_Email" },
+      "object": "Lead",
+      "filters": [],
+      "queriedFields": null,
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": false
+    },
+    {
+      "name": "Get_Template_ID",
+      "description": "",
+      "label": "Get Template ID",
+      "locationX": 354,
+      "locationY": 50,
+      "connector": { "targetReference": "Get_Template_Target_Record" },
+      "object": "EmailTemplate",
+      "filters": [
+        {
+          "field": "Name",
+          "operator": "EqualTo",
+          "value": { "stringValue": "ApproveStep2" }
+        }
+      ],
+      "queriedFields": ["Id", "Name"],
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": true
+    },
+    {
+      "name": "Get_Template_Target_Record",
+      "description": "",
+      "label": "Get Template Target Record",
+      "locationX": 466,
+      "locationY": 50,
+      "connector": { "targetReference": "Get_Users" },
+      "object": "Contact",
+      "filters": [
+        {
+          "field": "FirstName",
+          "operator": "EqualTo",
+          "value": { "stringValue": "Diana" }
+        }
+      ],
+      "queriedFields": ["Id", "FirstName", "LastName"],
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": true
+    },
+    {
+      "name": "Get_Users",
+      "description": "",
+      "label": "Get Users",
+      "locationX": 591,
+      "locationY": 50,
+      "connector": { "targetReference": "Get_Contacts" },
+      "object": "User",
+      "filters": [
+        {
+          "field": "FirstName",
+          "operator": "EqualTo",
+          "value": { "stringValue": "George" }
+        }
+      ],
+      "queriedFields": ["Id", "Email", "FirstName", "LastName"],
+      "storeOutputAutomatically": true,
+      "getFirstRecordOnly": false
+    }
+  ],
+  "recordDeletes": [],
+  "recordCreates": [],
+  "formulas": [],
+  "apexPluginCalls": [],
+  "actionCalls": [
+    {
+      "name": "Send_Rich_Email",
+      "description": "",
+      "label": "Send Rich Email",
+      "locationX": 815,
+      "locationY": 185,
+      "connector": { "targetReference": "screenConsole1" },
+      "actionType": "apex",
+      "actionName": "SendRichEmail",
+      "inputParameters": [
+        {
+          "name": "replyEmailAddress",
+          "value": { "stringValue": "errorsFromEmail" }
+        },
+        {
+          "name": "SendTOthisStringCollectionOfEmailAddresses",
+          "value": { "stringValue": "StringVariableTest" }
+        }
+      ],
+      "outputParameters": [],
+      "storeOutputAutomatically": false
+    }
+  ]
+}

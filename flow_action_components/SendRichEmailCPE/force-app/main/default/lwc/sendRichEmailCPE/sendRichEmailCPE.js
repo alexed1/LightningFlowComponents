@@ -81,6 +81,7 @@ export default class SendRichEmailCPE extends LightningElement {
         HTMLbody: {value: null},
         plainTextBody: {value: null},
         recordId: {value: null},
+        SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null},
         templateTargetObjectID: {value: null},
         bodyOption: {value: this.settings.specifyBodyOption}
     };
@@ -200,6 +201,7 @@ export default class SendRichEmailCPE extends LightningElement {
     }
 
     dispatchFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {
+        console.log('inputs to dispatch:  id is ' + id + ' newValue is ' + newValue + 'newValueDataType is ' + newValueDataType);
         const valueChangedEvent = new CustomEvent('valuechanged', {
             bubbles: true,
             cancelable: false,
@@ -238,6 +240,26 @@ export default class SendRichEmailCPE extends LightningElement {
         if (this.inputValues[elementName]) {
             this.inputValues[elementName].value = event.detail.value;
         }
+        console.log('incoming event data: event currentTarget' + JSON.stringify(event.currentTarget));
+        console.log('incoming event data: event detail' + JSON.stringify(event.detail));
+        console.log('incoming event data: event target name is: ' + JSON.stringify(event.target.name));
+
+        //this.dispatchFlowValueChangeEvent(elementName, event.detail.value,'String' );
+        //testing dispatch of an SObject Collection: this.dispatchFlowValueChangeEvent(elementName, 'curContacts','Contact[]' );
+        this.dispatchFlowValueChangeEvent(elementName, 'Get_Template_Target_Record','Contact');
+
+
+    }
+
+
+    connectedCallback() {
+        console.log('entering connected callback');
+        console.log('_flowcontext is: ' +JSON.stringify(this._flowContext));
+        //console.log('xxxxxxx');
+        //console.log('property context is: ' +JSON.stringify(this.property));
+
+        //console.log('flowcontext is: ' +JSON.stringify(this.flowContext));
+
     }
 
     // Return a promise that resolve and return errors if any

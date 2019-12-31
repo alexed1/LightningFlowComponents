@@ -11,13 +11,16 @@
             <property name="value" label="Value" type="String"></property>
             <property name="choiceValues" label="Choice Values (String Collection)" type="String[]"></property>
             <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]"></property>
+            <property name="choiceIcons" label="Choice Icons (String Collection)" type="String[]"></property>
+            <property name="showIcons" label="Show Icons in Text Box?" type="Boolean"></property>
+            <property name="iconSize" label="Icon Size" type="String"></property>
             <property name="inputMode" label="Input Mode" type="String" ></property>
             <property name="masterLabel" label="Master Label" type="String"  ></property>
             <property name="required" label="Required" type="Boolean" default="false"></property>
             <property name="displayMode" label="Display Mode" type="String" ></property>
             <property name="recordTypeId" label="Record Type Id" type="String"  ></property>      
             <property name="objectAndFieldName" label="Object Name and Field Name (dot notation)" type="String" ></property>
-            <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"></property>
+            <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"></property>   
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

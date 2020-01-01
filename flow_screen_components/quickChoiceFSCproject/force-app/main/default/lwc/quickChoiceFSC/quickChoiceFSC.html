@@ -17,7 +17,7 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObjectTest
                                                 MockHttpResponseGenerator
 
-12/30/19 -  Eric Smith -    Version 1.14
+12/31/19 -  Eric Smith -    Version 1.17
                             Added visual textbox selection with or without icons
                             Fixed error handling when Required is set to True
 
@@ -29,7 +29,7 @@ Additional components packaged with this LWC:
 <template>
 
     <template if:true={showVisual}>
-        <template if:true={showIcons}>
+        <template if:true={includeIcons}>
             <!-- Display Visual Choice with Icons-->
             <fieldset class="slds-form-element">
                 <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
@@ -65,7 +65,7 @@ Additional components packaged with this LWC:
             </fieldset>
         </template>
 
-        <template if:false={showIcons}>
+        <template if:false={includeIcons}>
             <!-- Display Visual Choice without Icons-->
             <fieldset class="slds-form-element">
                 <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>

@@ -12,10 +12,10 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api choiceLabels;
 	@api choiceValues; //string collection
 	@api choiceIcons; 
-	@api showIcons;
+	@api includeIcons;
 	@api iconSize;
 	@api displayMode; //Picklist, Radio, Visual (3 different selection types)
-	@api allowNoneToBeChosen;
+	@api allowNoneToBeChosen; //For picklist field only
 
 	@api recordTypeId; //used for picklist fields
 
@@ -64,17 +64,6 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.picklistOptionsStorage = picklistOptions;
 			console.log("displayMode is" + this.displayMode);
 
-/* 			Redundant - removed v1.14 - Eric Smith
-			// Visual Picker Selection
-			if (this.displayMode === "Visual") {
-				this.showVisual = true;
-				this.showRadio = false;
-			}
-
-			if (this.displayMode === "Picklist") {
-				this.showRadio = false;
-			} */
-
 			if (this.inputMode === "Picklist Field") {
 				this.setPicklistOptions();
 			}
@@ -100,9 +89,9 @@ export default class SmartChoiceFSC extends LightningElement {
 		// Visual Picker Selection
 		if (this.displayMode === "Visual") {
 			this.showVisual = true;
-			console.log("showIcons is: " + this.showIcons);
+			console.log("includeIcons is: " + this.includeIcons);
 			console.log("choiceIcons is: " + this.choiceIcons);
-			if (!this.showIcons || !this.choiceIcons) {
+			if (!this.includeIcons || !this.choiceIcons) {
 				console.log("icons not needed");
 				this.choiceIcons = this.choiceLabels;
 			}

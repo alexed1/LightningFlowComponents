@@ -35,10 +35,10 @@ global with sharing class EvaluateFormula {
     global  class Requests {
        
       @InvocableVariable
-      public String formulaString;
+      global String formulaString;
 
        @InvocableVariable
-      public String contextDataString;
+      global String contextDataString;
         
     }
     
@@ -46,10 +46,10 @@ global with sharing class EvaluateFormula {
 
      
       @InvocableVariable
-      public String stringResult;
+      global String stringResult;
 
       @InvocableVariable
-      public Decimal numberResult;
+      global Decimal numberResult;
 
 
         }

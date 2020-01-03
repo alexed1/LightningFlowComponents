@@ -25,17 +25,17 @@ global with sharing class GetFirst {
 
     global class Requests {
       @InvocableVariable(required=true)
-      public List<SObject> inputCollection;
+      global List<SObject> inputCollection;
 
       @InvocableVariable
-      public Boolean enforceSingleMember; //not yet implemented
+      global Boolean enforceSingleMember; //not yet implemented
         
     }
     
     global class Results {
      
       @InvocableVariable
-      public SObject outputMember;
+      global SObject outputMember;
 
     }
 

@@ -36,10 +36,10 @@ global with sharing class FilterCollection {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable
-        public String formula;
+        global String formula;
 
     }
 
@@ -50,9 +50,9 @@ global with sharing class FilterCollection {
         }
 
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

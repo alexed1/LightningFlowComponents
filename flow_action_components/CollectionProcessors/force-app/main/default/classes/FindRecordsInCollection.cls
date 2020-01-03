@@ -58,16 +58,16 @@ global with sharing class FindRecordsInCollection {
 
     global class Requests {
       @InvocableVariable(required=true)
-      public List<SObject> inputCollection;
+      global List<SObject> inputCollection;
 
       @InvocableVariable
-      public String targetObject;
+      global String targetObject;
 
       @InvocableVariable
-      public String targetField;
+      global String targetField;
 
        @InvocableVariable
-      public String targetValue;
+      global String targetValue;
         
     }
     
@@ -79,9 +79,9 @@ global with sharing class FindRecordsInCollection {
         }
      
       @InvocableVariable
-      public SObject singleOutputMember;
+      global SObject singleOutputMember;
 
       @InvocableVariable
-      public List<SObject> multipleOutputMembers;
+      global List<SObject> multipleOutputMembers;
     }
 }

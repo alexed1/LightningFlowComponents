@@ -20,9 +20,9 @@ global with sharing class RemoveRecordInCollection {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
         @InvocableVariable(required=true)
-        public Integer index;
+        global Integer index;
     }
 
     global class Results {
@@ -32,6 +32,6 @@ global with sharing class RemoveRecordInCollection {
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

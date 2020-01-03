@@ -62,8 +62,8 @@ global class RegExps {
             }
         }
 
-        public String formula;
-        public String outputString;
+        global String formula;
+        global String outputString;
         public Map<String, String> referencesString;
         public Map<String, Decimal> referencesDecimal;
         public Map<String, DateTime> referencesDateTime;
@@ -74,12 +74,12 @@ global class RegExps {
         public Set<String> fields;
         public Map<String, Object> fieldValues;
         public Map<String, String> fieldTypes;
-        public String outputType;
+        global String outputType;
         global Object result { get; set; }
         global Boolean isError { get; set; }
         global String errorMessage { get; set; }
-        public String stackTrace { get; set; }
-        public Integer scale { get; set; }
+        global String stackTrace { get; set; }
+        global Integer scale { get; set; }
 
         public void replace(String origin, String value) {
             this.outputString = this.outputString.replace(' ' + origin + ' ', ' _S' + this.referencesString.size() + 'S_ ');

@@ -32,11 +32,11 @@ global with sharing class CountRecordsAndFields {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
         @InvocableVariable(required=true)
-        public String fieldName;
+        global String fieldName;
         @InvocableVariable(required=true)
-        public String fieldValue;
+        global String fieldValue;
     }
 
     global class Results {
@@ -46,10 +46,10 @@ global with sharing class CountRecordsAndFields {
             this.totalNumber = 0;
         }
         @InvocableVariable
-        public Integer matchedNumber;
+        global Integer matchedNumber;
         @InvocableVariable
-        public Integer totalNumber;
+        global Integer totalNumber;
         @InvocableVariable
-        public String errors;
+        global String errors;
     }
 }

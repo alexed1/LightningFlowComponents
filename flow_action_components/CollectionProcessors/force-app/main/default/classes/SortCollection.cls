@@ -48,10 +48,10 @@ global with sharing class SortCollection {
 
     global class SortableWrapper implements Comparable {
 
-        public SObject acc;
-        public String field;
-        public Integer direction;
-        public String fieldType;
+        global SObject acc;
+        global String field;
+        global Integer direction;
+        global String fieldType;
 
         public SortableWrapper(SObject acc, String field, Integer direction, String fieldType) {
             this.acc = acc;
@@ -119,10 +119,10 @@ global with sharing class SortCollection {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String sortKeys;
+        global String sortKeys;
 
     }
 
@@ -133,7 +133,7 @@ global with sharing class SortCollection {
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 
     private class SortKeys {

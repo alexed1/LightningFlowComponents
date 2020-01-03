@@ -36,17 +36,17 @@ global with sharing class ExtractStringsFromCollection {
       }
 
       @InvocableVariable //don't make required because it blows up if user passes in null
-      public List<SObject> inputCollection; 
+      global List<SObject> inputCollection; 
 
       @InvocableVariable(required=true)
-      public String fieldName;
+      global String fieldName;
         
     }
     
     global class Results {
      
       @InvocableVariable
-      public List<String> stringList;
+      global List<String> stringList;
 
     }
 

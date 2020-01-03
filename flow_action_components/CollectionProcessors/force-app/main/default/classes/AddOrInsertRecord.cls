@@ -24,11 +24,11 @@ global with sharing class AddOrInsertRecord {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
         @InvocableVariable(required=true)
-        public SObject inputRecord;
+        global SObject inputRecord;
         @InvocableVariable
-        public Integer index;
+        global Integer index;
     }
 
     global class Results {
@@ -38,6 +38,6 @@ global with sharing class AddOrInsertRecord {
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

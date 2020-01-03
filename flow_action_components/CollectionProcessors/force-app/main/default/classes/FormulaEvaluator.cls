@@ -462,8 +462,8 @@ global  with sharing class FormulaEvaluator {
     }
 
     global class ContextWrapper {
-        public String name;
-        public String value;
+        global String name;
+        global String value;
 
         public ContextWrapper(String name, String value) {
             this.name = name;

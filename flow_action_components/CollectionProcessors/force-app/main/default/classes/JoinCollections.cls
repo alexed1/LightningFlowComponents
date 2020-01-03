@@ -18,9 +18,9 @@ global with sharing class JoinCollections {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection2;
+        global List<SObject> inputCollection2;
     }
 
     global class Results {
@@ -30,6 +30,6 @@ global with sharing class JoinCollections {
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

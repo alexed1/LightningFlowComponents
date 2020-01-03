@@ -17,7 +17,7 @@ global with sharing class CopyCollection {
 
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
     }
 
     global class Results {
@@ -27,6 +27,6 @@ global with sharing class CopyCollection {
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

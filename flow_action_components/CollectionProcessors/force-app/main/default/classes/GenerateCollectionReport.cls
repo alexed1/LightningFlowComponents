@@ -30,17 +30,17 @@ global with sharing class GenerateCollectionReport {
     }
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String shownFields;
+        global String shownFields;
 
     }
 
     global class Results {
 
         @InvocableVariable
-        public String reportString;
+        global String reportString;
 
     }
 }

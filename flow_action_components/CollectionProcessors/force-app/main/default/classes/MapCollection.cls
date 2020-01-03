@@ -44,10 +44,10 @@ global with sharing class MapCollection {
     }
     global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String keyValuePairs;
+        global String keyValuePairs;
 
     }
 
@@ -57,9 +57,9 @@ global with sharing class MapCollection {
             outputCollection = new List<SObject>();
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

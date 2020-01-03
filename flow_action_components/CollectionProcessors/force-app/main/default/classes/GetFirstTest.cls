@@ -1,5 +1,5 @@
 @isTest
-public class GetFirstTest {
+global class GetFirstTest {
 
     @isTest
     static void GetFirstReturnsFirstResult() {

@@ -1,8 +1,8 @@
-public with sharing class GetFirst {
+global with sharing class GetFirst {
   
   
     @InvocableMethod
-    public static List <Results> execute (List<Requests> requestList) {
+    global static List <Results> execute (List<Requests> requestList) {
         System.debug('entering getFirst');
         List<SObject>  inputCollection = requestList[0].inputCollection;
         Boolean enforceSingle = requestList[0].enforceSingleMember;
@@ -23,7 +23,7 @@ public with sharing class GetFirst {
     
     }
 
-    public class Requests {
+    global class Requests {
       @InvocableVariable(required=true)
       public List<SObject> inputCollection;
 
@@ -32,7 +32,7 @@ public with sharing class GetFirst {
         
     }
     
-    public class Results {
+    global class Results {
      
       @InvocableVariable
       public SObject outputMember;

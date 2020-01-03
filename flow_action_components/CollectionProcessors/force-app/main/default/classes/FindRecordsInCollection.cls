@@ -1,7 +1,7 @@
-public with sharing class FindRecordsInCollection {
+global with sharing class FindRecordsInCollection {
    
     @InvocableMethod
-    public static List <Results> execute (List<Requests> requestList) {
+    global static List <Results> execute (List<Requests> requestList) {
         System.debug('entering FindRecordInCollection');
         List<SObject>  inputCollection = requestList[0].inputCollection;
         String targetField = requestList[0].targetField;
@@ -41,7 +41,7 @@ public with sharing class FindRecordsInCollection {
 
     //given the name of a field, return the actual field itself
     //ref https://salesforce.stackexchange.com/a/192792/24822
-    public static Schema.SobjectField getFieldByName (String objectName, String fieldName) {
+    global static Schema.SobjectField getFieldByName (String objectName, String fieldName) {
 
         // get the SObjectType
         Schema.SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
@@ -56,7 +56,7 @@ public with sharing class FindRecordsInCollection {
     }
 
 
-    public  class Requests {
+    global class Requests {
       @InvocableVariable(required=true)
       public List<SObject> inputCollection;
 
@@ -71,7 +71,7 @@ public with sharing class FindRecordsInCollection {
         
     }
     
-    public  class Results {
+    global class Results {
 
         public Results() {
            

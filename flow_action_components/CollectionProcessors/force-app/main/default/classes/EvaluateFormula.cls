@@ -1,7 +1,7 @@
-public with sharing class EvaluateFormula {
+global with sharing class EvaluateFormula {
    
     @InvocableMethod
-    public static List <Results> evaluate (List<Requests> requestList) {
+    global static List <Results> evaluate (List<Requests> requestList) {
         System.debug('entering Evaluate Formula');
 
 
@@ -32,7 +32,7 @@ public with sharing class EvaluateFormula {
 
     
 
-    public  class Requests {
+    global  class Requests {
        
       @InvocableVariable
       public String formulaString;
@@ -42,7 +42,7 @@ public with sharing class EvaluateFormula {
         
     }
     
-    public  class Results {
+    global  class Results {
 
      
       @InvocableVariable

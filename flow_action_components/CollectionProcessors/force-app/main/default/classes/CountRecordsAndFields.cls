@@ -1,7 +1,7 @@
 
-public with sharing class CountRecordsAndFields {
+global with sharing class CountRecordsAndFields {
     @InvocableMethod
-    public static List <Results> count(List<Requests> requestList) {
+    global static List <Results> count(List<Requests> requestList) {
 
         List<SObject> records = requestList[0].inputCollection;
         String fieldName = requestList[0].fieldName;
@@ -30,7 +30,7 @@ public with sharing class CountRecordsAndFields {
 
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
         public List<SObject> inputCollection;
         @InvocableVariable(required=true)
@@ -39,7 +39,7 @@ public with sharing class CountRecordsAndFields {
         public String fieldValue;
     }
 
-    public class Results {
+    global class Results {
         public Results() {
             this.errors = '';
             this.matchedNumber = 0;

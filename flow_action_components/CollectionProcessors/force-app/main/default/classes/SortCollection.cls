@@ -1,6 +1,6 @@
 global with sharing class SortCollection {
     @InvocableMethod
-    public static List <Results> sort(List<Requests> requestList) {
+    global static List <Results> sort(List<Requests> requestList) {
         List<String> rawData = requestList[0].sortKeys.replaceAll('"+| +', '').split(',');
         SortKeys sk = new SortKeys();
         for (String rd : rawData) {
@@ -117,7 +117,7 @@ global with sharing class SortCollection {
         return resultMap;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
         public List<SObject> inputCollection;
 
@@ -126,7 +126,7 @@ global with sharing class SortCollection {
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();

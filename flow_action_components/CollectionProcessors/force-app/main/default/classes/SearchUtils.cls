@@ -20,7 +20,7 @@ global with sharing class SearchUtils {
             'RelatedUsers', 'Owner', 'Creator'
     };
 
-    public static final Map<String, String> TYPE_TO_ID_FIELD = new Map<String, String>{
+    global static final Map<String, String> TYPE_TO_ID_FIELD = new Map<String, String>{
             'User' => 'UserName',
             'Group' => 'DeveloperName',
             'Queue' => 'DeveloperName',
@@ -30,7 +30,7 @@ global with sharing class SearchUtils {
 
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, List<Member>> searchMemberByType(List<String> memberTypes, String searchString) {
+    global static Map<String, List<Member>> searchMemberByType(List<String> memberTypes, String searchString) {
         Map<String, List<Member>> resultMap = new Map<String, List<Member>>();
 
         for (String curType : TYPE_TO_SOBJECT.keySet()) {
@@ -52,14 +52,14 @@ global with sharing class SearchUtils {
         return resultMap;
     }
     @AuraEnabled(cacheable=true)
-    public static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
+    global static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
         return getMembersByTypeAndId(new Map<String, Set<String>>{
                 type => new Set<String>{
                         id
                 }
         });
     }
-    public static Map<String, SObject> getMembersByTypeAndId(Map<String, Set<String>> typeToIds) {
+    global static Map<String, SObject> getMembersByTypeAndId(Map<String, Set<String>> typeToIds) {
 
         Map<String, SObject> results = new Map<String, SObject>();
         for (String sObjectTypeName : typeToIds.keySet()) {
@@ -94,7 +94,7 @@ global with sharing class SearchUtils {
     }
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, List<Member>> describeSObjects(List<String> types) {
+    global static Map<String, List<Member>> describeSObjects(List<String> types) {
 
         Map<String, List<SearchUtils.Member>> objectToFieldDescribe = new Map<String, List<SearchUtils.Member>>();
         if (types == null || types.isEmpty()) {

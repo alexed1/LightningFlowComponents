@@ -1,7 +1,7 @@
-public with sharing class ExtractStringsFromCollection {
+global with sharing class ExtractStringsFromCollection {
   
     @InvocableMethod
-    public static List <Results> extract (List<Requests> requestList) {
+    global static List <Results> extract (List<Requests> requestList) {
         System.debug('entering ExtractStringsFromCollection');
         List<String> outputStrings =  new List<String>();
         
@@ -29,7 +29,7 @@ public with sharing class ExtractStringsFromCollection {
     
     }
 
-    public class Requests {
+    global class Requests {
 
       public Requests () {
         this.inputCollection = new List<SObject>();
@@ -43,7 +43,7 @@ public with sharing class ExtractStringsFromCollection {
         
     }
     
-    public class Results {
+    global class Results {
      
       @InvocableVariable
       public List<String> stringList;

@@ -1,6 +1,6 @@
-public with sharing class RemoveRecordInCollection {
+global with sharing class RemoveRecordInCollection {
     @InvocableMethod
-    public static List <Results> removeRecordByIndex(List<Requests> requestList) {
+    global static List <Results> removeRecordByIndex(List<Requests> requestList) {
 
         Results response = new Results();
 
@@ -18,14 +18,14 @@ public with sharing class RemoveRecordInCollection {
         return responseWrapper;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
         public List<SObject> inputCollection;
         @InvocableVariable(required=true)
         public Integer index;
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();

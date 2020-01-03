@@ -1,10 +1,10 @@
-public with sharing class GetLayoutFields {
+global with sharing class GetLayoutFields {
     public GetLayoutFields() {
 
     }
 
     @InvocableMethod
-    public static List <Results> get(List<Requests> requestList) {
+    global static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
         String layoutName = requestList[0].layoutName;
         String objectName = requestList[0].objectName;
@@ -39,7 +39,7 @@ public with sharing class GetLayoutFields {
     }
 
 
-    public class Requests {
+    global class Requests {
        
         @InvocableVariable 
         public String layoutName;
@@ -49,7 +49,7 @@ public with sharing class GetLayoutFields {
 
     }
 
-    public class Results {
+    global class Results {
 
        
         @InvocableVariable

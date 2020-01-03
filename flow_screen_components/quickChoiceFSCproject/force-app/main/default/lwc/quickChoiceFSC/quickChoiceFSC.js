@@ -23,7 +23,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api fieldName; //used for picklist fields
 	masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
 	@api objectAndFieldName;
-
+	//tempcalculatedObjectAndFieldName = this.objectName + '.' + this.fieldName;
 	@api inputMode;
 	@api required;
 	picklistOptionsStorage;
@@ -44,10 +44,11 @@ export default class SmartChoiceFSC extends LightningElement {
 	@wire(getPicklistValues, {
 		recordTypeId: "$recordTypeId",
 		fieldApiName: "$objectAndFieldName"
+		//fieldApiName: "$calculatedObjectAndFieldName"
 	})
 	picklistValues({ error, data }) {
 		if (data) {
-			console.log("inside picklist wiring");
+			console.log("gtPicklistValues returned data");
 
 			let picklistOptions = [];
 			if (this.allowNoneToBeChosen) 
@@ -71,17 +72,28 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.error = JSON.stringify(error);
 			console.log("getPicklistValues wire service returned error: " + this.error);
 			console.log("object and field " + this.objectAndFieldName);
-			if (!this.objectAndFieldName)
-				throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
+			//if (!this.objectAndFieldName)
+			//	throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
 		}
 	}
+
+	get calculatedObjectAndFieldName() {
+		console.log ('in getter: objectApiName is: ' + this.objectName);
+		console.log ('in getter: fieldApiName is: ' + this.fieldName);
+
+        if ((this.objectName) && (this.fieldName)) {
+			console.log('satisfied calculatedObjectAndFieldName test');
+            return `${this.objectName}.${this.fieldName}`;
+        }
+        return undefined;
+    }
 
 	setPicklistOptions() {
 		this.options = this.picklistOptionsStorage;
 	}
 
 	connectedCallback() {
-		console.log("initializing smartchoice");
+		console.log("Entering Connected Callback for smartchoice");
 		console.log("recordtypeId is: " + this.recordTypeId);
 		console.log("objectFieldName is: " + this.objectAndFieldName);
 		if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
@@ -102,7 +114,7 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.showRadio = false;
 		}
 
-		console.log("initializing smartChoice. inputMode is: " + this.inputMode);
+		//console.log("initializing smartChoice. inputMode is: " + this.inputMode);
 		let options = [];
 		let items = [];	//parameters for visual text box selection
 		let index = 0;

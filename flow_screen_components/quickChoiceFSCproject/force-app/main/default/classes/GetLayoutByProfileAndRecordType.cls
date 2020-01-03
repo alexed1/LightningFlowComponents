@@ -1,8 +1,8 @@
-public with sharing class GetLayoutByProfileAndRecordType {
+global with sharing class GetLayoutByProfileAndRecordType {
  
 
     @InvocableMethod
-    public static List <Results> get(List<Requests> requestList) {
+    global static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
         String profileId = requestList[0].profileId;
         String recordTypeId = requestList[0].recordTypeId;
@@ -76,7 +76,7 @@ public with sharing class GetLayoutByProfileAndRecordType {
 
 
     }
-    public class Requests {
+    global class Requests {
        
         @InvocableVariable 
         public String profileId;
@@ -86,7 +86,7 @@ public with sharing class GetLayoutByProfileAndRecordType {
 
     }
 
-    public class Results {
+    global class Results {
 
        
         @InvocableVariable

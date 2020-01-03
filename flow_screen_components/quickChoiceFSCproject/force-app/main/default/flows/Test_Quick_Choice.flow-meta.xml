@@ -101,7 +101,7 @@
         </connector>
         <fields>
             <name>QuickChoiceVisual_0</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -173,7 +173,7 @@
         </connector>
         <fields>
             <name>QCR</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -233,7 +233,7 @@
         </connector>
         <fields>
             <name>QuickChoiceRadio</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -293,7 +293,7 @@
         </connector>
         <fields>
             <name>QuickChoiceVisual</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>

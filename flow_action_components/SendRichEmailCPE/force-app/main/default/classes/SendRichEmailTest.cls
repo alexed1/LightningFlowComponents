@@ -15,17 +15,17 @@ public with sharing class SendRichEmailTest {
     @isTest
     public static void CanSendEmail () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendRichEmail.Request testReq = new SendRichEmail.Request();
         testReq.HTMLbody = 'this is the body';
         testReq.Subject = 'this is the subject';
         testReq.SendTOthisOneEmailAddress = 'test@foo.com';
         testReq.SendCCthisOneEmailAddress = 'test@foo.com';
         testReq.SendBCCthisOneEmailAddress = 'test@foo.com';
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendRichEmail.Request> reqList = new List<SendRichEmail.Request>();
         reqList.add(testReq);
 
-        List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+        List<SendRichEmail.Response> testResponseList = SendRichEmail.SendEmail(reqList);
 	    
         Boolean EmailDeliverabilityEnabled = EmailDeliverabilityEnabled();
         if(EmailDeliverabilityEnabled){
@@ -39,15 +39,15 @@ public with sharing class SendRichEmailTest {
     @isTest
     public static void errorIfNoAddress () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendRichEmail.Request testReq = new SendRichEmail.Request();
         testReq.HTMLbody = 'this is the body';
         testReq.Subject = 'this is the subject';
         //testReq.SendTOthisOneEmailAddress = 'test@foo.com';
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendRichEmail.Request> reqList = new List<SendRichEmail.Request>();
         reqList.add(testReq);
 
-        List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+        List<SendRichEmail.Response> testResponseList = SendRichEmail.SendEmail(reqList);
         System.assertEquals(testResponseList[0].isSuccess,false);
 
 
@@ -57,19 +57,19 @@ public with sharing class SendRichEmailTest {
     @isTest
     public static void errorIfBothTemplateandBody () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendRichEmail.Request testReq = new SendRichEmail.Request();
         testReq.HTMLbody = 'this is the body';
         testReq.templateID = 'temp';
         testReq.Subject = 'this is the subject';
         testReq.SendTOthisOneEmailAddress = 'test@foo.com';
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendRichEmail.Request> reqList = new List<SendRichEmail.Request>();
         reqList.add(testReq);
         Boolean exceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendRichEmail.Response> testResponseList = SendRichEmail.SendEmail(reqList);
         
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendRichEmail.InvocableActionException e) {
             exceptionHit=true;
         }
         System.assertEquals(true, exceptionHit);
@@ -81,19 +81,19 @@ public with sharing class SendRichEmailTest {
      @isTest
     public static void errorIfTemplateButNoContextRecord () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+         SendRichEmail.Request testReq = new SendRichEmail.Request();
         //testReq.HTMLbody = 'this is the body';
         testReq.templateID = 'temp';
         testReq.Subject = 'this is the subject';
         testReq.SendTOthisOneEmailAddress = 'test@foo.com';
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendRichEmail.Request> reqList = new List<SendRichEmail.Request>();
         reqList.add(testReq);
 		Boolean exceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendRichEmail.Response> testResponseList = SendRichEmail.SendEmail(reqList);
         
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendRichEmail.InvocableActionException e) {
             exceptionHit=true;
         }
         System.assertEquals(true, exceptionHit);

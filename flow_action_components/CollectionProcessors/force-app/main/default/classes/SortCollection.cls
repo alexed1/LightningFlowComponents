@@ -1,6 +1,6 @@
 global with sharing class SortCollection {
     @InvocableMethod
-    public static List <Results> sort(List<Requests> requestList) {
+    global static List <Results> sort(List<Requests> requestList) {
         List<String> rawData = requestList[0].sortKeys.replaceAll('"+| +', '').split(',');
         SortKeys sk = new SortKeys();
         for (String rd : rawData) {
@@ -48,10 +48,10 @@ global with sharing class SortCollection {
 
     global class SortableWrapper implements Comparable {
 
-        public SObject acc;
-        public String field;
-        public Integer direction;
-        public String fieldType;
+        global SObject acc;
+        global String field;
+        global Integer direction;
+        global String fieldType;
 
         public SortableWrapper(SObject acc, String field, Integer direction, String fieldType) {
             this.acc = acc;
@@ -117,23 +117,23 @@ global with sharing class SortCollection {
         return resultMap;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String sortKeys;
+        global String sortKeys;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 
     private class SortKeys {

@@ -1,6 +1,6 @@
-public with sharing class JoinCollections {
+global with sharing class JoinCollections {
     @InvocableMethod
-    public static List <Results> joinCollections(List<Requests> requestList) {
+    global static List <Results> joinCollections(List<Requests> requestList) {
 
         Results response = new Results();
         if (requestList[0].inputCollection != null && !requestList[0].inputCollection.isEmpty()) {
@@ -16,20 +16,20 @@ public with sharing class JoinCollections {
         return responseWrapper;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection2;
+        global List<SObject> inputCollection2;
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

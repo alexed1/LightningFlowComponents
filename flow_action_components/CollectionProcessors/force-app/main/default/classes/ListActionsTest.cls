@@ -229,7 +229,7 @@ public with sharing class ListActionsTest {
         System.assertEquals(((Account) responseWrapper[0].outputCollection[NUMBER_OF_TEST_RECORDS - 1]).Name, firstAccountName);
     }
 
-    public static List<Account> createAccounts(Integer numberOfRecords, Boolean doInsert) {
+     static List<Account> createAccounts(Integer numberOfRecords, Boolean doInsert) {
 
         List<Account> returnList = new List<Account>();
         for (Integer i = 0; i < numberOfRecords; i++) {

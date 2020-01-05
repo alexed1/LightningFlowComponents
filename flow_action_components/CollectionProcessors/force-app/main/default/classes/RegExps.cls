@@ -1,25 +1,25 @@
 global class RegExps {
 
-    public static final String EXP_NULL = '(?i:NULL)';
-    public static final String EXP_BOOLEAN = '(?i:TRUE|FALSE)';
-    public static final String EXP_STRING = '"([^"|\"])*"';
-    public static final String EXP_NUMBER = '[0-9]*\\.?[0-9]+';
-    public static final String EXP_DATE = '[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}';
-    public static final String EXP_DATETIME = EXP_DATE + '(T[0-9]{2}:[0-9]{2}:[0-9]{2})?';
-    public static final String EXP_VALUE = '(' + EXP_NULL + '|' + EXP_STRING + '|' + EXP_NUMBER + '|' + EXP_DATE + '|' + EXP_DATETIME + '|' + EXP_BOOLEAN + ')';
-    public static final String EXP_OPERAND = '(_[S|N|D|B|T][0-9]+[S|N|D|B|T]_)';
-    public static final String EXP_NUMBER_TOKEN = '(_D[0-9]+D_)';
-    public static final String EXP_MATH_EXPRESSION_COMPONENT = EXP_NUMBER_TOKEN + '|\\+|\\-|\\*|/';
-    public static final String EXP_MULTILINE_COMMENT = '/\\*.+?(?=\\*/)\\*/';
-    public static final String EXP_BOOLEAN_TOKEN = '(_B[0-9]+B_)';
-    public static final String EXP_DATETIME_TOKEN = '(_T[0-9]+T_)';
-    public static final String EXP_NULL_TOKEN = '(_N[0-9]+N_)';
-    public static final String EXP_STRING_TOKEN = '(_S[0-9]+S_)';
-    public static final String EXP_CUSTOM_SETTING_POLISH = '(\\$SETUP\\.[A-Z][A-Z_0-9]{2,40}__C(\\[\\s*' + EXP_STRING + '\\s*\\])?\\.[A-Z][A-Z_0-9]{2,40}__C)';
-    public static final String EXP_MATH_EXPRESSION_TOKEN_DELIMITER = '_@_';
-    public static final String EXP_COMPARE_EXPRESSION = '(' + EXP_OPERAND + ' (_O[0-9]O_) ' + EXP_OPERAND + ')';
+    global static final String EXP_NULL = '(?i:NULL)';
+    global static final String EXP_BOOLEAN = '(?i:TRUE|FALSE)';
+    global static final String EXP_STRING = '"([^"|\"])*"';
+    global static final String EXP_NUMBER = '[0-9]*\\.?[0-9]+';
+    global static final String EXP_DATE = '[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}';
+    global static final String EXP_DATETIME = EXP_DATE + '(T[0-9]{2}:[0-9]{2}:[0-9]{2})?';
+    global static final String EXP_VALUE = '(' + EXP_NULL + '|' + EXP_STRING + '|' + EXP_NUMBER + '|' + EXP_DATE + '|' + EXP_DATETIME + '|' + EXP_BOOLEAN + ')';
+    global static final String EXP_OPERAND = '(_[S|N|D|B|T][0-9]+[S|N|D|B|T]_)';
+    global static final String EXP_NUMBER_TOKEN = '(_D[0-9]+D_)';
+    global static final String EXP_MATH_EXPRESSION_COMPONENT = EXP_NUMBER_TOKEN + '|\\+|\\-|\\*|/';
+    global static final String EXP_MULTILINE_COMMENT = '/\\*.+?(?=\\*/)\\*/';
+    global static final String EXP_BOOLEAN_TOKEN = '(_B[0-9]+B_)';
+    global static final String EXP_DATETIME_TOKEN = '(_T[0-9]+T_)';
+    global static final String EXP_NULL_TOKEN = '(_N[0-9]+N_)';
+    global static final String EXP_STRING_TOKEN = '(_S[0-9]+S_)';
+    global static final String EXP_CUSTOM_SETTING_POLISH = '(\\$SETUP\\.[A-Z][A-Z_0-9]{2,40}__C(\\[\\s*' + EXP_STRING + '\\s*\\])?\\.[A-Z][A-Z_0-9]{2,40}__C)';
+    global static final String EXP_MATH_EXPRESSION_TOKEN_DELIMITER = '_@_';
+    global static final String EXP_COMPARE_EXPRESSION = '(' + EXP_OPERAND + ' (_O[0-9]O_) ' + EXP_OPERAND + ')';
 
-    public static final Map<String, String> COMPARE_OPERATORS = new Map<String, String>{
+    global static final Map<String, String> COMPARE_OPERATORS = new Map<String, String>{
             '<=' => '_O0O_',
             '>=' => '_O1O_',
             '==' => '_O2O_',
@@ -29,12 +29,12 @@ global class RegExps {
             '=' => '_O2O_'
     };
 
-    public static final String EXP_BINARY_MATH_OPERATOR_HIGH = '(' + EXP_NUMBER_TOKEN + '((\\s*([*/])\\s*' + EXP_NUMBER_TOKEN + ')+))';
-    public static final String EXP_BINARY_MATH_OPERATOR_LOW = '(' + EXP_NUMBER_TOKEN + '((\\s*([+-])\\s*' + EXP_NUMBER_TOKEN + ')+))';
-    public static final String EXP_BINARY_MATH_OPERATOR_HIGH_INNER = '\\s*([*/])\\s*' + EXP_NUMBER_TOKEN;
-    public static final String EXP_BINARY_MATH_OPERATOR_LOW_INNER = '\\s*([+-])\\s*' + EXP_NUMBER_TOKEN;
-    public static final String EXP_IF = 'IF\\s*\\(\\s*' + EXP_BOOLEAN_TOKEN + '\\s*,\\s*' + EXP_OPERAND + '\\s*,\\s*' + EXP_OPERAND + '\\s*\\)';
-    public static final String EXP_CASE = 'CASE\\s*\\(\\s*' + EXP_OPERAND + '\\s*(,\\s*' + EXP_OPERAND + '\\s*)*\\)';
+    global static final String EXP_BINARY_MATH_OPERATOR_HIGH = '(' + EXP_NUMBER_TOKEN + '((\\s*([*/])\\s*' + EXP_NUMBER_TOKEN + ')+))';
+    global static final String EXP_BINARY_MATH_OPERATOR_LOW = '(' + EXP_NUMBER_TOKEN + '((\\s*([+-])\\s*' + EXP_NUMBER_TOKEN + ')+))';
+    global static final String EXP_BINARY_MATH_OPERATOR_HIGH_INNER = '\\s*([*/])\\s*' + EXP_NUMBER_TOKEN;
+    global static final String EXP_BINARY_MATH_OPERATOR_LOW_INNER = '\\s*([+-])\\s*' + EXP_NUMBER_TOKEN;
+    global static final String EXP_IF = 'IF\\s*\\(\\s*' + EXP_BOOLEAN_TOKEN + '\\s*,\\s*' + EXP_OPERAND + '\\s*,\\s*' + EXP_OPERAND + '\\s*\\)';
+    global static final String EXP_CASE = 'CASE\\s*\\(\\s*' + EXP_OPERAND + '\\s*(,\\s*' + EXP_OPERAND + '\\s*)*\\)';
 
     global class ParserContext {
 
@@ -62,8 +62,8 @@ global class RegExps {
             }
         }
 
-        public String formula;
-        public String outputString;
+        global String formula;
+        global String outputString;
         public Map<String, String> referencesString;
         public Map<String, Decimal> referencesDecimal;
         public Map<String, DateTime> referencesDateTime;
@@ -74,12 +74,12 @@ global class RegExps {
         public Set<String> fields;
         public Map<String, Object> fieldValues;
         public Map<String, String> fieldTypes;
-        public String outputType;
+        global String outputType;
         global Object result { get; set; }
         global Boolean isError { get; set; }
         global String errorMessage { get; set; }
-        public String stackTrace { get; set; }
-        public Integer scale { get; set; }
+        global String stackTrace { get; set; }
+        global Integer scale { get; set; }
 
         public void replace(String origin, String value) {
             this.outputString = this.outputString.replace(' ' + origin + ' ', ' _S' + this.referencesString.size() + 'S_ ');
@@ -108,7 +108,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateMathExpressions(ParserContext context) {
+    global static void evaluateMathExpressions(ParserContext context) {
 
         String[] formulaSplit = context.outputString.trim().split('\\s+');
         String pieceOfExpression = null;
@@ -222,11 +222,11 @@ global class RegExps {
         clearMinusAndPlus(context);
     }
 
-    public static void clearParentesis(ParserContext context) {
+    global static void clearParentesis(ParserContext context) {
         clearParentesis(context, 'ALL');
     }
 
-    public static void clearParentesis(ParserContext context, String type) {
+    global static void clearParentesis(ParserContext context, String type) {
 
         if (String.isBlank(type)) {
             type = 'ALL';
@@ -261,7 +261,7 @@ global class RegExps {
         }
     }
 
-    public static void wrapParentesis(ParserContext context, String type) {
+    global static void wrapParentesis(ParserContext context, String type) {
 
         if (String.isBlank(type)) {
             type = 'ALL';
@@ -295,7 +295,7 @@ global class RegExps {
         }
     }
 
-    public static void clearMinusAndPlus(ParserContext context) {
+    global static void clearMinusAndPlus(ParserContext context) {
         Pattern myPattern = pattern.compile('([+-/*])\\s*([+-])\\s*' + EXP_NUMBER_TOKEN);
         Matcher m = myPattern.matcher(context.outputString);
         while (m.find()) {
@@ -312,7 +312,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateBinaryOperations(ParserContext context, String actualExpression, String regexp, String innerRegExp) {
+    global static void evaluateBinaryOperations(ParserContext context, String actualExpression, String regexp, String innerRegExp) {
 
         actualExpression = actualExpression.trim();
         String[] tmpSplit = actualExpression.split(EXP_MATH_EXPRESSION_TOKEN_DELIMITER);
@@ -370,7 +370,7 @@ global class RegExps {
         context.outputString = context.outputString.replace(toBeReplaced, startingToken + ' ' + expression.trim() + ' ' + endingToken);
     }
 
-    public static void evaluateStringOperations(ParserContext context) {
+    global static void evaluateStringOperations(ParserContext context) {
 
         Pattern myPattern = pattern.compile('(' + EXP_NULL_TOKEN + '|' + EXP_STRING_TOKEN + ')(\\s+\\+\\s+(' + EXP_NULL_TOKEN + '|' + EXP_STRING_TOKEN + '))+');
         Pattern tmpPattern = pattern.compile(EXP_STRING_TOKEN);
@@ -392,7 +392,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateMathFunctions(ParserContext context) {
+    global static void evaluateMathFunctions(ParserContext context) {
 
         Pattern myPattern = pattern.compile('(ABS|ROUND|CEIL|FLOOR|SQRT|ACOS|ASIN|ATAN|COS|SIN|TAN|COSH|SINH|TANH|EXP|LOG|LOG10|RINT|SIGNUM|INTEGER)\\s*\\(\\s*' + EXP_OPERAND + '\\s*\\)');
         Matcher m = myPattern.matcher(context.outputString);
@@ -498,7 +498,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateTypeConversionFunctions(ParserContext context) {
+    global static void evaluateTypeConversionFunctions(ParserContext context) {
 
         Pattern myPattern = pattern.compile('(TEXT|DATETIME|INTEGER|DECIMAL|BOOLEAN|DATE)\\s*\\(\\s*' + EXP_OPERAND + '\\s*\\)');
         Matcher m = myPattern.matcher(context.outputString);
@@ -638,7 +638,7 @@ global class RegExps {
         return 'NONE';
     }
 
-    public static void evaluateDateTimeFunctions(ParserContext context) {
+    global static void evaluateDateTimeFunctions(ParserContext context) {
 
         Pattern myPattern = pattern.compile('(DATE)\\s*\\(\\s*' + EXP_OPERAND + '\\s*,\\s*' + EXP_OPERAND + '\\s*,\\s*' + EXP_OPERAND + '\\s*\\)');
         Matcher m = myPattern.matcher(context.outputString);
@@ -856,7 +856,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateStringFunctions(ParserContext context) {
+    global static void evaluateStringFunctions(ParserContext context) {
 
         final String LEN_FN = '((LEN|ISBLANK)\\s*\\(\\s*(' + EXP_OPERAND + ')\\s*\\))';
         final String SUBSTRING_FN = '((SUBSTRING|MID)\\s+\\(\\s+' + EXP_OPERAND + '\\s+,\\s+' + EXP_OPERAND + '\\s+,\\s+' + EXP_OPERAND + '\\s+\\))';
@@ -1134,7 +1134,7 @@ global class RegExps {
         }
     }
 
-    public static void evaluateCompareExpressions(ParserContext context) {
+    global static void evaluateCompareExpressions(ParserContext context) {
 
         Pattern myPattern = pattern.compile(EXP_COMPARE_EXPRESSION);
         Matcher m = myPattern.matcher(context.outputString);
@@ -1260,7 +1260,7 @@ global class RegExps {
         context.outputString = context.outputString.replaceAll('\\s+', ' ');
     }
 
-    public static void evaluateFlowExpressions(ParserContext context) {
+    global static void evaluateFlowExpressions(ParserContext context) {
 
         Pattern myPattern = pattern.compile(EXP_IF);
         Matcher m = myPattern.matcher(context.outputString);
@@ -1317,7 +1317,7 @@ global class RegExps {
 
     }
 
-    public static void evaluateFlowExpressionsCASE(ParserContext context) {
+    global static void evaluateFlowExpressionsCASE(ParserContext context) {
 
         Pattern myPattern = pattern.compile(EXP_CASE);
         Pattern myPatternInternal = pattern.compile(EXP_OPERAND);
@@ -1427,7 +1427,7 @@ global class RegExps {
 
     }
 
-    public static void evaluateBooleanExpressions(ParserContext context) {
+    global static void evaluateBooleanExpressions(ParserContext context) {
 
         Pattern myPattern = pattern.compile('(AND|OR)\\s*\\(\\s*' + EXP_OPERAND + '(\\s*,\\s*' + EXP_OPERAND + ')+\\s*\\)');
         Matcher m = myPattern.matcher(context.outputString);
@@ -1554,7 +1554,7 @@ global class RegExps {
         context.outputString = context.outputString.replaceAll('\\s+', ' ');
     }
 
-    public static Object evaluateResult(ParserContext context) {
+    global static Object evaluateResult(ParserContext context) {
 
         String result = context.outputString.trim();
 
@@ -1648,7 +1648,7 @@ global class RegExps {
         return null;
     }
 
-    public static String iterativePlaceholderDiscover(String start, ParserContext context) {
+    global static String iterativePlaceholderDiscover(String start, ParserContext context) {
 
         String output = start;
         Pattern myPattern = pattern.compile(EXP_OPERAND + '');
@@ -1702,6 +1702,6 @@ global class RegExps {
         return start;
     }
 
-    public class ExpressionParsingException extends Exception {
+    global class ExpressionParsingException extends Exception {
     }
 }

@@ -1,6 +1,6 @@
-public with sharing class FilterCollection {
+global with sharing class FilterCollection {
     @InvocableMethod
-    public static List <Results> filter(List<Requests> requestList) {
+    global static List <Results> filter(List<Requests> requestList) {
 
         String formulaString = requestList[0].formula;
         List<SObject> inputCollection = requestList[0].inputCollection;
@@ -34,25 +34,25 @@ public with sharing class FilterCollection {
 
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable
-        public String formula;
+        global String formula;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();
         }
 
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

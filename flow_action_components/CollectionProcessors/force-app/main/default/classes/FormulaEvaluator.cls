@@ -1,6 +1,6 @@
-public  with sharing class FormulaEvaluator {
+global  with sharing class FormulaEvaluator {
 
-    public static String parseFormula(String formula, String context) {
+    global static String parseFormula(String formula, String context) {
         List<ContextWrapper> contextResult = (List<ContextWrapper>)JSON.deserialize(context, List<ContextWrapper>.class);
         Map<String, String> mapParameters = new Map<String, String>();
 
@@ -113,7 +113,7 @@ public  with sharing class FormulaEvaluator {
 
     }
 
-    public static String updateFormulaFields (String objectName, String objectId, String formula, Set<String> fields) {
+    global static String updateFormulaFields (String objectName, String objectId, String formula, Set<String> fields) {
         Map<String, Schema.DisplayType> fieldNameToType = getFieldTypes(objectName, fields);
 
         String queryString = 'SELECT ';
@@ -185,7 +185,7 @@ public  with sharing class FormulaEvaluator {
         return fieldNameToType;
     }
 
-    public static String evaluateFormula (String formula, String resultType) {
+    global static String evaluateFormula (String formula, String resultType) {
         Pattern mPattern = pattern.compile('[0-9.]{3,}');
         Matcher mMatcher = mPattern.matcher(formula);
         //TODO: add scale as an input param for Numeric values
@@ -202,7 +202,7 @@ public  with sharing class FormulaEvaluator {
         return String.valueOf(parserContext.result);
     }
 
-    public static RegExps.ParserContext evaluate(String formula, String outputType, Integer scale){
+    global static RegExps.ParserContext evaluate(String formula, String outputType, Integer scale){
 
         RegExps.ParserContext context = new RegExps.ParserContext(formula, outputType, scale);
 
@@ -301,7 +301,7 @@ public  with sharing class FormulaEvaluator {
         return context;
     }
 
-    public static void replaceExpressionValues(RegExps.ParserContext context){
+    global static void replaceExpressionValues(RegExps.ParserContext context){
         
         context.outputString = ' ' + context.outputString + ' ';
         context.outputString = context.outputString.replaceAll(RegExps.EXP_MULTILINE_COMMENT, '');
@@ -461,9 +461,9 @@ public  with sharing class FormulaEvaluator {
         context.outputString = context.outputString.replaceAll('\\s+',' ');
     }
 
-    public class ContextWrapper {
-        public String name;
-        public String value;
+    global class ContextWrapper {
+        global String name;
+        global String value;
 
         public ContextWrapper(String name, String value) {
             this.name = name;
@@ -471,6 +471,6 @@ public  with sharing class FormulaEvaluator {
         }
     }
 
-    public class ExpressionParsingException extends Exception {
+    global class ExpressionParsingException extends Exception {
     }
 }

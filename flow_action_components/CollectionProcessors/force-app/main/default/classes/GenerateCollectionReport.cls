@@ -1,6 +1,6 @@
-public with sharing class GenerateCollectionReport {
+global with sharing class GenerateCollectionReport {
     @InvocableMethod
-    public static List <Results> generateReport(List<Requests> requestList) {
+    global static List <Results> generateReport(List<Requests> requestList) {
 
         List<SObject> inputCollection = requestList[0].inputCollection;
         String shownFields = requestList[0].shownFields;
@@ -28,19 +28,19 @@ public with sharing class GenerateCollectionReport {
 
 
     }
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String shownFields;
+        global String shownFields;
 
     }
 
-    public class Results {
+    global class Results {
 
         @InvocableVariable
-        public String reportString;
+        global String reportString;
 
     }
 }

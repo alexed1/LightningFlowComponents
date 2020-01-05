@@ -1,4 +1,4 @@
- public with sharing class GetRecordTypeInfobyObject {
+ global with sharing class GetRecordTypeInfobyObject {
   //given a fieldname and a collection, return a collection of strings representing the fieldname
 //great for extracting the Names of SObjects from SObject Collections
 //should rename this
@@ -6,7 +6,7 @@
 
 
     @InvocableMethod
-    public static List <Results> get(List<Requests> requestList) {
+    global static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
 
         String objectName = requestList[0].objectName;
@@ -54,34 +54,34 @@
 
 
     }
-    public class Requests {
+    global class Requests {
 
         @InvocableVariable(label='Object Name' required=true)
-        public String objectName;
+        global String objectName;
 
         @InvocableVariable
-        public Boolean onlyReturnActiveRecordTypes;
+        global Boolean onlyReturnActiveRecordTypes;
 
         @InvocableVariable
-        public Boolean onlyReturnRecordTypesAvailableToCurrentUser;
+        global Boolean onlyReturnRecordTypesAvailableToCurrentUser;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<String> recordTypeNames;
+        global List<String> recordTypeNames;
 
         @InvocableVariable
-        public List<String> recordTypeIds;
+        global List<String> recordTypeIds;
     }
 
-    public class InvocableActionException extends Exception {}
+    global class InvocableActionException extends Exception {}
 
 }

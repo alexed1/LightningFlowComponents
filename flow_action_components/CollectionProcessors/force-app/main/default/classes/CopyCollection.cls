@@ -1,6 +1,6 @@
-public with sharing class CopyCollection {
+global with sharing class CopyCollection {
     @InvocableMethod
-    public static List <Results> copyCollection(List<Requests> requestList) {
+    global static List <Results> copyCollection(List<Requests> requestList) {
 
         Results response = new Results();
         List<SObject> inputCollection = requestList[0].inputCollection;
@@ -15,18 +15,18 @@ public with sharing class CopyCollection {
         return responseWrapper;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();
         }
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

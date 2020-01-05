@@ -1,6 +1,6 @@
-public with sharing class MapCollection {
+global with sharing class MapCollection {
     @InvocableMethod
-    public static List <Results> mapCollection(List<Requests> requestList) {
+    global static List <Results> mapCollection(List<Requests> requestList) {
         Results response = new Results();
         List<SObject> inputCollection = requestList[0].inputCollection;
         List<SObject> outputCollection = new List<SObject>();
@@ -42,24 +42,24 @@ public with sharing class MapCollection {
 
 
     }
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
 
         @InvocableVariable(required=true)
-        public String keyValuePairs;
+        global String keyValuePairs;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputCollection = new List<SObject>();
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<SObject> outputCollection;
+        global List<SObject> outputCollection;
     }
 }

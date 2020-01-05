@@ -5,6 +5,8 @@
 # Salesforce cache
 .sfdx/
 .localdevserver/
+**scripts
+**mdapi
 
 # Logs
 logs

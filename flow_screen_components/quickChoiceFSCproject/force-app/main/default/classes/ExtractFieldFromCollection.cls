@@ -29,10 +29,10 @@ global with sharing class ExtractFieldFromCollection {
     }
     global class Requests {
         @InvocableVariable(required=true)
-        public List<Account> inputCollection;
+        global List<Account> inputCollection;
 
         @InvocableVariable(required=true)
-        public String fieldName;
+        global String fieldName;
 
     }
 
@@ -42,9 +42,9 @@ global with sharing class ExtractFieldFromCollection {
             outputStringCollection = new List<String>();
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<String> outputStringCollection;
+        global List<String> outputStringCollection;
     }
 }

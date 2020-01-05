@@ -42,10 +42,10 @@ global with sharing class GetLayoutFields {
     global class Requests {
        
         @InvocableVariable 
-        public String layoutName;
+        global String layoutName;
 
         @InvocableVariable 
-        public String objectName;
+        global String objectName;
 
     }
 
@@ -53,7 +53,7 @@ global with sharing class GetLayoutFields {
 
        
         @InvocableVariable
-        public String layoutFieldsCSV;
+        global String layoutFieldsCSV;
 
     }
 }

@@ -57,13 +57,13 @@
     global class Requests {
 
         @InvocableVariable(label='Object Name' required=true)
-        public String objectName;
+        global String objectName;
 
         @InvocableVariable
-        public Boolean onlyReturnActiveRecordTypes;
+        global Boolean onlyReturnActiveRecordTypes;
 
         @InvocableVariable
-        public Boolean onlyReturnRecordTypesAvailableToCurrentUser;
+        global Boolean onlyReturnRecordTypesAvailableToCurrentUser;
 
     }
 
@@ -73,13 +73,13 @@
             
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<String> recordTypeNames;
+        global List<String> recordTypeNames;
 
         @InvocableVariable
-        public List<String> recordTypeIds;
+        global List<String> recordTypeIds;
     }
 
     global class InvocableActionException extends Exception {}

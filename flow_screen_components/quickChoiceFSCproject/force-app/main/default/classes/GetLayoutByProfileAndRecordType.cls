@@ -79,10 +79,10 @@ global with sharing class GetLayoutByProfileAndRecordType {
     global class Requests {
        
         @InvocableVariable 
-        public String profileId;
+        global String profileId;
 
         @InvocableVariable 
-        public String recordTypeId;
+        global String recordTypeId;
 
     }
 
@@ -90,12 +90,12 @@ global with sharing class GetLayoutByProfileAndRecordType {
 
        
         @InvocableVariable
-        public String layoutId;
+        global String layoutId;
 
         @InvocableVariable
-        public String layoutName;
+        global String layoutName;
 
         @InvocableVariable
-        public String objectName;
+        global String objectName;
     }
 }

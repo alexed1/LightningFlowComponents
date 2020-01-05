@@ -27,8 +27,38 @@ export default class addNewMembers extends LightningElement {
         For
     };
     settings = {
-        selectButton: 'Select'
+        selectButton: 'Select',
+        reactionConfirm: {label: 'Confirm', variant: 'destructive', value: 'yes'},
+        reactionCancel: {label: 'Cancel', variant: 'brand', value: 'no'},
+        stringVariablesOption: 'String Variables (or type an address)'
     };
+
+    get modalReactions() {
+        return [this.settings.reactionConfirm, this.settings.reactionCancel];
+    }
+
+    handleModalReactionButtonClick(event) {
+        if (event.detail.value === this.settings.reactionConfirm.value) {
+            this.dispatchValueChangedEvent(this.searchString);
+        }
+    }
+
+    showStringVariableModal() {
+        if (this.selectedType === this.settings.stringVariablesOption && this.isSearchApplied && (!this.searchResults || !this.searchResults.length)) {
+            this.modalAction(true);
+        }
+    }
+
+    modalAction(isOpen) {
+        const existing = this.template.querySelector('c-uc-modal');
+        if (existing) {
+            if (isOpen) {
+                existing.openModal();
+            } else {
+                existing.closeModal();
+            }
+        }
+    }
 
     @api get customDataStructure() {
         return this._customDataStructure;
@@ -41,7 +71,7 @@ export default class addNewMembers extends LightningElement {
                 return {label: curKey, value: curKey}
             });
 
-            if (this._memberTypes && this._memberTypes.length) {
+            if (this._memberTypes && this._memberTypes.length && !this.selectedType) {
                 this.selectedType = this._memberTypes[0].value;
             }
         }
@@ -54,10 +84,6 @@ export default class addNewMembers extends LightningElement {
     set value(value) {
         this.existingMembers = value;
     }
-
-    // connectedCallback() {
-    //     debugger;
-    // }
 
     typeChange(event) {
         this.selectedType = event.detail.value;
@@ -99,8 +125,10 @@ export default class addNewMembers extends LightningElement {
 
             this.isSearchApplied = true;
             this.searchDisabled = false;
+            this.showStringVariableModal();
         }
     }
+
 
     get isSearchDisabled() {
         return this.searchDisabled || !this.selectedType;
@@ -180,8 +208,12 @@ export default class addNewMembers extends LightningElement {
         this.updateSelected();
     }
 
-    dispatchValueChangedEvent() {
-        let returnedValue = this.singleSelect ? (this.existingMembers.length ? this.existingMembers[0] : null) : this.existingMembers;
+    dispatchValueChangedEvent(value) {
+        let returnedValue = value;
+        if (!returnedValue) {
+            returnedValue = this.singleSelect ? (this.existingMembers.length ? this.existingMembers[0] : null) : this.existingMembers;
+        }
+
         const valueChangedEvent = new CustomEvent('valuechanged', {
             detail: {
                 id: this.name,

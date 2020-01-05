@@ -16,6 +16,9 @@
             ],
             "c/sendRichEmailCPE": [
                 "sendRichEmailCPE/sendRichEmailCPE.js"
+            ],
+            "c/ucModal": [
+                "ucModal/ucModal.js"
             ]
         },
         "experimentalDecorators": true

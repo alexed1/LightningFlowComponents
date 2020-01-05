@@ -1,6 +1,9 @@
 <template>
     <!--    TODO: implement value attribute once it is clear how to send value change events-->
     <template if:true={isInitialized}>
+        <div style="padding:0.5rem;background:#16325c">
+            <h1 class="slds-text-color_inverse slds-text-heading_medium ">Set Sender Settings</h1>  
+        </div> 
         <lightning-combobox label="Reply Email Address" name="replyEmailAddress" onchange={handleValueChange}
                             options={stringOptions} value={inputValues.replyEmailAddress.value}></lightning-combobox>
         <lightning-combobox label="Organization-Wide Email Address Id" name="orgWideEmailAddressId"
@@ -9,6 +12,12 @@
                             value={inputValues.orgWideEmailAddressId.value}></lightning-combobox>
         <lightning-combobox label="Sender Display Name" name="senderDisplayName" onchange={handleValueChange}
                             options={stringOptions} value={inputValues.senderDisplayName.value}></lightning-combobox>
+        
+        <br>
+        
+        <div style="padding:0.5rem;background:#16325c">
+            <h1 class="slds-text-color_inverse slds-text-heading_medium ">Set Addressees</h1>  
+        </div>                      
         <lightning-accordion allow-multiple-sections-open title class="example-accordion">
             <template for:each={availableRecipients} for:item="curRecipient">
                 <lightning-accordion-section name={curRecipient.baseLabel} label={curRecipient.label}
@@ -19,6 +28,10 @@
                 </lightning-accordion-section>
             </template>
         </lightning-accordion>
+        <br>
+        <div style="padding:0.5rem;background:#16325c">
+            <h1 class="slds-text-color_inverse slds-text-heading_medium ">Set Subject and Body</h1>  
+        </div>
         <lightning-combobox label="Subject" name="subject" onchange={handleValueChange}
                             options={stringOptions} value={inputValues.subject.value}></lightning-combobox>
         <lightning-radio-group name="bodyOption"

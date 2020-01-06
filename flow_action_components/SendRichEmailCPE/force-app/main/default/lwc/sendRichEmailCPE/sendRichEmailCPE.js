@@ -6,7 +6,12 @@ export default class SendRichEmailCPE extends LightningElement {
     settings = {
         specifyBodyOption: 'specifyBody',
         useTemplateOption: 'useTemplate',
-        stringVariablesOption: 'String Variables (or type an address)'
+        stringVariablesOption: 'String Variables (or type an address)',
+        stringDataType: 'String',
+        referenceDataType: 'reference',
+        true: true,
+        false: false,
+        componentWidth: 300
     };
     @track _values;
     @track _flowContext;
@@ -54,15 +59,15 @@ export default class SendRichEmailCPE extends LightningElement {
     }];
     //Keys must inherit names from invocable method
     @track inputValues = {
-        replyEmailAddress: {value: null},
-        orgWideEmailAddressId: {value: null},
-        senderDisplayName: {value: null},
-        subject: {value: null},
-        HTMLbody: {value: null},
-        plainTextBody: {value: null},
-        recordId: {value: null},
-        templateTargetObjectID: {value: null},
-        bodyOption: {value: this.settings.specifyBodyOption}
+        replyEmailAddress: {value: null, dataType: null},
+        orgWideEmailAddressId: {value: null, dataType: null},
+        senderDisplayName: {value: null, dataType: null},
+        subject: {value: null, dataType: null},
+        HTMLbody: {value: null, dataType: null},
+        plainTextBody: {value: null, dataType: null},
+        recordId: {value: null, dataType: null},
+        templateTargetObjectID: {value: null, dataType: null},
+        bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.stringDataType}
     };
     @track isInitialized = true;
 
@@ -72,7 +77,6 @@ export default class SendRichEmailCPE extends LightningElement {
 
     set flowContext(value) {
         this._flowContext = value;
-        this.convertStringOptions(value);
         this.convertTemplateOptions(value);
         this.convertContextIntoRoleManagerParams(value);
     }
@@ -94,6 +98,7 @@ export default class SendRichEmailCPE extends LightningElement {
         this._values.forEach(curInputParam => {
             if (this.inputValues[curInputParam.id]) {
                 this.inputValues[curInputParam.id].value = curInputParam.value;
+                this.inputValues[curInputParam.id].dataType = curInputParam.dataType;
             }
             this.setAvailableRecipientsValues(curInputParam, roleManagerValues);
         });
@@ -121,22 +126,10 @@ export default class SendRichEmailCPE extends LightningElement {
         });
     }
 
-    convertStringOptions(value) {
-        this.stringOptions = value.variables.filter(curValue => {
-            return curValue.dataType === 'String' && !curValue.isCollection
-        }).map(curValue => {
-            return {label: curValue.name, value: curValue.name}
-        });
-    }
-
     convertTemplateOptions(value) {
         this.templateOptions = value.textTemplates.map(curValue => {
             return {label: curValue.name, value: curValue.name}
         });
-    }
-
-    get stringAndTemplateOptions() {
-        return [...this.stringOptions, ...this.templateOptions];
     }
 
     convertContextIntoRoleManagerParams(flowContext) {
@@ -195,10 +188,10 @@ export default class SendRichEmailCPE extends LightningElement {
             let attributeToChange = curRecipient.typeMap[event.detail.newValueDataType];
             let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
             curRecipient.label = newLabel;
-            if (event.detail.newValueDataType === this.settings.stringVariablesOption) {
-                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue, 'String');
+            if (event.detail.newValueDataType === this.settings.stringVariablesOption || event.detail.newValueDataType === this.settings.stringDataType) {
+                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue, this.settings.stringDataType);
             } else {
-                this.dispatchFlowValueChangeEvent(attributeToChange, '{!' + event.detail.newValue + '}', 'reference');
+                this.dispatchFlowValueChangeEvent(attributeToChange, '{!' + event.detail.newValue + '}', this.settings.referenceDataType);
             }
 
         }
@@ -212,15 +205,18 @@ export default class SendRichEmailCPE extends LightningElement {
         return this.selectedBodyOption === this.settings.specifyBodyOption;
     }
 
-    handleValueChange(event) {
-        let elementName = event.currentTarget.name;
+    handleFlowValueChange(event) {
+        let elementName = event.detail.id;
         if (this.inputValues[elementName]) {
-            this.inputValues[elementName].value = event.detail.value;
-            this.dispatchFlowValueChangeEvent(elementName, '{!' + event.detail.value + '}', 'reference');
+            this.inputValues[elementName].value = event.detail.newValue;
+            this.inputValues[elementName].value = event.detail.newValueDataType;
+            let formattedValue = (event.detail.newValueDataType === this.settings.stringDataType || !event.detail.newValue) ? event.detail.newValue : '{!' + event.detail.newValue + '}';
+            this.dispatchFlowValueChangeEvent(elementName, formattedValue, event.detail.newValueDataType);
         }
     }
 
     @api validate() {
         return [];
     }
+
 }

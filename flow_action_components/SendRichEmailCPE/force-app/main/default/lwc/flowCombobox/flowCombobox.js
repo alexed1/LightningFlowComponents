@@ -2,12 +2,13 @@ import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 
 export default class FlowCombobox extends LightningElement {
-
+    @api name;
     @api label;
     @api required = false;
-    @api filterType;
-    @api filterCollection;
-
+    @api flowContextFilterType;
+    @api valueIsCollection;
+    @api maxWidth;
+    @track _dataType;
     @track _value;
     @track allOptions;
     @track _options = [];
@@ -17,7 +18,12 @@ export default class FlowCombobox extends LightningElement {
     @track _selectedObjectType;
     @track _selectedFieldPath;
 
+    isMenuOpen = false;
     key = 0;
+
+    labels = {
+        noDataAvailable: 'No data available'
+    };
     iconsPerType = {
         String: 'utility:text',
         Boolean: 'utility:check',
@@ -49,6 +55,11 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'apexPluginCalls', label: 'Variables', dataType: 'String'},
     ];
 
+    settings = {
+        stringDataType: 'String',
+        referenceDataType: 'reference'
+    };
+
     @api
     get value() {
         return this._value;
@@ -60,6 +71,16 @@ export default class FlowCombobox extends LightningElement {
         this.determineSelectedType();
     }
 
+    @api
+    get valueType() {
+        return this._dataType;
+    }
+
+    set valueType(value) {
+        if (!this._dataType) {
+            this._dataType = value;
+        }
+    }
 
     @api get flowContext() {
         return this._flowContext;
@@ -109,7 +130,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     getTypes() {
-        return this.typeDescriptors.map(curTypeDescriptor => curTypeDescriptor.apiName);
+            return this.typeDescriptors.map(curTypeDescriptor => curTypeDescriptor.apiName);
     }
 
     getTypeDescriptor(typeApiName) {
@@ -207,7 +228,7 @@ export default class FlowCombobox extends LightningElement {
                 type: curDataType,
                 label: curObject[labelField] ? curObject[labelField] : curObject[valueField],
                 value: curObject[valueField],
-                isCollection: curObject[isCollectionField],
+                isCollection: !!curObject[isCollectionField],
                 objectType: curObject[objectTypeField],
                 optionIcon: this.getIconNameByType(curDataType),
                 isObject: curDataType === 'SObject',
@@ -219,15 +240,29 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenObject(event) {
+        event.stopPropagation();
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
         this._selectedObjectType = event.currentTarget.dataset.objectType;
     }
 
     handleSetSelectedRecord(event) {
         if (event.currentTarget.dataset) {
-            this.value = this.formatValue(this._selectedFieldPath, event.currentTarget.dataset.value);
+            this._dataType = this.settings.referenceDataType;
+            this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
             this.closeOptionDialog();
+
         }
+    }
+
+    dispatchValueChangedEvent() {
+        const valueChangedEvent = new CustomEvent('valuechanged', {
+            detail: {
+                id: this.name,
+                newValue: this._value ? this._value : '',
+                newValueDataType: this._dataType
+            }
+        });
+        this.dispatchEvent(valueChangedEvent);
     }
 
     resetData(event) {
@@ -238,15 +273,36 @@ export default class FlowCombobox extends LightningElement {
         this.closeOptionDialog();
     }
 
-    openOptionDialog() {
+    openOptionDialog(event) {
         this.isDataSelected = false;
+        this.isMenuOpen = true;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open';
-
     }
 
-    closeOptionDialog() {
-        this.isDataSelected = true;
+    closeOptionDialog(noChangeEvents) {
+        if (this._value) {
+            this.isDataSelected = true;
+        }
+        this.isMenuOpen = false;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click';
+        if(!noChangeEvents){
+            this.dispatchValueChangedEvent();
+        }
+    }
+
+    constructor() {
+        super();
+        document.addEventListener('click', this.handleWindowClick.bind(this));
+    }
+
+    disconnectedCallback() {
+        document.removeEventListener('click', this.handleWindowClick.bind(this));
+    }
+
+    handleWindowClick(event) {
+        if (!event.path.includes(this.template.host)) {
+            this.closeOptionDialog(true);
+        }
     }
 
     processOptions(searchString) {
@@ -255,12 +311,12 @@ export default class FlowCombobox extends LightningElement {
         this.allOptions.forEach(curOption => {
             let localOptions = curOption.options;
 
-            if (this.filterType) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.filterType);
+            if (this.flowContextFilterType) {
+                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.flowContextFilterType);
             }
 
-            if (typeof this.filterCollection !== "undefined") {
-                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.filterCollection);
+            if (typeof this.valueIsCollection !== "undefined") {
+                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.valueIsCollection);
             }
 
             if (searchLC) {
@@ -282,7 +338,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenOptions(event) {
-
+        event.stopPropagation();
         this.openOptionDialog();
     }
 
@@ -296,7 +352,43 @@ export default class FlowCombobox extends LightningElement {
         this.allOptions.length ? this.openOptionDialog() : this.closeOptionDialog();
     }
 
-    formatValue(path, val) {
-        return '{!' + (path ? path + '.' : '') + val + '}'
+    handleSearchKeyUp(event) {
+        console.log('isDataSelected' + this.isDataSelected);
+
+        if (event.key === "Enter") {
+            if (this.isMenuOpen) {
+                let valueInput = this.template.querySelector('.value-input');
+                if (valueInput) {
+                    this.value = valueInput.value;
+                    this._dataType = this.settings.stringDataType;
+                }
+                this.closeOptionDialog();
+            } else {
+                this.openOptionDialog();
+            }
+
+        }
+    }
+
+    getFullPath(path, val) {
+        return (path ? path + '.' : '') + val;
+    }
+
+    get formattedValue() {
+        return this._dataType === this.settings.referenceDataType ? '{!' + this._value + '}' : this._value;
+    }
+
+    get inputStyle() {
+        if (this.maxWidth) {
+            return 'max-width: ' + this.maxWidth + 'px';
+        }
+    }
+
+    splitValues = (originalString) => {
+        if (originalString) {
+            return originalString.replace(/ /g, '').split(',');
+        } else {
+            return [];
+        }
     }
 }

@@ -1,5 +1,0 @@
-<aura:component implements="lightning:availableForFlowScreens">
-    <aura:attribute name="myVal" type="String" />
-    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
-    <lightning:inputRichText value="{!v.myVal}" />
-</aura:component>

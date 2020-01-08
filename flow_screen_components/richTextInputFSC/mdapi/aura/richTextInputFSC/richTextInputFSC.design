@@ -1,3 +1,0 @@
-<design:component >
-	<design:attribute name="myVal" label="value" />
-</design:component>

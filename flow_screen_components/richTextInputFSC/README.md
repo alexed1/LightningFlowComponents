@@ -8,7 +8,7 @@ This is an extremely simple port of the [standard inputRichText control](https:/
 
 ## Install this Component Into Your Org ##
 
-[Install this Component](https://sites.google.com/view/flowunofficial/flow-screen-components/rich-text-input).
+[Install this Component](https://www.google.com/url?q=https%3A%2F%2Flogin.salesforce.com%2Fpackaging%2FinstallPackage.apexp%3Fp0%3D04tf40000047pLa%26isdtp%3Dp1&sa=D&sntz=1&usg=AFQjCNFJ2u0xxwl1BfnFB45ROIiXXvNVQg).
 
 See the full set of installation options [here](/install.md).
 

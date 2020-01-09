@@ -215,6 +215,12 @@ export default class SendRichEmailCPE extends LightningElement {
         }
     }
 
+    get inputStyle() {
+        if (this.settings.componentWidth) {
+            return 'max-width: ' + this.settings.componentWidth + 'px';
+        }
+    }
+
     @api validate() {
         return [];
     }

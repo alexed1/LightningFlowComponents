@@ -17,8 +17,9 @@ export default class FlowCombobox extends LightningElement {
     @track isDataSelected = false;
     @track _selectedObjectType;
     @track _selectedFieldPath;
-
     isMenuOpen = false;
+    isDataModified = false;
+    selfEvent = false;
     key = 0;
 
     labels = {
@@ -78,7 +79,12 @@ export default class FlowCombobox extends LightningElement {
 
     set valueType(value) {
         if (!this._dataType) {
-            this._dataType = value;
+            if (value) {
+                this._dataType = value;
+            } else {
+                this._dataType = this.settings.stringDataType;
+            }
+
         }
     }
 
@@ -91,6 +97,10 @@ export default class FlowCombobox extends LightningElement {
         this._mergeFields = this.generateMergeFieldsFromFlowContext(this._flowContext);
         this.setOptions(this._mergeFields);
         this.determineSelectedType();
+    }
+
+    get displayPill() {
+        return this.isDataSelected && this._dataType === this.settings.referenceDataType;
     }
 
     setOptions(value) {
@@ -130,7 +140,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     getTypes() {
-            return this.typeDescriptors.map(curTypeDescriptor => curTypeDescriptor.apiName);
+        return this.typeDescriptors.map(curTypeDescriptor => curTypeDescriptor.apiName);
     }
 
     getTypeDescriptor(typeApiName) {
@@ -249,8 +259,8 @@ export default class FlowCombobox extends LightningElement {
         if (event.currentTarget.dataset) {
             this._dataType = this.settings.referenceDataType;
             this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
+            this.isDataModified = true;
             this.closeOptionDialog();
-
         }
     }
 
@@ -269,24 +279,32 @@ export default class FlowCombobox extends LightningElement {
         this.value = '';
         this._selectedFieldPath = '';
         this._selectedObjectType = null;
+        this._dataType = this.settings.stringDataType;
         this.setOptions(this._mergeFields);
         this.closeOptionDialog();
     }
 
     openOptionDialog(event) {
-        this.isDataSelected = false;
+        // this.isDataSelected = false;
         this.isMenuOpen = true;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open';
     }
 
-    closeOptionDialog(noChangeEvents) {
+    closeOptionDialog(setValueInput) {
+
         if (this._value) {
             this.isDataSelected = true;
         }
         this.isMenuOpen = false;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click';
-        if(!noChangeEvents){
+
+        if (setValueInput) {
+            this.setValueInput();
+        }
+
+        if (this.isDataModified) {
             this.dispatchValueChangedEvent();
+            this.isDataModified = false;
         }
     }
 
@@ -300,9 +318,11 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleWindowClick(event) {
-        if (!event.path.includes(this.template.host)) {
+        console.log(Date.now());
+        if (!event.path.includes(this.template.host) && !this.selfEvent) {
             this.closeOptionDialog(true);
         }
+        this.selfEvent = false;
     }
 
     processOptions(searchString) {
@@ -338,8 +358,21 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenOptions(event) {
+        // event.stopPropagation();
+        console.log('handleOpenOptions');
+        this.selfEvent = true;
+        if (this.isMenuOpen) {
+            this.isDataSelected = false;
+            this._value = this.formattedValue(this._value);
+        } else {
+            this.openOptionDialog();
+        }
+
+    }
+
+    handleOpenEditDialog(event) {
         event.stopPropagation();
-        this.openOptionDialog();
+        this.handleOpenOptions(event);
     }
 
     handleCloseOptions(event) {
@@ -348,39 +381,70 @@ export default class FlowCombobox extends LightningElement {
 
     handleSearchField(event) {
         let currentText = event.target.value;
+        if (this.isReference(currentText)) {
+            this._dataType = this.settings.referenceDataType;
+        } else {
+            this._dataType = this.settings.stringDataType;
+        }
+
+        this.isDataModified = true;
+        this.isDataSelected = false;
+
         this.processOptions(currentText);
-        this.allOptions.length ? this.openOptionDialog() : this.closeOptionDialog();
+        if (this.allOptions.length) {
+            this.openOptionDialog();
+        }
     }
 
     handleSearchKeyUp(event) {
-        console.log('isDataSelected' + this.isDataSelected);
-
         if (event.key === "Enter") {
             if (this.isMenuOpen) {
-                let valueInput = this.template.querySelector('.value-input');
-                if (valueInput) {
-                    this.value = valueInput.value;
-                    this._dataType = this.settings.stringDataType;
-                }
-                this.closeOptionDialog();
+                this.closeOptionDialog(true);
             } else {
                 this.openOptionDialog();
             }
-
         }
+    }
+
+    setValueInput() {
+        let valueInput = this.template.querySelector('.value-input');
+        if (valueInput) {
+            let isReference = this.isReference(valueInput.value);
+            this._value = this.removeFormatting(valueInput.value);
+            if (isReference) {
+                this._dataType = this.settings.referenceDataType;
+            } else {
+                this._dataType = this.settings.stringDataType;
+            }
+        }
+    }
+
+    isReference(value) {
+        let isReference = value.indexOf('{!') === 0 && value.lastIndexOf('}') === (value.length - 1);
+        return isReference;
     }
 
     getFullPath(path, val) {
         return (path ? path + '.' : '') + val;
     }
 
-    get formattedValue() {
-        return this._dataType === this.settings.referenceDataType ? '{!' + this._value + '}' : this._value;
+    formattedValue(value) {
+        if (this.isReference(value)) {
+            return value;
+        } else {
+            return this._dataType === this.settings.referenceDataType ? '{!' + value + '}' : value;
+        }
+    }
+
+    removeFormatting(value) {
+        let isReference = this.isReference(value);
+        let clearValue = isReference ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
+        return clearValue;
     }
 
     get inputStyle() {
         if (this.maxWidth) {
-            return 'max-width: ' + this.maxWidth + 'px';
+            return 'max-width: ' + this.maxWidth + 'px;';
         }
     }
 

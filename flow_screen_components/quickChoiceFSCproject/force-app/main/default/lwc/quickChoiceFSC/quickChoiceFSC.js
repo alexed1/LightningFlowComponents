@@ -90,7 +90,6 @@ export default class SmartChoiceFSC extends LightningElement {
 	connectedCallback() {
 		console.log("Entering Connected Callback for smartchoice");
 		console.log("recordtypeId is: " + this.recordTypeId);
-		console.log("objectFieldName is: " + this.objectAndFieldName);
 		if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
 		// Visual Picker Selection

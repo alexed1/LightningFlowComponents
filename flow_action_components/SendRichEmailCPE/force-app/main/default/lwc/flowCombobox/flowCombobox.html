@@ -1,7 +1,7 @@
 <template>
     <div style={inputStyle}>
         <div>
-            <div class="slds-form-element">
+            <div class={formElementClass}>
                 <div class="slds-form-element__control">
                     <div class="slds-combobox_container">
                         <div class={dropdownClass} data-id="resultBox" aria-expanded="false" aria-haspopup="listbox"
@@ -32,6 +32,7 @@
                                                 class="slds-pill_bare custom-width-full"
                                                 label={_value}
                                                 onremove={resetData}
+                                                has-error={hasError}
                                         ></lightning-pill>
                                     </div>
                                 </template>
@@ -85,6 +86,11 @@
                         </div>
                     </div>
                 </div>
+                <template if:true={hasError}>
+                    <div class="slds-form-element__help">
+                        {settings.invalidReferenceError}
+                    </div>
+                </template>
             </div>
         </div>
     </div>

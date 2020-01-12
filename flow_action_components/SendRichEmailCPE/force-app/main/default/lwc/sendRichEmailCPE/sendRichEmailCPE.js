@@ -11,7 +11,8 @@ export default class SendRichEmailCPE extends LightningElement {
         referenceDataType: 'reference',
         true: true,
         false: false,
-        componentWidth: 300
+        componentWidth: 320,
+        nullValue: ''
     };
     @track _values;
     @track _flowContext;
@@ -27,6 +28,7 @@ export default class SendRichEmailCPE extends LightningElement {
         baseLabel: 'TO',
         label: 'TO',
         value: [],
+        objectType: null,
         typeMap: {
             'User': 'SendTOtheEmailAddressesFromThisCollectionOfUsers',
             'Contact': 'SendTOtheEmailAddressesFromThisCollectionOfContacts',
@@ -38,6 +40,7 @@ export default class SendRichEmailCPE extends LightningElement {
         baseLabel: 'CC',
         label: 'CC',
         value: [],
+        objectType: null,
         typeMap: {
             'User': 'SendCCtheEmailAddressesFromThisCollectionOfUsers',
             'Contact': 'SendCCtheEmailAddressesFromThisCollectionOfContacts',
@@ -49,6 +52,7 @@ export default class SendRichEmailCPE extends LightningElement {
         baseLabel: 'BCC',
         label: 'BCC',
         value: [],
+        objectType: null,
         typeMap: {
             'User': 'SendBCCtheEmailAddressesFromThisCollectionOfUsers',
             'Contact': 'SendBCCtheEmailAddressesFromThisCollectionOfContacts',
@@ -96,20 +100,23 @@ export default class SendRichEmailCPE extends LightningElement {
 
         let roleManagerValues = {};
         this._values.forEach(curInputParam => {
-            if (this.inputValues[curInputParam.id]) {
-                this.inputValues[curInputParam.id].value = curInputParam.value;
-                this.inputValues[curInputParam.id].dataType = curInputParam.dataType;
+            if (curInputParam.value) {
+                if (this.inputValues[curInputParam.id]) {
+                    this.inputValues[curInputParam.id].value = curInputParam.value;
+                    this.inputValues[curInputParam.id].dataType = curInputParam.dataType;
+                }
+                this.setAvailableRecipientsValues(curInputParam, roleManagerValues);
             }
-            this.setAvailableRecipientsValues(curInputParam, roleManagerValues);
         });
 
         Object.keys(roleManagerValues).forEach(curRecipientBaseLabel => {
             let foundRecipient = this.availableRecipients.find(curRecipient => curRecipient.baseLabel === curRecipientBaseLabel);
             if (foundRecipient) {
-                foundRecipient.value = [roleManagerValues[curRecipientBaseLabel]];
+                foundRecipient.value = [roleManagerValues[curRecipientBaseLabel].value];
                 if (roleManagerValues[curRecipientBaseLabel]) {
-                    let newLabel = foundRecipient.baseLabel + ' (' + roleManagerValues[curRecipientBaseLabel] + ')';
+                    let newLabel = foundRecipient.baseLabel + ' (' + roleManagerValues[curRecipientBaseLabel].value + ')';
                     foundRecipient.label = newLabel;
+                    foundRecipient.objectType = roleManagerValues[curRecipientBaseLabel].objectType;
                 }
             }
         });
@@ -120,7 +127,7 @@ export default class SendRichEmailCPE extends LightningElement {
         this.availableRecipients.forEach(curRecipient => {
             Object.keys(curRecipient.typeMap).forEach(curObjectType => {
                 if (curRecipient.typeMap[curObjectType] === curInputParam.id) {
-                    roleManagerValues[curRecipient.baseLabel] = curInputParam.value;
+                    roleManagerValues[curRecipient.baseLabel] = {value: curInputParam.value, objectType: curObjectType};
                 }
             });
         });
@@ -184,16 +191,29 @@ export default class SendRichEmailCPE extends LightningElement {
     handleValueSelected(event) {
 
         let curRecipient = this.availableRecipients.find(curRec => curRec.baseLabel === event.detail.id);
+        let valuesToCleanUp = [];
+        Object.keys(curRecipient.typeMap).forEach(curType => {
+            if (event.detail.newValueObjectType !== curType) {
+                valuesToCleanUp = valuesToCleanUp.concat(this._values.filter(curValue => curValue.id === curRecipient.typeMap[curType]));
+            }
+        });
+        if (valuesToCleanUp.length) {
+            valuesToCleanUp.forEach(valueToCleanUp => {
+                if (valueToCleanUp && valueToCleanUp.value) {
+                    this.dispatchFlowValueChangeEvent(valueToCleanUp.id, this.settings.nullValue, this.settings.stringDataType);
+                }
+            });
+        }
+
         if (curRecipient) {
-            let attributeToChange = curRecipient.typeMap[event.detail.newValueDataType];
+            let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
             let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
             curRecipient.label = newLabel;
-            if (event.detail.newValueDataType === this.settings.stringVariablesOption || event.detail.newValueDataType === this.settings.stringDataType) {
-                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue, this.settings.stringDataType);
+            if (event.detail.newValueType === this.settings.stringDataType) {
+                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringDataType);
             } else {
-                this.dispatchFlowValueChangeEvent(attributeToChange, '{!' + event.detail.newValue + '}', this.settings.referenceDataType);
+                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? '{!' + event.detail.newValue + '}' : this.settings.nullValue, this.settings.referenceDataType);
             }
-
         }
     }
 
@@ -209,7 +229,7 @@ export default class SendRichEmailCPE extends LightningElement {
         let elementName = event.detail.id;
         if (this.inputValues[elementName]) {
             this.inputValues[elementName].value = event.detail.newValue;
-            this.inputValues[elementName].value = event.detail.newValueDataType;
+            this.inputValues[elementName].dataType = event.detail.newValueDataType;
             let formattedValue = (event.detail.newValueDataType === this.settings.stringDataType || !event.detail.newValue) ? event.detail.newValue : '{!' + event.detail.newValue + '}';
             this.dispatchFlowValueChangeEvent(elementName, formattedValue, event.detail.newValueDataType);
         }
@@ -222,7 +242,16 @@ export default class SendRichEmailCPE extends LightningElement {
     }
 
     @api validate() {
-        return [];
+        let resultErrors = [];
+        let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
+        if(allComboboxes){
+            allComboboxes.forEach(curCombobox=>{
+                if(!curCombobox.reportValidity()){
+                    resultErrors.push('error');
+                }
+            });
+        }
+        return resultErrors;
     }
 
 }

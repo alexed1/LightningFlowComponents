@@ -40,11 +40,16 @@
         <div style="max-width: 600px;">
             <lightning-accordion allow-multiple-sections-open title>
                 <template for:each={availableRecipients} for:item="curRecipient">
-                    <lightning-accordion-section name={curRecipient.baseLabel} label={curRecipient.label}
+                    <lightning-accordion-section name={curRecipient.baseLabel}
+                                                 label={curRecipient.label}
                                                  key={curRecipient.baseLabel}>
-                        <c-add-new-members name={curRecipient.baseLabel} onvaluechanged={handleValueSelected}
+                        <c-add-new-members name={curRecipient.baseLabel}
                                            custom-data-structure={convertedFlowContext}
-                                           value={curRecipient.value} single-select></c-add-new-members>
+                                           value={curRecipient.value}
+                                           object-type={curRecipient.objectType}
+                                           single-select
+                                           onvaluechanged={handleValueSelected}
+                        ></c-add-new-members>
                     </lightning-accordion-section>
                 </template>
             </lightning-accordion>

@@ -8,21 +8,22 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="value" label="Value" type="String"></property>
-            <property name="choiceValues" label="Choice Values (String Collection)" type="String[]"></property>
-            <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]"></property>
-            <property name="choiceIcons" label="Choice Icons (String Collection)" type="String[]"></property>
-            <property name="includeIcons" label="Include Icons in Text Box?" type="Boolean"></property>
-            <property name="iconSize" label="Icon Size" type="String"></property>
-            <property name="inputMode" label="Input Mode" type="String" ></property>
-            <property name="masterLabel" label="Master Label" type="String"  ></property>
-            <property name="required" label="Required" type="Boolean" default="false"></property>
-            <property name="displayMode" label="Display Mode" type="String" ></property>
-            <property name="recordTypeId" label="Record Type Id" type="String"  ></property>      
-            <property name="objectAndFieldName" label="Object Name and Field Name (dot notation)" type="String" ></property>
-            <property name="objectName" label="Object Name" type="String" ></property>
-            <property name="fieldName" label="Field Name" type="String" ></property>
-            <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"></property>   
+            <property name="value" label="Value" type="String"/>
+            <property name="choiceValues" label="Choice Values (String Collection)" type="String[]"/>
+            <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]"/>
+            <property name="choiceIcons" label="Choice Icons (String Collection)" type="String[]"/>
+            <property name="includeIcons" label="Include Icons in Text Box?" type="Boolean"/>
+            <property name="iconSize" label="Icon Size" type="String"/>
+            <property name="numberOfColumns" label="Number of Textbox Columns (1 or 2)" type="String"/>
+            <property name="inputMode" label="Input Mode" type="String"/>
+            <property name="masterLabel" label="Master Label" type="String"/>
+            <property name="required" label="Required" type="Boolean" default="false"/>
+            <property name="displayMode" label="Display Mode" type="String"/>
+            <property name="recordTypeId" label="Record Type Id" type="String"/>
+            <property name="objectAndFieldName" label="Object Name and Field Name (dot notation)" type="String"/>
+            <property name="objectName" label="Object Name" type="String"/>
+            <property name="fieldName" label="Field Name" type="String"/>
+            <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

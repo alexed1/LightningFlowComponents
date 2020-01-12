@@ -11,6 +11,7 @@ export default class addNewMembers extends LightningElement {
 
     @api singleSelect = false;
     @api name;
+
     @track existingMembers = [];
     @track searchResults = [];
     @track searchDisabled = false;
@@ -30,7 +31,9 @@ export default class addNewMembers extends LightningElement {
         selectButton: 'Select',
         reactionConfirm: {label: 'Confirm', variant: 'destructive', value: 'yes'},
         reactionCancel: {label: 'Cancel', variant: 'brand', value: 'no'},
-        stringVariablesOption: 'String Variables (or type an address)'
+        stringVariablesOption: 'String Variables (or type an address)',
+        stringDataType: 'String',
+        referenceDataType: 'reference',
     };
 
     get modalReactions() {
@@ -57,6 +60,17 @@ export default class addNewMembers extends LightningElement {
             } else {
                 existing.closeModal();
             }
+        }
+    }
+
+    @api get objectType() {
+        return this.selectedType;
+    }
+
+    set objectType(value) {
+        this.selectedType = value;
+        if (value) {
+            this.actuallySearch();
         }
     }
 
@@ -114,7 +128,7 @@ export default class addNewMembers extends LightningElement {
             let labelFieldName = this._customDataStructure[this.selectedType].labelFieldName;
 
             this.searchResults = this._customDataStructure[this.selectedType].data.filter(curItem => {
-                return curItem[labelFieldName].toLowerCase().includes(this.searchString ? this.searchString.toLowerCase() : '')
+                return curItem[valueFieldName].toLowerCase().includes(this.searchString ? this.searchString.toLowerCase() : '')
             }).map(curItem => {
                 return {
                     label: curItem[labelFieldName],
@@ -210,15 +224,18 @@ export default class addNewMembers extends LightningElement {
 
     dispatchValueChangedEvent(value) {
         let returnedValue = value;
+        let valueType = this.settings.stringDataType;
         if (!returnedValue) {
             returnedValue = this.singleSelect ? (this.existingMembers.length ? this.existingMembers[0] : null) : this.existingMembers;
+            valueType = this.settings.referenceDataType;
         }
 
         const valueChangedEvent = new CustomEvent('valuechanged', {
             detail: {
                 id: this.name,
                 newValue: returnedValue,
-                newValueDataType: this.selectedType
+                newValueType: valueType,
+                newValueObjectType: this.selectedType
             }
         });
         this.dispatchEvent(valueChangedEvent);

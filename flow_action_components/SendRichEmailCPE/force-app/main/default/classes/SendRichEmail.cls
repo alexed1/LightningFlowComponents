@@ -2,7 +2,7 @@ public with sharing class SendRichEmail {
 
     @invocableMethod(label='Send Rich Email' configurationEditor='c:sendRichEmailCPE')
     public static List<Response> SendEmail(List<Request> requests) {
-        
+
         String HTMLbody = requests[0].HTMLbody;
         String plainTextBody = requests[0].plainTextBody;
         String subject = requests[0].subject;
@@ -10,7 +10,7 @@ public with sharing class SendRichEmail {
         String senderDisplayName = requests[0].senderDisplayName;
         String templateID = requests[0].templateID;
         String templateTargetObjectId = requests[0].templateTargetObjectId;
-        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;    
+        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;
         Boolean saveAsActivity = requests[0].saveAsActivity;
         Id recordId = requests[0].recordId;
 
@@ -31,13 +31,13 @@ public with sharing class SendRichEmail {
         // Strings to hold the email addresses to which you are sending the email.
         //String[] toAddresses = new String[] {oneAddress}; 
         Map<String, Object> m = GenerateMap(requests[0]);
-        String[] toAddresses = BuildAddressList('TO',m); 
+        String[] toAddresses = BuildAddressList('TO', m);
         System.debug('toAddresses is: ' + toAddresses);
-        String[] ccAddresses = BuildAddressList('CC',m); 
+        String[] ccAddresses = BuildAddressList('CC', m);
         System.debug('ccAddresses is: ' + ccAddresses);
         String[] bccAddresses = BuildAddressList('BCC', m);
         System.debug('bccAddresses is: ' + bccAddresses);
-        
+
 
         // Assign the addresses for the To and CC lists to the mail object.
         mail.setToAddresses(toAddresses);
@@ -64,31 +64,31 @@ public with sharing class SendRichEmail {
         // Optionally append the salesforce.com email signature to the email.
         // The email address of the user executing the Apex Code will be used.
         // True by default unless the user passes a value in.
-        if(requests[0].useSalesforceSignature != null) {
+        if (requests[0].useSalesforceSignature != null) {
             mail.setUseSignature(requests[0].useSalesforceSignature);
         } else {
             mail.setUseSignature(true);
         }
 
         mail = AddAttachments(mail, requests[0].contentDocumentAttachments, null);
-         
+
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
             throw new InvocableActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
-           
+
         if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
             throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
-        
-        if (templateID == null  && HTMLbody == null && plainTextBody == null)
+
+        if (templateID == null && HTMLbody == null && plainTextBody == null)
             throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
-              
+
         if (saveAsActivity == true && recordId == null) {
             throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
         }
-        
+
         mail.setTemplateID(templateID);
         mail.setTargetObjectId(templateTargetObjectId);
         System.debug('templateID is:' + templateID);
-        
+
         // Specify the text content of the email.
         mail.setPlainTextBody(plainTextBody);
 
@@ -104,23 +104,23 @@ public with sharing class SendRichEmail {
             });
             System.debug('emailResponse is: ' + emailResponse);
             completed = true;
-        } catch (InvocableActionException e){
+        } catch (InvocableActionException e) {
             System.debug ('exception occured: ' + e.getMessage());
             completed = false;
             error = e.getMessage();
-        } catch (System.EmailException e){
+        } catch (System.EmailException e) {
             System.debug ('exception occured: ' + e.getMessage());
             completed = false;
             error = e.getMessage();
         }
-       
+
         //report back the results
         Response response = new Response();
         if (completed == true) {
             if (emailResponse[0].isSuccess() != true) {
                 Messaging.SendEmailError[] curErrors = emailResponse[0].getErrors();
                 String errorReport = '';
-                for(Messaging.SendEmailError curError : curErrors ) {
+                for (Messaging.SendEmailError curError : curErrors) {
                     errorReport = errorReport + curError.getMessage() + '/n';
                 }
                 response.errors = errorReport;
@@ -143,7 +143,7 @@ public with sharing class SendRichEmail {
             response.errors = error;
             response.isSuccess = false;
         }
-        
+
         List<Response> responseList = new List<Response>();
         responseList.add(response);
         return responseList;
@@ -175,62 +175,67 @@ public with sharing class SendRichEmail {
                 attachments.add(efa);
             }
             mail.setFileAttachments(attachments);
-        } 
+        }
         return mail;
     }
 
     public static String[] BuildAddressList(string type, Map<String, Object> m) {
-        
+
         String[] addressList = new List<String>();
         String curEmail;
-        
+
         //build address list
         //handle individual addresses
-        String oneAddress = (String)m.get('Send' + type + 'thisOneEmailAddress');
-        if ( oneAddress != null) {
+        String oneAddress = (String) m.get('Send' + type + 'thisOneEmailAddress');
+        if (!String.isBlank(oneAddress)) {
             addressList.add(oneAddress);
             System.debug('address list is:' + addressList);
         }
 
         //handle inputs involving collections of String addresses
-        List<String> stringAddresses = (List<String>)m.get('Send' + type + 'thisStringCollectionOfEmailAddresses');
+        List<String> stringAddresses = (List<String>) m.get('Send' + type + 'thisStringCollectionOfEmailAddresses');
         if (stringAddresses != null) {
-            addressList.addAll(stringAddresses);
+            for (String curAddress : stringAddresses) {
+                if (!String.isBlank(curAddress)) {
+                    addressList.add(curAddress);
+                }
+            }
+
             System.debug('address list is:' + addressList);
         }
-        
-        
+
+
         //handle inputs involving collections of Contacts
-        List<Contact> curContacts = (List<Contact>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfContacts');        
+        List<Contact> curContacts = (List<Contact>) m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfContacts');
         if (curContacts != null) {
             List<String> extractedEmailAddresses = new List<String>();
             for (Contact curContact : curContacts) {
                 curEmail = curContact.email;
-                if (curEmail != null) extractedEmailAddresses.add(curEmail);
-            }
-            addressList.addAll(extractedEmailAddresses);
-            System.debug('address list is now:' + addressList); 
-        }
-        
-        //handle inputs involving collections of Users
-        List<User> curUsers = (List<User>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfUsers');
-        if (curUsers != null) {
-            List<String> extractedEmailAddresses = new List<String>();
-            for (User curUser : curUsers) {
-               // curEmail = curUser.email;
-               // if (curEmail != null) extractedEmailAddresses.add(curEmail);
+                if (!String.isBlank(curEmail)) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
             System.debug('address list is now:' + addressList);
         }
-        
+
+        //handle inputs involving collections of Users
+        List<User> curUsers = (List<User>) m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfUsers');
+        if (curUsers != null) {
+            List<String> extractedEmailAddresses = new List<String>();
+            for (User curUser : curUsers) {
+                curEmail = curUser.email;
+                if (!String.isBlank(curEmail)) extractedEmailAddresses.add(curEmail);
+            }
+            addressList.addAll(extractedEmailAddresses);
+            System.debug('address list is now:' + addressList);
+        }
+
         //handle inputs involving collections of Leads
-        List<Lead> curLeads = (List<Lead>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfLeads');
+        List<Lead> curLeads = (List<Lead>) m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfLeads');
         if (curLeads != null) {
             List<String> extractedEmailAddresses = new List<String>();
             for (Lead curLead : curLeads) {
                 curEmail = curLead.email;
-                if (curEmail != null) extractedEmailAddresses.add(curEmail);
+                if (!String.isBlank(curEmail)) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
             System.debug('address list is now:' + addressList);
@@ -244,25 +249,25 @@ public with sharing class SendRichEmail {
     //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
     //by making the lookup a string, we can composite the string in the m.get lines above
     private static Map<String, Object> GenerateMap(Request request) {
-       
+
         return new Map<String, Object>{
-           'SendTOthisOneEmailAddress' => request.SendTOthisOneEmailAddress,
-           'SendTOthisStringCollectionOfEmailAddresses'  => request.SendTOthisStringCollectionOfEmailAddresses,
-           'SendTOtheEmailAddressesFromThisCollectionOfContacts' => request.SendTOtheEmailAddressesFromThisCollectionOfContacts,
-           'SendTOtheEmailAddressesFromThisCollectionOfUsers' => request.SendTOtheEmailAddressesFromThisCollectionOfUsers,
-           'SendTOtheEmailAddressesFromThisCollectionOfLeads' => request.SendTOtheEmailAddressesFromThisCollectionOfLeads,
-           'SendCCthisOneEmailAddress' => request.SendCCthisOneEmailAddress,
-           'SendCCthisStringCollectionOfEmailAddresses'  => request.SendCCthisStringCollectionOfEmailAddresses,
-           'SendCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendCCtheEmailAddressesFromThisCollectionOfContacts,
-           'SendCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendCCtheEmailAddressesFromThisCollectionOfUsers,
-           'SendCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendCCtheEmailAddressesFromThisCollectionOfLeads,
-           'SendBCCthisOneEmailAddress' => request.SendBCCthisOneEmailAddress,
-           'SendBCCthisStringCollectionOfEmailAddresses'  => request.SendBCCthisStringCollectionOfEmailAddresses,
-           'SendBCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendBCCtheEmailAddressesFromThisCollectionOfContacts,
-           'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
-           'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
-  };
-       
+                'SendTOthisOneEmailAddress' => request.SendTOthisOneEmailAddress,
+                'SendTOthisStringCollectionOfEmailAddresses' => request.SendTOthisStringCollectionOfEmailAddresses,
+                'SendTOtheEmailAddressesFromThisCollectionOfContacts' => request.SendTOtheEmailAddressesFromThisCollectionOfContacts,
+                'SendTOtheEmailAddressesFromThisCollectionOfUsers' => request.SendTOtheEmailAddressesFromThisCollectionOfUsers,
+                'SendTOtheEmailAddressesFromThisCollectionOfLeads' => request.SendTOtheEmailAddressesFromThisCollectionOfLeads,
+                'SendCCthisOneEmailAddress' => request.SendCCthisOneEmailAddress,
+                'SendCCthisStringCollectionOfEmailAddresses' => request.SendCCthisStringCollectionOfEmailAddresses,
+                'SendCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendCCtheEmailAddressesFromThisCollectionOfContacts,
+                'SendCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendCCtheEmailAddressesFromThisCollectionOfUsers,
+                'SendCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendCCtheEmailAddressesFromThisCollectionOfLeads,
+                'SendBCCthisOneEmailAddress' => request.SendBCCthisOneEmailAddress,
+                'SendBCCthisStringCollectionOfEmailAddresses' => request.SendBCCthisStringCollectionOfEmailAddresses,
+                'SendBCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendBCCtheEmailAddressesFromThisCollectionOfContacts,
+                'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
+                'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads
+        };
+
     }
 
     private static void createActivity(Id recordId, String subject, String recipientList) {
@@ -282,19 +287,19 @@ public with sharing class SendRichEmail {
 
         @invocableVariable
         public String plainTextBody;
-        
+
         @invocableVariable
         public String templateID;
-        
+
         @invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
         public String templateTargetObjectID;
-        
+
         @invocableVariable
         public String subject;
-        
+
         @invocableVariable
         public String replyEmailAddress;
-        
+
         @invocableVariable
         public String senderDisplayName;
 
@@ -312,7 +317,7 @@ public with sharing class SendRichEmail {
 
         @invocableVariable
         public List<User> SendTOtheEmailAddressesFromThisCollectionOfUsers;
-        
+
         @invocableVariable
         public List<Lead> SendTOtheEmailAddressesFromThisCollectionOfLeads;
 
@@ -320,14 +325,14 @@ public with sharing class SendRichEmail {
         public String SendCCthisOneEmailAddress;
 
         @invocableVariable
-        public List<String>  SendCCthisStringCollectionOfEmailAddresses;
+        public List<String> SendCCthisStringCollectionOfEmailAddresses;
 
         @invocableVariable
         public List<Contact> SendCCtheEmailAddressesFromThisCollectionOfContacts;
 
         @invocableVariable
         public List<User> SendCCtheEmailAddressesFromThisCollectionOfUsers;
-        
+
         @invocableVariable
         public List<Lead> SendCCtheEmailAddressesFromThisCollectionOfLeads;
 
@@ -335,17 +340,17 @@ public with sharing class SendRichEmail {
         public String SendBCCthisOneEmailAddress;
 
         @invocableVariable
-        public List<String>  SendBCCthisStringCollectionOfEmailAddresses;
+        public List<String> SendBCCthisStringCollectionOfEmailAddresses;
 
         @invocableVariable
         public List<Contact> SendBCCtheEmailAddressesFromThisCollectionOfContacts;
 
         @invocableVariable
         public List<User> SendBCCtheEmailAddressesFromThisCollectionOfUsers;
-        
+
         @invocableVariable
         public List<Lead> SendBCCtheEmailAddressesFromThisCollectionOfLeads;
-        
+
         @invocableVariable
         public Boolean UseSalesforceSignature;
 
@@ -371,14 +376,15 @@ public with sharing class SendRichEmail {
 
     public class Response {
         @invocableVariable
-        public Boolean isSuccess; 
-        
+        public Boolean isSuccess;
+
         @invocableVariable
         public String errors;
 
     }
-            
-    public class InvocableActionException extends Exception {}
+
+    public class InvocableActionException extends Exception {
+    }
 
 
 }

@@ -17,6 +17,7 @@ export default class FlowCombobox extends LightningElement {
     @track isDataSelected = false;
     @track _selectedObjectType;
     @track _selectedFieldPath;
+    @track hasError = false;
     isMenuOpen = false;
     isDataModified = false;
     selfEvent = false;
@@ -58,7 +59,8 @@ export default class FlowCombobox extends LightningElement {
 
     settings = {
         stringDataType: 'String',
-        referenceDataType: 'reference'
+        referenceDataType: 'reference',
+        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}'
     };
 
     @api
@@ -107,6 +109,17 @@ export default class FlowCombobox extends LightningElement {
         this._options = value;
         this.allOptions = JSON.parse(JSON.stringify(this._options));
         this.processOptions();
+    }
+
+    getTypeOption(value) {
+        if (value && this.allOptions && this.allOptions.length) {
+            for (let i = 0; i < this.allOptions.length; i++) {
+                let localOption = this.allOptions[i].options.find(curTypeOption => curTypeOption.value.toLowerCase() === value.toLowerCase());
+                if (localOption) {
+                    return localOption;
+                }
+            }
+        }
     }
 
     @wire(getObjectInfo, {objectApiName: '$_selectedObjectType'})
@@ -260,6 +273,7 @@ export default class FlowCombobox extends LightningElement {
             this._dataType = this.settings.referenceDataType;
             this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
             this.isDataModified = true;
+            this.hasError = false;
             this.closeOptionDialog();
         }
     }
@@ -409,9 +423,14 @@ export default class FlowCombobox extends LightningElement {
     setValueInput() {
         let valueInput = this.template.querySelector('.value-input');
         if (valueInput) {
+            this.hasError = false;
             let isReference = this.isReference(valueInput.value);
             this._value = this.removeFormatting(valueInput.value);
             if (isReference) {
+                let typeOption = this.getTypeOption(this._value);
+                if (!typeOption) {
+                    this.hasError = true;
+                }
                 this._dataType = this.settings.referenceDataType;
             } else {
                 this._dataType = this.settings.stringDataType;
@@ -448,11 +467,16 @@ export default class FlowCombobox extends LightningElement {
         }
     }
 
-    splitValues = (originalString) => {
-        if (originalString) {
-            return originalString.replace(/ /g, '').split(',');
-        } else {
-            return [];
+    @api
+    reportValidity() {
+        return !this.hasError;
+    }
+
+    get formElementClass() {
+        let resultClass = 'slds-form-element';
+        if (this.hasError) {
+            resultClass += ' slds-has-error';
         }
+        return resultClass;
     }
 }

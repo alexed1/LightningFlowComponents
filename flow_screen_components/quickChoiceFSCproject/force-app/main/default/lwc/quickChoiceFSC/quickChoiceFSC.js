@@ -22,8 +22,6 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api objectName; //used for picklist fields
 	@api fieldName; //used for picklist fields
 	masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
-	@api objectAndFieldName;
-	//tempcalculatedObjectAndFieldName = this.objectName + '.' + this.fieldName;
 	@api inputMode;
 	@api required;
 	picklistOptionsStorage;
@@ -43,8 +41,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	//possibility master record type only works if there aren't other record types?
 	@wire(getPicklistValues, {
 		recordTypeId: "$recordTypeId",
-		fieldApiName: "$objectAndFieldName"
-		//fieldApiName: "$calculatedObjectAndFieldName"
+		fieldApiName: "$calculatedObjectAndFieldName"
 	})
 	picklistValues({ error, data }) {
 		if (data) {
@@ -71,9 +68,7 @@ export default class SmartChoiceFSC extends LightningElement {
 		} else if (error) {
 			this.error = JSON.stringify(error);
 			console.log("getPicklistValues wire service returned error: " + this.error);
-			console.log("object and field " + this.objectAndFieldName);
-			//if (!this.objectAndFieldName)
-			//	throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
+			 
 		}
 	}
 

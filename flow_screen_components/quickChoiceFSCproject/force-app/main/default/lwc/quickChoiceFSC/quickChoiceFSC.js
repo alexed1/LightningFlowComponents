@@ -14,7 +14,6 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api choiceIcons; 
 	@api includeIcons;
 	@api iconSize;
-	@api numberOfColumns; //for Visual Textboxes only, 1(default) or 2
 	@api displayMode; //Picklist, Radio, Visual (3 different selection types)
 	@api allowNoneToBeChosen; //For picklist field only
 
@@ -38,7 +37,6 @@ export default class SmartChoiceFSC extends LightningElement {
 	];
 	@track options = [];
 	@track items = [];
-	@track dualColumns = false;
 
 	//possibility master record type only works if there aren't other record types?
 	@wire(getPicklistValues, {
@@ -85,18 +83,6 @@ export default class SmartChoiceFSC extends LightningElement {
         return undefined;
     }
 
-	get gridClass() {
-		return this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center' : 'slds-form-element__control';
-	}
-
-	get gridStyle() {
-		return this.dualColumns ? 'width:52rem' : '';
-	}
-
-	get columnClass() {
-		return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2' : 'slds-visual-picker slds-visual-picker_vertical';
-	}
-
 	setPicklistOptions() {
 		this.options = this.picklistOptionsStorage;
 	}
@@ -115,9 +101,6 @@ export default class SmartChoiceFSC extends LightningElement {
 			if (!this.includeIcons || !this.choiceIcons) {
 				console.log("icons not needed");
 				this.choiceIcons = this.choiceLabels;
-			}
-			if (this.numberOfColumns === "2") {
-				this.dualColumns = true;
 			}
 		}
 

@@ -15,7 +15,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api includeIcons;
 	@api iconSize;
 	@api numberOfColumns; //for Visual Pickers only, 1(default) or 2
-	@api displayMode; //Picklist, Radio, Visual (3 different selection types)
+	@api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 	@api allowNoneToBeChosen; //For picklist field only
 
 	@api recordTypeId; //used for picklist fields
@@ -112,8 +112,8 @@ export default class SmartChoiceFSC extends LightningElement {
 		console.log("objectFieldName is: " + this.objectAndFieldName);
 		if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
-		// Visual Picker Selection
-		if (this.displayMode === "Visual") {
+		// Visual Card Selection
+		if (this.displayMode === "Card" || this.displayMode === "Visual") {
 			this.showVisual = true;
 			console.log("includeIcons is: " + this.includeIcons);
 			console.log("choiceIcons is: " + this.choiceIcons);

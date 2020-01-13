@@ -14,7 +14,8 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api choiceIcons; 
 	@api includeIcons;
 	@api iconSize;
-	@api displayMode; //Picklist, Radio, Visual (3 different selection types)
+	@api numberOfColumns; //for Visual Pickers only, 1(default) or 2
+	@api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 	@api allowNoneToBeChosen; //For picklist field only
 
 	@api recordTypeId; //used for picklist fields
@@ -22,6 +23,8 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api objectName; //used for picklist fields
 	@api fieldName; //used for picklist fields
 	masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
+	@api objectAndFieldName;
+	//tempcalculatedObjectAndFieldName = this.objectName + '.' + this.fieldName;
 	@api inputMode;
 	@api required;
 	picklistOptionsStorage;
@@ -37,11 +40,13 @@ export default class SmartChoiceFSC extends LightningElement {
 	];
 	@track options = [];
 	@track items = [];
+	@track dualColumns = false;
 
 	//possibility master record type only works if there aren't other record types?
 	@wire(getPicklistValues, {
 		recordTypeId: "$recordTypeId",
-		fieldApiName: "$calculatedObjectAndFieldName"
+		fieldApiName: "$objectAndFieldName"
+		//fieldApiName: "$calculatedObjectAndFieldName"
 	})
 	picklistValues({ error, data }) {
 		if (data) {
@@ -68,7 +73,9 @@ export default class SmartChoiceFSC extends LightningElement {
 		} else if (error) {
 			this.error = JSON.stringify(error);
 			console.log("getPicklistValues wire service returned error: " + this.error);
-			 
+			console.log("object and field " + this.objectAndFieldName);
+			//if (!this.objectAndFieldName)
+			//	throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
 		}
 	}
 
@@ -83,6 +90,18 @@ export default class SmartChoiceFSC extends LightningElement {
         return undefined;
     }
 
+	get gridClass() {
+		return this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center' : 'slds-form-element__control';
+	}
+
+	get gridStyle() {
+		return this.dualColumns ? 'width:52rem' : '';
+	}
+
+	get columnClass() {
+		return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2' : 'slds-visual-picker slds-visual-picker_vertical';
+	}
+
 	setPicklistOptions() {
 		this.options = this.picklistOptionsStorage;
 	}
@@ -90,16 +109,20 @@ export default class SmartChoiceFSC extends LightningElement {
 	connectedCallback() {
 		console.log("Entering Connected Callback for smartchoice");
 		console.log("recordtypeId is: " + this.recordTypeId);
+		console.log("objectFieldName is: " + this.objectAndFieldName);
 		if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
-		// Visual Picker Selection
-		if (this.displayMode === "Visual") {
+		// Visual Card Selection
+		if (this.displayMode === "Card" || this.displayMode === "Visual") {
 			this.showVisual = true;
 			console.log("includeIcons is: " + this.includeIcons);
 			console.log("choiceIcons is: " + this.choiceIcons);
 			if (!this.includeIcons || !this.choiceIcons) {
 				console.log("icons not needed");
 				this.choiceIcons = this.choiceLabels;
+			}
+			if (this.numberOfColumns === "2") {
+				this.dualColumns = true;
 			}
 		}
 
@@ -110,7 +133,7 @@ export default class SmartChoiceFSC extends LightningElement {
 
 		//console.log("initializing smartChoice. inputMode is: " + this.inputMode);
 		let options = [];
-		let items = [];	//parameters for visual text box selection
+		let items = [];	//parameters for visual picker selection
 		let index = 0;
 		if (this.legitInputModes.includes(this.inputMode)) {
 			switch (this.inputMode) {

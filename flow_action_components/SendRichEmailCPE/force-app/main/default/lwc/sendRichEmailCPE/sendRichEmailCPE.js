@@ -20,8 +20,12 @@ export default class SendRichEmailCPE extends LightningElement {
     @track stringOptions = [];
     @track templateOptions = [];
     bodyOptions = [
-        {label: 'Specify Body here', value: this.settings.specifyBodyOption},
-        {label: 'Use Email Template', value: this.settings.useTemplateOption}
+        {label: 'Specify Body here', value: this.settings.specifyBodyOption, fields: ['HTMLbody', 'plainTextBody']},
+        {
+            label: 'Use Email Template',
+            value: this.settings.useTemplateOption,
+            fields: ['templateID', 'templateTargetObjectID']
+        }
     ];
     @track selectedBodyOption = this.settings.specifyBodyOption;
     @track availableRecipients = [{
@@ -69,7 +73,7 @@ export default class SendRichEmailCPE extends LightningElement {
         subject: {value: null, dataType: null},
         HTMLbody: {value: null, dataType: null},
         plainTextBody: {value: null, dataType: null},
-        recordId: {value: null, dataType: null},
+        templateID: {value: null, dataType: null},
         templateTargetObjectID: {value: null, dataType: null},
         bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.stringDataType}
     };
@@ -100,13 +104,11 @@ export default class SendRichEmailCPE extends LightningElement {
 
         let roleManagerValues = {};
         this._values.forEach(curInputParam => {
-            if (curInputParam.value) {
-                if (this.inputValues[curInputParam.id]) {
+                if (curInputParam.id && this.inputValues[curInputParam.id]) {
                     this.inputValues[curInputParam.id].value = curInputParam.value;
                     this.inputValues[curInputParam.id].dataType = curInputParam.dataType;
                 }
-                this.setAvailableRecipientsValues(curInputParam, roleManagerValues);
-            }
+            this.setAvailableRecipientsValues(curInputParam, roleManagerValues);
         });
 
         Object.keys(roleManagerValues).forEach(curRecipientBaseLabel => {
@@ -115,19 +117,36 @@ export default class SendRichEmailCPE extends LightningElement {
                 foundRecipient.value = [roleManagerValues[curRecipientBaseLabel].value];
                 if (roleManagerValues[curRecipientBaseLabel]) {
                     let newLabel = foundRecipient.baseLabel + ' (' + roleManagerValues[curRecipientBaseLabel].value + ')';
-                    foundRecipient.label = newLabel;
+                    foundRecipient.label = roleManagerValues[curRecipientBaseLabel].value ? newLabel : foundRecipient.baseLabel;
                     foundRecipient.objectType = roleManagerValues[curRecipientBaseLabel].objectType;
                 }
             }
         });
+        this.initializeBodyOptions();
         this.isInitialized = true;
+    }
+
+    initializeBodyOptions() {
+        this.bodyOptions.forEach(curBodyOption => {
+            let hasValue = false;
+            curBodyOption.fields.forEach(curBodyField => {
+                if (!hasValue && this.inputValues[curBodyField].value) {
+                    this.selectedBodyOption = curBodyOption.value;
+                }
+            });
+        });
     }
 
     setAvailableRecipientsValues(curInputParam, roleManagerValues) {
         this.availableRecipients.forEach(curRecipient => {
             Object.keys(curRecipient.typeMap).forEach(curObjectType => {
                 if (curRecipient.typeMap[curObjectType] === curInputParam.id) {
-                    roleManagerValues[curRecipient.baseLabel] = {value: curInputParam.value, objectType: curObjectType};
+                    if (!roleManagerValues[curRecipient.baseLabel] || !roleManagerValues[curRecipient.baseLabel].value) {
+                        roleManagerValues[curRecipient.baseLabel] = {
+                            value: curInputParam.value,
+                            objectType: curObjectType
+                        };
+                    }
                 }
             });
         });
@@ -153,9 +172,10 @@ export default class SendRichEmailCPE extends LightningElement {
                             valueFieldName: valueFieldName,
                             labelFieldName: labelFieldName
                         };
+                        outputTypes[curLookUp.object].data.push(curLookUp);
                     }
                 }
-                outputTypes[curLookUp.object].data.push(curLookUp);
+
             }
         });
 
@@ -188,15 +208,18 @@ export default class SendRichEmailCPE extends LightningElement {
         this.dispatchEvent(valueChangedEvent);
     }
 
-    handleValueSelected(event) {
-
-        let curRecipient = this.availableRecipients.find(curRec => curRec.baseLabel === event.detail.id);
+    doCleanRoleManager(baseLabel, newValueObjectType) {
         let valuesToCleanUp = [];
-        Object.keys(curRecipient.typeMap).forEach(curType => {
-            if (event.detail.newValueObjectType !== curType) {
-                valuesToCleanUp = valuesToCleanUp.concat(this._values.filter(curValue => curValue.id === curRecipient.typeMap[curType]));
+        this.availableRecipients.forEach(curRecipient => {
+            if (!baseLabel || baseLabel === curRecipient.baseLabel) {
+                Object.keys(curRecipient.typeMap).forEach(curType => {
+                    if (newValueObjectType !== curType) {
+                        valuesToCleanUp = valuesToCleanUp.concat(this._values.filter(curValue => curValue.id === curRecipient.typeMap[curType]));
+                    }
+                });
             }
         });
+
         if (valuesToCleanUp.length) {
             valuesToCleanUp.forEach(valueToCleanUp => {
                 if (valueToCleanUp && valueToCleanUp.value) {
@@ -204,6 +227,25 @@ export default class SendRichEmailCPE extends LightningElement {
                 }
             });
         }
+    }
+
+    doClearBodyOptions() {
+        let bodyOptionToClear = this.bodyOptions.filter(bodyOptionToClear => bodyOptionToClear.value !== this.selectedBodyOption);
+        if (bodyOptionToClear && bodyOptionToClear.length) {
+            bodyOptionToClear.forEach(curBodyOption => {
+                curBodyOption.fields.forEach(curBodyField => {
+                    if (this.inputValues[curBodyField].value) {
+                        this.dispatchFlowValueChangeEvent(curBodyField, this.settings.nullValue, this.settings.stringDataType);
+                    }
+                });
+            });
+        }
+    }
+
+    handleValueSelected(event) {
+
+        let curRecipient = this.availableRecipients.find(curRec => curRec.baseLabel === event.detail.id);
+        this.doCleanRoleManager(event.detail.id, event.detail.newValueObjectType);
 
         if (curRecipient) {
             let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
@@ -219,7 +261,10 @@ export default class SendRichEmailCPE extends LightningElement {
 
     handleBodyOptionChange(event) {
         this.selectedBodyOption = event.detail.value;
+        this.doClearBodyOptions();
     }
+
+
 
     get isSpecifyBodyOption() {
         return this.selectedBodyOption === this.settings.specifyBodyOption;
@@ -235,6 +280,10 @@ export default class SendRichEmailCPE extends LightningElement {
         }
     }
 
+    handleClearAll(event) {
+        this.doCleanRoleManager();
+    }
+
     get inputStyle() {
         if (this.settings.componentWidth) {
             return 'max-width: ' + this.settings.componentWidth + 'px';
@@ -244,9 +293,9 @@ export default class SendRichEmailCPE extends LightningElement {
     @api validate() {
         let resultErrors = [];
         let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
-        if(allComboboxes){
-            allComboboxes.forEach(curCombobox=>{
-                if(!curCombobox.reportValidity()){
+        if (allComboboxes) {
+            allComboboxes.forEach(curCombobox => {
+                if (!curCombobox.reportValidity()) {
                     resultErrors.push('error');
                 }
             });

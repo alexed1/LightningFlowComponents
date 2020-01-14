@@ -38,6 +38,14 @@
             <h1 class="slds-text-color_inverse slds-text-heading_medium ">Set Addressees</h1>
         </div>
         <div style="max-width: 600px;">
+            <div class="slds-grid slds-grid--align-end">
+                <div class="slds-col slds-col_bump-left">
+                    <a onclick={handleClearAll} href="javascript:void(0);"
+                       class="slds-text-align_right slds-text-link_reset">
+                        <span class="slds-text-link">Clear All</span>
+                    </a>
+                </div>
+            </div>
             <lightning-accordion allow-multiple-sections-open title>
                 <template for:each={availableRecipients} for:item="curRecipient">
                     <lightning-accordion-section name={curRecipient.baseLabel}
@@ -69,7 +77,7 @@
             <lightning-radio-group name="bodyOption"
                                    label="Body"
                                    options={bodyOptions}
-                                   value={inputValues.bodyOption.value}
+                                   value={selectedBodyOption}
                                    onchange={handleBodyOptionChange}
                                    type="radio"></lightning-radio-group>
             <template if:true={isSpecifyBodyOption}>
@@ -94,20 +102,20 @@
                 ></c-flow-combobox>
             </template>
             <template if:false={isSpecifyBodyOption}>
-                <c-flow-combobox name="recordId"
+                <c-flow-combobox name="templateTargetObjectID"
                                  label="Specify Target record ID"
-                                 value={inputValues.recordId.value}
-                                 value-type={inputValues.recordId.dataType}
+                                 value={inputValues.templateTargetObjectID.value}
+                                 value-type={inputValues.templateTargetObjectID.dataType}
                                  flow-context-filter-type="String"
                                  value-is-collection={settings.false}
                                  flow-context={_flowContext}
                                  onvaluechanged={handleFlowValueChange}
                 ></c-flow-combobox>
 
-                <c-flow-combobox name="templateTargetObjectID"
+                <c-flow-combobox name="templateID"
                                  label="Select  Email Template"
-                                 value={inputValues.templateTargetObjectID.value}
-                                 value-type={inputValues.templateTargetObjectID.dataType}
+                                 value={inputValues.templateID.value}
+                                 value-type={inputValues.templateID.dataType}
                                  flow-context-filter-type="String"
                                  value-is-collection={settings.false}
                                  flow-context={_flowContext}

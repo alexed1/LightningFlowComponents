@@ -70,7 +70,7 @@ export default class addNewMembers extends LightningElement {
     set objectType(value) {
         this.selectedType = value;
         if (value) {
-            this.actuallySearch();
+            this.actuallySearch(true);
         }
     }
 
@@ -96,7 +96,10 @@ export default class addNewMembers extends LightningElement {
     }
 
     set value(value) {
-        this.existingMembers = value;
+        if (this.existingMembers !== value) {
+            this.existingMembers = value;
+            this.actuallySearch(true);
+        }
     }
 
     typeChange(event) {
@@ -117,12 +120,12 @@ export default class addNewMembers extends LightningElement {
 
     listenForEnter(event) {
         if (event.code === 'Enter') {
-            this.actuallySearch();
+            this.actuallySearch(false);
         }
     }
 
-    actuallySearch() {
-        if (this._customDataStructure) {
+    actuallySearch(preventShowStringVariableModal) {
+        if (this._customDataStructure && this.selectedType && this._customDataStructure[this.selectedType]) {
             this.searchDisabled = true;
             let valueFieldName = this._customDataStructure[this.selectedType].valueFieldName;
             let labelFieldName = this._customDataStructure[this.selectedType].labelFieldName;
@@ -139,7 +142,9 @@ export default class addNewMembers extends LightningElement {
 
             this.isSearchApplied = true;
             this.searchDisabled = false;
-            this.showStringVariableModal();
+            if (preventShowStringVariableModal !== true) {
+                this.showStringVariableModal();
+            }
         }
     }
 

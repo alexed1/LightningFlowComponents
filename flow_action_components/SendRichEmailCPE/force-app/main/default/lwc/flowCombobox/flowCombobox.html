@@ -33,7 +33,11 @@
                                                 label={_value}
                                                 onremove={resetData}
                                                 has-error={hasError}
-                                        ></lightning-pill>
+                                        >
+                                            <span class="slds-p-around--xx-small">
+                                            <lightning-icon icon-name={iconsPerType.reference} size="x-small">.</lightning-icon>
+                                            </span>
+                                        </lightning-pill>
                                     </div>
                                 </template>
                             </div>

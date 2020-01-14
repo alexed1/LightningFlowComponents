@@ -12,8 +12,7 @@ public with sharing class SendRichEmail {
         String templateTargetObjectId = requests[0].templateTargetObjectId;
         String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;
         Boolean saveAsActivity = requests[0].saveAsActivity;
-        Id recordId = requests[0].recordId;
-
+        String recordId = requests[0].recordId;
         //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
         // First, reserve email capacity for the current Apex transaction to ensure
@@ -72,21 +71,29 @@ public with sharing class SendRichEmail {
 
         mail = AddAttachments(mail, requests[0].contentDocumentAttachments, null);
 
-        if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
+        if (!String.isBlank(templateID) && (!String.isBlank(HTMLbody) || !String.isBlank(plainTextBody))) {
             throw new InvocableActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
-
-        if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
-            throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
-
-        if (templateID == null && HTMLbody == null && plainTextBody == null)
-            throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
-
-        if (saveAsActivity == true && recordId == null) {
-            throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
         }
 
-        mail.setTemplateID(templateID);
-        mail.setTargetObjectId(templateTargetObjectId);
+        if ((!String.isBlank(templateID) && String.isBlank(templateTargetObjectId)) || (String.isBlank(templateID) && !String.isBlank(templateTargetObjectId))) {
+            throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
+        }
+
+        if (String.isBlank(templateID) && String.isBlank(HTMLbody) && String.isBlank(plainTextBody)) {
+            throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
+        }
+
+        if (saveAsActivity == true && String.isBlank(recordId)) {
+            throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
+        }
+        mail.setSaveAsActivity(false);
+        if (!String.isBlank(templateID)) {
+            mail.setTemplateID(templateID);
+        }
+        if (!String.isBlank(templateTargetObjectId)) {
+            mail.setTargetObjectId(templateTargetObjectId);
+        }
+
         System.debug('templateID is:' + templateID);
 
         // Specify the text content of the email.
@@ -128,14 +135,12 @@ public with sharing class SendRichEmail {
             } else {
                 response.isSuccess = true;
             }
-            if (saveAsActivity == true && recordId != null) {
-                if (recordId != null) {
-                    try {
-                        createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
-                    } catch (Exception ex) {
-                        response.errors = ex.getMessage();
-                        response.isSuccess = false;
-                    }
+            if (saveAsActivity == true && !String.isBlank(recordId)) {
+                try {
+                    createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
+                } catch (Exception ex) {
+                    response.errors = ex.getMessage();
+                    response.isSuccess = false;
                 }
             }
 
@@ -180,7 +185,6 @@ public with sharing class SendRichEmail {
     }
 
     public static String[] BuildAddressList(string type, Map<String, Object> m) {
-
         String[] addressList = new List<String>();
         String curEmail;
 
@@ -370,7 +374,7 @@ public with sharing class SendRichEmail {
         @invocableVariable
         public Boolean saveAsActivity;
         @invocableVariable
-        public Id recordId;
+        public String recordId;
 
     }
 

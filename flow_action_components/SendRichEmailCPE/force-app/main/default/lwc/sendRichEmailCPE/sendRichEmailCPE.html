@@ -9,9 +9,9 @@
                              value={inputValues.replyEmailAddress.value}
                              value-type={inputValues.replyEmailAddress.dataType}
                              flow-context-filter-type="String"
-                             value-is-collection={settings.false}
+                             flow-context-filter-collection-boolean={inputValues.replyEmailAddress.isCollection}
                              flow-context={_flowContext}
-                             onvaluechanged={handleFlowValueChange}
+                             onvaluechanged={handleFlowComboboxValueChange}
             ></c-flow-combobox>
 
             <c-flow-combobox name="orgWideEmailAddressId"
@@ -19,9 +19,9 @@
                              value={inputValues.orgWideEmailAddressId.value}
                              value-type={inputValues.orgWideEmailAddressId.dataType}
                              flow-context-filter-type="String"
-                             value-is-collection={settings.false}
+                             flow-context-filter-collection-boolean={inputValues.orgWideEmailAddressId.isCollection}
                              flow-context={_flowContext}
-                             onvaluechanged={handleFlowValueChange}
+                             onvaluechanged={handleFlowComboboxValueChange}
             ></c-flow-combobox>
 
             <c-flow-combobox name="senderDisplayName"
@@ -29,9 +29,9 @@
                              value={inputValues.senderDisplayName.value}
                              value-type={inputValues.senderDisplayName.dataType}
                              flow-context-filter-type="String"
-                             value-is-collection={settings.false}
+                             flow-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
                              flow-context={_flowContext}
-                             onvaluechanged={handleFlowValueChange}
+                             onvaluechanged={handleFlowComboboxValueChange}
             ></c-flow-combobox>
         </div>
         <div style="padding:0.5rem;background:#16325c">
@@ -72,9 +72,9 @@
                              value={inputValues.subject.value}
                              value-type={inputValues.subject.dataType}
                              flow-context-filter-type="String"
-                             value-is-collection={settings.false}
+                             flow-context-filter-collection-boolean={inputValues.subject.isCollection}
                              flow-context={_flowContext}
-                             onvaluechanged={handleFlowValueChange}
+                             onvaluechanged={handleFlowComboboxValueChange}
             ></c-flow-combobox>
 
             <lightning-radio-group name="bodyOption"
@@ -89,9 +89,9 @@
                                  value={inputValues.HTMLbody.value}
                                  value-type={inputValues.HTMLbody.dataType}
                                  flow-context-filter-type="String"
-                                 value-is-collection={settings.false}
+                                 flow-context-filter-collection-boolean={inputValues.HTMLbody.isCollection}
                                  flow-context={_flowContext}
-                                 onvaluechanged={handleFlowValueChange}
+                                 onvaluechanged={handleFlowComboboxValueChange}
                 ></c-flow-combobox>
 
                 <c-flow-combobox name="plainTextBody"
@@ -99,9 +99,9 @@
                                  value={inputValues.plainTextBody.value}
                                  value-type={inputValues.plainTextBody.dataType}
                                  flow-context-filter-type="String"
-                                 value-is-collection={settings.false}
+                                 flow-context-filter-collection-boolean={inputValues.plainTextBody.isCollection}
                                  flow-context={_flowContext}
-                                 onvaluechanged={handleFlowValueChange}
+                                 onvaluechanged={handleFlowComboboxValueChange}
                 ></c-flow-combobox>
             </template>
             <template if:false={isSpecifyBodyOption}>
@@ -110,9 +110,9 @@
                                  value={inputValues.templateTargetObjectID.value}
                                  value-type={inputValues.templateTargetObjectID.dataType}
                                  flow-context-filter-type="String"
-                                 value-is-collection={settings.false}
+                                 flow-context-filter-collection-boolean={inputValues.templateTargetObjectID.isCollection}
                                  flow-context={_flowContext}
-                                 onvaluechanged={handleFlowValueChange}
+                                 onvaluechanged={handleFlowComboboxValueChange}
                 ></c-flow-combobox>
 
                 <c-flow-combobox name="templateID"
@@ -120,9 +120,9 @@
                                  value={inputValues.templateID.value}
                                  value-type={inputValues.templateID.dataType}
                                  flow-context-filter-type="String"
-                                 value-is-collection={settings.false}
+                                 flow-context-filter-collection-boolean={inputValues.templateID.isCollection}
                                  flow-context={_flowContext}
-                                 onvaluechanged={handleFlowValueChange}
+                                 onvaluechanged={handleFlowComboboxValueChange}
                 ></c-flow-combobox>
             </template>
         </div>

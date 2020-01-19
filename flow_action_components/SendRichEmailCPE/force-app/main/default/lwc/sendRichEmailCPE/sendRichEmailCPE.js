@@ -9,15 +9,14 @@ export default class SendRichEmailCPE extends LightningElement {
         stringVariablesOption: 'String Variables (or type an address)',
         stringDataType: 'String',
         referenceDataType: 'reference',
-        true: true,
-        false: false,
         componentWidth: 320,
         nullValue: ''
     };
     @track _values;
     @track _flowContext;
+    @track convertedFlowContext;
     @track stringOptions = [];
-    @track templateOptions = [];
+
     bodyOptions = [
         {label: 'Specify Body here', value: this.settings.specifyBodyOption, fields: ['HTMLbody', 'plainTextBody']},
         {
@@ -66,15 +65,15 @@ export default class SendRichEmailCPE extends LightningElement {
     }];
     //Keys must inherit names from invocable method
     @track inputValues = {
-        replyEmailAddress: {value: null, dataType: null},
-        orgWideEmailAddressId: {value: null, dataType: null},
-        senderDisplayName: {value: null, dataType: null},
-        subject: {value: null, dataType: null},
-        HTMLbody: {value: null, dataType: null},
-        plainTextBody: {value: null, dataType: null},
-        templateID: {value: null, dataType: null},
-        templateTargetObjectID: {value: null, dataType: null},
-        bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.stringDataType}
+        replyEmailAddress: {value: null, dataType: null, isCollection: false},
+        orgWideEmailAddressId: {value: null, dataType: null, isCollection: false},
+        senderDisplayName: {value: null, dataType: null, isCollection: false},
+        subject: {value: null, dataType: null, isCollection: false},
+        HTMLbody: {value: null, dataType: null, isCollection: false},
+        plainTextBody: {value: null, dataType: null, isCollection: false},
+        templateID: {value: null, dataType: null, isCollection: false},
+        templateTargetObjectID: {value: null, dataType: null, isCollection: false},
+        bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.stringDataType, isCollection: false}
     };
     @track isInitialized = true; //helps ensure all data structures are ready before rendering starts
 
@@ -84,7 +83,6 @@ export default class SendRichEmailCPE extends LightningElement {
 
     set flowContext(value) {
         this._flowContext = value;
-        this.convertTemplateOptions(value);
         this.convertContextIntoRoleManagerParams(value);
     }
 
@@ -97,7 +95,6 @@ export default class SendRichEmailCPE extends LightningElement {
         this.isInitialized = false;
         this._values = value;
         this.initializeValues();
-        
     }
 
     initializeValues(value) {
@@ -149,12 +146,6 @@ export default class SendRichEmailCPE extends LightningElement {
                     }
                 }
             });
-        });
-    }
-
-    convertTemplateOptions(value) {
-        this.templateOptions = value.textTemplates.map(curValue => {
-            return {label: curValue.name, value: curValue.name}
         });
     }
 
@@ -270,7 +261,7 @@ export default class SendRichEmailCPE extends LightningElement {
         return this.selectedBodyOption === this.settings.specifyBodyOption;
     }
 
-    handleFlowValueChange(event) {
+    handleFlowComboboxValueChange(event) {
         let elementName = event.detail.id;
         if (this.inputValues[elementName]) {
             this.inputValues[elementName].value = event.detail.newValue;

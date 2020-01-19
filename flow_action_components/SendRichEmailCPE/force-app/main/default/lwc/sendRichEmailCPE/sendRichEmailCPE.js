@@ -14,7 +14,7 @@ export default class SendRichEmailCPE extends LightningElement {
     };
     @track _values;
     @track _flowContext;
-    @track convertedFlowContext;
+    @track roleManagerOptions;
     @track stringOptions = [];
 
     bodyOptions = [
@@ -182,7 +182,7 @@ export default class SendRichEmailCPE extends LightningElement {
             };
         }
 
-        this.convertedFlowContext = outputTypes;
+        this.roleManagerOptions = outputTypes;
     }
 
     dispatchFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {

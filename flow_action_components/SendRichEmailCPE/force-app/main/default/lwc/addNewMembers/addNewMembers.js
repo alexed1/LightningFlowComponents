@@ -18,7 +18,7 @@ export default class addNewMembers extends LightningElement {
     @track isSearchApplied = false;
     @track searchString;
     @track selectedType;
-    _customDataStructure;
+    _roleManagerOptions;
     _memberTypes;
 
     @track label = {
@@ -74,12 +74,12 @@ export default class addNewMembers extends LightningElement {
         }
     }
 
-    @api get customDataStructure() {
-        return this._customDataStructure;
+    @api get roleManagerOptions() {
+        return this._roleManagerOptions;
     }
 
-    set customDataStructure(value) {
-        this._customDataStructure = value;
+    set roleManagerOptions(value) {
+        this._roleManagerOptions = value;
         if (value) {
             this._memberTypes = Object.keys(value).map(curKey => {
                 return {label: curKey, value: curKey}
@@ -125,12 +125,12 @@ export default class addNewMembers extends LightningElement {
     }
 
     actuallySearch(preventShowStringVariableModal) {
-        if (this._customDataStructure && this.selectedType && this._customDataStructure[this.selectedType]) {
+        if (this._roleManagerOptions && this.selectedType && this._roleManagerOptions[this.selectedType]) {
             this.searchDisabled = true;
-            let valueFieldName = this._customDataStructure[this.selectedType].valueFieldName;
-            let labelFieldName = this._customDataStructure[this.selectedType].labelFieldName;
+            let valueFieldName = this._roleManagerOptions[this.selectedType].valueFieldName;
+            let labelFieldName = this._roleManagerOptions[this.selectedType].labelFieldName;
 
-            this.searchResults = this._customDataStructure[this.selectedType].data.filter(curItem => {
+            this.searchResults = this._roleManagerOptions[this.selectedType].data.filter(curItem => {
                 return curItem[valueFieldName].toLowerCase().includes(this.searchString ? this.searchString.toLowerCase() : '')
             }).map(curItem => {
                 return {

@@ -5,6 +5,8 @@
 .idea/
 /IlluminatedCloud/
 .prettier*
+
+**mdapi
 # Salesforce cache
 .sfdx/
 

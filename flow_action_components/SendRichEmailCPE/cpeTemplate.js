@@ -68,7 +68,8 @@ export default class SendRichEmailCPE extends LightningElement {
         });
 
         //do additional mapping of input values to existing controls   
-        this.isInitialized = true;
+        this.isInitialized = true; //helps ensure all data structures are ready before rendering starts
+
     }
 
     //this function should be called any time something happens in the CPE that results in a change to an action input value

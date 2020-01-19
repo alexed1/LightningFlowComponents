@@ -2,7 +2,7 @@ import {api, track, LightningElement} from 'lwc';
 
 export default class SendRichEmailCPE extends LightningElement {
 
-    @api property;
+    
     settings = {
         specifyBodyOption: 'specifyBody',
         useTemplateOption: 'useTemplate',
@@ -16,7 +16,6 @@ export default class SendRichEmailCPE extends LightningElement {
     };
     @track _values;
     @track _flowContext;
-    @track convertedFlowContext;
     @track stringOptions = [];
     @track templateOptions = [];
     bodyOptions = [
@@ -77,7 +76,7 @@ export default class SendRichEmailCPE extends LightningElement {
         templateTargetObjectID: {value: null, dataType: null},
         bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.stringDataType}
     };
-    @track isInitialized = true;
+    @track isInitialized = true; //helps ensure all data structures are ready before rendering starts
 
     @api get flowContext() {
         return this._flowContext;
@@ -98,6 +97,7 @@ export default class SendRichEmailCPE extends LightningElement {
         this.isInitialized = false;
         this._values = value;
         this.initializeValues();
+        
     }
 
     initializeValues(value) {

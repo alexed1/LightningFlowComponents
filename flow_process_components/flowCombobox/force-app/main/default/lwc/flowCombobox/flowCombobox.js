@@ -1,13 +1,15 @@
 import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
+import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 
 export default class FlowCombobox extends LightningElement {
-
+    @api name;
     @api label;
     @api required = false;
-    @api filterType;
-    @api filterCollection;
+    @api flowContextFilterType;
+    @api flowContextFilterCollectionBoolean;
     @api maxWidth;
+    @track _dataType;
     @track _value;
     @track allOptions;
     @track _options = [];
@@ -16,8 +18,10 @@ export default class FlowCombobox extends LightningElement {
     @track isDataSelected = false;
     @track _selectedObjectType;
     @track _selectedFieldPath;
-
+    @track hasError = false;
     isMenuOpen = false;
+    isDataModified = false;
+    selfEvent = false;
     key = 0;
 
     labels = {
@@ -37,7 +41,8 @@ export default class FlowCombobox extends LightningElement {
         Address: 'utility:location',
         Currency: 'utility:currency_input',
         Url: 'utility:link',
-        SObject: 'utility:sobject'
+        SObject: 'utility:sobject',
+        reference: 'utility:merge_field'
     };
 
     typeDescriptors = [
@@ -54,6 +59,12 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'apexPluginCalls', label: 'Variables', dataType: 'String'},
     ];
 
+    settings = {
+        stringDataType: 'String',
+        referenceDataType: 'reference',
+        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}'
+    };
+
     @api
     get value() {
         return this._value;
@@ -65,6 +76,21 @@ export default class FlowCombobox extends LightningElement {
         this.determineSelectedType();
     }
 
+    @api
+    get valueType() {
+        return this._dataType;
+    }
+
+    set valueType(value) {
+        if (!this._dataType) {
+            if (value) {
+                this._dataType = value;
+            } else {
+                this._dataType = this.settings.stringDataType;
+            }
+
+        }
+    }
 
     @api get flowContext() {
         return this._flowContext;
@@ -73,8 +99,14 @@ export default class FlowCombobox extends LightningElement {
     set flowContext(value) {
         this._flowContext = value;
         this._mergeFields = this.generateMergeFieldsFromFlowContext(this._flowContext);
-        this.setOptions(this._mergeFields);
-        this.determineSelectedType();
+        if (!this._selectedObjectType) {
+            this.setOptions(this._mergeFields);
+            this.determineSelectedType();
+        }
+    }
+
+    get displayPill() {
+        return this.isDataSelected && this._dataType === this.settings.referenceDataType;
     }
 
     setOptions(value) {
@@ -83,10 +115,26 @@ export default class FlowCombobox extends LightningElement {
         this.processOptions();
     }
 
+    getTypeOption(value) {
+        if (value) {
+            let parentVar = value.split('.')[0];
+            if (parentVar && this._mergeFields && this._mergeFields.length) {
+                for (let i = 0; i < this._mergeFields.length; i++) {
+                    let localOption = this._mergeFields[i].options.find(curTypeOption => curTypeOption.value.toLowerCase() === parentVar.toLowerCase());
+                    if (localOption) {
+                        return localOption;
+                    }
+                }
+            }
+        }
+    }
+
     @wire(getObjectInfo, {objectApiName: '$_selectedObjectType'})
     _getObjectInfo({error, data}) {
         if (error) {
-            this.errors.push(error.body[0].message);
+            this.showToast('Error', error.body, 'error');
+            console.log(error.body);
+            this.setOptions([]);
         } else if (data) {
             let tempOptions = [];
             let localKey = 0;
@@ -105,12 +153,10 @@ export default class FlowCombobox extends LightningElement {
                     displayType: curDataType === 'SObject' ? curObjectType : curDataType,
                     key: 'fieldDescriptor' + localKey++
                 });
-
-
             });
             this.setOptions([{type: data.label + ' Fields', options: tempOptions}]);
-
         }
+
     }
 
     getTypes() {
@@ -212,7 +258,7 @@ export default class FlowCombobox extends LightningElement {
                 type: curDataType,
                 label: curObject[labelField] ? curObject[labelField] : curObject[valueField],
                 value: curObject[valueField],
-                isCollection: curObject[isCollectionField],
+                isCollection: !!curObject[isCollectionField],
                 objectType: curObject[objectTypeField],
                 optionIcon: this.getIconNameByType(curDataType),
                 isObject: curDataType === 'SObject',
@@ -226,36 +272,68 @@ export default class FlowCombobox extends LightningElement {
     handleOpenObject(event) {
         event.stopPropagation();
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
+        this.value = this._selectedFieldPath + '.';
         this._selectedObjectType = event.currentTarget.dataset.objectType;
     }
 
     handleSetSelectedRecord(event) {
         if (event.currentTarget.dataset) {
-            this.value = this.formatValue(this._selectedFieldPath, event.currentTarget.dataset.value);
+            this._dataType = this.settings.referenceDataType;
+            this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
+            this.isDataModified = true;
+            this.hasError = false;
             this.closeOptionDialog();
         }
     }
 
+
+    dispatchValueChangedEvent() {
+        const valueChangedEvent = new CustomEvent('valuechanged', {
+            detail: {
+                id: this.name,
+                newValue: this._value ? this._value : '',
+                newValueDataType: this._dataType
+            }
+        });
+        this.dispatchEvent(valueChangedEvent);
+    }
+
     resetData(event) {
         this.value = '';
-        this._selectedFieldPath = '';
-        this._selectedObjectType = null;
-        this.setOptions(this._mergeFields);
+        this.resetTypeOptions();
         this.closeOptionDialog();
     }
 
+    resetTypeOptions() {
+        this.isDataModified = true;
+        this._selectedFieldPath = '';
+        this._selectedObjectType = null;
+        this._dataType = this.settings.stringDataType;
+        this.setOptions(this._mergeFields);
+    }
+
     openOptionDialog(event) {
-        this.isDataSelected = false;
+        // this.isDataSelected = false;
         this.isMenuOpen = true;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open';
     }
 
-    closeOptionDialog() {
+    closeOptionDialog(setValueInput) {
+
         if (this._value) {
             this.isDataSelected = true;
         }
         this.isMenuOpen = false;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click';
+
+        if (setValueInput) {
+            this.setValueInput();
+        }
+
+        if (this.isDataModified) {
+            this.dispatchValueChangedEvent();
+            this.isDataModified = false;
+        }
     }
 
     constructor() {
@@ -268,23 +346,31 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleWindowClick(event) {
-        if (!event.path.includes(this.template.host)) {
-            this.closeOptionDialog();
+        console.log(Date.now());
+        if (!event.path.includes(this.template.host) && !this.selfEvent) {
+            this.closeOptionDialog(true);
         }
+        this.selfEvent = false;
     }
 
     processOptions(searchString) {
-        let searchLC = searchString ? searchString.toLowerCase() : '';
+        let searchLC = '';
+
+        if (searchString) {
+            let searchParts = searchString.split('.');
+            searchLC = searchParts[searchParts.length - 1].toLowerCase();
+        }
+
         this._options = [];
         this.allOptions.forEach(curOption => {
             let localOptions = curOption.options;
 
-            if (this.filterType) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.filterType);
+            if (this.flowContextFilterType) {
+                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.flowContextFilterType || (opToFilter.type === 'SObject' && !this.flowContextFilterCollectionBoolean));
             }
 
-            if (typeof this.filterCollection !== "undefined") {
-                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.filterCollection);
+            if (typeof this.flowContextFilterCollectionBoolean !== "undefined") {
+                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.flowContextFilterCollectionBoolean);
             }
 
             if (searchLC) {
@@ -306,8 +392,21 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenOptions(event) {
+        // event.stopPropagation();
+        console.log('handleOpenOptions');
+        this.selfEvent = true;
+        if (this.isMenuOpen) {
+            this.isDataSelected = false;
+            this._value = this.formattedValue(this._value);
+        } else {
+            this.openOptionDialog();
+        }
+
+    }
+
+    handleOpenEditDialog(event) {
         event.stopPropagation();
-        this.openOptionDialog();
+        this.handleOpenOptions(event);
     }
 
     handleCloseOptions(event) {
@@ -316,29 +415,101 @@ export default class FlowCombobox extends LightningElement {
 
     handleSearchField(event) {
         let currentText = event.target.value;
+        if (this.isReference(currentText)) {
+            this._dataType = this.settings.referenceDataType;
+        } else {
+            this._dataType = this.settings.stringDataType;
+        }
+        if (!currentText || !currentText.includes('.')) {
+            this.resetTypeOptions();
+            this.setOptions(this._mergeFields);
+        }
+        this.isDataModified = true;
+        this.isDataSelected = false;
+
         this.processOptions(currentText);
-        this.allOptions.length ? this.openOptionDialog() : this.closeOptionDialog();
-    }
-
-    handleSearchKeyUp(event) {
-        console.log('isDataSelected' + this.isDataSelected);
-        if (event.key === "Enter") {
-            if (this.isMenuOpen) {
-                this.closeOptionDialog();
-            } else {
-                this.openOptionDialog();
-            }
-
+        if (this.allOptions.length) {
+            this.openOptionDialog();
         }
     }
 
-    formatValue(path, val) {
-        return '{!' + (path ? path + '.' : '') + val + '}'
+    handleSearchKeyUp(event) {
+        if (event.key === "Enter") {
+            if (this.isMenuOpen) {
+                this.closeOptionDialog(true);
+            } else {
+                this.openOptionDialog();
+            }
+        }
+    }
+
+    setValueInput() {
+        let valueInput = this.template.querySelector('.value-input');
+        if (valueInput) {
+            this.hasError = false;
+            let isReference = this.isReference(valueInput.value);
+            this._value = this.removeFormatting(valueInput.value);
+            if (isReference) {
+                let typeOption = this.getTypeOption(this._value);
+                if (!typeOption) {
+                    this.hasError = true;
+                }
+                this._dataType = this.settings.referenceDataType;
+            } else {
+                this._dataType = this.settings.stringDataType;
+            }
+        }
+    }
+
+    isReference(value) {
+        let isReference = value.indexOf('{!') === 0 && value.lastIndexOf('}') === (value.length - 1);
+        return isReference;
+    }
+
+    getFullPath(path, val) {
+        return (path ? path + '.' : '') + val;
+    }
+
+    formattedValue(value) {
+        if (this.isReference(value)) {
+            return value;
+        } else {
+            return this._dataType === this.settings.referenceDataType ? '{!' + value + '}' : value;
+        }
+    }
+
+    removeFormatting(value) {
+        let isReference = this.isReference(value);
+        let clearValue = isReference ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
+        return clearValue;
     }
 
     get inputStyle() {
         if (this.maxWidth) {
-            return 'max-width: ' + this.maxWidth + 'px';
+            return 'max-width: ' + this.maxWidth + 'px;';
         }
     }
+
+    @api
+    reportValidity() {
+        return !this.hasError;
+    }
+
+    get formElementClass() {
+        let resultClass = 'slds-form-element';
+        if (this.hasError) {
+            resultClass += ' slds-has-error';
+        }
+        return resultClass;
+    }
+
+    showToast(title, message, variant) {
+        const showToast = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant: variant,
+        });
+        dispatchEvent(showToast);
+    }
+
 }

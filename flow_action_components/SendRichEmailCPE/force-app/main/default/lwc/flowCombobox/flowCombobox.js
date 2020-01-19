@@ -7,7 +7,7 @@ export default class FlowCombobox extends LightningElement {
     @api label;
     @api required = false;
     @api flowContextFilterType;
-    @api valueIsCollection;
+    @api flowContextFilterCollectionBoolean;
     @api maxWidth;
     @track _dataType;
     @track _value;
@@ -366,11 +366,11 @@ export default class FlowCombobox extends LightningElement {
             let localOptions = curOption.options;
 
             if (this.flowContextFilterType) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.flowContextFilterType || opToFilter.type === 'SObject');
+                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.flowContextFilterType || (opToFilter.type === 'SObject' && !this.flowContextFilterCollectionBoolean));
             }
 
-            if (typeof this.valueIsCollection !== "undefined") {
-                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.valueIsCollection);
+            if (typeof this.flowContextFilterCollectionBoolean !== "undefined") {
+                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.flowContextFilterCollectionBoolean);
             }
 
             if (searchLC) {

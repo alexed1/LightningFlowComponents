@@ -5,6 +5,7 @@ import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
 
 export default class recordDetailFSC extends LightningElement {
     @api recordId;
+    @api recordTypeId;
     @api mode = 'view';
     @api objectApiName;
 

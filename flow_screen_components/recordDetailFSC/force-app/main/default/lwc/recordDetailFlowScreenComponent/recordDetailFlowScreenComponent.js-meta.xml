@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>46.0</apiVersion>
+    <apiVersion>47.0</apiVersion>
     <description>recordDetailFSC</description>
     <isExposed>true</isExposed>
     <masterLabel>recordDetail FSC</masterLabel>
@@ -15,6 +15,7 @@
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" type="String"></property>
+            <property name="recordTypeId" type="String"></property>
             <property name="objectApiName" type="String"></property>
             <property name="fields" type="String"></property>
             <property name="mode" type="String"></property>

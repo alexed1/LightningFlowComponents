@@ -28,7 +28,7 @@
         </connector>
         <fields>
             <name>edit_account2</name>
-            <extensionName>c:recordDetailFSC</extensionName>
+            <extensionName>c:recordDetailFlowScreenComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordId</name>
@@ -58,7 +58,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>showAccount2_0</name>
-            <extensionName>c:recordDetailFSC</extensionName>
+            <extensionName>c:recordDetailFlowScreenComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordId</name>
@@ -139,7 +139,7 @@
         </connector>
         <fields>
             <name>showAccount2</name>
-            <extensionName>c:recordDetailFSC</extensionName>
+            <extensionName>c:recordDetailFlowScreenComponent</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordId</name>

@@ -3,8 +3,11 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/recordDetailFSC": [
-                "recordDetailFSC/recordDetailFSC.js"
+            "c/toastMessage": [
+                "toastMessage/toastMessage.js"
+            ],
+            "c/recordDetailFlowScreenComponent": [
+                "recordDetailFlowScreenComponent/recordDetailFlowScreenComponent.js"
             ]
         }
     },

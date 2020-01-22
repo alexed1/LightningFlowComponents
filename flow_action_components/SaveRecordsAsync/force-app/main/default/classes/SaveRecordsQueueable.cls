@@ -39,6 +39,12 @@ global with sharing class SaveRecordsQueueable implements Queueable {
         Schema.sObjectType typeName = this.records[0].getSObjectType();
         Type listType = Type.forName('List<' + typeName + '>');
 
+        // Cast generic collection to typed
+        List<SObject> toUpsert = (List<SObject>)listType.newInstance();
+        toUpsert.addAll(this.records);
+
+        // Upsert via throwable method so it surfaces in status
+        Database.upsert(toUpsert);
     }
 
     /* 
@@ -48,9 +54,11 @@ global with sharing class SaveRecordsQueueable implements Queueable {
      */
     @InvocableMethod(label='Save Records Later' description='Upserts a collection of records asynchronously. Returns an Apex JobId to track status of the request.')
     global static List<Results> saveRecordsQueueable(List<Requests> requests) {
+        // Result object to populated and returned
         Results result;
 
         try {
+            // Instantiate this class and add job to queue
             SaveRecordsQueueable job = new SaveRecordsQueueable(requests[0].inputCollection);
         	Id jobId = System.enqueueJob(job);
 

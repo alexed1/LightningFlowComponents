@@ -13,7 +13,7 @@ global with sharing class SaveRecordsQueueable implements Queueable {
         // Assign contructor param to local variable
         this.records = records;
 
-        // TODO: Maybe check permissions to object, saves async exception handling
+        // TODO: Maybe check permissions to object, saves async exception handling but adds to loop iterations
         // Schema.sObjectType sobjectType = this.records[0].getSObjectType();
         // Schema.DescribeSObjectResult describe = sobjectType.getDescribe();
         
@@ -30,6 +30,9 @@ global with sharing class SaveRecordsQueueable implements Queueable {
 
     // Primary execution method for Queueable
     global void execute(QueueableContext context) {
+        // Get generic type information to support generic upsert
+        Schema.sObjectType typeName = this.records[0].getSObjectType();
+        Type listType = Type.forName('List<' + typeName + '>');
         
     }
 
@@ -83,6 +86,5 @@ global with sharing class SaveRecordsQueueable implements Queueable {
         }
     }
     
-    // Custom exception class for local exceptions
     global class SaveRecordsQueueableException extends Exception {}
 }

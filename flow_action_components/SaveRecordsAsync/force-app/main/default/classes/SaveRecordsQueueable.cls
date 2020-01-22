@@ -26,6 +26,11 @@ global with sharing class SaveRecordsQueueable implements Queueable {
                 )
             );
         }
+
+        // Check for record list having no values
+        if(this.records.isEmpty()) {
+            throw new SaveRecordsQueueableException('The collection provided is empty.');
+        }
     }
 
     // Primary execution method for Queueable
@@ -33,7 +38,7 @@ global with sharing class SaveRecordsQueueable implements Queueable {
         // Get generic type information to support generic upsert
         Schema.sObjectType typeName = this.records[0].getSObjectType();
         Type listType = Type.forName('List<' + typeName + '>');
-        
+
     }
 
     /* 
@@ -52,8 +57,15 @@ global with sharing class SaveRecordsQueueable implements Queueable {
             // Create result object with success
             result = new Results(jobId);
         } catch(Exception e) {
-            // Create new result object with error
-            result = new Results(e.getMessage());
+            // Check for empty exception
+            if(e.getMessage() == 'The collection provided is empty.') {
+                // Create result success, but with message
+                result = new Results(true);
+                result.message = e.getMessage();
+            } else {
+                // Create new result object with error
+                result = new Results(e.getMessage());
+            }            
         }
         
         return new List<Results>{result};
@@ -83,6 +95,10 @@ global with sharing class SaveRecordsQueueable implements Queueable {
         public Results(String error) {
             this.success = false;
             this.message = error;
+        }
+
+        public Results(Boolean success) {
+            this.success = success;
         }
     }
     

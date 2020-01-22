@@ -40,7 +40,20 @@ global with sharing class SaveRecordsQueueable implements Queueable {
      */
     @InvocableMethod(label='Save Records Later' description='Upserts a collection of records asynchronously. Returns an Apex JobId to track status of the request.')
     global static List<Results> saveRecordsQueueable(List<Requests> requests) {
-        return null;
+        Results result;
+
+        try {
+            SaveRecordsQueueable job = new SaveRecordsQueueable(requests[0].inputCollection);
+        	Id jobId = System.enqueueJob(job);
+
+            // Create result object with success
+            result = new Results(jobId);
+        } catch(Exception e) {
+            // Create new result object with error
+            result = new Results(e.getMessage());
+        }
+        
+        return new List<Results>{result};
     }
 
     global class Requests {
@@ -54,6 +67,20 @@ global with sharing class SaveRecordsQueueable implements Queueable {
 
         @InvocableVariable
         global String message;
+
+        @InvocableVariable
+        global Id jobId;
+
+        public Results(Id jobId) {
+            this.success = true;
+            this.message = 'Successfully enqueued job';
+            this.jobId = jobId;
+        }
+
+        public Results(String error) {
+            this.success = false;
+            this.message = error;
+        }
     }
     
     // Custom exception class for local exceptions

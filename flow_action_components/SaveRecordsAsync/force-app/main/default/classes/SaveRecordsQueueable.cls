@@ -3,7 +3,7 @@
  *  Author: (github) davidentremont
  *  Date 2020-01-22
  */
-public with sharing class SaveRecordsQueueable implements Queueable {
+global with sharing class SaveRecordsQueueable implements Queueable {
     
     // Local variables
     private List<SObject> records = new List<SObject>(); // The collection to be saved
@@ -29,7 +29,7 @@ public with sharing class SaveRecordsQueueable implements Queueable {
     }
 
     // Primary execution method for Queueable
-    public void execute(QueueableContext context) {
+    global void execute(QueueableContext context) {
         
     }
 
@@ -39,23 +39,23 @@ public with sharing class SaveRecordsQueueable implements Queueable {
      *  @return: List<Result>, A Result class object used to return result of the request being validated and the job being queued 
      */
     @InvocableMethod(label='Save Records Later' description='Upserts a collection of records asynchronously. Returns an Apex JobId to track status of the request.')
-    public static List<Results> saveRecordsQueueable(List<Requests> requests) {
+    global static List<Results> saveRecordsQueueable(List<Requests> requests) {
         return null;
     }
 
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<SObject> inputCollection;
+        global List<SObject> inputCollection;
     }
 
-    public class Results {
+    global class Results {
         @InvocableVariable
-        public Boolean success;
+        global Boolean success;
 
         @InvocableVariable
-        public String message;
+        global String message;
     }
     
     // Custom exception class for local exceptions
-    public class SaveRecordsQueueableException extends Exception {}
+    global class SaveRecordsQueueableException extends Exception {}
 }

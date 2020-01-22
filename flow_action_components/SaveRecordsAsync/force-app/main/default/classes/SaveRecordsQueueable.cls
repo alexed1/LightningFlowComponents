@@ -58,7 +58,7 @@ global with sharing class SaveRecordsQueueable implements Queueable {
      *  @return: List<Result>, A Result class object used to return result of the request being validated and the job being queued 
      */
     @InvocableMethod(label='Save Records Later' description='Upserts a collection of records asynchronously. Returns an Apex JobId to track status of the request.')
-    global static List<Results> saveRecordsQueueable(List<Requests> requests) {
+    global static List<Results> createJob(List<Requests> requests) {
         // Result object to populated and returned
         Results result;
 

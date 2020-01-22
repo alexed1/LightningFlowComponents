@@ -18,7 +18,7 @@ private class SaveRecordsQueueableTest {
 
         Test.startTest();
             // Invoke 
-            result = SaveRecordsQueueable.saveRecordsQueueable(new List<SaveRecordsQueueable.Requests>{request});
+            result = SaveRecordsQueueable.createJob(new List<SaveRecordsQueueable.Requests>{request});
         Test.stopTest();
 
         // Check job was created. No need to check account creation against customer org
@@ -44,7 +44,7 @@ private class SaveRecordsQueueableTest {
 
         Test.startTest();
             // Invoke 
-            result = SaveRecordsQueueable.saveRecordsQueueable(new List<SaveRecordsQueueable.Requests>{request});
+            result = SaveRecordsQueueable.createJob(new List<SaveRecordsQueueable.Requests>{request});
         Test.stopTest();
 
         // Check job was created. No need to check account creation against customer org
@@ -66,7 +66,7 @@ private class SaveRecordsQueueableTest {
 
         Test.startTest();
             // Invoke 
-            result = SaveRecordsQueueable.saveRecordsQueueable(new List<SaveRecordsQueueable.Requests>{request});
+            result = SaveRecordsQueueable.createJob(new List<SaveRecordsQueueable.Requests>{request});
         Test.stopTest();
 
         // Check job was created. No need to check account creation against customer org

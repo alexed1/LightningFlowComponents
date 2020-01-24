@@ -111,21 +111,14 @@ export default class SendRichEmailCPE extends LightningElement {
 
     //called at save-time
     @api validate() {
-        let resultErrors = [];
-
-        //example: this code can be used to ask the FlowComboboxes to carry out their own validaiton
-        /* 
-        let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
-        if (allComboboxes) {
-            allComboboxes.forEach(curCombobox => {
-                if (!curCombobox.reportValidity()) {
-                        
-                }
-            });
-        } 
-        */
-        
-        return resultErrors;
+        const validity = [];
+        if (!this.isSomethingTrue(this.email)) {
+            validity.push({ key: 'emailAddress', errorString: 'The email address you enter is invalid.' });
+        }
+        return validity;
     }
+        
+        
+      
 
 }

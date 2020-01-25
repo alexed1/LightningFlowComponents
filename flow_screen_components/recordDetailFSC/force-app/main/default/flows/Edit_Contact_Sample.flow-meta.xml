@@ -16,10 +16,46 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+        <name>Create_Account</name>
+        <label>Create Account</label>
+        <locationX>276</locationX>
+        <locationY>369</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Final_Screen</targetReference>
+        </connector>
+        <fields>
+            <name>CreateNewRecord</name>
+            <extensionName>c:recordDetailFlowScreenComponent</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>mode</name>
+                <value>
+                    <stringValue>Edit</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectApiName</name>
+                <value>
+                    <stringValue>Account</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>AccountId</assignToReference>
+                <name>recordId</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>edit_account</name>
         <label>Show Full Account</label>
-        <locationX>390</locationX>
-        <locationY>50</locationY>
+        <locationX>411</locationX>
+        <locationY>86</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -51,11 +87,14 @@
     <screens>
         <name>Edit_Fields</name>
         <label>Edit Fields</label>
-        <locationX>688</locationX>
-        <locationY>48</locationY>
+        <locationX>729</locationX>
+        <locationY>203</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Final_Screen</targetReference>
+        </connector>
         <fields>
             <name>showAccount2_0</name>
             <extensionName>c:recordDetailFlowScreenComponent</extensionName>
@@ -78,17 +117,73 @@
                     <stringValue>Name, Rating, Type, Industry</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>flowNavigationOnSave</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>flowDisplayCancelButton</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>flowNavigationOnCancelDirection</name>
+                <value>
+                    <stringValue>Next</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <outputParameters>
+                <assignToReference>vCancel</assignToReference>
+                <name>isCancelButton</name>
+            </outputParameters>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Final_Screen</name>
+        <label>Final Screen</label>
+        <locationX>728</locationX>
+        <locationY>369</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>notice</name>
+            <fieldText>&lt;p&gt;Final Screen&lt;/p&gt;&lt;p&gt;Account Id [{!AccountId}]&lt;/p&gt;&lt;p&gt;Cancel Button? [{!vCancel}]&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Previous_Screen</name>
+        <label>Previous Screen</label>
+        <locationX>646</locationX>
+        <locationY>84</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Edit_Fields</targetReference>
+        </connector>
+        <fields>
+            <name>notice_0</name>
+            <fieldText>&lt;p&gt;Previous Screen&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Select_Account</name>
         <label>Select Account</label>
-        <locationX>224</locationX>
-        <locationY>50</locationY>
+        <locationX>244</locationX>
+        <locationY>203</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -129,13 +224,13 @@
     <screens>
         <name>Show_Specific_Fields</name>
         <label>Show Specific Fields</label>
-        <locationX>540</locationX>
-        <locationY>49</locationY>
+        <locationX>559</locationX>
+        <locationY>203</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Edit_Fields</targetReference>
+            <targetReference>Previous_Screen</targetReference>
         </connector>
         <fields>
             <name>showAccount2</name>
@@ -166,10 +261,10 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationX>70</locationX>
+        <locationY>203</locationY>
         <connector>
-            <targetReference>Select_Account</targetReference>
+            <targetReference>Create_Account</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -187,5 +282,12 @@
         <isInput>true</isInput>
         <isOutput>true</isOutput>
         <objectType>Contact</objectType>
+    </variables>
+    <variables>
+        <name>vCancel</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

@@ -32,13 +32,11 @@ export default class dualListBoxFSC extends LightningElement {
 
     @api
     get allOptionsFieldDescriptorList() {
-        debugger;
         return this.getOptions(defaults.originalObject);
     }
 
     set allOptionsFieldDescriptorList(value) {
         this._options = value;
-        debugger;
         this.allOptionsStringFormat = defaults.originalObject;
     }
 

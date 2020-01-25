@@ -49,7 +49,7 @@
         </connector>
         <fields>
             <name>dual_list_box_lwc</name>
-            <extensionName>c:enhancedDualListBoxFSC</extensionName>
+            <extensionName>c:dualListBoxFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>disableReordering</name>

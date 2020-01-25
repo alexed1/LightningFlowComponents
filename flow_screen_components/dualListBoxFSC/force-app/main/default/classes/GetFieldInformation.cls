@@ -6,7 +6,6 @@ public with sharing class GetFieldInformation {
         List<Results> responseWrapper = new List<Results>();
         response.fields = describeSObject(requestList[0].objectName);
         responseWrapper.add(response);
-        System.debug('responseWrapper:::'+responseWrapper);
         return responseWrapper;
 
     }

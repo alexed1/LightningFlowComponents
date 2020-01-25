@@ -10,7 +10,7 @@ export default class recordDetailFSC extends LightningElement {
     @api mode = 'view';
     @api objectApiName;
     @api flowNavigationOnSave = false;
-    @api flowDisplayCancelButton = false;
+    @api flowNavigationOnCancel = false;
     @api flowNavigationOnCancelDirection = "next";
     @api isCancelButton = false;
     @api availableActions = [];
@@ -130,23 +130,36 @@ export default class recordDetailFSC extends LightningElement {
     }
 
     handleCancel(event) {
+        // set output value to true
         this.isCancelButton = true;
-        if (this.cancelNavigationDirection === 'back') {
-            // check if BACK is allowed on the flow screen
-            if (this.availableActions.find(action => action === 'BACK')) {
-                const navigateBackEvent = new FlowNavigationBackEvent();
-                this.dispatchEvent(navigateBackEvent);
-            }            
+        // reset field values
+        const inputFields = this.template.querySelectorAll(
+            'lightning-input-field'
+        );
+        if (inputFields) {
+            inputFields.forEach(field => {
+                field.reset();
+            });
         }
-        // check if FINISH is allowed on the flow screen
-        if (this.availableActions.find(action => action === 'FINISH')) {
-            const navigateFinishEvent = new FlowNavigationFinishEvent();
-            this.dispatchEvent(navigateFinishEvent);
-        }
-        // check if NEXT is allowed on the flow screen
-        if (this.availableActions.find(action => action === 'NEXT')) {
-            const navigateNextEvent = new FlowNavigationNextEvent();
-            this.dispatchEvent(navigateNextEvent);
+        // handle automatic Flow navigation
+        if (this.flowNavigationOnCancel) {
+            if (this.cancelNavigationDirection === 'back') {
+                // check if BACK is allowed on the flow screen
+                if (this.availableActions.find(action => action === 'BACK')) {
+                    const navigateBackEvent = new FlowNavigationBackEvent();
+                    this.dispatchEvent(navigateBackEvent);
+                }            
+            }
+            // check if FINISH is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'FINISH')) {
+                const navigateFinishEvent = new FlowNavigationFinishEvent();
+                this.dispatchEvent(navigateFinishEvent);
+            }
+            // check if NEXT is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'NEXT')) {
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
         }       
     }
 

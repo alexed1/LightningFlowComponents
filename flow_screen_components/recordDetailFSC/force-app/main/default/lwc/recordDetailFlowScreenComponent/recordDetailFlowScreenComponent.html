@@ -1,23 +1,8 @@
 <!-- 
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
-The RecordDetail component provides new ways to display record fields in Flow screens. 
-Flow excels in providing fine control over field combinations, but sometimes you just want to show 
-a bunch of fields from a record in one place without a lot of configuration. This component handles 
-all the formatting, provides 2 column layout, and takes advantage of additional goodies that the platform provides.
-
-Additional components packaged with this LWC:
-
-                    Lightning Web Components:   toastMessage
-
-                    Apex Classes:               <none>
-                    
-                    Labels:                     NotSupportedMessage
-
-                    Flows:                      Edit Contact Sample
-
 1/24/20 -   Eric Smith -    Version 1.3
-                            Added on option to display and handle a Cancel button when in Edit mode
+                            Added a feature to display and handle a Cancel button when in Edit mode
                             Added an option to support flow navigation on record save and cancel                           
                             Included descriptive labels and help text for Flow parameters
 
@@ -80,16 +65,14 @@ Additional components packaged with this LWC:
                                                 name="save"
                                                 label="Save">
                                         </lightning-button>
-                                        <template if:true={flowDisplayCancelButton}>
-                                            <lightning-button
-                                                    class="slds-m-top_small slds-float--right"
-                                                    variant="neutral"
-                                                    type="button"
-                                                    name="cancel"
-                                                    label="Cancel"
-                                                    onclick={handleCancel}>
-                                            </lightning-button>                                            
-                                        </template>
+                                        <lightning-button
+                                                class="slds-m-top_small slds-float--right"
+                                                variant="neutral"
+                                                type="button"
+                                                name="cancel"
+                                                label="Cancel"
+                                                onclick={handleCancel}>
+                                        </lightning-button>                                            
                                     </lightning-layout-item>
                                 </lightning-layout>
                             </lightning-record-edit-form>

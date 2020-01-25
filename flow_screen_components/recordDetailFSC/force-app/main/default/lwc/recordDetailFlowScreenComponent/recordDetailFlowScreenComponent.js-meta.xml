@@ -20,7 +20,7 @@
             <property name="fields" type="String" role="inputOnly" label="Record Field List" description="A comma-separated list of field names from the recordId’s object type. If this is not provided, this component will display all fields accessible to the running user’s profile"/>
             <property name="mode" type="String" role="inputOnly" label="Mode (View or Edit)"/>
             <property name="flowNavigationOnSave" type="Boolean" role="inputOnly" label="Flow - Navigation on Save?" description="Check if you would like the flow to navigate to the Next screen (or Finish) when clicking Save.  For best results, hide the page footer in the flow screen."/>
-            <property name="flowDisplayCancelButton" type="Boolean" role="inputOnly" label="Flow - Display a Cancel Button?" description="Check if you want to display a Cancel button when in Edit Mode."/>
+            <property name="flowNavigationOnCancel" type="Boolean" role="inputOnly" label="Flow - Navigation on Cancel?" description="Check if you would like the flow to navigate to the Previous or Next screen when clicking Cancel.  For best results, hide the page footer in the flow screen."/>
             <property name="flowNavigationOnCancelDirection" type="String" role="inputOnly" label="Flow - Navigation Direction on Cancel (Previous or Next)" description="Specify Previous or Next for the flow navigation direction after the Cancel button is clicked."/>
             <property name="isCancelButton" type="Boolean" role="outputOnly" label="Cancel Button Selected" description="This value will be set to True is the user selected the Cancel button."/>
         </targetConfig>

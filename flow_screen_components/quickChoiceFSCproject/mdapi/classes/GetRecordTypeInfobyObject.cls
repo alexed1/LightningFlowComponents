@@ -1,17 +1,18 @@
- public with sharing class GetRecordTypeInfobyObject {
-  //given a fieldname and a collection, return a collection of strings representing the fieldname
-//great for extracting the Names of SObjects from SObject Collections
-//should rename this
-//should support more than just string fields
+global with sharing class GetRecordTypeInfobyObject {
+//given a target object name, return a collection of strings representing the available record types
+//great for extracting the Names and IDs of record types available for selection
+// source: https://github.com/alexed1/LightningFlowComponents/blob/master/flow_screen_components/quickChoiceFSCproject/force-app/main/default/classes/GetRecordTypeInfobyObject.cls
+// adapted by Tamar Erlich, added a toggle to ignore the master record type.
 
 
     @InvocableMethod
-    public static List <Results> get(List<Requests> requestList) {
+    global static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
 
         String objectName = requestList[0].objectName;
         Boolean onlyReturnActiveRecordTypes = requestList[0].onlyReturnActiveRecordTypes;
         Boolean onlyReturnRecordTypesAvailableToCurrentUser = requestList[0].onlyReturnRecordTypesAvailableToCurrentUser;
+        Boolean ignoreMasterRecordType = requestList[0].ignoreMasterRecordType;
         List<String> recordTypeNames = new List<String>();
         List<String> recordTypeIds = new List<String>();
         String errors;
@@ -30,6 +31,9 @@
                         filteredOut = true;    
                 }
                 if (onlyReturnRecordTypesAvailableToCurrentUser = true && ! curRecord.isAvailable()) {
+                        filteredOut = true;    
+                }
+                if (ignoreMasterRecordType = true && curRecord.isMaster()) {
                         filteredOut = true;    
                 }
                 if ( filteredOut != true) {
@@ -54,34 +58,37 @@
 
 
     }
-    public class Requests {
+    global class Requests {
 
         @InvocableVariable(label='Object Name' required=true)
-        public String objectName;
+        global String objectName;
 
         @InvocableVariable
-        public Boolean onlyReturnActiveRecordTypes;
+        global Boolean onlyReturnActiveRecordTypes;
 
         @InvocableVariable
-        public Boolean onlyReturnRecordTypesAvailableToCurrentUser;
+        global Boolean onlyReturnRecordTypesAvailableToCurrentUser;
+
+        @InvocableVariable
+        global Boolean ignoreMasterRecordType;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<String> recordTypeNames;
+        global List<String> recordTypeNames;
 
         @InvocableVariable
-        public List<String> recordTypeIds;
+        global List<String> recordTypeIds;
     }
 
-    public class InvocableActionException extends Exception {}
+    global class InvocableActionException extends Exception {}
 
 }

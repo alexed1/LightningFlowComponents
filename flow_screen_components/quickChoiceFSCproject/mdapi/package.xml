@@ -13,6 +13,10 @@
     <members>MockHttpResponseGenerator</members>
   </types>
   <types>
+    <name>Flow</name>
+    <members>Test_Quick_Choice2</members>
+  </types>
+  <types>
     <name>CustomLabels</name>
     <members>CustomLabels</members>
   </types>
@@ -25,6 +29,10 @@
     <members>quickChoiceFSC</members>
     <members>recordDetailFSC</members>
     <members>toastMessage</members>
+  </types>
+  <types>
+    <name>ApexPage</name>
+    <members>sessionId</members>
   </types>
   <version>47.0</version>
 </Package>

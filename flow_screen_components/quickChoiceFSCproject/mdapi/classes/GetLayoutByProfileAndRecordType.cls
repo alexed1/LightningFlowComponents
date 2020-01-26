@@ -1,8 +1,8 @@
-public with sharing class GetLayoutByProfileAndRecordType {
+global with sharing class GetLayoutByProfileAndRecordType {
  
 
     @InvocableMethod
-    public static List <Results> get(List<Requests> requestList) {
+    global static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
         String profileId = requestList[0].profileId;
         String recordTypeId = requestList[0].recordTypeId;
@@ -10,9 +10,10 @@ public with sharing class GetLayoutByProfileAndRecordType {
         String baseURL = Url.getOrgDomainUrl().toExternalForm();
 
         HttpRequest req = new HttpRequest();
-        req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID());
+        String sessionId = Page.sessionId.getContent().toString();
+        req.setHeader('Authorization', 'Bearer ' + sessionId); //UserInfo.getSessionID());
         req.setHeader('Content-Type', 'application/json');
-
+        System.debug('UserInfo.getSession is: ' + sessionId); //UserInfo.getSessionID());
         
         String endpoint = baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'' ;
         System.debug('endpoint starts as: ' + endpoint);
@@ -76,26 +77,26 @@ public with sharing class GetLayoutByProfileAndRecordType {
 
 
     }
-    public class Requests {
+    global class Requests {
        
-        @InvocableVariable 
-        public String profileId;
+        @InvocableVariable(required=true)
+        global String profileId;
 
-        @InvocableVariable 
-        public String recordTypeId;
+        @InvocableVariable(required=true) 
+        global String recordTypeId;
 
     }
 
-    public class Results {
+    global class Results {
 
        
         @InvocableVariable
-        public String layoutId;
+        global String layoutId;
 
         @InvocableVariable
-        public String layoutName;
+        global String layoutName;
 
         @InvocableVariable
-        public String objectName;
+        global String objectName;
     }
 }

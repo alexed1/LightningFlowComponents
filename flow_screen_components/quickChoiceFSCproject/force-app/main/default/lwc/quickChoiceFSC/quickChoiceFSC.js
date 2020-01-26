@@ -11,20 +11,28 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api masterLabel;
 	@api choiceLabels;
 	@api choiceValues; //string collection
+
+	@api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
+	
+	@api numberOfColumns; //for Visual Pickers only, 1(default) or 2
+
+	//-------------For inputMode = Picklist
+	@api allowNoneToBeChosen; //For picklist field only
+	@api recordTypeId; //used for picklist fields
+	@api objectName; //used for picklist fields
+	@api fieldName; //used for picklist fields
+
+	//-------------For inputMode = Visual Text Box (Card)
 	@api choiceIcons; 
 	@api includeIcons;
 	@api iconSize;
-	@api numberOfColumns; //for Visual Pickers only, 1(default) or 2
-	@api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
-	@api allowNoneToBeChosen; //For picklist field only
 
-	@api recordTypeId; //used for picklist fields
+	//-------------For displayMode = Picklist or Radio
+	@api style_width = 320;
 
-	@api objectName; //used for picklist fields
-	@api fieldName; //used for picklist fields
+
 	masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
 	@api objectAndFieldName;
-	//tempcalculatedObjectAndFieldName = this.objectName + '.' + this.fieldName;
 	@api inputMode;
 	@api required;
 	picklistOptionsStorage;
@@ -212,6 +220,14 @@ export default class SmartChoiceFSC extends LightningElement {
 			this.selectedValue
 		);
 		this.dispatchEvent(attributeChangeEvent);
+	}
+
+	get inputStyle() {
+		if (this.style_width) {
+			return 'max-width: ' + this.style_width + 'px';
+		} 
+		return '' 
+			
 	}
 
 }

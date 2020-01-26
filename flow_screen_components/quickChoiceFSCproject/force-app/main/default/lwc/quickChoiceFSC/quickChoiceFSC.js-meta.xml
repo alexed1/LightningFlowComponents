@@ -24,6 +24,7 @@
             <property name="objectName" label="Object Name" type="String"/>
             <property name="fieldName" label="Field Name" type="String"/>
             <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"/>
+            <property name="style_width" label="Set Width in Pixels" type="Integer"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

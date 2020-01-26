@@ -10,9 +10,10 @@ global with sharing class GetLayoutByProfileAndRecordType {
         String baseURL = Url.getOrgDomainUrl().toExternalForm();
 
         HttpRequest req = new HttpRequest();
-        req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionID());
+        String sessionId = Page.sessionId.getContent().toString();
+        req.setHeader('Authorization', 'Bearer ' + sessionId); //UserInfo.getSessionID());
         req.setHeader('Content-Type', 'application/json');
-
+        System.debug('UserInfo.getSession is: ' + sessionId); //UserInfo.getSessionID());
         
         String endpoint = baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'' ;
         System.debug('endpoint starts as: ' + endpoint);
@@ -78,10 +79,10 @@ global with sharing class GetLayoutByProfileAndRecordType {
     }
     global class Requests {
        
-        @InvocableVariable 
+        @InvocableVariable(required=true)
         global String profileId;
 
-        @InvocableVariable 
+        @InvocableVariable(required=true) 
         global String recordTypeId;
 
     }

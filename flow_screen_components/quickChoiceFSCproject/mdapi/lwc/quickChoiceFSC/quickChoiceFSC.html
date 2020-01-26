@@ -1,24 +1,118 @@
+<!-- 
+Lightning Web Component for Flow Screens:       quickChoiceFSC
+
+Add picklists, radio button groups, and visual textbox pickers 
+that can use dynamic defaults, record-type-filtered picklist fields, and string collections
+
+Additional components packaged with this LWC:
+
+                    Lightning Web Components:   toastMessage
+
+                    Apex Classes:               ExtractFieldFromCollection 
+                                                ExtractFieldFromCollectionTest
+                                                GetLayoutByProfileAndRecordType
+                                                GetLayoutByProfileAndRecordTypeTest
+                                                GetLayoutFields
+                                                GetRecordTypeInfobyObject
+                                                GetRecordTypeInfobyObjectTest
+                                                MockHttpResponseGenerator
+
+1/12/20 -   Eric Smith -    Version 1.22
+                            Added an option to display the visual card pickers in a single or dual columns
+
+12/31/19 -  Eric Smith -    Version 1.17
+                            Added visual card picker selection with or without icons
+                            Fixed error handling when Required is set to True
+
+12/29/19 -  unofficialsf -  Version 1.13
+                            Fixed bug with defaults on picklist control
+                            Added flag to allow or disallow a ‘None’ choice
+
+-->
 <template>
-    
-    <template if:true={showRadio}>
-        <lightning-radio-group 
-            name={masterLabel}
-            label={masterLabel}
-            value={value}
-            options={options}
-            required={required}
-            onchange={handleChange}
-            type="radio">
-        </lightning-radio-group>
+
+    <!-- Display Visual Card Pickers -->
+    <template if:true={showVisual}>
+        <fieldset class="slds-form-element">
+            <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
+            <div class={gridClass} style={gridStyle}>
+                <template for:each={items} for:item="item">
+                    <div key={item.name} class={columnClass}>
+                        <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleChange} />
+                        <label for={item.name}>
+
+                            <!-- Display Visual Card Pickers with Icons-->
+                            <template if:true={includeIcons}>
+                                <span
+                                    class="slds-visual-picker__figure slds-visual-picker__text class=slds-box slds-box_link slds-box_x-small slds-media"
+                                    style="width:25rem">
+                                    <div
+                                        class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
+                                        <span class="slds-icon_container">
+                                            <lightning-icon icon-name={item.icon} size={iconSize}>
+                                            </lightning-icon>
+                                        </span>
+                                    </div>
+                                    <div
+                                        class="slds-media__body slds-border_left slds-p-left_small slds-p-top_xxx-small">
+                                        <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
+                                        <span class="slds-text-title">{item.description}</span>
+                                    </div>
+                                </span>
+                            </template>
+
+                            <!-- Display Visual Card Pickers without Icons-->                            
+                            <template if:false={includeIcons}>
+                                <span class="slds-visual-picker__figure slds-visual-picker__text">
+                                    <span>
+                                        <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
+                                        <span class="slds-text-title">{item.description}</span>
+                                    </span>
+                                </span>
+                            </template>
+
+                            <span class="icon-container slds-visual-picker__text-check">
+                                <lightning-icon icon-name="utility:check" size="x-small" variant="inverse">
+                                </lightning-icon>
+                            </span>
+                        </label>
+                    </div>
+                </template>
+            </div>
+        </fieldset>
     </template>
-    <template if:false={showRadio}>
-        <lightning-combobox
-            name={masterLabel}
-            label={masterLabel}
-            value={selectedValue}
-            options={options}
-            required={required}
-            onchange={handleChange} >
-        </lightning-combobox>
+
+    <template if:false={showVisual}>
+
+        <!-- Display Radio Buttons -->
+        <template if:true={showRadio}>
+            <div style={inputStyle}>
+                <lightning-radio-group 
+                    name={masterLabel} 
+                    label={masterLabel} 
+                    value={value} 
+                    options={options}
+                    required={required} 
+                    onchange={handleChange} 
+                    type="radio">
+                </lightning-radio-group>
+            </div>
+        </template>
+
+        <!-- Display Picklist -->
+        <template if:false={showRadio}>
+            <div style={inputStyle}>
+                <lightning-combobox 
+                    name={masterLabel} 
+                    label={masterLabel} 
+                    value={value} 
+                    options={options}
+                    required={required} 
+                    onchange={handleChange}>
+                </lightning-combobox>
+            </div>
+        </template>
+
     </template>
+
 </template>

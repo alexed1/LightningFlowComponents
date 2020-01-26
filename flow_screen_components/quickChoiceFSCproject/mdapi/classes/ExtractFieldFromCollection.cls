@@ -1,4 +1,4 @@
-public with sharing class ExtractFieldFromCollection {
+global with sharing class ExtractFieldFromCollection {
   //given a fieldname and a collection, return a collection of strings representing the fieldname
 //great for extracting the Names of SObjects from SObject Collections
 //should rename this
@@ -6,7 +6,7 @@ public with sharing class ExtractFieldFromCollection {
 
 
     @InvocableMethod
-    public static List <Results> extract(List<Requests> requestList) {
+    global static List <Results> extract(List<Requests> requestList) {
         Results response = new Results();
         List<Account> inputCollection = requestList[0].inputCollection;
         List<String> outputStringCollection = new List<String>();
@@ -27,24 +27,24 @@ public with sharing class ExtractFieldFromCollection {
 
 
     }
-    public class Requests {
+    global class Requests {
         @InvocableVariable(required=true)
-        public List<Account> inputCollection;
+        global List<Account> inputCollection;
 
         @InvocableVariable(required=true)
-        public String fieldName;
+        global String fieldName;
 
     }
 
-    public class Results {
+    global class Results {
 
         public Results() {
             outputStringCollection = new List<String>();
         }
         @InvocableVariable
-        public String errors;
+        global String errors;
 
         @InvocableVariable
-        public List<String> outputStringCollection;
+        global List<String> outputStringCollection;
     }
 }

@@ -3,14 +3,14 @@ private class GetLayoutByProfileAndRecordTypeTest {
 
     
 
-    @isTest
+    //@isTest
     static void CanGetLayoutProfile() {
             // Set mock callout class 
             Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
             
 
 
-             List<GetLayoutByProfileAndRecordType.Requests> requestList = new List<GetLayoutByProfileAndRecordType.Requests>();
+            List<GetLayoutByProfileAndRecordType.Requests> requestList = new List<GetLayoutByProfileAndRecordType.Requests>();
             String profileId  = '';
             String recordTypeId = '';
             GetLayoutByProfileAndRecordType.Requests request = new GetLayoutByProfileAndRecordType.Requests();

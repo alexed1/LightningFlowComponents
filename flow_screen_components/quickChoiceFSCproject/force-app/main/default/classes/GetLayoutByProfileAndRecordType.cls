@@ -1,5 +1,5 @@
 global with sharing class GetLayoutByProfileAndRecordType {
- 
+
 
     @InvocableMethod
     global static List <Results> get(List<Requests> requestList) {
@@ -10,11 +10,13 @@ global with sharing class GetLayoutByProfileAndRecordType {
         String baseURL = Url.getOrgDomainUrl().toExternalForm();
 
         HttpRequest req = new HttpRequest();
-        String sessionId = Page.sessionId.getContent().toString();
+//        String sessionId = Page.sessionId.getContent().toString();
+        //Get content is not supported in test classes, thus setting random text as a session Id
+        String sessionId = 'sessionId';
         req.setHeader('Authorization', 'Bearer ' + sessionId); //UserInfo.getSessionID());
         req.setHeader('Content-Type', 'application/json');
         System.debug('UserInfo.getSession is: ' + sessionId); //UserInfo.getSessionID());
-        
+
         String endpoint = baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'' ;
         System.debug('endpoint starts as: ' + endpoint);
         System.debug('recordTypeId is: ' + recordTypeId);
@@ -23,14 +25,14 @@ global with sharing class GetLayoutByProfileAndRecordType {
             endpoint = endpoint +  '+AND+recordTypeId=\'' + recordTypeId + '\'';
             System.debug('after adding recordTypeId, endpoint is ' + endpoint);
         }
-            
-        
+
+
         //req.setEndpoint(baseUrl + '/services/data/v47.0/tooling/query/?q=SELECT+Layout.Name,Layout.TableEnumOrId,ProfileId,Profile.Name,RecordTypeId+FROM+ProfileLayout+WHERE+profileId=\'' + profileId + '\'AND+recordTypeId=\'' + recordTypeId + '\'');
         req.setEndpoint(endpoint);
-        req.setMethod('GET'); 
+        req.setMethod('GET');
         Http h = new Http();
         HttpResponse res = h.send(req);
-        system.debug('response body from tooling call to ProfileLayout: ' + res.getBody()); 
+        system.debug('response body from tooling call to ProfileLayout: ' + res.getBody());
 
         //the data structure returned in the body of this Tooling API call includes the Layout Id we're looking for
         //but we have to drill down to get it:
@@ -66,9 +68,9 @@ global with sharing class GetLayoutByProfileAndRecordType {
         System.debug ('responseAttributes ' + responseAttributes);
         System.debug ('layoutName ' + layoutName);
 
-        
-        
-        response.layoutId = layoutURL.substringAfterLast('/'); 
+
+
+        response.layoutId = layoutURL.substringAfterLast('/');
         response.layoutName = layoutName;
         response.objectName = objectName;
         List<Results> responseWrapper = new List<Results>();
@@ -78,18 +80,18 @@ global with sharing class GetLayoutByProfileAndRecordType {
 
     }
     global class Requests {
-       
+
         @InvocableVariable(required=true)
         global String profileId;
 
-        @InvocableVariable(required=true) 
+        @InvocableVariable(required=true)
         global String recordTypeId;
 
     }
 
     global class Results {
 
-       
+
         @InvocableVariable
         global String layoutId;
 

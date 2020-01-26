@@ -2,12 +2,18 @@ import {LightningElement, api, track, wire} from 'lwc';
 import {getRecord} from 'lightning/uiRecordApi';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
+import {FlowNavigationNextEvent, FlowNavigationFinishEvent, FlowNavigationBackEvent} from 'lightning/flowSupport';
 
 export default class recordDetailFSC extends LightningElement {
     @api recordId;
     @api recordTypeId;
     @api mode = 'view';
     @api objectApiName;
+    @api flowNavigationOnSave = false;
+    @api flowNavigationOnCancel = false;
+    @api flowNavigationOnCancelDirection = "next";
+    @api isCancelButton = false;
+    @api availableActions = [];
 
     @track elementSize = 6;
     @track objectData;
@@ -22,6 +28,10 @@ export default class recordDetailFSC extends LightningElement {
         errorMessage: 'Error',
         recordSaveSuccessMessage: 'Record has been saved successfully'
     };
+
+    connectedCallback() {
+       this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
+    }
 
     @api
     get fields() {
@@ -104,6 +114,53 @@ export default class recordDetailFSC extends LightningElement {
     handleSuccess(event) {
         this.recordId = event.detail.id;
         this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
+        // is Flow Navigation selected?
+        if (this.flowNavigationOnSave) {
+            // check if FINISH is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'FINISH')) {
+                const navigateFinishEvent = new FlowNavigationFinishEvent();
+                this.dispatchEvent(navigateFinishEvent);
+            }
+            // check if NEXT is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'NEXT')) {
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
+        }
+    }
+
+    handleCancel(event) {
+        // set output value to true
+        this.isCancelButton = true;
+        // reset field values
+        const inputFields = this.template.querySelectorAll(
+            'lightning-input-field'
+        );
+        if (inputFields) {
+            inputFields.forEach(field => {
+                field.reset();
+            });
+        }
+        // handle automatic Flow navigation
+        if (this.flowNavigationOnCancel) {
+            if (this.cancelNavigationDirection === 'back') {
+                // check if BACK is allowed on the flow screen
+                if (this.availableActions.find(action => action === 'BACK')) {
+                    const navigateBackEvent = new FlowNavigationBackEvent();
+                    this.dispatchEvent(navigateBackEvent);
+                }            
+            }
+            // check if FINISH is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'FINISH')) {
+                const navigateFinishEvent = new FlowNavigationFinishEvent();
+                this.dispatchEvent(navigateFinishEvent);
+            }
+            // check if NEXT is allowed on the flow screen
+            if (this.availableActions.find(action => action === 'NEXT')) {
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
+        }       
     }
 
     handleError(event) {

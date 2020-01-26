@@ -1,8 +1,15 @@
+<!-- 
+Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
+1/24/20 -   Eric Smith -    Version 1.3
+                            Added a feature to display and handle a Cancel button when in Edit mode
+                            Added an option to support flow navigation on record save and cancel                           
+                            Included descriptive labels and help text for Flow parameters
+
+-->
     <template>
         <div class="container">
-    
-    
+       
             <template if:true={loadFinished}>
                 <div class="slds-box slds-theme_default">
                     <template if:true={isError}>
@@ -52,12 +59,20 @@
                                     </template>
                                     <lightning-layout-item size=12>
                                         <lightning-button
-                                                class="slds-m-top_small slds-float--right"
-                                                variant="neutral"
+                                                class="slds-m-top_small slds-p-left_small slds-float--right"
+                                                variant="brand"
                                                 type="submit"
                                                 name="save"
                                                 label="Save">
                                         </lightning-button>
+                                        <lightning-button
+                                                class="slds-m-top_small slds-float--right"
+                                                variant="neutral"
+                                                type="button"
+                                                name="cancel"
+                                                label="Cancel"
+                                                onclick={handleCancel}>
+                                        </lightning-button>                                            
                                     </lightning-layout-item>
                                 </lightning-layout>
                             </lightning-record-edit-form>

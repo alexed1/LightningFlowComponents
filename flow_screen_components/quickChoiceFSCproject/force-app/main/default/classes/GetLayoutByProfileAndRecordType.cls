@@ -10,9 +10,14 @@ global with sharing class GetLayoutByProfileAndRecordType {
         String baseURL = Url.getOrgDomainUrl().toExternalForm();
 
         HttpRequest req = new HttpRequest();
-//        String sessionId = Page.sessionId.getContent().toString();
+        String sessionId;
         //Get content is not supported in test classes, thus setting random text as a session Id
-        String sessionId = 'sessionId';
+        if(Test.isRunningTest()){
+            sessionId = 'sessionId';
+        }else{
+            sessionId = Page.sessionId.getContent().toString();
+        }
+
         req.setHeader('Authorization', 'Bearer ' + sessionId); //UserInfo.getSessionID());
         req.setHeader('Content-Type', 'application/json');
         System.debug('UserInfo.getSession is: ' + sessionId); //UserInfo.getSessionID());

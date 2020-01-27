@@ -10,7 +10,7 @@ private class GetLayoutByProfileAndRecordTypeTest {
             
 
 
-             List<GetLayoutByProfileAndRecordType.Requests> requestList = new List<GetLayoutByProfileAndRecordType.Requests>();
+            List<GetLayoutByProfileAndRecordType.Requests> requestList = new List<GetLayoutByProfileAndRecordType.Requests>();
             String profileId  = '';
             String recordTypeId = '';
             GetLayoutByProfileAndRecordType.Requests request = new GetLayoutByProfileAndRecordType.Requests();
@@ -42,7 +42,7 @@ private class GetLayoutByProfileAndRecordTypeTest {
 
 
 
-   /* @isTest
+  /*   @isTest
    public static void CanGetLayoutProfile() {
         List<GetLayoutByProfileAndRecordType.Requests> requestList = new List<GetLayoutByProfileAndRecordType.Requests>();
         String profileId  = '';
@@ -54,5 +54,5 @@ private class GetLayoutByProfileAndRecordTypeTest {
 
         List <GetLayoutByProfileAndRecordType.Results> results = GetLayoutByProfileAndRecordType.get(requestList);
         System.assertNotEquals(results, null);
-   } */
-
+   } 
+ */

@@ -1,7 +1,6 @@
 import { LightningElement, api, track, wire } from "lwc";
 import { FlowAttributeChangeEvent } from "lightning/flowSupport";
 import { getPicklistValues } from "lightning/uiObjectInfoApi";
-import TYPE_FIELD from "@salesforce/schema/Account.Type";
 
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
@@ -32,7 +31,6 @@ export default class SmartChoiceFSC extends LightningElement {
 
 
 	masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
-	@api objectAndFieldName;
 	@api inputMode;
 	@api required;
 	picklistOptionsStorage;
@@ -53,8 +51,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	//possibility master record type only works if there aren't other record types?
 	@wire(getPicklistValues, {
 		recordTypeId: "$recordTypeId",
-		fieldApiName: "$objectAndFieldName"
-		//fieldApiName: "$calculatedObjectAndFieldName"
+		fieldApiName: "$calculatedObjectAndFieldName"
 	})
 	picklistValues({ error, data }) {
 		if (data) {
@@ -81,10 +78,8 @@ export default class SmartChoiceFSC extends LightningElement {
 		} else if (error) {
 			this.error = JSON.stringify(error);
 			console.log("getPicklistValues wire service returned error: " + this.error);
-			console.log("object and field " + this.objectAndFieldName);
-			//if (!this.objectAndFieldName)
-			//	throw new Error("objectAndFieldName is undefined. Needs a value like Account.Rating");
-		}
+
+			}
 	}
 
 	get calculatedObjectAndFieldName() {
@@ -117,7 +112,6 @@ export default class SmartChoiceFSC extends LightningElement {
 	connectedCallback() {
 		console.log("Entering Connected Callback for smartchoice");
 		console.log("recordtypeId is: " + this.recordTypeId);
-		console.log("objectFieldName is: " + this.objectAndFieldName);
 		if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
 		// Visual Card Selection

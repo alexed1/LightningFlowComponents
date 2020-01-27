@@ -20,7 +20,6 @@
             <property name="required" label="Required" type="Boolean" default="false"/>
             <property name="displayMode" label="Display Mode" type="String"/>
             <property name="recordTypeId" label="Record Type Id" type="String"/>
-            <property name="objectAndFieldName" label="Object Name and Field Name (dot notation)" type="String"/>
             <property name="objectName" label="Object Name" type="String"/>
             <property name="fieldName" label="Field Name" type="String"/>
             <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean"/>

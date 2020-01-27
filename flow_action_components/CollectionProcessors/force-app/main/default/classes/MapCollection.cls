@@ -7,7 +7,7 @@ global with sharing class MapCollection {
         String keyValuePairs = requestList[0].keyValuePairs;
         if (inputCollection != null && !inputCollection.isEmpty() && keyValuePairs != null) {
             for (SObject acc : inputCollection) {
-                outputCollection.add(acc.clone());
+                outputCollection.add(acc.clone(true));
             }
 
             Pattern mPattern = pattern.compile('([^,:"\\s*]+)');

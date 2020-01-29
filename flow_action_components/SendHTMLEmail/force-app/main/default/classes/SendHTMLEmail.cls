@@ -1,14 +1,17 @@
-public with sharing class SendHTMLEmail {
+public without sharing class SendHTMLEmail {
 
     @invocableMethod(label='Send HTML Email')
     public static List<Response>  SendEmail(List<Request> requests) {
         
+        Response response = new Response();
         String HTMLbody = requests[0].HTMLbody;
         String plainTextBody = requests[0].plainTextBody;
         String subject = requests[0].subject;
         String replyEmailAddress = requests[0].replyEmailAddress;
         String senderDisplayName = requests[0].senderDisplayName;
         String templateID = requests[0].templateID;
+        String templateName = requests[0].templateName;
+        String templateLanguage = requests[0].templateLanguage;
         String templateTargetObjectId = requests[0].templateTargetObjectId;
         String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;    
         Boolean saveAsActivity = requests[0].saveAsActivity;
@@ -72,8 +75,18 @@ public with sharing class SendHTMLEmail {
 
         mail = AddAttachments(mail, requests[0].contentDocumentAttachments, null);
          
+        if (templateName != null && templateID != null)
+            throw new InvocableActionException('You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).');
+
+        if (templateName != null){
+            templateID = getTemplateIdFromName(templateName,templateLanguage);
+            if (templateID == null){
+	            throw new InvocableActionException('Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template');
+            }
+            Response.templateUsed = TemplateId;
+        }
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
-            throw new InvocableActionException('you\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
+            throw new InvocableActionException('You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
            
         if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
             throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
@@ -87,6 +100,7 @@ public with sharing class SendHTMLEmail {
         
         mail.setTemplateID(templateID);
         mail.setTargetObjectId(templateTargetObjectId);
+        if (recordId != null) mail.setWhatId(recordId);
         System.debug('templateID is:' + templateID);
         
         // Specify the text content of the email.
@@ -115,7 +129,6 @@ public with sharing class SendHTMLEmail {
         }
        
         //report back the results
-        Response response = new Response();
         if (completed == true) {
             if (emailResponse[0].isSuccess() != true) {
                 Messaging.SendEmailError[] curErrors = emailResponse[0].getErrors();
@@ -275,7 +288,26 @@ public with sharing class SendHTMLEmail {
                 WhatId = recordId);
         insert t;
     }
-
+    private static String getTemplateIdFromName(String templateName, String templateLanguage){
+        String retTemplateId;
+        String blankTemplate;
+        List<EmailTemplate> et = [SELECT Id,Description FROM EmailTemplate WHERE Name=:templateName AND isActive = TRUE];
+        if (et.size() > 0){
+            String localeKey = [Select LanguageLocaleKey From Organization].LanguageLocaleKey;
+            if (templateLanguage == NULL) templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;
+            for (EmailTemplate thisTemplate: et){
+                if (thisTemplate.Description.Contains('Language="')){
+                    if (thisTemplate.Description.substringAfter('Language="').substringBefore('"') == templateLanguage){
+                        retTemplateID = thisTemplate.Id;
+                        break;
+                    }
+                }else{
+                    blankTemplate = blankTemplate == NULL ? thisTemplate.Id : blankTemplate;
+                }
+            }
+        }
+        return (retTemplateId == NULL)? blankTemplate : retTemplateId;
+    }
 
     public class Request {
         @invocableVariable
@@ -287,9 +319,15 @@ public with sharing class SendHTMLEmail {
         @invocableVariable
         public String templateID;
         
+        @invocableVariable(label='Template Name' description='Used in conjuction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
+        public String templateName;
+        
+        @invocableVariable(label='Template Language' description='Used in conjuction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
+        public String templateLanguage;
+        
         @invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
         public String templateTargetObjectID;
-        
+
         @invocableVariable
         public String subject;
         
@@ -365,9 +403,8 @@ public with sharing class SendHTMLEmail {
 
         @invocableVariable
         public Boolean saveAsActivity;
-        @invocableVariable
+        @invocableVariable(label='Template WhatId' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
         public Id recordId;
-
     }
 
     public class Response {
@@ -375,11 +412,12 @@ public with sharing class SendHTMLEmail {
         public Boolean isSuccess; 
         
         @invocableVariable
+        public String templateUsed; 
+        
+        @invocableVariable
         public String errors;
 
     }
-            
+
     public class InvocableActionException extends Exception {}
-
-
 }

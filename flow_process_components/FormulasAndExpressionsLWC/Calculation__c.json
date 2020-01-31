@@ -1,0 +1,47 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Calculation__c",
+                "referenceId": "Calculation__cRef1"
+            },
+            "Name": "Join Two Strings",
+            "Formula__c": "'string1' + 'string2'"
+        },
+        {
+            "attributes": {
+                "type": "Calculation__c",
+                "referenceId": "Calculation__cRef2"
+            },
+            "Name": "Extract Last Name",
+            "Formula__c": "RIGHT($Record.Name, LEN($Record.Name) - FIND(\" \", $Record.Name))",
+            "Context_Object_Type__c": "Contact",
+            "Type__c": "ContactClean"
+        },
+        {
+            "attributes": {
+                "type": "Calculation__c",
+                "referenceId": "Calculation__cRef3"
+            },
+            "Name": "Extract First Name",
+            "Formula__c": "LEFT($Record.Name, FIND( \" \", $Record.Name ) -1 )",
+            "Context_Object_Type__c": "Contact",
+            "Type__c": "ContactClean"
+        },
+        {
+            "attributes": {
+                "type": "Calculation__c",
+                "referenceId": "Calculation__cRef4"
+            },
+            "Name": "Simple Math",
+            "Formula__c": "5+ 10"
+        },
+        {
+            "attributes": {
+                "type": "Calculation__c",
+                "referenceId": "Calculation__cRef5"
+            },
+            "Name": "Is Today a Birthday"
+        }
+    ]
+}

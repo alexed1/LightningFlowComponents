@@ -1,0 +1,44 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ],
+            "c/expressionBuilder": [
+                "expressionBuilder/expressionBuilder.js"
+            ],
+            "c/expressionLine": [
+                "expressionLine/expressionLine.js"
+            ],
+            "c/formulaBuilder": [
+                "formulaBuilder/formulaBuilder.js"
+            ],
+            "c/lwcLogger": [
+                "lwcLogger/lwcLogger.js"
+            ],
+            "c/pickObjectAndFieldFSC": [
+                "pickObjectAndFieldFSC/pickObjectAndFieldFSC.js"
+            ],
+            "c/setOwner": [
+                "setOwner/setOwner.js"
+            ],
+            "c/setPickList": [
+                "setPickList/setPickList.js"
+            ],
+            "c/updateFieldCPE": [
+                "updateFieldCPE/updateFieldCPE.js"
+            ]
+        },
+        "experimentalDecorators": true
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

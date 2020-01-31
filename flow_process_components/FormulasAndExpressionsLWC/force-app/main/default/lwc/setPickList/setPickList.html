@@ -1,0 +1,18 @@
+<template>
+    <lightning-radio-group name="textOptions"
+                           label="Text Options"
+                           options={picklistOptions}
+                           value={_selectionType}
+                           onchange={handleOptionChange}
+                           type="radio"></lightning-radio-group>
+    <template if:true={isSpecificValue}>
+        <lightning-combobox
+                name="picklistField"
+                label={picklistFieldName}
+                value={_value}
+                placeholder={labels.none}
+                options={availableValues}
+                onchange={handlePicklistValueChange}
+        ></lightning-combobox>
+    </template>
+</template>

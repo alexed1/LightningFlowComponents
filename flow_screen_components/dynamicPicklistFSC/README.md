@@ -1,5 +1,7 @@
 # Dynamic Picklist #
 
+ ## Consider using [QuickChoice](https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/quickChoiceFSCproject), which provides additional functionality ##
+
 ### A Flow Extension  ###
 
 This component grabs picklist values and creates a Lightning Design System styled picklist populated with those values.

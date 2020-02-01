@@ -12,18 +12,11 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
 LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-.THIS .slds-lookup__menu a {
-	text-decoration: none;
-	font-weight: normal;
-	padding-left: 50px;
-	color: #333;
-}
-
+*/
 .THIS .searchIcon {
 	position: absolute;
 	top: 5px;
-	left:5px;
+	left: 5px;
 	z-index: 100;
 }
 
@@ -32,45 +25,27 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	left: 30px;
 }
 
-.THIS .lookup {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 1;
-}
-
-.THIS .alignButton{
-	position: absolute;
-	top: 10px;
-	right: 5px;
-	z-index: 10;
-}
-
-.THIS #error-message{
+.THIS #error-message {
 	margin-top: 45px;
 }
 
-.THIS .slds-lookup__menu {
-	margin-top: 30px;
+.THIS .slds-input::-ms-clear {
+	display: none;
+	width: 0;
+	height: 0;
 }
 
-.THIS.slds-lookup {
-	min-height: 70px;	
+.THIS .slds-input::-ms-reveal {
+	display: none;
+	width: 0;
+	height: 0;
 }
 
-.THIS .slds-input::-ms-clear {  
-	display: none; width : 0; height: 0; 
-}
-.THIS .slds-input::-ms-reveal {  
-	display: none; 
-	width : 0; 
-	height: 0; 
-}
 .THIS .slds-input::-webkit-search-decoration,
 .THIS .slds-input::-webkit-search-cancel-button,
 .THIS .slds-input::-webkit-search-results-button,
-.THIS .slds-input::-webkit-search-results-decoration { 
-	display: none; 
+.THIS .slds-input::-webkit-search-results-decoration {
+	display: none;
 	-webkit-appearance: none;
 }
 
@@ -82,29 +57,27 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 	padding-top: 15px;
 }
 
-.THIS .help:hover + div{
+.THIS .help:hover+div {
 	visibility: visible;
 }
+
 .THIS .slds-popover {
-	display:inline-block !important;
+	display: inline-block !important;
 	visibility: hidden;
 }
 
-.THIS ul > li:hover{
+.THIS ul>li:hover {
 	background-color: rgb(244, 246, 249);
 }
-.THIS .hlight{
+
+.THIS .hlight {
 	background-color: rgb(244, 246, 249);
 }
-.THIS ul > li > span{
-	margin-left: 5px;
-}
-.THIS .move-left{
+
+.THIS .move-left {
 	margin-right: 20px;
 }
-.THIS .hide{
+
+.THIS .hide {
 	display: none;
-}
-.THIS .push-down {
-	padding: 2px 0px;
 }

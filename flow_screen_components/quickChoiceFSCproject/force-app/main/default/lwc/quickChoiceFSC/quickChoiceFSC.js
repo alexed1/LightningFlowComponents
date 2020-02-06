@@ -190,6 +190,15 @@ export default class SmartChoiceFSC extends LightningElement {
 		}
 	}
 
+	//show default visual card as selected
+	renderedCallback() {
+		if (this.showVisual && this.value != null) {
+			if (this.template.querySelector('[data-id="' + this.value + '"]') != null) {
+				this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
+			}
+		}
+	}
+
 	@api
 	validate() {
 		//If the component is invalid, return the isValid parameter as false and return an error message.

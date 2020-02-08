@@ -9,6 +9,7 @@
                     variant="label-stacked"
                     value={logicType}
                     options={logicTypes}
+                    data-dispatch-value-changed-event
                     onchange={handleValueChanged}
             ></lightning-combobox>
         </div>
@@ -37,12 +38,16 @@
                                       value={condition.value}
                                       line-id={condition.key}
                                       onconditionchanged={handleConditionChanged}
+                                      onconditionremoved={handleConditionRemoved}
                     ></c-condition-line>
                 </div>
             </template>
         </div>
         <div class="slds-col slds-size--12-of-12 slds-grid--align-end slds-p-left--none">
-            <lightning-button variant="brand" label="+ Add condition" title="Add condition"
+            <lightning-button
+                              label="Add condition"
+                              title="Add condition"
+                              icon-name="utility:add"
                               onclick={handleAddCondition}></lightning-button>
         </div>
     </div>

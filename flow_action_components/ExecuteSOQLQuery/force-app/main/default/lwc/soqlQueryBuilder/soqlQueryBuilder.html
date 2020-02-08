@@ -12,8 +12,10 @@
                         onchange={handleObjectTypeChange}
                 ></lightning-combobox>
 
+                <label class="slds-form-element__label slds-border--bottom" style="width: 100%;">
+                    {labels.chooseFields}
+                </label>
                 <div class="slds-form-element slds-scrollable_y" style="height:15rem;">
-                    <label class="slds-form-element__label">{labels.chooseFields}</label>
                     <div class="slds-form-element__control">
                         <template for:each={fields} for:item="field">
                             <lightning-input key={field.value}
@@ -40,7 +42,7 @@
                 <lightning-textarea name="soqlQuery" label="Query" value={_soqlQuery}
                                     onchange={handleSoqlChange}></lightning-textarea>
                 <div class="slds-grid slds-wrap slds-p-left--none">
-                    <div class="slds-col slds-size--2-of-12 slds-p-left--none">
+                    <div class="slds-col slds-size--1-of-12 slds-p-left--none">
                         <lightning-input
                                 name="limit"
                                 type="Number"
@@ -50,11 +52,11 @@
                         >
                         </lightning-input>
                     </div>
-                    <div class="slds-col slds-size--3-of-12">
+                    <div class="slds-col slds-size--4-of-12">
                         <lightning-combobox
                                 name="orderByField"
                                 label="Order By"
-                                placeholder="Select Logic Type"
+                                placeholder=""
                                 variant="label-stacked"
                                 value={orderByField}
                                 options={fieldOptionsWithNone}
@@ -65,7 +67,7 @@
                         <lightning-combobox
                                 name="orderByDirection"
                                 label="Direction"
-                                placeholder="Direction"
+                                placeholder=""
                                 variant="label-stacked"
                                 value={orderByDirection}
                                 options={orderByDirections}

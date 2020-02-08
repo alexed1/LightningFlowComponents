@@ -1,3 +1,16 @@
+/**
+ * @File Name          : SendHTMLEmail.cls
+ * @Description        : Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
+ * @Author             : various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
+ * @Group              : unofficialSF
+ * @Last Modified By   : jack.pond@psitex.com
+ * @Last Modified On   : 2/5/2020, 4:02:33 PM
+ * @Modification Log   : 
+ * @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
+ * Ver       Date            Author      		    Modification
+ * 1.32    2/5/2020   jack.pond@psitex.com     Modified for multi-lingual and to throw InvocableActionException on exceptions
+**/
+
 public without sharing class SendHTMLEmail {
 
     @invocableMethod(label='Send HTML Email')
@@ -13,7 +26,7 @@ public without sharing class SendHTMLEmail {
         String templateName = requests[0].templateName;
         String templateLanguage = requests[0].templateLanguage;
         String templateTargetObjectId = requests[0].templateTargetObjectId;
-        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;    
+        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;
         Boolean saveAsActivity = requests[0].saveAsActivity;
         Id recordId = requests[0].recordId;
 
@@ -35,11 +48,8 @@ public without sharing class SendHTMLEmail {
         //String[] toAddresses = new String[] {oneAddress}; 
         Map<String, Object> m = GenerateMap(requests[0]);
         String[] toAddresses = BuildAddressList('TO',m); 
-        System.debug('toAddresses is: ' + toAddresses);
         String[] ccAddresses = BuildAddressList('CC',m); 
-        System.debug('ccAddresses is: ' + ccAddresses);
         String[] bccAddresses = BuildAddressList('BCC', m);
-        System.debug('bccAddresses is: ' + bccAddresses);
         
 
         // Assign the addresses for the To and CC lists to the mail object.
@@ -88,48 +98,44 @@ public without sharing class SendHTMLEmail {
         if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
             throw new InvocableActionException('You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
            
-        if ((templateID != null && templateTargetObjectId == null) || (templateID == null && templateTargetObjectId != null))
-            throw new InvocableActionException('templateId and templateTargetObjectId have to be used together. the target recordID determines how to fill in the mergefields in the template.');
-        
         if (templateID == null  && HTMLbody == null && plainTextBody == null)
-            throw new InvocableActionException(' Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
+            throw new InvocableActionException('Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
               
         if (saveAsActivity == true && recordId == null) {
             throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
         }
         
-        mail.setTemplateID(templateID);
-        mail.setTargetObjectId(templateTargetObjectId);
+        Boolean completed = true;
+        String error;
+        Messaging.SendEmailResult[] emailResponse;
+        if (templateTargetObjectId != NULL) mail.setTargetObjectId(templateTargetObjectId);
         if (recordId != null) mail.setWhatId(recordId);
-        System.debug('templateID is:' + templateID);
         
         // Specify the text content of the email.
-        mail.setPlainTextBody(plainTextBody);
-
-        mail.setHtmlBody(HTMLbody);
-        System.debug('mail is:' + mail);
-        Messaging.SendEmailResult[] emailResponse;
-        Boolean completed;
-        String error;
+        if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
+        if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
+        if (saveAsActivity != NULL) mail.setSaveAsActivity(saveAsActivity);
+        if (templateID != NULL){
+        	try {
+            	mail.setTemplateID(templateID);
+            } catch (Exception e){
+                completed = false;
+                error = e.getMessage();
+            	throw new InvocableActionException(e.getMessage());
+        	}
+        }
         // Send the email you have created.
         try {
-            emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{
-                    mail
-            });
-            System.debug('emailResponse is: ' + emailResponse);
+
+            emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
             completed = true;
-        } catch (InvocableActionException e){
-            System.debug ('exception occured: ' + e.getMessage());
+        } catch (Exception e){
             completed = false;
             error = e.getMessage();
-        } catch (System.EmailException e){
-            System.debug ('exception occured: ' + e.getMessage());
-            completed = false;
-            error = e.getMessage();
+            throw new InvocableActionException(e.getMessage());
         }
-       
         //report back the results
-        if (completed == true) {
+        if (completed) {
             if (emailResponse[0].isSuccess() != true) {
                 Messaging.SendEmailError[] curErrors = emailResponse[0].getErrors();
                 String errorReport = '';
@@ -141,22 +147,19 @@ public without sharing class SendHTMLEmail {
             } else {
                 response.isSuccess = true;
             }
-            if (saveAsActivity == true && recordId != null) {
-                if (recordId != null) {
-                    try {
-                        createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
-                    } catch (Exception ex) {
-                        response.errors = ex.getMessage();
-                        response.isSuccess = false;
-                    }
+            if (saveAsActivity == true) {
+                try {
+                    createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
+                } catch (Exception e) {
+                    response.errors = e.getMessage();
+                    response.isSuccess = false;
+                    throw new InvocableActionException(e.getMessage());
                 }
             }
-
         } else {
             response.errors = error;
             response.isSuccess = false;
         }
-        
         List<Response> responseList = new List<Response>();
         responseList.add(response);
         return responseList;
@@ -194,26 +197,19 @@ public without sharing class SendHTMLEmail {
     }
 
     public static String[] BuildAddressList(string type, Map<String, Object> m) {
-        
         String[] addressList = new List<String>();
         String curEmail;
-        
         //build address list
         //handle individual addresses
         String oneAddress = (String)m.get('Send' + type + 'thisOneEmailAddress');
         if ( oneAddress != null) {
             addressList.add(oneAddress);
-            System.debug('address list is:' + addressList);
         }
-
         //handle inputs involving collections of String addresses
         List<String> stringAddresses = (List<String>)m.get('Send' + type + 'thisStringCollectionOfEmailAddresses');
         if (stringAddresses != null) {
             addressList.addAll(stringAddresses);
-            System.debug('address list is:' + addressList);
         }
-        
-        
         //handle inputs involving collections of Contacts
         List<Contact> curContacts = (List<Contact>)m.get('Send' + type + 'theEmailAddressesFromThisCollectionOfContacts');        
         if (curContacts != null) {
@@ -223,7 +219,6 @@ public without sharing class SendHTMLEmail {
                 if (curEmail != null) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
-            System.debug('address list is now:' + addressList); 
         }
         
         //handle inputs involving collections of Users
@@ -235,7 +230,6 @@ public without sharing class SendHTMLEmail {
                 if (curEmail != null) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
-            System.debug('address list is now:' + addressList);
         }
         
         //handle inputs involving collections of Leads
@@ -247,12 +241,8 @@ public without sharing class SendHTMLEmail {
                 if (curEmail != null) extractedEmailAddresses.add(curEmail);
             }
             addressList.addAll(extractedEmailAddresses);
-            System.debug('address list is now:' + addressList);
         }
-
-
-        return addressList;
-
+       return addressList;
     }
 
     //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
@@ -275,8 +265,7 @@ public without sharing class SendHTMLEmail {
            'SendBCCtheEmailAddressesFromThisCollectionOfContacts' => request.SendBCCtheEmailAddressesFromThisCollectionOfContacts,
            'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
            'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
-  };
-       
+        };
     }
 
     private static void createActivity(Id recordId, String subject, String recipientList) {
@@ -293,7 +282,7 @@ public without sharing class SendHTMLEmail {
         String blankTemplate;
         List<EmailTemplate> et = [SELECT Id,Description FROM EmailTemplate WHERE Name=:templateName AND isActive = TRUE];
         if (et.size() > 0){
-            String localeKey = [Select LanguageLocaleKey From Organization].LanguageLocaleKey;
+            String localeKey = [Select LanguageLocaleKey From Organization Limit 1].LanguageLocaleKey;
             if (templateLanguage == NULL) templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;
             for (EmailTemplate thisTemplate: et){
                 if (thisTemplate.Description.Contains('Language="')){
@@ -302,7 +291,7 @@ public without sharing class SendHTMLEmail {
                         break;
                     }
                 }else{
-                    blankTemplate = blankTemplate == NULL ? thisTemplate.Id : blankTemplate;
+                    blankTemplate = (blankTemplate == NULL) ? thisTemplate.Id : blankTemplate;
                 }
             }
         }
@@ -319,15 +308,6 @@ public without sharing class SendHTMLEmail {
         @invocableVariable
         public String templateID;
         
-        @invocableVariable(label='Template Name' description='Used in conjuction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
-        public String templateName;
-        
-        @invocableVariable(label='Template Language' description='Used in conjuction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
-        public String templateLanguage;
-        
-        @invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
-        public String templateTargetObjectID;
-
         @invocableVariable
         public String subject;
         
@@ -403,7 +383,17 @@ public without sharing class SendHTMLEmail {
 
         @invocableVariable
         public Boolean saveAsActivity;
-        @invocableVariable(label='Template WhatId' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
+
+        @invocableVariable(label='Template Name' description='Used in conjuction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
+        public String templateName;
+        
+        @invocableVariable(label='Template Language' description='Used in conjuction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
+        public String templateLanguage;
+        
+        @invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
+        public String templateTargetObjectId;
+
+        @invocableVariable(label='Associated RecordId(WhatId/recordId for template and activity)' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
         public Id recordId;
     }
 

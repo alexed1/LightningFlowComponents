@@ -29,8 +29,11 @@ export default class recordDetailFSC extends LightningElement {
         recordSaveSuccessMessage: 'Record has been saved successfully'
     };
 
+    restrictedFields = ['SystemModstamp'];
+    readOnlyFields = ['LastModifiedDate', 'LastModifiedById', 'LastViewedDate', 'LastReferencedDate', 'CreatedDate', 'CreatedById', 'SystemModstamp'];
+
     connectedCallback() {
-       this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
+        this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
     }
 
     @api
@@ -39,11 +42,14 @@ export default class recordDetailFSC extends LightningElement {
     }
 
     get fieldData() {
-        return this.fieldsToDisplay.map(curField => {
+        return this.fieldsToDisplay.filter(curField => {
+            return this.recordId || (!this.recordId && !this.readOnlyFields.includes(curField));
+        }).map(curField => {
             let isError = !!this.notSupportedFields.find(curNSField => curNSField === curField) || !curField;
             return {
                 fieldName: curField,
                 isError: isError,
+                isOutput: this.readOnlyFields.includes(curField),
                 errorMessage: isError ? NotSupportedMessage + ' ' + (curField ? curField : 'null') : ''
             }
         });
@@ -57,7 +63,7 @@ export default class recordDetailFSC extends LightningElement {
         this.errors = [];
         if (value) {
             let fieldsArray = value.replace(/^[,\s]+|[,\s]+$/g, '').replace(/\s*,\s*/g, ',').split(',');
-            this.fieldsToDisplay = fieldsArray;
+            this.fieldsToDisplay = fieldsArray.filter(curFieldName => !this.restrictedFields.includes(curFieldName));
         } else {
             this.fieldsToDisplay = [];
         }
@@ -148,7 +154,7 @@ export default class recordDetailFSC extends LightningElement {
                 if (this.availableActions.find(action => action === 'BACK')) {
                     const navigateBackEvent = new FlowNavigationBackEvent();
                     this.dispatchEvent(navigateBackEvent);
-                }            
+                }
             }
             // check if FINISH is allowed on the flow screen
             if (this.availableActions.find(action => action === 'FINISH')) {
@@ -160,7 +166,7 @@ export default class recordDetailFSC extends LightningElement {
                 const navigateNextEvent = new FlowNavigationNextEvent();
                 this.dispatchEvent(navigateNextEvent);
             }
-        }       
+        }
     }
 
     handleError(event) {

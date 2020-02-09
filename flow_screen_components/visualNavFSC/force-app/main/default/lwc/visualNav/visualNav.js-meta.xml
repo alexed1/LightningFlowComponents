@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Professor Flow | Visual Nav</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="outputLabel" role="outputOnly" label="Output: Label" type="String" description="The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field."></property>
+            <property name="outputSubLabel" role="outputOnly" label="Output: SubLabel" type="String"></property>
+            <property name="outputUniqueId" role="outputOnly" label="Output: Unique" type="String"></property>
+            <property name="value" role="outputOnly" label="Output: Value" type="String"></property>
+            <property name="choiceSubLabels" role="inputOnly" label="Collection - SubLabel" type="String[]" description="A string collection used to populated the sublabels"></property>
+            <property name="choiceLabels" role="inputOnly" label="Collection - Label" type="String[]" description="A string collection used to populated the labels"></property>
+            <property name="choiceValues" role="inputOnly" label="Collection - Value" type="String[]" description="A string collection used to populated the additional values"></property>
+            <property name="choiceIcons" role="inputOnly" label="Collection - Icons" type="String[]" description="A string collection used to populated the icons. Please visit https://www.lightningdesignsystem.com/icons/ for available icons. Example: standard:lead"></property>
+            <property name="showIcons" role="inputOnly" label="Show Icons?" type="Boolean"></property>
+            <property name="showSubLabel" role="inputOnly" label="Show SubLabels?" type="Boolean"></property>
+            <property name="iconSize" role="inputOnly" label="Icon Size" type="String" description="The size of the icon. Options include xx-small, x-small, small, medium, or large. The default is medium."></property>
+            <property name="buttonSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="165" description="The size of the box in pixels. The box is a square."></property>
+            <property name="iconVariant" role="inputOnly" label="Icon Variant" type="String" description="The variant changes the shape of the avatar. Valid values are empty, circle, and square. This value defaults to square."></property>
+            <property name="required" role="inputOnly" label="Required" type="Boolean" default="false"></property>
+            <property name="autoNext" role="inputOnly" label="Enable Auto Next" type="Boolean" default="false" description="Selecting an option will automatically transition the flow if enabled. Please note there is an accessibility impact when enabling this option. If a user utilizes a keyboard or screen reader that will be unable to get to any other choice but the first."></property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

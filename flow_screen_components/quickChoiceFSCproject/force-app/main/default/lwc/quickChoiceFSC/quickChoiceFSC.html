@@ -16,6 +16,8 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
                                                 MockHttpResponseGenerator
+2/2/20 -    Eric Smith -    Version 1.26
+                            Fixed default display for visual cards (thx to clifford-fra)
 
 1/12/20 -   Eric Smith -    Version 1.22
                             Added an option to display the visual card pickers in a single or dual columns
@@ -38,7 +40,7 @@ Additional components packaged with this LWC:
             <div class={gridClass} style={gridStyle}>
                 <template for:each={items} for:item="item">
                     <div key={item.name} class={columnClass}>
-                        <input type="radio" id={item.name} value={item.name} name="visualList" onclick={handleChange} />
+                        <input type="radio" id={item.name} value={item.name} name="visualList" data-id={item.name} onclick={handleChange} />
                         <label for={item.name}>
 
                             <!-- Display Visual Card Pickers with Icons-->

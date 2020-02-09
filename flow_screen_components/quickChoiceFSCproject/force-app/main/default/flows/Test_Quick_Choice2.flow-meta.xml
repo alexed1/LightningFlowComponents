@@ -100,27 +100,9 @@
             <targetReference>Selected_Values</targetReference>
         </connector>
         <fields>
-            <name>quickChoice3</name>
-            <extensionName>c:quickChoiceFSC</extensionName>
+            <name>QuickChoiceVisual_0</name>
+            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>choiceIcons</name>
-                <value>
-                    <elementReference>colIcons</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>includeIcons</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>inputMode</name>
-                <value>
-                    <stringValue>Visual Text Box</stringValue>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>masterLabel</name>
                 <value>
@@ -128,9 +110,15 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>required</name>
+                <name>displayMode</name>
                 <value>
-                    <booleanValue>true</booleanValue>
+                    <stringValue>Visual</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Visual Text Box</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -146,15 +134,21 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>numberOfColumns</name>
+                <name>required</name>
                 <value>
-                    <stringValue>2</stringValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>displayMode</name>
+                <name>choiceIcons</name>
                 <value>
-                    <stringValue>Card</stringValue>
+                    <elementReference>colIcons</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>includeIcons</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -178,19 +172,25 @@
             <targetReference>Create_Lists</targetReference>
         </connector>
         <fields>
-            <name>QuickChoice0</name>
-            <extensionName>c:quickChoiceFSC</extensionName>
+            <name>QCR</name>
+            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>allowNoneToBeChosen</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>masterLabel</name>
                 <value>
                     <stringValue>Select Opportunity Stage</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Picklist Field</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -200,27 +200,9 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>objectName</name>
+                <name>allowNoneToBeChosen</name>
                 <value>
-                    <stringValue>Opportunity</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>fieldName</name>
-                <value>
-                    <stringValue>StageName</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>displayMode</name>
-                <value>
-                    <stringValue>Radio</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>inputMode</name>
-                <value>
-                    <stringValue>Picklist Field</stringValue>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -244,9 +226,33 @@
             <targetReference>Quick_Choice_Visual</targetReference>
         </connector>
         <fields>
-            <name>quickChoice1</name>
-            <extensionName>c:quickChoiceFSC</extensionName>
+            <name>QuickChoiceRadio</name>
+            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Select Option</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Radio</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Dual String Collections</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <inputParameters>
                 <name>choiceLabels</name>
                 <value>
@@ -257,24 +263,6 @@
                 <name>choiceValues</name>
                 <value>
                     <elementReference>colValues</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>inputMode</name>
-                <value>
-                    <stringValue>Dual String Collections</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>displayMode</name>
-                <value>
-                    <stringValue>Radio</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>masterLabel</name>
-                <value>
-                    <stringValue>Select Option</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -298,15 +286,9 @@
             <targetReference>Quick_Choice_Icon</targetReference>
         </connector>
         <fields>
-            <name>quickChoice2</name>
-            <extensionName>c:quickChoiceFSC</extensionName>
+            <name>QuickChoiceVisual</name>
+            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>inputMode</name>
-                <value>
-                    <stringValue>Visual Text Box</stringValue>
-                </value>
-            </inputParameters>
             <inputParameters>
                 <name>masterLabel</name>
                 <value>
@@ -316,7 +298,13 @@
             <inputParameters>
                 <name>displayMode</name>
                 <value>
-                    <stringValue>Card</stringValue>
+                    <stringValue>Visual</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Visual Text Box</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -329,6 +317,12 @@
                 <name>choiceValues</name>
                 <value>
                     <elementReference>colValues</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -363,7 +357,7 @@
             <targetReference>Quick_Choice_Picklist</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Obsolete</status>
     <variables>
         <name>colIcons</name>
         <dataType>String</dataType>

@@ -3,7 +3,7 @@
         <div class="slds-col slds-p-left--none slds-size--4-of-12 slds-align-bottom slds-p-left--none">
             <lightning-combobox
                     name="fieldName"
-                    label="Fields"
+                    label="Resource"
                     placeholder="Select a Field"
                     variant="label-stacked"
                     options={allFields}
@@ -11,7 +11,7 @@
                     onchange={handleConditionChanged}
             ></lightning-combobox>
         </div>
-        <div class="slds-col slds-size--4-of-12 slds-align-bottom">
+        <div class="slds-col slds-size--3-of-12 slds-align-bottom">
             <lightning-combobox
                     name="operation"
                     label="Operation"
@@ -19,6 +19,7 @@
                     variant="label-stacked"
                     options={availableOperations}
                     value={operation}
+                    disabled={isDisabled}
                     onchange={handleConditionChanged}
             ></lightning-combobox>
         </div>
@@ -27,10 +28,20 @@
             <lightning-input name="value"
                              label="Value"
                              type={inputType}
-                             variant="label-stacked"
+                             variant={valueVariant}
                              value={value}
+                             checked={value}
+                             disabled={isDisabled}
                              onchange={handleConditionChanged}
             ></lightning-input>
+        </div>
+        <div class="slds-col slds-size--1-of-12 slds-align-bottom slds-m-bottom--x-small">
+            <lightning-button-icon
+                    icon-name="utility:delete"
+                    alternative-text="Delete"
+                    onclick={handleConditionRemove}
+            >
+            </lightning-button-icon>
         </div>
     </div>
 

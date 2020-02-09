@@ -8,9 +8,9 @@ export default class ConditionBuilder extends LightningElement {
     @track customLogic;
     @track _whereClause;
     logicTypes = [
-        {label: 'AND', value: 'AND'},
-        {label: 'OR', value: 'OR'},
-        {label: 'CUSTOM', value: 'custom'}
+        {label: 'All Conditions Are Met', value: 'AND'},
+        {label: 'Any Condition Is Met', value: 'OR'},
+        {label: 'Custom', value: 'custom'}
     ];
     operations = [
         {
@@ -27,9 +27,17 @@ export default class ConditionBuilder extends LightningElement {
         {label: 'greater than', value: ' > ', types: 'Date,DateTime,Currency,Double,Int,Address'},
         {label: 'less than or equals', value: ' <= ', types: 'Date,DateTime,Currency,Double,Int,Address'},
         {label: 'greater than or equals', value: ' >= ', types: 'Phone,Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'IN',value: ' IN ',types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'LIKE',value: ' LIKE ', types: 'String,Picklist,Url,Email,Reference,Phone'},
-        {label: 'NOT IN',value: ' NOT IN ',types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Boolean,Int,Address'}
+        {
+            label: 'IN',
+            value: ' IN ',
+            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
+        },
+        {label: 'LIKE', value: ' LIKE ', types: 'String,Picklist,Url,Email,Reference,Phone'},
+        {
+            label: 'NOT IN',
+            value: ' NOT IN ',
+            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
+        }
     ];
 
     fieldTypeSettings = {
@@ -43,7 +51,7 @@ export default class ConditionBuilder extends LightningElement {
         Reference: {inputType: 'text', dataTransformationFunction: 'wrapInQuotes'},
         DateTime: {inputType: 'datetime', dataTransformationFunction: null},
         Phone: {inputType: 'text', dataTransformationFunction: 'wrapInQuotes'},
-        Boolean: {inputType: 'toggle', dataTransformationFunction: null},
+        Boolean: {inputType: 'checkbox', dataTransformationFunction: 'transformBoolean'},
         Date: {inputType: 'date', dataTransformationFunction: null},
         Int: {inputType: 'number', dataTransformationFunction: null},
         Url: {inputType: 'url', dataTransformationFunction: 'wrapInQuotes'}
@@ -60,9 +68,9 @@ export default class ConditionBuilder extends LightningElement {
     }
 
     determineLogicType() {
-        if (!this._whereClause) {
-            this.logicType = 'AND';
-        }
+        // if (!this._whereClause) {
+        //     this.logicType = 'AND';
+        // }
     }
 
     parseWhereClause(value) {
@@ -76,6 +84,7 @@ export default class ConditionBuilder extends LightningElement {
     handleValueChanged(event) {
         let inputName = event.target.name;
         this[inputName] = event.detail.value;
+
         if (event.currentTarget.dataset.dispatchValueChangedEvent) {
             this.dispatchConditionsChangedEvent();
         }
@@ -114,17 +123,26 @@ export default class ConditionBuilder extends LightningElement {
         }
     }
 
+    handleConditionRemoved(event) {
+        let newCondition = event.detail;
+        this._conditions = this._conditions.filter(curCondition => curCondition.key !== newCondition.id);
+        this.dispatchConditionsChangedEvent();
+    }
+
     constructWhereClause() {
         let whereClause = '';
-        let completeConditions = this._conditions.filter(curCondition => curCondition.fieldName && curCondition.operation && curCondition.value);
+        let completeConditions = this._conditions.filter(curCondition => curCondition.fieldName && curCondition.operation && this.isValidValue(curCondition));
         if (completeConditions && completeConditions.length) {
             whereClause += ' WHERE ';
             if (this.logicType === 'custom') {
-                whereClause += this.customLogic ? this.customLogic : '';
-                for (let i = 0; i < completeConditions.length; i++) {
-                    const regex = new RegExp('' + (i + 1), 'gi');
-                    whereClause = whereClause.replace(regex, this.buildCondition(completeConditions[i]))
+                let customLogicLocal = this.buildCustomLogic(this.customLogic);
+                if (customLogicLocal) {
+                    for (let i = 0; i < completeConditions.length; i++) {
+                        const regex = new RegExp('\\$' + (i + 1) + '_', 'gi');
+                        customLogicLocal = customLogicLocal.replace(regex, this.buildCondition(completeConditions[i]))
+                    }
                 }
+                whereClause += customLogicLocal ? customLogicLocal : '';
             } else {
                 whereClause += completeConditions.map(curCompleteCondition => {
                     return this.buildCondition(curCompleteCondition);
@@ -132,6 +150,27 @@ export default class ConditionBuilder extends LightningElement {
             }
         }
         return whereClause;
+    }
+
+    buildCustomLogic(customLogic) {
+        if (customLogic) {
+            const matcher = new RegExp('\\d+', 'gi');
+            let matched = customLogic.match(matcher);
+            if (matched) {
+                matched.forEach(curMatch => {
+                    customLogic = customLogic.replace(curMatch, '$' + curMatch + '_')
+                });
+            }
+        }
+        return customLogic;
+    }
+
+    isValidValue(condition) {
+        if (condition.dataType === 'Boolean') {
+            return true;
+        } else {
+            return condition.value
+        }
     }
 
     buildCondition(completeCondition) {
@@ -150,6 +189,10 @@ export default class ConditionBuilder extends LightningElement {
 
     wrapInQuotes(value) {
         return '\'' + value + '\'';
+    }
+
+    transformBoolean(value) {
+        return !!value;
     }
 
     dispatchConditionsChangedEvent() {

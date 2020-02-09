@@ -25,10 +25,27 @@ export default class ConditionLine extends LightningElement {
 
     }
 
+    get isDisabled() {
+        return !this.fieldName;
+    }
+
+    get valueVariant() {
+        return (this.fieldType === 'Date' || this.fieldType === 'DateTime') ? 'label-hidden' : 'label-stacked';
+    }
+
     handleConditionChanged(event) {
         let inputName = event.target.name;
-        this[inputName] = event.detail.value;
+        this[inputName] = (this.fieldType === 'Boolean' && inputName === 'value') ? event.detail.checked : event.detail.value;
         this.dispatchConditionChangedEvent();
+    }
+
+    handleConditionRemove(event) {
+        const filterChangedEvent = new CustomEvent('conditionremoved', {
+            detail: {
+                id: this.lineId
+            }
+        });
+        this.dispatchEvent(filterChangedEvent);
     }
 
     dispatchConditionChangedEvent() {

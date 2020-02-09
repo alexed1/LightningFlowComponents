@@ -9,7 +9,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 -->
     <template>
         <div class="container">
-       
+
             <template if:true={loadFinished}>
                 <div class="slds-box slds-theme_default">
                     <template if:true={isError}>
@@ -49,8 +49,13 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                 <lightning-layout multiple-rows="true">
                                     <template for:each={fieldData} for:item="field">
                                         <lightning-layout-item key={field.fieldName} size={elementSize}>
-                                            <lightning-input-field if:false={field.isError} field-name={field.fieldName}>
-                                            </lightning-input-field>
+                                            <template if:false={field.isError} >
+                                                <lightning-output-field if:true={field.isOutput} field-name={field.fieldName}>
+                                                </lightning-output-field>
+                                                <lightning-input-field  if:false={field.isOutput} field-name={field.fieldName}>
+                                                </lightning-input-field>
+                                            </template>
+
                                             <div if:true={field.isError}
                                                  class="slds-text-color_destructive slds-align_absolute-center">
                                                 {field.errorMessage}
@@ -72,7 +77,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                                 name="cancel"
                                                 label="Cancel"
                                                 onclick={handleCancel}>
-                                        </lightning-button>                                            
+                                        </lightning-button>
                                     </lightning-layout-item>
                                 </lightning-layout>
                             </lightning-record-edit-form>

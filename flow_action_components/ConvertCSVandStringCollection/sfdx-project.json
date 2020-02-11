@@ -1,0 +1,19 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "ConvertCSVAndString",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "ConvertCSVAndString": "0HoB000000000QGKAY",
+        "ConvertCSVAndString@0.1.0-1": "04tB0000000AwjsIAC",
+        "ConvertCSVAndString@0.1.0-2": "04tB0000000AwjxIAC"
+    }
+}

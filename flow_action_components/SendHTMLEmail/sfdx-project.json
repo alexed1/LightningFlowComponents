@@ -6,6 +6,13 @@
             "package": "SendHTMLEmailPrA",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
+        },
+        {
+            "path": "force-app",
+            "package": "SendHTMLEmail",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "default": false
         }
     ],
     "namespace": "",
@@ -14,6 +21,8 @@
     "packageAliases": {
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
-        "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO"
+        "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
+        "SendHTMLEmail": "0HoB000000000QLKAY",
+        "SendHTMLEmail@0.1.0-1": "04tB0000000Awk2IAC"
     }
 }

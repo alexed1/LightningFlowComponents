@@ -15,154 +15,169 @@ public without sharing class SendHTMLEmail {
 
     @invocableMethod(label='Send HTML Email')
     public static List<Response>  SendEmail(List<Request> requests) {
-        
-        Response response = new Response();
-        String HTMLbody = requests[0].HTMLbody;
-        String plainTextBody = requests[0].plainTextBody;
-        String subject = requests[0].subject;
-        String replyEmailAddress = requests[0].replyEmailAddress;
-        String senderDisplayName = requests[0].senderDisplayName;
-        String templateID = requests[0].templateID;
-        String templateName = requests[0].templateName;
-        String templateLanguage = requests[0].templateLanguage;
-        String templateTargetObjectId = requests[0].templateTargetObjectId;
-        String orgWideEmailAddressId = requests[0].orgWideEmailAddressId;
-        Boolean saveAsActivity = requests[0].saveAsActivity;
-        Id recordId = requests[0].recordId;
 
-        //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
+        List<Response> responseList = new List<Response>();
 
-        // First, reserve email capacity for the current Apex transaction to ensure
-        // that we won't exceed our daily email limits when sending email after
-        // the current transaction is committed.
-        //Messaging.reserveSingleEmailCapacity(2);
+        for (Request curRequest : requests) {
+            Response response = new Response();
 
-        // Processes and actions involved in the Apex transaction occur next,
-        // which conclude with sending a single email.
+            String HTMLbody = curRequest.HTMLbody;
+            String plainTextBody = curRequest.plainTextBody;
+            String subject = curRequest.subject;
+            String replyEmailAddress = curRequest.replyEmailAddress;
+            String senderDisplayName = curRequest.senderDisplayName;
+            String templateID = curRequest.templateID;
+            String templateName = curRequest.templateName;
+            String templateLanguage = curRequest.templateLanguage;
+            String templateTargetObjectId = curRequest.templateTargetObjectId;
+            String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
+            Boolean saveAsActivity = curRequest.saveAsActivity;
+            String recordId = curRequest.recordId;
 
-        // Now create a new single email message object
-        // that will send out a single email to the addresses in the To, CC & BCC list.
-        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
-        // Strings to hold the email addresses to which you are sending the email.
-        //String[] toAddresses = new String[] {oneAddress}; 
-        Map<String, Object> m = GenerateMap(requests[0]);
-        String[] toAddresses = BuildAddressList('TO',m); 
-        String[] ccAddresses = BuildAddressList('CC',m); 
-        String[] bccAddresses = BuildAddressList('BCC', m);
-        
 
-        // Assign the addresses for the To and CC lists to the mail object.
-        mail.setToAddresses(toAddresses);
-        mail.setCcAddresses(ccAddresses);
-        mail.setBccAddresses(bccAddresses);
+            //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
-        //outgoing email can either use an orgWideEmailAddress or specify it here, but not both
-        if (orgWideEmailAddressId != null && orgWideEmailAddressId != '') {
-            mail.setOrgWideEmailAddressId(orgWideEmailAddressId);
-        } else {
-            // Specify the address used when the recipients reply to the email. 
-            mail.setReplyTo(replyEmailAddress);
+            // First, reserve email capacity for the current Apex transaction to ensure
+            // that we won't exceed our daily email limits when sending email after
+            // the current transaction is committed.
+            //Messaging.reserveSingleEmailCapacity(2);
 
-            // Specify the name used as the display name.
-            mail.setSenderDisplayName(senderDisplayName);
-        }
+            // Processes and actions involved in the Apex transaction occur next,
+            // which conclude with sending a single email.
 
-        // Specify the subject line for your email address.
-        mail.setSubject(subject);
+            // Now create a new single email message object
+            // that will send out a single email to the addresses in the To, CC & BCC list.
+            Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
 
-        // Set to True if you want to BCC yourself on the email.
-        mail.setBccSender(false);
+            // Strings to hold the email addresses to which you are sending the email.
+            //String[] toAddresses = new String[] {oneAddress}; 
+            Map<String, Object> m = GenerateMap(curRequest);
+            String[] toAddresses = BuildAddressList('TO',m); 
+            String[] ccAddresses = BuildAddressList('CC',m); 
+            String[] bccAddresses = BuildAddressList('BCC', m);
+                
 
-        // Optionally append the salesforce.com email signature to the email.
-        // The email address of the user executing the Apex Code will be used.
-        // True by default unless the user passes a value in.
-        if(requests[0].useSalesforceSignature != null) {
-            mail.setUseSignature(requests[0].useSalesforceSignature);
-        } else {
-            mail.setUseSignature(true);
-        }
+            // Assign the addresses for the To and CC lists to the mail object.
+            mail.setToAddresses(toAddresses);
+            mail.setCcAddresses(ccAddresses);
+            mail.setBccAddresses(bccAddresses);
 
-        mail = AddAttachments(mail, requests[0].contentDocumentAttachments, null);
-         
-        if (templateName != null && templateID != null)
-            throw new InvocableActionException('You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).');
-
-        if (templateName != null){
-            templateID = getTemplateIdFromName(templateName,templateLanguage);
-            if (templateID == null){
-	            throw new InvocableActionException('Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template');
-            }
-            Response.templateUsed = TemplateId;
-        }
-        if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
-            throw new InvocableActionException('You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
-           
-        if (templateID == null  && HTMLbody == null && plainTextBody == null)
-            throw new InvocableActionException('Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
-              
-        if (saveAsActivity == true && recordId == null) {
-            throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
-        }
-        
-        Boolean completed = true;
-        String error;
-        Messaging.SendEmailResult[] emailResponse;
-        if (templateTargetObjectId != NULL) mail.setTargetObjectId(templateTargetObjectId);
-        if (recordId != null) mail.setWhatId(recordId);
-        
-        // Specify the text content of the email.
-        if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
-        if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
-        if (saveAsActivity != NULL) mail.setSaveAsActivity(saveAsActivity);
-        if (templateID != NULL){
-        	try {
-            	mail.setTemplateID(templateID);
-            } catch (Exception e){
-                completed = false;
-                error = e.getMessage();
-            	throw new InvocableActionException(e.getMessage());
-        	}
-        }
-        // Send the email you have created.
-        try {
-
-            emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
-            completed = true;
-        } catch (Exception e){
-            completed = false;
-            error = e.getMessage();
-            throw new InvocableActionException(e.getMessage());
-        }
-        //report back the results
-        if (completed) {
-            if (emailResponse[0].isSuccess() != true) {
-                Messaging.SendEmailError[] curErrors = emailResponse[0].getErrors();
-                String errorReport = '';
-                for(Messaging.SendEmailError curError : curErrors ) {
-                    errorReport = errorReport + curError.getMessage() + '/n';
-                }
-                response.errors = errorReport;
-                response.isSuccess = false;
+            //outgoing email can either use an orgWideEmailAddress or specify it here, but not both
+            if (orgWideEmailAddressId != null && orgWideEmailAddressId != '') {
+                mail.setOrgWideEmailAddressId(orgWideEmailAddressId);
             } else {
-                response.isSuccess = true;
+                // Specify the address used when the recipients reply to the email. 
+                mail.setReplyTo(replyEmailAddress);
+
+                // Specify the name used as the display name.
+                mail.setSenderDisplayName(senderDisplayName);
             }
-            if (saveAsActivity == true) {
+
+            // Specify the subject line for your email address.
+            mail.setSubject(subject);
+
+            // Set to True if you want to BCC yourself on the email.
+            mail.setBccSender(false);
+
+            // Optionally append the salesforce.com email signature to the email.
+            // The email address of the user executing the Apex Code will be used.
+            // True by default unless the user passes a value in.
+            if(curRequest.useSalesforceSignature != null) {
+                mail.setUseSignature(curRequest.useSalesforceSignature);
+            } else {
+                mail.setUseSignature(true);
+            }
+
+            mail = AddAttachments(mail, curRequest.contentDocumentAttachments, null);
+            
+            if (templateName != null && templateID != null)
+                throw new InvocableActionException('You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).');
+
+            if (templateName != null){
+                templateID = getTemplateIdFromName(templateName,templateLanguage);
+                if (templateID == null){
+                    throw new InvocableActionException('Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template');
+                }
+                Response.templateUsed = TemplateId;
+            }
+            if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
+                throw new InvocableActionException('You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
+            
+            if (templateID == null  && HTMLbody == null && plainTextBody == null)
+                throw new InvocableActionException('Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
+                
+            if (saveAsActivity == true && recordId == null) {
+                throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
+            }
+            
+            Boolean completed = true;
+            String error;
+            Messaging.SendEmailResult[] emailResponse;
+            if (templateTargetObjectId != NULL) mail.setTargetObjectId(templateTargetObjectId);
+            System.debug('recordId is: ' + recordId);
+            if (recordId != null) {
+                mail.setWhatId(ID.valueOf(recordId));
+            }
+               
+            
+            // Specify the text content of the email.
+            if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
+            if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
+            if (saveAsActivity != NULL) mail.setSaveAsActivity(saveAsActivity);
+            if (templateID != NULL){
                 try {
-                    createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
-                } catch (Exception e) {
-                    response.errors = e.getMessage();
-                    response.isSuccess = false;
+                    mail.setTemplateID(templateID);
+                } catch (Exception e){
+                    completed = false;
+                    error = e.getMessage();
                     throw new InvocableActionException(e.getMessage());
                 }
             }
-        } else {
-            response.errors = error;
-            response.isSuccess = false;
-        }
-        List<Response> responseList = new List<Response>();
+            // Send the email you have created.
+            try {
+
+                emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
+                completed = true;
+            } catch (Exception e){
+                completed = false;
+                error = e.getMessage();
+                throw new InvocableActionException(e.getMessage());
+            }
+            //report back the results
+            if (completed) {
+                if (emailResponse[0].isSuccess() != true) {
+                    Messaging.SendEmailError[] curErrors = emailResponse[0].getErrors();
+                    String errorReport = '';
+                    for(Messaging.SendEmailError curError : curErrors ) {
+                        errorReport = errorReport + curError.getMessage() + '/n';
+                    }
+                    response.errors = errorReport;
+                    response.isSuccess = false;
+                } else {
+                    response.isSuccess = true;
+                }
+                if (saveAsActivity == true) {
+                    try {
+                        createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
+                    } catch (Exception e) {
+                        response.errors = e.getMessage();
+                        response.isSuccess = false;
+                        throw new InvocableActionException(e.getMessage());
+                    }
+                }
+            } else {
+                response.errors = error;
+                response.isSuccess = false;
+            }
+
+        responseList = new List<Response>();
         responseList.add(response);
-        return responseList;
+    }
+
+    
+    return responseList;
+
     }
 
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
@@ -394,7 +409,7 @@ public without sharing class SendHTMLEmail {
         public String templateTargetObjectId;
 
         @invocableVariable(label='Associated RecordId(WhatId/recordId for template and activity)' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
-        public Id recordId;
+        public String recordId;
     }
 
     public class Response {

@@ -101,7 +101,7 @@
         </connector>
         <fields>
             <name>QuickChoiceVisual_0</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>c:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -173,7 +173,7 @@
         </connector>
         <fields>
             <name>QCR</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>c:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -205,6 +205,18 @@
                     <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>fieldName</name>
+                <value>
+                    <stringValue>StageName</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Opportunity</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vSelectedRadioValue</assignToReference>
@@ -227,7 +239,7 @@
         </connector>
         <fields>
             <name>QuickChoiceRadio</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>c:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -287,7 +299,7 @@
         </connector>
         <fields>
             <name>QuickChoiceVisual</name>
-            <extensionName>fmp_quickchoice:quickChoiceFSC</extensionName>
+            <extensionName>c:quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -357,7 +369,7 @@
             <targetReference>Quick_Choice_Picklist</targetReference>
         </connector>
     </start>
-    <status>Obsolete</status>
+    <status>Draft</status>
     <variables>
         <name>colIcons</name>
         <dataType>String</dataType>

@@ -14,20 +14,21 @@
             ></lightning-combobox>
         </div>
         <div class="slds-col slds-size--4-of-12">
-            <lightning-input if:true={renderCustomLogicInput}
+            <lightning-input class="customLogic"
+                             if:true={renderCustomLogicInput}
                              name="customLogic"
                              label="Value"
                              variant="label-stacked"
                              value={customLogic}
                              data-dispatch-value-changed-event
-                             onchange={handleValueChanged}
+                             onblur={handleValueChanged}
             ></lightning-input>
         </div>
         <div class="slds-col slds-size--4-of-12">
 
         </div>
         <div class="slds-col slds-size--1-of-1 slds-p-left--none">
-            <template for:each={_conditions} for:item="condition">
+            <template for:each={_conditions} for:item="condition" for:index="conditionIndex">
                 <div key={condition.key}>
                     <c-condition-line all-operations={operations}
                                       all-fields={_fields}
@@ -37,6 +38,7 @@
                                       operation={condition.operation}
                                       value={condition.value}
                                       line-id={condition.key}
+                                      index={conditionIndex}
                                       onconditionchanged={handleConditionChanged}
                                       onconditionremoved={handleConditionRemoved}
                     ></c-condition-line>
@@ -45,10 +47,10 @@
         </div>
         <div class="slds-col slds-size--12-of-12 slds-grid--align-end slds-p-left--none">
             <lightning-button
-                              label="Add condition"
-                              title="Add condition"
-                              icon-name="utility:add"
-                              onclick={handleAddCondition}></lightning-button>
+                    label="Add condition"
+                    title="Add condition"
+                    icon-name="utility:add"
+                    onclick={handleAddCondition}></lightning-button>
         </div>
     </div>
 </template>

@@ -12,7 +12,7 @@ export default class soqlQueryBuilder extends LightningElement {
     @track _objectTypes;
     @track _soqlQuery;
     @track _selectedFields = [];
-
+    @track fieldPickerStyle = 'height: 14rem;';
     fieldOptions = [];
     labels = {
         chooseFields: 'Choose the query fields below.',
@@ -35,10 +35,47 @@ export default class soqlQueryBuilder extends LightningElement {
 
     parseQuery(value) {
         this._soqlQuery = value;
-        this.setSelectedFields(value);
-        this.setObjectTypeByQuery(value);
-        this.setOrderBy(value);
-        this.setLimit(value);
+        if (value.indexOf(" FROM ") !== -1) {
+            let objectName = value.substring(value.indexOf(" FROM ") + 6, value.indexOf(" WHERE "));
+            this._objectType = objectName;
+        } else {
+            this._objectType = null;
+        }
+
+        if (value.indexOf("SELECT ") !== -1) {
+            let selectedFields = value.substring(value.indexOf("SELECT ") + 7, value.indexOf(" FROM "));
+            this._selectedFields = selectedFields.split(',').map(curField => curField.trim());
+
+        } else {
+            this._selectedFields = [];
+        }
+
+        let orderByIndex = value.indexOf(" ORDER BY ");
+        let limitIndex = value.indexOf(" LIMIT ");
+        if (value.indexOf(" WHERE ") !== -1) {
+            this.whereClause = value.substring(value.indexOf(" WHERE ") + 7, Math.min(orderByIndex === -1 ? value.length : orderByIndex, limitIndex === -1 ? value.length : limitIndex, value.length) - 1);
+        } else {
+            this.whereClause = null;
+        }
+
+        if (orderByIndex) {
+            let orderByClause = value.substring(orderByIndex + 10);
+            let orderByParts = orderByClause.split(' ');
+            this.orderByField = orderByParts[0];
+            this.orderByDirection = orderByParts.length > 1 ? (orderByParts[1] === 'ASC' || orderByParts[1] === 'DESC' ? orderByParts[1] : null) : null;
+        } else {
+            this.orderByField = null;
+            this.orderByDirection = null;
+        }
+
+        if (limitIndex !== -1) {
+            let limit = value.substring(limitIndex + 7);
+            this.limit = limit;
+        } else {
+            this.limit = null;
+        }
+
+        this.prepareFieldDescriptors();
     }
 
     get fieldOptionsWithNone() {
@@ -63,7 +100,7 @@ export default class soqlQueryBuilder extends LightningElement {
         if (this._objectType && this._selectedFields && this._selectedFields.length) {
             let resultQuery = 'SELECT ' + this._selectedFields.join(', ') + ' FROM ' + this._objectType;
             if (this.whereClause) {
-                resultQuery += this.whereClause;
+                resultQuery += ' WHERE ' + this.whereClause;
             }
             if (this.orderByField && this.orderByDirection) {
                 resultQuery += ' ORDER BY ' + this.orderByField + ' ' + this.orderByDirection;
@@ -77,6 +114,15 @@ export default class soqlQueryBuilder extends LightningElement {
 
     clearSelectedValues() {
         this._selectedFields = [];
+        this.whereClause = '';
+        this._soqlQuery = '';
+        this.limit = null;
+        this.orderByField = null;
+        this.orderByDirection = null;
+        let conditionBuilder = this.template.querySelector('c-condition-builder');
+        if (conditionBuilder) {
+            conditionBuilder.clearConditions();
+        }
     }
 
     handleConditionChanged(event) {
@@ -90,7 +136,7 @@ export default class soqlQueryBuilder extends LightningElement {
     }
 
     handleSoqlChange(event) {
-        this.parseQuery(event.detail.value);
+        this.parseQuery(event.target.value);
     }
 
     handleFieldSelected(event) {
@@ -122,26 +168,12 @@ export default class soqlQueryBuilder extends LightningElement {
         }
     }
 
-    setOrderBy(value) {
-        //TODO: determine by query
-        // this.orderByDirection;
-        // this.orderByField
-    }
-
-    setSelectedFields(query) {
-        //TODO: determine by query 'SELECT 'Id', 'Name' FROM Account '
-        // this._selectedFields = ['Id', 'Name'];
-        this.prepareFieldDescriptors();
-    }
-
-    setObjectTypeByQuery(query) {
-        //TODO: determine by query 'SELECT Id FROM `Account` '
-        // this._objectType = 'Account';
-    }
-
-    setLimit(query) {
-        //TODO: determine by query 'SELECT Id FROM `Account` LIMIT 1'
-        // this.limit = 1;
+    calculateFieldPickerStyle() {
+        let fieldPickerContainer = this.template.querySelector('.field-picker-container');
+        if (fieldPickerContainer) {
+            let fullHeight = fieldPickerContainer.offsetHeight;
+            this.fieldPickerStyle = 'height: ' + (fullHeight - 50) + 'px';
+        }
     }
 
     toggle(array, element) {

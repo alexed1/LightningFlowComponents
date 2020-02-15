@@ -40,11 +40,10 @@
                             fields={fieldOptions}
                             where-clause={whereClause}
                             onconditionschanged={handleConditionChanged}
-                            onconditionadded={calculateFieldPickerStyle}
-                            onconditionremoved= {calculateFieldPickerStyle}
+                            onrenderfinished={calculateFieldPickerStyle}
                     ></c-condition-builder>
                     <lightning-textarea name="soqlQuery" label="Query" value={_soqlQuery}
-                                        onchange={handleSoqlChange}
+                                        onblur={handleSoqlChange}
                     ></lightning-textarea>
                     <div class="slds-grid slds-wrap slds-p-left--none">
                         <div class="slds-col slds-size--1-of-12 slds-p-left--none">

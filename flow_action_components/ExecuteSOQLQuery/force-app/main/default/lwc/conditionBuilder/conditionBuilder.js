@@ -62,7 +62,22 @@ export default class ConditionBuilder extends LightningElement {
     }
 
     set whereClause(value) {
-        this.parseWhereClause(value);
+        this._whereClause = value;
+        if (this._fields && this._fields.length) {
+            this.parseWhereClause(this._whereClause);
+        }
+    }
+
+    @api get fields() {
+        return this._conditions;
+    }
+
+    set fields(value) {
+        this._fields = this.copyValue(value);
+        if (this._whereClause) {
+            this.parseWhereClause(this._whereClause);
+        }
+
     }
 
     @api
@@ -71,7 +86,6 @@ export default class ConditionBuilder extends LightningElement {
     }
 
     parseWhereClause(value) {
-        this._whereClause = value;
         if (value) {
             const matcher = new RegExp('(( ?(OR|AND) ?))(?!\\w)|([()])', 'gi');
             let matched = value.match(matcher);
@@ -182,14 +196,6 @@ export default class ConditionBuilder extends LightningElement {
         }
 
         return true;
-    }
-
-    @api get fields() {
-        return this._conditions;
-    }
-
-    set fields(value) {
-        this._fields = this.copyValue(value);
     }
 
     conditionKey = 0;
@@ -342,5 +348,10 @@ export default class ConditionBuilder extends LightningElement {
         } else {
             return value;
         }
+    }
+
+    renderedCallback() {
+        const renderfinishedEvent = new CustomEvent('renderfinished', {});
+        this.dispatchEvent(renderfinishedEvent);
     }
 }

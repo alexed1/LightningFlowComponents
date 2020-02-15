@@ -3,7 +3,7 @@ import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 
 export default class soqlQueryBuilder extends LightningElement {
-    @track _objectType = 'Account';
+    @track _objectType;
     @track fields = [];
     @track whereClause;
     @track orderByField;
@@ -29,12 +29,11 @@ export default class soqlQueryBuilder extends LightningElement {
 
     @api
     set soqlQuery(value) {
-        this._soqlQuery = value;
-        this.parseQuery(value);
+        this._soqlQuery = value ? value : '';
+        this.parseQuery(this._soqlQuery);
     }
 
     parseQuery(value) {
-        this._soqlQuery = value;
         if (value.indexOf(" FROM ") !== -1) {
             let objectName = value.substring(value.indexOf(" FROM ") + 6, value.indexOf(" WHERE "));
             this._objectType = objectName;

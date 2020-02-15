@@ -8,6 +8,7 @@ export default class ConditionLine extends LightningElement {
     @api operation;
     @api value;
     @api lineId;
+    @api index;
     @api fieldTypeSettings;
 
     get inputType() {
@@ -25,6 +26,10 @@ export default class ConditionLine extends LightningElement {
 
     }
 
+    get conditionIndex() {
+        return this.index + 1;
+    }
+
     get isDisabled() {
         return !this.fieldName;
     }
@@ -35,7 +40,7 @@ export default class ConditionLine extends LightningElement {
 
     handleConditionChanged(event) {
         let inputName = event.target.name;
-        this[inputName] = (this.fieldType === 'Boolean' && inputName === 'value') ? event.detail.checked : event.detail.value;
+        this[inputName] = (this.fieldType === 'Boolean' && inputName === 'value') ? event.target.checked : event.target.value;
         this.dispatchConditionChangedEvent();
     }
 
@@ -46,6 +51,18 @@ export default class ConditionLine extends LightningElement {
             }
         });
         this.dispatchEvent(filterChangedEvent);
+    }
+
+    get fieldNameClass() {
+        if(!this.fieldType){
+            return 'slds-has-error';
+        }
+    }
+
+    get valueClass() {
+        if(this.fieldType && !this.value){
+            return 'slds-has-error';
+        }
     }
 
     dispatchConditionChangedEvent() {

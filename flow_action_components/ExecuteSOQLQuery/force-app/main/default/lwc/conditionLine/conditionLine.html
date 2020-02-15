@@ -1,7 +1,9 @@
 <template>
     <div class="slds-grid">
+        <span class="slds-form-element__label">{conditionIndex} </span>
         <div class="slds-col slds-p-left--none slds-size--4-of-12 slds-align-bottom slds-p-left--none">
             <lightning-combobox
+                    class={fieldNameClass}
                     name="fieldName"
                     label="Resource"
                     placeholder="Select a Field"
@@ -25,14 +27,16 @@
         </div>
 
         <div class="slds-col slds-size--4-of-12 slds-align-bottom">
-            <lightning-input name="value"
-                             label="Value"
-                             type={inputType}
-                             variant={valueVariant}
-                             value={value}
-                             checked={value}
-                             disabled={isDisabled}
-                             onchange={handleConditionChanged}
+            <lightning-input
+                    class={valueClass}
+                    name="value"
+                    label="Value"
+                    type={inputType}
+                    variant={valueVariant}
+                    value={value}
+                    checked={value}
+                    disabled={isDisabled}
+                    onblur={handleConditionChanged}
             ></lightning-input>
         </div>
         <div class="slds-col slds-size--1-of-12 slds-align-bottom slds-m-bottom--x-small">

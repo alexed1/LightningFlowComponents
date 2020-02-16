@@ -1,6 +1,7 @@
 import {LightningElement, api, track} from 'lwc';
 
 export default class ConditionBuilder extends LightningElement {
+    @api isDisabled;
     @track outputType = 'query'; //query/formula
     @track _fields;
     @track _conditions = [];
@@ -200,12 +201,27 @@ export default class ConditionBuilder extends LightningElement {
 
     conditionKey = 0;
 
+
     handleAddCondition(event) {
+        this.addEmptyCondition();
+    }
+
+    @api
+    addEmptyCondition(params) {
         if (!this._conditions) {
             this._conditions = [];
         }
         let newCondition = this.generateEmptyCondition();
+        if (params) {
+            newCondition = {...newCondition, ...params};
+        }
         this._conditions.push(newCondition);
+        if (this._conditions.length > 1) {
+            this._conditions = this._conditions.map(curCondition => {
+                curCondition.preventErrors = false;
+                return curCondition;
+            });
+        }
         this.dispatchConditionAddedEvent(newCondition);
     }
 
@@ -339,6 +355,12 @@ export default class ConditionBuilder extends LightningElement {
             value: null,
             dataType: null,
             key: 'whereCondition' + this.conditionKey++
+        }
+    }
+
+    get parentClass(){
+        if(this.isDisabled){
+            return 'slds-is-disabled';
         }
     }
 

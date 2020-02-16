@@ -8,4 +8,10 @@
         <target>lightning__HomePage</target>
         <target>lightning__FlowScreen</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="label" label="Label" type="String" role="inputOnly"/>
+            <property name="soqlQuery" label="Query" type="String"/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

@@ -1,8 +1,10 @@
 import {LightningElement, api, track, wire} from 'lwc';
+import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 
 export default class soqlQueryBuilder extends LightningElement {
+    @api label = "Create SOQL Query";
     @track _objectType;
     @track fields = [];
     @track whereClause;
@@ -12,49 +14,70 @@ export default class soqlQueryBuilder extends LightningElement {
     @track _objectTypes;
     @track _soqlQuery;
     @track _selectedFields = [];
-    @track fieldPickerStyle = 'height: 14rem;';
+    @track fieldPickerStyle;
+
     fieldOptions = [];
     labels = {
-        chooseFields: 'Choose the query fields below.',
-        generatedQuery: 'The generated query will appear below. You may edit it before finishing.',
+        chooseFields: 'Return which fields:',
+        generatedQuery: 'Return Records meeting the following conditions:',
         whereClauses: 'Create the where clauses to your query below',
         orderBy: 'Order the number of results by:'
     };
 
     orderByDirections = [{label: 'ASC', value: 'ASC'}, {label: 'DESC', value: 'DESC'}];
 
+    @api
     get soqlQuery() {
         return this._soqlQuery;
     }
 
-    @api
     set soqlQuery(value) {
-        this._soqlQuery = value ? value : '';
-        this.parseQuery(this._soqlQuery);
+
+        this.parseQuery(value);
+    }
+
+    getNextKeywordIndex(query, indexes) {
+        let validIndexes = indexes.filter(curIndex => curIndex !== -1);
+        if (!validIndexes || !validIndexes.length) {
+            return query.length;
+        } else {
+            return Math.min(...validIndexes);
+        }
     }
 
     parseQuery(value) {
-        if (value.indexOf(" FROM ") !== -1) {
-            let objectName = value.substring(value.indexOf(" FROM ") + 6, value.indexOf(" WHERE "));
-            this._objectType = objectName;
-        } else {
-            this._objectType = null;
+        this._soqlQuery = value ? value : '';
+        if (!value) {
+            return;
+        }
+
+        let selectIndex = value.indexOf("SELECT ");
+        let fromIndex = value.indexOf(" FROM ");
+        let whereIndex = value.indexOf(" WHERE ");
+        let orderByIndex = value.indexOf(" ORDER BY ");
+        let limitIndex = value.indexOf(" LIMIT ");
+
+        if (fromIndex !== -1) {
+            let objectName = value.substring(fromIndex + 6, this.getNextKeywordIndex(value, [whereIndex, orderByIndex, limitIndex]));
+            if (objectName) {
+                this._objectType = objectName.trim();
+            }
         }
 
         if (value.indexOf("SELECT ") !== -1) {
-            let selectedFields = value.substring(value.indexOf("SELECT ") + 7, value.indexOf(" FROM "));
+            let selectedFields = value.substring(selectIndex + 7, value.indexOf(" FROM "));
             this._selectedFields = selectedFields.split(',').map(curField => curField.trim());
 
         } else {
             this._selectedFields = [];
         }
 
-        let orderByIndex = value.indexOf(" ORDER BY ");
-        let limitIndex = value.indexOf(" LIMIT ");
-        if (value.indexOf(" WHERE ") !== -1) {
-            this.whereClause = value.substring(value.indexOf(" WHERE ") + 7, Math.min(orderByIndex === -1 ? value.length : orderByIndex, limitIndex === -1 ? value.length : limitIndex, value.length) - 1);
+        if (whereIndex !== -1) {
+            this.whereClause = value.substring(whereIndex + 7, this.getNextKeywordIndex(value, [orderByIndex, limitIndex]) - 1);
         } else {
             this.whereClause = null;
+            this.clearConditions();
+            this.addEmptyCondition();
         }
 
         if (orderByIndex) {
@@ -73,12 +96,20 @@ export default class soqlQueryBuilder extends LightningElement {
         } else {
             this.limit = null;
         }
-
         this.prepareFieldDescriptors();
+        this.dispatchSoqlChangeEvent();
     }
 
     get fieldOptionsWithNone() {
         return [...[{label: '--NONE--', value: ''}], ...this.fieldOptions];
+    }
+
+    get conditionBuilderDisabled() {
+        return !this._objectType;
+    }
+
+    get conditionBuilderStyle() {
+        return !this._objectType ? 'display: none' : '';
     }
 
     prepareFieldDescriptors() {
@@ -108,7 +139,13 @@ export default class soqlQueryBuilder extends LightningElement {
                 resultQuery += ' LIMIT ' + this.limit;
             }
             this._soqlQuery = resultQuery;
+            this.dispatchSoqlChangeEvent();
         }
+    }
+
+    dispatchSoqlChangeEvent() {
+        const attributeChangeEvent = new FlowAttributeChangeEvent('soqlQuery', this._soqlQuery);
+        this.dispatchEvent(attributeChangeEvent);
     }
 
     clearSelectedValues() {
@@ -118,6 +155,11 @@ export default class soqlQueryBuilder extends LightningElement {
         this.limit = null;
         this.orderByField = null;
         this.orderByDirection = null;
+        this.clearConditions();
+        this.dispatchSoqlChangeEvent();
+    }
+
+    clearConditions() {
         let conditionBuilder = this.template.querySelector('c-condition-builder');
         if (conditionBuilder) {
             conditionBuilder.clearConditions();
@@ -132,10 +174,19 @@ export default class soqlQueryBuilder extends LightningElement {
     handleObjectTypeChange(event) {
         this._objectType = event.detail.value;
         this.clearSelectedValues();
+        this.addEmptyCondition();
+    }
+
+    addEmptyCondition() {
+        let conditionBuilder = this.template.querySelector('c-condition-builder');
+        if (conditionBuilder) {
+            conditionBuilder.addEmptyCondition({preventErrors: true});
+        }
     }
 
     handleSoqlChange(event) {
         this.parseQuery(event.target.value);
+
     }
 
     handleFieldSelected(event) {

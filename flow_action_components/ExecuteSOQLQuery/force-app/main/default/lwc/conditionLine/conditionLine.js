@@ -10,6 +10,7 @@ export default class ConditionLine extends LightningElement {
     @api lineId;
     @api index;
     @api fieldTypeSettings;
+    @api preventErrors;
 
     get inputType() {
         if (this.fieldType && this.fieldTypeSettings[this.fieldType]) {
@@ -54,13 +55,13 @@ export default class ConditionLine extends LightningElement {
     }
 
     get fieldNameClass() {
-        if(!this.fieldType){
+        if (!this.fieldName && !this.preventErrors) {
             return 'slds-has-error';
         }
     }
 
     get valueClass() {
-        if(this.fieldType && !this.value){
+        if (this.fieldType && !this.value) {
             return 'slds-has-error';
         }
     }

@@ -1,8 +1,9 @@
 <template>
-    <lightning-card>
+    <lightning-card title={label}>
         <div class="slds-grid slds-gutters slds-p-around--small">
             <div class="slds-col slds-size--3-of-12">
                 <lightning-combobox
+                        class="slds-p-left--none"
                         name="objectType"
                         label="Object Type"
                         placeholder="Select Object Type"
@@ -12,7 +13,7 @@
                         onchange={handleObjectTypeChange}
                 ></lightning-combobox>
 
-                <label class="slds-form-element__label slds-border--bottom" style="width: 100%;">
+                <label if:true={_objectType} class="slds-form-element__label slds-border--bottom" style="width: 100%;">
                     {labels.chooseFields}
                 </label>
                 <div style="width: 100%;">
@@ -35,50 +36,58 @@
             </div>
             <div class="slds-col slds-size--9-of-12 slds-p-left--none">
                 <div class="field-picker-container">
-                    {labels.generatedQuery}
-                    <c-condition-builder
-                            fields={fieldOptions}
-                            where-clause={whereClause}
-                            onconditionschanged={handleConditionChanged}
-                            onrenderfinished={calculateFieldPickerStyle}
-                    ></c-condition-builder>
+
+                    <div style={conditionBuilderStyle}>
+                        <span class="slds-p-left--xx-small">
+                            {labels.generatedQuery}
+                        </span>
+                        <c-condition-builder
+                                class="slds-p-left--xx-small"
+                                fields={fieldOptions}
+                                where-clause={whereClause}
+                                is-disabled={conditionBuilderDisabled}
+                                onconditionschanged={handleConditionChanged}
+                                onrenderfinished={calculateFieldPickerStyle}
+                        ></c-condition-builder>
+
+                        <div class="slds-grid slds-wrap slds-p-left--xx-small">
+                            <div class="slds-col slds-size--1-of-12 slds-p-left--none">
+                                <lightning-input
+                                        name="limit"
+                                        type="Number"
+                                        label="Limit"
+                                        value={limit}
+                                        onchange={handleValueChanged}
+                                >
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size--4-of-12">
+                                <lightning-combobox
+                                        name="orderByField"
+                                        label="Order By"
+                                        placeholder=""
+                                        variant="label-stacked"
+                                        value={orderByField}
+                                        options={fieldOptionsWithNone}
+                                        onchange={handleValueChanged}
+                                ></lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size--2-of-12 slds-p-left--xx-small">
+                                <lightning-combobox
+                                        name="orderByDirection"
+                                        label="Direction"
+                                        placeholder=""
+                                        variant="label-stacked"
+                                        value={orderByDirection}
+                                        options={orderByDirections}
+                                        onchange={handleValueChanged}
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
                     <lightning-textarea name="soqlQuery" label="Query" value={_soqlQuery}
                                         onblur={handleSoqlChange}
                     ></lightning-textarea>
-                    <div class="slds-grid slds-wrap slds-p-left--none">
-                        <div class="slds-col slds-size--1-of-12 slds-p-left--none">
-                            <lightning-input
-                                    name="limit"
-                                    type="Number"
-                                    label="Limit"
-                                    value={limit}
-                                    onchange={handleValueChanged}
-                            >
-                            </lightning-input>
-                        </div>
-                        <div class="slds-col slds-size--4-of-12">
-                            <lightning-combobox
-                                    name="orderByField"
-                                    label="Order By"
-                                    placeholder=""
-                                    variant="label-stacked"
-                                    value={orderByField}
-                                    options={fieldOptionsWithNone}
-                                    onchange={handleValueChanged}
-                            ></lightning-combobox>
-                        </div>
-                        <div class="slds-col slds-size--2-of-12">
-                            <lightning-combobox
-                                    name="orderByDirection"
-                                    label="Direction"
-                                    placeholder=""
-                                    variant="label-stacked"
-                                    value={orderByDirection}
-                                    options={orderByDirections}
-                                    onchange={handleValueChanged}
-                            ></lightning-combobox>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

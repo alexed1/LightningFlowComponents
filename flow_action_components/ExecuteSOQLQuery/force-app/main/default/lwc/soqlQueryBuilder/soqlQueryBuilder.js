@@ -27,11 +27,11 @@ export default class soqlQueryBuilder extends LightningElement {
     orderByDirections = [{label: 'ASC', value: 'ASC'}, {label: 'DESC', value: 'DESC'}];
 
     @api
-    get soqlQuery() {
+    get queryString() {
         return this._soqlQuery;
     }
 
-    set soqlQuery(value) {
+    set queryString(value) {
 
         this.parseQuery(value);
     }
@@ -69,6 +69,7 @@ export default class soqlQueryBuilder extends LightningElement {
             this._selectedFields = selectedFields.split(',').map(curField => curField.trim());
 
         } else {
+            
             this._selectedFields = [];
         }
 

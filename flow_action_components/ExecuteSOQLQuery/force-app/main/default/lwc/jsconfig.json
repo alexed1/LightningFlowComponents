@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/conditionBuilder": [
+                "conditionBuilder/conditionBuilder.js"
+            ],
+            "c/conditionLine": [
+                "conditionLine/conditionLine.js"
+            ],
+            "c/soqlQueryBuilder": [
+                "soqlQueryBuilder/soqlQueryBuilder.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

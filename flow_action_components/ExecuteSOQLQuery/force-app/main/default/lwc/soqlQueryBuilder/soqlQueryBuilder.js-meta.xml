@@ -11,7 +11,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="label" label="Label" type="String" role="inputOnly"/>
-            <property name="soqlQuery" label="Query" type="String"/>
+            <property name="queryString" label="Query String" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

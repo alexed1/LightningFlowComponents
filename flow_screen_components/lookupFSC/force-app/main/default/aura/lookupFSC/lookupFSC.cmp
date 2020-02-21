@@ -9,7 +9,7 @@
 	<aura:attribute name="valueFieldName" type="String" default="Id" />
 	<aura:attribute name="label" type="String" />
 	<aura:attribute name="selectedValue" type="String" />
-	<aura:attribute name="filterFieldName" type="String" default="AccountId" />
+	<aura:attribute name="filterFieldName" type="String" />
 	<aura:attribute name="filterFieldValue" type="String" />
 	<aura:attribute name="parentChild" type="String" />
 	<aura:attribute name="defaultValue" type="String" />

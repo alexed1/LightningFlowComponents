@@ -11,7 +11,9 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="label" label="Label" type="String" role="inputOnly"/>
-            <property name="queryString" label="Query String" type="String"/>
+            <property name="objectType" label="Object Type" type="String" role="inputOnly"/>
+            <property name="disableObjectTypeSelection" label="Disable Object Type Selection" type="Boolean" role="inputOnly"/>
+            <property name="soqlQuery" label="Query" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

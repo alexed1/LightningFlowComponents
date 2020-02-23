@@ -1,0 +1,46 @@
+<template>
+    <div>
+        <lightning-pill if:true={_selectedFieldPath}
+                        has-error
+                        class="slds-button_full-width"
+                        label={_selectedFieldPath}
+                        onremove={clearSelected}>
+        </lightning-pill>
+    </div>
+    <label if:true={_selectedObjectType} class="slds-form-element__label slds-border--bottom slds-p-left--x-small" style="width: 100%;">
+        {fieldSelectorLabel}
+    </label>
+    <div style="width: 100%;">
+        <div class="slds-form-element slds-scrollable_y field-picker" style={fieldSelectorStyle}>
+            <div class="slds-form-element__control">
+                <template for:each={_options} for:item="curOptionElement">
+                    <div key={curOptionElement.key}
+                         class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                         role="option">
+                                                <span class="slds-media__figure">
+                                                    <span class="slds-icon_container">
+                                                        <lightning-icon icon-name={curOptionElement.optionIcon}
+                                                                        class="slds-icon slds-icon_small slds-icon-text-default"
+                                                                        size="x-small"></lightning-icon>
+                                                    </span>
+                                                </span>
+                        <span data-value={curOptionElement.value}
+                              onclick={handleSetSelectedRecord}
+                              class="slds-media__body">
+                                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
+                                                    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
+                                                </span>
+                        <lightning-icon if:true={curOptionElement.isObject}
+                                        data-option-value={curOptionElement.relationshipName}
+                                        data-object-type={curOptionElement.objectType}
+                                        icon-name="utility:chevronright"
+                                        class="slds-float--right"
+                                        size="x-small"
+                                        onclick={handleOpenObject}
+                        ></lightning-icon>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -5,6 +5,7 @@ import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 
 export default class soqlQueryBuilder extends LightningElement {
     @api label = "Create SOQL Query";
+    @api disableObjectTypeSelection;
     @track _objectType;
     @track fields = [];
     @track whereClause;
@@ -15,24 +16,43 @@ export default class soqlQueryBuilder extends LightningElement {
     @track _soqlQuery;
     @track _selectedFields = [];
     @track fieldPickerStyle;
+    isError;
+    isConditionBuilderInitialized = false;
+    errors = [];
 
     fieldOptions = [];
     labels = {
         chooseFields: 'Return which fields:',
+        availableFields: 'Add field:',
         generatedQuery: 'Return Records meeting the following conditions:',
         whereClauses: 'Create the where clauses to your query below',
-        orderBy: 'Order the number of results by:'
+        orderBy: 'Order the number of results by:',
+        incompatibleObject: 'The soql string that was passed in was incompatible with the provided object type name',
+        lockObjectButNoSoqlNoObject: 'You need to either specify the object type, pass in an existing soql string, or allow the user to choose the object type'
+
     };
 
     orderByDirections = [{label: 'ASC', value: 'ASC'}, {label: 'DESC', value: 'DESC'}];
 
     @api
-    get queryString() {
+    get objectType() {
+        return this._objectType;
+    }
+
+    set objectType(value) {
+        if (!this._objectType || !this.disableObjectTypeSelection) {
+            this._objectType = value;
+        } else if (this._objectType !== value && this.disableObjectTypeSelection) {
+            this.errors.push(this.labels.incompatibleObject);
+        }
+    }
+
+    @api
+    get soqlQuery() {
         return this._soqlQuery;
     }
 
-    set queryString(value) {
-
+    set soqlQuery(value) {
         this.parseQuery(value);
     }
 
@@ -43,6 +63,17 @@ export default class soqlQueryBuilder extends LightningElement {
         } else {
             return Math.min(...validIndexes);
         }
+    }
+
+    get errorMessage() {
+        let errorResult = '';
+        if (this.errors.length) {
+            errorResult += this.errors.join('\n');
+        }
+        if (!this._objectType && !this._soqlQuery && this.disableObjectTypeSelection) {
+            errorResult += this.labels.lockObjectButNoSoqlNoObject;
+        }
+        return errorResult;
     }
 
     parseQuery(value) {
@@ -60,7 +91,12 @@ export default class soqlQueryBuilder extends LightningElement {
         if (fromIndex !== -1) {
             let objectName = value.substring(fromIndex + 6, this.getNextKeywordIndex(value, [whereIndex, orderByIndex, limitIndex]));
             if (objectName) {
-                this._objectType = objectName.trim();
+                if (!this._objectType || !this.disableObjectTypeSelection) {
+                    this._objectType = objectName.trim();
+                } else if (this._objectType !== objectName.trim() && this.disableObjectTypeSelection) {
+                    this.errors.push(this.labels.incompatibleObject);
+                    return;
+                }
             }
         }
 
@@ -69,7 +105,6 @@ export default class soqlQueryBuilder extends LightningElement {
             this._selectedFields = selectedFields.split(',').map(curField => curField.trim());
 
         } else {
-            
             this._selectedFields = [];
         }
 
@@ -192,7 +227,14 @@ export default class soqlQueryBuilder extends LightningElement {
 
     handleFieldSelected(event) {
         // this.notifyAssignee = event.target.checked === true;
-        this._selectedFields = this.toggle(this._selectedFields, event.target.name);
+        this._selectedFields = this.toggle(this._selectedFields, event.detail.value, true);
+        this.prepareFieldDescriptors();
+        this.buildQuery();
+    }
+
+    handleFieldRemove(event) {
+        // this.notifyAssignee = event.target.checked === true;
+        this._selectedFields = this.toggle(this._selectedFields, event.target.label);
         this.prepareFieldDescriptors();
         this.buildQuery();
     }
@@ -214,23 +256,34 @@ export default class soqlQueryBuilder extends LightningElement {
             this.fieldOptions = Object.keys(data.fields).map(curFieldName => {
                 let curField = data.fields[curFieldName];
                 return {label: curField.label, value: curField.apiName, dataType: curField.dataType}
-            });
+            }).sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
             this.prepareFieldDescriptors();
         }
     }
 
     calculateFieldPickerStyle() {
+        if (!this.isConditionBuilderInitialized) {
+            this.isConditionBuilderInitialized = true;
+            if (!this.whereClause) {
+                this.addEmptyCondition();
+            }
+        }
+
         let fieldPickerContainer = this.template.querySelector('.field-picker-container');
         if (fieldPickerContainer) {
             let fullHeight = fieldPickerContainer.offsetHeight;
-            this.fieldPickerStyle = 'height: ' + (fullHeight - 50) + 'px';
+            this.fieldPickerStyle = 'min-height: 120px; height: ' + (fullHeight - 50) + 'px';
         }
     }
 
-    toggle(array, element) {
+    toggle(array, element, skipIfPersists) {
         if (array && element) {
             if (array.includes(element)) {
-                return array.filter(curElement => curElement != element);
+                if (skipIfPersists) {
+                    return array;
+                } else {
+                    return array.filter(curElement => curElement != element);
+                }
             } else {
                 array.push(element);
                 return array;

@@ -1,5 +1,10 @@
 <template>
-    <lightning-card title={label}>
+    <template if:true={errorMessage}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+            {errorMessage}
+        </div>
+    </template>
+    <lightning-card title={label} if:false={errorMessage}>
         <div class="slds-grid slds-gutters slds-p-around--small">
             <div class="slds-col slds-size--3-of-12">
                 <lightning-combobox
@@ -10,32 +15,32 @@
                         variant="label-stacked"
                         value={_objectType}
                         options={_objectTypes}
+                        disabled={disableObjectTypeSelection}
                         onchange={handleObjectTypeChange}
                 ></lightning-combobox>
-
-                <label if:true={_objectType} class="slds-form-element__label slds-border--bottom" style="width: 100%;">
-                    {labels.chooseFields}
-                </label>
-                <div style="width: 100%;">
-                    <div class="slds-form-element slds-scrollable_y field-picker" style={fieldPickerStyle}>
-                        <div class="slds-form-element__control">
-                            <template for:each={fields} for:item="field">
-                                <lightning-input key={field.value}
-                                                 name={field.value}
-                                                 type="checkbox"
-                                                 label={field.label}
-                                                 checked={field.selected}
-                                                 onchange={handleFieldSelected}
-                                >
-                                </lightning-input>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
+                <c-field-selector
+                        object-type={_objectType}
+                        field-selector-label={labels.availableFields}
+                        field-selector-style={fieldPickerStyle}
+                        onfieldselected={handleFieldSelected}
+                ></c-field-selector>
             </div>
             <div class="slds-col slds-size--9-of-12 slds-p-left--none">
                 <div class="field-picker-container">
+                    <div class="slds-p-left--xx-small">
+                        <template if:true={_selectedFields.length}>
+                            <div class="slds-p-bottom--small">
+                                <label class="slds-form-element__label slds-border--bottom" style="width: 100%;">
+                                    {labels.chooseFields}
+                                </label>
+                                <template for:each={_selectedFields} for:item="curField">
+                                    <lightning-pill key={curField} label={curField}
+                                                    onremove={handleFieldRemove}></lightning-pill>
+
+                                </template>
+                            </div>
+                        </template>
+                    </div>
 
                     <div style={conditionBuilderStyle}>
                         <span class="slds-p-left--xx-small">
@@ -51,7 +56,7 @@
                         ></c-condition-builder>
 
                         <div class="slds-grid slds-wrap slds-p-left--xx-small">
-                            <div class="slds-col slds-size--2-of-12 slds-p-left--none">
+                            <div class="slds-col slds-size--1-of-12 slds-p-left--none">
                                 <lightning-input
                                         name="limit"
                                         type="Number"
@@ -61,7 +66,7 @@
                                 >
                                 </lightning-input>
                             </div>
-                            <div class="slds-col slds-size--6-of-12">
+                            <div class="slds-col slds-size--4-of-12">
                                 <lightning-combobox
                                         name="orderByField"
                                         label="Order By"
@@ -72,7 +77,7 @@
                                         onchange={handleValueChanged}
                                 ></lightning-combobox>
                             </div>
-                            <div class="slds-col slds-size--3-of-12 slds-p-left--xx-small">
+                            <div class="slds-col slds-size--2-of-12 slds-p-left--xx-small">
                                 <lightning-combobox
                                         name="orderByDirection"
                                         label="Direction"
@@ -85,12 +90,11 @@
                             </div>
                         </div>
                     </div>
-                    <lightning-textarea name="soqlQuery" label="Query Preview" value={_soqlQuery}
+                    <lightning-textarea name="soqlQuery" label="Query" value={_soqlQuery}
                                         onblur={handleSoqlChange}
                     ></lightning-textarea>
                 </div>
             </div>
         </div>
     </lightning-card>
-
 </template>

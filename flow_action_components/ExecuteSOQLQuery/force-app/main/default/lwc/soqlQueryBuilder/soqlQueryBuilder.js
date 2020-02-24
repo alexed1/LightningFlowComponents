@@ -13,7 +13,7 @@ export default class soqlQueryBuilder extends LightningElement {
     @track orderByDirection;
     @track limit;
     @track _objectTypes;
-    @track _soqlQuery;
+    @track _queryString;
     @track _selectedFields = [];
     @track fieldPickerStyle;
     isError;
@@ -48,11 +48,11 @@ export default class soqlQueryBuilder extends LightningElement {
     }
 
     @api
-    get soqlQuery() {
-        return this._soqlQuery;
+    get queryString() {
+        return this._queryString;
     }
 
-    set soqlQuery(value) {
+    set queryString(value) {
         this.parseQuery(value);
     }
 
@@ -70,14 +70,14 @@ export default class soqlQueryBuilder extends LightningElement {
         if (this.errors.length) {
             errorResult += this.errors.join('\n');
         }
-        if (!this._objectType && !this._soqlQuery && this.disableObjectTypeSelection) {
+        if (!this._objectType && !this._queryString && this.disableObjectTypeSelection) {
             errorResult += this.labels.lockObjectButNoSoqlNoObject;
         }
         return errorResult;
     }
 
     parseQuery(value) {
-        this._soqlQuery = value ? value : '';
+        this._queryString = value ? value : '';
         if (!value) {
             return;
         }
@@ -174,20 +174,20 @@ export default class soqlQueryBuilder extends LightningElement {
             if (this.limit) {
                 resultQuery += ' LIMIT ' + this.limit;
             }
-            this._soqlQuery = resultQuery;
+            this._queryString = resultQuery;
             this.dispatchSoqlChangeEvent();
         }
     }
 
     dispatchSoqlChangeEvent() {
-        const attributeChangeEvent = new FlowAttributeChangeEvent('soqlQuery', this._soqlQuery);
+        const attributeChangeEvent = new FlowAttributeChangeEvent('queryString', this._queryString);
         this.dispatchEvent(attributeChangeEvent);
     }
 
     clearSelectedValues() {
         this._selectedFields = [];
         this.whereClause = '';
-        this._soqlQuery = '';
+        this._queryString = '';
         this.limit = null;
         this.orderByField = null;
         this.orderByDirection = null;

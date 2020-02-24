@@ -11,6 +11,9 @@
             ],
             "c/soqlQueryBuilder": [
                 "soqlQueryBuilder/soqlQueryBuilder.js"
+            ],
+            "c/fieldSelector": [
+                "fieldSelector/fieldSelector.js"
             ]
         }
     },

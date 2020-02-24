@@ -56,7 +56,7 @@
                         ></c-condition-builder>
 
                         <div class="slds-grid slds-wrap slds-p-left--xx-small">
-                            <div class="slds-col slds-size--1-of-12 slds-p-left--none">
+                            <div class="slds-col slds-size--3-of-12 slds-p-left--none">
                                 <lightning-input
                                         name="limit"
                                         type="Number"
@@ -66,7 +66,7 @@
                                 >
                                 </lightning-input>
                             </div>
-                            <div class="slds-col slds-size--4-of-12">
+                            <div class="slds-col slds-size--5-of-12">
                                 <lightning-combobox
                                         name="orderByField"
                                         label="Order By"
@@ -77,7 +77,7 @@
                                         onchange={handleValueChanged}
                                 ></lightning-combobox>
                             </div>
-                            <div class="slds-col slds-size--2-of-12 slds-p-left--xx-small">
+                            <div class="slds-col slds-size--3-of-12 slds-p-left--xx-small">
                                 <lightning-combobox
                                         name="orderByDirection"
                                         label="Direction"
@@ -90,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                    <lightning-textarea name="soqlQuery" label="Query" value={_soqlQuery}
+                    <lightning-textarea name="queryString" label="Query Preview" value={_queryString}
                                         onblur={handleSoqlChange}
                     ></lightning-textarea>
                 </div>

@@ -1,5 +1,11 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import {getObjectInfo} from "lightning/uiObjectInfoApi";
+import {
+    flashElement,
+    buildOptions,
+    getErrorMessage,
+    showToast
+} from 'c/fieldSelectorUtils';
 
 export default class FieldSelector extends LightningElement {
     @api fieldSelectorLabel;
@@ -8,23 +14,6 @@ export default class FieldSelector extends LightningElement {
     _selectedFieldPath;
     _objectType;
     _selectedObjectType;
-
-    iconsPerType = {
-        String: 'utility:text',
-        Boolean: 'utility:check',
-        Date: 'utility:date_input',
-        DateTime: 'utility:date_time',
-        Number: 'utility:number_input',
-        Int: 'utility:number_input',
-        Double: 'utility:number_input',
-        Picklist: 'utility:picklist',
-        TextArea: 'utility:textarea',
-        Phone: 'utility:phone_portrait',
-        Address: 'utility:location',
-        Currency: 'utility:currency_input',
-        Url: 'utility:link',
-        SObject: 'utility:sobject'
-    };
 
     @api
     get objectType() {
@@ -39,35 +28,13 @@ export default class FieldSelector extends LightningElement {
     @wire(getObjectInfo, {objectApiName: '$_selectedObjectType'})
     _getObjectInfo({error, data}) {
         if (error) {
-            console.log(error.body[0].message);
+            showToast('Error', getErrorMessage(error), 'error');
         } else if (data) {
-            let tempOptions = [];
-            let localKey = 0;
-            Object.keys(data.fields).forEach(curField => {
-                let curFieldData = data.fields[curField];
-                let curDataType = curFieldData.dataType === 'Reference' ? 'SObject' : curFieldData.dataType;
-                let curObjectType = curFieldData.referenceToInfos.length ? curFieldData.referenceToInfos[0].apiName : null;
-                tempOptions.push({
-                    type: curDataType,
-                    label: curFieldData.label,
-                    value: curFieldData.apiName,
-                    isCollection: false,
-                    objectType: curObjectType,
-                    optionIcon: this.getIconNameByType(curDataType),
-                    isObject: curDataType === 'SObject',
-                    relationshipName: curFieldData.relationshipName,
-                    displayType: curDataType === 'SObject' ? curObjectType : curDataType,
-                    key: 'fieldDescriptor' + localKey++
-                });
-            });
+            let tempOptions = buildOptions(data.fields);
             if (tempOptions && tempOptions.length) {
                 this._options = tempOptions.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
             }
         }
-    }
-
-    getIconNameByType(variableType) {
-        return this.iconsPerType[variableType];
     }
 
     handleSetSelectedRecord(event) {
@@ -89,13 +56,38 @@ export default class FieldSelector extends LightningElement {
         this.dispatchEvent(filterChangedEvent);
     }
 
+    handleRemoveAll(event) {
+        this.dispatchEvent(new CustomEvent('removeall', {}));
+    }
+
+    handleAddAll(event) {
+        this.dispatchEvent(new CustomEvent('addall', {}));
+    }
+
     handleOpenObject(event) {
-        // event.stopPropagation();
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
         this._selectedObjectType = event.currentTarget.dataset.objectType;
+        flashElement(this, '.custom-path', 'custom-red-flash', 2, 400);
     }
 
     formatValue(path, val) {
         return (path ? path + '.' : '') + val;
     }
+
+    handleMouseDown(event) {
+        let target = event.currentTarget;
+        target.classList.add('clicked-field');
+    }
+
+    handleMouseUp(event) {
+        let target = event.currentTarget;
+        target.classList.remove('clicked-field');
+    }
+
+    get formattedPath() {
+        if (this._selectedFieldPath) {
+            return this._selectedFieldPath.replace(/\./g, ' > ');
+        }
+    }
+
 }

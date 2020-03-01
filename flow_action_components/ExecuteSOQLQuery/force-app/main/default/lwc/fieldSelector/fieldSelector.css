@@ -1,0 +1,18 @@
+.clicked-field {
+    border: 2px solid;
+    border-color: var(--lwc-colorBorderRowSelectedHover);
+    border-radius: var(--lwc-borderRadiusMedium);
+    box-shadow: var(--lwc-shadowDrag);
+}
+
+.custom-red-flash {
+    color: var(--lwc-colorTextLinkFocus);
+    font-weight: var(--lwc-fontWeightBold);
+    /*outline: 2px solid;*/
+    /*outline-color: var(--lwc-colorBorderError);*/
+    /*border-radius: var(--lwc-borderRadiusMedium);*/
+}
+
+.custom-cursor-pointer {
+    cursor: pointer;
+}

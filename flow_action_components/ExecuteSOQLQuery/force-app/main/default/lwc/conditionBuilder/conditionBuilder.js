@@ -131,17 +131,20 @@ export default class ConditionBuilder extends LightningElement {
                 if (curCondition.indexOf(curLogicType.value) !== -1) {
                     let conditionParts = curCondition.split(curLogicType.value);
                     let fieldDescriptor = this._fields.find(curField => curField.value === conditionParts[0].trim());
+                    let newCondition = this.generateEmptyCondition();
+                    newCondition.fieldName = conditionParts[0].trim();
+                    newCondition.operation = curLogicType.value;
                     if (fieldDescriptor) {
-                        let newCondition = this.generateEmptyCondition();
-                        newCondition.fieldName = conditionParts[0].trim();
-                        newCondition.operation = curLogicType.value;
                         if (this.fieldTypeSettings[fieldDescriptor.dataType]) {
                             newCondition.value = this.fieldTypeSettings[fieldDescriptor.dataType].dataTransformationFunction === 'wrapInQuotes' ? this.stripQuotes(conditionParts[1].trim()) : conditionParts[1].trim();
                         }
-
                         newCondition.dataType = fieldDescriptor.dataType;
-                        this._conditions.push(newCondition);
+                    } else {
+                        //TODO: replace this with proper dataType handler
+                        newCondition.value = this.stripQuotes(conditionParts[1].trim());
+                        newCondition.dataType = 'String';
                     }
+                    this._conditions.push(newCondition);
                 }
             });
         });
@@ -235,6 +238,8 @@ export default class ConditionBuilder extends LightningElement {
             let fieldDescriptor = this._fields.find(curField => curField.value === newCondition.fieldName);
             if (fieldDescriptor) {
                 changedCondition.dataType = fieldDescriptor.dataType;
+            } else {
+                changedCondition.dataType = newCondition.dataType;
             }
             this.dispatchConditionsChangedEvent();
         }
@@ -358,8 +363,8 @@ export default class ConditionBuilder extends LightningElement {
         }
     }
 
-    get parentClass(){
-        if(this.isDisabled){
+    get parentClass() {
+        if (this.isDisabled) {
             return 'slds-is-disabled';
         }
     }

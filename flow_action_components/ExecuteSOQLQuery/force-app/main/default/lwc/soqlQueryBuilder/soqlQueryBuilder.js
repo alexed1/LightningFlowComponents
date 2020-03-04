@@ -26,13 +26,13 @@ export default class soqlQueryBuilder extends LightningElement {
     fieldOptions = [];
     labels = {
         chooseFields: 'Return which fields:',
-        availableFields: 'Add field:',
+        availableFields: 'Add fields',
         generatedQuery: 'Return Records meeting the following conditions:',
         whereClauses: 'Create the where clauses to your query below',
         orderBy: 'Order the number of results by:',
         incompatibleObject: 'The soql string that was passed in was incompatible with the provided object type name',
-        lockObjectButNoSoqlNoObject: 'You need to either specify the object type, pass in an existing soql string, or allow the user to choose the object type'
-
+        lockObjectButNoSoqlNoObject: 'You need to either specify the object type, pass in an existing soql string, or allow the user to choose the object type',
+        buttonRemoveAll: 'Remove All'
     };
 
     orderByDirections = [{label: 'ASC', value: 'ASC'}, {label: 'DESC', value: 'DESC'}];
@@ -82,6 +82,9 @@ export default class soqlQueryBuilder extends LightningElement {
     parseQuery(value) {
         this._queryString = value ? value : '';
         if (!value) {
+            this.clearSelectedValues();
+            this.addEmptyCondition();
+            this.dispatchSoqlChangeEvent();
             return;
         }
 
@@ -112,7 +115,7 @@ export default class soqlQueryBuilder extends LightningElement {
         }
 
         if (whereIndex !== -1) {
-            this.whereClause = value.substring(whereIndex + 7, this.getNextKeywordIndex(value, [orderByIndex, limitIndex]) - 1);
+            this.whereClause = value.substring(whereIndex + 7, this.getNextKeywordIndex(value, [orderByIndex, limitIndex]));
         } else {
             this.whereClause = null;
             this.clearConditions();

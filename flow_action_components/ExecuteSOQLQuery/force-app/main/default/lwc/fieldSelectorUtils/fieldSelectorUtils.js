@@ -5,6 +5,7 @@ export {
     buildOptions,
     getErrorMessage,
     showToast,
+    copyValue,
     iconsPerType
 };
 
@@ -95,4 +96,12 @@ const showToast = (title, message, variant) => {
         variant: variant,
     });
     dispatchEvent(showToast);
+};
+
+const copyValue = (value) => {
+    if (value) {
+        return JSON.parse(JSON.stringify(value));
+    } else {
+        return value;
+    }
 };

@@ -16,3 +16,11 @@
 .custom-cursor-pointer {
     cursor: pointer;
 }
+
+.custom-full-width {
+    width: 100%;
+}
+
+.custom-add-fields-header {
+    font-size: x-large;
+}

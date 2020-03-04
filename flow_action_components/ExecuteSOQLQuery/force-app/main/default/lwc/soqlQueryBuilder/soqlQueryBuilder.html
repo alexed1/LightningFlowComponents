@@ -18,7 +18,7 @@
                         disabled={disableObjectTypeSelection}
                         onchange={handleObjectTypeChange}
                 ></lightning-combobox>
-                <c-field-selector
+                <c-field-selector if:true={_objectType}
                         object-type={_objectType}
                         field-selector-label={labels.availableFields}
                         field-selector-style={fieldPickerStyle}
@@ -34,6 +34,12 @@
                             <div class="slds-p-bottom--small">
                                 <label class="slds-form-element__label" style="width: 100%;">
                                     {labels.chooseFields}
+                                    <span class="slds-p-left--medium">
+                                        <lightning-button
+                                                label= {labels.buttonRemoveAll}
+                                                onclick={handleRemoveAll}
+                                        ></lightning-button>
+                                    </span>
                                 </label>
                                 <div class="slds-box slds-p-around_none">
                                     <div class="slds-p-around--xx-small">
@@ -54,6 +60,7 @@
                         </span>
                         <c-condition-builder
                                 class="slds-p-left--xx-small"
+                                object-type={_objectType}
                                 fields={fieldOptions}
                                 where-clause={whereClause}
                                 is-disabled={conditionBuilderDisabled}

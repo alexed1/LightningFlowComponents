@@ -3,15 +3,15 @@
         <span class="slds-form-element__label slds-p-top--large slds-p-right--xx-small condition-number">
             {conditionIndex}
         </span>
-        <div class="slds-col slds-p-around_none slds-size--4-of-12 slds-p-left--none">
-            <c-flow-combobox class="fieldNameClass"
-                             name="fieldName"
-                             label="Resource"
-                             required
-                             mode="fields"
-                             object-type="Account"
-                             value={fieldName}
-                             onvaluechanged={handleFieldChanged}
+        <div class="slds-col slds-p-around_none slds-size--4-of-12 slds-p-left--none slds-m-left--xx-small">
+            <c-flow-combobox
+                    name="fieldName"
+                    label="Resource"
+                    required
+                    mode="fields"
+                    object-type={objectType}
+                    value={fieldName}
+                    onvaluechanged={handleFieldChanged}
             >
             </c-flow-combobox>
         </div>
@@ -41,8 +41,9 @@
                     onblur={handleConditionChanged}
             ></lightning-input>
         </div>
-        <div class="slds-col slds-size--1-of-12 slds-align-bottom slds-m-bottom--x-small">
+        <div class="slds-col slds-size--1-of-12 slds-align-bottom slds-m-bottom--x-small slds-p-left--none">
             <lightning-button-icon
+                    disabled={preventRemoval}
                     icon-name="utility:delete"
                     alternative-text="Delete"
                     onclick={handleConditionRemove}

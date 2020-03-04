@@ -4,11 +4,13 @@ export default class ConditionLine extends LightningElement {
     @api allOperations;
     @api allFields;
     @api fieldName;
+    @api objectType;
     _fieldType;
     @api operation;
     @api value;
     @api lineId;
     @api index;
+    @api conditionCount;
     @api fieldTypeSettings;
     @api preventErrors;
 
@@ -63,6 +65,10 @@ export default class ConditionLine extends LightningElement {
         if (event.detail.displayType) {
             this._fieldType = event.detail.displayType;
         }
+        if (!this.fieldName) {
+            this.value = null;
+            this._fieldType = null;
+        }
         this.dispatchConditionChangedEvent();
     }
 
@@ -75,12 +81,6 @@ export default class ConditionLine extends LightningElement {
         this.dispatchEvent(filterChangedEvent);
     }
 
-    get fieldNameClass() {
-        if (!this.fieldName && !this.preventErrors) {
-            return 'slds-has-error';
-        }
-    }
-
     get valueClass() {
         let resultClass = '';
         if (this._fieldType === 'Date' || this._fieldType === 'DateTime') {
@@ -90,6 +90,10 @@ export default class ConditionLine extends LightningElement {
             resultClass += 'slds-has-error ';
         }
         return resultClass;
+    }
+
+    get preventRemoval() {
+        return (this.conditionCount <= 1);
     }
 
     dispatchConditionChangedEvent() {

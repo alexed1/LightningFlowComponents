@@ -1,6 +1,7 @@
 import { LightningElement, api, track, wire } from "lwc";
 import { FlowAttributeChangeEvent } from "lightning/flowSupport";
 import { getPicklistValues } from "lightning/uiObjectInfoApi";
+import Quickchoice_Images from '@salesforce/resourceUrl/Quickchoice_Images';	//Static Resource containing images for Visual Cards
 
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
@@ -174,7 +175,12 @@ export default class SmartChoiceFSC extends LightningElement {
 					console.log("entering input mode Visual Text Box");
 					console.log("choiceLabels is: " + this.choiceLabels);
 					this.choiceLabels.forEach(label => {
-						items.push({ name: label, description: this.choiceValues[index], icon: this.choiceIcons[index] });
+						//Add the correct path to custom images
+						if (this.choiceIcons[index].includes(':')) {
+							items.push({ name: label, description: this.choiceValues[index], icon: this.choiceIcons[index] });
+						} else {
+							items.push({ name: label, description: this.choiceValues[index], icon: Quickchoice_Images + '/' + this.choiceIcons[index] });
+						}
 						console.log("items is: " + items);
 						index +=1;
 					});

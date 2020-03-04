@@ -16,6 +16,11 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
                                                 MockHttpResponseGenerator
+
+3/2/20 -    Eric Smith -    Version 1.27
+                            Added ability to display both images & icons on visual cards
+                            (thx again to clifford-fra)
+
 2/2/20 -    Eric Smith -    Version 1.26
                             Fixed default display for visual cards (thx to clifford-fra)
 
@@ -50,10 +55,11 @@ Additional components packaged with this LWC:
                                     style="width:25rem">
                                     <div
                                         class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
-                                        <span class="slds-icon_container">
+                                        <lightning-avatar size={iconSize} src={item.icon} fallback-icon-name={item.icon}></lightning-avatar>
+                                        <!-- <span class="slds-icon_container">
                                             <lightning-icon icon-name={item.icon} size={iconSize}>
                                             </lightning-icon>
-                                        </span>
+                                        </span> -->
                                     </div>
                                     <div
                                         class="slds-media__body slds-border_left slds-p-left_small slds-p-top_xxx-small">

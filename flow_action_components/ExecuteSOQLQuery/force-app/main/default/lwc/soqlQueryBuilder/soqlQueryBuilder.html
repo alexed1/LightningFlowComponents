@@ -4,8 +4,8 @@
             {errorMessage}
         </div>
     </template>
-    <lightning-card title={label} if:false={errorMessage}>
-        <div class="slds-grid slds-gutters slds-p-around--small">
+    <lightning-card title={label} if:false={errorMessage} class="slds-p-around--none">
+        <div class="slds-grid slds-gutters slds-p-left--small slds-p-right--small">
             <div class="slds-col slds-size--3-of-12">
                 <lightning-combobox
                         class="slds-p-left--none"
@@ -23,21 +23,27 @@
                         field-selector-label={labels.availableFields}
                         field-selector-style={fieldPickerStyle}
                         onfieldselected={handleFieldSelected}
+                        onaddall={handleAddAll}
+                        onremoveall={handleRemoveAll}
                 ></c-field-selector>
             </div>
-            <div class="slds-col slds-size--9-of-12 slds-p-left--none">
+            <div class="slds-col slds-size--9-of-12 slds-p-left--small" style="position: relative">
                 <div class="field-picker-container">
                     <div class="slds-p-left--xx-small">
                         <template if:true={_selectedFields.length}>
                             <div class="slds-p-bottom--small">
-                                <label class="slds-form-element__label slds-border--bottom" style="width: 100%;">
+                                <label class="slds-form-element__label" style="width: 100%;">
                                     {labels.chooseFields}
                                 </label>
-                                <template for:each={_selectedFields} for:item="curField">
-                                    <lightning-pill key={curField} label={curField}
-                                                    onremove={handleFieldRemove}></lightning-pill>
+                                <div class="slds-box slds-p-around_none">
+                                    <div class="slds-p-around--xx-small">
+                                        <template for:each={_selectedFields} for:item="curField">
+                                            <lightning-pill key={curField} label={curField} data-fieldvalue={curField}
+                                                            onremove={handleFieldRemove}></lightning-pill>
 
-                                </template>
+                                        </template>
+                                    </div>
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -56,7 +62,7 @@
                         ></c-condition-builder>
 
                         <div class="slds-grid slds-wrap slds-p-left--xx-small">
-                            <div class="slds-col slds-size--3-of-12 slds-p-left--none">
+                            <div class="slds-col slds-size--3-of-12  slds-p-around_none">
                                 <lightning-input
                                         name="limit"
                                         type="Number"
@@ -66,7 +72,7 @@
                                 >
                                 </lightning-input>
                             </div>
-                            <div class="slds-col slds-size--5-of-12">
+                            <div class="slds-col slds-size--5-of-12 slds-p-around_none">
                                 <lightning-combobox
                                         name="orderByField"
                                         label="Order By"
@@ -77,7 +83,7 @@
                                         onchange={handleValueChanged}
                                 ></lightning-combobox>
                             </div>
-                            <div class="slds-col slds-size--3-of-12 slds-p-left--xx-small">
+                            <div class="slds-col slds-size--3-of-12 slds-p-around_none">
                                 <lightning-combobox
                                         name="orderByDirection"
                                         label="Direction"

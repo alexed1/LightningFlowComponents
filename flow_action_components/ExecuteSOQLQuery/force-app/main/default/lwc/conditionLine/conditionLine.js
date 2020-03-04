@@ -4,7 +4,7 @@ export default class ConditionLine extends LightningElement {
     @api allOperations;
     @api allFields;
     @api fieldName;
-    @api fieldType;
+    _fieldType;
     @api operation;
     @api value;
     @api lineId;
@@ -12,16 +12,29 @@ export default class ConditionLine extends LightningElement {
     @api fieldTypeSettings;
     @api preventErrors;
 
+    @api get fieldType() {
+        return this._fieldType;
+    }
+
+    set fieldType(value) {
+        this._fieldType = value;
+    }
+
     get inputType() {
-        if (this.fieldType && this.fieldTypeSettings[this.fieldType]) {
-            return this.fieldTypeSettings[this.fieldType].inputType;
+        if (this._fieldType && this.fieldTypeSettings[this._fieldType]) {
+            return this.fieldTypeSettings[this._fieldType].inputType;
         }
     }
 
     get availableOperations() {
         if (this.allOperations) {
             return this.allOperations.filter(curOperation => {
-                return curOperation.types.includes(this.fieldType);
+                if (this._fieldType) {
+                    return curOperation.types.includes(this._fieldType);
+                } else {
+                    return false;
+                }
+
             });
         }
 
@@ -36,12 +49,20 @@ export default class ConditionLine extends LightningElement {
     }
 
     get valueVariant() {
-        return (this.fieldType === 'Date' || this.fieldType === 'DateTime') ? 'label-hidden' : 'label-stacked';
+        return (this._fieldType === 'Date' || this._fieldType === 'DateTime') ? 'label-hidden' : 'label-stacked';
     }
 
     handleConditionChanged(event) {
         let inputName = event.target.name;
-        this[inputName] = (this.fieldType === 'Boolean' && inputName === 'value') ? event.target.checked : event.target.value;
+        this[inputName] = (this._fieldType === 'Boolean' && inputName === 'value') ? event.target.checked : event.target.value;
+        this.dispatchConditionChangedEvent();
+    }
+
+    handleFieldChanged(event) {
+        this.fieldName = event.detail.newValue;
+        if (event.detail.displayType) {
+            this._fieldType = event.detail.displayType;
+        }
         this.dispatchConditionChangedEvent();
     }
 
@@ -61,15 +82,21 @@ export default class ConditionLine extends LightningElement {
     }
 
     get valueClass() {
-        if (this.fieldType && !this.value) {
-            return 'slds-has-error';
+        let resultClass = '';
+        if (this._fieldType === 'Date' || this._fieldType === 'DateTime') {
+            resultClass += 'slds-p-top--large '
         }
+        if (this._fieldType && !this.value) {
+            resultClass += 'slds-has-error ';
+        }
+        return resultClass;
     }
 
     dispatchConditionChangedEvent() {
         const filterChangedEvent = new CustomEvent('conditionchanged', {
             detail: {
                 fieldName: this.fieldName,
+                dataType: this._fieldType,
                 operation: this.operation,
                 value: this.value,
                 id: this.lineId

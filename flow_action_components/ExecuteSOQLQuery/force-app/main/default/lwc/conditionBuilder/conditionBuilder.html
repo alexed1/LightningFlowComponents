@@ -1,7 +1,7 @@
 <template>
     <div class={parentClass}>
         <div class="slds-grid slds-wrap">
-            <div class="slds-col slds-size--4-of-12 slds-p-left--none">
+            <div class="slds-col slds-size--4-of-12 slds-p-around_none">
                 <lightning-combobox
                         name="logicType"
                         label="Logic Type"
@@ -13,7 +13,7 @@
                         onchange={handleValueChanged}
                 ></lightning-combobox>
             </div>
-            <div class="slds-col slds-size--4-of-12">
+            <div class="slds-col slds-size--4-of-12 slds-p-around_none">
                 <lightning-input class="customLogic"
                                  if:true={renderCustomLogicInput}
                                  name="customLogic"

@@ -2,6 +2,9 @@ import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
+import {
+    flashElement
+} from 'c/fieldSelectorUtils';
 
 export default class soqlQueryBuilder extends LightningElement {
     @api label = "Create SOQL Query";
@@ -232,6 +235,19 @@ export default class soqlQueryBuilder extends LightningElement {
         this.buildQuery();
     }
 
+    handleRemoveAll(event) {
+        this._selectedFields = [];
+        this.prepareFieldDescriptors();
+        this._queryString = '';
+        this.buildQuery();
+    }
+
+    handleAddAll(event) {
+        this._selectedFields = this.fieldOptions.map(curOption => curOption.value);
+        this.prepareFieldDescriptors();
+        this.buildQuery();
+    }
+
     handleFieldRemove(event) {
         // this.notifyAssignee = event.target.checked === true;
         this._selectedFields = this.toggle(this._selectedFields, event.target.label);
@@ -280,6 +296,7 @@ export default class soqlQueryBuilder extends LightningElement {
         if (array && element) {
             if (array.includes(element)) {
                 if (skipIfPersists) {
+                    flashElement(this, '[data-fieldvalue=' + element.replace('.', '\\.') + ']', 'slds-has-error', 2, 400);
                     return array;
                 } else {
                     return array.filter(curElement => curElement != element);

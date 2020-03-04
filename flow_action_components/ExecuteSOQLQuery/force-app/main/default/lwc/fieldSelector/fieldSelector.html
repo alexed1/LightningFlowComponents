@@ -1,21 +1,40 @@
 <template>
     <div>
-        <lightning-pill if:true={_selectedFieldPath}
-                        has-error
-                        class="slds-button_full-width"
-                        label={_selectedFieldPath}
-                        onremove={clearSelected}>
-        </lightning-pill>
+        <div if:true={_selectedFieldPath} class="slds-button_full-width custom-path">
+            Path: {formattedPath}
+        </div>
     </div>
-    <label if:true={_selectedObjectType} class="slds-form-element__label slds-border--bottom slds-p-left--x-small" style="width: 100%;">
+    <label if:true={_selectedObjectType} class="slds-form-element__label slds-border--bottom slds-p-left--x-small"
+           style="width: 100%;">
         {fieldSelectorLabel}
+        <div class="slds-float--right">
+            <span onclick={handleRemoveAll}>
+                <lightning-icon
+                        class="custom-cursor-pointer"
+                        icon-name="utility:dash"
+                        size="x-small"
+                ></lightning-icon>
+            </span>
+
+            <span onclick={handleAddAll}>
+                <lightning-icon
+                        class="slds-m-left--small custom-cursor-pointer"
+                        icon-name="utility:add"
+                        size="x-small"
+                ></lightning-icon>
+            </span>
+        </div>
     </label>
+
     <div style="width: 100%;">
         <div class="slds-form-element slds-scrollable_y field-picker" style={fieldSelectorStyle}>
             <div class="slds-form-element__control">
                 <template for:each={_options} for:item="curOptionElement">
-                    <div key={curOptionElement.key}
-                         class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                    <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                         onmousedown={handleMouseDown}
+                         onmouseup={handleMouseUp}
+                         onmouseleave={handleMouseUp}
+                         key={curOptionElement.key}
                          role="option">
                                                 <span class="slds-media__figure">
                                                     <span class="slds-icon_container">
@@ -30,14 +49,16 @@
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
                                                     <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
                                                 </span>
-                        <lightning-icon if:true={curOptionElement.isObject}
-                                        data-option-value={curOptionElement.relationshipName}
-                                        data-object-type={curOptionElement.objectType}
-                                        icon-name="utility:chevronright"
-                                        class="slds-float--right"
-                                        size="x-small"
-                                        onclick={handleOpenObject}
-                        ></lightning-icon>
+                        <div if:true={curOptionElement.isObject}
+                             data-option-value={curOptionElement.relationshipName}
+                             data-object-type={curOptionElement.objectType}
+                             class="slds-float--right slds-p-left--large slds-p-right--x-small"
+                             style="height: 100%;" onclick={handleOpenObject}>
+                            <lightning-icon
+                                    icon-name="utility:chevronright"
+                                    size="x-small"
+                            ></lightning-icon>
+                        </div>
                     </div>
                 </template>
             </div>

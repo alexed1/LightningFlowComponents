@@ -1,19 +1,21 @@
 <template>
     <div class="slds-grid">
-        <span class="slds-form-element__label">{conditionIndex} </span>
-        <div class="slds-col slds-p-left--none slds-size--4-of-12 slds-align-bottom slds-p-left--none">
-            <lightning-combobox
-                    class={fieldNameClass}
-                    name="fieldName"
-                    label="Resource"
-                    placeholder="Select a Field"
-                    variant="label-stacked"
-                    options={allFields}
-                    value={fieldName}
-                    onchange={handleConditionChanged}
-            ></lightning-combobox>
+        <span class="slds-form-element__label slds-p-top--large slds-p-right--xx-small condition-number">
+            {conditionIndex}
+        </span>
+        <div class="slds-col slds-p-around_none slds-size--4-of-12 slds-p-left--none">
+            <c-flow-combobox class="fieldNameClass"
+                             name="fieldName"
+                             label="Resource"
+                             required
+                             mode="fields"
+                             object-type="Account"
+                             value={fieldName}
+                             onvaluechanged={handleFieldChanged}
+            >
+            </c-flow-combobox>
         </div>
-        <div class="slds-col slds-size--3-of-12 slds-align-bottom">
+        <div class="slds-col slds-size--3-of-12 slds-p-around_none  slds-align-top">
             <lightning-combobox
                     name="operation"
                     label="Operation"
@@ -26,7 +28,7 @@
             ></lightning-combobox>
         </div>
 
-        <div class="slds-col slds-size--4-of-12 slds-align-bottom">
+        <div class="slds-col slds-size--4-of-12 slds-p-around_none  slds-align-top">
             <lightning-input
                     class={valueClass}
                     name="value"

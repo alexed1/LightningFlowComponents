@@ -1,33 +1,27 @@
 <template>
-    <div>
-        <div if:true={_selectedFieldPath} class="slds-button_full-width custom-path">
-            Path: {formattedPath}
+    <div if:true={_selectedObjectType} class="slds-grid slds-wrap">
+        <div class="slds-col slds-p-left--none slds-size--2-of-3">
+            <span class="custom-add-fields-header">
+            {fieldSelectorLabel}
+                </span>
+            <div if:true={_selectedFieldPath}>
+                <label
+                       class="slds-form-element__label slds-p-right--none custom-red-flash custom-path">
+                    Path: {formattedPath}
+                </label>
+            </div>
+        </div>
+        <div class="slds-col_bump-left slds-align-bottom">
+            <lightning-button
+                    class="slds-float--right"
+                    label={labels.buttonAddAll}
+                    onclick={handleAddAll}
+            ></lightning-button>
         </div>
     </div>
-    <label if:true={_selectedObjectType} class="slds-form-element__label slds-border--bottom slds-p-left--x-small"
-           style="width: 100%;">
-        {fieldSelectorLabel}
-        <div class="slds-float--right">
-            <span onclick={handleRemoveAll}>
-                <lightning-icon
-                        class="custom-cursor-pointer"
-                        icon-name="utility:dash"
-                        size="x-small"
-                ></lightning-icon>
-            </span>
 
-            <span onclick={handleAddAll}>
-                <lightning-icon
-                        class="slds-m-left--small custom-cursor-pointer"
-                        icon-name="utility:add"
-                        size="x-small"
-                ></lightning-icon>
-            </span>
-        </div>
-    </label>
-
-    <div style="width: 100%;">
-        <div class="slds-form-element slds-scrollable_y field-picker" style={fieldSelectorStyle}>
+    <div class="slds-box slds-p-around--none" style="width: 100%;">
+        <div class="slds-form-element slds-p-left--xx-small slds-scrollable_y field-picker" style={fieldSelectorStyle}>
             <div class="slds-form-element__control">
                 <template for:each={_options} for:item="curOptionElement">
                     <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
@@ -36,7 +30,7 @@
                          onmouseleave={handleMouseUp}
                          key={curOptionElement.key}
                          role="option">
-                                                <span class="slds-media__figure">
+                                                <span class="slds-media__figure slds-p-top--xx-small">
                                                     <span class="slds-icon_container">
                                                         <lightning-icon icon-name={curOptionElement.optionIcon}
                                                                         class="slds-icon slds-icon_small slds-icon-text-default"

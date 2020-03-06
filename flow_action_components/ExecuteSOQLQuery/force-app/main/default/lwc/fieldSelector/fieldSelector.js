@@ -15,6 +15,11 @@ export default class FieldSelector extends LightningElement {
     _objectType;
     _selectedObjectType;
 
+    labels = {
+        buttonAddAll: 'Add All',
+        buttonRemoveAll: 'Remove All'
+    };
+
     @api
     get objectType() {
         return this._objectType;

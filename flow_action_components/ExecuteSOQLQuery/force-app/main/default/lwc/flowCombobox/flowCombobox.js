@@ -141,7 +141,8 @@ export default class FlowCombobox extends LightningElement {
             showToast('Error', getErrorMessage(error), 'error');
             this.setOptions([]);
         } else if (data) {
-            this.setOptions([{type: data.label + ' Fields', options: buildOptions(data.fields)}]);
+            this._mergeFields = [{type: data.label + ' Fields', options: buildOptions(data.fields)}];
+            this.setOptions(this._mergeFields);
         }
 
     }
@@ -296,7 +297,7 @@ export default class FlowCombobox extends LightningElement {
     resetTypeOptions() {
         this.isDataModified = true;
         this._selectedFieldPath = '';
-        if (this.labels.cpeMode) {
+        if (this.mode === this.labels.cpeMode) {
             this._selectedObjectType = null;
         } else {
             this._selectedObjectType = this.originalObjectName;

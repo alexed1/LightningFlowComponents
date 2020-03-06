@@ -1,13 +1,18 @@
 import {LightningElement, api, track} from 'lwc';
+import {
+    copyValue
+} from 'c/fieldSelectorUtils';
 
 export default class ConditionBuilder extends LightningElement {
     @api isDisabled;
+    @api objectType;
     @track outputType = 'query'; //query/formula
     @track _fields;
     @track _conditions = [];
     @track logicType = 'AND';
     @track customLogic;
     @track _whereClause;
+    conditionKey = 0;
     logicTypes = [
         {label: 'All Conditions Are Met', value: 'AND'},
         {label: 'Any Condition Is Met', value: 'OR'},
@@ -74,7 +79,7 @@ export default class ConditionBuilder extends LightningElement {
     }
 
     set fields(value) {
-        this._fields = this.copyValue(value);
+        this._fields = copyValue(value);
         if (this._whereClause) {
             this.parseWhereClause(this._whereClause);
         }
@@ -201,9 +206,6 @@ export default class ConditionBuilder extends LightningElement {
 
         return true;
     }
-
-    conditionKey = 0;
-
 
     handleAddCondition(event) {
         this.addEmptyCondition();
@@ -341,7 +343,7 @@ export default class ConditionBuilder extends LightningElement {
     }
 
     dispatchConditionsChangedEvent() {
-        let incompleteConditions = this._conditions.filter(curCondition => !curCondition.fieldName || !curCondition.operation || !this.isValidValue(curCondition));
+        let incompleteConditions = this.getIncompleteConditions();
         if (incompleteConditions.length === 0 && this.isValid()) { //all condition are populated with valid values
             const filterChangedEvent = new CustomEvent('conditionschanged', {
                 detail: {
@@ -350,6 +352,14 @@ export default class ConditionBuilder extends LightningElement {
                 }
             });
             this.dispatchEvent(filterChangedEvent);
+        }
+    }
+
+    getIncompleteConditions() {
+        if (this._conditions && this._conditions.length === 1 && !this._conditions[0].fieldName) {
+            return [];
+        } else {
+            return this._conditions.filter(curCondition => !curCondition.fieldName || !curCondition.operation || !this.isValidValue(curCondition));
         }
     }
 
@@ -369,13 +379,6 @@ export default class ConditionBuilder extends LightningElement {
         }
     }
 
-    copyValue(value) {
-        if (value) {
-            return JSON.parse(JSON.stringify(value));
-        } else {
-            return value;
-        }
-    }
 
     renderedCallback() {
         const renderfinishedEvent = new CustomEvent('renderfinished', {});

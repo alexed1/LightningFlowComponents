@@ -35,10 +35,12 @@
                                           field-name={condition.fieldName}
                                           field-type={condition.dataType}
                                           field-type-settings={fieldTypeSettings}
+                                          object-type={objectType}
                                           operation={condition.operation}
                                           value={condition.value}
                                           line-id={condition.key}
                                           index={conditionIndex}
+                                          condition-count={_conditions.length}
                                           prevent-errors={condition.preventErrors}
                                           onconditionchanged={handleConditionChanged}
                                           onconditionremoved={handleConditionRemoved}
@@ -46,7 +48,7 @@
                     </div>
                 </template>
             </div>
-            <div class="slds-col slds-size--12-of-12 slds-grid--align-end slds-p-left--none slds-m-left--xx-small">
+            <div class="slds-col slds-size--12-of-12 slds-p-top--x-small slds-grid--align-end slds-p-left--none slds-m-left--xx-small">
                 <lightning-button
                         label="Add condition"
                         title="Add condition"

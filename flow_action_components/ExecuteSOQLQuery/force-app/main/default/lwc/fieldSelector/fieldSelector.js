@@ -94,5 +94,4 @@ export default class FieldSelector extends LightningElement {
             return this._selectedFieldPath.replace(/\./g, ' > ');
         }
     }
-
 }

@@ -9,6 +9,7 @@
                         variant="label-stacked"
                         value={logicType}
                         options={logicTypes}
+                        disabled={disabled}
                         data-dispatch-value-changed-event
                         onchange={handleValueChanged}
                 ></lightning-combobox>
@@ -20,6 +21,7 @@
                                  label="Condition Logic"
                                  variant="label-stacked"
                                  value={customLogic}
+                                 disabled={disabled}
                                  data-dispatch-value-changed-event
                                  onblur={handleValueChanged}
                 ></lightning-input>
@@ -42,6 +44,7 @@
                                           index={conditionIndex}
                                           condition-count={_conditions.length}
                                           prevent-errors={condition.preventErrors}
+                                          disabled={disabled}
                                           onconditionchanged={handleConditionChanged}
                                           onconditionremoved={handleConditionRemoved}
                         ></c-condition-line>
@@ -53,6 +56,7 @@
                         label="Add condition"
                         title="Add condition"
                         icon-name="utility:add"
+                        disabled={disabled}
                         onclick={handleAddCondition}></lightning-button>
             </div>
         </div>

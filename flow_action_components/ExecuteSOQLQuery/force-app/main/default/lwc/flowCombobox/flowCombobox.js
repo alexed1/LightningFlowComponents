@@ -15,6 +15,7 @@ export default class FlowCombobox extends LightningElement {
     @api flowContextFilterCollectionBoolean;
     @api maxWidth;
     @api mode = 'cpe';
+    @api disabled;
     @track _dataType;
     @track _value;
     @track allOptions;
@@ -112,7 +113,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     get displayPill() {
-        return this.isDataSelected && (this._dataType === this.settings.referenceDataType || this.mode !== this.labels.cpeMode);
+        return !this.disabled && this.isDataSelected && (this._dataType === this.settings.referenceDataType || this.mode !== this.labels.cpeMode);
     }
 
     setOptions(value) {

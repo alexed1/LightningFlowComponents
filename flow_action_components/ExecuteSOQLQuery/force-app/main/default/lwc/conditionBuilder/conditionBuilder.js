@@ -6,6 +6,7 @@ import {
 export default class ConditionBuilder extends LightningElement {
     @api isDisabled;
     @api objectType;
+    @api disabled;
     @track outputType = 'query'; //query/formula
     @track _fields;
     @track _conditions = [];

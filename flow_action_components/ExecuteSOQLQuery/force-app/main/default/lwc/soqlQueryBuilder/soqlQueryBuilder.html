@@ -19,41 +19,28 @@
                         onchange={handleObjectTypeChange}
                 ></lightning-combobox>
                 <c-field-selector if:true={_objectType}
-                        object-type={_objectType}
-                        field-selector-label={labels.availableFields}
-                        field-selector-style={fieldPickerStyle}
-                        onfieldselected={handleFieldSelected}
-                        onaddall={handleAddAll}
-                        onremoveall={handleRemoveAll}
+                                  object-type={_objectType}
+                                  field-selector-label={labels.availableFields}
+                                  field-selector-style={fieldPickerStyle}
+                                  onfieldselected={handleFieldSelected}
+                                  onaddall={handleAddAll}
+                                  onremoveall={handleRemoveAll}
                 ></c-field-selector>
             </div>
             <div class="slds-col slds-size--9-of-12 slds-p-left--small" style="position: relative">
-                <div class="field-picker-container">
+                <div class="field-picker-container"
+
+                >
                     <div class="slds-p-left--xx-small">
-                        <template if:true={_selectedFields.length}>
-                            <div class="slds-p-bottom--small">
-                                <label class="slds-form-element__label" style="width: 100%;">
-                                    {labels.chooseFields}
-                                    <span class="slds-p-left--medium">
-                                        <lightning-button
-                                                label= {labels.buttonRemoveAll}
-                                                onclick={handleRemoveAll}
-                                        ></lightning-button>
-                                    </span>
-                                </label>
-                                <div class="slds-box slds-p-around_none">
-                                    <div class="slds-p-around--xx-small">
-                                        <template for:each={_selectedFields} for:item="curField">
-                                            <lightning-pill key={curField} label={curField} data-fieldvalue={curField}
-                                                            onremove={handleFieldRemove}></lightning-pill>
-
-                                        </template>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
+                            <c-selected-fields selected-fields={_selectedFields}
+                                               choose-fields-label={labels.chooseFields}
+                                               remove-all-label={labels.buttonRemoveAll}
+                                               onremoveall={handleRemoveAll}
+                                               onremovefield={handleFieldRemove}
+                                               onrenderfinished={calculateFieldPickerStyle}
+                            >
+                            </c-selected-fields>
                     </div>
-
                     <div style={conditionBuilderStyle}>
                         <span class="slds-p-left--xx-small">
                             {labels.generatedQuery}
@@ -63,11 +50,11 @@
                                 object-type={_objectType}
                                 fields={fieldOptions}
                                 where-clause={whereClause}
+                                disabled={isRHSDisabled}
                                 is-disabled={conditionBuilderDisabled}
                                 onconditionschanged={handleConditionChanged}
                                 onrenderfinished={calculateFieldPickerStyle}
                         ></c-condition-builder>
-
                         <div class="slds-grid slds-wrap slds-p-left--xx-small">
                             <div class="slds-col slds-size--3-of-12  slds-p-around_none">
                                 <lightning-input
@@ -75,6 +62,7 @@
                                         type="Number"
                                         label="Limit"
                                         value={limit}
+                                        disabled={isRHSDisabled}
                                         onchange={handleValueChanged}
                                 >
                                 </lightning-input>
@@ -86,6 +74,7 @@
                                         placeholder=""
                                         variant="label-stacked"
                                         value={orderByField}
+                                        disabled={isRHSDisabled}
                                         options={fieldOptionsWithNone}
                                         onchange={handleValueChanged}
                                 ></lightning-combobox>
@@ -98,6 +87,7 @@
                                         variant="label-stacked"
                                         value={orderByDirection}
                                         options={orderByDirections}
+                                        disabled={isRHSDisabled}
                                         onchange={handleValueChanged}
                                 ></lightning-combobox>
                             </div>

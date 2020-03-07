@@ -516,7 +516,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
                 $A.util.addClass(dropDown, "slds-is-open");
             }
             this.toggleIcons(component,true);
-            // $A.util.addClass(component.find('diplayedul').get('v.body')[0].elements[0],'hlight');
+            $A.util.addClass(component.find('diplayedul').get('v.body')[0].elements[0],'hlight');
         }
         catch(e){
             this.showError(component, e.message);

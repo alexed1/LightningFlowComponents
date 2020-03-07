@@ -13,7 +13,7 @@ export default class ConditionLine extends LightningElement {
     @api conditionCount;
     @api fieldTypeSettings;
     @api preventErrors;
-
+    @api disabled;
     @api get fieldType() {
         return this._fieldType;
     }
@@ -47,7 +47,7 @@ export default class ConditionLine extends LightningElement {
     }
 
     get isDisabled() {
-        return !this.fieldName;
+        return (this.disabled || !this.fieldName);
     }
 
     get valueVariant() {

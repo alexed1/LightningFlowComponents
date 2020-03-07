@@ -5,13 +5,13 @@
             {fieldSelectorLabel}
                 </span>
             <div if:true={_selectedFieldPath}>
-                <label
-                       class="slds-form-element__label slds-p-right--none custom-red-flash custom-path">
+                <label class="slds-form-element__label slds-p-right--none custom-red-flash custom-path custom-cursor-pointer"
+                       onclick={clearSelected}>
                     Path: {formattedPath}
                 </label>
             </div>
         </div>
-        <div class="slds-col_bump-left slds-align-bottom">
+        <div class="slds-col_bump-left slds-align-top">
             <lightning-button
                     class="slds-float--right"
                     label={labels.buttonAddAll}

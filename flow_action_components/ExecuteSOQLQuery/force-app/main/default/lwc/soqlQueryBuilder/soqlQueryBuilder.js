@@ -252,8 +252,10 @@ export default class soqlQueryBuilder extends LightningElement {
     }
 
     handleFieldRemove(event) {
-        // this.notifyAssignee = event.target.checked === true;
-        this._selectedFields = this.toggle(this._selectedFields, event.target.label);
+        this._selectedFields = this.toggle(this._selectedFields, event.detail.value);
+        if(!this._selectedFields || !this._selectedFields.length){
+            this._queryString = '';
+        }
         this.prepareFieldDescriptors();
         this.buildQuery();
     }
@@ -317,5 +319,9 @@ export default class soqlQueryBuilder extends LightningElement {
         let inputName = event.target.name;
         this[inputName] = event.detail.value;
         this.buildQuery();
+    }
+
+    get isRHSDisabled() {
+        return (!this._selectedFields || !this._selectedFields.length);
     }
 }

@@ -1,0 +1,25 @@
+<template>
+    <template if:true={selectedFields.length}>
+        <div class="slds-p-bottom--small">
+            <label class="slds-form-element__label" style="width: 100%;">
+                {chooseFieldsLabel}
+                <span class="slds-p-left--medium">
+                                        <lightning-button
+                                                label={removeAllLabel}
+                                                onclick={handleRemoveAll}
+                                        ></lightning-button>
+                                    </span>
+            </label>
+            <div class="slds-box slds-p-around_none">
+                <div class="slds-p-around--xx-small">
+                    <template for:each={selectedFields} for:item="curField">
+                        <lightning-pill key={curField}
+                                        label={curField}
+                                        onremove={handleFieldRemove}>
+                        </lightning-pill>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

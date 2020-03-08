@@ -40,7 +40,7 @@ const buildOptions = (dataFields) => {
             isCollection: false,
             objectType: curObjectType,
             optionIcon: iconsPerType[curDataType],
-            isObject: curDataType === 'SObject' && curFieldData.relationshipName,
+            isSObject: curDataType === 'SObject' && curFieldData.relationshipName,
             relationshipName: curFieldData.relationshipName,
             displayType: curDataType === 'SObject' ? curObjectType : curDataType,
             key: 'fieldDescriptor' + localKey++

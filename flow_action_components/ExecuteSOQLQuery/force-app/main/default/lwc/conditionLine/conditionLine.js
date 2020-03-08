@@ -4,8 +4,8 @@ export default class ConditionLine extends LightningElement {
     @api allOperations;
     @api allFields;
     @api fieldName;
-    @api objectType;
     _fieldType;
+    _objectType;
     @api operation;
     @api value;
     @api lineId;
@@ -14,6 +14,15 @@ export default class ConditionLine extends LightningElement {
     @api fieldTypeSettings;
     @api preventErrors;
     @api disabled;
+
+    @api get objectType() {
+        return this._objectType;
+    }
+
+    set objectType(value) {
+        this._objectType = value;
+    }
+
     @api get fieldType() {
         return this._fieldType;
     }
@@ -32,7 +41,7 @@ export default class ConditionLine extends LightningElement {
         if (this.allOperations) {
             return this.allOperations.filter(curOperation => {
                 if (this._fieldType) {
-                    return curOperation.types.includes(this._fieldType);
+                    return curOperation.types.toLowerCase().includes(this._fieldType.toLowerCase());
                 } else {
                     return false;
                 }
@@ -63,7 +72,10 @@ export default class ConditionLine extends LightningElement {
     handleFieldChanged(event) {
         this.fieldName = event.detail.newValue;
         if (event.detail.displayType) {
-            this._fieldType = event.detail.displayType;
+            this._fieldType = event.detail.newValueDataType;
+            if (event.detail.isSObject) {
+                this._objectType = event.detail.displayType;
+            }
         }
         if (!this.fieldName) {
             this.value = null;
@@ -101,6 +113,7 @@ export default class ConditionLine extends LightningElement {
             detail: {
                 fieldName: this.fieldName,
                 dataType: this._fieldType,
+                objectType: this._objectType,
                 operation: this.operation,
                 value: this.value,
                 id: this.lineId

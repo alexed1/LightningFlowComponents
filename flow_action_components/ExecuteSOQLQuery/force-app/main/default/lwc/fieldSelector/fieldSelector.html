@@ -4,19 +4,20 @@
             <span class="custom-add-fields-header">
             {fieldSelectorLabel}
                 </span>
+        </div>
+        <div class="slds-col_bump-left slds-align-top">
+            <lightning-button
+                    label={labels.buttonAddAll}
+                    onclick={handleAddAll}
+            ></lightning-button>
+        </div>
+        <div class="slds-p-left--none slds-col slds-size--1-of-1">
             <div if:true={_selectedFieldPath}>
-                <label class="slds-form-element__label slds-p-right--none custom-red-flash custom-path custom-cursor-pointer"
+                <label class="slds-form-element__label slds-p-right--none custom-path custom-cursor-pointer"
                        onclick={clearSelected}>
                     Path: {formattedPath}
                 </label>
             </div>
-        </div>
-        <div class="slds-col_bump-left slds-align-top">
-            <lightning-button
-                    class="slds-float--right"
-                    label={labels.buttonAddAll}
-                    onclick={handleAddAll}
-            ></lightning-button>
         </div>
     </div>
 
@@ -43,7 +44,7 @@
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
                                                     <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
                                                 </span>
-                        <div if:true={curOptionElement.isObject}
+                        <div if:true={curOptionElement.isSObject}
                              data-option-value={curOptionElement.relationshipName}
                              data-object-type={curOptionElement.objectType}
                              class="slds-float--right slds-p-left--large slds-p-right--x-small"

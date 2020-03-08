@@ -34,15 +34,15 @@ export default class ConditionBuilder extends LightningElement {
         {label: 'greater than', value: ' > ', types: 'Date,DateTime,Currency,Double,Int,Address'},
         {label: 'less than or equals', value: ' <= ', types: 'Date,DateTime,Currency,Double,Int,Address'},
         {label: 'greater than or equals', value: ' >= ', types: 'Phone,Date,DateTime,Currency,Double,Int,Address'},
-        {
-            label: 'IN',
-            value: ' IN ',
-            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
-        },
         {label: 'LIKE', value: ' LIKE ', types: 'String,Picklist,Url,Email,Reference,Phone'},
         {
             label: 'NOT IN',
             value: ' NOT IN ',
+            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
+        },
+        {
+            label: 'IN',
+            value: ' IN ',
             types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
         }
     ];
@@ -123,7 +123,7 @@ export default class ConditionBuilder extends LightningElement {
                 }
 
             }
-            let conditions = value.replace(new RegExp('OR|AND|\\(|\\)', 'gi'), '|||').split('|||');
+            let conditions = value.replace(new RegExp(' OR| AND|\\(|\\)', 'gi'), '|||').split('|||');
             this.parseConditions(conditions.filter(curCondition => {
                 return curCondition.trim();
             }));
@@ -133,7 +133,8 @@ export default class ConditionBuilder extends LightningElement {
     parseConditions(conditions) {
         this._conditions = [];
         conditions.forEach(curCondition => {
-            this.operations.forEach(curLogicType => {
+            for (let i = 0; i < this.operations.length; i++) {
+                let curLogicType = this.operations[i];
                 if (curCondition.indexOf(curLogicType.value) !== -1) {
                     let conditionParts = curCondition.split(curLogicType.value);
                     let fieldDescriptor = this._fields.find(curField => curField.value === conditionParts[0].trim());
@@ -151,8 +152,9 @@ export default class ConditionBuilder extends LightningElement {
                         newCondition.dataType = 'String';
                     }
                     this._conditions.push(newCondition);
+                    break;
                 }
-            });
+            }
         });
     }
 

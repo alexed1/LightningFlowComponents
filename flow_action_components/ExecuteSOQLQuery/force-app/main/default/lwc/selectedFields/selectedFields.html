@@ -15,6 +15,7 @@
                     <template for:each={selectedFields} for:item="curField">
                         <lightning-pill key={curField}
                                         label={curField}
+                                        data-fieldvalue={curField}
                                         onremove={handleFieldRemove}>
                         </lightning-pill>
                     </template>

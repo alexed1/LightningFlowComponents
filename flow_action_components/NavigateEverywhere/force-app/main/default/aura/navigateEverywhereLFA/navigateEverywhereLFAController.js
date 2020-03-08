@@ -75,14 +75,14 @@
                 case 'record' :
                     console.log('entering record section');
                     validActionValues = ['clone','edit','view'];
-                    if(destinationRecordId) {
+                    if(destinationRecordId && validActionValues.includes(destinationAction.toLowerCase())) {
                         pageReference.type = 'standard__recordPage';
                         pageReference.attributes.recordId = destinationRecordId;
                         pageReference.attributes.objectApiName = destinationName;
                         pageReference.attributes.actionName = destinationAction.toLowerCase();
                         
                     } else {
-                        throw new Error('Missing RecordId. Since you have DestinationType set to record, you need to pass in a RecordId. If you want to create a new record, use a DestinationType of object instead and a DestinationAction of new');
+                        throw new Error('Error due to either 1) Missing RecordId. Since you have DestinationType set to record, you need to pass in a RecordId. If you want to create a new record, use a DestinationType of object instead and a DestinationAction of new or 2) You need to provide a Destination Action of edit, view or clone');
                     }
                 break;
 
@@ -156,7 +156,7 @@
             throw new Error("Unsupported or missing destination Type. Currently this component supports object, record, url, namedpage, tab, knowledge, relatedlist, and app");
                  
         }
-
+         console.log('page reference is: ' + JSON.stringify(pageReference));
          navService.navigate(pageReference);  
      } 
             

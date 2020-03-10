@@ -4,6 +4,7 @@ import {
     buildOptions,
     getErrorMessage,
     showToast,
+    flashElement,
     iconsPerType
 } from 'c/fieldSelectorUtils';
 
@@ -32,6 +33,7 @@ export default class FlowCombobox extends LightningElement {
     key = 0;
     originalObjectName;
     displayType;
+    isSObject;
 
     labels = {
         noDataAvailable: 'No data available',
@@ -55,7 +57,8 @@ export default class FlowCombobox extends LightningElement {
     settings = {
         stringDataType: 'String',
         referenceDataType: 'reference',
-        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}'
+        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}',
+        invalidFieldError: 'Selected field is invalid.'
     };
 
     @api
@@ -250,7 +253,7 @@ export default class FlowCombobox extends LightningElement {
                 isCollection: !!curObject[isCollectionField],
                 objectType: curObject[objectTypeField],
                 optionIcon: this.getIconNameByType(curDataType),
-                isObject: curDataType === 'SObject',
+                isSObject: curDataType === 'SObject',
                 displayType: curDataType === 'SObject' ? curObject[objectTypeField] : curDataType,
                 key: 'flowCombobox-' + this.key++
             });
@@ -263,12 +266,15 @@ export default class FlowCombobox extends LightningElement {
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
         this.value = this._selectedFieldPath + '.';
         this._selectedObjectType = event.currentTarget.dataset.objectType;
+        flashElement(this, '.custom-selected-field-path', 'custom-blue-flash', 2, 400);
+
     }
 
     handleSetSelectedRecord(event) {
         if (event.currentTarget.dataset) {
             this._dataType = this.settings.referenceDataType;
             this.displayType = event.currentTarget.dataset.displayType;
+            this.isSObject = event.currentTarget.dataset.isSObject;
             this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
             this.isDataModified = true;
             this.hasError = false;
@@ -283,7 +289,8 @@ export default class FlowCombobox extends LightningElement {
                 id: this.name,
                 newValue: this._value ? this._value : '',
                 newValueDataType: this._dataType,
-                displayType: this.displayType
+                displayType: this.displayType,
+                isSObject: this.isSObject
             }
         });
         this.dispatchEvent(valueChangedEvent);
@@ -318,6 +325,9 @@ export default class FlowCombobox extends LightningElement {
 
         if (this._value) {
             this.isDataSelected = true;
+            if (this._value.endsWith('.')) {
+                this.hasError = true;
+            }
         }
         this.isMenuOpen = false;
         this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click';
@@ -398,6 +408,10 @@ export default class FlowCombobox extends LightningElement {
             this.openOptionDialog();
         }
 
+    }
+
+    get isCPEMode() {
+        return this.mode === this.labels.cpeMode;
     }
 
     handleOpenEditDialog(event) {

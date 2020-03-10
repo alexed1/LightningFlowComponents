@@ -30,7 +30,7 @@
                                     <label class="slds-form-element__label slds-no-flex">{label}</label>
                                     <div data-input-name={name} class="slds-pill_container" onclick={handleOpenOptions}>
                                         <lightning-pill
-                                                class="slds-pill_bare custom-width-full"
+                                                class="slds-pill_bare custom-width-full custom-selected-field-path"
                                                 label={_value}
                                                 onremove={resetData}
                                                 has-error={hasError}
@@ -67,12 +67,13 @@
                                                 </span>
                                                     <span data-value={curOptionElement.value}
                                                           data-display-type={curOptionElement.displayType}
+                                                          data-is-object={curOptionElement.isSObject}
                                                           onclick={handleSetSelectedRecord}
                                                           class="slds-media__body">
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
                                                     <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
                                                 </span>
-                                                    <lightning-icon if:true={curOptionElement.isObject}
+                                                    <lightning-icon if:true={curOptionElement.isSObject}
                                                                     data-option-value={curOptionElement.relationshipName}
                                                                     data-object-type={curOptionElement.objectType}
                                                                     icon-name="utility:chevronright"
@@ -91,7 +92,12 @@
                 </div>
                 <template if:true={hasError}>
                     <div class="slds-form-element__help">
-                        {settings.invalidReferenceError}
+                        <div if:true={isCPEMode}>
+                            {settings.invalidReferenceError}
+                        </div>
+                        <div if:false={isCPEMode}>
+                            {settings.invalidFieldError}
+                        </div>
                     </div>
                 </template>
             </div>

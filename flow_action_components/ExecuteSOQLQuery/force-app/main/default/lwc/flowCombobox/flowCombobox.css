@@ -21,3 +21,8 @@ div input[readonly] {
 .custom-width-full {
     width: 100%;
 }
+
+.custom-blue-flash {
+    color: var(--lwc-colorTextLinkFocus);
+    font-weight: var(--lwc-fontWeightBold);
+}

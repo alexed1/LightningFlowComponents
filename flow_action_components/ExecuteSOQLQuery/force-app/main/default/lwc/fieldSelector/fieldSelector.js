@@ -72,7 +72,7 @@ export default class FieldSelector extends LightningElement {
     handleOpenObject(event) {
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
         this._selectedObjectType = event.currentTarget.dataset.objectType;
-        flashElement(this, '.custom-path', 'custom-red-flash', 2, 400);
+        flashElement(this, '.custom-path', 'custom-blue-flash', 2, 400);
     }
 
     formatValue(path, val) {

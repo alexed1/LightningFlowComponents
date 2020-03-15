@@ -2,6 +2,64 @@
 public with sharing class ListActionsTest {
     private final static Integer NUMBER_OF_TEST_RECORDS = 5;
     private final static String TEST_RECORD_NAME = 'Test Acc';
+
+    @isTest
+    static void cloneRecordTests() {
+        //user must pass in at least one input recordid or an input record
+        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
+        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        List<CloneParentRecordAndChildRecords.Requests> requests = new List<CloneParentRecordAndChildRecords.Requests>();
+        CloneParentRecordAndChildRecords.Requests request = new CloneParentRecordAndChildRecords.Requests();
+        requests.add(request);
+        List<CloneParentRecordAndChildRecords.Results> responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        requests.clear();
+
+        //user can't pass in both an input recordid and an input record
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = testAccounts[0];
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage );
+        requests.clear();
+
+        request.inputRecordId = null;
+        request.inputRecord = testAccounts[0];
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        requests.clear();
+
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        requests.clear();
+
+        request.preserveId = true;
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
+        requests.clear();
+
+        request.preserveId = false;
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        request.saveImmediately = true;
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null );
+        requests.clear();
+
+    } 
+
+
+
     @isTest
     static void copyCollectionTest() {
         List<CopyCollection.Requests> requests = new List<CopyCollection.Requests>();

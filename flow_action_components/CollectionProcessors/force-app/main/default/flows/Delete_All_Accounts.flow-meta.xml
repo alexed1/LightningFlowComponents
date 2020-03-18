@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <interviewLabel>Delete All Accounts {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Delete All Accounts</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordDeletes>
+        <name>Delete_All_Accounts</name>
+        <label>Delete All Accounts</label>
+        <locationX>199</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Create_2_Accounts</targetReference>
+        </connector>
+        <filters>
+            <field>AccountNumber</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>9999</stringValue>
+            </value>
+        </filters>
+        <object>Account</object>
+    </recordDeletes>
+    <startElementReference>Delete_All_Accounts</startElementReference>
+    <status>Draft</status>
+    <subflows>
+        <name>Create_2_Accounts</name>
+        <label>Create 2 Accounts</label>
+        <locationX>357</locationX>
+        <locationY>55</locationY>
+        <flowName>Create_Accounts</flowName>
+    </subflows>
+</Flow>

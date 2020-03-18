@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Clone_Collection</name>
+        <label>Clone Collection</label>
+        <locationX>529</locationX>
+        <locationY>388</locationY>
+        <actionName>CopyCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Save_New_Collection</targetReference>
+        </connector>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>Load_Account_Collection</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>collectionVar</assignToReference>
+            <name>outputCollection</name>
+        </outputParameters>
+    </actionCalls>
+    <assignments>
+        <name>Add_Account_to_New_Collection</name>
+        <label>Add Account to New Collection</label>
+        <locationX>979</locationX>
+        <locationY>58</locationY>
+        <assignmentItems>
+            <assignToReference>newAccountCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>loopIndex</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterate_over_Starting_Collection</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>choiceCP</name>
+        <choiceText>With a Collection Action</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>action</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceOldWay</name>
+        <choiceText>With Loops</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>loops</stringValue>
+        </value>
+    </choices>
+    <decisions>
+        <name>Use_Which_Approach</name>
+        <label>Use Which Approach?</label>
+        <locationX>518</locationX>
+        <locationY>59</locationY>
+        <defaultConnector>
+            <targetReference>Clone_Collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>With Collection Processors</defaultConnectorLabel>
+        <rules>
+            <name>The_Old_Way_With_Loops</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Which_approach</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choiceOldWay</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Iterate_over_Starting_Collection</targetReference>
+            </connector>
+            <label>The Old Way With Loops</label>
+        </rules>
+    </decisions>
+    <interviewLabel>DemoFlow_Clone Collection {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DemoFlow_Clone Collection</label>
+    <loops>
+        <name>Iterate_over_Starting_Collection</name>
+        <label>Iterate over Starting Collection</label>
+        <locationX>816</locationX>
+        <locationY>58</locationY>
+        <assignNextValueToReference>loopIndex</assignNextValueToReference>
+        <collectionReference>Load_Account_Collection</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Account_to_New_Collection</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Save_Cloned_Collection</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordCreates>
+        <name>Save_Cloned_Collection</name>
+        <label>Save Cloned Collection</label>
+        <locationX>888</locationX>
+        <locationY>205</locationY>
+        <inputReference>newAccountCollection</inputReference>
+    </recordCreates>
+    <recordCreates>
+        <name>Save_New_Collection</name>
+        <label>Save New Collection</label>
+        <locationX>896</locationX>
+        <locationY>388</locationY>
+        <inputReference>collectionVar</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Load_Account_Collection</name>
+        <label>Load Account Collection</label>
+        <locationX>362</locationX>
+        <locationY>56</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Use_Which_Approach</targetReference>
+        </connector>
+        <object>Account</object>
+    </recordLookups>
+    <screens>
+        <name>Initial_Screen</name>
+        <label>Initial Screen</label>
+        <locationX>219</locationX>
+        <locationY>57</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Load_Account_Collection</targetReference>
+        </connector>
+        <fields>
+            <name>dispClone</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Clone a Collection&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Which_approach</name>
+            <choiceReferences>choiceOldWay</choiceReferences>
+            <choiceReferences>choiceCP</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Which approach?</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Initial_Screen</startElementReference>
+    <status>Draft</status>
+    <variables>
+        <name>collectionVar</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>loopIndex</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>newAccountCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+</Flow>

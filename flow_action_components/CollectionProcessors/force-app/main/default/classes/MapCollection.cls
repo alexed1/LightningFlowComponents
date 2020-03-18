@@ -13,6 +13,7 @@ global with sharing class MapCollection {
             Pattern mPattern = pattern.compile('([^,:"\\s*]+)');
             Matcher mMatcher = mPattern.matcher(keyValuePairs);
             Map<String, String> keyValue = new Map<String, String>();
+            System.debug('keyvalue is: ' + keyValue);
             String key;
             while (mMatcher.find()) {
                 if (key == null) {
@@ -26,6 +27,7 @@ global with sharing class MapCollection {
             for (String curKey : keyValue.keySet()) {
                 for (SObject acc : outputCollection) {
                     try{
+                        System.debug('trying to add key: ' + curKey + 'to Sobject: ' + acc );
                         acc.put(curKey, keyValue.get(curKey));
                     }catch (Exception ex){
                         response.errors+=ex.getMessage();

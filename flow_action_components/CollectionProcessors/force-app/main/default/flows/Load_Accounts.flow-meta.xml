@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Change_Rating</name>
+        <label>Change Rating</label>
+        <locationX>344</locationX>
+        <locationY>56</locationY>
+        <actionName>MapCollection</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Save_Results</targetReference>
+        </connector>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>Load_Accounts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>keyValuePairs</name>
+            <value>
+                <stringValue>Rating : Cold</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <interviewLabel>Load Accounts {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Load Accounts</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Load_Accounts</name>
+        <label>Load Accounts</label>
+        <locationX>207</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Change_Rating</targetReference>
+        </connector>
+        <object>Account</object>
+    </recordLookups>
+    <recordUpdates>
+        <name>Save_Results</name>
+        <label>Save Results</label>
+        <locationX>479</locationX>
+        <locationY>56</locationY>
+        <inputReference>Change_Rating.outputCollection</inputReference>
+    </recordUpdates>
+    <startElementReference>Load_Accounts</startElementReference>
+    <status>Draft</status>
+</Flow>

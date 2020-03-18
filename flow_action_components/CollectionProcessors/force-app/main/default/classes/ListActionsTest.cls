@@ -4,30 +4,58 @@ public with sharing class ListActionsTest {
     private final static String TEST_RECORD_NAME = 'Test Acc';
 
     @isTest
-    static void cloneRecordTests() {
+    static void cloneParentRecordAndChildTests() {
         //user must pass in at least one input recordid or an input record
         String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
         String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        String noObjectNameInputsMessage = 'You need to pass in the name of at least one child relationship name. You can do this either via a collection of strings or a single comma-separated string';
+        String dualObjectNameInputsMessage = 'You need to pass either a value for childObjectNames or for childObjectNamesCSV into this action, but you can not pass both';
+
         List<CloneParentRecordAndChildRecords.Requests> requests = new List<CloneParentRecordAndChildRecords.Requests>();
         CloneParentRecordAndChildRecords.Requests request = new CloneParentRecordAndChildRecords.Requests();
         requests.add(request);
-        List<CloneParentRecordAndChildRecords.Results> responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        List<CloneParentRecordAndChildRecords.Results> responseWrapper;
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText.split(' LN:')[0], noInputsMessage );
         requests.clear();
 
         //user can't pass in both an input recordid and an input record
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        request.inputRecordId = testAccounts[0].Id;
+         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = testAccounts[0];
         requests.add(request);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage );
+        System.assertEquals(responseWrapper[0].errorText.split(' LN:')[0], dualInputsMessage );
         requests.clear();
+ 
+        //user must pass in at least one child object name input  
+        requests = new List<CloneParentRecordAndChildRecords.Requests>();
+        request = new CloneParentRecordAndChildRecords.Requests();
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(noObjectNameInputsMessage, responseWrapper[0].errorText.split(' LN:')[0] );
+        requests.clear();
+
+        //user can't pass in both an child csv and a child collectionlist
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        request.childObjectNamesCSV = 'Contact';
+        request.childObjectNames = new List<String> { 'Contact'};
+        requests.add(request);
+        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText.split(' LN:')[0], dualObjectNameInputsMessage );
+        requests.clear(); 
 
         request.inputRecordId = null;
         request.inputRecord = testAccounts[0];
+        request.childObjectNames = null;
+        request.childObjectNamesCSV = 'Contacts';
         requests.add(request);
+        System.debug('requests are: ' + requests);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+       // System.debug('error reported: ' + responseWrapper[0].errorText.split(' LN:')[0]);
         System.assertNotEquals(responseWrapper[0].clonedRecord, null );
         requests.clear();
 
@@ -52,6 +80,63 @@ public with sharing class ListActionsTest {
         request.saveImmediately = true;
         requests.add(request);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null );
+        requests.clear();
+
+    } 
+
+
+
+    @isTest
+    static void cloneRecordTests() {
+        //user must pass in at least one input recordid or an input record
+        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
+        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        List<CloneRecord.Requests> requests = new List<CloneRecord.Requests>();
+        CloneRecord.Requests request = new CloneRecord.Requests();
+        requests.add(request);
+        List<CloneRecord.Results> responseWrapper = CloneRecord.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText.split(' LN:')[0], noInputsMessage );
+        requests.clear();
+
+        //user can't pass in both an input recordid and an input record
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = testAccounts[0];
+        requests.add(request);
+        responseWrapper = CloneRecord.clone(requests);
+        System.assertEquals(responseWrapper[0].errorText.split(' LN:')[0], dualInputsMessage );
+        requests.clear();
+
+        request.inputRecordId = null;
+        request.inputRecord = testAccounts[0];
+        requests.add(request);
+        responseWrapper = CloneRecord.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        requests.clear();
+
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        requests.add(request);
+        responseWrapper = CloneRecord.clone(requests);
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        requests.clear();
+
+        request.preserveId = true;
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        requests.add(request);
+        responseWrapper = CloneRecord.clone(requests);
+        System.assertEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
+        requests.clear();
+
+        request.preserveId = false;
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = null;
+        request.saveImmediately = true;
+        requests.add(request);
+        responseWrapper = CloneRecord.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null );
         requests.clear();

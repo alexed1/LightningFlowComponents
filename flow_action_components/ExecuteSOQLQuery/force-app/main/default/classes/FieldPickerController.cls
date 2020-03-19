@@ -1,7 +1,24 @@
 global with sharing class FieldPickerController {
+    private static final Integer DEFAULT_CACHE_LIVE_MINUTES = 1440;
+    private static final String CACHE_LAST_UPDATED_DATETIME = 'local.SObjectDescribes.lastUpdatedDate';
+    private static final String CACHE_CACHED_OBJECTS = 'local.SObjectDescribes.cachedObjects';
 
-    @AuraEnabled(cacheable=true)
+
+    @AuraEnabled(Cacheable=true)
     public static List<Member> getObjects(List<String> availableObjectTypes) {
+        List<Member> cachedObjects = (List<Member>) Cache.Org.get(CACHE_CACHED_OBJECTS);
+        Datetime dt = (Datetime) Cache.Org.get(CACHE_LAST_UPDATED_DATETIME);
+        if (cachedObjects == null || dt == null || dt.addMinutes(DEFAULT_CACHE_LIVE_MINUTES) < Datetime.now()) {
+            cachedObjects = doGetObjects(availableObjectTypes);
+            if (!cachedObjects.isEmpty()) {
+                Cache.Org.put(CACHE_CACHED_OBJECTS, cachedObjects);
+                Cache.Org.put(CACHE_LAST_UPDATED_DATETIME, Datetime.now());
+            }
+        }
+        return cachedObjects;
+    }
+
+    public static List<Member> doGetObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();
         Map<String, SObjectType> allTypes = Schema.getGlobalDescribe();
 
@@ -27,6 +44,7 @@ global with sharing class FieldPickerController {
         return result;
 
     }
+
     @AuraEnabled(cacheable=true)
     public static List<Member> getPicklistValues(String objectApiName, String fieldName) {
 

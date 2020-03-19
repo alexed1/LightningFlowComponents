@@ -23,27 +23,27 @@ export default class ConditionBuilder extends LightningElement {
         {
             label: 'equals',
             value: ' = ',
-            types: 'String,Picklist,Url,Email,TextArea,Reference,Phone,Date,DateTime,Currency,Double,Boolean,Int,Address'
+            types: 'String,Picklist,Url,Email,TextArea,Reference,Phone,Date,DateTime,Currency,Double,Boolean,Int,Address,NestedField'
         },
         {
             label: 'not equals',
             value: ' != ',
-            types: 'String,Picklist,Url,Email,TextArea,Reference,Phone,Date,DateTime,Currency,Double,Boolean,Int,Address'
+            types: 'String,Picklist,Url,Email,TextArea,Reference,Phone,Date,DateTime,Currency,Double,Boolean,Int,Address,NestedField'
         },
-        {label: 'less than', value: ' < ', types: 'Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'greater than', value: ' > ', types: 'Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'less than or equals', value: ' <= ', types: 'Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'greater than or equals', value: ' >= ', types: 'Phone,Date,DateTime,Currency,Double,Int,Address'},
-        {label: 'LIKE', value: ' LIKE ', types: 'String,Picklist,Url,Email,Reference,Phone'},
+        {label: 'less than', value: ' < ', types: 'Date,DateTime,Currency,Double,Int,Address,NestedField'},
+        {label: 'greater than', value: ' > ', types: 'Date,DateTime,Currency,Double,Int,Address,NestedField'},
+        {label: 'less than or equals', value: ' <= ', types: 'Date,DateTime,Currency,Double,Int,Address,NestedField'},
+        {label: 'greater than or equals', value: ' >= ', types: 'Phone,Date,DateTime,Currency,Double,Int,Address,NestedField'},
+        {label: 'LIKE', value: ' LIKE ', types: 'String,Picklist,Url,Email,Reference,Phone,NestedField'},
         {
             label: 'NOT IN',
             value: ' NOT IN ',
-            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
+            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address,NestedField'
         },
         {
             label: 'IN',
             value: ' IN ',
-            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address'
+            types: 'String,Picklist,Url,Email,Reference,Phone,Date,DateTime,Currency,Double,Int,Address,NestedField'
         }
     ];
 
@@ -149,7 +149,7 @@ export default class ConditionBuilder extends LightningElement {
                     } else {
                         //TODO: replace this with proper dataType handler
                         newCondition.value = this.stripQuotes(conditionParts[1].trim());
-                        newCondition.dataType = 'String';
+                        newCondition.dataType = 'NestedField';
                     }
                     this._conditions.push(newCondition);
                     break;
@@ -244,6 +244,13 @@ export default class ConditionBuilder extends LightningElement {
             if (fieldDescriptor) {
                 changedCondition.dataType = fieldDescriptor.dataType;
             } else {
+                if (this._fields) {
+                    this._fields.push({
+                        value: newCondition.fieldName,
+                        lable: newCondition.fieldName,
+                        dataType: newCondition.dataType
+                    });
+                }
                 changedCondition.dataType = newCondition.dataType;
             }
             this.dispatchConditionsChangedEvent();

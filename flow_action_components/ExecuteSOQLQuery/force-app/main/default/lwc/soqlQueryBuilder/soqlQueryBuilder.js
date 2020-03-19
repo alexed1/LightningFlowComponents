@@ -2,7 +2,9 @@ import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
-
+import {
+    standardObjectOptions
+} from 'c/fieldSelectorUtils';
 
 export default class soqlQueryBuilder extends LightningElement {
     @api label = "Create SOQL Query";
@@ -13,7 +15,7 @@ export default class soqlQueryBuilder extends LightningElement {
     @track orderByField;
     @track orderByDirection;
     @track limit;
-    @track _objectTypes;
+    @track _objectTypes = standardObjectOptions;
     @track _queryString;
     @track _selectedFields = [];
     @track fieldPickerStyle;

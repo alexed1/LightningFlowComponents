@@ -72,7 +72,7 @@ export default class ConditionLine extends LightningElement {
     handleFieldChanged(event) {
         this.fieldName = event.detail.newValue;
         if (event.detail.displayType) {
-            this._fieldType = event.detail.newValueDataType;
+            this._fieldType = event.detail.displayType;
             if (event.detail.isSObject) {
                 this._objectType = event.detail.displayType;
             }

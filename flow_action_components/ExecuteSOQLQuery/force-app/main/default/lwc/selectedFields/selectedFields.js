@@ -34,5 +34,4 @@ export default class SelectedFields extends LightningElement {
     renderedCallback() {
         this.dispatchRenderFinishedEvent();
     }
-
 }

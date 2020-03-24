@@ -480,14 +480,6 @@
             <numberValue>5.0</numberValue>
         </value>
     </choices>
-    <choices>
-        <name>whichExampleChoice6</name>
-        <choiceText>6) Create Multi-Lingual Test EmailTemplates</choiceText>
-        <dataType>Number</dataType>
-        <value>
-            <numberValue>6.0</numberValue>
-        </value>
-    </choices>
     <decisions>
         <name>Any_Files_Uploaded</name>
         <label>Any Files Uploaded?</label>
@@ -663,21 +655,6 @@
             </connector>
             <label>5. Multi-Lingual Using Email Templates</label>
         </rules>
-        <rules>
-            <name>X6_Create_Templates</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Choose_Example</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <elementReference>whichExampleChoice6</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>X6_Create_Multi_Lingual_Test_Templates</targetReference>
-            </connector>
-            <label>6. Create Test Templates</label>
-        </rules>
     </decisions>
     <description>A series of 5 examples for testing and demonstrating Send HTML Email Action Component</description>
     <formulas>
@@ -812,7 +789,7 @@
         </connector>
         <fields>
             <name>SelectExampleInstructions</name>
-            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - with To, Sender, Reply-To, Subject, Body (All text)&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - Using Address Collections to Send to Multiple Recipients&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - Simple Email (1) With Attachments&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; - An email using a Lightning EmailTemplate&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - An email using a Lightning EmailTemplate selected by language&lt;/p&gt;&lt;p&gt;&lt;b&gt;6) &lt;/b&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Create Multi-Lingual Test EmailTemplates&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - with To, Sender, Reply-To, Subject, Body (All text)&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - Using Address Collections to Send to Multiple Recipients&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - Simple Email (1) With Attachments&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; - An email using a Lightning EmailTemplate&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - An email using a Lightning EmailTemplate selected by language&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -822,7 +799,6 @@
             <choiceReferences>whichExampleChoice3</choiceReferences>
             <choiceReferences>whichExampleChoice4</choiceReferences>
             <choiceReferences>whichExampleChoice5</choiceReferences>
-            <choiceReferences>whichExampleChoice6</choiceReferences>
             <dataType>Number</dataType>
             <fieldText>Choose Example</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -1007,8 +983,8 @@
     <screens>
         <name>screenConsole1</name>
         <label>screenConsole1</label>
-        <locationX>1217</locationX>
-        <locationY>169</locationY>
+        <locationX>1216</locationX>
+        <locationY>177</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1428,7 +1404,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
+            <targetReference>Create_Test_Templates_if_Needed_5</targetReference>
         </connector>
         <fields>
             <name>Example5Details</name>
@@ -1526,36 +1502,6 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <screens>
-        <name>X6_Create_Multi_Lingual_Test_Templates</name>
-        <label>6. Create Multi-Lingual Test Templates</label>
-        <locationX>232</locationX>
-        <locationY>50</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Create_Test_Templates_if_Needed</targetReference>
-        </connector>
-        <fields>
-            <name>Example5Details_0</name>
-            <fieldText>&lt;p&gt;This choice creates a test multi-lingual email template set with the name specified.  If a template with that name already exists, no action is taken.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>Template_Name_6</name>
-            <dataType>String</dataType>
-            <defaultValue>
-                <stringValue>sendHTMLEmailTest</stringValue>
-            </defaultValue>
-            <fieldText>Template Name</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Language.&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
-            <isRequired>true</isRequired>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
     <start>
         <locationX>34</locationX>
         <locationY>467</locationY>
@@ -1566,18 +1512,18 @@
     <status>Draft</status>
     <subflows>
         <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
-        <name>Create_Test_Templates_if_Needed</name>
+        <name>Create_Test_Templates_if_Needed_5</name>
         <label>Create Test Templates if Needed</label>
-        <locationX>778</locationX>
-        <locationY>50</locationY>
+        <locationX>634</locationX>
+        <locationY>1085</locationY>
         <connector>
-            <targetReference>screenConsole1</targetReference>
+            <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
         </connector>
         <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
         <inputAssignments>
             <name>sendHTMLEmailTestName</name>
             <value>
-                <elementReference>Template_Name_6</elementReference>
+                <elementReference>Template_Name</elementReference>
             </value>
         </inputAssignments>
     </subflows>

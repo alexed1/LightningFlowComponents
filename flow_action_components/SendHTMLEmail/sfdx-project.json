@@ -4,20 +4,20 @@
             "path": "force-app",
             "default": true,
             "package": "SendHTMLEmailPrA",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionName": "ver 1.33",
+            "versionNumber": "1.33.0.NEXT"
         },
         {
             "path": "force-app",
             "package": "SendHTMLEmail",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
+            "versionName": "ver 1.33",
+            "versionNumber": "1.33.0.NEXT",
             "default": false
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "47.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",

@@ -4,12 +4,19 @@
             "path": "force-app",
             "default": true,
             "package": "SendHTMLEmailPrA",
-            "versionName": "ver 1.33",
-            "versionNumber": "1.33.0.NEXT"
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
         },
         {
             "path": "force-app",
-            "package": "SendHTMLEmail",
+            "package": "sendHTMLEmail",
+            "versionName": "ver 1.33",
+            "versionNumber": "1.33.0.NEXT",
+            "default": false
+        },
+        {
+            "path": "force-app",
+            "package": "sendHTMLEmail(With Tests)",
             "versionName": "ver 1.33",
             "versionNumber": "1.33.0.NEXT",
             "default": false
@@ -22,7 +29,13 @@
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
         "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
-        "SendHTMLEmail": "0HoB000000000QLKAY",
-        "SendHTMLEmail@0.1.0-1": "04tB0000000Awk2IAC"
+        "SendHTMLEmail@0.1.0-1": "04tB0000000Awk2IAC",
+        "sendHTMLEmail": "0Ho0P000000GmadSAC",
+        "sendHTMLEmail@0.1.0-1": "04t0P000000TUsXQAW",
+        "sendHTMLEmail@1.3.0-1": "04t0P000000TUscQAG",
+        "sendHTMLEmail@1.33.0-1": "04t0P000000TUshQAG",
+        "sendHTMLEmail(With Tests)": "0Ho0P000000GmadSAC",
+        "sendHTMLEmail@1.33.0-2": "04t0P000000TUsrQAG",
+        "sendHTMLEmail@1.33.0-0": "04t0P000000TUswQAG"
     }
 }

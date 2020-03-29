@@ -1,0 +1,30 @@
+.slds-combobox__input,
+.slds-combobox_container {
+    transition: border 0.1s linear, box-shadow 0.1 linear;
+}
+
+.slds-combobox__input {
+    box-shadow: none;
+}
+
+.slds-combobox__input.has-custom-border {
+    box-shadow: 0 0 0 2px #fff inset, 0 0 0 3px rgb(221, 219, 218) inset;
+}
+
+.slds-combobox__input.has-custom-error {
+    border: 1px solid rgb(194, 57, 52);
+    box-shadow: rgb(194, 57, 52) 0 0 0 1px inset;
+}
+
+.slds-combobox_container.has-custom-error {
+    border: none !important;
+}
+
+.slds-combobox__input.has-custom-height {
+    height: 32px !important;
+}
+
+.form-error {
+    color: rgb(194, 57, 52);
+    display: block;
+}

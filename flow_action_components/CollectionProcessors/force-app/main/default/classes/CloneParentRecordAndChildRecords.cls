@@ -1,4 +1,11 @@
 global with sharing class CloneParentRecordAndChildRecords {
+
+        //for each child relationship name, query for the records that have the inputRecord as parent
+        //suppose the parent account is Order and we want all the child OrderLines
+        //we need to know for our query of OrderLines what the fieldname is of the lookup relationship. It is not deterministic
+        //so we have to first find all the child relationships of Order, match them by name with the requested relationships and find the field names of the lookup fields 
+        //once we have the field name from the ChildRelationship, we can do a query for all the child records
+
     @InvocableMethod
     global static List <Results> clone(List<Requests> requestList) {
 
@@ -45,11 +52,6 @@ global with sharing class CloneParentRecordAndChildRecords {
             }
         }
         
-        //for each child relationship name, query for the records that have the inputRecord as parent
-        //suppose the parent account is Order and we want all the child OrderLines
-        //we need to know for our query of OrderLines what the fieldname is of the lookup relationship. It is not deterministic
-        //so we have to first find all the child relationships of Order, match them by name with the requested relationships and find the field names of the lookup fields 
-        //once we have the field name from the ChildRelationship, we can do a query for all the child records
 
         responseWrapper.add(response);
         return responseWrapper;

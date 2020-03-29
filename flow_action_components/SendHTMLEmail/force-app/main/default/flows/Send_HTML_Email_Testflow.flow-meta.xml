@@ -1,49 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Send_HTML_Email</name>
-        <label>Send HTML Email</label>
-        <locationX>1140</locationX>
-        <locationY>215</locationY>
+        <name>Simplest_HTML_Email</name>
+        <label>1. Simplest HTML Email</label>
+        <locationX>781</locationX>
+        <locationY>169</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
         </connector>
         <inputParameters>
+            <name>HTMLbody</name>
+            <value>
+                <elementReference>HTMLTextTemplate</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <elementReference>plainTextBody</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <elementReference>TestReturnAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>senderDisplayName</name>
             <value>
-                <stringValue>Thisbethe sender name</stringValue>
+                <elementReference>testSenderName</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
+            <name>SendTOthisOneEmailAddress</name>
             <value>
-                <elementReference>curUsers</elementReference>
+                <elementReference>TestEmailAddress1</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>saveAsActivity</name>
+            <name>subject</name>
             <value>
-                <booleanValue>true</booleanValue>
+                <elementReference>testSubject</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>UseSalesforceSignature</name>
             <value>
-                <elementReference>curContacts</elementReference>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>X2_Simple_Email_with_Address_Collections_Wit_Collections</name>
+        <label>2. Simple Email with Address Collections - With Address Collections</label>
+        <locationX>1004</locationX>
+        <locationY>273</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <elementReference>plainTextBody</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
+            <name>replyEmailAddress</name>
             <value>
-                <elementReference>curContacts</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>recordId</name>
-            <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>TestReturnAddress</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -53,54 +90,260 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>contentDocumentAttachments</name>
-            <value>
-                <elementReference>filterred_cdls</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>SendBCCtheEmailAddressesFromThisCollectionOfUsers</name>
             <value>
                 <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>orgWideEmailAddressId</name>
+            <name>SendBCCthisStringCollectionOfEmailAddresses</name>
+            <value>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
+            </value>
         </inputParameters>
         <inputParameters>
-            <name>plainTextBody</name>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfContacts</name>
             <value>
-                <elementReference>plainTextVersion</elementReference>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCtheEmailAddressesFromThisCollectionOfUsers</name>
+            <value>
+                <elementReference>curUsers</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendCCthisStringCollectionOfEmailAddresses</name>
+            <value>
+                <elementReference>stringCollectionEmailAddresses</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <elementReference>testSenderName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfContacts</name>
+            <value>
+                <elementReference>curContacts</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOtheEmailAddressesFromThisCollectionOfUsers</name>
+            <value>
+                <elementReference>curUsers</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>subject</name>
             <value>
-                <stringValue>This is my email subject!</stringValue>
+                <elementReference>testSubject</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>X3_Email_with_Attachments</name>
+        <label>3. Email with Attachments</label>
+        <locationX>1087</locationX>
+        <locationY>637</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>contentDocumentAttachments</name>
+            <value>
+                <elementReference>filterred_cdls</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendBCCthisOneEmailAddress</name>
+            <name>plainTextBody</name>
             <value>
-                <stringValue>foo@bar.com</stringValue>
+                <elementReference>testPlainTextLineFeeds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>Related_Record_ID_whatId_recordId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>replyEmailAddress</name>
             <value>
-                <stringValue>myreply@edelstein.org</stringValue>
+                <elementReference>TestReturnAddress</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>HTMLbody</name>
+            <name>saveAsActivity</name>
             <value>
-                <elementReference>HTMLTextTemplate</elementReference>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
-            <name>SendTOthisStringCollectionOfEmailAddresses</name>
+            <name>senderDisplayName</name>
             <value>
-                <elementReference>stringCollectionEmailAddresses</elementReference>
+                <elementReference>testSenderName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <elementReference>TestEmailAddress1</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <elementReference>Subject_3</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>UseSalesforceSignature</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <description>Email Using Template - An email using a Lightning EmailTemplate</description>
+        <name>X4_Email_Using_Template_Action</name>
+        <label>4. Email Using Template Action</label>
+        <locationX>1140</locationX>
+        <locationY>961</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>Related_Record_Id_for_testing_merge_fields_4</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <elementReference>TestReturnAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsActivity</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <elementReference>testSenderName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <elementReference>Subject_4</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateTargetObjectId</name>
+            <value>
+                <elementReference>Template_Target_Record_Id_4</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateID</name>
+            <value>
+                <elementReference>Template_RecordId_TemplateEmail</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <description>Multi-Lingual Using Email Templates - An email using a Lightning EmailTemplate selected by language</description>
+        <name>X5_Multi_Lingual_Using_Email_Templates_Action</name>
+        <label>5. Multi-Lingual Using Email Templates</label>
+        <locationX>1229</locationX>
+        <locationY>1085</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>Related_Record_Id_for_testing_merge_fields_5</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <elementReference>TestReturnAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsActivity</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <elementReference>testSenderName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <elementReference>Subject_5</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateLanguage</name>
+            <value>
+                <elementReference>Template_Language</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateName</name>
+            <value>
+                <elementReference>Template_Name</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateTargetObjectId</name>
+            <value>
+                <elementReference>Template_Target_Record_Id_5</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -115,8 +358,8 @@
     <assignments>
         <name>Add_All_Attached_Files</name>
         <label>Add All Attached Files</label>
-        <locationX>637</locationX>
-        <locationY>55</locationY>
+        <locationX>1013</locationX>
+        <locationY>544</locationY>
         <assignmentItems>
             <assignToReference>filterred_cdls</assignToReference>
             <operator>Assign</operator>
@@ -125,14 +368,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Template_ID</targetReference>
+            <targetReference>X3_Email_with_Attachments</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Add_CDL_in_Filtered_List</name>
         <label>Add CDL in Filtered List</label>
-        <locationX>991</locationX>
-        <locationY>267</locationY>
+        <locationX>852</locationX>
+        <locationY>741</locationY>
         <assignmentItems>
             <assignToReference>filterred_cdls</assignToReference>
             <operator>Add</operator>
@@ -152,33 +395,96 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Build_List_of_String_Addresses</name>
-        <label>Build List of String Addresses</label>
-        <locationX>229</locationX>
-        <locationY>54</locationY>
+        <name>Clear_String_Addr_Collection</name>
+        <label>Clear String Addr Collection</label>
+        <locationX>639</locationX>
+        <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <stringValue>alexsalesforcedemo@gmail.com</stringValue>
-            </value>
+            <operator>Assign</operator>
         </assignmentItems>
+        <connector>
+            <targetReference>Email_Addr_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the first email to the string collection</description>
+        <name>Email_1_to_Collection</name>
+        <label>Email 1 to Collection</label>
+        <locationX>507</locationX>
+        <locationY>460</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
             <operator>Add</operator>
             <value>
-                <stringValue>fribble@edelstein.org</stringValue>
+                <elementReference>TestEmailAddress1</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Content_Document_Links</targetReference>
+            <targetReference>Email_Addr_2</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Email_2_to_Collection</name>
+        <label>Email 2 to Collection</label>
+        <locationX>788</locationX>
+        <locationY>474</locationY>
+        <assignmentItems>
+            <assignToReference>stringCollectionEmailAddresses</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>TestEmailAddress2</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Users</targetReference>
+        </connector>
+    </assignments>
+    <choices>
+        <name>whichExampleChoice1</name>
+        <choiceText>1) Simple Email Text - with To, Sender, Reply-To, Subject, Body (All text)</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>1.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <name>whichExampleChoice2</name>
+        <choiceText>2) Simple Email with Address Collections - Using Address Collections to Send to Multiple Recipients</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>2.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <name>whichExampleChoice3</name>
+        <choiceText>3) Email with Attachments - Simple Email (1) With Attachments</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>3.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <name>whichExampleChoice4</name>
+        <choiceText>4) Email Using Template - An email using a Lightning EmailTemplate</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>4.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <name>whichExampleChoice5</name>
+        <choiceText>5) Multi-Lingual Using Email Templates - An email using a Lightning EmailTemplate selected by language</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>5.0</numberValue>
+        </value>
+    </choices>
     <decisions>
         <name>Any_Files_Uploaded</name>
         <label>Any Files Uploaded?</label>
-        <locationX>694</locationX>
-        <locationY>274</locationY>
+        <locationX>847</locationX>
+        <locationY>634</locationY>
         <defaultConnector>
             <targetReference>Add_All_Attached_Files</targetReference>
         </defaultConnector>
@@ -194,7 +500,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Template_ID</targetReference>
+                <targetReference>X3_Email_with_Attachments</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -202,8 +508,8 @@
     <decisions>
         <name>CDL_In_Just_Uploaded_Files</name>
         <label>CDL In Just Uploaded Files</label>
-        <locationX>982</locationX>
-        <locationY>425</locationY>
+        <locationX>844</locationX>
+        <locationY>871</locationY>
         <defaultConnector>
             <targetReference>All_Uploaded_CD_Ids</targetReference>
         </defaultConnector>
@@ -224,13 +530,146 @@
             <label>Yes</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Email_Addr_1</name>
+        <label>Email Addr 1</label>
+        <locationX>629</locationX>
+        <locationY>406</locationY>
+        <defaultConnector>
+            <targetReference>Email_1_to_Collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Email 1</defaultConnectorLabel>
+        <rules>
+            <name>No_Email_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>TestEmailAddress1</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Email_Addr_2</targetReference>
+            </connector>
+            <label>No Email 1?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Email_Addr_2</name>
+        <label>Email Addr 2</label>
+        <locationX>638</locationX>
+        <locationY>528</locationY>
+        <defaultConnector>
+            <targetReference>Email_2_to_Collection</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Email 2</defaultConnectorLabel>
+        <rules>
+            <name>No_Email_2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>TestEmailAddress2</leftValueReference>
+                <operator>EqualTo</operator>
+            </conditions>
+            <connector>
+                <targetReference>Get_Users</targetReference>
+            </connector>
+            <label>No Email 2?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Which_Choice</name>
+        <label>Which Choice</label>
+        <locationX>235</locationX>
+        <locationY>469</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Ex_1</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice1</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X1_Get_Simple_Email_Fields</targetReference>
+            </connector>
+            <label>1 Simple Email</label>
+        </rules>
+        <rules>
+            <name>Ex_2</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice2</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X2_Get_Simple_Email_Fields_Collections</targetReference>
+            </connector>
+            <label>2. Simple Email with Address Collection</label>
+        </rules>
+        <rules>
+            <name>Ex_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice3</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Simple_Email_Fields_Attachments</targetReference>
+            </connector>
+            <label>3. Email with Attachments</label>
+        </rules>
+        <rules>
+            <name>Ex_4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice4</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X4_Email_Using_Template</targetReference>
+            </connector>
+            <label>4. Email Using Template</label>
+        </rules>
+        <rules>
+            <name>Ex_5</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice5</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X5_Multi_Lingual_Using_Email_Templates</targetReference>
+            </connector>
+            <label>5. Multi-Lingual Using Email Templates</label>
+        </rules>
+    </decisions>
+    <description>A series of 5 examples for testing and demonstrating Send HTML Email Action Component</description>
+    <formulas>
+        <description>Create a plaintext message with line feeds</description>
+        <name>testPlainTextLineFeeds</name>
+        <dataType>String</dataType>
+        <expression>&quot;Plaintext Line 1&quot;+BR()+&quot;Plaintext Line 2&quot;+BR()+&quot;Plaintext Line 3&quot;</expression>
+    </formulas>
     <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Send HTML Email Testflow</label>
     <loops>
         <name>All_CDL</name>
         <label>All CDL</label>
-        <locationX>478</locationX>
-        <locationY>416</locationY>
+        <locationX>650</locationX>
+        <locationY>630</locationY>
         <assignNextValueToReference>cur_cdl</assignNextValueToReference>
         <collectionReference>Get_Content_Document_Links</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -244,8 +683,8 @@
     <loops>
         <name>All_Uploaded_CD_Ids</name>
         <label>All Uploaded CD Ids</label>
-        <locationX>821</locationX>
-        <locationY>419</locationY>
+        <locationX>651</locationX>
+        <locationY>809</locationY>
         <assignNextValueToReference>cur_cd_id</assignNextValueToReference>
         <collectionReference>content_document_ids</collectionReference>
         <iterationOrder>Asc</iterationOrder>
@@ -272,17 +711,17 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>1140</locationX>
-        <locationY>56</locationY>
+        <locationX>884</locationX>
+        <locationY>273</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Send_HTML_Email</targetReference>
+            <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
         </connector>
         <filters>
-            <field>Email</field>
+            <field>Name</field>
             <operator>Contains</operator>
             <value>
-                <stringValue>edelstein</stringValue>
+                <elementReference>testContactContains</elementReference>
             </value>
         </filters>
         <object>Contact</object>
@@ -295,8 +734,8 @@
     <recordLookups>
         <name>Get_Content_Document_Links</name>
         <label>Get Content Document Links</label>
-        <locationX>348</locationX>
-        <locationY>54</locationY>
+        <locationX>549</locationX>
+        <locationY>630</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>All_CDL</targetReference>
@@ -305,7 +744,7 @@
             <field>LinkedEntityId</field>
             <operator>EqualTo</operator>
             <value>
-                <elementReference>recordId</elementReference>
+                <elementReference>Related_Record_ID_whatId_recordId</elementReference>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -315,64 +754,19 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>Get_Template_ID</name>
-        <label>Get Template ID</label>
-        <locationX>784</locationX>
-        <locationY>56</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Template_Target_Record</targetReference>
-        </connector>
-        <filters>
-            <field>Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>ApproveStep2</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>EmailTemplate</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Name</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
-        <name>Get_Template_Target_Record</name>
-        <label>Get Template Target Record</label>
-        <locationX>896</locationX>
-        <locationY>56</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Get_Users</targetReference>
-        </connector>
-        <filters>
-            <field>FirstName</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Diana</stringValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Contact</object>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>FirstName</queriedFields>
-        <queriedFields>LastName</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
-    <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>1021</locationX>
-        <locationY>56</locationY>
+        <locationX>780</locationX>
+        <locationY>273</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
         </connector>
         <filters>
-            <field>FirstName</field>
-            <operator>EqualTo</operator>
+            <field>Name</field>
+            <operator>Contains</operator>
             <value>
-                <stringValue>George</stringValue>
+                <elementReference>testUserContains</elementReference>
             </value>
         </filters>
         <object>User</object>
@@ -383,15 +777,47 @@
         <queriedFields>LastName</queriedFields>
     </recordLookups>
     <screens>
-        <name>File_Upload</name>
-        <label>File Upload</label>
-        <locationX>121</locationX>
-        <locationY>49</locationY>
+        <name>Choose_Example_Screen</name>
+        <label>Choose Example</label>
+        <locationX>141</locationX>
+        <locationY>467</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Which_Choice</targetReference>
+        </connector>
+        <fields>
+            <name>SelectExampleInstructions</name>
+            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - with To, Sender, Reply-To, Subject, Body (All text)&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - Using Address Collections to Send to Multiple Recipients&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - Simple Email (1) With Attachments&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; - An email using a Lightning EmailTemplate&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - An email using a Lightning EmailTemplate selected by language&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Choose_Example</name>
+            <choiceReferences>whichExampleChoice1</choiceReferences>
+            <choiceReferences>whichExampleChoice2</choiceReferences>
+            <choiceReferences>whichExampleChoice3</choiceReferences>
+            <choiceReferences>whichExampleChoice4</choiceReferences>
+            <choiceReferences>whichExampleChoice5</choiceReferences>
+            <dataType>Number</dataType>
+            <fieldText>Choose Example</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>true</isRequired>
+            <scale>0</scale>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>File_Upload_to_Attach</name>
+        <label>Upload Files to Attach</label>
+        <locationX>450</locationX>
+        <locationY>630</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Build_List_of_String_Addresses</targetReference>
+            <targetReference>Get_Content_Document_Links</targetReference>
         </connector>
         <fields>
             <name>file_apload_sc</name>
@@ -406,7 +832,7 @@
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>recordId</elementReference>
+                    <elementReference>Related_Record_ID_whatId_recordId</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -425,10 +851,140 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Get_Simple_Email_Fields_Attachments</name>
+        <label>3. Get Simple Email Fields For Attachments</label>
+        <locationX>339</locationX>
+        <locationY>630</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>File_Upload_to_Attach</targetReference>
+        </connector>
+        <fields>
+            <name>Example3Details</name>
+            <fieldText>&lt;p&gt;For this example, you will need to create or use a record to which attachments can be made (e.g.,  a Contact).  Create the record and then use the recordId of that record to attach files.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out a simple plaintext email with attachments from uploaded files to the addressee in [Recipient Email Address] from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;:  This example as distributed uses the formula variable &quot;&lt;span style=&quot;background-color: rgb(243, 242, 242); color: rgb(0, 109, 204);&quot;&gt;testPlainTextLineFeeds&lt;/span&gt;&quot; to create a plain text body without signature&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ToEmailaAdress_3</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Recipient Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>disabled</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>readonly</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestEmailAddress1</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Reply_To_Email_Address_3</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Sender_Name_3</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Subject_3</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSubject</elementReference>
+            </defaultValue>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Related_Record_ID_whatId_recordId</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>recordId</elementReference>
+            </defaultValue>
+            <fieldText>Related Record ID(whatId/recordId)</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>screenConsole1</name>
         <label>screenConsole1</label>
-        <locationX>1140</locationX>
-        <locationY>347</locationY>
+        <locationX>1216</locationX>
+        <locationY>177</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -440,25 +996,544 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <start>
-        <locationX>17</locationX>
-        <locationY>49</locationY>
+    <screens>
+        <name>X1_Get_Simple_Email_Fields</name>
+        <label>1. Get Simple Email Fields</label>
+        <locationX>344</locationX>
+        <locationY>169</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
         <connector>
-            <targetReference>File_Upload</targetReference>
+            <targetReference>Simplest_HTML_Email</targetReference>
+        </connector>
+        <fields>
+            <name>Example1Details</name>
+            <fieldText>&lt;p&gt;This sends out a rich text email predefined as a text template () l to the addressee in [Recipient Email Address] from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;: To get the full effect of rich text, edit the formula plainTextBody instead of modifying the field on this screen.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ToEmailAddress_1</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Recipient Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>disabled</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>readonly</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestEmailAddress1</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Reply_To_Email_Address_1</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Sender_Name_1</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Subject_1</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSubject</elementReference>
+            </defaultValue>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>X2_Get_Simple_Email_Fields_Collections</name>
+        <label>2. Get Simple Email Fields &amp; Collections</label>
+        <locationX>408</locationX>
+        <locationY>276</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Clear_String_Addr_Collection</targetReference>
+        </connector>
+        <fields>
+            <name>Example2Details</name>
+            <fieldText>&lt;p&gt;This sends out a simple plaintext email  from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The addressees can be built from multiple collections.  This example builds a collection of strings from the  two email strings and/or from collections you can set up external to the example flow by creating contacts with names containing the text entered in [Contact Contains Match].&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;By default, this example builds a collection of strings from the two recipient email addresses and will send all collections to To, CC, and BCC (so 6 emails will be sent - minimum)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Example&lt;/b&gt;:  Create two contacts with valid email addresses and names containing &quot;testContact&quot;, then specify &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; &quot;testContact&quot; in [Contact Contains Match]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Note&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;: To get the full effect of rich text, edit the formula plainTextBody instead of modifying the field on this screen.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ToEmailAddress_2</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Recipient Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestEmailAddress1</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>disabled</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>readonly</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestEmailAddress1</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>ToEmailAddress2_2</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Recipient Email Addr 2</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestEmailAddress2</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>readonly</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestEmailAddress2</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestEmailAddress2</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Reply_To_Email_Address_2</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Sender_Name_2</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Subject_2</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSubject</elementReference>
+            </defaultValue>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>emailBody_2</name>
+            <defaultValue>
+                <stringValue>{!plainTextBody}</stringValue>
+            </defaultValue>
+            <fieldText>Body</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Test_Contact_Recipient_Contains_2</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testContactContains</elementReference>
+            </defaultValue>
+            <fieldText>Test Contact Recipient Contains</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Test_User_Recipient_Contains_2</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Test_Contact_Recipient_Contains_2</elementReference>
+            </defaultValue>
+            <fieldText>Test User Recipient Contains</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>X4_Email_Using_Template</name>
+        <label>4. Email Using Template</label>
+        <locationX>259</locationX>
+        <locationY>961</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>X4_Email_Using_Template_Action</targetReference>
+        </connector>
+        <fields>
+            <name>Example4Details</name>
+            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Template_RecordId_TemplateEmail</name>
+            <dataType>String</dataType>
+            <fieldText>Template RecordId (TemplateEmail)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Template_Target_Record_Id_4</name>
+            <dataType>String</dataType>
+            <fieldText>Template Target Record Id</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Related_Record_Id_for_testing_merge_fields_4</name>
+            <dataType>String</dataType>
+            <fieldText>Related Record Id (for testing merge fields)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Reply_To_Email_Address_4</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Sender_Name_4</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Subject_4</name>
+            <dataType>String</dataType>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>X5_Multi_Lingual_Using_Email_Templates</name>
+        <label>5. Multi-Lingual Using Email Templates</label>
+        <locationX>193</locationX>
+        <locationY>1085</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Create_Test_Templates_if_Needed_5</targetReference>
+        </connector>
+        <fields>
+            <name>Example5Details</name>
+            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&#39;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Template_Name</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>sendHTMLEmailTest</stringValue>
+            </defaultValue>
+            <fieldText>Template Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Language.&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Template_Language</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>es_MX</stringValue>
+            </defaultValue>
+            <fieldText>Template Language</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Will be in the format lang_Local(e.g. &quot;en_US&quot;) Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Name,&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&amp;nbsp;&amp;nbsp;Template&amp;nbsp;Selection&amp;nbsp;criteria&amp;nbsp;order&amp;nbsp;first&amp;nbsp;found&amp;nbsp;Name&amp;nbsp;with:&amp;nbsp;1)If&amp;nbsp;empty,&amp;nbsp;Org&amp;nbsp;LanguageLocaleKey&amp;nbsp;2)Language&amp;nbsp;found&amp;nbsp;in&amp;nbsp;Description&amp;nbsp;3)First&amp;nbsp;without&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Template_Target_Record_Id_5</name>
+            <dataType>String</dataType>
+            <fieldText>Template Target Record Id</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Related_Record_Id_for_testing_merge_fields_5</name>
+            <dataType>String</dataType>
+            <fieldText>Related Record Id (for testing merge fields)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Reply_To_Email_Address_5</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>TestReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>TestReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>Sender_Name_5</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Subject_5</name>
+            <dataType>String</dataType>
+            <fieldText>Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>34</locationX>
+        <locationY>467</locationY>
+        <connector>
+            <targetReference>Choose_Example_Screen</targetReference>
         </connector>
     </start>
     <status>Draft</status>
-    <textTemplates>
-        <name>HTMLPasteIn</name>
-        <text>&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Hi Geoff Minor,&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;We received a request to reset the password for your account. Click here to set up a new one.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&amp;lt;a&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;href&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;https://www.salesforce.com/&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt; &lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorSlate,#68737C);&quot;&gt;target&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBrown,#8F6D4D);&quot;&gt;=&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorGreen,#04844B);&quot;&gt;&quot;_blank&quot;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;Create a password&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlack,#000000);&quot;&gt;If you don’t want to reset your password, you can ignore this email and we won’t change it.&lt;/span&gt;&lt;span style=&quot;color: var(--lwc-codeSnippetColorBlue,#005FB2);&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
-    </textTemplates>
+    <subflows>
+        <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
+        <name>Create_Test_Templates_if_Needed_5</name>
+        <label>Create Test Templates if Needed</label>
+        <locationX>634</locationX>
+        <locationY>1085</locationY>
+        <connector>
+            <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
+        </connector>
+        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <inputAssignments>
+            <name>sendHTMLEmailTestName</name>
+            <value>
+                <elementReference>Template_Name</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
     <textTemplates>
         <name>HTMLTextTemplate</name>
-        <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
+        <text>&lt;p&gt;This is some &lt;span style=&quot;color: rgb(41, 25, 215);&quot;&gt;body text &lt;/span&gt;created using the rich text editor in the &lt;b&gt;Text Template&lt;/b&gt; resource in &lt;u style=&quot;font-size: 22px;&quot;&gt;Flow&lt;/u&gt;.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Or a graphic:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from:&lt;/p&gt;&lt;ol&gt;&lt;li&gt;SendTOthisOneEmailAddress:  {!TestEmailAddress1}&lt;/li&gt;&lt;li&gt;String Collection: {!stringCollectionEmailAddresses}&lt;/li&gt;&lt;/ol&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>plainTextBody</name>
-        <text>&lt;p&gt;This is some body text created using the rich text editor in the Text Template resource in Flow.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
+        <text>&lt;p&gt;This is some body text created using the rich text editor in the Text Template resource in Flow.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This email is being sent to this set of email addresses that came from a string collection:&lt;/p&gt;&lt;p&gt;{!stringCollectionEmailAddresses}&lt;/p&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>plainTextVersion</name>
@@ -564,5 +1639,89 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testContactContains</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>testContact</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>A test email address for checking if an email is actually sent.</description>
+        <name>TestEmailAddress1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>john.doe@example.com</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>A second email address  for testing actual sends if desired</description>
+        <name>TestEmailAddress2</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>jane.roe@example.com</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>testPlainTextBody</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>This is the plain text version line 1.\nLine 2.\nLine 3.</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>A return address if an actual email is requested</description>
+        <name>TestReturnAddress</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>donotreply@example.com</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>testSenderName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>DoNotReply</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>testSubject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>This is a test email from sendHTMLEmail</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <description>For testing list/collection of recipients if the user name contains this value</description>
+        <name>testUserContains</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>testUserValue</stringValue>
+        </value>
     </variables>
 </Flow>

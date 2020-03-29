@@ -4,38 +4,41 @@
  * @Author             : various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group              : unofficialSF
  * @Last Modified By   : jack.pond@psitex.com
- * @Last Modified On   : 2/5/2020, 4:02:33 PM
+ * @Last Modified On   : 3/22/2020, 9:08:33 AM
  * @Modification Log   : 
  * @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver       Date            Author      		    Modification
- * 1.32    2/5/2020   jack.pond@psitex.com     Modified for multi-lingual and to throw InvocableActionException on exceptions
+ * 1.32    2/5/2020   jack.pond@psitex.com      Modified for multi-lingual and to throw InvocableActionException on exceptions
+ * 1.32    2/11/2020  alex@edelstein.org        Bulkified and Changed recordId to String
+ * 1.33    3/22/2020  jack.pond@psitex.com      Added consistency checks, modified Labels and alphabetized params
 **/
 
 public without sharing class SendHTMLEmail {
 
     @invocableMethod(label='Send HTML Email')
-    public static List<Response>  SendEmail(List<Request> requests) {
+    public static List<Response> SendEmail(List<Request> requests) {
 
         List<Response> responseList = new List<Response>();
-
+		system.debug('Got here SendEmail');
         for (Request curRequest : requests) {
             Response response = new Response();
 
             String HTMLbody = curRequest.HTMLbody;
+            String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
             String plainTextBody = curRequest.plainTextBody;
-            String subject = curRequest.subject;
+            String recordId = curRequest.recordId;
             String replyEmailAddress = curRequest.replyEmailAddress;
             String senderDisplayName = curRequest.senderDisplayName;
+            String subject = curRequest.subject;
             String templateID = curRequest.templateID;
             String templateName = curRequest.templateName;
             String templateLanguage = curRequest.templateLanguage;
             String templateTargetObjectId = curRequest.templateTargetObjectId;
-            String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
-            Boolean saveAsActivity = curRequest.saveAsActivity;
-            String recordId = curRequest.recordId;
-
-
-
+            Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
+            Boolean saveAsActivity = curRequest.saveAsActivity == null?true:curRequest.saveAsActivity;
+            if (recordId==null)saveAsActivity = curRequest.saveAsActivity == null?false:curRequest.saveAsActivity;
+            if (subject != null && (subject.length() == 0) ) subject = null;
+         
             //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
             // First, reserve email capacity for the current Apex transaction to ensure
@@ -83,12 +86,7 @@ public without sharing class SendHTMLEmail {
             // Optionally append the salesforce.com email signature to the email.
             // The email address of the user executing the Apex Code will be used.
             // True by default unless the user passes a value in.
-            if(curRequest.useSalesforceSignature != null) {
-                mail.setUseSignature(curRequest.useSalesforceSignature);
-            } else {
-                mail.setUseSignature(true);
-            }
-
+            mail.setUseSignature(useSalesforceSignature);
             mail = AddAttachments(mail, curRequest.contentDocumentAttachments, null);
             
             if (templateName != null && templateID != null)
@@ -296,6 +294,7 @@ public without sharing class SendHTMLEmail {
         String retTemplateId;
         String blankTemplate;
         List<EmailTemplate> et = [SELECT Id,Description FROM EmailTemplate WHERE Name=:templateName AND isActive = TRUE];
+        system.debug('TemplateNames: '+ et);
         if (et.size() > 0){
             String localeKey = [Select LanguageLocaleKey From Organization Limit 1].LanguageLocaleKey;
             if (templateLanguage == NULL) templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;
@@ -315,25 +314,25 @@ public without sharing class SendHTMLEmail {
 
     public class Request {
         @invocableVariable
+        public List<ContentDocumentLink> contentDocumentAttachments;
+
+        @invocableVariable
         public String HTMLbody;
+
+        @invocableVariable
+        public String orgWideEmailAddressId;
 
         @invocableVariable
         public String plainTextBody;
         
-        @invocableVariable
-        public String templateID;
-        
-        @invocableVariable
-        public String subject;
-        
+        @invocableVariable(label='Related Record ID(whatId/recordId)' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
+        public String recordId;
+
         @invocableVariable
         public String replyEmailAddress;
         
         @invocableVariable
         public String senderDisplayName;
-
-        @invocableVariable
-        public String orgWideEmailAddressId;
 
         @invocableVariable
         public String SendTOthisOneEmailAddress;
@@ -354,7 +353,7 @@ public without sharing class SendHTMLEmail {
         public String SendCCthisOneEmailAddress;
 
         @invocableVariable
-        public List<String>  SendCCthisStringCollectionOfEmailAddresses;
+        public List<String> SendCCthisStringCollectionOfEmailAddresses;
 
         @invocableVariable
         public List<Contact> SendCCtheEmailAddressesFromThisCollectionOfContacts;
@@ -369,7 +368,7 @@ public without sharing class SendHTMLEmail {
         public String SendBCCthisOneEmailAddress;
 
         @invocableVariable
-        public List<String>  SendBCCthisStringCollectionOfEmailAddresses;
+        public List<String> SendBCCthisStringCollectionOfEmailAddresses;
 
         @invocableVariable
         public List<Contact> SendBCCtheEmailAddressesFromThisCollectionOfContacts;
@@ -380,9 +379,6 @@ public without sharing class SendHTMLEmail {
         @invocableVariable
         public List<Lead> SendBCCtheEmailAddressesFromThisCollectionOfLeads;
         
-        @invocableVariable
-        public Boolean UseSalesforceSignature;
-
         /*
         Static resources do not store file extensions, thus email attachments will have file names without extensions,
         which is inconvenient for an end user. Disabling this option for now.
@@ -393,23 +389,26 @@ public without sharing class SendHTMLEmail {
 //        @invocableVariable
 //        public String staticResourceAttachmentNames;
 
-        @invocableVariable
-        public List<ContentDocumentLink> contentDocumentAttachments;
-
-        @invocableVariable
+        @invocableVariable(description='Defaults to True unless recordId is null')
         public Boolean saveAsActivity;
 
-        @invocableVariable(label='Template Name' description='Used in conjuction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
+        @invocableVariable
+        public String subject;
+        
+        @invocableVariable
+        public String templateID;
+        
+        @invocableVariable(label='Template Name' description='Used in conjunction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
         public String templateName;
         
-        @invocableVariable(label='Template Language' description='Used in conjuction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
+        @invocableVariable(label='Template Language' description='Used in conjunction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
         public String templateLanguage;
         
         @invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
         public String templateTargetObjectId;
 
-        @invocableVariable(label='Associated RecordId(WhatId/recordId for template and activity)' description='If you specify a contact for the targetObjectId field, you can specify an optional whatId as well. This helps to further ensure that merge fields in the template contain the correct data. This is used for merge fields and for associating activities and attachments.')
-        public String recordId;
+        @invocableVariable(description='True unless otherwise specified')
+        public Boolean UseSalesforceSignature;
     }
 
     public class Response {

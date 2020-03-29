@@ -1,10 +1,10 @@
 {
-  "orgName": "aedelstein Company",
+  "orgName": "unofficialSF Team",
   "edition": "Developer",
-  "features": [],
+  "hasSampleData": false,
   "settings": {
-    "orgPreferenceSettings": {
-      "s1DesktopEnabled": true
+    "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
     }
   }
 }

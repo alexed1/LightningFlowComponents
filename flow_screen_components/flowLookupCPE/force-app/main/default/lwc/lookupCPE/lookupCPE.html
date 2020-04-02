@@ -1,0 +1,18 @@
+<template>
+    <lightning-input
+            label={labels.masterLabel}
+            value={_masterLabel}
+            onchange={handleMasterLabelChanged}
+    ></lightning-input>
+    <c-pick-object-and-field-f-s-c
+            object-label={labels.lookupWhichObject}
+            field-label={labels.displayWhichField}
+            onfieldselected={handleDisplayFieldSelected}
+    ></c-pick-object-and-field-f-s-c>
+    <c-pick-object-and-field-f-s-c
+            field-label={labels.outputWhichField}
+            object-type={_objectName}
+            onfieldselected={handleOutputFieldSelected}
+            hide-object-picklist
+    ></c-pick-object-and-field-f-s-c>
+</template>

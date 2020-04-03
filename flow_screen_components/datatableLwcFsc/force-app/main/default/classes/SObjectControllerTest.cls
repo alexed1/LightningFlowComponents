@@ -15,7 +15,7 @@ public with sharing class SObjectControllerTest {
 			Description='D2');
         insert a2;
         Account[] accts = [Select Id, Name, OwnerId from Account];
-        String fieldnames = 'Name,Id,OwnerId,AccountNumber,Website,Type,Description,IsPartner,CreatedDate,AnnualRevenue,NumberOfEmployees,Fax,LastActivityDate';
+        String fieldnames = 'Name,Id,OwnerId,AccountNumber,Website,Type,Description,IsDeleted,CreatedDate,AnnualRevenue,NumberOfEmployees,Fax,LastActivityDate';
         String testResponse = SObjectController.getReturnResults(accts, fieldnames);
         System.assert(testResponse.contains('"noEditFieldList":["Type","Description"],"lookupFieldList":["OwnerId"]'));
     }

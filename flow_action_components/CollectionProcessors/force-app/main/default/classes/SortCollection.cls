@@ -21,7 +21,7 @@ global with sharing class SortCollection {
             }
 
             if (!outputCollection.isEmpty()) {
-                Map<String, String> fieldTypes = getFieldTypes(outputCollection[0], allFields);
+                Map<String, String> fieldTypes = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], allFields);
 
                 for (SortKeyMember skm : sk.sortKeys) {
                     List<SortableWrapper> sortable = new List<SortableWrapper>();
@@ -103,19 +103,7 @@ global with sharing class SortCollection {
         }
     }
 
-    private static Map<String, String> getFieldTypes(SObject acc, List<String> fieldNames) {
-        //Assuming SObject will be replaced with generic SObject
-        Schema.SObjectType r = acc.Id.getSObjectType();
 
-        Map<String, String> resultMap = new Map<String, String>();
-
-        DescribeSObjectResult d = r.getDescribe();
-        for (String fieldName : fieldNames) {
-            resultMap.put(fieldName, d.fields.getMap().get(fieldName).getDescribe().getType().name());
-        }
-
-        return resultMap;
-    }
 
     global class Requests {
         @InvocableVariable(required=true)

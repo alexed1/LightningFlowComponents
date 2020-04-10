@@ -1,69 +1,92 @@
 global with sharing class CloneParentRecordAndChildRecords {
 
-        //for each child relationship name, query for the records that have the inputRecord as parent
-        //suppose the parent account is Order and we want all the child OrderLines
-        //we need to know for our query of OrderLines what the fieldname is of the lookup relationship. It is not deterministic
-        //so we have to first find all the child relationships of Order, match them by name with the requested relationships and find the field names of the lookup fields 
-        //once we have the field name from the ChildRelationship, we can do a query for all the child records
-
+    //for each child relationship name, query for the records that have the inputRecord as parent
+    //suppose the parent account is Order and we want all the child OrderLines
+    //we need to know for our query of OrderLines what the fieldname is of the lookup relationship. It is not deterministic
+    //so we have to first find all the child relationships of Order, match them by name with the requested relationships and find the field names of the lookup fields
+    //once we have the field name from the ChildRelationship, we can do a query for all the child records
+    @TestVisible
+    private static String ERROR_NO_RECORD_NO_ID = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
+    @TestVisible
+    private static String ERROR_RECORD_AND_ID = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+    @TestVisible
+    private static String ERROR_SAVE_CHILD_WITHOUT_PARENT = 'You tried to save child records that didn\'t have a parentId, which might mean that you need to first save the parent record';
     @InvocableMethod
     global static List <Results> clone(List<Requests> requestList) {
 
-        
+
         SObject inputRecord = requestList[0].inputRecord;
         String inputRecordId = requestList[0].inputRecordId;
-        Boolean preserveId = requestList[0].preserveId != null ? requestList[0].preserveId : false;
+        List<String> childRelationships = requestList[0].childRelationships != null ? requestList[0].childRelationships : (new List<String>());
+        String childRelationshipsCSV = requestList[0].childRelationshipsCSV;
+        Boolean saveChildRecordsAutomatically = requestList[0].saveChildRecordsAutomatically != null ? requestList[0].saveChildRecordsAutomatically : false;
         Boolean saveImmediately = requestList[0].saveImmediately != null ? requestList[0].saveImmediately : false;
-
 
         List<Results> responseWrapper = new List<Results>();
 
         Results response = new Results();
-        try {
-            if (inputRecordId == null && inputRecord == null) {
-                throw new InvocableActionException('You need to pass either a record or a recordId into this action, representing the entity you want to clone');
-            } else if (inputRecordId != null && inputRecord != null) {
-                throw new InvocableActionException('You need to pass either a record or a recordId into this action, but you can not pass both');
-            }
-            if (inputRecordId != null) {
-                String typeName = ID.valueOf(inputRecordId).getSObjectType().getDescribe().getName();
-                inputRecord = Database.query('SELECT Id, Name From ' + typeName + ' Where Id = :inputRecordId');       
-            }
-            System.debug('made it through validation. inputRecord is: ' + inputRecord);
-            response.clonedRecord = inputRecord.clone(preserveId);   
-            System.debug('after in-memory clone, clonedRecord is: ' + response.clonedRecord);
-        } 
-        catch ( Exception e) {
-            response.errorText = e.getMessage();
+        SObjectDeepClone cloner;
+
+
+        if (inputRecordId == null && inputRecord == null) {
+            throw new InvocableActionException(ERROR_NO_RECORD_NO_ID);
+        } else if (inputRecordId != null && inputRecord != null) {
+            throw new InvocableActionException(ERROR_RECORD_AND_ID);
+        } else if (saveChildRecordsAutomatically && !saveImmediately) {
+            throw new InvocableActionException(ERROR_SAVE_CHILD_WITHOUT_PARENT);
+        }
+        if (childRelationships == null || childRelationships.isEmpty() && !String.isBlank(childRelationshipsCSV)) {
+            childRelationships = childRelationshipsCSV.replaceAll(' ', '').split(',');
         }
 
-        if (saveImmediately)  {
-            // setup the save point for rollback
-            Savepoint sp = Database.setSavepoint();
-            System.debug('Saving clone...');
-            
-            try {
-                insert response.clonedRecord;
-                response.clonedRecordId = response.clonedRecord.Id;
-                System.debug('saved record id is: ' + response.clonedRecord.Id);
-            } catch(Exception e){
-                Database.rollback(sp);
-                response.errorText = e.getMessage();
+        if (inputRecordId != null) {
+            cloner = new SObjectDeepClone(inputRecordId, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+        } else if (inputRecord.Id != null) {
+            cloner = new SObjectDeepClone(inputRecord.Id, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+        } else if (inputRecord != null) {
+            cloner = new SObjectDeepClone(inputRecord, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+        }
+        if (cloner != null) {
+            response.clonedRecord = cloner.clone;
+        }
+
+        if (saveImmediately && cloner != null) {
+
+            response.clonedRecordId = cloner.save();
+            if (!cloner.clonedChildrenPerTypeMap.isEmpty()) {
+
+                for (Integer i = 1; i <= Math.min(5, childRelationships.size()); i++) {
+                    String curRelation = childRelationships[i - 1];
+
+                    List<SObject> curChildren = cloner.clonedChildrenPerTypeMap.get(curRelation.toUpperCase());
+                    if (i == 1) {
+                        response.clonedRelatedList1 = curChildren;
+                    } else if (i == 2) {
+                        response.clonedRelatedList2 = curChildren;
+                    } else if (i == 3) {
+                        response.clonedRelatedList3 = curChildren;
+                    } else if (i == 4) {
+                        response.clonedRelatedList4 = curChildren;
+                    } else if (i == 5) {
+                        response.clonedRelatedList5 = curChildren;
+                    }
+                }
             }
         }
-        
 
         responseWrapper.add(response);
+
         return responseWrapper;
     }
 
-    global class InvocableActionException extends Exception {}
+    global class InvocableActionException extends Exception {
+    }
 
     global class Requests {
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=false)
         global SObject inputRecord;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=false)
         global String inputRecordId;
 
         @InvocableVariable
@@ -73,24 +96,40 @@ global with sharing class CloneParentRecordAndChildRecords {
         global String childRelationshipsCSV;
 
         @invocableVariable
-        global Boolean saveImmediately;
+        global Boolean saveImmediately = true;
 
         @invocableVariable
-        global Boolean preserveId;
-       
+        global Boolean saveChildRecordsAutomatically = true;
     }
 
     global class Results {
 
         public Results() {
-            clonedRelatedList = new List<SObject>();
+            clonedRelatedList1 = new List<SObject>();
+            clonedRelatedList2 = new List<SObject>();
+            clonedRelatedList3 = new List<SObject>();
+            clonedRelatedList4 = new List<SObject>();
+            clonedRelatedList5 = new List<SObject>();
+
         }
 
         @InvocableVariable(required=true)
         global SObject clonedRecord;
 
-        @InvocableVariable
-        global List<SObject> clonedRelatedList;
+        @InvocableVariable(required=false)
+        global List<SObject> clonedRelatedList1;
+
+        @InvocableVariable(required=false)
+        global List<SObject> clonedRelatedList2;
+
+        @InvocableVariable(required=false)
+        global List<SObject> clonedRelatedList3;
+
+        @InvocableVariable(required=false)
+        global List<SObject> clonedRelatedList4;
+
+        @InvocableVariable(required=false)
+        global List<SObject> clonedRelatedList5;
 
         @invocableVariable
         global String clonedRecordId;

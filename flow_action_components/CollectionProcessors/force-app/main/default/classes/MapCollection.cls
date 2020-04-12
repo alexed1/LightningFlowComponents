@@ -10,25 +10,28 @@ global with sharing class MapCollection {
                 outputCollection.add(acc.clone(true));
             }
 
-            Pattern mPattern = pattern.compile('([^,:"\\s*]+)');
-            Matcher mMatcher = mPattern.matcher(keyValuePairs);
-            Map<String, String> keyValue = new Map<String, String>();
+            Pattern mPattern = pattern.compile('"(?:[^"\\\\]|\\\\.)*"');
+            Matcher mMatcher = mPattern.matcher(CollectionProcessorsUtils.replaceConstants(keyValuePairs));
+
+            Map<String, String> fieldNameToValueMap = new Map<String, String>();
             String key;
             while (mMatcher.find()) {
+
                 if (key == null) {
                     key = mMatcher.group(0);
                 } else {
-                    keyValue.put(key, mMatcher.group(0));
+                    fieldNameToValueMap.put(stripQuotes(key), stripQuotes(mMatcher.group(0)));
                     key = null;
                 }
             }
 
-            for (String curKey : keyValue.keySet()) {
+            Map<String, String> fieldTypesMap = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], new List<String>(fieldNameToValueMap.keySet()));
+            for (String curFieldName : fieldNameToValueMap.keySet()) {
                 for (SObject acc : outputCollection) {
-                    try{
-                        acc.put(curKey, keyValue.get(curKey));
-                    }catch (Exception ex){
-                        response.errors+=ex.getMessage();
+                    try {
+                        putType(acc, curFieldName, fieldTypesMap.get(curFieldName), fieldNameToValueMap.get(curFieldName));
+                    } catch (Exception ex) {
+                        response.errors += ex.getMessage();
                     }
                 }
             }
@@ -39,9 +42,39 @@ global with sharing class MapCollection {
         responseWrapper.add(response);
 
         return responseWrapper;
-
-
     }
+
+
+
+    private static String stripQuotes(String str) {
+        if (str != null) {
+            return str.removeEnd('"').removeStart('"');
+        } else {
+            return null;
+        }
+    }
+
+    private static void putType(SObject obj, String fieldName, String fieldType, String fieldValue) {
+
+        if (fieldType != 'Boolean' && (fieldValue == null || fieldValue == '')) {
+            obj.put(fieldName, null);
+        } else if (fieldType == 'Date') {
+            obj.put(fieldName, Date.valueOf((String) fieldValue));
+        } else if (fieldType == 'Datetime') {
+            obj.put(fieldName, Datetime.valueOf((String) fieldValue));
+        } else if (fieldType == 'Boolean') {
+            obj.put(fieldName, fieldValue == null ? false : Boolean.valueOf(fieldValue));
+        } else if (fieldType == 'Currency') {
+            if (fieldValue != null && fieldValue != '') {
+                obj.put(fieldName, Decimal.valueOf(fieldValue));
+            }
+        } else if (fieldType == 'JSON') {
+            obj.put(fieldName, JSON.serialize(fieldValue));
+        } else {
+            obj.put(fieldName, fieldValue);
+        }
+    }
+
     global class Requests {
         @InvocableVariable(required=true)
         global List<SObject> inputCollection;

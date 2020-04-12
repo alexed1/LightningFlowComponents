@@ -6,58 +6,61 @@ public with sharing class ListActionsTest {
     @isTest
     static void cloneRecordTests() {
         //user must pass in at least one input recordid or an input record
-        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
-        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+//        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
+//        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<CloneParentRecordAndChildRecords.Requests> requests = new List<CloneParentRecordAndChildRecords.Requests>();
         CloneParentRecordAndChildRecords.Requests request = new CloneParentRecordAndChildRecords.Requests();
         requests.add(request);
-        List<CloneParentRecordAndChildRecords.Results> responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        List<CloneParentRecordAndChildRecords.Results> responseWrapper;
+        try {
+            responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        } catch (Exception ex) {
+            System.assertEquals(true, ex.getMessage().contains(CloneParentRecordAndChildRecords.ERROR_NO_RECORD_NO_ID));
+        }
+
         requests.clear();
 
         //user can't pass in both an input recordid and an input record
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id,true);
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = testAccounts[0];
         requests.add(request);
-        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage );
+        try {
+            responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        } catch (Exception ex) {
+            System.assertEquals(true, ex.getMessage().contains(CloneParentRecordAndChildRecords.ERROR_RECORD_AND_ID));
+        }
+
         requests.clear();
 
         request.inputRecordId = null;
         request.inputRecord = testAccounts[0];
         requests.add(request);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = null;
         requests.add(request);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord, null );
+        System.assertNotEquals(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
-        request.preserveId = true;
-        request.inputRecordId = testAccounts[0].Id;
-        request.inputRecord = null;
-        requests.add(request);
-        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
-        requests.clear();
-
-        request.preserveId = false;
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = null;
         request.saveImmediately = true;
+        request.childRelationshipsCSV = 'Tasks';
         requests.add(request);
         responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id );
-        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null );
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id);
+        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null);
+        List<Task> allTasks = [SELECT Id FROM Task];
+        System.assertEquals(2 * NUMBER_OF_TEST_RECORDS, allTasks.size());
         requests.clear();
 
-    } 
-
+    }
 
 
     @isTest
@@ -131,14 +134,16 @@ public with sharing class ListActionsTest {
     @isTest
     static void mapCollection() {
         final Map<String, String> fieldNameValue = new Map<String, String>{
-                'Website' => 'www.site.com',
-                'Name' => 'DifferentName'
+                'Email' => 'test@site.com',
+                'HasOptedOutOfEmail' => 'true',
+                'AnnualRevenue' => '1.123'
         };
+
 
         List<MapCollection.Requests> requests = new List<MapCollection.Requests>();
         MapCollection.Requests request = new MapCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        request.inputCollection = testAccounts;
+        List<Lead> testLeads = createLeads(NUMBER_OF_TEST_RECORDS, true);
+        request.inputCollection = testLeads;
         request.keyValuePairs = '';
         for (String fieldName : fieldNameValue.keySet()) {
             request.keyValuePairs += '"' + fieldName + '":"' + fieldNameValue.get(fieldName) + '",';
@@ -151,9 +156,10 @@ public with sharing class ListActionsTest {
         System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
         for (SObject obj : responseWrapper[0].outputCollection) {
             for (String fieldName : fieldNameValue.keySet()) {
-                System.assertEquals(fieldNameValue.get(fieldName), obj.get(fieldName));
+                System.assertEquals(String.valueOf(fieldNameValue.get(fieldName)), String.valueOf(obj.get(fieldName)));
             }
         }
+
     }
 
     @isTest
@@ -287,11 +293,37 @@ public with sharing class ListActionsTest {
         System.assertEquals(((Account) responseWrapper[0].outputCollection[NUMBER_OF_TEST_RECORDS - 1]).Name, firstAccountName);
     }
 
-     static List<Account> createAccounts(Integer numberOfRecords, Boolean doInsert) {
+    static List<Account> createAccounts(Integer numberOfRecords, Boolean doInsert) {
 
         List<Account> returnList = new List<Account>();
         for (Integer i = 0; i < numberOfRecords; i++) {
             returnList.add(new Account(Name = TEST_RECORD_NAME + i, Website = '' + i));
+        }
+        if (doInsert) {
+            insert returnList;
+        }
+
+        return returnList;
+    }
+
+    static List<Task> createTasks(Integer numberOfRecords, Id whatId, Boolean doInsert) {
+
+        List<Task> returnList = new List<Task>();
+        for (Integer i = 0; i < numberOfRecords; i++) {
+            returnList.add(new Task(Subject = TEST_RECORD_NAME + i, WhatId = whatId));
+        }
+        if (doInsert) {
+            insert returnList;
+        }
+
+        return returnList;
+    }
+
+    static List<Lead> createLeads(Integer numberOfRecords, Boolean doInsert) {
+
+        List<Lead> returnList = new List<Lead>();
+        for (Integer i = 0; i < numberOfRecords; i++) {
+            returnList.add(new Lead(LastName = TEST_RECORD_NAME + i, Company = TEST_RECORD_NAME));
         }
         if (doInsert) {
             insert returnList;

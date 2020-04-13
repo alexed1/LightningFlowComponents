@@ -2,7 +2,7 @@
     "packageDirectories": [
         {
             "path": "force-app",
-            "default": true,
+            "default": false,
             "package": "SendHTMLEmailPrA",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
@@ -19,7 +19,7 @@
             "package": "sendHTMLEmail",
             "versionName": "ver 1.33.01",
             "versionNumber": "1.33.01.NEXT",
-            "default": false
+            "default": true
         }
     ],
     "namespace": "",
@@ -31,6 +31,8 @@
         "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
         "sendHTMLEmail": "0Ho3h000000Gmb2CAC",
         "sendHTMLEmail(No Tests)": "0Ho3h000000GmbCCAS",
-        "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS"
+        "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
+        "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
+        "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC"
     }
 }

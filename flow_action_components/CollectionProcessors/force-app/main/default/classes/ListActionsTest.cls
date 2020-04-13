@@ -2,6 +2,84 @@
 public with sharing class ListActionsTest {
     private final static Integer NUMBER_OF_TEST_RECORDS = 5;
     private final static String TEST_RECORD_NAME = 'Test Acc';
+    private final static String TEST_CONTACT_NAME = 'Test Contact';
+
+     
+    @isTest
+    static void canGetLookupCollection() {
+        String noInputsMessage = 'You need to pass either a collection of records or a collection of record IDs into this action, representing the initial set of records';
+        String dualInputsMessage = 'You need to pass either a collection of records or a collection of record IDs into this action, but you can not pass both';
+        List<GetLookupCollection.Request> requests = new List<GetLookupCollection.Request>();
+        GetLookupCollection.Request request = new GetLookupCollection.Request();
+        requests.add(request);
+        List<GetLookupCollection.Results> responseWrapper = GetLookupCollection.get(requests);
+        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        requests.clear();
+
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Contact> testContacts = createContacts(testAccounts, true);
+        List<Opportunity> testOpportunity = createOpportunities(NUMBER_OF_TEST_RECORDS, true);
+        OpportunityContactRole testOpportunityContactRole = createOpportunityContactRole(testContacts, testOpportunity);
+        List<OpportunityContactRole> ocrList = new List<OpportunityContactRole> ();
+        ocrList.add(testOpportunityContactRole);
+        System.debug('ocRoleid is: ' + testOpportunityContactRole.Id);
+        request.inputCollection = ocrList;
+        request.lookupObjectName = 'Contact';
+        request.lookupRecordFieldsCSV = 'LastName,Id';
+        requests.add(request);
+        responseWrapper = GetLookupCollection.get(requests);
+        System.debug('responseWrapper is: ' + responseWrapper);
+        System.assertEquals(null,responseWrapper[0].errorText );
+        requests.clear();
+    }
+
+    static OpportunityContactRole createOpportunityContactRole(List<Contact> testContacts, List<Opportunity> testOpportunities) {
+
+        OpportunityContactRole ocRole = new OpportunityContactRole(contactId = testContacts[0].Id, opportunityId = testOpportunities[0].Id);
+        insert ocRole;
+
+        return ocRole;
+    }
+         
+
+    @isTest
+    static void canGetChildCollection() {
+        //user must pass in at least one input recordid or an input record
+       
+        
+        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to start with';
+        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
+        GetChildCollection.Request request = new GetChildCollection.Request();
+        requests.add(request);
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(requests);
+        System.debug('responseWrapper is: ' + responseWrapper);
+        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        requests.clear();
+
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Contact> testContacts = createContacts(testAccounts, true);
+
+        //user can't pass in both an input recordid and an input record
+        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecord = testAccounts[0];
+        requests.add(request);
+        responseWrapper = GetChildCollection.get(requests);
+        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage );
+        requests.clear();
+
+        request.inputRecordId = null;
+        request.inputRecord = testAccounts[0];
+        request.childRelationshipName = 'Contact';
+        request.childRecordFieldsCSV = 'Id,Name';
+        requests.add(request);
+        responseWrapper = GetChildCollection.get(requests);
+        System.assertNotEquals(responseWrapper[0].childCollection, null );
+        System.assertEquals(1, responseWrapper[0].childCollection.size() );
+        requests.clear();
+
+       
+    }
 
     @isTest
     static void cloneRecordTests() {
@@ -331,4 +409,32 @@ public with sharing class ListActionsTest {
 
         return returnList;
     }
+
+    static List<Contact> createContacts(List<Account> accountList, Boolean doInsert) {
+
+        List<Contact> contactList = new List<Contact>();
+        Integer i = 1;
+        for (Account curAccount : accountList) {
+            contactList.add(new Contact(LastName = TEST_CONTACT_NAME + i, AccountId = curAccount.Id));
+            i = i+1;
+        }
+        if (doInsert) {
+            insert contactList;
+        }
+        return contactList;
+    }
+
+    static List<Opportunity> createOpportunities(Integer numberOfRecords, Boolean doInsert) {
+
+        List<Opportunity> returnList = new List<Opportunity>();
+        for (Integer i = 0; i < numberOfRecords; i++) {
+            returnList.add(new Opportunity(Name = 'Opportunity' + i, StageName='Prospecting', CloseDate = System.today()));
+        }
+        if (doInsert) {
+            insert returnList;
+        }
+
+        return returnList;
+    }
+
 }

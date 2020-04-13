@@ -9,16 +9,16 @@
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail",
-            "versionName": "ver 1.33",
-            "versionNumber": "1.33.0.NEXT",
+            "package": "sendHTMLEmail(No Tests)",
+            "versionName": "ver 1.33.01",
+            "versionNumber": "1.33.1.NEXT",
             "default": false
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail(With Tests)",
-            "versionName": "ver 1.33",
-            "versionNumber": "1.33.0.NEXT",
+            "package": "sendHTMLEmail",
+            "versionName": "ver 1.33.01",
+            "versionNumber": "1.33.1.NEXT",
             "default": false
         }
     ],

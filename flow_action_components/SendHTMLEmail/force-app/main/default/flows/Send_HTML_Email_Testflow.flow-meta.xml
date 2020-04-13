@@ -189,7 +189,7 @@
         <inputParameters>
             <name>saveAsActivity</name>
             <value>
-                <booleanValue>false</booleanValue>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -251,7 +251,7 @@
         <inputParameters>
             <name>saveAsActivity</name>
             <value>
-                <booleanValue>false</booleanValue>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -863,7 +863,7 @@
         </connector>
         <fields>
             <name>Example3Details</name>
-            <fieldText>&lt;p&gt;For this example, you will need to create or use a record to which attachments can be made (e.g.,  a Contact).  Create the record and then use the recordId of that record to attach files.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out a simple plaintext email with attachments from uploaded files to the addressee in [Recipient Email Address] from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;:  This example as distributed uses the formula variable &quot;&lt;span style=&quot;background-color: rgb(243, 242, 242); color: rgb(0, 109, 204);&quot;&gt;testPlainTextLineFeeds&lt;/span&gt;&quot; to create a plain text body without signature&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;For this example, you will need to create or use a record to which attachments can be made (e.g.,  a Contact).  Create the record and then use the recordId of that record to attach files.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out a simple plaintext email with attachments from uploaded files to the addressee in [Recipient Email Address] from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;It also creates a task (completed) that shows the email has been sent (saveAsActivity)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;:  This example as distributed uses the formula variable &quot;&lt;span style=&quot;color: rgb(0, 109, 204); background-color: rgb(243, 242, 242);&quot;&gt;testPlainTextLineFeeds&lt;/span&gt;&quot; to create a plain text body without signature&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1306,8 +1306,8 @@
     <screens>
         <name>X4_Email_Using_Template</name>
         <label>4. Email Using Template</label>
-        <locationX>259</locationX>
-        <locationY>961</locationY>
+        <locationX>260</locationX>
+        <locationY>960</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1316,7 +1316,7 @@
         </connector>
         <fields>
             <name>Example4Details</name>
-            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This example also creates an activity for the email which will be assigned to the running user and related to the RecordId.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can create test templates (sendHTMLEmailTest)  by running example 5.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you use the default test templates (&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1331,7 +1331,7 @@
             <dataType>String</dataType>
             <fieldText>Template Target Record Id</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendHTMLEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1339,6 +1339,7 @@
             <dataType>String</dataType>
             <fieldText>Related Record Id (for testing merge fields)</fieldText>
             <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record of a type that allows File Attachments.  If you are using the default test templates (sendHTMLEmailTest), it should be an AccountId&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -1408,7 +1409,7 @@
         </connector>
         <fields>
             <name>Example5Details</name>
-            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&#39;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&#39;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;If you use the default test templates (sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1438,7 +1439,7 @@
             <dataType>String</dataType>
             <fieldText>Template Target Record Id</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test Template set (sendHTMLEmailTest), this should be a ContactId.&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1446,6 +1447,7 @@
             <dataType>String</dataType>
             <fieldText>Related Record Id (for testing merge fields)</fieldText>
             <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record.  If you are using the default test Template set (sendHTMLEmailTest), this should be a AccountId.&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -1514,7 +1516,7 @@
         <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
         <name>Create_Test_Templates_if_Needed_5</name>
         <label>Create Test Templates if Needed</label>
-        <locationX>634</locationX>
+        <locationX>633</locationX>
         <locationY>1085</locationY>
         <connector>
             <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>

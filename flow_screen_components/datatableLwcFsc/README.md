@@ -11,6 +11,8 @@ Additional components packaged with this LWC:
                     Apex Classes:               SObjectController 
                                                 SObjectControllerTest
 
+04/01/20 -  Eric Smith -    Version 1.0
+
 Features:
 * The only required paramters are the SObject collection of records and a list of field API names
 * The field label and field type will default to what is defined in the object
@@ -33,5 +35,8 @@ Features:
   * Other Custom Column Attributes with nested values {name: {name:value}}
 
 
-04/01/20 -  Eric Smith -    Version 1.0
+04/14/20 -  Eric Smith -    Version 1.1
+
+Additions:  New Column Attribute to support column filtering
+
 

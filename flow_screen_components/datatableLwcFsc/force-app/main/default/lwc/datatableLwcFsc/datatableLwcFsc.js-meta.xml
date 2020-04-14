@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
 
-    <masterLabel>datatable_Account_v1.0</masterLabel>     <!-- Change the Object name here to identify the component in the Custom Screen Component List -->
+    <masterLabel>datatable_Account_v1.1</masterLabel>     <!-- Change the Object name here to identify the component in the Custom Screen Component List -->
 
     <description>This component allows the user to configure and display a datatable in a Flow screen.</description>
     <apiVersion>48.0</apiVersion>
@@ -35,11 +35,15 @@
                 description="'All' or a Comma separated list of ColID:True or False  
                   --  NOTE: Some data types cannot be edited in a datable (lookup, picklist, location, encrypted, rich text, long text area)
                   --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnFilters" label="- Column Filters (Col#:true,...) or All" type="String" role="inputOnly"
+                description="'All' or a Comma separated list of ColID:True or False  
+                --  NOTE: Some data types cannot be filtered in a datable (location, encrypted)
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnIcons" label="- Column Icons (Col#:icon,...)" type="String" role="inputOnly"
                 description="Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)  
                   --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnLabels" label="- Column Labels (Col#:label,...)" type="String" role="inputOnly"
-                description="Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label.  
+                description="Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)  
                   --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnWidths" label="- Column Widths (Col#:width,...)" type="String" role="inputOnly"
                 description="Comma separated list of ColID:Width (in pixels).  

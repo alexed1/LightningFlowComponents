@@ -29,6 +29,8 @@ import getReturnResults from '@salesforce/apex/SObjectController.getReturnResult
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
 
 const MYDOMAIN = 'https://' + window.location.hostname.split('.')[0].replace('--c','');
+const FILTER_ACTION = 0;    // Column Action Attribute Number
+const CLEAR_ACTION = 1;     // Column Action Attribute Number
 
 export default class DatatableLwcFsc extends LightningElement {
 
@@ -38,6 +40,7 @@ export default class DatatableLwcFsc extends LightningElement {
     @api columnAlignments = [];
     @api columnCellAttribs = [];
     @api columnEdits = '';
+    @api columnFilters = '';
     @api columnIcons = [];
     @api columnLabels = [];
     @api columnOtherAttribs = [];
@@ -66,6 +69,19 @@ export default class DatatableLwcFsc extends LightningElement {
     @api objectName;
     @track lookupName;
 
+    // Column Filter variables
+    @api filterColumns;
+    @api columnFilterValues = [];
+    @api columnType;
+    @api columnNumber;
+    @api baseLabel;
+    @api isFiltered;
+    @track columnFilterValue = null;
+    @track isOpenFilterInput = false;
+    @track inputLabel;
+    @track inputType = 'text';
+    @track inputFormat = null;    
+
     // Component working variables
     @api savePreEditData = [];
     @api editedData = [];
@@ -80,6 +96,8 @@ export default class DatatableLwcFsc extends LightningElement {
     @api edits = [];
     @api isEditAttribSet = false;
     @api editAttribType = 'none';
+    @api filters = [];
+    @api filterAttribType = 'none';
     @api alignments = [];
     @api cellAttribs = [];
     @api cellAttributes;
@@ -131,6 +149,28 @@ export default class DatatableLwcFsc extends LightningElement {
             });
         } else {
             this.editAttribType = 'all';
+        }
+
+        // Parse Column Filter attribute
+        if (this.columnFilters.toLowerCase() != 'all') {
+            const parseFilters = (this.columnFilters.length > 0) ? this.columnFilters.replace(/\s/g, '').split(',') : [];
+            this.attribCount = (parseFilters.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
+            this.filterAttribType = 'none';
+            parseFilters.forEach(filter => {
+                let colFilter = (this.columnValue(filter).toLowerCase() == 'true') ? true : false;
+                let col = this.columnReference(filter);
+                this.filters.push({
+                    column: col,
+                    filter: colFilter,
+                    actions: [
+                        {label: 'Set Filter', disabled: false, name: 'filter_' + col, iconName: 'utility:filter'},
+                        {label: 'Clear Filter', disabled: true, name: 'clear_' + col, iconName: 'utility:clear'}
+                    ]
+                });
+                this.filterAttribType = 'cols';
+            });
+        } else {
+            this.filterAttribType = 'all';
         }
 
         // Parse Column Icon attribute
@@ -280,6 +320,7 @@ export default class DatatableLwcFsc extends LightningElement {
         .catch(error => {
             console.log('getReturnResults error is: ' + JSON.stringify(error));
             this.errorApex = 'Apex Action error: ' + error.body.message;
+            alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
             return this.errorApex; 
         });
     }
@@ -345,6 +386,7 @@ export default class DatatableLwcFsc extends LightningElement {
             this.cellAttributes = {};
             this.typeAttributes = {};
             let editAttrib = [];
+            let filterAttrib = [];
 
             // Update Alignment attribute overrides by column
             let alignmentAttrib = this.alignments.find(i => i['column'] == columnNumber);
@@ -383,6 +425,37 @@ export default class DatatableLwcFsc extends LightningElement {
                         break;
                     case 'text':
                         if (this.noEditFieldArray.indexOf(fieldName) != -1) editAttrib.edit = false;
+                        break;
+                    default:
+                }
+            }
+
+            // Update Filter attribute overrides by column
+            switch (this.filterAttribType) {
+                case 'cols':
+                    filterAttrib = this.filters.find(i => i['column'] == columnNumber);
+                    if (!filterAttrib) {
+                        filterAttrib = [];
+                        filterAttrib.filter = false;
+                    }
+                    break;
+                case 'all':
+                    filterAttrib.column = columnNumber; 
+                    filterAttrib.filter = true;
+                    filterAttrib.actions = [
+                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                    ]; 
+                    break;
+                default:
+                    filterAttrib.filter = false;
+            }
+
+            // Some data types are not filterable
+            if(filterAttrib) {
+                switch (type) {
+                    case 'location':
+                        filterAttrib.filter = false;
                         break;
                     default:
                 }
@@ -445,6 +518,7 @@ export default class DatatableLwcFsc extends LightningElement {
                 cellAttributes: this.cellAttributes,
                 typeAttributes: this.typeAttributes,
                 editable: (editAttrib) ? editAttrib.edit : false,
+                actions: (filterAttrib.filter) ? filterAttrib.actions : null,
                 sortable: 'true',
                 initialWidth: (widthAttrib) ? widthAttrib.width : null
             });
@@ -602,6 +676,166 @@ export default class DatatableLwcFsc extends LightningElement {
         this.mydata = [...this.mydata.sort(
             (a,b)=>(a=fieldValue(a),b=fieldValue(b),reverse*((a>b)-(b>a)))
         )];
+    }
+    
+    handleHeaderAction(event) {
+        // Handle Set Filter and Clear Filter
+        const actionName = event.detail.action.name;
+        if (actionName.search('filter') == -1 && actionName.search('clear') == -1) return;
+        this.isFiltered = false;
+        const colDef = event.detail.columnDefinition;
+        this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
+        this.columnNumber = Number(actionName.split("_")[1]);     
+        this.baseLabel = this.filterColumns[this.columnNumber].label.split(' [')[0];
+        this.inputLabel = 'Column Filter: ' + this.baseLabel;
+        switch(actionName.split('_')[0]) {
+
+            case 'filter':
+                this.columnFilterValue = this.columnFilterValues[this.columnNumber];
+                this.columnFilterValue = (this.columnFilterValue) ? this.columnFilterValue : null;
+                this.columnType = colDef.type;
+                this.inputType = this.convertType(this.columnType);
+                this.inputFormat = (this.inputType == 'number') ? this.convertFormat(this.columnType) : null;
+
+                this.handleOpenFilterInput();
+                
+                break;
+
+            case 'clear':
+                this.filterColumns[this.columnNumber].label = this.baseLabel;
+                this.columnFilterValue = null;
+                this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
+
+                this.filterColumnData();
+
+                this.filterColumns[this.columnNumber].actions[CLEAR_ACTION].disabled = true;
+                break;
+
+            default:
+        }
+
+        this.columns = [...this.filterColumns];
+    }
+
+    convertType(colType) {
+        // Set Input Type based on column Data Type
+        switch(colType) {
+            case 'boolean':
+                return 'text';
+            case 'date':
+                return 'date';
+            case 'datetime':
+                return 'datetime';
+            case 'time':
+                return 'time';
+            case 'email':
+                return 'email';
+            case 'phone':
+                return 'tel';
+            case 'url':
+                return 'url';
+            case 'number':
+                return 'number';
+            case 'currency':
+                return 'number';
+            case 'percent':
+                return 'number';
+            default:
+                return 'text';
+        }
+    }
+
+    convertFormat(colType) {
+        // Set Input Formatter value for different number types
+        switch(colType) {
+            case 'currency':
+                return 'currency';
+            case 'percent':
+                // return 'percent-fixed';  // This would be to enter 35 to get 35% (0.35)
+                return 'percent';
+            default:
+                return null;
+        }
+    }
+
+    handleChange(event) {
+        // Update the filter value as the user types it in
+        this.columnFilterValue = event.target.value;
+        this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
+        this.isFiltered = false;
+    }
+
+    handleOpenFilterInput() {
+        // Display the input dialog for the filter value
+        this.isOpenFilterInput = true;
+    }
+
+    handleCommit() {
+        // Handle the filter input when the user clicks out of the input dialog
+        if (this.columnFilterValue != null) {
+            this.handleCloseFilterInput();
+        }
+    }
+
+    handleCloseFilterInput() {
+        // Close the input dialog and handle the new column filter value
+        this.isOpenFilterInput = false; 
+        if (this.columnType == 'boolean') {
+            var firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
+            if (firstChar == 't' || firstChar == 'y' || firstChar == '1') { // True, Yes, 1 - allow multiple ways to select a True value
+                this.columnFilterValue = 'true';
+            } else {
+                this.columnFilterValue = 'false';
+            }
+            this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
+        }
+
+        if (!this.isFiltered) this.filterColumnData();
+
+        this.filterColumns[this.columnNumber].label = this.baseLabel + ' [' + this.columnFilterValue + ']';
+        this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
+        // Force a redisplay of the datatable with the filter value shown in the column header
+        this.columns = [...this.filterColumns]; 
+    }
+
+    filterColumnData() {
+        // Filter the rows based on the current column filter values
+        const rows = [...this.savePreEditData];
+        const cols = this.columnFilterValues;
+        var filteredRows = [];
+        rows.forEach(row => {
+            var match = true;
+            for (var col = 0; col < cols.length; col++) {
+                if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
+                    if (!row[this.filterColumns[col].fieldName] || row[this.filterColumns[col].fieldName] == null) {    // No match because the field is empty
+                        match = false;
+                        break; 
+                    }                   
+
+                    switch(this.filterColumns[col].type) {
+                        case 'number':
+                        case 'currency':
+                        case 'percent':
+                            if (row[this.filterColumns[col].fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
+                                match = false;
+                                break;                                
+                            }
+                            break;
+                        default:
+                            if (row[this.filterColumns[col].fieldName].toString().search(this.columnFilterValues[col]) == -1) {  // Check for filter value within field value
+                                match = false;
+                                break;
+                            }                            
+                    }
+                }
+            }
+            if (match) {
+                filteredRows.push(row);
+            }
+        });
+        this.filterColumns[this.columnNumber].actions[CLEAR_ACTION].disabled = false;
+        this.mydata = filteredRows;
+        this.isFiltered = true;
     }
 
 }

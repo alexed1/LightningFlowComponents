@@ -1,0 +1,20 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "SerializeDeserialize",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "SerializeDeserialize": "0Hof4000000XZK7CAO",
+        "SerializeDeserialize@1.0.0-0": "04tf4000004Pta8AAC",
+        "SerializeDeserialize@1.0.0-1": "04tf4000004PtaDAAS",
+        "SerializeDeserialize@1.0.1-0": "04tf4000004PtaIAAS"
+    }
+}

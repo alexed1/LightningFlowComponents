@@ -45,18 +45,19 @@ OF THE POSSIBILITY OF SUCH DAMAGE.
 
 global class ConnectApiHelper {
 
-    public class InvalidParameterException extends Exception {}
+    public class InvalidParameterException extends Exception {
+    }
 
-    private static final Map<String, ConnectApi.MarkupType> supportedMarkup = new Map<String, ConnectApi.MarkupType> {
-        'b' => ConnectApi.MarkupType.Bold,
-        'code' => ConnectApi.MarkupType.Code,
-        'i' => ConnectApi.MarkupType.Italic,
-        'li' => ConnectApi.MarkupType.ListItem,
-        'ol' => ConnectApi.MarkupType.OrderedList,
-        'p' => ConnectApi.MarkupType.Paragraph,
-        's' => ConnectApi.MarkupType.Strikethrough,
-        'u' => ConnectApi.MarkupType.Underline,
-        'ul' => ConnectApi.MarkupType.UnorderedList
+    private static final Map<String, ConnectApi.MarkupType> supportedMarkup = new Map<String, ConnectApi.MarkupType>{
+            'b' => ConnectApi.MarkupType.Bold,
+            'code' => ConnectApi.MarkupType.Code,
+            'i' => ConnectApi.MarkupType.Italic,
+            'li' => ConnectApi.MarkupType.ListItem,
+            'ol' => ConnectApi.MarkupType.OrderedList,
+            'p' => ConnectApi.MarkupType.Paragraph,
+            's' => ConnectApi.MarkupType.Strikethrough,
+            'u' => ConnectApi.MarkupType.Underline,
+            'ul' => ConnectApi.MarkupType.UnorderedList
     };
 
     /**
@@ -93,6 +94,36 @@ global class ConnectApiHelper {
      */
     public static ConnectApi.FeedElement postFeedItemWithRichText(String communityId, String subjectId, String textWithMentionsAndRichText) {
         return postFeedItemWithSpecialFormatting(communityId, subjectId, textWithMentionsAndRichText, 'textWithMentionsAndRichText');
+    }
+    public class FeedTargetBodyPair {
+        public String communityId;
+        public String target;
+        public String body;
+
+        public FeedTargetBodyPair(String communityId, String target, String body) {
+            this.communityId = communityId;
+            this.target = target;
+            this.body = body;
+        }
+    }
+    public static List<ConnectApi.BatchResult> postFeedItemWithRichTextBulk(String communityId, List<FeedTargetBodyPair> feedTargetBodyPairs) {
+
+        List<ConnectApi.BatchInput> batchInputs = new List<ConnectApi.BatchInput>();
+        for (FeedTargetBodyPair curPair : feedTargetBodyPairs) {
+            ConnectApi.FeedItemInput input = new ConnectApi.FeedItemInput();
+            input.subjectId = curPair.target;
+
+            ConnectApi.MessageBodyInput body = new ConnectApi.MessageBodyInput();
+            body.messageSegments =  getMessageSegmentInputs(curPair.body);
+
+            input.body = body;
+
+            ConnectApi.BatchInput batchInput = new ConnectApi.BatchInput(input);
+            batchInputs.add(batchInput);
+        }
+
+        return ConnectApi.ChatterFeeds.postFeedElementBatch(communityId, batchInputs);
+
     }
 
     private static ConnectApi.FeedElement postFeedItemWithSpecialFormatting(String communityId, String subjectId, String formattedText, String textParameterName) {
@@ -172,22 +203,19 @@ global class ConnectApiHelper {
                     ConnectApi.InlineImageSegmentInput inlineImageSegmentInput = makeInlineImageSegmentInput(imageInfo[1], altText);
                     messageSegmentInputs.add(inlineImageSegmentInput);
                     strPos = globalMatcher.end();
-                }
-                else if (innerMatchedText.startsWith('record:')) {
+                } else if (innerMatchedText.startsWith('record:')) {
                     // Inline record
                     String[] recordInfo = innerMatchedText.split(':');
                     ConnectApi.EntityLinkSegmentInput entityLinkSegmentInput = makeEntityLinkSegmentInput(recordInfo[1]);
                     messageSegmentInputs.add(entityLinkSegmentInput);
                     strPos = globalMatcher.end();
-                }
-                else {
+                } else {
                     // This is a mention id.
                     ConnectApi.MentionSegmentInput mentionSegmentInput = makeMentionSegmentInput(innerMatchedText);
                     messageSegmentInputs.add(mentionSegmentInput);
                     strPos = globalMatcher.end();
                 }
-            }
-            else {
+            } else {
                 // This is an HTML tag.
                 boolean isBeginTag = !matchingText.startsWith('</');
                 if (isBeginTag) {
@@ -201,8 +229,7 @@ global class ConnectApiHelper {
                         messageSegmentInputs.add(markupBeginSegmentInput);
                         strPos = globalMatcher.end();
                     }
-                }
-                else { // This is an end tag.
+                } else { // This is an end tag.
                     // Strip off the </ and >.
                     String tag = matchingText.substring(2, matchingText.indexOf('>'));
                     if (supportedMarkup.containsKey(tag.toLowerCase())) {
@@ -290,65 +317,57 @@ global class ConnectApiHelper {
     public static ConnectApi.MessageBodyInput createInputFromBody(ConnectApi.FeedBody body) {
         ConnectApi.MessageBodyInput input = new ConnectApi.MessageBodyInput();
         input.messageSegments = new List<ConnectApi.MessageSegmentInput>();
-        
+
         // Identify newline and replace it with encoded values that MessageSegment will handle correctly.
-        String newline = EncodingUtil.urlDecode('%0A', 'UTF-8'); 
+        String newline = EncodingUtil.urlDecode('%0A', 'UTF-8');
 
         for (ConnectApi.MessageSegment segment : body.messageSegments) {
             if (segment instanceof ConnectApi.TextSegment) {
                 ConnectApi.TextSegment textOutput = (ConnectApi.TextSegment) segment;
                 if (textOutput.text.indexOf(newline) > -1) {
                     // If newline is found, create multiple message segments instead of just a textSegment.
-                    List<ConnectApi.MessageSegmentInput> newSegments = 
-                        ConnectApiHelper.getMessageSegmentInputs(textOutput.text
-                                        .replaceAll(newline + newline, '<p>&nbsp;</p>')
-                                        .replaceAll(newline, '<p></p>'));
+                    List<ConnectApi.MessageSegmentInput> newSegments =
+                            ConnectApiHelper.getMessageSegmentInputs(textOutput.text
+                                    .replaceAll(newline + newline, '<p>&nbsp;</p>')
+                                    .replaceAll(newline, '<p></p>'));
                     input.messageSegments.addAll(newSegments);
-                }
-                else {
+                } else {
                     ConnectApi.TextSegmentInput textInput = new ConnectApi.TextSegmentInput();
                     textInput.text = textOutput.text;
                     input.messageSegments.add(textInput);
                 }
-            }
-            else if (segment instanceof ConnectApi.MentionSegment) {
+            } else if (segment instanceof ConnectApi.MentionSegment) {
                 ConnectApi.MentionSegment mentionOutput = (ConnectApi.MentionSegment) segment;
                 ConnectApi.MentionSegmentInput mentionInput = new ConnectApi.MentionSegmentInput();
                 mentionInput.id = mentionOutput.record.id;
                 input.messageSegments.add(mentionInput);
-            }
-            else if (segment instanceof ConnectApi.HashtagSegment) {
+            } else if (segment instanceof ConnectApi.HashtagSegment) {
                 ConnectApi.HashtagSegment hashtagOutput = (ConnectApi.HashtagSegment) segment;
                 ConnectApi.HashtagSegmentInput hashtagInput = new ConnectApi.HashtagSegmentInput();
                 hashtagInput.tag = hashtagOutput.tag;
                 input.messageSegments.add(hashtagInput);
-            }
-            else if (segment instanceof ConnectApi.LinkSegment) {
+            } else if (segment instanceof ConnectApi.LinkSegment) {
                 ConnectApi.LinkSegment linkOutput = (ConnectApi.LinkSegment) segment;
                 ConnectApi.LinkSegmentInput linkInput = new ConnectApi.LinkSegmentInput();
                 linkInput.url = linkOutput.url;
                 input.messageSegments.add(linkInput);
-            }
-            else if (segment instanceof ConnectApi.MarkupBeginSegment) {
+            } else if (segment instanceof ConnectApi.MarkupBeginSegment) {
                 ConnectApi.MarkupBeginSegment markupBeginOutput = (ConnectApi.MarkupBeginSegment) segment;
                 ConnectApi.MarkupBeginSegmentInput markupBeginInput = new ConnectApi.MarkupBeginSegmentInput();
                 markupBeginInput.markupType = markupBeginOutput.markupType;
                 input.messageSegments.add(markupBeginInput);
-            }
-            else if (segment instanceof ConnectApi.MarkupEndSegment) {
+            } else if (segment instanceof ConnectApi.MarkupEndSegment) {
                 ConnectApi.MarkupEndSegment markupEndOutput = (ConnectApi.MarkupEndSegment) segment;
                 ConnectApi.MarkupEndSegmentInput markupEndInput = new ConnectApi.MarkupEndSegmentInput();
                 markupEndInput.markupType = markupEndOutput.markupType;
                 input.messageSegments.add(markupEndInput);
-            }
-            else if (segment instanceof ConnectApi.InlineImageSegment) {
+            } else if (segment instanceof ConnectApi.InlineImageSegment) {
                 ConnectApi.InlineImageSegment inlineImageOutput = (ConnectApi.InlineImageSegment) segment;
                 ConnectApi.InlineImageSegmentInput inlineImageInput = new ConnectApi.InlineImageSegmentInput();
                 inlineImageInput.fileId = inlineImageOutput.thumbnails.fileId;
                 inlineImageInput.altText = inlineImageOutput.altText;
                 input.messageSegments.add(inlineImageInput);
-            }
-            else {
+            } else {
                 // The other segment types are system-generated and have no corresponding input types.
             }
 

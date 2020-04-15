@@ -1,110 +1,134 @@
 global with sharing class PostRichChatter {
-  
-  
-    @InvocableMethod
-    global static List <Results> post (List<Requests> requestList) {
-        System.debug('entering PostRichChatter');
-        String body = requestList[0].body;
-        String targetNameOrId = requestList[0].targetNameOrId;
-        String communityId = requestList[0].communityId;
-        System.debug ('here are the values flow has passed');
-        System.debug (requestList[0]);
-        //System.debug ('targetNameOrId is: '  + targetNameOrId);
-        //System.debug ('targetType is: '  + targetType);
-        System.debug ('communityId is: ' + communityId);
-        if (communityId == null)
-            communityId = Network.getNetworkId();
 
-        //check to see if the targetNameOrId matches a Group Name or a Username
-        List<Group> targetGroup = [SELECT Id FROM Group WHERE Name =:targetNameOrId];
-        System.debug('targetGroup is: ' + targetGroup);
-        if (targetGroup.size() == 1) {
-                        
-            targetNameOrId = targetGroup[0].Id;
-        } else {
-            System.debug('targetNameOrId is: ' + targetNameOrId );
-            List<User> targetUser = [SELECT Id FROM User WHERE username =:targetNameOrId];
-            System.debug('targetUser is: ' + targetUser);
-            if (targetUser.size() == 1){
-                targetNameOrId = targetUser[0].Id;
+    private static final Map<String, String> PATTERN_TO_REPLACEMENT_MAP = new Map<String, String>{
+            '<\\/?span[^>]*>' => '',
+            '(<a href="([^"]+)" target="_blank">([^<]+)<\\/a>)' => '$3 ($2) ',
+            ' class="ql-indent-[1-4]"' => '',
+            '<img src="([^"]+)">' => 'image: $1'
+    };
+
+    @InvocableMethod
+    global static List <Results> post(List<Requests> requestList) {
+
+
+        Id standardCommunityId = Network.getNetworkId();
+        Set<String> targetNames = new Set<String>();
+
+        for (Requests curRequest : requestList) {
+            if ((curRequest.targetNameOrId == null && (curRequest.collectionTargetStrings == null || curRequest.collectionTargetStrings.isEmpty())) ||
+                    (curRequest.targetNameOrId != null && (curRequest.collectionTargetStrings != null && !curRequest.collectionTargetStrings.isEmpty()))) {
+                throw new InvocableActionException('You need to provide either targetNameOrId or collectionTargetStrings, but you cant provide both');
+            }
+
+            if (curRequest.targetNameOrId != null) {
+                curRequest.collectionTargetStrings.add(curRequest.targetNameOrId);
+            }
+
+            if (!curRequest.collectionTargetStrings.isEmpty()) {
+                targetNames.addAll(curRequest.collectionTargetStrings);
             }
         }
 
-        //several things that Flow rich text supports, like color and font size, are represented by span tags. chatter doesn't support, so need to strip them out
-        Pattern MyPattern = Pattern.compile('<\\/?span[^>]*>');
-        Matcher MyMatcher = MyPattern.matcher(body);
-        body = MyMatcher.replaceAll('');
+        //check to see if the targetNameOrId matches a Group Name or a Username
+        Map<String, String> targetNameToIdMap = getTargetNameToIdMap(targetNames);
+        Map<String, List<ConnectApiHelper.FeedTargetBodyPair>> feedItemsMap = new Map<String, List<ConnectApiHelper.FeedTargetBodyPair>>();
 
-        //chatter's support for hyperlinks is unconventional and I haven't figured out how to convert a normal anchor link (<a href="http://www.salesforce.com" target="_blank">link</a>) into the chatter equivalent
-        //so this hack puts the url into a parentheses next to the link word. anyone who has a better approach is encouraged.
-        //extract the url
-           //find all strings that start with <a and end with > i.e.extract url from an anchor tag
-        //extract the text
-        //craft a replacement string
+        for (Requests curRequest : requestList) {
+            String body = formatChatterPost(curRequest.body);
 
-        String anchorPattern = '(<a href="([^"]+)" target="_blank">([^<]+)<\\/a>)';
-        MyPattern = Pattern.compile(anchorPattern);
-        MyMatcher = MyPattern.matcher(body);
-        body = MyMatcher.replaceAll('$3 ($2) ');
-         System.debug ('body after replacement is: ' + body);
+            String communityId = curRequest.communityId;
+            if (communityId == null) {
+                communityId = standardCommunityId;
+            }
 
-        //also have to strip out indent markup:
-        //Here's some indented stuff:</p><p class="ql-indent-2">I'm indented</p><p>
-        String indentedClassPattern = ' class="ql-indent-[1-4]"';
-        MyPattern = Pattern.compile(indentedClassPattern);
-        MyMatcher = MyPattern.matcher(body);
-        body = MyMatcher.replaceAll('');
-        System.debug ('body after replacement is: ' + body);
+            if (!feedItemsMap.containsKey(communityId)) {
+                feedItemsMap.put(communityId, new List<ConnectApiHelper.FeedTargetBodyPair>());
+            }
 
+            for (String curTargetNameOrId : curRequest.collectionTargetStrings) {
+                String targetNameOrId = targetNameToIdMap.get(curTargetNameOrId);
+                if (targetNameOrId == null) {
+                    targetNameOrId = curTargetNameOrId;
+                }
+                feedItemsMap.get(communityId).add(new ConnectApiHelper.FeedTargetBodyPair(communityId, targetNameOrId, body));
+            }
+        }
 
-        //image links work fine, but we'll do a little reformatting to remove the html 
-        String imagePattern = '<img src="([^"]+)">';
-        MyPattern = Pattern.compile(imagePattern);
-        MyMatcher = MyPattern.matcher(body);
-        body = MyMatcher.replaceAll('image: $1');
-        System.debug ('body after replacement is: ' + body);
+        List<Results> responseWrapper = new List<Results>();
 
-        //ConnectApi.FeedItem fi = (ConnectApi.FeedItem) ConnectApiHelper.postFeedItemWithMentions(Network.getNetworkId(), 'me', 'Hey there {005D00000015tjz}, how are you?');
-        ConnectApi.FeedItem feedItem = (ConnectApi.FeedItem) ConnectApiHelper.postFeedItemWithRichText(communityId, targetNameOrId, body);
+        for (String communityId : feedItemsMap.keySet()) {
+            List<ConnectApi.BatchResult> batchResult = ConnectApiHelper.postFeedItemWithRichTextBulk(communityId, feedItemsMap.get(communityId));
+            Results response = new Results();
+            for (ConnectApi.BatchResult curResult : batchResult) {
+                ConnectApi.FeedElement feedItemResult = (ConnectApi.FeedElement) curResult.getResult();
+                if (curResult.isSuccess) {
+                    response.feedItemIds.add(feedItemResult.id);
+                } else {
+                    response.errors.add(curResult.getErrorMessage());
+                }
+            }
+            //Moving this out of the loop, as we can have only one response
+            responseWrapper.add(response);
+        }
 
-
-       
-        
-        //Create a Results object to hold the return values
-
-        Results response = new Results();
-
-        //add the return values to the Results object
-        response.feedItemId = feedItem.id;
-
-        //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
-        List<Results> responseWrapper= new List<Results>();
-        responseWrapper.add(response);
         return responseWrapper;
-    
+
+    }
+
+    private static Map<String, String> getTargetNameToIdMap(Set<String> targetNames) {
+        Map<String, String> getTargetNameToIdMap = new Map<String, String>();
+        List<Group> targetGroups = [SELECT Id,Name FROM Group WHERE Name IN :targetNames];
+        List<User> targetUsers = [SELECT Id,Username FROM User WHERE Username IN :targetNames];
+
+        for (Group curGroup : targetGroups) {
+            getTargetNameToIdMap.put(curGroup.Name, curGroup.Id);
+        }
+        for (User curUser : targetUsers) {
+            getTargetNameToIdMap.put(curUser.Username, curUser.Id);
+        }
+
+        return getTargetNameToIdMap;
+    }
+
+    private static String formatChatterPost(String inputString) {
+
+        for (String curPattern : PATTERN_TO_REPLACEMENT_MAP.keySet()) {
+            Pattern MyPattern = Pattern.compile(curPattern);
+            Matcher MyMatcher = MyPattern.matcher(inputString);
+            inputString = MyMatcher.replaceAll(PATTERN_TO_REPLACEMENT_MAP.get(curPattern));
+            System.debug ('body after replacement is: ' + inputString);
+        }
+
+        return inputString;
     }
 
     global class Requests {
-      @InvocableVariable(required=true)
-      public String body;
+        public Requests() {
+            this.collectionTargetStrings = new List<String>();
+        }
 
-      @InvocableVariable(required=true description='Reference to the user, Chatter group, or record whose feed you want to post to.')
-      public String targetNameOrId;
+        @InvocableVariable(required=true)
+        public String body;
 
-     // @InvocableVariable(required=false)
-      // public String targetType;
+        @InvocableVariable(required=false description='Reference to the user, Chatter group, or record whose feed you want to post to.')
+        public String targetNameOrId;
 
-      @InvocableVariable(required=false)
-      public String communityId;
+        @InvocableVariable(required=false description='List of References to the user, Chatter group, or record whose feed you want to post to.')
+        public List<String> collectionTargetStrings;
 
-        
+        @InvocableVariable(required=false)
+        public String communityId;
+
     }
-    
+
     global class Results {
-     
-      @InvocableVariable
-      public String feedItemId;
 
+        @InvocableVariable
+        public List<String> feedItemIds = new List<String>();
+        @InvocableVariable
+        public List<String> errors = new List<String>();
     }
 
+    global class InvocableActionException extends Exception {
+    }
 }

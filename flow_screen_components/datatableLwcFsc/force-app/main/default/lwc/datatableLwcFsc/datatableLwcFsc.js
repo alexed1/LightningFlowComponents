@@ -47,6 +47,7 @@ export default class DatatableLwcFsc extends LightningElement {
     @api columnTypeAttribs = [];
     @api columnWidths = [];
     @api keyField = 'Id';
+    @api matchCaseOnFilters;
     @api maxNumberOfRows;
     @api preSelectedRows = [];
     @api hideCheckboxColumn;
@@ -806,8 +807,12 @@ export default class DatatableLwcFsc extends LightningElement {
         rows.forEach(row => {
             var match = true;
             for (var col = 0; col < cols.length; col++) {
+                var fieldName = this.filterColumns[col].fieldName;
+                if (fieldName.endsWith('_lookup')) {
+                    fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
+                }                
                 if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
-                    if (!row[this.filterColumns[col].fieldName] || row[this.filterColumns[col].fieldName] == null) {    // No match because the field is empty
+                    if (!row[fieldName] || row[fieldName] == null) {    // No match because the field is empty
                         match = false;
                         break; 
                     }                   
@@ -816,13 +821,19 @@ export default class DatatableLwcFsc extends LightningElement {
                         case 'number':
                         case 'currency':
                         case 'percent':
-                            if (row[this.filterColumns[col].fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
+                            if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
                                 match = false;
                                 break;                                
                             }
                             break;
                         default:
-                            if (row[this.filterColumns[col].fieldName].toString().search(this.columnFilterValues[col]) == -1) {  // Check for filter value within field value
+                            var fieldValue = row[fieldName].toString();
+                            var filterValue = this.columnFilterValues[col];
+                            if (!this.matchCaseOnFilters) {
+                                fieldValue = fieldValue.toLowerCase();
+                                filterValue = filterValue.toLowerCase();
+                            }
+                            if (fieldValue.search(filterValue) == -1) {  // Check for filter value within field value
                                 match = false;
                                 break;
                             }                            

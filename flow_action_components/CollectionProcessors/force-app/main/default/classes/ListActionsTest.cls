@@ -86,14 +86,14 @@ public with sharing class ListActionsTest {
         //user must pass in at least one input recordid or an input record
 //        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
 //        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
-        List<CloneParentRecordAndChildRecords.Requests> requests = new List<CloneParentRecordAndChildRecords.Requests>();
-        CloneParentRecordAndChildRecords.Requests request = new CloneParentRecordAndChildRecords.Requests();
+        List<DeepClone.Requests> requests = new List<DeepClone.Requests>();
+        DeepClone.Requests request = new DeepClone.Requests();
         requests.add(request);
-        List<CloneParentRecordAndChildRecords.Results> responseWrapper;
+        List<DeepClone.Results> responseWrapper;
         try {
-            responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+            responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(true, ex.getMessage().contains(CloneParentRecordAndChildRecords.ERROR_NO_RECORD_NO_ID));
+            System.assertEquals(true, ex.getMessage().contains(DeepClone.ERROR_NO_RECORD_NO_ID));
         }
 
         requests.clear();
@@ -105,9 +105,9 @@ public with sharing class ListActionsTest {
         request.inputRecord = testAccounts[0];
         requests.add(request);
         try {
-            responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+            responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(true, ex.getMessage().contains(CloneParentRecordAndChildRecords.ERROR_RECORD_AND_ID));
+            System.assertEquals(true, ex.getMessage().contains(DeepClone.ERROR_RECORD_AND_ID));
         }
 
         requests.clear();
@@ -115,14 +115,14 @@ public with sharing class ListActionsTest {
         request.inputRecordId = null;
         request.inputRecord = testAccounts[0];
         requests.add(request);
-        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        responseWrapper = DeepClone.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = null;
         requests.add(request);
-        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        responseWrapper = DeepClone.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
@@ -131,7 +131,7 @@ public with sharing class ListActionsTest {
         request.saveImmediately = true;
         request.childRelationshipsCSV = 'Tasks';
         requests.add(request);
-        responseWrapper = CloneParentRecordAndChildRecords.clone(requests);
+        responseWrapper = DeepClone.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id);
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null);
         List<Task> allTasks = [SELECT Id FROM Task];

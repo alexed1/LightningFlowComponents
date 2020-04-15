@@ -1,5 +1,5 @@
 @isTest
-public with sharing class FieldPickerControllerTest {
+public class FieldPickerControllerTest {
     
     @isTest
     public static void CanGetPicklistValues() {

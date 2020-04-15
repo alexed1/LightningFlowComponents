@@ -58,6 +58,8 @@
                 description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly"
                 description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
+            <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" 
+                description="Set to True is you want to force an exact match on case for column filter values."/>
             <property name="maxNumberOfRows" label="Maximum Number of Records to Display" type="Integer" role="inputOnly"
                 description="Enter a number here if you want to restrict how many rows will be displayed in the datatable."/>                
             <property name="singleRowSelection" label="Single Row Selection (Radio Buttons)?" type="Boolean" default="false" role="inputOnly"

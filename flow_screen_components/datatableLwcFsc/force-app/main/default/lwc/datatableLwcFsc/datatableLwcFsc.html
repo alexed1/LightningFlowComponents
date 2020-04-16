@@ -11,6 +11,8 @@ Additional components packaged with this LWC:
                     Apex Classes:               SObjectController 
                                                 SObjectControllerTest
 
+04/01/20 -  Eric Smith -    Version 1.0
+
 Features:   The only required paramters are the SObject collection of records and a list of field API names
             The field label and field type will default to what is defined in the object
             Numeric fields will display with the correct number of decimal places as defined in the object
@@ -31,7 +33,10 @@ Features:   The only required paramters are the SObject collection of records an
                 Custom Type Attributes including those with nested values {name: {name:value}}
                 Other Custom Column Attributes including those with nested values {name: {name:value}}
 
-04/01/20 -  Eric Smith -    Version 1.0
+04/14/20 -  Eric Smith -    Version 1.1
+
+Additions:  New Column Attribute to support column filtering
+
 
 Copyright (c) 2020, Eric Smith
 
@@ -57,6 +62,31 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
 
 <template>
     <template if:false={showSpinner}>
+
+        <!-- Input dialog for entering Column Filter values -->
+        <template if:true={isOpenFilterInput}>
+            <div style="height: 40px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <lightning-input 
+                                type={inputType}
+                                formatter={inputFormat} 
+                                label={inputLabel} 
+                                value={columnFilterValue} 
+                                onchange={handleChange}
+                                onblur={handleCloseFilterInput} 
+                                oncommit={handleCommit}
+                            >
+                            </lightning-input>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+
+        <!-- DATATABLE -->
         <lightning-datatable
             data={mydata}
             columns={columns}
@@ -71,11 +101,16 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVE
             oncellchange={handleCellChange}
             onsave={handleSave}
             oncancel={cancelChanges}
+            onheaderaction={handleHeaderAction}
             onrowselection={handleRowSelection}
-            onrowaction={handleRowAction}>
+            onrowaction={handleRowAction}
+        >
         </lightning-datatable>
     </template>
+
+    <!-- Spinner -->
     <template if:true={showSpinner}>
         <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
     </template> 
+
 </template>

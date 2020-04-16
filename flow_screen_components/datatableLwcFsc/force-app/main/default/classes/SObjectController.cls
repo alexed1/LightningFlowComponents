@@ -59,7 +59,7 @@ public with sharing class SObjectController {
             Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
             Schema.SObjectField fieldItem = fieldMap.get(fieldName);
             if (fieldItem == null) 
-                throw new MyApexException('could not find the field: ' + fieldName + 'on the object ' + objectName);
+                throw new MyApexException('could not find the field: ' + fieldName + ' on the object ' + objectName);
             Schema.DescribeFieldResult dfr = fieldItem.getDescribe();
             curFieldDescribes.add(dfr);
             datatableColumnFieldDescriptor = datatableColumnFieldDescriptor 

@@ -2,24 +2,24 @@
     "packageDirectories": [
         {
             "path": "force-app",
-            "default": true,
+            "default": false,
             "package": "SendHTMLEmailPrA",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail",
-            "versionName": "ver 1.33",
-            "versionNumber": "1.33.0.NEXT",
+            "package": "sendHTMLEmail(Without Examples)",
+            "versionName": "ver 1.33.01",
+            "versionNumber": "1.33.01.NEXT",
             "default": false
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail(With Tests)",
-            "versionName": "ver 1.33",
-            "versionNumber": "1.33.0.NEXT",
-            "default": false
+            "package": "sendHTMLEmail",
+            "versionName": "ver 1.33.01",
+            "versionNumber": "1.33.01.NEXT",
+            "default": true
         }
     ],
     "namespace": "",
@@ -29,13 +29,10 @@
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
         "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
-        "SendHTMLEmail@0.1.0-1": "04tB0000000Awk2IAC",
-        "sendHTMLEmail": "0Ho0P000000GmadSAC",
-        "sendHTMLEmail@0.1.0-1": "04t0P000000TUsXQAW",
-        "sendHTMLEmail@1.3.0-1": "04t0P000000TUscQAG",
-        "sendHTMLEmail@1.33.0-1": "04t0P000000TUshQAG",
-        "sendHTMLEmail(With Tests)": "0Ho0P000000GmadSAC",
-        "sendHTMLEmail@1.33.0-2": "04t0P000000TUsrQAG",
-        "sendHTMLEmail@1.33.0-0": "04t0P000000TUswQAG"
+        "sendHTMLEmail": "0Ho3h000000Gmb2CAC",
+        "sendHTMLEmail(No Tests)": "0Ho3h000000GmbCCAS",
+        "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
+        "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
+        "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC"
     }
 }

@@ -9,7 +9,8 @@
  * @Modification Log   : 
  * @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver       Date            Author      		    Modification
- * 1.32    2/5/2020   jack.pond@psitex.com     Updated Versioning
+ * 1.32    2/05/2020   jack.pond@psitex.com     Updated Versioning
+ * 1.33.1  4/11/2020   jack.pond@psitex.com     Added tests for Issues 308,316
 **/
 @isTest
 public with sharing class SendHTMLEmailTest {
@@ -39,12 +40,14 @@ public with sharing class SendHTMLEmailTest {
             Name = TEMPLATE_NAME,
             DeveloperName = TEMPLATE_DEVNAME,
             TemplateType = 'custom',
-    		// UIType = 2,
-    		// RelatedEntityType = 'Case',
             Description = 'Test Email Template - No Language Specified',
             FolderId = UserInfo.getUserId(),
             Subject = 'Test Email Template'
         );
+        if (TEST_WITH_CREATED_RECORDS){
+            validEmailTemplate.UIType = 'SFX';
+            validEmailTemplate.RelatedEntityType = 'Account';
+        }
         insert validEmailTemplate;
 
         validEmailTemplate = new EmailTemplate(
@@ -52,12 +55,14 @@ public with sharing class SendHTMLEmailTest {
             Name = TEMPLATE_NAME,
             DeveloperName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE,
             TemplateType = 'custom',
-    		// UIType = 2,
-    		// RelatedEntityType = 'Case',
             Description = 'Test Email Template - Language Specified (Language="'+TEMPLATE_LANGUAGE+'")',
             FolderId = UserInfo.getUserId(),
             Subject = 'Test Email Template - Language'
         );
+        if (TEST_WITH_CREATED_RECORDS){
+            validEmailTemplate.UIType = 'SFX';
+            validEmailTemplate.RelatedEntityType = 'Account';
+        }
         insert validEmailTemplate;
     }
 // Check to see if email is deliverable (enabled and capacity not exceeded)    
@@ -123,17 +128,16 @@ public with sharing class SendHTMLEmailTest {
     }
 
 //	Create a contact to test email field merge (recipient && relatedTo[WhichId,relatedId])
-    private static List<Case> emailCreateTestCases(integer howMany, ID relatedContactId){
-        List<Case> caseList = new List<Case>();
+    private static List<Account> emailCreateTestAccount(integer howMany, ID relatedContactId){
+        List<Account> accountList = new List<Account>();
         for (Integer i = 0; i < howMany; i++){
-            caseList.add(new Case(
-                    Subject    	= 'Test Case '+ ('0000'+i).right(4),
-                	ContactId	= relatedContactId
+            accountList.add(new Account(
+                    Name    	= 'Test Account '+ ('0000'+i).right(4)	
                 )
             );
         }
-        insert caseList;
-        return caseList;
+        insert AccountList;
+        return AccountList;
     }
 
     
@@ -311,7 +315,7 @@ public with sharing class SendHTMLEmailTest {
         if (TEST_WITH_CREATED_RECORDS){
             List<Contact>sendToContactCollection = emailCreateTestContacts(TEST_CONTACTS_COUNT);
 			testReq.templateTargetObjectId = sendToContactCollection[0].Id;
-        	testReq.recordId = emailCreateTestCases(1,testReq.templateTargetObjectId)[0].Id;
+        	testReq.recordId = emailCreateTestAccount(1,testReq.templateTargetObjectId)[0].Id;
 			// also do code coverage test for sentTo Contact Collection
             List<Id> theseIds = new List<Id>();
             for (Contact thisContact : sendToContactCollection) theseIds.Add(thisContact.Id);
@@ -362,7 +366,7 @@ public with sharing class SendHTMLEmailTest {
         testReq.recordId = validEmailTemplate.Id;
         if (TEST_WITH_CREATED_RECORDS){
 			testReq.templateTargetObjectId = emailCreateTestContacts(TEST_CONTACTS_COUNT)[0].Id;
-        	testReq.recordId = emailCreateTestCases(1,testReq.templateTargetObjectId)[0].Id;
+        	testReq.recordId = emailCreateTestAccount(1,testReq.templateTargetObjectId)[0].Id;
         	testReq.saveAsActivity = true;
         }else{
         	testReq.templateTargetObjectId = UserInfo.getUserId();
@@ -459,7 +463,7 @@ public with sharing class SendHTMLEmailTest {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t011_ErrorIfNoBody: '+e.getMessage());
+            system.debug('t012_ErrorIfSaveAsActivityAndNoRecordId: '+e.getMessage());
         }
 	    
         Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
@@ -467,6 +471,41 @@ public with sharing class SendHTMLEmailTest {
             System.assertEquals(exceptionHit,true,'Error not received when (saveAsActivity == true && recordId/whatId == null)');
         } else {
             System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityDisabled Enabled or capacity exceeded');
+        }
+    }
+// @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
+    @isTest
+    public static void t013_ErrorIfSaveAsActivityAndNoRecordId() {
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        for (OrgWideEmailAddress orgAddrs : [SELECT id, DisplayName, Address FROM OrgWideEmailAddress]){
+        	SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+            testReq.Subject = EMAIL_SUBJECT;
+            testReq.HTMLbody = EMAIL_BODY;
+            testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+            testReq.orgWideEmailAddressId = orgAddrs.Id;
+            reqList.add(testReq);
+    	}
+        if (reqList.size() > 0){
+            Boolean exceptionHit = false;
+            List<SendHTMLEmail.Response> testResponseList = new List<SendHTMLEmail.Response>();
+            try {            
+                testResponseList = SendHTMLEmail.SendEmail(reqList);
+            } catch (SendHTMLEmail.InvocableActionException e) {
+                exceptionHit=true;
+                system.debug('t013_CoverageAttemptForOrgWideEmailAddress: '+e.getMessage());
+            }
+            
+            Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
+            if(emailDeliverabilityEnabled){
+                for(SendHTMLEmail.Response thisTest : testResponseList){
+                    system.debug('t013_CoverageAttemptForOrgWideEmailAddress Response:' + thisTest.isSuccess + ' Template Errors: ' + thisTest.errors + ' Template Used: '+ thisTest.templateUsed);
+                }
+//                System.assertEquals(exceptionHit,false,'Error on orgWideEmailAddressId');
+            } else {
+                System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityDisabled Enabled or capacity exceeded');
+            }
+        } else {
+            System.Debug('Unable to test orgWideEmailAddressId.  No orgWideEmailAddress available.');
         }
     }
 }

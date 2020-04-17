@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+    <interviewLabel>DemoFlow_DeepClone {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DemoFlow_DeepClone</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Get_Opportunity_Template</name>
+        <label>Get Opportunity Template</label>
+        <locationX>174</locationX>
+        <locationY>50</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Output1</targetReference>
+        </connector>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>HMS Victory</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+    </recordLookups>
+    <screens>
+        <name>Output1</name>
+        <label>Output1</label>
+        <locationX>486</locationX>
+        <locationY>50</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;DeepClone generates child Opportunity Line Items: &lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <startElementReference>Get_Opportunity_Template</startElementReference>
+    <status>Draft</status>
+</Flow>

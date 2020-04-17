@@ -13,68 +13,73 @@ global with sharing class DeepClone {
     private static String ERROR_SAVE_CHILD_WITHOUT_PARENT = 'You tried to save child records that didn\'t have a parentId, which might mean that you need to first save the parent record';
     @InvocableMethod
     global static List <Results> clone(List<Requests> requestList) {
-
-
-        SObject inputRecord = requestList[0].inputRecord;
-        String inputRecordId = requestList[0].inputRecordId;
-        List<String> childRelationships = requestList[0].childRelationships != null ? requestList[0].childRelationships : (new List<String>());
-        String childRelationshipsCSV = requestList[0].childRelationshipsCSV;
-        Boolean saveChildRecordsAutomatically = requestList[0].saveChildRecordsAutomatically != null ? requestList[0].saveChildRecordsAutomatically : false;
-        Boolean saveImmediately = requestList[0].saveImmediately != null ? requestList[0].saveImmediately : false;
-
         List<Results> responseWrapper = new List<Results>();
 
-        Results response = new Results();
-        SObjectDeepClone cloner;
+        for (Requests curRequest : requestList) {
+            SObject inputRecord = curRequest.inputRecord;
+            String inputRecordId = curRequest.inputRecordId;
+            List<String> childRelationships = curRequest.childRelationships != null ? curRequest.childRelationships : (new List<String>());
+            String childRelationshipsCSV = curRequest.childRelationshipsCSV;
+            Boolean saveChildRecordsAutomatically = curRequest.saveChildRecordsAutomatically != null ? curRequest.saveChildRecordsAutomatically : false;
+            Boolean saveImmediately = curRequest.saveImmediately != null ? curRequest.saveImmediately : false;
+            Results response = new Results();
+            SObjectDeepClone cloner;
 
 
-        if (inputRecordId == null && inputRecord == null) {
-            throw new InvocableActionException(ERROR_NO_RECORD_NO_ID);
-        } else if (inputRecordId != null && inputRecord != null) {
-            throw new InvocableActionException(ERROR_RECORD_AND_ID);
-        } else if (saveChildRecordsAutomatically && !saveImmediately) {
-            throw new InvocableActionException(ERROR_SAVE_CHILD_WITHOUT_PARENT);
-        }
-        if (childRelationships == null || childRelationships.isEmpty() && !String.isBlank(childRelationshipsCSV)) {
-            childRelationships = childRelationshipsCSV.replaceAll(' ', '').split(',');
-        }
-
-        if (inputRecordId != null) {
-            cloner = new SObjectDeepClone(inputRecordId, new Set<String>(childRelationships), saveChildRecordsAutomatically);
-        } else if (inputRecord.Id != null) {
-            cloner = new SObjectDeepClone(inputRecord.Id, new Set<String>(childRelationships), saveChildRecordsAutomatically);
-        } else if (inputRecord != null) {
-            cloner = new SObjectDeepClone(inputRecord, new Set<String>(childRelationships), saveChildRecordsAutomatically);
-        }
-        if (cloner != null) {
-            response.clonedRecord = cloner.clone;
-        }
-
-        if (saveImmediately && cloner != null) {
-
-            response.clonedRecordId = cloner.save();
-            if (!cloner.clonedChildrenPerTypeMap.isEmpty()) {
-
-                for (Integer i = 1; i <= Math.min(5, childRelationships.size()); i++) {
-                    String curRelation = childRelationships[i - 1];
-
-                    List<SObject> curChildren = cloner.clonedChildrenPerTypeMap.get(curRelation.toUpperCase());
-                    if (i == 1) {
-                        response.clonedRelatedList1 = curChildren;
-                    } else if (i == 2) {
-                        response.clonedRelatedList2 = curChildren;
-                    } else if (i == 3) {
-                        response.clonedRelatedList3 = curChildren;
-                    } else if (i == 4) {
-                        response.clonedRelatedList4 = curChildren;
-                    } else if (i == 5) {
-                        response.clonedRelatedList5 = curChildren;
+            if (inputRecordId == null && inputRecord == null) {
+                throw new InvocableActionException(ERROR_NO_RECORD_NO_ID);
+            } else if (inputRecordId != null && inputRecord != null) {
+                throw new InvocableActionException(ERROR_RECORD_AND_ID);
+            } else if (saveChildRecordsAutomatically && !saveImmediately) {
+                throw new InvocableActionException(ERROR_SAVE_CHILD_WITHOUT_PARENT);
+            }
+            if (childRelationships == null || childRelationships.isEmpty() && !String.isBlank(childRelationshipsCSV)) {
+                childRelationships = childRelationshipsCSV.replaceAll(' ', '').split(',');
+            }
+    
+            if (inputRecordId != null) {
+                cloner = new SObjectDeepClone(inputRecordId, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+            } else if (inputRecord.Id != null) {
+                cloner = new SObjectDeepClone(inputRecord.Id, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+            } else if (inputRecord != null) {
+                cloner = new SObjectDeepClone(inputRecord, new Set<String>(childRelationships), saveChildRecordsAutomatically);
+            }
+            if (cloner != null) {
+                response.clonedRecord = cloner.clone;
+                
+            }
+    
+            if (saveImmediately && cloner != null) {
+    
+                response.clonedRecordId = cloner.save();
+                if (!cloner.clonedChildrenPerTypeMap.isEmpty()) {
+    
+                    for (Integer i = 1; i <= Math.min(5, childRelationships.size()); i++) {
+                        String curRelation = childRelationships[i - 1];
+    
+                        List<SObject> curChildren = cloner.clonedChildrenPerTypeMap.get(curRelation.toUpperCase());
+                        if (i == 1) {
+                            response.clonedRelatedList1 = curChildren;
+                        } else if (i == 2) {
+                            response.clonedRelatedList2 = curChildren;
+                        } else if (i == 3) {
+                            response.clonedRelatedList3 = curChildren;
+                        } else if (i == 4) {
+                            response.clonedRelatedList4 = curChildren;
+                        } else if (i == 5) {
+                            response.clonedRelatedList5 = curChildren;
+                        }
                     }
                 }
             }
+    
+            responseWrapper.add(response);
         }
+        
 
-        responseWrapper.add(response);
+        
+
+
 
         return responseWrapper;
     }
@@ -99,7 +104,7 @@ global with sharing class DeepClone {
         global Boolean saveImmediately = true;
 
         @invocableVariable
-        global Boolean saveChildRecordsAutomatically = true;
+        global Boolean saveChildRecordsAutomatically = false;
     }
 
     global class Results {
@@ -113,22 +118,22 @@ global with sharing class DeepClone {
 
         }
 
-        @InvocableVariable(required=true)
+        @InvocableVariable
         global SObject clonedRecord;
 
-        @InvocableVariable(required=false)
+        @InvocableVariable
         global List<SObject> clonedRelatedList1;
 
-        @InvocableVariable(required=false)
+        @InvocableVariable
         global List<SObject> clonedRelatedList2;
 
-        @InvocableVariable(required=false)
+        @InvocableVariable
         global List<SObject> clonedRelatedList3;
 
-        @InvocableVariable(required=false)
+        @InvocableVariable
         global List<SObject> clonedRelatedList4;
 
-        @InvocableVariable(required=false)
+        @InvocableVariable
         global List<SObject> clonedRelatedList5;
 
         @invocableVariable

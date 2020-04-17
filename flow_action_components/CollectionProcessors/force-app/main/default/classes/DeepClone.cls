@@ -1,4 +1,4 @@
-global with sharing class CloneParentRecordAndChildRecords {
+global with sharing class DeepClone {
 
     //for each child relationship name, query for the records that have the inputRecord as parent
     //suppose the parent account is Order and we want all the child OrderLines

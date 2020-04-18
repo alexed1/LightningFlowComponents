@@ -15,7 +15,7 @@ Additional components packaged with this LWC:
                                                 GetLayoutFields
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
-                                                MockHttpResponseGenerator
+                                                QuickChoiceMockHttpResponseGenerator
 
 3/2/20 -    Eric Smith -    Version 1.27
                             Added ability to display both images & icons on visual cards
@@ -98,7 +98,7 @@ Additional components packaged with this LWC:
                 <lightning-radio-group 
                     name={masterLabel} 
                     label={masterLabel} 
-                    value={value} 
+                    value={selectedValue}
                     options={options}
                     required={required} 
                     onchange={handleChange} 
@@ -113,7 +113,7 @@ Additional components packaged with this LWC:
                 <lightning-combobox 
                     name={masterLabel} 
                     label={masterLabel} 
-                    value={value} 
+                    value={selectedValue}
                     options={options}
                     required={required} 
                     onchange={handleChange}>

@@ -1,49 +1,54 @@
 global with sharing class MapCollection {
     @InvocableMethod
     global static List <Results> mapCollection(List<Requests> requestList) {
-        Results response = new Results();
-        List<SObject> inputCollection = requestList[0].inputCollection;
-        List<SObject> outputCollection = new List<SObject>();
-        String keyValuePairs = requestList[0].keyValuePairs;
-        if (inputCollection != null && !inputCollection.isEmpty() && keyValuePairs != null) {
-            for (SObject acc : inputCollection) {
-                outputCollection.add(acc.clone(true));
-            }
+        List<Results> responseWrapper = new List<Results>();
 
-            Pattern mPattern = pattern.compile('"(?:[^"\\\\]|\\\\.)*"');
-            Matcher mMatcher = mPattern.matcher(CollectionProcessorsUtils.replaceConstants(keyValuePairs));
+        for (Requests curRequest : requestList) {
+            Results response = new Results();
+            List<SObject> inputCollection = curRequest.inputCollection;
+            String keyValuePairs = curRequest.keyValuePairs;
 
-            Map<String, String> fieldNameToValueMap = new Map<String, String>();
-            String key;
-            while (mMatcher.find()) {
 
-                if (key == null) {
-                    key = mMatcher.group(0);
-                } else {
-                    fieldNameToValueMap.put(stripQuotes(key), stripQuotes(mMatcher.group(0)));
-                    key = null;
+            List<SObject> outputCollection = new List<SObject>();
+
+            if (inputCollection != null && !inputCollection.isEmpty() && keyValuePairs != null) {
+                for (SObject acc : inputCollection) {
+                    outputCollection.add(acc.clone(true));
                 }
-            }
 
-            Map<String, String> fieldTypesMap = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], new List<String>(fieldNameToValueMap.keySet()));
-            for (String curFieldName : fieldNameToValueMap.keySet()) {
-                for (SObject acc : outputCollection) {
-                    try {
-                        putType(acc, curFieldName, fieldTypesMap.get(curFieldName), fieldNameToValueMap.get(curFieldName));
-                    } catch (Exception ex) {
-                        response.errors += ex.getMessage();
+                Pattern mPattern = pattern.compile('"(?:[^"\\\\]|\\\\.)*"');
+                Matcher mMatcher = mPattern.matcher(CollectionProcessorsUtils.replaceConstants(keyValuePairs));
+
+                Map<String, String> fieldNameToValueMap = new Map<String, String>();
+                String key;
+                while (mMatcher.find()) {
+
+                    if (key == null) {
+                        key = mMatcher.group(0);
+                    } else {
+                        fieldNameToValueMap.put(stripQuotes(key), stripQuotes(mMatcher.group(0)));
+                        key = null;
+                    }
+                }
+
+                Map<String, String> fieldTypesMap = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], new List<String>(fieldNameToValueMap.keySet()));
+                for (String curFieldName : fieldNameToValueMap.keySet()) {
+                    for (SObject acc : outputCollection) {
+                        try {
+                            putType(acc, curFieldName, fieldTypesMap.get(curFieldName), fieldNameToValueMap.get(curFieldName));
+                        } catch (Exception ex) {
+                            response.errors += ex.getMessage();
+                        }
                     }
                 }
             }
-        }
 
-        response.outputCollection = outputCollection;
-        List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+            response.outputCollection = outputCollection;
+            responseWrapper.add(response);
+        }
 
         return responseWrapper;
     }
-
 
 
     private static String stripQuotes(String str) {

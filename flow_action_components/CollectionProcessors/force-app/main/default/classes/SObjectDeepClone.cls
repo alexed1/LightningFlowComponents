@@ -10,6 +10,7 @@ public with sharing class SObjectDeepClone {
     public SObject clone;
     public Boolean saveChildRecordsAutomatically = true;
     public Map<String, List<SObject>> clonedChildrenPerTypeMap;
+    private Map<Schema.SObjectType, Map<String, Schema.SObjectField>> sObjectFields = new Map<Schema.SObjectType, Map<String, Schema.SObjectField>>();
     /**
       * @description Constructor to query object
       * @param toCloneId: Id to clone.  All creatable fields will be pulled
@@ -41,6 +42,9 @@ public with sharing class SObjectDeepClone {
       * @return The Id of the cloned SObject
       */
     public Id save() {
+        if (!sObjectFields.containsKey(this.type)) {
+            sObjectFields.put(this.type, this.type.getDescribe().fields.getMap());
+        }
         // setup the save point for rollback
         Savepoint sp = Database.setSavepoint();
 
@@ -48,6 +52,7 @@ public with sharing class SObjectDeepClone {
             if (clone.Id != null) {
                 clone.Id = null;
             }
+            markAsCloned(clone);
             insert clone;
 
             clonedChildrenPerTypeMap = new Map<String, List<SObject>>();
@@ -58,6 +63,7 @@ public with sharing class SObjectDeepClone {
                 ChildRelationshipProps rel = this.relationshipMap.get(relationshipName);
                 for (Sobject child : clone.getSObjects(relationshipName)) {
                     SObject childClone = child.clone(false);
+                    markAsCloned(childClone);
                     childClone.put(rel.field, clone.Id);
                     clonedChildrenPerTypeMap.get(relationshipName).add(childClone);
                 }
@@ -74,6 +80,28 @@ public with sharing class SObjectDeepClone {
         }
 
         return clone.Id;
+    }
+
+    private void markAsCloned(SObject so) {
+        //Fields to check if we can add "Cloned" stamp
+        List<String> fieldsToCheck = new List<String>{
+                'Name', 'Subject', 'FirstName', 'LastName'
+        };
+        SObjectType curType = so.getSObjectType();
+
+        if (!this.sObjectFields.containsKey(curType)) {
+            this.sObjectFields.put(curType, curType.getDescribe().fields.getMap());
+        }
+
+        for (String curFieldName : fieldsToCheck) {
+            if (this.sObjectFields.get(curType).containsKey(curFieldName.toLowerCase())) {
+                if (so.get(curFieldName) != null && this.sObjectFields.get(curType).get(curFieldName.toLowerCase()).getDescribe().isUpdateable()) {
+                    String curName = (String) so.get(curFieldName);
+                    so.put(curFieldName, curName + ' Clone' + Datetime.now().format('MM/dd/yyyy H:mm'));
+                    break;
+                }
+            }
+        }
     }
 
 

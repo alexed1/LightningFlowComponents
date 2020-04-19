@@ -9,6 +9,9 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="value" label="Value" type="String"/>
+            <property name="selectedLabel" label="Selected Label" type="String" role="outputOnly"/>
+            <property name="allValues" label="All Values" type="String[]" role="outputOnly"/>
+            <property name="allLabels" label="All Labels" type="String[]" role="outputOnly"/>
             <property name="choiceValues" label="Choice Values (String Collection)" type="String[]"/>
             <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]"/>
             <property name="choiceIcons" label="Card Mode - Choice Icons (String Collection)" type="String[]"/>

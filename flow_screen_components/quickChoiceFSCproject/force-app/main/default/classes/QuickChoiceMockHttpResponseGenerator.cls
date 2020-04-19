@@ -1,5 +1,5 @@
 @isTest
-    global class MockHttpResponseGenerator implements HttpCalloutMock {
+    global class QuickChoiceMockHttpResponseGenerator implements HttpCalloutMock {
         // Implement this interface method
         global HTTPResponse respond(HTTPRequest req) {
             // Optionally, only send a mock response for a specific endpoint

@@ -6,7 +6,7 @@ private class GetLayoutByProfileAndRecordTypeTest {
     @isTest
     static void CanGetLayoutProfile() {
             // Set mock callout class 
-            Test.setMock(HttpCalloutMock.class, new MockHttpResponseGenerator());
+            Test.setMock(HttpCalloutMock.class, new QuickChoiceMockHttpResponseGenerator());
             
 
 

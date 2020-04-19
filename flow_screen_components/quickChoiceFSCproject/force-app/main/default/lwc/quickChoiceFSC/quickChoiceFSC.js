@@ -270,11 +270,13 @@ export default class SmartChoiceFSC extends LightningElement {
 	}
 
 	handleChange(event) {
+console.log('EVENT',event);
 		this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
 		console.log("selected value is: " + this.selectedValue);
 		this.dispatchFlowAttributeChangedEvent('value', this.selectedValue);
 
 	}
+
 	setSelectedLabel(){
 		if(this.options && this.options.length){
 			let selectedOption = this.options.find(curOption=>curOption.value === this.selectedValue);

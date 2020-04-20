@@ -4,7 +4,7 @@ public with sharing class ListActionsTest {
     private final static String TEST_RECORD_NAME = 'Test Acc';
     private final static String TEST_CONTACT_NAME = 'Test Contact';
 
-     
+
     @isTest
     static void canGetLookupCollection() {
         String noInputsMessage = 'You need to pass either a collection of records or a collection of record IDs into this action, representing the initial set of records';
@@ -40,13 +40,13 @@ public with sharing class ListActionsTest {
 
         return ocRole;
     }
-         
+
 
     @isTest
     static void canGetChildCollection() {
         //user must pass in at least one input recordid or an input record
-       
-        
+
+
         String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to start with';
         String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
@@ -78,7 +78,7 @@ public with sharing class ListActionsTest {
         System.assertEquals(1, responseWrapper[0].childCollection.size() );
         requests.clear();
 
-       
+
     }
 
     @isTest
@@ -130,6 +130,7 @@ public with sharing class ListActionsTest {
         request.inputRecord = null;
         request.saveImmediately = true;
         request.childRelationshipsCSV = 'Tasks';
+        request.saveChildRecordsAutomatically = true;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id);

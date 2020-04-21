@@ -129,6 +129,22 @@ global with sharing class SortCollection {
                         returnValue = -1 * direction;
                     }
                 }
+             } else if (fieldType == 'DECIMAL') {
+                Decimal origValue = Decimal.valueOf(acc.get(this.field));
+                Decimal compareToValue = Decimal.valueOf(compareToAcc.acc.get(this.field));
+                if (origValue == null && compareToValue == null) {
+                    returnValue = 0;
+                } else if (origValue == null) {
+                    returnValue = -1;
+                } else if (compareToValue == null) {
+                    returnValue = 1;
+                } else {
+                    if (origValue > compareToValue) {
+                        returnValue = 1 * direction;
+                    } else if (origValue < compareToValue) {
+                        returnValue = -1 * direction;
+                    }
+                }
              } else if (fieldType == 'BOOLEAN') {
                 Boolean origValue = Boolean.valueOf(acc.get(this.field));
                 Boolean compareToValue = Boolean.valueOf(compareToAcc.acc.get(this.field));

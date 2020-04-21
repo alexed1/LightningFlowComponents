@@ -97,6 +97,54 @@ global with sharing class SortCollection {
                         returnValue = -1 * direction;
                     }
                 }
+             } else if (fieldType == 'DATE') {
+                Date origValue = Date.valueOf(acc.get(this.field));
+                Date compareToValue = Date.valueOf(compareToAcc.acc.get(this.field));
+                if (origValue == null && compareToValue == null) {
+                    returnValue = 0;
+                } else if (origValue == null) {
+                    returnValue = -1;
+                } else if (compareToValue == null) {
+                    returnValue = 1;
+                } else {
+                    if (origValue > compareToValue) {
+                        returnValue = 1 * direction;
+                    } else if (origValue < compareToValue) {
+                        returnValue = -1 * direction;
+                    }
+                }
+             } else if (fieldType == 'DATETIME') {
+                Datetime origValue = Datetime.valueOf(acc.get(this.field));
+                Datetime compareToValue = Datetime.valueOf(compareToAcc.acc.get(this.field));
+                if (origValue == null && compareToValue == null) {
+                    returnValue = 0;
+                } else if (origValue == null) {
+                    returnValue = -1;
+                } else if (compareToValue == null) {
+                    returnValue = 1;
+                } else {
+                    if (origValue > compareToValue) {
+                        returnValue = 1 * direction;
+                    } else if (origValue < compareToValue) {
+                        returnValue = -1 * direction;
+                    }
+                }
+             } else if (fieldType == 'BOOLEAN') {
+                Boolean origValue = Boolean.valueOf(acc.get(this.field));
+                Boolean compareToValue = Boolean.valueOf(compareToAcc.acc.get(this.field));
+                if (origValue == null && compareToValue == null) {
+                    returnValue = 0;
+                } else if (origValue == null) {
+                    returnValue = -1;
+                } else if (compareToValue == null) {
+                    returnValue = 1;
+                } else {
+                    if (origValue && !compareToValue) {
+                        returnValue = 1 * direction;
+                    } else if (!origValue && compareToValue) {
+                        returnValue = -1 * direction;
+                    }
+                }
             }
 
             return returnValue;

@@ -1,0 +1,12 @@
+for (Request request : requestList) {
+            Response response = new Response();
+            //soql expects this format YYYY-MM-DDThh:mm:ss-hh:mm
+            String dateTimeFormat = request.flowDateTime.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+        
+    
+            response.soqlDateTimeString = dateTimeFormat;  
+    
+            //package up the response
+            
+            responseList.add(response);
+       }

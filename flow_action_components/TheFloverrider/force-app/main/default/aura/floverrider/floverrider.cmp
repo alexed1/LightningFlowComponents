@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,lightning:actionOverride">
+
+    <aura:attribute name="recordId" type="String" />
+foobar!
+recordId is: {!v.recordId}
+</aura:component>	

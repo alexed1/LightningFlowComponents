@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Type --></label>
+    <name>Type__c</name>
+    <picklistValues>
+        <masterLabel>All Internal Users</masterLabel>
+        <translation><!-- All Internal Users --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Creator</masterLabel>
+        <translation><!-- Creator --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Customer Portal User</masterLabel>
+        <translation><!-- Customer Portal User --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Group</masterLabel>
+        <translation><!-- Group --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Owner</masterLabel>
+        <translation><!-- Owner --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Partner User</masterLabel>
+        <translation><!-- Partner User --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Portal Role</masterLabel>
+        <translation><!-- Portal Role --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Portal Role Subordinates</masterLabel>
+        <translation><!-- Portal Role Subordinates --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Role</masterLabel>
+        <translation><!-- Role --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Role Subordinate</masterLabel>
+        <translation><!-- Role Subordinate --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Role Subordinate - Internal</masterLabel>
+        <translation><!-- Role Subordinate - Internal --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>User</masterLabel>
+        <translation><!-- User --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

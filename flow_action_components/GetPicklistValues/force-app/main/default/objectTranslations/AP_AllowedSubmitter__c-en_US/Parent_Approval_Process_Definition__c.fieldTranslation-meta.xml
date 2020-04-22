@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- Parent Approval Process Definition --></label>
+    <name>Parent_Approval_Process_Definition__c</name>
+    <relationshipLabel><!-- AP_AllowedSubmitter --></relationshipLabel>
+</CustomFieldTranslation>

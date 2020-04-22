@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parent_Approval_Process_Definition__c</fullName>
+    <externalId>false</externalId>
+    <label>Parent Approval Process Definition</label>
+    <referenceTo>ApprovalProcessDefinition__c</referenceTo>
+    <relationshipLabel>AP_AllowedSubmitter</relationshipLabel>
+    <relationshipName>AP_AllowedSubmitterSets</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

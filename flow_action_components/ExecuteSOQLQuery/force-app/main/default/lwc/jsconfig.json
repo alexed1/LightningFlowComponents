@@ -9,11 +9,20 @@
             "c/conditionLine": [
                 "conditionLine/conditionLine.js"
             ],
-            "c/soqlQueryBuilder": [
-                "soqlQueryBuilder/soqlQueryBuilder.js"
-            ],
             "c/fieldSelector": [
                 "fieldSelector/fieldSelector.js"
+            ],
+            "c/fieldSelectorUtils": [
+                "fieldSelectorUtils/fieldSelectorUtils.js"
+            ],
+            "c/flowCombobox": [
+                "flowCombobox/flowCombobox.js"
+            ],
+            "c/selectedFields": [
+                "selectedFields/selectedFields.js"
+            ],
+            "c/soqlQueryBuilder": [
+                "soqlQueryBuilder/soqlQueryBuilder.js"
             ]
         }
     },

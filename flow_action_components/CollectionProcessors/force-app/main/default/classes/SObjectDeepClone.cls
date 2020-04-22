@@ -70,6 +70,7 @@ public with sharing class SObjectDeepClone {
             }
             if (saveChildRecordsAutomatically && !clonedChildrenPerTypeMap.isEmpty()) {
                 for (String relationshipName : clonedChildrenPerTypeMap.keySet()) {
+                    System.debug('cloned children are: ' + clonedChildrenPerTypeMap);
                     insert clonedChildrenPerTypeMap.get(relationshipName);
                 }
             }

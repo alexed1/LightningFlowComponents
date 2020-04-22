@@ -4,16 +4,19 @@ public with sharing class ExecuteSOQL {
 
         Results results = new Results();
         List<Results> responseWrapper = new List<Results>();
-        
-        for (Requests req : requestList) {
-            String soqlQuery = req.soqlQuery;
+
+        for(Requests curRequest : requestList) {
+
+            String soqlQuery = curRequest.soqlQuery;
             soqlQuery = replaceWithFormattedValues(soqlQuery);
             results.sObjects = Database.query(soqlQuery);
-
-
+    
+    
             responseWrapper.add(results);
+            
         }
         return responseWrapper;
+       
     }
 
     public static String replaceWithFormattedValues(String soqlQuery) {

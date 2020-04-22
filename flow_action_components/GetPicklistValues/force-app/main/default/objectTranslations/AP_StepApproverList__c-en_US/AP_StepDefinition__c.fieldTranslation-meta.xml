@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- AP_StepDefinition --></label>
+    <name>AP_StepDefinition__c</name>
+    <relationshipLabel><!-- AP_StepApproverLists --></relationshipLabel>
+</CustomFieldTranslation>

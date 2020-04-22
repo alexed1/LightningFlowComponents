@@ -13,7 +13,7 @@ export default class SendRichEmailCPE extends LightningElement {
         nullValue: ''
     };
     @track _values;
-    @track _flowContext;
+    @track _builderContext;
     @track convertedFlowContext;
     @track stringOptions = [];
 
@@ -77,21 +77,21 @@ export default class SendRichEmailCPE extends LightningElement {
     };
     @track isInitialized = true; //helps ensure all data structures are ready before rendering starts
 
-    @api get flowContext() {
-        return this._flowContext;
+    @api get builderContext() {
+        return this._builderContext;
     }
 
-    set flowContext(value) {
-        this._flowContext = value;
+    set builderContext(value) {
+        this._builderContext = value;
         this.convertContextIntoRoleManagerParams(value);
     }
 
 
-    @api get values() {
+    @api get inputVariables() {
         return this._values;
     }
 
-    set values(value) {
+    set inputVariables(value) {
         this.isInitialized = false;
         this._values = value;
         this.initializeValues();
@@ -186,7 +186,7 @@ export default class SendRichEmailCPE extends LightningElement {
     }
 
     dispatchFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {
-        const valueChangedEvent = new CustomEvent('valuechanged', {
+        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,
             cancelable: false,
             composed: true,

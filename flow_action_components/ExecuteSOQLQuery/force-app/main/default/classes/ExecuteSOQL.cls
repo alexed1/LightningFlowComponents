@@ -4,12 +4,15 @@ public with sharing class ExecuteSOQL {
 
         Results results = new Results();
         List<Results> responseWrapper = new List<Results>();
-        String soqlQuery = requestList[0].soqlQuery;
-        soqlQuery = replaceWithFormattedValues(soqlQuery);
-        results.sObjects = Database.query(soqlQuery);
+        
+        for (Requests req : requestList) {
+            String soqlQuery = req.soqlQuery;
+            soqlQuery = replaceWithFormattedValues(soqlQuery);
+            results.sObjects = Database.query(soqlQuery);
 
 
-        responseWrapper.add(results);
+            responseWrapper.add(results);
+        }
         return responseWrapper;
     }
 

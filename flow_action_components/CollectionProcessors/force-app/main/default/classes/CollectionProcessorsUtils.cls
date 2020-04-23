@@ -1,14 +1,15 @@
 public with sharing class CollectionProcessorsUtils {
     public static Map<String, String> getFieldTypes(SObject acc, List<String> fieldNames) {
 
-        Schema.SObjectType r = acc.Id.getSObjectType();
         Map<String, String> resultMap = new Map<String, String>();
-        DescribeSObjectResult d = r.getDescribe();
+        DescribeSObjectResult d = acc.getSObjectType().getDescribe();
         for (String fieldName : fieldNames) {
-           resultMap.put(fieldName, d.fields.getMap().get(fieldName).getDescribe().getType().name());
+            resultMap.put(fieldName, d.fields.getMap().get(fieldName).getDescribe().getType().name());
         }
 
         return resultMap;
+
+
     }
 
     public static String replaceConstants(String sourceString) {

@@ -14,18 +14,13 @@ export default class QuickChoiceCpe extends LightningElement {
         style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels):'},
         numberOfColumns: {value: null, valueDataType: null, isCollection: false, label: 'Number of columns:'},
         includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
-        choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Datasource for Choice Icons:'},
+        choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
         iconSize: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
         recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:'},
         choiceLabels: {value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]'},
-        choiceValues: {
-            value: null,
-            valueDataType: null,
-            isCollection: true,
-            label: 'Choice Values [Card Descriptions]'
-        },
+        choiceValues: {value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]'},
     };
 
     settings = {
@@ -85,7 +80,6 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     set inputVariables(value) {
-
         this._values = value;
         this.initializeValues();
     }

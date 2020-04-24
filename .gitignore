@@ -33,3 +33,5 @@ Thumbs.db
 ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
+flow_action_components/CollectionProcessors/force-app/main/default/lwc/jsconfig.json
+flow_screen_components/quickChoiceFSCproject/force-app/main/default/lwc/jsconfig.json

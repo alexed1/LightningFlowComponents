@@ -6,14 +6,5 @@
     <masterLabel>Lookup Cpe</masterLabel>
     <targets>
         <target>lightning__HomePage</target>
-        <target>lightning__FlowScreen</target>
     </targets>
-    <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
-            <property label="Object Name" name="objectName" type="String"/>
-            <property label="Display which Field" name="displayWhichField" type="String"/>
-            <property label="Output which value" name="outputWhichValue" type="String"/>
-            <property label="Master Label" name="masterLabel" type="String"/>
-        </targetConfig>
-    </targetConfigs>
 </LightningComponentBundle>

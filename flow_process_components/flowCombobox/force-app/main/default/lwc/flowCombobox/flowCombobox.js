@@ -6,8 +6,8 @@ export default class FlowCombobox extends LightningElement {
     @api name;
     @api label;
     @api required = false;
-    @api flowContextFilterType;
-    @api flowContextFilterCollectionBoolean;
+    @api builderContextFilterType;
+    @api builderContextFilterCollectionBoolean;
     @api maxWidth;
     @track _dataType;
     @track _value;
@@ -23,7 +23,7 @@ export default class FlowCombobox extends LightningElement {
     isDataModified = false;
     selfEvent = false;
     key = 0;
-
+    _builderContext;
     labels = {
         noDataAvailable: 'No data available'
     };
@@ -92,13 +92,13 @@ export default class FlowCombobox extends LightningElement {
         }
     }
 
-    @api get flowContext() {
-        return this._flowContext;
+    @api get builderContext() {
+        return this._builderContext;
     }
 
-    set flowContext(value) {
-        this._flowContext = value;
-        this._mergeFields = this.generateMergeFieldsFromFlowContext(this._flowContext);
+    set builderContext(value) {
+        this._builderContext = value;
+        this._mergeFields = this.generateMergeFieldsFromBuilderContext(this._builderContext);
         if (!this._selectedObjectType) {
             this.setOptions(this._mergeFields);
             this.determineSelectedType();
@@ -184,7 +184,7 @@ export default class FlowCombobox extends LightningElement {
         }
     }
 
-    generateMergeFieldsFromFlowContext(flowContext) {
+    generateMergeFieldsFromBuilderContext(builderContext) {
         let optionsByType = {};
         let key = 0;
 
@@ -192,8 +192,8 @@ export default class FlowCombobox extends LightningElement {
             let typeParts = curType.split('.');
             let typeOptions = [];
 
-            if (typeParts.length && flowContext[typeParts[0]]) {
-                let objectToExamine = flowContext;
+            if (typeParts.length && builderContext[typeParts[0]]) {
+                let objectToExamine = builderContext;
                 let parentNodeLabel = '';
                 typeParts.forEach(curTypePart => {
 
@@ -346,7 +346,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleWindowClick(event) {
-        console.log(Date.now());
+        // console.log(Date.now());
         if (!event.path.includes(this.template.host) && !this.selfEvent) {
             this.closeOptionDialog(true);
         }
@@ -365,12 +365,12 @@ export default class FlowCombobox extends LightningElement {
         this.allOptions.forEach(curOption => {
             let localOptions = curOption.options;
 
-            if (this.flowContextFilterType) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.flowContextFilterType || (opToFilter.type === 'SObject' && !this.flowContextFilterCollectionBoolean));
+            if (this.builderContextFilterType) {
+                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || (opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
             }
 
-            if (typeof this.flowContextFilterCollectionBoolean !== "undefined") {
-                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.flowContextFilterCollectionBoolean);
+            if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {
+                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.builderContextFilterCollectionBoolean);
             }
 
             if (searchLC) {
@@ -462,6 +462,9 @@ export default class FlowCombobox extends LightningElement {
     }
 
     isReference(value) {
+        if (!value) {
+            return false;
+        }
         let isReference = value.indexOf('{!') === 0 && value.lastIndexOf('}') === (value.length - 1);
         return isReference;
     }
@@ -479,6 +482,9 @@ export default class FlowCombobox extends LightningElement {
     }
 
     removeFormatting(value) {
+        if (!value) {
+            return value;
+        }
         let isReference = this.isReference(value);
         let clearValue = isReference ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
         return clearValue;

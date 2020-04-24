@@ -17,14 +17,23 @@
                 options={numberOfColumnOptions}
                 onchange={handleValueChange}
         ></lightning-combobox>
+        <lightning-input
+                type="checkbox"
+                label={inputValues.includeIcons.label}
+                name="select_includeIcons"
+                checked={inputValues.includeIcons.value}
+                onchange={handleValueChange}
+        ></lightning-input>
+    <!-- </template> -->
+    <!-- <template if:true={inputValues.includeIcons.value}> -->
         <c-flow-combobox
                 name="select_choiceIcons"
                 label={inputValues.choiceIcons.label}
                 value={inputValues.choiceIcons.value}
                 value-type={inputValues.choiceIcons.valueDataType}
-                flow-context-filter-type="String"
-                flow-context-filter-collection-boolean={inputValues.value.isCollection}
-                flow-context={_builderContext}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.choiceIcons.isCollection}
+                builder-context={_builderContext}
                 onvaluechanged={handleFlowComboboxValueChange}
         ></c-flow-combobox>
         <lightning-combobox
@@ -60,9 +69,9 @@
                 label={inputValues.recordTypeId.label}
                 value={inputValues.recordTypeId.value}
                 value-type={inputValues.recordTypeId.valueDataType}
-                flow-context-filter-type="String"
-                flow-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
-                flow-context={_builderContext}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
+                builder-context={_builderContext}
                 onvaluechanged={handleFlowComboboxValueChange}
         ></c-flow-combobox>
 
@@ -73,9 +82,9 @@
                 label={inputValues.choiceLabels.label}
                 value={inputValues.choiceLabels.value}
                 value-type={inputValues.choiceLabels.valueDataType}
-                flow-context-filter-type="String"
-                flow-context-filter-collection-boolean={inputValues.choiceLabels.isCollection}
-                flow-context={_builderContext}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.choiceLabels.isCollection}
+                builder-context={_builderContext}
                 onvaluechanged={handleFlowComboboxValueChange}
         ></c-flow-combobox>
     </template>
@@ -85,26 +94,31 @@
                 label={inputValues.choiceValues.label}
                 value={inputValues.choiceValues.value}
                 value-type={inputValues.choiceValues.valueDataType}
-                flow-context-filter-type="String"
-                flow-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
-                flow-context={_builderContext}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
+                builder-context={_builderContext}
                 onvaluechanged={handleFlowComboboxValueChange}
         ></c-flow-combobox>
     </template>
     <lightning-input
             class="slds-p-top_x-small"
-            type="checkbox" label={inputValues.allowNoneToBeChosen.label}
+            type="checkbox"
+            label={inputValues.allowNoneToBeChosen.label}
             name="select_allowNoneToBeChosen"
             checked={inputValues.allowNoneToBeChosen.value}
             onchange={handleValueChange}
     ></lightning-input>
     <lightning-input
-            type="checkbox" label={inputValues.required.label} name="select_required"
+            type="checkbox"
+            label={inputValues.required.label}
+            name="select_required"
             checked={inputValues.required.value}
             onchange={handleValueChange}
     ></lightning-input>
     <lightning-input
-            type="text" label={inputValues.masterLabel.label} name="select_masterLabel"
+            type="text"
+            label={inputValues.masterLabel.label}
+            name="select_masterLabel"
             value={inputValues.masterLabel.value}
             onchange={handleValueChange}
     ></lightning-input>
@@ -113,14 +127,17 @@
             label={inputValues.value.label}
             value={inputValues.value.value}
             value-type={inputValues.value.valueDataType}
-            flow-context-filter-type="String"
-            flow-context-filter-collection-boolean={inputValues.value.isCollection}
-            flow-context={_builderContext}
+            builder-context-filter-type="String"
+            builder-context-filter-collection-boolean={inputValues.value.isCollection}
+            builder-context={_builderContext}
             onvaluechanged={handleFlowComboboxValueChange}
     ></c-flow-combobox>
     <lightning-input
-            type="number" label={inputValues.style_width.label} name="select_style_width"
+            type="number"
+            label={inputValues.style_width.label}
+            name="select_style_width"
             value={inputValues.style_width.value}
             onchange={handleValueChange}
     ></lightning-input>
+
 </template>

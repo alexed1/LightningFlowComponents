@@ -462,6 +462,9 @@ export default class FlowCombobox extends LightningElement {
     }
 
     isReference(value) {
+        if (!value) {
+            return false;
+        }
         let isReference = value.indexOf('{!') === 0 && value.lastIndexOf('}') === (value.length - 1);
         return isReference;
     }
@@ -479,6 +482,9 @@ export default class FlowCombobox extends LightningElement {
     }
 
     removeFormatting(value) {
+        if (!value) {
+            return value;
+        }
         let isReference = this.isReference(value);
         let clearValue = isReference ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
         return clearValue;

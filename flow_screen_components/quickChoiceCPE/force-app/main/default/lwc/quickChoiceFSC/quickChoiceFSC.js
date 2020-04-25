@@ -6,7 +6,7 @@ import Quickchoice_Images from '@salesforce/resourceUrl/Quickchoice_Images';	//S
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
-export default class SmartChoiceFSC extends LightningElement {
+export default class QuickChoiceFSC extends LightningElement {
 
     @api masterLabel;
     @api choiceLabels;

@@ -13,13 +13,14 @@ public with sharing class ExecuteSOQL {
         return responseWrapper;
     }
     public static String replaceWithFormattedValues(String soqlQuery) {
+        String endingClause = '';
         soqlQuery = soqlQuery.toLowerCase().replaceAll('\r\n|\n|\r|\t',' ');
-        List<String> clausesToRemove = new List<String>{
-                ' order by ', ' limit '
-        };
+        List<String> clausesToRemove = new List<String>{' order by ', ' limit '};
         for (String curClause : clausesToRemove) {
             if (soqlQuery.contains(curClause)) {
-                soqlQuery = soqlQuery.substring(0, soqlQuery.indexOf(curClause));
+                endingClause = curClause + soqlQuery.substringAfter(curClause);
+                soqlQuery = soqlQuery.remove(endingClause);
+                break;
             }
         }
         if (soqlQuery != null && soqlQuery.contains(' from ') && soqlQuery.contains('select ') && soqlQuery.contains(' where ')) {
@@ -63,7 +64,7 @@ public with sharing class ExecuteSOQL {
             Map<String, String> fieldTypes = getFieldTypes(sObjectType, fieldNames);
             soqlQuery = putFormattedValues(soqlQuery, fieldNameValueMap, fieldTypes);
         }
-        return soqlQuery;
+        return soqlQuery + endingClause;
     }
     public static Map<String, String> getFieldTypes(String sObjectTypeName, List<String> fieldNames) {
         Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName);

@@ -54,29 +54,35 @@ public class ExecuteSOQLTest {
     }
 
     @isTest
-    private static void testExecuteSOQLMultipleRecords() {
-        Account acc = new Account(Name = 'Test Account');
-        insert acc;
-
-        //Multiple records returned
-        Set<Id> accIds = new Set<Id>();
-        accIds.add(acc.Id);
-        acc = new Account(Name = 'Test Account2');
-        insert acc;
-        accIds.add(acc.Id);
+    private static void testExecuteSOQLLimit() {        
+        insert new List<Account>{new Account(Name = 'Test 3'), new Account(Name = 'Test 1'), new Account(Name = 'Test 2')};
         
         ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
-        requests.soqlQuery = 'Select Id From Account Where Name != \'TEST\' ORDER BY CreatedDate LIMIT 2';
+        requests.soqlQuery = 'Select Id From Account Where Name != \'TEST\' LIMIT 2';
                 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
-                requests
-        });
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
         Test.stopTest();
         
-        for (SObject so : results[0].sObjects) {
-            System.assertEquals(true, accIds.contains(so.Id));
-        }
+        System.assertEquals(2, results[0].sObjects.size());  
+    }
+    
+    @isTest
+    private static void testExecuteSOQLOrderBy() {
+        insert new List<Account>{new Account(Name = 'Apple'), new Account(Name = 'Pear'), new Account(Name = 'Cucumber')};
+        
+        ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
+        requests.soqlQuery = 'Select Id,Name From Account Order By Name';
+                
+        Test.startTest();
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        Test.stopTest();
+        
+        System.assertEquals(true, results[0].sObjects.size() == 3);
+        List<Account> accounts = (List<Account>)results[0].sObjects;
+        System.assertEquals('Apple', accounts[0].Name);
+      	System.assertEquals('Cucumber', accounts[1].Name);
+		System.assertEquals('Pear', accounts[2].Name);
     }
 
     @isTest

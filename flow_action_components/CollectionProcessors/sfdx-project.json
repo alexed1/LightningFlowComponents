@@ -10,9 +10,10 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "46.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
         "CollectionActions": "0Hof4000000PB3LCAW",
-        "CollectionActions@1.14.0-0": "04tf4000004J1IDAA0"
+        "CollectionActions@1.14.0-0": "04tf4000004J1IDAA0",
+        "collectionProcessorsT": "0HoB0000000Cb1CKAS"
     }
 }

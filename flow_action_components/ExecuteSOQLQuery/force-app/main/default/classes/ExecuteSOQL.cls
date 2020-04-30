@@ -15,7 +15,7 @@ public with sharing class ExecuteSOQL {
     public static String replaceWithFormattedValues(String soqlQuery) {
         String endingClause = '';
         soqlQuery = soqlQuery.toLowerCase().replaceAll('\r\n|\n|\r|\t',' ');
-        List<String> clausesToRemove = new List<String>{' order by ', ' limit '};
+        List<String> clausesToRemove = new List<String>{' order by ', ' limit ', ' group by ', ' offset ' };
         for (String curClause : clausesToRemove) {
             if (soqlQuery.contains(curClause)) {
                 endingClause = curClause + soqlQuery.substringAfter(curClause);

@@ -78,7 +78,7 @@ public with sharing class ExecuteSOQL {
         	}
             return resultMap; 
         } else {
-            throw new ExecuteSOQLException('Unable to get sObject Type for name: '+ cleanObjectName);
+            throw new ExecuteSOQLException('Unable to get sObject Type for name: '+ sObjectTypeName);
         }
     }
     public static String putFormattedValues(String query, Map<String, String> fieldNameValueMap, Map<String, String> fieldTypes) {

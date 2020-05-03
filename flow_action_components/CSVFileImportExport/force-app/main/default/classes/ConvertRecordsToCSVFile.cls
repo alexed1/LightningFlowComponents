@@ -1,7 +1,7 @@
 public with sharing class ConvertRecordsToCSVFile {
 
        
-    
+        ///was bulkifying but probably will never finish because of the CapTech version
         @InvocableMethod(label='Convert Record Collection to CSV file' description='Pass a list of records and get a CSV file as output')
         public static FlowActionOutput[] recordCollectionToCSVConverter( FlowActionInput[] lstInputs ) {
             for (FlowActionInput curInput : lstInputs) {
@@ -10,21 +10,24 @@ public with sharing class ConvertRecordsToCSVFile {
                 Boolean boolAddTimeStamp = curInput.boolAddTimeStamp;
                 FlowActionOutput[] lstOutput = new FlowActionOutput[]{};
                 ContentVersion[] curContentVersionList = new ContentVersion[]{};
+                for(FlowActionInput input : lstInputs) {
+                    String strTitle = strFileTitle + (boolAddTimeStamp ? ' '+ System.now() : '');
+                    ContentVersion cv = new ContentVersion(
+                        Title = strTitle,
+                        VersionData = createCSVBlob(mapfieldApiNameToLabel,input.lstRecords),
+                        PathOnClient = strTitle+'.csv'
+                    );
+                    curContentVersionList.add(cv);
+                }
+
+                insert curContentVersionList;
 
             }
            
             
             
-            for(FlowActionInput input : lstInputs) {
-                String strTitle = strFileTitle + (boolAddTimeStamp ? ' '+ System.now() : '');
-                ContentVersion cv = new ContentVersion(
-                    Title = strTitle,
-                    VersionData = createCSVBlob(mapfieldApiNameToLabel,input.lstRecords),
-                    PathOnClient = strTitle+'.csv'
-                );
-                curContentVersionList.add(cv);
-            }
-            insert curContentVersionList;
+           
+            
     
             for(ContentVersion file : [ SELECT Id,ContentDocumentId FROM ContentVersion WHERE Id IN: lstFilesToUpload] ) {
                 FlowActionOutput output = new FlowActionOutput();

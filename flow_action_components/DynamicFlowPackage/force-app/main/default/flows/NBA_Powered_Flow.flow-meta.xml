@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Autolaunch_Flow</name>
-        <label>Autolaunch Flow</label>
-        <locationX>588</locationX>
-        <locationY>229</locationY>
-        <actionName>AutolaunchFlow</actionName>
-        <actionType>apex</actionType>
-        <inputParameters>
-            <name>flowName</name>
-            <value>
-                <elementReference>selectedFlowApiName</elementReference>
-            </value>
-        </inputParameters>
-    </actionCalls>
-    <actionCalls>
         <name>Generate_Flow_Link</name>
         <label>Generate Flow Link</label>
         <locationX>441</locationX>
@@ -34,6 +20,18 @@
             <assignToReference>curFlowLink</assignToReference>
             <name>flowLink</name>
         </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Launch_Flow_Dynamically</name>
+        <label>Launch Flow Dynamically</label>
+        <locationX>479</locationX>
+        <locationY>339</locationY>
+        <actionName>LaunchFlowDynamically</actionName>
+        <actionType>apex</actionType>
+        <inputParameters>
+            <name>flowName</name>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <name>Launch_Screen_Flow</name>
@@ -90,10 +88,10 @@
     <decisions>
         <name>Autolaunched_or_ScreenFlow</name>
         <label>Autolaunched or ScreenFlow?</label>
-        <locationX>258</locationX>
-        <locationY>179</locationY>
+        <locationX>243</locationX>
+        <locationY>207</locationY>
         <defaultConnector>
-            <targetReference>Autolaunch_Flow</targetReference>
+            <targetReference>Launch_Flow_Dynamically</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Autolaunched</defaultConnectorLabel>
         <rules>
@@ -119,8 +117,8 @@
         <object>Flow_Record__c</object>
         <valueField>API_Name__c</valueField>
     </dynamicChoiceSets>
-    <interviewLabel>Dynamic Flow Launcher {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Dynamic Flow Launcher</label>
+    <interviewLabel>NBA-Powered Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>NBA-Powered Flow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -134,6 +132,42 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <screens>
+        <name>Recommended_Next_Steps</name>
+        <label>Recommended Next Steps</label>
+        <locationX>50</locationX>
+        <locationY>198</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>screenNextSteps</name>
+            <extensionName>c:getNBARecommendationsFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>strategyName</name>
+                <value>
+                    <stringValue>NextStepsStrategy</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Some Suggestions</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <screens>
         <name>Select_Process</name>
         <label>Select Process</label>
@@ -212,7 +246,7 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Select_Process_0</targetReference>
+            <targetReference>Recommended_Next_Steps</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -236,6 +270,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>0031k00000Pt4Y6AAJ</stringValue>
+        </value>
     </variables>
     <variables>
         <name>selectedFlowApiName</name>

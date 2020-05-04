@@ -8,6 +8,7 @@ public without sharing class ExecuteSOQL {
         for(Requests curRequest : requestList) {
             String soqlQuery = curRequest.soqlQuery;
             soqlQuery = replaceWithFormattedValues(soqlQuery);
+            System.debug('Logs: query: ' + soqlQuery);
             results.sObjects = Database.query(soqlQuery);
             responseWrapper.add(results);
         }
@@ -15,7 +16,7 @@ public without sharing class ExecuteSOQL {
     }
     public static String replaceWithFormattedValues(String soqlQuery) {
         String endingClause = '';
-        soqlQuery = soqlQuery.toLowerCase().replaceAll('\r\n|\n|\r|\t',' ');
+        soqlQuery = soqlQuery.replaceAll('\r\n|\n|\r|\t',' ');
         List<String> clausesToRemove = new List<String>{' order by ', ' limit ', ' group by ', ' offset ' };
         for (String curClause : clausesToRemove) {
             if (soqlQuery.contains(curClause)) {
@@ -25,14 +26,14 @@ public without sharing class ExecuteSOQL {
             }
         }
         if (soqlQuery != null && soqlQuery.contains(' from ') && soqlQuery.contains('select ') && soqlQuery.contains(' where ')) {
-            Pattern mPattern = pattern.compile('(?<=from )(.*)(?= where .+(\\(select .+\\)))');
+            Pattern mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where .+(\\(select .+\\)))');
             Matcher mMatcher = mPattern.matcher(soqlQuery);
             Boolean found = mMatcher.find();
             String sObjectType = '';
             if (found) {
                 sObjectType = mMatcher.group(0);
                 // Recurse through sub-queries
-                Pattern subPattern = pattern.compile('\\(select .+\\)');
+                Pattern subPattern = pattern.compile('(?i)\\(select .+\\)');
                 Matcher subMatcher = subPattern.matcher(soqlQuery);
                 while (subMatcher.find()) {
                     String subQuery = subMatcher.group(0).removeStart('(').removeEnd(')');
@@ -40,7 +41,7 @@ public without sharing class ExecuteSOQL {
                    	soqlQuery = soqlQuery.replace(subQuery, formattedSubQuery);
                 }
             } else {
-                mPattern = pattern.compile('(?<=from )(.*)(?= where)');            
+                mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where)');            
                 mMatcher = mPattern.matcher(soqlQuery);
                 if (mMatcher.find()) {
                     sObjectType = mMatcher.group(0);
@@ -50,10 +51,10 @@ public without sharing class ExecuteSOQL {
             }
             Map<String, String> fieldNameValueMap = new Map<String, String>();
             List<String> fieldNames = new List<String>();
-            mPattern = pattern.compile('(?<=where )(.*)');
+            mPattern = pattern.compile('(?i)(?<=where )(.*)');
             mMatcher = mPattern.matcher(soqlQuery);
             while (mMatcher.find()) {
-                String whereClause = mMatcher.group(0).replaceAll('\\(select .+\\)', '(SUBQUERY)');
+                String whereClause = mMatcher.group(0).replaceAll('(?i)\\(select .+\\)', '(SUBQUERY)');
                 fieldNames.addAll(whereClause.split('\\(|\\)|>=|<=|!=|=|>|<| in\\(| not in\\(| like | in:| or| and'));
             }
             if (!fieldNames.isEmpty()) {
@@ -97,20 +98,21 @@ public without sharing class ExecuteSOQL {
     }
     private static String getFormattedValue(String fieldValue, String fieldType) {		
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
+            String caseInsensitiveValue = fieldValue.toLowerCase();
             //Datetime is already formatted
             for (String literal: DATE_LITERAL_FORMATS) {
-                if (fieldValue.contains(literal.toLowerCase())) {
+                if (caseInsensitiveValue.contains(literal.toLowerCase())) {
                     return fieldValue;
                 }
             }
-            if (fieldValue.contains('t') && fieldValue.contains('z') && fieldValue.indexOf('t') == 11) {
+            if (caseInsensitiveValue.contains('t') && caseInsensitiveValue.contains('z') && caseInsensitiveValue.indexOf('t') == 11) {
                 return fieldValue;
             }
             Map<String, String> localMonthNumbers = getLocalMonthNumbers();
             Boolean isDate = false;
             for (String monthName : localMonthNumbers.keySet()) {
-                if (fieldValue.contains(monthName)) {
-                    fieldValue = fieldValue.replaceAll(monthName, localMonthNumbers.get(monthName) + ',');
+                if (caseInsensitiveValue.contains(monthName)) {
+                    fieldValue = caseInsensitiveValue.replaceAll(monthName, localMonthNumbers.get(monthName) + ',');
                     isDate = true;
                 }
             }

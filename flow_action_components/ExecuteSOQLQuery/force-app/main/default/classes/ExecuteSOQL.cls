@@ -1,4 +1,5 @@
-public with sharing class ExecuteSOQL {
+public without sharing class ExecuteSOQL {
+    private static Set<String> DATE_LITERAL_FORMATS = new Set<String>{'YESTERDAY','TODAY','TOMORROW','LAST_WEEK','THIS_WEEK','NEXT_WEEK','LAST_MONTH','THIS_MONTH','NEXT_MONTH','LAST_90_DAYS','NEXT_90_DAYS','LAST_N_DAYS','NEXT_N_DAYS','NEXT_N_WEEKS','LAST_N_WEEKS','NEXT_N_MONTHS','LAST_N_MONTHS','THIS_QUARTER','LAST_QUARTER','NEXT_QUARTER','NEXT_N_QUARTERS','LAST_N_QUARTERS','THIS_YEAR','LAST_YEAR','NEXT_YEAR','NEXT_N_YEARS','LAST_N_YEARS','THIS_FISCAL_QUARTER','LAST_FISCAL_QUARTER','NEXT_FISCAL_QUARTER','NEXT_N_FISCAL_QUARTERS','LAST_N_FISCAL_QUARTERS','THIS_FISCAL_YEAR','LAST_FISCAL_YEAR','NEXT_FISCAL_YEAR','NEXT_N_FISCAL_YEARS','LAST_N_FISCAL_YEARS'};
     class ExecuteSOQLException extends Exception {}
     @InvocableMethod
     public static List <Results> getEligibleProducts(List<Requests> requestList) {
@@ -67,7 +68,7 @@ public with sharing class ExecuteSOQL {
         return soqlQuery + endingClause;
     }
     public static Map<String, String> getFieldTypes(String sObjectTypeName, List<String> fieldNames) {
-        Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName);
+        Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName.replace(' ', ''));
         if (objectType != null) {
             Map<String, String> resultMap = new Map<String, String>();
         	DescribeSObjectResult d = objectType.getDescribe();
@@ -94,9 +95,14 @@ public with sharing class ExecuteSOQL {
         }
         return query;
     }
-    private static String getFormattedValue(String fieldValue, String fieldType) {
+    private static String getFormattedValue(String fieldValue, String fieldType) {		
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
             //Datetime is already formatted
+            for (String literal: DATE_LITERAL_FORMATS) {
+                if (fieldValue.contains(literal.toLowerCase())) {
+                    return fieldValue;
+                }
+            }
             if (fieldValue.contains('t') && fieldValue.contains('z') && fieldValue.indexOf('t') == 11) {
                 return fieldValue;
             }

@@ -84,6 +84,22 @@ public class ExecuteSOQLTest {
         
         System.assertEquals(2, results[0].sObjects.size());  
     }
+
+    @isTest
+    private static void testExecuteSOQLId() {      
+        Account searchAccount = new Account(Name = 'Test 3');  
+        insert new List<Account>{searchAccount, new Account(Name = 'Test 1'), new Account(Name = 'Test 2')};
+        
+        ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
+        requests.soqlQuery = 'Select Id From Account Where Name != \'TEST\' AND Id = \'' + searchAccount.Id + '\'';
+                
+        Test.startTest();
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        Test.stopTest();
+        
+        System.assertEquals(1, results[0].sObjects.size());  
+        System.assertEquals(searchAccount.Id, results[0].sObjects[0].Id);  
+    }
     
     @isTest
     private static void testExecuteSOQLOrderBy() {

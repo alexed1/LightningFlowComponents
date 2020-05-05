@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Territory2Type xmlns="http://soap.sforce.com/2006/04/metadata">
+    <name>SMB</name>
+    <priority>3</priority>
+</Territory2Type>

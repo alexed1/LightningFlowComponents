@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Territory2 xmlns="http://soap.sforce.com/2006/04/metadata">
+    <accountAccessLevel>All</accountAccessLevel>
+    <caseAccessLevel>Edit</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
+    <name>Washington</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentTerritory>East_Coast</parentTerritory>
+    <territory2Type>Strategic</territory2Type>
+</Territory2>

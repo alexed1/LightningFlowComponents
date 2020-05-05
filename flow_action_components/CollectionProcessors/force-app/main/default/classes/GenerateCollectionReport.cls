@@ -10,9 +10,16 @@ global with sharing class GenerateCollectionReport {
             List<String> shownFieldsArray = shownFields.replaceAll('[^a-zA-Z0-9\\,]', '').split(',');
             if (!shownFieldsArray.isEmpty()) {
                 for (SObject acc : inputCollection) {
-                    reportString += 'Record: ' + (acc.get('Name') != null ? acc.get('Name') : (acc.get('Id') != null ? acc.get('Id') : ''))+'\n';
+                    reportString += 'Record: ';
+                    try {
+                        reportString += acc.get('Name');
+                    } catch (Exception ex) {
+                        reportString += acc.get('Id');
+                    }
+                    reportString += '\n';
+
                     for (String fieldName : shownFieldsArray) {
-                        reportString += fieldName + ' : ' + acc.get(fieldName)+'\n';
+                        reportString += fieldName + ' : ' + acc.get(fieldName) + '\n';
                     }
                     reportString += '\n\n';
                 }

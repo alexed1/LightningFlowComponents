@@ -1,0 +1,18 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "ConvertCSVToRecords",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "ConvertCSVToRecords": "0Hof4000000XZKMCA4",
+        "ConvertCSVToRecords@1.0.0-0": "04tf4000004PtcnAAC"
+    }
+}

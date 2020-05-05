@@ -1,0 +1,30 @@
+public with sharing class ExecuteNBAStrategy {
+    public static List<Results> ExecuteNBAStrategy(List<Requests> requests) {
+
+    }
+
+
+    public class InvocableErrorException extends Exception{}
+
+
+    public class Requests {
+
+      @InvocableVariable
+      public String contextRecordId;
+
+      @InvocableVariable
+      public String strategyName;
+
+      @InvocableVariable
+      public Number maxResults;
+    }
+    
+    public class Results {
+     
+      @InvocableVariable
+      public ConnectApi.NBARecommendations curRecs;
+
+    }
+
+
+}

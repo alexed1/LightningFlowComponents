@@ -7,13 +7,13 @@ import Quickchoice_Images from '@salesforce/resourceUrl/Quickchoice_Images';	//S
 /* eslint-disable no-console */
 
 export default class SmartChoiceFSC extends LightningElement {
-	@api value;
+
 	@api masterLabel;
 	@api choiceLabels;
 	@api choiceValues; //string collection
 
 	@api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
-	
+
 	@api numberOfColumns; //for Visual Pickers only, 1(default) or 2
 
 	//-------------For inputMode = Picklist
@@ -23,7 +23,7 @@ export default class SmartChoiceFSC extends LightningElement {
 	@api fieldName; //used for picklist fields
 
 	//-------------For inputMode = Visual Text Box (Card)
-	@api choiceIcons; 
+	@api choiceIcons;
 	@api includeIcons;
 	@api iconSize;
 
@@ -37,6 +37,9 @@ export default class SmartChoiceFSC extends LightningElement {
 	picklistOptionsStorage;
 
 	@track selectedValue;
+	@track _selectedLabel;
+	@track _allValues = [];
+	@track _allLabels = [];
 	@track showRadio = true;
 	@track showVisual = false;
 	@track legitInputModes = [
@@ -49,6 +52,40 @@ export default class SmartChoiceFSC extends LightningElement {
 	@track items = [];
 	@track dualColumns = false;
 
+
+	@api get value() {
+		return this.selectedValue;
+	}
+
+	set value(value) {
+		this.selectedValue = value;
+		this.setSelectedLabel();
+	}
+
+	@api get selectedLabel(){
+		return this._selectedLabel;
+	}
+
+	set selectedLabel(value) {
+		this._selectedLabel = value;
+	}
+
+	@api get allValues(){
+		return this._allValues;
+	}
+
+	set allValues(value) {
+		this._allValues = value;
+	}
+
+	@api get allLabels(){
+		return this._allLabels;
+	}
+
+	set allLabels(value) {
+		this._allLabels = value;
+	}
+
 	//possibility master record type only works if there aren't other record types?
 	@wire(getPicklistValues, {
 		recordTypeId: "$recordTypeId",
@@ -59,7 +96,9 @@ export default class SmartChoiceFSC extends LightningElement {
 			console.log("gtPicklistValues returned data");
 
 			let picklistOptions = [];
-			if (this.allowNoneToBeChosen) 
+			this._allValues = [];
+			this._allLabels = [];
+			if (this.allowNoneToBeChosen)
 				picklistOptions.push({ label: "--None--", value: "None" });
 
 			// Picklist values
@@ -68,6 +107,8 @@ export default class SmartChoiceFSC extends LightningElement {
 					label: key.label,
 					value: key.value
 				});
+				this._allLabels.push(key.label);
+				this._allValues.push(key.value);
 			});
 
 			this.picklistOptionsStorage = picklistOptions;
@@ -75,6 +116,10 @@ export default class SmartChoiceFSC extends LightningElement {
 
 			if (this.inputMode === "Picklist Field") {
 				this.setPicklistOptions();
+			}
+			if(this._allValues && this._allValues.length){
+				this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
+				this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
 			}
 		} else if (error) {
 			this.error = JSON.stringify(error);
@@ -108,6 +153,9 @@ export default class SmartChoiceFSC extends LightningElement {
 
 	setPicklistOptions() {
 		this.options = this.picklistOptionsStorage;
+		if(this.selectedValue){
+			this.setSelectedLabel();
+		}
 	}
 
 	connectedCallback() {
@@ -169,7 +217,7 @@ export default class SmartChoiceFSC extends LightningElement {
 						index += 1;
 					});
 					break;
-				
+
 				//User passes in Label collection of string for box header and Value collection of strings for box description
 				case "Visual Text Box":
 					console.log("entering input mode Visual Text Box");
@@ -222,11 +270,27 @@ export default class SmartChoiceFSC extends LightningElement {
 	}
 
 	handleChange(event) {
+console.log('EVENT',event);
 		this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
 		console.log("selected value is: " + this.selectedValue);
+		this.dispatchFlowAttributeChangedEvent('value', this.selectedValue);
+
+	}
+
+	setSelectedLabel(){
+		if(this.options && this.options.length){
+			let selectedOption = this.options.find(curOption=>curOption.value === this.selectedValue);
+			if(selectedOption && selectedOption.label){
+				this._selectedLabel = selectedOption.label;
+				this.dispatchFlowAttributeChangedEvent('selectedLabel',this._selectedLabel)
+			}
+		}
+	}
+
+	dispatchFlowAttributeChangedEvent(attributeName, attributeValue){
 		const attributeChangeEvent = new FlowAttributeChangeEvent(
-			"value",
-			this.selectedValue
+			attributeName,
+			attributeValue
 		);
 		this.dispatchEvent(attributeChangeEvent);
 	}
@@ -234,9 +298,9 @@ export default class SmartChoiceFSC extends LightningElement {
 	get inputStyle() {
 		if (this.style_width) {
 			return 'max-width: ' + this.style_width + 'px';
-		} 
-		return '' 
-			
+		}
+		return ''
+
 	}
 
 }

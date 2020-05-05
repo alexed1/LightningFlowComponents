@@ -15,7 +15,15 @@ Additional components packaged with this LWC:
                                                 GetLayoutFields
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
-                                                MockHttpResponseGenerator
+                                                QuickChoiceMockHttpResponseGenerator
+4/19/20 -   Eric Smith -    Version 1.4
+                            Added help text for all configuration attributes to make this component easier to use
+                            Fixed a bug where only the last selected visual card would display a check when multiple Quick Choice components were on the same screen
+
+4/16/20 -   unofficialsf -  Version 1.3
+                            The test class utility MockHTTPResponseGenerator was renamed to eliminate conflicts with existing installations that use this utility
+                            New Output Attributes: allValues and allLabels
+                            New Output Attribute: selectedLabel
 
 3/2/20 -    Eric Smith -    Version 1.27
                             Added ability to display both images & icons on visual cards
@@ -45,7 +53,7 @@ Additional components packaged with this LWC:
             <div class={gridClass} style={gridStyle}>
                 <template for:each={items} for:item="item">
                     <div key={item.name} class={columnClass}>
-                        <input type="radio" id={item.name} value={item.name} name="visualList" data-id={item.name} onclick={handleChange} />
+                        <input type="radio" id={item.name} value={item.name} name={masterLabel} data-id={item.name} onclick={handleChange} />
                         <label for={item.name}>
 
                             <!-- Display Visual Card Pickers with Icons-->
@@ -98,7 +106,7 @@ Additional components packaged with this LWC:
                 <lightning-radio-group 
                     name={masterLabel} 
                     label={masterLabel} 
-                    value={value} 
+                    value={selectedValue}
                     options={options}
                     required={required} 
                     onchange={handleChange} 
@@ -113,7 +121,7 @@ Additional components packaged with this LWC:
                 <lightning-combobox 
                     name={masterLabel} 
                     label={masterLabel} 
-                    value={value} 
+                    value={selectedValue}
                     options={options}
                     required={required} 
                     onchange={handleChange}>

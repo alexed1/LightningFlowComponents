@@ -1,5 +1,6 @@
 <template>
     <c-enhanced-dual-list-box if:true={isDataSet}
+                              onvaluechanged={handleValueChanged}
                               selected-values-string-format={selectedValuesStringFormat}
                               all-options-string-format={allOptionsStringFormat}
                               use-which-object-key-for-data={useWhichObjectKeyForData}

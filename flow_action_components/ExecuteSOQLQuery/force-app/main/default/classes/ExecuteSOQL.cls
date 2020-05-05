@@ -19,13 +19,13 @@ public without sharing class ExecuteSOQL {
         soqlQuery = soqlQuery.replaceAll('\r\n|\n|\r|\t',' ');
         List<String> clausesToRemove = new List<String>{' order by ', ' limit ', ' group by ', ' offset ' };
         for (String curClause : clausesToRemove) {
-            if (soqlQuery.contains(curClause)) {
-                endingClause = curClause + soqlQuery.substringAfter(curClause);
-                soqlQuery = soqlQuery.remove(endingClause);
+            if (soqlQuery.containsIgnoreCase(curClause)) {
+                endingClause = curClause + soqlQuery.toLowerCase().substringAfter(curClause.toLowerCase());
+                soqlQuery = soqlQuery.removeEndIgnoreCase(endingClause);
                 break;
             }
         }
-        if (soqlQuery != null && soqlQuery.contains(' from ') && soqlQuery.contains('select ') && soqlQuery.contains(' where ')) {
+        if (soqlQuery != null && soqlQuery.containsIgnoreCase(' from ') && soqlQuery.containsIgnoreCase('select ') && soqlQuery.containsIgnoreCase(' where ')) {
             Pattern mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where .+(\\(select .+\\)))');
             Matcher mMatcher = mPattern.matcher(soqlQuery);
             Boolean found = mMatcher.find();
@@ -45,6 +45,7 @@ public without sharing class ExecuteSOQL {
                 mMatcher = mPattern.matcher(soqlQuery);
                 if (mMatcher.find()) {
                     sObjectType = mMatcher.group(0);
+                    System.debug('Logs: match found: sobject: ' + sObjectType);
                 } else {
                     throw new ExecuteSOQLException('Unable to parse query string: ' + soqlQuery);
                 }
@@ -54,7 +55,10 @@ public without sharing class ExecuteSOQL {
             mPattern = pattern.compile('(?i)(?<=where )(.*)');
             mMatcher = mPattern.matcher(soqlQuery);
             while (mMatcher.find()) {
-                String whereClause = mMatcher.group(0).replaceAll('(?i)\\(select .+\\)', '(SUBQUERY)');
+                String statement = mMatcher.group(0);
+                                    System.debug('Logs: match found: fields: ' + statement);
+
+                String whereClause = statement.replaceAll('(?i)\\(select .+\\)', '(SUBQUERY)');
                 fieldNames.addAll(whereClause.split('\\(|\\)|>=|<=|!=|=|>|<| in\\(| not in\\(| like | in:| or| and'));
             }
             if (!fieldNames.isEmpty()) {
@@ -98,21 +102,20 @@ public without sharing class ExecuteSOQL {
     }
     private static String getFormattedValue(String fieldValue, String fieldType) {		
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
-            String caseInsensitiveValue = fieldValue.toLowerCase();
             //Datetime is already formatted
             for (String literal: DATE_LITERAL_FORMATS) {
-                if (caseInsensitiveValue.contains(literal.toLowerCase())) {
+                if (fieldValue.containsIgnoreCase(literal)) {
                     return fieldValue;
                 }
             }
-            if (caseInsensitiveValue.contains('t') && caseInsensitiveValue.contains('z') && caseInsensitiveValue.indexOf('t') == 11) {
+            if (fieldValue.containsIgnoreCase('t') && fieldValue.containsIgnoreCase('z') && fieldValue.indexOfIgnoreCase('t') == 11) {
                 return fieldValue;
             }
             Map<String, String> localMonthNumbers = getLocalMonthNumbers();
             Boolean isDate = false;
             for (String monthName : localMonthNumbers.keySet()) {
-                if (caseInsensitiveValue.contains(monthName)) {
-                    fieldValue = caseInsensitiveValue.replaceAll(monthName, localMonthNumbers.get(monthName) + ',');
+                if (fieldValue.containsIgnoreCase(monthName)) {
+                    fieldValue = fieldValue.replaceAll('(?i)' + monthName, localMonthNumbers.get(monthName) + ',');
                     isDate = true;
                 }
             }
@@ -134,7 +137,7 @@ public without sharing class ExecuteSOQL {
             if (month.length() == 1) {
                 month = '0' + month;
             }
-            resultMap.put(dt.format('MMMM').toLowerCase(), month);
+            resultMap.put(dt.format('MMMM'), month);
             dt = dt.addMonths(1);
         }
         return resultMap;

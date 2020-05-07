@@ -7,13 +7,15 @@ public with sharing class GetLayoutFieldsTest {
 
             List<GetLayoutFields.Requests> requestList = new List<GetLayoutFields.Requests>();
            
-            String objectName = 'Account';
-            String layoutName = 'Account Layout';
+            String objectName = 'Case';
+            String layoutName = 'Case Layout';
+            String excludeFields = 'ContactId';
             
 
             GetLayoutFields.Requests request = new GetLayoutFields.Requests();
             request.objectName = objectName;
             request.layoutName = layoutName;
+            request.excludeFields = excludeFields;
             
             requestList.add(request);
             

@@ -21,15 +21,15 @@ private class DedupeFieldsFromCollectionTest {
         flowRequest.inputRecordCollection = new List<Account>();
         flowRequest.fieldAPIName = '';
         flowRequests.add(flowRequest);
-        DedupeFieldsFromCollection.DedupeFieldsFromCollection exc;
+        DedupeFieldsFromCollection.DedupeFieldsException exc;
         Test.startTest();
         try {
            List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
-        } catch (DedupeFieldsFromCollection.DedupeFieldsFromCollection e) {
+        } catch (DedupeFieldsFromCollection.DedupeFieldsException e) {
             exc = e;
         }
         Test.stopTest();
-        System.assert(exc != null, 'DedupeFieldsFromRecordCollectionTest : emptyInputCollectionReturnsEmptyOutputCollection failed');
+        System.assert(exc != null, 'DedupeFieldsFromCollectionTest : emptyInputCollectionReturnsEmptyOutputCollection failed');
     }
     
     @IsTest
@@ -43,7 +43,7 @@ private class DedupeFieldsFromCollectionTest {
         Test.startTest();
         List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
         Test.stopTest();
-        System.assert(results[0].fieldValueCollection.size() == 11, 'DedupeFieldsFromRecordCollectionTest : dedupeTextCollectionSuccess failed');
+        System.assert(results[0].fieldValueCollection.size() == 11, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }
 
     @IsTest
@@ -56,7 +56,7 @@ private class DedupeFieldsFromCollectionTest {
         Test.startTest();
         List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
         Test.stopTest();
-        System.assert(results[0].fieldValueCollection.size() == 10, 'DedupeFieldsFromRecordCollectionTest : dedupeTextCollectionSuccess failed');
+        System.assert(results[0].fieldValueCollection.size() == 10, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }
     
     @IsTest
@@ -78,6 +78,6 @@ private class DedupeFieldsFromCollectionTest {
         Test.startTest();
         List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
         Test.stopTest();
-        System.assert(results[0].fieldValueCollection.size() == 2, 'DedupeFieldsFromRecordCollectionTest : dedupeTextCollectionSuccess failed');
+        System.assert(results[0].fieldValueCollection.size() == 2, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }
 }

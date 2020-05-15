@@ -26,7 +26,7 @@ global with sharing class DedupeFieldsFromCollection {
         Set<String> stringsSet = new Set<String>();
         List<String> stringsList = new List<String>{};
         for (SObject record : request.inputRecordCollection) {
-            String fieldValue = String.valueOf(record.get(request.fieldToDedupeOn));
+            String fieldValue = String.valueOf(record.get(request.fieldAPIName));
             if (fieldValue != null) {
                 if (request.dedupeValues) {
                     stringsSet.add(fieldValue);
@@ -35,7 +35,7 @@ global with sharing class DedupeFieldsFromCollection {
                 }
             }
         }
-        return request.dedupeValues ? new List<String>(stringValues): stringsList;
+        return request.dedupeValues ? new List<String>(stringsSet): stringsList;
     }
 
     global class FlowRequest {

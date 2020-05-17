@@ -1,5 +1,4 @@
-public without sharing class ExecuteSOQL {
-    private static Set<String> DATE_LITERAL_FORMATS = new Set<String>{'YESTERDAY','TODAY','TOMORROW','LAST_WEEK','THIS_WEEK','NEXT_WEEK','LAST_MONTH','THIS_MONTH','NEXT_MONTH','LAST_90_DAYS','NEXT_90_DAYS','LAST_N_DAYS','NEXT_N_DAYS','NEXT_N_WEEKS','LAST_N_WEEKS','NEXT_N_MONTHS','LAST_N_MONTHS','THIS_QUARTER','LAST_QUARTER','NEXT_QUARTER','NEXT_N_QUARTERS','LAST_N_QUARTERS','THIS_YEAR','LAST_YEAR','NEXT_YEAR','NEXT_N_YEARS','LAST_N_YEARS','THIS_FISCAL_QUARTER','LAST_FISCAL_QUARTER','NEXT_FISCAL_QUARTER','NEXT_N_FISCAL_QUARTERS','LAST_N_FISCAL_QUARTERS','THIS_FISCAL_YEAR','LAST_FISCAL_YEAR','NEXT_FISCAL_YEAR','NEXT_N_FISCAL_YEARS','LAST_N_FISCAL_YEARS'};
+public with sharing class ExecuteSOQL {
     class ExecuteSOQLException extends Exception {}
     @InvocableMethod
     public static List <Results> getEligibleProducts(List<Requests> requestList) {
@@ -8,7 +7,6 @@ public without sharing class ExecuteSOQL {
         for(Requests curRequest : requestList) {
             String soqlQuery = curRequest.soqlQuery;
             soqlQuery = replaceWithFormattedValues(soqlQuery);
-            System.debug('Logs: query: ' + soqlQuery);
             results.sObjects = Database.query(soqlQuery);
             responseWrapper.add(results);
         }
@@ -16,24 +14,24 @@ public without sharing class ExecuteSOQL {
     }
     public static String replaceWithFormattedValues(String soqlQuery) {
         String endingClause = '';
-        soqlQuery = soqlQuery.replaceAll('\r\n|\n|\r|\t',' ');
+        soqlQuery = soqlQuery.toLowerCase().replaceAll('\r\n|\n|\r|\t',' ');
         List<String> clausesToRemove = new List<String>{' order by ', ' limit ', ' group by ', ' offset ' };
         for (String curClause : clausesToRemove) {
-            if (soqlQuery.containsIgnoreCase(curClause)) {
-                endingClause = curClause + soqlQuery.toLowerCase().substringAfter(curClause.toLowerCase());
-                soqlQuery = soqlQuery.removeEndIgnoreCase(endingClause);
+            if (soqlQuery.contains(curClause)) {
+                endingClause = curClause + soqlQuery.substringAfter(curClause);
+                soqlQuery = soqlQuery.remove(endingClause);
                 break;
             }
         }
-        if (soqlQuery != null && soqlQuery.containsIgnoreCase(' from ') && soqlQuery.containsIgnoreCase('select ') && soqlQuery.containsIgnoreCase(' where ')) {
-            Pattern mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where .+(\\(select .+\\)))');
+        if (soqlQuery != null && soqlQuery.contains(' from ') && soqlQuery.contains('select ') && soqlQuery.contains(' where ')) {
+            Pattern mPattern = pattern.compile('(?<=from )(.*)(?= where .+(\\(select .+\\)))');
             Matcher mMatcher = mPattern.matcher(soqlQuery);
             Boolean found = mMatcher.find();
             String sObjectType = '';
             if (found) {
                 sObjectType = mMatcher.group(0);
                 // Recurse through sub-queries
-                Pattern subPattern = pattern.compile('(?i)\\(select .+\\)');
+                Pattern subPattern = pattern.compile('\\(select .+\\)');
                 Matcher subMatcher = subPattern.matcher(soqlQuery);
                 while (subMatcher.find()) {
                     String subQuery = subMatcher.group(0).removeStart('(').removeEnd(')');
@@ -41,24 +39,20 @@ public without sharing class ExecuteSOQL {
                    	soqlQuery = soqlQuery.replace(subQuery, formattedSubQuery);
                 }
             } else {
-                mPattern = pattern.compile('(?i)(?<=from )(.*)(?= where)');            
+                mPattern = pattern.compile('(?<=from )(.*)(?= where)');            
                 mMatcher = mPattern.matcher(soqlQuery);
                 if (mMatcher.find()) {
                     sObjectType = mMatcher.group(0);
-                    System.debug('Logs: match found: sobject: ' + sObjectType);
                 } else {
                     throw new ExecuteSOQLException('Unable to parse query string: ' + soqlQuery);
                 }
             }
             Map<String, String> fieldNameValueMap = new Map<String, String>();
             List<String> fieldNames = new List<String>();
-            mPattern = pattern.compile('(?i)(?<=where )(.*)');
+            mPattern = pattern.compile('(?<=where )(.*)');
             mMatcher = mPattern.matcher(soqlQuery);
             while (mMatcher.find()) {
-                String statement = mMatcher.group(0);
-                                    System.debug('Logs: match found: fields: ' + statement);
-
-                String whereClause = statement.replaceAll('(?i)\\(select .+\\)', '(SUBQUERY)');
+                String whereClause = mMatcher.group(0).replaceAll('\\(select .+\\)', '(SUBQUERY)');
                 fieldNames.addAll(whereClause.split('\\(|\\)|>=|<=|!=|=|>|<| in\\(| not in\\(| like | in:| or| and'));
             }
             if (!fieldNames.isEmpty()) {
@@ -73,7 +67,7 @@ public without sharing class ExecuteSOQL {
         return soqlQuery + endingClause;
     }
     public static Map<String, String> getFieldTypes(String sObjectTypeName, List<String> fieldNames) {
-        Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName.replace(' ', ''));
+        Schema.SObjectType objectType = Schema.getGlobalDescribe().get(sObjectTypeName);
         if (objectType != null) {
             Map<String, String> resultMap = new Map<String, String>();
         	DescribeSObjectResult d = objectType.getDescribe();
@@ -100,22 +94,17 @@ public without sharing class ExecuteSOQL {
         }
         return query;
     }
-    private static String getFormattedValue(String fieldValue, String fieldType) {		
+    private static String getFormattedValue(String fieldValue, String fieldType) {
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
             //Datetime is already formatted
-            for (String literal: DATE_LITERAL_FORMATS) {
-                if (fieldValue.containsIgnoreCase(literal)) {
-                    return fieldValue;
-                }
-            }
-            if (fieldValue.containsIgnoreCase('t') && fieldValue.containsIgnoreCase('z') && fieldValue.indexOfIgnoreCase('t') == 11) {
+            if (fieldValue.contains('t') && fieldValue.contains('z') && fieldValue.indexOf('t') == 11) {
                 return fieldValue;
             }
             Map<String, String> localMonthNumbers = getLocalMonthNumbers();
             Boolean isDate = false;
             for (String monthName : localMonthNumbers.keySet()) {
-                if (fieldValue.containsIgnoreCase(monthName)) {
-                    fieldValue = fieldValue.replaceAll('(?i)' + monthName, localMonthNumbers.get(monthName) + ',');
+                if (fieldValue.contains(monthName)) {
+                    fieldValue = fieldValue.replaceAll(monthName, localMonthNumbers.get(monthName) + ',');
                     isDate = true;
                 }
             }
@@ -137,7 +126,7 @@ public without sharing class ExecuteSOQL {
             if (month.length() == 1) {
                 month = '0' + month;
             }
-            resultMap.put(dt.format('MMMM'), month);
+            resultMap.put(dt.format('MMMM').toLowerCase(), month);
             dt = dt.addMonths(1);
         }
         return resultMap;

@@ -1,0 +1,41 @@
+<template>
+        <lightning-layout vertical-align="end">
+            <lightning-layout-item padding="horizontal-small" flexibility="grow">
+                <lightning-combobox label={label.Search} name="mdtype" onchange={typeChange} options={_memberTypes}
+                                    value={selectedType}></lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item padding="horizontal-small" flexibility="grow">
+                <lightning-input type="search" label={label.For} name="search" onchange={searchEventHandler}
+                                 onkeyup={listenForEnter} disabled={isSearchDisabled}></lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item padding="horizontal-small" flexibility="none">
+                <lightning-button type="submit" label="Search" variant="brand" onclick={actuallySearch}
+                                  disabled={isSearchDisabled}></lightning-button>
+            </lightning-layout-item>
+        </lightning-layout>
+        <div class="slds-p-around--small">
+            <template if:true={tooManyResults}>
+                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning" role="alert">
+                    <h2> {label.TooManyResultsMessage} </h2>
+                </div>
+            </template>
+            <template if:true={isTableVisible}>
+                <lightning-datatable data={searchResults} columns={columns} key-field="value"
+                                     hide-checkbox-column="true"
+                                     onrowaction={handleRowAction} resize-column-disabled></lightning-datatable>
+            </template>
+            <template if:true={isNoSearchResultsMessageVisible}>
+                <div class="slds-align_absolute-center">{label.NoSearchResultsMessage}</div>
+            </template>
+        </div>
+    <c-uc-modal class="modal-window" show-footer available-reactions={modalReactions} name={modalName}
+                onreaction={handleModalReactionButtonClick}>
+            <span slot="modalHeader">
+                Confirm your action
+            </span>
+            <span slot="modalBody">
+                Add the text you’ve typed as an email address?
+            </span>
+    </c-uc-modal>
+</template>

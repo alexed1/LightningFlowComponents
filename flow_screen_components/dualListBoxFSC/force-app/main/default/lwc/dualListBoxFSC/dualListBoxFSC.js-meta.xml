@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-dual-list-box-c-p-e" category="Input">
             <property name="label" type="String" role="inputOnly"> </property>
             <property name="sourceLabel" type="String" role="inputOnly"> </property>
             <property name="fieldLevelHelp" type="String" role="inputOnly"> </property>
@@ -25,9 +25,12 @@
             <property name="allOptionsFieldDescriptorList" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
             <property name="allOptionsCSV" type="String" role="inputOnly"> </property>
             <property name="allOptionsStringCollection" type="String[]" role="inputOnly"> </property>
+            <property name="allOptionsStringCollectionLabels" type="String[]" role="inputOnly"> </property>
+            <property name="allOptionsStringFormat" type="String" role="inputOnly"> </property>
             <property name="selectedOptionsFieldDescriptorList" type="apex://FieldDescriptor[]"> </property>
             <property name="selectedOptionsCSV" type="String"> </property>
             <property name="selectedOptionsStringList" type="String[]"> </property>
+
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

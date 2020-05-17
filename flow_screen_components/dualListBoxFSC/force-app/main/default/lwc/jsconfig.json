@@ -1,0 +1,32 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/dualListBoxCPE": [
+                "dualListBoxCPE/dualListBoxCPE.js"
+            ],
+            "c/dualListBoxUtils": [
+                "dualListBoxUtils/dualListBoxUtils.js"
+            ],
+            "c/flowCombobox": [
+                "flowCombobox/flowCombobox.js"
+            ],
+            "c/dualListBox": [
+                "dualListBox/dualListBox.js"
+            ],
+            "c/extendedBaseDualListBox": [
+                "extendedBaseDualListBox/extendedBaseDualListBox.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

@@ -6,7 +6,7 @@ import {
     inputTypeToInputAttributeName
 } from 'c/dualListBoxUtils';
 
-export default class dualListBoxFSC extends LightningElement {
+export default class dualListBox extends LightningElement {
 
     @api label;
     @api sourceLabel;

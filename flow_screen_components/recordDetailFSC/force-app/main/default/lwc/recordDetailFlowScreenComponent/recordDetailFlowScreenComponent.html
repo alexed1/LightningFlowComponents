@@ -1,6 +1,9 @@
 <!-- 
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
+4/29/20 -   Eric Smith -    Version 1.6
+                            Removed record-type-id={recordTypeId} from lightning-record-view-form
+
 4/16/20 -   Eric Smith -    Version 1.5
                             Added underlines to fields when in View Mode to improve readability
                             
@@ -26,7 +29,6 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                     <template if:true={isViewMode}>
                         <lightning-record-view-form
                                 record-id={recordId}
-                                record-type-id={recordTypeId}
                                 object-api-name={objectApiName}>
                             <lightning-layout multiple-rows="true">
                                 <template for:each={fieldData} for:item="field">

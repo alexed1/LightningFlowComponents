@@ -3,10 +3,18 @@
     <actionCalls>
         <name>Change_Opportunity_Product_ServiceDate</name>
         <label>Change Opportunity Product ServiceDate</label>
-        <locationX>540</locationX>
-        <locationY>229</locationY>
+        <locationX>554</locationX>
+        <locationY>228</locationY>
         <actionName>MapCollection</actionName>
         <actionType>apex</actionType>
+        <dataTypeMappings>
+            <typeName>T__inputCollection</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__outputCollection</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
         <inputParameters>
             <name>inputCollection</name>
             <value>
@@ -19,6 +27,7 @@
                 <stringValue>&quot;ServiceDate&quot; : &quot;{!formulaToday}&quot;</stringValue>
             </value>
         </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
         <name>Clone_Opportunity_and_Its_Products</name>
@@ -30,6 +39,34 @@
         <connector>
             <targetReference>Change_Opportunity_Product_ServiceDate</targetReference>
         </connector>
+        <dataTypeMappings>
+            <typeName>T__inputRecord</typeName>
+            <typeValue>Opportunity</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRecord</typeName>
+            <typeValue>Opportunity</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRelatedList1</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRelatedList2</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRelatedList3</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRelatedList4</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__clonedRelatedList5</typeName>
+            <typeValue>OpportunityLineItem</typeValue>
+        </dataTypeMappings>
         <inputParameters>
             <name>childRelationshipsCSV</name>
             <value>
@@ -54,6 +91,7 @@
                 <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <formulas>
         <name>formulaFirstDayOfWeek</name>
@@ -96,8 +134,16 @@
                 <stringValue>HMS Victory</stringValue>
             </value>
         </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
-    <startElementReference>Get_Opportunity_Template</startElementReference>
+    <start>
+        <locationX>50</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Get_Opportunity_Template</targetReference>
+        </connector>
+    </start>
     <status>Draft</status>
 </Flow>

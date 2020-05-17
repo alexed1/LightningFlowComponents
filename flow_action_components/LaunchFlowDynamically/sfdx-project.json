@@ -3,18 +3,16 @@
         {
             "path": "force-app",
             "default": true,
-            "package": "CollectionActions",
+            "package": "launchFlowDynamically",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "49.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
-        "CollectionActions": "0HoB0000000Cb1HKAS",
-        "CollectionActions@1.14.0-0": "04tf4000004J1IDAA0",
-        "collectionProcessorsT": "0HoB0000000Cb1CKAS",
-        "CollectionActions@1.15.0-0": "04tB0000000OxPiIAK"
+        "launchFlowDynamically": "0Hof4000000XZKqCAO",
+        "launchFlowDynamically@1.2.0-0": "04tf4000004PthTAAS"
     }
 }

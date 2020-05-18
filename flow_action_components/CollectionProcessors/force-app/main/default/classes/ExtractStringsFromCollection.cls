@@ -2,10 +2,10 @@ global with sharing class ExtractStringsFromCollection {
     global class DedupeFieldsException extends Exception {}
   
     @InvocableMethod(label='Extract Strings From Collection' description='Extract and return field values from a list of records using a provided field API name as the unique value' category='Util')
-    global static List <Results> extract(List<Requests> requestList) {
-        List<String> outputStrings =  new List<String>();
+    global static List <Result> extract(List<Request> requestList) {
+        List<Result> outputStrings =  new List<Result>();
         
-        for (FlowRequest request: requestList) {
+        for (Request request: requestList) {
             if (request.inputRecordCollection == null || request.inputRecordCollection.size() == 0) {
                 throw new DedupeFieldsException('Input record list is required, but empty');
             }
@@ -15,15 +15,15 @@ global with sharing class ExtractStringsFromCollection {
             if (request.dedupeValues == null) {
                 request.dedupeValues = true;
             }
-            Results result = new Results();
-            result.fieldValueCollection = getUniqueTextCollection(request);
-            result.fieldValueString = String.join(flowResponse.fieldValueCollection, ',');
-            result.add(flowResponse);
+            Result result = new Result();
+         	result.fieldValueCollection = getUniqueTextCollection(request);
+          	result.fieldValueString = String.join(result.fieldValueCollection, ',');
+            outputStrings.add(result);
         }
         return outputStrings;
     }
 
-    private static List<String> getUniqueTextCollection(FlowRequest request) {
+    private static List<String> getUniqueTextCollection(Request request) {
         Set<String> stringsSet = new Set<String>();
         List<String> stringsList = new List<String>{};
         for (SObject record : request.inputRecordCollection) {
@@ -39,7 +39,7 @@ global with sharing class ExtractStringsFromCollection {
         return request.dedupeValues ? new List<String>(stringsSet): stringsList;
     }
 
-    global class Requests {
+    global class Request {
         @InvocableVariable(description='List of records to extract field values from' required=true)
         global List<SObject> inputRecordCollection;
         
@@ -50,7 +50,7 @@ global with sharing class ExtractStringsFromCollection {
         global Boolean dedupeValues;
     }
     
-    global class Results {
+    global class Result {
         @InvocableVariable(description='List of unique field values for API name provided')
         global List<String> fieldValueCollection;
 

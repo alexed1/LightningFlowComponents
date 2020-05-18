@@ -3,16 +3,16 @@
         {
             "path": "force-app",
             "default": true,
-            "package": "dualListBox",
+            "package": "GetFieldInformation",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "46.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
-        "dualListBox": "0HoB00000008PFIKA2",
-        "dualListBox@2.0.0-0": "04tB0000000KxaSIAS"
+        "GetFieldInformation": "0Hof4000000XZLKCA4",
+        "GetFieldInformation@1.0.0-0": "04tf4000004PtpTAAS"
     }
 }

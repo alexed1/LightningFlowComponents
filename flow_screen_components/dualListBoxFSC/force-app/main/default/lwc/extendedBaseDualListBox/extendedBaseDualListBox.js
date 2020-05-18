@@ -1,15 +1,7 @@
 import {LightningElement, track, api} from 'lwc';
-
-const defaults = {
-    csv: 'csv',
-    list: 'list',
-    originalObject: 'object',
-    valueField: 'value',
-    labelField: 'label',
-    originalObjectOutputNotSupported: 'Object output is not supported for this option type.',
-    valueLabelFieldNamesNotSupported: 'Value and Label field names should be left empty for this option type.',
-    canNotUseValuesForOutput: 'Values for output can be used only with "csv" or "list" input type.'
-};
+import {
+    defaults
+} from 'c/dualListBoxUtils';
 
 export default class dualListBox extends LightningElement {
 
@@ -68,19 +60,19 @@ export default class dualListBox extends LightningElement {
     }
 
     get isError() {
-        if (this.selectedValuesStringFormat === defaults.originalObject && this.allOptionsStringFormat !== defaults.originalObject) {
-            return defaults.originalObjectOutputNotSupported;
-        }
-        if (this.allOptionsStringFormat !== defaults.originalObject &&
-            (
-                (this.useWhichObjectKeyForData || this.useWhichObjectKeyForLabel) &&
-                this.useWhichObjectKeyForData !== defaults.valueField || this.useWhichObjectKeyForLabel !== defaults.labelField)
-        ) {
-            return defaults.valueLabelFieldNamesNotSupported;
-        }
-        if (this.useObjectValueAsOutput && this.selectedValuesStringFormat === defaults.originalObject) {
-            return defaults.canNotUseValuesForOutput;
-        }
+        // if (this.selectedValuesStringFormat === defaults.originalObject && this.allOptionsStringFormat !== defaults.originalObject) {
+        //     return defaults.originalObjectOutputNotSupported;
+        // }
+        // if (this.allOptionsStringFormat !== defaults.originalObject &&
+        //     (
+        //         (this.useWhichObjectKeyForData || this.useWhichObjectKeyForLabel) &&
+        //         this.useWhichObjectKeyForData !== defaults.valueField || this.useWhichObjectKeyForLabel !== defaults.labelField)
+        // ) {
+        //     return defaults.valueLabelFieldNamesNotSupported;
+        // }
+        // if (this.useObjectValueAsOutput && this.selectedValuesStringFormat === defaults.originalObject) {
+        //     return defaults.canNotUseValuesForOutput;
+        // }
     }
 
     formatValuesSet(value, optionType) {
@@ -89,10 +81,12 @@ export default class dualListBox extends LightningElement {
         }
         if (optionType === defaults.csv) {
             return value.replace(/[\s]+/, '').split(',');
-        } else if (optionType === defaults.list) {
+        } else if (optionType === defaults.list || optionType === defaults.twoLists) {
             return value;
         } else if (optionType === defaults.originalObject) {
-            return value.map(curItem => curItem[this.useWhichObjectKeyForData]);
+            return value.map(curItem => {
+               return curItem[this.useWhichObjectKeyForData] ? curItem[this.useWhichObjectKeyForData] : curItem
+            });
         }
     }
 
@@ -105,7 +99,7 @@ export default class dualListBox extends LightningElement {
         });
         if (optionType === defaults.csv) {
             return selectedValues.join(',');
-        } else if (optionType === defaults.list) {
+        } else if (optionType === defaults.list || optionType === defaults.twoLists) {
             return selectedValues;
         } else if (optionType === defaults.originalObject) {
             return this._optionsOriginal.filter(curOriginal => {
@@ -127,7 +121,7 @@ export default class dualListBox extends LightningElement {
             return items.map(curItem => {
                 return {label: curItem, value: curItem}
             });
-        } else if (optionType === defaults.originalObject) {
+        } else if (optionType === defaults.originalObject || optionType === defaults.twoLists) {
             return items.map(curItem => {
                 return {label: curItem[this.useWhichObjectKeyForLabel], value: curItem[this.useWhichObjectKeyForData]}
             });
@@ -142,7 +136,7 @@ export default class dualListBox extends LightningElement {
             return items.map(curItem => this.useObjectValueAsOutput ? curItem.value : curItem.label).join(',');
         } else if (optionType === defaults.list) {
             return items.map(curItem => this.useObjectValueAsOutput ? curItem.value : curItem.label);
-        } else if (optionType === defaults.originalObject) {
+        } else if (optionType === defaults.originalObject || optionType === defaults.twoLists) {
             return items.map(curItem => {
                 return this._optionsOriginal.find(curFilterItem => curItem.value === curFilterItem[this.useWhichObjectKeyForData]);
             });
@@ -151,5 +145,15 @@ export default class dualListBox extends LightningElement {
 
     handleChange(event) {
         this._value = event.detail.value;
+        this.dispatchValueChangedEvent();
+    }
+
+    dispatchValueChangedEvent() {
+        const valueChangedEvent = new CustomEvent('valuechanged', {
+            detail: {
+                value: this.getValues(this.selectedValuesStringFormat)
+            }
+        });
+        this.dispatchEvent(valueChangedEvent);
     }
 }

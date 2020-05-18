@@ -1,5 +1,5 @@
 global with sharing class ExtractStringsFromCollection {
-    global class DedupeFieldsException extends Exception {}
+    global class ExtractStringsException extends Exception {}
   
     @InvocableMethod(label='Extract Strings From Collection' description='Extract and return field values from a list of records using a provided field API name as the unique value' category='Util')
     global static List <Result> extract(List<Request> requestList) {
@@ -7,10 +7,10 @@ global with sharing class ExtractStringsFromCollection {
         
         for (Request request: requestList) {
             if (request.inputRecordCollection == null || request.inputRecordCollection.size() == 0) {
-                throw new DedupeFieldsException('Input record list is required, but empty');
+                throw new ExtractStringsException('Input record list is required, but empty');
             }
             if (request.fieldAPIName == null || request.fieldAPIName.length() == 0) {
-                throw new DedupeFieldsException('Field to dedupe on is required, but empty');
+                throw new ExtractStringsException('Field to dedupe on is required, but empty');
             }
             if (request.dedupeValues == null) {
                 request.dedupeValues = true;

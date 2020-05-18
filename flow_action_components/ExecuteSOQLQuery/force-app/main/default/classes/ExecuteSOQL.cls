@@ -1,13 +1,16 @@
 public with sharing class ExecuteSOQL {
     class ExecuteSOQLException extends Exception {}
-    @InvocableMethod
+    @InvocableMethod(description='Executes an SOQL query and returns a list of sObjects of the specified type' category='Util')
     public static List <Results> getEligibleProducts(List<Requests> requestList) {
         Results results = new Results();
         List<Results> responseWrapper = new List<Results>();
         for(Requests curRequest : requestList) {
             String soqlQuery = curRequest.soqlQuery;
             soqlQuery = replaceWithFormattedValues(soqlQuery);
-            results.sObjects = Database.query(soqlQuery);
+            List<SObject> queryResult = Database.query(soqlQuery);
+            if (queryResult.size() > 0) {
+                results.sObjects = queryResult;
+            }
             responseWrapper.add(results);
         }
         return responseWrapper;
@@ -132,14 +135,11 @@ public with sharing class ExecuteSOQL {
         return resultMap;
     }
     public class Requests {
-        @InvocableVariable(required=true)
+        @InvocableVariable(description='Valid SOQL query string' required=true)
         public String soqlQuery;
     }
     public class Results {
-        public Results() {
-            sObjects = new List<SObject>();
-        }
-        @InvocableVariable
+        @InvocableVariable(description='List of sObjects returned from query. If no objects are returned this variable will be null.')
         public List<SObject> sObjects;
     }
 }

@@ -48,6 +48,7 @@ public without sharing class SendHTMLEmail {
 			String templateName = curRequest.templateName;
 			String templateLanguage = curRequest.templateLanguage;
 			String templateTargetObjectId = curRequest.templateTargetObjectId;
+			Boolean useMassEmail = curRequest.useMassEmail == null?false:curRequest.useMassEmail;
 			Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
 			if (subject != null && (subject.length() == 0) ) subject = null;
             ThisResponse thisResponse = new ThisResponse();
@@ -368,8 +369,12 @@ public without sharing class SendHTMLEmail {
         public String[] toAddresses; 
         public String[] ccAddresses; 
         public String[] bccAddresses;
+
 		@invocableVariable
 		public List<ContentDocumentLink> contentDocumentAttachments;
+
+		@invocableVariable(label='description' description='The description of the email.')
+		public String description;
 
 		@invocableVariable
 		public String HTMLbody;
@@ -453,21 +458,30 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable
 		public String subject;
 		
-		@invocableVariable
-		public String templateID;
+		@invocableVariable(label='targetObjectIds' description='A list of IDs of the contacts, leads, or users to which the email will be sent. The IDs you specify set the context and ensure that merge fields in the template contain the correct data. The objects must be of the same type (all contacts, all leads, or all users)')
+		public List<Id> targetObjectIds;
 		
-		@invocableVariable(label='Template Name' description='Used in conjunction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
-		public String templateName;
+		@invocableVariable(label='templateId' )
+		public String templateId;
 		
 		@invocableVariable(label='Template Language' description='Used in conjunction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
 		public String templateLanguage;
 		
+		@invocableVariable(label='Template Name' description='Used in conjunction with Template Language. Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.')
+		public String templateName;
+		
 		@invocableVariable(label='Template Target Record Id' description='If you are passing in a template Id, you need to also pass in the Id of context record. It can be a Contact, Lead, or User. It will determine which data gets merged into the template')
 		public String templateTargetObjectId;
 
-		@invocableVariable(description='True unless otherwise specified')
+		@invocableVariable(label='UseSalesforceSignature' description='True unless otherwise specified')
 		public Boolean UseSalesforceSignature;
-	}
+
+		@invocableVariable(label='useMassEmail' description='MassEmailMessage can send mails related to multiple records (WhatId and TargetObjectId), but is severely limited for other configuration purposes.')
+		public Boolean useMassEmail;
+
+		@invocableVariable(label='whatIds' description='For MassEmail, if you specify a list of contacts for the targetObjectIds field, you can specify a list of whatIds as well. This helps to further ensure that merge fields in the template contain the correct data.')
+		public List<Id> whatIds;
+}
 
 	public class Response {
 		@invocableVariable

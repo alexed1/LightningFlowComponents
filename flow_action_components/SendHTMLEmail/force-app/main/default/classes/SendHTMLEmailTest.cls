@@ -5,14 +5,14 @@
  * @Author				: various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2/5/2020, 4:02:33 PM
+ * @Last Modified On	: 5/17/2020, 4:02:33 PM
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
  * -------	----------	----------------------	------------------------------------------
  * 1.32		2/05/2020	Jack D. Pond			Updated Versioning
  * 1.33.1	4/11/2020	Jack D. Pond			Added tests for Issues #308,#316
- * 1.33.2	5/03/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #351,#354
+ * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355
 **/
 // @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
 // @Test t002_errorIfNoAddress: Error expected if no addresses specified
@@ -138,6 +138,7 @@ public with sharing class SendHTMLEmailTest {
             ldList.add(new Lead(
                     LastName    = 'Lead '+ ('0000'+i).right(4),
                     FirstName   = 'Test',
+                    Company    = 'Company '+('0000'+i).right(4),
                 	email		= 'e'+('0000'+i).right(4)+EMAIL_NOSUCH
                 )
             );
@@ -529,7 +530,7 @@ public with sharing class SendHTMLEmailTest {
 // @Test t014_coverageTestActivityAndBulkification: Can allow email activity and task activity on recordId object if records, plus bulkification
     @isTest
     public static void t014_coverageTestActivityAndBulkification() {
-        List<Contact> theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);
+        List<Contact> theseContacts = new List<Contact>();
         List<Account> theseAccounts = new List<Account>();
         if (TEST_WITH_CREATED_RECORDS){
 			theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);

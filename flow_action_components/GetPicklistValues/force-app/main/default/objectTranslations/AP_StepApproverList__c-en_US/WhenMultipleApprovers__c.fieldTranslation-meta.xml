@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label><!-- WhenMultipleApprovers --></label>
+    <name>WhenMultipleApprovers__c</name>
+    <picklistValues>
+        <masterLabel>FirstResponse</masterLabel>
+        <translation><!-- FirstResponse --></translation>
+    </picklistValues>
+    <picklistValues>
+        <masterLabel>Unanimous</masterLabel>
+        <translation><!-- Unanimous --></translation>
+    </picklistValues>
+</CustomFieldTranslation>

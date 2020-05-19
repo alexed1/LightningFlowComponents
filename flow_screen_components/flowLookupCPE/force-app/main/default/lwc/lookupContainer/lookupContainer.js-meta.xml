@@ -8,11 +8,11 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-lookup-c-p-e" category="Input">
             <property label="Object Name" name="objectName" type="String" role="inputOnly"/>
             <property label="Display which Field" name="displayWhichField" type="String" role="inputOnly"/>
-            <property label="Field Label" name="fieldLabel" type="String" role="inputOnly"/>
             <property label="Output which value" name="outputWhichValue" type="String" role="inputOnly"/>
+            <property label="Field Label" name="fieldLabel" type="String" role="inputOnly"/>
             <property label="Value" name="selectedValue" type="String"/>
         </targetConfig>
     </targetConfigs>

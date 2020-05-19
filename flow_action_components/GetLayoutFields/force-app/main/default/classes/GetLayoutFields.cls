@@ -6,33 +6,37 @@ public with sharing class GetLayoutFields {
     @InvocableMethod
     public static List <Results> get(List<Requests> requestList) {
         Results response = new Results();
-        String layoutName = requestList[0].layoutName;
-        String objectName = requestList[0].objectName;
-        String layoutFieldsCSV = '';
+        List<Results> responseWrapper = new List<Results>();
+        
+        for (Requests req : requestList) {
+            String layoutName = req.layoutName;
+            String objectName = req.objectName;
+            String excludeFields = requestList[0].excludeFields;
+            String layoutFieldsCSV = '';
 
-        layoutName = objectName + '-' + layoutName;
-        List<Metadata.Metadata> layouts = 
-            Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
-                                        new List<String> {layoutName});
+            layoutName = objectName + '-' + layoutName;
+            List<Metadata.Metadata> layouts = 
+                Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
+                                            new List<String> {layoutName});
 
-        Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);
+            Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);
 
-        for (Metadata.LayoutSection section : layoutMd.layoutSections) {
-            for (Metadata.LayoutColumn column : section.layoutColumns) {
-                if (column.layoutItems != null) {
-                    for (Metadata.LayoutItem item : column.layoutItems) {
-                            layoutFieldsCSV = layoutFieldsCSV + ',' +item.field;
-                        
-                            
+            for (Metadata.LayoutSection section : layoutMd.layoutSections) {
+                for (Metadata.LayoutColumn column : section.layoutColumns) {
+                    if (column.layoutItems != null) {
+                        for (Metadata.LayoutItem item : column.layoutItems) {
+                            if(!excludeFields.contains(item.field)){
+                                layoutFieldsCSV = layoutFieldsCSV + ',' +item.field;
+                            }
+                        }
                     }
                 }
             }
+
+
+            response.layoutFieldsCSV = layoutFieldsCSV;
+            responseWrapper.add(response);
         }
-
-
-        response.layoutFieldsCSV = layoutFieldsCSV;
-        List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
         return responseWrapper;
 
 
@@ -46,6 +50,9 @@ public with sharing class GetLayoutFields {
 
         @InvocableVariable 
         public String objectName;
+
+        @InvocableVariable 
+        global String excludeFields;
 
     }
 

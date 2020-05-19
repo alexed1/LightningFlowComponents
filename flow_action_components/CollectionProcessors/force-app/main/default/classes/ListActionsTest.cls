@@ -3,8 +3,10 @@ public with sharing class ListActionsTest {
     private final static Integer NUMBER_OF_TEST_RECORDS = 5;
     private final static String TEST_RECORD_NAME = 'Test Acc';
     private final static String TEST_CONTACT_NAME = 'Test Contact';
+    private final static String FLOW_DATE_FORMAT = 'MMMM dd, yyyy';
+    private final static String FLOW_DATE_TIME_FORMAT = 'MM/dd/yyyy, hh:mm aa';
 
-     
+
     @isTest
     static void canGetLookupCollection() {
         String noInputsMessage = 'You need to pass either a collection of records or a collection of record IDs into this action, representing the initial set of records';
@@ -13,7 +15,7 @@ public with sharing class ListActionsTest {
         GetLookupCollection.Request request = new GetLookupCollection.Request();
         requests.add(request);
         List<GetLookupCollection.Results> responseWrapper = GetLookupCollection.get(requests);
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
@@ -29,7 +31,7 @@ public with sharing class ListActionsTest {
         requests.add(request);
         responseWrapper = GetLookupCollection.get(requests);
         System.debug('responseWrapper is: ' + responseWrapper);
-        System.assertEquals(null,responseWrapper[0].errorText );
+        System.assertEquals(null, responseWrapper[0].errorText);
         requests.clear();
     }
 
@@ -40,13 +42,13 @@ public with sharing class ListActionsTest {
 
         return ocRole;
     }
-         
+
 
     @isTest
     static void canGetChildCollection() {
         //user must pass in at least one input recordid or an input record
-       
-        
+
+
         String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to start with';
         String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
@@ -54,7 +56,7 @@ public with sharing class ListActionsTest {
         requests.add(request);
         List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(requests);
         System.debug('responseWrapper is: ' + responseWrapper);
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage );
+        System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
@@ -65,7 +67,7 @@ public with sharing class ListActionsTest {
         request.inputRecord = testAccounts[0];
         requests.add(request);
         responseWrapper = GetChildCollection.get(requests);
-        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage );
+        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage);
         requests.clear();
 
         request.inputRecordId = null;
@@ -74,11 +76,11 @@ public with sharing class ListActionsTest {
         request.childRecordFieldsCSV = 'Id,Name';
         requests.add(request);
         responseWrapper = GetChildCollection.get(requests);
-        System.assertNotEquals(responseWrapper[0].childCollection, null );
-        System.assertEquals(1, responseWrapper[0].childCollection.size() );
+        System.assertNotEquals(responseWrapper[0].childCollection, null);
+        System.assertEquals(1, responseWrapper[0].childCollection.size());
         requests.clear();
 
-       
+
     }
 
     @isTest
@@ -100,7 +102,7 @@ public with sharing class ListActionsTest {
 
         //user can't pass in both an input recordid and an input record
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id,true);
+        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = testAccounts[0];
         requests.add(request);
@@ -130,6 +132,7 @@ public with sharing class ListActionsTest {
         request.inputRecord = null;
         request.saveImmediately = true;
         request.childRelationshipsCSV = 'Tasks';
+        request.saveChildRecordsAutomatically = true;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id);
@@ -237,8 +240,40 @@ public with sharing class ListActionsTest {
                 System.assertEquals(String.valueOf(fieldNameValue.get(fieldName)), String.valueOf(obj.get(fieldName)));
             }
         }
-
     }
+
+    @isTest
+    static void mapCollectionDateTime() {
+
+        List<MapCollection.Requests> requests = new List<MapCollection.Requests>();
+        MapCollection.Requests request = new MapCollection.Requests();
+        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
+
+        Datetime dt = Datetime.now();
+        dt = dt.addSeconds(-dt.second());
+        request.inputCollection = testTasks;
+
+        request.keyValuePairs = '"ActivityDate":"' + dt.format(FLOW_DATE_FORMAT) + '"';
+        requests.add(request);
+        List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(requests);
+        System.assertEquals(responseWrapper.size(), 1);
+        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        for (SObject obj : responseWrapper[0].outputCollection) {
+            System.assertEquals(obj.get('ActivityDate'), Date.today());
+        }
+
+        List<Event> testEvents = createEvents(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
+        request.inputCollection = testEvents;
+        request.keyValuePairs = '"StartDateTime":"' + dt.format(FLOW_DATE_TIME_FORMAT) + '"';
+        requests.add(request);
+        responseWrapper = MapCollection.mapCollection(requests);
+        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        for (SObject obj : responseWrapper[0].outputCollection) {
+            System.assertEquals(dt, obj.get('StartDateTime'));
+        }
+    }
+
 
     @isTest
     static void removeRecordInCollectionTest() {
@@ -397,6 +432,25 @@ public with sharing class ListActionsTest {
         return returnList;
     }
 
+    static List<Event> createEvents(Integer numberOfRecords, Id whatId, Boolean doInsert) {
+
+        List<Event> returnList = new List<Event>();
+        for (Integer i = 0; i < numberOfRecords; i++) {
+            returnList.add(new Event(
+                    Subject = TEST_RECORD_NAME + i,
+                    WhatId = whatId,
+                    ActivityDateTime = DateTime.now().addDays(1),
+                    DurationInMinutes = 100,
+                    ActivityDate = Date.today().addDays(1)
+            ));
+        }
+        if (doInsert) {
+            insert returnList;
+        }
+
+        return returnList;
+    }
+
     static List<Lead> createLeads(Integer numberOfRecords, Boolean doInsert) {
 
         List<Lead> returnList = new List<Lead>();
@@ -416,7 +470,7 @@ public with sharing class ListActionsTest {
         Integer i = 1;
         for (Account curAccount : accountList) {
             contactList.add(new Contact(LastName = TEST_CONTACT_NAME + i, AccountId = curAccount.Id));
-            i = i+1;
+            i = i + 1;
         }
         if (doInsert) {
             insert contactList;
@@ -428,7 +482,7 @@ public with sharing class ListActionsTest {
 
         List<Opportunity> returnList = new List<Opportunity>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Opportunity(Name = 'Opportunity' + i, StageName='Prospecting', CloseDate = System.today()));
+            returnList.add(new Opportunity(Name = 'Opportunity' + i, StageName = 'Prospecting', CloseDate = System.today()));
         }
         if (doInsert) {
             insert returnList;

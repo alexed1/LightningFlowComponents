@@ -10,10 +10,9 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
-    // @api objectType;
-    // @api field;
     @api availableObjectTypes;
     @api availableFields;
+    @api availableFieldTypes;
 
     @api disableObjectPicklist = false;
     @api hideObjectPicklist = false;
@@ -34,19 +33,21 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     };
 
     @api
-    get objectType(){
+    get objectType() {
         return this._objectType;
     }
-    set objectType(value){
+
+    set objectType(value) {
         this._objectType = value;
     }
 
     @api
-    get field(){
+    get field() {
         return this._field;
     }
-    set field(value){
-        if(this._objectType){
+
+    set field(value) {
+        if (this._objectType) {
             this._field = value;
         }
     }
@@ -88,7 +89,8 @@ export default class pickObjectAndFieldFSC extends LightningElement {
                     this._field = null;
                 }
             }
-            this.fields = fieldResults.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));;
+            this.fields = fieldResults.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));
+            ;
             if (this.fields) {
                 this.dispatchDataChangedEvent({...this.fields.find(curField => curField.value == this._field), ...{isInit: true}});
             }
@@ -100,6 +102,12 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     }
 
     isTypeSupported(field) {
+        if (this.availableFieldTypes) {
+            if (!this.availableFieldTypes.toLowerCase().split(',').includes(field.dataType.toLowerCase())) {
+                return false;
+            }
+        }
+
         let result = false;
         if (!this.availableFields) {
             result = true;
@@ -153,9 +161,11 @@ export default class pickObjectAndFieldFSC extends LightningElement {
 
     handleFieldChange(event) {
         this._field = event.detail.value;
-        this.dispatchDataChangedEvent(this.fields.find(curField => curField.value == this._field));
-        const attributeChangeEvent = new FlowAttributeChangeEvent('field', this._field);
-        this.dispatchEvent(attributeChangeEvent);
+        if (this.fields) {
+            this.dispatchDataChangedEvent(this.fields.find(curField => curField.value == this._field));
+            const attributeChangeEvent = new FlowAttributeChangeEvent('field', this._field);
+            this.dispatchEvent(attributeChangeEvent);
+        }
     }
 
     dispatchDataChangedEvent(detail) {

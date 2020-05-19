@@ -31,7 +31,7 @@ global with sharing class FlowListController {
                     List<String> values = filters.get(fieldName);
                     String negativeClause = fieldName.contains('!') ? (values.size() > 1 ? 'NOT ' : '!') : '';
                     String operator = fieldName.contains('Label') ? 'LIKE ' : (values.size() == 1 ? '= ' : 'IN ');  // Updated to Handle Search String
-                    String value = values.size() == 1 ? values[0] : '(\'' + String.join(values, '\',\'') + '\')';
+                    String value = values.size() == 1 ?  '\'' + values[0] + '\'' : '(\'' + String.join(values, '\',\'') + '\')';
                     queryString += (!isFirst ? ' AND ' : ' ') + fieldName.replace('!', '') + ' ' + negativeClause + operator + value;
                     isFirst = false;
                 }

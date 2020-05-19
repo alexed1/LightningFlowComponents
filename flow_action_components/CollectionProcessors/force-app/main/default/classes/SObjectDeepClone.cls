@@ -3,6 +3,16 @@
 //   - Not currently optimized for bulk use!
 //   See https://github.com/ChuckJonas/SObjectDeepClone for readme
 public with sharing class SObjectDeepClone {
+    @TestVisible
+    private static final Map<Schema.SObjectType, List<String>> NULLABLE_FIELDS = new Map<Schema.SObjectType, List<String>>{
+            //the purpose of this was to get around a problem created when the calculated TotalPrice field gets cloned. 
+            
+            //this fix turns out not to work. setting TotalPrice to null creates a separate error. ultimately, the solution was to set TotalPrice to empty string
+            /* Schema.OpportunityLineItem.getSObjectType() => new List<String>{
+                    'TotalPrice'
+            } */
+    };
+
     private Map<String, ChildRelationshipProps> relationshipMap;
     private SObjectType type;
 
@@ -70,6 +80,7 @@ public with sharing class SObjectDeepClone {
             }
             if (saveChildRecordsAutomatically && !clonedChildrenPerTypeMap.isEmpty()) {
                 for (String relationshipName : clonedChildrenPerTypeMap.keySet()) {
+                    System.debug('cloned children are: ' + clonedChildrenPerTypeMap);
                     insert clonedChildrenPerTypeMap.get(relationshipName);
                 }
             }
@@ -97,8 +108,19 @@ public with sharing class SObjectDeepClone {
             if (this.sObjectFields.get(curType).containsKey(curFieldName.toLowerCase())) {
                 if (so.get(curFieldName) != null && this.sObjectFields.get(curType).get(curFieldName.toLowerCase()).getDescribe().isUpdateable()) {
                     String curName = (String) so.get(curFieldName);
-                    so.put(curFieldName, curName + ' Clone' + Datetime.now().format('MM/dd/yyyy H:mm'));
+                    so.put(curFieldName, curName + ' Clone ' + Datetime.now().format('MM/dd/yyyy H:mm'));
                     break;
+                }
+            }
+        }
+        if (NULLABLE_FIELDS != null) {
+            for (SObjectType curNullableType : NULLABLE_FIELDS.keySet()) {
+                if (curType == curNullableType) {
+                    for (String curNullableField : NULLABLE_FIELDS.get(curNullableType)) {
+                        if (this.sObjectFields.get(curType).containsKey(curNullableField.toLowerCase())) {
+                            so.put(curNullableField, null);
+                        }
+                    }
                 }
             }
         }

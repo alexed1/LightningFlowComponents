@@ -64,9 +64,9 @@ global with sharing class MapCollection {
         if (fieldType != 'Boolean' && (fieldValue == null || fieldValue == '')) {
             obj.put(fieldName, null);
         } else if (fieldType == 'Date') {
-            obj.put(fieldName, Date.valueOf((String) fieldValue));
+            obj.put(fieldName, Date.valueOf(CollectionProcessorsUtils.getFormattedValue(fieldValue.toLowerCase(), fieldType.toLowerCase())));
         } else if (fieldType == 'Datetime') {
-            obj.put(fieldName, Datetime.valueOf((String) fieldValue));
+            obj.put(fieldName, Datetime.valueOf(CollectionProcessorsUtils.getFormattedValue(fieldValue.toLowerCase(), fieldType.toLowerCase())));
         } else if (fieldType == 'Boolean') {
             obj.put(fieldName, fieldValue == null ? false : Boolean.valueOf(fieldValue));
         } else if (fieldType == 'Currency') {

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <externalId>false</externalId>
+    <label>Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Group</fullName>
+                <default>false</default>
+                <label>Group</label>
+            </value>
+            <value>
+                <fullName>Role</fullName>
+                <default>false</default>
+                <label>Role</label>
+            </value>
+            <value>
+                <fullName>User</fullName>
+                <default>false</default>
+                <label>User</label>
+            </value>
+            <value>
+                <fullName>Role Subordinate</fullName>
+                <default>false</default>
+                <label>Role Subordinate</label>
+            </value>
+            <value>
+                <fullName>Role Subordinate - Internal</fullName>
+                <default>false</default>
+                <label>Role Subordinate - Internal</label>
+            </value>
+            <value>
+                <fullName>Owner</fullName>
+                <default>false</default>
+                <label>Owner</label>
+            </value>
+            <value>
+                <fullName>Creator</fullName>
+                <default>false</default>
+                <label>Creator</label>
+            </value>
+            <value>
+                <fullName>Partner User</fullName>
+                <default>false</default>
+                <label>Partner User</label>
+            </value>
+            <value>
+                <fullName>Customer Portal User</fullName>
+                <default>false</default>
+                <label>Customer Portal User</label>
+            </value>
+            <value>
+                <fullName>Portal Role</fullName>
+                <default>false</default>
+                <label>Portal Role</label>
+            </value>
+            <value>
+                <fullName>Portal Role Subordinates</fullName>
+                <default>false</default>
+                <label>Portal Role Subordinates</label>
+            </value>
+            <value>
+                <fullName>All Internal Users</fullName>
+                <default>false</default>
+                <label>All Internal Users</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

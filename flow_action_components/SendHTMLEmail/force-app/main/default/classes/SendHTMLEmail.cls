@@ -34,8 +34,6 @@ public without sharing class SendHTMLEmail {
 		List<Response> responseList = new List<Response>();
 		List<Messaging.SingleEmailMessage> mailList = new List<Messaging.SingleEmailMessage>();
         Response response = new Response();
-		Integer requestOrder=0;
-        Map<Integer,ThisResponse> mapResponses = new Map<Integer,ThisResponse>();
 		for (Request curRequest : requests) {
 			String HTMLbody = curRequest.HTMLbody;
 			String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
@@ -51,12 +49,13 @@ public without sharing class SendHTMLEmail {
 			Boolean useMassEmail = curRequest.useMassEmail == null?false:curRequest.useMassEmail;
 			Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
 			if (subject != null && (subject.length() == 0) ) subject = null;
-            ThisResponse thisResponse = new ThisResponse();
-			thisResponse.saveAsActivity = curRequest.saveAsActivity == null?true:curRequest.saveAsActivity;
-			if (recordId==null)thisResponse.saveAsActivity = curRequest.saveAsActivity == null?false:curRequest.saveAsActivity;
+            Response thisResponse = new Response();
+            
+			curRequest.setSaveAsActivity = curRequest.saveAsActivity == null?true:curRequest.saveAsActivity;
+			if (recordId==null)curRequest.setSaveAsActivity = curRequest.saveAsActivity == null?false:curRequest.setSaveAsActivity;
             // saveAsTask will default to whatever saveAsActivity is, but if recordId is null, will set it to false
-			thisResponse.saveAsTask = curRequest.saveAsTask == null?curRequest.saveAsActivity:curRequest.saveAsTask;
-			if (recordId==null)thisResponse.saveAsTask = curRequest.saveAsTask == null?false:thisResponse.saveAsTask;
+			curRequest.setSaveAsTask = curRequest.saveAsTask == null?curRequest.setSaveAsActivity:curRequest.saveAsTask;
+			if (recordId==null)curRequest.setSaveAsTask = curRequest.setSaveAsTask == null?false:curRequest.setSaveAsTask;
 			//from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
 			// First, reserve email capacity for the current Apex transaction to ensure
@@ -74,14 +73,24 @@ public without sharing class SendHTMLEmail {
 			// Strings to hold the email addresses to which you are sending the email.
 			//String[] toAddresses = new String[] {oneAddress}; 
 			Map<String, Object> m = GenerateMap(curRequest);
-			thisResponse.toAddresses = BuildAddressList('TO',m); 
-			thisResponse.ccAddresses = BuildAddressList('CC',m); 
-			thisResponse.bccAddresses = BuildAddressList('BCC', m);
+			curRequest.toAddresses = BuildAddressList('TO',m); 
+			curRequest.ccAddresses = BuildAddressList('CC',m); 
+			curRequest.bccAddresses = BuildAddressList('BCC', m);
 				
 			// Assign the addresses for the To and CC lists to the mail object.
-			mail.setToAddresses(thisResponse.toAddresses);
-			mail.setCcAddresses(thisResponse.ccAddresses);
-			mail.setBccAddresses(thisResponse.bccAddresses);
+			mail.setToAddresses(curRequest.toAddresses);
+			mail.setCcAddresses(curRequest.ccAddresses);
+			mail.setBccAddresses(curRequest.bccAddresses);
+/*
+			// These methods available to all email message classes
+
+			setBccSender(bcc)
+			setReplyTo(replyAddress)
+			setTemplateID(templateId)
+			setSaveAsActivity(saveAsActivity)
+			setSenderDisplayName(displayName)
+			setUseSignature(useSignature)
+*/
 
 			//outgoing email can either use an orgWideEmailAddress or specify it here, but not both
 			if (orgWideEmailAddressId != null && orgWideEmailAddressId != '') {
@@ -106,28 +115,28 @@ public without sharing class SendHTMLEmail {
 			mail.setUseSignature(useSalesforceSignature);
 			mail = AddAttachments(mail, curRequest.contentDocumentAttachments, null);
 			
-            if (thisResponse.response.errors == null && (templateName != null && templateID != null)){
-				thisResponse.response.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).';
+            if (thisResponse.errors == null && (templateName != null && templateID != null)){
+				thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).';
             }
 
-			if (thisResponse.response.errors == null && templateName != null){
+			if (thisResponse.errors == null && templateName != null){
 				templateID = getTemplateIdFromName(templateName,templateLanguage);
 				if (templateID == null){
-                    thisResponse.response.errors = 'Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template';
+                    thisResponse.errors = 'Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template';
 				}
 				Response.templateUsed = TemplateId;
 			}
 
-            if (thisResponse.response.errors == null && (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))){
-                thisResponse.response.errors = 'You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).';
+            if (thisResponse.errors == null && (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))){
+                thisResponse.errors = 'You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).';
             }
 			
-            if (thisResponse.response.errors == null && (templateID == null  && HTMLbody == null && plainTextBody == null)){
-                thisResponse.response.errors = 'Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId';
+            if (thisResponse.errors == null && (templateID == null  && HTMLbody == null && plainTextBody == null)){
+                thisResponse.errors = 'Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId';
             }
 				
-            if (thisResponse.response.errors == null && (thisResponse.saveAsActivity == true && recordId == null)){
-                thisResponse.response.errors = 'In order to log this email send to activity history, you need to pass in a recordId';
+            if (thisResponse.errors == null && (curRequest.setSaveAsActivity == true && recordId == null)){
+                thisResponse.errors = 'In order to log this email send to activity history, you need to pass in a recordId';
             }
 			
 			Boolean completed = true;
@@ -141,61 +150,55 @@ public without sharing class SendHTMLEmail {
 			// Specify the text content of the email.
 			if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
 			if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
-			if (thisResponse.saveAsActivity != NULL) mail.setSaveAsActivity(thisResponse.saveAsActivity);
+			if (curRequest.setSaveAsActivity != NULL) mail.setSaveAsActivity(curRequest.setSaveAsActivity);
 			if (templateID != NULL){
 				try {
 					mail.setTemplateID(templateID);
-                    thisResponse.response.templateUsed = templateId;
+                    thisResponse.templateUsed = templateId;
 				} catch (Exception e){
-					thisResponse.response.errors = e.getMessage();
+					thisResponse.errors = e.getMessage();
 				}
 			}
-            if (thisResponse.response.errors == null) {
+            if (thisResponse.errors == null) {
                 mailList.add(mail);
-            } else thisResponse.response.isSuccess = false;
-			mapResponses.put(requestOrder,thisResponse);
-            requestOrder++;
+            } else thisResponse.isSuccess = false;
+			responseList.add(thisResponse);
         }
 		List<Messaging.SendEmailResult> emailResults = new List<Messaging.SendEmailResult>();
         try {
             emailResults = Messaging.sendEmail(mailList,false);
         } catch (Exception e){
             // if an error occurred in sendMail, put same error message on all responses
-            for (Integer i=0; i < mapResponses.size();i++){
-                ThisResponse thisResponse = mapResponses.get(i);
-                thisResponse.response.isSuccess = false;
-                thisResponse.response.errors = e.getmessage();
-                mapResponses.put(i,thisResponse);
+            for (Integer i=0; i < responseList.size();i++){
+                responseList[i].isSuccess = false;
+                responseList[i].errors = e.getmessage();
             }
         }
         //report back the results
         Integer replyPos = 0;
         for (Messaging.SendEmailResult thisResult : emailResults){
-            while (mapResponses.get(replyPos).response.errors != null) replyPos++;
-            ThisResponse thisResponse = mapResponses.get(replyPos);
+            while (responseList[replyPos].errors != null) replyPos++;
             if (thisResult.isSuccess() != true) {
                 Messaging.SendEmailError[] curErrors = thisResult.getErrors();
                 String errorReport = '';
                 for(Messaging.SendEmailError curError : curErrors ) {
                     errorReport = errorReport + curError.getMessage() + '/n';
                 }
-                thisResponse.response.errors = errorReport;
-                thisResponse.response.isSuccess = false;
-                mapResponses.put(replyPos,thisResponse);
+                responseList[replyPos].errors = errorReport;
+                responseList[replyPos].isSuccess = false;
             } else {
-                thisResponse.response.isSuccess = true;
-                if (thisResponse.saveAsTask == true) {
-                    thisResponse.response.errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
+                responseList[replyPos].isSuccess = true;
+                if (requests[replyPos].setSaveAsTask == true) {
+                    responseList[replyPos].errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
                                                            requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
-                                                           thisResponse);
+                                                           requests[replyPos],responseList[replyPos].errors);
                 }
             }
             replyPos++;
         }
         boolean atLeastOneSent=false;
-        for (Integer i=0;i<mapResponses.size();i++){
-            responseList.add(mapResponses.get(i).response);
-            if (mapResponses.get(i).response.isSuccess) atLeastOneSent = true;
+        for (Integer i=0;i<responseList.size();i++){
+            if (responseList[i].isSuccess) atLeastOneSent = true;
         }
         if (!atLeastOneSent)
 				throw new InvocableActionException('No Messages were sent.  First Error: '+responseList[0].errors);
@@ -203,12 +206,13 @@ public without sharing class SendHTMLEmail {
 	}
 
 // Add a task activity    
-    private static String addTasks(ID templateID, String subject, ID templateTargetObjectId, ID recordId, ThisResponse thisResponse){
+    private static String addTasks(ID templateID, String subject, ID templateTargetObjectId, ID recordId, Request thisRequest,String curErrors){
+        String retErrors = curErrors;
         if (templateID != null && subject == null){
             subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateId AND isActive = TRUE ].Subject;
         }
-        if (thisResponse.toAddresses.size() == 0){
-            thisResponse.toAddresses.add((String) (Database.query('Select Email From ' +
+        if (thisRequest.toAddresses.size() == 0){
+            thisRequest.toAddresses.add((String) (Database.query('Select Email From ' +
                                                                   ((Id)templateTargetObjectId).getSObjectType().getDescribe().getName() + 
                                                                   ' Where Id = \''+ templateTargetObjectId +'\' limit 1'))[0].get('Email'));
         }
@@ -216,12 +220,12 @@ public without sharing class SendHTMLEmail {
             createActivity(
                 recordId,
                 subject,
-                thisResponse.toAddresses + ',' + thisResponse.ccAddresses + ',' + thisResponse.bccAddresses
+                thisRequest.toAddresses + ',' + thisRequest.ccAddresses + ',' + thisRequest.bccAddresses
             );
         } catch (Exception e) {
-            thisResponse.response.errors = e.getMessage();
+            retErrors = e.getMessage();
         }
-        return thisResponse.response.errors;
+        return retErrors;
     }
 
 	//credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
@@ -369,6 +373,8 @@ public without sharing class SendHTMLEmail {
         public String[] toAddresses; 
         public String[] ccAddresses; 
         public String[] bccAddresses;
+        public Boolean setSaveAsActivity;
+        public Boolean setSaveAsTask;
 
 		@invocableVariable
 		public List<ContentDocumentLink> contentDocumentAttachments;
@@ -494,14 +500,6 @@ public without sharing class SendHTMLEmail {
 		public String errors;
 
 	}
-    private class ThisResponse {
-        public Response response = new Response();
-        public Boolean saveAsActivity;
-        public Boolean saveAsTask;
-        public String[] toAddresses;
-        public String[] ccAddresses; 
-        public String[] bccAddresses;
-    }
 
-	public class InvocableActionException extends Exception {}
+    public class InvocableActionException extends Exception {}
 }

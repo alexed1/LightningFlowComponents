@@ -52,7 +52,7 @@ public with sharing class GetLayoutFields {
         public String objectName;
 
         @InvocableVariable 
-        global String excludeFields;
+        public String excludeFields;
 
     }
 

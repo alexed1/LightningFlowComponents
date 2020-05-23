@@ -1,8 +1,23 @@
 <template>
     <lightning-input
+            name="select_fieldLabel"
             label={inputValues.fieldLabel.label}
             value={inputValues.fieldLabel.value}
-            onchange={handleMasterLabelChanged}
+            onblur={handleAttributeChange}
+    ></lightning-input>
+    <lightning-input
+            name="select_placeholderText"
+            label={inputValues.placeholderText.label}
+            value={inputValues.placeholderText.value}
+            onblur={handleAttributeChange}
+    ></lightning-input>
+    <lightning-input
+            class="slds-p-top_small"
+            name="select_showAddNewRecord"
+            type="checkbox"
+            label={inputValues.showAddNewRecord.label}
+            checked={inputValues.showAddNewRecord.value}
+            onchange={handleBooleanAttributeChange}
     ></lightning-input>
     <c-pick-object-and-field-f-s-c
             object-label={inputValues.objectName.label}
@@ -10,6 +25,7 @@
             object-type={inputValues.objectName.value}
             field={inputValues.displayWhichField.value}
             onfieldselected={handleDisplayFieldSelected}
+            builder-context={_builderContext}
     ></c-pick-object-and-field-f-s-c>
     <c-pick-object-and-field-f-s-c
             field-label={inputValues.outputWhichValue.label}
@@ -17,5 +33,6 @@
             field={inputValues.outputWhichValue.value}
             onfieldselected={handleOutputFieldSelected}
             hide-object-picklist
+            builder-context={_builderContext}
     ></c-pick-object-and-field-f-s-c>
 </template>

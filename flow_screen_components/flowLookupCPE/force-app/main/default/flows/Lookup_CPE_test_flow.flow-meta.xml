@@ -39,13 +39,13 @@
             <inputParameters>
                 <name>displayWhichField</name>
                 <value>
-                    <stringValue>Name</stringValue>
+                    <stringValue>{!lookup_displayWhichField}</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>outputWhichValue</name>
                 <value>
-                    <stringValue>Id</stringValue>
+                    <stringValue>{!lookup_outputWhichValue}</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -93,6 +93,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+        <value>
+            <stringValue>Name</stringValue>
+        </value>
     </variables>
     <variables>
         <name>lookup_masterLabel</name>
@@ -114,6 +117,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+        <value>
+            <stringValue>Id</stringValue>
+        </value>
     </variables>
     <variables>
         <name>output_selected_value</name>

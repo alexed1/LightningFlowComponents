@@ -3,18 +3,18 @@
  * The Lookup controller returns a List<LookupSearchResult> when sending search result back to Lightning
  */
 public class LookupSearchResult {
-    private Id id;
+    private String id;
     private String sObjectType;
     private String icon;
     private String title;
     private String subtitle;
 
     public LookupSearchResult(
-        Id id,
-        String sObjectType,
-        String icon,
-        String title,
-        String subtitle
+            String id,
+            String sObjectType,
+            String icon,
+            String title,
+            String subtitle
     ) {
         this.id = id;
         this.sObjectType = sObjectType;
@@ -24,7 +24,7 @@ public class LookupSearchResult {
     }
 
     @AuraEnabled
-    public Id getId() {
+    public String getId() {
         return id;
     }
 

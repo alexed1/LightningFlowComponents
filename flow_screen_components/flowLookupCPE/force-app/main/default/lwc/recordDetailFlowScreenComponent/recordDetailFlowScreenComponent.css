@@ -1,0 +1,15 @@
+.container {
+    position: relative;
+}
+
+.toast-message {
+    top: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: --lwc-zIndexModal;
+}
+
+.underline {
+    border-bottom: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(221, 219, 218));
+}

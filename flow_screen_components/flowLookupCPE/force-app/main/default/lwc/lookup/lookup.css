@@ -28,3 +28,11 @@
     color: rgb(194, 57, 52);
     display: block;
 }
+
+.self-align-center {
+    align-self: center;
+}
+
+.custom-padding-top-2px {
+    padding-top: 2px;
+}

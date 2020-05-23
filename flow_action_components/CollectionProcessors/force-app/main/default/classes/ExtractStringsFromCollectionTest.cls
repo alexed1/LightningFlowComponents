@@ -1,6 +1,5 @@
 @IsTest
-private class DedupeFieldsFromCollectionTest {
-    
+private class ExtractStringsFromCollectionTest {
     @TestSetup
     static void setup(){
         List<Account> accounts = new List<Account>();
@@ -15,17 +14,17 @@ private class DedupeFieldsFromCollectionTest {
     }
 
     @IsTest
-    static void emptyInputCollectionReturnsEmptyOutputCollection() {
-        List<DedupeFieldsFromCollection.FlowRequest> flowRequests = new List<DedupeFieldsFromCollection.FlowRequest>();
-        DedupeFieldsFromCollection.FlowRequest flowRequest = new DedupeFieldsFromCollection.FlowRequest();
+    static void emptyInputCollectionThrowsError() {
+        List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
+        ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
         flowRequest.inputRecordCollection = new List<Account>();
         flowRequest.fieldAPIName = '';
         flowRequests.add(flowRequest);
-        DedupeFieldsFromCollection.DedupeFieldsException exc;
+        ExtractStringsFromCollection.ExtractStringsException exc;
         Test.startTest();
         try {
-           List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
-        } catch (DedupeFieldsFromCollection.DedupeFieldsException e) {
+           List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
+        } catch (ExtractStringsFromCollection.ExtractStringsException e) {
             exc = e;
         }
         Test.stopTest();
@@ -34,33 +33,33 @@ private class DedupeFieldsFromCollectionTest {
     
     @IsTest
     static void extractTextCollectionNoDedupe() {
-        List<DedupeFieldsFromCollection.FlowRequest> flowRequests = new List<DedupeFieldsFromCollection.FlowRequest>();
-        DedupeFieldsFromCollection.FlowRequest flowRequest = new DedupeFieldsFromCollection.FlowRequest();
+        List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
+        ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
         flowRequest.inputRecordCollection = [SELECT Name FROM Account LIMIT 50];
         flowRequest.fieldAPIName = 'name';
         flowRequest.dedupeValues = false;
         flowRequests.add(flowRequest);
         Test.startTest();
-        List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
+        List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
         Test.stopTest();
         System.assert(results[0].fieldValueCollection.size() == 11, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }
 
     @IsTest
-    static void dedupeTextCollectionSuccess() {
-        List<DedupeFieldsFromCollection.FlowRequest> flowRequests = new List<DedupeFieldsFromCollection.FlowRequest>();
-        DedupeFieldsFromCollection.FlowRequest flowRequest = new DedupeFieldsFromCollection.FlowRequest();
+    static void extractTextCollectionSuccess() {
+        List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
+        ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
         flowRequest.inputRecordCollection = [SELECT Name FROM Account LIMIT 50];
         flowRequest.fieldAPIName = 'name';
         flowRequests.add(flowRequest);
         Test.startTest();
-        List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
+        List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
         Test.stopTest();
         System.assert(results[0].fieldValueCollection.size() == 10, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }
     
     @IsTest
-    static void dedupeTextCollectionSuccessNullValues() {
+    static void extractTextCollectionSuccessNullValues() {
         List<Account> accounts = [Select Id, BillingCity from Account LIMIT 8]; // out of 10: leave one null, set one unique
         for (Account act: accounts) {
             act.BillingCity = 'Test City';
@@ -70,13 +69,13 @@ private class DedupeFieldsFromCollectionTest {
 		accounts2[0].BillingCity = 'Test City 2';
         update accounts2;
         
-        List<DedupeFieldsFromCollection.FlowRequest> flowRequests = new List<DedupeFieldsFromCollection.FlowRequest>();
-        DedupeFieldsFromCollection.FlowRequest flowRequest = new DedupeFieldsFromCollection.FlowRequest();
+        List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
+        ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
         flowRequest.inputRecordCollection = [SELECT BillingCity FROM Account LIMIT 50];
         flowRequest.fieldAPIName = 'BillingCity';
         flowRequests.add(flowRequest);
         Test.startTest();
-        List<DedupeFieldsFromCollection.FlowResponse> results = DedupeFieldsFromCollection.dedupe(flowRequests);
+        List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
         Test.stopTest();
         System.assert(results[0].fieldValueCollection.size() == 2, 'DedupeFieldsFromCollectionTest : dedupeTextCollectionSuccess failed');
     }

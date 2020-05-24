@@ -1,6 +1,7 @@
 import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
+import {formattedValue, isReference, getDataType, removeFormatting, flowComboboxDefaults} from 'c/flowComboboxUtils';
 
 export default class FlowCombobox extends LightningElement {
     @api name;
@@ -25,7 +26,9 @@ export default class FlowCombobox extends LightningElement {
     key = 0;
     _builderContext;
     labels = {
-        noDataAvailable: 'No data available'
+        noDataAvailable: 'No data available',
+        staticOptionsLabel: 'OBJECT FIELDS',
+        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}',
     };
     iconsPerType = {
         String: 'utility:text',
@@ -46,24 +49,45 @@ export default class FlowCombobox extends LightningElement {
     };
 
     typeDescriptors = [
-        {apiName: 'variables', label: 'Variables', dataType: 'dataType'},
-        {apiName: 'constants', label: 'Global Constants', dataType: 'String'},
-        {apiName: 'textTemplates', label: 'Variables', dataType: 'String'},
-        {apiName: 'stages', label: 'Variables', dataType: 'String'},
-        {apiName: 'screens.fields', label: 'Screen Components', dataType: 'String'},
-        {apiName: 'screens.fields.inputParameters', label: 'Screen Components', dataType: 'String'},
-        {apiName: 'recordLookups', label: 'Variables', dataType: 'SObject'},
-        {apiName: 'formulas', label: 'Formulas', dataType: 'String'},
-        {apiName: 'actionCalls.inputParameters', label: 'Variables', dataType: 'String'},
-        {apiName: 'actionCalls.outputParameters', label: 'Variables', dataType: 'String'},
-        {apiName: 'apexPluginCalls', label: 'Variables', dataType: 'String'},
+        {
+            apiName: 'variables',
+            label: 'Variables',
+            dataType: 'dataType',
+            objectTypeField: 'objectType',
+            isCollectionField: 'getFirstRecordOnly'
+        },
+        {apiName: 'constants', label: 'Global Constants', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: 'textTemplates', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: 'stages', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        // {apiName: 'screens.fields', label: 'Screen Components', dataType: flowComboboxDefaults.stringDataType},
+        // {
+        //     apiName: 'screens.fields.inputParameters',
+        //     label: 'Screen Components',
+        //     dataType: flowComboboxDefaults.stringDataType
+        // },
+        {
+            apiName: flowComboboxDefaults.recordLookupsType,
+            label: 'Variables',
+            dataType: 'SObject',
+            objectTypeField: 'object',
+            isCollectionField: 'getFirstRecordOnly'
+        },
+        {apiName: 'formulas', label: 'Formulas', dataType: flowComboboxDefaults.stringDataType},
+        // {apiName: 'actionCalls.inputParameters', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        // {apiName: 'actionCalls.outputParameters', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        // {apiName: 'apexPluginCalls', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
     ];
 
-    settings = {
-        stringDataType: 'String',
-        referenceDataType: 'reference',
-        invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}'
-    };
+    _staticOptions
+    @api
+    get staticOptions() {
+        return this._staticOptions;
+    }
+
+    set staticOptions(value) {
+        this._staticOptions = value;
+        this.processOptions();
+    }
 
     @api
     get value() {
@@ -71,8 +95,13 @@ export default class FlowCombobox extends LightningElement {
     }
 
     set value(value) {
-        this._value = value;
-        this.isDataSelected = !!this._value;
+        this.isDataSelected = !!value;
+        if (isReference(value)) {
+            this._dataType = getDataType(value);
+            this._value = removeFormatting(value);
+        } else {
+            this._value = value;
+        }
         this.determineSelectedType();
     }
 
@@ -86,7 +115,7 @@ export default class FlowCombobox extends LightningElement {
             if (value) {
                 this._dataType = value;
             } else {
-                this._dataType = this.settings.stringDataType;
+                this._dataType = flowComboboxDefaults.stringDataType;
             }
 
         }
@@ -106,7 +135,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     get displayPill() {
-        return this.isDataSelected && this._dataType === this.settings.referenceDataType;
+        return this.isDataSelected && this._dataType === flowComboboxDefaults.referenceDataType;
     }
 
     setOptions(value) {
@@ -120,7 +149,10 @@ export default class FlowCombobox extends LightningElement {
             let parentVar = value.split('.')[0];
             if (parentVar && this._mergeFields && this._mergeFields.length) {
                 for (let i = 0; i < this._mergeFields.length; i++) {
-                    let localOption = this._mergeFields[i].options.find(curTypeOption => curTypeOption.value.toLowerCase() === parentVar.toLowerCase());
+                    let localOption = this._mergeFields[i].options.find(curTypeOption => {
+                        let result = (curTypeOption.value.toLowerCase() === parentVar.toLowerCase()) || (curTypeOption.value.toLowerCase() === value.toLowerCase());
+                        return result;
+                    });
                     if (localOption) {
                         return localOption;
                     }
@@ -137,22 +169,22 @@ export default class FlowCombobox extends LightningElement {
             this.setOptions([]);
         } else if (data) {
             let tempOptions = [];
-            let localKey = 0;
+            // let localKey = 0;
             Object.keys(data.fields).forEach(curField => {
                 let curFieldData = data.fields[curField];
                 let curDataType = curFieldData.dataType === 'Reference' ? 'SObject' : curFieldData.dataType;
                 let curObjectType = curFieldData.referenceToInfos.length ? curFieldData.referenceToInfos[0].apiName : null;
-                tempOptions.push({
-                    type: curDataType,
-                    label: curFieldData.label,
-                    value: curFieldData.apiName,
-                    isCollection: false,
-                    objectType: curObjectType,
-                    optionIcon: this.getIconNameByType(curDataType),
-                    isObject: curDataType === 'SObject',
-                    displayType: curDataType === 'SObject' ? curObjectType : curDataType,
-                    key: 'fieldDescriptor' + localKey++
-                });
+                tempOptions.push(this.generateOptionLine(
+                    curDataType,
+                    curFieldData.label,
+                    curFieldData.apiName,
+                    false,
+                    curObjectType,
+                    this.getIconNameByType(curDataType),
+                    curDataType === 'SObject',
+                    curDataType === 'SObject' ? curObjectType : curDataType,
+                    flowComboboxDefaults.defaultKeyPrefix + this.key++
+                ));
             });
             this.setOptions([{type: data.label + ' Fields', options: tempOptions}]);
         }
@@ -210,29 +242,46 @@ export default class FlowCombobox extends LightningElement {
                         if (Array.isArray(objectToExamine)) {
                             let allObjectToExamine = [];
                             objectToExamine.forEach(curObjToExam => {
-                                allObjectToExamine = [...allObjectToExamine, ...curObjToExam[curTypePart].map(curItem => {
-                                    return {
-                                        ...curItem, varApiName: curObjToExam.name + '.' + curItem.name,
-                                        varLabel: (curObjToExam.label ? curObjToExam.label : parentNodeLabel) + ': ' + curItem.name
-                                    }
-                                })];
+                                if (curObjToExam.storeOutputAutomatically) {
+                                    //TODO: Uncomment when it is clear how to get output parameters from actions and flow screens
+                                    // allObjectToExamine.push({
+                                    //     varApiName: curObjToExam.name,
+                                    //     varLabel: curObjToExam.label
+                                    // });
+                                } else {
+                                    allObjectToExamine = [...allObjectToExamine, ...curObjToExam[curTypePart].map(curItem => {
+                                        return {
+                                            ...curItem, varApiName: curObjToExam.name + '.' + curItem.name,
+                                            varLabel: (curObjToExam.label ? curObjToExam.label : parentNodeLabel) + ': ' + curItem.name
+                                        }
+                                    })];
+                                }
                             });
                             objectToExamine = allObjectToExamine;
                         }
                     }
 
                 });
+                let localType = this.getTypeDescriptor(curType);
 
-                let curTypeOptions = this.getOptionLines(objectToExamine, 'varLabel', 'varApiName', 'dataType', 'isCollection', 'objectType');
+                let curTypeOptions = this.getOptionLines(
+                    objectToExamine,
+                    'varLabel',
+                    'varApiName',
+                    'dataType',
+                    localType.isCollectionField ? localType.isCollectionField : 'isCollection',
+                    localType.objectTypeField ? localType.objectTypeField : 'objectType',
+                    localType
+                );
                 if (curTypeOptions.length) {
                     typeOptions = [...typeOptions, ...curTypeOptions];
                 }
                 if (typeOptions.length) {
-                    let localType = this.getTypeDescriptor(curType).label;
-                    if (optionsByType[localType]) {
-                        optionsByType[localType] = [...optionsByType[localType], ...typeOptions];
+                    // let localType = this.getTypeDescriptor(curType).label;
+                    if (optionsByType[localType.label]) {
+                        optionsByType[localType.label] = [...optionsByType[localType.label], ...typeOptions];
                     } else {
-                        optionsByType[localType] = typeOptions;
+                        optionsByType[localType.label] = typeOptions;
                     }
                 }
             } else {
@@ -250,23 +299,49 @@ export default class FlowCombobox extends LightningElement {
         return options;
     }
 
-    getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField) {
+    getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor) {
         let typeOptions = [];
         objectArray.forEach(curObject => {
-            let curDataType = curObject[typeField] ? curObject[typeField] : 'String';
-            typeOptions.push({
-                type: curDataType,
-                label: curObject[labelField] ? curObject[labelField] : curObject[valueField],
-                value: curObject[valueField],
-                isCollection: !!curObject[isCollectionField],
-                objectType: curObject[objectTypeField],
-                optionIcon: this.getIconNameByType(curDataType),
-                isObject: curDataType === 'SObject',
-                displayType: curDataType === 'SObject' ? curObject[objectTypeField] : curDataType,
-                key: 'flowCombobox-' + this.key++
-            });
+
+            let curDataType = this.getTypeByDescriptor(curObject[typeField], typeDescriptor);
+            typeOptions.push(this.generateOptionLine(
+                curDataType,
+                curObject[labelField] ? curObject[labelField] : curObject[valueField],
+                curObject[valueField],
+                typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType ? !curObject[isCollectionField] : !!curObject[isCollectionField],
+                curObject[objectTypeField],
+                this.getIconNameByType(curDataType),
+                (curDataType === flowComboboxDefaults.dataTypeSObject || typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType),
+                curDataType === flowComboboxDefaults.dataTypeSObject ? curObject[objectTypeField] : curDataType,
+                flowComboboxDefaults.defaultKeyPrefix + this.key++
+            ));
         });
         return typeOptions;
+    }
+
+    getTypeByDescriptor(curObjectFieldType, typeDescriptor) {
+        if (!typeDescriptor) {
+            return flowComboboxDefaults.stringDataType;
+        } else if (typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType) {
+            return flowComboboxDefaults.dataTypeSObject
+        } else {
+            return curObjectFieldType ? curObjectFieldType : flowComboboxDefaults.stringDataType;
+        }
+    }
+
+    generateOptionLine(type, label, value, isCollection, objectType, optionIcon, isObject, displayType, key, flowType) {
+        return {
+            type: type,
+            label: label,
+            value: value,
+            isCollection: isCollection,
+            objectType: objectType,
+            optionIcon: optionIcon,
+            isObject: isObject,
+            displayType: displayType,
+            key: key,
+            flowType: flowType ? flowType : flowComboboxDefaults.referenceDataType
+        };
     }
 
     handleOpenObject(event) {
@@ -278,7 +353,7 @@ export default class FlowCombobox extends LightningElement {
 
     handleSetSelectedRecord(event) {
         if (event.currentTarget.dataset) {
-            this._dataType = this.settings.referenceDataType;
+            this._dataType = event.currentTarget.dataset.flowType;
             this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
             this.isDataModified = true;
             this.hasError = false;
@@ -308,7 +383,7 @@ export default class FlowCombobox extends LightningElement {
         this.isDataModified = true;
         this._selectedFieldPath = '';
         this._selectedObjectType = null;
-        this._dataType = this.settings.stringDataType;
+        this._dataType = flowComboboxDefaults.stringDataType;
         this.setOptions(this._mergeFields);
     }
 
@@ -362,29 +437,51 @@ export default class FlowCombobox extends LightningElement {
         }
 
         this._options = [];
-        this.allOptions.forEach(curOption => {
-            let localOptions = curOption.options;
+        if (this.allOptions && this.allOptions.length) {
+            this.allOptions.forEach(curOption => {
+                let localOptions = curOption.options;
 
-            if (this.builderContextFilterType) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || (opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
-            }
+                if (this.builderContextFilterType) {
+                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || (opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
+                }
 
-            if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {
-                localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.builderContextFilterCollectionBoolean);
-            }
+                if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {
+                    localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.builderContextFilterCollectionBoolean);
+                }
 
-            if (searchLC) {
-                localOptions = localOptions.filter(opToFilter => opToFilter.label.toLowerCase().includes(searchLC) || opToFilter.value.toLowerCase().includes(searchLC.replace(/\W/g, '')));
-            }
+                if (searchLC) {
+                    localOptions = localOptions.filter(opToFilter => opToFilter.label.toLowerCase().includes(searchLC) || opToFilter.value.toLowerCase().includes(searchLC.replace(/\W/g, '')));
+                }
 
-            if (localOptions.length) {
-                this._options.push({
-                    ...curOption, ...{
-                        options: localOptions,
-                    }
-                });
-            }
-        });
+                if (localOptions.length) {
+                    this._options.push({
+                        ...curOption, ...{
+                            options: localOptions,
+                        }
+                    });
+                }
+            });
+        }
+
+        if (this._staticOptions && this._staticOptions.length) {
+            this._options.push({
+                type: this.labels.staticOptionsLabel, options:
+                    this._staticOptions.map(curOption => {
+                        return this.generateOptionLine(
+                            flowComboboxDefaults.stringDataType,
+                            curOption.label,
+                            curOption.value,
+                            false,
+                            flowComboboxDefaults.stringDataType,
+                            "utility:text",
+                            false,
+                            flowComboboxDefaults.stringDataType,
+                            flowComboboxDefaults.defaultKeyPrefix + this.key++,
+                            flowComboboxDefaults.stringDataType,
+                        )
+                    })
+            });
+        }
     }
 
     getIconNameByType(variableType) {
@@ -397,7 +494,7 @@ export default class FlowCombobox extends LightningElement {
         this.selfEvent = true;
         if (this.isMenuOpen) {
             this.isDataSelected = false;
-            this._value = this.formattedValue(this._value);
+            this._value = formattedValue(this._value, this._dataType);
         } else {
             this.openOptionDialog();
         }
@@ -415,11 +512,7 @@ export default class FlowCombobox extends LightningElement {
 
     handleSearchField(event) {
         let currentText = event.target.value;
-        if (this.isReference(currentText)) {
-            this._dataType = this.settings.referenceDataType;
-        } else {
-            this._dataType = this.settings.stringDataType;
-        }
+        this._dataType = getDataType(currentText);
         if (!currentText || !currentText.includes('.')) {
             this.resetTypeOptions();
             this.setOptions(this._mergeFields);
@@ -447,47 +540,22 @@ export default class FlowCombobox extends LightningElement {
         let valueInput = this.template.querySelector('.value-input');
         if (valueInput) {
             this.hasError = false;
-            let isReference = this.isReference(valueInput.value);
-            this._value = this.removeFormatting(valueInput.value);
-            if (isReference) {
+            let isRef = isReference(valueInput.value);
+            this._value = removeFormatting(valueInput.value);
+            if (isRef) {
                 let typeOption = this.getTypeOption(this._value);
                 if (!typeOption) {
                     this.hasError = true;
                 }
-                this._dataType = this.settings.referenceDataType;
+                this._dataType = flowComboboxDefaults.referenceDataType;
             } else {
-                this._dataType = this.settings.stringDataType;
+                this._dataType = flowComboboxDefaults.stringDataType;
             }
         }
     }
 
-    isReference(value) {
-        if (!value) {
-            return false;
-        }
-        let isReference = value.indexOf('{!') === 0 && value.lastIndexOf('}') === (value.length - 1);
-        return isReference;
-    }
-
     getFullPath(path, val) {
         return (path ? path + '.' : '') + val;
-    }
-
-    formattedValue(value) {
-        if (this.isReference(value)) {
-            return value;
-        } else {
-            return this._dataType === this.settings.referenceDataType ? '{!' + value + '}' : value;
-        }
-    }
-
-    removeFormatting(value) {
-        if (!value) {
-            return value;
-        }
-        let isReference = this.isReference(value);
-        let clearValue = isReference ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
-        return clearValue;
     }
 
     get inputStyle() {

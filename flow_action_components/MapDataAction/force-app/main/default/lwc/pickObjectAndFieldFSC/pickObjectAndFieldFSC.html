@@ -17,7 +17,7 @@
         </template>
         <template if:false={hideFieldPicklist}>
             <lightning-combobox
-                    if:true={readOnly}
+                    if:false={renderFlowCombobox}
                     name="fieldField"
                     label={fieldLabel}
                     value={_field}

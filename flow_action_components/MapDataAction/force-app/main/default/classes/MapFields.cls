@@ -71,13 +71,13 @@ global with sharing class MapFields {
             return INPUT_TYPE_SINGLE;
         } else if (curRequest.inputSObjectCollection != null && curRequest.outputSObjectCollection != null && curRequest.inputSObject == null && curRequest.outputSObject == null) {
             if (curRequest.inputSObjectCollection.size() != curRequest.outputSObjectCollection.size()) {
-                throw new AuraHandledException('Size of input and output collections does not match');
+                throw new InvocableActionException('Size of input and output collections does not match');
             }
             inputSObjectCollection.addAll(curRequest.inputSObjectCollection);
             outputSObjectCollection.addAll(curRequest.outputSObjectCollection);
             return INPUT_TYPE_COLLECTION;
         } else {
-            throw new AuraHandledException('You can specify either single SObject or collection, but you can not specify both');
+            throw new InvocableActionException('You can specify either single SObject or collection, but you can not specify both');
         }
     }
 
@@ -113,5 +113,8 @@ global with sharing class MapFields {
         global List<SObject> outputSObjectCollection;
         @InvocableVariable
         global String errors;
+    }
+
+    global class InvocableActionException extends Exception {
     }
 }

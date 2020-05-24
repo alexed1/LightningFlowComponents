@@ -9,6 +9,7 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
     @api inputObjectType;
     @api outputObjectType;
     @api fieldLabel;
+    @api builderContext;
     @track _fieldRows = [];
     rowIterator = 0;
 
@@ -31,6 +32,11 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
 
     @api clearRows() {
         this._fieldRows = [];
+        this.renderSingleRow();
+    }
+
+    connectedCallback() {
+        this.renderSingleRow();
     }
 
     stringifyFieldMap() {
@@ -38,10 +44,14 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
             return null;
         }
         let outputMap = {};
+        let hasValues;
         this._fieldRows.forEach(curRow => {
-            outputMap[curRow.input.field] = curRow.output.field;
+            if (curRow.input.field || curRow.output.field) {
+                outputMap[curRow.input.field] = curRow.output.field;
+                hasValues = true;
+            }
         });
-        return JSON.stringify(outputMap);
+        return hasValues ? JSON.stringify(outputMap) : null;
     }
 
     parseFieldMap(fieldMap) {
@@ -52,8 +62,19 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
                 let newRow = this.generateEmptyRow();
                 newRow.input.field = curFieldKey;
                 newRow.output.field = keyValue[curFieldKey];
-                this._fieldRows.push(newRow);
+                if (newRow.input.field && newRow.output.field) {
+                    this._fieldRows.push(newRow);
+                }
             });
+        }
+        this.renderSingleRow();
+    }
+
+    renderSingleRow() {
+        if (!this._fieldRows || !this._fieldRows.length) {
+            this.addNewRow(true);
+        } else if (this._fieldRows.length === 1 && !this._fieldRows[0].input.field && !this._fieldRows[0].output.field) {
+            this._fieldRows[0].isRemovable = false;
         }
     }
 
@@ -67,17 +88,19 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
 
     removeRow(rowId) {
         this._fieldRows = this._fieldRows.filter(curRow => curRow.id != rowId);
+        this.renderSingleRow();
     }
 
-    addNewRow() {
-        this._fieldRows.push(this.generateEmptyRow());
+    addNewRow(hideRemoveOption) {
+        this._fieldRows.push(this.generateEmptyRow(hideRemoveOption));
     }
 
-    generateEmptyRow() {
+    generateEmptyRow(hideRemoveOption) {
         return {
             input: {objectType: this.inputObjectType, field: null},
             output: {objectType: this.outputObjectType, field: null},
-            id: this.rowIterator++
+            id: this.rowIterator++,
+            isRemovable: !hideRemoveOption
         }
     }
 
@@ -87,6 +110,7 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
             let curFieldRow = this._fieldRows.find(curRow => curRow.id == event.currentTarget.dataset.id);
             if (curFieldRow) {
                 curFieldRow[curAttributeName].field = event.detail.fieldName;
+                curFieldRow.isRemovable = true;
             }
         }
     }
@@ -106,6 +130,18 @@ export default class GenerateFieldMapCpeLine extends LightningElement {
                 }
                 rowNumber++;
             });
+        }
+        let pickObjectAndFieldCmp = this.template.querySelectorAll('c-pick-object-and-field-f-s-c');
+        if (pickObjectAndFieldCmp) {
+            pickObjectAndFieldCmp.forEach(curPickObjectAndFieldCmp => {
+                if (!curPickObjectAndFieldCmp.reportValidity()) {
+                    result.hasError = true;
+                    result.errors.push({
+                        key: 'c-pick-object-and-field-f-s-c',
+                        errorString: 'flow combobox  validation error'
+                    });
+                }
+            })
         }
         return result;
     }

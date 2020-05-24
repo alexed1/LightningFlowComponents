@@ -14,7 +14,7 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
-    @api readOnly = false;
+    @api disableMergefieldSelection = false;
     @api builderContext;
     @api availableObjectTypes;
     @api availableFields;
@@ -202,7 +202,7 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     };
 
     get renderFlowCombobox() {
-        return !this.readOnly && this.builderContext;
+        return !this.disableMergefieldSelection && this.builderContext;
     }
 
     @api

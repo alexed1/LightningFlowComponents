@@ -1,5 +1,15 @@
+/**
+ * The following field types have been tested: 
+ *  BOOLEAN, CURRENCY, DATE, DATETIME, DOUBLE, EMAIL, ID, PERCENT, PHONE, 
+ *  PICKLIST, REFERENCE, STRING, TIME
+ * The following field types are also supported:
+ *  DECIMAL, INTEGER, LONG
+ * API Data Types and Salesforce Field Types
+ * https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/api_ui_datatype_map.htm
+ */
 global with sharing class SortCollection {
     @InvocableMethod
+
     global static List <Results> sort(List<Requests> requestList) {
         List<String> rawData = requestList[0].sortKeys.replaceAll('"+| +', '').split(',');
         SortKeys sk = new SortKeys();
@@ -21,7 +31,7 @@ global with sharing class SortCollection {
             }
 
             if (!outputCollection.isEmpty()) {
-                Map<String, String> fieldTypes = getFieldTypes(outputCollection[0], allFields);
+                Map<String, String> fieldTypes = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], allFields);
 
                 for (SortKeyMember skm : sk.sortKeys) {
                     List<SortableWrapper> sortable = new List<SortableWrapper>();
@@ -47,17 +57,17 @@ global with sharing class SortCollection {
     }
 
     global class SortableWrapper implements Comparable {
-
         global SObject acc;
         global String field;
         global Integer direction;
         global String fieldType;
-
+ 
         public SortableWrapper(SObject acc, String field, Integer direction, String fieldType) {
             this.acc = acc;
             this.field = field;
             this.direction = direction;
             this.fieldType = fieldType;
+            System.debug('SortCollection.compareTo(): field ' + field + ', field type "' + fieldType + '".' );
         }
 
         global Integer compareTo(Object compareTo) {
@@ -65,129 +75,69 @@ global with sharing class SortCollection {
 
             Integer returnValue = 0;
             //Have to copy paste code here as there is no way to cast field types dynamically in APEX
-            if (fieldType == 'STRING') {
-                String origValue = String.valueOf(acc.get(this.field));
-                String compareToValue = String.valueOf(compareToAcc.acc.get(this.field));
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue > compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (origValue < compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+            switch on fieldType {
+                when 'BOOLEAN' {
+                    BooleanComparable origValue = new BooleanComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
                 }
-            } else if (fieldType == 'INTEGER' || fieldType == 'DOUBLE') {
-                Double origValue = Double.valueOf(acc.get(this.field));
-                Double compareToValue = Double.valueOf(compareToAcc.acc.get(this.field));
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue > compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (origValue < compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+                when 'CURRENCY', 'DOUBLE', 'PERCENT' {
+                    DoubleComparable origValue = new DoubleComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
                 }
-             } else if (fieldType == 'BOOLEAN') {
-                Boolean origValue = Boolean.valueOf(acc.get(this.field));
-                Boolean compareToValue = Boolean.valueOf(compareToAcc.acc.get(this.field));
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue && !compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (!origValue && compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+                when 'DECIMAL' {
+                    DecimalComparable origValue = new DecimalComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
                 }
-             } else if (fieldType == 'CURRENCY') {
-                Decimal origValue = Decimal.valueOf(acc.get(this.field)+'');
-                Decimal compareToValue = Decimal.valueOf(compareToAcc.acc.get(this.field)+'');
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue > compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (origValue < compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+                when 'DATE' {
+                    DateComparable origValue = new DateComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
                 }
-             } else if (fieldType == 'DATE') {
-                Date origValue = Date.valueOf(acc.get(this.field));
-                Date compareToValue = Date.valueOf(compareToAcc.acc.get(this.field));
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue > compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (origValue < compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+                when 'DATETIME' {
+                    DatetimeComparable origValue = new DatetimeComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
                 }
-             } else if (fieldType == 'DATETIME') {
-                Datetime origValue = Datetime.valueOf(acc.get(this.field));
-                Datetime compareToValue = Datetime.valueOf(compareToAcc.acc.get(this.field));
-                if (origValue == null && compareToValue == null) {
-                    returnValue = 0;
-                } else if (origValue == null) {
-                    returnValue = -1;
-                } else if (compareToValue == null) {
-                    returnValue = 1;
-                } else {
-                    if (origValue > compareToValue) {
-                        returnValue = 1 * direction;
-                    } else if (origValue < compareToValue) {
-                        returnValue = -1 * direction;
-                    }
+                when 'INTEGER', 'LONG' {
+                    DoubleComparable origValue = new DoubleComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
+                }
+                when 'ID', 'EMAIL', 'STRING', 'PHONE', 'PICKLIST', 'REFERENCE' {
+                    StringComparable origValue = new StringComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
+                    // TODO: Sort PICKLIST according to order https://www.jitendrazaa.com/blog/salesforce/get-picklist-values-in-apex/
+                }
+                when 'TIME' {
+                    TimeComparable origValue = new TimeComparable(acc.get(this.field));
+                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;  
+                }
+                when else {
+                    System.debug(System.LoggingLevel.WARN, 
+                    String.format('UNSUPPORTED_FIELD_TYPE: field "{0}", fieldType "{1}" in SortableWrapper.compareTo().',
+                    new List<String> {field, fieldType}));
                 }
             }
-
             return returnValue;
         }
     }
-
-    private static Map<String, String> getFieldTypes(SObject acc, List<String> fieldNames) {
-        //Assuming SObject will be replaced with generic SObject
-        Schema.SObjectType r = acc.Id.getSObjectType();
-
-        Map<String, String> resultMap = new Map<String, String>();
-
-        DescribeSObjectResult d = r.getDescribe();
-        for (String fieldName : fieldNames) {
-            resultMap.put(fieldName, d.fields.getMap().get(fieldName).getDescribe().getType().name());
-        }
-
-        return resultMap;
-    }
-
+    /**
+     * @param inputCollection An SObject collection. Be sure that it includes 
+     *  any field referenced in the Sort Keys.
+     * @param sortKeys One or more comma separated sort keys formatted as 
+     *  [Field API Name]:[ASC|DESC]. Sort directions other
+     *  than DESC are treated as ASC. Invalid sort field api names will result 
+     *  in a "System.NullPointerException: Attempt to de-reference a null 
+     *  object".  If the field is missing from an SObject in the collection, 
+     *  the following error will occur:
+     *  "System.SObjectException: SObject row was retrieved via SOQL without 
+     *  querying the requested field: [Object Name].[Field Name]"
+     */
     global class Requests {
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=true label='Input Collection' 
+                           description='An SObject collection. Be sure that it includes any field referenced in the Sort Keys.')
         global List<SObject> inputCollection;
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(required=true label='Sort Keys'
+                          description='One or more comma separated sort keys formatted as [Field API Name]:[ASC|DESC].')
         global String sortKeys;
-
     }
 
     global class Results {
@@ -196,7 +146,7 @@ global with sharing class SortCollection {
             outputCollection = new List<SObject>();
         }
 
-        @InvocableVariable
+        @InvocableVariable (label='Output Collection')
         global List<SObject> outputCollection;
     }
 
@@ -213,5 +163,170 @@ global with sharing class SortCollection {
         }
         String field;
         String direction;
+    }
+
+    private class BooleanComparable implements Comparable {
+        Boolean value;
+        
+        public BooleanComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : Boolean.valueOf(initialValue);
+        }
+        
+        // true is greater than false; false is greater than null
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Boolean compareToValue = (compareTo == null) ? null : Boolean.valueOf(compareTo);
+            //System.debug('BooleanComparable.compareTo value=' 
+            //    + (value == null ? 'null' : String.valueof(value))
+            //    + ' compareToValue=' + (compareToValue == null ? 'null' : String.valueof(compareToValue)));
+            if (this.value == null && compareToValue == null) {
+                returnValue = 0;
+            } else if (value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value && !compareToValue)) {
+                returnValue = 1;
+            } else if (!this.value && compareToValue) {
+                returnValue = -1;
+            }     
+            return returnValue;  
+        }
+    }
+
+    private class DateComparable implements Comparable {
+        Date value;
+        
+        public DateComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : (Date) initialValue;
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Date compareToValue = (compareTo == null) ? null : (Date) compareTo;
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+        }
+    }
+
+    private class DatetimeComparable implements Comparable {
+        Datetime value;
+        
+        public DatetimeComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : (Datetime) initialValue;
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Datetime compareToValue = (compareTo == null) ? null : (Datetime) compareTo;
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+        }
+    }
+
+    private class DecimalComparable implements Comparable {
+        Decimal value;
+        
+        public DecimalComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : (Decimal) initialValue;
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Decimal compareToValue = (compareTo == null) ? null : (Decimal) compareTo;
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+        }
+    }
+
+    private class DoubleComparable implements Comparable {
+        Double value;
+        
+        public DoubleComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : Double.valueOf(initialValue);
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Double compareToValue = (compareTo == null) ? null : Double.valueOf(compareTo);
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+        }
+    }
+
+    private class StringComparable implements Comparable {
+        String value;
+        
+        public StringComparable (Object initialValue) {
+            this.value = (initialValue == null) ? null : String.valueOf(initialValue);
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            String compareToValue = (compareTo == null) ? null : String.valueOf(compareTo);
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+         }
+    }
+
+    private class TimeComparable implements Comparable {
+        Time value;
+        
+        public TimeComparable (Object initialValue) {
+            this.value = (Time) initialValue;
+        }
+        
+        public Integer compareTo(Object compareTo) {
+            Integer returnValue = 0;
+            Time compareToValue = (Time) compareTo;
+            if (this.value == null && compareToValue == null) { 
+                returnValue = 0;
+            } else if (this.value == null) {
+                returnValue = -1;
+            } else if ((compareToValue == null) || (this.value > compareToValue)) {
+                returnValue = 1;
+            } else if (this.value < compareToValue) {
+                returnValue = -1;
+            }
+            return returnValue;
+         }
     }
 }

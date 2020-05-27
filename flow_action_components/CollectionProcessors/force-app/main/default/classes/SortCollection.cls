@@ -1,11 +1,13 @@
 /**
- * The following field types have been tested: 
+ * Provides a Salesforce Ligntning Flow component for sorting collections.
+ * 
+ * The following field types are supported and have been tested: 
  *  BOOLEAN, CURRENCY, DATE, DATETIME, DOUBLE, EMAIL, ID, PERCENT, PHONE, 
- *  PICKLIST, REFERENCE, STRING, TIME
+ *  PICKLIST, REFERENCE, STRING, TIME.
  * The following field types are also supported:
- *  DECIMAL, INTEGER, LONG
- * API Data Types and Salesforce Field Types
- * https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/api_ui_datatype_map.htm
+ *  DECIMAL, INTEGER, LONG.
+ * 
+ * See SortCollectionTest.cls for test coverage of API data types and UI field types.
  */
 global with sharing class SortCollection {
     @InvocableMethod
@@ -61,60 +63,28 @@ global with sharing class SortCollection {
         global String field;
         global Integer direction;
         global String fieldType;
+        global Comparable orig;
  
         public SortableWrapper(SObject acc, String field, Integer direction, String fieldType) {
             this.acc = acc;
             this.field = field;
             this.direction = direction;
             this.fieldType = fieldType;
-            System.debug('SortCollection.compareTo(): field ' + field + ', field type "' + fieldType + '".' );
+            this.orig = getComparable(this.fieldType, acc.get(this.field));
+            if (this.orig == null) {
+            	System.debug(System.LoggingLevel.WARN, 
+                    String.format('UNSUPPORTED_FIELD_TYPE: fieldType "{1}", field "{0}", in SortableWrapper().',
+                    new List<String> {this.field, this.fieldType}));
+            } else {
+            	System.debug('SortableWrapper(): field ' + field + ', field type "' + fieldType + '", value ' + acc.get(this.field) + '.' );
+        	}
         }
 
         global Integer compareTo(Object compareTo) {
             SortableWrapper compareToAcc = (SortableWrapper) compareTo;
-
-            Integer returnValue = 0;
-            //Have to copy paste code here as there is no way to cast field types dynamically in APEX
-            switch on fieldType {
-                when 'BOOLEAN' {
-                    BooleanComparable origValue = new BooleanComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'CURRENCY', 'DOUBLE', 'PERCENT' {
-                    DoubleComparable origValue = new DoubleComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'DECIMAL' {
-                    DecimalComparable origValue = new DecimalComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'DATE' {
-                    DateComparable origValue = new DateComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'DATETIME' {
-                    DatetimeComparable origValue = new DatetimeComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'INTEGER', 'LONG' {
-                    DoubleComparable origValue = new DoubleComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                }
-                when 'ID', 'EMAIL', 'STRING', 'PHONE', 'PICKLIST', 'REFERENCE' {
-                    StringComparable origValue = new StringComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;
-                    // TODO: Sort PICKLIST according to order https://www.jitendrazaa.com/blog/salesforce/get-picklist-values-in-apex/
-                }
-                when 'TIME' {
-                    TimeComparable origValue = new TimeComparable(acc.get(this.field));
-                    returnValue = origValue.compareTo(compareToAcc.acc.get(this.field)) * direction;  
-                }
-                when else {
-                    System.debug(System.LoggingLevel.WARN, 
-                    String.format('UNSUPPORTED_FIELD_TYPE: field "{0}", fieldType "{1}" in SortableWrapper.compareTo().',
-                    new List<String> {field, fieldType}));
-                }
-            }
+            Integer returnValue = (this.orig != null) ? 
+                this.orig.compareTo(compareToAcc.acc.get(this.field)) * direction :
+                0;
             return returnValue;
         }
     }
@@ -146,7 +116,7 @@ global with sharing class SortCollection {
             outputCollection = new List<SObject>();
         }
 
-        @InvocableVariable (label='Output Collection')
+        @InvocableVariable(label='Output Collection')
         global List<SObject> outputCollection;
     }
 
@@ -163,6 +133,42 @@ global with sharing class SortCollection {
         }
         String field;
         String direction;
+    }
+
+    /**
+     * Field Type Comparable Factory
+     * @return A Comparable cooresponding to the fieldType or null if none exists.
+     */
+    private static Comparable getComparable (String fieldType, Object value) {
+        Comparable comp = null;
+        switch on fieldType {
+            when 'BOOLEAN' {
+                comp = new BooleanComparable(value);
+            }
+            when 'CURRENCY', 'DOUBLE', 'PERCENT' {
+                comp = new DoubleComparable(value);
+            }
+            when 'DECIMAL' {
+                comp = new DecimalComparable(value);
+            }
+            when 'DATE' {
+                comp = new DateComparable(value);
+            }
+            when 'DATETIME' { 
+                comp = new DatetimeComparable(value);
+            }
+            when 'INTEGER', 'LONG' {
+                comp = new DoubleComparable(value);
+            }
+            when 'ID', 'EMAIL', 'STRING', 'PHONE', 'PICKLIST', 'REFERENCE' {
+                comp = new StringComparable(value);
+                // TODO: Sort PICKLIST according to order https://www.jitendrazaa.com/blog/salesforce/get-picklist-values-in-apex/
+            }
+            when 'TIME' {
+                comp = new TimeComparable(value);
+            }
+        }
+        return comp;            
     }
 
     private class BooleanComparable implements Comparable {
@@ -191,7 +197,6 @@ global with sharing class SortCollection {
             return returnValue;  
         }
     }
-
     private class DateComparable implements Comparable {
         Date value;
         
@@ -304,7 +309,7 @@ global with sharing class SortCollection {
                 returnValue = -1;
             }
             return returnValue;
-         }
+        }
     }
 
     private class TimeComparable implements Comparable {
@@ -327,6 +332,6 @@ global with sharing class SortCollection {
                 returnValue = -1;
             }
             return returnValue;
-         }
+        }
     }
 }

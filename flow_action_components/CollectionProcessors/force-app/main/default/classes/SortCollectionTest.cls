@@ -4,6 +4,8 @@ private class SortCollectionTest {
      * API Data Types and Salesforce Field Types
      * https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/api_ui_datatype_map.htm
      * 
+     * Testing Notes
+     * 
      * API Data Type    UI Field Types              Notes
      * =============    ==========================  ===========================
      * ID               Lookup                      Tested. ID, AccountId FROM Contact.
@@ -13,6 +15,7 @@ private class SortCollectionTest {
      * Double           Percent                     Tested. ExpectedResponse FROM Campaign
      * Date             Date                        Tested. Birthdate FROM Contact.
      * Datetime         Datetime                    Tested. Datetime__c FROM ZTest__c; CreatedDate FROM Contact.
+     *                                              CreatedDate from Contact might not provide much variance in values.
      * String           Email                       Tested. Email FROM Contact.
      * String           Phone                       Tested. Phone FROM Contact.
      * String           Picklist                    Tested. LeadSource FROM Contact. 
@@ -390,29 +393,62 @@ private class SortCollectionTest {
         return t;
     }
 
+    static String makeAssertMsgTemplate (String fieldName, Boolean isDescending, String sortKey) {
+        return String.format('previous.{0} ({3}) {1} current.{0} ({4}), sortKeys={2}.',
+        new List<String> {fieldName,
+            (isDescending ? '>=' : '<='), 
+            sortKey,
+            '{0}', 
+            '{1}'});
+    }
+
     static void testSortBooleanField(List<SObject> inputCollection, String sortKeys) {
         SortCollection.Requests requests = new SortCollection.Requests();
         List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
         List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
 
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
         // Setup
         requests.inputCollection = inputCollection;
         requests.sortKeys = sortKeys;
         requestsList.add(requests);
-
+        
         // Test
         Test.startTest();
         resultsList = SortCollection.sort(requestsList);
         Test.stopTest();
         
         // Validate
-        System.assertNotEquals(null, resultsList, 'SortCollection.sort() returned null');
+        System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
         System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
         List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.BooleanFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.BooleanFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortBooleanField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Boolean prevValue = previous.get(fieldName) == null ?
+                    null : (Boolean) previous.get(fieldName); 
+                Boolean curValue = current.get(fieldName) == null ? 
+                   null : (Boolean) current.get(fieldName);
+                List<Boolean> values = new List<Boolean> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue && !curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || !prevValue && curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
         }
     }
  
@@ -420,7 +456,14 @@ private class SortCollectionTest {
         SortCollection.Requests requests = new SortCollection.Requests();
         List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
         List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
+
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
         // Setup
         requests.inputCollection = inputCollection;
         requests.sortKeys = sortKeys;
@@ -435,10 +478,27 @@ private class SortCollectionTest {
         System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
         System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
         List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.DateFieldSortAssertionIterator assertionIterator = 
-            new AssertionIterators.DateFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortDateField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Date prevValue = previous.get(fieldName) == null ?
+                    null : (Date) previous.get(fieldName); 
+                Date curValue = current.get(fieldName) == null ? 
+                   null : (Date) current.get(fieldName);
+                List<Date> values = new List<Date> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
         }
     }
 
@@ -446,7 +506,14 @@ private class SortCollectionTest {
         SortCollection.Requests requests = new SortCollection.Requests();
         List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
         List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
+
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
         // Setup
         requests.inputCollection = inputCollection;
         requests.sortKeys = sortKeys;
@@ -461,10 +528,27 @@ private class SortCollectionTest {
         System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
         System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
         List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.DatetimeFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.DatetimeFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortDatetimeField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Datetime prevValue = previous.get(fieldName) == null ?
+                    null : (Datetime) previous.get(fieldName); 
+                Datetime curValue = current.get(fieldName) == null ? 
+                   null : (Datetime) current.get(fieldName);
+                List<Datetime> values = new List<Datetime> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
         }
     }
 
@@ -472,85 +556,14 @@ private class SortCollectionTest {
         SortCollection.Requests requests = new SortCollection.Requests();
         List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
         List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
-        // Setup
-        requests.inputCollection = inputCollection;
-        requests.sortKeys = sortKeys;
-        requestsList.add(requests);
-        
-        // Test
-        Test.startTest();
-        resultsList = SortCollection.sort(requestsList);
-        Test.stopTest();
-        
-        // Validate
-        System.assertNotEquals(null, resultsList, 'SortCollection.sort() returned null');
-        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
-        List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.DecimalFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.DecimalFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
-        }
-    }
- 
-    static void testSortDoubleField(List<SObject> inputCollection, String sortKeys) {
-        SortCollection.Requests requests = new SortCollection.Requests();
-        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
-        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
-        // Setup
-        requests.inputCollection = inputCollection;
-        requests.sortKeys = sortKeys;
-        requestsList.add(requests);
-        
-        // Test
-        Test.startTest();
-        resultsList = SortCollection.sort(requestsList);
-        Test.stopTest();
-        
-        // Validate
-        System.assertNotEquals(null, resultsList, 'SortCollection.sort() returned null');
-        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
-        List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.DoubleFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.DoubleFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
-        }
-    }
 
-    static void testSortStringField(List<SObject> inputCollection, String sortKeys) {
-        SortCollection.Requests requests = new SortCollection.Requests();
-        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
-        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
-        // Setup
-        requests.inputCollection = inputCollection;
-        requests.sortKeys = sortKeys;
-        requestsList.add(requests);
-        
-        // Test
-        Test.startTest();
-        resultsList = SortCollection.sort(requestsList);
-        Test.stopTest();
-        
-        // Validate
-        System.assertNotEquals(null, resultsList, 'SortCollection.sort() returned null');
-        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
-        List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.StringFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.StringFieldSortAssertionIterator (outputCollection, requests.sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
-        }
-    }
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
 
-    static void testSortTimeField(List<SObject> inputCollection, String sortKeys) {
-        SortCollection.Requests requests = new SortCollection.Requests();
-        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
-        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
-        
         // Setup
         requests.inputCollection = inputCollection;
         requests.sortKeys = sortKeys;
@@ -565,11 +578,177 @@ private class SortCollectionTest {
         System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
         System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
         List<SObject> outputCollection = resultsList[0].outputCollection;
-        AssertionIterators.TimeFieldSortAssertionIterator assertionIterator =
-            new AssertionIterators.TimeFieldSortAssertionIterator (outputCollection, sortKeys);
-        while (assertionIterator.hasNext()) {
-            Sobject current = assertionIterator.next();
-            System.debug('testSortTimeField.current=' + JSON.serialize(current));
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortDecimalField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Decimal prevValue = previous.get(fieldName) == null ?
+                    null : (Decimal) previous.get(fieldName); 
+                Decimal curValue = current.get(fieldName) == null ? 
+                   null : (Decimal) current.get(fieldName);
+                List<Decimal> values = new List<Decimal> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
+        }
+    }
+
+    static void testSortDoubleField(List<SObject> inputCollection, String sortKeys) {
+        SortCollection.Requests requests = new SortCollection.Requests();
+        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
+        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
+
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
+        // Setup
+        requests.inputCollection = inputCollection;
+        requests.sortKeys = sortKeys;
+        requestsList.add(requests);
+        
+        // Test
+        Test.startTest();
+        resultsList = SortCollection.sort(requestsList);
+        Test.stopTest();
+        
+        // Validate
+        System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
+        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
+        List<SObject> outputCollection = resultsList[0].outputCollection;
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortDoubleField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Double prevValue = previous.get(fieldName) == null ?
+                    null : (Double) previous.get(fieldName); 
+                Double curValue = current.get(fieldName) == null ? 
+                   null : (Double) current.get(fieldName);
+                List<Double> values = new List<Double> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
+        }
+    }
+
+    static void testSortStringField(List<SObject> inputCollection, String sortKeys) {
+        SortCollection.Requests requests = new SortCollection.Requests();
+        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
+        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
+
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
+        // Setup
+        requests.inputCollection = inputCollection;
+        requests.sortKeys = sortKeys;
+        requestsList.add(requests);
+        
+        // Test
+        Test.startTest();
+        resultsList = SortCollection.sort(requestsList);
+        Test.stopTest();
+        
+        // Validate
+        System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
+        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
+        List<SObject> outputCollection = resultsList[0].outputCollection;
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortStringField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                String prevValue = previous.get(fieldName) == null ?
+                    null : (String) previous.get(fieldName); 
+                    String curValue = current.get(fieldName) == null ? 
+                   null : (String) current.get(fieldName);
+                List<String> values = new List<String> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
+        }
+    }
+
+    static void testSortTimeField(List<SObject> inputCollection, String sortKeys) {
+        SortCollection.Requests requests = new SortCollection.Requests();
+        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
+        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
+
+        // Configuration
+        SObject previous = null;
+        List<String> tokens = sortKeys.split(':');
+        String fieldName = tokens[0];
+        Boolean isDescending = (tokens[1] == 'DESC');
+        String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+
+        // Setup
+        requests.inputCollection = inputCollection;
+        requests.sortKeys = sortKeys;
+        requestsList.add(requests);
+        
+        // Test
+        Test.startTest();
+        resultsList = SortCollection.sort(requestsList);
+        Test.stopTest();
+        
+        // Validate
+        System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
+        System.assertEquals(1, resultsList.size(), 'SortCollection.sort().size() should 1, instead got ' + resultsList.size());
+        List<SObject> outputCollection = resultsList[0].outputCollection;
+        Integer i = 0;
+        for (Sobject current : outputCollection)  {
+            System.debug('testSortTimeField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+            if (i == 0) {
+                previous = current;
+            } else {
+                Time prevValue = previous.get(fieldName) == null ?
+                    null : (Time) previous.get(fieldName); 
+                Time curValue = current.get(fieldName) == null ? 
+                   null : (Time) current.get(fieldName);
+                List<Time> values = new List<Time> {prevValue,curValue};
+                if (isDescending) {
+                    System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                    String.format(msgTemplate, values));
+                } else {
+                    System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                    String.format(msgTemplate, values));                    
+                }
+                previous = current;
+            }
+            i++;
         }
     }
 }

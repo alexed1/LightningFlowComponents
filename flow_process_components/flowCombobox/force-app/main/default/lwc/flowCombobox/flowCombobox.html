@@ -65,6 +65,7 @@
                                                     </span>
                                                 </span>
                                                     <span data-value={curOptionElement.value}
+                                                          data-flow-type={curOptionElement.flowType}
                                                           onclick={handleSetSelectedRecord}
                                                           class="slds-media__body">
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
@@ -89,7 +90,7 @@
                 </div>
                 <template if:true={hasError}>
                     <div class="slds-form-element__help">
-                        {settings.invalidReferenceError}
+                        {labels.invalidReferenceError}
                     </div>
                 </template>
             </div>

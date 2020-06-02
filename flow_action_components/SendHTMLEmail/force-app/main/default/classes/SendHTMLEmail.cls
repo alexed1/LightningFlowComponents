@@ -13,6 +13,7 @@
  * 1.33		3/22/2020	Jack Pond				Added consistency checks, modified Labels and alphabetized params
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
  * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355
+ * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
  * 
  * Done:
  * #320 sendHTMLEmail - Activity History Redesign?
@@ -100,9 +101,7 @@ public without sharing class SendHTMLEmail {
 					mmail.setReplyTo(replyEmailAddress);
 				}
 				//	setSaveAsActivity(saveAsActivity)
-				if (thisResponse.errors == null){
-					mmail.setReplyTo(replyEmailAddress);
-				}
+				if (curRequest.setSaveAsActivity != NULL) mmail.setSaveAsActivity(curRequest.setSaveAsActivity);
 				//	setSenderDisplayName(displayName)
 				if (thisResponse.errors == null){
 					mmail.setSenderDisplayName(senderDisplayName);
@@ -125,12 +124,11 @@ public without sharing class SendHTMLEmail {
 				}
 				//	setUseSignature(useSignature)
 				if (thisResponse.errors == null){
-					mmail.setUseSignature(curRequest.useSalesforceSignature);
+					mmail.setUseSignature(curRequest.useSalesforceSignature == NULL?false:curRequest.useSalesforceSignature);
 				}
-				//	setWhatIds(whatIds)
-				if (thisResponse.errors == null && (curRequest.whatIds != null && (curRequest.targetObjectIds == null || curRequest.targetObjectIds.size() ==0 ) )){
-					thisResponse.errors = 'You can specify a list of whatIds only if you specify a list of contacts for the targetObjectIds field.';
-				}
+				if (thisResponse.errors == null) {
+					mailMMList.add(mmail);
+				} else thisResponse.isSuccess = false;
                 responseList.add(thisResponse);
 			} else {
 				// Processes and actions involved in the SingleEmailMessage transaction occur next,
@@ -236,31 +234,40 @@ public without sharing class SendHTMLEmail {
                     }
 				}
 			}
+            system.debug('MassEmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
             Integer replyPos = 0;
             for (Messaging.SendEmailResult thisResult : emailResults){
-                while (responseList[replyPos].errors != null && requests[replyPos].useMassEmail != true) replyPos++;
+                while (responseList[replyPos].errors != null || requests[replyPos].useMassEmail != true) replyPos++;
+                system.debug('MassReplyPos: ' + replyPos);
                 if (thisResult.isSuccess() != true) {
                     Messaging.SendEmailError[] curErrors = thisResult.getErrors();
                     String errorReport = '';
                     for(Messaging.SendEmailError curError : curErrors ) {
-                        errorReport = errorReport + curError.getMessage() + '/n';
+                        errorReport = errorReport + 'Error Code: ' + curError.getStatusCode() + ' - '+ curError.getMessage() + '\n';
                     }
                     responseList[replyPos].errors = errorReport;
                     responseList[replyPos].isSuccess = false;
+					system.debug('MassResponseSetFail:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 } else {
                     responseList[replyPos].isSuccess = true;
                     if (requests[replyPos].setSaveAsTask == true) {
-                        for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++)
-                        {
+                        for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++) {
+	                        List<String> recipientList = new List<String>{	(String) Database.query('Select Email From ' +
+                                                               			((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
+																		' Where Id = \''+ requests[replyPos].targetObjectIds[i] +
+																		'\' limit 1')[0].get('Email')};
 	                        responseList[replyPos].errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
                                                                requests[replyPos].targetObjectIds[i], requests[replyPos].whatIds[i],
-                                                               requests[replyPos],responseList[replyPos].errors);
+                                                               recipientList,responseList[replyPos].errors);
                         }
 					}
+					system.debug('MassResponseSetSuccess:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 }
                 replyPos++;
             }
 		}
+//        system.debug('mailList: Size: ' + mailList.size() + ' ' + mailList);
+//        system.debug('responseList: Size: ' + responseList.size() + ' ' + responseList);
 		if (mailList != NULL && mailList.size() > 0){
 			try {
 				emailResults = Messaging.sendEmail(mailList,false);
@@ -274,27 +281,40 @@ public without sharing class SendHTMLEmail {
 				}
 			}
             Integer replyPos = 0;
+            system.debug('EmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
             for (Messaging.SendEmailResult thisResult : emailResults){
-                while (responseList[replyPos].errors != null && requests[replyPos].useMassEmail == true) replyPos++;
+                while (responseList[replyPos].errors != null || requests[replyPos].useMassEmail == true) replyPos++;
+            	system.debug('EmailResults replyPos: ' + replyPos + ' Results: ' + thisResult.isSuccess());
                 if (thisResult.isSuccess() != true) {
                     Messaging.SendEmailError[] curErrors = thisResult.getErrors();
                     String errorReport = '';
                     for(Messaging.SendEmailError curError : curErrors ) {
-                        errorReport = errorReport + curError.getMessage() + '/n';
+                        errorReport = errorReport + 'Error Code:' + curError.getStatusCode() + ' - '+ curError.getMessage() + '\n';
                     }
                     responseList[replyPos].errors = errorReport;
                     responseList[replyPos].isSuccess = false;
+					system.debug('FailResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 } else {
                     responseList[replyPos].isSuccess = true;
                     if (requests[replyPos].setSaveAsTask == true) {
+                        List<String> recipientList = requests[replyPos].toAddresses;
+                        recipientList.addAll(requests[replyPos].ccAddresses);
+                        recipientList.addAll(requests[replyPos].bccAddresses);
+                        if (recipientList.size() == 0){
+                            requests[replyPos].toAddresses.add((String) (Database.query('Select Email From ' +
+                                                                                  ((Id)requests[replyPos].templateTargetObjectId).getSObjectType().getDescribe().getName() + 
+                                                                                  ' Where Id = \''+ requests[replyPos].templateTargetObjectId +'\' limit 1'))[0].get('Email'));
+                        }
                         responseList[replyPos].errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
                                                                requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
-                                                               requests[replyPos],responseList[replyPos].errors);
+                                                               recipientList,responseList[replyPos].errors);
 					}
+					system.debug('ResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 }
                 replyPos++;
             }
 		}
+		for (Integer i=0;i<responseList.size();i++) system.debug('Response:['+i+'].isSuccess: ' + responseList[i].isSuccess + ' errors: ' + responseList[i].errors);
 		//report back the results
 		boolean atLeastOneSent=false;
 		for (Integer i=0;i<responseList.size();i++){
@@ -306,21 +326,16 @@ public without sharing class SendHTMLEmail {
 	}
 
 // Add a task activity    
-	private static String addTasks(ID templateID, String subject, ID templateTargetObjectId, ID recordId, Request thisRequest,String curErrors){
+	private static String addTasks(ID templateID, String subject, ID templateTargetObjectId, ID recordId, List<String> recipientList,String curErrors){
 		String retErrors = curErrors;
 		if (templateID != null && subject == null){
 			subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateId AND isActive = TRUE ].Subject;
-		}
-		if (thisRequest.toAddresses.size() == 0){
-			thisRequest.toAddresses.add((String) (Database.query('Select Email From ' +
-																  ((Id)templateTargetObjectId).getSObjectType().getDescribe().getName() + 
-																  ' Where Id = \''+ templateTargetObjectId +'\' limit 1'))[0].get('Email'));
 		}
 		try {
 			createActivity(
 				recordId,
 				subject,
-				thisRequest.toAddresses + ',' + thisRequest.ccAddresses + ',' + thisRequest.bccAddresses
+				recipientList
 			);
 		} catch (Exception e) {
 			retErrors = e.getMessage();
@@ -436,10 +451,11 @@ public without sharing class SendHTMLEmail {
 		};
 	}
 
-	private static void createActivity(Id recordId, String subject, String recipientList) {
+	private static void createActivity(Id recordId, String subject, List<String> recipientList) {
+        String recipientListString = string.join(recipientList,',');
 		Task t = new Task(OwnerId = UserInfo.getUserId(),
 				Subject = 'Sent Email: ' + subject,
-				Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientList.replaceAll('[()]|,\\(\\)+', ''),
+				Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientListString.replaceAll('[()]|,\\(\\)+', ''),
 				Status = 'Closed',
 				Priority = 'Normal',
 				ActivityDate = Date.today(),

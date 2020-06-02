@@ -1,11 +1,27 @@
 <template>
-            <c-lookup
-                selection={initialSelection}
-                errors={errors}
-                onsearch={handleSearch}
-                onselectionchange={handleSelectionChange}
-                label={fieldLabel}
-                placeholder={fieldLabel}
-                is-multi-entry={isMultiEntry}>
-            </c-lookup>
+    <c-lookup
+            selection={initialSelection}
+            errors={errors}
+            onsearch={handleSearch}
+            onselectionchange={handleSelectionChange}
+            onaddnewrecord={handleAddNewRecord}
+            label={fieldLabel}
+            placeholder={placeholderText}
+            show-add-new-record={showAddNewRecord}
+            is-multi-entry={isMultiEntry}>
+    </c-lookup>
+    <c-uc-modal class="modal-window"
+                name="confirmObjectChange">
+            <span slot="modalHeader">
+                Create New Record
+            </span>
+        <span slot="modalBody">
+               <c-record-detail-flow-screen-component object-api-name={objectName}
+                                                      mode="edit"
+                                                      is-cancel-button
+                                                      fields={newRecordRequiredFields}
+                                                      onnewrecordcreated={handleNewRecordCreated}
+               ></c-record-detail-flow-screen-component>
+            </span>
+    </c-uc-modal>
 </template>

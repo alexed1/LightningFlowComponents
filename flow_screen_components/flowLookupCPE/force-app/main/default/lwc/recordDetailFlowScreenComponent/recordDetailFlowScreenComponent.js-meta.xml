@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <description>recordDetailFSC</description>
+    <isExposed>true</isExposed>
+    <masterLabel>recordDetail FSC</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="fields" type="String"/>
+            <property name="mode" type="String" datasource="View,Edit"/>
+        </targetConfig>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" required="false" label="Record Id" description="Input - This is the ID of the record to display or Output - The ID of a newly created record."/>
+            <property name="recordTypeId" type="String" role="inputOnly" label="Record Type Id" description="When provided, picklist values will be filtered for the selected record type."/>
+            <property name="objectApiName" type="String" role="inputOnly" label="Object API Name" description="If you pass in no recordId, an Object API Name, and mode of Edit, the component will open in edit mode and create a new record on save."/>
+            <property name="fields" type="String" role="inputOnly" label="Record Field List" description="A comma-separated list of field names from the recordId’s object type. If this is not provided, this component will display all fields accessible to the running user’s profile"/>
+            <property name="mode" type="String" role="inputOnly" label="Mode (View or Edit)"/>
+            <property name="flowNavigationOnSave" type="Boolean" role="inputOnly" label="Flow - Navigation on Save?" description="Check if you would like the flow to navigate to the Next screen (or Finish) when clicking Save.  For best results, hide the page footer in the flow screen."/>
+            <property name="flowNavigationOnCancel" type="Boolean" role="inputOnly" label="Flow - Navigation on Cancel?" description="Check if you would like the flow to navigate to the Previous or Next screen when clicking Cancel.  For best results, hide the page footer in the flow screen."/>
+            <property name="flowNavigationOnCancelDirection" type="String" role="inputOnly" label="Flow - Navigation Direction on Cancel (Previous or Next)" description="Specify Previous or Next for the flow navigation direction after the Cancel button is clicked."/>
+            <property name="isCancelButton" type="Boolean" role="outputOnly" label="Cancel Button Selected" description="This value will be set to True is the user selected the Cancel button."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

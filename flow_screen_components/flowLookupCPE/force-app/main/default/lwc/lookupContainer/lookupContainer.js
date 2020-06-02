@@ -1,21 +1,25 @@
-import {LightningElement, track, api} from 'lwc';
+import {LightningElement, track, api, wire} from 'lwc';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import apexSearch from '@salesforce/apex/ObjectLookupController.search';
+import {getRecordCreateDefaults} from 'lightning/uiRecordApi';
+import {refreshApex} from '@salesforce/apex';
 
 export default class LookupContainer extends LightningElement {
     // Use alerts instead of toast to notify user
     @api objectName;
     @api displayWhichField;
     @api fieldLabel;
+    @api placeholderText;
     @api outputWhichValue;
-
+    @api showAddNewRecord;
     cachedSearchResults = [];
     @api notifyViaAlerts = false;
     @track isMultiEntry = false;
     @track initialSelection = [];
     @track errors = [];
-
+    newRecordRequiredFields = '';
+    newRecordCounter = 0;
 
     @api get selectedValue() {
         if (this.initialSelection && this.initialSelection.length) {
@@ -25,12 +29,37 @@ export default class LookupContainer extends LightningElement {
         }
     }
 
+    @wire(getRecordCreateDefaults, {objectApiName: '$objectName'})
+    _getRecordCreateDefaults({error, data}) {
+        if (error) {
+            this.errors.push(error.body.message);
+        } else if (data) {
+            this.constructRequiredFields(data);
+        }
+    };
+
+    constructRequiredFields(data) {
+        let allAvailableFields = [];
+        data.layout.sections.forEach(curSection => {
+            curSection.layoutRows.forEach(curLayoutRow => {
+                curLayoutRow.layoutItems.forEach(curLayoutItem => {
+                    if (curLayoutItem.editableForNew) {
+                        curLayoutItem.layoutComponents.forEach(curLayoutComponent => {
+                            allAvailableFields.push(curLayoutComponent.apiName);
+                        });
+                    }
+                });
+            })
+        });
+        this.newRecordRequiredFields = allAvailableFields.join(',');
+    }
+
     set selectedValue(value) {
         if (value) {
             if (!this.cachedSearchResults || !this.cachedSearchResults.length) {
                 this.handleSearch({detail: {objectIdList: [value]}}, true);
             } else {
-                this.setCachedResult(this.isMultiEntry ? value : [value]);
+                this.setCachedResult(value);
             }
 
         } else {
@@ -59,12 +88,14 @@ export default class LookupContainer extends LightningElement {
             displayWhichField: this.displayWhichField,
             outputWhichValue: this.outputWhichValue,
             searchTerm: event.detail ? event.detail.searchTerm : null,
-            objectIdList: event.detail ? event.detail.objectIdList : []
+            objectIdList: event.detail ? event.detail.objectIdList : [],
+            newRecordCounter: this.newRecordCounter
         })
             .then(results => {
                 this.cachedSearchResults = results;
                 if (setCachedValue && event.detail && event.detail.objectIdList && event.detail.objectIdList.length) {
-                    this.setCachedResult(event.detail.objectIdList);
+                    this.selectedValue = this.cachedSearchResults.map(curResult => curResult.id);
+                    this.dispatchValueChangeEvent();
                 }
                 this.template.querySelector('c-lookup').setSearchResults(results);
             })
@@ -75,13 +106,17 @@ export default class LookupContainer extends LightningElement {
                     'error'
                 );
                 // eslint-disable-next-line no-console
-                console.error('Lookup error', JSON.stringify(error));
+                console.error('Lookup error', JSON.stringify(error.body.message));
                 this.errors = [error];
             });
     }
 
     handleSelectionChange(event) {
         this.selectedValue = event.detail ? event.detail.value : [];
+        this.dispatchValueChangeEvent();
+    }
+
+    dispatchValueChangeEvent() {
         this.dispatchEvent(new CustomEvent('selectionchange', {
             detail: {
                 value: this.selectedValue
@@ -115,6 +150,28 @@ export default class LookupContainer extends LightningElement {
             // Notify via toast
             const toastEvent = new ShowToastEvent({title, message, variant});
             this.dispatchEvent(toastEvent);
+        }
+    }
+
+    handleAddNewRecord() {
+        this.modalAction(true);
+    }
+
+    handleNewRecordCreated(event) {
+        this.handleSearch({detail: {objectIdList: [event.detail.value]}}, true);
+        this.modalAction(false);
+        this.newRecordCounter++;
+    }
+
+    modalAction(isOpen, params) {
+        const existing = this.template.querySelector('c-uc-modal');
+        if (existing) {
+            if (isOpen) {
+                existing.params = params;
+                existing.openModal();
+            } else {
+                existing.closeModal();
+            }
         }
     }
 }

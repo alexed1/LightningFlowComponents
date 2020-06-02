@@ -2,19 +2,22 @@
     "packageDirectories": [
         {
             "path": "force-app",
-            "default": true,
             "package": "CollectionActions",
             "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionNumber": "0.1.0.NEXT",
+            "default": true
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "49.0",
+    "sourceApiVersion": "48.0",
     "packageAliases": {
         "CollectionActions": "0HoB0000000Cb1HKAS",
         "CollectionActions@1.14.0-0": "04tf4000004J1IDAA0",
         "collectionProcessorsT": "0HoB0000000Cb1CKAS",
-        "CollectionActions@1.15.0-0": "04tB0000000OxPiIAK"
+        "CollectionActions@1.15.0-0": "04tB0000000OxPiIAK",
+        "CollectionActions2": "0Hof4000000XZKvCAO",
+        "CollectionActions2@1.16.0-0": "04tf4000004Ptm5AAC",
+        "CollectionActions@1.17.0-0": "04tB0000000L1HJIA0"
     }
 }

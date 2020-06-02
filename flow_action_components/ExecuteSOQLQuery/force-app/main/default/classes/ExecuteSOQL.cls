@@ -1,15 +1,17 @@
 public without sharing class ExecuteSOQL {
     private static Set<String> DATE_LITERAL_FORMATS = new Set<String>{'YESTERDAY','TODAY','TOMORROW','LAST_WEEK','THIS_WEEK','NEXT_WEEK','LAST_MONTH','THIS_MONTH','NEXT_MONTH','LAST_90_DAYS','NEXT_90_DAYS','LAST_N_DAYS','NEXT_N_DAYS','NEXT_N_WEEKS','LAST_N_WEEKS','NEXT_N_MONTHS','LAST_N_MONTHS','THIS_QUARTER','LAST_QUARTER','NEXT_QUARTER','NEXT_N_QUARTERS','LAST_N_QUARTERS','THIS_YEAR','LAST_YEAR','NEXT_YEAR','NEXT_N_YEARS','LAST_N_YEARS','THIS_FISCAL_QUARTER','LAST_FISCAL_QUARTER','NEXT_FISCAL_QUARTER','NEXT_N_FISCAL_QUARTERS','LAST_N_FISCAL_QUARTERS','THIS_FISCAL_YEAR','LAST_FISCAL_YEAR','NEXT_FISCAL_YEAR','NEXT_N_FISCAL_YEARS','LAST_N_FISCAL_YEARS'};
     class ExecuteSOQLException extends Exception {}
-    @InvocableMethod
+    @InvocableMethod(label='Execute SOQL Query' description='Executes an SOQL query and returns a list of sObjects of the specified type' category='Util')
     public static List <Results> getEligibleProducts(List<Requests> requestList) {
         Results results = new Results();
         List<Results> responseWrapper = new List<Results>();
         for(Requests curRequest : requestList) {
             String soqlQuery = curRequest.soqlQuery;
             soqlQuery = replaceWithFormattedValues(soqlQuery);
-            System.debug('Logs: query: ' + soqlQuery);
-            results.sObjects = Database.query(soqlQuery);
+            List<SObject> queryResult = Database.query(soqlQuery);
+            if (queryResult.size() > 0) {
+                results.sObjects = queryResult;
+            }
             responseWrapper.add(results);
         }
         return responseWrapper;
@@ -143,14 +145,11 @@ public without sharing class ExecuteSOQL {
         return resultMap;
     }
     public class Requests {
-        @InvocableVariable(required=true)
+        @InvocableVariable(description='Valid SOQL query string' required=true)
         public String soqlQuery;
     }
     public class Results {
-        public Results() {
-            sObjects = new List<SObject>();
-        }
-        @InvocableVariable
+        @InvocableVariable(description='List of sObjects returned from query. If no objects are returned this variable will be null.')
         public List<SObject> sObjects;
     }
 }

@@ -12,6 +12,7 @@ export default class LookupCpe extends LightningElement {
         attributeMasterLabel: 'fieldLabel',
         attributeSelectedValue: 'selectedValue',
         flowDataTypeString: 'String',
+        flowDataTypeBoolean: 'Boolean',
         inputAttributePrefix: 'select_'
     }
 
@@ -19,7 +20,9 @@ export default class LookupCpe extends LightningElement {
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Lookup which Object?'},
         displayWhichField: {value: null, valueDataType: null, isCollection: false, label: 'Display which Field?'},
         outputWhichValue: {value: null, valueDataType: null, isCollection: false, label: 'Output which Field?'},
-        fieldLabel: {value: null, valueDataType: null, isCollection: false, label: 'Master Label'}
+        fieldLabel: {value: null, valueDataType: null, isCollection: false, label: 'Label'},
+        placeholderText: {value: null, valueDataType: null, isCollection: false, label: 'Placeholder Text'},
+        showAddNewRecord: {value: null, valueDataType: null, isCollection: false, label: 'Show Add New Record '}
     }
 
     @api get builderContext() {
@@ -59,8 +62,18 @@ export default class LookupCpe extends LightningElement {
         this.dispatchFlowValueChangeEvent(this.settings.attributeOutputWhichValueName, event.detail.fieldName, this.settings.flowDataTypeString);
     }
 
-    handleMasterLabelChanged(event) {
-        this.dispatchFlowValueChangeEvent(this.settings.attributeMasterLabel, event.detail.value, this.settings.flowDataTypeString);
+    handleAttributeChange(event) {
+        let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
+        if (curAttributeName) {
+            this.dispatchFlowValueChangeEvent(curAttributeName, event.currentTarget.value, this.settings.flowDataTypeString);
+        }
+    }
+
+    handleBooleanAttributeChange(event) {
+        let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
+        if (curAttributeName) {
+            this.dispatchFlowValueChangeEvent(curAttributeName, event.target.checked, this.settings.flowDataTypeBoolean);
+        }
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {

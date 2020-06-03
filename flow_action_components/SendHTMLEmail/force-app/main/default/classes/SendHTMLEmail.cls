@@ -13,15 +13,16 @@
  * 1.33		3/22/2020	Jack Pond				Added consistency checks, modified Labels and alphabetized params
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
  * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355
- * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
+ * 1.33.2	6/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
  * 
  * Done:
  * #320 sendHTMLEmail - Activity History Redesign?
  * #351 sendHTMLEmail - Address bulkification consistent with Apex Gov Limits
  * #354 sendHTMLEmail - Limit Class test to 2 OrgWideEmailAddresses
  * #355 sendHTMLEmail - Separate Email Activity from Email Task Activity
+ * #378 sendHTMLEmail - Allow selection of email template by name as well as by TemplateId
  * 
- * 
+ * To do: 
  * #342 sendHTMLEmail CPE For Summer '20 Release
 **/
 
@@ -117,7 +118,14 @@ public without sharing class SendHTMLEmail {
 				//	setTemplateID(templateId)
 				if (thisResponse.errors == null){
 					if (curRequest.TemplateID == null) {
-						thisResponse.errors = 'You must specify a templateId - required parameter for mass emails.';
+                        if (curRequest.templateName == null) {
+							thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
+                        } else {
+							TemplateId = getTemplateIdFromName(templateName, null);
+                            if (TemplateId != null){
+                                mmail.setTemplateID(TemplateId);
+                            } else thisResponse.errors = 'An Email template with the specified template name could not be found';
+                        }
 					} else {
 						mmail.setTemplateID(curRequest.TemplateID);
 					}
@@ -321,7 +329,7 @@ public without sharing class SendHTMLEmail {
 			if (responseList[i].isSuccess) atLeastOneSent = true;
 		}
 		if (!atLeastOneSent)
-				throw new InvocableActionException('No Messages were sent.  First Error: '+responseList[0].errors);
+            throw new InvocableActionException('No Messages were sent.  First Error: '+responseList[0].errors);
 		return responseList;
 	}
 

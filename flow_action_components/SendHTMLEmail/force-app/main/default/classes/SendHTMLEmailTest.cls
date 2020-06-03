@@ -36,6 +36,8 @@
 // @Test t016_coverageMassMailTestDescription: MassEmail should have Error if no description
 // @Test t017_coverageMassMailtargetObjectIds: MassEmail requires targetObjectIds
 // @Test t018_coverageMassMailTemplateId: MassEmail requires TemplateId
+// @Test t019_coverageMassMailTemplateName: MassEmail can find TemplateName
+// @Test t020_coverageMassMailTemplateNameNotFound: MassEmail cannnot find TemplateName
 
 @isTest
 public with sharing class SendHTMLEmailTest {
@@ -696,6 +698,7 @@ public with sharing class SendHTMLEmailTest {
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
 //        testReq.templateId = EmailTemplateId;
+//        testReq.templateName = TEMPLATE_NAME;
         testReq.useMassEmail = true;
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
 		testReq.whatIds = testReq.targetObjectIds;
@@ -711,6 +714,56 @@ public with sharing class SendHTMLEmailTest {
         } catch (SendHTMLEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t018_coverageMassMailTemplateId error: '+e.getMessage());
+        }
+    }
+// @Test t019_coverageMassMailTemplateName: MassEmail can find TemplateName
+    @isTest
+    public static void t019_coverageMassMailTemplateName() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateId = EmailTemplateId;
+        testReq.templateName = TEMPLATE_NAME;
+        testReq.useMassEmail = true;
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t019_coverageMassMailTemplateName: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,true);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t019_coverageMassMailTemplateId error: '+e.getMessage());
+        }
+    }
+// @Test t020_coverageMassMailTemplateNameNotFound: MassEmail cannnot find TemplateName
+    @isTest
+    public static void t020_coverageMassMailTemplateNameNotFound() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateId = EmailTemplateId;
+        testReq.templateName = TEMPLATE_NOSUCH;
+        testReq.useMassEmail = true;
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t020_coverageMassMailTemplateNameNotFound: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,false);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t020_coverageMassMailTemplateNameNotFound error: '+e.getMessage());
         }
     }
 

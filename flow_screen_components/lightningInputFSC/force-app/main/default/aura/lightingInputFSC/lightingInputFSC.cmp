@@ -27,6 +27,7 @@
   <aura:attribute name="tabindex" type="String" />
   <aura:attribute name="title" type="String" />
   <aura:attribute name="variant" type="String" />
+  <aura:attribute name="style" type="String" />
 
   <!--Validation-->
   <aura:attribute name="messageToggleActive" type="String" />
@@ -78,7 +79,7 @@
                          type="{!v.type}"
                          value="{!v.value}"
                          variant="{!v.variant}"
-                         
+                         style="{!v.style}"
                          />
 
       <aura:if isTrue="{!v.type == 'range'}">

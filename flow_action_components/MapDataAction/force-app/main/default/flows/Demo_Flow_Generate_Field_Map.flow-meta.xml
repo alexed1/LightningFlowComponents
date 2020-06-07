@@ -23,7 +23,7 @@
         <inputParameters>
             <name>shownFields</name>
             <value>
-                <stringValue>AccountId, AssistantName, FirstName,Title, Department, OtherPhone, date__c, datetime__c</stringValue>
+                <stringValue>AccountId, AssistantName, FirstName,LastName,Title, Department, OtherPhone, date__c, datetime__c</stringValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -136,8 +136,8 @@
     <actionCalls>
         <name>paramparamss</name>
         <label>params</label>
-        <locationX>463</locationX>
-        <locationY>73</locationY>
+        <locationX>498</locationX>
+        <locationY>72</locationY>
         <actionName>GenerateFieldMap</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -152,7 +152,7 @@
         <inputParameters>
             <name>inputMapJson</name>
             <value>
-                <stringValue>{&quot;Id&quot;:&quot;AccountId&quot;,&quot;IsDeleted&quot;:&quot;FirstName&quot;,&quot;NumberOfEmployees&quot;:&quot;Title&quot;,&quot;LastModifiedDate&quot;:&quot;Department&quot;,&quot;LastActivityDate&quot;:&quot;OtherPhone&quot;,&quot;date__c&quot;:&quot;datetime__c&quot;,&quot;datetime__c&quot;:&quot;date__c&quot;}</stringValue>
+                <stringValue>{&quot;{!Get_Single_Account.Name}&quot;:&quot;AssistantName&quot;,&quot;Id&quot;:&quot;LastName&quot;}</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -193,11 +193,11 @@
     <recordLookups>
         <name>Get_Single_Account</name>
         <label>Get Single Account</label>
-        <locationX>602</locationX>
-        <locationY>248</locationY>
+        <locationX>444</locationX>
+        <locationY>285</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Get_Single_Contact</targetReference>
+            <targetReference>paramparamss</targetReference>
         </connector>
         <getFirstRecordOnly>true</getFirstRecordOnly>
         <object>Account</object>
@@ -272,8 +272,28 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>paramparamss</targetReference>
+            <targetReference>Get_Single_Account</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>fieldLastName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>LastName</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>fieldName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>Name</stringValue>
+        </value>
+    </variables>
 </Flow>

@@ -6,17 +6,16 @@ import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 import NonePicklistValueLabel from '@salesforce/label/c.NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.FieldIsNotSupportedMessage';
 
-import {
-    standardObjectOptions
-} from 'c/pickObjectAndFieldUtils';
+import {standardObjectOptions} from 'c/pickObjectAndFieldUtils';
+import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/flowComboboxUtils';
 
 export default class pickObjectAndFieldFSC extends LightningElement {
     @api name;
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
-    // @api objectType;
-    // @api field;
+    @api disableMergefieldSelection = false;
+    @api builderContext;
     @api availableObjectTypes;
     @api availableFields;
 
@@ -32,6 +31,8 @@ export default class pickObjectAndFieldFSC extends LightningElement {
     @track fields;
     @track errors = [];
     @track isLoadFinished = false;
+    fieldDataType;
+    showCollections = false;
 
     labels = {
         none: NonePicklistValueLabel,
@@ -52,6 +53,7 @@ export default class pickObjectAndFieldFSC extends LightningElement {
 
     set field(value) {
         this._field = value;
+        this.fieldDataType = getDataType(value);
     }
 
     @wire(getObjects, {availableObjectTypes: '$availableObjectTypesList'})
@@ -86,7 +88,7 @@ export default class pickObjectAndFieldFSC extends LightningElement {
                         });
                     }
                 }
-                if (this._field && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
+                if (this._field && !isReference(this._field) && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
                     this.errors.push(this.labels.fieldNotSupported + this._field);
                     this._field = null;
                 }
@@ -96,6 +98,16 @@ export default class pickObjectAndFieldFSC extends LightningElement {
                 this.dispatchDataChangedEvent({...this.fields.find(curField => curField.value == this._field), ...{isInit: true}});
             }
         }
+    }
+
+    handleFlowComboboxValueChange(event) {
+        if (event.detail.newValueDataType === flowComboboxDefaults.referenceDataType) {
+            this._field = formattedValue(event.detail.newValue, event.detail.newValueDataType);
+        } else {
+            this._field = event.detail.newValue;
+        }
+
+        this.dispatchDataChangedEvent(event.detail);
     }
 
     get isFieldTypeVisible() {
@@ -144,7 +156,8 @@ export default class pickObjectAndFieldFSC extends LightningElement {
 
     get fieldType() {
         if (this.fields && this._field) {
-            return this.fields.find(e => e.value == this._field).dataType;
+            let foundField = this.fields.find(e => e.value == this._field);
+            return foundField ? foundField.dataType : null
         } else {
             return null;
         }
@@ -178,7 +191,6 @@ export default class pickObjectAndFieldFSC extends LightningElement {
             }
         });
         this.dispatchEvent(memberRefreshedEvt);
-
     }
 
     splitValues(originalString) {
@@ -188,4 +200,19 @@ export default class pickObjectAndFieldFSC extends LightningElement {
             return [];
         }
     };
+
+    get renderFlowCombobox() {
+        return !this.disableMergefieldSelection && this.builderContext;
+    }
+
+    @api
+    reportValidity() {
+        let flowCombobox = this.template.querySelector('c-flow-combobox');
+        if (flowCombobox) {
+            if (!flowCombobox.reportValidity()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

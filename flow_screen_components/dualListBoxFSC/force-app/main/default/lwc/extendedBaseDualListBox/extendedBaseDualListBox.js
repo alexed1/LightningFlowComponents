@@ -85,7 +85,7 @@ export default class dualListBox extends LightningElement {
             return value;
         } else if (optionType === defaults.originalObject) {
             return value.map(curItem => {
-               return curItem[this.useWhichObjectKeyForData] ? curItem[this.useWhichObjectKeyForData] : curItem
+                return curItem[this.useWhichObjectKeyForData] ? curItem[this.useWhichObjectKeyForData] : curItem
             });
         }
     }
@@ -102,8 +102,11 @@ export default class dualListBox extends LightningElement {
         } else if (optionType === defaults.list || optionType === defaults.twoLists) {
             return selectedValues;
         } else if (optionType === defaults.originalObject) {
-            return this._optionsOriginal.filter(curOriginal => {
+            let filteredRecords = this._optionsOriginal.filter(curOriginal => {
                 return items.includes(curOriginal[this.useWhichObjectKeyForData]);
+            });
+            return items.map(curItemId => {
+                return filteredRecords.find(curFilteredItem => curFilteredItem[this.useWhichObjectKeyForData] === curItemId)
             });
         }
     }

@@ -25,8 +25,18 @@ export default class DualListBoxCpe extends LightningElement {
         },
         required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
         requiredOptions: {value: null, valueDataType: null, isCollection: true, label: 'Datasource for Choice Icons:'},
-        useWhichObjectKeyForData: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
-        useWhichObjectKeyForLabel: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
+        useWhichObjectKeyForData: {
+            value: null,
+            valueDataType: null,
+            isCollection: false,
+            label: 'Use Which Object Key For Data'
+        },
+        useWhichObjectKeyForLabel: {
+            value: null,
+            valueDataType: null,
+            isCollection: false,
+            label: 'Use Which Object Key For Label'
+        },
         useObjectValueAsOutput: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
         allOptionsFieldDescriptorList: {
             value: null,
@@ -123,7 +133,8 @@ export default class DualListBoxCpe extends LightningElement {
     handleValueChange(event) {
         if (event.target) {
             let curAttributeName = event.target.name ? event.target.name.replace(defaults.inputAttributePrefix, '') : null;
-            let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
+            let value = event.detail ? event.detail.value : event.target.value
+            let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : value;
             let curAttributeType;
             switch (event.target.type) {
                 case "checkbox":

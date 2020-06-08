@@ -1,0 +1,29 @@
+<!-- 
+Lightning Web Component for Flow Screens:       flowPickerFSC
+                                                FlowListController.cls
+
+Allows the selection of a Flow
+
+12/20/19 - Eric Smith - Version 1.3
+                        Added labels for the configuration attributes,
+                        added help text for the configuration attributes,
+                        added support for changing the default placeholder text,  
+                        added a search string to filter the list of flows,
+                        sorted the list to display in alphabetical order by Flow Label,
+                        added an attribute to specify the width of the component,
+                        added a method to expose the selected Flow API Name to a calling component,
+                        and created a Test Class so the component can be packaged
+
+-->
+<template>
+        <div class={comboboxWidth}>
+            <lightning-combobox
+                    name={label}
+                    label={label}
+                    placeholder={placeholder}
+                    value={selectedFlowApiName}
+                    options={options}
+                    required={required}
+                    onchange={handleChange} ></lightning-combobox>
+        </div>
+</template>

@@ -1,14 +1,3 @@
-<!--
-  @File Name          : flowCombobox.html
-  @Description        : 
-  @Author             : Alex Edelstein
-  @Group              : 
-  @Last Modified By   : jack.pond@psitex.com
-  @Last Modified On   : 4/27/2020, 6:49:56 AM
-  @Modification Log   : 
-  Ver       Date            Author      		    Modification
-  1.0    4/27/2020   jack.pond@psitex.com     Initial Version
--->
 <template>
     <div style={inputStyle}>
         <div>
@@ -32,6 +21,7 @@
                                                 value={_value}
                                                 onchange={handleSearchField}
                                                 onclick={handleOpenOptions}
+
                                         ></lightning-input>
                                     </div>
                                 </template>
@@ -43,10 +33,12 @@
                                                 label={_value}
                                                 onremove={resetData}
                                                 has-error={hasError}
-                                        ></lightning-pill>
+                                        >
+                                        </lightning-pill>
                                     </div>
                                 </template>
                             </div>
+
                             <div id="listbox-id-1"
                                  class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
                                  role="listbox">
@@ -69,11 +61,11 @@
                                                     <span class="slds-icon_container">
                                                         <lightning-icon icon-name={curOptionElement.optionIcon}
                                                                         class="slds-icon slds-icon_small slds-icon-text-default"
-                                                                        size="x-small"
-                                                        ></lightning-icon>
+                                                                        size="x-small"></lightning-icon>
                                                     </span>
                                                 </span>
                                                     <span data-value={curOptionElement.value}
+                                                          data-flow-type={curOptionElement.flowType}
                                                           onclick={handleSetSelectedRecord}
                                                           class="slds-media__body">
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
@@ -98,7 +90,7 @@
                 </div>
                 <template if:true={hasError}>
                     <div class="slds-form-element__help">
-                        {settings.invalidReferenceError}
+                        {labels.invalidReferenceError}
                     </div>
                 </template>
             </div>

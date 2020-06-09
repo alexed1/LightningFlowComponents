@@ -7,6 +7,7 @@ export default class ucModal extends LightningElement {
     @api width;
     @api height;
     @api availableReactions;
+    @api params;
 
     @track showModal = false;
 
@@ -45,7 +46,8 @@ export default class ucModal extends LightningElement {
             bubbles: true,
             detail: {
                 name: this.name,
-                value: reaction
+                value: reaction,
+                params: this.params
             }
         });
         this.dispatchEvent(memberRefreshedEvt);

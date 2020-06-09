@@ -11,14 +11,14 @@ public with sharing class GetLayoutFields {
         for (Requests req : requestList) {
             String layoutName = req.layoutName;
             String objectName = req.objectName;
-            String excludeFields = requestList[0].excludeFields;
+            String excludeFields = req.excludeFields;
             String layoutFieldsCSV = '';
 
             layoutName = objectName + '-' + layoutName;
             List<Metadata.Metadata> layouts = 
                 Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
                                             new List<String> {layoutName});
-                                            
+
             List<String> lstExcludeFields = excludeFields.split(',');
 
             Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);

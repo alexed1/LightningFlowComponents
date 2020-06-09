@@ -18,14 +18,17 @@ public with sharing class GetLayoutFields {
             List<Metadata.Metadata> layouts = 
                 Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
                                             new List<String> {layoutName});
+                                            
+            List<String> lstExcludeFields = excludeFields.split(',');
 
             Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);
-
+            
+            
             for (Metadata.LayoutSection section : layoutMd.layoutSections) {
                 for (Metadata.LayoutColumn column : section.layoutColumns) {
                     if (column.layoutItems != null) {
                         for (Metadata.LayoutItem item : column.layoutItems) {
-                            if(!excludeFields.contains(item.field)){
+                            if(!lstExcludeFields.contains(item.field)){
                                 layoutFieldsCSV = layoutFieldsCSV + ',' +item.field;
                             }
                         }
@@ -52,7 +55,7 @@ public with sharing class GetLayoutFields {
         public String objectName;
 
         @InvocableVariable 
-        global String excludeFields;
+        public String excludeFields;
 
     }
 
@@ -64,5 +67,4 @@ public with sharing class GetLayoutFields {
 
     }
 }
-
 

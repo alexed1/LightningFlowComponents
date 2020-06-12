@@ -22,6 +22,7 @@
   <design:attribute name="value" label="*value" default="" />
   <design:attribute name="variant" label="variant" default="" />
   <design:attribute name="style" label="style" default="" />
+  <design:attribute name="help" label="msg: Help Text" default="" />
 
   <design:attribute name="messageToggleActive" label="msg: Toggle Active" default="" />
   <design:attribute name="messageToggleInactive" label="msg: Toggle Inactive" default="" />

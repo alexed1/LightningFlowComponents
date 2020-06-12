@@ -28,6 +28,7 @@
   <aura:attribute name="title" type="String" />
   <aura:attribute name="variant" type="String" />
   <aura:attribute name="style" type="String" />
+  <aura:attribute name="help" type="String" />
 
   <!--Validation-->
   <aura:attribute name="messageToggleActive" type="String" />
@@ -80,6 +81,7 @@
                          value="{!v.value}"
                          variant="{!v.variant}"
                          style="{!v.style}"
+                         fieldLevelHelp="{!v.help}"
                          />
 
       <aura:if isTrue="{!v.type == 'range'}">

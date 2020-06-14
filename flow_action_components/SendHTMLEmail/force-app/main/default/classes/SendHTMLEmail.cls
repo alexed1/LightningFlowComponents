@@ -3,8 +3,8 @@
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
  * @Author				: various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group				: unofficialSF
- * @Last Modified By	: Jack Pond
- * @Last Modified On	: 5/29/2020, 6:08:33 PM
+ * @Last Modified By	: Jack D. Pond
+ * @Last Modified On	: 6/13/2020, 7:55:39 PM
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -12,7 +12,7 @@
  * 1.32		2/11/2020	Alex Edelstein			Bulkified and Changed recordId to String
  * 1.33		3/22/2020	Jack Pond				Added consistency checks, modified Labels and alphabetized params
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
- * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355
+ * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
  * 1.33.2	6/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
  * 
  * Done:
@@ -21,6 +21,7 @@
  * #354 sendHTMLEmail - Limit Class test to 2 OrgWideEmailAddresses
  * #355 sendHTMLEmail - Separate Email Activity from Email Task Activity
  * #378 sendHTMLEmail - Allow selection of email template by name as well as by TemplateId
+ * #392 sendHTMLEmail - Return the Activity TaskId added
  * 
  * To do: 
  * #342 sendHTMLEmail CPE For Summer '20 Release
@@ -261,15 +262,17 @@ public without sharing class SendHTMLEmail {
                     if (requests[replyPos].setSaveAsTask == true) {
                         for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++) {
 	                        List<String> recipientList = new List<String>{	(String) Database.query('Select Email From ' +
-                                                               			((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
+							((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
 																		' Where Id = \''+ requests[replyPos].targetObjectIds[i] +
 																		'\' limit 1')[0].get('Email')};
-	                        responseList[replyPos].errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
-                                                               requests[replyPos].targetObjectIds[i], requests[replyPos].whatIds[i],
-                                                               recipientList,responseList[replyPos].errors);
-                        }
+							TaskAttached thisTask = addTasksId(requests[replyPos].templateID,requests[replyPos].subject,
+																		requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
+																		recipientList,responseList[replyPos].errors);
+							responseList[replyPos].errors = thisTask.errorMsg;
+							responseList[replyPos].taskId = thisTask.taskId;
+						}
 					}
-					system.debug('MassResponseSetSuccess:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
+//					system.debug('MassResponseSetSuccess:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 }
                 replyPos++;
             }
@@ -310,14 +313,16 @@ public without sharing class SendHTMLEmail {
                         recipientList.addAll(requests[replyPos].bccAddresses);
                         if (recipientList.size() == 0){
                             requests[replyPos].toAddresses.add((String) (Database.query('Select Email From ' +
-                                                                                  ((Id)requests[replyPos].templateTargetObjectId).getSObjectType().getDescribe().getName() + 
-                                                                                  ' Where Id = \''+ requests[replyPos].templateTargetObjectId +'\' limit 1'))[0].get('Email'));
-                        }
-                        responseList[replyPos].errors = addTasks(requests[replyPos].templateID,requests[replyPos].subject,
-                                                               requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
-                                                               recipientList,responseList[replyPos].errors);
+																				((Id)requests[replyPos].templateTargetObjectId).getSObjectType().getDescribe().getName() + 
+																				' Where Id = \''+ requests[replyPos].templateTargetObjectId +'\' limit 1'))[0].get('Email'));
+						}
+						TaskAttached thisTask = addTasksId(requests[replyPos].templateID,requests[replyPos].subject,
+																requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
+																recipientList,responseList[replyPos].errors);
+						responseList[replyPos].errors = thisTask.errorMsg;
+						responseList[replyPos].taskId = thisTask.taskId;
 					}
-					system.debug('ResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
+//					system.debug('ResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
                 }
                 replyPos++;
             }
@@ -333,22 +338,23 @@ public without sharing class SendHTMLEmail {
 		return responseList;
 	}
 
-// Add a task activity    
-	private static String addTasks(ID templateID, String subject, ID templateTargetObjectId, ID recordId, List<String> recipientList,String curErrors){
-		String retErrors = curErrors;
+	// Add a task activity    
+	private static TaskAttached addTasksId(ID templateID, String subject, ID templateTargetObjectId, ID recordId, List<String> recipientList,String curErrors){
+		TaskAttached retAttached = new TaskAttached();
+		retAttached.errorMsg = curErrors;
 		if (templateID != null && subject == null){
 			subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateId AND isActive = TRUE ].Subject;
 		}
 		try {
-			createActivity(
+			retAttached.taskId = createActivity(
 				recordId,
 				subject,
 				recipientList
 			);
 		} catch (Exception e) {
-			retErrors = e.getMessage();
+			retAttached.errorMsg = ((curErrors != null) && (curErrors.length() > 0))? curErrors + ',' + e.getMessage() : e.getMessage();
 		}
-		return retErrors;
+		return retAttached;
 	}
 
 	//credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
@@ -459,7 +465,7 @@ public without sharing class SendHTMLEmail {
 		};
 	}
 
-	private static void createActivity(Id recordId, String subject, List<String> recipientList) {
+	private static string createActivity(Id recordId, String subject, List<String> recipientList) {
         String recipientListString = string.join(recipientList,',');
 		Task t = new Task(OwnerId = UserInfo.getUserId(),
 				Subject = 'Sent Email: ' + subject,
@@ -469,6 +475,7 @@ public without sharing class SendHTMLEmail {
 				ActivityDate = Date.today(),
 				WhatId = recordId);
 		insert t;
+		return t.Id;
 	}
 
 	private static String getTemplateIdFromName(String templateName, String templateLanguage){
@@ -491,6 +498,11 @@ public without sharing class SendHTMLEmail {
 			}
 		}
 		return (retTemplateId == NULL)? blankTemplate : retTemplateId;
+	}
+
+	private class TaskAttached {
+		private String errorMsg;
+		private String taskId;
 	}
 
 	public class Request {
@@ -622,6 +634,9 @@ public without sharing class SendHTMLEmail {
 		
 		@invocableVariable
 		public String templateUsed; 
+		
+		@invocableVariable
+		public String taskId; 
 		
 		@invocableVariable
 		public String errors;

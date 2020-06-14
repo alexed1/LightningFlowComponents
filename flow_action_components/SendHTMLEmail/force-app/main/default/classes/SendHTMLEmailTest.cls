@@ -5,14 +5,14 @@
  * @Author				: various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 5/29/2020, 4:02:33 PM
+ * @Last Modified On	: 6/13/2020, 7:57:28 PM
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
  * -------	----------	----------------------	------------------------------------------
  * 1.32		2/05/2020	Jack D. Pond			Updated Versioning
  * 1.33.1	4/11/2020	Jack D. Pond			Added tests for Issues #308,#316
- * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355
+ * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
  * 1.33.2	5/29/2020	Jack D. Pond			Fixed Lead (Company rqd for Summer'20)
  * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
  * 

@@ -1,6 +1,6 @@
 <template>
     <div class="slds-grid slds-wrap slds-card">
-        <div class="slds-col slds-size_1-of-2 slds-border_bottom slds-p-bottom_small">
+        <div class="slds-col slds-size_1-of-2 border-bottom-2px slds-p-bottom_small">
             <lightning-radio-group
                     name="select_inputDataType"
                     label={inputValues.inputDataType.label}
@@ -15,11 +15,12 @@
                         object-label={inputValues.inputObject.label}
                         hide-field-picklist
                         object-type={inputValues.inputObject.value}
+                        disable-mergefield-selection
                         onfieldselected={handleObjectSelected}
                 ></c-pick-object-and-field-f-s-c>
             </template>
         </div>
-        <div class="slds-p-left_small slds-col slds-size_1-of-2">
+        <div class="slds-p-left_small border-bottom-2px slds-col slds-p-bottom_small slds-size_1-of-2">
             <lightning-radio-group
                     name="select_outputDataType"
                     label={inputValues.outputDataType.label}
@@ -34,6 +35,7 @@
                             name="select_outputObject"
                             object-label={inputValues.outputObject.label}
                             hide-field-picklist
+                            disable-mergefield-selection
                             object-type={inputValues.outputObject.value}
                             onfieldselected={handleObjectSelected}
                     ></c-pick-object-and-field-f-s-c>
@@ -47,6 +49,7 @@
                     output-object-type={inputValues.outputObject.value}
                     input-map-json={inputValues.inputMapJson.value}
                     field-label={labels.addMappingField}
+                    builder-context={_builderContext}
             ></c-generate-field-map-cpe-lines>
         </div>
 
@@ -55,7 +58,7 @@
                 name="confirmObjectChange"
                 onreaction={handleModalReactionButtonClick}>
             <span slot="modalHeader">
-           {labels.objectChangeConfirm}
+           {labels.confirmAction}
             </span>
         <span slot="modalBody">
                 {labels.objectChangeConfirm}

@@ -47,7 +47,7 @@ public with sharing class SendHTMLEmailTest {
     Inversely, not doing these tests can cause code coverage % failures.  For pre-deployment testing purposes, TEST_WITH_CREATED_RECORDS should be set to true,
     but for version release, should be set to false.
 **/
-    private Static Final Boolean TEST_WITH_CREATED_RECORDS = false;
+    private Static Final Boolean TEST_WITH_CREATED_RECORDS = true;
 //
     private Static Final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
     private Static Final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';
@@ -476,14 +476,14 @@ public with sharing class SendHTMLEmailTest {
             System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityDisabled Enabled or capacity exceeded');
         }
     }
-// @Test t012_ErrorIfSaveAsActivityAndNoRecordId: Error expected if (saveAsActivity == true && recordId/whatId == null)
+// @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsActivity == true && recordId/whatId == null)
     @isTest
-    public static void t012_ErrorIfSaveAsActivityAndNoRecordId() {
+    public static void t012_ErrorIfSaveAsTaskAndNoRecordId() {
         SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
-        testReq.saveAsActivity = true;
+        testReq.saveAsTask = true;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
         reqList.add(testReq);
 
@@ -492,7 +492,7 @@ public with sharing class SendHTMLEmailTest {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t012_ErrorIfSaveAsActivityAndNoRecordId: '+e.getMessage());
+            system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+e.getMessage());
         }
 	    
         Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();

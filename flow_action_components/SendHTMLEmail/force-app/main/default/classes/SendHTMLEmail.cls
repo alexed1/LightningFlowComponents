@@ -4,7 +4,7 @@
  * @Author				: various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 6/13/2020, 7:55:39 PM
+ * @Last Modified On	: 6/13/2020, 7:43:23 PM
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -29,8 +29,8 @@
 
 public without sharing class SendHTMLEmail {
 
-	@invocableMethod(label='Send HTML Email')
-//    @invocableMethod(label='Send HTML Email' configurationEditor='c:sendHTMLEmail')
+//	@invocableMethod(label='Send HTML Email')
+    @invocableMethod(label='Send HTML Email' configurationEditor='c:sendHTMLEmail')
 	public static List<Response> SendEmail(List<Request> requests) {
 
 		List<Response> responseList = new List<Response>();
@@ -201,8 +201,8 @@ public without sharing class SendHTMLEmail {
 					thisResponse.errors = 'Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId';
 				}
 					
-				if (thisResponse.errors == null && (curRequest.setSaveAsActivity == true && recordId == null)){
-					thisResponse.errors = 'In order to log this email send to activity history, you need to pass in a recordId';
+				if (thisResponse.errors == null && (curRequest.setSaveAsTask == true && recordId == null)){
+					thisResponse.errors = 'In order to log this email send as a task, you need to pass in a recordId';
 				}
 				
 				Boolean completed = true;

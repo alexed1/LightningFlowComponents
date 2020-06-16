@@ -1,0 +1,18 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "GetGroupInfo",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "GetGroupInfo": "0HoB0000000Cb3DKAS",
+        "GetGroupInfo@1.0.0-0": "04tB0000000P0s9IAC"
+    }
+}

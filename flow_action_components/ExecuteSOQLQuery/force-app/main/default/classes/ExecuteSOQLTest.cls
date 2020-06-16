@@ -1,16 +1,16 @@
 @isTest
 public class ExecuteSOQLTest {
     @isTest
-    public static void testExecuteSOQLDateTime() {
+    public static void testExecuteEnglishUpperCasePM() {
         Account acc = new Account(Name = 'Test Account');
         insert acc;
 
         //Not formatted DateTime
         ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
-        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020 03:24 PM';
+        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020, 03:24 PM';
 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
                 requests
         });
         Test.stopTest();
@@ -18,7 +18,7 @@ public class ExecuteSOQLTest {
     }
     
     @isTest
-    private static void testExecuteSOQLShortDate() {
+    private static void testExecuteSOQLMonthDayCommaYear() {
         Account acc = new Account(Name = 'Test Account');
         insert acc;
 
@@ -27,7 +27,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id From Account Where CreatedDate >= April 12, 2020';
 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
                 requests
         });
         Test.stopTest();
@@ -45,7 +45,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 2020-04-12T15:24:00Z';
 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
                 requests
         });
         Test.stopTest();
@@ -63,7 +63,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id From Account Where CreatedDate = LAST_n_DAYS:14';
 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
                 requests
         });
         Test.stopTest();
@@ -79,7 +79,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id From Account Where Name != \'TEST\' LIMIT 2';
                 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{requests});
         Test.stopTest();
         
         System.assertEquals(2, results[0].sObjects.size());  
@@ -94,7 +94,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id From Account Where Name != \'TEST\' AND Id = \'' + searchAccount.Id + '\'';
                 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{requests});
         Test.stopTest();
         
         System.assertEquals(1, results[0].sObjects.size());  
@@ -109,7 +109,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id,Name From Account Order By Name';
                 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{requests});
         Test.stopTest();
         
         System.assertEquals(true, results[0].sObjects.size() == 3);
@@ -131,7 +131,7 @@ public class ExecuteSOQLTest {
         requests.soqlQuery = 'Select Id, AccountId, Account.Name From Contact Where AccountId in (SELECT Id from Account WHERE Name in (\'Test1\', \'Test2\', \'Test3\')) ';
 
         Test.startTest();
-        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{requests});
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{requests});
         Test.stopTest();
 
         System.assertEquals(1, results[0].sObjects.size());
@@ -140,5 +140,59 @@ public class ExecuteSOQLTest {
         System.assertEquals(ct.Id, returnedContact.Id);
         System.assertEquals(act.Id, returnedContact.AccountId);
         System.assertEquals('Test1', returnedContact.Account.Name);
+    }
+    
+    @isTest
+    private static void testGetFieldTypesUnknownSObjectType() {
+        String sObjectTypeName = 'theObjectThatMustNotBeNamed';
+        String msg = '[ExecuteSOQLException Not Thrown for Unknown sObject Type]';
+        Test.startTest();
+        try {
+        	Map<String, String> results = ExecuteSOQL.getFieldTypes(sObjectTypeName, new List<String>());
+        } catch (ExecuteSOQL.ExecuteSOQLException e) {
+            msg = e.getMessage();
+        }
+        Test.stopTest();
+        System.assertEquals('Unable to get sObject Type for name: '+ sObjectTypeName, msg);
+    }
+
+    @isTest
+    private static void testReplaceWithFormattedValuesWithBadQueryString() {
+        String soqlQuery = 'DOES NOT COMPUTE WHERE SELECT FROM ';
+        String msg = '[ExecuteSOQLException Not Thrown for Bad Query String]';
+        Test.startTest();
+        try {
+            String result = ExecuteSOQL.replaceWithFormattedValues(soqlQuery);
+        } catch (ExecuteSOQL.ExecuteSOQLException e) {
+            msg = e.getMessage();
+        }
+        Test.stopTest();
+        System.assertEquals('Unable to parse query string: ' + soqlQuery, msg);
+    }
+
+    @isTest
+    private static void testGetFormattedValueWithInteger() {
+        String fieldvalue = '1';
+        String fieldType = 'INTEGER';
+        Test.startTest();
+        String actualFieldvalue = ExecuteSOQL.getFormattedValue(fieldValue, fieldType);
+        Test.stopTest();
+        System.assertEquals(actualFieldvalue, fieldValue);
+    }
+
+    @isTest
+    public static void testLegacyEntryPoint() {
+        Account acc = new Account(Name = 'Test Account');
+        insert acc;
+
+        ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
+        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020, 03:24 PM';
+
+        Test.startTest();
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{
+                requests
+        });
+        Test.stopTest();
+        System.assertEquals(acc.Id, results[0].sObjects[0].Id);
     }
 }

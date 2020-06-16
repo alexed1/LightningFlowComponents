@@ -2,11 +2,8 @@
  * Provides a Salesforce Ligntning Flow component for sorting collections.
  * 
  * The following field types are supported and have been tested: 
- *  BOOLEAN, CURRENCY, DATE, DATETIME, DOUBLE, EMAIL, ID, PERCENT, PHONE, 
- *  PICKLIST, REFERENCE, STRING, TIME.
- * The following field types are also supported:
- *  DECIMAL, INTEGER, LONG.
- * 
+ *  BOOLEAN, CURRENCY, DATE, DATETIME, DECIMAL, DOUBLE, EMAIL, ID, INTEGER, 
+ *  LONG, PERCENT, PHONE, PICKLIST, REFERENCE, STRING, TIME.
  * See SortCollectionTest.cls for test coverage of API data types and UI field types.
  */
 global with sharing class SortCollection {
@@ -139,6 +136,7 @@ global with sharing class SortCollection {
      * Field Type Comparable Factory
      * @return A Comparable cooresponding to the fieldType or null if none exists.
      */
+    @TestVisible
     private static Comparable getComparable (String fieldType, Object value) {
         Comparable comp = null;
         switch on fieldType {

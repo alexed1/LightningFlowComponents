@@ -8,28 +8,29 @@
  */
 global with sharing class SortCollection {
     @InvocableMethod
-
     global static List <Results> sort(List<Requests> requestList) {
-        List<String> rawData = requestList[0].sortKeys.replaceAll('"+| +', '').split(',');
-        SortKeys sk = new SortKeys();
-        for (String rd : rawData) {
-            if (rd != null && rd.length() > 2) {
-                List<String> fieldDirection = rd.split(':');
-                if (fieldDirection.size() == 2) {
-                    sk.sortKeys.add(new SortKeyMember(fieldDirection[0], fieldDirection[1]));
+        List<Results> responseWrapper = new List<Results>();
+        for (Requests curRequest : requestList) {
+            List<SObject> outputCollection;
+            List<String> rawData = curRequest.sortKeys.replaceAll('"+| +', '').split(',');
+            SortKeys sk = new SortKeys();
+            for (String rd : rawData) {
+                if (rd != null && rd.length() > 2) {
+                    List<String> fieldDirection = rd.split(':');
+                    if (fieldDirection.size() == 2) {
+                        sk.sortKeys.add(new SortKeyMember(fieldDirection[0], fieldDirection[1]));
+                    }
                 }
             }
-        }
 
-        List<SObject> outputCollection = requestList[0].inputCollection;
+            outputCollection = curRequest.inputCollection;
 
-        if (outputCollection != null && !outputCollection.isEmpty()) {
-            List<String> allFields = new List<String>();
-            for (SortKeyMember skm : sk.sortKeys) {
-                allFields.add(skm.field);
-            }
+            if (outputCollection != null && !outputCollection.isEmpty()) {
+                List<String> allFields = new List<String>();
+                for (SortKeyMember skm : sk.sortKeys) {
+                    allFields.add(skm.field);
+                }
 
-            if (!outputCollection.isEmpty()) {
                 Map<String, String> fieldTypes = CollectionProcessorsUtils.getFieldTypes(outputCollection[0], allFields);
 
                 for (SortKeyMember skm : sk.sortKeys) {
@@ -44,15 +45,12 @@ global with sharing class SortCollection {
                     }
                 }
             }
+
+            Results response = new Results();
+            response.outputCollection = outputCollection;
+            responseWrapper.add(response);
         }
-
-        Results response = new Results();
-        response.outputCollection = outputCollection;
-        List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
-
         return responseWrapper;
-
     }
 
     global class SortableWrapper implements Comparable {

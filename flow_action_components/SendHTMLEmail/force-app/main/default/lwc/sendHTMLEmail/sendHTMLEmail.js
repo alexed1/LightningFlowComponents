@@ -4,16 +4,13 @@
  * @Author             : Alex Edelstein (From SendRichEmailCPE)
  * @Group              : 
  * @Last Modified By   : Jack D. Pond
- * @Last Modified On   : 6/16/2020, 9:47:44 AM
+ * @Last Modified On   : 6/18/2020, 3:00:02 PM
  * @Modification Log   : 
  * Ver		Date		Author					Modification
  * 1.0		06/09/2020	Alex Edelstein			Initial Version from SendRichEmailCPE
  * 1.33.2	06/15/2020	Jack D. Pond			Corrected to work for Summer 20
 **/
 import {api, track, LightningElement} from 'lwc';
-import {getObjectInfo} from 'lightning/uiObjectInfoApi';
-import {ShowToastEvent} from 'lightning/platformShowToastEvent';
-import {formattedValue, isReference, getDataType, removeFormatting, flowComboboxDefaults} from 'c/flowComboboxUtils';
 
 
 export default class SendHTMLEmail extends LightningElement {
@@ -26,6 +23,8 @@ export default class SendHTMLEmail extends LightningElement {
 		stringDataType: 'String',
 		referenceDataType: 'reference',
 		componentWidth: 320,
+		flowValueChangeEvent: 'configuration_editor_input_value_changed',
+		comboboxFlowValueChangeEvent: 'valuechanged',
 		nullValue: ''
 	};
 	@track _inputVariables;
@@ -202,7 +201,7 @@ export default class SendHTMLEmail extends LightningElement {
 	}
 
 	dispatchFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {
-		const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+		const valueChangedEvent = new CustomEvent(this.settings.flowValueChangeEvent, {
 			bubbles: true,
 			cancelable: false,
 			composed: true,
@@ -215,7 +214,7 @@ export default class SendHTMLEmail extends LightningElement {
 		this.dispatchEvent(valueChangedEvent);
 	}
 	dispatchComboboxFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {
-		const valueChangedEvent = new CustomEvent('valuechanged', {
+		const valueChangedEvent = new CustomEvent(this.settings.comboboxFlowValueChangeEvent, {
 			bubbles: true,
 			cancelable: false,
 			composed: true,

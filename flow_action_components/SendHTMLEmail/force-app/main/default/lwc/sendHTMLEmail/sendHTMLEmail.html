@@ -1,13 +1,14 @@
 <!--
   @File Name          : sendHTMLEmail.html
   @Description        : 
-  @Author             : Alex Edelstein
+  @Author             : Alex Edelstein (From SendRichEmail)
   @Group              : 
   @Last Modified By   : Jack D. Pond
-  @Last Modified On   : 6/8/2020, 7:59:34 PM
+  @Last Modified On   : 6/16/2020, 9:59:05 AM
   @Modification Log   : 
   Ver       Date            Author      		    Modification
   1.0		6/5/2020		Alex Edelstein			Initial Version
+  1.33.2    06/15/2020      Jack D. Pond            Update to Summer 20 from original template
 -->
 <template>
     <div style="padding:0.5rem;background:#16325c">
@@ -33,7 +34,6 @@
                              builder-context={_builderContext}
                              onvaluechanged={handleFlowComboboxValueChange}
             ></c-flow-combobox>
-
             <c-flow-combobox name="senderDisplayName"
                              label="Sender Display Name"
                              value={inputValues.senderDisplayName.value}

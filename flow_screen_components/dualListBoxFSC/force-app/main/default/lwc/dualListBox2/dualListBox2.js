@@ -142,14 +142,14 @@ export default class dualListBoxFSC extends LightningElement {
     }
 
     getValues(valueType) {
-        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
+        let listBox = this.template.querySelector('c-extended-base-dual-list-box');
         if (listBox) {
             return listBox.getValues(valueType);
         }
     }
 
     getOptions(valueType) {
-        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
+        let listBox = this.template.querySelector('c-extended-base-dual-list-box');
         if (listBox) {
             return listBox.getOptions(valueType);
         }

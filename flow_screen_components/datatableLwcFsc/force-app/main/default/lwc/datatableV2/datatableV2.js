@@ -446,7 +446,7 @@ export default class DatatableV2 extends LightningElement {
                 // Done processing the datatable
                 this.showSpinner = false;
 
-            })
+            })  // Handle any errors from the Apex Class
             .catch(error => {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
                 this.errorApex = 'Apex Action error: ' + error.body.message;
@@ -802,18 +802,24 @@ export default class DatatableV2 extends LightningElement {
                         eitem[ef] = edraft[ef];
                     }
                 });
+
                 // Add/update edited record to output collection
-                const orecord = this.outputEditedRows.find(o => o[this.keyField] == eitem[this.keyField]);   // Check to see if already in output collection
+                const orecord = this.outputEditedRows.find(o => o[this.keyField] == eitem[this.keyField]);   // Check to see if already in output collection      
                 if (orecord) {
-                    efieldNames.forEach(ef => orecord[ef] = edraft[ef]);    // Change existing output record
+                    const otherEditedRows = [];
+                    this.outputEditedRows.forEach(er => {   // Remove current row so it can be replaced with the new edits
+                        if (er[this.keyField] != eitem[this.keyField]) {
+                            otherEditedRows.push(er);
+                        }
+                    });
+                    this.outputEditedRows = [...otherEditedRows];
+                } 
+                this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
+                if (this.isUserDefinedObject) {
+                    this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                        //JSON Version
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));    //JSON Version
                 } else {
-                    this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
-                    if (this.isUserDefinedObject) {
-                        this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                        //JSON Version
-                        this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));    //JSON Version
-                    } else {
-                        this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-                    }
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
                 }
             }
             return eitem;

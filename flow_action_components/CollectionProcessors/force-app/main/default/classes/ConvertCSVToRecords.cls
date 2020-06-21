@@ -107,6 +107,10 @@ public with sharing class ConvertCSVToRecords {
         public class FlowCustomException extends Exception{}
     
         public class Request{
+            
+            public Request() {
+                contentDocumentIdList = new List<String>();
+            }
             @InvocableVariable(label='Object API Name' required=true)
             public string objectApiName;
             

@@ -1,5 +1,7 @@
 **/jsconfig.json
 
+force-app/main/default/flows/Demo_Flow_Generate_Report.flow-meta.xml
+force-app/main/default/flows/Create_Accounts.flow-meta.xml
 **/.eslintrc.json
 /force-app/main/default/profiles/
 /force-app/main/default/settings/

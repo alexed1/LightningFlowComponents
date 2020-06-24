@@ -8,10 +8,10 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="zipFileString" type="String" role="outputOnly"  />
-            <property name="metadataName" type="String"  role="inputOnly" />
-            <property name="transferMode" type="String"  role="inputOnly" />
-            <property name="objectType" type="String"  role="inputOnly" />
-            <property name="metadataString" type="String"  role="inputOnly" />
+            <property name="metadataName" type="String"  role="inputOnly" description="API Name of the metadata"/>
+            <property name="transferMode" type="String"  role="inputOnly"  description="Options are: retrieve or deploy"/>
+            <property name="objectType" type="String"  role="inputOnly" description="Metadata Object Type needs to be in CamelCase"/>
+            <property name="metadataString" type="String"  role="inputOnly" description="Metadata source code"/>
         </targetConfig>
     </targetConfigs> 
 </LightningComponentBundle>

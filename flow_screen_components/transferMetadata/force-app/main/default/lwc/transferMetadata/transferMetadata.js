@@ -24,13 +24,12 @@ export default class TransferMetadata extends LightningElement {
     modifiedName;
 
 
-
     connectedCallback() {
 
         this.activity = 'Beginning metadata transfer...';
-       if (this.transferMode == 'retrieve')
+       if (this.transferMode.toLowerCase() == 'retrieve')
             this.retrieve();
-       else if (this.transferMode == 'deploy')
+       else if (this.transferMode.toLowerCase() == 'deploy')
             this.deploy();
             else {
              console.log('transfermodeerror!');
@@ -64,7 +63,11 @@ export default class TransferMetadata extends LightningElement {
         console.log('this.metadataName is: ' + this.metadataName);
         console.log('beginning deployment of this.metadataString is: ' + this.metadataString);
         console.log('this.objectTpe is: ' + this.objectType);
-        this.modifiedName = this.metadataName + '_Converted';
+        if (this.objectType.toLowerCase() == this.objectType || this.objectType.toUpperCase() == this.objectType) {
+            console.log('ERROR: objectType parameter should be in CamelCase');
+        }
+        // this.modifiedName = this.metadataName + '_Converted';
+        this.modifiedName = this.metadataName;
         console.log('this.modifiedName is: ' + this.modifiedName);
         deployMetadata({ metadataText : this.metadataString, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })
         .then(result => {

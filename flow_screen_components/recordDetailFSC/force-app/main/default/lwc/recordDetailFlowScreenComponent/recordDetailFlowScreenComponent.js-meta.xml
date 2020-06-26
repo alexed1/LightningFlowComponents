@@ -10,8 +10,8 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="fields" type="String" description="Comma Seperated field api names"/>
-            <property name="mode" type="String" datasource="View,Edit" description="Either enter 'View' or 'Edit'"/>
+            <property name="fields" type="String" description="comma-seperated field api names"/>
+            <property name="mode" type="String" datasource="View,Edit"/>
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
             <property name="recordId" type="String" required="false" label="Record Id" description="Input - This is the ID of the record to display or Output - The ID of a newly created record."/>

@@ -12,57 +12,36 @@ private class SortCollectionTest {
      * Boolean          Checkbox                    Tested. HasOptedOutOfEmail FROM Contact.
      * Double           Currency                    Tested. ExpectedRevenue FROM Campaign.
      * Double           Number                      Tested. Double__c FROM ZTest__c.
-     * Double           Percent                     Tested. ExpectedResponse FROM Campaign
+     * Double           Percent                     Tested. ExpectedResponse FROM Campaign.
      * Date             Date                        Tested. Birthdate FROM Contact.
-     * Datetime         Datetime                    Tested. Datetime__c FROM ZTest__c; CreatedDate FROM Contact.
+     * Datetime         Datetime                    Tested. Datetime__c FROM Contract; CreatedDate FROM Contact.
      *                                              CreatedDate from Contact might not provide much variance in values.
+     * Decimal          ---                         Tested. getComparable and DecimalComparable directly tested. SObject fields not tested.
+     * Integer          ---                         Tested. getComparable and DoubleComparable directly tested. SObject fields not tested.
+     * Long             ---                         Tested. getComparable and DoubleComparable directly tested. SObject fields not tested.
      * String           Email                       Tested. Email FROM Contact.
      * String           Phone                       Tested. Phone FROM Contact.
      * String           Picklist                    Tested. LeadSource FROM Contact. 
      *                                              SortCollection sorts picklists by API Name and not picklist order.
      * String           Text                        Tested. FirstName, LastName, Department FROM Contact.
-     * Time             Time                        Tested. Time__c FROM ZTest__c.
-     * 
-     * ID               Master-detail Relationship  Not tested.
-     * Decimal          ---                         Not tested.
-     * Integer          ---                         Not tested.
-     * Long             ---                         Not tested.
-     * String           Auto Number                 Not tested.
-     * String           Text Area                   Not tested.
-     * String           Long Text Area              Not tested.
-     * String           Multi-select picklist       Not tested.
-     * String           Rich Text Area              Not tested.
-     * String           Data Category Group         Not tested.
-     * String           URL                         Not tested.
+     * Time             Time                        Tested. getComparable and TimeComparable directly tested. SObject fields not tested.
+     * ---              ---                         -----------
+     * ID               Master-detail Relationship  Not tested. However, ID (Lookup) was tested.
+     * String           Auto Number                 Not tested. However, other String UI field types tested.
+     * String           Text Area                   Not tested. However, other String UI field types tested.
+     * String           Long Text Area              Not tested. However, other String UI field types tested.
+     * String           Multi-select picklist       Not tested. However, other String UI field types tested.
+     * String           Rich Text Area              Not tested. However, other String UI field types tested.
+     * String           Data Category Group         Not tested. However, other String UI field types tested.
+     * String           URL                         Not tested. However, other String UI field types tested.
      */
-    
-    /*
-     * The following SObject must be in your Salesforce environment to maximize
-     * test coverage. If it is not present, some tests will be skipped.
-     * Name: ZTest
-     *    * If you use a different name, change CUSTOM_OBJECT_NAME.
-     *    * API Name: ZTest__c
-     *    * Deployment Status: Deployed
-     *    * Sharing Model: 'ReadWrite'
-     * Fields:
-     *  * Time
-     *    * Type: Time
-     *    * API Name: Time__c
-     *  * Datetime
-     *    * Type: Datetime
-     *    * API Name: Datetime__c
-     *  * Double
-     *    * Type: Number (10,8)
-     *    * API Name: Double__c
-     * 
-     */
-    static final String CUSTOM_OBJECT_NAME = 'ZTest'; // Do not provide the __c.
-    static final String CUSTOM_OBJECT_API_NAME = CUSTOM_OBJECT_NAME.trim() + '__c';
 
     static final Integer NUM_ACCOUNTS = 11;
     static final Integer NUM_CAMPAIGNS = 13;
     static final Integer NUM_CONTACTS = 23;
+    static final Integer NUM_CONTRACTS = 7;
     static final Integer NUM_CUSTOM_OBJECTS = 17;
+    
 
     static final Boolean[] CHECKBOX_CHOICES = new Boolean[] {null, true, false};
     static final String[] LEAD_SOURCE_CHOICES = new String[] {null, 'Web', 'Phone Inquiry', 'Partner Referral', 'Purchased List', 'Other'};
@@ -132,41 +111,35 @@ private class SortCollectionTest {
             }
         }
         insert testCampaigns;
-
-        // Make Test Objects for field types not covered above
-        String customObjectApiName = CUSTOM_OBJECT_API_NAME;
-        Schema.SObjectType t = Schema.getGlobalDescribe().get(customObjectApiName);
-        System.debug('makeData() Schema.SObjectType t=' + t);
-
-        if (t != null) {
-            List<SObject> testSObjects = new List<SObject>();
-            for (Integer i=0; i < NUM_CUSTOM_OBJECTS; i++) {
-                String name = String.fromCharArray(new List<Integer> {aCharCode + Math.mod(i,26)}) + (1 + Math.rint(i/26));
-                Double doub = i + i/1000 + i/100000;
-                Datetime dt = Datetime.newInstance(2000, 1 + (Math.mod(i, 12)), 1 + Math.mod(i,29), 
-                    Math.mod(i,24), Math.mod(i,60), Math.mod(i,60));
-                SObject so = t.newSObject();
-                so.put('Name',name);
-                if (Math.mod(i,3) != 0) {
-                    Time timeVal = Time.newInstance(Math.mod(i,24), Math.mod(i,60), Math.mod(i,60), Math.mod(i,1000)); //HH:mm:ss:S
-                    so.put('Time__c', timeVal);
-                    so.put('Double__c', doub);
-                    so.put('Datetime__c', dt);
-                }
-                testSObjects.add(so);
+        // Make Contracts for DateTime tests
+        List<Contract> testContracts = new List<Contract>();
+        for(Integer i=0; i< NUM_CONTRACTS; i++) {
+            String name = String.fromCharArray(new List<Integer> {aCharCode + Math.mod(i,26)}) + (1 + Math.rint(i/26));
+            if (Math.mod(i,3) == 0) {
+                testContracts.add(new Contract(Name=name,
+                    AccountId = testAccounts[Math.mod(i,NUM_ACCOUNTS)].Id,
+                    ContractTerm = i + 1,
+                    Status = 'Draft'
+                    ));
+            } else {
+                testContracts.add(new Contract(Name=name,
+                    AccountId = testAccounts[Math.mod(i,NUM_ACCOUNTS)].Id,
+                    ContractTerm = i+1,
+                    Status = 'Draft'
+                    ));
             }
-            insert testSObjects;
         }
+        insert testContracts;
+        // Change the ActivatedDates
+        for(Integer i=0; i< NUM_CONTRACTS; i++) {
+            Datetime dt = Datetime.newInstance(2019, 1 + (Math.mod(i, 12)), 1 + Math.mod(i,29), 
+                Math.mod(i,24), Math.mod(i,60), Math.mod(i,60));
+            testContracts[i].Status = 'Activated';
+            testContracts[i].ActivatedDate = dt;
+        }
+        upsert testContracts;
     }
 
-    /**************************************************************************
-     * New Stuff field type tests
-     * DECIMAL, INTEGER
-     *************************************************************************/
-   /*  @isTest static void testSortContactAccountIdDesc() {
-        List<SObject> inputCollection = [SELECT Id, LastName, AccountId FROM Contact];
-        testSortDoubleField(inputCollection, 'AccountId:DESC');
-    } */
     /**************************************************************************
      * Checkbox field type tests
      ************************************D*************************************/
@@ -209,21 +182,13 @@ private class SortCollectionTest {
     /**************************************************************************
      * Datetime field type tests
      *************************************************************************/
-    @isTest static void testSortCustomObjectDatetimeAsc() {
-        System.assert(customSObjectExists(CUSTOM_OBJECT_API_NAME), 
-            'MISSING_CUSTOM_SOBJECT - ' + CUSTOM_OBJECT_API_NAME + ' needed for testSortCustomObjectDatetimeAsc().');
-        String query = String.format('SELECT Id, Name, Datetime__c FROM {0}', new List<Object>{CUSTOM_OBJECT_API_NAME});
-        System.debug('testSortCustomObjectDoubleAsc.query=' + query);
-        List<SObject> inputCollection = Database.query(query);
-        testSortDatetimeField(inputCollection, 'Datetime__c:Asc');
+    @isTest static void testSortDatetimeContractActivatedDateAsc() {
+        List<SObject> inputCollection = [SELECT Id, ActivatedDate FROM Contract];
+        testSortDatetimeField(inputCollection, 'ActivatedDate:ASC');
     }
-     @isTest static void testSortCustomObjectDatetimeDesc() {
-        System.assert(customSObjectExists(CUSTOM_OBJECT_API_NAME), 
-            'MISSING_CUSTOM_SOBJECT - ' + CUSTOM_OBJECT_API_NAME + ' needed for testSortCustomObjectDatetimeDesc().');
-        String query = String.format('SELECT Id, Name, Datetime__c FROM {0}', new List<Object>{CUSTOM_OBJECT_API_NAME});
-        System.debug('testSortCustomObjectDoubleAsc.query=' + query);
-        List<SObject> inputCollection = Database.query(query);
-        testSortDatetimeField(inputCollection, 'Datetime__c:DESC');
+    @isTest static void testSortDatetimeContractActivatedDateDesc() {
+        List<SObject> inputCollection = [SELECT Id, ActivatedDate FROM Contract];
+        testSortDatetimeField(inputCollection, 'ActivatedDate:DESC');
     }
 
     // CreatedDates will likely all be all be the same.
@@ -281,33 +246,12 @@ private class SortCollectionTest {
     /**************************************************************************
      * Number(x,y) (Double) field type tests.
      *************************************************************************/
-    @isTest static void testSortCustomObjectDoubleDesc() {
-        System.assert(customSObjectExists(CUSTOM_OBJECT_API_NAME), 
-            'MISSING_CUSTOM_SOBJECT - ' + CUSTOM_OBJECT_API_NAME + ' needed for testSortCustomObjectDoubleDesc().');
-        String query = String.format('SELECT Id, Name, Double__c FROM {0}', new List<Object>{CUSTOM_OBJECT_API_NAME});
-        System.debug('testSortCustomObjectDoubleAsc.query=' + query);
-        List<SObject> inputCollection = Database.query(query);
-        testSortDoubleField(inputCollection, 'Double__c:DESC');
-    }
+    // See testDoubleCompableIntegerFieldType
 
     /**************************************************************************
      * Time field type tests
      *************************************************************************/
-    @isTest static void testSortCustomObjectTimeAsc() {
-        System.assert(customSObjectExists(CUSTOM_OBJECT_API_NAME), 
-            'MISSING_CUSTOM_SOBJECT - ' + CUSTOM_OBJECT_API_NAME + ' needed for testSortCustomObjectTimeAsc().');
-        String query = String.format('SELECT Id, Time__c FROM {0}', new List<Object>{CUSTOM_OBJECT_API_NAME});
-        System.debug('testSortCustomObjectTimeAsc.query=' + query);
-        List<SObject> inputCollection = Database.query(query);
-        testSortTimeField(inputCollection, 'Time__c:ASC');
-    }
-    @isTest static void testSortCustomObjectTimeDesc() {
-        System.assert(customSObjectExists(CUSTOM_OBJECT_API_NAME), 
-            'MISSING_CUSTOM_SOBJECT - ' + CUSTOM_OBJECT_API_NAME + ' needed for testSortCustomObjectTimeDesc().');
-        String query = String.format('SELECT Id, Time__c FROM {0}', new List<Object>{CUSTOM_OBJECT_API_NAME});
-        List<SObject> inputCollection = Database.query(query);
-        testSortTimeField(inputCollection, 'Time__c:DESC');
-    }
+    // See testTimeComparable
 
     /**************************************************************************
      * Percentage field type tests
@@ -373,6 +317,157 @@ private class SortCollectionTest {
         testSortStringField(inputCollection, 'LastName:DESC');
     }
 
+    /*
+     * Further coverage
+     */
+    @isTest static void testBulkification() {
+        Integer numRows;
+        List<SortCollection.Requests> requestsList = new List<SortCollection.Requests>();
+
+        for (Integer i; i < Math.min(7, NUM_CONTACTS); i++) {
+            SortCollection.Requests requests = new SortCollection.Requests();
+            numRows = i + 1;
+            requests.inputCollection = [SELECT Id, LastName, FirstName FROM Contact LIMIT :numRows]; 
+            // Have varying lengths to detect if results match up as expected
+            requests.sortKeys = (Math.mod(i,3) == 0) ? 'LastName:ASC' : 'LastName:DESC';
+            requestsList.add(requests);
+        }
+        testBulkSortStringField(requestsList);
+    }
+
+    @isTest static void testSortableWrapperCompareToUnsupportedType() {
+        
+        List<SObject> inputCollection = [SELECT Id, LastName, FirstName, Department FROM Contact LIMIT 2];
+        System.debug('inputCollection.size() ' + inputCollection.size());
+        Test.startTest();
+        SortCollection.SortableWrapper sw0 = new SortCollection.SortableWrapper(inputCollection[0], 'LastName', 1, 'UnsupportedType');
+        SortCollection.SortableWrapper sw1 = new SortCollection.SortableWrapper(inputCollection[1], 'LastName', 1, 'STRING');
+        //sw0.orig = null;
+        Integer retval = sw0.compareTo(sw1);
+        Test.stopTest();
+
+        System.assertEquals(0,retval);
+    }
+    @isTest static void testBooleanComparable () {
+        Boolean t = true;
+        Boolean f = false;
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,0,1,-1,0,-1,-1,1,1};
+        Test.startTest();
+        Comparable tc = SortCollection.getComparable('BOOLEAN', (Object) t);
+        Comparable fc = SortCollection.getComparable('BOOLEAN', (Object) f);
+        Comparable nc = SortCollection.getComparable('BOOLEAN', null);
+        actuals.add(tc.compareTo(t)); // expect 0, true = true
+        actuals.add(fc.compareTo(f)); // expect 0, false = false
+        actuals.add(tc.compareTo(false)); // expect 1, true > false
+        actuals.add(fc.compareTo(true));  // expect -1, false < true
+        actuals.add(nc.compareTo(null));  // expect 0, null = null
+        actuals.add(nc.compareTo(f));  // expect -1, null < false
+        actuals.add(nc.compareTo(t));  // expect 1-, null < true
+        actuals.add(tc.compareTo(null));  // expect 1, true > null
+        actuals.add(fc.compareTo(null));  // expect 1 false > null
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+    @isTest static void testDateimeComparable () {
+        Datetime datetime0 = Datetime.newInstance(2020, 1, 1, 0, 0, 0); //year, month, day, hour, minute, second
+        Datetime datetime1 = Datetime.newInstance(2020, 3, 14, 15, 9, 26); 
+        Datetime datetime2 = Datetime.newInstance(2020, 6, 28, 30, 18,52);
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,1,-1,0,1,-1};
+        Test.startTest();
+        Comparable dt1c = SortCollection.getComparable('DATETIME', (Object) datetime1);
+        Comparable nc = SortCollection.getComparable('DATETIME', null);
+        actuals.add(dt1c.compareTo(datetime1)); // expect 0, 
+        actuals.add(dt1c.compareTo(datetime0)); // expect 1
+        actuals.add(dt1c.compareTo(datetime2)); // expect -1
+        actuals.add(nc.compareTo(null));   // expect 0, null = null
+        actuals.add(dt1c.compareTo(null));  // expect 1, any datetime > null
+        actuals.add(nc.compareTo(datetime1));  // expect -1 null < anydatetime
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+    @isTest static void testDecimalComparable () {
+        Decimal value = 3.14159; // Apple
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,1,-1,0,1,-1};
+        Test.startTest();
+        Comparable pi = SortCollection.getComparable('DECIMAL', (Object) value);
+        Comparable n = SortCollection.getComparable('DECIMAL', null);
+        actuals.add(pi.compareTo(value)); // expect 0, pi = pi
+        actuals.add(pi.compareTo(2.71828));   // expect 1, pi > e
+        actuals.add(pi.compareTo(22.4591));  // expect -1, pi < pi^e
+        actuals.add(n.compareTo(null));   // expect 0, null = null
+        actuals.add(pi.compareTo(null));  // expect 1, pi > null
+        actuals.add(n.compareTo(value));  // expect -1 null < pi
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+    @isTest static void testDoubleComparableIntegerFieldType () {
+        Integer value = 3;
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,1,-1,0,1,-1};
+        Test.startTest();
+        Comparable pi = SortCollection.getComparable('INTEGER', (Object) value);
+        Comparable n = SortCollection.getComparable('INTEGER', null);
+        actuals.add(pi.compareTo(value)); // expect 0, pi = pi
+        actuals.add(pi.compareTo(2));   // expect 1, pi > e
+        actuals.add(pi.compareTo(22));  // expect -1, pi < pi^e
+        actuals.add(n.compareTo(null));   // expect 0, null = null
+        actuals.add(pi.compareTo(null));  // expect 1, pi > null
+        actuals.add(n.compareTo(value));  // expect -1 null < pi
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+    @isTest static void testDoubleComparableLongFieldType () {
+        Long value = 3141592653L;
+        Long evalue  = 2718281828L;
+                     
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,1,-1,0,1,-1};
+        Test.startTest();
+        Comparable pi = SortCollection.getComparable('LONG', (Object) value);
+        Comparable n = SortCollection.getComparable('LONG', null);
+        actuals.add(pi.compareTo(value)); // expect 0, pi = pi
+        actuals.add(pi.compareTo(2));   // expect 1, pi > e
+        actuals.add(pi.compareTo(2*value));  // expect -1, pi < 2*pi
+        actuals.add(n.compareTo(null));   // expect 0, null = null
+        actuals.add(pi.compareTo(null));  // expect 1, pi > null
+        actuals.add(n.compareTo(value));  // expect -1 null < pi
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+    @isTest static void testTimeComparable () {
+        Time time0 = Time.newInstance(0, 0, 0, 0); //HH:mm:ss:S
+        Time time1 = Time.newInstance(3, 14, 15, 926); //HH:mm:ss:S
+        Time time2 = Time.newInstance(22, 45, 0, 0); //HH:mm:ss:S
+        List<Integer> actuals = new List<Integer>();
+        List<Integer> expectations = new List<Integer>{0,1,-1,0,1,-1};
+        Test.startTest();
+        Comparable t1 = SortCollection.getComparable('TIME', (Object) time1);
+        Comparable n = SortCollection.getComparable('TIME', null);
+        actuals.add(t1.compareTo(time1)); // expect 0, 3:14:15:926 = 3:14:15:000
+        actuals.add(t1.compareTo(time0)); // expect 1, 3:14:15:926 > 00:00:00:000
+        actuals.add(t1.compareTo(time2)); // expect -1, 3:14:15:926 < 22:45:00:000
+        actuals.add(n.compareTo(null));   // expect 0, null = null
+        actuals.add(t1.compareTo(null));  // expect 1, 3:14:15:926 > null
+        actuals.add(n.compareTo(time1));  // expect -1 null < 3:14:15:926
+        Test.stopTest();
+        for (Integer i = 0; i < actuals.size(); i++) {
+            System.assertEquals(expectations[i], actuals[i], 'Comparison #' + i);
+        }
+    }
+
     /**************************************************************************
      * Test helpers
      *************************************************************************/
@@ -400,6 +495,57 @@ private class SortCollectionTest {
             sortKey,
             '{0}', 
             '{1}'});
+    }
+
+    static void testBulkSortStringField(List<SortCollection.Requests> requestsList) {
+        //List<SObject> inputCollection, String sortKeys) {
+        SortCollection.Requests requests = new SortCollection.Requests();
+        List<SortCollection.Results> resultsList = new List<SortCollection.Results>();
+
+        // Test
+        Test.startTest();
+        resultsList = SortCollection.sort(requestsList);
+        Test.stopTest();
+        
+        // Validate
+        System.assertNotEquals((List<SortCollection.Results>) null, resultsList, 'SortCollection.sort() returned null');
+        System.assertEquals(requestsList.size(), resultsList.size(), 'resultList.size()');
+
+        for (Integer i = 0; i < resultsList.size(); i++) {
+            SortCollection.Results curResults = resultsList[i];
+            SortCollection.Requests curRequests = requestsList[i];
+
+            List<SObject> outputCollection = curResults.outputCollection;
+            List<SObject> inputCollection = curRequests.inputCollection;
+            System.assertEquals(outputCollection.size(), inputCollection.size(), 'Num sort results');
+
+            String sortKeys = curRequests.sortKeys;
+            List<String> tokens = sortKeys.split(':');
+            String fieldName = tokens[0];
+            Boolean isDescending = (tokens[1] == 'DESC');
+            String msgTemplate = makeAssertMsgTemplate(fieldName, isDescending, sortKeys);
+            SObject previous = null;
+            for (Sobject current : outputCollection)  {
+                //System.debug('testSortStringField() [' + i + '] current=' + JSON.serialize(current) + ', sortKeys=' + sortKeys);
+                if (i == 0) {
+                    previous = current;
+                } else {
+                    String prevValue = previous.get(fieldName) == null ?
+                        null : (String) previous.get(fieldName); 
+                        String curValue = current.get(fieldName) == null ? 
+                    null : (String) current.get(fieldName);
+                    List<String> values = new List<String> {prevValue,curValue};
+                    if (isDescending) {
+                        System.assert((prevValue == curValue || curValue == null || prevValue > curValue), 
+                        String.format(msgTemplate, values));
+                    } else {
+                        System.assert((prevValue == curValue || prevValue == null || prevValue < curValue), 
+                        String.format(msgTemplate, values));                    
+                    }
+                    previous = current;
+                }
+            }
+        }
     }
 
     static void testSortBooleanField(List<SObject> inputCollection, String sortKeys) {

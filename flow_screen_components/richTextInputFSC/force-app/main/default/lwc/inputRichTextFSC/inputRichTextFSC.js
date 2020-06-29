@@ -1,7 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-export default class RicherTextFSC extends LightningElement {
+export default class InputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
     @api value;

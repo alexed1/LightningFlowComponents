@@ -7,27 +7,36 @@ https://unofficialsf.com/rich-text-input-flow-screen-component/
 Rich Text enhancements for Flows
 
 ### Summary:
-IMPORTANT:  Use richerText = true input attribute if you want to leverage these enhanced features.  Otherwise leave empty and regular input Rich Text component will be used.
-1)	Block disallowed words and symbols
-    a.	Control whether this is a block that prevents next/finish of flow.
-2)	Search and Replace custom text
+IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to leverage these enhanced features.  Otherwise leave empty and regular input Rich Text component will be used.
+1)	Warn or Block Transition in Flow if disallowed words and/or symbols are present.
+2)	Find and Replace
 3)	Auto-Replace suggested words
-4)	Revert mass changes from search/replace or suggested words
+4)	Undo functionality for search/replace or suggested words
 
 ### Admin Instructions:
-1)  Follow Input/Output map below.
-2)  Hard Block will prevent user from advancing the Flow screen if there are disallowedWords or disallowedSymbols used.
-3)  Default for disallowed Words/Symbols if hardBlock is false will be a Warning message only.  Setting hardBlock to true will set them to Error messages.
+##### Enabling and Disabling Features in Flow:
+1)  Default function is regular rich text input field.  To enable advanced features set enableAdvancedTools to true.
+2)  Setting label provides a field label for the rich text input.
+3)  Rich Text input/output is provided through the value attribute.
+##### Replace Text with Suggested Terms:
+1)  If autoReplaceMap is populated, then a button is shown to user.
+2)  Use autoReplaceMap to set up key:value pairs in JSON.  Example: {"Test":"GreatTest™"}
+     a.  When user employs the button, the key will be replace by value.
+##### Managing Disallowed Words and Symbols:
+1)  If disallowedSymbols or disallowedWords is filled, then user will be notified while typing one of those words or symbols.
+2)  Both disallowedSymbols and disallowedWords accept a comma delimited string.
+3)  The default popup when one of these symbols/words is used will be an error Toast.  This will also give validation error if user tries to advance while error is still present.
+4)  To change the popup to a warning only, and turn off the associated validation, set warnOnly attribute to true.
 
-|Parameter	               |I	   |O	     |Information 
-|--------------------------|-----|-------|-------------------------------------------------------------------------------|
-|**richerText**            |X    |       |  Boolean.  Set to true if you want to use enhanced rich text.  Default if false (regular input component)   |
-|**autoReplaceMap**	           |X	   |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )            |
-|**disallowedSymbols**	       |X	   |       |Comma-separated list of words to block.  Example: /,@,*                        |
-|**disallowedWords**	         |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst              |
-|**warnOnly**	               |X	   |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.   |
-|**richText**	                 |X	   |X	     |Input and output RichText that you’ll be editing                               |
-|**label**                      |X     |X        |Input to provide field-level label if desired                                 |
+|Parameter	               |I	 |O	     |Information 
+|--------------------------|-----|-------|-------------------------------------------------------------------------------------------------------------------|
+|**enableAdvancedTools**   |X    |       |Boolean.  Set to true if you want to use enhanced rich text.  Default is false (regular input component)           |
+|**autoReplaceMap**	       |X	 |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )                                                |
+|**disallowedSymbols**	   |X	 |       |Comma-separated list of words to block.  Example: /,@,*                                                            |
+|**disallowedWords**	   |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst                                                  |
+|**warnOnly**	           |X	 |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.   |
+|**value**	           	   |X	 |X	     |Input and output Rich Text that you’ll be editing                                                                  |
+|**label**                 |X    |X      |Input to provide field-level label if desired                                                                      |
 
 
 ### User Instructions:

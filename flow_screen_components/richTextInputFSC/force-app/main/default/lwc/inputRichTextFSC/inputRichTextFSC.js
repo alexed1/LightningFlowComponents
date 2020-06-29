@@ -1,11 +1,11 @@
 import { LightningElement, api, track } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-export default class InputRichTextFSC_LWC extends LightningElement {
+export default class RicherTextFSC extends LightningElement {
 
     //Input and Output Attributes for Flow
     @api value;
-    @api richerText = false;
+    @api enableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
     @api autoReplaceMap;
@@ -18,18 +18,18 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     //Validation hook to use standard in Flow.  Only enforce if 
     @api validate(){
         this.value = this.richText;
-        if(!this.richerText || this.warnOnly || (!this.warnOnly && this.isValidCheck)){
+        if(!this.enableAdvancedTools || this.warnOnly || (!this.warnOnly && !this.runningBlockedInput.length>0)){
             return {isValid:true};
         }else{
             return {
                 isValid:false,
-                errorMessage: 'Cannot Advance - Invalid Symbols/Words Remaind in Rich Text'
+                errorMessage: 'Cannot Advance - Invalid Symbols/Words Remain in Rich Text: '+this.runningBlockedInput.toString()
             };
         }
     }
 
     //Other Variables
-    @track richText; //use separate variable for richerText as value is causing conflict
+    @track richText; //use separate variable for richerText as value attribute is causing conflict
     @track disallowedWordsArray = [];
     @track disallowedWords;
     @track disallowedWordsMessage;
@@ -42,22 +42,25 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     @track symbolsNotAllowed;
     @track wordsNotAllowed;
     @track oldRichText;
-    @track selectTrue = false;
-    @track allowRevert = false;
+    @track dirty = false;
     @track autoReplaceEnabled = false;
     @track disallowedType = 'error';
     @track disallowedMode = 'sticky';
+    @track runningBlockedInput = [];
+    @track searchButton = false;
     replaceMap = {};
     regTerm = '';
     applyTerm = '';
     symbolTitle = 'Invalid Symbols';
     wordTitle = 'Invalid Words';
+    instructions = '1)  Find and Replace:  Use Magnifying Glass, Enter Terms and Use Check Mark.  '+
+                    '2)  Auto Replace:  If your Admin has configured it, Use Merge Icon to replace suggested terms.';
 
     //Begin functionality
 
     //Set initial values on load
     connectedCallback() {
-        if(this.richerText){
+        if(this.enableAdvancedTools){
             this.richText = this.value;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsMessage = 'Do Not Use the Following Symbols: '+this.disallowedSymbolsList;
@@ -85,7 +88,7 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                         if(this.disallowedWordsArray.length != 1){
                             this.disallowedWords = '('+this.disallowedWordsArray[i] + '|';
                         }else{
-                            this.disallowedWords = '('+this.disallowedWordsArray[i] + ')\\b';
+                            this.disallowedWords = '('+this.disallowedWordsArray[i] + ')\b';
                         }
                     } else if (i == (this.disallowedWordsArray.length - 1)){
                         this.disallowedWords = this.disallowedWords.concat(this.disallowedWordsArray[i] + ')\\b');
@@ -94,13 +97,12 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                     }
                 }
             }
-            if(this.disallowedSymbols != undefined) this.symbolsNotAllowed = new RegExp(this.disallowedSymbols);
-            if(this.disallowedWords != undefined) this.wordsNotAllowed = new RegExp(this.disallowedWords);
+            if(this.disallowedSymbols != undefined) this.symbolsNotAllowed = new RegExp(this.disallowedSymbols,'g');
+            if(this.disallowedWords != undefined) this.wordsNotAllowed = new RegExp(this.disallowedWords,'g');
             if(this.autoReplaceMap != undefined){
                 this.replaceMap = JSON.parse(this.autoReplaceMap);
                 this.autoReplaceEnabled = true;
             } 
-            this.isValidCheck = true;
             //if warn only is set, then change toast type/mode
             if(this.warnOnly){
                 this.disallowedType = 'warning';
@@ -111,13 +113,18 @@ export default class InputRichTextFSC_LWC extends LightningElement {
 
     //Handle updates to Rich Text field
     handleTextChange(event) {
+        this.runningBlockedInput = [];
         if (this.symbolsNotAllowed != undefined || this.wordsNotAllowed != undefined) {
             this.interimValue = (event.target.value).toLowerCase();
             this.interimValue = this.interimValue.replace(/(<([^>]+)>)/ig, "");
-
-            if(this.symbolsNotAllowed != undefined){
-                if (this.symbolsNotAllowed.test(this.interimValue)) {
-                    this.isValidCheck = false;
+            
+            //Symbol check section
+            if (this.symbolsNotAllowed != undefined) {
+                let matchesSymbol = this.interimValue.match(this.symbolsNotAllowed);
+                if (matchesSymbol != null && matchesSymbol.length > 0) {
+                    for(let i = 0; i < matchesSymbol.length; i++){
+                        this.runningBlockedInput.push(matchesSymbol[i]);
+                    }
                     const evt = new ShowToastEvent({
                         title: this.symbolTitle,
                         message: this.disallowedSymbolsMessage,
@@ -125,15 +132,17 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                         mode: this.disallowedMode
                     });
                     this.dispatchEvent(evt);
-                }else{
-                    this.isValidCheck = true;
+                } else {
                     this.richText = event.target.value;
                 }
             }
 
-            if(this.wordsNotAllowed != undefined){
-                if (this.wordsNotAllowed.test(this.interimValue)) {
-                    this.isValidCheck = false;
+            if (this.wordsNotAllowed != undefined) {
+                let matchesWords = this.interimValue.match(this.wordsNotAllowed);
+                if (matchesWords != null && matchesWords.length > 0) {
+                    for(let i = 0; i < matchesWords.length; i++){
+                        this.runningBlockedInput.push(matchesWords[i]);
+                    }
                     const evt = new ShowToastEvent({
                         title: this.wordTitle,
                         message: this.disallowedWordsMessage,
@@ -141,22 +150,18 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                         mode: this.disallowedMode
                     });
                     this.dispatchEvent(evt);
-                }else{
-                    this.isValidCheck = true;
+                } else {
                     this.richText = event.target.value;
                 }
             }
         } else {
-            this.isValidCheck = true;
             this.richText = event.target.value;
         }
     }
 
     //Handle initiation of Search and Replace
     handleOpenSearch(event) {
-        this.selectTrue = !this.selectTrue;
-        if (this.searchButton) this.searchButton = false;
-        else this.searchButton = true;
+        this.searchButton = !this.searchButton;
     }
 
     //Search and Replace Search for Value
@@ -172,19 +177,18 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     //Execute Search and REplace
     searchReplace() {
         this.oldRichText = this.richText;
-        this.allowRevert = true;
+        this.dirty = true;
         let draftValue = this.richText;
         this.searchTerm = this.escapeRegExp(this.searchTerm);
         this.replaceValue = this.escapeRegExp(this.replaceValue);
         draftValue = this.replaceAll(draftValue, this.searchTerm, this.replaceValue);
-        this.isValidCheck = true;
         this.richText = draftValue;
     }
 
     //Execute Auto-Replacement based on map.
     applySuggested(event) {
         this.oldRichText = this.richText;
-        this.allowRevert = true;
+        this.dirty = true;
         let draftValue = this.richText;
         let regTerm = '';
         for (var key in this.replaceMap) {
@@ -192,7 +196,6 @@ export default class InputRichTextFSC_LWC extends LightningElement {
             this.regTerm = key;
             draftValue = this.replaceAll(draftValue, this.regTerm, this.applyTerm);
         }
-        this.isValidCheck = true;
         this.richText = draftValue;
     }
 
@@ -204,7 +207,7 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     //Undo last change
     handleRevert() {
         this.richText = this.oldRichText;
-        this.allowRevert = false;
+        this.dirty = false;
     }
 
     //Clean input for RegExp

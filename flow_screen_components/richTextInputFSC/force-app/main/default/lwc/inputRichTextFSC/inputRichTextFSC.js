@@ -29,7 +29,7 @@ export default class RicherTextFSC extends LightningElement {
     }
 
     //Other Variables
-    @track richText; //use separate variable for richerText as value attribute is causing conflict
+    @track richText; //use separate variable for enhanced features as value attribute is causing conflict
     @track disallowedWordsArray = [];
     @track disallowedWords;
     @track disallowedWordsMessage;

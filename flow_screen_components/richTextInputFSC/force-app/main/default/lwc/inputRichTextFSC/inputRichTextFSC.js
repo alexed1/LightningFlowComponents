@@ -1,7 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
-export default class InputRichTextFSC_LWC extends LightningElement {
+export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
     @api value;
@@ -15,10 +14,12 @@ export default class InputRichTextFSC_LWC extends LightningElement {
         'strike', 'list', 'indent', 'align', 'link',
         'image', 'clean', 'table', 'header', 'color','background','code','code-block','script','blockquote','direction'];
 
-    //Validation hook to use standard in Flow.  Only enforce if 
+    //Validation hook to use standard in Flow.  Only enforce if Advanced Tools are enabled
     @api validate(){
-        this.value = this.richText;
-        if(!this.enableAdvancedTools || this.warnOnly || (!this.warnOnly && !this.runningBlockedInput.length>0)){
+        if(this.enableAdvancedTools){
+            this.value = this.richText;
+        }
+        if(!this.enableAdvancedTools || this.warnOnly || (!this.warnOnly && this.isValidCheck)){
             return {isValid:true};
         }else{
             return {
@@ -29,13 +30,11 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     }
 
     //Other Variables
-    @track richText; //use separate variable for enhanced features as value attribute is causing conflict
+    @track richText; //use separate variable for richerText as value attribute is causing conflict
     @track disallowedWordsArray = [];
     @track disallowedWords;
-    @track disallowedWordsMessage;
     @track disallowedSymbolsArray = [];
     @track disallowedSymbols;
-    @track disallowedSymbolsMessage;
     @track searchTerm = '';
     @track replaceValue = '';
     @track interimValue = '';
@@ -44,15 +43,13 @@ export default class InputRichTextFSC_LWC extends LightningElement {
     @track oldRichText;
     @track dirty = false;
     @track autoReplaceEnabled = false;
-    @track disallowedType = 'error';
-    @track disallowedMode = 'sticky';
     @track runningBlockedInput = [];
     @track searchButton = false;
+    @track isValidCheck = true;
+    @track errorMessage;
     replaceMap = {};
     regTerm = '';
     applyTerm = '';
-    symbolTitle = 'Invalid Symbols';
-    wordTitle = 'Invalid Words';
     instructions = '1)  Find and Replace:  Use Magnifying Glass, Enter Terms and Use Check Mark.  '+
                     '2)  Auto Replace:  If your Admin has configured it, Use Merge Icon to replace suggested terms.';
 
@@ -63,7 +60,6 @@ export default class InputRichTextFSC_LWC extends LightningElement {
         if(this.enableAdvancedTools){
             this.richText = this.value;
             if(this.disallowedSymbolsList != undefined){
-                this.disallowedSymbolsMessage = 'Do Not Use the Following Symbols: '+this.disallowedSymbolsList;
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedSymbolsArray.length; i++){
                     if(i == 0){
@@ -81,7 +77,6 @@ export default class InputRichTextFSC_LWC extends LightningElement {
             }
     
             if(this.disallowedWordsList != undefined){
-                this.disallowedWordsMessage = 'Do Not Use the Following Words: '+this.disallowedWordsList;
                 this.disallowedWordsArray = this.disallowedWordsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedWordsArray.length; i++){
                     if(i == 0){
@@ -103,17 +98,13 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                 this.replaceMap = JSON.parse(this.autoReplaceMap);
                 this.autoReplaceEnabled = true;
             } 
-            //if warn only is set, then change toast type/mode
-            if(this.warnOnly){
-                this.disallowedType = 'warning';
-                this.disallowedMode = 'dismissable';
-            }
         }
     }
 
     //Handle updates to Rich Text field
     handleTextChange(event) {
         this.runningBlockedInput = [];
+        this.isValidCheck = true;
         if (this.symbolsNotAllowed != undefined || this.wordsNotAllowed != undefined) {
             this.interimValue = (event.target.value).toLowerCase();
             this.interimValue = this.interimValue.replace(/(<([^>]+)>)/ig, "");
@@ -125,13 +116,7 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                     for(let i = 0; i < matchesSymbol.length; i++){
                         this.runningBlockedInput.push(matchesSymbol[i]);
                     }
-                    const evt = new ShowToastEvent({
-                        title: this.symbolTitle,
-                        message: this.disallowedSymbolsMessage,
-                        variant: this.disallowedType,
-                        mode: this.disallowedMode
-                    });
-                    this.dispatchEvent(evt);
+                    this.isValidCheck = false;
                 } else {
                     this.richText = event.target.value;
                 }
@@ -143,20 +128,22 @@ export default class InputRichTextFSC_LWC extends LightningElement {
                     for(let i = 0; i < matchesWords.length; i++){
                         this.runningBlockedInput.push(matchesWords[i]);
                     }
-                    const evt = new ShowToastEvent({
-                        title: this.wordTitle,
-                        message: this.disallowedWordsMessage,
-                        variant: this.disallowedType,
-                        mode: this.disallowedMode
-                    });
-                    this.dispatchEvent(evt);
+                    this.isValidCheck = false;
                 } else {
                     this.richText = event.target.value;
                 }
             }
         } else {
+            this.isValidCheck = true;
             this.richText = event.target.value;
         }
+        //Display different message if warn only - validation also won't be enforced on Next.
+        if(!this.warnOnly){
+            this.errorMessage = 'Error - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
+        }else{
+            this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
+        }
+        
     }
 
     //Handle initiation of Search and Replace

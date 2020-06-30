@@ -25,8 +25,8 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 ##### Managing Disallowed Words and Symbols:
 1)  If disallowedSymbols or disallowedWords is filled, then user will be notified while typing one of those words or symbols.
 2)  Both disallowedSymbols and disallowedWords accept a comma delimited string.
-3)  The default popup when one of these symbols/words is used will be an error Toast.  This will also give validation error if user tries to advance while error is still present.
-4)  To change the popup to a warning only, and turn off the associated validation, set warnOnly attribute to true.
+3)  The default message will say 'Error' and provide the violating word/symbol.  This will also give validation error if user tries to advance while error is still present.
+4)  To change the message to a warning only, and turn off the associated validation (allowing user to advance the Flow), set warnOnly attribute to true.
 
 |Parameter	               |I	 |O	     |Information 
 |--------------------------|-----|-------|-------------------------------------------------------------------------------------------------------------------|
@@ -40,7 +40,7 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 
 
 ### User Instructions:
-1)  While entering text in the Rich Text Area, if you use words or symbols that are flagged as not allowed, you will receive either a warning message (yellow popup) or an error message (red popup).
+1)  While entering text in the Rich Text Area, if you use words or symbols that are flagged as not allowed, you will receive either a warning message or an error message.
     a.  If the warning message is displayed, this is for notification only, and you will be able to proceed.
     b.  If the error message is shown, this means you will need to correct the noted error prior to continuing.  If you try to click Next/Finish, a validation message will be  given.
 2)  To Search and Replace text, click on the magnifying glass icon. titled 'Search and Replace'

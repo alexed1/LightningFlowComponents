@@ -11,7 +11,8 @@
     <!-- Start Entry Enhancements - only display if enableAdvancedTools activated -->
     <template if:true={enableAdvancedTools}>
         <div>
-            <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} label-visible=true>
+            <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} 
+                label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage}>
             </lightning-input-rich-text>
         </div>
         <div class="slds-grid slds-wrap slds-p-around_xx-small lgc-bg">
@@ -51,11 +52,9 @@
                         </lightning-button-icon>
                     </div>
                 </template>
-                <!-- HelpText section start - can consider moving this to label longer term-->
                 <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_xx-small slds-p-bottom_xxx-small">
                     <lightning-helptext content={instructions}></lightning-helptext>
                 </div>
-                <!-- HelpText section end-->
             </lightning-button-group>
         </div>
     </template>

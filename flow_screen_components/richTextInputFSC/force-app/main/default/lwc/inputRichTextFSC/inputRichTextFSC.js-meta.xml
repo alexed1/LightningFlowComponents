@@ -2,13 +2,25 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="Rich Text Area FSC">
     <apiVersion>48.0</apiVersion>
     <isExposed>true</isExposed>
-        <targets>
+    <targets>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="value" type="String"/>
-            <property name="label" type="String"/>
+            <property name="enableAdvancedTools" type="Boolean" role="inputOnly" 
+                description="Set to true to activate expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
+            <property name="value" type="String" 
+                description="Rich Text input/output to the Flow - this is the value you will be manipulating"/>
+            <property name="label" type="String" role="inputOnly"
+                description="Label for the Rich Text field"/>
+            <property name="disallowedWordsList" type="String" role="inputOnly" 
+                description="Comma-separated list of words to block.  Example: bad,worse,worst"/>
+            <property name="disallowedSymbolsList" type="String" role="inputOnly" 
+                description="Comma-separated list of words to block.  Example: /,@,*"/>
+            <property name="autoReplaceMap" type="String" role="inputOnly" 
+                description='JSON for key:value pairs you want to replace.  Key = value to replace, Value = value to replace with.  Example: {"Test":"GreatTest™"}'/>
+            <property name="warnOnly" type="Boolean" role="inputOnly" 
+                description="Set to True if you want disallowed Symbols or Words to only alert and not block next/finish.  Default is false."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

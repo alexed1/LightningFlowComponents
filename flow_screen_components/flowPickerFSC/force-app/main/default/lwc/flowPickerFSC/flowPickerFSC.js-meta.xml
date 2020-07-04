@@ -10,7 +10,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="label" type="String" role="inputOnly" label="Flow Selector Label" default="Select a Flow:" description="Set the text to appear above the Flow selection box"/>
+            <property name="label" type="String" role="inputOnly" label="Flow Selector Label" description="Set the text to appear above the Flow selection box"/>
             <property name="placeholder" type="String" role="inputOnly" label="Placeholder text for selection box" default="- Select a Flow -" description="Set the placeholder text to appear in the Flow selection box"/>
             <property name="selectedFlowApiName" type="String" label="Store the API name of the selected Flow" description="On output this stores the API name of the selected Flow, and the component can be initialized with a value on input"/>
             <property name="showActiveFlowsOnly" type="Boolean" role="inputOnly" label="Show Active Flows Only?" description="If set to True, only active Flows will be displayed"/>

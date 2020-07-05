@@ -541,7 +541,9 @@ global class RegExps {
                 } else if (valueRef.contains('S')) {
 
                     String val = String.valueOf(context.referencesString.get(valueRef));
-
+                    if (val != null && val.endsWith('Z')) {
+                        val = val.substring(0, val.length() - 5); //removing .000Z from the end of the date string
+                    }
                     if (!Pattern.matches(RegExps.EXP_DATETIME, val)) {
                         throw new ExpressionParsingException('Cannot apply DATETIME() function: Invalid date/time value "' + val + '". Expected: YYYY-MM-DDTHH:MM:SS');
                     }

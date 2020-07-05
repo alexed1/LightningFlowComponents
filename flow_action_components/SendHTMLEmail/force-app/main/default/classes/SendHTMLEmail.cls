@@ -1,12 +1,13 @@
 /**
 * @File Name			: SendHTMLEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @Author				: various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
+ * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 6/16/2020, 11:00:31 AM
+ * @Last Modified On	: 07-04-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
+ * 
  * Ver		Date		Author					Modification
  * 1.32		2/5/2020	Jack Pond				Modified for multi-lingual and to throw InvocableActionException on exceptions
  * 1.32		2/11/2020	Alex Edelstein			Bulkified and Changed recordId to String
@@ -30,7 +31,7 @@
 public without sharing class SendHTMLEmail {
 
 //	@invocableMethod(label='Send HTML Email')
-	@invocableMethod(label='Send HTML Email' configurationEditor='c:sendHTMLEmail')
+	@invocableMethod(label='Send HTML Email' configurationEditor='c:sendHTMLEmailCPE')
 	public static List<Response> SendEmail(List<Request> requests) {
 
 		List<Response> responseList = new List<Response>();
@@ -48,7 +49,7 @@ public without sharing class SendHTMLEmail {
 			String templateName = curRequest.templateName;
 			String templateLanguage = curRequest.templateLanguage;
 			String templateTargetObjectId = curRequest.templateTargetObjectId;
-			Boolean useMassEmail = curRequest.useMassEmail == null?false:curRequest.useMassEmail;
+			String emailMessageType = curRequest.emailMessageType == null?'singleEmail':curRequest.emailMessageType;
 			Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
 			Boolean bcc = curRequest.bcc == null?false:curRequest.bcc; // default to false
 			if (subject != null && (subject.length() == 0) ) subject = null;
@@ -79,7 +80,8 @@ public without sharing class SendHTMLEmail {
 
 			SaveAsTask 
 */
-			if (useMassEmail){
+//			Mass Email Segment
+			if (emailMessageType == 'massEmail'){
 				//	setBccSender(bcc)
 				//	setDescription(description)
 				//	setReplyTo(replyAddress)
@@ -114,6 +116,17 @@ public without sharing class SendHTMLEmail {
 						thisResponse.errors = 'You must specify a collection of targetObjectIds - required parameter for mass emails.';
 					} else {
 						mmail.setTargetObjectIds(curRequest.targetObjectIds);
+						if (curRequest.whatIds != null && curRequest.whatIds.size() > 0 ){
+							if (curRequest.whatIds.size() == curRequest.targetObjectIds.size()){
+								try {
+									mmail.setTargetObjectIds(curRequest.whatIds);
+								} catch (Exception e){
+									thisResponse.errors = e.getMessage();
+								}
+							}else{
+								thisResponse.errors = 'You must match targetObjectIds one-for-one with whatIds';
+							}
+						}
 					}
 				}
 				//	setTemplateID(templateId)
@@ -139,6 +152,7 @@ public without sharing class SendHTMLEmail {
 					mailMMList.add(mmail);
 				} else thisResponse.isSuccess = false;
 				responseList.add(thisResponse);
+//			Single Email Segment
 			} else {
 				// Processes and actions involved in the SingleEmailMessage transaction occur next,
 				// which conclude with sending a single email.
@@ -237,16 +251,16 @@ public without sharing class SendHTMLEmail {
 			} catch (Exception e){
 				// if an error occurred in sendMail, put same error message on all responses
 				for (Integer i=0; i < responseList.size();i++){
-					if (requests[i].useMassEmail == true){
+					if (requests[i].emailMessageType == 'massEmail'){
 						responseList[i].isSuccess = false;
 						responseList[i].errors = e.getmessage();
 					}
 				}
 			}
-			system.debug('MassEmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
+//			system.debug('MassEmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
 			Integer replyPos = 0;
 			for (Messaging.SendEmailResult thisResult : emailResults){
-				while (responseList[replyPos].errors != null || requests[replyPos].useMassEmail != true) replyPos++;
+				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail') replyPos++;
 				system.debug('MassReplyPos: ' + replyPos);
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
@@ -285,7 +299,7 @@ public without sharing class SendHTMLEmail {
 			} catch (Exception e){
 				// if an error occurred in sendMail, put same error message on all responses
 				for (Integer i=0; i < responseList.size();i++){
-					if (requests[i].useMassEmail == true){
+					if (requests[i].emailMessageType == 'massEmail'){
 						responseList[i].isSuccess = false;
 						responseList[i].errors = e.getmessage();
 					}
@@ -294,7 +308,7 @@ public without sharing class SendHTMLEmail {
 			Integer replyPos = 0;
 			system.debug('EmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
 			for (Messaging.SendEmailResult thisResult : emailResults){
-				while (responseList[replyPos].errors != null || requests[replyPos].useMassEmail == true) replyPos++;
+				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') replyPos++;
 				system.debug('EmailResults replyPos: ' + replyPos + ' Results: ' + thisResult.isSuccess());
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
@@ -518,7 +532,7 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable
 		public List<ContentDocumentLink> contentDocumentAttachments;
 
-		@invocableVariable(label='description' description='The description of the email.')
+		@invocableVariable(label='description' description='The description of the email used in results notification.')
 		public String description;
 
 		@invocableVariable
@@ -621,8 +635,8 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable(label='UseSalesforceSignature' description='True unless otherwise specified')
 		public Boolean UseSalesforceSignature;
 
-		@invocableVariable(label='useMassEmail' description='MassEmailMessage can send mails related to multiple records (WhatId and TargetObjectId), but is severely limited for other configuration purposes.')
-		public Boolean useMassEmail;
+		@invocableVariable(label='emailMessageType' description='\'singleEmail\'(default) or \'massEmail\'.  MassEmailMessage can send mails related to multiple records (WhatId and TargetObjectId), but is severely limited for other configuration purposes.')
+		public String emailMessageType;
 
 		@invocableVariable(label='whatIds' description='For MassEmail, if you specify a list of contacts for the targetObjectIds field, you can specify a list of whatIds as well. This helps to further ensure that merge fields in the template contain the correct data.')
 		public List<Id> whatIds;

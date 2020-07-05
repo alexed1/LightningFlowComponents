@@ -1,5 +1,4 @@
  .container {
-    background-color: var(--lwc-colorBackgroundAlt);
     padding: var(--lwc-spacingMedium);
     border-radius: var(--lwc-borderRadiusMedium);
     position: relative;

@@ -1,7 +1,12 @@
 public with sharing class ExpressionBuilder {
+
+    /*
+    Known issues:
+    1. Not stable work with some special characters (single/double quotes, backslash/slash); Verification regex: ['"\\\/|&^]
+    2. Does not support custom conditions like (1 OR (2 AND 3))
+     */
     @AuraEnabled
     public static String assembleFormulaString(String customLogic, String logicType, String expressionLines) {
-
         List<ExpressionLineWrapper> lines = (List<ExpressionLineWrapper>) JSON.deserialize(expressionLines, List<ExpressionLineWrapper>.class);
 
         String result = '';
@@ -111,7 +116,6 @@ public with sharing class ExpressionBuilder {
         }
 
         return customLogic;
-
     }
 /*
 Due to not stable formula disassembly for custom conditions we have excluded this option.
@@ -130,19 +134,29 @@ Expected result:
 Formula represents all conditions and must look like this:
 OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2")),CONTAINS($Account.Name, TEXT("3")),CONTAINS($Account.Name, TEXT("4"))))
 */
+    private static final String SPACE_SYMBOL = '__nbsp__';
     @AuraEnabled
-    public static Map<String, Object> disassemblyFormulaString(String expression) {
+    public static Map<String, Object> disassemblyFormulaString(String expression, String customVariableDelimiter) {
+
+        //TODO: determine map of special characters and its replacements. Replace all of them here and do the backward operation in convertSetToExpressionLineWrapper
+        expression = expression.replaceAll(' (?=[^"]*"[^"]*(?:"[^"]*"[^"]*)*$)', SPACE_SYMBOL);
+
+        if (customVariableDelimiter != null) {
+            expression = expression.replaceAll(customVariableDelimiter, '\\$');
+        }
+
         Map<String, Object> result = new Map<String, Object>();
 
         if (String.isEmpty(expression)) {
             return result;
         }
-
-        expression = expression.replaceAll('[\\s]', '');
+//        expression = expression.replaceAll('[\\s]', '');
+        expression = expression.replaceAll('\\s+(?=(?:[^\\\'"]*[\\\'"][^\\\'"]*[\\\'"])*[^\\\'"]*$)', '');
         String parentCondition = expression.indexOf('AND') == 0 ? ' AND ' : ' OR ';
         Boolean isSingleExpression = expression.indexOf('AND(') != 0 && expression.indexOf('OR(') != 0;
         Boolean isCustomLogic = expression.indexOf('AND(') != -1 && expression.indexOf('OR(') != -1;
-        Pattern mPattern = pattern.compile('[^ANDOR(][\\w!=<>.,"()$]{1,}');
+//        Pattern mPattern = pattern.compile('[^ANDOR(][\\w-:!=<>.,"()$]{1,}');
+        Pattern mPattern = pattern.compile('^(AND\\(|OR\\()[\\w-:!=<>. ,"()$]{1,}');
 //        Pattern mPattern = pattern.compile('(?<=OR|AND\\().*');
         Matcher mMatcher = mPattern.matcher(expression);
 
@@ -194,13 +208,14 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
             expression = expression.replaceAll(mMatcher.group(0).replace('(', '\\(').replace(')', '\\)').replaceAll('\\$', '\\\\\\$'), newValue);
         }
 
-        mPattern = pattern.compile('(BOOLEAN|DECIMAL|DATE|DATETIME|INTEGER|TEXT)\\([\\w".,-/+]{1,}\\)');
+        mPattern = pattern.compile('(BOOLEAN|DECIMAL|DATE|DATETIME|INTEGER|TEXT)\\([\\w" .,-:/+]{1,}\\)');
         mMatcher = mPattern.matcher(expression);
 
         while (mMatcher.find()) {
             String newValue = mMatcher.group(0).replaceAll('[\\w]{1,}\\("', '').replaceAll('"\\)', '');
             expression = expression.replaceAll(mMatcher.group(0).replace('(', '\\(').replace(')', '\\)'), newValue);
         }
+
 
         expression = expression.replaceAll('==', ' equals ');
         expression = expression.replaceAll('!=', ' not_equal_to ');
@@ -211,6 +226,7 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
 
         Set<String> conditions = new Set<String>(expression.replaceAll('OR\\(', '')
                 .replaceAll('AND\\(', '')
+//                .removeEnd(')')
                 .replaceAll('\\)', '')
 //                .replaceAll('\\(', '')
                 .split(','));
@@ -280,18 +296,19 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
                 result.put('logicType', 'CUSTOM');
                 result.put('customLogic', expression);
             } else {
-            if (expression.indexOf('AND') > -1) {
-                result.put('logicType', 'AND');
-            } else {
-                result.put('logicType', 'OR');
-            }
-            result.put('customLogic', '');
+                if (expression.indexOf('AND') > -1) {
+                    result.put('logicType', 'AND');
+                } else {
+                    result.put('logicType', 'OR');
+                }
+                result.put('customLogic', '');
             }
         } else {
             result.put('logicType', 'AND');
         }
 
-        result.put('expressionLines', convertSetToExpressionLineWrapper(conditions));
+        result.put('expressionLines', convertSetToExpressionLineWrapper(conditions, customVariableDelimiter));
+
         return result;
     }
 
@@ -315,8 +332,8 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
     }
 
     public static String convertExpressionLines(ExpressionLineWrapper expressionLine) {
-        String leftItem = '\\'+expressionLine.fieldName;
-        String rightItem = expressionLine.parameter;
+        String leftItem = '\\' + expressionLine.fieldName;
+        String rightItem = String.escapeSingleQuotes(expressionLine.parameter);
         String dataType = expressionLine.dataType.toUpperCase();
         String result = '';
 
@@ -329,19 +346,19 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
         }
 
         if (expressionLine.operator == 'starts_with') {
-            result = 'LEFT(' + leftItem + ', ' + expressionLine.parameter.length() + ') == ' + convertValueType(rightItem, dataType);
+            result = 'LEFT(' + leftItem + ' , ' + expressionLine.parameter.length() + ') == ' + convertValueType(rightItem, dataType);
         }
 
         if (expressionLine.operator == 'end_with') {
-            result = 'RIGHT(' + leftItem + ', ' + expressionLine.parameter.length() + ') == ' + convertValueType(rightItem, dataType);
+            result = 'RIGHT(' + leftItem + ' , ' + expressionLine.parameter.length() + ') == ' + convertValueType(rightItem, dataType);
         }
 
         if (expressionLine.operator == 'contains') {
-            result = 'CONTAINS(' + leftItem + ', ' + convertValueType(rightItem, dataType) + ')';
+            result = 'CONTAINS(' + leftItem + ' , ' + convertValueType(rightItem, dataType) + ')';
         }
 
         if (expressionLine.operator == 'does_not_contain') {
-            result = '!CONTAINS(' + leftItem + ', ' + convertValueType(rightItem, dataType) + ')';
+            result = '!CONTAINS(' + leftItem + ' , ' + convertValueType(rightItem, dataType) + ')';
         }
 
         if (expressionLine.operator == 'greater_or_equal') {
@@ -361,25 +378,26 @@ OR(AND(CONTAINS($Account.Name, TEXT("1")),CONTAINS($Account.Name, TEXT("2"))), A
         }
 
         if (expressionLine.operator == 'includes') {
-            result = 'INCLUDES(' + leftItem + ', ' + convertValueType(rightItem, dataType) + ')';
+            result = 'INCLUDES(' + leftItem + ' , ' + convertValueType(rightItem, dataType) + ')';
         }
 
         if (expressionLine.operator == 'excludes') {
-            result = '!INCLUDES(' + leftItem + ', ' + convertValueType(rightItem, dataType) + ')';
+            result = '!INCLUDES(' + leftItem + ' , ' + convertValueType(rightItem, dataType) + ')';
         }
 
         return result;
 
     }
 
-    public static List<ExpressionLineWrapper> convertSetToExpressionLineWrapper(Set<String> lines) {
+    public static List<ExpressionLineWrapper> convertSetToExpressionLineWrapper(Set<String> lines, String customVariableDelimiter) {
         List<ExpressionLineWrapper> result = new List<ExpressionLineWrapper>();
 
         for (String line : lines) {
             List<String> lineParameters = line.split(' ');
             if (lineParameters.size() == 3) {
                 List<String> fieldInfo = lineParameters[0].replaceAll('[$]', '').split('\\.');
-                result.add(new ExpressionLineWrapper(fieldInfo[0], lineParameters[0], '', lineParameters[1], lineParameters[2]));
+                String fieldName = customVariableDelimiter == null ? lineParameters[0] : lineParameters[0].replaceAll('\\$', customVariableDelimiter);
+                result.add(new ExpressionLineWrapper(fieldInfo[0], fieldName, '', lineParameters[1], lineParameters[2].replaceAll(SPACE_SYMBOL, ' ')));
             }
         }
 

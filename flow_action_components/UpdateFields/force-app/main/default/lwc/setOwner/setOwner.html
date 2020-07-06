@@ -1,0 +1,72 @@
+<template>
+    <lightning-card>
+        <lightning-layout class="slds-p-left--small" multiple-rows="true">
+            <lightning-layout-item size="12">
+                <lightning-layout multiple-rows="false">
+                    <lightning-layout-item>
+                        <lightning-input name="username" disabled value={selectedMemberName}
+                                         label="Selected Member"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item class="button-align-bottom">
+                        <lightning-button class="slds-m-left_x-small"
+                                          variant="brand"
+                                          label="Select"
+                                          title="Select"
+                                          onclick={toggleMemberSelect}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <template if:true={showMemberSelect}>
+                    <lightning-layout vertical-align="end">
+                        <lightning-layout-item padding="horizontal-small" flexibility="grow">
+                            <lightning-combobox label={label.Search} name="mdtype" onchange={handleTypeChange}
+                                                options={objectTypes}
+                                                value={selectedType}></lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item padding="horizontal-small" flexibility="grow">
+                            <lightning-input type="search" label={label.For} name="search" onchange={searchEventHandler}
+                                             onkeyup={listenForEnter} disabled={searchDisabled}></lightning-input>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item padding="horizontal-small" flexibility="none">
+                            <lightning-button type="submit" label="Search" variant="brand" onclick={actuallySearch}
+                                              disabled={searchDisabled}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <template if:true={tooManyResults}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_warning"
+                             role="alert">
+                            <h2> {label.TooManyResultsMessage} </h2>
+                        </div>
+                    </template>
+                    <lightning-datatable data={searchResults} columns={columns} key-field="value"
+                                         hide-checkbox-column="true"
+                                         onrowaction={handleRowAction} resize-column-disabled></lightning-datatable>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-top--small" size="12">
+                <lightning-layout  multiple-rows="true">
+                    <lightning-layout-item class="slds-p-top--small" size="8">
+                        <template if:true={showNotifyAssignee}>
+                            <lightning-input type="checkbox" label={notifyAssigneeLabel} name="NotifyAssignee"
+                                             onchange={handleNotifyAssigneeChange}
+                                             value={notifyAssignee}></lightning-input>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4">
+                        <template if:true={showMemberSelect}>
+                            <lightning-button class="slds-m-right--large slds-float--right"
+                                              variant="brand"
+                                              label="OK"
+                                              title="Ok"
+                                              onclick={toggleMemberSelect}>
+                            </lightning-button>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

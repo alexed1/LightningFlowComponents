@@ -1,0 +1,19 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "FlowBaseComponents",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "FlowBaseComponents": "0HoB0000000Cb4BKAS",
+        "FlowBaseComponents@1.0.0-0": "04tB0000000P6rDIAS",
+        "FlowBaseComponents@1.0.1-0": "04tB0000000P6rIIAS"
+    }
+}

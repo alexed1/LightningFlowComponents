@@ -1,0 +1,25 @@
+ .container {
+    background-color: var(--lwc-colorBackgroundAlt);
+    padding: var(--lwc-spacingMedium);
+    border-radius: var(--lwc-borderRadiusMedium);
+    position: relative;
+}
+.flexContainer {
+    display: flex;
+    padding-bottom: var(--lwc-spacingMedium);
+    align-items: center;
+}
+.flexContainer p {
+    padding-right: var(--lwc-spacingXSmall);
+}
+lightning-combobox {
+    padding-right: var(--lwc-spacingXSmall);
+}
+lightning-button {
+    margin-left: 0;
+}
+.resultContainer {
+    display: flex;
+    padding-top: var(--lwc-spacingXSmall);
+    padding-bottom: var(--lwc-spacingXSmall);
+}

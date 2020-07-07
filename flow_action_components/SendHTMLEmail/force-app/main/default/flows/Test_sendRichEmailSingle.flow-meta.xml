@@ -1,33 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>This is a test</description>
-        <name>Test_SendHTML_with_sendRichEmailSingle</name>
-        <label>Test SendHTML with sendRichEmailSingle</label>
-        <locationX>440</locationX>
+        <description>Testing CPE for SendHTMLEmail (sendHTMLEmailCPE)</description>
+        <name>Test_SendHTMLEmail_CPE</name>
+        <label>Test SendHTMLEmail CPE</label>
+        <locationX>675</locationX>
         <locationY>69</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <inputParameters>
+            <name>bcc</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>description</name>
+            <value>
+                <stringValue>Testing 1,2,3</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>emailMessageType</name>
             <value>
-                <stringValue>massEmail</stringValue>
+                <stringValue>singleEmail</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>HTMLbody</name>
+            <value>
+                <stringValue>&lt;b&gt;This is the HTML body of the Single Email Message&lt;/b&gt;</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>orgWideEmailAddressId</name>
             <value>
-                <elementReference>ReplytoName</elementReference>
+                <stringValue>012345678901234567</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>plainTextBody</name>
+            <value>
+                <stringValue>This is the plain text body of the Single Email Message</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>replyEmailAddress</name>
             <value>
-                <elementReference>ReplytoName</elementReference>
+                <stringValue>jack.pond@psitex.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsActivity</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsTask</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <stringValue>Jack D. Pond</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subject</name>
+            <value>
+                <stringValue>This is the Subject of the Single Email Message</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetObjectIds</name>
+            <value>
+                <elementReference>targetObjectIdsTest</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateName</name>
+            <value>
+                <stringValue>Testing</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>UseSalesforceSignature</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>whatIds</name>
+            <value>
+                <elementReference>whatIdsTest</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <assignments>
+        <name>Setup_Test_targetObjectIds_and_whatIds</name>
+        <label>Setup Test targetObjectIds and whatIds</label>
+        <locationX>473</locationX>
+        <locationY>69</locationY>
+        <assignmentItems>
+            <assignToReference>targetObjectIdsTest</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>UserId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>whatIdsTest</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>UserId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Test_SendHTMLEmail_CPE</targetReference>
+        </connector>
+    </assignments>
+    <formulas>
+        <name>UserId</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
     <interviewLabel>Test sendRichEmailSingle {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test sendRichEmailSingle</label>
     <processMetadataValues>
@@ -47,7 +147,7 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Test_SendHTML_with_sendRichEmailSingle</targetReference>
+            <targetReference>Setup_Test_targetObjectIds_and_whatIds</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -60,5 +160,19 @@
         <value>
             <stringValue>jdpond@psitex.com</stringValue>
         </value>
+    </variables>
+    <variables>
+        <name>targetObjectIdsTest</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>whatIdsTest</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

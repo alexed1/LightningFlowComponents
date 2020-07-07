@@ -4,7 +4,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-04-2020
+ * @Last Modified On	: 07-07-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * 
@@ -535,6 +535,9 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable(label='description' description='The description of the email used in results notification.')
 		public String description;
 
+		@invocableVariable(label='emailMessageType' description='\'singleEmail\'(default) or \'massEmail\'.  MassEmailMessage can send mails related to multiple records (WhatId and TargetObjectId), but is severely limited for other configuration purposes.')
+		public String emailMessageType;
+
 		@invocableVariable
 		public String HTMLbody;
 
@@ -608,17 +611,17 @@ public without sharing class SendHTMLEmail {
 //        @invocableVariable
 //        public String staticResourceAttachmentNames;
 
-		@invocableVariable(description='Defaults to True unless recordId is null')
+		@invocableVariable(description='Defaults to True')
 		public Boolean saveAsActivity;
 
-		@invocableVariable(description='Defaults to True unless recordId is null')
+		@invocableVariable(description='Defaults to True unless recordId/whatId is null')
 		public Boolean saveAsTask;
 
 		@invocableVariable
 		public String subject;
 		
 		@invocableVariable(label='targetObjectIds' description='A list of IDs of the contacts, leads, or users to which the email will be sent. The IDs you specify set the context and ensure that merge fields in the template contain the correct data. The objects must be of the same type (all contacts, all leads, or all users)')
-		public List<Id> targetObjectIds;
+		public List<String> targetObjectIds;
 		
 		@invocableVariable(label='templateId' )
 		public String templateId;
@@ -635,11 +638,8 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable(label='UseSalesforceSignature' description='True unless otherwise specified')
 		public Boolean UseSalesforceSignature;
 
-		@invocableVariable(label='emailMessageType' description='\'singleEmail\'(default) or \'massEmail\'.  MassEmailMessage can send mails related to multiple records (WhatId and TargetObjectId), but is severely limited for other configuration purposes.')
-		public String emailMessageType;
-
 		@invocableVariable(label='whatIds' description='For MassEmail, if you specify a list of contacts for the targetObjectIds field, you can specify a list of whatIds as well. This helps to further ensure that merge fields in the template contain the correct data.')
-		public List<Id> whatIds;
+		public List<String> whatIds;
 }
 
 	public class Response {

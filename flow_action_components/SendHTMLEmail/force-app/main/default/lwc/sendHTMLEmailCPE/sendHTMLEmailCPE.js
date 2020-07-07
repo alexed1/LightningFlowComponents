@@ -1,13 +1,14 @@
 /**
- * @File Name          : sendHTMLEmailCPE.js
- * @Description        : 
- * @Author             : Jack D. Pond
- * @Group              : 
- * @Last Modified By   : Jack D. Pond
- * @Last Modified On   : 07-05-2020
- * @Modification Log   : 
+ * @File Name			: sendHTMLEmailCPE.js
+ * @Description			: 
+ * @Author				: Jack D. Pond
+ * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
+ * @Group				: 
+ * @Last Modified By	: Jack D. Pond
+ * @Last Modified On	: 07-07-2020
+ * @Modification Log	: 
  * Ver		Date		Author				Modification
- * 1.0		6/29/2020   Jack D. Pond		Initial Version
+ * 1.0		6/29/2020	Jack D. Pond		Initial Version
 **/
 import {api, track, LightningElement} from 'lwc';
 
@@ -32,6 +33,7 @@ export default class SendHTMLEmailCPE extends LightningElement {
 	settings = {
 		specifyBodyOption: 'specifyBody',
 		useTemplateOption: 'useTemplate',
+		useTemplateNameOption: 'useTemplateName',
 		singleEmailOption: 'singleEmail',
 		massEmailOption: 'massEmail',
 		displayModeVisualCards: 'Visual',
@@ -64,15 +66,22 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		HTMLbody: {value: null, valueDataType: null, isCollection: false, label: 'HTML Body'},
 		plainTextBody: {value: null, valueDataType: null, isCollection: false, label: 'Plain Text'},
 		templateID: {value: null, valueDataType: null, isCollection: false, label: 'Select  Email Template'},
-		templateTargetObjectID: {value: null, valueDataType: null, isCollection: false, label: 'Specify Target record ID'},
+		templateTargetObjectId: {value: null, valueDataType: null, isCollection: false, label: 'Specify Target record ID'},
 		bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.flowDataTypeString, isCollection: false, label: 'Body'},
 		emailMessageType: {value: null, dataType: null, isCollection: false, label: 'Select Email Type'},
-		description: {value: null, dataType: null, isCollection: false, label: 'Description to send for action results email notification'},
+		description: {value: null, dataType: null, isCollection: false, label: 'Description to send for flow action results email notification'},
 		bcc: {value: null, dataType: null, isCollection: false, label: 'Sender receives BCC of first email sent?'},
 		senderDisplayName: {value: null, dataType: null, isCollection: false, label: 'senderDisplayName'},
 		replyEmailAddress: {value: null, dataType: null, isCollection: false, label: 'Reply Email Address'},
+		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, label: 'Use SalesForce Signature if executing user has one?'},
 		templateId: {value: null, dataType: null, isCollection: false, label: 'templateId'},
-		templateName: {value: null, dataType: null, isCollection: false, label: 'Template Name'}
+		templateName: {value: null, dataType: null, isCollection: false, label: 'Template Name'},
+		templateLanguage: {value: null, dataType: null, isCollection: false, label: 'Template Language'},
+		targetObjectIds: {value: null, dataType: null, isCollection: false, label: 'targetObjectIds collection'},
+		whatIds: {value: null, dataType: null, isCollection: false, label: 'whatIds collection'},
+		saveAsActivity: {value: null, dataType: null, isCollection: false, label: 'saveAsActivity on targetId(s)'},
+		saveAsTask: {value: null, dataType: null, isCollection: false, label: 'saveAsTask on related records?'},
+		recordId: {value: null, valueDataType: null, isCollection: false, label: 'Related Record ID(whatId/recordId)'}
 /*
 		allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
 		required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
@@ -92,12 +101,17 @@ export default class SendHTMLEmailCPE extends LightningElement {
 
 	bodyOptions = [
 		{label: 'Specify Body here', value: this.settings.specifyBodyOption,fields: ['HTMLbody','plainTextBody']},
-		{label: 'Use Email Template',value: this.settings.useTemplateOption,fields: ['templateID','templateTargetObjectID']}
+		{label: 'Use Email Template',value: this.settings.useTemplateOption,fields: ['templateID','templateTargetObjectId']}
+	];
+
+	emailTemplateOptions = [
+		{label: 'Specify Template by Id Here', value: this.settings.specifyBodyOption,fields: ['templateID','templateTargetObjectId']},
+		{label: 'Use template with this name',value: this.settings.useTemplateNameOption,fields: ['templateName','templateName']}
 	];
 
 	emailOptions = [
 		{label: 'Single Email Message', value: this.settings.singleEmailOption,fields: ['HTMLbody','plainTextBody']},
-		{label: 'Mass Email Messages',value: this.settings.massEmailOption,fields: ['templateID','templateTargetObjectID']}
+		{label: 'Mass Email Messages',value: this.settings.massEmailOption,fields: ['templateID','templateTargetObjectId']}
 	];
 
 	displayChoicesAsOptions = [

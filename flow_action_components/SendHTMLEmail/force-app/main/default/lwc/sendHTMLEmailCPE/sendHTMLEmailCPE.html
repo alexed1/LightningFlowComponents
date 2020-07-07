@@ -1,12 +1,13 @@
 <!--
-  @File Name          : sendHTMLEmailCPE.html
-  @Description        : 
-  @Author             : Jack D. Pond
-  @Group              : 
-  @Last Modified By   : Jack D. Pond
-  @Last Modified On   : 07-05-2020
-  @Modification Log   : 
-  @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
+  @File Name			: sendHTMLEmailCPE.html
+  @Description			: 
+  @Author				: Jack D. Pond
+  @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
+  @Group				: 
+  @Last Modified By		: Jack D. Pond
+  @Last Modified On		: 07-07-2020
+  @Modification Log		: 
+  @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
   1.0    6/29/2020   Jack D. Pond     Initial Version
 -->
@@ -27,7 +28,7 @@
 				<h1 class="slds-text-color_inverse slds-text-heading_medium">Mass Email Messages</h1>
 			</div>
 			<div style="padding:0.5rem;background:#16325c;">
-				<h1 class="slds-text-color_inverse slds-text-heading_medium ">Send Email Instructions</h1>
+				<h1 class="slds-text-color_inverse slds-text-heading_medium ">Set Sender Settings</h1>
 			</div>
 			<c-flow-combobox
 				name="select_description"
@@ -66,6 +67,17 @@
 				builder-context={_builderContext}
 				onvaluechanged={handleFlowComboboxValueChange}
 			></c-flow-combobox>
+			<lightning-input
+				type="checkbox"
+				label={inputValues.UseSalesforceSignature.label}
+				name="select_UseSalesforceSignature"
+				checked={inputValues.UseSalesforceSignature.value}
+				onchange={handleValueChange}
+			></lightning-input>
+			<br/>
+			<div style="padding:0.5rem;background:#16325c;">
+				<h1 class="slds-text-color_inverse slds-text-heading_medium ">Select Mass Email Template (Id or Name, not both)</h1>
+			</div>
 			<c-flow-combobox
 				name="select_templateId"
 				label={inputValues.templateId.label}
@@ -86,6 +98,60 @@
 				builder-context={_builderContext}
 				onvaluechanged={handleFlowComboboxValueChange}
 			></c-flow-combobox>
+			<div style="margin-left:12px;">
+				<c-flow-combobox
+					name="select_templateLanguage"
+					label={inputValues.templateLanguage.label}
+					value={inputValues.templateLanguage.value}
+					value-type={inputValues.templateLanguage.dataType}
+					builder-context-filter-type="String"
+					builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
+					builder-context={_builderContext}
+					onvaluechanged={handleFlowComboboxValueChange}
+				></c-flow-combobox>
+			</div>
+			<br/>
+			<div style="padding:0.5rem;background:#16325c;">
+				<h1 class="slds-text-color_inverse slds-text-heading_medium ">Recipients & Recipient-Related Records</h1>
+			</div>
+			<c-flow-combobox
+				name="select_targetObjectIds"
+				label={inputValues.targetObjectIds.label}
+				value={inputValues.targetObjectIds.value}
+				value-type={inputValues.targetObjectIds.dataType}
+				builder-context-filter-type="String"
+				builder-context-filter-collection-boolean={inputValues.targetObjectIds.isCollection}
+				builder-context={_builderContext}
+				onvaluechanged={handleFlowComboboxValueChange}
+			></c-flow-combobox>
+			<c-flow-combobox
+				name="select_whatIds"
+				label={inputValues.whatIds.label}
+				value={inputValues.whatIds.value}
+				value-type={inputValues.whatIds.dataType}
+				builder-context-filter-type="String"
+				builder-context-filter-collection-boolean={inputValues.whatIds.isCollection}
+				builder-context={_builderContext}
+				onvaluechanged={handleFlowComboboxValueChange}
+			></c-flow-combobox>
+			<br/>
+			<div style="padding:0.5rem;background:#16325c;">
+				<h1 class="slds-text-color_inverse slds-text-heading_medium ">Record as Activity and/or Task</h1>
+			</div>
+			<lightning-input
+				type="checkbox"
+				label={inputValues.saveAsActivity.label}
+				name="select_saveAsActivity"
+				checked={inputValues.saveAsActivity.value}
+				onchange={handleValueChange}
+			></lightning-input>
+			<lightning-input
+				type="checkbox"
+				label={inputValues.saveAsTask.label}
+				name="select_saveAsTask"
+				checked={inputValues.saveAsTask.value}
+				onchange={handleValueChange}
+			></lightning-input>
 		</template>
 <!--	If Single Email -->
 		<template if:false={isMassEmail} >
@@ -97,8 +163,34 @@
 			</div>
 			<div class="slds-p-bottom--small" style={inputStyle}>
 				<c-flow-combobox
+					name="select_senderDisplayName"
+					label={inputValues.senderDisplayName.label}
+					value={inputValues.senderDisplayName.value}
+					value-type={inputValues.senderDisplayName.dataType}
+					builder-context-filter-type="String"
+					builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
+					builder-context={_builderContext}
+					onvaluechanged={handleFlowComboboxValueChange}
+				></c-flow-combobox>
+				<c-flow-combobox name="select_orgWideEmailAddressId"
+					label="Organization-Wide Email Address Id"
+					value={inputValues.orgWideEmailAddressId.value}
+					value-type={inputValues.orgWideEmailAddressId.dataType}
+					builder-context-filter-type="String"
+					builder-context-filter-collection-boolean={inputValues.orgWideEmailAddressId.isCollection}
+					builder-context={_builderContext}
+					onvaluechanged={handleFlowComboboxValueChange}
+				></c-flow-combobox>
+				<lightning-input
+					type="checkbox"
+					label={inputValues.bcc.label}
+					name="select_bcc"
+					checked={inputValues.bcc.value}
+					onchange={handleValueChange}
+				></lightning-input>
+				<c-flow-combobox
 					name="select_replyEmailAddress"
-					label="Reply Email Address"
+					label={inputValues.replyEmailAddress.label}
 					value={inputValues.replyEmailAddress.value}
 					value-type={inputValues.replyEmailAddress.dataType}
 					builder-context-filter-type="String"
@@ -106,24 +198,14 @@
 					builder-context={_builderContext}
 					onvaluechanged={handleFlowComboboxValueChange}
 				></c-flow-combobox>
-				<c-flow-combobox name="select_orgWideEmailAddressId"
-								label="Organization-Wide Email Address Id"
-								value={inputValues.orgWideEmailAddressId.value}
-								value-type={inputValues.orgWideEmailAddressId.dataType}
-								builder-context-filter-type="String"
-								builder-context-filter-collection-boolean={inputValues.orgWideEmailAddressId.isCollection}
-								builder-context={_builderContext}
-								onvaluechanged={handleFlowComboboxValueChange}
-				></c-flow-combobox>
-				<c-flow-combobox name="select_senderDisplayName"
-								label="Sender Display Name"
-								value={inputValues.senderDisplayName.value}
-								value-type={inputValues.senderDisplayName.dataType}
-								builder-context-filter-type="String"
-								builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
-								builder-context={_builderContext}
-								onvaluechanged={handleFlowComboboxValueChange}
-				></c-flow-combobox>
+				<lightning-input
+					type="checkbox"
+					label={inputValues.UseSalesforceSignature.label}
+					name="select_UseSalesforceSignature"
+					checked={inputValues.UseSalesforceSignature.value}
+					onchange={handleValueChange}
+				></lightning-input>
+				<br/>
 			</div>
 			<div style="padding:0.5rem;background:#16325c;">
 				<h1 class="slds-text-color_inverse slds-text-heading_medium">Set Addressees</h1>
@@ -131,23 +213,24 @@
 			<div style="max-width: 600px;">
 				<div class="slds-grid slds-grid--align-end">
 					<div class="slds-col slds-col_bump-left">
-						<a onclick={handleClearAll} href="javascript:void(0);"
-						class="slds-text-align_right slds-text-link_reset">
+						<a 	onclick={handleClearAll} href="javascript:void(0);"
+							class="slds-text-align_right slds-text-link_reset">
 							<span class="slds-text-link">Clear All</span>
 						</a>
 					</div>
 				</div>
 				<lightning-accordion allow-multiple-sections-open title>
 					<template for:each={availableRecipients} for:item="curRecipient">
-						<lightning-accordion-section name={curRecipient.baseLabel}
-													label={curRecipient.label}
-													key={curRecipient.baseLabel}>
+						<lightning-accordion-section
+								name={curRecipient.baseLabel}
+								label={curRecipient.label}
+								key={curRecipient.baseLabel}>
 							<c-add-new-members name={curRecipient.baseLabel}
-											custom-data-structure={convertedFlowContext}
-											value={curRecipient.value}
-											object-type={curRecipient.objectType}
-											single-select
-											onvaluechanged={handleValueSelected}
+								custom-data-structure={convertedFlowContext}
+								value={curRecipient.value}
+								object-type={curRecipient.objectType}
+								single-select
+								onvaluechanged={handleValueSelected}
 							></c-add-new-members>
 						</lightning-accordion-section>
 					</template>
@@ -157,67 +240,115 @@
 				<h1 class="slds-text-color_inverse slds-text-heading_medium">Set Subject and Body</h1>
 			</div>
 			<div class="slds-p-bottom--xx-large" style={inputStyle}>
-
 				<c-flow-combobox name="select_subject"
-								label="Subject"
-								value={inputValues.subject.value}
-								value-type={inputValues.subject.dataType}
-								builder-context-filter-type="String"
-								builder-context-filter-collection-boolean={inputValues.subject.isCollection}
-								builder-context={_builderContext}
-								onvaluechanged={handleFlowComboboxValueChange}
+					label="Subject"
+					value={inputValues.subject.value}
+					value-type={inputValues.subject.dataType}
+					builder-context-filter-type="String"
+					builder-context-filter-collection-boolean={inputValues.subject.isCollection}
+					builder-context={_builderContext}
+					onvaluechanged={handleFlowComboboxValueChange}
 				></c-flow-combobox>
 
 				<lightning-radio-group name="select_bodyOption"
-									label="Body"
-									options={bodyOptions}
-									value={selectedBodyOption}
-									onchange={handleBodyOptionChange}
-									type="radio">
+					label="Body"
+					options={bodyOptions}
+					value={selectedBodyOption}
+					onchange={handleBodyOptionChange}
+					type="radio">
 				</lightning-radio-group>
 				<template if:true={isSpecifyBodyOption}>
 					<c-flow-combobox name="select_HTMLbody"
-									label="HTML Body"
-									value={inputValues.HTMLbody.value}
-									value-type={inputValues.HTMLbody.dataType}
-									builder-context-filter-type="String"
-									builder-context-filter-collection-boolean={inputValues.HTMLbody.isCollection}
-									builder-context={_builderContext}
-									onvaluechanged={handleFlowComboboxValueChange}
+						label="HTML Body"
+						value={inputValues.HTMLbody.value}
+						value-type={inputValues.HTMLbody.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.HTMLbody.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
 					></c-flow-combobox>
 
 					<c-flow-combobox name="select_plainTextBody"
-									label="Plain Text"
-									value={inputValues.plainTextBody.value}
-									value-type={inputValues.plainTextBody.dataType}
-									builder-context-filter-type="String"
-									builder-context-filter-collection-boolean={inputValues.plainTextBody.isCollection}
-									builder-context={_builderContext}
-									onvaluechanged={handleFlowComboboxValueChange}
+						label="Plain Text"
+						value={inputValues.plainTextBody.value}
+						value-type={inputValues.plainTextBody.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.plainTextBody.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
 					></c-flow-combobox>
 				</template>
 				<template if:false={isSpecifyBodyOption}>
-					<c-flow-combobox name="select_templateTargetObjectID"
-									label="Specify Target record ID"
-									value={inputValues.templateTargetObjectID.value}
-									value-type={inputValues.templateTargetObjectID.dataType}
-									builder-context-filter-type="String"
-									builder-context-filter-collection-boolean={inputValues.templateTargetObjectID.isCollection}
-									builder-context={_builderContext}
-									onvaluechanged={handleFlowComboboxValueChange}
-					></c-flow-combobox>
-
 					<c-flow-combobox name="select_templateID"
-									label="Select  Email Template"
-									value={inputValues.templateID.value}
-									value-type={inputValues.templateID.dataType}
-									builder-context-filter-type="String"
-									builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
-									builder-context={_builderContext}
-									onvaluechanged={handleFlowComboboxValueChange}
+						label="Select  Email Template"
+						value={inputValues.templateID.value}
+						value-type={inputValues.templateID.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
 					></c-flow-combobox>
+					<c-flow-combobox
+						name="select_templateName"
+						label={inputValues.templateName.label}
+						value={inputValues.templateName.value}
+						value-type={inputValues.templateName.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.templateName.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
+					></c-flow-combobox>
+					<div style="margin-left:12px;">
+						<c-flow-combobox
+							name="select_templateLanguage"
+							label={inputValues.templateLanguage.label}
+							value={inputValues.templateLanguage.value}
+							value-type={inputValues.templateLanguage.dataType}
+							builder-context-filter-type="String"
+							builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
+							builder-context={_builderContext}
+							onvaluechanged={handleFlowComboboxValueChange}
+						></c-flow-combobox>
+					</div>
+					<br/>
+					<div style="padding:0.5rem;background:#16325c;">
+						<h1 class="slds-text-color_inverse slds-text-heading_medium">Recipients & Recipient-Related Records</h1>
+					</div>
+					<c-flow-combobox name="select_templateTargetObjectId"
+						label="Specify Target record ID"
+						value={inputValues.templateTargetObjectId.value}
+						value-type={inputValues.templateTargetObjectId.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.templateTargetObjectId.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
+					></c-flow-combobox>
+					<c-flow-combobox name="select_recordId"
+						label={inputValues.recordId.label}
+						value={inputValues.recordId.value}
+						value-type={inputValues.recordId.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.recordId.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
+					></c-flow-combobox>
+					<lightning-input
+						type="checkbox"
+						label={inputValues.saveAsActivity.label}
+						name="select_saveAsActivity"
+						checked={inputValues.saveAsActivity.value}
+						onchange={handleValueChange}
+					></lightning-input>
+					<lightning-input
+						type="checkbox"
+						label={inputValues.saveAsTask.label}
+						name="select_saveAsTask"
+						checked={inputValues.saveAsTask.value}
+						onchange={handleValueChange}
+					></lightning-input>
 				</template>
 			</div>
 		</template>
 	</template>
+	<hr width=”100%”>
 </template>

@@ -1,0 +1,25 @@
+<design:component>
+    
+    <!-- input parameters -->
+
+    <!-- component styling -->
+	<design:attribute name="buttonLabel" label="Button Label" />
+    <design:attribute name="variant" label="Button Variant" description="BASE, NEUTRAL, BRAND, BRAND-OUTLINE, DESTRUCTIVE, DESTRUCTIVE-TEXT, INVERSE, and SUCCESS" />
+    <design:attribute name="class" label="Component CSS class" description="Component CSS class (default: slds-size_12-of-12). If this component launches an inline flow, this class will control the area that contains the flow. " />
+    <design:attribute name="padding" label="Style Padding" description="padding format: top right bottom left; default: 10px 10px 10px 10px" />
+    <design:attribute name="horizontalAlign" label="Horizontal Align" description="center, space, spread, end"/>
+    <design:attribute name="buttonClass" label="Button CSS class" description="CSS class applied to the button (example: slds-align_absolute-center)"/>
+    
+    <!-- component actions -->
+    <design:attribute name="flowToLaunch" label="Flow to Launch (API Name)" description="Flow API Name. If empty, the button is used to fire the flow action." />
+    <design:attribute name="recordId" label="Flow Input: Record ID" description="recordId passed as input to the flow" />
+    <design:attribute name="launchFlowOnInit" label="Launch Flow On Init" description="Launches the flow immediately when component is shown and hides the button." />
+    <design:attribute name="showFlowInModal" label="Show flow in modal dialog" />
+    <design:attribute name="buttonFlowAction" label="Button Flow Action" description="NEXT, BACK, PAUSE, RESUME, and FINISH" />  
+    <design:attribute name="doFlowActionWhenSubflowCompletes" label="Do Flow Action When Subflow Completes" />   
+
+    <!-- output parameters -->
+    <design:attribute name="buttonClicked" label="Button Clicked?" description="true/false" />
+    <design:attribute name="flowStatus" label="Flow Status" description="STARTED, FINISHED" />
+    
+</design:component>

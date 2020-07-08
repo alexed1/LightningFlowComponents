@@ -1,5 +1,62 @@
 <template>
-    <lightning-input-rich-text
-        value={value} formats={formats} label={label} label-visible=true>
-    </lightning-input-rich-text>
+
+    <!-- Start Rich Text Input Section - if enableAdvancedTools is false - this is default -->
+    <template if:false={enableAdvancedTools}>
+        <div>
+            <lightning-input-rich-text value={value} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
+        </div>
+    </template>
+    <!-- End Rich Text Input Section-->
+
+    <!-- Start Entry Enhancements - only display if enableAdvancedTools activated -->
+    <template if:true={enableAdvancedTools}>
+        <div>
+            <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} 
+                label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage}>
+            </lightning-input-rich-text>
+        </div>
+        <div class="slds-grid slds-wrap slds-p-around_xx-small lgc-bg">
+            <lightning-button-group>
+                <div class="slds-p-around_xxx-small">
+                    <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:search"
+                        onclick={handleOpenSearch} alternative-text="Open Search and Replace"
+                        tooltip="Open Search and Replace">
+                    </lightning-button-icon>
+                </div>
+                <template if:true={searchButton}>
+                    <div class="slds-p-around_xxx-small">
+                        <lightning-input type="text" placeholder="Search Text" variant="label-hidden" 
+                            value={searchTerm} onchange={handleSearchChange}></lightning-input>
+                    </div>
+                    <div class="slds-p-around_xxx-small">
+                        <lightning-input type="text" placeholder="Replace with Text" variant="label-hidden"
+                            value={replaceValue} onchange={handleReplaceChange}></lightning-input>
+                    </div>
+                    <div class="slds-p-left_xxx-small slds-p-right_small slds-p-top_xxx-small slds-p-bottom_xxx-small">
+                        <lightning-button-icon variant="brand" size="medium" icon-name="utility:check"
+                            onclick={searchReplace} alternative-text="Search and Replace" tooltip="Search and Replace">
+                        </lightning-button-icon>
+                    </div>
+                </template>
+                <template if:true={autoReplaceEnabled}>
+                    <div class="slds-p-around_xxx-small">
+                        <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:merge"
+                            onclick={applySuggested} alternative-text="Apply Suggested Terms" tooltip="Apply Suggested Terms">
+                        </lightning-button-icon>
+                    </div>
+                </template>
+                <template if:true={dirty}>
+                    <div class="slds-p-around_xxx-small">
+                        <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:undo"
+                            onclick={handleRevert} alternative-text="Undo Last Change" tooltip="Undo Last Change">
+                        </lightning-button-icon>
+                    </div>
+                </template>
+                <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_xx-small slds-p-bottom_xxx-small">
+                    <lightning-helptext content={instructions}></lightning-helptext>
+                </div>
+            </lightning-button-group>
+        </div>
+    </template>
+    <!-- End Entry Enhancements -->
 </template>

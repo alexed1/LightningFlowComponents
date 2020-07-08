@@ -19,7 +19,7 @@ export default class expressionBuilder extends LightningElement {
     @track contextTypes = [];
     @track isLoading = true;
 
-    @api staticFields = [];
+    @api customMergeFields = [];
 
     @api
     get formulaString() {
@@ -78,8 +78,8 @@ export default class expressionBuilder extends LightningElement {
                 }
             });
 
-            if (this.staticFields && this.staticFields.length) {
-                this.contextFields = this.contextFields.concat(this.staticFields);
+            if (this.customMergeFields && this.customMergeFields.length) {
+                this.contextFields = this.contextFields.concat(this.customMergeFields);
             }
 
             if (this.contextFields && this.contextFields.length > 0) {
@@ -120,7 +120,7 @@ export default class expressionBuilder extends LightningElement {
                             objectType: line.objectType,
                             operator: line.operator,
                             parameter: line.parameter,
-                            valueType: fieldData ? fieldData.valueType : 'text',
+                            renderType: fieldData ? fieldData.renderType : 'text',
                             dataType: fieldData ? fieldData.dataType : null
                         }
                     });
@@ -175,7 +175,7 @@ export default class expressionBuilder extends LightningElement {
 
     isExpressionValid(expression) {
         let isParameterValid = true;
-        if (expression.valueType === this.settings.valueTypeString) {
+        if (expression.renderType === this.settings.valueTypeString) {
             isParameterValid = !expression.parameter || !expression.parameter.match(this.settings.invalidCharactersRegex)
         }
         return !!(expression.fieldName && expression.operator && expression.parameter && isParameterValid);

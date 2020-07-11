@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-07-2020
+ * @Last Modified On	: 07-10-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.0		6/29/2020	Jack D. Pond		Initial Version
@@ -29,6 +29,7 @@ import {api, track, LightningElement} from 'lwc';
 export default class SendHTMLEmailCPE extends LightningElement {
 	_builderContext;
 	_values;
+	convertedFlowContext;
 
 	settings = {
 		specifyBodyOption: 'specifyBody',
@@ -95,7 +96,7 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
 		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
 		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'RFU'}
+		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'}
 /*
 		allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
 		required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
@@ -151,6 +152,9 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		{label: 'Two String Collections (Labels and Values)', value: this.settings.inputModeDualCollection},
 		{label: 'One String Collection (Values)', value: this.settings.inputModeSingleCollection}
 	];
+
+    @track convertedFlowContext;
+    @track stringOptions = [];
 
 	@track isInitialized = true; //helps ensure all data structures are ready before rendering starts
 	@track selectedBodyOption = this.settings.specifyBodyOption;
@@ -329,13 +333,13 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		}
 	}
 
-	dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
+	dispatchFlowValueChangeEvent(id = '', newValue = '', newValueDataType = '') {
 		const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
 			bubbles: true,
 			cancelable: false,
 			composed: true,
 			detail: {
-				name: id,
+				id: id,
 				newValue: newValue ? newValue : null,
 				newValueDataType: newValueDataType
 			}
@@ -361,6 +365,7 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		let valueFieldName = 'name';
 		let labelFieldName = 'label';
 		let outputTypes = {};
+		console.log(JSON.stringify(flowContext, null, 4));
 		flowContext.recordLookups.forEach(curLookUp => {
 			if (allowedTypes.includes(curLookUp.object)) {
 				if (!outputTypes.hasOwnProperty(curLookUp.object)) {
@@ -386,7 +391,6 @@ export default class SendHTMLEmailCPE extends LightningElement {
 				labelFieldName: 'name'
 			};
 		}
-
 		this.convertedFlowContext = outputTypes;
 	}
 	doCleanRoleManager(baseLabel, newValueObjectType) {
@@ -423,22 +427,21 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		}
 	}
 
-	handleValueSelected(event) {
+    handleValueSelected(event) {
+        let curRecipient = this.availableRecipients.find(curRec => curRec.baseLabel === event.detail.id);
+        this.doCleanRoleManager(event.detail.id, event.detail.newValueObjectType);
 
-		let curRecipient = this.availableRecipients.find(curRec => curRec.baseLabel === event.detail.id);
-		this.doCleanRoleManager(event.detail.id, event.detail.newValueObjectType);
-
-		if (curRecipient) {
-			let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
-			let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
-			curRecipient.label = newLabel;
-			if (event.detail.newValueType === this.settings.stringDataType) {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringDataType);
-			} else {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? '{!' + event.detail.newValue + '}' : this.settings.nullValue, this.settings.referenceDataType);
-			}
-		}
-	}
+        if (curRecipient) {
+            let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
+            let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
+            curRecipient.label = newLabel;
+            if (event.detail.newValueType === this.settings.stringDataType) {
+                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringDataType);
+            } else {
+                this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? '{!' + event.detail.newValue + '}' : this.settings.nullValue, this.settings.referenceDataType);
+            }
+        }
+    }
 
 	handleBodyOptionChange(event) {
 		this.selectedBodyOption = event.detail.value;

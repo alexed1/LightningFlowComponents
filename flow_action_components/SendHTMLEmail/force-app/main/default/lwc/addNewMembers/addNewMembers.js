@@ -1,3 +1,13 @@
+/**
+ * @description       : addNewMembers.js
+ * @group             : unofficialSF
+ * @last modified on  : 07-10-2020
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver		Date			Author			Modification
+ * 1.0		07-09-2020		Alex Edelstein	Initial Version
+ * 1.33.2	07-10-2020		Jack D. Pond	Modified for Summer '20 changes
+**/
 import {LightningElement, api, track, wire} from 'lwc';
 
 import Search from '@salesforce/label/c.Search';
@@ -155,7 +165,7 @@ export default class addNewMembers extends LightningElement {
 
     updateSelected() {
         this.searchResults = this.searchResults.map(curResult => {
-            return {...curResult, iconName: this.getSelectedIconName(this.existingMembers.includes(curResult.value))}
+            return {curResult, iconName: this.getSelectedIconName(this.existingMembers.includes(curResult.value))}
         });
     }
 
@@ -235,7 +245,10 @@ export default class addNewMembers extends LightningElement {
             valueType = this.settings.referenceDataType;
         }
 
-        const valueChangedEvent = new CustomEvent('valuechanged', {
+        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+			bubbles: true,
+			cancelable: false,
+			composed: true,
             detail: {
                 id: this.name,
                 newValue: returnedValue,

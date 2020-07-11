@@ -4,7 +4,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-07-2020
+ * @Last Modified On	: 07-11-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * 
@@ -233,7 +233,7 @@ public without sharing class SendHTMLEmail {
 				if (templateID != NULL){
 					try {
 						mail.setTemplateID(templateID);
-						thisResponse.templateUsed = templateId;
+						thisResponse.templateUsed = templateID;
 					} catch (Exception e){
 						thisResponse.errors = e.getMessage();
 					}
@@ -357,7 +357,7 @@ public without sharing class SendHTMLEmail {
 		TaskAttached retAttached = new TaskAttached();
 		retAttached.errorMsg = curErrors;
 		if (templateID != null && subject == null){
-			subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateId AND isActive = TRUE ].Subject;
+			subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateID AND isActive = TRUE ].Subject;
 		}
 		try {
 			retAttached.taskId = createActivity(
@@ -623,8 +623,8 @@ public without sharing class SendHTMLEmail {
 		@invocableVariable(label='targetObjectIds' description='A list of IDs of the contacts, leads, or users to which the email will be sent. The IDs you specify set the context and ensure that merge fields in the template contain the correct data. The objects must be of the same type (all contacts, all leads, or all users)')
 		public List<String> targetObjectIds;
 		
-		@invocableVariable(label='templateId' )
-		public String templateId;
+		@invocableVariable(label='templateID' )
+		public String templateID;
 		
 		@invocableVariable(label='Template Language' description='Used in conjunction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
 		public String templateLanguage;

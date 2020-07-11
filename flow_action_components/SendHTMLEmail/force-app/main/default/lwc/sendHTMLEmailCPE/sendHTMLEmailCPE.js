@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-10-2020
+ * @Last Modified On	: 07-11-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.0		6/29/2020	Jack D. Pond		Initial Version
@@ -53,7 +53,12 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		attributeInputMode: 'inputMode',
 		flowDataTypeString: 'String',
 		availableFieldTypesPicklist: 'Picklist',
-		inputAttributePrefix: 'select_'
+		inputAttributePrefix: 'select_',
+        stringVariablesOption: 'String Variables (or type an address)',
+        stringDataType: 'String',
+        referenceDataType: 'reference',
+        componentWidth: 320,
+        nullValue: ''
 	}
 
 	@track inputValues = {
@@ -339,7 +344,7 @@ export default class SendHTMLEmailCPE extends LightningElement {
 			cancelable: false,
 			composed: true,
 			detail: {
-				id: id,
+				name: id,
 				newValue: newValue ? newValue : null,
 				newValueDataType: newValueDataType
 			}

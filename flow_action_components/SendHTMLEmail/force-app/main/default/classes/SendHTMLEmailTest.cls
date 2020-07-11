@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-04-2020
+ * @Last Modified On	: 07-11-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -20,7 +20,7 @@
 **/
 // @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
 // @Test t002_errorIfNoAddress: Error expected if no addresses specified
-// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateId set
+// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateID set
 // @Test t004_errorIfTemplateButNoContextRecord: Error expected if templateID does not exist
 // @Test t005_errorIfTemplateNameAndTemplateID: Error expected if templateID and templateName both used
 // @Test t006_coverageIfTemplateNameAndNoLanguage: Can select the Organization LanguageLocaleKey template if no language specified.  However, if LanguageLocaleKey isn't en_US, still works
@@ -237,7 +237,7 @@ public with sharing class SendHTMLEmailTest {
         }
     }
 
-// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateId set
+// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateID set
     @isTest
     public static void t003_errorIfBothTemplateAndBody () {
 
@@ -256,7 +256,7 @@ public with sharing class SendHTMLEmailTest {
             exceptionHit=true;
             system.debug('t003_error - IfBothTemplateAndBody error: '+e.getMessage());
         }
-        System.assertEquals(true, exceptionHit,'Error expected if flow attempts to set both body and templateId');
+        System.assertEquals(true, exceptionHit,'Error expected if flow attempts to set both body and templateID');
     }
 
 // @Test t004_errorIfTemplateButNoContextRecord: Error expected if templateID does not exist
@@ -631,7 +631,7 @@ public with sharing class SendHTMLEmailTest {
                 }
             }
             if (math.mod(i,3) == 2){
-                testReq.templateId = EmailTemplateId;
+                testReq.templateID = EmailTemplateId;
                 testReq.emailMessageType = 'massEmail';
                 if (TEST_WITH_CREATED_RECORDS){
                     testReq.targetObjectIds = theseContactIds;
@@ -665,7 +665,7 @@ public with sharing class SendHTMLEmailTest {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-        testReq.templateId = EmailTemplateId;
+        testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
 		testReq.whatIds = testReq.targetObjectIds;
@@ -689,7 +689,7 @@ public with sharing class SendHTMLEmailTest {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-        testReq.templateId = EmailTemplateId;
+        testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
 //        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
 //		testReq.whatIds = testReq.targetObjectIds;
@@ -713,7 +713,7 @@ public with sharing class SendHTMLEmailTest {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-//        testReq.templateId = EmailTemplateId;
+//        testReq.templateID = EmailTemplateId;
 //        testReq.templateName = TEMPLATE_NAME;
         testReq.emailMessageType = 'massEmail';
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -738,7 +738,7 @@ public with sharing class SendHTMLEmailTest {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-//        testReq.templateId = EmailTemplateId;
+//        testReq.templateID = EmailTemplateId;
         testReq.templateName = TEMPLATE_NAME;
         testReq.emailMessageType = 'massEmail';
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -763,7 +763,7 @@ public with sharing class SendHTMLEmailTest {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-//        testReq.templateId = EmailTemplateId;
+//        testReq.templateID = EmailTemplateId;
         testReq.templateName = TEMPLATE_NOSUCH;
         testReq.emailMessageType = 'massEmail';
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -805,7 +805,7 @@ public with sharing class SendHTMLEmailTest {
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq;
         testReq = new SendHTMLEmail.Request();
-        testReq.templateId = EmailTemplateId;
+        testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         // Deliberately introduce error by mismatching targetObjectIds and whatIds
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -830,7 +830,7 @@ public with sharing class SendHTMLEmailTest {
     public static void t022_coverageMassMailTemplateIdNoLang() {
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
 		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
-//        testReq.templateId = EmailTemplateId;
+//        testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         testReq.Description = 'MassEmail Test - no Language';
         testReq.templateName = TEMPLATE_NAME_NO_LANG;

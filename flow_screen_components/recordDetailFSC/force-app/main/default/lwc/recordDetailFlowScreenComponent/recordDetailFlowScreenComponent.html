@@ -32,7 +32,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                 object-api-name={objectApiName}>
                             <lightning-layout multiple-rows="true">
                                 <template for:each={fieldData} for:item="field">
-                                    <lightning-layout-item key={field.fieldName} size={elementSize}>
+                                    <lightning-layout-item class="slds-p-horizontal_medium" key={field.fieldName} size={elementSize}>
                                         <div class="underline">
                                             <lightning-output-field if:false={field.isError} field-name={field.fieldName}>
                                             </lightning-output-field>
@@ -55,7 +55,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                         >
                             <lightning-layout multiple-rows="true">
                                 <template for:each={fieldData} for:item="field">
-                                    <lightning-layout-item key={field.fieldName} size={elementSize}>
+                                    <lightning-layout-item  class="slds-p-horizontal_medium" key={field.fieldName} size={elementSize}>
                                         <template if:false={field.isError} >
                                             <lightning-output-field if:true={field.isOutput} field-name={field.fieldName}>
                                             </lightning-output-field>

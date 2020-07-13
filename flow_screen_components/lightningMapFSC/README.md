@@ -27,8 +27,8 @@ Embed map in Flow passing in collection (of address attributes or geolocation), 
 |**title**	       		   |X	 |       |String.  Title to appear above the map                                                                                                     |
 |**showListView**	       |X	 |       |Boolean.  Set to true to show the List View on the map.  Default is false (hidden)                                                         |
 |**geolocation**	       |X    |	     |Boolean.  Set to true if you will pass in Geolocation instead of Address. Default is false                                                 |
-|**selectedMarkerValue**   |	 |X	     |String.  This is the Id of the marker selected.                                                                                            |
+|**selectedMarkerValue**   |	 |X	     |String.  This is the 'MarkerValue' passed in to the markerList for the corresponding marker selected.                                      |
 
 ### User Instructions:
 1)	Note that markers will not appear if there are address/location attributes missing.  This can cause the List View not to match the map.
-2)  If enabled by your administrator, selecting a Marker on the map or list view will capture the selection you have made.
+2)  If enabled by your administrator, selecting a Marker on the map or list view will capture the selection you have made.  This value will correspond to the MarkerValue you've passed in to the component when building the markerList input.  For example, if 'Austin;USA;78767;TX;312 Constitution Place Austin, TX 78767 USA;Edge Communications;standard:account;001B000001KKZavIAH' is one of your markers in the collection variable, then the MarkerValue passed in is '001B000001KKZavIAH', and so selectedMarkerValue passed out if that marker is selected would be '001B000001KKZavIAH'.

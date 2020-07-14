@@ -1,12 +1,12 @@
 import { LightningElement, api, track } from 'lwc';
 
-export default class LightningMapFSC extends LightningElement {
+export default class MultiMapFSC extends LightningElement {
 
     //input attributes
     @api title;
     @api markerList;
     @api showListView = false;
-    @api geolocation = false;
+    @api coordinates = false;
     @api selectedMarkerValue;
 
     //component attributes
@@ -14,11 +14,14 @@ export default class LightningMapFSC extends LightningElement {
     @track listView = 'hidden';
 
     connectedCallback() {
+        console.log('marker list: '+this.markerList);
         if (this.markerList.length > 0) {
             for (let i = 0; i < this.markerList.length; i++) {
+                //Splitting location elements by ';' as some address fields can have ','.  
+                //Latitude and Longitude will not be leaving for consistency in setting up flow.
                 let locationData = this.markerList[i].split(';');
-                //If geolcation set to be passed in, then use:
-                if (this.geolocation) {
+                //If coordinates set to be passed in, then use:
+                if (this.coordinates) {
                     let markerObj = {
                         location: {
                             'Latitude': locationData[0],

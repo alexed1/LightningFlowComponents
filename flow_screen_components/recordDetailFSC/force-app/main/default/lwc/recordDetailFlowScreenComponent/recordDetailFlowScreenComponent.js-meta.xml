@@ -10,7 +10,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="fields" type="String"/>
+            <property name="fields" type="String" description="comma-seperated field api names"/>
             <property name="mode" type="String" datasource="View,Edit"/>
         </targetConfig>
         <targetConfig targets="lightning__FlowScreen">
@@ -22,7 +22,13 @@
             <property name="flowNavigationOnSave" type="Boolean" role="inputOnly" label="Flow - Navigation on Save?" description="Check if you would like the flow to navigate to the Next screen (or Finish) when clicking Save.  For best results, hide the page footer in the flow screen."/>
             <property name="flowNavigationOnCancel" type="Boolean" role="inputOnly" label="Flow - Navigation on Cancel?" description="Check if you would like the flow to navigate to the Previous or Next screen when clicking Cancel.  For best results, hide the page footer in the flow screen."/>
             <property name="flowNavigationOnCancelDirection" type="String" role="inputOnly" label="Flow - Navigation Direction on Cancel (Previous or Next)" description="Specify Previous or Next for the flow navigation direction after the Cancel button is clicked."/>
+            <property name="showCancelButton" type="Boolean" label="Show Cancel Button?" description="This will hide cancel button if set FALSE"/>
             <property name="isCancelButton" type="Boolean" role="outputOnly" label="Cancel Button Selected" description="This value will be set to True is the user selected the Cancel button."/>
+            <property name="SaveBtnLabel" type="String" label="Save Button Label" description="Input - This is the next/submit button label"/>
+            <property name="CancelBtnLabel" type="String" label="Cancel Button Label" description="Input - This is the previous/cancel button label"/>
+            <property name="columnsize" type="Integer" label="No. of Columns" default="2" description="Input - This will represent number of columns for View/Edit mode"/>
+            <property name="showtoast" type="Boolean" label="Show Toast on Success?" description="If True, Toast will be triggered on success"/>
+        
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

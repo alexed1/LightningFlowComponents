@@ -5,9 +5,12 @@
 public with sharing class SObjectDeepClone {
     @TestVisible
     private static final Map<Schema.SObjectType, List<String>> NULLABLE_FIELDS = new Map<Schema.SObjectType, List<String>>{
-            Schema.OpportunityLineItem.getSObjectType() => new List<String>{
+            //the purpose of this was to get around a problem created when the calculated TotalPrice field gets cloned. 
+            
+            //this fix turns out not to work. setting TotalPrice to null creates a separate error. ultimately, the solution was to set TotalPrice to empty string
+            /* Schema.OpportunityLineItem.getSObjectType() => new List<String>{
                     'TotalPrice'
-            }
+            } */
     };
 
     private Map<String, ChildRelationshipProps> relationshipMap;

@@ -1,74 +1,92 @@
-import {LightningElement, api} from 'lwc';
-import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
+import {LightningElement, api, track} from 'lwc';
 
 export default class LookupCpe extends LightningElement {
 
-    _masterLabel;
-    _objectName;
-    _outputWhichValue;
-    _displayWhichField;
+    _builderContext;
+    _values;
 
-    @api get masterLabel() {
-        return this._masterLabel;
+    settings = {
+        attributeObjectName: 'objectName',
+        attributeDisplayWhichFieldName: 'displayWhichField',
+        attributeOutputWhichValueName: 'outputWhichValue',
+        attributeMasterLabel: 'fieldLabel',
+        attributeSelectedValue: 'selectedValue',
+        flowDataTypeString: 'String',
+        flowDataTypeBoolean: 'Boolean',
+        inputAttributePrefix: 'select_'
     }
 
-    set masterLabel(value) {
-        this._masterLabel = value;
+    @track inputValues = {
+        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Lookup which Object?'},
+        displayWhichField: {value: null, valueDataType: null, isCollection: false, label: 'Display which Field?'},
+        outputWhichValue: {value: null, valueDataType: null, isCollection: false, label: 'Output which Field?'},
+        fieldLabel: {value: null, valueDataType: null, isCollection: false, label: 'Label'},
+        placeholderText: {value: null, valueDataType: null, isCollection: false, label: 'Placeholder Text'},
+        showAddNewRecord: {value: null, valueDataType: null, isCollection: false, label: 'Show Add New Record '}
     }
 
-    @api get objectName() {
-        return this._objectName;
+    @api get builderContext() {
+        return this._builderContext;
     }
 
-    set objectName(value) {
-        this._objectName = value;
+    set builderContext(value) {
+        this._builderContext = value;
     }
 
-    @api get displayWhichField() {
-        return this._displayWhichField;
+    @api get inputVariables() {
+        return this._values;
     }
 
-    set displayWhichField(value) {
-        this._displayWhichField = value;
+    set inputVariables(value) {
+        this._values = value;
+        this.initializeValues();
     }
 
-    @api get outputWhichValue() {
-        return this._outputWhichValue;
+    initializeValues(value) {
+        if (this._values && this._values.length) {
+            this._values.forEach(curInputParam => {
+                if (curInputParam.name && this.inputValues[curInputParam.name]) {
+                    this.inputValues[curInputParam.name].value = curInputParam.value;
+                    this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+                }
+            });
+        }
     }
-
-    set outputWhichValue(value) {
-        this._outputWhichValue = value;
-    }
-
-    labels = {
-        lookupWhichObject: 'Lookup which Object?',
-        displayWhichField: 'Display which Field?',
-        outputWhichField: 'Output which Field?',
-        masterLabel: 'Master Label'
-    };
 
     handleDisplayFieldSelected(event) {
-        this._objectName = event.detail.objectType;
-        this._displayWhichField = event.detail.fieldName;
-        this.handleSelectionChange(['objectName', 'displayWhichField']);
+        this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
+        this.dispatchFlowValueChangeEvent(this.settings.attributeDisplayWhichFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
     }
 
     handleOutputFieldSelected(event) {
-        this._outputWhichValue = event.detail.fieldName;
-        this.handleSelectionChange(['outputWhichValue']);
+        this.dispatchFlowValueChangeEvent(this.settings.attributeOutputWhichValueName, event.detail.fieldName, this.settings.flowDataTypeString);
     }
 
-    handleMasterLabelChanged(event) {
-        this._masterLabel = event.detail.value;
-        this.handleSelectionChange(['masterLabel']);
-    }
-
-    handleSelectionChange(attributes) {
-        if (attributes && attributes.length) {
-            attributes.forEach(curAttributeName => {
-                const valueChangeEvent = new FlowAttributeChangeEvent('curAttributeName', this[curAttributeName]);
-                this.dispatchEvent(valueChangeEvent);
-            });
+    handleAttributeChange(event) {
+        let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
+        if (curAttributeName) {
+            this.dispatchFlowValueChangeEvent(curAttributeName, event.currentTarget.value, this.settings.flowDataTypeString);
         }
+    }
+
+    handleBooleanAttributeChange(event) {
+        let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
+        if (curAttributeName) {
+            this.dispatchFlowValueChangeEvent(curAttributeName, event.target.checked, this.settings.flowDataTypeBoolean);
+        }
+    }
+
+    dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
+        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+            detail: {
+                name: id,
+                newValue: newValue ? newValue : null,
+                newValueDataType: newValueDataType
+            }
+        });
+        this.dispatchEvent(valueChangedEvent);
     }
 }

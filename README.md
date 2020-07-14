@@ -1,5 +1,5 @@
 
-This folder contains a collection of Lightning Components and Invocable Actions that can be used to enhance Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Builder! You can install many of these components as packages over at [UnofficialSF site](http://unofficialsf.com). (See "Installation")
+A collection of installable extensions for Lightning Flow from Salesforce. Note that you do not need to write code, read code, or use developer console to install these into your Flow Builder! You can install many of these components as packages over at [UnofficialSF site](http://unofficialsf.com). 
 
 
 # Lightning Flow Screen Components

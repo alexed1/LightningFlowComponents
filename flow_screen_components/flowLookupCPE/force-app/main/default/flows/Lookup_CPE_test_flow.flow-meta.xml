@@ -16,94 +16,42 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>Lookup_CPE_Screen</name>
-        <label>Lookup CPE Screen</label>
-        <locationX>200</locationX>
-        <locationY>52</locationY>
+        <name>flowLookup_screen</name>
+        <label>flowLookup_screen</label>
+        <locationX>459</locationX>
+        <locationY>70</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Screen_Show_Results</targetReference>
+            <targetReference>output</targetReference>
         </connector>
         <fields>
-            <name>screen_lookup_cpe</name>
-            <extensionName>c:lookupCPE</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>lookup_displayWhichField</assignToReference>
-                <name>displayWhichField</name>
-            </outputParameters>
-            <outputParameters>
-                <assignToReference>lookup_objectName</assignToReference>
-                <name>objectName</name>
-            </outputParameters>
-            <outputParameters>
-                <assignToReference>lookup_outputWhichValue</assignToReference>
-                <name>outputWhichValue</name>
-            </outputParameters>
-            <outputParameters>
-                <assignToReference>lookup_masterLabel</assignToReference>
-                <name>masterLabel</name>
-            </outputParameters>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>screen_display_selected_value</name>
-        <label>screen_display_selected_value</label>
-        <locationX>546</locationX>
-        <locationY>51</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>dt_selected_value</name>
-            <fieldText>&lt;p&gt;Selected Value: {!output_selected_value}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Screen_Show_Results</name>
-        <label>Screen  Show Results</label>
-        <locationX>376</locationX>
-        <locationY>50</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>screen_display_selected_value</targetReference>
-        </connector>
-        <fields>
-            <name>lwc_flow_lookup</name>
+            <name>flowLookup</name>
             <extensionName>c:lookupContainer</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
-                <name>displayWhichField</name>
+                <name>objectName</name>
                 <value>
-                    <elementReference>lookup_displayWhichField</elementReference>
+                    <stringValue>Account</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>objectName</name>
+                <name>displayWhichField</name>
                 <value>
-                    <elementReference>lookup_objectName</elementReference>
+                    <stringValue>{!lookup_displayWhichField}</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>outputWhichValue</name>
                 <value>
-                    <elementReference>lookup_outputWhichValue</elementReference>
+                    <stringValue>{!lookup_outputWhichValue}</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>fieldLabel</name>
                 <value>
-                    <elementReference>lookup_masterLabel</elementReference>
+                    <stringValue>Hello Flow Lookup</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -113,13 +61,29 @@
             </outputParameters>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>output</name>
+        <label>output</label>
+        <locationX>638</locationX>
+        <locationY>71</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>output_selected_value2</name>
+            <fieldText>&lt;p&gt;output value is: {!output_selected_value}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
     </screens>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>Lookup_CPE_Screen</targetReference>
+            <targetReference>flowLookup_screen</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -129,6 +93,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+        <value>
+            <stringValue>Name</stringValue>
+        </value>
     </variables>
     <variables>
         <name>lookup_masterLabel</name>
@@ -150,6 +117,9 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+        <value>
+            <stringValue>Id</stringValue>
+        </value>
     </variables>
     <variables>
         <name>output_selected_value</name>

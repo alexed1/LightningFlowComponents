@@ -11,6 +11,7 @@ public with sharing class GetLayoutFields {
         for (Requests req : requestList) {
             String layoutName = req.layoutName;
             String objectName = req.objectName;
+            String excludeFields = req.excludeFields;
             String layoutFieldsCSV = '';
 
             layoutName = objectName + '-' + layoutName;
@@ -18,15 +19,18 @@ public with sharing class GetLayoutFields {
                 Metadata.Operations.retrieve(Metadata.MetadataType.Layout, 
                                             new List<String> {layoutName});
 
-            Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);
+            List<String> lstExcludeFields = excludeFields.split(',');
 
+            Metadata.Layout layoutMd = (Metadata.Layout)layouts.get(0);
+            
+            
             for (Metadata.LayoutSection section : layoutMd.layoutSections) {
                 for (Metadata.LayoutColumn column : section.layoutColumns) {
                     if (column.layoutItems != null) {
                         for (Metadata.LayoutItem item : column.layoutItems) {
+                            if(!lstExcludeFields.contains(item.field)){
                                 layoutFieldsCSV = layoutFieldsCSV + ',' +item.field;
-
-
+                            }
                         }
                     }
                 }
@@ -50,6 +54,9 @@ public with sharing class GetLayoutFields {
         @InvocableVariable 
         public String objectName;
 
+        @InvocableVariable 
+        public String excludeFields;
+
     }
 
     public class Results {
@@ -60,5 +67,4 @@ public with sharing class GetLayoutFields {
 
     }
 }
-
 

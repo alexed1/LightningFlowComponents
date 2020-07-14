@@ -1,0 +1,18 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "launchFlowDynamically",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "launchFlowDynamically": "0Hof4000000XZKqCAO",
+        "launchFlowDynamically@1.2.0-0": "04tf4000004PthTAAS"
+    }
+}

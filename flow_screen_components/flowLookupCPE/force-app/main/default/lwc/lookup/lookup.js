@@ -1,7 +1,7 @@
-import { LightningElement, track, api } from 'lwc';
+import {LightningElement, track, api} from 'lwc';
 
 const MINIMAL_SEARCH_TERM_LENGTH = 2; // Min number of chars required to search
-const SEARCH_DELAY = 300; // Wait 300 ms after user stops typing then, peform search
+const SEARCH_DELAY = 300; // Wait 300 ms after user stops typing then, perform search
 
 export default class Lookup extends LightningElement {
     @api label;
@@ -11,7 +11,7 @@ export default class Lookup extends LightningElement {
     @api errors = [];
     @api scrollAfterNItems;
     @api customKey;
-
+    @api showAddNewRecord;
     @track searchTerm = '';
     @track searchResults = [];
     @track hasFocus = false;
@@ -20,6 +20,7 @@ export default class Lookup extends LightningElement {
     cleanSearchTerm;
     blurTimeout;
     searchThrottlingTimeout;
+
 
     // EXPOSED FUNCTIONS
 
@@ -31,7 +32,7 @@ export default class Lookup extends LightningElement {
         this.searchResults = results.map(result => {
             // Clone and complete search result if icon is missing
             if (typeof result.icon === 'undefined') {
-                const { id, sObjectType, title, subtitle } = result;
+                const {id, sObjectType, title, subtitle} = result;
                 return {
                     id,
                     sObjectType,
@@ -190,8 +191,17 @@ export default class Lookup extends LightningElement {
 
     handleClearSelection() {
         this.selection = [];
+        const searchInput = this.template.querySelector('.mainSearchInput');
+        if (searchInput) {
+            searchInput.focus();
+        }
         // Notify parent components that selection has changed
         this.dispatchEvent(new CustomEvent('selectionchange'));
+    }
+
+    handleAddNewRecord() {
+        this.selection = [];
+        this.dispatchEvent(new CustomEvent('addnewrecord'));
     }
 
     // STYLE EXPRESSIONS
@@ -211,9 +221,11 @@ export default class Lookup extends LightningElement {
         let css =
             'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click ';
         if (
-            this.hasFocus &&
-            this.cleanSearchTerm &&
-            this.cleanSearchTerm.length >= MINIMAL_SEARCH_TERM_LENGTH
+            this.hasFocus
+            // &&
+            // this.cleanSearchTerm
+            // &&
+            // this.cleanSearchTerm.length >= MINIMAL_SEARCH_TERM_LENGTH
         ) {
             css += 'slds-is-open';
         }
@@ -222,7 +234,7 @@ export default class Lookup extends LightningElement {
 
     get getInputClass() {
         let css =
-            'slds-input slds-combobox__input has-custom-height ' +
+            'mainSearchInput slds-input slds-combobox__input has-custom-height ' +
             (this.errors.length === 0 ? '' : 'has-custom-error ');
         if (!this.isMultiEntry) {
             css +=

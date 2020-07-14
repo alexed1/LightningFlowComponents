@@ -16,4 +16,12 @@
         <shortDescription>FieldIsNotSupportedMessage</shortDescription>
         <value>Following fields are not supported: </value>
     </labels>
+	<labels>
+        <fullName>NotSupportedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>NotSupportedMessage</shortDescription>
+        <value>Unable to access a field called</value>
+    </labels>
 </CustomLabels>

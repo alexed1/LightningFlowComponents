@@ -1,0 +1,49 @@
+<template>
+    <div class="slds-p-top_small">
+        <template for:each={_fieldRows} for:item="curDataRow">
+            <div class="slds-grid slds-wrap slds-card" key={curDataRow.input.name}>
+                <div class="slds-col slds-size_5-of-12">
+                    <c-pick-object-and-field-f-s-c
+                            name="select_input"
+                            data-id={curDataRow.id}
+                            field-label={fieldLabel}
+                            object-type={curDataRow.input.objectType}
+                            field={curDataRow.input.field}
+                            onfieldselected={handleOutputFieldSelected}
+                            hide-object-picklist
+                            builder-context={builderContext}
+                    ></c-pick-object-and-field-f-s-c>
+                </div>
+                <div class="slds-col slds-size--1-of-12 slds-align-bottom slds-text-align_center slds-p-left_xx-small">
+                    <lightning-icon
+                            icon-name="utility:forward"
+                    ></lightning-icon>
+                </div>
+                <div class="slds-p-left_small slds-col slds-size_5-of-12">
+                    <c-pick-object-and-field-f-s-c
+                            name="select_output"
+                            data-id={curDataRow.id}
+                            field-label={fieldLabel}
+                            object-type={curDataRow.output.objectType}
+                            field={curDataRow.output.field}
+                            onfieldselected={handleOutputFieldSelected}
+                            hide-object-picklist
+                            builder-context={builderContext}
+                    ></c-pick-object-and-field-f-s-c>
+                </div>
+                <div if:true={curDataRow.isRemovable}
+                     class="slds-col slds-size--1-of-12 slds-align-bottom slds-p-left_xx-small">
+                    <lightning-button-icon
+                            data-id={curDataRow.id}
+                            icon-name="utility:delete"
+                            alternative-text={defaults.removeRowLabel}
+                            onclick={handleRemoveMapping}
+                    >
+                    </lightning-button-icon>
+                </div>
+            </div>
+        </template>
+        <lightning-button class="slds-p-top_small slds-p-bottom_small slds-float_right" label={defaults.addButtonLabel}
+                          onclick={handleAddMapping}></lightning-button>
+    </div>
+</template>

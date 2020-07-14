@@ -6,9 +6,10 @@ import disassemblyFormulaString from '@salesforce/apex/ExpressionBuilder.disasse
 import describeSObjects from '@salesforce/apex/SearchUtils.describeSObjects';
 
 export default class expressionBuilder extends LightningElement {
-
+    @api name;
     @api addButtonLabel = 'Add Condition';
-
+    @api dispatchComponentChangeEvents = false;
+    @api customVariableDelimiter;
     @track objectName;
     @track expressionLines = [];
     @track customLogic = '';
@@ -17,6 +18,8 @@ export default class expressionBuilder extends LightningElement {
     @track contextFields = [];
     @track contextTypes = [];
     @track isLoading = true;
+
+    @api staticFields = [];
 
     @api
     get formulaString() {
@@ -48,6 +51,11 @@ export default class expressionBuilder extends LightningElement {
         this.contextTypes = [...[this._objectName], ...this.splitValues(value)];
     }
 
+    settings = {
+        valueTypeString: 'string',
+        invalidCharactersRegex: /['"\\\/|&^]/g
+    }
+
     @wire(describeSObjects, {types: '$contextTypes'})
     _describeSObjects(result) {
         if (result.error) {
@@ -70,8 +78,14 @@ export default class expressionBuilder extends LightningElement {
                 }
             });
 
+            if (this.staticFields && this.staticFields.length) {
+                this.contextFields = this.contextFields.concat(this.staticFields);
+            }
+
             if (this.contextFields && this.contextFields.length > 0) {
                 this.doDisassemblyFormulaString();
+            } else {
+                this.isLoading = false;
             }
         }
     }
@@ -85,7 +99,10 @@ export default class expressionBuilder extends LightningElement {
     conditionLogicHelpText = 'placeholder for conditionLogicHelpTest' //conditionLogicHelpText;
 
     doDisassemblyFormulaString() {
-        disassemblyFormulaString({expression: this.convertedExpression}).then(result => {
+        disassemblyFormulaString({
+            expression: this.convertedExpression,
+            customVariableDelimiter: this.customVariableDelimiter
+        }).then(result => {
             if (result.logicType !== undefined) {
                 this.logicType = result.logicType;
             }
@@ -103,6 +120,7 @@ export default class expressionBuilder extends LightningElement {
                             objectType: line.objectType,
                             operator: line.operator,
                             parameter: line.parameter,
+                            valueType: fieldData ? fieldData.valueType : 'text',
                             dataType: fieldData ? fieldData.dataType : null
                         }
                     });
@@ -110,8 +128,10 @@ export default class expressionBuilder extends LightningElement {
                 });
                 this.expressionLines = expressionLines;
             }
+
+        }).finally(() => {
             this.isLoading = false;
-        })
+        });
     }
 
     generateNewExpression() {
@@ -154,7 +174,11 @@ export default class expressionBuilder extends LightningElement {
     }
 
     isExpressionValid(expression) {
-        return !!(expression.fieldName && expression.operator && expression.parameter);
+        let isParameterValid = true;
+        if (expression.valueType === this.settings.valueTypeString) {
+            isParameterValid = !expression.parameter || !expression.parameter.match(this.settings.invalidCharactersRegex)
+        }
+        return !!(expression.fieldName && expression.operator && expression.parameter && isParameterValid);
     }
 
     handleRemoveExpression(event) {
@@ -170,14 +194,32 @@ export default class expressionBuilder extends LightningElement {
                 expressionLines: JSON.stringify(this.expressionLines)
             }).then(result => {
                 this.convertedExpression = result
+                if (this.dispatchComponentChangeEvents) {
+                    this.dispatchValueChangedEvent();
+                } else {
+                    this.dispatchFlowValueChangedEvent();
+                }
             })
         } else {
             this.convertedExpression = ''
+            this.dispatchFlowValueChangedEvent();
         }
+    }
 
+    dispatchValueChangedEvent() {
+        const memberRefreshedEvt = new CustomEvent('expressionchanged', {
+            bubbles: true,
+            detail: {
+                name: this.name,
+                value: this.convertedExpression
+            }
+        });
+        this.dispatchEvent(memberRefreshedEvt);
+    }
+
+    dispatchFlowValueChangedEvent() {
         const valueChangeEvent = new FlowAttributeChangeEvent('value', this.convertedExpression);
         this.dispatchEvent(valueChangeEvent);
-
     }
 
     get disabledAddButton() {
@@ -186,5 +228,28 @@ export default class expressionBuilder extends LightningElement {
 
     splitValues(originalString) {
         return originalString ? originalString.replace(/ /g, '').split(',') : [];
+    }
+
+    @api
+    getFormulaString() {
+        return this.convertedExpression;
+    }
+
+    @api
+    validate() {
+        let validity = {
+            isValid: true
+        };
+        let inputsToVerify = this.template.querySelectorAll('c-expression-line');
+        if (inputsToVerify && inputsToVerify.length) {
+            inputsToVerify.forEach(curInput => {
+                let reportedValidity = curInput.validate();
+                if (!reportedValidity || !reportedValidity.isValid) {
+                    validity = reportedValidity;
+                    return reportedValidity;
+                }
+            })
+        }
+        return validity;
     }
 }

@@ -1,0 +1,37 @@
+<template>
+    <div class="container">
+        <div class="flexContainer">
+            <p>Insert</p>
+            <lightning-combobox name="field"
+                                label="Field"
+                                variant="label-hidden"
+                                placeholder="Field"
+                                options={contextFields}
+                                onchange={selectField}>
+            </lightning-combobox>
+            <lightning-combobox name="function"
+                                label="Function"
+                                variant="label-hidden"
+                                placeholder="Function"
+                                options={functions}
+                                onchange={selectFunction}>
+            </lightning-combobox>
+            <lightning-combobox name="recordDetail.htmloperator"
+                                label="Operator"
+                                variant="label-hidden"
+                                placeholder="Operator"
+                                options={operators}
+                                onchange={selectOperator}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <textarea class="slds-textarea" onchange={changeFormula} onblur={formulaChangedFlowEvent}>
+                    {formulaString}
+                </textarea>
+            </div>
+        </div>
+        <p>Use formula syntax: Enclose text and picklist value API names in double quotes : "the_text", include numbers
+            without quotes : 25, show percentages as decimals: 0.10, and express date calculations in the standard format: Today() + 7</p>
+    </div>
+</template>

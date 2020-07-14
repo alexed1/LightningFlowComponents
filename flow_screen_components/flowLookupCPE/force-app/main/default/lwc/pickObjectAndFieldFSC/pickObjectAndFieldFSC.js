@@ -6,12 +6,16 @@ import getObjects from '@salesforce/apex/FieldPickerController.getObjects';
 import NonePicklistValueLabel from '@salesforce/label/c.NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.FieldIsNotSupportedMessage';
 
+import {standardObjectOptions} from 'c/pickObjectAndFieldUtils';
+import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/flowComboboxUtils';
+
 export default class pickObjectAndFieldFSC extends LightningElement {
+    @api name;
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
-    // @api objectType;
-    // @api field;
+    @api readOnly = false;
+    @api builderContext;
     @api availableObjectTypes;
     @api availableFields;
 
@@ -23,32 +27,33 @@ export default class pickObjectAndFieldFSC extends LightningElement {
 
     @track _objectType;
     @track _field;
-    @track objectTypes;
+    @track objectTypes = standardObjectOptions;
     @track fields;
     @track errors = [];
     @track isLoadFinished = false;
+    fieldDataType;
+    showCollections = false;
 
     labels = {
         none: NonePicklistValueLabel,
         fieldNotSupported: FieldIsNotSupportedMessage
     };
 
-    @api
-    get objectType(){
+    @api get objectType() {
         return this._objectType;
     }
-    set objectType(value){
+
+    set objectType(value) {
         this._objectType = value;
     }
 
-    @api
-    get field(){
-        return this._field;
+    @api get field() {
+        return this._objectType;
     }
-    set field(value){
-        if(this._objectType){
-            this._field = value;
-        }
+
+    set field(value) {
+        this._field = value;
+        this.fieldDataType = getDataType(value);
     }
 
     @wire(getObjects, {availableObjectTypes: '$availableObjectTypesList'})
@@ -83,16 +88,26 @@ export default class pickObjectAndFieldFSC extends LightningElement {
                         });
                     }
                 }
-                if (this._field && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
+                if (this._field && !isReference(this._field) && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
                     this.errors.push(this.labels.fieldNotSupported + this._field);
                     this._field = null;
                 }
             }
-            this.fields = fieldResults.sort((a, b) => (a.label > b.label) ? 1 : ((b.label > a.label) ? -1 : 0));;
+            this.fields = fieldResults;
             if (this.fields) {
                 this.dispatchDataChangedEvent({...this.fields.find(curField => curField.value == this._field), ...{isInit: true}});
             }
         }
+    }
+
+    handleFlowComboboxValueChange(event) {
+        if (event.detail.newValueDataType === flowComboboxDefaults.referenceDataType) {
+            this._field = formattedValue(event.detail.newValue, event.detail.newValueDataType);
+        } else {
+            this._field = event.detail.newValue;
+        }
+
+        this.dispatchDataChangedEvent(event.detail);
     }
 
     get isFieldTypeVisible() {
@@ -134,9 +149,15 @@ export default class pickObjectAndFieldFSC extends LightningElement {
         return this._objectType == null || this.isError;
     }
 
+    get isObjectDisabled() {
+        return this.disableObjectPicklist || this.isError;
+        // return !this.isLoadFinished || this.disableObjectPicklist || this.isError;
+    }
+
     get fieldType() {
-        if (this._field) {
-            return this.fields.find(e => e.value == this._field).dataType;
+        if (this.fields && this._field) {
+            let foundField = this.fields.find(e => e.value == this._field);
+            return foundField ? foundField.dataType : null
         } else {
             return null;
         }
@@ -163,13 +184,13 @@ export default class pickObjectAndFieldFSC extends LightningElement {
             bubbles: true,
             detail: {
                 ...detail, ...{
+                    name: this.name,
                     objectType: this._objectType,
                     fieldName: this._field
                 }
             }
         });
         this.dispatchEvent(memberRefreshedEvt);
-
     }
 
     splitValues(originalString) {
@@ -179,4 +200,19 @@ export default class pickObjectAndFieldFSC extends LightningElement {
             return [];
         }
     };
+
+    get renderFlowCombobox() {
+        return !this.readOnly && this.builderContext;
+    }
+
+    @api
+    reportValidity() {
+        let flowCombobox = this.template.querySelector('c-flow-combobox');
+        if (flowCombobox) {
+            if (!flowCombobox.reportValidity()) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

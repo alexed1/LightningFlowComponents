@@ -1,0 +1,67 @@
+<template>
+    <div class="slds-grid slds-wrap slds-card">
+        <div class="slds-col slds-size_1-of-2 border-bottom-2px slds-p-bottom_small">
+            <lightning-radio-group
+                    name="select_inputDataType"
+                    label={inputValues.inputDataType.label}
+                    options={dataTypeOptions}
+                    value={inputValues.inputDataType.value}
+                    type="radio"
+                    onchange={handleValueChange}
+            ></lightning-radio-group>
+            <template if:true={isInputSObject}>
+                <c-pick-object-and-field-f-s-c
+                        name="select_inputObject"
+                        object-label={inputValues.inputObject.label}
+                        hide-field-picklist
+                        object-type={inputValues.inputObject.value}
+                        disable-mergefield-selection
+                        onfieldselected={handleObjectSelected}
+                ></c-pick-object-and-field-f-s-c>
+            </template>
+        </div>
+        <div class="slds-p-left_small border-bottom-2px slds-col slds-p-bottom_small slds-size_1-of-2">
+            <lightning-radio-group
+                    name="select_outputDataType"
+                    label={inputValues.outputDataType.label}
+                    options={dataTypeOptions}
+                    value={inputValues.outputDataType.value}
+                    type="radio"
+                    onchange={handleValueChange}
+            ></lightning-radio-group>
+            <template if:true={isOutputSObject}>
+                <template if:true={isInputSObject}>
+                    <c-pick-object-and-field-f-s-c
+                            name="select_outputObject"
+                            object-label={inputValues.outputObject.label}
+                            hide-field-picklist
+                            disable-mergefield-selection
+                            object-type={inputValues.outputObject.value}
+                            onfieldselected={handleObjectSelected}
+                    ></c-pick-object-and-field-f-s-c>
+                </template>
+            </template>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-p-top_small">
+            <c-generate-field-map-cpe-lines
+                    name="select_inputMapJson"
+                    input-object-type={inputValues.inputObject.value}
+                    output-object-type={inputValues.outputObject.value}
+                    input-map-json={inputValues.inputMapJson.value}
+                    field-label={labels.addMappingField}
+                    builder-context={_builderContext}
+            ></c-generate-field-map-cpe-lines>
+        </div>
+
+    </div>
+    <c-uc-modal class="modal-window" show-footer available-reactions={changeObjectModalReactions}
+                name="confirmObjectChange"
+                onreaction={handleModalReactionButtonClick}>
+            <span slot="modalHeader">
+           {labels.confirmAction}
+            </span>
+        <span slot="modalBody">
+                {labels.objectChangeConfirm}
+            </span>
+    </c-uc-modal>
+</template>

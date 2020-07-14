@@ -5,7 +5,7 @@ export default class expressionLine extends LightningElement {
     @api objectType;
     @api operator;
     @api value;
-    @api valueType = 'text';
+    @api renderType = 'text';
     @api expressionId;
     @api expressionIndex;
     @api availableMergeFields = [];

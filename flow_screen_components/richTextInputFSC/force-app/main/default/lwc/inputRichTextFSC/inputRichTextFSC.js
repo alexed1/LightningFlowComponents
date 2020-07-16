@@ -25,7 +25,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         }else if(this.characterCap && (this.characterCount > this.characterLimit)){
             return {
                 isValid:false,
-                errorMessage: 'Cannot Advance - Character Limit Exceed: '+this.characterCount + ' > ' + this.characterLimit
+                errorMessage: 'Cannot Advance - Character Limit Exceeded: '+this.characterCount + ' > ' + this.characterLimit
             };
         }else if(!this.isValidCheck){
             return {

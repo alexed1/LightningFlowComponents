@@ -68,7 +68,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     //Set initial values on load
     connectedCallback() {
         if(this.enableAdvancedTools){
-            this.richText = this.value;
+            (this.value === null || this.value == undefined) ? this.richText = '' : this.richText = this.value;
             this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
@@ -152,24 +152,18 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.richText = event.target.value;
         }
         this.characterCount = this.richText.length;
-        if(this.characterCap && this.characterCount > this.characterLimit){
-            this.isValidCheck = false;
-        }
         //Display different message if warn only - validation also won't be enforced on Next.
-        if(this.characterCap && this.characterCount > this.characterLimit){
-            this.errorMessage = 'Error - Character Limit Exceeded';
-        }else if(!this.warnOnly){
+        if(!this.warnOnly){
             this.errorMessage = 'Error - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }else{
             this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }
-
         
     }
 
     //Set css on Character count if passing character limit
     get charClass(){
-        return (this.characterLimit < this.characterCount ? 'warning' : '');
+        return (this.characterLimit < this.characterCount ? 'slds-theme_error' : '');
     }
 
     //Handle initiation of Search and Replace

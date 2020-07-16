@@ -10,6 +10,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @api autoReplaceMap;
     @api warnOnly = false;
     @api label;
+    @api characterLimit;
     formats = ['font', 'size', 'bold', 'italic', 'underline',
         'strike', 'list', 'indent', 'align', 'link',
         'image', 'clean', 'table', 'header', 'color','background','code','code-block','script','blockquote','direction'];
@@ -19,13 +20,20 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         if(this.enableAdvancedTools){
             this.value = this.richText;
         }
-        if(!this.enableAdvancedTools || this.warnOnly || (!this.warnOnly && this.isValidCheck)){
+        if(!this.enableAdvancedTools || this.warnOnly){
             return {isValid:true};
-        }else{
+        }else if(this.characterCap && (this.characterCount > this.characterLimit)){
+            return {
+                isValid:false,
+                errorMessage: 'Cannot Advance - Character Limit Exceed: '+this.characterCount + ' > ' + this.characterLimit
+            };
+        }else if(!this.isValidCheck){
             return {
                 isValid:false,
                 errorMessage: 'Cannot Advance - Invalid Symbols/Words Remain in Rich Text: '+this.runningBlockedInput.toString()
             };
+        }else{
+            return {isValid:true};
         }
     }
 
@@ -47,6 +55,8 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @track searchButton = false;
     @track isValidCheck = true;
     @track errorMessage;
+    @track characterCount = 0;
+    @track characterCap = false;
     replaceMap = {};
     regTerm = '';
     applyTerm = '';
@@ -59,6 +69,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     connectedCallback() {
         if(this.enableAdvancedTools){
             this.richText = this.value;
+            this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedSymbolsArray.length; i++){
@@ -98,6 +109,9 @@ export default class inputRichTextFSC_LWC extends LightningElement {
                 this.replaceMap = JSON.parse(this.autoReplaceMap);
                 this.autoReplaceEnabled = true;
             } 
+            if(this.characterLimit > 0){
+                this.characterCap = true;
+            }
         }
     }
 
@@ -137,6 +151,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.isValidCheck = true;
             this.richText = event.target.value;
         }
+        this.characterCount = this.richText.length;
         //Display different message if warn only - validation also won't be enforced on Next.
         if(!this.warnOnly){
             this.errorMessage = 'Error - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
@@ -144,6 +159,11 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }
         
+    }
+
+    //Set css on Character count if passing character limit
+    get charClass(){
+        return (this.characterLimit < this.characterCount ? 'slds-theme_error' : '');
     }
 
     //Handle initiation of Search and Replace

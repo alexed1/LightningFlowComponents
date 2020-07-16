@@ -1,3 +1,7 @@
 .lgc-bg {
     background-color: rgb(242, 242, 242);
 }
+
+.warning {
+    color: red;
+}

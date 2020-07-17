@@ -3,7 +3,7 @@ import { LightningElement, api, track } from 'lwc';
 export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
-    @api value;
+    @api value = ''; //set empty in case undefined comes from flow entry
     @api enableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
@@ -68,7 +68,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     //Set initial values on load
     connectedCallback() {
         if(this.enableAdvancedTools){
-            (this.value === null || this.value == undefined) ? this.richText = '' : this.richText = this.value;
+            this.richText = this.value;
             this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');

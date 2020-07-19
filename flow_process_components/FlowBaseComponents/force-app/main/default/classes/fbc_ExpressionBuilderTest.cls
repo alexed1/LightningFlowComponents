@@ -1,5 +1,5 @@
 @isTest
-public with sharing class ExpressionBuilderTest {
+public with sharing class fbc_ExpressionBuilderTest {
     @IsTest
     static void assembleAndDisassemblyFormulaStringTest() {
         String expression = '1 AND (2 OR 3) AND 4 AND (5 OR 6 OR (7 AND 8)) AND (1 OR 2)';
@@ -12,13 +12,13 @@ public with sharing class ExpressionBuilderTest {
         '{"objectType":"Account","fieldName":"$Account.AnnualRevenue","dataType":"Currency","operator":"includes","parameter":"2"},' +
         '{"objectType":"Account","fieldName":"$Account.Id","dataType":"String","operator":"excludes","parameter":"3"}]';
 
-        String assembleResult = ExpressionBuilder.assembleFormulaString(expression, 'CUSTOM', testData);
+        String assembleResult = fbc_ExpressionBuilder.assembleFormulaString(expression, 'CUSTOM', testData);
         String expectResult = 'AND(LEFT($Account.AccountNumber , 1) == TEXT("1"), OR($Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2")), $Account.Id == TEXT("3"), OR(CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), AND(INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))), OR(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        Map<String, Object> disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
-        List<ExpressionBuilder.ExpressionLineWrapper> data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
+        Map<String, Object> disassemblyResult = fbc_ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
+        List<fbc_ExpressionBuilder.ExpressionLineWrapper> data = (List<fbc_ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('CUSTOM', String.valueOf(disassemblyResult.get('logicType')));
         //Switching off custom logic asserts due to not stable work
@@ -26,25 +26,25 @@ public with sharing class ExpressionBuilderTest {
         System.assertEquals(8, data.size());
 
 
-        assembleResult = ExpressionBuilder.assembleFormulaString('', 'AND', testData);
+        assembleResult = fbc_ExpressionBuilder.assembleFormulaString('', 'AND', testData);
         expectResult = 'AND(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
-        data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
+        disassemblyResult = fbc_ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
+        data = (List<fbc_ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('AND', String.valueOf(disassemblyResult.get('logicType')));
         System.assertEquals('', String.valueOf(disassemblyResult.get('customLogic')));
         System.assertEquals(8, data.size());
 
-        assembleResult = ExpressionBuilder.assembleFormulaString('', 'OR', testData);
+        assembleResult = fbc_ExpressionBuilder.assembleFormulaString('', 'OR', testData);
         expectResult = 'OR(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
-        data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
+        disassemblyResult = fbc_ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
+        data = (List<fbc_ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('OR', String.valueOf(disassemblyResult.get('logicType')));
         System.assertEquals('', String.valueOf(disassemblyResult.get('customLogic')));

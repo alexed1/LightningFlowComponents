@@ -1,4 +1,4 @@
-global with sharing class SearchUtils {
+global with sharing class fbc_SearchUtils {
 
     static final Map<String, String> TYPE_TO_SOBJECT = new Map<String, String>{
             'User' => 'User',
@@ -12,7 +12,7 @@ global with sharing class SearchUtils {
             'User' => 'WHERE IsActive = true AND Name LIKE (searchString)',
             'Role_subordinates' => 'WHERE Name LIKE (searchString)',
             'Role' => 'WHERE Name LIKE (searchString)',
-            'Group' => 'WHERE (Type = \'Public\' OR Type = \'Regular\') AND Name LIKE (searchString)',
+            'Group' => 'WHERE (Type = \'global\' OR Type = \'Regular\') AND Name LIKE (searchString)',
             'Queue' => 'WHERE Type = \'Queue\' AND Name LIKE (searchString)'
     };
 
@@ -20,7 +20,7 @@ global with sharing class SearchUtils {
             'RelatedUsers', 'Owner', 'Creator'
     };
 
-    public static final Map<String, String> TYPE_TO_ID_FIELD = new Map<String, String>{
+    global static final Map<String, String> TYPE_TO_ID_FIELD = new Map<String, String>{
             'User' => 'UserName',
             'Group' => 'DeveloperName',
             'Queue' => 'DeveloperName',
@@ -30,7 +30,7 @@ global with sharing class SearchUtils {
 
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, List<Member>> searchMemberByType(List<String> memberTypes, String searchString) {
+    global static Map<String, List<Member>> searchMemberByType(List<String> memberTypes, String searchString) {
         Map<String, List<Member>> resultMap = new Map<String, List<Member>>();
 
         for (String curType : TYPE_TO_SOBJECT.keySet()) {
@@ -52,14 +52,14 @@ global with sharing class SearchUtils {
         return resultMap;
     }
     @AuraEnabled(cacheable=true)
-    public static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
+    global static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
         return getMembersByTypeAndId(new Map<String, Set<String>>{
                 type => new Set<String>{
                         id
                 }
         });
     }
-    public static Map<String, SObject> getMembersByTypeAndId(Map<String, Set<String>> typeToIds) {
+    global static Map<String, SObject> getMembersByTypeAndId(Map<String, Set<String>> typeToIds) {
 
         Map<String, SObject> results = new Map<String, SObject>();
         for (String sObjectTypeName : typeToIds.keySet()) {
@@ -94,9 +94,9 @@ global with sharing class SearchUtils {
     }
 
     @AuraEnabled(cacheable=true)
-    public static Map<String, List<Member>> describeSObjects(List<String> types) {
+    global static Map<String, List<Member>> describeSObjects(List<String> types) {
 
-        Map<String, List<SearchUtils.Member>> objectToFieldDescribe = new Map<String, List<SearchUtils.Member>>();
+        Map<String, List<fbc_SearchUtils.Member>> objectToFieldDescribe = new Map<String, List<fbc_SearchUtils.Member>>();
         if (types == null || types.isEmpty()) {
             return objectToFieldDescribe;
         }
@@ -105,7 +105,7 @@ global with sharing class SearchUtils {
 
         for (Schema.DescribeSobjectResult res : results) {
             String objName = res.getName();
-            objectToFieldDescribe.put(objName, new List<SearchUtils.Member>());
+            objectToFieldDescribe.put(objName, new List<fbc_SearchUtils.Member>());
             Map<String, SObjectField> fieldMap = res.fields.getMap();
             for (String fieldApiName : fieldMap.keySet()) {
                 Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
@@ -121,11 +121,11 @@ global with sharing class SearchUtils {
         @AuraEnabled global String value;
         @AuraEnabled global String dataType;
         @AuraEnabled global String type;
-        public Member(String label, String value) {
+        global Member(String label, String value) {
             this.label = label;
             this.value = value;
         }
-        public Member(String label, String value, String type, String dataType) {
+        global Member(String label, String value, String type, String dataType) {
             this.label = label;
             this.value = value;
             this.dataType = dataType;

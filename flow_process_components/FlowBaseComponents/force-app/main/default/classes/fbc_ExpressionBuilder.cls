@@ -1,4 +1,4 @@
-public with sharing class ExpressionBuilder {
+public with sharing class fbc_ExpressionBuilder {
 
     /*
     Known issues:

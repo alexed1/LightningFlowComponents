@@ -1,7 +1,7 @@
-global with sharing class FieldPickerController {
+global with sharing class fbc_FieldPickerController {
 
     @AuraEnabled(cacheable=true)
-    public static List<Member> getObjects(List<String> availableObjectTypes) {
+    global static List<Member> getObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();
         Map<String, SObjectType> allTypes = Schema.getGlobalDescribe();
 
@@ -28,7 +28,7 @@ global with sharing class FieldPickerController {
 
     }
     @AuraEnabled(cacheable=true)
-    public static List<Member> getPicklistValues(String objectApiName, String fieldName) {
+    global static List<Member> getPicklistValues(String objectApiName, String fieldName) {
 
         List<Member> options = new List<Member>();
 
@@ -46,19 +46,19 @@ global with sharing class FieldPickerController {
     }
 
 
-    public class Member implements Comparable {
+    global class Member implements Comparable {
 
         @AuraEnabled
-        public String label;
+        global String label;
         @AuraEnabled
-        public String value;
+        global String value;
 
-        public Member(String value, String label) {
+        global Member(String value, String label) {
             this.label = label;
             this.value = value;
         }
 
-        public Integer compareTo(Object compareTo) {
+        global Integer compareTo(Object compareTo) {
 
             Member curMember = (Member) compareTo;
 

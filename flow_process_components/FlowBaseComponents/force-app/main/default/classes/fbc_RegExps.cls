@@ -1,4 +1,4 @@
-global class RegExps {
+global class fbc_RegExps {
 
     public static final String EXP_NULL = '(?i:NULL)';
     public static final String EXP_BOOLEAN = '(?i:TRUE|FALSE)';
@@ -544,7 +544,7 @@ global class RegExps {
                     if (val != null && val.endsWith('Z')) {
                         val = val.substring(0, val.length() - 5); //removing .000Z from the end of the date string
                     }
-                    if (!Pattern.matches(RegExps.EXP_DATETIME, val)) {
+                    if (!Pattern.matches(fbc_RegExps.EXP_DATETIME, val)) {
                         throw new ExpressionParsingException('Cannot apply DATETIME() function: Invalid date/time value "' + val + '". Expected: YYYY-MM-DDTHH:MM:SS');
                     }
 

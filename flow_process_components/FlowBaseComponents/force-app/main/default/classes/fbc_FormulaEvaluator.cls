@@ -1,6 +1,6 @@
-public with sharing class FormulaEvaluator {
+global with sharing class fbc_FormulaEvaluator {
 
-    public static String parseFormula(String formula, String context) {
+    global static String parseFormula(String formula, String context) {
         List<ContextWrapper> contextResult = (List<ContextWrapper>) JSON.deserialize(context, List<ContextWrapper>.class);
         Map<String, String> mapParameters = new Map<String, String>();
 
@@ -113,7 +113,7 @@ public with sharing class FormulaEvaluator {
 
     }
 
-    public static String updateFormulaFields(String objectName, String objectId, String formula, Set<String> fields) {
+    global static String updateFormulaFields(String objectName, String objectId, String formula, Set<String> fields) {
         Map<String, Schema.DisplayType> fieldNameToType = getFieldTypes(objectName, fields);
 
         String queryString = 'SELECT ';
@@ -185,7 +185,7 @@ public with sharing class FormulaEvaluator {
         return fieldNameToType;
     }
 
-    public static String evaluateFormula(String formula, String resultType) {
+    global static String evaluateFormula(String formula, String resultType) {
         Pattern mPattern = pattern.compile('[0-9.]{3,}');
         Matcher mMatcher = mPattern.matcher(formula);
         //TODO: add scale as an input param for Numeric values
@@ -198,13 +198,13 @@ public with sharing class FormulaEvaluator {
             }
         }
 
-        RegExps.ParserContext parserContext = evaluate(formula, resultType, scale);
+        fbc_RegExps.ParserContext parserContext = evaluate(formula, resultType, scale);
         return String.valueOf(parserContext.result);
     }
 
-    public static RegExps.ParserContext evaluate(String formula, String outputType, Integer scale) {
+    global static fbc_RegExps.ParserContext evaluate(String formula, String outputType, Integer scale) {
 
-        RegExps.ParserContext context = new RegExps.ParserContext(formula, outputType, scale);
+        fbc_RegExps.ParserContext context = new fbc_RegExps.ParserContext(formula, outputType, scale);
 
         try {
 
@@ -220,78 +220,78 @@ public with sharing class FormulaEvaluator {
                         break;
                     } else {
                         parenthesisAdded = true;
-                        RegExps.wrapParentesis(context, 'NUMBER');
+                        fbc_RegExps.wrapParentesis(context, 'NUMBER');
                     }
                 }
 
                 outputFormula = context.outputString;
 
-                RegExps.evaluateMathExpressions(context);
+                fbc_RegExps.evaluateMathExpressions(context);
                 if (outputFormula != context.outputString) {
-                    RegExps.clearParentesis(context, 'NUMBER');
+                    fbc_RegExps.clearParentesis(context, 'NUMBER');
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateMathFunctions(context);
-                if (outputFormula != context.outputString) {
-                    parenthesisAdded = false;
-                    continue;
-                }
-
-                RegExps.evaluateStringOperations(context);
+                fbc_RegExps.evaluateMathFunctions(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateStringFunctions(context);
+                fbc_RegExps.evaluateStringOperations(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateCompareExpressions(context);
+                fbc_RegExps.evaluateStringFunctions(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateBooleanExpressions(context);
+                fbc_RegExps.evaluateCompareExpressions(context);
+                if (outputFormula != context.outputString) {
+                    parenthesisAdded = false;
+                    continue;
+                }
+
+                fbc_RegExps.evaluateBooleanExpressions(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
 
-                RegExps.evaluateFlowExpressions(context);
+                fbc_RegExps.evaluateFlowExpressions(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateFlowExpressionsCASE(context);
+                fbc_RegExps.evaluateFlowExpressionsCASE(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateTypeConversionFunctions(context);
+                fbc_RegExps.evaluateTypeConversionFunctions(context);
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.evaluateDateTimeFunctions(context);
+                fbc_RegExps.evaluateDateTimeFunctions(context);
 
                 if (outputFormula != context.outputString) {
                     parenthesisAdded = false;
                     continue;
                 }
 
-                RegExps.clearParentesis(context, 'ALL');
+                fbc_RegExps.clearParentesis(context, 'ALL');
             }
-            context.result = RegExps.evaluateResult(context);
+            context.result = fbc_RegExps.evaluateResult(context);
 
         } catch (Exception e) {
             context.isError = true;
@@ -302,12 +302,12 @@ public with sharing class FormulaEvaluator {
         return context;
     }
 
-    public static void replaceExpressionValues(RegExps.ParserContext context) {
+    global static void replaceExpressionValues(fbc_RegExps.ParserContext context) {
 
         context.outputString = ' ' + context.outputString + ' ';
-        context.outputString = context.outputString.replaceAll(RegExps.EXP_MULTILINE_COMMENT, '');
+        context.outputString = context.outputString.replaceAll(fbc_RegExps.EXP_MULTILINE_COMMENT, '');
 
-        Pattern myPattern = pattern.compile(RegExps.EXP_STRING);
+        Pattern myPattern = pattern.compile(fbc_RegExps.EXP_STRING);
         Matcher m = myPattern.matcher(context.outputString);
         Set<String> stringList = new Set<String>();
 
@@ -331,12 +331,12 @@ public with sharing class FormulaEvaluator {
         context.outputString = context.outputString.replaceAll('\\s*\\|\\|\\s*', ' || ');
         context.outputString = context.outputString.replaceAll('\\s*\\^\\^\\s*', ' ^^ ');
 
-        for (String op : RegExps.COMPARE_OPERATORS.keyset()) {
-            context.outputString = context.outputString.replaceAll('\\s*' + op + '\\s*', ' ' + RegExps.COMPARE_OPERATORS.get(op) + ' ');
+        for (String op : fbc_RegExps.COMPARE_OPERATORS.keyset()) {
+            context.outputString = context.outputString.replaceAll('\\s*' + op + '\\s*', ' ' + fbc_RegExps.COMPARE_OPERATORS.get(op) + ' ');
         }
 
         List<String> vList = new List<String>();
-        myPattern = pattern.compile(RegExps.EXP_DATETIME);
+        myPattern = pattern.compile(fbc_RegExps.EXP_DATETIME);
         m = myPattern.matcher(context.outputString);
 
         while (m.find()) {
@@ -347,7 +347,7 @@ public with sharing class FormulaEvaluator {
 
             DateTime vdt = null;
 
-            if (!Pattern.matches(RegExps.EXP_DATETIME, str)) {
+            if (!Pattern.matches(fbc_RegExps.EXP_DATETIME, str)) {
                 throw new ExpressionParsingException('Invalid date/time value "' + str + '". Expected: YYYY-MM-DDTHH:MM:SS');
             }
 
@@ -416,7 +416,7 @@ public with sharing class FormulaEvaluator {
             }
         }
 
-        String EXP_VALUES_NO_STRING = '(' + RegExps.EXP_NULL + '|' + RegExps.EXP_NUMBER_NEGATIVE_FUNCTION + '|' + RegExps.EXP_NUMBER + '|' + RegExps.EXP_BOOLEAN + ')';
+        String EXP_VALUES_NO_STRING = '(' + fbc_RegExps.EXP_NULL + '|' + fbc_RegExps.EXP_NUMBER_NEGATIVE_FUNCTION + '|' + fbc_RegExps.EXP_NUMBER + '|' + fbc_RegExps.EXP_BOOLEAN + ')';
 
         vList = new List<String>();
         myPattern = pattern.compile(EXP_VALUES_NO_STRING);
@@ -427,13 +427,13 @@ public with sharing class FormulaEvaluator {
         }
 
         for (String str : vList) {
-            if (Pattern.matches(RegExps.EXP_NULL, str)) {
+            if (Pattern.matches(fbc_RegExps.EXP_NULL, str)) {
                 context.replace(str);
-            } else if (Pattern.matches(RegExps.EXP_NUMBER_NEGATIVE, str)) {
+            } else if (Pattern.matches(fbc_RegExps.EXP_NUMBER_NEGATIVE, str)) {
                 context.replace(str, Decimal.valueOf(str.replace(' ', '')));
-            } else if (Pattern.matches(RegExps.EXP_NUMBER, str)) {
+            } else if (Pattern.matches(fbc_RegExps.EXP_NUMBER, str)) {
                 context.replace(str, Decimal.valueOf(str));
-            } else if (Pattern.matches(RegExps.EXP_BOOLEAN, str)) {
+            } else if (Pattern.matches(fbc_RegExps.EXP_BOOLEAN, str)) {
                 context.replace(str, Boolean.valueOf(str));
             }
         }
@@ -464,16 +464,16 @@ public with sharing class FormulaEvaluator {
         context.outputString = context.outputString.replaceAll('\\s+', ' ');
     }
 
-    public class ContextWrapper {
-        public String name;
-        public String value;
+    global class ContextWrapper {
+        global String name;
+        global String value;
 
-        public ContextWrapper(String name, String value) {
+        global ContextWrapper(String name, String value) {
             this.name = name;
             this.value = value;
         }
     }
 
-    public class ExpressionParsingException extends Exception {
+    global class ExpressionParsingException extends Exception {
     }
 }

@@ -1,5 +1,5 @@
 @IsTest
-private class SearchUtilsTest {
+private class fbc_SearchUtilsTest {
 
     static final List<String> TYPES_TO_SEARCH = new List<String>{
             'User', 'Queue'
@@ -25,14 +25,14 @@ private class SearchUtilsTest {
         Map<String, SObject> typeToObject = new Map<String, SObject>{
                 'User' => testUser, 'Queue' => testQueue
         };
-        Map<String, List<SearchUtils.Member>> searchResult = SearchUtils.searchMemberByType(TYPES_TO_SEARCH, TEST_RECORD_NAME);
+        Map<String, List<fbc_SearchUtils.Member>> searchResult = fbc_SearchUtils.searchMemberByType(TYPES_TO_SEARCH, TEST_RECORD_NAME);
 
         //We have added one record to each type, so expecting as many records as types
         System.assertEquals(TYPES_TO_SEARCH.size(), searchResult.size());
 
         //For each type checking if search worked fine
         for (String typeName : TYPES_TO_SEARCH) {
-            System.assertEquals(typeToObject.get(typeName).get(SearchUtils.TYPE_TO_ID_FIELD.get(typeName)), searchResult.get(typeName)[0].value);
+            System.assertEquals(typeToObject.get(typeName).get(fbc_SearchUtils.TYPE_TO_ID_FIELD.get(typeName)), searchResult.get(typeName)[0].value);
             System.assertEquals(typeToObject.get(typeName).get('Name'), searchResult.get(typeName)[0].label);
         }
 
@@ -44,7 +44,7 @@ private class SearchUtilsTest {
                         testQueue.DeveloperName
                 })
         };
-        Map<String, SObject> members = SearchUtils.getMembersByTypeAndId(typeToIds);
+        Map<String, SObject> members = fbc_SearchUtils.getMembersByTypeAndId(typeToIds);
 
         System.assertEquals(TEST_RECORD_NAME, members.get(testUser.UserName).get('Name'));
         System.assertEquals(TEST_RECORD_NAME, members.get(testQueue.DeveloperName).get('Name'));

@@ -1,7 +1,7 @@
 import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
-import {formattedValue, isReference, getDataType, removeFormatting, flowComboboxDefaults} from 'c/flowComboboxUtils';
+import {formattedValue, isReference, getDataType, removeFormatting, flowComboboxDefaults} from 'c/fbc_flowComboboxUtils';
 
 export default class FlowCombobox extends LightningElement {
     @api name;

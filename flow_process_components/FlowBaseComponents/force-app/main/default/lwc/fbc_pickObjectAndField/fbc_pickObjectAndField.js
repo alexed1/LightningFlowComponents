@@ -2,11 +2,11 @@ import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/fbc_FieldPickerController.getObjects';
-
-import NonePicklistValueLabel from '@salesforce/label/c.NonePicklistValueLabel';
-import FieldIsNotSupportedMessage from '@salesforce/label/c.FieldIsNotSupportedMessage';
-
 import {standardObjectOptions} from 'c/fbc_pickObjectAndFieldUtils';
+import NonePicklistValueLabel from '@salesforce/label/c.fbc_NonePicklistValueLabel';
+import FieldIsNotSupportedMessage from '@salesforce/label/c.fbc_FieldIsNotSupportedMessage';
+
+
 import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/fbc_flowComboboxUtils';
 
 export default class fbc_pickObjectAndField extends LightningElement {
@@ -19,11 +19,12 @@ export default class fbc_pickObjectAndField extends LightningElement {
     @api availableObjectTypes;
     @api availableFields;
 
+
     @api disableObjectPicklist = false;
     @api hideObjectPicklist = false;
     @api hideFieldPicklist = false;
     @api displayFieldType = false;
-
+    @api testproperty;
 
     @track _objectType;
     @track _field;

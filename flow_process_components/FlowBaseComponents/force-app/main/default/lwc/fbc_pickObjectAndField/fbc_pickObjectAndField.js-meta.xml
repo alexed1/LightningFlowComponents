@@ -21,6 +21,7 @@
             <property name="hideObjectPicklist" type="Boolean" role="inputOnly"> </property>
             <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
             <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
+            <property name="testproperty" type="String" role="inputOnly"> </property>
         </targetConfig>
         <targetConfig targets="lightning__RecordPage">
             <property name="masterLabel" type="String"> </property>

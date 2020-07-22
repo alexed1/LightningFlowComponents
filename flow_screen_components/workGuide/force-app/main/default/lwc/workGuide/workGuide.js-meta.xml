@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <description>Work Guide</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Work Guide</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="flowHeight" type="Integer" label="Flow Height" description="Set the height of the inner flow"/>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="flowHeight" type="Integer" label="Flow Height" description="Set the height of the inner flow"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

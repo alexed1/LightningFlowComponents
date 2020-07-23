@@ -3,7 +3,7 @@
     <!-- Start Rich Text Input Section - if enableAdvancedTools is false - this is default -->
     <template if:false={enableAdvancedTools}>
         <div>
-            <lightning-input-rich-text value={value} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
+            <lightning-input-rich-text value={value} onchange={handleValueChange} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
         </div>
     </template>
     <!-- End Rich Text Input Section-->

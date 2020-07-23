@@ -114,6 +114,11 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             }
         }
     }
+	
+	//Handle updates to Rich Text field with no enhanced features
+    handleValueChange(event) {
+        this.value = event.target.value;
+    }
 
     //Handle updates to Rich Text field
     handleTextChange(event) {

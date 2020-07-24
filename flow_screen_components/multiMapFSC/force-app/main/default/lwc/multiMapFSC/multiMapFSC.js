@@ -14,7 +14,6 @@ export default class MultiMapFSC extends LightningElement {
     @track listView = 'hidden';
 
     connectedCallback() {
-        console.log('marker list: '+this.markerList);
         if (this.markerList.length > 0) {
             for (let i = 0; i < this.markerList.length; i++) {
                 //Splitting location elements by ';' as some address fields can have ','.  

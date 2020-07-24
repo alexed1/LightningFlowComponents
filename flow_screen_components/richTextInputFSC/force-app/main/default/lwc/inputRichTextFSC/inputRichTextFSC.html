@@ -52,14 +52,14 @@
                         </lightning-button-icon>
                     </div>
                 </template>
-                <template if:false={characterCap}>
+                <!--<template if:false={characterCap}>
                     <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_x-small slds-p-bottom_xxx-small">
-                        <p><strong>Characters: </strong>{characterCount}</p>
+                        <p>{characterCount}</p>
                     </div>
-                </template>
+                </template>-->
                 <template if:true={characterCap}>
                     <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_x-small slds-p-bottom_xxx-small">
-                        <p class={charClass}><strong>Characters: </strong>{characterCount} of {characterLimit} max</p>
+                        <p class={charClass}>{characterCount}/{characterLimit}</p>
                     </div>
                 </template>
                 <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_xx-small slds-p-bottom_xxx-small">

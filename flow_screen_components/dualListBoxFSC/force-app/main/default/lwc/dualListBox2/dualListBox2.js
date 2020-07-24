@@ -21,6 +21,7 @@ export default class dualListBoxFSC extends LightningElement {
     @api requiredOptions;
     @api useWhichObjectKeyForData = defaults.valueField;
     @api useWhichObjectKeyForLabel = defaults.labelField;
+    @api useWhichObjectKeyForSort;
     @api useObjectValueAsOutput = false;
 
     _allOptionsStringFormat;

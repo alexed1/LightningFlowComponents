@@ -22,6 +22,7 @@
             <property name="useObjectValueAsOutput" type="Boolean" role="inputOnly"> </property>
             <property name="useWhichObjectKeyForData" type="String" role="inputOnly"> </property>
             <property name="useWhichObjectKeyForLabel" type="String" role="inputOnly"> </property>
+            <property name="useWhichObjectKeyForSort" type="String" role="inputOnly"> </property>
             <property name="allOptionsFieldDescriptorList" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
             <property name="allOptionsCSV" type="String" role="inputOnly"> </property>
             <property name="allOptionsStringCollection" type="String[]" role="inputOnly"> </property>

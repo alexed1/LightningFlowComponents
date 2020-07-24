@@ -21,6 +21,7 @@ export default class dualListBox extends LightningElement {
     @api allOptionsStringFormat = defaults.csv;//csv;list;object
     @api useWhichObjectKeyForData = defaults.valueField;
     @api useWhichObjectKeyForLabel = defaults.labelField;
+    @api useWhichObjectKeyForSort;
     @api useObjectValueAsOutput = false; //used with csv or list
     @track _options; //always json{label,value}
     @track _optionsOriginal; //stores original values
@@ -55,7 +56,8 @@ export default class dualListBox extends LightningElement {
     set allOptions(value) {
         if (!this.isError) {
             this._optionsOriginal = value;
-            this._options = this.formatOptionsSet(value, this.allOptionsStringFormat);
+            let formattedOptions = this.formatOptionsSet(value, this.allOptionsStringFormat);
+            this._options = this.sortOptionsSet(formattedOptions, this.useWhichObjectKeyForSort);
         }
     }
 
@@ -73,6 +75,19 @@ export default class dualListBox extends LightningElement {
         // if (this.useObjectValueAsOutput && this.selectedValuesStringFormat === defaults.originalObject) {
         //     return defaults.canNotUseValuesForOutput;
         // }
+    }
+
+    sortOptionsSet(value, sortField) {
+        if (!value) {
+            return;
+        }
+        if (!sortField) {
+            return value;
+        }
+        let fieldValue = row => row[sortField] || '';
+        return [...value.sort(
+            (a,b)=>(a=fieldValue(a).toUpperCase(),b=fieldValue(b).toUpperCase(),((a>b)-(b>a)))
+        )];        
     }
 
     formatValuesSet(value, optionType) {

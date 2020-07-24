@@ -23,6 +23,7 @@
             <property name="selectedValuesStringFormat" type="String" > </property>
             <property name="useWhichObjectKeyForData" type="String" default="value"> </property>
             <property name="useWhichObjectKeyForLabel" type="String" default="label"> </property>
+            <property name="useWhichObjectKeyForSort" type="String"> </property>
             <property name="useObjectValueAsOutput" type="Boolean"> </property>
             <property name="allOptions" type="String"> </property>
         </targetConfig>

@@ -28,6 +28,7 @@ export default class dualListBoxFSC extends LightningElement {
     @track _options = [];
     @track _selectedValues = [];
     @track optionValues = {};
+    
 
     set allOptionsStringFormat(value) {
 
@@ -165,5 +166,18 @@ export default class dualListBoxFSC extends LightningElement {
             attributeValue
         );
         this.dispatchEvent(attributeChangeEvent);
+    }
+
+    @api
+    validate() {
+        if(this.required == true && this._selectedValues == []) { 
+            return { 
+                isValid: false, 
+                errorMessage: 'At least one value must be selected.' 
+                }; 
+            } 
+        else { 
+            return { isValid: true }; 
+        } 
     }
 }

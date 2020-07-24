@@ -2,7 +2,7 @@
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
 
     <labels>
-        <fullName>fbc_TooManyResultsMessage</fullName>
+        <fullName>TooManyResultsMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -10,7 +10,7 @@
         <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
     </labels>
     <labels>
-        <fullName>fbc_NonePicklistValueLabel</fullName>
+        <fullName>NonePicklistValueLabel</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -18,7 +18,7 @@
         <value>-- None --</value>
     </labels>
     <labels>
-        <fullName>fbc_FieldIsNotSupportedMessage</fullName>
+        <fullName>FieldIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -26,7 +26,7 @@
         <value>Following fields are not supported: </value>
     </labels>
     <labels>
-        <fullName>fbc_ButtonIsNotSupportedMessage</fullName>
+        <fullName>ButtonIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -34,7 +34,7 @@
         <value>Following buttons are note supported: </value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedButtonsEmptyMessage</fullName>
+        <fullName>SupportedButtonsEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -42,7 +42,7 @@
         <value>"Supported Buttons" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedAddCapabilitiesEmptyMessage</fullName>
+        <fullName>SupportedAddCapabilitiesEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -50,7 +50,7 @@
         <value>"Add Capabilities" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedEditCapabilitiesEmptyMessage</fullName>
+        <fullName>SupportedEditCapabilitiesEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -58,7 +58,7 @@
         <value>"Edit Capabilities" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_ManagerEmptyMessage</fullName>
+        <fullName>ManagerEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -66,7 +66,7 @@
         <value>"Manager APEX Class" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_OWDReadWrite</fullName>
+        <fullName>OWDReadWrite</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -75,7 +75,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_MultipleGroupsForRole</fullName>
+        <fullName>MultipleGroupsForRole</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -84,7 +84,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_LackingPermissions</fullName>
+        <fullName>LackingPermissions</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -93,7 +93,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_OwnerAdminModify</fullName>
+        <fullName>OwnerAdminModify</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -102,7 +102,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_AccessLevel</fullName>
+        <fullName>AccessLevel</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -110,7 +110,7 @@
         <value>Access Level</value>
     </labels>
     <labels>
-        <fullName>fbc_Name</fullName>
+        <fullName>Name</fullName>
         <categories>quicklinks, Labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -118,7 +118,7 @@
         <value>Name</value>
     </labels>
     <labels>
-        <fullName>fbc_Read</fullName>
+        <fullName>Read</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -126,7 +126,7 @@
         <value>Read</value>
     </labels>
     <labels>
-        <fullName>fbc_ReadWrite</fullName>
+        <fullName>ReadWrite</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -134,7 +134,7 @@
         <value>Read / Write</value>
     </labels>
     <labels>
-        <fullName>fbc_Delete</fullName>
+        <fullName>Delete</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -142,7 +142,7 @@
         <value>Delete</value>
     </labels>
     <labels>
-        <fullName>fbc_Reason</fullName>
+        <fullName>Reason</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -150,7 +150,7 @@
         <value>Reason</value>
     </labels>
     <labels>
-        <fullName>fbc_Search</fullName>
+        <fullName>Search</fullName>
         <categories>Actions,Buttons,quicklinks</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -158,7 +158,7 @@
         <value>Search in</value>
     </labels>
     <labels>
-        <fullName>fbc_SearchFor</fullName>
+        <fullName>SearchFor</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -166,7 +166,7 @@
         <value>For</value>
     </labels>
     <labels>
-        <fullName>fbc_Type</fullName>
+        <fullName>Type</fullName>
         <categories>Buttons,Filters,Title</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -174,7 +174,7 @@
         <value>Type</value>
     </labels>
     <labels>
-        <fullName>fbc_Back</fullName>
+        <fullName>Back</fullName>
         <categories>Buttons,Filters,Title</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -182,7 +182,7 @@
         <value>Back</value>
     </labels>
     <labels>
-        <fullName>fbc_For</fullName>
+        <fullName>For</fullName>
         <categories>Buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -190,7 +190,7 @@
         <value>For</value>
     </labels>
     <labels>
-        <fullName>fbc_UserOrGroup</fullName>
+        <fullName>UserOrGroup</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -198,7 +198,7 @@
         <value>User Or Group</value>
     </labels>
     <labels>
-        <fullName>fbc_SetAccessLevel</fullName>
+        <fullName>SetAccessLevel</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -207,7 +207,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_PublicGroups</fullName>
+        <fullName>PublicGroups</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -215,7 +215,7 @@
         <value>Public Groups</value>
     </labels>
     <labels>
-        <fullName>fbc_Roles</fullName>
+        <fullName>Roles</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -223,7 +223,7 @@
         <value>Roles</value>
     </labels>
     <labels>
-        <fullName>fbc_Users</fullName>
+        <fullName>Users</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -231,7 +231,7 @@
         <value>Users</value>
     </labels>
     <labels>
-        <fullName>fbc_Queues</fullName>
+        <fullName>Queues</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -239,19 +239,12 @@
         <value>Queues</value>
     </labels>
     <labels>
-        <fullName>fbc_RelatedUsers</fullName>
+        <fullName>RelatedUsers</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
         <shortDescription>RelatedUsers</shortDescription>
         <value>Related Users</value>
     </labels>
-    <labels>
-        <fullName>fbc_ConditionLogicHelpText</fullName>
-        <categories>labels</categories>
-        <language>en_US</language>
-        <protected>false</protected>
-        <shortDescription>ConditionLogicHelpText</shortDescription>
-        <value>Use parentheses, AND, OR, and NOT to customize the logic. For example, if you enter “(1 AND 2 AND 3) OR 4”, the flow evaluates whether the first three conditions are true or only the fourth condition is true.</value>
-    </labels>
+    
 </CustomLabels>

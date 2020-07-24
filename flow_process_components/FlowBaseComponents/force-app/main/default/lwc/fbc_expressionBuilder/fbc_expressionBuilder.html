@@ -27,7 +27,7 @@
             </lightning-layout-item>
             <lightning-layout-item size="12" class="slds-m-top_x-small">
                 <template for:each={expressionLines} for:item="expression" for:index="index">
-                    <c-expression-line
+                    <c-fbc_expression-line
                             key={expression.id}
                             expression-index={index}
                             expression-id={expression.id}
@@ -39,7 +39,7 @@
                             fields={contextFields}
                             onexpressionremoved={handleRemoveExpression}
                             onfieldselected={handleExpressionChange}>
-                    </c-expression-line>
+                    </c-fbc_expression-line>
                 </template>
             </lightning-layout-item>
             <lightning-layout-item size="12" class="slds-m-top_x-small">

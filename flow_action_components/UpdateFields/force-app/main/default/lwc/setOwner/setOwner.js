@@ -12,11 +12,11 @@ import Users from '@salesforce/label/c.Users';
 import USER_NAME_FIELD from '@salesforce/schema/User.Name';
 import GROUP_NAME_FIELD from '@salesforce/schema/Group.Name';
 
-import searchMemberByType from '@salesforce/apex/SearchUtils.searchMemberByType';
+import searchMemberByType from '@salesforce/apex/fbc_SearchUtils.searchMemberByType';
 
-import getSingleMembersByTypeAndId from '@salesforce/apex/SearchUtils.getSingleMembersByTypeAndId';
+import getSingleMembersByTypeAndId from '@salesforce/apex/fbc_SearchUtils.getSingleMembersByTypeAndId';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
-import {logger, logError} from 'c/lwcLogger';
+//import {logger, logError} from 'fbc/lwcLogger';
 
 import {
     generateCapabilityColumns,
@@ -151,7 +151,7 @@ export default class addNewMembers extends LightningElement {
     }
 
     toastTheError(e, errorSource) {
-        logError(this.log, this.source, errorSource, e);
+        //logError(this.log, this.source, errorSource, e);
         this.dispatchEvent(
             new ShowToastEvent({
                 message: e.body.message,

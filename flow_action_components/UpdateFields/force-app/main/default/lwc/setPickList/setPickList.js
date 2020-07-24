@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from 'lwc';
-import getPicklistValues from '@salesforce/apex/FieldPickerController.getPicklistValues';
+import getPicklistValues from '@salesforce/apex/fbc_FieldPickerController.getPicklistValues';
 import NonePicklistValueLabel from '@salesforce/label/c.NonePicklistValueLabel';
 
 export default class setPickList extends LightningElement {

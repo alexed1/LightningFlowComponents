@@ -11,6 +11,9 @@
             ],
             "c/setOwner": [
                 "setOwner/setOwner.js"
+            ],
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
             ]
         }
     },

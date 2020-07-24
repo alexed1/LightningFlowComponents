@@ -1,14 +1,15 @@
 <template>
-    <lightning-card title='Field Update Edit'>
-        <div class="slds-p-around--small">
-            <c-pick-object-and-field-f-s-c
+    <div style="color:red;">{errorStrings}  </div>
+    <!-- <lightning-card title='Field Update Edit'> -->
+        <div >
+            <c-fbc_pick-object-and-field
                     field-label='Field to Update'
                     object-label='Object'
                     object-type={_objectType}
                     field={_fieldName}
                     onfieldselected={handleFieldChange}
                     display-field-type
-            ></c-pick-object-and-field-f-s-c>
+            ></c-fbc_pick-object-and-field>
             <template if:true={fieldProperties}>
                 <template if:true={fieldProperties.isDisabled}>
                     <div class="slds-text-color_destructive">
@@ -27,9 +28,9 @@
                             <a onclick={toggleFormulaEditor}>{formulaEditorMessage}</a>
                             <template if:true={formulaEditorVisible}>
                                 <div>
-                                    <c-formula-builder object-name={_objectType}
+                                    <c-fbc_formula-builder object-name={_objectType}
                                                        supported-system-types={supportedSystemTypes}
-                                                       onformulachanged={handleValueChange}></c-formula-builder>
+                                                       onformulachanged={handleValueChange}></c-fbc_formula-builder>
                                 </div>
                             </template>
                             <template if:false={formulaEditorVisible}>
@@ -132,5 +133,5 @@
                 <lightning-layout-item></lightning-layout-item>
             </lightning-layout>
         </div> -->
-    </lightning-card>
+    <!-- </lightning-card> -->
 </template>

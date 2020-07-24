@@ -4,11 +4,6 @@ export default class updateFieldConfigurator extends LightningElement {
 
     @api supportedSystemTypes;
 
-    @api values;
-    @api property;
-    @api flowContext;
-    @api validate(){}
-
     @track _value;
     @track _objectType;
     @track _fieldName;
@@ -16,6 +11,7 @@ export default class updateFieldConfigurator extends LightningElement {
     @track textOption;
     @track formulaEditorVisible = false;
     @track formulaEditorMessage = 'Show Formula Editor';
+    @track errorStrings;
 
     labels = {
         fieldTypeNotSupported: 'Selected field type is not supported',
@@ -106,6 +102,18 @@ export default class updateFieldConfigurator extends LightningElement {
     get showFormulaBuilderOption() {
         return this.textOption === 'formula_builder';
     }
+
+    /* @api validate() {
+        const validity = [];
+        if (true) {
+            this.errorStrings = 'Validation error: Test Message';
+            validity.push({
+                key: 'testValidityErrorKey',
+                errorString: 'Test validity message',
+            });
+        }
+    return validity;
+    } */
 
     get fieldProperties() {
         if (this.selectedField && this.selectedField.fieldName) {

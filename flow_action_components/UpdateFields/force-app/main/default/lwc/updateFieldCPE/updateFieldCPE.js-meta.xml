@@ -9,7 +9,6 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
             <property name="objectType" type="String"></property>
             <property name="fieldName" type="String"></property>
             <property name="value" type="String"></property>

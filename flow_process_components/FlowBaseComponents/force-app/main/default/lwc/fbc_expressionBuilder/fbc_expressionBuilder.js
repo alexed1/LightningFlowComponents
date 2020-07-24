@@ -1,11 +1,11 @@
 import {LightningElement, track, api, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 //import conditionLogicHelpText from '@salesforce/label/c.ConditionLogicHelpText';
-import assembleFormulaString from '@salesforce/apex/ExpressionBuilder.assembleFormulaString';
-import disassemblyFormulaString from '@salesforce/apex/ExpressionBuilder.disassemblyFormulaString';
-import describeSObjects from '@salesforce/apex/SearchUtils.describeSObjects';
+import assembleFormulaString from '@salesforce/apex/fbc_ExpressionBuilder.assembleFormulaString';
+import disassemblyFormulaString from '@salesforce/apex/fbc_ExpressionBuilder.disassemblyFormulaString';
+import describeSObjects from '@salesforce/apex/fbc_SearchUtils.describeSObjects';
 
-export default class expressionBuilder extends LightningElement {
+export default class fbc_ExpressionBuilder extends LightningElement {
     @api name;
     @api addButtonLabel = 'Add Condition';
     @api dispatchComponentChangeEvents = false;
@@ -240,7 +240,7 @@ export default class expressionBuilder extends LightningElement {
         let validity = {
             isValid: true
         };
-        let inputsToVerify = this.template.querySelectorAll('c-expression-line');
+        let inputsToVerify = this.template.querySelectorAll('c-fbc-expression-line');
         if (inputsToVerify && inputsToVerify.length) {
             inputsToVerify.forEach(curInput => {
                 let reportedValidity = curInput.validate();

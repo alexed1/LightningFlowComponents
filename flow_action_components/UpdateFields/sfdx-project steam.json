@@ -14,8 +14,8 @@
         }
     ],
     "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    
+    "sfdcLoginUrl": "https://na44.stmfa.stm.salesforce.com",
+    "signupTargetLoginUrl": "https://test.stmfa.stm.salesforce.com",
     "sourceApiVersion": "49.0",
     "packageAliases": {
         "UpdateFields": "0HoB0000000Cb4GKAS",

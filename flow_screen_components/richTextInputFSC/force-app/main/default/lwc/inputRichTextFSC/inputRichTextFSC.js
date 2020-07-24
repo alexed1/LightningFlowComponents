@@ -120,7 +120,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         this.value = event.target.value;
     }
 
-    //Handle updates to Rich Text field
+    //Handle updates to Rich Text field with enhanced features
     handleTextChange(event) {
         this.runningBlockedInput = [];
         this.isValidCheck = true;
@@ -157,8 +157,13 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.richText = event.target.value;
         }
         this.characterCount = this.richText.length;
+                if(this.characterCap && this.characterCount > this.characterLimit){
+            this.isValidCheck = false;
+        }
         //Display different message if warn only - validation also won't be enforced on Next.
-        if(!this.warnOnly){
+        if(this.characterCap && this.characterCount > this.characterLimit){
+            this.errorMessage = 'Error - Character Limit Exceeded';
+        }else if(!this.warnOnly){
             this.errorMessage = 'Error - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }else{
             this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
@@ -168,7 +173,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Set css on Character count if passing character limit
     get charClass(){
-        return (this.characterLimit < this.characterCount ? 'slds-theme_error' : '');
+        return (this.characterLimit < this.characterCount ? 'warning' : '');
     }
 
     //Handle initiation of Search and Replace

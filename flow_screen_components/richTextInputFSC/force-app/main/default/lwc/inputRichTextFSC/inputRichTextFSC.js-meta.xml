@@ -14,8 +14,7 @@
             <property label="Blocked Symbols" name="disallowedSymbolsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: /,@,*"/>
             <property label="Auto Replace Map" name="autoReplaceMap" type="String" role="inputOnly" description="JSON for key:value pairs you want to replace.  Key = value to replace, Value = value to replace with.  Example: {&quot;Test&quot;:&quot;GreatTest™&quot;}"/>
             <property label="Warning Only" name="warnOnly" type="Boolean" role="inputOnly" description="Set to True if you want disallowed Symbols or Words to only alert and not block next/finish.  Default is false."/>
-            <property label="Character Limit" name="characterLimit" type="Integer" role="inputOnly" 
-                description="If set, then the character count will be limited to this quantity."/>
+            <property label="Character Limit" name="characterLimit" type="Integer" role="inputOnly" description="If set, then the character count will be limited to this quantity."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

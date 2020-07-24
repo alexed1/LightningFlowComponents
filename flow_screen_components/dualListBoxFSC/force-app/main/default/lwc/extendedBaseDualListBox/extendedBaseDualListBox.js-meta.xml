@@ -9,23 +9,23 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
-            <property name="label" type="String"> </property>
-            <property name="sourceLabel" type="String" > </property>
-            <property name="fieldLevelHelp" type="String" > </property>
-            <property name="selectedLabel" type="String"> </property>
-            <property name="selectedOptions" type="String"> </property>
-            <property name="min" type="Integer"> </property>
-            <property name="max" type="Integer"> </property>
-            <property name="disableReordering" type="Boolean"> </property>
-            <property name="size" type="Integer"> </property>
-            <property name="required" type="Boolean"> </property>
-            <property name="requiredOptions" type="String"> </property>
-            <property name="selectedValuesStringFormat" type="String" > </property>
-            <property name="useWhichObjectKeyForData" type="String" default="value"> </property>
-            <property name="useWhichObjectKeyForLabel" type="String" default="label"> </property>
-            <property name="useWhichObjectKeyForSort" type="String"> </property>
-            <property name="useObjectValueAsOutput" type="Boolean"> </property>
-            <property name="allOptions" type="String"> </property>
+            <property name="label" type="String"/>
+            <property name="sourceLabel" type="String"/>
+            <property name="fieldLevelHelp" type="String"/>
+            <property name="selectedLabel" type="String"/>
+            <property name="selectedOptions" type="String"/>
+            <property name="min" type="Integer"/>
+            <property name="max" type="Integer"/>
+            <property name="disableReordering" type="Boolean"/>
+            <property name="size" type="Integer"/>
+            <property name="required" type="Boolean"/>
+            <property name="requiredOptions" type="String"/>
+            <property name="selectedValuesStringFormat" type="String"/>
+            <property name="useWhichObjectKeyForData" type="String" default="value"/>
+            <property name="useWhichObjectKeyForLabel" type="String" default="label"/>
+            <property name="useWhichObjectKeyForSort" type="String"/>
+            <property name="useObjectValueAsOutput" type="Boolean"/>
+            <property name="allOptions" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

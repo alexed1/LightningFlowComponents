@@ -56,8 +56,12 @@ export default class dualListBox extends LightningElement {
     set allOptions(value) {
         if (!this.isError) {
             this._optionsOriginal = value;
-            let formattedOptions = this.formatOptionsSet(value, this.allOptionsStringFormat);
-            this._options = this.sortOptionsSet(formattedOptions, this.useWhichObjectKeyForSort);
+            if (this.useWhichObjectKeyForSort) {
+                let formattedOptions = this.formatOptionsSet(value, this.allOptionsStringFormat);
+                this._options = this.sortOptionsSet(formattedOptions, this.useWhichObjectKeyForSort);
+            } else {
+                this._options = this.formatOptionsSet(value, this.allOptionsStringFormat);
+            }
         }
     }
 

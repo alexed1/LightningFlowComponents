@@ -17,11 +17,11 @@ public class fbc_Zippex
         zipFileString = EncodingUtil.convertToHex(fileData);
         Integer offsetOfEndCentralDirSignature = zipFileString.lastIndexOf(endCentralDirSignature);
         
-        Integer numberOfFiles = fbc_fbc_HexUtil.hexToIntLE(zipFileString.mid(offsetOfEndCentralDirSignature+10*2, 2*2));    //offset 10, 2 bytes
+        Integer numberOfFiles = fbc_HexUtil.hexToIntLE(zipFileString.mid(offsetOfEndCentralDirSignature+10*2, 2*2));    //offset 10, 2 bytes
         
         offsetOfStartOfCentralDir = zipFileString.mid(offsetOfEndCentralDirSignature+16*2, 4*2); // 4 bytes
         
-        Integer offset = fbc_fbc_HexUtil.hexToIntLE(offsetOfStartOfCentralDir);
+        Integer offset = fbc_HexUtil.hexToIntLE(offsetOfStartOfCentralDir);
         
         for (Integer fileLoop = 0; fileLoop < numberOfFiles; fileLoop++)
         {
@@ -100,7 +100,7 @@ public class fbc_Zippex
         FileObject tempFileObject = zipFileMap.get(fileName);
 
         if (tempFileObject.fileDataInZipStr) {
-            tempFileObject.readLocalFileHeader(zipFileString, fbc_fbc_HexUtil.hexToIntLE(tempFileObject.offsetOfLH));
+            tempFileObject.readLocalFileHeader(zipFileString, fbc_HexUtil.hexToIntLE(tempFileObject.offsetOfLH));
         }
 
         if (tempFileObject.compressionMethod == '0000')
@@ -110,11 +110,11 @@ public class fbc_Zippex
         else if (tempFileObject.compressionMethod == '0800') //DEFLATED
         {
             return EncodingUtil.convertFromHex(new fbc_Puff(tempFileObject.compressedFileData,
-                             fbc_fbc_HexUtil.hexToIntLE(tempFileObject.compressedSize),
-                             fbc_fbc_HexUtil.hexToIntLE(tempFileObject.uncompressedSize)).inflate());
+                             fbc_HexUtil.hexToIntLE(tempFileObject.compressedSize),
+                             fbc_HexUtil.hexToIntLE(tempFileObject.uncompressedSize)).inflate());
         }
         else {
-            System.assert(false,'Unsupported compression method: ' + fbc_fbc_HexUtil.hexToIntLE(tempFileObject.compressionMethod));
+            System.assert(false,'Unsupported compression method: ' + fbc_HexUtil.hexToIntLE(tempFileObject.compressionMethod));
             return null;
         }
     }

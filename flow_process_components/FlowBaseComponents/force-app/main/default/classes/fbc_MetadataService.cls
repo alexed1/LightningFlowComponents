@@ -58,7 +58,7 @@ public class fbc_MetadataService {
         public Integer connectionTimeoutDuration;
         public Integer connectionWarningDuration;
         public Boolean displayQueuePosition;
-        public fbc_fbc_MetadataService.LiveChatDeploymentDomainWhitelist domainWhiteList;
+        public fbc_MetadataService.LiveChatDeploymentDomainWhitelist domainWhiteList;
         public Boolean enablePrechatApi;
         public Boolean enableTranscriptSave;
         public String label;
@@ -114,7 +114,7 @@ public class fbc_MetadataService {
     }
     public class FlowWaitEventOutputParameter extends FlowBaseElement {
         public String type = 'FlowWaitEventOutputParameter';
-        public fbc_fbc_MetadataService.FlowMetadataValue[] processMetadataValues;
+        public fbc_MetadataService.FlowMetadataValue[] processMetadataValues;
         private String[] processMetadataValues_type_info = new String[]{'processMetadataValues',SOAP_M_URI,null,'0','-1','false'};
         public String assignToReference;
         public String name;
@@ -131,10 +131,10 @@ public class fbc_MetadataService {
         private String[] field_order_type_info = new String[]{'enableAdvancedSearch'};
     }
     public class KnowledgeSuggestedArticlesSettings {
-        public fbc_fbc_MetadataService.KnowledgeCaseFieldsSettings caseFields;
+        public fbc_MetadataService.KnowledgeCaseFieldsSettings caseFields;
         public Boolean useSuggestedArticlesForCase;
-        public fbc_fbc_MetadataService.KnowledgeWorkOrderFieldsSettings workOrderFields;
-        public fbc_fbc_MetadataService.KnowledgeWorkOrderLineItemFieldsSettings workOrderLineItemFields;
+        public fbc_MetadataService.KnowledgeWorkOrderFieldsSettings workOrderFields;
+        public fbc_MetadataService.KnowledgeWorkOrderLineItemFieldsSettings workOrderLineItemFields;
         private String[] caseFields_type_info = new String[]{'caseFields',SOAP_M_URI,null,'0','1','false'};
         private String[] useSuggestedArticlesForCase_type_info = new String[]{'useSuggestedArticlesForCase',SOAP_M_URI,null,'0','1','false'};
         private String[] workOrderFields_type_info = new String[]{'workOrderFields',SOAP_M_URI,null,'0','1','false'};

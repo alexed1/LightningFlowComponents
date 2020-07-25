@@ -38,7 +38,7 @@ public  with sharing class fbc_RetrieveMetadata
 	public static String MetaDataItem {get; set;}	
 	public static String MetadataFileName {get; set;}
 	public static String MetadataFileData {get; set;}
-	public static fbc_fbc_MetadataService.AsyncResult AsyncResult {get; private set;}
+	public static fbc_MetadataService.AsyncResult AsyncResult {get; private set;}
 	public static String MetaDataRetrieveZip { get; private set; }	
 	public static List<MetadataFile> MetadataFiles { get; set; }		
 	
@@ -79,8 +79,8 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		MetadataFiles = null;
 		 
 		// Construct unmanaged package with list of desired components to retrieve in zip
-		fbc_fbc_MetadataService.MetadataPort service = createService();				
-        fbc_fbc_MetadataService.RetrieveRequest retrieveRequest = new fbc_fbc_MetadataService.RetrieveRequest();
+		fbc_MetadataService.MetadataPort service = createService();				
+        fbc_MetadataService.RetrieveRequest retrieveRequest = new fbc_MetadataService.RetrieveRequest();
 
       
 		retrieveRequest.apiVersion = METADATA_API_VERSION;

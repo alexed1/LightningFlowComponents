@@ -1,4 +1,4 @@
-public with sharing class ModifyFlowMetadata {
+public with sharing class fbc_ModifyFlowMetadata {
 
     public static String SOAP_NS = 'http://soap.sforce.com/2006/04/metadata';
    
@@ -7,7 +7,7 @@ public with sharing class ModifyFlowMetadata {
         Dom.XmlNode curNode = flowXML.getChildElement('processType',  SOAP_NS);
         
         System.debug('processType is: ' + curNode.getText());
-        curNode = XmlUtils.changeTextValue(newProcessType, curNode);
+        curNode = fbc_XmlUtils.changeTextValue(newProcessType, curNode);
         //curNode = flowXML.getChildElement('processType',  SOAP_NS);         
         //System.debug('processType is now : ' + curNode.getText());
         return flowXML;
@@ -18,7 +18,7 @@ public with sharing class ModifyFlowMetadata {
         Dom.XmlNode curNode = flowXML.getChildElement('status',  SOAP_NS);
         
         System.debug('status is: ' + curNode.getText());
-        curNode = XmlUtils.changeTextValue(newStatus, curNode);
+        curNode = fbc_XmlUtils.changeTextValue(newStatus, curNode);
         //curNode = flowXML.getChildElement('processType',  SOAP_NS);         
         //System.debug('processType is now : ' + curNode.getText());
         return flowXML;
@@ -79,8 +79,8 @@ public with sharing class ModifyFlowMetadata {
         //it appears to be safe to assume that the first decision node returned is always the first node in pb. we can verify by looking for index
         Dom.XmlNode curDecisionNode = curDecisionNodes[0];
         //verify index  
-        Dom.XmlNode indexNode = XmlUtils.getChildProcessMetadataValueByName(curDecisionNode, 'index');
-        String retrievedIndexVal = XmlUtils.getProcessMetadataValue(indexNode);
+        Dom.XmlNode indexNode = fbc_XmlUtils.getChildProcessMetadataValueByName(curDecisionNode, 'index');
+        String retrievedIndexVal = fbc_XmlUtils.getProcessMetadataValue(indexNode);
         System.debug ('indexNode is ' + retrievedIndexVal);
         System.debug ('targetindexval is ' + curIndexVal);
         if (retrievedIndexVal != curIndexVal)
@@ -125,7 +125,7 @@ public with sharing class ModifyFlowMetadata {
             }
 
         }
-        System.debug('failed to find next node name for this node: ' + XmlUtils.getInternalName(curNode));
+        System.debug('failed to find next node name for this node: ' + fbc_XmlUtils.getInternalName(curNode));
         return null;
     }
 
@@ -133,7 +133,7 @@ public with sharing class ModifyFlowMetadata {
 
     //finds the targetReference value
     public static String findNextNodeName(Dom.XmlNode curNode) {
-        System.debug('finding next node name forthis node: ' + XmlUtils.getInternalName(curNode));
+        System.debug('finding next node name forthis node: ' + fbc_XmlUtils.getInternalName(curNode));
         //if the curNode name is decisions do rules than connnector, else just connector 
          
         if (curNode.getName() == 'decisions'){
@@ -141,7 +141,7 @@ public with sharing class ModifyFlowMetadata {
             if (nodeRulesElement != null ) {
                return getTargetReference(nodeRulesElement);
             }
-            System.debug('failed to find next node name for this node: ' + XmlUtils.getInternalName(curNode));
+            System.debug('failed to find next node name for this node: ' + fbc_XmlUtils.getInternalName(curNode));
         } else {
             return getTargetReference(curNode);
         }
@@ -157,7 +157,7 @@ public with sharing class ModifyFlowMetadata {
         while (nextNodeName != null && !nextNodeName.contains('decision')) {
             System.debug ('nextNodeName is: ' + nextNodeName);
             //find child of flowxml that has a child name element equal to this  generalize getChildProcessMetadataValueByName
-            Dom.XmlNode targetNode = XmlUtils.getChildNodeByInternalName(flowXML, nextNodeName);
+            Dom.XmlNode targetNode = fbc_XmlUtils.getChildNodeByInternalName(flowXML, nextNodeName);
             setXYPosition(targetNode,String.valueOf(xPosition), currentYPos);
             xPosition = xPosition + 150;
             //look in the node for another connector. if you find one, set nextNodeName equal to the new value, else set nextNodeName to null
@@ -167,7 +167,7 @@ public with sharing class ModifyFlowMetadata {
     }
 
     public static void setXYPosition(Dom.XmlNode curNode, String newXVal, String newYVal) {
-        System.debug('changing the position of this node: ' + XmlUtils.getInternalName(curNode) + ' to xval ' + newXVal + ' and to yval ' + newYVal);
+        System.debug('changing the position of this node: ' + fbc_XmlUtils.getInternalName(curNode) + ' to xval ' + newXVal + ' and to yval ' + newYVal);
         Dom.XmlNode curXPos = curNode.getChildElement('locationX', SOAP_NS);
         Dom.XmlNode curYPos = curNode.getChildElement('locationY', SOAP_NS);
         if (curXPos == null || curYPos == null)

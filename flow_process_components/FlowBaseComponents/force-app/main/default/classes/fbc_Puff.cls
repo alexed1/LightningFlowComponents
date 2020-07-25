@@ -1,9 +1,9 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
-//Puff.cls based on Mark Adler's puff.c
+//fbc_Puff.cls based on Mark Adler's puff.c
 //
-public class Puff {
+public class fbc_Puff {
     private final Integer MAXBITS = 15;             /* maximum bits in a code */
     private final Integer MAXLCODES = 286;           /* maximum number of literal/length codes */
     private final Integer MAXDCODES = 30;            /* maximum number of distance codes */
@@ -394,7 +394,7 @@ public class Puff {
                 return symbol;              /* invalid symbol */
             if (symbol < 256) {             /* literal: symbol is the byte */
                 /* write out the literal */
-                s.out += HexUtil.intToHexLE(symbol, 1);
+                s.out += fbc_HexUtil.intToHexLE(symbol, 1);
                 s.outcnt++;
             }
             else if (symbol > 256) {        /* length */
@@ -722,7 +722,7 @@ public class Puff {
              //const unsigned char *source,   /* pointer to source data pointer */
              //unsigned long *sourcelen)      /* amount of input available */
     private State s = new State();             /* input/output state */
-    public Puff(String source, Integer srclen, Integer destlen){
+    public fbc_Puff(String source, Integer srclen, Integer destlen){
         /* initialize output state */
         s.out = '';
         s.outlen = destlen;                /* ignored if dest is NIL */

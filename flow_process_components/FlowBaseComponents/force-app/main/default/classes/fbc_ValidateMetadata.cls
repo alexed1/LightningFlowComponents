@@ -1,4 +1,4 @@
-public with sharing class ValidateMetadata {
+public with sharing class fbc_ValidateMetadata {
     
     public static String SOAP_NS = 'http://soap.sforce.com/2006/04/metadata';
 
@@ -24,7 +24,7 @@ public with sharing class ValidateMetadata {
         //terminate conversion if any of these are found
 
         //get all decision elements, for each element, if one of these is true, then validate problem string = x
-        List<Dom.XmlNode> decisionNodes = XmlUtils.getChildrenByName(flowXml, 'decisions');
+        List<Dom.XmlNode> decisionNodes = fbc_XmlUtils.getChildrenByName(flowXml, 'decisions');
         for (Dom.XMLNode curDecision : decisionNodes) {
             if (containsIsChangedInName(curDecision))
                 validityProblemString = validityProblemString + 'The selected process uses IsChanged operator, and Flow doesn\'t currently support that. \n';
@@ -34,7 +34,7 @@ public with sharing class ValidateMetadata {
 
         }
 
-        List<Dom.XmlNode> formulaNodes = XmlUtils.getChildrenByName(flowXml, 'formulas');
+        List<Dom.XmlNode> formulaNodes = fbc_XmlUtils.getChildrenByName(flowXml, 'formulas');
         for (Dom.XMLNode curFormula : formulaNodes) {
             Dom.XmlNode expressionNode = curFormula.getChildElement('expression', SOAP_NS);
             if (expressionNode != null) {
@@ -83,14 +83,14 @@ public with sharing class ValidateMetadata {
 
     public static Boolean containsIsChangedInName(Dom.XmlNode curDecisionNode) {
         //get the text of the name element
-        String curName = XmlUtils.getInternalName(curDecisionNode);
+        String curName = fbc_XmlUtils.getInternalName(curDecisionNode);
         return curName.contains('isChangedDecision') ? true : false;
        
     }
 
 
     public static Boolean containsPmetdec(Dom.XmlNode curDecisionNode) {
-        String curName = XmlUtils.getInternalName(curDecisionNode);
+        String curName = fbc_XmlUtils.getInternalName(curDecisionNode);
         return curName.contains('pmetdec') ? true : false;
 
     }

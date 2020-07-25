@@ -1,7 +1,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
-public class HexUtil { 
+public class fbc_HexUtil { 
 
     private static final Integer[] table = new List<Integer> { 
             0, 1996959894, -301047508, -1727442502, 124634137, 1886057615, -379345611, -1637575261,

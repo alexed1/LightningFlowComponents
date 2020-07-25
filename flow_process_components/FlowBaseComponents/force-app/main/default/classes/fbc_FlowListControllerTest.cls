@@ -1,10 +1,10 @@
 @IsTest
-class FlowListControllerTest {
+class fbc_FlowListControllerTest {
 static testMethod void testFlowListController() {
 
     Test.startTest();
         String filters = '{"ProcessType":["Flow","AutolaunchedFlow"]}';
-        FlowListController.getFlowNamesApex(filters);
+        fbc_FlowListController.getFlowNamesApex(filters);
     Test.stopTest();
     
 }

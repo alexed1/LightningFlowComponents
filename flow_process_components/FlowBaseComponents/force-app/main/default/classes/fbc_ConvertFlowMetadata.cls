@@ -15,7 +15,7 @@ public with sharing class fbc_ConvertFlowMetadata {
 
             String flowmetadata = unpackZipfile( req.flowMetadataZipFile);
             System.debug('initial retrieved unconverted pb metadata is: ' + flowmetadata);
-            String validityProblemString = ValidateMetadata.validate (flowmetadata);
+            String validityProblemString = fbc_ValidateMetadata.validate (flowmetadata);
             System.debug('validtyProblemString is: ' + validityProblemString);
             if(validityProblemString == '') {
                 String metadataText = convertMetadata(flowmetadata, req.flowName);
@@ -33,7 +33,7 @@ public with sharing class fbc_ConvertFlowMetadata {
 
              
         Blob zipBlob = EncodingUtil.base64Decode(metadataZipfile);
-        Zippex curZippex = new Zippex(zipBlob);
+        fbc_Zippex curZippex = new fbc_Zippex(zipBlob);
         Set<String> fileNames = curZippex.getFileNames();
         System.debug('filenames are: ' + fileNames);
      
@@ -51,27 +51,27 @@ public with sharing class fbc_ConvertFlowMetadata {
         Dom.XMLNode flowXML = doc.getRootElement();
        // System.debug('root node is:' + flowXML);
        
-        Dom.XmlNode pmv_ObjectType = XmlUtils.getChildProcessMetadataValueByName(flowXML,'ObjectType');
-        String contextObjectType = XmlUtils.getProcessMetadataValue(pmv_ObjectType);
+        Dom.XmlNode pmv_ObjectType = fbc_XmlUtils.getChildProcessMetadataValueByName(flowXML,'ObjectType');
+        String contextObjectType = fbc_XmlUtils.getProcessMetadataValue(pmv_ObjectType);
         System.debug('contextObjectType for flow: ' + flowName +' is: ' + contextObjectType);
 
-        Dom.XmlNode  pmv_TriggerType = XmlUtils.getChildProcessMetadataValueByName(flowXML,'TriggerType');
-        String triggerType = XmlUtils.getProcessMetadataValue(pmv_TriggerType);
+        Dom.XmlNode  pmv_TriggerType = fbc_XmlUtils.getChildProcessMetadataValueByName(flowXML,'TriggerType');
+        String triggerType = fbc_XmlUtils.getProcessMetadataValue(pmv_TriggerType);
         System.debug('triggerType for flow: ' + flowName +' is: ' + triggerType); 
         String startElementReference = flowXML.getChildElement('startElementReference', SOAP_NS).getText();
         String newProcessType = 'AutolaunchedFlow';
         
-        flowXML = ModifyFlowMetadata.changeProcessType(flowXML, newProcessType);
-        flowXML = ModifyFlowMetadata.setStatus(flowXML, 'Draft' );
-        flowXML = ModifyFlowMetadata.addStartElement(flowXML, contextObjectType, triggerType, startElementReference);
-        ModifyFlowMetadata.removeExcessPMV(flowXML, 'ObjectType');
-        ModifyFlowMetadata.removeExcessPMV(flowXML, 'ObjectVariable');
-        ModifyFlowMetadata.removeExcessPMV(flowXML, 'OldObjectVariable');
-        ModifyFlowMetadata.removeExcessPMV(flowXML, 'RecursiveCountVariable');
-        ModifyFlowMetadata.removeExcessPMV(flowXML, 'TriggerType');
-        doc = ModifyFlowMetadata.changeContextReference(doc);  
-        doc = ModifyFlowMetadata.fixupRelatedReferences(doc);
-        ModifyFlowMetadata.repositionElements(doc);
+        flowXML = fbc_ModifyFlowMetadata.changeProcessType(flowXML, newProcessType);
+        flowXML = fbc_ModifyFlowMetadata.setStatus(flowXML, 'Draft' );
+        flowXML = fbc_ModifyFlowMetadata.addStartElement(flowXML, contextObjectType, triggerType, startElementReference);
+        fbc_ModifyFlowMetadata.removeExcessPMV(flowXML, 'ObjectType');
+        fbc_ModifyFlowMetadata.removeExcessPMV(flowXML, 'ObjectVariable');
+        fbc_ModifyFlowMetadata.removeExcessPMV(flowXML, 'OldObjectVariable');
+        fbc_ModifyFlowMetadata.removeExcessPMV(flowXML, 'RecursiveCountVariable');
+        fbc_ModifyFlowMetadata.removeExcessPMV(flowXML, 'TriggerType');
+        doc = fbc_ModifyFlowMetadata.changeContextReference(doc);  
+        doc = fbc_ModifyFlowMetadata.fixupRelatedReferences(doc);
+        fbc_ModifyFlowMetadata.repositionElements(doc);
              
         String classText = doc.toXmlString();
         System.debug('===========');

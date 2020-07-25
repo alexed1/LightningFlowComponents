@@ -1,10 +1,10 @@
    @isTest 
-   public with sharing class ValidateMetadataTest { 
+   public with sharing class fbc_ValidateMetadataTest { 
 
    @isTest
    public static void validationRejectsIsChanged() {
         String flowMetadata = getMetadataString();
-        String validationString = ValidateMetadata.validate(flowMetadata);
+        String validationString = fbc_ValidateMetadata.validate(flowMetadata);
         
         System.assertNotEquals(null,validationString);
    }

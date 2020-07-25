@@ -27,7 +27,7 @@
 /**
  * This example demonstrates how to utilise the Metadata API Retrieve operation inconjunction with the JSZip JavaScript library
  **/
-public  with sharing class RetrieveMetadata 
+public  with sharing class fbc_RetrieveMetadata 
 {
 	private static final Integer METADATA_API_VERSION = 48;
 
@@ -38,7 +38,7 @@ public  with sharing class RetrieveMetadata
 	public static String MetaDataItem {get; set;}	
 	public static String MetadataFileName {get; set;}
 	public static String MetadataFileData {get; set;}
-	public static MetadataService.AsyncResult AsyncResult {get; private set;}
+	public static fbc_fbc_MetadataService.AsyncResult AsyncResult {get; private set;}
 	public static String MetaDataRetrieveZip { get; private set; }	
 	public static List<MetadataFile> MetadataFiles { get; set; }		
 	
@@ -65,10 +65,10 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 
     
     @auraEnabled
-	public static String retrieveMetadataItem(String metadataName)
+	public static String fbc_RetrieveMetadataItem(String metadataName)
 	{		
         
-	   System.debug('entering retrieveMetadataItem with metadataName: ' + metadataName);
+	   System.debug('entering fbc_RetrieveMetadataItem with metadataName: ' + metadataName);
 
 
 
@@ -79,17 +79,17 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		MetadataFiles = null;
 		 
 		// Construct unmanaged package with list of desired components to retrieve in zip
-		MetadataService.MetadataPort service = createService();				
-        MetadataService.RetrieveRequest retrieveRequest = new MetadataService.RetrieveRequest();
+		fbc_fbc_MetadataService.MetadataPort service = createService();				
+        fbc_fbc_MetadataService.RetrieveRequest retrieveRequest = new fbc_fbc_MetadataService.RetrieveRequest();
 
       
 		retrieveRequest.apiVersion = METADATA_API_VERSION;
 		retrieveRequest.packageNames = null;
 		retrieveRequest.singlePackage = true;
 		retrieveRequest.specificFiles = null;
-		retrieveRequest.unpackaged = new MetadataService.Package_x();
-		retrieveRequest.unpackaged.types = new List<MetadataService.PackageTypeMembers>();
-        MetadataService.PackageTypeMembers packageType = new MetadataService.PackageTypeMembers();
+		retrieveRequest.unpackaged = new fbc_MetadataService.Package_x();
+		retrieveRequest.unpackaged.types = new List<fbc_MetadataService.PackageTypeMembers>();
+        fbc_MetadataService.PackageTypeMembers packageType = new fbc_MetadataService.PackageTypeMembers();
         
         //Flow-specific code
 		packageType.name = 'Flow'; 
@@ -99,11 +99,11 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
  
         
 
-        MetadataService.AsyncResult curAsyncResult = service.retrieve(retrieveRequest);
+        fbc_MetadataService.AsyncResult curAsyncResult = service.retrieve(retrieveRequest);
         
 
         String jobId = curAsyncResult.id;
-        MetadataService.RetrieveResult result = service.checkRetrieveStatus(jobId,true);
+        fbc_MetadataService.RetrieveResult result = service.checkRetrieveStatus(jobId,true);
         System.debug('retrieve status is: done=' +  ' ' + result.done + ' status: ' + result.status + ' success: '+ result.success); 
         System.debug('zip file is: ' + result.zipfile);
 						
@@ -114,8 +114,8 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 	public static String checkAsyncRequest(String jobId) {
         System.debug('entering checkAsyncRequest, job id: ' + jobId);
 		// Check the status of the retrieve request
-		MetadataService.MetadataPort service = createService();
-		MetadataService.RetrieveResult retrieveResult = service.checkRetrieveStatus(jobId, true);
+		fbc_MetadataService.MetadataPort service = createService();
+		fbc_MetadataService.RetrieveResult retrieveResult = service.checkRetrieveStatus(jobId, true);
 		if(retrieveResult.done == true)
 		{
 			// Errors?
@@ -144,7 +144,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		System.debug ('entering getFileNames');
         if (zipfile != '') {
 			Blob zipBlob = EncodingUtil.base64Decode(zipfile);
-			Zippex curZippex = new Zippex(zipBlob);
+			fbc_Zippex curZippex = new fbc_Zippex(zipBlob);
 			Set<String> fileNames = curZippex.getFileNames();
 			System.debug('filenames are: ' + fileNames);
 		 
@@ -159,10 +159,10 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 	}
 
 	
-	private static MetadataService.MetadataPort createService()
+	private static fbc_MetadataService.MetadataPort createService()
 	{ 
-		MetadataService.MetadataPort service = new MetadataService.MetadataPort();
-		service.SessionHeader = new MetadataService.SessionHeader_element();
+		fbc_MetadataService.MetadataPort service = new fbc_MetadataService.MetadataPort();
+		service.SessionHeader = new fbc_MetadataService.SessionHeader_element();
 		service.SessionHeader.sessionId = UserInfo.getSessionId();
 		return service;		
     }	
@@ -182,7 +182,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 	/**
 	 * Simple container class for retrieve metadata file, may as well leverage the Metadata API class for this
 	 **/
-	public class MetadataFile extends MetadataService.MetadataWithContent
+	public class MetadataFile extends fbc_MetadataService.MetadataWithContent
 	{
 		public String getFullname()
 		{

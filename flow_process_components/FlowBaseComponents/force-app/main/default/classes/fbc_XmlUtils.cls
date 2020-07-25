@@ -1,4 +1,4 @@
-public with sharing class XmlUtils {
+public with sharing class fbc_XmlUtils {
 
     public static String SOAP_NS = 'http://soap.sforce.com/2006/04/metadata';
 

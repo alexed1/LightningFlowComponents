@@ -1,7 +1,7 @@
 import { LightningElement,track,api,wire } from 'lwc';
-import requestMetadata from '@salesforce/apex/RetrieveMetadata.retrieveMetadataItem';
-import checkRetrieveStatus from '@salesforce/apex/RetrieveMetadata.checkAsyncRequest';
-import getFileNames from '@salesforce/apex/RetrieveMetadata.getFileNames';
+import requestMetadata from '@salesforce/apex/fbc_RetrieveMetadata.fbc_RetrieveMetadataItem';
+import checkRetrieveStatus from '@salesforce/apex/fbc_RetrieveMetadata.checkAsyncRequest';
+import getFileNames from '@salesforce/apex/fbc_RetrieveMetadata.getFileNames';
 import fbc_deployMetadata from '@salesforce/apex/fbc_DeployMetadata.deploy';
 import checkDeployStatus from '@salesforce/apex/fbc_DeployMetadata.checkAsyncRequest';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';

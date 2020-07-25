@@ -15,7 +15,7 @@ Allows the selection of a Flow
 
 */
 
-global with sharing class FlowListController {
+global with sharing class fbc_FlowListController {
 
     @AuraEnabled(cacheable=true)
     public static List<FlowDefinitionView> getFlowNamesApex(String filtersString) {

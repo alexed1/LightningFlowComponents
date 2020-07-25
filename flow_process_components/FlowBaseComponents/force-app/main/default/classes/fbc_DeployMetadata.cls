@@ -7,15 +7,15 @@ public with sharing class fbc_DeployMetadata {
         System.debug ('objectName: ' + metadataName);
         System.debug ('testLevel: ' + testLevel);
         System.debug ('objectType: ' + objectType);
-        MetadataService.MetadataPort service = createService();
+        fbc_MetadataService.MetadataPort service = createService();
         if (String.isEmpty(testLevel))
             testLevel = 'NoTestRun';
 
         String zippedClass = generateZipfile(metadataText, metadataName, objectType);
-        MetadataService.AsyncResult deployResult= service.deploy(zippedClass, getDeployOptions());
+        fbc_MetadataService.AsyncResult deployResult= service.deploy(zippedClass, getDeployOptions());
 
         String jobId = deployResult.id;
-        MetadataService.DeployResult result = service.checkDeployStatus(jobId,true);
+        fbc_MetadataService.DeployResult result = service.checkDeployStatus(jobId,true);
         System.debug('deploy status is: ' + metadataName + ' ' + result.status + ' ' + result.stateDetail); 
         return jobId;
     }
@@ -24,8 +24,8 @@ public with sharing class fbc_DeployMetadata {
 	public static String checkAsyncRequest(String jobId) {
         System.debug('entering checkAsyncRequest, job id: ' + jobId);
 		// Check the status of the retrieve request
-		MetadataService.MetadataPort service = createService();
-        MetadataService.DeployResult deployResult = service.checkDeployStatus(jobId, true);
+		fbc_MetadataService.MetadataPort service = createService();
+        fbc_MetadataService.DeployResult deployResult = service.checkDeployStatus(jobId, true);
         System.debug('returned from checkDeployStatus call to metadata service. deploy result is: ' + deployResult);
 		if(deployResult.done)
 		{
@@ -37,7 +37,7 @@ public with sharing class fbc_DeployMetadata {
                 String problems = '';
                 System.debug('deploy result:' + deployResult.details.componentFailures);
                 System.debug('deploy success:' + deployResult.details.componentSuccesses);
-                for(MetadataService.DeployMessage curMessage : deployResult.details.componentFailures) {
+                for(fbc_MetadataService.DeployMessage curMessage : deployResult.details.componentFailures) {
                     problems = problems + '\n' + curMessage.problem;
                 }
                 System.debug('problem is: ' + problems);
@@ -55,7 +55,7 @@ public with sharing class fbc_DeployMetadata {
         
 
     public static String generateZipfile(String classText, String objectName, String objectType) {
-            Zippex sampleZip = new Zippex();
+            fbc_Zippex sampleZip = new fbc_Zippex();
             System.debug('assembling package with objectName: ' + objectName);
             Blob fileData = Blob.valueOf(getPackageXml(objectName, objectType));
             System.debug('preparing to deploy package.xml: ' + fileData.toString());
@@ -69,9 +69,9 @@ public with sharing class fbc_DeployMetadata {
             return EncodingUtil.base64Encode(sampleZip.getZipArchive());
 
         }
-    public static MetadataService.DeployOptions getDeployOptions(){
+    public static fbc_MetadataService.DeployOptions getDeployOptions(){
              
-        MetadataService.DeployOptions curDeployOption = new MetadataService.DeployOptions();
+        fbc_MetadataService.DeployOptions curDeployOption = new fbc_MetadataService.DeployOptions();
         curDeployOption.allowMissingFiles = false;
         curDeployOption.autoUpdatePackage = true;
         curDeployOption.checkOnly = false;
@@ -86,10 +86,10 @@ public with sharing class fbc_DeployMetadata {
         return curDeployOption;
         }
 
-        private static MetadataService.MetadataPort createService()
+        private static fbc_MetadataService.MetadataPort createService()
         { 
-            MetadataService.MetadataPort service = new MetadataService.MetadataPort();
-            service.SessionHeader = new MetadataService.SessionHeader_element();
+            fbc_MetadataService.MetadataPort service = new fbc_MetadataService.MetadataPort();
+            service.SessionHeader = new fbc_MetadataService.SessionHeader_element();
             service.SessionHeader.sessionId = UserInfo.getSessionId();
             return service;		
         }	

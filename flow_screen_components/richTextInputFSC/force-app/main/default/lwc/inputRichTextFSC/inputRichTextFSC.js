@@ -3,7 +3,7 @@ import { LightningElement, api, track } from 'lwc';
 export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
-    @api value = ''; //set empty in case undefined comes from flow entry
+    @api value; //set empty in connectedCallback if undefined.
     @api enableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
@@ -23,11 +23,15 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         if(!this.enableAdvancedTools || this.warnOnly){
             return {isValid:true};
         }else if(this.characterCap && (this.characterCount > this.characterLimit)){
+            //failure scenario so set tempValue in sessionStorage
+            sessionStorage.setItem('tempValue',this.value);
             return {
                 isValid:false,
                 errorMessage: 'Cannot Advance - Character Limit Exceeded: '+this.characterCount + ' > ' + this.characterLimit
             };
         }else if(!this.isValidCheck){
+            //failure scenario so set tempValue in sessionStorage
+            sessionStorage.setItem('tempValue',this.value);
             return {
                 isValid:false,
                 errorMessage: 'Cannot Advance - Invalid Symbols/Words Remain in Rich Text: '+this.runningBlockedInput.toString()
@@ -67,8 +71,17 @@ export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Set initial values on load
     connectedCallback() {
+		
+        //use sessionStorage to fetch and restore latest value before validation failure.
+        if(sessionStorage){
+            if(sessionStorage.getItem('tempValue')){
+                this.value = sessionStorage.getItem('tempValue');
+                sessionStorage.removeItem('tempValue'); //clear value after selection
+            }
+        }
+
         if(this.enableAdvancedTools){
-            this.richText = this.value;
+			(this.value != undefined) ? this.richText = this.value : this.richText = '';
             this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
@@ -157,7 +170,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.richText = event.target.value;
         }
         this.characterCount = this.richText.length;
-                if(this.characterCap && this.characterCount > this.characterLimit){
+        if(this.characterCap && this.characterCount > this.characterLimit){
             this.isValidCheck = false;
         }
         //Display different message if warn only - validation also won't be enforced on Next.

@@ -1,11 +1,17 @@
+/**
+ * 
+ * 07/01/20     Eric Smith      Updated to navigate to the next node in the Flow on deployment completion
+ *                              This will work best if you disable the footer on the Flow screen 
+ *                         
+**/
+
 import { LightningElement,track,api,wire } from 'lwc';
 import requestMetadata from '@salesforce/apex/fbc_RetrieveMetadata.fbc_RetrieveMetadataItem';
 import checkRetrieveStatus from '@salesforce/apex/fbc_RetrieveMetadata.checkAsyncRequest';
 import getFileNames from '@salesforce/apex/fbc_RetrieveMetadata.getFileNames';
 import fbc_deployMetadata from '@salesforce/apex/fbc_DeployMetadata.deploy';
 import checkDeployStatus from '@salesforce/apex/fbc_DeployMetadata.checkAsyncRequest';
-import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
-import { FlowNavigationNextEvent } from 'lightning/flowSupport';
+import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from 'lightning/flowSupport';
 
 export default class TransferMetadata extends LightningElement {
  
@@ -22,32 +28,17 @@ export default class TransferMetadata extends LightningElement {
     @api metadataString;
     @api objectType;
     modifiedName;
-
-    //@wire(getFileNames ,{ zipfile : '$zipFileString'})
-    //retrievedFileNames;
-
-/*     @api get retrievedFileNames() {
-        return JSON.stringify(retrieveFileNamesObject);
-    }
-
-    set retrievedFileNames(value) {
-        this.retrievedFileNames = value;
-    }   */
-
+    @api availableActions = [];
 
 
     connectedCallback() {
  
-       if (this.transferMode == 'retrieve') {
-            this.activity = 'Beginning metadata retrieval...';
+        this.activity = 'Beginning metadata transfer...';
+        if (this.transferMode.toLowerCase() == 'retrieve')
             this.retrieve();
-       }       
-       else if (this.transferMode == 'deploy') {
-        this.activity = 'Beginning metadata deployment...';
-        this.deploy();
-       }
-            
-        else {
+        else if (this.transferMode.toLowerCase() == 'deploy')
+            this.deploy();
+            else {
              console.log('transfer mode error!');
             }
     }
@@ -68,7 +59,8 @@ export default class TransferMetadata extends LightningElement {
             }
         })
         .catch(error => {
-            console.log('error happened on initial retrieve call');
+            console.log('An error occurred on the initial retrieve call:');    
+            this.activity = 'Error: ' + JSON.stringify(error.body.message);
             this.error = error;
         });
     }
@@ -78,8 +70,12 @@ export default class TransferMetadata extends LightningElement {
         console.log('this.metadataName is: ' + this.metadataName);
         console.log('beginning deployment of this.metadataString is: ' + this.metadataString);
         console.log('this.objectTpe is: ' + this.objectType);
-        this.modifiedName = this.metadataName + '_Converted';
-        console.log('this.modifiedName is: ' + this.modifiedName);
+        if (this.objectType.toLowerCase() == this.objectType || this.objectType.toUpperCase() == this.objectType) {
+            console.log('ERROR: objectType parameter should be in CamelCase');
+        }
+        // this.modifiedName = this.metadataName + '_Converted';
+        this.modifiedName = this.metadataName;
+        console.log('this.metadataName is: ' + this.modifiedName);
         fbc_deployMetadata({ metadataText : this.metadataString, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })
         .then(result => {
             console.log('result of deployment request is: ' + result);
@@ -91,8 +87,10 @@ export default class TransferMetadata extends LightningElement {
             if (!this.transferComplete) {
                 console.log('deployment not complete');
                 this.waitForDeployment(this.jobId);
-            } else
-            this.activity = 'Deployment Complete!';
+            } else {
+                this.activity = 'Deployment Complete!';
+                this.handleGoNext();
+            }
         })
         .catch(error => {
             console.log('error calling fbc_deployMetadata from transfer');
@@ -100,6 +98,15 @@ export default class TransferMetadata extends LightningElement {
         });
     }
     
+    handleGoNext() {
+        // check if NEXT is allowed on this screen
+        if (this.availableActions.find(action => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+        }
+    }
+
     waitForRetrieval(jobId) {
         setTimeout(function(){ 
             console.log('checking status. jobId is: ' + this.jobId);
@@ -127,8 +134,9 @@ export default class TransferMetadata extends LightningElement {
             if (result == 'success'){
                 console.log('deployment successful');
              
-                self.activity = 'Flow converted successfully. '
+                self.activity = 'Flow deployed successfully. '
                 console.log('this.activity is: ' + this.activity);
+                this.handleGoNext();
 
             } else if (result == 'inprocess') {
                 console.log('deployment not complete');
@@ -136,13 +144,9 @@ export default class TransferMetadata extends LightningElement {
                 
               } else  {
                 //console.log('not done yet. jobid is: ' + this.jobId);
-                 
-
                 console.log ('deployment failed');
                 console.log ( result);
-                self.activity = result;
-
-                  
+                self.activity = result;   
             }
         });
  
@@ -156,7 +160,7 @@ export default class TransferMetadata extends LightningElement {
             if (result != 'inprocess'){
                 console.log('data returned');
                 console.log('data is: ' + result);
-                this.activity = 'Process Builder metadata retrieved successfully. '
+                this.activity = 'metadata retrieved successfully. '
                 console.log('this.activity is: ' + this.activity);
                 this.zipFileString = result;
                 const attributeChangeEvent = new FlowAttributeChangeEvent('zipFileString', this.zipFileString);

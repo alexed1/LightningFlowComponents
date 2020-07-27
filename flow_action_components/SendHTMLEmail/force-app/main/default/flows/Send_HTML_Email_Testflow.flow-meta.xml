@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Simplest_HTML_Email</name>
         <label>1. Simplest HTML Email</label>
-        <locationX>1155</locationX>
-        <locationY>169</locationY>
+        <locationX>1154</locationX>
+        <locationY>155</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -64,8 +64,8 @@
     <actionCalls>
         <name>X2_Simple_Email_with_Address_Collections_Wit_Collections</name>
         <label>2. Simple Email with Address Collections - With Address Collections</label>
-        <locationX>1378</locationX>
-        <locationY>273</locationY>
+        <locationX>1376</locationX>
+        <locationY>275</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -356,11 +356,11 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <description>Multi-Lingual Using Email Templates - An email using a Lightning EmailTemplate selected by language</description>
-        <name>X6_Mass_Email_Templates</name>
-        <label>6. Mass Email Templates</label>
-        <locationX>1157</locationX>
-        <locationY>75</locationY>
+        <description>Testing Send HTML Email - Mass Email</description>
+        <name>X6_Send_HTML_Email_Mass</name>
+        <label>6. Send HTML Email - Mass</label>
+        <locationX>1661</locationX>
+        <locationY>1224</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -369,7 +369,19 @@
         <inputParameters>
             <name>description</name>
             <value>
-                <stringValue>sendHTMLEmailTest - Mass Email</stringValue>
+                <stringValue>Test Send Mass Email</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailMessageType</name>
+            <value>
+                <stringValue>massEmail</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <stringValue>Do Not Reply</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -381,13 +393,7 @@
         <inputParameters>
             <name>templateName</name>
             <value>
-                <elementReference>Template_Name_Mass_Email</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>useMassEmail</name>
-            <value>
-                <booleanValue>true</booleanValue>
+                <stringValue>sendMassHTMLEmailTest</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -396,14 +402,6 @@
                 <elementReference>UserListForMassMail</elementReference>
             </value>
         </inputParameters>
-        <outputParameters>
-            <assignToReference>errorsFromEmail</assignToReference>
-            <name>errors</name>
-        </outputParameters>
-        <outputParameters>
-            <assignToReference>isSuccess</assignToReference>
-            <name>isSuccess</name>
-        </outputParameters>
     </actionCalls>
     <assignments>
         <name>Add_All_Attached_Files</name>
@@ -447,8 +445,8 @@
     <assignments>
         <name>Assign_User_ID_for_TargetIds</name>
         <label>Assign User ID for TargetIds</label>
-        <locationX>1009</locationX>
-        <locationY>75</locationY>
+        <locationX>1357</locationX>
+        <locationY>1226</locationY>
         <assignmentItems>
             <assignToReference>UserListForMassMail</assignToReference>
             <operator>Add</operator>
@@ -457,7 +455,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>X6_Mass_Email_Templates</targetReference>
+            <targetReference>X6_Send_HTML_Email_Mass</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -806,8 +804,8 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>1258</locationX>
-        <locationY>273</locationY>
+        <locationX>1256</locationX>
+        <locationY>275</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
@@ -851,7 +849,7 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>1156</locationX>
+        <locationX>1154</locationX>
         <locationY>275</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -1079,8 +1077,8 @@
     <screens>
         <name>screenConsole1</name>
         <label>screenConsole1</label>
-        <locationX>1578</locationX>
-        <locationY>167</locationY>
+        <locationX>1647</locationX>
+        <locationY>162</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -1095,8 +1093,8 @@
     <screens>
         <name>X1_Get_Simple_Email_Fields</name>
         <label>1. Get Simple Email Fields</label>
-        <locationX>718</locationX>
-        <locationY>169</locationY>
+        <locationX>717</locationX>
+        <locationY>155</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1501,7 +1499,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Test_Templates_if_Needed_5</targetReference>
+            <targetReference>X5_Create_Test_Templates_if_Needed</targetReference>
         </connector>
         <fields>
             <name>Example5Details</name>
@@ -1603,13 +1601,13 @@
     <screens>
         <name>X6_Mass_Email</name>
         <label>6. Mass Email Test Flow</label>
-        <locationX>609</locationX>
-        <locationY>75</locationY>
+        <locationX>513</locationX>
+        <locationY>1226</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Mass_Email_Test_Templates_If_Needed</targetReference>
+            <targetReference>X6_Create_Mass_Email_Test_Templates_If_Needed</targetReference>
         </connector>
         <fields>
             <name>Example6Details</name>
@@ -1639,11 +1637,28 @@
     </start>
     <status>Draft</status>
     <subflows>
+        <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
+        <name>X5_Create_Test_Templates_if_Needed</name>
+        <label>5. Create Test Templates if Needed</label>
+        <locationX>1029</locationX>
+        <locationY>1087</locationY>
+        <connector>
+            <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
+        </connector>
+        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <inputAssignments>
+            <name>sendHTMLEmailTestName</name>
+            <value>
+                <elementReference>Template_Name</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
         <description>sendHTMLEmail Test - Create Mass Email Test Templates If Needed</description>
-        <name>Create_Mass_Email_Test_Templates_If_Needed</name>
-        <label>Create Mass Email Test Templates If Needed</label>
-        <locationX>725</locationX>
-        <locationY>75</locationY>
+        <name>X6_Create_Mass_Email_Test_Templates_If_Needed</name>
+        <label>6. Create Mass Email Test Templates If Needed</label>
+        <locationX>1028</locationX>
+        <locationY>1226</locationY>
         <connector>
             <targetReference>Assign_User_ID_for_TargetIds</targetReference>
         </connector>
@@ -1658,23 +1673,6 @@
             <name>sendHTMLEmailTestType</name>
             <value>
                 <stringValue>MassEmail</stringValue>
-            </value>
-        </inputAssignments>
-    </subflows>
-    <subflows>
-        <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
-        <name>Create_Test_Templates_if_Needed_5</name>
-        <label>Create Test Templates if Needed</label>
-        <locationX>1023</locationX>
-        <locationY>1087</locationY>
-        <connector>
-            <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
-        </connector>
-        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
-        <inputAssignments>
-            <name>sendHTMLEmailTestName</name>
-            <value>
-                <elementReference>Template_Name</elementReference>
             </value>
         </inputAssignments>
     </subflows>

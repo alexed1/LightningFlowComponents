@@ -1,27 +1,18 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/flowCombobox": [
-                "flowCombobox/flowCombobox.js"
-            ],
             "c/addNewMembers": [
                 "addNewMembers/addNewMembers.js"
             ],
-            "c/buttonUtils": [
-                "buttonUtils/buttonUtils.js"
-            ],
-            "c/configEditorLwc": [
-                "configEditorLwc/configEditorLwc.js"
+            "c/sendHTMLEmailCPE": [
+                "sendHTMLEmailCPE/sendHTMLEmailCPE.js"
             ],
             "c/ucModal": [
                 "ucModal/ucModal.js"
-            ],
-            "c/sendHTMLEmail": [
-                "sendHTMLEmail/sendHTMLEmail.js"
             ]
-        },
-        "experimentalDecorators": true
+        }
     },
     "include": [
         "**/*",

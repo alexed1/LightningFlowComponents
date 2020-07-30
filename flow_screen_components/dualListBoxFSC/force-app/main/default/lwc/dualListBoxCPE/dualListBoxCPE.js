@@ -37,6 +37,12 @@ export default class DualListBoxCpe extends LightningElement {
             isCollection: false,
             label: 'Use Which Object Key For Label'
         },
+        useWhichObjectKeyForSort: {
+            value: null,
+            valueDataType: null,
+            isCollection: false,
+            label: 'Use Which Object Key For Sort'
+        },
         useObjectValueAsOutput: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
         allOptionsFieldDescriptorList: {
             value: null,

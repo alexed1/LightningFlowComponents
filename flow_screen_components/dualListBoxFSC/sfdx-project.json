@@ -5,7 +5,12 @@
             "default": true,
             "package": "dualListBox",
             "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionNumber": "0.1.0.NEXT",
+            "dependencies": [
+                {
+                    "package": "FlowBaseComponents@1.0.8-0"
+                }
+            ]
         }
     ],
     "namespace": "",
@@ -13,6 +18,9 @@
     "sourceApiVersion": "46.0",
     "packageAliases": {
         "dualListBox": "0HoB00000008PFIKA2",
-        "dualListBox@2.0.0-0": "04tB0000000KxaSIAS"
+        "dualListBox@2.0.0-0": "04tB0000000KxaSIAS",
+        "FlowBaseComponents@1.0.8-0": "04tB0000000QITRIA4",
+        "dualListBox@2.1.0-0": "04tB0000000QJdAIAW",
+        "dualListBox@2.1.1-0": "04tB0000000QJdFIAW"
     }
 }

@@ -1,23 +1,33 @@
 <!-- 
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
-4/29/20 -   Eric Smith -    Version 1.6
-                            Removed record-type-id={recordTypeId} from lightning-record-view-form
 
-4/16/20 -   Eric Smith -    Version 1.5
-                            Added underlines to fields when in View Mode to improve readability
+/29/20 -   M Hamza Siddiqui -     Version 1.7
+                                  Save and Cancel Button Labels are now changeable
+                                  Option to hide CANCEL button
+                                  Column Size option (Show all fields in 1 -> 12 sections)
+                                  Disable Toast Option
+                                  Removed slds-box class to remove double boxes under flow screen
+                                  label-stacked variant added on input fields.
+
+4/29/20 -   Eric Smith -          Version 1.6
+                                  Removed record-type-id={recordTypeId} from lightning-record-view-form
+
+4/16/20 -   Eric Smith -          Version 1.5
+                                  Added underlines to fields when in View Mode to improve readability
+
                             
-1/24/20 -   Eric Smith -    Version 1.3
-                            Added a feature to display and handle a Cancel button when in Edit mode
-                            Added an option to support flow navigation on record save and cancel                           
-                            Included descriptive labels and help text for Flow parameters
+1/24/20 -   Eric Smith -          Version 1.3
+                                  Added a feature to display and handle a Cancel button when in Edit mode
+                                  Added an option to support flow navigation on record save and cancel                           
+                                  Included descriptive labels and help text for Flow parameters
 
 -->
 <template>
     <div class="container">
 
         <template if:true={loadFinished}>
-            <div class="slds-box slds-theme_default">
+            <div class="slds-theme_default">
                 <template if:true={isError}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
                         <template for:each={errors} for:item="error">
@@ -57,9 +67,9 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                 <template for:each={fieldData} for:item="field">
                                     <lightning-layout-item key={field.fieldName} size={elementSize}>
                                         <template if:false={field.isError} >
-                                            <lightning-output-field if:true={field.isOutput} field-name={field.fieldName}>
+                                            <lightning-output-field variant="label-stacked" if:true={field.isOutput} field-name={field.fieldName}>
                                             </lightning-output-field>
-                                            <lightning-input-field  if:false={field.isOutput} field-name={field.fieldName}>
+                                            <lightning-input-field  variant="label-stacked" if:false={field.isOutput} field-name={field.fieldName}>
                                             </lightning-input-field>
                                         </template>
                                         <div if:true={field.isError}
@@ -74,16 +84,18 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                             variant="brand"
                                             type="submit"
                                             name="save"
-                                            label="Save">
+                                            label={SaveBtnLabel}>
                                     </lightning-button>
-                                    <lightning-button
-                                            class="slds-m-top_small slds-float--right"
-                                            variant="neutral"
-                                            type="button"
-                                            name="cancel"
-                                            label="Cancel"
-                                            onclick={handleCancel}>
-                                    </lightning-button>
+                                    <template if:true={showCancelButton}>
+                                        <lightning-button
+                                                class="slds-m-top_small slds-float--right"
+                                                variant="neutral"
+                                                type="button"
+                                                name="cancel"
+                                                label={CancelBtnLabel}
+                                                onclick={handleCancel}>
+                                        </lightning-button>
+                                    </template>
                                 </lightning-layout-item>
                             </lightning-layout>
                         </lightning-record-edit-form>

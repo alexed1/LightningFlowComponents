@@ -14,6 +14,12 @@ export default class recordDetailFSC extends LightningElement {
     @api flowNavigationOnCancelDirection = "next";
     @api isCancelButton = false;
     @api availableActions = [];
+    @api showCancelButton = false;
+    @api showtoast = false;
+    @api SaveBtnLabel = 'Save';
+    @api CancelBtnLabel = 'Cancel';
+    @api columnsize = 2;
+    
 
     @track elementSize = 6;
     @track objectData;
@@ -34,7 +40,10 @@ export default class recordDetailFSC extends LightningElement {
 
     connectedCallback() {
         this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
+        this.elementSize = this.columnsize? (12/this.columnsize) : 6;
     }
+
+
 
     @api
     get fields() {
@@ -119,7 +128,10 @@ export default class recordDetailFSC extends LightningElement {
 
     handleSuccess(event) {
         this.recordId = event.detail.id;
-        this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
+        // showtoast is True?
+        if(this.showtoast){
+            this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
+        }
         // is Flow Navigation selected?
         if (this.flowNavigationOnSave) {
             // check if FINISH is allowed on the flow screen

@@ -1,0 +1,137 @@
+<template>
+    <div style="color:red;">{errorStrings}  </div>
+    <!-- <lightning-card title='Field Update Edit'> -->
+        <div >
+            <c-fbc_pick-object-and-field
+                    field-label='Field to Update'
+                    object-label='Object'
+                    object-type={_objectType}
+                    field={_fieldName}
+                    onfieldselected={handleFieldChange}
+                    display-field-type
+            ></c-fbc_pick-object-and-field>
+            <template if:true={fieldProperties}>
+                <template if:true={fieldProperties.isDisabled}>
+                    <div class="slds-text-color_destructive">
+                        <h2>{labels.fieldNotUpdatable}</h2>
+                    </div>
+                </template>
+                <template if:false={fieldProperties.isDisabled}>
+                    <template if:true={fieldProperties.isTextField}>
+                        <lightning-radio-group name="textOptions"
+                                               label="Text Options"
+                                               options={textOptions}
+                                               value={textOption}
+                                               onchange={handleTextOptionValueChange}
+                                               type="radio"></lightning-radio-group>
+                        <template if:true={showFormulaBuilderOption}>
+                            <a onclick={toggleFormulaEditor}>{formulaEditorMessage}</a>
+                            <template if:true={formulaEditorVisible}>
+                                <div>
+                                    <c-fbc_formula-builder object-name={_objectType}
+                                                       supported-system-types={supportedSystemTypes}
+                                                       onformulachanged={handleValueChange}></c-fbc_formula-builder>
+                                </div>
+                            </template>
+                            <template if:false={formulaEditorVisible}>
+                                <lightning-input
+                                        name="field-value"
+                                        label="Formula"
+                                        value={_value}
+                                        onchange={handleValueChange}
+                                ></lightning-input>
+                            </template>
+                        </template>
+                    </template>
+                    <template if:true={fieldProperties.isUserReferenceField}>
+                        <c-set-owner
+                                available-object-types='User, Queue'
+                                supported-add-capabilities='Set'
+                                notify-assignee-label='Notify Assignee'
+                                member-id={_value}
+                                onmembersrefreshed={handleOwnerChange}
+                        ></c-set-owner>
+                    </template>
+                    <template if:true={fieldProperties.isBoolean}>
+                        <lightning-radio-group name="textOptions"
+                                               label="Checkbox Options"
+                                               options={checkboxOptions}
+                                               value={_value}
+                                               onchange={handleValueChange}
+                                               type="radio">
+
+                        </lightning-radio-group>
+                    </template>
+                    <template if:true={fieldProperties.isPicklist}>
+                        <c-set-pick-list
+                                value={_value}
+                                picklist-object-name={_objectType}
+                                picklist-field-name={selectedField.fieldName}
+                                onpicklistselected={handleValueChange}></c-set-pick-list>
+                    </template>
+                    <template if:true={fieldProperties.isDateTime}>
+                        <lightning-input type="datetime" name="datetime" label="Select Date and Time" value={_value}
+                                         onchange={handleValueChange}></lightning-input>
+                    </template>
+                    <template if:true={fieldProperties.isDate}>
+                        <lightning-input type="date" name="datetime" label="Select Date" value={_value}
+                                         onchange={handleValueChange}></lightning-input>
+                    </template>
+                    <template if:true={fieldProperties.isCurrency}>
+                        <lightning-input type="number"
+                                         name="numbercurrency"
+                                         label={labels.fieldValueLabel}
+                                         value={_value}
+                                         formatter="currency"
+                                         onchange={handleValueChange}>
+                        </lightning-input>
+                    </template>
+                    <template if:true={fieldProperties.isAddress}>
+                        {labels.fieldTypeNotSupported}
+                    </template>
+                    <template if:true={fieldProperties.isDouble}>
+                        <lightning-input type="number"
+                                         name="numberdecimal"
+                                         label={labels.fieldValueLabel}
+                                         value={_value}
+                                         formatter="decimal"
+                                         onchange={handleValueChange}>
+                        </lightning-input>
+                    </template>
+                    <template if:true={fieldProperties.isTextArea}>
+                        <lightning-textarea name="textarea"
+                                            label={labels.fieldValueLabel}
+                                            value={_value}
+                                            onchange={handleValueChange}>
+                        </lightning-textarea>
+                    </template>
+                    <template if:true={fieldProperties.isPhone}>
+                        <lightning-input type="tel"
+                                         name="phone"
+                                         label={labels.fieldValueLabel}
+                                         value={_value}
+                                         onchange={handleValueChange}>
+                        </lightning-input>
+                    </template>
+                    <template if:true={fieldProperties.isUrl}>
+                        <lightning-input type="url"
+                                         name="inputurl"
+                                         label={labels.fieldValueLabel}
+                                         value={_value}></lightning-input>
+                    </template>
+                </template>
+            </template>
+        </div>
+        <!-- <div slot="footer">
+            <lightning-layout horizontal-align="center">
+                <lightning-layout-item>
+                    <lightning-button variant="Neutral" label="Save" title="Save"
+                                      onclick={handleSave}></lightning-button>
+                    <lightning-button class="slds-p-left--small" variant="Brand" label="Cancel" title="Cancel"
+                                      onclick={handleSave}></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item></lightning-layout-item>
+            </lightning-layout>
+        </div> -->
+    <!-- </lightning-card> -->
+</template>

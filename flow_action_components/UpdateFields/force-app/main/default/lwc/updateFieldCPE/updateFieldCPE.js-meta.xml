@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>46.0</apiVersion>
+    <description>updateFieldConfigurator</description>
+    <isExposed>true</isExposed>
+    <masterLabel>updateFieldConfigurator</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+            <property name="objectType" type="String"></property>
+            <property name="fieldName" type="String"></property>
+            <property name="value" type="String"></property>
+            <property name="supportedSystemTypes" type="String" role="inputOnly"></property>
+        </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

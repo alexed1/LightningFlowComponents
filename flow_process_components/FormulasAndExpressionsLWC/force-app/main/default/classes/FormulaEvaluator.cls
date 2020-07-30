@@ -1,26 +1,27 @@
 public with sharing class FormulaEvaluator {
 
     public static String parseFormula(String formula, String context) {
-        List<ContextWrapper> contextResult = (List<ContextWrapper>) JSON.deserialize(context, List<ContextWrapper>.class);
         Map<String, String> mapParameters = new Map<String, String>();
-
-        for (ContextWrapper cont : contextResult) {
-            if (!String.isEmpty(cont.value) && cont.name == '$Record') {
-                //TODO: replace Schema.getGlobalDescribe() code with recordId.getSObjectType();
-                String keyPrefix = cont.value.substring(0, 3);
-                for (Schema.SObjectType obj : Schema.getGlobalDescribe().Values()) {
-                    String prefix = obj.getDescribe().getKeyPrefix();
-                    if (prefix == keyPrefix && prefix.indexOf(keyPrefix) != -1) {
-                        String objectAPIName = obj.getDescribe().getName();
-                        formula = formula.replaceAll('[$]Record', '\\$' + objectAPIName);
-                        formula = formula.replaceAll('[!]Record', '\\!' + objectAPIName);
-                        cont.name = objectAPIName;
-                        mapParameters.put(cont.name, cont.value);
-                        break;
+        if (context != null) {
+            List<ContextWrapper> contextResult = (List<ContextWrapper>) JSON.deserialize(context, List<ContextWrapper>.class);
+            for (ContextWrapper cont : contextResult) {
+                if (!String.isEmpty(cont.value) && cont.name == '$Record') {
+                    //TODO: replace Schema.getGlobalDescribe() code with recordId.getSObjectType();
+                    String keyPrefix = cont.value.substring(0, 3);
+                    for (Schema.SObjectType obj : Schema.getGlobalDescribe().Values()) {
+                        String prefix = obj.getDescribe().getKeyPrefix();
+                        if (prefix == keyPrefix && prefix.indexOf(keyPrefix) != -1) {
+                            String objectAPIName = obj.getDescribe().getName();
+                            formula = formula.replaceAll('[$]Record', '\\$' + objectAPIName);
+                            formula = formula.replaceAll('[!]Record', '\\!' + objectAPIName);
+                            cont.name = objectAPIName;
+                            mapParameters.put(cont.name, cont.value);
+                            break;
+                        }
                     }
+                } else if (!String.isEmpty(cont.value)) {
+                    formula = formula.replaceAll(cont.name, cont.value);
                 }
-            } else if (!String.isEmpty(cont.value)) {
-                formula = formula.replaceAll(cont.name, cont.value);
             }
         }
 
@@ -100,13 +101,11 @@ public with sharing class FormulaEvaluator {
                 return result;
             }
         }
-
-        formula = formula.replaceAll('["]', '');
-        mPattern = pattern.compile('[A-z0-9 ]{1,}');
+        mPattern = pattern.compile('[A-z0-9 "]+');
         mMatcher = mPattern.matcher(formula);
 
         while (mMatcher.find()) {
-            String item = '"' + mMatcher.group(0).trim() + '"';
+            String item = '"' + mMatcher.group(0).trim().replaceAll('["]', '') + '"';
             formula = formula.replaceFirst(mMatcher.group(0), item);
         }
         return evaluateFormula(formula, 'STRING');

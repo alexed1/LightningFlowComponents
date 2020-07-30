@@ -21,6 +21,7 @@ export default class dualListBoxFSC extends LightningElement {
     @api requiredOptions;
     @api useWhichObjectKeyForData = defaults.valueField;
     @api useWhichObjectKeyForLabel = defaults.labelField;
+    @api useWhichObjectKeyForSort;
     @api useObjectValueAsOutput = false;
 
     _allOptionsStringFormat;
@@ -28,6 +29,7 @@ export default class dualListBoxFSC extends LightningElement {
     @track _options = [];
     @track _selectedValues = [];
     @track optionValues = {};
+    
 
     set allOptionsStringFormat(value) {
 
@@ -142,14 +144,14 @@ export default class dualListBoxFSC extends LightningElement {
     }
 
     getValues(valueType) {
-        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
+        let listBox = this.template.querySelector('c-extended-base-dual-list-box');
         if (listBox) {
             return listBox.getValues(valueType);
         }
     }
 
     getOptions(valueType) {
-        let listBox = this.template.querySelector('c-enhanced-dual-list-box');
+        let listBox = this.template.querySelector('c-extended-base-dual-list-box');
         if (listBox) {
             return listBox.getOptions(valueType);
         }
@@ -165,5 +167,18 @@ export default class dualListBoxFSC extends LightningElement {
             attributeValue
         );
         this.dispatchEvent(attributeChangeEvent);
+    }
+
+    @api
+    validate() {
+        if(this.required == true && this._selectedValues == []) { 
+            return { 
+                isValid: false, 
+                errorMessage: 'At least one value must be selected.' 
+                }; 
+            } 
+        else { 
+            return { isValid: true }; 
+        } 
     }
 }

@@ -13,14 +13,11 @@ public with sharing class ExpressionBuilderTest {
         '{"objectType":"Account","fieldName":"$Account.Id","dataType":"String","operator":"excludes","parameter":"3"}]';
 
         String assembleResult = ExpressionBuilder.assembleFormulaString(expression, 'CUSTOM', testData);
-        String expectResult = 'AND(LEFT($Account.AccountNumber, 1) == TEXT("1"), OR($Account.AccountSource != TEXT("A"), ' +
-        '$Account.AnnualRevenue < DECIMAL("2")), $Account.Id == TEXT("3"), OR(CONTAINS($User.AccountNumber, TEXT("1")), ' +
-        '!CONTAINS($Organization.AccountSource, TEXT("A")), AND(INCLUDES($Account.AnnualRevenue, DECIMAL("2")), ' +
-        '!INCLUDES($Account.Id, TEXT("3")))), OR(LEFT($Account.AccountNumber, 1) == TEXT("1"), $Account.AccountSource != TEXT("A")))';
+        String expectResult = 'AND(LEFT($Account.AccountNumber , 1) == TEXT("1"), OR($Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2")), $Account.Id == TEXT("3"), OR(CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), AND(INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))), OR(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        Map<String, Object> disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult);
+        Map<String, Object> disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
         List<ExpressionBuilder.ExpressionLineWrapper> data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('CUSTOM', String.valueOf(disassemblyResult.get('logicType')));
@@ -30,13 +27,11 @@ public with sharing class ExpressionBuilderTest {
 
 
         assembleResult = ExpressionBuilder.assembleFormulaString('', 'AND', testData);
-        expectResult = 'AND(LEFT($Account.AccountNumber, 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), ' +
-        '$Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber, TEXT("1")), ' +
-        '!CONTAINS($Organization.AccountSource, TEXT("A")), INCLUDES($Account.AnnualRevenue, DECIMAL("2")), !INCLUDES($Account.Id, TEXT("3")))';
+        expectResult = 'AND(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult);
+        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
         data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('AND', String.valueOf(disassemblyResult.get('logicType')));
@@ -44,13 +39,11 @@ public with sharing class ExpressionBuilderTest {
         System.assertEquals(8, data.size());
 
         assembleResult = ExpressionBuilder.assembleFormulaString('', 'OR', testData);
-        expectResult = 'OR(LEFT($Account.AccountNumber, 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), ' +
-        '$Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber, TEXT("1")), ' +
-        '!CONTAINS($Organization.AccountSource, TEXT("A")), INCLUDES($Account.AnnualRevenue, DECIMAL("2")), !INCLUDES($Account.Id, TEXT("3")))';
+        expectResult = 'OR(LEFT($Account.AccountNumber , 1) == TEXT("1"), $Account.AccountSource != TEXT("A"), $Account.AnnualRevenue < DECIMAL("2"), $Account.Id == TEXT("3"), CONTAINS($User.AccountNumber , TEXT("1")), !CONTAINS($Organization.AccountSource , TEXT("A")), INCLUDES($Account.AnnualRevenue , DECIMAL("2")), !INCLUDES($Account.Id , TEXT("3")))';
 
         System.assertEquals(expectResult, assembleResult);
 
-        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult);
+        disassemblyResult = ExpressionBuilder.disassemblyFormulaString(assembleResult, null);
         data = (List<ExpressionBuilder.ExpressionLineWrapper>)disassemblyResult.get('expressionLines');
 
         System.assertEquals('OR', String.valueOf(disassemblyResult.get('logicType')));

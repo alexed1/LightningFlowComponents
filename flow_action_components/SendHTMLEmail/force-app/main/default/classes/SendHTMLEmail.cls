@@ -3,8 +3,8 @@
  * @Description        : Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
  * @Author             : various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
  * @Group              : unofficialSF
- * @Last Modified By   : jack.pond@psitex.com
- * @Last Modified On   : 3/22/2020, 9:08:33 AM
+ * @Last Modified By   : Mohith Shrivastava
+ * @Last Modified On   : 08-01-2020
  * @Modification Log   : 
  * @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver       Date            Author      		    Modification
@@ -20,9 +20,36 @@ public without sharing class SendHTMLEmail {
     public static List<Response> SendEmail(List<Request> requests) {
 
         List<Response> responseList = new List<Response>();
-//		system.debug('Got here SendEmail');
+        Response response = new Response();
+        Messaging.SendEmailResult[] emailResponse = new Messaging.SendEmailResult[]{};
+        Messaging.SingleEmailMessage[] mails = new Messaging.SingleEmailMessage[]{};
+        List<Task> lstTasks = new List<Task> ();
+        Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates = new Map<String, List<EmailTemplate>>();
+        Map<Id,EmailTemplate> mapIdByEmailTemplate = new Map<Id,EmailTemplate>();
+        Set<String> templateNames = new Set<String>();
+        Set<Id> contentDocumentIds = new Set<Id>();
+        Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
+
+        Boolean completed = true;
+        String error;
+
+        // Collect all inputs for SOQL
         for (Request curRequest : requests) {
-            Response response = new Response();
+            templateNames.add(curRequest.templateName);
+            if(curRequest.contentDocumentAttachments != null) {
+                for(ContentDocumentLink contentLink : curRequest.contentDocumentAttachments) {
+                    contentDocumentIds.add(contentLink.ContentDocumentId);
+                }
+            }
+        }
+        // Cache the local language key
+        String localeKey = [Select LanguageLocaleKey From Organization Limit 1].LanguageLocaleKey;
+        // Cache Query results for Templates
+        mapTemplateNameByEmailTemplates = getMapTemplateNameByEmailTemplates(templateNames,mapIdByEmailTemplate);
+        // Cache Query results for ContentDocument Ids
+        mapContentDocumentIdByContentVersion = getMapContentDocumentIdByContentVersions(contentDocumentIds);
+        
+        for (Request curRequest : requests) {
 
             String HTMLbody = curRequest.HTMLbody;
             String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
@@ -35,11 +62,16 @@ public without sharing class SendHTMLEmail {
             String templateName = curRequest.templateName;
             String templateLanguage = curRequest.templateLanguage;
             String templateTargetObjectId = curRequest.templateTargetObjectId;
-            Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
-            Boolean saveAsActivity = curRequest.saveAsActivity == null?true:curRequest.saveAsActivity;
-            if (recordId==null)saveAsActivity = curRequest.saveAsActivity == null?false:curRequest.saveAsActivity;
-            if (subject != null && (subject.length() == 0) ) subject = null;
-         
+            Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null? true : curRequest.useSalesforceSignature;
+            Boolean saveAsActivity = curRequest.saveAsActivity == null? true : curRequest.saveAsActivity;
+
+            if (recordId == null) {
+                saveAsActivity = curRequest.saveAsActivity == null? false : curRequest.saveAsActivity;
+            }
+
+            if (subject != null && (subject.length() == 0) ) {
+                subject = null;
+            }
             //from https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_forcecom_email_outbound.htm
 
             // First, reserve email capacity for the current Apex transaction to ensure
@@ -56,10 +88,10 @@ public without sharing class SendHTMLEmail {
 
             // Strings to hold the email addresses to which you are sending the email.
             //String[] toAddresses = new String[] {oneAddress}; 
-            Map<String, Object> m = GenerateMap(curRequest);
-            String[] toAddresses = BuildAddressList('TO',m); 
-            String[] ccAddresses = BuildAddressList('CC',m); 
-            String[] bccAddresses = BuildAddressList('BCC', m);
+            Map<String, Object> m = generateMap(curRequest);
+            String[] toAddresses = buildAddressList('TO',m); 
+            String[] ccAddresses = buildAddressList('CC',m); 
+            String[] bccAddresses = buildAddressList('BCC', m);
                 
             // Assign the addresses for the To and CC lists to the mail object.
             mail.setToAddresses(toAddresses);
@@ -72,7 +104,6 @@ public without sharing class SendHTMLEmail {
             } else {
                 // Specify the address used when the recipients reply to the email. 
                 mail.setReplyTo(replyEmailAddress);
-
                 // Specify the name used as the display name.
                 mail.setSenderDisplayName(senderDisplayName);
             }
@@ -87,45 +118,57 @@ public without sharing class SendHTMLEmail {
             // The email address of the user executing the Apex Code will be used.
             // True by default unless the user passes a value in.
             mail.setUseSignature(useSalesforceSignature);
-            mail = AddAttachments(mail, curRequest.contentDocumentAttachments, null);
+            mail = addAttachments(mail, curRequest.contentDocumentAttachments, mapContentDocumentIdByContentVersion, null);
             
-            if (templateName != null && templateID != null)
+            if (templateName != null && templateID != null) {
                 throw new InvocableActionException('You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).');
+            }
 
             if (templateName != null){
-                templateID = getTemplateIdFromName(templateName,templateLanguage);
+                templateID = getTemplateIdFromName(templateName,templateLanguage,mapTemplateNameByEmailTemplates,localeKey);
                 if (templateID == null){
                     throw new InvocableActionException('Could not find email template named "'+templateName+'".  Please have your administrator check the name and/or accessibility of this template');
                 }
                 Response.templateUsed = TemplateId;
             }
 
-            if (templateID != null && ((HTMLbody != null) || (plainTextBody != null)))
+            if (templateID != null && ((HTMLbody != null) || (plainTextBody != null))) {
                 throw new InvocableActionException('You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).');
+            }
             
-            if (templateID == null  && HTMLbody == null && plainTextBody == null)
+            if (templateID == null  && HTMLbody == null && plainTextBody == null) {
                 throw new InvocableActionException('Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId');
+            }
                 
-            if (saveAsActivity == true && recordId == null)
+            if (saveAsActivity == true && recordId == null) {
                 throw new InvocableActionException('In order to log this email send to activity history, you need to pass in a recordId');
+            }
             
-            Boolean completed = true;
-            String error;
-            Messaging.SendEmailResult[] emailResponse;
-            if (templateTargetObjectId != NULL) mail.setTargetObjectId(templateTargetObjectId);
-//            System.debug('recordId is: ' + recordId);
+            if (templateTargetObjectId != NULL) {
+                mail.setTargetObjectId(templateTargetObjectId);
+            }
+            // System.debug('recordId is: ' + recordId);
             if (recordId != null) {
                 mail.setWhatId(ID.valueOf(recordId));
             }
 
             // Specify the text content of the email.
-            if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
-            if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
-            if (saveAsActivity != NULL) mail.setSaveAsActivity(saveAsActivity);
-            if (templateID != NULL){
+            if (plainTextBody != NULL) {
+                mail.setPlainTextBody(plainTextBody);
+            } 
+
+            if (HTMLbody != NULL) {
+                mail.setHtmlBody(HTMLbody);
+            }
+
+            if (saveAsActivity != NULL) {
+                mail.setSaveAsActivity(saveAsActivity);
+            } 
+
+            if (templateID != NULL) {
                 try {
                     mail.setTemplateID(templateID);
-//                    system.debug('Set TemplateId: '+ templateID);
+                //  system.debug('Set TemplateId: '+ templateID);
                 } catch (Exception e){
                     completed = false;
                     error = e.getMessage();
@@ -133,11 +176,27 @@ public without sharing class SendHTMLEmail {
                 }
             }
 
+            if (saveAsActivity == true) {
+                // Capture activities to insert
+                if (templateID != null && subject == null && mapIdByEmailTemplate.get(templateID) != null){
+                    subject = mapIdByEmailTemplate.get(templateID).subject;
+                }
+                // TODO BULKIFY
+                if (toAddresses.size() == 0) {
+                    toAddresses.add((String) (Database.query('Select Email From ' +
+                        ((Id)templateTargetObjectId).getSObjectType().getDescribe().getName() + 
+                        ' Where Id = \''+ templateTargetObjectId +'\' limit 1'))[0].get('Email'));
+                }
+                lstTasks.add(createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses));
+            }
+            mails.add(mail);
+        }
+
             // Send the email you have created.
             try {
-//                system.debug('About to send Email: '+ mail);
-                emailResponse = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{mail});
-//                system.debug('Sent Email Successfully: '+ mail);
+            //  system.debug('About to send Email: '+ mail);
+                emailResponse = Messaging.sendEmail(mails);
+            //  system.debug('Sent Email Successfully: '+ mail);
                 completed = true;
             } catch (Exception e){
                 completed = false;
@@ -158,19 +217,10 @@ public without sharing class SendHTMLEmail {
                 } else {
                     response.isSuccess = true;
                 }
- 
-                if (saveAsActivity == true) {
-//                    system.debug('saveAsActivity: '+ saveAsActivity);
-                    if (templateID != null && subject == null){
-                        subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateID AND isActive = TRUE ].Subject;
-                    }
-                    if (toAddresses.size() == 0){
-                        toAddresses.add((String) (Database.query('Select Email From ' +
-                            ((Id)templateTargetObjectId).getSObjectType().getDescribe().getName() + 
-                            ' Where Id = \''+ templateTargetObjectId +'\' limit 1'))[0].get('Email'));
-                    }
+                if(lstTasks.size() >0 ) {
+                    // system.debug('saveAsActivity: '+ lstTasks);
                     try {
-                        createActivity(recordId, subject, toAddresses + ',' + ccAddresses + ',' + bccAddresses);
+                        insert lstTasks;     
                     } catch (Exception e) {
                         response.errors = e.getMessage();
                         response.isSuccess = false;
@@ -181,27 +231,33 @@ public without sharing class SendHTMLEmail {
                 response.errors = error;
                 response.isSuccess = false;
             }
-            responseList.add(response);
-        }
+
+        responseList.add(response);
         return responseList;
     }
 
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
-    public static Messaging.SingleEmailMessage AddAttachments(Messaging.SingleEmailMessage mail, List<ContentDocumentLink> contentDocumentLinks, String staticResourceNames) {
+    public static Messaging.SingleEmailMessage addAttachments(Messaging.SingleEmailMessage mail, List<ContentDocumentLink> contentDocumentLinks, Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion, String staticResourceNames) {
         List<SObject> curAttachments = new List<SObject>();
-        if (staticResourceNames != null) {
-            List<String> staticResourceNamesList = staticResourceNames.replaceAll('[^A-Z0-9]+//ig', ',').split(',');
-            curAttachments.addAll([SELECT Id, Body, Name, ContentType FROM StaticResource WHERE Name IN:staticResourceNamesList]);
-        }
+
+        // Comment out the code for now since Static Resource option is disabled for now
+        // In future bulkify this query and move out else this will be SOQL inside for loop
+        //if (staticResourceNames != null) {
+            // List<String> staticResourceNamesList = staticResourceNames.replaceAll('[^A-Z0-9]+//ig', ',').split(',');
+            // curAttachments.addAll([SELECT Id, Body, Name, ContentType FROM StaticResource WHERE Name IN:staticResourceNamesList]);
+        //}
  
         if (contentDocumentLinks != null && !contentDocumentLinks.isEmpty()) {
             Set<Id> cdIds = new Set<Id>();
             for (ContentDocumentLink cdl : contentDocumentLinks) {
                 cdIds.add(cdl.ContentDocumentId);
             }
-
-            for (ContentVersion cv : [SELECT Id, PathOnClient, VersionData, FileType FROM ContentVersion WHERE ContentDocumentId IN:cdIds]) {
-                curAttachments.add(new StaticResource(Name = cv.PathOnClient, Body = cv.VersionData));
+            for(Id contentDocumentId : cdIds) {
+                if(mapContentDocumentIdByContentVersion.get(contentDocumentId) != null && mapContentDocumentIdByContentVersion.get(contentDocumentId).size() >0) {
+                    for (ContentVersion cv : mapContentDocumentIdByContentVersion.get(contentDocumentId)) {
+                        curAttachments.add(new StaticResource(Name = cv.PathOnClient, Body = cv.VersionData));
+                    }
+                }
             }
         }
 
@@ -220,7 +276,8 @@ public without sharing class SendHTMLEmail {
         return mail;
     }
 
-    public static String[] BuildAddressList(string type, Map<String, Object> m) {
+    public static String[] buildAddressList(string type, Map<String, Object> m) {
+
         String[] addressList = new List<String>();
         String curEmail;
 
@@ -273,8 +330,7 @@ public without sharing class SendHTMLEmail {
 
     //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
     //by making the lookup a string, we can composite the string in the m.get lines above
-    private static Map<String, Object> GenerateMap(Request request) {
-       
+    private static Map<String, Object> generateMap(Request request) {
         return new Map<String, Object>{
            'SendTOthisOneEmailAddress' => request.SendTOthisOneEmailAddress,
            'SendTOthisStringCollectionOfEmailAddresses'  => request.SendTOthisStringCollectionOfEmailAddresses,
@@ -294,8 +350,8 @@ public without sharing class SendHTMLEmail {
         };
     }
 
-    private static void createActivity(Id recordId, String subject, String recipientList) {
-//        system.debug('Create Activity with subject: '+ subject +' OwnerId: '+UserInfo.getUserId());
+    private static Task createActivity(Id recordId, String subject, String recipientList) {
+        // system.debug('Create Activity with subject: '+ subject +' OwnerId: '+UserInfo.getUserId());
         Task t = new Task(OwnerId = UserInfo.getUserId(),
                 Subject = 'Sent Email: ' + subject,
                 Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientList.replaceAll('[()]|,\\(\\)+', ''),
@@ -303,20 +359,58 @@ public without sharing class SendHTMLEmail {
                 Priority = 'Normal',
 				ActivityDate = Date.today(),
                 WhatId = recordId);
-        insert t;
+        return t;
+    }
+    
+    // Creates Map with template Name and list of all Email Templates with different languages
+    private static Map<String, List<EmailTemplate>> getMapTemplateNameByEmailTemplates(Set<String> templateNames,Map<Id,EmailTemplate> mapIdByEmailTemplate) {
+        Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates = new Map<String, List<EmailTemplate>>();
+        for(EmailTemplate et : [SELECT Id,
+                                       Description,
+                                       Name
+                                       FROM EmailTemplate 
+                                       WHERE Name IN: templateNames 
+                                       AND isActive = true]) {
+            if(!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
+                mapTemplateNameByEmailTemplates.put(et.Name, new List<EmailTemplate> {et});
+            } else {
+                mapTemplateNameByEmailTemplates.get(et.Name).add(et);
+            }
+            mapIdByEmailTemplate.put(et.Id,et);
+        }
+        return mapTemplateNameByEmailTemplates;
     }
 
-    private static String getTemplateIdFromName(String templateName, String templateLanguage){
+    private static Map<Id, List<ContentVersion>> getMapContentDocumentIdByContentVersions(Set<Id> contentDocumentIds) {
+        Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
+        for (ContentVersion cv : [SELECT Id, 
+                                         PathOnClient, 
+                                         VersionData, 
+                                         FileType,
+                                         ContentDocumentId
+                                         FROM ContentVersion 
+                                         WHERE ContentDocumentId IN:contentDocumentIds]) {
+            if(!mapContentDocumentIdByContentVersion.containsKey(cv.ContentDocumentId)) {
+                mapContentDocumentIdByContentVersion.put(cv.ContentDocumentId, new List<ContentVersion> {cv});
+            } else {
+                mapContentDocumentIdByContentVersion.get(cv.ContentDocumentId).add(cv);
+            }
+        }
+        return mapContentDocumentIdByContentVersion;
+    }
+
+    private static String getTemplateIdFromName(String templateName, String templateLanguage, Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates, String localKey) {
         String retTemplateId;
         String blankTemplate;
-        List<EmailTemplate> et = [SELECT Id,Description FROM EmailTemplate WHERE Name=:templateName AND isActive = TRUE];
+        //system.debug('TemplateNames: '+ et);
+        System.debug('mapTemplateNameByEmailTemplates' + mapTemplateNameByEmailTemplates);
+        System.debug('localkey' + localKey);
 
-//        system.debug('TemplateNames: '+ et);
-
-        if (et.size() > 0){
-            String localeKey = [Select LanguageLocaleKey From Organization Limit 1].LanguageLocaleKey;
-            if (templateLanguage == NULL) templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;
-            for (EmailTemplate thisTemplate: et){
+        if(mapTemplateNameByEmailTemplates.get(templateName) != null && mapTemplateNameByEmailTemplates.get(templateName).size() > 0) {
+            if (templateLanguage == NULL) {
+                templateLanguage = localKey;
+            }
+            for (EmailTemplate thisTemplate: mapTemplateNameByEmailTemplates.get(templateName)){
                 if (thisTemplate.Description.Contains('Language="')){
                     if (thisTemplate.Description.substringAfter('Language="').substringBefore('"') == templateLanguage){
                         retTemplateID = thisTemplate.Id;
@@ -404,8 +498,8 @@ public without sharing class SendHTMLEmail {
             1. Specify full file name in Description of static resource
             2. Let the user pass file names together with static resource names
          */
-//        @invocableVariable
-//        public String staticResourceAttachmentNames;
+        // @invocableVariable
+        // public String staticResourceAttachmentNames;
 
         @invocableVariable(description='Defaults to True unless recordId is null')
         public Boolean saveAsActivity;

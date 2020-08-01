@@ -403,8 +403,8 @@ public without sharing class SendHTMLEmail {
         String retTemplateId;
         String blankTemplate;
         //system.debug('TemplateNames: '+ et);
-        System.debug('mapTemplateNameByEmailTemplates' + mapTemplateNameByEmailTemplates);
-        System.debug('localkey' + localKey);
+        // System.debug('mapTemplateNameByEmailTemplates' + mapTemplateNameByEmailTemplates);
+        // System.debug('localkey' + localKey);
 
         if(mapTemplateNameByEmailTemplates.get(templateName) != null && mapTemplateNameByEmailTemplates.get(templateName).size() > 0) {
             if (templateLanguage == NULL) {

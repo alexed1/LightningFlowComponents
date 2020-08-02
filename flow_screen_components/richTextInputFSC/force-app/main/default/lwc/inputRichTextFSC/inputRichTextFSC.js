@@ -3,13 +3,14 @@ import { LightningElement, api, track } from 'lwc';
 export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
-    @api value;
+    @api value; //set empty in connectedCallback if undefined.
     @api enableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
     @api autoReplaceMap;
     @api warnOnly = false;
     @api label;
+    @api characterLimit;
     formats = ['font', 'size', 'bold', 'italic', 'underline',
         'strike', 'list', 'indent', 'align', 'link',
         'image', 'clean', 'table', 'header', 'color','background','code','code-block','script','blockquote','direction'];
@@ -19,13 +20,24 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         if(this.enableAdvancedTools){
             this.value = this.richText;
         }
-        if(!this.enableAdvancedTools || this.warnOnly || (!this.warnOnly && this.isValidCheck)){
+        if(!this.enableAdvancedTools || this.warnOnly){
             return {isValid:true};
-        }else{
+        }else if(this.characterCap && (this.characterCount > this.characterLimit)){
+            //failure scenario so set tempValue in sessionStorage
+            sessionStorage.setItem('tempValue',this.value);
+            return {
+                isValid:false,
+                errorMessage: 'Cannot Advance - Character Limit Exceeded: '+this.characterCount + ' > ' + this.characterLimit
+            };
+        }else if(!this.isValidCheck){
+            //failure scenario so set tempValue in sessionStorage
+            sessionStorage.setItem('tempValue',this.value);
             return {
                 isValid:false,
                 errorMessage: 'Cannot Advance - Invalid Symbols/Words Remain in Rich Text: '+this.runningBlockedInput.toString()
             };
+        }else{
+            return {isValid:true};
         }
     }
 
@@ -47,6 +59,8 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @track searchButton = false;
     @track isValidCheck = true;
     @track errorMessage;
+    @track characterCount = 0;
+    @track characterCap = false;
     replaceMap = {};
     regTerm = '';
     applyTerm = '';
@@ -57,8 +71,18 @@ export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Set initial values on load
     connectedCallback() {
+		
+        //use sessionStorage to fetch and restore latest value before validation failure.
+        if(sessionStorage){
+            if(sessionStorage.getItem('tempValue')){
+                this.value = sessionStorage.getItem('tempValue');
+                sessionStorage.removeItem('tempValue'); //clear value after selection
+            }
+        }
+
         if(this.enableAdvancedTools){
-            this.richText = this.value;
+			(this.value != undefined) ? this.richText = this.value : this.richText = '';
+            this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedSymbolsArray.length; i++){
@@ -98,10 +122,18 @@ export default class inputRichTextFSC_LWC extends LightningElement {
                 this.replaceMap = JSON.parse(this.autoReplaceMap);
                 this.autoReplaceEnabled = true;
             } 
+            if(this.characterLimit > 0){
+                this.characterCap = true;
+            }
         }
     }
+	
+	//Handle updates to Rich Text field with no enhanced features
+    handleValueChange(event) {
+        this.value = event.target.value;
+    }
 
-    //Handle updates to Rich Text field
+    //Handle updates to Rich Text field with enhanced features
     handleTextChange(event) {
         this.runningBlockedInput = [];
         this.isValidCheck = true;
@@ -137,13 +169,24 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.isValidCheck = true;
             this.richText = event.target.value;
         }
+        this.characterCount = this.richText.length;
+        if(this.characterCap && this.characterCount > this.characterLimit){
+            this.isValidCheck = false;
+        }
         //Display different message if warn only - validation also won't be enforced on Next.
-        if(!this.warnOnly){
+        if(this.characterCap && this.characterCount > this.characterLimit){
+            this.errorMessage = 'Error - Character Limit Exceeded';
+        }else if(!this.warnOnly){
             this.errorMessage = 'Error - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }else{
             this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }
         
+    }
+
+    //Set css on Character count if passing character limit
+    get charClass(){
+        return (this.characterLimit < this.characterCount ? 'warning' : '');
     }
 
     //Handle initiation of Search and Replace

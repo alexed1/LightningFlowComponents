@@ -7,20 +7,14 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="enableAdvancedTools" type="Boolean" role="inputOnly" 
-                description="Set to true to activate expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
-            <property name="value" type="String" 
-                description="Rich Text input/output to the Flow - this is the value you will be manipulating"/>
-            <property name="label" type="String"
-                description="Label for the Rich Text field"/>
-            <property name="disallowedWordsList" type="String" role="inputOnly" 
-                description="Comma-separated list of words to block.  Example: bad,worse,worst"/>
-            <property name="disallowedSymbolsList" type="String" role="inputOnly" 
-                description="Comma-separated list of words to block.  Example: /,@,*"/>
-            <property name="autoReplaceMap" type="String" role="inputOnly" 
-                description='JSON for key:value pairs you want to replace.  Key = value to replace, Value = value to replace with.  Example: {"Test":"GreatTest™"}'/>
-            <property name="warnOnly" type="Boolean" role="inputOnly" 
-                description="Set to True if you want disallowed Symbols or Words to only alert and not block next/finish.  Default is false."/>
+            <property label="Enabled Advanced Tools" name="enableAdvancedTools" type="Boolean" role="inputOnly" description="Set to true to activate expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
+            <property label="Rich Text Value" name="value" type="String" description="Rich Text input/output to the Flow - this is the value you will be manipulating"/>
+            <property label="Field Label" name="label" type="String" role="inputOnly" description="Label for the Rich Text field"/>
+            <property label="Blocked Words" name="disallowedWordsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: bad,worse,worst"/>
+            <property label="Blocked Symbols" name="disallowedSymbolsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: /,@,*"/>
+            <property label="Auto Replace Map" name="autoReplaceMap" type="String" role="inputOnly" description="JSON for key:value pairs you want to replace.  Key = value to replace, Value = value to replace with.  Example: {&quot;Test&quot;:&quot;GreatTest™&quot;}"/>
+            <property label="Warning Only" name="warnOnly" type="Boolean" role="inputOnly" description="Set to True if you want disallowed Symbols or Words to only alert and not block next/finish.  Default is false."/>
+            <property label="Character Limit" name="characterLimit" type="Integer" role="inputOnly" description="If set, then the character count will be limited to this quantity."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

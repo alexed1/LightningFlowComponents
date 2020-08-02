@@ -32,7 +32,7 @@ global with sharing class GetChildCollection {
                 if (inputRecordId != null) {
                     recordType = ID.valueOf(inputRecordId).getSObjectType();
                     String typeName = recordType.getDescribe().getName();
-                    inputRecord = Database.query('SELECT Id, Name From ' + typeName + ' Where Id = :inputRecordId');       
+                    inputRecord = Database.query('SELECT Id From ' + typeName + ' Where Id = :inputRecordId');
                 } else {
                     recordType = inputRecord.getSObjectType();    
                 }

@@ -39,6 +39,7 @@ global with sharing class GetChildCollection {
                 System.debug('made it through validation. inputRecord is: ' + inputRecord);
                 for(ChildRelationship curChildRel : recordType.getDescribe().getChildRelationships()){
                     Schema.DescribeSObjectResult childRelDescribe = curChildRel.getChildSObject().getDescribe();
+                    System.debug('childRelDescribe.getName():::'+childRelDescribe.getName());
                     if (childRelDescribe.getName() == curRequest.childRelationshipName) {
                         lookupField = curChildRel.getField();
                     }

@@ -4,7 +4,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-11-2020
+ * @Last Modified On	: 08-02-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * 
@@ -131,6 +131,9 @@ public without sharing class SendHTMLEmail {
 				}
 				//	setTemplateID(templateId)
 				if (thisResponse.errors == null){
+					if (thisResponse.errors == null && (templateName != null && templateID != null)){
+						thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).';
+					}
 					if (curRequest.TemplateID == null) {
 						if (curRequest.templateName == null) {
 							thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';

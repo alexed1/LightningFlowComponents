@@ -10,6 +10,7 @@
                                  role="none" style="height: 55px;">
                                 <template if:false={displayPill}>
                                     <div onkeyup={handleSearchKeyUp}>
+                                        <label class="slds-form-element__label custom-width-full" onclick={toggleMenu}>{label}</label>
                                         <lightning-input
                                                 class="value-input"
                                                 name="searchText"
@@ -17,16 +18,17 @@
                                                 required={required}
                                                 data-input-name={name}
                                                 data-id="userinput"
-                                                label={label}
+                                                variant="label-hidden"
                                                 value={_value}
                                                 onchange={handleSearchField}
+                                                onkeydown={handleKeyDown}
                                                 onclick={handleOpenOptions}
 
                                         ></lightning-input>
                                     </div>
                                 </template>
                                 <template if:true={displayPill}>
-                                    <label class="slds-form-element__label slds-no-flex">{label}</label>
+                                    <label class="slds-form-element__label slds-no-flex custom-width-full" onclick={toggleMenu}>{label}</label>
                                     <div data-input-name={name} class="slds-pill_container" onclick={handleOpenOptions}>
                                         <lightning-pill
                                                 class="slds-pill_bare custom-width-full"
@@ -66,6 +68,7 @@
                                                 </span>
                                                     <span data-value={curOptionElement.value}
                                                           data-flow-type={curOptionElement.flowType}
+                                                          data-object-type={curOptionElement.objectType}
                                                           onclick={handleSetSelectedRecord}
                                                           class="slds-media__body">
                                                     <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>

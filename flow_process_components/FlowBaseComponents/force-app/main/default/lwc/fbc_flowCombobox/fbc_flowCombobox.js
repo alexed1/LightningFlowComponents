@@ -1,7 +1,13 @@
 import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
-import {formattedValue, isReference, getDataType, removeFormatting, flowComboboxDefaults} from 'c/fbc_flowComboboxUtils';
+import {
+    formattedValue,
+    isReference,
+    getDataType,
+    removeFormatting,
+    flowComboboxDefaults
+} from 'c/fbc_flowComboboxUtils';
 
 export default class FlowCombobox extends LightningElement {
     @api name;
@@ -269,7 +275,7 @@ export default class FlowCombobox extends LightningElement {
                     'varLabel',
                     'varApiName',
                     'dataType',
-                    localType.isCollectionField ? localType.isCollectionField : 'isCollection',
+                    localType.isCollectionField ? localType.isCollectionField : flowComboboxDefaults.isCollectionField,
                     localType.objectTypeField ? localType.objectTypeField : 'objectType',
                     localType
                 );
@@ -304,11 +310,12 @@ export default class FlowCombobox extends LightningElement {
         objectArray.forEach(curObject => {
 
             let curDataType = this.getTypeByDescriptor(curObject[typeField], typeDescriptor);
+            let curIsCollection = this.isCollection(curObject, isCollectionField);
             typeOptions.push(this.generateOptionLine(
                 curDataType,
                 curObject[labelField] ? curObject[labelField] : curObject[valueField],
                 curObject[valueField],
-                typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType ? !curObject[isCollectionField] : !!curObject[isCollectionField],
+                typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType ? !curIsCollection : !!curIsCollection,
                 curObject[objectTypeField],
                 this.getIconNameByType(curDataType),
                 (curDataType === flowComboboxDefaults.dataTypeSObject || typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType),
@@ -317,6 +324,14 @@ export default class FlowCombobox extends LightningElement {
             ));
         });
         return typeOptions;
+    }
+
+    isCollection(curObject, isCollectionField) {
+        if (curObject.hasOwnProperty(isCollectionField)) {
+            return curObject[isCollectionField];
+        } else {
+            return curObject[flowComboboxDefaults.isCollectionField];
+        }
     }
 
     getTypeByDescriptor(curObjectFieldType, typeDescriptor) {
@@ -345,20 +360,28 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenObject(event) {
-        event.stopPropagation();
-        this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
-        this.value = this._selectedFieldPath + '.';
-        this._selectedObjectType = event.currentTarget.dataset.objectType;
+        this.doOpenObject(event, event.currentTarget.dataset.optionValue, event.currentTarget.dataset.objectType);
     }
 
     handleSetSelectedRecord(event) {
         if (event.currentTarget.dataset) {
-            this._dataType = event.currentTarget.dataset.flowType;
-            this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
-            this.isDataModified = true;
-            this.hasError = false;
-            this.closeOptionDialog();
+            if (this.value && this.value.endsWith(event.currentTarget.dataset.value) && event.currentTarget.dataset.objectType) {
+                this.doOpenObject(event, event.currentTarget.dataset.value, event.currentTarget.dataset.objectType);
+            } else {
+                this._dataType = event.currentTarget.dataset.flowType;
+                this.value = this.getFullPath(this._selectedFieldPath, event.currentTarget.dataset.value);
+                this.isDataModified = true;
+                this.hasError = false;
+                this.closeOptionDialog();
+            }
         }
+    }
+
+    doOpenObject(event, value, objectType) {
+        event.stopPropagation();
+        this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + value;
+        this.value = this._selectedFieldPath + '.';
+        this._selectedObjectType = objectType;
     }
 
 
@@ -411,8 +434,7 @@ export default class FlowCombobox extends LightningElement {
         }
     }
 
-    constructor() {
-        super();
+    connectedCallback() {
         document.addEventListener('click', this.handleWindowClick.bind(this));
     }
 
@@ -421,7 +443,6 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleWindowClick(event) {
-        // console.log(Date.now());
         if (!event.path.includes(this.template.host) && !this.selfEvent) {
             this.closeOptionDialog(true);
         }
@@ -511,30 +532,46 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleSearchField(event) {
-        let currentText = event.target.value;
-        this._dataType = getDataType(currentText);
-        if (!currentText || !currentText.includes('.')) {
-            this.resetTypeOptions();
-            this.setOptions(this._mergeFields);
-        }
-        this.isDataModified = true;
-        this.isDataSelected = false;
+        if (event.target) {
+            let currentText = event.target.value;
+            this._dataType = getDataType(currentText);
+            if (!currentText || !currentText.includes('.')) {
+                this.resetTypeOptions();
+                this.setOptions(this._mergeFields);
+            }
+            this.isDataModified = true;
+            this.isDataSelected = false;
 
-        this.processOptions(currentText);
-        if (this.allOptions.length) {
-            this.openOptionDialog();
-        }
-    }
-
-    handleSearchKeyUp(event) {
-        if (event.key === "Enter") {
-            if (this.isMenuOpen) {
-                this.closeOptionDialog(true);
-            } else {
+            this.processOptions(currentText);
+            if (this.allOptions.length) {
                 this.openOptionDialog();
             }
         }
     }
+
+    handleSearchKeyUp(event) {
+        if (event.key === "Enter" || event.key === "Tab") {
+            this.toggleMenu(event);
+        }
+    }
+
+    toggleMenu(event) {
+        if (this.isMenuOpen) {
+            this.closeOptionDialog(true);
+        } else {
+            this.openOptionDialog();
+        }
+    }
+
+    handleKeyDown(event) {
+        if (this.isMenuOpen && (event.key === "Tab" || event.key === 'Escape')) {
+            this.closeOptionDialog(true);
+            if (event.key === 'Escape') {
+                event.stopPropagation();
+            }
+        }
+    }
+
 
     setValueInput() {
         let valueInput = this.template.querySelector('.value-input');

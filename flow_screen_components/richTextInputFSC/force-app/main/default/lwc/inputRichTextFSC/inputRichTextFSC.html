@@ -1,7 +1,7 @@
 <template>
 
-    <!-- Start Rich Text Input Section - if enableAdvancedTools is false - this is default -->
-    <template if:false={enableAdvancedTools}>
+    <!-- Start Rich Text Input Section -   -->
+    <template if:true={disableAdvancedTools}>
         <div>
             <lightning-input-rich-text value={value} onchange={handleValueChange} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
         </div>
@@ -9,7 +9,7 @@
     <!-- End Rich Text Input Section-->
 
     <!-- Start Entry Enhancements - only display if enableAdvancedTools activated -->
-    <template if:true={enableAdvancedTools}>
+    <template if:false={disableAdvancedTools}>
         <div>
             <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} 
                 label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage}>

@@ -7,7 +7,7 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property label="Enabled Advanced Tools" name="enableAdvancedTools" type="Boolean" role="inputOnly" description="Set to true to activate expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
+            <property label="Disable Advanced Tools" name="disableAdvancedTools" type="Boolean" role="inputOnly" description="Set to true to disable expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
             <property label="Rich Text Value" name="value" type="String" description="Rich Text input/output to the Flow - this is the value you will be manipulating"/>
             <property label="Field Label" name="label" type="String" role="inputOnly" description="Label for the Rich Text field"/>
             <property label="Blocked Words" name="disallowedWordsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: bad,worse,worst"/>

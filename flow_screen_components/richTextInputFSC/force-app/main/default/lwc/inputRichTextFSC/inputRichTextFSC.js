@@ -4,7 +4,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
     @api value; //set empty in connectedCallback if undefined.
-    @api enableAdvancedTools = false;
+    @api disableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
     @api autoReplaceMap;
@@ -17,10 +17,10 @@ export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Validation hook to use standard in Flow.  Only enforce if Advanced Tools are enabled
     @api validate(){
-        if(this.enableAdvancedTools){
+        if(!this.disableAdvancedTools){
             this.value = this.richText;
         }
-        if(!this.enableAdvancedTools || this.warnOnly){
+        if(this.disableAdvancedTools || this.warnOnly){
             return {isValid:true};
         }else if(this.characterCap && (this.characterCount > this.characterLimit)){
             //failure scenario so set tempValue in sessionStorage
@@ -80,7 +80,8 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             }
         }
 
-        if(this.enableAdvancedTools){
+        if(!this.disableAdvancedTools){
+            console.log('disableAdvancedTools is false, in connected callback');
 			(this.value != undefined) ? this.richText = this.value : this.richText = '';
             this.characterCount = this.richText.length;
             if(this.disallowedSymbolsList != undefined){

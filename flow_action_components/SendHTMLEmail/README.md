@@ -11,23 +11,21 @@ This improved email flow action supports:
 
 - Rich, HTML email bodies that can use all of the capabilities of Flow’s Text Templates, including Bold, Italics, Underline, Bullets and Numbers, Left/Center/Right justification, URLs, images, fonts, and text size
 - Email Templates (both Classic and Lightning) with field merge and letterheads.
+- Any combination of the following, for To, CC, and BCC:
 
-Any combination of the following, for To, CC, and BCC:
+    - A single email address
+    - A string collection of email addresses
+    - A collection of Contacts
+    - A collection of Users
+    - A collection of Leads
+    - Organization-Wide Email Addresses
 
-- A single email address
-- A string collection of email addresses
-- A collection of Contacts
-- A collection of Users
-- A collection of Leads
-- Organization-Wide Email Addresses
-
-Also supported: 
-
-- Attachments
-- Ability to toggle on/off the use of the Salesforce per-user email signature
-- Ability to provide a plain text body, an html body, or both
-- Ability to set the ReplyTo email address and the Sender Display Name
-- Multi-Language Support for Lightning Email Templates
-- Mass Email Messaging Support
-- Activity Attachment for targeted recipient records
-- Task Attachments of email information for records related to the targeted recipient records
+- Also supported: 
+    - Attachments
+    - Ability to toggle on/off the use of the Salesforce per-user email signature
+    - Ability to provide a plain text body, an html body, or both
+    - Ability to set the ReplyTo email address and the Sender Display Name
+    - Multi-Language Support for Lightning Email Templates
+    - Mass Email Messaging Support
+    - Activity Attachment for targeted recipient records
+    - Task Attachments of email information for records related to the targeted recipient records

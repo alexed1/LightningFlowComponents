@@ -359,8 +359,8 @@
         <description>Testing Send HTML Email - Mass Email</description>
         <name>X6_Send_HTML_Email_Mass</name>
         <label>6. Send HTML Email - Mass</label>
-        <locationX>1661</locationX>
-        <locationY>1224</locationY>
+        <locationX>1662</locationX>
+        <locationY>1226</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>

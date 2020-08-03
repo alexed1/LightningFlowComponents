@@ -1,7 +1,7 @@
 /**
  * @description       : addNewMembers.js
  * @group             : unofficialSF
- * @last modified on  : 07-26-2020
+ * @last modified on  : 08-02-2020
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date			Author			Modification
@@ -10,10 +10,10 @@
 **/
 import {LightningElement, api, track, wire} from 'lwc';
 
-import Search from '@salesforce/label/c.SearchMembers';
-import For from '@salesforce/label/c.For';
-import TooManyResultsMessage from '@salesforce/label/c.TooManyResultsMessage';
-import NoSearchResultsMessage from '@salesforce/label/c.NoSearchResultsMessage';
+import Search from '@salesforce/label/c.sremailSearchMembers';
+import For from '@salesforce/label/c.fbc_For';
+import TooManyResultsMessage from '@salesforce/label/c.fbc_TooManyResultsMessage';
+import NoSearchResultsMessage from '@salesforce/label/c.sremailNoSearchResultsMessage';
 
 
 export default class addNewMembers extends LightningElement {

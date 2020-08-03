@@ -1,0 +1,94 @@
+<aura:component description="RC_FlowButton" implements="lightning:availableForFlowScreens,flexipage:availableForAllPageTypes,forceCommunity:availableForAllPageTypes,force:hasRecordId" access="global">
+	        
+    <!-- input parameters -->
+
+    <!-- component styling -->
+    <aura:attribute name="buttonLabel" type="String" access="global" default="Create Contact"/>
+    <aura:attribute name="variant" type="String" access="global" default="BRAND" description="BASE, NEUTRAL, BRAND, BRAND-OUTLINE, DESTRUCTIVE, DESTRUCTIVE-TEXT, INVERSE, and SUCCESS"/>
+    <aura:attribute name="class" type="String" access="global" default="slds-size_12-of-12" description="component css class. If this component launches an inline flow, this class will control the area that contains the flow."/>
+    <aura:attribute name="padding" type="String" access="global" default="10px 10px 10px 10px" description="style padding: top right bottom left"/>
+    <aura:attribute name="horizontalAlign" type="String" access="global" default="" description="center, space, spread, end" />
+    <aura:attribute name="buttonClass" type="String" access="global" default="" description="CSS class applied to the button (example: slds-align_absolute-center)"/>
+ 
+    <!-- component actions -->
+    <aura:attribute name="flowToLaunch" type="String" access="global" description="Flow API Name. If empty, the button is used to fire the flow action."/>
+    <aura:attribute name="recordId" type="String" access="global" description="recordId passed as input to the flow" /> 
+    <aura:attribute name="launchFlowOnInit" type="Boolean" access="global" default="false" description="Launches the flow immediately when component is shown and hides the button."/>
+    <aura:attribute name="showFlowInModal" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="buttonFlowAction" type="String" access="global" default="NEXT" description="NEXT, BACK, PAUSE, RESUME, and FINISH" />
+    <aura:attribute name="doFlowActionWhenSubflowCompletes" type="Boolean" access="global" default="false" /> 
+       
+    <!-- output parameters -->
+    <aura:attribute name="buttonClicked" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="flowStatus" type="String" access="global" default=""/>   
+    
+    <!-- private parameters -->
+    <aura:attribute name="showButton" type="Boolean" access="global" default="false"/>
+    <aura:attribute name="showFlow" type="Boolean" access="global" default="false"/>
+    
+    <!-- handlers -->
+    <aura:handler name="init" action="{!c.init}" value="{!this}"/>
+
+    <!-- MAIN COMPONENT -->    
+    <div class="{!v.class}" style="{! 'padding: ' + v.padding}">
+        
+        <lightning:layout horizontalAlign="{!v.horizontalAlign}">
+            <lightning:layoutItem flexibility="grow">  
+                
+                <aura:if isTrue="{!v.showButton}">
+                    <lightning:button label="{!v.buttonLabel}" 
+                                      class="{!v.buttonClass}"
+                                      variant="{!v.variant}" 
+                                      onclick="{!c.handleNavigation}"/>
+                </aura:if>
+                
+                <aura:if isTrue="{!v.showFlow}">
+                    <lightning:card title="">
+                    	<lightning:flow aura:id="flowComponent" onstatuschange="{!c.handleStatusChange}"/>
+                    </lightning:card>
+                </aura:if>
+                
+            </lightning:layoutItem>
+        </lightning:layout>
+            
+    </div>
+    <!-- END MAIN COMPONENT --> 
+
+    
+ 	<!-- MODAL DIALOG attributes --> 
+    <aura:attribute name="modalIsOpen" type="boolean" default="false"/>
+    <aura:attribute name="modalTitle" type="String"/>
+    
+    <!-- MODAL DIALOG --> 
+    <aura:if isTrue="{!v.modalIsOpen}">
+               
+    	<div class="slds-m-around--xx-large">    	  
+            <div role="dialog" tabindex="-1" aria-labelledby="modalHeader" class="slds-modal slds-fade-in-open ">
+                <div class="slds-modal__container">
+                    
+                    <!-- MODAL HEADER -->
+                    <div class="slds-modal__header">
+                        <button class="slds-button slds-modal__close slds-button--icon-inverse" title="Close" onclick="{!c.closeModal}">
+                            X <span class="slds-assistive-text">Close</span>
+                        </button>
+                    </div>
+                    
+                    <!--MODAL BODY -->
+                    <div class="slds-modal__content slds-p-around--small">
+                                            	                                 
+            			<lightning:flow aura:id="modalFlowComponent" onstatuschange="{!c.handleStatusChange}"/>
+                         
+                    </div>
+                    <!-- / MODAL BODY -->
+ 
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop--open"></div>
+                     
+        </div>    
+    </aura:if>  	
+    <!-- END MODAL DIALOG -->        
+    
+    
+    
+</aura:component>

@@ -1,0 +1,27 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "FlowBaseComponents",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "48.0",
+    "packageAliases": {
+        "FlowBaseComponents": "0HoB0000000Cb4BKAS",
+        "FlowBaseComponents@1.0.0-0": "04tB0000000P6rDIAS",
+        "FlowBaseComponents@1.0.1-0": "04tB0000000P6rIIAS",
+        "FlowBaseComponents@1.0.2-0": "04tB0000000QISiIAO",
+        "FlowBaseComponents@1.0.3-0": "04tB0000000QISnIAO",
+        "FlowBaseComponents@1.0.4-0": "04tB0000000QISsIAO",
+        "FlowBaseComponents@1.0.4-1": "04tB0000000QIT2IAO",
+        "FlowBaseComponents@1.0.5-0": "04tB0000000QIT7IAO",
+        "FlowBaseComponents@1.0.6-0": "04tB0000000QITCIA4",
+        "FlowBaseComponents@1.0.7-0": "04tB0000000QITMIA4",
+        "FlowBaseComponents@1.0.8-0": "04tB0000000QITRIA4"
+    }
+}

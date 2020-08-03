@@ -1,0 +1,63 @@
+<template>
+    <div class="slds-card slds-p-top_medium slds-p-top_none slds-m-top_none">
+        <div class="slds-m-bottom_small">
+            <div class="work-guide-header slds-p-around_small header">
+                <div class="slds-p-left_small">
+                    {labels.header}
+                </div>
+            </div>
+        </div>
+        <div if:false={isNoWorkAvailable}>
+            <div class="slds-path slds-p-bottom_small slds-m-left_small slds-m-right_small">
+                <div class="slds-grid slds-path__track">
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller" role="application">
+                            <div class="slds-path__scroller_inner">
+                                <ul class="slds-path__nav" role="listbox" aria-orientation="horizontal">
+                                    <template for:each={pathStructure} for:item="curPath">
+                                        <li key={curPath.stageName} class={curPath.stageClass} role="presentation">
+                                            <a name={curPath.stageName} aria-selected="false" class="slds-path__link"
+                                               onclick={handleStageClick} role="option" tabindex="-1">
+                                    <span class="slds-path__stage">
+                                        <lightning-icon icon-name="utility:check" size="x-small"> </lightning-icon>
+                                      <span class="slds-assistive-text">Stage Complete</span>
+                                    </span>
+                                                <span class="slds-path__title">{curPath.stageName}</span>
+                                            </a>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-bottom-2px slds-p-left_medium">
+                <div>
+                    <a href={appProcess.link}>{appProcess.label}</a>
+                </div>
+                <div class="slds-p-bottom_small">
+                    Step: {_currentStep}
+                </div>
+            </div>
+            <template if:true={curFlowName}>
+                <div if:false={isFlowStarted} class="spinner-container">
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+                <c-flow-wrapper
+                        flow-name={curFlowName}
+                        step-name={_currentStep}
+                        flow-params={flowParams}
+                        onflowstatuschange={handleFlowStatusChange}
+                        height={flowHeight}
+                        width={innerWidth}
+                ></c-flow-wrapper>
+            </template>
+        </div>
+        <template if:true={isNoWorkAvailable}>
+            <div class="slds-p-around_large">
+                {labels.noWorkAvailable}
+            </div>
+        </template>
+    </div>
+</template>

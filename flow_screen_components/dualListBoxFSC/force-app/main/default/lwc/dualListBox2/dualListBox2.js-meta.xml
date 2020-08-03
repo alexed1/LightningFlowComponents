@@ -9,28 +9,28 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" configurationEditor="c-dual-list-box-c-p-e" category="Input">
-            <property name="label" type="String" role="inputOnly"> </property>
-            <property name="sourceLabel" type="String" role="inputOnly"> </property>
-            <property name="fieldLevelHelp" type="String" role="inputOnly"> </property>
-            <property name="selectedLabel" type="String" role="inputOnly"> </property>
-            <property name="min" type="Integer" role="inputOnly"> </property>
-            <property name="max" type="Integer" role="inputOnly"> </property>
-            <property name="disableReordering" type="Boolean" role="inputOnly"> </property>
-            <property name="size" type="Integer" role="inputOnly"> </property>
-            <property name="required" type="Boolean" role="inputOnly"> </property>
-            <property name="requiredOptions" type="String" role="inputOnly"> </property>
-            <property name="useObjectValueAsOutput" type="Boolean" role="inputOnly"> </property>
-            <property name="useWhichObjectKeyForData" type="String" role="inputOnly"> </property>
-            <property name="useWhichObjectKeyForLabel" type="String" role="inputOnly"> </property>
-            <property name="allOptionsFieldDescriptorList" type="apex://FieldDescriptor[]" role="inputOnly"> </property>
-            <property name="allOptionsCSV" type="String" role="inputOnly"> </property>
-            <property name="allOptionsStringCollection" type="String[]" role="inputOnly"> </property>
-            <property name="allOptionsStringCollectionLabels" type="String[]" role="inputOnly"> </property>
-            <property name="allOptionsStringFormat" type="String" role="inputOnly"> </property>
-            <property name="selectedOptionsFieldDescriptorList" type="apex://FieldDescriptor[]"> </property>
-            <property name="selectedOptionsCSV" type="String"> </property>
-            <property name="selectedOptionsStringList" type="String[]"> </property>
-
+            <property name="label" type="String" role="inputOnly"/>
+            <property name="sourceLabel" type="String" role="inputOnly"/>
+            <property name="fieldLevelHelp" type="String" role="inputOnly"/>
+            <property name="selectedLabel" type="String" role="inputOnly"/>
+            <property name="min" type="Integer" role="inputOnly"/>
+            <property name="max" type="Integer" role="inputOnly"/>
+            <property name="disableReordering" type="Boolean" role="inputOnly"/>
+            <property name="size" type="Integer" role="inputOnly"/>
+            <property name="required" type="Boolean" role="inputOnly"/>
+            <property name="requiredOptions" type="String" role="inputOnly"/>
+            <property name="useObjectValueAsOutput" type="Boolean" role="inputOnly"/>
+            <property name="useWhichObjectKeyForData" type="String" role="inputOnly"/>
+            <property name="useWhichObjectKeyForLabel" type="String" role="inputOnly"/>
+            <property name="useWhichObjectKeyForSort" type="String" role="inputOnly"/>
+            <property name="allOptionsFieldDescriptorList" type="apex://FieldDescriptor[]" role="inputOnly"/>
+            <property name="allOptionsCSV" type="String" role="inputOnly"/>
+            <property name="allOptionsStringCollection" type="String[]" role="inputOnly"/>
+            <property name="allOptionsStringCollectionLabels" type="String[]" role="inputOnly"/>
+            <property name="allOptionsStringFormat" type="String" role="inputOnly"/>
+            <property name="selectedOptionsFieldDescriptorList" type="apex://FieldDescriptor[]"/>
+            <property name="selectedOptionsCSV" type="String"/>
+            <property name="selectedOptionsStringList" type="String[]"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

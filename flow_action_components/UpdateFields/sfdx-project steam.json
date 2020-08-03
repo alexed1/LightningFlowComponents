@@ -1,0 +1,24 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "UpdateFields",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT",
+            "dependencies": [
+              {
+                  "package": "Base@1.3.0.0"
+              }
+          ]
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://na44.stmfa.stm.salesforce.com",
+    "signupTargetLoginUrl": "https://test.stmfa.stm.salesforce.com",
+    "sourceApiVersion": "49.0",
+    "packageAliases": {
+        "UpdateFields": "0HoB0000000Cb4GKAS",
+        "FlowBaseComponents": "04tB0000000P6VRIA0"
+    }
+}

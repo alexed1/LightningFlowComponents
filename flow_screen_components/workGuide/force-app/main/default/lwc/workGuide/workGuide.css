@@ -1,0 +1,14 @@
+.border-bottom-2px {
+    border-bottom: solid 2px;
+    border-color: var(--lwc-colorBorder);
+}
+
+.work-guide-header {
+    background: rgba(170, 204, 255, 0.76);
+    font-weight: var(--lwc-fontWeightBold);
+}
+
+.spinner-container {
+    position:relative;
+    padding: var(--lwc-spacingXxLarge);
+}

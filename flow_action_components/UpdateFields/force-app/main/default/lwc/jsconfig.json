@@ -2,7 +2,20 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {}
+        "paths": {
+            "c/updateFieldCPE": [
+                "updateFieldCPE/updateFieldCPE.js"
+            ],
+            "c/setPickList": [
+                "setPickList/setPickList.js"
+            ],
+            "c/setOwner": [
+                "setOwner/setOwner.js"
+            ],
+            "c/buttonUtils": [
+                "buttonUtils/buttonUtils.js"
+            ]
+        }
     },
     "include": [
         "**/*",

@@ -233,6 +233,11 @@ public without sharing class SendHTMLEmail {
             }
 
         responseList.add(response);
+        // The number of results does not match the number of interviews that were executed in a single bulk execution request.
+        // TODO refactor to return proper error for each individual emails
+        for(integer i = 0 ; i < mails.size() -1 ; i ++) {
+            responseList.add(new Response());
+        }
         return responseList;
     }
 

@@ -21,8 +21,7 @@
             "versionNumber": "1.33.02.NEXT",
             "dependencies": [
                 {
-					"package": "FlowBaseComponents",
-					"versionNumber": "1.2.2.LATEST"
+					"package": "FlowBaseComponents@1.2.2-0"
                 }
             ],
             "default": true
@@ -32,6 +31,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "49.0",
     "packageAliases": {
+		"FLowBaseComponents": "033f4000000AoiCAAS",
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
         "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
@@ -40,6 +40,6 @@
         "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
         "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
         "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
-        "FlowBaseComponents@1.0.8-0": "04tB0000000QITRIA4"
+        "FlowBaseComponents@1.2.2-0": "04tf4000003RQxcAAG"
     }
 }

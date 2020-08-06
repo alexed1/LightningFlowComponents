@@ -17,15 +17,21 @@
         {
             "path": "force-app",
             "package": "sendHTMLEmail",
-            "versionName": "ver 1.33.01",
-            "versionNumber": "1.33.01.NEXT",
+            "versionName": "ver 1.33.02",
+            "versionNumber": "1.33.02.NEXT",
+            "dependencies": [
+                {
+                    "package": "FlowBaseComponents@1.2.3-0"
+                }
+            ],
             "default": true
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0",
+    "sourceApiVersion": "49.0",
     "packageAliases": {
+        "FLowBaseComponents": "033f4000000AoiCAAS",
         "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
         "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
         "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
@@ -33,6 +39,9 @@
         "sendHTMLEmail(No Tests)": "0Ho3h000000GmbCCAS",
         "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
         "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
-        "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC"
+        "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
+        "FlowBaseComponents@1.2.3-0": "04tf4000004Pu2iAAC",
+        "sendHTMLEmail@1.33.2-0": "04t3h0000045qdMAAQ",
+        "sendHTMLEmail@1.33.2-2": "04t3h0000045qdRAAQ"
     }
 }

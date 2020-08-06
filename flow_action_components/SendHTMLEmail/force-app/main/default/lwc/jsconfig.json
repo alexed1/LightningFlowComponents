@@ -1,8 +1,18 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "baseUrl": ".",
-        "paths": {},
-        "experimentalDecorators": true
+        "paths": {
+            "c/addNewMembers": [
+                "addNewMembers/addNewMembers.js"
+            ],
+            "c/sendHTMLEmailCPE": [
+                "sendHTMLEmailCPE/sendHTMLEmailCPE.js"
+            ],
+            "c/ucModal": [
+                "ucModal/ucModal.js"
+            ]
+        }
     },
     "include": [
         "**/*",

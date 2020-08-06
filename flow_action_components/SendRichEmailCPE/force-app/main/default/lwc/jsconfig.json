@@ -2,6 +2,9 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
+            "c/flowCombobox": [
+                "flowCombobox/flowCombobox.js"
+            ],
             "c/addNewMembers": [
                 "addNewMembers/addNewMembers.js"
             ],
@@ -11,14 +14,11 @@
             "c/configEditorLwc": [
                 "configEditorLwc/configEditorLwc.js"
             ],
-            "c/flowCombobox": [
-                "flowCombobox/flowCombobox.js"
-            ],
-            "c/sendRichEmailCPE": [
-                "sendRichEmailCPE/sendRichEmailCPE.js"
-            ],
             "c/ucModal": [
                 "ucModal/ucModal.js"
+            ],
+            "c/sendHTMLEmail": [
+                "sendHTMLEmail/sendHTMLEmail.js"
             ]
         },
         "experimentalDecorators": true

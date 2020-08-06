@@ -21,7 +21,7 @@
             "versionNumber": "1.33.02.NEXT",
             "dependencies": [
                 {
-                    "package": "FlowBaseComponents@1.2.2-0"
+                    "package": "FlowBaseComponents@1.2.3-0"
                 }
             ],
             "default": true
@@ -40,7 +40,8 @@
         "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
         "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
         "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
-        "FlowBaseComponents@1.2.2-0": "04tf4000003RQxcAAG",
-        "sendHTMLEmail@1.33.2-0": "04t3h000004pJx3AAE"
+        "FlowBaseComponents@1.2.3-0": "04tf4000004Pu2iAAC",
+        "sendHTMLEmail@1.33.2-0": "04t3h0000045qdMAAQ",
+        "sendHTMLEmail@1.33.2-2": "04t3h0000045qdRAAQ"
     }
 }

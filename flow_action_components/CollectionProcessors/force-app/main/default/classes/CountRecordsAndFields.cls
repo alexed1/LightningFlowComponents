@@ -1,4 +1,3 @@
-
 global with sharing class CountRecordsAndFields {
     @InvocableMethod
     global static List <Results> count(List<Requests> requestList) {

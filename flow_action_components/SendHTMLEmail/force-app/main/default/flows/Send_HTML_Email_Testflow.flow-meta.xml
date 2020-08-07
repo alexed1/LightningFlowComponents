@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Simplest_HTML_Email</name>
         <label>1. Simplest HTML Email</label>
-        <locationX>781</locationX>
-        <locationY>169</locationY>
+        <locationX>1154</locationX>
+        <locationY>155</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -64,8 +64,8 @@
     <actionCalls>
         <name>X2_Simple_Email_with_Address_Collections_Wit_Collections</name>
         <label>2. Simple Email with Address Collections - With Address Collections</label>
-        <locationX>1004</locationX>
-        <locationY>273</locationY>
+        <locationX>1376</locationX>
+        <locationY>275</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -155,7 +155,7 @@
     <actionCalls>
         <name>X3_Email_with_Attachments</name>
         <label>3. Email with Attachments</label>
-        <locationX>1087</locationX>
+        <locationX>1461</locationX>
         <locationY>637</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
@@ -229,7 +229,7 @@
         <description>Email Using Template - An email using a Lightning EmailTemplate</description>
         <name>X4_Email_Using_Template_Action</name>
         <label>4. Email Using Template Action</label>
-        <locationX>1140</locationX>
+        <locationX>1514</locationX>
         <locationY>961</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
@@ -291,8 +291,8 @@
         <description>Multi-Lingual Using Email Templates - An email using a Lightning EmailTemplate selected by language</description>
         <name>X5_Multi_Lingual_Using_Email_Templates_Action</name>
         <label>5. Multi-Lingual Using Email Templates</label>
-        <locationX>1229</locationX>
-        <locationY>1085</locationY>
+        <locationX>1591</locationX>
+        <locationY>1087</locationY>
         <actionName>SendHTMLEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -355,10 +355,58 @@
             <name>isSuccess</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <description>Testing Send HTML Email - Mass Email</description>
+        <name>X6_Send_HTML_Email_Mass</name>
+        <label>6. Send HTML Email - Mass</label>
+        <locationX>1662</locationX>
+        <locationY>1226</locationY>
+        <actionName>SendHTMLEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>screenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>description</name>
+            <value>
+                <stringValue>Test Send Mass Email</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailMessageType</name>
+            <value>
+                <stringValue>massEmail</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <stringValue>Do Not Reply</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetObjectIds</name>
+            <value>
+                <elementReference>UserListForMassMail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateName</name>
+            <value>
+                <stringValue>sendMassHTMLEmailTest</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>whatIds</name>
+            <value>
+                <elementReference>UserListForMassMail</elementReference>
+            </value>
+        </inputParameters>
+    </actionCalls>
     <assignments>
         <name>Add_All_Attached_Files</name>
         <label>Add All Attached Files</label>
-        <locationX>1013</locationX>
+        <locationX>1387</locationX>
         <locationY>544</locationY>
         <assignmentItems>
             <assignToReference>filterred_cdls</assignToReference>
@@ -374,7 +422,7 @@
     <assignments>
         <name>Add_CDL_in_Filtered_List</name>
         <label>Add CDL in Filtered List</label>
-        <locationX>852</locationX>
+        <locationX>1226</locationX>
         <locationY>741</locationY>
         <assignmentItems>
             <assignToReference>filterred_cdls</assignToReference>
@@ -395,9 +443,25 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_User_ID_for_TargetIds</name>
+        <label>Assign User ID for TargetIds</label>
+        <locationX>1357</locationX>
+        <locationY>1226</locationY>
+        <assignmentItems>
+            <assignToReference>UserListForMassMail</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>UserIdRunningFlow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>X6_Send_HTML_Email_Mass</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Clear_String_Addr_Collection</name>
         <label>Clear String Addr Collection</label>
-        <locationX>639</locationX>
+        <locationX>1013</locationX>
         <locationY>276</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
@@ -411,7 +475,7 @@
         <description>Add the first email to the string collection</description>
         <name>Email_1_to_Collection</name>
         <label>Email 1 to Collection</label>
-        <locationX>507</locationX>
+        <locationX>881</locationX>
         <locationY>460</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
@@ -427,7 +491,7 @@
     <assignments>
         <name>Email_2_to_Collection</name>
         <label>Email 2 to Collection</label>
-        <locationX>788</locationX>
+        <locationX>1162</locationX>
         <locationY>474</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
@@ -480,10 +544,18 @@
             <numberValue>5.0</numberValue>
         </value>
     </choices>
+    <choices>
+        <name>whichExampleChoice6</name>
+        <choiceText>&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;6) Mass Email Example&lt;/span&gt;</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>6.0</numberValue>
+        </value>
+    </choices>
     <decisions>
         <name>Any_Files_Uploaded</name>
         <label>Any Files Uploaded?</label>
-        <locationX>847</locationX>
+        <locationX>1221</locationX>
         <locationY>634</locationY>
         <defaultConnector>
             <targetReference>Add_All_Attached_Files</targetReference>
@@ -508,7 +580,7 @@
     <decisions>
         <name>CDL_In_Just_Uploaded_Files</name>
         <label>CDL In Just Uploaded Files</label>
-        <locationX>844</locationX>
+        <locationX>1218</locationX>
         <locationY>871</locationY>
         <defaultConnector>
             <targetReference>All_Uploaded_CD_Ids</targetReference>
@@ -533,7 +605,7 @@
     <decisions>
         <name>Email_Addr_1</name>
         <label>Email Addr 1</label>
-        <locationX>629</locationX>
+        <locationX>1003</locationX>
         <locationY>406</locationY>
         <defaultConnector>
             <targetReference>Email_1_to_Collection</targetReference>
@@ -555,7 +627,7 @@
     <decisions>
         <name>Email_Addr_2</name>
         <label>Email Addr 2</label>
-        <locationX>638</locationX>
+        <locationX>1012</locationX>
         <locationY>528</locationY>
         <defaultConnector>
             <targetReference>Email_2_to_Collection</targetReference>
@@ -577,7 +649,7 @@
     <decisions>
         <name>Which_Choice</name>
         <label>Which Choice</label>
-        <locationX>235</locationX>
+        <locationX>609</locationX>
         <locationY>469</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -655,6 +727,21 @@
             </connector>
             <label>5. Multi-Lingual Using Email Templates</label>
         </rules>
+        <rules>
+            <name>Ex_6</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice6</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X6_Mass_Email</targetReference>
+            </connector>
+            <label>6. Mass Email</label>
+        </rules>
     </decisions>
     <description>A series of 5 examples for testing and demonstrating Send HTML Email Action Component</description>
     <formulas>
@@ -663,12 +750,18 @@
         <dataType>String</dataType>
         <expression>&quot;Plaintext Line 1&quot;+BR()+&quot;Plaintext Line 2&quot;+BR()+&quot;Plaintext Line 3&quot;</expression>
     </formulas>
+    <formulas>
+        <description>The user ID of the user running the flow</description>
+        <name>UserIdRunningFlow</name>
+        <dataType>String</dataType>
+        <expression>{!$User.Id}</expression>
+    </formulas>
     <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Send HTML Email Testflow</label>
     <loops>
         <name>All_CDL</name>
         <label>All CDL</label>
-        <locationX>650</locationX>
+        <locationX>1024</locationX>
         <locationY>630</locationY>
         <assignNextValueToReference>cur_cdl</assignNextValueToReference>
         <collectionReference>Get_Content_Document_Links</collectionReference>
@@ -683,7 +776,7 @@
     <loops>
         <name>All_Uploaded_CD_Ids</name>
         <label>All Uploaded CD Ids</label>
-        <locationX>651</locationX>
+        <locationX>1025</locationX>
         <locationY>809</locationY>
         <assignNextValueToReference>cur_cd_id</assignNextValueToReference>
         <collectionReference>content_document_ids</collectionReference>
@@ -711,8 +804,8 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>884</locationX>
-        <locationY>273</locationY>
+        <locationX>1256</locationX>
+        <locationY>275</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
@@ -734,7 +827,7 @@
     <recordLookups>
         <name>Get_Content_Document_Links</name>
         <label>Get Content Document Links</label>
-        <locationX>549</locationX>
+        <locationX>923</locationX>
         <locationY>630</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -756,8 +849,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>780</locationX>
-        <locationY>273</locationY>
+        <locationX>1154</locationX>
+        <locationY>275</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
@@ -779,7 +872,7 @@
     <screens>
         <name>Choose_Example_Screen</name>
         <label>Choose Example</label>
-        <locationX>141</locationX>
+        <locationX>515</locationX>
         <locationY>467</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -789,7 +882,7 @@
         </connector>
         <fields>
             <name>SelectExampleInstructions</name>
-            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - with To, Sender, Reply-To, Subject, Body (All text)&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - Using Address Collections to Send to Multiple Recipients&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - Simple Email (1) With Attachments&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; - An email using a Lightning EmailTemplate&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - An email using a Lightning EmailTemplate selected by language&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 14px; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; color: rgb(23, 43, 77);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - with To, Sender, Reply-To, Subject, Body (All text)&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - Using Address Collections to Send to Multiple Recipients&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - Simple Email (1) With Attachments&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; - An email using a Lightning EmailTemplate&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - An email using a Lightning EmailTemplate selected by language&lt;/p&gt;&lt;p&gt;&lt;b&gt;6) Mass Email&lt;/b&gt; - Send an email using MassEmail messaging&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -799,6 +892,7 @@
             <choiceReferences>whichExampleChoice3</choiceReferences>
             <choiceReferences>whichExampleChoice4</choiceReferences>
             <choiceReferences>whichExampleChoice5</choiceReferences>
+            <choiceReferences>whichExampleChoice6</choiceReferences>
             <dataType>Number</dataType>
             <fieldText>Choose Example</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -811,7 +905,7 @@
     <screens>
         <name>File_Upload_to_Attach</name>
         <label>Upload Files to Attach</label>
-        <locationX>450</locationX>
+        <locationX>824</locationX>
         <locationY>630</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -853,7 +947,7 @@
     <screens>
         <name>Get_Simple_Email_Fields_Attachments</name>
         <label>3. Get Simple Email Fields For Attachments</label>
-        <locationX>339</locationX>
+        <locationX>713</locationX>
         <locationY>630</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -983,8 +1077,8 @@
     <screens>
         <name>screenConsole1</name>
         <label>screenConsole1</label>
-        <locationX>1216</locationX>
-        <locationY>177</locationY>
+        <locationX>1647</locationX>
+        <locationY>162</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -999,8 +1093,8 @@
     <screens>
         <name>X1_Get_Simple_Email_Fields</name>
         <label>1. Get Simple Email Fields</label>
-        <locationX>344</locationX>
-        <locationY>169</locationY>
+        <locationX>717</locationX>
+        <locationY>155</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1118,7 +1212,7 @@
     <screens>
         <name>X2_Get_Simple_Email_Fields_Collections</name>
         <label>2. Get Simple Email Fields &amp; Collections</label>
-        <locationX>408</locationX>
+        <locationX>782</locationX>
         <locationY>276</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1306,7 +1400,7 @@
     <screens>
         <name>X4_Email_Using_Template</name>
         <label>4. Email Using Template</label>
-        <locationX>260</locationX>
+        <locationX>634</locationX>
         <locationY>960</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1316,7 +1410,7 @@
         </connector>
         <fields>
             <name>Example4Details</name>
-            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This example also creates an activity for the email which will be assigned to the running user and related to the RecordId.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can create test templates (sendHTMLEmailTest)  by running example 5.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you use the default test templates (&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This example also creates an activity for the email which will be assigned to the running user and related to the RecordId.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can create test templates (sendHTMLEmailTest)  by running example 5.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you use the default test templates (&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1399,17 +1493,17 @@
     <screens>
         <name>X5_Multi_Lingual_Using_Email_Templates</name>
         <label>5. Multi-Lingual Using Email Templates</label>
-        <locationX>193</locationX>
-        <locationY>1085</locationY>
+        <locationX>579</locationX>
+        <locationY>1087</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Create_Test_Templates_if_Needed_5</targetReference>
+            <targetReference>X5_Create_Test_Templates_if_Needed</targetReference>
         </connector>
         <fields>
             <name>Example5Details</name>
-            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&#39;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&#39;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;If you use the default test templates (sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;If you use the default test templates (sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1420,7 +1514,7 @@
             </defaultValue>
             <fieldText>Template Name</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Language.&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Language.&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1431,7 +1525,7 @@
             </defaultValue>
             <fieldText>Template Language</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Will be in the format lang_Local(e.g. &quot;en_US&quot;) Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Name,&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&amp;nbsp;&amp;nbsp;Template&amp;nbsp;Selection&amp;nbsp;criteria&amp;nbsp;order&amp;nbsp;first&amp;nbsp;found&amp;nbsp;Name&amp;nbsp;with:&amp;nbsp;1)If&amp;nbsp;empty,&amp;nbsp;Org&amp;nbsp;LanguageLocaleKey&amp;nbsp;2)Language&amp;nbsp;found&amp;nbsp;in&amp;nbsp;Description&amp;nbsp;3)First&amp;nbsp;without&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&#39;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Will be in the format lang_Local(e.g. &quot;en_US&quot;) Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Name,&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&amp;nbsp;&amp;nbsp;Template&amp;nbsp;Selection&amp;nbsp;criteria&amp;nbsp;order&amp;nbsp;first&amp;nbsp;found&amp;nbsp;Name&amp;nbsp;with:&amp;nbsp;1)If&amp;nbsp;empty,&amp;nbsp;Org&amp;nbsp;LanguageLocaleKey&amp;nbsp;2)Language&amp;nbsp;found&amp;nbsp;in&amp;nbsp;Description&amp;nbsp;3)First&amp;nbsp;without&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -1504,9 +1598,39 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>X6_Mass_Email</name>
+        <label>6. Mass Email Test Flow</label>
+        <locationX>513</locationX>
+        <locationY>1226</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>X6_Create_Mass_Email_Test_Templates_If_Needed</targetReference>
+        </connector>
+        <fields>
+            <name>Example6Details</name>
+            <fieldText>&lt;p&gt;SendHTMLEmail can also be used to send Mass Emails.  Mass Emails are far more limited in functionality that Single Emails, though both can be bulked as a single send (up to 10) in this action.  Mass emails cannot have language localization for obvious reasons (one template for a list of targets).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressees specified through the TargetObjectIds and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id (WhatId).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;﻿If you use the default test templates (sendMassHTMLEmailTest) the Target ID and the RelatedRecord Id will be a UserId.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Template_Name_Mass_Email</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <stringValue>sendMassHTMLEmailTest</stringValue>
+            </defaultValue>
+            <fieldText>Template Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Used&amp;nbsp;in&amp;nbsp;conjunction&amp;nbsp;with&amp;nbsp;Template&amp;nbsp;Language.&amp;nbsp;Finds&amp;nbsp;templates&amp;nbsp;with&amp;nbsp;the&amp;nbsp;name&amp;nbsp;matching&amp;nbsp;Template&amp;nbsp;Name&amp;nbsp;for&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;Language=&quot;xxx_YY&quot;&lt;/span&gt;&lt;span style=&quot;color: rgb(215, 186, 125);&quot;&gt;&apos;&lt;/span&gt;&lt;span style=&quot;color: rgb(206, 145, 120);&quot;&gt;&amp;nbsp;in&amp;nbsp;the&amp;nbsp;Description.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>34</locationX>
-        <locationY>467</locationY>
+        <locationX>167</locationX>
+        <locationY>447</locationY>
         <connector>
             <targetReference>Choose_Example_Screen</targetReference>
         </connector>
@@ -1514,10 +1638,10 @@
     <status>Draft</status>
     <subflows>
         <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
-        <name>Create_Test_Templates_if_Needed_5</name>
-        <label>Create Test Templates if Needed</label>
-        <locationX>633</locationX>
-        <locationY>1085</locationY>
+        <name>X5_Create_Test_Templates_if_Needed</name>
+        <label>5. Create Test Templates if Needed</label>
+        <locationX>1029</locationX>
+        <locationY>1087</locationY>
         <connector>
             <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
         </connector>
@@ -1526,6 +1650,29 @@
             <name>sendHTMLEmailTestName</name>
             <value>
                 <elementReference>Template_Name</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>sendHTMLEmail Test - Create Mass Email Test Templates If Needed</description>
+        <name>X6_Create_Mass_Email_Test_Templates_If_Needed</name>
+        <label>6. Create Mass Email Test Templates If Needed</label>
+        <locationX>1028</locationX>
+        <locationY>1226</locationY>
+        <connector>
+            <targetReference>Assign_User_ID_for_TargetIds</targetReference>
+        </connector>
+        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <inputAssignments>
+            <name>sendHTMLEmailTestName</name>
+            <value>
+                <elementReference>Template_Name_Mass_Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>sendHTMLEmailTestType</name>
+            <value>
+                <stringValue>MassEmail</stringValue>
             </value>
         </inputAssignments>
     </subflows>
@@ -1629,6 +1776,14 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>MassEmailUserCollection</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1725,5 +1880,13 @@
         <value>
             <stringValue>testUserValue</stringValue>
         </value>
+    </variables>
+    <variables>
+        <description>Create a user list for mass email</description>
+        <name>UserListForMassMail</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

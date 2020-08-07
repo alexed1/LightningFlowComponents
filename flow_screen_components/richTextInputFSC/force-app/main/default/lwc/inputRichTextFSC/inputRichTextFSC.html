@@ -1,15 +1,15 @@
 <template>
 
-    <!-- Start Rich Text Input Section - if enableAdvancedTools is false - this is default -->
-    <template if:false={enableAdvancedTools}>
+    <!-- Start Rich Text Input Section -   -->
+    <template if:true={disableAdvancedTools}>
         <div>
-            <lightning-input-rich-text value={value} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
+            <lightning-input-rich-text value={value} onchange={handleValueChange} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
         </div>
     </template>
     <!-- End Rich Text Input Section-->
 
     <!-- Start Entry Enhancements - only display if enableAdvancedTools activated -->
-    <template if:true={enableAdvancedTools}>
+    <template if:false={disableAdvancedTools}>
         <div>
             <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} 
                 label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage}>
@@ -50,6 +50,16 @@
                         <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:undo"
                             onclick={handleRevert} alternative-text="Undo Last Change" tooltip="Undo Last Change">
                         </lightning-button-icon>
+                    </div>
+                </template>
+                <!--<template if:false={characterCap}>
+                    <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_x-small slds-p-bottom_xxx-small">
+                        <p>{characterCount}</p>
+                    </div>
+                </template>-->
+                <template if:true={characterCap}>
+                    <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_x-small slds-p-bottom_xxx-small">
+                        <p class={charClass}>{characterCount}/{characterLimit}</p>
                     </div>
                 </template>
                 <div class="slds-p-left_x-small slds-p-right_xxx-small slds-p-top_xx-small slds-p-bottom_xxx-small">

@@ -12,6 +12,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "47.0",
     "packageAliases": {
-        "richTextAreaFSC": "0Hof4000000XZIuCAO"
+        "richTextAreaFSC": "0Hof4000000XZIuCAO",
+        "richTextAreaFSC@1.3.0-0": "04tf4000003RR3gAAG"
     }
 }

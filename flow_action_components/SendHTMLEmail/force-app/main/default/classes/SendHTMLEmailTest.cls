@@ -1,17 +1,46 @@
 /**
- * @File Name          : SendHTMLEmailTest.cls
- * @Description        : Test the SendHTMLEmail Action Component. Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @NotTested		   : OrgWideEmailAddress - cannot be assured deployment org actually has any and test insert not allowed
- * @Author             : various, including Salesforce, Alex Edelstein, https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
- * @Group              : unofficialSF
- * @Last Modified By   : jack.pond@psitex.com
- * @Last Modified On   : 2/5/2020, 4:02:33 PM
- * @Modification Log   : 
- * @License            : LICENSE found in https://github.com/alexed1/LightningFlowComponents
- * Ver       Date            Author      		    Modification
- * 1.32    2/05/2020   jack.pond@psitex.com     Updated Versioning
- * 1.33.1  4/11/2020   jack.pond@psitex.com     Added tests for Issues 308,316
+ * @File Name			: SendHTMLEmailTest.cls
+ * @Description			: Test the SendHTMLEmail Action Component. Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
+ * @NotTested			: OrgWideEmailAddress - cannot be assured deployment org actually has any and test insert not allowed
+ * @Author				: Jack D. Pond
+ * @Group				: unofficialSF
+ * @Last Modified By	: Jack D. Pond
+ * @Last Modified On	: 07-11-2020
+ * @Modification Log	: 
+ * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
+ * Ver		Date		Author					Modification
+ * -------	----------	----------------------	------------------------------------------
+ * 1.32		2/05/2020	Jack D. Pond			Updated Versioning
+ * 1.33.1	4/11/2020	Jack D. Pond			Added tests for Issues #308,#316
+ * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
+ * 1.33.2	5/29/2020	Jack D. Pond			Fixed Lead (Company rqd for Summer'20)
+ * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
+ * 
+ * To Do: Tests for MassEmail
 **/
+// @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
+// @Test t002_errorIfNoAddress: Error expected if no addresses specified
+// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateID set
+// @Test t004_errorIfTemplateButNoContextRecord: Error expected if templateID does not exist
+// @Test t005_errorIfTemplateNameAndTemplateID: Error expected if templateID and templateName both used
+// @Test t006_coverageIfTemplateNameAndNoLanguage: Can select the Organization LanguageLocaleKey template if no language specified.  However, if LanguageLocaleKey isn't en_US, still works
+// @Test t007_coverageIfTemplateNameDoesntExist: Error expected if Named Template non-existent 
+// @Test t008_coverageWithAttachments: Can add Attachments and send to collections (Contact, Lead, User)
+// @Test t009_coverageTestActivity: Can allow email activity and task activity on recordId object
+// @Test t010_canSendEmailCCUsers: Can send email to a collection of users, email addresses and useSalesforceSignature
+// @Test t011_ErrorIfNoBody: Error expected if (templateID == null  && HTMLbody == null && plainTextBody == null)
+// @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
+// @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
+// @Test t014_coverageTestActivityAndBulkification: Can allow email activity and task activity on recordId object if records, plus bulkification
+// @Test t015_coverageMassMailTestActivityAndBulkification: Can allow mass email activity and task activity on recordId object if records, plus bulkification
+// @Test t016_coverageMassMailTestDescription: MassEmail should have Error if no description
+// @Test t017_coverageMassMailtargetObjectIds: MassEmail requires targetObjectIds
+// @Test t018_coverageMassMailTemplateId: MassEmail requires TemplateId
+// @Test t019_coverageMassMailTemplateName: MassEmail can find TemplateName
+// @Test t020_coverageMassMailTemplateNameNotFound: MassEmail cannnot find TemplateName
+// @Test t021_coverageMassMailTemplateIdMismatches: MassEmail count of TargetObjectIds and WhatIds doesn't match
+// @Test t022_coverageMassMailTemplateIdNoLang: MassEmail finds Template with no Language Specified
+
 @isTest
 public with sharing class SendHTMLEmailTest {
 /**
@@ -20,10 +49,12 @@ public with sharing class SendHTMLEmailTest {
     Inversely, not doing these tests can cause code coverage % failures.  For pre-deployment testing purposes, TEST_WITH_CREATED_RECORDS should be set to true,
     but for version release, should be set to false.
 **/
-    private Static Final Boolean TEST_WITH_CREATED_RECORDS = false;
+    private Static Final Boolean TEST_WITH_CREATED_RECORDS = true;
 //
     private Static Final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
     private Static Final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';
+    private Static Final String TEMPLATE_NAME_NO_LANG = 'xxxyyy Test Email Template No Language yyyxxx';
+    private Static Final String TEMPLATE_DEVNAME_NO_LANG = 'xxxyyy_Test_Email_Template_No_Language_yyyxxx';
     private Static Final String TEMPLATE_LANGUAGE = 'en_US';
     private Static Final String TEMPLATE_NOSUCH = 'ZZXZ_XYZZY';
     private Static Final String TEMPLATE_NAME_NOSUCH = 'ZZXZ XYZZY';
@@ -32,10 +63,11 @@ public with sharing class SendHTMLEmailTest {
     private Static Final String EMAIL_NOSUCH = 'test@foo.com';
     private Static Final String EMAIL_NAME_NOSUCH = 'Do Not Reply';
     private Static Final Integer TEST_CONTACTS_COUNT = 1;
+    private Static Final Integer BULK_TEST_COUNT = 6;
 
-//	set up two email templates - one language enabled, the other not.   These will also be used as the relatedTo (WhatId/recordId)
+	//	set up two email templates - one language enabled, the other not.   These will also be used as the relatedTo (WhatId/recordId)
 	@testSetup static void testSetupdata(){
-            EmailTemplate validEmailTemplate = new EmailTemplate(
+        EmailTemplate validEmailTemplate = new EmailTemplate(
             isActive = true,
             Name = TEMPLATE_NAME,
             DeveloperName = TEMPLATE_DEVNAME,
@@ -64,6 +96,18 @@ public with sharing class SendHTMLEmailTest {
             validEmailTemplate.RelatedEntityType = 'Account';
         }
         insert validEmailTemplate;
+
+        validEmailTemplate = new EmailTemplate(
+            isActive = true,
+            Name = TEMPLATE_NAME_NO_LANG,
+            DeveloperName = TEMPLATE_DEVNAME_NO_LANG,
+            TemplateType = 'custom',
+            Description = 'Unique Test Email Template - No Language Specified',
+            FolderId = UserInfo.getUserId(),
+            Subject = 'Test Email Template'
+        );
+        insert validEmailTemplate;
+
     }
 // Check to see if email is deliverable (enabled and capacity not exceeded)    
     private static Boolean emailDeliverabilityEnabled(){
@@ -73,11 +117,12 @@ public with sharing class SendHTMLEmailTest {
             Messaging.reserveMassEmailCapacity(1);
         } catch (System.NoAccessException e) {
             emailDeliverabilityEnabled = false;
+            system.debug('WARNING!!!:  Messaging has not been enabled or insufficient capacity for test.');
         }
         return emailDeliverabilityEnabled;
     }
 
-//  Create Content and content links for testing 'attachments'
+	//  Create Content and content links for testing 'attachments'
     private static List<ContentDocumentLink> emailCreateAttachments(ID validEmailTemplateId){
         ContentVersion content=new ContentVersion(); 
             content.Title='Test_Content'; 
@@ -119,6 +164,7 @@ public with sharing class SendHTMLEmailTest {
             ldList.add(new Lead(
                     LastName    = 'Lead '+ ('0000'+i).right(4),
                     FirstName   = 'Test',
+                    Company    = 'Company '+('0000'+i).right(4),
                 	email		= 'e'+('0000'+i).right(4)+EMAIL_NOSUCH
                 )
             );
@@ -144,7 +190,6 @@ public with sharing class SendHTMLEmailTest {
 // @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
     @isTest
     public static void t001_canSendEmail () {
-
         SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
@@ -160,7 +205,7 @@ public with sharing class SendHTMLEmailTest {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t001_errorIfNoAddress: '+e.getMessage());
+            system.debug('t001_error: IfNoAddress: '+e.getMessage());
         }
 	    
         Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
@@ -185,14 +230,14 @@ public with sharing class SendHTMLEmailTest {
 		Boolean exceptionHit = false;
         try {            
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+        	System.assertEquals(testResponseList[0].isSuccess,false,'t002_errorIfNoAddress: Error expected if no addresses specified');
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t002_errorIfNoAddress: '+e.getMessage());
+            system.debug('t002_error - IfNoAddress: '+e.getMessage());
         }
-        System.assertEquals(exceptionHit,true,'Error expected if no addresses specified');
     }
 
-// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateId set
+// @Test t003_errorIfBothTemplateAndBody: Error expected if both body and templateID set
     @isTest
     public static void t003_errorIfBothTemplateAndBody () {
 
@@ -209,9 +254,9 @@ public with sharing class SendHTMLEmailTest {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t003_errorIfBothTemplateAndBody error: '+e.getMessage());
+            system.debug('t003_error - IfBothTemplateAndBody error: '+e.getMessage());
         }
-        System.assertEquals(true, exceptionHit,'Error expected if flow attempts to set both body and templateId');
+        System.assertEquals(true, exceptionHit,'Error expected if flow attempts to set both body and templateID');
     }
 
 // @Test t004_errorIfTemplateButNoContextRecord: Error expected if templateID does not exist
@@ -342,25 +387,25 @@ public with sharing class SendHTMLEmailTest {
 		testReq.contentDocumentAttachments = cdls;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
         reqList.add(testReq);
-        system.debug('attachlist: '+cdls);
+        system.debug('t008 attachlist: '+cdls);
 		Boolean ExceptionHit=false;
         try {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+        	if (TEST_WITH_CREATED_RECORDS){
+        		System.assertEquals(testResponseList[0].isSuccess,true,'t008_error: IfNoAddress. Error expected if no addresses specified');
+            } else {
+	        	System.assertEquals(testResponseList[0].isSuccess,false,'t008_error: WhatId is not available for sending emails to UserIds when using User as targetObject');
+            }
         } catch (SendHTMLEmail.InvocableActionException e) {
             ExceptionHit=true;
-            system.debug('t008_coverageWithAttachments error: '+e.getMessage());
+            system.debug('t008_coverage: WithAttachments error: '+e.getMessage());
         }
 		// This will fail to send because WhatId is not available for sending emails to UserIds.
-        if (TEST_WITH_CREATED_RECORDS){
-	        System.assertEquals(false, ExceptionHit,'Cannot add Attachments and/or send to collections (Contact, Lead, User)');
-        } else {
-	        System.assertEquals(true, ExceptionHit,'WhatId is not available for sending emails to UserIds when using User as targetObject');
-        }
     }
 
-// @Test t009_coverageTestActivity: Can allow email record as activity on recordId object
+// @Test t009_coverageTestActivityAndBulkification: Can allow email activity and task activity on recordId object
     @isTest
-    public static void t009_coverageTestActivity() {
+    public static void t009_coverageTestActivityAndBulkification() {
         String devName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE;
         EmailTemplate validEmailTemplate = [Select Id,Name from EmailTemplate where DeveloperName=:devName];
         SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
@@ -382,16 +427,16 @@ public with sharing class SendHTMLEmailTest {
 		Boolean ExceptionHit=False;
         try {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-            system.debug('testResponseList: ' + testResponseList);
+            system.debug('t009: testResponseList: ' + testResponseList);
+            if (TEST_WITH_CREATED_RECORDS){
+                System.assertEquals(testResponseList[0].isSuccess,true,'Cannot allow email record as activity on recordId object');
+            } else {
+                System.assertEquals(testResponseList[0].isSuccess,false,'WhatId is not available for sending emails to UserIds when using User as targetObject');
+            }
         } catch (SendHTMLEmail.InvocableActionException e) {
             ExceptionHit=true;
             String error = e.getMessage();
-            system.debug('t009_coverageTestActivity error: '+e.getMessage());
-        }
-        if (TEST_WITH_CREATED_RECORDS){
-	        System.assertEquals(false, ExceptionHit,'Cannot allow email record as activity on recordId object');
-        } else {
-	        System.assertEquals(true, ExceptionHit,'WhatId is not available for sending emails to UserIds when using User as targetObject');
+            system.debug('t009_coverage - TestActivity error: '+e.getMessage());
         }
     }
 
@@ -449,14 +494,14 @@ public with sharing class SendHTMLEmailTest {
             System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityDisabled Enabled or capacity exceeded');
         }
     }
-// @Test t012_ErrorIfSaveAsActivityAndNoRecordId: Error expected if (saveAsActivity == true && recordId/whatId == null)
-    @isTest
-    public static void t012_ErrorIfSaveAsActivityAndNoRecordId() {
+// @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
+@isTest
+    public static void t012_ErrorIfSaveAsTaskAndNoRecordId() {
         SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
-        testReq.saveAsActivity = true;
+        testReq.saveAsTask = true;
         List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
         reqList.add(testReq);
 
@@ -465,7 +510,7 @@ public with sharing class SendHTMLEmailTest {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
         } catch (SendHTMLEmail.InvocableActionException e) {
             exceptionHit=true;
-            system.debug('t012_ErrorIfSaveAsActivityAndNoRecordId: '+e.getMessage());
+            system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+e.getMessage());
         }
 	    
         Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
@@ -510,4 +555,299 @@ public with sharing class SendHTMLEmailTest {
             System.Debug('Unable to test orgWideEmailAddressId.  No orgWideEmailAddress available.');
         }
     }
+// @Test t014_coverageTestActivityAndBulkification: Can allow email activity and task activity on recordId object if records, plus bulkification
+    @isTest
+    public static void t014_coverageTestActivityAndBulkification() {
+        List<Contact> theseContacts = new List<Contact>();
+        List<Account> theseAccounts = new List<Account>();
+        if (TEST_WITH_CREATED_RECORDS){
+			theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);
+            for (Contact thisContact : theseContacts){
+                theseAccounts.add(emailCreateTestAccount(1,thisContact.Id)[0]);
+            }
+        }
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq;
+        for (Integer i=0;i<BULK_TEST_COUNT;i++){
+            testReq = new SendHTMLEmail.Request();
+            testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
+            testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+            // Deliberately introduce error every other request
+            if (math.mod(i,2) == 0){
+                testReq.HTMLbody = EMAIL_BODY + ('0000'+i).right(4);
+            }
+            if (TEST_WITH_CREATED_RECORDS){
+                testReq.templateTargetObjectId = theseContacts[i].Id;
+                testReq.recordId = theseAccounts[i].Id;
+                testReq.saveAsActivity = true;
+            }else{
+                testReq.saveAsActivity = false;
+            }
+            reqList.add(testReq);
+        }
+        try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4));
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t014_coverageTestActivityAndBulkification error: '+e.getMessage());
+        }
+    }
+// @Test t015_coverageMassMailTestActivityAndBulkification: Can allow mass email activity and task activity on recordId object if records, plus bulkification
+    @isTest
+    public static void t015_coverageMassMailTestActivityAndBulkification() {
+        List<Contact> theseContacts = new List<Contact>();
+        List<Account> theseAccounts = new List<Account>();
+        list<String> theseContactIds = new list<String>();
+        list<String> theseAccountIds = new list<String>();
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        
+// Select b.Value, b.SystemModstamp, b.NamespacePrefix, b.Name, b.LastModifiedDate, b.LastModifiedById, b.IsActive, b.Id, b.DeveloperName, b.Description, b.CreatedDate, b.CreatedById From BrandTemplate b
+
+        if (TEST_WITH_CREATED_RECORDS){
+			theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);
+            
+            for (Contact thisContact : theseContacts){
+                theseContactIds.add((string) thisContact.Id);
+                theseAccounts.add(emailCreateTestAccount(1,thisContact.Id)[0]);
+            }
+            for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
+        }
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq;
+        for (Integer i=0;i<BULK_TEST_COUNT;i++){
+            testReq = new SendHTMLEmail.Request();
+            testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
+            testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+            // Deliberately introduce error by default so mixed types and errors
+            if (math.mod(i,3) == 0){
+                testReq.HTMLbody = EMAIL_BODY + ('0000'+i).right(4);
+                if (TEST_WITH_CREATED_RECORDS){
+                    testReq.templateTargetObjectId = theseContacts[i].Id;
+                    testReq.recordId = theseAccounts[i].Id;
+                    testReq.saveAsActivity = true;
+                }else{
+                    testReq.saveAsActivity = false;
+                }
+            }
+            if (math.mod(i,3) == 2){
+                testReq.templateID = EmailTemplateId;
+                testReq.emailMessageType = 'massEmail';
+                if (TEST_WITH_CREATED_RECORDS){
+                    testReq.targetObjectIds = theseContactIds;
+                    testReq.whatIds = theseAccountIds;
+                    testReq.Description = 'MassEmail ' + ('0000'+i).right(4);
+                    testReq.saveAsActivity = true;
+                    testReq.saveAsTask = true;
+                } else {
+                    testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+                    testReq.whatIds = testReq.targetObjectIds;
+                    testReq.Description = 'MassEmail ' + ('0000'+i).right(4);
+                    testReq.saveAsTask = true;
+                }
+            }
+            system.debug('testReq'+('0000'+i).right(4)+': ' + testReq);
+            reqList.add(testReq);
+        }
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t015_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
+        }
+    }
+// @Test t016_coverageMassMailTestDescription: MassEmail should have Error if no description
+    @isTest
+    public static void t016_coverageMassMailTestDescription() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        testReq.templateID = EmailTemplateId;
+        testReq.emailMessageType = 'massEmail';
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+//        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t016_coverageMassMailTestDescription: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,false);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t016_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
+        }
+    }
+// @Test t017_coverageMassMailtargetObjectIds: MassEmail requires targetObjectIds
+    @isTest
+    public static void t017_coverageMassMailTestActivityAndBulkification() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        testReq.templateID = EmailTemplateId;
+        testReq.emailMessageType = 'massEmail';
+//        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+//		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t017_coverageMassMailtargetObjectIds: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,false);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t017_coverageMassMailtargetObjectIds error: '+e.getMessage());
+        }
+    }
+// @Test t018_coverageMassMailTemplateId: MassEmail requires TemplateId
+    @isTest
+    public static void t018_coverageMassMailTemplateId() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateID = EmailTemplateId;
+//        testReq.templateName = TEMPLATE_NAME;
+        testReq.emailMessageType = 'massEmail';
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t018_coverageMassMailTemplateId: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,false);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t018_coverageMassMailTemplateId error: '+e.getMessage());
+        }
+    }
+// @Test t019_coverageMassMailTemplateName: MassEmail can find TemplateName
+    @isTest
+    public static void t019_coverageMassMailTemplateName() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateID = EmailTemplateId;
+        testReq.templateName = TEMPLATE_NAME;
+        testReq.emailMessageType = 'massEmail';
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t019_coverageMassMailTemplateName: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,true);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t019_coverageMassMailTemplateId error: '+e.getMessage());
+        }
+    }
+// @Test t020_coverageMassMailTemplateNameNotFound: MassEmail cannnot find TemplateName
+    @isTest
+    public static void t020_coverageMassMailTemplateNameNotFound() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateID = EmailTemplateId;
+        testReq.templateName = TEMPLATE_NOSUCH;
+        testReq.emailMessageType = 'massEmail';
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = testReq.targetObjectIds;
+        testReq.Description = 'MassEmail Test';
+        testReq.saveAsTask = true;
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t020_coverageMassMailTemplateNameNotFound: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,false);
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t020_coverageMassMailTemplateNameNotFound error: '+e.getMessage());
+        }
+    }
+// @Test t021_coverageMassMailTemplateIdMismatches: MassEmail count of TargetObjectIds and WhatIds doesn't match
+    @isTest
+    public static void t021_coverageMassMailTemplateIdMismatches() {
+        List<Contact> theseContacts = new List<Contact>();
+        List<Account> theseAccounts = new List<Account>();
+        list<String> theseContactIds = new list<String>();
+        list<String> theseAccountIds = new list<String>();
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        
+// Select b.Value, b.SystemModstamp, b.NamespacePrefix, b.Name, b.LastModifiedDate, b.LastModifiedById, b.IsActive, b.Id, b.DeveloperName, b.Description, b.CreatedDate, b.CreatedById From BrandTemplate b
+
+        if (TEST_WITH_CREATED_RECORDS){
+			theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);
+            
+            for (Contact thisContact : theseContacts){
+                theseContactIds.add((string) thisContact.Id);
+                theseAccounts.add(emailCreateTestAccount(1,thisContact.Id)[0]);
+            }
+            for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
+        }
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq;
+        testReq = new SendHTMLEmail.Request();
+        testReq.templateID = EmailTemplateId;
+        testReq.emailMessageType = 'massEmail';
+        // Deliberately introduce error by mismatching targetObjectIds and whatIds
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = new List<String> {UserInfo.getUserId(),UserInfo.getUserId()};
+        testReq.Description = 'MassEmail ' + ('0000').right(4);
+        testReq.saveAsTask = true;
+        system.debug('testReq'+('0000').right(4)+': ' + testReq);
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t021 Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+				System.assertEquals(testResponseList[i].isSuccess,false,'t021 Fail: Should have recognized targetObjectIds and whatIds mismatch');
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t021_coverageMassMailTemplateIdMismatches error: '+e.getMessage());
+        }
+    }
+// @Test t022_coverageMassMailTemplateIdNoLang: MassEmail finds Template with no Language Specified
+    @isTest
+    public static void t022_coverageMassMailTemplateIdNoLang() {
+        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+//        testReq.templateID = EmailTemplateId;
+        testReq.emailMessageType = 'massEmail';
+        testReq.Description = 'MassEmail Test - no Language';
+        testReq.templateName = TEMPLATE_NAME_NO_LANG;
+        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+        reqList.add(testReq);
+		try {
+            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+                system.debug('t022_coverageMassMailTemplateIdNoLang: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assertEquals(testResponseList[i].isSuccess,true,'t022 MassEmail should have found Template with no Language Specified');
+            }
+        } catch (SendHTMLEmail.InvocableActionException e) {
+            String error = e.getMessage();
+            system.debug('t022_coverageMassMailTemplateIdNoLang error: '+e.getMessage());
+        }
+    }
+
 }

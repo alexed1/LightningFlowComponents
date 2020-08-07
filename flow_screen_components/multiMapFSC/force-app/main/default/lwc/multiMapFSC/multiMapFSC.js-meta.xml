@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property label="Marker List" name="markerList" type="String[]" role="inputOnly" description="List of markers for display on screen"/>
+            <property label="Map Title" name="title" type="String" role="inputOnly" description="Title of the Map displayed."/>
+            <property label="Show List View?" name="showListView" type="Boolean" role="inputOnly" description="Set to true to show location list.  Default is false"/>
+            <property label="Use Coordinates?" name="coordinates" type="Boolean" role="inputOnly" description="Set to true if you are passing in coordinates instead"/>
+            <property label="Selected Marker" name="selectedMarkerValue" type="String" role="outputOnly" description="Output of selected marker."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

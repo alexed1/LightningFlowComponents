@@ -19,6 +19,7 @@ export default class recordDetailFSC extends LightningElement {
     @api SaveBtnLabel = 'Save';
     @api CancelBtnLabel = 'Cancel';
     @api columnsize = 2;
+    @api suppressUnderline = false;
     
 
     @track elementSize = 6;

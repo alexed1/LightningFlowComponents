@@ -1,5 +1,7 @@
 /**
  * 
+ * 08/08/20     Eric Smith      Display Error Message on Deploy if one is caught
+ * 
  * 07/01/20     Eric Smith      Updated to navigate to the next node in the Flow on deployment completion
  *                              This will work best if you disable the footer on the Flow screen 
  *                         
@@ -94,6 +96,7 @@ export default class TransferMetadata extends LightningElement {
         })
         .catch(error => {
             console.log('error calling fbc_deployMetadata from transfer');
+            this.activity = 'Error: ' + JSON.stringify(error.body.message);
             this.error = error;
         });
     }

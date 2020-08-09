@@ -5,8 +5,10 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-11-2020
- * @Modification Log	:
+
+ * @Last Modified On	: 08-07-2020
+ * @Modification Log	: 
+
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
  * -------	----------	----------------------	------------------------------------------
@@ -49,25 +51,26 @@ public with sharing class SendHTMLEmailTest {
     Inversely, not doing these tests can cause code coverage % failures.  For pre-deployment testing purposes, TEST_WITH_CREATED_RECORDS should be set to true,
     but for version release, should be set to false.
 **/
-    private static final Boolean TEST_WITH_CREATED_RECORDS = true;
-    //
-    private static final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
-    private static final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';
-    private static final String TEMPLATE_NAME_NO_LANG = 'xxxyyy Test Email Template No Language yyyxxx';
-    private static final String TEMPLATE_DEVNAME_NO_LANG = 'xxxyyy_Test_Email_Template_No_Language_yyyxxx';
-    private static final String TEMPLATE_LANGUAGE = 'en_US';
-    private static final String TEMPLATE_NOSUCH = 'ZZXZ_XYZZY';
-    private static final String TEMPLATE_NAME_NOSUCH = 'ZZXZ XYZZY';
-    private static final String EMAIL_SUBJECT = 'this is the subject';
-    private static final String EMAIL_BODY = 'this is the body';
-    private static final String EMAIL_NOSUCH = 'test@foo.com';
-    private static final String EMAIL_NAME_NOSUCH = 'Do Not Reply';
-    private static final Integer TEST_CONTACTS_COUNT = 1;
-    private static final Integer BULK_TEST_COUNT = 6;
 
-    //	set up two email templates - one language enabled, the other not.   These will also be used as the relatedTo (WhatId/recordId)
-    @testSetup
-    static void testSetupdata() {
+    private Static Final Boolean TEST_WITH_CREATED_RECORDS = false;
+//
+    private Static Final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
+    private Static Final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';
+    private Static Final String TEMPLATE_NAME_NO_LANG = 'xxxyyy Test Email Template No Language yyyxxx';
+    private Static Final String TEMPLATE_DEVNAME_NO_LANG = 'xxxyyy_Test_Email_Template_No_Language_yyyxxx';
+    private Static Final String TEMPLATE_LANGUAGE = 'en_US';
+    private Static Final String TEMPLATE_NOSUCH = 'ZZXZ_XYZZY';
+    private Static Final String TEMPLATE_NAME_NOSUCH = 'ZZXZ XYZZY';
+    private Static Final String EMAIL_SUBJECT = 'this is the subject';
+    private Static Final String EMAIL_BODY = 'this is the body';
+    private Static Final String EMAIL_NOSUCH = 'test@foo.com';
+    private Static Final String EMAIL_NAME_NOSUCH = 'Do Not Reply';
+    private Static Final Integer TEST_CONTACTS_COUNT = 1;
+    private Static Final Integer BULK_TEST_COUNT = 6;
+
+	//	set up two email templates - one language enabled, the other not.   These will also be used as the relatedTo (WhatId/recordId)
+	@testSetup static void testSetupdata(){
+
         EmailTemplate validEmailTemplate = new EmailTemplate(
             isActive = true,
             Name = TEMPLATE_NAME,

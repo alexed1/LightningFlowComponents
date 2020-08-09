@@ -8,7 +8,7 @@
  * 1.0		07-09-2020		Andrii Kraiev	Initial Version
  * 1.33.2	07-23-2020		Jack D. Pond	Modified for Summer '20 changes
 **/
-import {LightningElement, api, track, wire} from 'lwc';
+import {LightningElement, api, track} from 'lwc';
 
 import Search from '@salesforce/label/c.sremailSearchMembers';
 import For from '@salesforce/label/c.fbc_For';

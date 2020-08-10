@@ -1,20 +1,22 @@
 /**
 * @File Name			: SendHTMLEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @Author				: Jack D. Pond
+ * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-02-2020
- * @Modification Log	: 
+ * @Last Modified On	: 08-09-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
+ * @Modification Log	: 
  * 
  * Ver		Date		Author					Modification
+ * 0.01					Alex Edelstein			Original Author
  * 1.32		2/5/2020	Jack Pond				Modified for multi-lingual and to throw InvocableActionException on exceptions
  * 1.32		2/11/2020	Alex Edelstein			Bulkified and Changed recordId to String
  * 1.33		3/22/2020	Jack Pond				Added consistency checks, modified Labels and alphabetized params
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
  * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
  * 1.33.2	6/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
+ * 2.00.00	6/02/2020	Jack Pond				SendHTMLEmail - Optimize Bulkification #445
  * 
  * Done:
  * #320 sendHTMLEmail - Activity History Redesign?
@@ -23,9 +25,8 @@
  * #355 sendHTMLEmail - Separate Email Activity from Email Task Activity
  * #378 sendHTMLEmail - Allow selection of email template by name as well as by TemplateId
  * #392 sendHTMLEmail - Return the Activity TaskId added
- * 
- * To do: 
  * #342 sendHTMLEmail CPE For Summer '20 Release
+ * #445 SendHTMLEmail - Optimize Bulkification
 **/
 
 public without sharing class SendHTMLEmail {
@@ -264,7 +265,7 @@ public without sharing class SendHTMLEmail {
 			Integer replyPos = 0;
 			for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail') replyPos++;
-				system.debug('MassReplyPos: ' + replyPos);
+//				system.debug('MassReplyPos: ' + replyPos);
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
@@ -273,16 +274,20 @@ public without sharing class SendHTMLEmail {
 					}
 					responseList[replyPos].errors = errorReport;
 					responseList[replyPos].isSuccess = false;
-					system.debug('MassResponseSetFail:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
+//					system.debug('MassResponseSetFail:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
+						string subject = requests[replyPos].subject;
+						if (requests[replyPos].templateID != null && subject == null){
+							subject = [SELECT Subject FROM EmailTemplate WHERE Id=:requests[replyPos].templateID AND isActive = TRUE ].Subject;
+						}
 						for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++) {
 							List<String> recipientList = new List<String>{	(String) Database.query('Select Email From ' +
 							((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
 																		' Where Id = \''+ requests[replyPos].targetObjectIds[i] +
 																		'\' limit 1')[0].get('Email')};
-							TaskAttached thisTask = addTasksId(requests[replyPos].templateID,requests[replyPos].subject,
+							TaskAttached thisTask = addTasksId(requests[replyPos].templateID,subject,
 																		requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
 																		recipientList,responseList[replyPos].errors);
 							responseList[replyPos].errors = thisTask.errorMsg;
@@ -309,10 +314,10 @@ public without sharing class SendHTMLEmail {
 				}
 			}
 			Integer replyPos = 0;
-			system.debug('EmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
+//			system.debug('EmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
 			for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') replyPos++;
-				system.debug('EmailResults replyPos: ' + replyPos + ' Results: ' + thisResult.isSuccess());
+//				system.debug('EmailResults replyPos: ' + replyPos + ' Results: ' + thisResult.isSuccess());
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
@@ -321,7 +326,7 @@ public without sharing class SendHTMLEmail {
 					}
 					responseList[replyPos].errors = errorReport;
 					responseList[replyPos].isSuccess = false;
-					system.debug('FailResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
+//					system.debug('FailResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
@@ -344,7 +349,7 @@ public without sharing class SendHTMLEmail {
 				replyPos++;
 			}
 		}
-		for (Integer i=0;i<responseList.size();i++) system.debug('Response:['+i+'].isSuccess: ' + responseList[i].isSuccess + ' errors: ' + responseList[i].errors);
+//		for (Integer i=0;i<responseList.size();i++) system.debug('Response:['+i+'].isSuccess: ' + responseList[i].isSuccess + ' errors: ' + responseList[i].errors);
 		//report back the results
 		boolean atLeastOneSent=false;
 		for (Integer i=0;i<responseList.size();i++){

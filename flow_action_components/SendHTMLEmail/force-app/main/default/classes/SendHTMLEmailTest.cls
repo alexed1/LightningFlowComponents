@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-11-2020
+ * @Last Modified On	: 08-09-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -586,7 +586,7 @@ public with sharing class SendHTMLEmailTest {
         try {
             List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
-                System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4));
+                System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4)+' Error: '+testResponseList[i].errors);
             }
         } catch (SendHTMLEmail.InvocableActionException e) {
             String error = e.getMessage();

@@ -12,6 +12,7 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 2)	Find and Replace
 3)	Auto-Replace suggested words
 4)	Undo functionality for search/replace or suggested words
+5)  Character Count and Max Character limits.
 
 ### Admin Instructions:
 ##### Enabling and Disabling Features in Flow:
@@ -27,16 +28,20 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 2)  Both disallowedSymbols and disallowedWords accept a comma delimited string.
 3)  The default message will say 'Error' and provide the violating word/symbol.  This will also give validation error if user tries to advance while error is still present.
 4)  To change the message to a warning only, and turn off the associated validation (allowing user to advance the Flow), set warnOnly attribute to true.
+##### Character Counts and Limits:
+1)  Character count is off by default.  Set characterLimit to an integer value to show character count and limit.  
+2)  If warnOnly is not set when characterLimit is on, then the Flow Next/Finish cannot be used until resolved.
 
 |Parameter	               |I	 |O	     |Information 
-|--------------------------|-----|-------|-------------------------------------------------------------------------------------------------------------------|
-|**enableAdvancedTools**   |X    |       |Boolean.  Set to true if you want to use enhanced rich text.  Default is false (regular input component)           |
-|**autoReplaceMap**	       |X	 |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )                                                |
-|**disallowedSymbols**	   |X	 |       |Comma-separated list of words to block.  Example: /,@,*                                                            |
-|**disallowedWords**	   |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst                                                  |
-|**warnOnly**	           |X	 |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.   |
-|**value**	           	   |X	 |X	     |Input and output Rich Text that you’ll be editing                                                                  |
-|**label**                 |X    |X      |Input to provide field-level label if desired                                                                      |
+|--------------------------|-----|-------|----------------------------------------------------------------------------------------------------------------------------------|
+|**enableAdvancedTools**   |X    |       |Boolean.  Set to true if you want to use enhanced rich text.  Default is false (regular input component)                          |
+|**autoReplaceMap**	       |X	 |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )                                                               |
+|**disallowedSymbols**	   |X	 |       |Comma-separated list of words to block.  Example: /,@,*                                                                           |
+|**disallowedWords**	   |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst                                                                 |
+|**warnOnly**	           |X	 |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.                  |
+|**characterLimit**	       |X	 |	     |Integer.  Set character limit.  This will enable character count and limit, and if warnOnly is not true, then will block next.    |
+|**value**	           	   |X	 |X	     |Input and output Rich Text that you’ll be editing                                                                                 |
+|**label**                 |X    |X      |Input to provide field-level label if desired                                                                                     |
 
 
 ### User Instructions:

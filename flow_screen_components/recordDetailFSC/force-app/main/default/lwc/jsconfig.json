@@ -3,9 +3,6 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/toastMessage": [
-                "toastMessage/toastMessage.js"
-            ],
             "c/recordDetailFlowScreenComponent": [
                 "recordDetailFlowScreenComponent/recordDetailFlowScreenComponent.js"
             ]

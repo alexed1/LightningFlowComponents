@@ -7,11 +7,4 @@
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
-<!--    <targetConfigs>-->
-<!--        <targetConfig targets="lightning__FlowScreen">-->
-<!--            <property name="formulaString" type="String"></property>-->
-<!--            <property name="contextObjectType" type="String"></property>-->
-<!--            <property name="supportedSystemTypes" type="String"></property>-->
-<!--        </targetConfig>-->
-<!--    </targetConfigs>-->
 </LightningComponentBundle>

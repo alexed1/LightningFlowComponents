@@ -15,10 +15,10 @@ global with sharing class FilterCollection {
         //usually generated in a separate 'management' flow from the runtime flow that does this filtering.
         if (inputCollection != null && !inputCollection.isEmpty()) {
             for (SObject member : inputCollection) {
-                List<FormulaEvaluator.ContextWrapper> context = new List<FormulaEvaluator.ContextWrapper>();
-                context.add(new FormulaEvaluator.ContextWrapper('$Record', member.Id));
+                List<fbc_FormulaEvaluator.ContextWrapper> context = new List<fbc_FormulaEvaluator.ContextWrapper>();
+                context.add(new fbc_FormulaEvaluator.ContextWrapper('$Record', member.Id));
                 String stringContext = JSON.serialize(context);
-                String result = FormulaEvaluator.parseFormula(formulaString, stringContext);
+                String result = fbc_FormulaEvaluator.parseFormula(formulaString, stringContext);
                 if (result == 'true') {
                     outputCollection.add(member);
                 }

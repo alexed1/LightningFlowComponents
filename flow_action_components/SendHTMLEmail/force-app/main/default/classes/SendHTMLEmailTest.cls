@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-09-2020
+ * @Last Modified On	: 08-11-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -49,7 +49,7 @@ public with sharing class SendHTMLEmailTest {
     Inversely, not doing these tests can cause code coverage % failures.  For pre-deployment testing purposes, TEST_WITH_CREATED_RECORDS should be set to true,
     but for version release, should be set to false.
 **/
-    private Static Final Boolean TEST_WITH_CREATED_RECORDS = true;
+    private Static Final Boolean TEST_WITH_CREATED_RECORDS = false;
 //
     private Static Final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
     private Static Final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';

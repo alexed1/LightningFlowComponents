@@ -1,0 +1,10 @@
+{
+  "orgName": "unofficialSF Team",
+  "edition": "Developer",
+  "hasSampleData": false,
+  "settings": {
+    "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
+    }
+  }
+}

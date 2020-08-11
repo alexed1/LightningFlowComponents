@@ -1,15 +1,15 @@
 ## Installation Instructions ##
 
 1. Install/update [Flow Base Components](https://unofficialsf.com/introducing-flowbasecomponents "Flow Base Components").  This is a firm pre-requisite.
-2. Install the latest package found at [Send Rich Email (Send HTML Email Action)](https://unofficialsf.com/send-rich-email-with-the-new-sendhtmlemail-action/).
+2. Install the latest package found at [Send Rich Email (Send Better Email Action)](https://unofficialsf.com/send-rich-email-with-the-new-sendhtmlemail-action/).
 
-# Send HTML Email Flow Action
+# Send Better Email Flow Action
 
-Flow provides a built-in Send Email action but it’s something of an underachiever. The sendHTMLEmail action uses the power of Apex and Flow Actions, easily installed and used from within Flow Builder. MVP Jeremiah Dohn pioneered this space several years back with his well received HTML Email Flow action. The version here is similar and adds a several of additional capabilities.
+Flow provides a built-in Send Email action but it’s something of an underachiever. The sendBetterEmail action uses the power of Apex and Flow Actions, easily installed and used from within Flow Builder. MVP Jeremiah Dohn pioneered this space several years back with his well received Better Email Flow action. The version here is similar and adds a several of additional capabilities.
 
 This improved email flow action supports:
 
-- Rich, HTML email bodies that can use all of the capabilities of Flow’s Text Templates, including Bold, Italics, Underline, Bullets and Numbers, Left/Center/Right justification, URLs, images, fonts, and text size
+- Rich, Better email bodies that can use all of the capabilities of Flow’s Text Templates, including Bold, Italics, Underline, Bullets and Numbers, Left/Center/Right justification, URLs, images, fonts, and text size
 - Email Templates (both Classic and Lightning) with field merge and letterheads.
 - Any combination of the following, for To, CC, and BCC:
 

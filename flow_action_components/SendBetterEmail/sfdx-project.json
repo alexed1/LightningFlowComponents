@@ -3,20 +3,20 @@
         {
             "path": "force-app",
             "default": false,
-            "package": "SendHTMLEmailPrA",
+            "package": "SendBetterEmailPrA",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail(Without Examples)",
+            "package": "sendBetterEmail(Without Examples)",
             "versionName": "ver 1.33.01",
             "versionNumber": "1.33.01.NEXT",
             "default": false
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail",
+            "package": "sendBetterEmail",
             "versionName": "ver 1.33.03",
             "versionNumber": "1.33.03.NEXT",
             "definitionFile": "config/project-scratch-def.json",
@@ -29,7 +29,7 @@
         },
         {
             "path": "force-app",
-            "package": "sendHTMLEmail",
+            "package": "sendBetterEmail",
             "versionName": "ver 2.0.0",
             "versionNumber": "2.0.0.NEXT",
             "dependencies": [
@@ -45,18 +45,18 @@
     "sourceApiVersion": "49.0",
     "packageAliases": {
         "FLowBaseComponents": "033f4000000AoiCAAS",
-        "SendHTMLEmailPrA": "0HoB0000000CavEKAS",
-        "SendHTMLEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
-        "SendHTMLEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
-        "sendHTMLEmail": "0Ho3h000000Gmb2CAC",
-        "sendHTMLEmail(No Tests)": "0Ho3h000000GmbCCAS",
-        "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
-        "sendHTMLEmail@1.33.1-0": "04t3h000002Ne4QAAS",
-        "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
+        "SendBetterEmailPrA": "0HoB0000000CavEKAS",
+        "SendBetterEmailPrA@0.1.0-1": "04tB0000000OE9cIAG",
+        "SendBetterEmailPrA@0.1.0-2": "04tB0000000ORBxIAO",
+        "sendBetterEmail": "0Ho3h000000Gmb2CAC",
+        "sendBetterEmail(No Tests)": "0Ho3h000000GmbCCAS",
+        "sendBetterEmail(Without Examples)": "0Ho3h0000008OTFCA2",
+        "sendBetterEmail@1.33.1-0": "04t3h000002Ne4QAAS",
+        "sendBetterEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
         "FlowBaseComponents@1.2.3-0": "04tf4000004Pu2iAAC",
-        "sendHTMLEmail@1.33.2-0": "04t3h0000045qdMAAQ",
-        "sendHTMLEmail@1.33.2-2": "04t3h0000045qdRAAQ",
-        "sendHTMLEmail@1.33.2-3": "04t3h0000045qeeAAA",
-        "sendHTMLEmail@1.33.3-0": "04t3h0000045qf3AAA"
+        "sendBetterEmail@1.33.2-0": "04t3h0000045qdMAAQ",
+        "sendBetterEmail@1.33.2-2": "04t3h0000045qdRAAQ",
+        "sendBetterEmail@1.33.2-3": "04t3h0000045qeeAAA",
+        "sendBetterEmail@1.33.3-0": "04t3h0000045qf3AAA"
     }
 }

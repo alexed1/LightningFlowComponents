@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
-        <members>SendHTMLEmail</members>
-        <members>SendHTMLEmailTest</members>
+        <members>SendBetterEmail</members>
+        <members>SendBetterEmailTest</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -10,13 +10,13 @@
         <name>CustomLabels</name>
     </types>
     <types>
-        <members>Send_HTML_Email_Testflow</members>
-        <members>sendHTMLEmail_Test_Create_Test_Templates_if_needed</members>
+        <members>Send_Better_Email_Testflow</members>
+        <members>sendBetterEmail_Test_Create_Test_Templates_if_needed</members>
         <name>Flow</name>
     </types>
     <types>
         <members>addNewMembers</members>
-        <members>sendHTMLEmailCPE</members>
+        <members>sendBetterEmailCPE</members>
         <members>ucModal</members>
         <name>LightningComponentBundle</name>
     </types>

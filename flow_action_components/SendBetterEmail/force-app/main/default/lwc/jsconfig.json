@@ -6,8 +6,8 @@
             "c/addNewMembers": [
                 "addNewMembers/addNewMembers.js"
             ],
-            "c/sendHTMLEmailCPE": [
-                "sendHTMLEmailCPE/sendHTMLEmailCPE.js"
+            "c/sendBetterEmailCPE": [
+                "sendBetterEmailCPE/sendBetterEmailCPE.js"
             ],
             "c/ucModal": [
                 "ucModal/ucModal.js"

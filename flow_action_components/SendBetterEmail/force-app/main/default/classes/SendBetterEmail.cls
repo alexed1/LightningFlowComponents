@@ -1,10 +1,10 @@
 /**
-* @File Name			: SendHTMLEmail.cls
+* @File Name			: SendBetterEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-10-2020
+ * @Last Modified On	: 08-11-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	: 
  * 
@@ -16,23 +16,23 @@
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
  * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
  * 1.33.2	6/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
- * 2.00.00	6/02/2020	Jack Pond				SendHTMLEmail - Optimize Bulkification #445
+ * 2.00.00	6/02/2020	Jack Pond				SendBetterEmail - Optimize Bulkification #445
  * 
  * Done:
- * #320 sendHTMLEmail - Activity History Redesign?
- * #351 sendHTMLEmail - Address bulkification consistent with Apex Gov Limits
- * #354 sendHTMLEmail - Limit Class test to 2 OrgWideEmailAddresses
- * #355 sendHTMLEmail - Separate Email Activity from Email Task Activity
- * #378 sendHTMLEmail - Allow selection of email template by name as well as by TemplateId
- * #392 sendHTMLEmail - Return the Activity TaskId added
- * #342 sendHTMLEmail CPE For Summer '20 Release
- * #445 SendHTMLEmail - Optimize Bulkification
+ * #320 sendBetterEmail - Activity History Redesign?
+ * #351 sendBetterEmail - Address bulkification consistent with Apex Gov Limits
+ * #354 sendBetterEmail - Limit Class test to 2 OrgWideEmailAddresses
+ * #355 sendBetterEmail - Separate Email Activity from Email Task Activity
+ * #378 sendBetterEmail - Allow selection of email template by name as well as by TemplateId
+ * #392 sendBetterEmail - Return the Activity TaskId added
+ * #342 sendBetterEmail CPE For Summer '20 Release
+ * #445 SendBetterEmail - Optimize Bulkification
 **/
 
-public without sharing class SendHTMLEmail {
+public without sharing class SendBetterEmail {
 
-//	@invocableMethod(label='Send HTML Email')
-	@invocableMethod(label='Send HTML Email' configurationEditor='c:sendHTMLEmailCPE')
+//	@invocableMethod(label='Send Better Email')
+	@invocableMethod(label='Send Better Email' configurationEditor='c:sendBetterEmailCPE')
 	public static List<Response> SendEmail(List<Request> requests) {
 
 		List<Response> responseList = new List<Response>();
@@ -216,7 +216,7 @@ public without sharing class SendHTMLEmail {
 				}
 				
 				if (thisResponse.errors == null && (templateID == null  && HTMLbody == null && plainTextBody == null)){
-					thisResponse.errors = 'Body text must be provided to Send HTML Email Action, either via HTMLbody, plainTextBody, or a templateId';
+					thisResponse.errors = 'Body text must be provided to Send Better Email Action, either via HTMLbody, plainTextBody, or a templateId';
 				}
 					
 				if (thisResponse.errors == null && (curRequest.setSaveAsTask == true && recordId == null)){

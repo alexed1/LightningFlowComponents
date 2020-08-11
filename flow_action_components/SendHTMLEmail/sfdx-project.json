@@ -17,8 +17,9 @@
         {
             "path": "force-app",
             "package": "sendHTMLEmail",
-            "versionName": "ver 1.33.02",
-            "versionNumber": "1.33.02.NEXT",
+            "versionName": "ver 1.33.03",
+            "versionNumber": "1.33.03.NEXT",
+            "definitionFile": "config/project-scratch-def.json",
             "dependencies": [
                 {
                     "package": "FlowBaseComponents@1.2.3-0"
@@ -54,6 +55,8 @@
         "sendHTMLEmail(Without Examples)@1.33.1-0": "04t3h000002Ne4kAAC",
         "FlowBaseComponents@1.2.3-0": "04tf4000004Pu2iAAC",
         "sendHTMLEmail@1.33.2-0": "04t3h0000045qdMAAQ",
-        "sendHTMLEmail@1.33.2-2": "04t3h0000045qdRAAQ"
+        "sendHTMLEmail@1.33.2-2": "04t3h0000045qdRAAQ",
+        "sendHTMLEmail@1.33.2-3": "04t3h0000045qeeAAA",
+        "sendHTMLEmail@1.33.3-0": "04t3h0000045qf3AAA"
     }
 }

@@ -5,7 +5,7 @@
   @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
   @Group				: 
   @Last Modified By		: Jack D. Pond
-  @Last Modified On		: 07-26-2020
+  @Last Modified On		: 08-10-2020
   @Modification Log		: 
   @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
@@ -235,9 +235,9 @@
 				<lightning-accordion allow-multiple-sections-open title>
 					<template for:each={availableRecipients} for:item="curRecipient">
 						<lightning-accordion-section
-								name={curRecipient.baseLabel}
-								label={curRecipient.label}
-								key={curRecipient.baseLabel}>
+							name={curRecipient.baseLabel}
+							label={curRecipient.label}
+							key={curRecipient.baseLabel}>
 							<c-add-new-members
 								name={curRecipient.baseLabel}
 								custom-data-structure={convertedFlowContext}
@@ -356,6 +356,21 @@
 						value-type={inputValues.recordId.dataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.recordId.isCollection}
+						builder-context={_builderContext}
+						onvaluechanged={handleFlowComboboxValueChange}
+					></c-fbc_flow-combobox>
+				</div>
+				<div style="padding:0.5rem;background:#16325c;">
+					<h1 class="slds-text-color_inverse slds-text-heading_medium ">Attachments</h1>
+				</div>
+				<div style="padding:5px 0 5px;">
+					<c-fbc_flow-combobox
+						name="contentDocumentAttachments"
+						label={inputValues.contentDocumentAttachments.label}
+						value={inputValues.contentDocumentAttachments.value}
+						value-type={inputValues.contentDocumentAttachments.dataType}
+						builder-context-filter-type="reference"
+						builder-context-filter-collection-boolean={inputValues.contentDocumentAttachments.isCollection}
 						builder-context={_builderContext}
 						onvaluechanged={handleFlowComboboxValueChange}
 					></c-fbc_flow-combobox>

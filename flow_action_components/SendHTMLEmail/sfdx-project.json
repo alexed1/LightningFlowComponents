@@ -24,6 +24,18 @@
                     "package": "FlowBaseComponents@1.2.3-0"
                 }
             ],
+            "default": false
+        },
+        {
+            "path": "force-app",
+            "package": "sendHTMLEmail",
+            "versionName": "ver 2.0.0",
+            "versionNumber": "2.0.0.NEXT",
+            "dependencies": [
+                {
+                    "package": "FlowBaseComponents@1.2.3-0"
+                }
+            ],
             "default": true
         }
     ],

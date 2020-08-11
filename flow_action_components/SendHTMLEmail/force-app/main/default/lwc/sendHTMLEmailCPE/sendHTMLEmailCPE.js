@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 07-26-2020
+ * @Last Modified On	: 08-11-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -45,7 +45,7 @@ export default class SendHTMLEmailCPE extends LightningElement {
 	}
 
 	@track inputValues = {
-		orgWideEmailAddressId: {value: null, valueDataType: null, isCollection: false, label: 'Organizataion Wide Email Address'},
+		orgWideEmailAddressId: {value: null, valueDataType: null, isCollection: false, label: 'Organization Wide Email Address'},
 		senderDisplayName: {value: null, valueDataType: null, isCollection: false, label: 'Sender Display Name'},
 		subject: {value: null, valueDataType: null, isCollection: false, label: 'Subject'},
 		HTMLbody: {value: null, valueDataType: null, isCollection: false, label: 'HTML Body'},
@@ -80,7 +80,8 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
 		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
 		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'}
+		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
+		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, label: 'Attach which Content Document Links?'}
 /*
 		allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
 		required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
@@ -96,7 +97,6 @@ export default class SendHTMLEmailCPE extends LightningElement {
 		recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:'},
 */
 	};
-
 
 	bodyOptions = [
 		{label: 'Specify Body here', value: this.settings.specifyBodyOption,fields: ['HTMLbody','plainTextBody']},

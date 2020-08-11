@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-09-2020
+ * @Last Modified On	: 08-10-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	: 
  * 
@@ -261,11 +261,9 @@ public without sharing class SendHTMLEmail {
 					}
 				}
 			}
-//			system.debug('MassEmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
 			Integer replyPos = 0;
 			for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail') replyPos++;
-//				system.debug('MassReplyPos: ' + replyPos);
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
@@ -274,7 +272,6 @@ public without sharing class SendHTMLEmail {
 					}
 					responseList[replyPos].errors = errorReport;
 					responseList[replyPos].isSuccess = false;
-//					system.debug('MassResponseSetFail:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
@@ -282,6 +279,7 @@ public without sharing class SendHTMLEmail {
 						if (requests[replyPos].templateID != null && subject == null){
 							subject = [SELECT Subject FROM EmailTemplate WHERE Id=:requests[replyPos].templateID AND isActive = TRUE ].Subject;
 						}
+                        responseList[replyPos].taskIds = new List<String>();
 						for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++) {
 							List<String> recipientList = new List<String>{	(String) Database.query('Select Email From ' +
 							((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
@@ -291,16 +289,13 @@ public without sharing class SendHTMLEmail {
 																		requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
 																		recipientList,responseList[replyPos].errors);
 							responseList[replyPos].errors = thisTask.errorMsg;
-							responseList[replyPos].taskId = thisTask.taskId;
+							responseList[replyPos].taskIds.add(thisTask.taskId);
 						}
 					}
-//					system.debug('MassResponseSetSuccess:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				}
 				replyPos++;
 			}
 		}
-//        system.debug('mailList: Size: ' + mailList.size() + ' ' + mailList);
-//        system.debug('responseList: Size: ' + responseList.size() + ' ' + responseList);
 		if (mailList != NULL && mailList.size() > 0){
 			try {
 				emailResults = Messaging.sendEmail(mailList,false);
@@ -314,10 +309,8 @@ public without sharing class SendHTMLEmail {
 				}
 			}
 			Integer replyPos = 0;
-//			system.debug('EmailResults: Size: ' + emailResults.size() + ' ' + emailResults);
 			for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') replyPos++;
-//				system.debug('EmailResults replyPos: ' + replyPos + ' Results: ' + thisResult.isSuccess());
 				if (thisResult.isSuccess() != true) {
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
@@ -326,7 +319,6 @@ public without sharing class SendHTMLEmail {
 					}
 					responseList[replyPos].errors = errorReport;
 					responseList[replyPos].isSuccess = false;
-//					system.debug('FailResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
@@ -342,14 +334,12 @@ public without sharing class SendHTMLEmail {
 																requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
 																recipientList,responseList[replyPos].errors);
 						responseList[replyPos].errors = thisTask.errorMsg;
-						responseList[replyPos].taskId = thisTask.taskId;
+                        responseList[replyPos].taskIds = new List<String>{thisTask.taskId};
 					}
-//					system.debug('ResponseSet:['+replyPos+'].isSuccess: ' + responseList[replyPos].isSuccess + ' errors: ' + responseList[replyPos].errors);
 				}
 				replyPos++;
 			}
 		}
-//		for (Integer i=0;i<responseList.size();i++) system.debug('Response:['+i+'].isSuccess: ' + responseList[i].isSuccess + ' errors: ' + responseList[i].errors);
 		//report back the results
 		boolean atLeastOneSent=false;
 		for (Integer i=0;i<responseList.size();i++){
@@ -658,7 +648,7 @@ public without sharing class SendHTMLEmail {
 		public String templateUsed; 
 		
 		@invocableVariable
-		public String taskId; 
+		public List<String> taskIds; 
 		
 		@invocableVariable
 		public String errors;

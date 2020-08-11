@@ -1,10 +1,10 @@
 /**
 * @File Name			: SendHTMLEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @OriginalAuthor		: Alex Edelstein, etal
+ * @Credits				: Authored by Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-10-2020
+ * @Last Modified On	: 08-11-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	: 
  * 

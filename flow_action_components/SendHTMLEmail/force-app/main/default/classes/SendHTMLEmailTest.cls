@@ -3,6 +3,7 @@
  * @Description			: Test the SendHTMLEmail Action Component. Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
  * @NotTested			: OrgWideEmailAddress - cannot be assured deployment org actually has any and test insert not allowed
  * @Author				: Jack D. Pond
+ * @Credits				: Alex Edelstein, Andrii Kraiev, Original Authors
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
  * @Last Modified On	: 08-11-2020

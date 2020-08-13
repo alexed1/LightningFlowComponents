@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>SendBetterEmail</members>
+        <members>SendBetterEmailTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>CustomLabels</members>
+        <name>CustomLabels</name>
+    </types>
+    <types>
+        <members>Send_Better_Email_Testflow</members>
+        <members>sendBetterEmail_Test_Create_Test_Templates_if_needed</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>addNewMembers</members>
+        <members>sendBetterEmailCPE</members>
+        <members>ucModal</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <version>49.0</version>
+</Package>

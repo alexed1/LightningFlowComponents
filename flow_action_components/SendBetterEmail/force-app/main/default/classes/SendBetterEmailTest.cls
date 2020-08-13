@@ -1,9 +1,8 @@
 /**
- * @File Name			: SendHTMLEmailTest.cls
- * @Description			: Test the SendHTMLEmail Action Component. Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
+ * @File Name			: SendBetterEmailTest.cls
+ * @Description			: Test the SendBetterEmail Action Component. Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
  * @NotTested			: OrgWideEmailAddress - cannot be assured deployment org actually has any and test insert not allowed
  * @Author				: Jack D. Pond
- * @Credits				: Alex Edelstein, Andrii Kraiev, Original Authors
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
  * @Last Modified On	: 08-11-2020
@@ -43,7 +42,7 @@
 // @Test t022_coverageMassMailTemplateIdNoLang: MassEmail finds Template with no Language Specified
 
 @isTest
-public with sharing class SendHTMLEmailTest {
+public with sharing class SendBetterEmailTest {
 /**
     Test classes that create standard object records can cause failures if the deploying org has customized required fields,  
     validations, triggers, . . . because it is complex to find and mimic these customizations and a failure in creation will stop the deployment
@@ -191,20 +190,20 @@ public with sharing class SendHTMLEmailTest {
 // @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
     @isTest
     public static void t001_canSendEmail () {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
         testReq.SendCCthisOneEmailAddress = EMAIL_NOSUCH;
         testReq.SendBCCthisOneEmailAddress = EMAIL_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 
 		Boolean exceptionHit = false;
         try {            
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t001_error: IfNoAddress: '+e.getMessage());
         }
@@ -221,18 +220,18 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t002_errorIfNoAddress () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         //testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean exceptionHit = false;
         try {            
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
         	System.assertEquals(testResponseList[0].isSuccess,false,'t002_errorIfNoAddress: Error expected if no addresses specified');
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t002_error - IfNoAddress: '+e.getMessage());
         }
@@ -242,18 +241,18 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t003_errorIfBothTemplateAndBody () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.templateID = TEMPLATE_NOSUCH;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
         Boolean exceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t003_error - IfBothTemplateAndBody error: '+e.getMessage());
         }
@@ -264,18 +263,18 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t004_errorIfTemplateButNoContextRecord () {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         //testReq.HTMLbody = EMAIL_BODY;
         testReq.templateID = TEMPLATE_NOSUCH;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean exceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t004_errorIfTemplateButNoContextRecord error: '+e.getMessage());
         }
@@ -285,19 +284,19 @@ public with sharing class SendHTMLEmailTest {
 // @Test t005_errorIfTemplateNameAndTemplateID: Error expected if templateID and templateName both used
     @isTest
     public static void t005_errorIfTemplateNameAndTemplateID () {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         //testReq.HTMLbody = EMAIL_BODY;
         testReq.templateID = TEMPLATE_NOSUCH;
         testReq.templateName = TEMPLATE_NAME_NOSUCH;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean ExceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             ExceptionHit=true;
             system.debug('t005_errorIfTemplateNameAndTemplateID error: '+e.getMessage());
         }
@@ -306,19 +305,19 @@ public with sharing class SendHTMLEmailTest {
 // @Test t006_coverageIfTemplateNameAndNoLanguage: Can select the Organization LanguageLocaleKey template if no language specified.  However, if LanguageLocaleKey isn't en_US, still works
     @isTest
     public static void t006_coverageIfTemplateNameAndNoLanguage() {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.templateName = TEMPLATE_NAME;
         testReq.templateTargetObjectId = UserInfo.getUserId();
         // if templateTargetObjectId type = user, saveAsActivity must be false
         testReq.saveAsActivity = false;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean noExceptionHit=true;
-        List<SendHTMLEmail.Response> testResponseList;
+        List<SendBetterEmail.Response> testResponseList;
         try {
-            testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             noExceptionHit=false;
             system.debug('t006_coverageIfTemplateNameAndNoLanguage error: '+e.getMessage());
         }
@@ -334,16 +333,16 @@ public with sharing class SendHTMLEmailTest {
 // @Test t007_coverageIfTemplateNameDoesntExist: Error expected if Named Template non-existent 
     @isTest
     public static void t007_coverageIfTemplateNameDoesntExist() {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.templateName = TEMPLATE_NOSUCH;
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean ExceptionHit=false;
-        List<SendHTMLEmail.Response> testResponseList;
+        List<SendBetterEmail.Response> testResponseList;
         try {
-            testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             ExceptionHit=true;
             system.debug('t007_coverageIfTemplateNameDoesntExist error: '+e.getMessage());
         }
@@ -354,7 +353,7 @@ public with sharing class SendHTMLEmailTest {
     public static void t008_coverageWithAttachments() {
         String devName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE;
         EmailTemplate validEmailTemplate = [Select Id,Name from EmailTemplate where DeveloperName=:devName];
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
     	List<ContentDocumentLink> cdls = emailCreateAttachments(validEmailTemplate.Id);
         testReq.templateName = validEmailTemplate.Name;
         testReq.recordId = validEmailTemplate.Id;
@@ -384,18 +383,18 @@ public with sharing class SendHTMLEmailTest {
         	testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
         }
 		testReq.contentDocumentAttachments = cdls;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
         system.debug('t008 attachlist: '+cdls);
 		Boolean ExceptionHit=false;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
         	if (TEST_WITH_CREATED_RECORDS){
         		System.assertEquals(testResponseList[0].isSuccess,true,'t008_error: IfNoAddress. Error expected if no addresses specified');
             } else {
 	        	System.assertEquals(testResponseList[0].isSuccess,false,'t008_error: WhatId is not available for sending emails to UserIds when using User as targetObject');
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             ExceptionHit=true;
             system.debug('t008_coverage: WithAttachments error: '+e.getMessage());
         }
@@ -407,7 +406,7 @@ public with sharing class SendHTMLEmailTest {
     public static void t009_coverageTestActivityAndBulkification() {
         String devName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE;
         EmailTemplate validEmailTemplate = [Select Id,Name from EmailTemplate where DeveloperName=:devName];
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.templateName = validEmailTemplate.Name;
         testReq.recordId = validEmailTemplate.Id;
         if (TEST_WITH_CREATED_RECORDS){
@@ -421,18 +420,18 @@ public with sharing class SendHTMLEmailTest {
         	testReq.saveAsActivity = false;
         }
 
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 		Boolean ExceptionHit=False;
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             system.debug('t009: testResponseList: ' + testResponseList);
             if (TEST_WITH_CREATED_RECORDS){
                 System.assertEquals(testResponseList[0].isSuccess,true,'Cannot allow email record as activity on recordId object');
             } else {
                 System.assertEquals(testResponseList[0].isSuccess,false,'WhatId is not available for sending emails to UserIds when using User as targetObject');
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             ExceptionHit=true;
             String error = e.getMessage();
             system.debug('t009_coverage - TestActivity error: '+e.getMessage());
@@ -443,7 +442,7 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t010_canSendEmailCCToCollectionOfUsers() {
 
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -451,13 +450,13 @@ public with sharing class SendHTMLEmailTest {
         testReq.SendCCtheEmailAddressesFromThisCollectionOfUsers = [Select Id,Email from User where Id=:UserInfo.getUserId()];
         testReq.SendBCCthisStringCollectionOfEmailAddresses = new List<String>{EMAIL_NOSUCH};
 		testReq.useSalesforceSignature = true;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 
 		Boolean exceptionHit = false;
         try {            
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t001_errorIfNoAddress: '+e.getMessage());
         }
@@ -472,16 +471,16 @@ public with sharing class SendHTMLEmailTest {
 // @Test t011_ErrorIfNoBody: Error expected if (templateID == null  && HTMLbody == null && plainTextBody == null)
     @isTest
     public static void t011_ErrorIfNoBody() {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 
 		Boolean exceptionHit = false;
         try {            
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t011_ErrorIfNoBody: '+e.getMessage());
         }
@@ -496,18 +495,18 @@ public with sharing class SendHTMLEmailTest {
 // @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
 @isTest
     public static void t012_ErrorIfSaveAsTaskAndNoRecordId() {
-        SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.Subject = EMAIL_SUBJECT;
         testReq.HTMLbody = EMAIL_BODY;
         testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
         testReq.saveAsTask = true;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         reqList.add(testReq);
 
 		Boolean exceptionHit = false;
         try {            
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
-        } catch (SendHTMLEmail.InvocableActionException e) {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+        } catch (SendBetterEmail.InvocableActionException e) {
             exceptionHit=true;
             system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+e.getMessage());
         }
@@ -522,9 +521,9 @@ public with sharing class SendHTMLEmailTest {
 // @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
     @isTest
     public static void t013_ErrorIfSaveAsActivityAndNoRecordId() {
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
         for (OrgWideEmailAddress orgAddrs : [SELECT id, DisplayName, Address FROM OrgWideEmailAddress]){
-        	SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        	SendBetterEmail.Request testReq = new SendBetterEmail.Request();
             testReq.Subject = EMAIL_SUBJECT;
             testReq.HTMLbody = EMAIL_BODY;
             testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -533,17 +532,17 @@ public with sharing class SendHTMLEmailTest {
     	}
         if (reqList.size() > 0){
             Boolean exceptionHit = false;
-            List<SendHTMLEmail.Response> testResponseList = new List<SendHTMLEmail.Response>();
+            List<SendBetterEmail.Response> testResponseList = new List<SendBetterEmail.Response>();
             try {            
-                testResponseList = SendHTMLEmail.SendEmail(reqList);
-            } catch (SendHTMLEmail.InvocableActionException e) {
+                testResponseList = SendBetterEmail.SendEmail(reqList);
+            } catch (SendBetterEmail.InvocableActionException e) {
                 exceptionHit=true;
                 system.debug('t013_CoverageAttemptForOrgWideEmailAddress: '+e.getMessage());
             }
             
             Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
             if(emailDeliverabilityEnabled){
-                for(SendHTMLEmail.Response thisTest : testResponseList){
+                for(SendBetterEmail.Response thisTest : testResponseList){
                     system.debug('t013_CoverageAttemptForOrgWideEmailAddress Response:' + thisTest.isSuccess + ' Template Errors: ' + thisTest.errors + ' Template Used: '+ thisTest.templateUsed);
                 }
 //                System.assertEquals(exceptionHit,false,'Error on orgWideEmailAddressId');
@@ -565,10 +564,10 @@ public with sharing class SendHTMLEmailTest {
                 theseAccounts.add(emailCreateTestAccount(1,thisContact.Id)[0]);
             }
         }
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq;
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq;
         for (Integer i=0;i<BULK_TEST_COUNT;i++){
-            testReq = new SendHTMLEmail.Request();
+            testReq = new SendBetterEmail.Request();
             testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
             testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
             // Deliberately introduce error every other request
@@ -585,11 +584,11 @@ public with sharing class SendHTMLEmailTest {
             reqList.add(testReq);
         }
         try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4)+' Error: '+testResponseList[i].errors);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t014_coverageTestActivityAndBulkification error: '+e.getMessage());
         }
@@ -614,10 +613,10 @@ public with sharing class SendHTMLEmailTest {
             }
             for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
         }
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq;
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq;
         for (Integer i=0;i<BULK_TEST_COUNT;i++){
-            testReq = new SendHTMLEmail.Request();
+            testReq = new SendBetterEmail.Request();
             testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
             testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
             // Deliberately introduce error by default so mixed types and errors
@@ -651,11 +650,11 @@ public with sharing class SendHTMLEmailTest {
             reqList.add(testReq);
         }
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t015_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
         }
@@ -664,8 +663,8 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t016_coverageMassMailTestDescription() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -674,12 +673,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.saveAsTask = true;
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t016_coverageMassMailTestDescription: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,false);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t016_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
         }
@@ -688,8 +687,8 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t017_coverageMassMailTestActivityAndBulkification() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
         testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
 //        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -698,12 +697,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.saveAsTask = true;
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t017_coverageMassMailtargetObjectIds: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,false);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t017_coverageMassMailtargetObjectIds error: '+e.getMessage());
         }
@@ -712,8 +711,8 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t018_coverageMassMailTemplateId() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
 //        testReq.templateID = EmailTemplateId;
 //        testReq.templateName = TEMPLATE_NAME;
         testReq.emailMessageType = 'massEmail';
@@ -723,12 +722,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.saveAsTask = true;
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t018_coverageMassMailTemplateId: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,false);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t018_coverageMassMailTemplateId error: '+e.getMessage());
         }
@@ -737,8 +736,8 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t019_coverageMassMailTemplateName() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
 //        testReq.templateID = EmailTemplateId;
         testReq.templateName = TEMPLATE_NAME;
         testReq.emailMessageType = 'massEmail';
@@ -748,12 +747,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.saveAsTask = true;
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t019_coverageMassMailTemplateName: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,true);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t019_coverageMassMailTemplateId error: '+e.getMessage());
         }
@@ -762,8 +761,8 @@ public with sharing class SendHTMLEmailTest {
     @isTest
     public static void t020_coverageMassMailTemplateNameNotFound() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
 //        testReq.templateID = EmailTemplateId;
         testReq.templateName = TEMPLATE_NOSUCH;
         testReq.emailMessageType = 'massEmail';
@@ -773,12 +772,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.saveAsTask = true;
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t020_coverageMassMailTemplateNameNotFound: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,false);
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t020_coverageMassMailTemplateNameNotFound error: '+e.getMessage());
         }
@@ -803,9 +802,9 @@ public with sharing class SendHTMLEmailTest {
             }
             for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
         }
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq;
-        testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq;
+        testReq = new SendBetterEmail.Request();
         testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         // Deliberately introduce error by mismatching targetObjectIds and whatIds
@@ -816,12 +815,12 @@ public with sharing class SendHTMLEmailTest {
         system.debug('testReq'+('0000').right(4)+': ' + testReq);
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t021 Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 				System.assertEquals(testResponseList[i].isSuccess,false,'t021 Fail: Should have recognized targetObjectIds and whatIds mismatch');
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t021_coverageMassMailTemplateIdMismatches error: '+e.getMessage());
         }
@@ -829,8 +828,8 @@ public with sharing class SendHTMLEmailTest {
 // @Test t022_coverageMassMailTemplateIdNoLang: MassEmail finds Template with no Language Specified
     @isTest
     public static void t022_coverageMassMailTemplateIdNoLang() {
-        List<SendHTMLEmail.Request> reqList = new List<SendHTMLEmail.Request>();
-		SendHTMLEmail.Request testReq = new SendHTMLEmail.Request();
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
 //        testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
         testReq.Description = 'MassEmail Test - no Language';
@@ -838,12 +837,12 @@ public with sharing class SendHTMLEmailTest {
         testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
         reqList.add(testReq);
 		try {
-            List<SendHTMLEmail.Response> testResponseList = SendHTMLEmail.SendEmail(reqList);
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
                 system.debug('t022_coverageMassMailTemplateIdNoLang: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
                 System.assertEquals(testResponseList[i].isSuccess,true,'t022 MassEmail should have found Template with no Language Specified');
             }
-        } catch (SendHTMLEmail.InvocableActionException e) {
+        } catch (SendBetterEmail.InvocableActionException e) {
             String error = e.getMessage();
             system.debug('t022_coverageMassMailTemplateIdNoLang error: '+e.getMessage());
         }

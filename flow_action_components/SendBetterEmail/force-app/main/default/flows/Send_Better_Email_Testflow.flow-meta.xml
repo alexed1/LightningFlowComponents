@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Simplest_HTML_Email</name>
-        <label>1. Simplest HTML Email</label>
+        <name>Simplest_Better_Email</name>
+        <label>1. Simplest Better Email</label>
         <locationX>1154</locationX>
         <locationY>155</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -66,7 +66,7 @@
         <label>2. Simple Email with Address Collections - With Address Collections</label>
         <locationX>1376</locationX>
         <locationY>275</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -157,7 +157,7 @@
         <label>3. Email with Attachments</label>
         <locationX>1461</locationX>
         <locationY>637</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -231,7 +231,7 @@
         <label>4. Email Using Template Action</label>
         <locationX>1514</locationX>
         <locationY>961</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -293,7 +293,7 @@
         <label>5. Multi-Lingual Using Email Templates</label>
         <locationX>1591</locationX>
         <locationY>1087</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -356,12 +356,12 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <description>Testing Send HTML Email - Mass Email</description>
-        <name>X6_Send_HTML_Email_Mass</name>
-        <label>6. Send HTML Email - Mass</label>
+        <description>Testing Send Better Email - Mass Email</description>
+        <name>X6_Send_Better_Email_Mass</name>
+        <label>6. Send Better Email - Mass</label>
         <locationX>1662</locationX>
         <locationY>1226</locationY>
-        <actionName>SendHTMLEmail</actionName>
+        <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
@@ -455,7 +455,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>X6_Send_HTML_Email_Mass</targetReference>
+            <targetReference>X6_Send_Better_Email_Mass</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -743,7 +743,7 @@
             <label>6. Mass Email</label>
         </rules>
     </decisions>
-    <description>A series of 5 examples for testing and demonstrating Send HTML Email Action Component</description>
+    <description>A series of 5 examples for testing and demonstrating Send Better Email Action Component</description>
     <formulas>
         <description>Create a plaintext message with line feeds</description>
         <name>testPlainTextLineFeeds</name>
@@ -756,8 +756,8 @@
         <dataType>String</dataType>
         <expression>{!$User.Id}</expression>
     </formulas>
-    <interviewLabel>Send HTML Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Send HTML Email Testflow</label>
+    <interviewLabel>Send Better Email Testflow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Send Better Email Testflow</label>
     <loops>
         <name>All_CDL</name>
         <label>All CDL</label>
@@ -1099,7 +1099,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Simplest_HTML_Email</targetReference>
+            <targetReference>Simplest_Better_Email</targetReference>
         </connector>
         <fields>
             <name>Example1Details</name>
@@ -1410,7 +1410,7 @@
         </connector>
         <fields>
             <name>Example4Details</name>
-            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This example also creates an activity for the email which will be assigned to the running user and related to the RecordId.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can create test templates (sendHTMLEmailTest)  by running example 5.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you use the default test templates (&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use a template.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This example also creates an activity for the email which will be assigned to the running user and related to the RecordId.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can create test templates (sendBetterEmailTest)  by running example 5.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;If you use the default test templates (&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;sendBetterEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1425,7 +1425,7 @@
             <dataType>String</dataType>
             <fieldText>Template Target Record Id</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendHTMLEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendBetterEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1433,7 +1433,7 @@
             <dataType>String</dataType>
             <fieldText>Related Record Id (for testing merge fields)</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record of a type that allows File Attachments.  If you are using the default test templates (sendHTMLEmailTest), it should be an AccountId&lt;/span&gt;&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record of a type that allows File Attachments.  If you are using the default test templates (sendBetterEmailTest), it should be an AccountId&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -1503,14 +1503,14 @@
         </connector>
         <fields>
             <name>Example5Details</name>
-            <fieldText>&lt;p&gt;SendHTMLEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;If you use the default test templates (sendHTMLEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;SendBetterEmail provides multi-lingual support within the same flow by allowing the language to be specified, then selecting the appropriate template for that language.&amp;nbsp;For this functionality, each language localization has its own template with all localizations sharing a common EmailTemplate.Name. To differentiate the localizations, add a tag to the EmailTemplate.Description field in the format: ‘Language=”en_US”‘ (or whatever corresponding to your organization localizations)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendBetterEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You will also need to:&lt;/p&gt;&lt;p&gt;1) Create a Contact (for Target Object) and have its Id available.&lt;/p&gt;&lt;p&gt;2) Create an Account (for Related Record) and have its Id available.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressee specified through the TargetObjectId and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;For this example, you will need to create or use one or more templates.  Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.  You will be required enter the ID for that record as the  &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; (targetObjectId).  Additionally if you intend to test merge fields (RelatedTo) with your template, you must also pre-create the related object record and have available the Id for that record as an ID for the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;If you use the default test templates (sendBetterEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountID.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>Template_Name</name>
             <dataType>String</dataType>
             <defaultValue>
-                <stringValue>sendHTMLEmailTest</stringValue>
+                <stringValue>sendBetterEmailTest</stringValue>
             </defaultValue>
             <fieldText>Template Name</fieldText>
             <fieldType>InputField</fieldType>
@@ -1533,7 +1533,7 @@
             <dataType>String</dataType>
             <fieldText>Template Target Record Id</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test Template set (sendHTMLEmailTest), this should be a ContactId.&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test Template set (sendBetterEmailTest), this should be a ContactId.&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
         </fields>
         <fields>
@@ -1541,7 +1541,7 @@
             <dataType>String</dataType>
             <fieldText>Related Record Id (for testing merge fields)</fieldText>
             <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record.  If you are using the default test Template set (sendHTMLEmailTest), this should be a AccountId.&lt;/span&gt;&lt;/p&gt;</helpText>
+            <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record.  If you are using the default test Template set (sendBetterEmailTest), this should be a AccountId.&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
         </fields>
         <fields>
@@ -1611,7 +1611,7 @@
         </connector>
         <fields>
             <name>Example6Details</name>
-            <fieldText>&lt;p&gt;SendHTMLEmail can also be used to send Mass Emails. Mass Emails are far more limited in functionality that Single Emails, though both can be bulked as a single send (up to 10) in this action. Mass emails cannot have language localization by target for obvious reasons (one template for a list of targets), so the selected language will apply to the entire list.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendHTMLEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressees specified through the TargetObjectIds and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id (WhatId).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;﻿If you use the default test templates (sendMassHTMLEmailTest) the Target ID and the RelatedRecord Id will be a UserId.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;SendBetterEmail can also be used to send Mass Emails. Mass Emails are far more limited in functionality that Single Emails, though both can be bulked as a single send (up to 10) in this action. Mass emails cannot have language localization by target for obvious reasons (one template for a list of targets), so the selected language will apply to the entire list.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example uses the template set sendHTMLTest with english (en_US) and spanish (es_MX) versions.  If the templates do not exist, this example will automatically create them for you (sendBetterEmailTest).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;You can, of course, vary the templates and object records to reflect your organization&apos;s needs.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This sends out an email using a specified EmailTemplate with the addressees specified through the TargetObjectIds and optionally (dependent on your Template) merge fields with an associated object record using that record&apos;s Id (WhatId).&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;﻿If you use the default test templates (sendMassHTMLEmailTest) the Target ID and the RelatedRecord Id will be a UserId.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1637,7 +1637,7 @@
     </start>
     <status>Draft</status>
     <subflows>
-        <description>sendHTMLEmail Test - Create Test Templates if Needed</description>
+        <description>sendBetterEmail Test - Create Test Templates if Needed</description>
         <name>X5_Create_Test_Templates_if_Needed</name>
         <label>5. Create Test Templates if Needed</label>
         <locationX>1029</locationX>
@@ -1645,16 +1645,16 @@
         <connector>
             <targetReference>X5_Multi_Lingual_Using_Email_Templates_Action</targetReference>
         </connector>
-        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <flowName>sendBetterEmail_Test_Create_Test_Templates_if_needed</flowName>
         <inputAssignments>
-            <name>sendHTMLEmailTestName</name>
+            <name>sendBetterEmailTestName</name>
             <value>
                 <elementReference>Template_Name</elementReference>
             </value>
         </inputAssignments>
     </subflows>
     <subflows>
-        <description>sendHTMLEmail Test - Create Mass Email Test Templates If Needed</description>
+        <description>sendBetterEmail Test - Create Mass Email Test Templates If Needed</description>
         <name>X6_Create_Mass_Email_Test_Templates_If_Needed</name>
         <label>6. Create Mass Email Test Templates If Needed</label>
         <locationX>1028</locationX>
@@ -1662,15 +1662,15 @@
         <connector>
             <targetReference>Assign_User_ID_for_TargetIds</targetReference>
         </connector>
-        <flowName>sendHTMLEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <flowName>sendBetterEmail_Test_Create_Test_Templates_if_needed</flowName>
         <inputAssignments>
-            <name>sendHTMLEmailTestName</name>
+            <name>sendBetterEmailTestName</name>
             <value>
                 <elementReference>Template_Name_Mass_Email</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
-            <name>sendHTMLEmailTestType</name>
+            <name>sendBetterEmailTestType</name>
             <value>
                 <stringValue>MassEmail</stringValue>
             </value>
@@ -1867,7 +1867,7 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <value>
-            <stringValue>This is a test email from sendHTMLEmail</stringValue>
+            <stringValue>This is a test email from sendBetterEmail</stringValue>
         </value>
     </variables>
     <variables>

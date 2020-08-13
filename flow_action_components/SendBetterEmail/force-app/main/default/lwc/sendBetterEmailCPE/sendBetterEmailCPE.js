@@ -1,6 +1,6 @@
 /**
- * @File Name			: sendHTMLEmailCPE.js
- * @Description			: CPE for sendHTMLEmail - an extended functionality for sending email
+ * @File Name			: sendBetterEmailCPE.js
+ * @Description			: CPE for sendBetterEmail - an extended functionality for sending email
  * @Author				: Jack D. Pond
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
@@ -26,7 +26,7 @@ import {api, track, LightningElement} from 'lwc';
 	setWhatIds(whatIds)
 */
 
-export default class SendHTMLEmailCPE extends LightningElement {
+export default class SendBetterEmailCPE extends LightningElement {
 	_builderContext;
 	_values;
 	convertedFlowContext;

@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-11-2020
+ * @Last Modified On	: 08-12-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -40,6 +40,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		flowDataTypeString: 'String',
 		stringVariablesOption: 'String Variables (or type an address)',
 		stringDataType: 'String',
+		stringCollectionVariablesOption: 'String Collection',
 		referenceDataType: 'reference',
 		nullValue: ''
 	}
@@ -66,36 +67,22 @@ export default class SendBetterEmailCPE extends LightningElement {
 		saveAsActivity: {value: null, dataType: null, isCollection: false, label: 'Save Email as Activity on Recipient Record(s)?'},
 		saveAsTask: {value: null, dataType: null, isCollection: false, label: 'Save Email as Task on recipient related record(s)?'},
 		recordId: {value: null, valueDataType: null, isCollection: false, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
-		SendTOthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendTOthisOneEmailAddress'},
-		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendTOthisStringCollectionOfEmailAddresses'},
-		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
-		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
-		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
-		SendCCthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendCCthisOneEmailAddress'},
-		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendCCthisStringCollectionOfEmailAddresses'},
-		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
-		SendBCCthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisOneEmailAddress'},
-		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
-		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
+		SendTOthisOneEmailAddress: {value: null, valueDataType: "String", isCollection: false, label: 'SendTOthisOneEmailAddress'},
+		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: "String", isCollection: true, label: 'SendTOthisStringCollectionOfEmailAddresses'},
+		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: "String", isCollection: true, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
+		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: "String", isCollection: true, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
+		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: "String", isCollection: true, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
+		SendCCthisOneEmailAddress: {value: null, valueDataType: "String", isCollection: false, label: 'SendCCthisOneEmailAddress'},
+		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: true, label: 'SendCCthisStringCollectionOfEmailAddresses'},
+		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: "String", isCollection: true, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: "String", isCollection: true, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: "String", isCollection: true, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
+		SendBCCthisOneEmailAddress: {value: null, valueDataType: "String", isCollection: false, label: 'SendBCCthisOneEmailAddress'},
+		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: "String", isCollection: true, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
+		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: "String", isCollection: true, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: "String", isCollection: true, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: "String", isCollection: true, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
 		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, label: 'Attach which Content Document Links?'}
-/*
-		allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
-		required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
-		masterLabel: {value: null, valueDataType: null, isCollection: false, label: 'Master Label'},
-		value: {value: null, valueDataType: null, isCollection: false, label: 'Value (Default or Existing)'},
-		style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)'},
-		numberOfColumns: {value: null, valueDataType: null, isCollection: false, label: 'Number of Columns'},
-		includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
-		choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
-		iconSize: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
-		objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-		fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
-		recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:'},
-*/
 	};
 
 	bodyOptions = [
@@ -153,8 +140,8 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendTOtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendTOtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendTOtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendTOthisStringCollectionOfEmailAddresses',
-			'String Variables (or type an address)': 'SendTOthisOneEmailAddress'
+			'String Collection': 'SendTOthisStringCollectionOfEmailAddresses',
+			'String Variable (or type an address)': 'SendTOthisOneEmailAddress'
 		}
 	}, {
 		baseLabel: 'CC',
@@ -165,7 +152,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendCCtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendCCtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendCCtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendCCthisStringCollectionOfEmailAddresses',
+			'String Collection': 'SendCCthisStringCollectionOfEmailAddresses',
 			'String Variables (or type an address)': 'SendCCthisOneEmailAddress'
 		}
 	}, {
@@ -177,7 +164,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendBCCtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendBCCtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendBCCtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendBCCthisStringCollectionOfEmailAddresses',
+			'String Collection': 'SendBCCthisStringCollectionOfEmailAddresses',
 			'String Variables (or type an address)': 'SendBCCthisOneEmailAddress'
 		}
 	}];
@@ -253,24 +240,43 @@ export default class SendBetterEmailCPE extends LightningElement {
 							data: [],
 							valueFieldName: valueFieldName,
 							labelFieldName: labelFieldName
-						};
+						}
 						outputTypes[curLookUp.object].data.push(curLookUp);
 					}
 				}
 			}
 		});
-		let stringVariables = flowContext.variables.filter(curValue => {
-			return curValue.dataType === 'String' && !curValue.isCollection
+		allowedTypes.forEach(curType => {
+			if (curType === 'String'){
+				let allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === curType && curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringCollectionVariablesOption,false);
+				allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === curType && !curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+			} else {
+				let allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === "SObject" && curValue.objectType === curType
+				});
+				this.addToOutputTypes(outputTypes,allVariables,curType,true);
+			}
 		});
-
-		if (stringVariables && stringVariables.length) {
-			outputTypes[this.settings.stringVariablesOption] = {
-				data: stringVariables,
-				valueFieldName: 'name',
-				labelFieldName: 'name'
-			};
-		}
 		this.convertedFlowContext = outputTypes;
+	}
+	addToOutputTypes(outputTypes,theseVariables,variablesOption,isSObject) {
+		let retVal = null;
+		if (theseVariables && theseVariables.length) {
+			if (!(variablesOption in outputTypes)) {
+				outputTypes[variablesOption] = {
+					data: [],
+					valueFieldName: 'name',
+					labelFieldName: 'name'
+				}
+			}
+			outputTypes[variablesOption].data.push(...theseVariables);
+		}
 	}
 
 	doCleanRoleManager(baseLabel, newValueObjectType) {

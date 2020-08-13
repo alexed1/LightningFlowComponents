@@ -1,7 +1,7 @@
 /**
 * @File Name			: SendBetterEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @Credits				: Alex Edelstein, Jeremiah Dohn, etal
+ * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
  * @Last Modified On	: 08-12-2020

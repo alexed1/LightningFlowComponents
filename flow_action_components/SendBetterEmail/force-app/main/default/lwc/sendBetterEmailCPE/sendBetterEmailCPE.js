@@ -5,26 +5,12 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-11-2020
+ * @Last Modified On	: 08-13-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
 **/
 import {api, track, LightningElement} from 'lwc';
-
-/*	MassEmail
-
-	saveAsTask
-	setBccSender(bcc)
-	setDescription(description)
-	setReplyTo(replyAddress)
-	setSaveAsActivity(saveAsActivity)
-	setSenderDisplayName(displayName)
-	setTargetObjectIds(targetObjectIds)
-	setTemplateID(templateId)
-	setUseSignature(useSignature)
-	setWhatIds(whatIds)
-*/
 
 export default class SendBetterEmailCPE extends LightningElement {
 	_builderContext;
@@ -38,6 +24,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		singleEmailOption: 'singleEmail',
 		massEmailOption: 'massEmail',
 		flowDataTypeString: 'String',
+		stringCollectionVariablesOption: 'String Collection',
 		stringVariablesOption: 'String Variables (or type an address)',
 		stringDataType: 'String',
 		referenceDataType: 'reference',
@@ -82,20 +69,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
 		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
 		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, label: 'Attach which Content Document Links?'}
-/*
-		allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
-		required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
-		masterLabel: {value: null, valueDataType: null, isCollection: false, label: 'Master Label'},
-		value: {value: null, valueDataType: null, isCollection: false, label: 'Value (Default or Existing)'},
-		style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)'},
-		numberOfColumns: {value: null, valueDataType: null, isCollection: false, label: 'Number of Columns'},
-		includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
-		choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
-		iconSize: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
-		objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-		fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
-		recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:'},
-*/
 	};
 
 	bodyOptions = [
@@ -153,7 +126,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendTOtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendTOtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendTOtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendTOthisStringCollectionOfEmailAddresses',
+			'String Collection': 'SendTOthisStringCollectionOfEmailAddresses',
 			'String Variables (or type an address)': 'SendTOthisOneEmailAddress'
 		}
 	}, {
@@ -165,7 +138,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendCCtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendCCtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendCCtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendCCthisStringCollectionOfEmailAddresses',
+			'String Collection': 'SendCCthisStringCollectionOfEmailAddresses',
 			'String Variables (or type an address)': 'SendCCthisOneEmailAddress'
 		}
 	}, {
@@ -260,17 +233,41 @@ export default class SendBetterEmailCPE extends LightningElement {
 			}
 		});
 		let stringVariables = flowContext.variables.filter(curValue => {
-			return curValue.dataType === 'String' && !curValue.isCollection
+			return curValue.dataType === 'String' && curValue.isCollection
 		});
 
-		if (stringVariables && stringVariables.length) {
-			outputTypes[this.settings.stringVariablesOption] = {
-				data: stringVariables,
-				valueFieldName: 'name',
-				labelFieldName: 'name'
-			};
-		}
+
+		allowedTypes.forEach(curType => {
+			if (curType === 'String'){
+				let allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === curType && curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringCollectionVariablesOption,false);
+				allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === curType && !curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+			} else {
+				let allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === 'SObject' && curValue.objectType === curType
+				});
+				this.addToOutputTypes(outputTypes,allVariables,curType,true);
+			}
+		});
 		this.convertedFlowContext = outputTypes;
+	}
+	addToOutputTypes(outputTypes,theseVariables,variablesOption,isSObject) {
+		let retVal = null;
+		if (theseVariables && theseVariables.length) {
+			if (!(variablesOption in outputTypes)) {
+				outputTypes[variablesOption] = {
+					data: [],
+					valueFieldName: 'name',
+					labelFieldName: 'name'
+				}
+			}
+			outputTypes[variablesOption].data.push(...theseVariables);
+		}
 	}
 
 	doCleanRoleManager(baseLabel, newValueObjectType) {
@@ -288,7 +285,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		if (valuesToCleanUp.length) {
 			valuesToCleanUp.forEach(valueToCleanUp => {
 				if (valueToCleanUp && valueToCleanUp.value) {
-					this.dispatchFlowValueChangeEvent(valueToCleanUp.name, this.settings.nullValue, this.settings.stringDataType);
+					this.dispatchFlowValueChangeEvent(valueToCleanUp.name, this.settings.nullValue, this.settings.stringCollectionVariablesOption);
 				}
 			});
 		}
@@ -318,6 +315,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 				newValueDataType: newValueDataType
 			}
 		});
+
 		this.dispatchEvent(valueChangedEvent);
 	}
 
@@ -334,7 +332,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		let curAttributeName = event.target.name ? event.target.name : null;
 		this.inputValues.emailMessageType.value = event.detail.value;
 		this.isMassEmail = this.inputValues.emailMessageType.value === this.settings.massEmailOption;
-		this.dispatchFlowValueChangeEvent(curAttributeName, event.detail.value, "String");
+		this.dispatchFlowValueChangeEvent(curAttributeName, event.detail.value, 'String');
 		//		this.doClearBodyOptions();
 	}
 
@@ -351,10 +349,10 @@ export default class SendBetterEmailCPE extends LightningElement {
 			let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
 			let curAttributeType;
 			switch (event.target.type) {
-				case "checkbox":
+				case 'checkbox':
 					curAttributeType = 'Boolean';
 					break;
-				case "number":
+				case 'number':
 					curAttributeType = 'Number';
 					break;
 				default:
@@ -372,8 +370,8 @@ export default class SendBetterEmailCPE extends LightningElement {
 			let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
 			let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
 			curRecipient.label = newLabel;
-			if (event.detail.newValueType === this.settings.stringDataType) {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringDataType);
+			if (event.detail.newValueType === this.settings.stringCollectionVariablesOption) {
+				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringCollectionVariablesOption);
 			} else {
 				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? '{!' + event.detail.newValue + '}' : this.settings.nullValue, this.settings.referenceDataType);
 			}

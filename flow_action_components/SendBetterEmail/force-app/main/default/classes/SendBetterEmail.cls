@@ -1,10 +1,10 @@
 /**
 * @File Name			: SendBetterEmail.cls
  * @Description			: Uses Spring/Summer '20 EmailTemplate Object + ContentVersion with multi-lingual
- * @Credits				: Alex Edelstein, Jeremiah Dohn, etal
+ * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-11-2020
+ * @Last Modified On	: 08-12-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	: 
  * 
@@ -120,7 +120,7 @@ public without sharing class SendBetterEmail {
 						if (curRequest.whatIds != null && curRequest.whatIds.size() > 0 ){
 							if (curRequest.whatIds.size() == curRequest.targetObjectIds.size()){
 								try {
-									mmail.setTargetObjectIds(curRequest.whatIds);
+									mmail.setWhatIds(curRequest.whatIds);
 								} catch (Exception e){
 									thisResponse.errors = e.getMessage();
 								}

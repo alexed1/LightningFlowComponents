@@ -22,6 +22,8 @@
         "sendHTMLEmail(No Tests)": "0Ho3h000000GmbCCAS",
         "sendHTMLEmail(Without Examples)": "0Ho3h0000008OTFCA2",
         "FlowBaseComponents@1.2.3-0": "04tf4000004Pu2iAAC",
-        "sendHTMLEmail@2.0.0-0": "04t3h0000045qiMAAQ"
+        "sendHTMLEmail@2.0.0-0": "04t3h0000045qiMAAQ",
+        "sendHTMLEmail@2.0.0-1": "04t3h0000045qtWAAQ",
+        "sendHTMLEmail@2.0.1-0": "04t3h0000045qtbAAA"
     }
 }

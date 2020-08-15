@@ -265,32 +265,21 @@ public without sharing class SendBetterEmail {
 			for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail') replyPos++;
 				if (thisResult.isSuccess() != true) {
+					responseList[replyPos].isSuccess = false;
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
 					for(Messaging.SendEmailError curError : curErrors ) {
 						errorReport = errorReport + 'Error Code: ' + curError.getStatusCode() + ' - '+ curError.getMessage() + '\n';
 					}
 					responseList[replyPos].errors = errorReport;
-					responseList[replyPos].isSuccess = false;
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
-						string subject = requests[replyPos].subject;
-						if (requests[replyPos].templateID != null && subject == null){
-							subject = [SELECT Subject FROM EmailTemplate WHERE Id=:requests[replyPos].templateID AND isActive = TRUE ].Subject;
-						}
-                        responseList[replyPos].taskIds = new List<String>();
-						for (integer i=0;i<requests[replyPos].targetObjectIds.size();i++) {
-							List<String> recipientList = new List<String>{	(String) Database.query('Select Email From ' +
-							((Id)requests[replyPos].targetObjectIds[i]).getSObjectType().getDescribe().getName() + 
-																		' Where Id = \''+ requests[replyPos].targetObjectIds[i] +
-																		'\' limit 1')[0].get('Email')};
-							TaskAttached thisTask = addTasksId(requests[replyPos].templateID,subject,
-																		requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
-																		recipientList,responseList[replyPos].errors);
-							responseList[replyPos].errors = thisTask.errorMsg;
-							responseList[replyPos].taskIds.add(thisTask.taskId);
-						}
+                        if (requests[replyPos].whatIds != null && requests[replyPos].whatIds.size() > 0){
+                    		responseList[replyPos].taskIds = addTasks(requests[replyPos], responseList[replyPos]);
+                        } else {
+                            responseList[replyPos].taskIds = new List<String> {'Error:  Mass Email requires whatIds if saveAsTask'};
+                        }
 					}
 				}
 				replyPos++;
@@ -309,32 +298,24 @@ public without sharing class SendBetterEmail {
 				}
 			}
 			Integer replyPos = 0;
-			for (Messaging.SendEmailResult thisResult : emailResults){
+            for (Messaging.SendEmailResult thisResult : emailResults){
 				while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') replyPos++;
 				if (thisResult.isSuccess() != true) {
+					responseList[replyPos].isSuccess = false;
 					Messaging.SendEmailError[] curErrors = thisResult.getErrors();
 					String errorReport = '';
 					for(Messaging.SendEmailError curError : curErrors ) {
 						errorReport = errorReport + 'Error Code:' + curError.getStatusCode() + ' - '+ curError.getMessage() + '\n';
 					}
 					responseList[replyPos].errors = errorReport;
-					responseList[replyPos].isSuccess = false;
 				} else {
 					responseList[replyPos].isSuccess = true;
 					if (requests[replyPos].setSaveAsTask == true) {
-						List<String> recipientList = requests[replyPos].toAddresses;
-						recipientList.addAll(requests[replyPos].ccAddresses);
-						recipientList.addAll(requests[replyPos].bccAddresses);
-						if (recipientList.size() == 0){
-							requests[replyPos].toAddresses.add((String) (Database.query('Select Email From ' +
-																				((Id)requests[replyPos].templateTargetObjectId).getSObjectType().getDescribe().getName() + 
-																				' Where Id = \''+ requests[replyPos].templateTargetObjectId +'\' limit 1'))[0].get('Email'));
-						}
-						TaskAttached thisTask = addTasksId(requests[replyPos].templateID,requests[replyPos].subject,
-																requests[replyPos].templateTargetObjectId, requests[replyPos].recordId,
-																recipientList,responseList[replyPos].errors);
-						responseList[replyPos].errors = thisTask.errorMsg;
-                        responseList[replyPos].taskIds = new List<String>{thisTask.taskId};
+                        if (requests[replyPos].recordID != null){
+                    		responseList[replyPos].taskIds = addTasks(requests[replyPos], responseList[replyPos]);
+                        } else {
+                            responseList[replyPos].taskIds = new List<String> {'Error:  Single Email requires recordId if saveAsTask'};
+                        }
 					}
 				}
 				replyPos++;
@@ -342,33 +323,64 @@ public without sharing class SendBetterEmail {
 		}
 		//report back the results
 		boolean atLeastOneSent=false;
-		for (Integer i=0;i<responseList.size();i++){
-			if (responseList[i].isSuccess) atLeastOneSent = true;
+        for (Response thisResponse : responseList){
+            if (thisResponse.isSuccess) {
+                atLeastOneSent = true;
+                break;
+            }
 		}
-		if (!atLeastOneSent)
+        if (!atLeastOneSent){
 			throw new InvocableActionException('No Messages were sent.  First Error: '+responseList[0].errors);
+        }
 		return responseList;
 	}
 
-	// Add a task activity    
-	private static TaskAttached addTasksId(ID templateID, String subject, ID templateTargetObjectId, ID recordId, List<String> recipientList,String curErrors){
-		TaskAttached retAttached = new TaskAttached();
-		retAttached.errorMsg = curErrors;
-		if (templateID != null && subject == null){
-			subject = [SELECT Subject FROM EmailTemplate WHERE Id=:templateID AND isActive = TRUE ].Subject;
+    // Add task activities    
+	private static List<String> addTasks(Request request, Response response){
+        List<String> thisResultIds;
+        string subject = request.subject;
+        if (request.templateID != null && subject == null){
+            subject = [SELECT Subject FROM EmailTemplate WHERE Id=:request.templateID AND isActive = TRUE ].Subject;
 		}
-		try {
-			retAttached.taskId = createActivity(
-				recordId,
-				subject,
-				recipientList
-			);
-		} catch (Exception e) {
-			retAttached.errorMsg = ((curErrors != null) && (curErrors.length() > 0))? curErrors + ',' + e.getMessage() : e.getMessage();
-		}
-		return retAttached;
-	}
 
+        response.taskIds = new List<String>();
+		List<Task> theseTasks = new List<Task>();
+        List<Id> theseTargets = new List<String> {request.templateTargetObjectId};
+        List<Id> theseWhatIds = new List<String> {request.recordId};
+		if( request.emailMessageType == 'massEmail'){
+            theseTargets = request.targetObjectIds;
+            theseWhatIds = request.whatIds;
+        } else {
+            theseTargets = request.templateTargetObjectId == null ? new List<String>() : new List<String> {request.templateTargetObjectId} ;
+            theseWhatIds = request.recordId == null ? new List<String>() : new List<String> {request.recordId} ;
+        }
+        String queryString = 	'Select Name From ' +
+            theseTargets[0].getSObjectType().getDescribe().getName() +
+            ' Where Id IN ('+ '\'' + string.join(theseWhatIds,'\',\'') + '\'' + ')';
+        String recipientListString = '\'' + string.join(theseWhatIds,'\',\'') + '\'';
+        List<SObject> recipientListNames = Database.query(queryString);
+        
+        for (integer i=0;i< recipientListNames.size();i++) {
+            theseTasks.add(new Task(OwnerId = UserInfo.getUserId(),
+                                    Subject = 'Sent Email: ' + subject,
+                                    Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientListNames[i].get('Name'),
+                                    Status = 'Closed',
+                                    Priority = 'Normal',
+                                    ActivityDate = Date.today(),
+                                    WhatId = theseWhatIds[i])
+                          );
+        }
+        List<Database.SaveResult> theseResults = Database.Insert(theseTasks,false);
+        for (Database.SaveResult thisResult : theseResults) {
+            if (thisResult.isSuccess()){
+                thisResultIds.add(thisResult.getId());
+            } else {
+                thisResultIds.add('Errors: ' + thisResult.getId());
+            }
+        }
+		return thisResultIds;
+    }
+    
 	//credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
 	public static Messaging.SingleEmailMessage AddAttachments(Messaging.SingleEmailMessage mail, List<ContentDocumentLink> contentDocumentLinks, String staticResourceNames) {
 		List<SObject> curAttachments = new List<SObject>();
@@ -475,19 +487,6 @@ public without sharing class SendBetterEmail {
 		   'SendBCCtheEmailAddressesFromThisCollectionOfUsers' => request.SendBCCtheEmailAddressesFromThisCollectionOfUsers,
 		   'SendBCCtheEmailAddressesFromThisCollectionOfLeads' => request.SendBCCtheEmailAddressesFromThisCollectionOfLeads 
 		};
-	}
-
-	private static string createActivity(Id recordId, String subject, List<String> recipientList) {
-		String recipientListString = string.join(recipientList,',');
-		Task t = new Task(OwnerId = UserInfo.getUserId(),
-				Subject = 'Sent Email: ' + subject,
-				Description = 'Sent Email : ' + subject + ' to recipient(s): ' + recipientListString.replaceAll('[()]|,\\(\\)+', ''),
-				Status = 'Closed',
-				Priority = 'Normal',
-				ActivityDate = Date.today(),
-				WhatId = recordId);
-		insert t;
-		return t.Id;
 	}
 
 	private static String getTemplateIdFromName(String templateName, String templateLanguage){

@@ -53,7 +53,7 @@ public with sharing class SendBetterEmailTest {
 	Inversely, not doing these tests can cause code coverage % failures.  For pre-deployment testing purposes, TEST_WITH_CREATED_RECORDS should be set to true,
 	but for version release, should be set to false.
 **/
-	private Static Final Boolean TEST_WITH_CREATED_RECORDS = false;
+	private Static Final Boolean TEST_WITH_CREATED_RECORDS = true;
 //
 	private Static Final String TEMPLATE_NAME = 'xxxyyy Test Email Template yyyxxx';
 	private Static Final String TEMPLATE_DEVNAME = 'xxxyyy_Test_Email_Template_yyyxxx';
@@ -812,7 +812,6 @@ public with sharing class SendBetterEmailTest {
 		testReq.whatIds = new List<String> {UserInfo.getUserId(),UserInfo.getUserId()};
 		testReq.Description = 'MassEmail ' + ('0000').right(4);
 		testReq.saveAsTask = true;
-		system.debug('testReq'+('0000').right(4)+': ' + testReq);
 		reqList.add(testReq);
 		try {
 			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
@@ -901,7 +900,6 @@ public with sharing class SendBetterEmailTest {
 			testReq.templateTargetObjectId = theseContacts[0].Id;
 			testReq.recordId = theseAccounts[0].Id;
 			testReq.saveAsTask = true;
-			system.debug('testReq'+('0000').right(4)+': ' + testReq);
 			reqList.add(testReq);
 			try {
 				List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
@@ -925,7 +923,6 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.emailMessageType = 'singleEmail';
 		testReq.saveAsTask = true;
-		system.debug('testReq'+('0000').right(4)+': ' + testReq);
 		reqList.add(testReq);
 		try {
 			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
@@ -935,6 +932,32 @@ public with sharing class SendBetterEmailTest {
 			}
 		} catch (SendBetterEmail.InvocableActionException e) {
 			system.debug('t025_errorSingleEMailNoRecordId error: '+e.getMessage());
+		}
+	}
+// @Test t026_coverageCollectionOfRecipients: Should use collection of recipients
+	@isTest
+	public static void t026_coverageCollectionOfRecipients() {
+// Will only work with created efforts
+        if (TEST_WITH_CREATED_RECORDS){
+			ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+			List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+			SendBetterEmail.Request testReq;
+			testReq = new SendBetterEmail.Request();
+			testReq.emailMessageType = 'singleEmail';
+            testReq.Subject = EMAIL_SUBJECT;
+            testReq.HTMLbody = EMAIL_BODY;
+            testReq.SendTOtheEmailAddressesFromThisCollectionOfContacts = emailCreateTestContacts(1);
+            testReq.SendTOtheEmailAddressesFromThisCollectionOfLeads = emailCreateTestLeads(1);
+			reqList.add(testReq);
+			try {
+				List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+				for (Integer i=0;i<testResponseList.size();i++){
+					System.assertEquals(testResponseList[i].isSuccess,true,'t026_coverageCollectionOfRecipients Fail: Should use collection of recipients ' + 
+										('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+				}
+			} catch (SendBetterEmail.InvocableActionException e) {
+				system.assert(false,'t026_coverageCollectionOfRecipients error: '+e.getMessage());
+			}
 		}
 	}
 

@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-12-2020
+ * @Last Modified On	: 08-15-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	: 
  * 
@@ -15,8 +15,8 @@
  * 1.33		3/22/2020	Jack Pond				Added consistency checks, modified Labels and alphabetized params
  * 1.33.1	4/11/2020	Jack Pond				Issues 308,316
  * 1.33.2	5/29/2020	Jack Pond				Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
- * 1.33.2	6/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
- * 2.00.00	6/02/2020	Jack Pond				SendBetterEmail - Optimize Bulkification #445
+ * 1.33.2	8/02/2020	Jack Pond				Finalized MassEmail and added Tests and Issue #378
+ * 2.00.00	8/02/2020	Jack Pond, Mohith		SendBetterEmail - Optimize Bulkification #445
  * 
  * Done:
  * #320 sendBetterEmail - Activity History Redesign?

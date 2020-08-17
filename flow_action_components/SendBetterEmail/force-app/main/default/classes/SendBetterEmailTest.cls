@@ -43,6 +43,7 @@
 // @Test t023_coverageMassMailTemplateSaveAsTask: MassEmail with saveAsTask and saveAsActivity
 // @Test t024_coverageSingleEMailTaskActivity: If TEST_WITH_CREATED_RECORDS
 // @Test t025_errorSingleEMailNoRecordId: Single Email requires recordId if saveAsTask
+// @Test t026_coverageCollectionOfRecipients: Should use collection of recipients
 
 
 @isTest
@@ -159,6 +160,7 @@ public with sharing class SendBetterEmailTest {
 			);
 		}
 		insert ctList;
+        system.debug(ctList);
 		return ctList;
 	}
 //	Create leads to test coverage for sent to leads)
@@ -514,29 +516,21 @@ public with sharing class SendBetterEmailTest {
 // @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
 @isTest
 	public static void t012_ErrorIfSaveAsTaskAndNoRecordId() {
+		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
 		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.saveAsTask = true;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
 		reqList.add(testReq);
 
-		Boolean exceptionHit = false;
 		try {            
 			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			System.assert(false,'t012_ErrorIfSaveAsTaskAndNoRecordId: Error not received when (saveAsActivity == true && recordId/whatId == null)');
 		} catch (SendBetterEmail.InvocableActionException e) {
-			exceptionHit=true;
-			system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+e.getMessage());
+			system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+ e.getMessage());
 		}
-		
-		Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
-		if(emailDeliverabilityEnabled){
-			System.assertEquals(exceptionHit,true,'Error not received when (saveAsActivity == true && recordId/whatId == null)');
-		} else {
-			System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityDisabled Enabled or capacity exceeded');
-		}
-	}
+}
 // @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
 	@isTest
 	public static void t013_ErrorIfSaveAsActivityAndNoRecordId() {
@@ -608,6 +602,8 @@ public with sharing class SendBetterEmailTest {
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4)+' Error: '+testResponseList[i].errors);
 			}
+            List<Task> theseTasks = [Select Subject,Description,Status from Task];
+            system.debug('theseTasks: ' + theseTasks);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			String error = e.getMessage();
 			system.debug('t014_coverageTestActivityAndBulkification error: '+e.getMessage());
@@ -618,20 +614,24 @@ public with sharing class SendBetterEmailTest {
 	public static void t015_coverageMassMailTestActivityAndBulkification() {
 		List<Contact> theseContacts = new List<Contact>();
 		List<Account> theseAccounts = new List<Account>();
+		List<Case> theseCases = new List<Case>();
 		list<String> theseContactIds = new list<String>();
 		list<String> theseAccountIds = new list<String>();
+		list<String> theseCaseIds = new list<String>();
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
 		
 // Select b.Value, b.SystemModstamp, b.NamespacePrefix, b.Name, b.LastModifiedDate, b.LastModifiedById, b.IsActive, b.Id, b.DeveloperName, b.Description, b.CreatedDate, b.CreatedById From BrandTemplate b
 
 		if (TEST_WITH_CREATED_RECORDS){
 			theseContacts = emailCreateTestContacts(BULK_TEST_COUNT);
+			theseCases = emailCreateTestCases(BULK_TEST_COUNT);
 			
 			for (Contact thisContact : theseContacts){
 				theseContactIds.add((string) thisContact.Id);
 				theseAccounts.add(emailCreateTestAccounts(1,thisContact.Id)[0]);
 			}
 			for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
+			for (Case thisCase : theseCases) theseCaseIds.add((String)thisCase.Id);
 		}
 		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
 		SendBetterEmail.Request testReq;
@@ -644,7 +644,7 @@ public with sharing class SendBetterEmailTest {
 				testReq.HTMLbody = EMAIL_BODY + ('0000'+i).right(4);
 				if (TEST_WITH_CREATED_RECORDS){
 					testReq.templateTargetObjectId = theseContacts[i].Id;
-					testReq.recordId = theseAccounts[i].Id;
+					testReq.recordId = theseCases[i].Id;
 					testReq.saveAsActivity = true;
 				}else{
 					testReq.saveAsActivity = false;
@@ -654,16 +654,15 @@ public with sharing class SendBetterEmailTest {
 				testReq.templateID = EmailTemplateId;
 				testReq.emailMessageType = 'massEmail';
 				if (TEST_WITH_CREATED_RECORDS){
-					testReq.targetObjectIds = theseContactIds;
-					testReq.whatIds = theseAccountIds;
 					testReq.Description = 'MassEmail ' + ('0000'+i).right(4);
+					testReq.targetObjectIds = theseContactIds;
+					testReq.whatIds = theseCaseIds;
 					testReq.saveAsActivity = true;
 					testReq.saveAsTask = true;
 				} else {
-					testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
-					testReq.whatIds = testReq.targetObjectIds;
 					testReq.Description = 'MassEmail ' + ('0000'+i).right(4);
-					testReq.saveAsTask = true;
+					testReq.saveAsActivity = true;
+					testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
 				}
 			}
 			system.debug('testReq'+('0000'+i).right(4)+': ' + testReq);
@@ -674,6 +673,8 @@ public with sharing class SendBetterEmailTest {
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.debug('Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 			}
+            List<Task> theseTasks = [Select Subject,Description,Status from Task];
+            system.debug('theseTasks: ' + theseTasks);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			system.assert(false,'t015_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
 		}
@@ -958,6 +959,56 @@ public with sharing class SendBetterEmailTest {
 			} catch (SendBetterEmail.InvocableActionException e) {
 				system.assert(false,'t026_coverageCollectionOfRecipients error: '+e.getMessage());
 			}
+		}
+	}
+
+// @Test t027_errorMassEMailFail: Should fail: saveAsTask == true, whatId == EmailTemplateId
+	@isTest
+	public static void t027_errorMassEMailFail() {
+        ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+        SendBetterEmail.Request testReq;
+        testReq = new SendBetterEmail.Request();
+        testReq.Description = 't027_errorMassEMailFail';
+        testReq.templateID = EmailTemplateId;
+        testReq.emailMessageType = 'massEmail';
+		testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+		testReq.whatIds = new List<String> {EmailTemplateId};
+		testReq.saveAsTask = true;
+        reqList.add(testReq);
+        try {
+            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+            for (Integer i=0;i<testResponseList.size();i++){
+				system.debug('t027_errorMassEMailFail: Should fail: saveAsTask == true, whatId == EmailTemplateId' + 
+                              ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+                System.assert(testResponseList[i].isSuccess,'t027_errorMassEMailFail Should fail: saveAsTask == true, whatId == EmailTemplateId' + 
+                              ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+            }
+        } catch (SendBetterEmail.InvocableActionException e) {
+            system.debug('t027_errorMassEMailFail: Should fail: saveAsTask == true, whatId == EmailTemplateId: '+e.getMessage());
+        }
+	}
+
+// @Test t028_CoverageSingleEMailTask: Single Email saveAsTask recordId is User
+	@isTest
+	public static void t028_CoverageSingleEMailTask() {
+		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
+		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		testReq.Subject = EMAIL_SUBJECT;
+		testReq.HTMLbody = EMAIL_BODY;
+		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+		testReq.recordId = UserInfo.getUserId();
+		testReq.saveAsTask = true;
+		reqList.add(testReq);
+		try {
+			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			for (Integer i=0;i<testResponseList.size();i++){
+				System.assert(testResponseList[i].isSuccess,'t028_CoverageSingleEMailTask Single Email saveAsTask recordId is User' + 
+									('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
+			}
+		} catch (SendBetterEmail.InvocableActionException e) {
+			system.assert(false,'t028_CoverageSingleEMailTask error: '+e.getMessage());
 		}
 	}
 

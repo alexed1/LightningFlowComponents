@@ -64,8 +64,8 @@
     <actionCalls>
         <name>X2_Simple_Email_with_Address_Collections_Wit_Collections</name>
         <label>2. Simple Email with Address Collections - With Address Collections</label>
-        <locationX>1376</locationX>
-        <locationY>275</locationY>
+        <locationX>1391</locationX>
+        <locationY>215</locationY>
         <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -461,8 +461,8 @@
     <assignments>
         <name>Clear_String_Addr_Collection</name>
         <label>Clear String Addr Collection</label>
-        <locationX>1013</locationX>
-        <locationY>276</locationY>
+        <locationX>1006</locationX>
+        <locationY>238</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
             <operator>Assign</operator>
@@ -475,8 +475,8 @@
         <description>Add the first email to the string collection</description>
         <name>Email_1_to_Collection</name>
         <label>Email 1 to Collection</label>
-        <locationX>881</locationX>
-        <locationY>460</locationY>
+        <locationX>1158</locationX>
+        <locationY>435</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
             <operator>Add</operator>
@@ -491,8 +491,8 @@
     <assignments>
         <name>Email_2_to_Collection</name>
         <label>Email 2 to Collection</label>
-        <locationX>1162</locationX>
-        <locationY>474</locationY>
+        <locationX>1393</locationX>
+        <locationY>354</locationY>
         <assignmentItems>
             <assignToReference>stringCollectionEmailAddresses</assignToReference>
             <operator>Add</operator>
@@ -501,7 +501,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Users</targetReference>
+            <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -605,8 +605,8 @@
     <decisions>
         <name>Email_Addr_1</name>
         <label>Email Addr 1</label>
-        <locationX>1003</locationX>
-        <locationY>406</locationY>
+        <locationX>993</locationX>
+        <locationY>356</locationY>
         <defaultConnector>
             <targetReference>Email_1_to_Collection</targetReference>
         </defaultConnector>
@@ -627,8 +627,8 @@
     <decisions>
         <name>Email_Addr_2</name>
         <label>Email Addr 2</label>
-        <locationX>1012</locationX>
-        <locationY>528</locationY>
+        <locationX>1218</locationX>
+        <locationY>346</locationY>
         <defaultConnector>
             <targetReference>Email_2_to_Collection</targetReference>
         </defaultConnector>
@@ -641,7 +641,7 @@
                 <operator>EqualTo</operator>
             </conditions>
             <connector>
-                <targetReference>Get_Users</targetReference>
+                <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
             </connector>
             <label>No Email 2?</label>
         </rules>
@@ -804,8 +804,8 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>1256</locationX>
-        <locationY>275</locationY>
+        <locationX>1376</locationX>
+        <locationY>84</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
@@ -849,8 +849,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>1154</locationX>
-        <locationY>275</locationY>
+        <locationX>1278</locationX>
+        <locationY>85</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
@@ -872,8 +872,8 @@
     <screens>
         <name>Choose_Example_Screen</name>
         <label>Choose Example</label>
-        <locationX>515</locationX>
-        <locationY>467</locationY>
+        <locationX>521</locationX>
+        <locationY>311</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1066,7 +1066,7 @@
             <defaultValue>
                 <elementReference>recordId</elementReference>
             </defaultValue>
-            <fieldText>Related Record ID(whatId/recordId)</fieldText>
+            <fieldText>Related Record Id (for template merge fields and/or recording Email as a task)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;This must be an existing record of a type that allows File Attachments.&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
@@ -1094,7 +1094,7 @@
         <name>X1_Get_Simple_Email_Fields</name>
         <label>1. Get Simple Email Fields</label>
         <locationX>717</locationX>
-        <locationY>155</locationY>
+        <locationY>156</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1103,7 +1103,7 @@
         </connector>
         <fields>
             <name>Example1Details</name>
-            <fieldText>&lt;p&gt;This sends out a rich text email predefined as a text template () l to the addressee in [Recipient Email Address] from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;: To get the full effect of rich text, edit the formula plainTextBody instead of modifying the field on this screen.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 14px;&quot;&gt;Flow Example 1&lt;/b&gt; sends a rich text email with content predefined in the resource &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;HTMLTextTemplate&lt;/span&gt; to the addressee in [TO(TestMailAddress1)]  from [&lt;span style=&quot;color: rgb(62, 62, 60); font-size: 12px; background-color: rgb(255, 255, 255);&quot;&gt;Reply Email Address(&lt;/span&gt;TestReturnAddress)] with the name [Sender Display Name(testSenderName)] using [Subject(testSubject)] and [Body(HTMLTextTemplate)]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above are flow resource variables.  To create a body with line breaks, use a formula variable (see example resource variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;: To get the full effect of rich text, edit the flow resource formula plainTextBody resource instead of modifying the field on this screen.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1212,8 +1212,8 @@
     <screens>
         <name>X2_Get_Simple_Email_Fields_Collections</name>
         <label>2. Get Simple Email Fields &amp; Collections</label>
-        <locationX>782</locationX>
-        <locationY>276</locationY>
+        <locationX>842</locationX>
+        <locationY>329</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1222,7 +1222,7 @@
         </connector>
         <fields>
             <name>Example2Details</name>
-            <fieldText>&lt;p&gt;This sends out a simple plaintext email  from [ReplyTo Email Address] with the name [Sender Name] using [Subject] and [Body]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;All of the above can be created by assigning variables.  To create a body with line breaks, use a formula variable (see example variable testPlainTextLineFeeds)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;The addressees can be built from multiple collections.  This example builds a collection of strings from the  two email strings and/or from collections you can set up external to the example flow by creating contacts with names containing the text entered in [Contact Contains Match].&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;By default, this example builds a collection of strings from the two recipient email addresses and will send all collections to To, CC, and BCC (so 6 emails will be sent - minimum)&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Example&lt;/b&gt;:  Create two contacts with valid email addresses and names containing &quot;testContact&quot;, then specify &lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt; &quot;testContact&quot; in [Contact Contains Match]&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;Note&lt;/b&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;: To get the full effect of rich text, edit the formula plainTextBody instead of modifying the field on this screen.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;b&gt;Flow Example 2 - Simple Email with Address Collections&lt;/b&gt;. Addressees can be built from multiple collections. &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This example builds a collection of strings from the two email strings and/or from collections you can set up external to the example flow by creating contacts with names containing the text entered in [Contact Contains Match].&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;By default, this example builds a collection of strings from the two recipient email addresses and will send all collections to To, CC, and BCC (so 6 emails will be sent - minimum). The message contains rich text email with content predefined in the resource HTMLTextTemplate from [Reply Email Address(TestReturnAddress)] with the name [Sender Display Name(testSenderName)] using [Subject(testSubject)] and [Body(HTMLTextTemplate)] to the addressees in the collections.&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Example&lt;/b&gt;: Create two contacts with valid email addresses and names containing &quot;testContact&quot;, then specify&amp;nbsp;&quot;testContact&quot; in [Contact Contains Match]&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note&lt;/b&gt;: To get the full effect of rich text, edit the formula plainTextBody instead of modifying the field on this screen.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1416,14 +1416,14 @@
         <fields>
             <name>Template_RecordId_TemplateEmail</name>
             <dataType>String</dataType>
-            <fieldText>Template RecordId (TemplateEmail)</fieldText>
+            <fieldText>Email Template Id</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>Template_Target_Record_Id_4</name>
             <dataType>String</dataType>
-            <fieldText>Template Target Record Id</fieldText>
+            <fieldText>Recipient Record Id (also for template merge fields and recording related Email as an activity)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendBetterEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
             <isRequired>true</isRequired>
@@ -1431,7 +1431,7 @@
         <fields>
             <name>Related_Record_Id_for_testing_merge_fields_4</name>
             <dataType>String</dataType>
-            <fieldText>Related Record Id (for testing merge fields)</fieldText>
+            <fieldText>Related Record Id (for template merge fields and/or recording Email as a task)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;This must be an existing record of a type that allows File Attachments.  If you are using the default test templates (sendBetterEmailTest), it should be an AccountId&lt;/span&gt;&lt;/p&gt;</helpText>
             <isRequired>false</isRequired>
@@ -1629,8 +1629,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>167</locationX>
-        <locationY>447</locationY>
+        <locationX>175</locationX>
+        <locationY>294</locationY>
         <connector>
             <targetReference>Choose_Example_Screen</targetReference>
         </connector>

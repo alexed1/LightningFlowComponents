@@ -1,5 +1,7 @@
 /**
  * 
+ * 08/21/20     Eric Smith      Added Extracted and Escaped Metadata Strings to the Output Attributes
+ * 
  * 08/08/20     Eric Smith      Display Error Message on Deploy if one is caught
  * 
  * 07/01/20     Eric Smith      Updated to navigate to the next node in the Flow on deployment completion
@@ -25,6 +27,8 @@ export default class TransferMetadata extends LightningElement {
     @track activity;
     transferComplete = false;
     @api zipFileString = '';
+    @api extractedMetadataString = '';
+    @api escapedMetadataString = '';
     @api metadataName;
     @api transferMode;
     @api metadataString;
@@ -165,11 +169,19 @@ export default class TransferMetadata extends LightningElement {
                 console.log('data is: ' + result);
                 this.activity = 'metadata retrieved successfully. '
                 console.log('this.activity is: ' + this.activity);
-                this.zipFileString = result;
-                const attributeChangeEvent = new FlowAttributeChangeEvent('zipFileString', this.zipFileString);
+
+                let returnResults = JSON.parse(result);
+                this.zipFileString = returnResults.zipFile;
+                let attributeChangeEvent = new FlowAttributeChangeEvent('zipFileString', this.zipFileString);
+                this.dispatchEvent(attributeChangeEvent);                      
+
+                this.extractedMetadataString = returnResults.extractedFlowMetadata;
+                attributeChangeEvent = new FlowAttributeChangeEvent('extractedMetadataString', this.extractedMetadataString);
+                this.dispatchEvent(attributeChangeEvent);     
+
+                this.escapedMetadataString = returnResults.escapedFlowMetadata;
+                attributeChangeEvent = new FlowAttributeChangeEvent('escapedMetadataString', this.escapedMetadataString);
                 this.dispatchEvent(attributeChangeEvent);
-                
-              
 
                 const nextNavigationEvent = new FlowNavigationNextEvent();
                 this.dispatchEvent(nextNavigationEvent);

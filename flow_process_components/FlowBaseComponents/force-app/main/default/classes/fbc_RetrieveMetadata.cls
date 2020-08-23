@@ -27,6 +27,17 @@
 /**
  * This example demonstrates how to utilise the Metadata API Retrieve operation inconjunction with the JSZip JavaScript library
  **/
+
+ /**
+ * Eric Smith - August 2020
+ * 
+ *      Extract a single metadata file from the Zip file returned by the Retrieve
+ *
+ *      Additional Outputs: Extracted File String
+ *              			Escaped File String (Angle brackets replaced by &lt and &gt)
+ * 
+ */
+
 public  with sharing class fbc_RetrieveMetadata 
 {
 	private static final Integer METADATA_API_VERSION = 48;
@@ -81,7 +92,6 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		// Construct unmanaged package with list of desired components to retrieve in zip
 		fbc_MetadataService.MetadataPort service = createService();				
         fbc_MetadataService.RetrieveRequest retrieveRequest = new fbc_MetadataService.RetrieveRequest();
-
       
 		retrieveRequest.apiVersion = METADATA_API_VERSION;
 		retrieveRequest.packageNames = null;
@@ -116,6 +126,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		// Check the status of the retrieve request
 		fbc_MetadataService.MetadataPort service = createService();
 		fbc_MetadataService.RetrieveResult retrieveResult = service.checkRetrieveStatus(jobId, true);
+		ReturnValues rv = new ReturnValues();
 		if(retrieveResult.done == true)
 		{
 			// Errors?
@@ -128,7 +139,12 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 				MetaDataRetrieveZip = retrieveResult.zipFile;
 				MetadataFiles = new List<MetadataFile>();
                 AsyncResult = null;
-                return retrieveResult.zipFile;
+				// return retrieveResult.zipFile;
+				rv.zipFile = retrieveResult.zipFile;
+				String unescapedString = unpackZipfile(MetaDataRetrieveZip);
+				rv.extractedFlowMetadata = unescapedString;
+				rv.escapedFlowMetadata = escape(unescapedString);
+				return JSON.serialize(rv);
 			}
 		}
 		else {
@@ -137,7 +153,38 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		}
 		 
 	}
-	
+
+    public static String unpackZipfile(String metadataZipfile) {
+            
+        Blob zipBlob = EncodingUtil.base64Decode(metadataZipfile);
+        fbc_Zippex curZippex = new fbc_Zippex(zipBlob);
+        Set<String> fileNames = curZippex.getFileNames();
+        System.debug('filenames are: ' + fileNames);
+     
+        List<String> filenamesList = new List<String>(fileNames);
+
+        //currently only set up to handle a single file
+        Blob fileData = curZippex.getFile(filenamesList[0]);
+        System.debug ('filename: ' + filenamesList[0]);
+        System.debug ('filedata: [' + fileData.toString() + ']');
+
+        return fileData.toString();
+
+    }
+
+    public static String escape(String unescapedString) {
+
+        String processedString = unescapedString;
+        System.debug ('initial: ' + processedString);
+        processedString = processedString.replace('<', '&lt;');
+        System.debug ('replace lt: ' + processedString);
+        processedString = processedString.replace('>', '&gt;');
+        System.debug ('replace gt: [' + processedString + ']');
+
+        return processedString;
+
+    }    
+
 
 	@AuraEnabled(cacheable=true)
 	public static string getFileNames(String zipfile){
@@ -153,9 +200,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 			//return filenamesList.toString();
 		}
 		else return 'nothing yet...';
-		
-
-		
+				
 	}
 
 	
@@ -193,5 +238,11 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		{
 			return content;
 		}
+	}
+
+	public class ReturnValues {
+		String zipFile;
+		String extractedFlowMetadata;
+		String escapedFlowMetadata;
 	}
 }

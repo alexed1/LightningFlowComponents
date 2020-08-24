@@ -1,30 +1,33 @@
 global with sharing class CountRecordsAndFields {
     @InvocableMethod
     global static List <Results> count(List<Requests> requestList) {
-
-        List<SObject> records = requestList[0].inputCollection;
-        String fieldName = requestList[0].fieldName;
-        String fieldValue = requestList[0].fieldValue;
-
-        //Create a Results object to hold the return values
-        Results response = new Results();
-        try {
-            for (SObject record : records) {
-                if (!String.isBlank(fieldName) && !String.isBlank(fieldValue)) {
-                    if (record.get(fieldName) == fieldValue) {
-                        response.matchedNumber++;
-                    }
-                }
-
-                response.totalNumber++;
-            }
-        } catch (Exception ex) {
-            response.errors = ex.getMessage();
-        }
-
-//Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+        for (Requests curRequest : requestList) {
+            List<SObject> records = curRequest.inputCollection;
+            String fieldName = curRequest.fieldName;
+            String fieldValue = curRequest.fieldValue;
+    
+            //Create a Results object to hold the return values
+            Results response = new Results();
+            try {
+                for (SObject record : records) {
+                    if (!String.isBlank(fieldName) && !String.isBlank(fieldValue)) {
+                        if (record.get(fieldName) == fieldValue) {
+                            response.matchedNumber++;
+                        }
+                    }
+    
+                    response.totalNumber++;
+                }
+            } catch (Exception ex) {
+                response.errors = ex.getMessage();
+            }
+    
+    //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
+          
+            responseWrapper.add(response);
+        }
+        
         return responseWrapper;
 
     }

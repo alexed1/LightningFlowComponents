@@ -3,42 +3,46 @@ global with sharing class FindRecordsInCollection {
     @InvocableMethod
     global static List <Results> execute(List<Requests> requestList) {
         System.debug('entering FindRecordInCollection');
-        List<SObject> inputCollection = requestList[0].inputCollection;
-        String targetField = requestList[0].targetField;
-        String targetValue = requestList[0].targetValue;
-        String targetObject = requestList[0].targetObject;
-
-        //Create a Results object to hold the return values
-        Results response = new Results();
-
-
-        //given a list of items, and a search string, find all of the matches
-        //iterate through input collection
-        //check the value of the current input  
-        Schema.SobjectField curField = getFieldByName(targetObject, targetField);
-        for (SObject curRecord : inputCollection) {
-            String value = (String) curRecord.get(curField);
-            if (value == targetValue) {
-                if (response.multipleOutputMembers == null) {
-                    response.multipleOutputMembers = new List<SObject>();
-                }
-
-                response.multipleOutputMembers.add(curRecord);
-            }
-        }
-
-        //because a lot of flow manipulations are easier if you're dealing with a single record
-        //instead of a collection, we provide a single record return value if there's only one hit.
-        if (response.multipleOutputMembers != null && response.multipleOutputMembers.size() == 1) {
-            response.singleOutputMember = response.multipleOutputMembers[0];
-        }
-
-        //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
-        System.debug('response is: ' + response);
-        System.debug('responseWrapper is: ' + responseWrapper);
 
+        for (Requests curRequest : requestList) {
+            List<SObject> inputCollection = curRequest.inputCollection;
+            String targetField = curRequest.targetField;
+            String targetValue = curRequest.targetValue;
+            String targetObject = curRequest.targetObject;
+
+            //Create a Results object to hold the return values
+            Results response = new Results();
+
+
+            //given a list of items, and a search string, find all of the matches
+            //iterate through input collection
+            //check the value of the current input  
+            Schema.SobjectField curField = getFieldByName(targetObject, targetField);
+            for (SObject curRecord : inputCollection) {
+                String value = (String) curRecord.get(curField);
+                if (value == targetValue) {
+                    if (response.multipleOutputMembers == null) {
+                        response.multipleOutputMembers = new List<SObject>();
+                    }
+
+                    response.multipleOutputMembers.add(curRecord);
+                }
+            }
+
+            //because a lot of flow manipulations are easier if you're dealing with a single record
+            //instead of a collection, we provide a single record return value if there's only one hit.
+            if (response.multipleOutputMembers != null && response.multipleOutputMembers.size() == 1) {
+                response.singleOutputMember = response.multipleOutputMembers[0];
+            }
+
+            //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
+        
+            responseWrapper.add(response);
+            System.debug('response is: ' + response);
+            System.debug('responseWrapper is: ' + responseWrapper);
+        }
+        
         return responseWrapper;
 
     }

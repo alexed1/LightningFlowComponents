@@ -66,8 +66,7 @@ public without sharing class SendBetterEmail {
         }
 
         // Cache the local language key for the organization
-        String localeKey = [SELECT LanguageLocaleKey FROM Organization LIMIT 1]
-        .LanguageLocaleKey;
+        String localeKey = Constant.getOrganization();
 
         // Cache Query results for Templates
         mapTemplateNameByEmailTemplates = SendEmailUtil.getMapTemplateNameByEmailTemplates(

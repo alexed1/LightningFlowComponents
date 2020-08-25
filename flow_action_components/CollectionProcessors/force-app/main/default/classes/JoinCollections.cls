@@ -2,16 +2,20 @@ global with sharing class JoinCollections {
     @InvocableMethod
     global static List <Results> joinCollections(List<Requests> requestList) {
 
-        Results response = new Results();
-        if (requestList[0].inputCollection != null && !requestList[0].inputCollection.isEmpty()) {
-            response.outputCollection.addAll(requestList[0].inputCollection);
-        }
-        if (requestList[0].inputCollection2 != null && !requestList[0].inputCollection2.isEmpty()) {
-            response.outputCollection.addAll(requestList[0].inputCollection2);
-        }
-
         List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+        for (Requests curRequest : requestList) {
+            Results response = new Results();
+            if (curRequest.inputCollection != null && !curRequest.inputCollection.isEmpty()) {
+                response.outputCollection.addAll(curRequest.inputCollection);
+            }
+            if (curRequest.inputCollection2 != null && !curRequest.inputCollection2.isEmpty()) {
+                response.outputCollection.addAll(curRequest.inputCollection2);
+            }
+    
+            responseWrapper.add(response);
+
+        }
+       
 
         return responseWrapper;
     }

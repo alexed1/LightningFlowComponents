@@ -67,4 +67,3 @@ public with sharing class UpsertRecords {
 
         public class InvocableActionException extends Exception {}
 }
-    

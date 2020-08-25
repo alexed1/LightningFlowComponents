@@ -1,47 +1,55 @@
 global with sharing class FindRecordsInCollection {
-   
+
     @InvocableMethod
-    global static List <Results> execute (List<Requests> requestList) {
+    global static List <Results> execute(List<Requests> requestList) {
         System.debug('entering FindRecordInCollection');
-        List<SObject>  inputCollection = requestList[0].inputCollection;
-        String targetField = requestList[0].targetField;
-        String targetValue = requestList[0].targetValue;
-        String targetObject = requestList[0].targetObject;
+        List<Results> responseWrapper = new List<Results>();
 
-        //Create a Results object to hold the return values
-        Results response = new Results();
+        for (Requests curRequest : requestList) {
+            List<SObject> inputCollection = curRequest.inputCollection;
+            String targetField = curRequest.targetField;
+            String targetValue = curRequest.targetValue;
+            String targetObject = curRequest.targetObject;
+
+            //Create a Results object to hold the return values
+            Results response = new Results();
 
 
-        //given a list of items, and a search string, find all of the matches
-        //iterate through input collection
-        //check the value of the current input  
-        Schema.SobjectField curField = getFieldByName(targetObject,targetField);
-        for(SObject curRecord : inputCollection) {
-            String value = (String)curRecord.get(curField);
-            if (value == targetValue){
-                response.multipleOutputMembers.add(curRecord);
+            //given a list of items, and a search string, find all of the matches
+            //iterate through input collection
+            //check the value of the current input  
+            Schema.SobjectField curField = getFieldByName(targetObject, targetField);
+            for (SObject curRecord : inputCollection) {
+                String value = (String) curRecord.get(curField);
+                if (value == targetValue) {
+                    if (response.multipleOutputMembers == null) {
+                        response.multipleOutputMembers = new List<SObject>();
+                    }
+
+                    response.multipleOutputMembers.add(curRecord);
+                }
             }
+
+            //because a lot of flow manipulations are easier if you're dealing with a single record
+            //instead of a collection, we provide a single record return value if there's only one hit.
+            if (response.multipleOutputMembers != null && response.multipleOutputMembers.size() == 1) {
+                response.singleOutputMember = response.multipleOutputMembers[0];
+            }
+
+            //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
+        
+            responseWrapper.add(response);
+            System.debug('response is: ' + response);
+            System.debug('responseWrapper is: ' + responseWrapper);
         }
-
-        //because a lot of flow manipulations are easier if you're dealing with a single record
-        //instead of a collection, we provide a single record return value if there's only one hit.
-        if(response.multipleOutputMembers.size() == 1) {
-            response.singleOutputMember = response.multipleOutputMembers[0];
-        }
-
-        //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
-        List<Results> responseWrapper= new List<Results>();
-        responseWrapper.add(response);
-         System.debug('response is: '+ response);
-        System.debug('responseWrapper is: '+ responseWrapper);
-
+        
         return responseWrapper;
-    
+
     }
 
     //given the name of a field, return the actual field itself
     //ref https://salesforce.stackexchange.com/a/192792/24822
-    global static Schema.SobjectField getFieldByName (String objectName, String fieldName) {
+    global static Schema.SobjectField getFieldByName(String objectName, String fieldName) {
 
         // get the SObjectType
         Schema.SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
@@ -57,31 +65,26 @@ global with sharing class FindRecordsInCollection {
 
 
     global class Requests {
-      @InvocableVariable(required=true)
-      global List<SObject> inputCollection;
+        @InvocableVariable(required=true)
+        global List<SObject> inputCollection;
 
-      @InvocableVariable
-      global String targetObject;
+        @InvocableVariable
+        global String targetObject;
 
-      @InvocableVariable
-      global String targetField;
+        @InvocableVariable
+        global String targetField;
 
-       @InvocableVariable
-      global String targetValue;
-        
+        @InvocableVariable
+        global String targetValue;
+
     }
-    
+
     global class Results {
 
-        public Results() {
-           
-           multipleOutputMembers = new List<SObject>();
-        }
-     
-      @InvocableVariable
-      global SObject singleOutputMember;
+        @InvocableVariable
+        global SObject singleOutputMember;
 
-      @InvocableVariable
-      global List<SObject> multipleOutputMembers;
+        @InvocableVariable
+        global List<SObject> multipleOutputMembers;
     }
 }

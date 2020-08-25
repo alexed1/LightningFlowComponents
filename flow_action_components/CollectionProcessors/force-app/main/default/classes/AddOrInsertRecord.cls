@@ -1,23 +1,28 @@
 global with sharing class AddOrInsertRecord {
     @InvocableMethod
     global static List <Results> addOrInsertRecord(List<Requests> requestList) {
-
-        Results response = new Results();
-        List<SObject> inputCollection = requestList[0].inputCollection;
-        SObject inputRecord = requestList[0].inputRecord;
-        Integer index = requestList[0].index;
-
-        if (inputCollection != null && inputRecord != null) {
-            if (index == null || index >= inputCollection.size()) {
-                inputCollection.add(inputRecord);
-            } else {
-                inputCollection.add(index, inputRecord);
+        List<Results> responseWrapper = new List<Results>();
+        for (Requests curRequest : requestList) {
+            Results response = new Results();
+            List<SObject> inputCollection = curRequest.inputCollection;
+            SObject inputRecord = curRequest.inputRecord;
+            Integer index = curRequest.index;
+    
+            if (inputCollection != null && inputRecord != null) {
+                if (index == null || index >= inputCollection.size()) {
+                    inputCollection.add(inputRecord);
+                } else {
+                    inputCollection.add(index, inputRecord);
+                }
+                response.outputCollection = inputCollection.clone();
             }
-            response.outputCollection = inputCollection.clone();
+    
+        
+            responseWrapper.add(response);
+
         }
 
-        List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+       
 
         return responseWrapper;
     }

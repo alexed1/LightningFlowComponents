@@ -27,8 +27,8 @@
             <property name="SaveBtnLabel" type="String" label="Save Button Label" description="Input - This is the next/submit button label"/>
             <property name="CancelBtnLabel" type="String" label="Cancel Button Label" description="Input - This is the previous/cancel button label"/>
             <property name="columnsize" type="Integer" label="No. of Columns" default="2" description="Input - This will represent number of columns for View/Edit mode"/>
-            <property name="showtoast" type="Boolean" label="Show Toast on Success?" description="If True, Toast will be triggered on success"/>
-        
+            <property name="suppressToast" type="Boolean" label="Show Toast on Success?" description="If True, Toast will be triggered on success"/>
+            <property name="suppressUnderline" type="Boolean" label="Suppress underlines in View mode?" description="If True, underlines will not be displayed in View mode"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

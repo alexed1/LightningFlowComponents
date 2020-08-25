@@ -2,25 +2,28 @@
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
 
-/29/20 -   M Hamza Siddiqui -     Version 1.7
-                                  Save and Cancel Button Labels are now changeable
-                                  Option to hide CANCEL button
-                                  Column Size option (Show all fields in 1 -> 12 sections)
-                                  Disable Toast Option
-                                  Removed slds-box class to remove double boxes under flow screen
-                                  label-stacked variant added on input fields.
+8/3/20 -    Eric Smith -        Version 1.8
+                                Added option to suppress the field underline (Multiple columns don't always line up)
 
-4/29/20 -   Eric Smith -          Version 1.6
-                                  Removed record-type-id={recordTypeId} from lightning-record-view-form
+/29/20 -    M Hamza Siddiqui -  Version 1.7
+                                Save and Cancel Button Labels are now changeable
+                                Option to hide CANCEL button
+                                Column Size option (Show all fields in 1 -> 12 sections)
+                                Disable Toast Option
+                                Removed slds-box class to remove double boxes under flow screen
+                                label-stacked variant added on input fields.
 
-4/16/20 -   Eric Smith -          Version 1.5
-                                  Added underlines to fields when in View Mode to improve readability
+4/29/20 -   Eric Smith -        Version 1.6
+                                Removed record-type-id={recordTypeId} from lightning-record-view-form
+
+4/16/20 -   Eric Smith -        Version 1.5
+                                Added underlines to fields when in View Mode to improve readability
 
                             
-1/24/20 -   Eric Smith -          Version 1.3
-                                  Added a feature to display and handle a Cancel button when in Edit mode
-                                  Added an option to support flow navigation on record save and cancel                           
-                                  Included descriptive labels and help text for Flow parameters
+1/24/20 -   Eric Smith -        Version 1.3
+                                Added a feature to display and handle a Cancel button when in Edit mode
+                                Added an option to support flow navigation on record save and cancel                           
+                                Included descriptive labels and help text for Flow parameters
 
 -->
 <template>
@@ -43,7 +46,11 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                             <lightning-layout multiple-rows="true">
                                 <template for:each={fieldData} for:item="field">
                                     <lightning-layout-item key={field.fieldName} size={elementSize}>
-                                        <div class="underline">
+                                        <div if:false={suppressUnderline} class="underline">
+                                            <lightning-output-field if:false={field.isError} field-name={field.fieldName}>
+                                            </lightning-output-field>
+                                        </div>
+                                        <div if:true={suppressUnderline}>
                                             <lightning-output-field if:false={field.isError} field-name={field.fieldName}>
                                             </lightning-output-field>
                                         </div>
@@ -103,8 +110,8 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                 </template>
             </div>
         </template>
-        <div class="toast-message">
-            <c-toast-message></c-toast-message>
+        <div class="fbc_toast-message">
+            <c-fbc_toast-message></c-fbc_toast-message>
         </div>
     </div>
 </template>

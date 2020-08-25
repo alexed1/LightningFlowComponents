@@ -1,16 +1,20 @@
 global with sharing class CopyCollection {
     @InvocableMethod
     global static List <Results> copyCollection(List<Requests> requestList) {
-
-        Results response = new Results();
-        List<SObject> inputCollection = requestList[0].inputCollection;
-
-        if (inputCollection != null && !inputCollection.isEmpty()) {
-            response.outputCollection = inputCollection.clone();
-        }
-
+        
         List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+        for (Requests curRequest : requestList) {
+            Results response = new Results();
+
+            List<SObject> inputCollection = curRequest.inputCollection;
+    
+            if (inputCollection != null && !inputCollection.isEmpty()) {
+                response.outputCollection = inputCollection.clone();
+            }
+    
+            responseWrapper.add(response);
+        }
+      
 
         return responseWrapper;
     }

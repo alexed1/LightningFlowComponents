@@ -5,14 +5,21 @@
             "default": true,
             "package": "quickChoiceCPE",
             "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
+            "versionNumber": "0.1.0.NEXT",
+            "dependencies": [
+                {
+                    "package": "FlowBaseComponents"
+                }
+            ]
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "48.0",
     "packageAliases": {
-        "quickChoiceCPE": "0HoB00000008PEyKAM",
-        "quickChoiceCPE@2.0.0-0": "04tB0000000KxT1IAK"
+        "FlowBaseComponents": "04tf4000003RQxcAAG",
+        "quickChoiceCPE": "0Hof4000000TN9nCAG",
+        "quickChoiceCPE@2.0.0-0": "04tB0000000KxT1IAK",
+        "quickChoiceCPE@2.1.0-0": "04tf4000003RR3MAAW"
     }
 }

@@ -25,6 +25,7 @@ export default class dualListBox extends LightningElement {
     @api useObjectValueAsOutput = false; //used with csv or list
     @track _options; //always json{label,value}
     @track _optionsOriginal; //stores original values
+    _optionsOriginalMap;
     @track _value; //['value1','value2','value3']
 
     @api
@@ -56,6 +57,9 @@ export default class dualListBox extends LightningElement {
     set allOptions(value) {
         if (!this.isError) {
             this._optionsOriginal = value;
+            if (this.selectedValuesStringFormat === defaults.originalObject || this.selectedValuesStringFormat === defaults.twoLists) {
+                this.setOriginalObjectMap();
+            }
             if (this.useWhichObjectKeyForSort) {
                 let formattedOptions = this.formatOptionsSet(value, this.allOptionsStringFormat);
                 this._options = this.sortOptionsSet(formattedOptions, this.useWhichObjectKeyForSort);
@@ -63,6 +67,14 @@ export default class dualListBox extends LightningElement {
                 this._options = this.formatOptionsSet(value, this.allOptionsStringFormat);
             }
         }
+    }
+
+    setOriginalObjectMap() {
+        let resultValue = {};
+        this._optionsOriginal.forEach(curItem => {
+            resultValue[curItem[this.useWhichObjectKeyForData]] = curItem;
+        });
+        this._optionsOriginalMap = resultValue;
     }
 
     get isError() {
@@ -91,7 +103,7 @@ export default class dualListBox extends LightningElement {
         let fieldValue = row => row[sortField] || '';
         return [...value.sort(
             (a,b)=>(a=fieldValue(a).toUpperCase(),b=fieldValue(b).toUpperCase(),((a>b)-(b>a)))
-        )];        
+        )];
     }
 
     formatValuesSet(value, optionType) {
@@ -121,11 +133,8 @@ export default class dualListBox extends LightningElement {
         } else if (optionType === defaults.list || optionType === defaults.twoLists) {
             return selectedValues;
         } else if (optionType === defaults.originalObject) {
-            let filteredRecords = this._optionsOriginal.filter(curOriginal => {
-                return items.includes(curOriginal[this.useWhichObjectKeyForData]);
-            });
             return items.map(curItemId => {
-                return filteredRecords.find(curFilteredItem => curFilteredItem[this.useWhichObjectKeyForData] === curItemId)
+                return this._optionsOriginalMap[curItemId];
             });
         }
     }
@@ -160,7 +169,7 @@ export default class dualListBox extends LightningElement {
             return items.map(curItem => this.useObjectValueAsOutput ? curItem.value : curItem.label);
         } else if (optionType === defaults.originalObject || optionType === defaults.twoLists) {
             return items.map(curItem => {
-                return this._optionsOriginal.find(curFilterItem => curItem.value === curFilterItem[this.useWhichObjectKeyForData]);
+                return this._optionsOriginalMap[curItem.value];
             });
         }
     }

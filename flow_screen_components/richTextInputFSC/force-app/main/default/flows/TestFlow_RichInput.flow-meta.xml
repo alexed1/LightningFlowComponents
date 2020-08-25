@@ -42,19 +42,8 @@
         <connector>
             <targetReference>outputScreen</targetReference>
         </connector>
-        <fields>
-            <name>richText</name>
-            <extensionName>c:inputRichTextFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>value</name>
-                <value>
-                    <stringValue>default value</stringValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
+        
+        
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>

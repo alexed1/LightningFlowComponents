@@ -1,0 +1,15 @@
+/**
+ * @description       : orgWideEmailAddress.soql
+ * @author            : Jack D. Pond
+ * @group             : 
+ * @last modified on  : 07-03-2020
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver   Date         Author         Modification
+ * 1.0   07-03-2020   Jack D. Pond   Initial Version
+**/
+// Use .soql files to store SOQL queries.
+// You can execute queries in VS Code by selecting the
+//     query text and running the command:
+//     SFDX: Execute SOQL Query with Currently Selected Text
+select Id, Address, IsAllowAllProfiles, DisplayName from orgWideEmailAddress

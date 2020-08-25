@@ -11,7 +11,8 @@ const flowComboboxDefaults = {
     referenceDataType: 'reference',
     defaultKeyPrefix: 'flowCombobox-',
     recordLookupsType:'recordLookups',
-    dataTypeSObject: 'SObject'
+    dataTypeSObject: 'SObject',
+    isCollectionField: 'isCollection'
 
 }
 

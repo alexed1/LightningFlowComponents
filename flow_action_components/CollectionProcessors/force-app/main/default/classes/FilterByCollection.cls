@@ -4,28 +4,33 @@
 global with sharing class FilterByCollection {
     @InvocableMethod
     global static List <Results> filter(List<Requests> requestList) {
-        Results response = new Results();
-      
-        List<SObject> containingCollection = requestList[0].containingCollection;
-        String objectName = requestList[0].objectName;
-        String returnFields = requestList[0].returnFields;
-        String bindField = requestList[0].bindField;
-        if (returnFields == '' || returnFields == null)
-            returnFields = 'Id';
-        if (bindField == '' || bindField == null)
-            bindField = 'Id';
-        
-        if (containingCollection != null && !containingCollection.isEmpty() && objectName != null) {
-            String queryString;
-            queryString = 'SELECT ' + returnFields + ' FROM ' + objectName + ' WHERE ' + bindField + ' IN :containingCollection'; 
-            System.debug ('queryString is: ' + queryString);
-            queryString = 'SELECT Name,Id,CampaignId FROM CampaignMember WHERE CampaignId IN :containingCollection';
-            response.foundRecords = Database.query(queryString);
-        } else {
-            throw new InvocableActionException('ContainingCollection or ObjectName did not contain valid values');
-        }
         List<Results> responseWrapper = new List<Results>();
-        responseWrapper.add(response);
+        for (Requests curRequest : requestList) {
+            Results response = new Results();
+            List<SObject> containingCollection = curRequest.containingCollection;
+            String objectName = curRequest.objectName;
+            String returnFields = curRequest.returnFields;
+            String bindField = curRequest.bindField;
+            if (returnFields == '' || returnFields == null)
+                returnFields = 'Id';
+            if (bindField == '' || bindField == null)
+                bindField = 'Id';
+            
+            if (containingCollection != null && !containingCollection.isEmpty() && objectName != null) {
+                String queryString;
+                queryString = 'SELECT ' + returnFields + ' FROM ' + objectName + ' WHERE ' + bindField + ' IN :containingCollection'; 
+                System.debug ('queryString is: ' + queryString);
+                queryString = 'SELECT Name,Id,CampaignId FROM CampaignMember WHERE CampaignId IN :containingCollection';
+                response.foundRecords = Database.query(queryString);
+            } else {
+                throw new InvocableActionException('ContainingCollection or ObjectName did not contain valid values');
+            }
+            
+            responseWrapper.add(response);
+
+        }
+      
+       
 
         return responseWrapper;
 

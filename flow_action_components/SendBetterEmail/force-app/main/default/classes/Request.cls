@@ -5,6 +5,7 @@ public inherited sharing class Request {
     public String[] bccAddresses;
     public Boolean setSaveAsActivity;
     public Boolean setSaveAsTask;
+    public Integer index; // This is internal Id for the requests and will be in sequence
 
     @invocableVariable(label='bcc' description='Indicates whether the email sender receives a copy of the email that is sent. For a mass mail, the sender is only copied on the first email sent.')
     public Boolean bcc;

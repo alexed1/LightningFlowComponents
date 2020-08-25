@@ -10,5 +10,7 @@ public inherited sharing class Response {
     
     @invocableVariable
     public String errors;
+
+    public Integer index; // variable that assigns internal Id
 }
 

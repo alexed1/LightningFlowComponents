@@ -186,4 +186,37 @@ public inherited sharing class SendEmailUtil {
         }
         return (rettemplateId == null) ? blankTemplate : rettemplateId;
     }
+
+    public static String getDatabaseErrorString(
+        List<Database.Error> curErrors
+    ) {
+        String errorReport;
+        for (Database.Error curError : curErrors) {
+            errorReport =
+                errorReport +
+                'Error Code:' +
+                curError.getStatusCode() +
+                ' - ' +
+                curError.getMessage() +
+                '\n';
+        }
+        return errorReport;
+    }
+
+    public static String getErrorString(
+        List<Messaging.SendEmailError> curErrors
+    ) {
+        String errorReport;
+        for (Messaging.SendEmailError curError : curErrors) {
+            errorReport =
+                errorReport +
+                'Error Code:' +
+                curError.getStatusCode() +
+                ' - ' +
+                curError.getMessage() +
+                '\n';
+        }
+        return errorReport;
+    }
+
 }

@@ -38,8 +38,15 @@ public without sharing class SendBetterEmail {
     )
     public static List<Response> SendEmail(List<Request> requests) {
         List<Response> responseList = new List<Response>();
-        List<Messaging.SingleEmailMessage> singlEmailList = new List<Messaging.SingleEmailMessage>();
+
+        List<Messaging.SingleEmailMessage> singleEmailList = new List<Messaging.SingleEmailMessage>();
+        List<Request> singleEmailRequestToSend = new List<Request>();
+
         List<Messaging.MassEmailMessage> massEmailList = new List<Messaging.MassEmailMessage>();
+        List<Request> massEmailRequestListToSend = new List<Request>();
+
+        List<Messaging.SendEmailResult> singleSendEmailResults = new List<Messaging.SendEmailResult>();
+        List<Messaging.SendEmailResult> massSendEmailResults = new List<Messaging.SendEmailResult>();
 
         // Set for template Names and content document Ids
         Set<String> templateNames = new Set<String>();
@@ -79,7 +86,12 @@ public without sharing class SendBetterEmail {
             contentDocumentIds
         );
 
+        Integer requestIndex = 0;
+
         for (Request curRequest : requests) {
+            //Assign Request Number to the Requests
+            curRequest.index = requestIndex;
+
             String HTMLbody = curRequest.HTMLbody;
             String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
             String plainTextBody = curRequest.plainTextBody;
@@ -91,13 +103,16 @@ public without sharing class SendBetterEmail {
             String templateName = curRequest.templateName;
             String templateLanguage = curRequest.templateLanguage;
             String templateTargetObjectId = curRequest.templateTargetObjectId;
+
             String emailMessageType = curRequest.emailMessageType == null
                 ? 'singleEmail'
                 : curRequest.emailMessageType;
+
             Boolean useSalesforceSignature = curRequest.useSalesforceSignature ==
                 null
                 ? true
                 : curRequest.useSalesforceSignature;
+
             Boolean bcc = curRequest.bcc == null ? false : curRequest.bcc; // default to false
 
             if (subject != null && (subject.length() == 0)) {
@@ -105,6 +120,7 @@ public without sharing class SendBetterEmail {
             }
 
             Response thisResponse = new Response();
+            thisResponse.index = requestIndex;
             curRequest.setSaveAsTask = curRequest.saveAsTask;
             curRequest.setSaveAsActivity = curRequest.saveAsActivity;
 
@@ -241,11 +257,14 @@ public without sharing class SendBetterEmail {
                             : curRequest.useSalesforceSignature
                     );
                 }
+
                 if (thisResponse.errors == null) {
                     massEmailList.add(mmail);
+                    massEmailRequestListToSend.add(curRequest);
                 } else {
                     thisResponse.isSuccess = false;
                 }
+
                 responseList.add(thisResponse);
                 //				Single Email Segment
             } else {
@@ -379,12 +398,15 @@ public without sharing class SendBetterEmail {
                 if (plainTextBody != null) {
                     mail.setPlainTextBody(plainTextBody);
                 }
+
                 if (HTMLbody != null) {
                     mail.setHtmlBody(HTMLbody);
                 }
+
                 if (curRequest.setSaveAsActivity != null) {
                     mail.setSaveAsActivity(curRequest.setSaveAsActivity);
                 }
+
                 if (templateId != null) {
                     try {
                         mail.setTemplateId(templateId);
@@ -394,18 +416,26 @@ public without sharing class SendBetterEmail {
                         thisResponse.errors = e.getMessage();
                     }
                 }
+
                 if (thisResponse.errors == null) {
-                    singleMailList.add(mail);
+                    singleEmailList.add(mail);
+                    singleEmailRequestToSend.add(curRequest);
                 } else {
                     thisResponse.isSuccess = false;
                 }
+
                 responseList.add(thisResponse);
             }
+
+            requestIndex = requestIndex + 1;
         }
-        List<Messaging.SendEmailResult> emailResults = new List<Messaging.SendEmailResult>();
+
         if (massEmailList != null && massEmailList.size() > 0) {
             try {
-                emailResults = Messaging.sendEmail(massEmailList, false);
+                massSendEmailResults = Messaging.sendEmail(
+                    massEmailList,
+                    false
+                );
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
@@ -415,71 +445,63 @@ public without sharing class SendBetterEmail {
                     }
                 }
             }
-            Integer replyPos = 0;
-            for (Messaging.SendEmailResult thisResult : emailResults) {
-                while (
-                    responseList[replyPos].errors != null ||
-                    requests[replyPos].emailMessageType != 'massEmail'
-                )
-                    replyPos++;
+
+            for (integer i = 0; i < massSendEmailResults.size(); i++) {
+                Request request = massEmailRequestListToSend[i];
+                Response response = responseList[request.index];
+                Messaging.SendEmailResult emailResult = massSendEmailResults[i];
                 if (
-                    thisResult.isSuccess() != true &&
+                    emailResult.isSuccess() == false &&
                     !(test.isRunningTest() &&
-                    requests[replyPos].setSaveAsTask &&
-                    ((Id) requests[replyPos].whatIds[0])
-                        .getSObjectType()
-                        .getDescribe()
-                        .getName() == 'User')
+                    request.setSaveAsTask &&
+                    ((Id) request.whatIds[0]).getSObjectType() ==
+                    Schema.User.sObjectType)
                 ) {
-                    responseList[replyPos].isSuccess = false;
-                    Messaging.SendEmailError[] curErrors = thisResult.getErrors();
-                    String errorReport = '';
-                    for (Messaging.SendEmailError curError : curErrors) {
-                        errorReport =
-                            errorReport +
-                            'Error Code: ' +
-                            curError.getStatusCode() +
-                            ' - ' +
-                            curError.getMessage() +
-                            '\n';
-                    }
-                    responseList[replyPos].errors = errorReport;
+                    response.isSuccess = false;
+                    response.errors = SendEmailUtil.getErrorString(
+                        emailResult.getErrors()
+                    );
                 } else {
-                    responseList[replyPos].isSuccess = true;
-                    if (requests[replyPos].setSaveAsTask == true) {
+                    response.isSuccess = true;
+                    if (request.setSaveAsTask == true) {
                         if (
-                            requests[replyPos].whatIds != null &&
-                            requests[replyPos].whatIds.size() > 0
+                            request.whatIds != null &&
+                            request.whatIds.size() > 0
                         ) {
-                            responseList[replyPos].taskIds = addTasks(
-                                requests[replyPos],
-                                responseList[replyPos],
+                            response.taskIds = addTasks(
+                                request,
+                                response,
                                 null
                             );
                         } else {
-                            responseList[replyPos].taskIds = new List<String>{
+                            response.taskIds = new List<String>{
                                 'Error:  Mass Email requires whatIds if saveAsTask'
                             };
                         }
                     }
                 }
-                replyPos++;
             }
         }
-        if (singleMailList != null && singleMailList.size() > 0) {
+
+        if (singleEmailList != null && singleEmailList.size() > 0) {
             try {
-                emailResults = Messaging.sendEmail(singleMailList, false);
+                singleSendEmailResults = Messaging.sendEmail(
+                    singleEmailList,
+                    false
+                );
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType == 'massEmail') {
+                    if (requests[i].emailMessageType != 'massEmail') {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
                 }
             }
             Integer replyPos = 0;
-            for (Messaging.SendEmailResult thisResult : emailResults) {
+            for (
+                Messaging.SendEmailResult thisResult : singleSendEmailResults
+            ) {
                 while (
                     responseList[replyPos].errors != null ||
                     requests[replyPos].emailMessageType == 'massEmail'

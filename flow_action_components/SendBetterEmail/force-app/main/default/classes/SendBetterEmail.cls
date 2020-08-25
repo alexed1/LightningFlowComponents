@@ -498,59 +498,44 @@ public without sharing class SendBetterEmail {
                     }
                 }
             }
-            Integer replyPos = 0;
-            for (
-                Messaging.SendEmailResult thisResult : singleSendEmailResults
-            ) {
-                while (
-                    responseList[replyPos].errors != null ||
-                    requests[replyPos].emailMessageType == 'massEmail'
-                )
-                    replyPos++;
+
+            for (integer i = 0; i < singleSendEmailResults.size(); i++) {
+                Request request = singleEmailRequestToSend[i];
+                Response response = responseList[request.index];
+                Messaging.SendEmailResult emailResult = singleSendEmailResults[
+                    i
+                ];
+
                 if (
-                    thisResult.isSuccess() != true &&
+                    emailResult.isSuccess() != true &&
                     !(test.isRunningTest() &&
-                    requests[replyPos].setSaveAsTask &&
-                    ((Id) requests[replyPos].recordId)
-                        .getSObjectType()
-                        .getDescribe()
-                        .getName() == 'User')
+                    request.setSaveAsTask &&
+                    ((Id) request.recordId).getSObjectType() ==
+                    Schema.User.sObjectType)
                 ) {
-                    responseList[replyPos].isSuccess = false;
-                    Messaging.SendEmailError[] curErrors = thisResult.getErrors();
-                    String errorReport = '';
-                    for (Messaging.SendEmailError curError : curErrors) {
-                        errorReport =
-                            errorReport +
-                            'Error Code:' +
-                            curError.getStatusCode() +
-                            ' - ' +
-                            curError.getMessage() +
-                            '\n';
-                    }
-                    responseList[replyPos].errors = errorReport;
+                    response.isSuccess = false;
+                    response.errors = SendEmailUtil.getErrorString(emailResult.getErrors());
                 } else {
-                    responseList[replyPos].isSuccess = true;
-                    if (requests[replyPos].setSaveAsTask == true) {
-                        string[] allRecipients = (requests[replyPos]
-                            .toAddresses);
-                        allRecipients.addall(requests[replyPos].ccAddresses);
-                        allRecipients.addall(requests[replyPos].bccAddresses);
+                    response.isSuccess = true;
+                    if (request.setSaveAsTask == true) {
+                        string[] allRecipients = request.toAddresses;
+                        allRecipients.addall(request.ccAddresses);
+                        allRecipients.addall(request.bccAddresses);
                         if (
-                            requests[replyPos].recordID != null &&
+                            request.recordID != null &&
                             allRecipients.size() > 0
                         ) {
-                            responseList[replyPos].taskIds = addTasks(
-                                requests[replyPos],
-                                responseList[replyPos],
+                            response.taskIds = addTasks(
+                                request,
+                                response,
                                 allRecipients
                             );
                         }
                     }
                 }
-                replyPos++;
             }
         }
+
         //report back the results
         boolean atLeastOneSent = false;
         for (Response thisResponse : responseList) {

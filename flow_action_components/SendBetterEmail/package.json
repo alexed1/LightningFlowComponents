@@ -1,0 +1,16 @@
+{
+  "name": "sendbetteremail",
+  "version": "1.0.0",
+  "description": "1. Install/update [Flow Base Components](https://unofficialsf.com/introducing-flowbasecomponents \"Flow Base Components\").  This is a firm pre-requisite. 2. Install the latest package found at [Send Rich Email (Send Better Email Action)](https://unofficialsf.com/send-rich-email-with-the-new-sendhtmlemail-action/).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@prettier/plugin-xml": "^0.10.0",
+    "prettier": "^2.0.5",
+    "prettier-plugin-apex": "^1.6.0"
+  }
+}

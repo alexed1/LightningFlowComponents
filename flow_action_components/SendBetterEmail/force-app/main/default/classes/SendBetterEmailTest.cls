@@ -211,19 +211,19 @@ public with sharing class SendBetterEmailTest {
 // @Test t001_canSendEmail: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
 	@isTest
 	public static void t001_canSendEmail () {
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.SendCCthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.SendBCCthisOneEmailAddress = EMAIL_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 
 		Boolean exceptionHit = false;
 		try {            
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
 			system.debug('t001_error: IfNoAddress: '+e.getMessage());
@@ -241,16 +241,16 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t002_errorIfNoAddress () {
 
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		//testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean exceptionHit = false;
 		try {            
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			System.assertEquals(testResponseList[0].isSuccess,false,'t002_errorIfNoAddress: Error expected if no addresses specified');
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
@@ -262,17 +262,17 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t003_errorIfBothTemplateAndBody () {
 
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.templateID = TEMPLATE_NOSUCH;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean exceptionHit=false;
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
 			system.debug('t003_error - IfBothTemplateAndBody error: '+e.getMessage());
@@ -284,17 +284,17 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t004_errorIfTemplateButNoContextRecord () {
 
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		//testReq.HTMLbody = EMAIL_BODY;
 		testReq.templateID = TEMPLATE_NOSUCH;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean exceptionHit=false;
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
 			system.debug('t004_errorIfTemplateButNoContextRecord error: '+e.getMessage());
@@ -305,18 +305,18 @@ public with sharing class SendBetterEmailTest {
 // @Test t005_errorIfTemplateNameAndTemplateID: Error expected if templateID and templateName both used
 	@isTest
 	public static void t005_errorIfTemplateNameAndTemplateID () {
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		//testReq.HTMLbody = EMAIL_BODY;
 		testReq.templateID = TEMPLATE_NOSUCH;
 		testReq.templateName = TEMPLATE_NAME_NOSUCH;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean ExceptionHit=false;
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			ExceptionHit=true;
 			system.debug('t005_errorIfTemplateNameAndTemplateID error: '+e.getMessage());
@@ -326,16 +326,16 @@ public with sharing class SendBetterEmailTest {
 // @Test t006_coverageIfTemplateNameAndNoLanguage: Can select the Organization LanguageLocaleKey template if no language specified.  However, if LanguageLocaleKey isn't en_US, still works
 	@isTest
 	public static void t006_coverageIfTemplateNameAndNoLanguage() {
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.templateName = TEMPLATE_NAME;
 		testReq.templateTargetObjectId = UserInfo.getUserId();
 		// if templateTargetObjectId type = user, saveAsActivity must be false
 		testReq.saveAsActivity = false;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean noExceptionHit=true;
-		List<SendBetterEmail.Response> testResponseList;
+		List<Response> testResponseList;
 		try {
 			testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
@@ -354,13 +354,13 @@ public with sharing class SendBetterEmailTest {
 // @Test t007_coverageIfTemplateNameDoesntExist: Error expected if Named Template non-existent 
 	@isTest
 	public static void t007_coverageIfTemplateNameDoesntExist() {
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.templateName = TEMPLATE_NOSUCH;
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean ExceptionHit=false;
-		List<SendBetterEmail.Response> testResponseList;
+		List<Response> testResponseList;
 		try {
 			testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
@@ -374,7 +374,7 @@ public with sharing class SendBetterEmailTest {
 	public static void t008_coverageWithAttachments() {
 		String devName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE;
 		EmailTemplate validEmailTemplate = [Select Id,Name from EmailTemplate where DeveloperName=:devName];
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		List<ContentDocumentLink> cdls = emailCreateAttachments(validEmailTemplate.Id);
 		testReq.templateName = validEmailTemplate.Name;
 		testReq.recordId = validEmailTemplate.Id;
@@ -404,12 +404,12 @@ public with sharing class SendBetterEmailTest {
 			testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		}
 		testReq.contentDocumentAttachments = cdls;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		system.debug('t008 attachlist: '+cdls);
 		Boolean ExceptionHit=false;
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			if (TEST_WITH_CREATED_RECORDS){
 				System.assertEquals(testResponseList[0].isSuccess,true,'t008_error: IfNoAddress. Error expected if no addresses specified');
 			} else {
@@ -427,7 +427,7 @@ public with sharing class SendBetterEmailTest {
 	public static void t009_coverageTestActivityAndBulkification() {
 		String devName = TEMPLATE_DEVNAME+'_'+TEMPLATE_LANGUAGE;
 		EmailTemplate validEmailTemplate = [Select Id,Name from EmailTemplate where DeveloperName=:devName];
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.templateName = validEmailTemplate.Name;
 		testReq.recordId = validEmailTemplate.Id;
 		if (TEST_WITH_CREATED_RECORDS){
@@ -441,11 +441,11 @@ public with sharing class SendBetterEmailTest {
 			testReq.saveAsActivity = false;
 		}
 
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 		Boolean ExceptionHit=False;
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			system.debug('t009: testResponseList: ' + testResponseList);
 			if (TEST_WITH_CREATED_RECORDS){
 				System.assertEquals(testResponseList[0].isSuccess,true,'Cannot allow email record as activity on recordId object');
@@ -463,7 +463,7 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t010_canSendEmailCCToCollectionOfUsers() {
 
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -471,12 +471,12 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendCCtheEmailAddressesFromThisCollectionOfUsers = [Select Id,Email from User where Id=:UserInfo.getUserId()];
 		testReq.SendBCCthisStringCollectionOfEmailAddresses = new List<String>{EMAIL_NOSUCH};
 		testReq.useSalesforceSignature = true;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 
 		Boolean exceptionHit = false;
 		try {            
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
 			system.debug('t001_errorIfNoAddress: '+e.getMessage());
@@ -492,15 +492,15 @@ public with sharing class SendBetterEmailTest {
 // @Test t011_ErrorIfNoBody: Error expected if (templateID == null  && HTMLbody == null && plainTextBody == null)
 	@isTest
 	public static void t011_ErrorIfNoBody() {
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		reqList.add(testReq);
 
 		Boolean exceptionHit = false;
 		try {            
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 		} catch (SendBetterEmail.InvocableActionException e) {
 			exceptionHit=true;
 			system.debug('t011_ErrorIfNoBody: '+e.getMessage());
@@ -516,8 +516,8 @@ public with sharing class SendBetterEmailTest {
 // @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
 @isTest
 	public static void t012_ErrorIfSaveAsTaskAndNoRecordId() {
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -525,7 +525,7 @@ public with sharing class SendBetterEmailTest {
 		reqList.add(testReq);
 
 		try {            
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			System.assert(false,'t012_ErrorIfSaveAsTaskAndNoRecordId: Error not received when (saveAsActivity == true && recordId/whatId == null)');
 		} catch (SendBetterEmail.InvocableActionException e) {
 			system.debug('t012_ErrorIfSaveAsTaskAndNoRecordId: '+ e.getMessage());
@@ -534,9 +534,9 @@ public with sharing class SendBetterEmailTest {
 // @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
 	@isTest
 	public static void t013_ErrorIfSaveAsActivityAndNoRecordId() {
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
+		List<Request> reqList = new List<Request>();
 		for (OrgWideEmailAddress orgAddrs : [SELECT id, DisplayName, Address FROM OrgWideEmailAddress limit 2]){
-			SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+			Request testReq = new Request();
 			testReq.Subject = EMAIL_SUBJECT;
 			testReq.HTMLbody = EMAIL_BODY;
 			testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -545,7 +545,7 @@ public with sharing class SendBetterEmailTest {
 		}
 		if (reqList.size() > 0){
 			Boolean exceptionHit = false;
-			List<SendBetterEmail.Response> testResponseList = new List<SendBetterEmail.Response>();
+			List<Response> testResponseList = new List<Response>();
 			try {            
 				testResponseList = SendBetterEmail.SendEmail(reqList);
 			} catch (SendBetterEmail.InvocableActionException e) {
@@ -555,7 +555,7 @@ public with sharing class SendBetterEmailTest {
 			
 			Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
 			if(emailDeliverabilityEnabled){
-				for(SendBetterEmail.Response thisTest : testResponseList){
+				for(Response thisTest : testResponseList){
 					system.debug('t013_CoverageAttemptForOrgWideEmailAddress Response:' + thisTest.isSuccess + ' Template Errors: ' + thisTest.errors + ' Template Used: '+ thisTest.templateUsed);
 				}
 //                System.assertEquals(exceptionHit,false,'Error on orgWideEmailAddressId');
@@ -577,10 +577,10 @@ public with sharing class SendBetterEmailTest {
 				theseAccounts.add(emailCreateTestAccounts(1,thisContact.Id)[0]);
 			}
 		}
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq;
+		List<Request> reqList = new List<Request>();
+		Request testReq;
 		for (Integer i=0;i<BULK_TEST_COUNT;i++){
-			testReq = new SendBetterEmail.Request();
+			testReq = new Request();
 			testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
 			testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 			// Deliberately introduce error every other request
@@ -598,7 +598,7 @@ public with sharing class SendBetterEmailTest {
 			reqList.add(testReq);
 		}
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assertEquals(testResponseList[i].isSuccess,(math.mod(i,2) == 0),'Failed on '+ ('0000'+i).right(4)+' Error: '+testResponseList[i].errors);
 			}
@@ -633,10 +633,10 @@ public with sharing class SendBetterEmailTest {
 			for (Account thisAccount : theseAccounts) theseAccountIds.add((String)thisAccount.Id);
 			for (Case thisCase : theseCases) theseCaseIds.add((String)thisCase.Id);
 		}
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq;
+		List<Request> reqList = new List<Request>();
+		Request testReq;
 		for (Integer i=0;i<BULK_TEST_COUNT;i++){
-			testReq = new SendBetterEmail.Request();
+			testReq = new Request();
 			testReq.Subject = EMAIL_SUBJECT + ('0000'+i).right(4);
 			testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 			// Deliberately introduce error by default so mixed types and errors
@@ -669,7 +669,7 @@ public with sharing class SendBetterEmailTest {
 			reqList.add(testReq);
 		}
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.debug('Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 			}
@@ -683,8 +683,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t016_coverageMassMailTestDescription() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 		testReq.templateID = EmailTemplateId;
 		testReq.emailMessageType = 'massEmail';
 		testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -693,7 +693,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.assert(!testResponseList[i].isSuccess,'t016_coverageMassMailTestDescription: Should error, no Description.  Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 			}
@@ -705,8 +705,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t017_coverageMassMailTestActivityAndBulkification() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 		testReq.templateID = EmailTemplateId;
 		testReq.emailMessageType = 'massEmail';
 //        testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
@@ -715,7 +715,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.assert(!testResponseList[i].isSuccess,'t017_coverageMassMailtargetObjectIds: Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 			}
@@ -727,8 +727,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t018_coverageMassMailTemplateId() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 //        testReq.templateID = EmailTemplateId;
 //        testReq.templateName = TEMPLATE_NAME;
 		testReq.emailMessageType = 'massEmail';
@@ -738,7 +738,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.assert(testResponseList[i].isSuccess,'t018_coverageMassMailTemplateId: Should have caught no template: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
 			}
@@ -750,8 +750,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t019_coverageMassMailTemplateName() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 //        testReq.templateID = EmailTemplateId;
 		testReq.templateName = TEMPLATE_NAME;
 		testReq.emailMessageType = 'massEmail';
@@ -761,7 +761,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				system.assert(testResponseList[i].isSuccess,'t019_coverageMassMailTemplateName: Response: ' +
 							 ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -774,8 +774,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t020_coverageMassMailTemplateNameNotFound() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 //        testReq.templateID = EmailTemplateId;
 		testReq.templateName = TEMPLATE_NOSUCH;
 		testReq.emailMessageType = 'massEmail';
@@ -785,7 +785,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assert(testResponseList[i].isSuccess,'t020_coverageMassMailTemplateNameNotFound: Response: ' +
 									('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -803,9 +803,9 @@ public with sharing class SendBetterEmailTest {
 		list<String> theseAccountIds = new list<String>();
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
 		
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq;
-		testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq;
+		testReq = new Request();
 		testReq.templateID = EmailTemplateId;
 		testReq.emailMessageType = 'massEmail';
 		// Deliberately introduce error by mismatching targetObjectIds and whatIds
@@ -815,7 +815,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assertEquals(testResponseList[i].isSuccess,false,'t021 Fail: Should have failed, targetObjectIds and whatIds mismatch ' + 
 									('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -827,8 +827,8 @@ public with sharing class SendBetterEmailTest {
 // @Test t022_coverageMassMailTemplateIdNoLang: MassEmail finds Template with no Language Specified
 	@isTest
 	public static void t022_coverageMassMailTemplateIdNoLang() {
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 //        testReq.templateID = EmailTemplateId;
 		testReq.emailMessageType = 'massEmail';
 		testReq.Description = 'MassEmail Test - no Language';
@@ -838,7 +838,7 @@ public with sharing class SendBetterEmailTest {
 
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assert(testResponseList[i].isSuccess,'t022_coverageMassMailTemplateIdNoLang: MassEmail should have found Template with no Language Specified'+
 								   ' Response: ' + ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -858,8 +858,8 @@ public with sharing class SendBetterEmailTest {
 			list<String> theseContactIds = new list<String>();
 			list<String> theseAccountIds = new list<String>();
 			list<String> theseCaseIds = new list<String>();
-			List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-			SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+			List<Request> reqList = new List<Request>();
+			Request testReq = new Request();
 			testReq.emailMessageType = 'massEmail';
 			testReq.Description = 'MassEmail Test - no Language';
 			testReq.templateName = TEMPLATE_NAME_NO_LANG;
@@ -876,7 +876,7 @@ public with sharing class SendBetterEmailTest {
 			testReq.saveAsActivity = true;
 			reqList.add(testReq);
 			try {
-				List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+				List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 				for (Integer i=0;i<testResponseList.size();i++){
 					System.assert(testResponseList[i].isSuccess,'t023_coverageMassMailTemplateSaveAsTask - MassEmail should have added tasks and activities');
 				}
@@ -893,9 +893,9 @@ public with sharing class SendBetterEmailTest {
 			List<Contact> theseContacts = emailCreateTestContacts(1);
 			List<Account> theseAccounts = emailCreateTestAccounts(1,theseContacts[0].Id);
 			ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-			List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-			SendBetterEmail.Request testReq;
-			testReq = new SendBetterEmail.Request();
+			List<Request> reqList = new List<Request>();
+			Request testReq;
+			testReq = new Request();
 			testReq.templateID = EmailTemplateId;
 			testReq.emailMessageType = 'singleEmail';
 			testReq.templateTargetObjectId = theseContacts[0].Id;
@@ -903,7 +903,7 @@ public with sharing class SendBetterEmailTest {
 			testReq.saveAsTask = true;
 			reqList.add(testReq);
 			try {
-				List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+				List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 				for (Integer i=0;i<testResponseList.size();i++){
 					System.assertEquals(testResponseList[i].isSuccess,true,'t024_coverageSingleEMailTaskActivity Fail: Should have attached task and activity ' + 
 										('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -917,16 +917,16 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t025_errorSingleEMailNoRecordId() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq;
-		testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq;
+		testReq = new Request();
 		testReq.templateID = EmailTemplateId;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.emailMessageType = 'singleEmail';
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assertEquals(testResponseList[i].isSuccess,false,'t025_errorSingleEMailNoRecordId Fail: Single Email requires recordId if saveAsTask' + 
 									('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -941,9 +941,9 @@ public with sharing class SendBetterEmailTest {
 // Will only work with created efforts
         if (TEST_WITH_CREATED_RECORDS){
 			ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-			List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-			SendBetterEmail.Request testReq;
-			testReq = new SendBetterEmail.Request();
+			List<Request> reqList = new List<Request>();
+			Request testReq;
+			testReq = new Request();
 			testReq.emailMessageType = 'singleEmail';
             testReq.Subject = EMAIL_SUBJECT;
             testReq.HTMLbody = EMAIL_BODY;
@@ -951,7 +951,7 @@ public with sharing class SendBetterEmailTest {
             testReq.SendTOtheEmailAddressesFromThisCollectionOfLeads = emailCreateTestLeads(1);
 			reqList.add(testReq);
 			try {
-				List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+				List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 				for (Integer i=0;i<testResponseList.size();i++){
 					System.assertEquals(testResponseList[i].isSuccess,true,'t026_coverageCollectionOfRecipients Fail: Should use collection of recipients ' + 
 										('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -966,9 +966,9 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t027_errorMassEMailFail() {
         ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-        List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-        SendBetterEmail.Request testReq;
-        testReq = new SendBetterEmail.Request();
+        List<Request> reqList = new List<Request>();
+        Request testReq;
+        testReq = new Request();
         testReq.Description = 't027_errorMassEMailFail';
         testReq.templateID = EmailTemplateId;
         testReq.emailMessageType = 'massEmail';
@@ -977,7 +977,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
         reqList.add(testReq);
         try {
-            List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+            List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
             for (Integer i=0;i<testResponseList.size();i++){
 				system.debug('t027_errorMassEMailFail: Should fail: saveAsTask == true, whatId == EmailTemplateId' + 
                               ('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);
@@ -993,8 +993,8 @@ public with sharing class SendBetterEmailTest {
 	@isTest
 	public static void t028_CoverageSingleEMailTask() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;
-		List<SendBetterEmail.Request> reqList = new List<SendBetterEmail.Request>();
-		SendBetterEmail.Request testReq = new SendBetterEmail.Request();
+		List<Request> reqList = new List<Request>();
+		Request testReq = new Request();
 		testReq.Subject = EMAIL_SUBJECT;
 		testReq.HTMLbody = EMAIL_BODY;
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
@@ -1002,7 +1002,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.saveAsTask = true;
 		reqList.add(testReq);
 		try {
-			List<SendBetterEmail.Response> testResponseList = SendBetterEmail.SendEmail(reqList);
+			List<Response> testResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testResponseList.size();i++){
 				System.assert(testResponseList[i].isSuccess,'t028_CoverageSingleEMailTask Single Email saveAsTask recordId is User' + 
 									('00'+i).right(2) + ' isSuccess: '+testResponseList[i].isSuccess + ' Error: '+testResponseList[i].errors);

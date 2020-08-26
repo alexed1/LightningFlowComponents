@@ -63,7 +63,7 @@ export default class sendBetterEmailAddNewMembers extends LightningElement {
     }
 
     modalAction(isOpen) {
-        const existing = this.template.querySelector('c-uc-modal');
+        const existing = this.template.querySelector('c-send-better-email-uc-modal');
         if (existing) {
             if (isOpen) {
                 existing.openModal();

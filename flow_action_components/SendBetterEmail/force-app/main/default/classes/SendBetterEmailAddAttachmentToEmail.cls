@@ -1,4 +1,4 @@
-public inherited sharing class AddAttachmentToEmail {
+public inherited sharing class SendBetterEmailAddAttachmentToEmail {
     
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
     public static Messaging.SingleEmailMessage addAttachments(

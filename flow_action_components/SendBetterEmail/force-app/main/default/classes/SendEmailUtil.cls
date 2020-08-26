@@ -79,7 +79,7 @@ public inherited sharing class SendEmailUtil {
 
     //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
     //by making the lookup a string, we can composite the string in the m.get lines above
-    public static Map<String, Object> generateMap(Request request) {
+    public static Map<String, Object> generateMap(SendBetterEmailRequest request) {
         return new Map<String, Object>{
             'SendTOthisOneEmailAddress' => request.SendTOthisOneEmailAddress,
             'SendTOthisStringCollectionOfEmailAddresses' => request.SendTOthisStringCollectionOfEmailAddresses,
@@ -169,10 +169,10 @@ public inherited sharing class SendEmailUtil {
                     templateName
                 )
             ) {
-                if (thisTemplate.Description.contains(Constant.LANGUAGE_EQUAL)) {
+                if (thisTemplate.Description.contains(SendBetterEmailConstant.LANGUAGE_EQUAL)) {
                     if (
-                        thisTemplate.Description.substringAfter(Constant.LANGUAGE_EQUAL)
-                            .substringBefore(Constant.DOUBLE_QUOTE) == templateLanguage
+                        thisTemplate.Description.substringAfter(SendBetterEmailConstant.LANGUAGE_EQUAL)
+                            .substringBefore(SendBetterEmailConstant.DOUBLE_QUOTE) == templateLanguage
                     ) {
                         rettemplateId = thisTemplate.Id;
                         break;

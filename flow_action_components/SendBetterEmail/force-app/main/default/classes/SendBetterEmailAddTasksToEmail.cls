@@ -1,8 +1,8 @@
-public inherited sharing class AddTasksToEmail {
+public inherited sharing class SendBetterEmailAddTasksToEmail {
     // Add task activities
     public static List<String> addTasks(
-        Request request,
-        Response response,
+        SendBetterEmailRequest request,
+        SendBetterEmailResponse response,
         List<String> recipientList,
         Map<Id, EmailTemplate> mapIdByEmailTemplate
     ) {
@@ -25,7 +25,7 @@ public inherited sharing class AddTasksToEmail {
             request.templateTargetObjectId
         };
         List<Id> theseWhatIds = new List<String>{ request.recordId };
-        if (request.emailMessageType == Constant.MASSEMAIL) {
+        if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
             theseTargets = request.targetObjectIds;
             theseWhatIds = request.whatIds;
         } else {
@@ -61,7 +61,7 @@ public inherited sharing class AddTasksToEmail {
 
         for (integer i = 0; i < theseWhatIds.size(); i++) {
             string thisRecipient;
-            if (request.emailMessageType == Constant.MASSEMAIL) {
+            if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
                 thisRecipient = (string) recipientListNames[i].get('Name');
             } else {
                 thisRecipient = theseTargets.isEmpty()

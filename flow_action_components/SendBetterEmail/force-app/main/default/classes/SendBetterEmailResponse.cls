@@ -1,4 +1,4 @@
-public inherited sharing class Response {
+public inherited sharing class SendBetterEmailResponse {
     @invocableVariable
     public Boolean isSuccess; 
     

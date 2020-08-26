@@ -36,14 +36,16 @@ public without sharing class SendBetterEmail {
         label='Send Better Email'
         configurationEditor='c:sendBetterEmailCPE'
     )
-    public static List<Response> SendEmail(List<Request> requests) {
-        List<Response> responseList = new List<Response>();
+    public static List<SendBetterEmailResponse> SendEmail(
+        List<SendBetterEmailRequest> requests
+    ) {
+        List<SendBetterEmailResponse> responseList = new List<SendBetterEmailResponse>();
 
         List<Messaging.SingleEmailMessage> singleEmailList = new List<Messaging.SingleEmailMessage>();
-        List<Request> singleEmailRequestToSend = new List<Request>();
+        List<SendBetterEmailRequest> singleEmailRequestToSend = new List<SendBetterEmailRequest>();
 
         List<Messaging.MassEmailMessage> massEmailList = new List<Messaging.MassEmailMessage>();
-        List<Request> massEmailRequestListToSend = new List<Request>();
+        List<SendBetterEmailRequest> massEmailRequestListToSend = new List<SendBetterEmailRequest>();
 
         List<Messaging.SendEmailResult> singleSendEmailResults = new List<Messaging.SendEmailResult>();
         List<Messaging.SendEmailResult> massSendEmailResults = new List<Messaging.SendEmailResult>();
@@ -58,7 +60,7 @@ public without sharing class SendBetterEmail {
         Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
 
         // Collect all inputs for SOQL
-        for (Request curRequest : requests) {
+        for (SendBetterEmailRequest curRequest : requests) {
             if (curRequest.templateName != null) {
                 templateNames.add(curRequest.templateName);
             }
@@ -73,7 +75,7 @@ public without sharing class SendBetterEmail {
         }
 
         // Cache the local language key for the organization
-        String localeKey = Constant.getOrganization();
+        String localeKey = SendBetterEmailConstant.getOrganization();
 
         // Cache Query results for Templates
         mapTemplateNameByEmailTemplates = SendEmailUtil.getMapTemplateNameByEmailTemplates(
@@ -88,7 +90,7 @@ public without sharing class SendBetterEmail {
 
         Integer requestIndex = 0;
 
-        for (Request curRequest : requests) {
+        for (SendBetterEmailRequest curRequest : requests) {
             //Assign Request Number to the Requests
             curRequest.index = requestIndex;
 
@@ -119,7 +121,7 @@ public without sharing class SendBetterEmail {
                 subject = null;
             }
 
-            Response thisResponse = new Response();
+            SendBetterEmailResponse thisResponse = new SendBetterEmailResponse();
             thisResponse.index = requestIndex;
             curRequest.setSaveAsTask = curRequest.saveAsTask;
             curRequest.setSaveAsActivity = curRequest.saveAsActivity;
@@ -145,7 +147,7 @@ public without sharing class SendBetterEmail {
 				SaveAsTask 
 	*/
             //			Mass Email Segment
-            if (emailMessageType == Constant.MASSEMAIL) {
+            if (emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
                 curRequest.setSaveAsTask = curRequest.setSaveAsTask != null
                     ? curRequest.setSaveAsTask
                     : (curRequest.whatIds == null
@@ -330,7 +332,7 @@ public without sharing class SendBetterEmail {
                 // The email address of the user executing the Apex Code will be used.
                 // True by default unless the user passes a value in.
                 mail.setUseSignature(useSalesforceSignature);
-                mail = AddAttachmentToEmail.addAttachments(
+                mail = SendBetterEmailAddAttachmentToEmail.addAttachments(
                     mail,
                     curRequest.contentDocumentAttachments,
                     mapContentDocumentIdByContentVersion
@@ -439,7 +441,7 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType == Constant.MASSEMAIL) {
+                    if (requests[i].emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -447,8 +449,8 @@ public without sharing class SendBetterEmail {
             }
 
             for (integer i = 0; i < massSendEmailResults.size(); i++) {
-                Request request = massEmailRequestListToSend[i];
-                Response response = responseList[request.index];
+                SendBetterEmailRequest request = massEmailRequestListToSend[i];
+                SendBetterEmailResponse response = responseList[request.index];
                 Messaging.SendEmailResult emailResult = massSendEmailResults[i];
                 if (
                     emailResult.isSuccess() == false &&
@@ -468,7 +470,7 @@ public without sharing class SendBetterEmail {
                             request.whatIds != null &&
                             request.whatIds.size() > 0
                         ) {
-                            response.taskIds = AddTasksToEmail.addTasks(
+                            response.taskIds = SendBetterEmailAddTasksToEmail.addTasks(
                                 request,
                                 response,
                                 null,
@@ -493,7 +495,7 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType != Constant.MASSEMAIL) {
+                    if (requests[i].emailMessageType != SendBetterEmailConstant.MASSEMAIL) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -501,8 +503,8 @@ public without sharing class SendBetterEmail {
             }
 
             for (integer i = 0; i < singleSendEmailResults.size(); i++) {
-                Request request = singleEmailRequestToSend[i];
-                Response response = responseList[request.index];
+                SendBetterEmailRequest request = singleEmailRequestToSend[i];
+                SendBetterEmailResponse response = responseList[request.index];
                 Messaging.SendEmailResult emailResult = singleSendEmailResults[
                     i
                 ];
@@ -528,7 +530,7 @@ public without sharing class SendBetterEmail {
                             request.recordID != null &&
                             allRecipients.size() > 0
                         ) {
-                            response.taskIds = AddTasksToEmail.addTasks(
+                            response.taskIds = SendBetterEmailAddTasksToEmail.addTasks(
                                 request,
                                 response,
                                 allRecipients,
@@ -542,7 +544,7 @@ public without sharing class SendBetterEmail {
 
         //report back the results
         boolean atLeastOneSent = false;
-        for (Response thisResponse : responseList) {
+        for (SendBetterEmailResponse thisResponse : responseList) {
             if (thisResponse.isSuccess) {
                 atLeastOneSent = true;
                 break;

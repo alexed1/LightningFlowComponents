@@ -468,10 +468,11 @@ public without sharing class SendBetterEmail {
                             request.whatIds != null &&
                             request.whatIds.size() > 0
                         ) {
-                            response.taskIds = addTasks(
+                            response.taskIds = AddTasksToEmail.addTasks(
                                 request,
                                 response,
-                                null
+                                null,
+                                mapIdByEmailTemplate
                             );
                         } else {
                             response.taskIds = new List<String>{
@@ -514,7 +515,9 @@ public without sharing class SendBetterEmail {
                     Schema.User.sObjectType)
                 ) {
                     response.isSuccess = false;
-                    response.errors = SendEmailUtil.getErrorString(emailResult.getErrors());
+                    response.errors = SendEmailUtil.getErrorString(
+                        emailResult.getErrors()
+                    );
                 } else {
                     response.isSuccess = true;
                     if (request.setSaveAsTask == true) {
@@ -525,10 +528,11 @@ public without sharing class SendBetterEmail {
                             request.recordID != null &&
                             allRecipients.size() > 0
                         ) {
-                            response.taskIds = addTasks(
+                            response.taskIds = AddTasksToEmail.addTasks(
                                 request,
                                 response,
-                                allRecipients
+                                allRecipients,
+                                mapIdByEmailTemplate
                             );
                         }
                     }
@@ -550,103 +554,6 @@ public without sharing class SendBetterEmail {
             );
         }
         return responseList;
-    }
-
-    // Add task activities
-    private static List<String> addTasks(
-        Request request,
-        Response response,
-        List<String> recipientList
-    ) {
-        List<String> thisResultIds = new List<String>();
-        String recipientListIds;
-        List<SObject> recipientListNames;
-        string subject = request.subject;
-        if (request.templateID != null && subject == null) {
-            subject = [
-                SELECT Subject
-                FROM EmailTemplate
-                WHERE Id = :request.templateID AND isActive = TRUE
-            ]
-            .Subject;
-        }
-
-        response.taskIds = new List<String>();
-        List<Task> theseTasks = new List<Task>();
-        List<Id> theseTargets = new List<String>{
-            request.templateTargetObjectId
-        };
-        List<Id> theseWhatIds = new List<String>{ request.recordId };
-        if (request.emailMessageType == Constant.MASSEMAIL) {
-            theseTargets = request.targetObjectIds;
-            theseWhatIds = request.whatIds;
-        } else {
-            theseTargets = request.templateTargetObjectId == null
-                ? new List<String>()
-                : new List<String>{ request.templateTargetObjectId };
-            theseWhatIds = request.recordId == null
-                ? new List<String>()
-                : new List<String>{ request.recordId };
-            Integer j = 0;
-            while (j < recipientList.size()) {
-                if (String.isBlank(recipientList[j])) {
-                    recipientList.remove(j);
-                } else
-                    j++;
-            }
-        }
-        for (Integer i = 0; i < theseTargets.size(); i++)
-            theseTargets[i] = string.escapeSingleQuotes(theseTargets[i]);
-        if (!theseTargets.isEmpty()) {
-            recipientListIds = '\'' + string.join(theseTargets, '\',\'') + '\'';
-            String queryString =
-                'Select Name From ' +
-                ((Id) theseTargets[0])
-                    .getSObjectType()
-                    .getDescribe()
-                    .getName() +
-                ' Where Id IN (' +
-                recipientListIds +
-                ')';
-            recipientListNames = Database.query(queryString);
-        }
-
-        for (integer i = 0; i < theseWhatIds.size(); i++) {
-            string thisRecipient;
-            if (request.emailMessageType == Constant.MASSEMAIL) {
-                thisRecipient = (string) recipientListNames[i].get('Name');
-            } else {
-                thisRecipient = theseTargets.isEmpty()
-                    ? string.join(recipientList, ',')
-                    : (string) recipientListNames[i].get('Name');
-            }
-            theseTasks.add(
-                new Task(
-                    OwnerId = UserInfo.getUserId(),
-                    Subject = 'Sent Email: ' + subject,
-                    Description = 'Sent Email : ' +
-                        subject +
-                        ' to recipient(s): ' +
-                        thisRecipient,
-                    Status = 'Closed',
-                    Priority = 'Normal',
-                    ActivityDate = Date.today(),
-                    WhatId = theseWhatIds[i]
-                )
-            );
-        }
-        List<Database.SaveResult> theseResults = Database.Insert(
-            theseTasks,
-            false
-        );
-        for (Database.SaveResult thisResult : theseResults) {
-            if (thisResult.isSuccess()) {
-                thisResultIds.add(thisResult.getId());
-            } else {
-                thisResultIds.add('Errors: ' + thisResult.getId());
-            }
-        }
-        return thisResultIds;
     }
 
     public class InvocableActionException extends Exception {

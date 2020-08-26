@@ -147,7 +147,7 @@ public without sharing class SendBetterEmail {
 				SaveAsTask 
 	*/
             //			Mass Email Segment
-            if (emailMessageType == Constant.MASSEMAIL) {
+            if (emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
                 curRequest.setSaveAsTask = curRequest.setSaveAsTask != null
                     ? curRequest.setSaveAsTask
                     : (curRequest.whatIds == null

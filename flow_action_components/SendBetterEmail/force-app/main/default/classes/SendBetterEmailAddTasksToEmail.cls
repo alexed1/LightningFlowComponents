@@ -25,7 +25,7 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
             request.templateTargetObjectId
         };
         List<Id> theseWhatIds = new List<String>{ request.recordId };
-        if (request.emailMessageType == Constant.MASSEMAIL) {
+        if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
             theseTargets = request.targetObjectIds;
             theseWhatIds = request.whatIds;
         } else {
@@ -61,7 +61,7 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
 
         for (integer i = 0; i < theseWhatIds.size(); i++) {
             string thisRecipient;
-            if (request.emailMessageType == Constant.MASSEMAIL) {
+            if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
                 thisRecipient = (string) recipientListNames[i].get('Name');
             } else {
                 thisRecipient = theseTargets.isEmpty()

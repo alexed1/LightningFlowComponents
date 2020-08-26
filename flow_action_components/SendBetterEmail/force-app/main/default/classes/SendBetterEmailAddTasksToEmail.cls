@@ -1,8 +1,8 @@
-public inherited sharing class AddTasksToEmail {
+public inherited sharing class SendBetterEmailAddTasksToEmail {
     // Add task activities
     public static List<String> addTasks(
-        Request request,
-        Response response,
+        SendBetterEmailRequest request,
+        SendBetterEmailResponse response,
         List<String> recipientList,
         Map<Id, EmailTemplate> mapIdByEmailTemplate
     ) {

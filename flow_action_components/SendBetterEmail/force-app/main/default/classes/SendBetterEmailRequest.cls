@@ -1,4 +1,4 @@
-public inherited sharing class Request {
+public inherited sharing class SendBetterEmailRequest {
 
     public String[] toAddresses; 
     public String[] ccAddresses; 

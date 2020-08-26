@@ -145,7 +145,7 @@ public without sharing class SendBetterEmail {
 				SaveAsTask 
 	*/
             //			Mass Email Segment
-            if (emailMessageType == 'massEmail') {
+            if (emailMessageType == Constant.MASSEMAIL) {
                 curRequest.setSaveAsTask = curRequest.setSaveAsTask != null
                     ? curRequest.setSaveAsTask
                     : (curRequest.whatIds == null
@@ -439,7 +439,7 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType == 'massEmail') {
+                    if (requests[i].emailMessageType == Constant.MASSEMAIL) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -492,7 +492,7 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType != 'massEmail') {
+                    if (requests[i].emailMessageType != Constant.MASSEMAIL) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -577,7 +577,7 @@ public without sharing class SendBetterEmail {
             request.templateTargetObjectId
         };
         List<Id> theseWhatIds = new List<String>{ request.recordId };
-        if (request.emailMessageType == 'massEmail') {
+        if (request.emailMessageType == Constant.MASSEMAIL) {
             theseTargets = request.targetObjectIds;
             theseWhatIds = request.whatIds;
         } else {
@@ -613,7 +613,7 @@ public without sharing class SendBetterEmail {
 
         for (integer i = 0; i < theseWhatIds.size(); i++) {
             string thisRecipient;
-            if (request.emailMessageType == 'massEmail') {
+            if (request.emailMessageType == Constant.MASSEMAIL) {
                 thisRecipient = (string) recipientListNames[i].get('Name');
             } else {
                 thisRecipient = theseTargets.isEmpty()

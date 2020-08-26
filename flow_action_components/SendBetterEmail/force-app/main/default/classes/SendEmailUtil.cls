@@ -169,10 +169,10 @@ public inherited sharing class SendEmailUtil {
                     templateName
                 )
             ) {
-                if (thisTemplate.Description.contains('Language="')) {
+                if (thisTemplate.Description.contains(Constant.LANGUAGE_EQUAL)) {
                     if (
-                        thisTemplate.Description.substringAfter('Language="')
-                            .substringBefore('"') == templateLanguage
+                        thisTemplate.Description.substringAfter(Constant.LANGUAGE_EQUAL)
+                            .substringBefore(Constant.DOUBLE_QUOTE) == templateLanguage
                     ) {
                         rettemplateId = thisTemplate.Id;
                         break;

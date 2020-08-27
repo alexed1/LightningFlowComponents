@@ -8,6 +8,7 @@ export default class QuickChoiceCpe extends LightningElement {
         displayMode: {value: null, valueDataType: null, isCollection: false, label: 'Display the choices as:'},
         inputMode: {value: null, valueDataType: null, isCollection: false, label: 'Select datasource:'},
         allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
+        sortList: {value: null, valueDataType: null, isCollection: false, label: 'Sort Picklist by Label'},
         required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
         masterLabel: {value: null, valueDataType: null, isCollection: false, label: 'Master Label'},
         value: {value: null, valueDataType: null, isCollection: false, label: 'Value (Default or Existing)'},

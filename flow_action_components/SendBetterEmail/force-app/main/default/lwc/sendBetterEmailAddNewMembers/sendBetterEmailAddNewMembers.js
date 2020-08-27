@@ -1,7 +1,7 @@
 /**
  * @description       : addNewMembers.js
  * @group             : unofficialSF
- * @last modified on  : 08-02-2020
+ * @last modified on  : 08-26-2020
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date			Author			Modification
@@ -16,7 +16,7 @@ import TooManyResultsMessage from '@salesforce/label/c.fbc_TooManyResultsMessage
 import NoSearchResultsMessage from '@salesforce/label/c.sremailNoSearchResultsMessage';
 
 
-export default class addNewMembers extends LightningElement {
+export default class sendBetterEmailAddNewMembers extends LightningElement {
 
 
     @api singleSelect = false;
@@ -63,7 +63,7 @@ export default class addNewMembers extends LightningElement {
     }
 
     modalAction(isOpen) {
-        const existing = this.template.querySelector('c-uc-modal');
+        const existing = this.template.querySelector('c-send-better-email-uc-modal');
         if (existing) {
             if (isOpen) {
                 existing.openModal();

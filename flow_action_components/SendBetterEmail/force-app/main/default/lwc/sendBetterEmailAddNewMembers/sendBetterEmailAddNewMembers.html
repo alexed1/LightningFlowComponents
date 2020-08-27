@@ -1,7 +1,7 @@
 <!--
-  @description       : 
+  @description       : sendBetterEmailAddNewMembers.html
   @group             : 
-  @last modified on  : 08-02-2020
+  @last modified on  : 08-26-2020
   @last modified by  : Jack D. Pond
   Modifications Log 
   Ver		Date		Author			Modification
@@ -39,7 +39,7 @@
 			<div class="slds-align_absolute-center">{label.sremailNoSearchResultsMessage}</div>
 		</template>
 	</div>
-    <c-uc-modal class="modal-window" show-footer available-reactions={modalReactions} name={modalName}
+    <c-send-better-email-uc-modal class="modal-window" show-footer available-reactions={modalReactions} name={modalName}
                 onreaction={handleModalReactionButtonClick}>
 		<span slot="modalHeader">
 			Confirm your action
@@ -47,5 +47,5 @@
 		<span slot="modalBody">
 			Add the text you’ve typed as an email address?
 		</span>
-	</c-uc-modal>
+	</c-send-better-email-uc-modal>
 </template>

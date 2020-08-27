@@ -5,7 +5,7 @@
   @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
   @Group				: 
   @Last Modified By		: Jack D. Pond
-  @Last Modified On		: 08-10-2020
+  @Last Modified On		: 08-26-2020
   @Modification Log		: 
   @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
@@ -238,14 +238,14 @@
 							name={curRecipient.baseLabel}
 							label={curRecipient.label}
 							key={curRecipient.baseLabel}>
-							<c-add-new-members
+							<c-send-better-email-add-new-members
 								name={curRecipient.baseLabel}
 								custom-data-structure={convertedFlowContext}
 								value={curRecipient.value}
 								object-type={curRecipient.objectType}
 								single-select
 								onvaluechanged={handleValueSelected}
-							></c-add-new-members>
+							></c-send-better-email-add-new-members>
 						</lightning-accordion-section>
 					</template>
 				</lightning-accordion>

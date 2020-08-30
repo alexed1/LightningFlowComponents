@@ -53,11 +53,19 @@ public without sharing class SendBetterEmail {
         // Set for template Names and content document Ids
         Set<String> templateNames = new Set<String>();
         Set<Id> contentDocumentIds = new Set<Id>();
+        // Target objectIds List
+        List<String> listTargetObjectIds = new List<String>();
+        // Map of recordId via Name
+        Map<String, String> mapRecordIdByName = new Map<String, String>();
 
         // Map for emailTemplate
         Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates = new Map<String, List<EmailTemplate>>();
         Map<Id, EmailTemplate> mapIdByEmailTemplate = new Map<Id, EmailTemplate>();
         Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
+
+        // List for Task Wrapper Collection
+        List<SendBetterEmailAddTasksToEmail.TaskWrapper> lstTaskWrapper = new List<SendBetterEmailAddTasksToEmail.TaskWrapper>();
+        List<Task> lstTaskToInsert = new List<Task>();
 
         // Collect all inputs for SOQL
         for (SendBetterEmailRequest curRequest : requests) {
@@ -70,6 +78,18 @@ public without sharing class SendBetterEmail {
                     ContentDocumentLink contentLink : curRequest.contentDocumentAttachments
                 ) {
                     contentDocumentIds.add(contentLink.ContentDocumentId);
+                }
+            }
+            // Cache all Target Object Ids in
+            if (
+                curRequest.emailMessageType == SendBetterEmailConstant.MASSEMAIL
+            ) {
+                if (curRequest.targetObjectIds != null && curRequest.targetObjectIds.size() > 0) {
+                    listTargetObjectIds.addAll(curRequest.targetObjectIds);
+                }
+            } else {
+                if (curRequest.templateTargetObjectId != null) {
+                    listTargetObjectIds.add(curRequest.templateTargetObjectId);
                 }
             }
         }
@@ -86,6 +106,11 @@ public without sharing class SendBetterEmail {
         // Cache Query results for ContentDocument Ids
         mapContentDocumentIdByContentVersion = SendEmailUtil.getMapContentDocumentIdByContentVersions(
             contentDocumentIds
+        );
+
+        // Cache a Map of targetObjectIds(Contact, Lead, User or other Custom Objects)
+        mapRecordIdByName = SendEmailUtil.getMapRecordIdByName(
+            listTargetObjectIds
         );
 
         Integer requestIndex = 0;
@@ -441,7 +466,10 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
+                    if (
+                        requests[i].emailMessageType ==
+                        SendBetterEmailConstant.MASSEMAIL
+                    ) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -470,11 +498,13 @@ public without sharing class SendBetterEmail {
                             request.whatIds != null &&
                             request.whatIds.size() > 0
                         ) {
-                            response.taskIds = SendBetterEmailAddTasksToEmail.addTasks(
-                                request,
-                                response,
-                                null,
-                                mapIdByEmailTemplate
+                            lstTaskWrapper.addAll(
+                                SendBetterEmailAddTasksToEmail.addTasks(
+                                    request,
+                                    null,
+                                    mapIdByEmailTemplate,
+                                    mapRecordIdByName
+                                )
                             );
                         } else {
                             response.taskIds = new List<String>{
@@ -495,7 +525,10 @@ public without sharing class SendBetterEmail {
             } catch (Exception e) {
                 // if an error occurred in sendMail, put same error message on all responses
                 for (Integer i = 0; i < responseList.size(); i++) {
-                    if (requests[i].emailMessageType != SendBetterEmailConstant.MASSEMAIL) {
+                    if (
+                        requests[i].emailMessageType !=
+                        SendBetterEmailConstant.MASSEMAIL
+                    ) {
                         responseList[i].isSuccess = false;
                         responseList[i].errors = e.getmessage();
                     }
@@ -527,18 +560,53 @@ public without sharing class SendBetterEmail {
                         allRecipients.addall(request.ccAddresses);
                         allRecipients.addall(request.bccAddresses);
                         if (
-                            request.recordID != null &&
+                            request.recordId != null &&
                             allRecipients.size() > 0
                         ) {
-                            response.taskIds = SendBetterEmailAddTasksToEmail.addTasks(
-                                request,
-                                response,
-                                allRecipients,
-                                mapIdByEmailTemplate
+                            lstTaskWrapper.addAll(
+                                SendBetterEmailAddTasksToEmail.addTasks(
+                                    request,
+                                    allRecipients,
+                                    mapIdByEmailTemplate,
+                                    mapRecordIdByName
+                                )
                             );
                         }
                     }
                 }
+            }
+        }
+
+        for (
+            SendBetterEmailAddTasksToEmail.TaskWrapper taskWrap : lstTaskWrapper
+        ) {
+            lstTaskToInsert.add(taskWrap.taskRec);
+        }
+
+        List<Database.SaveResult> taskInsertResults = Database.insert(
+            lstTaskToInsert,
+            false
+        );
+
+        for (integer i = 0; i < taskInsertResults.size(); i++) {
+            Database.SaveResult taskResult = taskInsertResults[i];
+            SendBetterEmailAddTasksToEmail.TaskWrapper taskWrapper = lstTaskWrapper[
+                i
+            ];
+            SendBetterEmailResponse reponse = responseList[
+                taskWrapper.requestIndex
+            ];
+            String taskId = taskResult.getId();
+            Task taskRecord = lstTaskToInsert[i];
+            if (taskResult.isSuccess()) {
+                reponse.taskIds.add(taskId);
+            } else {
+                reponse.taskErrors.add(
+                    'Task Insert failed for RecordId ' +
+                    taskRecord.whatId +
+                    ' with error ' +
+                    SendEmailUtil.getDatabaseErrorString(taskResult.getErrors())
+                );
             }
         }
 

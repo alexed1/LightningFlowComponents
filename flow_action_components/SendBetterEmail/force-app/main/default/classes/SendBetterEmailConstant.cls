@@ -1,7 +1,7 @@
 public inherited sharing class SendBetterEmailConstant {
-    
     public static String getOrganization() {
-        return [SELECT LanguageLocaleKey FROM Organization LIMIT 1].LanguageLocaleKey;
+        return [SELECT LanguageLocaleKey FROM Organization LIMIT 1]
+        .LanguageLocaleKey;
     }
 
     public static final String MASSEMAIL = 'massEmail';

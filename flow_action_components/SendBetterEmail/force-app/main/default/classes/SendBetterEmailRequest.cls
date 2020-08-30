@@ -104,8 +104,8 @@ public inherited sharing class SendBetterEmailRequest {
     @invocableVariable(label='targetObjectIds' description='A list of IDs of the contacts, leads, or users to which the email will be sent. The IDs you specify set the context and ensure that merge fields in the template contain the correct data. The objects must be of the same type (all contacts, all leads, or all users)')
     public List<String> targetObjectIds;
     
-    @invocableVariable(label='templateID' )
-    public String templateID;
+    @invocableVariable(label='templateId' )
+    public String templateId;
     
     @invocableVariable(label='Template Language' description='Used in conjunction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
     public String templateLanguage;

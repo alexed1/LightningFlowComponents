@@ -1,5 +1,4 @@
 public inherited sharing class SendEmailUtil {
-    
     public static String[] buildAddressList(
         string type,
         Map<String, Object> m
@@ -79,7 +78,9 @@ public inherited sharing class SendEmailUtil {
 
     //this map makes it easier to efficiently use the same code to handle To, CC, and BCC.
     //by making the lookup a string, we can composite the string in the m.get lines above
-    public static Map<String, Object> generateMap(SendBetterEmailRequest request) {
+    public static Map<String, Object> generateMap(
+        SendBetterEmailRequest request
+    ) {
         return new Map<String, Object>{
             'SendTOthisOneEmailAddress' => request.SendTOthisOneEmailAddress,
             'SendTOthisStringCollectionOfEmailAddresses' => request.SendTOthisStringCollectionOfEmailAddresses,
@@ -169,10 +170,18 @@ public inherited sharing class SendEmailUtil {
                     templateName
                 )
             ) {
-                if (thisTemplate.Description.contains(SendBetterEmailConstant.LANGUAGE_EQUAL)) {
+                if (
+                    thisTemplate.Description.contains(
+                        SendBetterEmailConstant.LANGUAGE_EQUAL
+                    )
+                ) {
                     if (
-                        thisTemplate.Description.substringAfter(SendBetterEmailConstant.LANGUAGE_EQUAL)
-                            .substringBefore(SendBetterEmailConstant.DOUBLE_QUOTE) == templateLanguage
+                        thisTemplate.Description.substringAfter(
+                                SendBetterEmailConstant.LANGUAGE_EQUAL
+                            )
+                            .substringBefore(
+                                SendBetterEmailConstant.DOUBLE_QUOTE
+                            ) == templateLanguage
                     ) {
                         rettemplateId = thisTemplate.Id;
                         break;
@@ -185,22 +194,6 @@ public inherited sharing class SendEmailUtil {
             }
         }
         return (rettemplateId == null) ? blankTemplate : rettemplateId;
-    }
-
-    public static String getDatabaseErrorString(
-        List<Database.Error> curErrors
-    ) {
-        String errorReport;
-        for (Database.Error curError : curErrors) {
-            errorReport =
-                errorReport +
-                'Error Code:' +
-                curError.getStatusCode() +
-                ' - ' +
-                curError.getMessage() +
-                '\n';
-        }
-        return errorReport;
     }
 
     public static String getErrorString(
@@ -219,4 +212,53 @@ public inherited sharing class SendEmailUtil {
         return errorReport;
     }
 
+    public static String getDatabaseErrorString(
+        List<Database.Error> curErrors
+    ) {
+        String errorReport;
+        for (Database.Error curError : curErrors) {
+            errorReport =
+                errorReport +
+                'Error Code:' +
+                curError.getStatusCode() +
+                ' - ' +
+                curError.getMessage() +
+                '\n';
+        }
+        return errorReport;
+    }
+
+    public static Map<String, String> getMapRecordIdByName(
+        List<String> targetObjectIds
+    ) {
+        Map<String, String> mapRecordIdByName = new Map<String, String>();
+        Set<Schema.SObjectType> setSobjectTypes = new Set<Schema.SObjectType>();
+        List<Sobject> lstRecords = new List<Sobject>();
+        for (String recId : targetObjectIds) {
+            if (recId.length() == 15 || recId.length() == 18) {
+                setSobjectTypes.add(((Id) recId).getSobjectType());
+            }
+        }
+        // Query is in loop here, however the query is per Object.
+        for (Schema.SObjectType objectType : setSobjectTypes) {
+            List<Sobject> recipientList = new List<Sobject>();
+            recipientList = Database.query(
+                'Select Id, Name From ' +
+                objectType.getDescribe().getName() +
+                ' WHERE Id IN : targetObjectIds'
+            );
+            lstRecords.addAll(recipientList);
+        }
+
+        for (Sobject rec : lstRecords) {
+            if (rec.get('Name') != null) {
+                mapRecordIdByName.put(
+                    (String) rec.get('Id'),
+                    (String) rec.get('Name')
+                );
+            }
+        }
+
+        return mapRecordIdByName;
+    }
 }

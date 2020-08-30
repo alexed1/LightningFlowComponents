@@ -1,14 +1,13 @@
 public inherited sharing class SendBetterEmailAddTasksToEmail {
     // Add task activities
-    public static List<String> addTasks(
+    public static List<TaskWrapper> addTasks(
         SendBetterEmailRequest request,
-        SendBetterEmailResponse response,
         List<String> recipientList,
-        Map<Id, EmailTemplate> mapIdByEmailTemplate
+        Map<Id, EmailTemplate> mapIdByEmailTemplate,
+        Map<String, String> mapRecordIdByName
     ) {
         List<String> thisResultIds = new List<String>();
         String recipientListIds;
-        List<SObject> recipientListNames;
         string subject = request.subject;
 
         if (
@@ -19,81 +18,68 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
             subject = mapIdByEmailTemplate.get(request.templateId).subject;
         }
 
-        response.taskIds = new List<String>();
-        List<Task> theseTasks = new List<Task>();
-        List<Id> theseTargets = new List<String>{
+        List<TaskWrapper> lstTaskWrapper = new List<TaskWrapper>();
+
+        List<String> theseTargets = new List<String>{
             request.templateTargetObjectId
         };
-        List<Id> theseWhatIds = new List<String>{ request.recordId };
+        List<String> lstWhatIds = new List<String>{ request.recordId };
+
         if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
             theseTargets = request.targetObjectIds;
-            theseWhatIds = request.whatIds;
+            lstWhatIds = request.whatIds;
         } else {
             theseTargets = request.templateTargetObjectId == null
                 ? new List<String>()
                 : new List<String>{ request.templateTargetObjectId };
-            theseWhatIds = request.recordId == null
+            lstWhatIds = request.recordId == null
                 ? new List<String>()
                 : new List<String>{ request.recordId };
             Integer j = 0;
             while (j < recipientList.size()) {
                 if (String.isBlank(recipientList[j])) {
                     recipientList.remove(j);
-                } else
+                } else {
                     j++;
+                }
             }
         }
-        for (Integer i = 0; i < theseTargets.size(); i++)
-            theseTargets[i] = string.escapeSingleQuotes(theseTargets[i]);
-        if (!theseTargets.isEmpty()) {
-            recipientListIds = '\'' + string.join(theseTargets, '\',\'') + '\'';
-            String queryString =
-                'Select Name From ' +
-                ((Id) theseTargets[0])
-                    .getSObjectType()
-                    .getDescribe()
-                    .getName() +
-                ' Where Id IN (' +
-                recipientListIds +
-                ')';
-            recipientListNames = Database.query(queryString);
-        }
-
-        for (integer i = 0; i < theseWhatIds.size(); i++) {
+        for (integer i = 0; i < lstWhatIds.size(); i++) {
             string thisRecipient;
             if (request.emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
-                thisRecipient = (string) recipientListNames[i].get('Name');
+                if (mapRecordIdByName.get(lstWhatIds[i]) != null) {
+                    thisRecipient = mapRecordIdByName.get(lstWhatIds[i]);
+                }
             } else {
-                thisRecipient = theseTargets.isEmpty()
-                    ? string.join(recipientList, ',')
-                    : (string) recipientListNames[i].get('Name');
+                if (mapRecordIdByName.get(lstWhatIds[i]) != null) {
+                    thisRecipient = theseTargets.isEmpty()
+                        ? string.join(recipientList, ',')
+                        : mapRecordIdByName.get(lstWhatIds[i]);
+                }
             }
-            theseTasks.add(
-                new Task(
-                    OwnerId = UserInfo.getUserId(),
-                    Subject = 'Sent Email: ' + subject,
-                    Description = 'Sent Email : ' +
-                        subject +
-                        ' to recipient(s): ' +
-                        thisRecipient,
-                    Status = 'Closed',
-                    Priority = 'Normal',
-                    ActivityDate = Date.today(),
-                    WhatId = theseWhatIds[i]
-                )
+            TaskWrapper taskWrapper = new TaskWrapper();
+            Task task = new Task(
+                OwnerId = UserInfo.getUserId(),
+                Subject = 'Sent Email: ' + subject,
+                Description = 'Sent Email : ' +
+                    subject +
+                    ' to recipient(s): ' +
+                    thisRecipient,
+                Status = 'Closed',
+                Priority = 'Normal',
+                ActivityDate = Date.today(),
+                WhatId = lstWhatIds[i]
             );
+            taskWrapper.requestIndex = request.index;
+            taskWrapper.taskRec = task;
+            lstTaskWrapper.add(taskWrapper);
         }
-        List<Database.SaveResult> theseResults = Database.Insert(
-            theseTasks,
-            false
-        );
-        for (Database.SaveResult thisResult : theseResults) {
-            if (thisResult.isSuccess()) {
-                thisResultIds.add(thisResult.getId());
-            } else {
-                thisResultIds.add('Errors: ' + thisResult.getId());
-            }
-        }
-        return thisResultIds;
+
+        return lstTaskWrapper;
+    }
+
+    public inherited sharing class TaskWrapper {
+        public Integer requestIndex; // Request Number
+        public Task taskRec; //  Task Record Instance
     }
 }

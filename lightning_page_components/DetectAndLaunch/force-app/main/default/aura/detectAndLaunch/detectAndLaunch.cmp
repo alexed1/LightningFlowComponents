@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForAllPageTypes, force:hasRecordId,lightning:isUrlAddressable"> <!--inherit recordId attribute-->
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:attribute name="record" type="Object"
+      description="The record object to be displayed"/>
+    <aura:attribute name="caseRecord" type="Object"/>
+    <aura:attribute name="simpleRecord" type="Object"
+      description="A simplified view record object to be displayed"/>
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
+    <aura:attribute name="flowName" type="String" default="foo" description="Launch this flow when the record changes"/>
+    <force:recordData aura:id="recordLoader"
+        fields="Subject"
+        recordId="{!v.recordId}"
+        targetError="{!v.recordError}"
+        recordUpdated="{!c.recordUpdated}"
+        mode="VIEW"/>
+      
+</aura:component>	

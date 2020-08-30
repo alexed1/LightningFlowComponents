@@ -1,0 +1,3 @@
+<design:component >
+    <design:attribute name="flowName" label="Flow Name" description="Provide the api name of an Active screen flow. It will launch when a record change is detected." />
+</design:component>

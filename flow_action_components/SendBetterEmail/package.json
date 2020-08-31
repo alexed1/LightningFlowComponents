@@ -1,0 +1,12 @@
+{
+  "name": "sendbetteremail",
+  "version": "1.0.0",
+  "description": "Send Better Email Flow Component",
+  "author": "unofficialsf.com",
+  "license": "ISC",
+  "devDependencies": {
+    "@prettier/plugin-xml": "^0.10.0",
+    "prettier": "^2.0.5",
+    "prettier-plugin-apex": "^1.6.0"
+  }
+}

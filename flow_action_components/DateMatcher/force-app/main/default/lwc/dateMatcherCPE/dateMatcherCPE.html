@@ -1,0 +1,84 @@
+<template>
+    Return 'true' if the current date and time match the following settings:
+
+    <lightning-radio-group
+        name="testType"
+        label="Apply which test:"
+        options={testType}
+        value={inputValues.testType.value}
+        onchange={handleValueChange}
+        >
+    </lightning-radio-group>
+
+    <div  class="slds-grid slds-gutters">
+        <template if:true={isTestTypeNthWeekdayOfAnyMonth}>
+            <div class="slds-col"> 
+                <lightning-combobox 
+                    name="select_weekOfMonthNumber"
+                    label={inputValues.weekOfMonthNumber.label}
+                    value={inputValues.weekOfMonthNumber.value}
+                    options={weekOfMonthNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox>
+            </div>
+            <div class="slds-col"> 
+                <lightning-combobox
+                    name="select_dayOfWeekNumber"
+                    label={inputValues.dayOfWeekNumber.label}
+                    value={inputValues.dayOfWeekNumber.value}
+                    options={dayOfWeekNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox> 
+            </div>
+        </template>
+       <template if:true={isTestTypeNthWeekdayOfSpecificMonth}>
+            <div class="slds-col"> 
+                <lightning-combobox 
+                    name="select_weekOfMonthNumber"
+                    label={inputValues.weekOfMonthNumber.label}
+                    value={inputValues.weekOfMonthNumber.value}
+                    options={weekOfMonthNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox>
+            </div>
+            <div class="slds-col"> 
+                <lightning-combobox
+                    name="select_dayOfWeekNumber"
+                    label={inputValues.dayOfWeekNumber.label}
+                    value={inputValues.dayOfWeekNumber.value}
+                    options={dayOfWeekNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox> 
+            </div>
+            <div class="slds-col"> 
+                <lightning-combobox
+                    name="select_monthOfYearNumber"
+                    label={inputValues.monthOfYearNumber.label}
+                    value={inputValues.monthOfYearNumber.value}
+                    options={monthOfYearNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox> 
+            </div>
+        </template>
+        <template if:true={isTestTypeNthDayOfMonth}>
+            <div class="slds-col"> 
+                <lightning-combobox 
+                    name="select_dayOfMonthNumber"
+                    label={inputValues.dayOfMonthNumber.label}
+                    value={inputValues.dayOfMonthNumber.value}
+                    options={dayOfMonthNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox>
+            </div>
+            <div class="slds-col"> 
+                <lightning-combobox
+                    name="select_monthOfYearNumber"
+                    label={inputValues.monthOfYearNumber.label}
+                    value={inputValues.monthOfYearNumber.value}
+                    options={monthOfYearNumber}
+                    onchange={handleValueChange}
+                ></lightning-combobox> 
+            </div>
+        </template>
+    </div>
+</template>

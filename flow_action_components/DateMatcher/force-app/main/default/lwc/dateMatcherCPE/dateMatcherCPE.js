@@ -11,48 +11,12 @@ export default class DateMatcherCPE extends LightningElement {
         monthOfYearNumber: {value: null, valueDataType: null, isCollection: false, label: 'Month of Year:'},
         testType: {value: null, valueDataType: null, isCollection: false, label: 'Test Type:'},
         dayOfMonthNumber: {value: null, valueDataType: null, isCollection: false, label: 'Day of Month:'},
-
-        displayMode: {value: null, valueDataType: null, isCollection: false, label: 'Display the choices as:'},
-        inputMode: {value: null, valueDataType: null, isCollection: false, label: 'Select datasource:'},
-        allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
-        required: {value: null, valueDataType: null, isCollection: false, label: 'Required'},
-        masterLabel: {value: null, valueDataType: null, isCollection: false, label: 'Master Label'},
-        value: {value: null, valueDataType: null, isCollection: false, label: 'Value (Default or Existing)'},
-        style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)'},
-        includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
-        choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
-        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
-        recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:'},
-        choiceLabels: {value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]'},
-        choiceValues: {value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]'},
     };
 
     settings = {
-        displayModeVisualCards: 'Visual',
-        displayModePicklist: 'Picklist',
-        displayModeRadio: 'Radio',
-        inputModePicklist: 'Picklist Field',
-        inputModeDualCollection: 'Dual String Collections',
-        inputModeSingleCollection: 'Single String Collection',
-        inputValueRecordTypeId: 'recordTypeId',
-        choiceLabelsPicklistLabelsLabel: 'Choice Labels',
-        choiceLabelsPicklistValuesLabel: 'Choice Values',
-        choiceLabelsCardLabelsLabel: 'Card Titles',
-        choiceLabelsCardValuesLabel: 'Card Descriptions',
-        attributeObjectName: 'objectName',
-        attributeFieldName: 'fieldName',
-        attributeInputMode: 'inputMode',
-        flowDataTypeString: 'String',
-        availableFieldTypesPicklist: 'Picklist',
         inputAttributePrefix: 'select_'
     }
 
-    displayChoicesAsOptions = [
-        {label: 'Picklist', value: 'Picklist'},
-        {label: 'Radio Button Group', value: 'Radio'},
-        {label: 'Visual Cards', value: 'Visual'}
-    ];
 
     weekOfMonthNumber = [
         {label: '1st', value: '1'},
@@ -127,11 +91,7 @@ export default class DateMatcherCPE extends LightningElement {
         {label: 'December', value: '12'}
     ];
 
-    selectDataSourceOptions = [
-        {label: 'A Picklist field', value: this.settings.inputModePicklist},
-        {label: 'Two String Collections (Labels and Values)', value: this.settings.inputModeDualCollection},
-        {label: 'One String Collection (Values)', value: this.settings.inputModeSingleCollection}
-    ];
+
 
     @api get builderContext() {
         return this._builderContext;
@@ -150,21 +110,7 @@ export default class DateMatcherCPE extends LightningElement {
         this.initializeValues();
     }
 
-    get isVisualCards() {
-        return this.inputValues.displayMode.value === this.settings.displayModeVisualCards;
-    }
 
-    get isDatasourcePicklist() {
-        return this.inputValues.inputMode.value === this.settings.inputModePicklist;
-    }
-
-    get isDatasourceDualCollection() {
-        return this.inputValues.inputMode.value === this.settings.inputModeDualCollection;
-    }
-
-    get isDatasourceSingleOrDualCollection() {
-        return this.inputValues.inputMode.value === this.settings.inputModeSingleCollection || this.inputValues.inputMode.value === this.settings.inputModeDualCollection;
-    }
 
     initializeValues(value) {
         if (this._values && this._values.length) {
@@ -175,41 +121,10 @@ export default class DateMatcherCPE extends LightningElement {
                 }
             });
         }
-        this.setInputMode();
-        this.setChoiceLabels();
+
     }
 
-    setChoiceLabels() {
-        if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards &&
-            this.inputValues.choiceLabels.label !== this.settings.choiceLabelsCardLabelsLabel) {
-            this.inputValues.choiceLabels.label = this.settings.choiceLabelsCardLabelsLabel;
-            this.inputValues.choiceValues.label = this.settings.choiceLabelsCardValuesLabel;
-        }
-        if (this.inputValues.displayMode.value !== this.settings.displayModeVisualCards &&
-            this.inputValues.choiceLabels.label !== this.settings.choiceLabelsPicklistLabelsLabel) {
-            this.inputValues.choiceLabels.label = this.settings.choiceLabelsPicklistLabelsLabel;
-            this.inputValues.choiceValues.label = this.settings.choiceLabelsPicklistValuesLabel;
-        }
-    }
 
-    setInputMode() {
-        if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards && this.inputValues.inputMode.value !== this.settings.inputModeDualCollection) {
-            this.dispatchFlowValueChangeEvent(this.settings.attributeInputMode, this.settings.inputModeDualCollection, this.settings.flowDataTypeString);
-        }
-    }
-
-    handlePickObjectAndFieldValueChange(event) {
-        if (event.detail) {
-            this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
-            this.dispatchFlowValueChangeEvent(this.settings.attributeFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
-        }
-    }
-
-    handleFlowComboboxValueChange(event) {
-        if (event.target && event.detail) {
-            this.dispatchFlowValueChangeEvent(event.target.name.replace(this.settings.inputAttributePrefix, ''), event.detail.newValue, event.detail.newValueDataType);
-        }
-    }
 
     handleValueChange(event) {
         if (event.target) {

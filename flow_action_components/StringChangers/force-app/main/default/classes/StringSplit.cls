@@ -1,7 +1,7 @@
-global class StringSplit {
+global with sharing class StringSplit {
   @InvocableMethod(
     label='Splits a string in an array of strings'
-    description='Given a string and a delimiter, will split the string into a collection of strings'
+    description='Given a string and a delimiter REGEX, will split the string into a collection of strings'
     category='String Helpers'
   )
   global static List<List<String>> stringSplit(List<StringSplitParams> params) {
@@ -23,15 +23,15 @@ global class StringSplit {
 
   global class StringSplitParams {
     @InvocableVariable(
-      label='String'
+      label='Input String'
       description='The string to split'
       required=false
     )
     global String str;
 
     @InvocableVariable(
-      label='Delimiter'
-      description='The delimiter to split on'
+      label='Regex Delimiter'
+      description='The delimiter REGEX to split the input string on'
       required=false
     )
     global String delim;

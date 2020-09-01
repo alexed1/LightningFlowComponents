@@ -5,11 +5,13 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-13-2020
+ * @Last Modified On	: 08-31-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
-**/
+ * 2.00.02	08-31-2020	Jack D. Pond		#469 thisOneEmailAddress failing when assigned to string
+ * 
+ **/
 import {api, track, LightningElement} from 'lwc';
 
 export default class SendBetterEmailCPE extends LightningElement {
@@ -53,17 +55,17 @@ export default class SendBetterEmailCPE extends LightningElement {
 		saveAsActivity: {value: null, dataType: null, isCollection: false, label: 'Save Email as Activity on Recipient Record(s)?'},
 		saveAsTask: {value: null, dataType: null, isCollection: false, label: 'Save Email as Task on recipient related record(s)?'},
 		recordId: {value: null, valueDataType: null, isCollection: false, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
-		SendTOthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendTOthisOneEmailAddress'},
+		SendTOthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendTOthisOneEmailAddress'},
 		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendTOthisStringCollectionOfEmailAddresses'},
 		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
 		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
 		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
-		SendCCthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendCCthisOneEmailAddress'},
+		SendCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendCCthisOneEmailAddress'},
 		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendCCthisStringCollectionOfEmailAddresses'},
 		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
 		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
 		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
-		SendBCCthisOneEmailAddress: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisOneEmailAddress'},
+		SendBCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendBCCthisOneEmailAddress'},
 		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
 		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
 		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
@@ -150,7 +152,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			'User': 'SendBCCtheEmailAddressesFromThisCollectionOfUsers',
 			'Contact': 'SendBCCtheEmailAddressesFromThisCollectionOfContacts',
 			'Lead': 'SendBCCtheEmailAddressesFromThisCollectionOfLeads',
-			'String': 'SendBCCthisStringCollectionOfEmailAddresses',
+			'String Collection': 'SendBCCthisStringCollectionOfEmailAddresses',
 			'String Variables (or type an address)': 'SendBCCthisOneEmailAddress'
 		}
 	}];
@@ -373,7 +375,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			if (event.detail.newValueType === this.settings.stringCollectionVariablesOption) {
 				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringCollectionVariablesOption);
 			} else {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? '{!' + event.detail.newValue + '}' : this.settings.nullValue, this.settings.referenceDataType);
+				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? ( event.detail.newValueType === this.settings.referenceDataType ? '{!' + event.detail.newValue + '}': event.detail.newValue) : this.settings.nullValue, event.detail.newValueType);
 			}
 		}
 	}

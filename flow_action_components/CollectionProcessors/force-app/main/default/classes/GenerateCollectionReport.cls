@@ -61,7 +61,7 @@ global with sharing class GenerateCollectionReport {
                 fieldValue = '';
             } else {
                 if (record != null){
-                    fieldValue = (String)record.get(fieldName);
+                    fieldValue = String.valueOf(record.get(fieldName));
                     if (fieldValue == null) fieldValue = '';
                 } else fieldValue = fieldName;
                 

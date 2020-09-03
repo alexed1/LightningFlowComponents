@@ -5,12 +5,13 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 09-02-2020
+ * @Last Modified On	: 09-03-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
  * 2.00.02	08-31-2020	Jack D. Pond		#469 thisOneEmailAddress failing when assigned to string
  * 2.00.02	09-02-2020	Jack D. Pond		#478 unchecked value sets to null when changed to false 
+ * 2.00.02	09-02-2020	Jack D. Pond		#481 allow flow formulas (string) to be selected in flow combo boxes 
  * 
  **/
 import {api, track, LightningElement} from 'lwc';
@@ -235,10 +236,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 				}
 			}
 		});
-		let stringVariables = flowContext.variables.filter(curValue => {
-			return curValue.dataType === 'String' && curValue.isCollection
-		});
-
 
 		allowedTypes.forEach(curType => {
 			if (curType === 'String'){
@@ -247,6 +244,10 @@ export default class SendBetterEmailCPE extends LightningElement {
 				});
 				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringCollectionVariablesOption,false);
 				allVariables = flowContext.variables.filter(curValue => {
+					return curValue.dataType === curType && !curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+				allVariables = flowContext.formulas.filter(curValue => {
 					return curValue.dataType === curType && !curValue.isCollection
 				});
 				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);

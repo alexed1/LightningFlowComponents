@@ -84,7 +84,7 @@ export default class TransferMetadata extends LightningElement {
         this.modifiedName = this.metadataName;
         console.log('this.metadataName is: ' + this.modifiedName);
 
-        // Special Processing to unescape characters passed by the Import/Export Flows flow
+        // Special Processing to unescape characters that could be passed in by a flow
         let documentContent = this.metadataString;
         documentContent = documentContent.replaceAll('&lbrace;', '{');
         documentContent = documentContent.replaceAll('&rbrace;', '}');

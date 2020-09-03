@@ -5,11 +5,12 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-31-2020
+ * @Last Modified On	: 09-02-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
  * 2.00.02	08-31-2020	Jack D. Pond		#469 thisOneEmailAddress failing when assigned to string
+ * 2.00.02	09-02-2020	Jack D. Pond		#478 unchecked value sets to null when changed to false 
  * 
  **/
 import {api, track, LightningElement} from 'lwc';
@@ -47,7 +48,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		bcc: {value: null, dataType: null, isCollection: false, label: 'Sender receives BCC of first email sent?'},
 		senderDisplayName: {value: null, dataType: null, isCollection: false, label: 'Sender Display Name'},
 		replyEmailAddress: {value: null, dataType: null, isCollection: false, label: 'Reply Email Address'},
-		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, label: 'Use Salesforce Signature if executing user has one?'},
+		UseSalesforceSignature: {value: null, dataType: 'Boolean', isCollection: false, label: 'Use Salesforce Signature if executing user has one?'},
 		templateName: {value: null, dataType: null, isCollection: false, label: 'Template Name'},
 		templateLanguage: {value: null, dataType: null, isCollection: false, label: 'Template Language'},
 		targetObjectIds: {value: null, dataType: null, isCollection: true, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
@@ -313,7 +314,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			composed: true,
 			detail: {
 				name: id,
-				newValue: newValue ? newValue : null,
+				newValue: newValue ? newValue : (newValueDataType === 'Boolean' ? newValue : null),
 				newValueDataType: newValueDataType
 			}
 		});

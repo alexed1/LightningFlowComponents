@@ -1012,4 +1012,68 @@ public with sharing class SendBetterEmailTest {
 		}
 	}
 
+	@isTest
+	private static void t029_CoverageSingleBetterEmailAddTasks() {
+		EmailTemplate emailTemplate = [Select Id, Subject from EmailTemplate Limit 1];
+
+		Map<Id, EmailTemplate> mapIdByEmailTemplate = new Map<Id, EmailTemplate>();
+		Map<String, String> mapRecordIdByName = new Map<String, String>();
+		SendBetterEmailRequest testReq = new SendBetterEmailRequest();
+
+		List<String> recipientList = new List<String>{' '};
+
+		testReq.Subject = null;
+		testReq.HTMLbody = EMAIL_BODY;
+		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+		testReq.recordId = UserInfo.getUserId();
+		testReq.saveAsTask = true;
+		testReq.templateId = emailTemplate.Id;
+		testReq.emailMessageType = SendBetterEmailConstant.MASSEMAIL;
+		testReq.whatIds = new List<String>{UserInfo.getUserId()};
+		testReq.index = 0;
+
+		mapIdByEmailTemplate.put(emailTemplate.Id, emailTemplate);
+		mapRecordIdByName.put(UserInfo.getUserId(), UserInfo.getUserEmail());
+		
+		List<SendBetterEmailAddTasksToEmail.TaskWrapper> lstTaskWrapper = SendBetterEmailAddTasksToEmail.addTasks(testReq, recipientList, mapIdByEmailTemplate, mapRecordIdByName);
+		System.assertEquals(lstTaskWrapper.size(), 1);
+		System.assertEquals(lstTaskWrapper[0].taskRec.OwnerId, UserInfo.getUserId());
+		System.assertEquals(lstTaskWrapper[0].taskRec.Status, 'Closed');
+		System.assertEquals(lstTaskWrapper[0].taskRec.Priority, 'Normal');
+		System.assertEquals(lstTaskWrapper[0].taskRec.ActivityDate, System.today());
+		System.assertEquals(lstTaskWrapper[0].taskRec.WhatId, UserInfo.getUserId());
+		System.assertEquals(lstTaskWrapper[0].requestIndex, 0);
+	}
+
+	@isTest
+	private static void t030_CoverageSingleBetterEmailAddTasks() {
+		EmailTemplate emailTemplate = [Select Id, Subject from EmailTemplate Limit 1];
+
+		Map<Id, EmailTemplate> mapIdByEmailTemplate = new Map<Id, EmailTemplate>();
+		Map<String, String> mapRecordIdByName = new Map<String, String>();
+		SendBetterEmailRequest testReq = new SendBetterEmailRequest();
+
+		List<String> recipientList = new List<String>{' '};
+
+		testReq.Subject = null;
+		testReq.HTMLbody = EMAIL_BODY;
+		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+		testReq.recordId = UserInfo.getUserId();
+		testReq.saveAsTask = true;
+		testReq.templateId = emailTemplate.Id;
+		testReq.whatIds = new List<String>{UserInfo.getUserId()};
+		testReq.index = 0;
+
+		mapIdByEmailTemplate.put(emailTemplate.Id, emailTemplate);
+		mapRecordIdByName.put(UserInfo.getUserId(), UserInfo.getUserEmail());
+		
+		List<SendBetterEmailAddTasksToEmail.TaskWrapper> lstTaskWrapper = SendBetterEmailAddTasksToEmail.addTasks(testReq, recipientList, mapIdByEmailTemplate, mapRecordIdByName);
+		System.assertEquals(lstTaskWrapper.size(), 1);
+		System.assertEquals(lstTaskWrapper[0].taskRec.OwnerId, UserInfo.getUserId());
+		System.assertEquals(lstTaskWrapper[0].taskRec.Status, 'Closed');
+		System.assertEquals(lstTaskWrapper[0].taskRec.Priority, 'Normal');
+		System.assertEquals(lstTaskWrapper[0].taskRec.ActivityDate, System.today());
+		System.assertEquals(lstTaskWrapper[0].taskRec.WhatId, UserInfo.getUserId());
+		System.assertEquals(lstTaskWrapper[0].requestIndex, 0);
+	}
 }

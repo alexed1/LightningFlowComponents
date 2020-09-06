@@ -23,9 +23,6 @@ private class SendBulkEmailTest {
         List<List<SendBetterEmailResponse>> sendBetterEmailResponseList = SendBulkEmail.SendEmail(
             emailRequestLists
         );
-
-        System.debug(sendBetterEmailResponseList);
-
         for (
             List<SendBetterEmailResponse> lstresponse : sendBetterEmailResponseList
         ) {

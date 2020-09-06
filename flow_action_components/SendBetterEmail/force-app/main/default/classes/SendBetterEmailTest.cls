@@ -63,9 +63,9 @@ public with sharing class SendBetterEmailTest {
 	private Static Final String TEMPLATE_LANGUAGE = 'en_US';
 	private Static Final String TEMPLATE_NOSUCH = 'ZZXZ_XYZZY';
 	private Static Final String TEMPLATE_NAME_NOSUCH = 'ZZXZ XYZZY';
-	private Static Final String EMAIL_SUBJECT = 'this is the subject';
-	private Static Final String EMAIL_BODY = 'this is the body';
-	private Static Final String EMAIL_NOSUCH = 'test@foo.com.invalid';
+	public Static Final String EMAIL_SUBJECT = 'this is the subject';
+	public Static Final String EMAIL_BODY = 'this is the body';
+	public Static Final String EMAIL_NOSUCH = 'test@foo.com.invalid';
 	private Static Final String EMAIL_NAME_NOSUCH = 'Do Not Reply';
 	private Static Final Integer TEST_CONTACTS_COUNT = 1;
 	private Static Final Integer BULK_TEST_COUNT = 6;
@@ -115,7 +115,7 @@ public with sharing class SendBetterEmailTest {
 
 	}
 // Check to see if email is deliverable (enabled and capacity not exceeded)    
-	private static Boolean emailDeliverabilityEnabled(){
+	public static Boolean emailDeliverabilityEnabled(){
 		Boolean emailDeliverabilityEnabled = true;
 		try {
 			Messaging.reserveSingleEmailCapacity(1);

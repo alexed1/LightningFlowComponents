@@ -1,7 +1,7 @@
-global class StringsUnique {
+global with sharing class StringsUnique {
   @InvocableMethod(
     label='Unique Strings'
-    description='Returns only unique Strings'
+    description='Given a collection of strings, returns a new collection without any duplicate values.'
     category='String Helper'
   )
   global static List<String[]> unique(List<StringUniqueParam> parm) {
@@ -27,15 +27,14 @@ global class StringsUnique {
   global class StringUniqueParam {
     @InvocableVariable(
       label='String Collection'
-      description='The list of strings to join'
+      description='The list of strings to make unique'
       required=false
     )
     global String[] arr;
 
-    // TODO
     @InvocableVariable(
       label='Ignore Case'
-      description='Ignore string casing (case in-sensitive).'
+      description='Ignore string casing (case in-sensitive).  Casing of first occurrence will be returned.'
       required=false
     )
     global Boolean ignoreCase;

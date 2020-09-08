@@ -7,8 +7,8 @@ public class RefreshRecordsTest {
 
     @isTest
     static void RefreshRecordsTest() {
-        RefreshRecords.RefreshRecordsInput input = new RefreshRecords.RefreshRecordsInput();
-        input.values = [SELECT Id FROM Lead];
-        RefreshRecords.RefreshRecords(new List<RefreshRecords.RefreshRecordsInput>{input});
+        RefreshRecords.Request input = new RefreshRecords.Request();
+        input.inputCollection = [SELECT Id FROM Lead];
+        RefreshRecords.RefreshRecords(new List<RefreshRecords.Request>{input});
     }
 }

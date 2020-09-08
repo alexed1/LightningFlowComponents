@@ -10,36 +10,36 @@
  * 1.0      9/1/2020      adwhite@captechconsulting.com      Initial release
 **/
 
-global with sharing class RecalculateFormulas {
-    @InvocableMethod(label='Refresh Formulas' description='' category='Util')
-	global static List<Output> refreshFormulas(List<Input> inputList) {
-         List<Output> outputResponses =  new List<Output>();
+global with sharing class RefreshFormulaFields {
+    @InvocableMethod(label='Refresh Formula Fields' description='' category='Util')
+	global static List<Response> refreshFormulas(List<Request> inputList) {
+         List<Response> outputResponses =  new List<Response>();
         
-        for (Input curInput: inputList) {
+        for (Request curRequest: inputList) {
             List<SObject> collectionToHydrate = new List<SObject>();
-            Output output = new Output();
-            output.refreshedCollection = new List<SObject>();
+            Response response = new Response();
+            response.refreshedCollection = new List<SObject>();
             //call the Formula recalc method to refresh the formulas on the input collection
-        	List<FormulaRecalcResult> results = Formula.recalculateFormulas(curInput.inputCollection);
+        	List<FormulaRecalcResult> results = Formula.recalculateFormulas(curRequest.inputCollection);
             Boolean successResult = results[0].IsSuccess();
             system.debug('Success?: ' + successResult );
             //goes through all of the results and adds them to the refreshedCollection output for flow
           		 for (FormulaRecalcResult result : results) {
-           			 output.refreshedCollection.add(result.getSObject());
+           			 response.refreshedCollection.add(result.getSObject());
              }
-            outputResponses.add(output);
+            outputResponses.add(response);
         }
     
     return outputResponses;
     }
         
         
-    global class Input {
+    global class Request {
         @InvocableVariable(description='Collection to recalculate' required=true)
         global List<sObject> inputCollection;       
     }
         
-    global class Output {
+    global class Response {
         @InvocableVariable(description='List of records refreshed from query.')
         global List<sobject> refreshedCollection;
     }

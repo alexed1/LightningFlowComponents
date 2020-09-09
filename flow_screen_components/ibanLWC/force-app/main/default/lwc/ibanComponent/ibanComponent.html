@@ -9,4 +9,7 @@
             <div class="slds-form-element__help" id="error-message-unique-id">Please enter a valid IBAN</div>
         </template>
     </div>
+    <template if:true={displayNext}>
+      <lightning-button label="Next" title="Next" onclick={handleGoNext}></lightning-button>
+    </template>
 </template>

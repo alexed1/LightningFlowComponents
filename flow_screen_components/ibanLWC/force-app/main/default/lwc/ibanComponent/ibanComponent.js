@@ -1,17 +1,28 @@
 import { LightningElement, track, api } from 'lwc';
-import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import IBAN from './iban.js';
 
 export default class IbanComponent extends LightningElement {
-    @api availableActions = [];
     _value = '';
+    initiallyRendered = false;
     @api set value(iban) {
         this._value = this.formatIBAN(iban);
+        if (this.initiallyRendered) {
+            this.validateIBAN();
+        }
     } get value() {
         return this._value;
     }
     @track invalidIBAN = false;
-    
+
+    renderedCallback() {
+        if (this.initiallyRendered) {
+            return;
+        }
+        this.initiallyRendered = true;
+        this.validateIBAN();
+    }
+
     isValidIBANNumber(input) {
         input = input.replace(/ /g, '');
         return IBAN.isValid(input);
@@ -34,20 +45,17 @@ export default class IbanComponent extends LightningElement {
         if (event.key === "Meta" || event.key === "Shift") {
             this.value = event.target.value;
             event.target.value = this.value;
-            this.validateIBAN();
             return;
         }
         if (event.shiftKey === true && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
             this.value = event.target.value;
             event.target.value = this.value;
-            this.validateIBAN();
             return;
         }
         const previousSelection = event.target.selectionStart;
         const lengthBefore = event.target.value.length;
         this.value = event.target.value;
         const lengthAfter = this.value.length;
-        this.validateIBAN();
         event.target.value = this.value;
         if (previousSelection === lengthBefore) {
             event.target.selectionStart = lengthAfter;
@@ -62,20 +70,6 @@ export default class IbanComponent extends LightningElement {
 
     formatIBAN(value) {
         return value.toUpperCase().replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
-    }
-
-    get displayNext() {
-        if (this.availableActions && this.availableActions.find(action => action === 'NEXT')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    handleGoNext() {
-        if (this.availableActions.find(action => action === 'NEXT')) {
-            this.dispatchEvent(new FlowNavigationNextEvent());
-        }
     }
 
     @api validate() {

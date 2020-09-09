@@ -1,4 +1,5 @@
-# Salesforce App
+# IBAN Validation
+Submitted by BrighterCloud GmbH Mannheim, Germany.
 
 ## IBAN Validation
-For the validation this component uses https://github.com/arhs/iban.js
+For the IBAN validation this component uses https://github.com/arhs/iban.js

@@ -1,17 +1,4 @@
-(function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define(['exports'], factory);
-    } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-        // CommonJS
-        factory(exports);
-    } else {
-        // Browser globals
-        factory(root.IBAN = {});
-    }
-}(this, function(exports){
-
-    // Array.prototype.map polyfill
+// Array.prototype.map polyfill
     // code from https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/map
     if (!Array.prototype.map){
         Array.prototype.map = function(fun /*, thisArg */){
@@ -350,20 +337,24 @@
         return (typeof v == 'string' || v instanceof String);
     }
 
+export default {
+
+    
+
     /**
      * Check if an IBAN is valid.
      *
      * @param {String} iban the IBAN to validate.
      * @returns {boolean} true if the passed IBAN is valid, false otherwise
      */
-    exports.isValid = function(iban){
+    isValid: function(iban){
         if (!isString(iban)){
             return false;
         }
         iban = electronicFormat(iban);
         var countryStructure = countries[iban.slice(0,2)];
         return !!countryStructure && countryStructure.isValid(iban);
-    };
+    },
 
     /**
      * Convert an IBAN to a BBAN.
@@ -372,7 +363,7 @@
      * @param {String} [separator] the separator to use between the blocks of the BBAN, defaults to ' '
      * @returns {string|*}
      */
-    exports.toBBAN = function(iban, separator){
+    toBBAN: function(iban, separator){
         if (typeof separator == 'undefined'){
             separator = ' ';
         }
@@ -382,7 +373,7 @@
             throw new Error('No country with code ' + iban.slice(0,2));
         }
         return countryStructure.toBBAN(iban, separator);
-    };
+    },
 
     /**
      * Convert the passed BBAN to an IBAN for this country specification.
@@ -393,13 +384,13 @@
      * @param bban the BBAN to convert to IBAN
      * @returns {string} the IBAN
      */
-    exports.fromBBAN = function(countryCode, bban){
+    fromBBAN: function(countryCode, bban){
         var countryStructure = countries[countryCode];
         if (!countryStructure) {
             throw new Error('No country with code ' + countryCode);
         }
         return countryStructure.fromBBAN(electronicFormat(bban));
-    };
+    },
 
     /**
      * Check the validity of the passed BBAN.
@@ -407,13 +398,13 @@
      * @param countryCode the country of the BBAN
      * @param bban the BBAN to check the validity of
      */
-    exports.isValidBBAN = function(countryCode, bban){
+    isValidBBAN: function(countryCode, bban){
         if (!isString(bban)){
             return false;
         }
         var countryStructure = countries[countryCode];
         return countryStructure && countryStructure.isValidBBAN(electronicFormat(bban));
-    };
+    },
 
     /**
      *
@@ -421,17 +412,16 @@
      * @param separator
      * @returns {string}
      */
-    exports.printFormat = function(iban, separator){
+    printFormat: function(iban, separator){
         if (typeof separator == 'undefined'){
             separator = ' ';
         }
         return electronicFormat(iban).replace(EVERY_FOUR_CHARS, "$1" + separator);
-    };
+    },
 
-    exports.electronicFormat = electronicFormat;
+    electronicFormat: electronicFormat,
     /**
      * An object containing all the known IBAN specifications.
      */
-    exports.countries = countries;
-
-}));
+    countries: countries,
+}

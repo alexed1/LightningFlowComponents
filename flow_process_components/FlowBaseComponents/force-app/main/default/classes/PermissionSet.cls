@@ -3,39 +3,23 @@ public with sharing class PermissionSet {
 
     public static String SOAP_M_URI = 'http://soap.sforce.com/2006/04/metadata';
 
-    
-    @auraEnabled
+
     public String type = 'PermissionSet';
-    @auraEnabled
     public String fullName;
     private String[] fullName_type_info = new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
-    @auraEnabled
     public fbc_MetadataService.PermissionSetApplicationVisibility[] applicationVisibilities;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetApexClassAccess[] classAccesses;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetCustomPermissions[] customPermissions;
-    @auraEnabled
     public String description;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetExternalDataSourceAccess[] externalDataSourceAccesses;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetFieldPermissions[] fieldPermissions;
-    @auraEnabled
     public Boolean hasActivationRequired;
-    @auraEnabled
     public String label;
-    @auraEnabled
     public String license;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetObjectPermissions[] objectPermissions;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetApexPageAccess[] pageAccesses;
-    @auraEnabled
-    public PermissionSetRecordTypeVisibility[] recordTypeVisibilities;
-    @auraEnabled
+    public fbc_MetadataService.PermissionSetRecordTypeVisibility[] recordTypeVisibilities;
     public fbc_MetadataService.PermissionSetTabSetting[] tabSettings;
-    @auraEnabled
     public fbc_MetadataService.PermissionSetUserPermission[] userPermissions;
     private String[] applicationVisibilities_type_info = new String[]{'applicationVisibilities',SOAP_M_URI,null,'0','-1','false'};
     private String[] classAccesses_type_info = new String[]{'classAccesses',SOAP_M_URI,null,'0','-1','false'};

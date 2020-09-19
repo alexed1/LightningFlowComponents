@@ -56,38 +56,13 @@ public  with sharing class fbc_RetrieveMetadata
 	public static fbc_MetadataService.AsyncResult AsyncResult {get; private set;}
 	public static String MetaDataRetrieveZip { get; private set; }	
 	public static List<MetadataFile> MetadataFiles { get; set; }		
-	
-    
-/*     
-    // Retrieve Custom Object Meta data for Source Object
-RetrieveRequest retrieveRequest = new RetrieveRequest();
-retrieveRequest.setSinglePackage(true);
-com.sforce.soap.metadata.Package packageManifest = new com.sforce.soap.metadata.Package();
-ArrayList<PackageTypeMembers> types = new ArrayList<PackageTypeMembers>();
-PackageTypeMembers packageTypeMember = new PackageTypeMembers();
-packageTypeMember.setName("CustomObject");
-packageTypeMember.setMembers(new String[] { sourceObject });
-types.add(packageTypeMember);
-packageManifest.setTypes((PackageTypeMembers[]) types.toArray(new PackageTypeMembers[] {}));
-retrieveRequest.setUnpackaged(packageManifest);
-AsyncResult response = metadataConnection.retrieve(retrieveRequest);
-while(!response.isDone())
-{
-    Thread.sleep(1000);
-    response = metadataConnection.checkStatus(new String[] { response.getId()} )[0];
-}
-RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.getId()); */
 
-    
+
     @auraEnabled
 	public static String fbc_RetrieveMetadataItem(String metadataName)
 	{		
         
 	   System.debug('entering fbc_RetrieveMetadataItem with metadataName: ' + metadataName);
-
-
-
-
         
 		// Reset state from any previous requests
 		MetaDataRetrieveZip = null;
@@ -109,9 +84,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 		packageType.name = 'Flow'; 
 		packageType.members = new String[] { metadataName };
         retrieveRequest.unpackaged.types.add(packageType);
-        System.debug('retrieve request is: ' + retrieveRequest);
- 
-        
+        System.debug('retrieve request is: ' + retrieveRequest);  
 
         fbc_MetadataService.AsyncResult curAsyncResult = service.retrieve(retrieveRequest);
         

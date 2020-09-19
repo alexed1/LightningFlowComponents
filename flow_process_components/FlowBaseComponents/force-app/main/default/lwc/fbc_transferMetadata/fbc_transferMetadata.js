@@ -50,6 +50,11 @@ export default class TransferMetadata extends LightningElement {
             }
     }
 
+    //read uses the MetadataService apex class representations of metadata objects. retrieve uses pure metadata strings that are zipped up. you have to use retrieve to work with Apex Classes
+    read() {
+        console.log('beginning metadata read');
+    }
+
     retrieve() {
         console.log('beginning retrieval');
         requestMetadata({ metadataName : this.metadataName })

@@ -4275,7 +4275,9 @@ public class fbc_MetadataService {
         private String[] field_order_type_info = new String[]{'domain'};
     }
     public class PermissionSetRecordTypeVisibility {
+        @auraEnabled
         public String recordType;
+        @auraEnabled
         public Boolean visible;
         private String[] recordType_type_info = new String[]{'recordType',SOAP_M_URI,null,'1','1','false'};
         private String[] visible_type_info = new String[]{'visible',SOAP_M_URI,null,'1','1','false'};
@@ -4397,22 +4399,38 @@ public class fbc_MetadataService {
         private String[] field_order_type_info = new String[]{'applicationBinaryFile','applicationBinaryFileName','applicationBundleIdentifier','applicationFileLength','applicationIconFile','applicationIconFileName','applicationInstallUrl','devicePlatform','deviceType','minimumOsVersion','privateApp','version'};
     }
     public class PermissionSet extends Metadata {
+        @auraEnabled
         public String type = 'PermissionSet';
+        @auraEnabled
         public String fullName;
         private String[] fullName_type_info = new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
+        @auraEnabled
         public fbc_MetadataService.PermissionSetApplicationVisibility[] applicationVisibilities;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetApexClassAccess[] classAccesses;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetCustomPermissions[] customPermissions;
+        @auraEnabled
         public String description;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetExternalDataSourceAccess[] externalDataSourceAccesses;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetFieldPermissions[] fieldPermissions;
+        @auraEnabled
         public Boolean hasActivationRequired;
+        @auraEnabled
         public String label;
+        @auraEnabled
         public String license;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetObjectPermissions[] objectPermissions;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetApexPageAccess[] pageAccesses;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetRecordTypeVisibility[] recordTypeVisibilities;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetTabSetting[] tabSettings;
+        @auraEnabled
         public fbc_MetadataService.PermissionSetUserPermission[] userPermissions;
         private String[] applicationVisibilities_type_info = new String[]{'applicationVisibilities',SOAP_M_URI,null,'0','-1','false'};
         private String[] classAccesses_type_info = new String[]{'classAccesses',SOAP_M_URI,null,'0','-1','false'};
@@ -13532,4 +13550,13 @@ public class fbc_MetadataService {
             return response_x.result;
         }
     }
+
+    public static fbc_MetadataService.MetadataPort createService()
+    {
+        fbc_MetadataService.MetadataPort service = new fbc_MetadataService.MetadataPort();
+        service.SessionHeader = new fbc_MetadataService.SessionHeader_element();
+        service.SessionHeader.sessionId = UserInfo.getSessionId();
+        return service;
+    }
+
 }

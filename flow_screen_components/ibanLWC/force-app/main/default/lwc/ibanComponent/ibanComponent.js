@@ -1,8 +1,35 @@
-import { LightningElement, track, api } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import IBAN from './iban.js';
 
 export default class IbanComponent extends LightningElement {
+    _fieldlabel = '';
+    @api set fieldlabel(fieldlabelInput) {
+        console.log(fieldlabelInput);
+        this._fieldlabel = fieldlabelInput;
+    }
+    get fieldlabel() {
+        return this._fieldlabel;
+    }
+
+    _required = false;
+    @api set required(requiredInput) {
+        console.log(requiredInput);
+        this._required = requiredInput;
+    }
+    get required() {
+        return this._required;
+    }
+
+    _errormessage = '';
+    @api set errormessage(errormessageInput) {
+        console.log(errormessageInput);
+        this._errormessage = errormessageInput;
+    }
+    get errormessage() {
+        return this._errormessage;
+    }
+
     _value = '';
     initiallyRendered = false;
     @api set value(iban) {
@@ -10,10 +37,10 @@ export default class IbanComponent extends LightningElement {
         if (this.initiallyRendered) {
             this.validateIBAN();
         }
-    } get value() {
+    }
+    get value() {
         return this._value;
     }
-    @track invalidIBAN = false;
 
     renderedCallback() {
         if (this.initiallyRendered) {
@@ -27,27 +54,27 @@ export default class IbanComponent extends LightningElement {
         input = input.replace(/ /g, '');
         return IBAN.isValid(input);
     }
-    
+
     validateIBAN() {
+        let ibanInput = this.template.querySelector(".iban-input");
         if (!this.isValidIBANNumber(this.value)) {
-            this.invalidIBAN = true;
-            this.template.querySelector(".slds-form-element").classList.add("slds-has-error");
+            ibanInput.setCustomValidity(this.errormessage);
         } else {
-            this.invalidIBAN = false;
-            this.template.querySelector(".slds-form-element").classList.remove("slds-has-error");
+            ibanInput.setCustomValidity("");
         }
+        ibanInput.reportValidity();
     }
 
     handleIBAN2Change(event) {
         if (event.code === "KeyA" && event.target.selectionStart === 0 && event.target.selectionEnd === event.target.value.length) {
             return;
         }
-        if (event.key === "Meta" || event.key === "Shift") {
+        if (event.key === "Meta" || event.key === "Shift") {
             this.value = event.target.value;
             event.target.value = this.value;
             return;
         }
-        if (event.shiftKey === true && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
+        if (event.shiftKey === true && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
             this.value = event.target.value;
             event.target.value = this.value;
             return;
@@ -70,17 +97,5 @@ export default class IbanComponent extends LightningElement {
 
     formatIBAN(value) {
         return value.toUpperCase().replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim();
-    }
-
-    @api validate() {
-        if(this.isValidIBANNumber) {
-            return {isValid: true};
-        } 
-        else { 
-            return { 
-                isValid: false, 
-                errorMessage: 'The entered IBAN number is not valid'
-            };
-        }
     }
 }

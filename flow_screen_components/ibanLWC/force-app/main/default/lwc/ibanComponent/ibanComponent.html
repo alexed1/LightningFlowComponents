@@ -1,12 +1,12 @@
 <template>
-    <div class="slds-form-element" style="width: 400px">
-        <label class="slds-form-element__label" for="text-input-id-1">
-          <abbr class="slds-required" title="required">* </abbr>IBAN</label>
-        <div class="slds-form-element__control">
-          <input type="text" id="text-input-id-1" placeholder="IBAN XXXX XXXX XXXX XXXX XX" required="" aria-describedby="error-message-unique-id" class="slds-input" value={value} onkeyup={handleIBAN2Change} aria-invalid="true" />
-        </div>
-        <template if:true={invalidIBAN}>
-            <div class="slds-form-element__help" id="error-message-unique-id">Please enter a valid IBAN</div>
-        </template>
-    </div>
+  <lightning-input
+    label={fieldlabel}
+    type="text"
+    placeholder="IBAN XXXX XXXX XXXX XXXX XX"
+    required={required}
+    value={value}
+    onkeyup={handleIBAN2Change}
+    class="iban-input limit-input-width"
+    message-when-pattern-mismatch={errormessage}
+  ></lightning-input>
 </template>

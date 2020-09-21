@@ -1,0 +1,12 @@
+<template>
+  <lightning-input
+    label={fieldlabel}
+    type="text"
+    placeholder="IBAN XXXX XXXX XXXX XXXX XX"
+    required={required}
+    value={value}
+    onkeyup={handleIBAN2Change}
+    class="iban-input limit-input-width"
+    message-when-pattern-mismatch={errormessage}
+  ></lightning-input>
+</template>

@@ -1,0 +1,11 @@
+{
+  "packageDirectories": [
+    {
+      "path": "flow_screen_components",
+      "default": true
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "49.0"
+}

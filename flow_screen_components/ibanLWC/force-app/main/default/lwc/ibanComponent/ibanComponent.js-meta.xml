@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>IBAN Validation</masterLabel>
+    <description>This component helps users enter a valid IBAN</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="value" type="String" label="IBAN" description="IBAN" />
+            <property name="fieldlabel" type="String" required="true" default="IBAN" label="Label" description="Label to display" />
+            <property name="required" type="Boolean" default="false" label="Required" description="Required flag" />
+            <property name="errormessage" type="String" required="true" default="The entered IBAN number is invalid" label="Error message" description="Error message shown when IBAN invalid" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

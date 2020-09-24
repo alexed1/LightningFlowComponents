@@ -16,6 +16,13 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
+
+9/14/20 -   Eric Smith -    Version 2.3 
+                            Fixed visual card selection when no Master Label is provided  
+  
+8/27/20 -   Eric Smith -    Version 2.2
+                            Added an option to sort the Picklist labels
+
 4/19/20 -   Eric Smith -    Version 1.4
                             Added help text for all configuration attributes to make this component easier to use
                             Fixed a bug where only the last selected visual card would display a check when multiple Quick Choice components were on the same screen
@@ -53,7 +60,7 @@ Additional components packaged with this LWC:
             <div class={gridClass} style={gridStyle}>
                 <template for:each={items} for:item="item">
                     <div key={item.name} class={columnClass}>
-                        <input type="radio" id={item.name} value={item.name} name={masterLabel} data-id={item.name} onclick={handleChange} />
+                        <input type="radio" id={item.name} value={item.name} name={radioGroup} data-id={item.name} onclick={handleChange} />
                         <label for={item.name}>
 
                             <!-- Display Visual Card Pickers with Icons-->
@@ -104,7 +111,7 @@ Additional components packaged with this LWC:
         <template if:true={showRadio}>
             <div style={inputStyle}>
                 <lightning-radio-group 
-                    name={masterLabel} 
+                    name={radioGroup} 
                     label={masterLabel} 
                     value={selectedValue}
                     options={options}

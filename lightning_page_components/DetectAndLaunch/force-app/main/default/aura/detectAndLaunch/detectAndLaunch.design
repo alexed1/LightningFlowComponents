@@ -1,0 +1,6 @@
+<design:component >
+    <design:attribute name="editFlowName" label="Flow Name (when record is edited)" description="Provide the api name of an Active screen flow. It will launch when a record edit is detected." />
+    <design:attribute name="deleteFlowName" label="Flow Name (when record is deleted)" description="Provide the api name of an Active screen flow. It will launch when a record delete is detected." />
+    <design:attribute name="launchMode" label="Launch Mode" description="Specify Modeless (default) or Modal. Modeless opens in tabs or browser pages. " />
+
+</design:component>

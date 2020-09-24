@@ -1,4 +1,5 @@
 /**
+ * 09/03/20     Eric Smith      Unescaped {} characters in the Metadata String in case it was passed in that way from a Flow
  * 
  * 08/21/20     Eric Smith      Added Extracted and Escaped Metadata Strings to the Output Attributes
  * 
@@ -82,7 +83,13 @@ export default class TransferMetadata extends LightningElement {
         // this.modifiedName = this.metadataName + '_Converted';
         this.modifiedName = this.metadataName;
         console.log('this.metadataName is: ' + this.modifiedName);
-        fbc_deployMetadata({ metadataText : this.metadataString, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })
+
+        // Special Processing to unescape characters that could be passed in by a flow
+        let documentContent = this.metadataString;
+        documentContent = documentContent.replaceAll('&lbrace;', '{');
+        documentContent = documentContent.replaceAll('&rbrace;', '}');
+
+        fbc_deployMetadata({ metadataText : documentContent, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })        
         .then(result => {
             console.log('result of deployment request is: ' + result);
             console.log('successfully sent async deployment request');

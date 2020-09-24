@@ -21,6 +21,7 @@ export default class QuickChoiceFSC extends LightningElement {
     @api recordTypeId; //used for picklist fields
     @api objectName; //used for picklist fields
     @api fieldName; //used for picklist fields
+    @api sortList; //used for picklist fields
 
     //-------------For inputMode = Visual Text Box (Card)
     @api choiceIcons;
@@ -86,6 +87,14 @@ export default class QuickChoiceFSC extends LightningElement {
         this._allLabels = value;
     }
 
+    @api get radioGroup() {
+        return "RG-" + this.masterLabel + "_RG";
+    }
+
+    set radioGroup(value) {
+        this.radioGroup = value;
+    }
+    
     //possibility master record type only works if there aren't other record types?
     @wire(getPicklistValues, {
         recordTypeId: "$recordTypeId",
@@ -111,7 +120,9 @@ export default class QuickChoiceFSC extends LightningElement {
                 this._allValues.push(key.value);
             });
 
-            this.picklistOptionsStorage = picklistOptions;
+            // Sort Picklist Values
+            this.picklistOptionsStorage = this.doSort(picklistOptions, this.sortList);
+
             console.log("displayMode is" + this.displayMode);
 
             if (this.inputMode === "Picklist Field") {
@@ -156,6 +167,19 @@ export default class QuickChoiceFSC extends LightningElement {
         if (this.selectedValue) {
             this.setSelectedLabel();
         }
+    }
+
+    doSort(value, sortFlag) {
+        if (!value) {
+            return;
+        }
+        if (!sortFlag) {
+            return value;
+        }
+        let fieldValue = row => row['label'] || '';
+        return [...value.sort(
+            (a,b)=>(a=fieldValue(a).toUpperCase(),b=fieldValue(b).toUpperCase(),((a>b)-(b>a)))
+        )];                
     }
 
     connectedCallback() {

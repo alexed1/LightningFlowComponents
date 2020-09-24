@@ -28,7 +28,7 @@ global with sharing class GenerateCollectionReport {
             hideHeader = curRequest.hideHeader != null ? curRequest.hideHeader :  false;
             if (inputCollection != null && !inputCollection.isEmpty() && shownFields != null) {
                 reportString += 'Collection Type: ' + inputCollection[0].getSObjectType().getDescribe().getName() + '\n\n';
-                List<String> shownFieldsArray = shownFields.replaceAll('[^a-zA-Z0-9\\,]', '').split(',');
+                List<String> shownFieldsArray = shownFields.replaceAll('[^a-zA-Z0-9\\,\\_]', '').split(',');
                 System.debug('first value in shownFieldsArray is: ' + shownFieldsArray[0]);
                 //System.debug('second value in shownFieldsArray is: ' + shownFieldsArray[1]);
                 switch on displayMode {
@@ -61,7 +61,7 @@ global with sharing class GenerateCollectionReport {
                 fieldValue = '';
             } else {
                 if (record != null){
-                    fieldValue = (String)record.get(fieldName);
+                    fieldValue = String.valueOf(record.get(fieldName));
                     if (fieldValue == null) fieldValue = '';
                 } else fieldValue = fieldName;
                 

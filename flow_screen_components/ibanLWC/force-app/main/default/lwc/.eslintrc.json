@@ -1,0 +1,4 @@
+{
+  "extends": ["@salesforce/eslint-config-lwc/recommended", "prettier"],
+  "experimentalDecorators": true
+}

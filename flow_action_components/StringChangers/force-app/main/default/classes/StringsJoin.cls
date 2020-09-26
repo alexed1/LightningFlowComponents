@@ -1,4 +1,4 @@
-global class StringsJoin {
+global with sharing class StringsJoin {
   @InvocableMethod(
     label='Join Strings'
     description='Joins a list of strings with optional delimiter'
@@ -6,8 +6,10 @@ global class StringsJoin {
   )
   global static List<String> join(List<StringJoinParams> parm) {
     List<String> results = new List<String>();
+
     for (StringJoinParams p : parm) {
-      results.add(String.join(p.arr, p.delim));
+      String delim = p.delim == null ? '' : p.delim;
+      results.add(String.join(p.arr, delim));
     }
     return results;
   }
@@ -15,7 +17,7 @@ global class StringsJoin {
   global class StringJoinParams {
     @InvocableVariable(
       label='String Collection'
-      description='The list of strings to join'
+      description='The list of strings to combine into a single string'
       required=false
     )
     global String[] arr;

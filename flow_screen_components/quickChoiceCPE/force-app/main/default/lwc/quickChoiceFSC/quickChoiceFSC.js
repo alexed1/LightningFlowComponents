@@ -87,6 +87,14 @@ export default class QuickChoiceFSC extends LightningElement {
         this._allLabels = value;
     }
 
+    @api get radioGroup() {
+        return "RG-" + this.masterLabel + "_RG";
+    }
+
+    set radioGroup(value) {
+        this.radioGroup = value;
+    }
+    
     //possibility master record type only works if there aren't other record types?
     @wire(getPicklistValues, {
         recordTypeId: "$recordTypeId",

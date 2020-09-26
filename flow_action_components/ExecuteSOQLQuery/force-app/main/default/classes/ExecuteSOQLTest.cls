@@ -7,7 +7,7 @@ public class ExecuteSOQLTest {
 
         //Not formatted DateTime
         ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
-        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020, 03:24 PM';
+        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020 03:24 PM';
 
         Test.startTest();
         List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
@@ -67,7 +67,7 @@ public class ExecuteSOQLTest {
                 requests
         });
         Test.stopTest();
-		System.assertEquals(1, results[0].sObjects.size());
+        System.assertEquals(1, results[0].sObjects.size());
         System.assertEquals(acc.Id, results[0].sObjects[0].Id);
     }
 
@@ -115,8 +115,8 @@ public class ExecuteSOQLTest {
         System.assertEquals(true, results[0].sObjects.size() == 3);
         List<Account> accounts = (List<Account>)results[0].sObjects;
         System.assertEquals('Apple', accounts[0].Name);
-      	System.assertEquals('Cucumber', accounts[1].Name);
-		System.assertEquals('Pear', accounts[2].Name);
+        System.assertEquals('Cucumber', accounts[1].Name);
+        System.assertEquals('Pear', accounts[2].Name);
     }
 
     @isTest
@@ -148,7 +148,7 @@ public class ExecuteSOQLTest {
         String msg = '[ExecuteSOQLException Not Thrown for Unknown sObject Type]';
         Test.startTest();
         try {
-        	Map<String, String> results = ExecuteSOQL.getFieldTypes(sObjectTypeName, new List<String>());
+            Map<String, String> results = ExecuteSOQL.getFieldTypes(sObjectTypeName, new List<String>());
         } catch (ExecuteSOQL.ExecuteSOQLException e) {
             msg = e.getMessage();
         }
@@ -216,7 +216,7 @@ public class ExecuteSOQLTest {
         insert acc;
         
         ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
-        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= 04/12/2020, 03:24 PM';
+        requests.soqlQuery = 'Select Id From Account Where CreatedDate >= YESTERDAY';
 
         Test.startTest();
         List<ExecuteSOQL.Results> results = ExecuteSOQL.getEligibleProducts(new List<ExecuteSOQL.Requests>{

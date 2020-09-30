@@ -1,7 +1,9 @@
-global with sharing class GetRecordTypeInfobyObject {
+
+//didn't want to make GetRecordTypeInfobyObject a prerequisite, so including it here
+//but don't want it to conflict on install so added the svf prefix
+global with sharing class svf_GetRecordTypeInfobyObject {
     //given a target object name, return a collection of strings representing the available record types
     //great for extracting the Names and IDs of record types available for selection
-    // source: https://github.com/alexed1/LightningFlowComponents/blob/master/flow_screen_components/quickChoiceFSCproject/force-app/main/default/classes/GetRecordTypeInfobyObject.cls
     // adapted by Tamar Erlich, added a toggle to ignore the master record type.
     
     
@@ -23,7 +25,7 @@ global with sharing class GetRecordTypeInfobyObject {
                     
                     Map<String, Schema.RecordTypeInfo> recTypeInfoMap = Schema.getGlobalDescribe().get(objectName).getDescribe().getRecordTypeInfosByName();
                     List<Schema.RecordTypeInfo> recTypeInfoList = recTypeInfoMap.values();
-                    
+                    System.debug('recTypeInfo is' + recTypeInfoList);
                     //extract the names and recordIds and return them as List<String> 
                     for(Schema.RecordTypeInfo curRecord : recTypeInfoList) {
                         System.debug('processing record: ' + curRecord);

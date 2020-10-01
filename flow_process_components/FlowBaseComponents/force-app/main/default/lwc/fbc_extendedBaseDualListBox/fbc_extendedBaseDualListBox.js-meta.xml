@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>47.0</apiVersion>
+    <description>Dual List Box</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Dual List Box</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="label" type="String"/>
+            <property name="sourceLabel" type="String"/>
+            <property name="fieldLevelHelp" type="String"/>
+            <property name="selectedLabel" type="String"/>
+            <property name="selectedOptions" type="String"/>
+            <property name="min" type="Integer"/>
+            <property name="max" type="Integer"/>
+            <property name="disableReordering" type="Boolean"/>
+            <property name="size" type="Integer"/>
+            <property name="required" type="Boolean"/>
+            <property name="requiredOptions" type="String"/>
+            <property name="selectedValuesStringFormat" type="String"/>
+            <property name="useWhichObjectKeyForData" type="String" default="value"/>
+            <property name="useWhichObjectKeyForLabel" type="String" default="label"/>
+            <property name="useWhichObjectKeyForSort" type="String"/>
+            <property name="useObjectValueAsOutput" type="Boolean"/>
+            <property name="allOptions" type="String"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

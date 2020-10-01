@@ -1,7 +1,7 @@
 import {LightningElement, api, track, wire} from "lwc";
 import {FlowAttributeChangeEvent} from "lightning/flowSupport";
 import {getPicklistValues} from "lightning/uiObjectInfoApi";
-import Quickchoice_Images from '@salesforce/resourceUrl/Quickchoice_Images';	//Static Resource containing images for Visual Cards
+import Quickchoice_Images from '@salesforce/resourceUrl/fbc_Quickchoice_Images';	//Static Resource containing images for Visual Cards
 
 /* eslint-disable no-alert */
 /* eslint-disable no-console */

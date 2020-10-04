@@ -58,7 +58,7 @@ public with sharing class fbc_FormulaEvaluatorTest {
         System.assertEquals('25', fbc_FormulaEvaluator.parseFormula('DAY(DATETIME(2019,12,26,0,0,0))', stringContext));
         System.assertEquals('12', fbc_FormulaEvaluator.parseFormula('MONTH(DATETIME(2019,12,26,0,0,0))', stringContext));
         System.assertEquals('2019', fbc_FormulaEvaluator.parseFormula('YEAR(DATETIME(2019,12,26,0,0,0))', stringContext));
-        System.assertEquals('19', fbc_FormulaEvaluator.parseFormula('HOURS(DATETIME(2019,12,26,0,0,0))', stringContext));
+        System.assertEquals('16', fbc_FormulaEvaluator.parseFormula('HOURS(DATETIME(2019,12,26,0,0,0))', stringContext));
         System.assertEquals('0', fbc_FormulaEvaluator.parseFormula('MINUTES(DATETIME(2019,12,26,0,0,0))', stringContext));
         System.assertEquals('0', fbc_FormulaEvaluator.parseFormula('SECONDS(DATETIME(2019,12,26,0,0,0))', stringContext));
         System.assertEquals('2019-12-27 00:00:00', fbc_FormulaEvaluator.parseFormula('ADDDAYS(DATETIME(2019,12,26,0,0,0),1)', stringContext));

@@ -16,6 +16,7 @@
             <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]" description="The labels of your choices"/>
             <property name="choiceIcons" label="Card Mode - Choice Icons (String Collection)" type="String[]" description="Icon names or image names"/>
             <property name="includeIcons" label="Card Mode - Include Icons in Display Box?" type="Boolean" description="Display the provided icons in the visual card when set to True"/>
+            <property name="btnMode" label="Button Mode" type="Boolean" role="inputonly" description="Navigate to next flow element on card selection"/>
             <property name="iconSize" label="Card Mode - Icon Size" type="String" description="Options include x-small, small, medium, or large. This value defaults to medium."/>
             <property name="numberOfColumns" label="Card Mode - Number of Display Box Columns (1 or 2)" type="String" description="1 or blank (default) for a single column or 2 for dual columns"/>
             <property name="inputMode" label="Input Mode" type="String" description="“Single String Collection”, “Dual String Collections”, “Picklist Field”, or ” Visual Text Box ” are currently supported"/>

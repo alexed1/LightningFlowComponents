@@ -20,7 +20,6 @@ export default class recordDetailFSC extends LightningElement {
     @api CancelBtnLabel = 'Cancel';
     @api columnsize = 2;
     @api suppressUnderline = false;
-    @api boxclass='slds-box slds-theme_default';
     
 
     @track elementSize = 6;

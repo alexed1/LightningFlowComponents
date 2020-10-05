@@ -1,8 +1,6 @@
 <!-- 
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 
-8/11/20 -    M Hamza Siddiqui - Version 1.8.1
-                                Added Class Option- Default Class = "slds-box slds-theme_default"
 
 8/3/20 -    Eric Smith -        Version 1.8
                                 Added option to suppress the field underline (Multiple columns don't always line up)
@@ -32,7 +30,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
     <div class="container">
 
         <template if:true={loadFinished}>
-            <div class={boxclass}>
+            <div class="slds-theme_default">
                 <template if:true={isError}>
                     <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
                         <template for:each={errors} for:item="error">

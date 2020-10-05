@@ -15,6 +15,7 @@ export default class QuickChoiceCpe extends LightningElement {
         style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)'},
         numberOfColumns: {value: null, valueDataType: null, isCollection: false, label: 'Number of Columns'},
         includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
+        btnMode: {value: false, valueDataType: null, isCollection: false, label: 'Button Mode'},
         choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
         iconSize: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
@@ -99,6 +100,10 @@ export default class QuickChoiceCpe extends LightningElement {
 
     get isDatasourceSingleOrDualCollection() {
         return this.inputValues.inputMode.value === this.settings.inputModeSingleCollection || this.inputValues.inputMode.value === this.settings.inputModeDualCollection;
+    }
+
+    get isBtnMode() {
+        return this.inputValues.inputMode.value === this.settings.btnMode;
     }
 
     initializeValues(value) {

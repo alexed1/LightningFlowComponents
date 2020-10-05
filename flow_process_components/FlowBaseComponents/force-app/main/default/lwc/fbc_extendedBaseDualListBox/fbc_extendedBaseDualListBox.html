@@ -1,0 +1,19 @@
+<template>
+    <div if:true={isError} class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+        <h2> {isError} </h2>
+    </div>
+    <lightning-dual-listbox if:false={isError}
+                            label={label}
+                            source-label={sourceLabel}
+                            field-level-help={fieldLevelHelp}
+                            selected-label={selectedLabel}
+                            min={min}
+                            max={max}
+                            disable-reordering={disableReordering}
+                            size={size}
+                            options={_options}
+                            value={_value}
+                            required-options={requiredOptions}
+                            onchange={handleChange}>
+    </lightning-dual-listbox>
+</template>

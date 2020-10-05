@@ -1,0 +1,24 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowBaseComponents1.3.2"
+                }
+            ],
+            "package": "SetupViaFlow",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "49.0",
+    "packageAliases": {
+        "FlowBaseComponents1.3.2": "04tf4000004PuQcAAK",
+        "SetupViaFlow": "0Hof4000000XZNBCA4",
+        "SetupViaFlow@1.0.0-0": "04tf4000004PuQhAAK"
+    }
+}

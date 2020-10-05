@@ -1,0 +1,4 @@
+.border-bottom-2px {
+    border-bottom: solid 2px;
+    border-color: var(--lwc-colorBorder)
+}

@@ -15,7 +15,7 @@ export default class QuickChoiceCpe extends LightningElement {
         style_width: {value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)'},
         numberOfColumns: {value: null, valueDataType: null, isCollection: false, label: 'Number of Columns'},
         includeIcons: {value: null, valueDataType: null, isCollection: false, label: 'Show Icons'},
-        navOnSelect: {value: false, valueDataType: null, isCollection: false, label: 'Button Mode'},
+        navOnSelect: {value: false, valueDataType: null, isCollection: false, label: 'InstantNavigation Mode'},
         choiceIcons: {value: null, valueDataType: null, isCollection: true, label: 'Choice Icons [Card Icons]'},
         iconSize: {value: null, valueDataType: null, isCollection: false, label: 'Icon Size'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},

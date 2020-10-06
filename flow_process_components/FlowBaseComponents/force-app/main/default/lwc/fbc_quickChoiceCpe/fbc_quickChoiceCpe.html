@@ -24,6 +24,13 @@
                     checked={inputValues.includeIcons.value}
                     onchange={handleValueChange}
             ></lightning-input>
+        <lightning-input
+                name="select_navOnSelect"
+                type="checkbox"
+                label={inputValues.navOnSelect.label}
+                checked={inputValues.navOnSelect.value}
+                 onchange={handleValueChange}
+        ></lightning-input>
         <!-- </template> -->
         <!-- <template if:true={inputValues.includeIcons.value}> -->
             <c-fbc_flow-combobox

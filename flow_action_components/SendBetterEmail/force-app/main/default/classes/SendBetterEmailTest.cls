@@ -15,6 +15,7 @@
  * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
  * 1.33.2	5/29/2020	Jack D. Pond			Fixed Lead (Company rqd for Summer'20)
  * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
+ * 2.00.2	6/02/2020	Jack D. Pond			Added bulkification coverage tests
  * 
  * To Do: Tests for MassEmail
 **/
@@ -44,7 +45,10 @@
 // @Test t024_coverageSingleEMailTaskActivity: If TEST_WITH_CREATED_RECORDS
 // @Test t025_errorSingleEMailNoRecordId: Single Email requires recordId if saveAsTask
 // @Test t026_coverageCollectionOfRecipients: Should use collection of recipients
-
+// @Test t027_errorMassEMailFail: Should fail: saveAsTask == true, whatId == EmailTemplateId
+// @Test t028_CoverageSingleEMailTask: Single Email saveAsTask recordId is User
+// @Test t029_CoverageMassBetterEmailAddTasks: Test separated tasks and activities (massEmail)
+// @Test t030_CoverageSingleBetterEmailAddTasks: Test separated tasks and activities (singleEmail)
 
 @isTest
 public with sharing class SendBetterEmailTest {
@@ -235,6 +239,8 @@ public with sharing class SendBetterEmailTest {
 		} else {
 			System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityEnabled');
 		}
+        List<List<SendBetterEmailRequest>> theseRequests = SendBetterEmailBulkRequestSetup.SendEmail(reqList);
+        System.assertEquals(theseRequests.size(), 1, 't001_canSendEmail (setup Bulk Request)');
 	}
 
 // @Test t002_errorIfNoAddress: Error expected if no addresses specified
@@ -609,9 +615,9 @@ public with sharing class SendBetterEmailTest {
 			system.debug('t014_coverageTestActivityAndBulkification error: '+e.getMessage());
 		}
 	}
-// @Test t015_coverageMassMailTestActivityAndBulkification: Can allow mass email activity and task activity on recordId object if records, plus bulkification
+// @Test t015_coverageMassSingleMailTestActivityAndBulkification: Can allow mass and single email in request collection with activity and task activity on recordId object if records, plus bulkification
 	@isTest
-	public static void t015_coverageMassMailTestActivityAndBulkification() {
+	public static void t015_coverageMassSingleMailTestActivityAndBulkification() {
 		List<Contact> theseContacts = new List<Contact>();
 		List<Account> theseAccounts = new List<Account>();
 		List<Case> theseCases = new List<Case>();
@@ -668,7 +674,8 @@ public with sharing class SendBetterEmailTest {
 			system.debug('testReq'+('0000'+i).right(4)+': ' + testReq);
 			reqList.add(testReq);
 		}
-		try {
+// First send normally
+        try {
 			List<SendBetterEmailResponse> testSendBetterEmailResponseList = SendBetterEmail.SendEmail(reqList);
 			for (Integer i=0;i<testSendBetterEmailResponseList.size();i++){
 				system.debug('SendBetterEmailResponse: ' + ('00'+i).right(2) + ' isSuccess: '+testSendBetterEmailResponseList[i].isSuccess + ' Error: '+testSendBetterEmailResponseList[i].errors);
@@ -676,7 +683,20 @@ public with sharing class SendBetterEmailTest {
             List<Task> theseTasks = [Select Subject,Description,Status from Task];
             system.debug('theseTasks: ' + theseTasks);
 		} catch (SendBetterEmail.InvocableActionException e) {
-			system.assert(false,'t015_coverageMassMailTestActivityAndBulkification error: '+e.getMessage());
+			system.assert(false,'t015_coverageMassSingleMailTestActivityAndBulkification error: '+e.getMessage());
+		}
+// then test bulkification flow
+        try {
+            List<List<SendBetterEmailRequest>> thisReqList = new List<List<SendBetterEmailRequest>>{reqList};
+			List<List<SendBetterEmailResponse>> testSendBetterEmailResponseList = SendBetterEmailBulk.SendBetterEmailBulk(new List<List<SendBetterEmailRequest>>{reqList});
+            for (List<SendBetterEmailResponse> thisSendBetterEmailResponseList : testSendBetterEmailResponseList)
+			for (Integer i=0;i<thisSendBetterEmailResponseList.size();i++){
+				system.debug('thisSendBetterEmailResponseList: ' + ('00'+i).right(2) + ' isSuccess: '+thisSendBetterEmailResponseList[i].isSuccess + ' Error: '+thisSendBetterEmailResponseList[i].errors);
+			}
+            List<Task> theseTasks = [Select Subject,Description,Status from Task];
+            system.debug('theseTasks: ' + theseTasks);
+		} catch (SendBetterEmail.InvocableActionException e) {
+			system.assert(false,'t015_coverageMassSingleMailTestActivityAndBulkification error(bulk): '+e.getMessage());
 		}
 	}
 // @Test t016_coverageMassMailTestDescription: MassEmail should have Error if no description
@@ -1012,8 +1032,9 @@ public with sharing class SendBetterEmailTest {
 		}
 	}
 
+// @Test t029_CoverageMassBetterEmailAddTasks: Test separated tasks and activities (massEmail)
 	@isTest
-	private static void t029_CoverageSingleBetterEmailAddTasks() {
+	private static void t029_CoverageMassBetterEmailAddTasks() {
 		EmailTemplate emailTemplate = [Select Id, Subject from EmailTemplate Limit 1];
 
 		Map<Id, EmailTemplate> mapIdByEmailTemplate = new Map<Id, EmailTemplate>();
@@ -1045,6 +1066,7 @@ public with sharing class SendBetterEmailTest {
 		System.assertEquals(lstTaskWrapper[0].requestIndex, 0);
 	}
 
+// @Test t030_CoverageSingleBetterEmailAddTasks: Test separated tasks and activities (singleEmail)
 	@isTest
 	private static void t030_CoverageSingleBetterEmailAddTasks() {
 		EmailTemplate emailTemplate = [Select Id, Subject from EmailTemplate Limit 1];

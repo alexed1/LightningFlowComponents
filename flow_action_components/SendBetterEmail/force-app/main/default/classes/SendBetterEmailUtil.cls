@@ -1,4 +1,14 @@
-public inherited sharing class SendEmailUtil {
+/**
+ * @description       : 
+ * @author            : Jack D. Pond
+ * @group             : 
+ * @last modified on  : 10-06-2020
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver   Date         Author         Modification
+ * 1.0   10-06-2020   Jack D. Pond   Initial Version
+**/
+public inherited sharing class SendBetterEmailUtil {
     public static String[] buildAddressList(
         string type,
         Map<String, Object> m

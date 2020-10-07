@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 09-02-2020
+ * @Last Modified On	: 10-06-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -98,18 +98,18 @@ public without sharing class SendBetterEmail {
         String localeKey = SendBetterEmailConstant.getOrganization();
 
         // Cache Query results for Templates
-        mapTemplateNameByEmailTemplates = SendEmailUtil.getMapTemplateNameByEmailTemplates(
+        mapTemplateNameByEmailTemplates = sendBetterEmailUtil.getMapTemplateNameByEmailTemplates(
             templateNames,
             mapIdByEmailTemplate
         );
 
         // Cache Query results for ContentDocument Ids
-        mapContentDocumentIdByContentVersion = SendEmailUtil.getMapContentDocumentIdByContentVersions(
+        mapContentDocumentIdByContentVersion = sendBetterEmailUtil.getMapContentDocumentIdByContentVersions(
             contentDocumentIds
         );
 
         // Cache a Map of targetObjectIds(Contact, Lead, User or other Custom Objects)
-        mapRecordIdByName = SendEmailUtil.getMapRecordIdByName(
+        mapRecordIdByName = sendBetterEmailUtil.getMapRecordIdByName(
             listTargetObjectIds
         );
 
@@ -260,7 +260,7 @@ public without sharing class SendBetterEmail {
                         if (curRequest.templateName == null) {
                             thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
                         } else {
-                            templateID = SendEmailUtil.gettemplateIdFromName(
+                            templateID = sendBetterEmailUtil.gettemplateIdFromName(
                                 templateName,
                                 templateLanguage,
                                 mapTemplateNameByEmailTemplates,
@@ -311,16 +311,16 @@ public without sharing class SendBetterEmail {
                     : curRequest.setSaveAsActivity;
                 // Strings to hold the email addresses to which you are sending the email.
                 //String[] toAddresses = new String[] {oneAddress};
-                Map<String, Object> m = SendEmailUtil.generateMap(curRequest);
-                curRequest.toAddresses = SendEmailUtil.buildAddressList(
+                Map<String, Object> m = sendBetterEmailUtil.generateMap(curRequest);
+                curRequest.toAddresses = sendBetterEmailUtil.buildAddressList(
                     'TO',
                     m
                 );
-                curRequest.ccAddresses = SendEmailUtil.buildAddressList(
+                curRequest.ccAddresses = sendBetterEmailUtil.buildAddressList(
                     'CC',
                     m
                 );
-                curRequest.bccAddresses = SendEmailUtil.buildAddressList(
+                curRequest.bccAddresses = sendBetterEmailUtil.buildAddressList(
                     'BCC',
                     m
                 );
@@ -377,7 +377,7 @@ public without sharing class SendBetterEmail {
                 }
 
                 if (thisResponse.errors == null && templateName != null) {
-                    templateID = SendEmailUtil.gettemplateIdFromName(
+                    templateID = sendBetterEmailUtil.gettemplateIdFromName(
                         templateName,
                         templateLanguage,
                         mapTemplateNameByEmailTemplates,
@@ -493,7 +493,7 @@ public without sharing class SendBetterEmail {
                     Schema.User.sObjectType)
                 ) {
                     response.isSuccess = false;
-                    response.errors = SendEmailUtil.getErrorString(
+                    response.errors = sendBetterEmailUtil.getErrorString(
                         emailResult.getErrors()
                     );
                 } else {
@@ -555,7 +555,7 @@ public without sharing class SendBetterEmail {
                     Schema.User.sObjectType)
                 ) {
                     response.isSuccess = false;
-                    response.errors = SendEmailUtil.getErrorString(
+                    response.errors = sendBetterEmailUtil.getErrorString(
                         emailResult.getErrors()
                     );
                 } else {
@@ -610,7 +610,7 @@ public without sharing class SendBetterEmail {
                     'Task Insert failed for RecordId ' +
                     taskRecord.whatId +
                     ' with error ' +
-                    SendEmailUtil.getDatabaseErrorString(taskResult.getErrors())
+                    sendBetterEmailUtil.getDatabaseErrorString(taskResult.getErrors())
                 );
             }
         }

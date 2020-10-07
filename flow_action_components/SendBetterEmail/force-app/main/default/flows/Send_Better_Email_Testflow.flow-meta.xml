@@ -3,23 +3,17 @@
     <actionCalls>
         <name>Simplest_Better_Email</name>
         <label>1. Simplest Better Email</label>
-        <locationX>1154</locationX>
-        <locationY>155</locationY>
+        <locationX>1124</locationX>
+        <locationY>153</locationY>
         <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>screenConsole1</targetReference>
         </connector>
         <inputParameters>
-            <name>HTMLbody</name>
-            <value>
-                <elementReference>HTMLTextTemplate</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>plainTextBody</name>
             <value>
-                <elementReference>plainTextBody</elementReference>
+                <elementReference>PlainText_Body_1</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -31,19 +25,19 @@
         <inputParameters>
             <name>senderDisplayName</name>
             <value>
-                <elementReference>testSenderName</elementReference>
+                <elementReference>sendSender</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>SendTOthisOneEmailAddress</name>
             <value>
-                <elementReference>TestEmailAddress1</elementReference>
+                <elementReference>Email_To_1</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
             <name>subject</name>
             <value>
-                <elementReference>testSubject</elementReference>
+                <elementReference>sendSubject</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -65,7 +59,7 @@
         <name>X2_Simple_Email_with_Address_Collections_Wit_Collections</name>
         <label>2. Simple Email with Address Collections - With Address Collections</label>
         <locationX>1391</locationX>
-        <locationY>215</locationY>
+        <locationY>216</locationY>
         <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -122,7 +116,7 @@
         <inputParameters>
             <name>senderDisplayName</name>
             <value>
-                <elementReference>testSenderName</elementReference>
+                <elementReference>sendSender</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -140,7 +134,7 @@
         <inputParameters>
             <name>subject</name>
             <value>
-                <elementReference>testSubject</elementReference>
+                <elementReference>sendSubject</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -459,19 +453,6 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Clear_String_Addr_Collection</name>
-        <label>Clear String Addr Collection</label>
-        <locationX>1006</locationX>
-        <locationY>238</locationY>
-        <assignmentItems>
-            <assignToReference>stringCollectionEmailAddresses</assignToReference>
-            <operator>Assign</operator>
-        </assignmentItems>
-        <connector>
-            <targetReference>Email_Addr_1</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <description>Add the first email to the string collection</description>
         <name>Email_1_to_Collection</name>
         <label>Email 1 to Collection</label>
@@ -502,6 +483,67 @@
         </assignmentItems>
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>You can&apos;t use a screen input component directly unless that component has an output assignment in it (Winter &apos;21, but possibly Summer &apos;21 will change that [safe harbor]), so this captures the output from the components and manually puts them into a usable variable.
+
+Also create an empty string collection of email addresses</description>
+        <name>X1_Assignments</name>
+        <label>X2_Assignments</label>
+        <locationX>1003</locationX>
+        <locationY>235</locationY>
+        <assignmentItems>
+            <assignToReference>sendSubject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Subject_2</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sendSender</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sender_Name_2</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>stringCollectionEmailAddresses</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Email_Addr_1</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>You can&apos;t use a screen input component directly unless that component has an output assignment in it (Winter &apos;21, but possibly Summer &apos;21 will change that [safe harbor]), so this captures the output from the components and manually puts them into a usable variable.</description>
+        <name>X1_Assignments_0</name>
+        <label>X1_Assignments</label>
+        <locationX>902</locationX>
+        <locationY>153</locationY>
+        <assignmentItems>
+            <assignToReference>sendSubject</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Subject_1</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>sendSender</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sender_Name_1</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>PlainText_Body_1</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X1_PlainText_Body</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Simplest_Better_Email</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -745,6 +787,12 @@
     </decisions>
     <description>A series of 5 examples for testing and demonstrating Send Better Email Action Component</description>
     <formulas>
+        <description>Create a test flow subject for the appropriate flow</description>
+        <name>TestFlowSubject</name>
+        <dataType>String</dataType>
+        <expression>&apos;sendBetterEmail Test:  Flow Example  &apos; + text({!Choose_Example})</expression>
+    </formulas>
+    <formulas>
         <description>Create a plaintext message with line feeds</description>
         <name>testPlainTextLineFeeds</name>
         <dataType>String</dataType>
@@ -804,8 +852,8 @@
     <recordLookups>
         <name>Get_Contacts</name>
         <label>Get Contacts</label>
-        <locationX>1376</locationX>
-        <locationY>84</locationY>
+        <locationX>1393</locationX>
+        <locationY>53</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>X2_Simple_Email_with_Address_Collections_Wit_Collections</targetReference>
@@ -849,8 +897,8 @@
     <recordLookups>
         <name>Get_Users</name>
         <label>Get Users</label>
-        <locationX>1278</locationX>
-        <locationY>85</locationY>
+        <locationX>1272</locationX>
+        <locationY>55</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Get_Contacts</targetReference>
@@ -1093,13 +1141,13 @@
     <screens>
         <name>X1_Get_Simple_Email_Fields</name>
         <label>1. Get Simple Email Fields</label>
-        <locationX>717</locationX>
-        <locationY>156</locationY>
+        <locationX>720</locationX>
+        <locationY>153</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Simplest_Better_Email</targetReference>
+            <targetReference>X1_Assignments_0</targetReference>
         </connector>
         <fields>
             <name>Example1Details</name>
@@ -1107,7 +1155,7 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>ToEmailAddress_1</name>
+            <name>X1_Email_To</name>
             <extensionName>flowruntime:email</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -1148,7 +1196,7 @@
             </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
-                <assignToReference>TestEmailAddress1</assignToReference>
+                <assignToReference>Email_To_1</assignToReference>
                 <name>value</name>
             </outputParameters>
         </fields>
@@ -1200,11 +1248,21 @@
             <name>Subject_1</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>testSubject</elementReference>
+                <elementReference>TestFlowSubject</elementReference>
             </defaultValue>
             <fieldText>Subject</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>X1_PlainText_Body</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>PlainText_Body_1</elementReference>
+            </defaultValue>
+            <fieldText>PlainText Body</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -1212,13 +1270,13 @@
     <screens>
         <name>X2_Get_Simple_Email_Fields_Collections</name>
         <label>2. Get Simple Email Fields &amp; Collections</label>
-        <locationX>842</locationX>
-        <locationY>329</locationY>
+        <locationX>887</locationX>
+        <locationY>361</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Clear_String_Addr_Collection</targetReference>
+            <targetReference>X1_Assignments</targetReference>
         </connector>
         <fields>
             <name>Example2Details</name>
@@ -1754,6 +1812,13 @@
         <objectType>User</objectType>
     </variables>
     <variables>
+        <name>Email_To_1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>errorsFromEmail</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -1784,11 +1849,44 @@
         <objectType>User</objectType>
     </variables>
     <variables>
+        <description>Plain Text for Body 1</description>
+        <name>PlainText_Body_1</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>testPlainTextBody</elementReference>
+        </value>
+    </variables>
+    <variables>
         <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>For sending the sender name (text)</description>
+        <name>sendSender</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>testSenderName</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>For adding sender name to emails</description>
+        <name>sendSubject</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>TestFlowSubject</elementReference>
+        </value>
     </variables>
     <variables>
         <name>stringCollectionEmailAddresses</name>

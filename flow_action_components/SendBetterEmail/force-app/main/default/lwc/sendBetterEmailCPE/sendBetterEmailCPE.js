@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 09-03-2020
+ * @Last Modified On	: 10-06-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -256,6 +256,13 @@ export default class SendBetterEmailCPE extends LightningElement {
 					return curValue.dataType === 'SObject' && curValue.objectType === curType
 				});
 				this.addToOutputTypes(outputTypes,allVariables,curType,true);
+			}
+			if (!(this.settings.stringVariablesOption in outputTypes)){
+				outputTypes[this.settings.stringVariablesOption] = {
+					data: [],
+					valueFieldName: 'name',
+					labelFieldName: 'name'
+				}
 			}
 		});
 		this.convertedFlowContext = outputTypes;

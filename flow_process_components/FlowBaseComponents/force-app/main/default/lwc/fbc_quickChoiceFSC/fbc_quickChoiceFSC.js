@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from "lwc";
-import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from "lightning/flowSupport";
+import {FlowAttributeChangeEvent} from "lightning/flowSupport";
 import {getPicklistValues} from "lightning/uiObjectInfoApi";
 import Quickchoice_Images from '@salesforce/resourceUrl/fbc_Quickchoice_Images';	//Static Resource containing images for Visual Cards
 
@@ -7,9 +7,6 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fbc_Quickchoice_Images';
 /* eslint-disable no-console */
 
 export default class QuickChoiceFSC extends LightningElement {
-
-    @api
-    availableActions = [];
 
     @api masterLabel;
     @api choiceLabels;
@@ -30,7 +27,6 @@ export default class QuickChoiceFSC extends LightningElement {
     @api choiceIcons;
     @api includeIcons;
     @api iconSize;
-    @api navOnSelect;
 
     //-------------For displayMode = Picklist or Radio
     @api style_width = 320;
@@ -305,10 +301,7 @@ export default class QuickChoiceFSC extends LightningElement {
         this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
         console.log("selected value is: " + this.selectedValue);
         this.dispatchFlowAttributeChangedEvent('value', this.selectedValue);
-        if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
-            const navigateNextEvent = new FlowNavigationNextEvent();
-            this.dispatchEvent(navigateNextEvent);
-        }
+
     }
 
     setSelectedLabel() {

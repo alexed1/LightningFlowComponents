@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Jack D. Pond
  * @group             : 
- * @last modified on  : 10-06-2020
+ * @last modified on  : 10-08-2020
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver   Date         Author         Modification
@@ -160,13 +160,13 @@ public inherited sharing class SendBetterEmailUtil {
         return mapTemplateNameByEmailTemplates;
     }
 
-    public static String gettemplateIdFromName(
+    public static String gettemplateIDFromName(
         String templateName,
         String templateLanguage,
         Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates,
         String localKey
     ) {
-        String rettemplateId;
+        String rettemplateID;
         String blankTemplate;
         if (
             mapTemplateNameByEmailTemplates.get(templateName) != null &&
@@ -193,7 +193,7 @@ public inherited sharing class SendBetterEmailUtil {
                                 SendBetterEmailConstant.DOUBLE_QUOTE
                             ) == templateLanguage
                     ) {
-                        rettemplateId = thisTemplate.Id;
+                        rettemplateID = thisTemplate.Id;
                         break;
                     }
                 } else {
@@ -203,7 +203,7 @@ public inherited sharing class SendBetterEmailUtil {
                 }
             }
         }
-        return (rettemplateId == null) ? blankTemplate : rettemplateId;
+        return (rettemplateID == null) ? blankTemplate : rettemplateID;
     }
 
     public static String getErrorString(

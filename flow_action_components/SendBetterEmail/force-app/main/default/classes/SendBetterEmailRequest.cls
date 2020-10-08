@@ -1,3 +1,13 @@
+/**
+ * @description       : 
+ * @author            : Jack D. Pond
+ * @group             : 
+ * @last modified on  : 10-08-2020
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver   Date         Author         Modification
+ * 1.0   10-08-2020   Jack D. Pond   Initial Version
+**/
 public inherited sharing class SendBetterEmailRequest {
 
     public String[] toAddresses; 
@@ -133,9 +143,9 @@ public inherited sharing class SendBetterEmailRequest {
     @AuraEnabled
     public List<String> targetObjectIds;
     
-    @invocableVariable(label='templateId' )
+    @invocableVariable(label='templateID' )
     @AuraEnabled
-    public String templateId;
+    public String templateID;
     
     @invocableVariable(label='Template Language' description='Used in conjunction with Template Name, Finds templates with the name matching Template Name for \'Language="xxx_YY"\' in the Description.  Template Selection criteria order first found Name with: 1)If empty, Org LanguageLocaleKey 2)Language found in Description 3)First without \'Language="\'')
     @AuraEnabled

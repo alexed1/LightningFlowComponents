@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 09-02-2020
+ * @Last Modified On	: 10-08-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -1048,7 +1048,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.recordId = UserInfo.getUserId();
 		testReq.saveAsTask = true;
-		testReq.templateId = emailTemplate.Id;
+		testReq.templateID = emailTemplate.Id;
 		testReq.emailMessageType = SendBetterEmailConstant.MASSEMAIL;
 		testReq.whatIds = new List<String>{UserInfo.getUserId()};
 		testReq.index = 0;
@@ -1082,7 +1082,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.recordId = UserInfo.getUserId();
 		testReq.saveAsTask = true;
-		testReq.templateId = emailTemplate.Id;
+		testReq.templateID = emailTemplate.Id;
 		testReq.whatIds = new List<String>{UserInfo.getUserId()};
 		testReq.index = 0;
 

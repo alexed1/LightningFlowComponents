@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 10-06-2020
+ * @Last Modified On	: 10-08-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -260,7 +260,7 @@ public without sharing class SendBetterEmail {
                         if (curRequest.templateName == null) {
                             thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
                         } else {
-                            templateID = sendBetterEmailUtil.gettemplateIdFromName(
+                            templateID = sendBetterEmailUtil.gettemplateIDFromName(
                                 templateName,
                                 templateLanguage,
                                 mapTemplateNameByEmailTemplates,
@@ -377,7 +377,7 @@ public without sharing class SendBetterEmail {
                 }
 
                 if (thisResponse.errors == null && templateName != null) {
-                    templateID = sendBetterEmailUtil.gettemplateIdFromName(
+                    templateID = sendBetterEmailUtil.gettemplateIDFromName(
                         templateName,
                         templateLanguage,
                         mapTemplateNameByEmailTemplates,

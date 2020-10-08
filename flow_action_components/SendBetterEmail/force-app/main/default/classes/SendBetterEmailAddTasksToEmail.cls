@@ -1,3 +1,13 @@
+/**
+ * @description       : 
+ * @author            : Jack D. Pond
+ * @group             : 
+ * @last modified on  : 10-08-2020
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver   Date         Author         Modification
+ * 1.0   10-08-2020   Jack D. Pond   Initial Version
+**/
 public inherited sharing class SendBetterEmailAddTasksToEmail {
     // Add task activities
     public static List<TaskWrapper> addTasks(
@@ -11,11 +21,11 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
         string subject = request.subject;
 
         if (
-            request.templateId != null &&
+            request.templateID != null &&
             subject == null &&
-            mapIdByEmailTemplate.get(request.templateId) != null
+            mapIdByEmailTemplate.get(request.templateID) != null
         ) {
-            subject = mapIdByEmailTemplate.get(request.templateId).subject;
+            subject = mapIdByEmailTemplate.get(request.templateID).subject;
         }
 
         List<TaskWrapper> lstTaskWrapper = new List<TaskWrapper>();

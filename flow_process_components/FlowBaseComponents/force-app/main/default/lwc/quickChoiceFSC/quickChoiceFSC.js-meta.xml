@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Quick Choice FSC</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-quick-choice-cpe" category="Input">
+            <property name="value" label="Value" type="String" description="The selected value(Output). This can be passed into QuickChoice, allowing you to set the default value dynamically(Input)."/>
+            <property name="selectedLabel" label="Selected Label" type="String" role="outputOnly" description="The selected Label (V1.3+)"/>
+            <property name="allValues" label="All Values" type="String[]" role="outputOnly" description="The complete set of values provided to the user. (V1.3+)"/>
+            <property name="allLabels" label="All Labels" type="String[]" role="outputOnly" description="The complete set of labels provided to the user (V1.3+)"/>
+            <property name="choiceValues" label="Choice Values (String Collection)" type="String[]" description="The values of your choices (should be unique) - The selected Value will be returned by the component - Extra descriptive text on visual cards"/>
+            <property name="choiceLabels" label="Choice Labels (String Collection)" type="String[]" description="The labels of your choices"/>
+            <property name="choiceIcons" label="Card Mode - Choice Icons (String Collection)" type="String[]" description="Icon names or image names"/>
+            <property name="includeIcons" label="Card Mode - Include Icons in Display Box?" type="Boolean" description="Display the provided icons in the visual card when set to True"/>
+            <property name="iconSize" label="Card Mode - Icon Size" type="String" description="Options include x-small, small, medium, or large. This value defaults to medium."/>
+            <property name="numberOfColumns" label="Card Mode - Number of Display Box Columns (1 or 2)" type="String" description="1 or blank (default) for a single column or 2 for dual columns"/>
+            <property name="inputMode" label="Input Mode" type="String" description="“Single String Collection”, “Dual String Collections”, “Picklist Field”, or ” Visual Text Box ” are currently supported"/>
+            <property name="masterLabel" label="Master Label" type="String" description="The main label for the picklist or radio button group"/>
+            <property name="required" label="Required" type="Boolean" default="false" description="Will prevent transition if set to {!$GlobalConstant.True}"/>
+            <property name="displayMode" label="Display Mode" type="String" description="Either “Visual”, “Picklist” or “Radio”, depending on which control you want"/>
+            <property name="recordTypeId" label="Record Type Id" type="String" description="Record Type Id (for Picklist Field)"/>
+            <property name="objectName" label="Object Name" type="String" description="Object Name (for Picklist Field)"/>
+            <property name="fieldName" label="Field Name" type="String" description="Field Name (for Picklist Field)"/>
+            <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean" description="Set this to true to include a None choice. (For Input Mode “Picklist Field” only)"/>
+            <property name="style_width" label="Set Width in Pixels" type="Integer" description="Set the width of the component for Picklist and Radio Buttons (Default 320 pixels)"/>
+            <property name="sortList" label="Sort the Picklist by Label?" type="Boolean" description="Set this to true to sort the list of Picklist labels.  Default will the the order they were added."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

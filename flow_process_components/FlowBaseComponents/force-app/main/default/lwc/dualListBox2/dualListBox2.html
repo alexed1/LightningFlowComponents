@@ -1,0 +1,25 @@
+<template>
+    <c-extended-base-dual-list-box if:true={isDataSet}
+                                   onvaluechanged={handleValueChanged}
+                                   selected-values-string-format={selectedValuesStringFormat}
+                                   all-options-string-format={allOptionsStringFormat}
+                                   use-which-object-key-for-data={useWhichObjectKeyForData}
+                                   use-which-object-key-for-label={useWhichObjectKeyForLabel}
+                                   use-which-object-key-for-sort={useWhichObjectKeyForSort}
+                                   label={label}
+                                   source-label={sourceLabel}
+                                   field-level-help={fieldLevelHelp}
+                                   selected-label={selectedLabel}
+                                   min={min}
+                                   max={max}
+                                   disable-reordering={disableReordering}
+                                   size={size}
+                                   all-options={_options}
+                                   required-options={requiredOptions}
+                                   selected-options={_selectedValues}
+                                   use-object-value-as-output>
+    </c-extended-base-dual-list-box>
+    <template if:false={isDataSet}>
+
+    </template>
+</template>

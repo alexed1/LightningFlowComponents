@@ -3,7 +3,7 @@ A collection of installable extensions for Lightning Flow from Salesforce. Note 
 
 
 # Lightning Flow Screen Components
-/flow_screen_components contains lightning components (a mix of aura and lwc) that have been optimized to be inserted into Lightning Flow screens. This mainly means that they:
+/flow_screen_components contains lightning components (a mix of aura and lwc) that have been optimized to be insertable into Lightning Flow screens. This mainly means that they:
 1) implement the Flow Screen interface. This causes them to appear in the palette of the Screen Builder in Flow Builder, where they  can be dragged into Screen Nodes.
 2) explicitly specify which component attributes will be visible as inputs or outputs in Flow.  
 

@@ -1,0 +1,23 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack"
+                }
+            ],
+            "package": "FlowScreenComponentsBasePack",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "49.0",
+    "packageAliases": {
+        "FlowActionsBasePack": "04t4W000002vXUCQA2",
+        "FlowScreenComponentsBasePack": "0Hof4000000XZNGCA4"
+    }
+}

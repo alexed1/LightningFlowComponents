@@ -1,0 +1,47 @@
+<template>
+    <div class="field-picker">
+        <template if:true={isError}>
+            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+                <h2> {errorMessage} </h2>
+            </div>
+        </template>
+        <template if:false={hideObjectPicklist}>
+            <lightning-combobox
+                    name="objectTypeField"
+                    label={objectLabel}
+                    value={_objectType}
+                    placeholder={labels.none}
+                    options={objectTypes}
+                    disabled={isObjectDisabled}
+                    onchange={handleObjectChange}></lightning-combobox>
+        </template>
+        <template if:false={hideFieldPicklist}>
+            <lightning-combobox
+                    if:false={renderFlowCombobox}
+                    name="fieldField"
+                    label={fieldLabel}
+                    value={_field}
+                    placeholder={labels.none}
+                    options={fields}
+                    disabled={isFieldDisabled}
+                    onchange={handleFieldChange}></lightning-combobox>
+            <c-fbc_flow-combobox
+                    if:true={renderFlowCombobox}
+                    name="select_field"
+                    label={fieldLabel}
+                    value={_field}
+                    static-options={fields}
+                    value-type={fieldDataType}
+                    builder-context-filter-type="String"
+                    builder-context-filter-collection-boolean={showCollections}
+                    builder-context={builderContext}
+                    onvaluechanged={handleFlowComboboxValueChange}
+            ></c-fbc_flow-combobox>
+        </template>
+        <template if:true={isFieldTypeVisible}>
+            <div class="slds-p-around--xx-small">
+                Field Type: {fieldType}
+            </div>
+        </template>
+    </div>
+</template>

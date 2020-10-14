@@ -1,4 +1,4 @@
-# MassTransactorAction
+# MassTransactor
 
 This Invocable allows Flow (or Proces Builder) to perform large DML operations by leveraging Batch Apex.
 

@@ -1,5 +1,5 @@
 {
-  "name": "MassTransactorAction",
+  "name": "MassTransactor",
   "private": true,
   "version": "1.0.0",
   "description": "Salesforce App",

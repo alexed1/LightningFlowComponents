@@ -10,7 +10,7 @@
  * 1.1   08-20-2020   Adam White                            Added email inputs / send on complete
 
 **/
-global with sharing class MassTransactorAction {
+global with sharing class MassTransactor {
     
     public static Integer MAX_BATCH_SIZE = 2000;
     // If no Batch size is specified from the flow - batch size defaults to DEFAULT_BATCH_SIZE

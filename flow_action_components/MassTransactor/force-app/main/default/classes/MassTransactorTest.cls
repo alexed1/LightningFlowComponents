@@ -9,7 +9,7 @@
  * 1.0   08-18-2020   Adam White, CapTech Consulting		 Initial Version
 **/
 @IsTest
-global with sharing class MassTransactorActionTest{
+global with sharing class MassTransactorTest{
 
     @TestSetup
     static void makeData(){
@@ -38,41 +38,41 @@ global with sharing class MassTransactorActionTest{
            		billingPostalCode = '23113',
            		BillingStreet = '12345 Hello Lane'));
         }
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 220;
         flowRequest.OperationType = 'Create';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
     }
 @IsTest
     static void deleteRecords(){
         List<Account> accounts = [SELECT Id from Account Where Name like '%Account%'];
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 220;
         flowRequest.OperationType = 'Delete';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
         
     }
 @IsTest
     static void testBatchLimit(){
         List<Account> accounts = [SELECT Id from Account Where Name like '%Account%'];
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 2220;
         flowRequest.OperationType = 'Delete';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
         
     }
@@ -80,14 +80,14 @@ global with sharing class MassTransactorActionTest{
     // Test creating some records where records already exist
     static void testBatchWrongDMLCreate(){
         List<Account> accounts = [SELECT Id from Account Where Name like '%Account%'];
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 200;
         flowRequest.OperationType = 'Create';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
         
     }
@@ -104,14 +104,14 @@ global with sharing class MassTransactorActionTest{
            		billingPostalCode = '23113',
            		BillingStreet = '12345 Hello Lane'));
         }
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 200;
         flowRequest.OperationType = 'Delete';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
         
     }
@@ -120,14 +120,14 @@ global with sharing class MassTransactorActionTest{
     // Test creating some records where records dont exist
     static void testBatchNull(){
 		List<Account> accounts = new List<Account>();
-        List<MassTransactorAction.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactorAction.InvocableApexAsyncBatchRequest>();
-        MassTransactorAction.InvocableApexAsyncBatchRequest flowRequest = new MassTransactorAction.InvocableApexAsyncBatchRequest();
+        List<MassTransactor.InvocableApexAsyncBatchRequest> flowRequests = new List<MassTransactor.InvocableApexAsyncBatchRequest>();
+        MassTransactor.InvocableApexAsyncBatchRequest flowRequest = new MassTransactor.InvocableApexAsyncBatchRequest();
         flowRequest.BatchSize = 200;
         flowRequest.OperationType = 'Delete';
         flowRequest.RequestList = accounts;
         flowRequests.add(flowRequest);
         Test.startTest();
-        MassTransactorAction.InvocableApexCreateAsyncController(flowRequests);
+        MassTransactor.InvocableApexCreateAsyncController(flowRequests);
         Test.stopTest();
     
 		}

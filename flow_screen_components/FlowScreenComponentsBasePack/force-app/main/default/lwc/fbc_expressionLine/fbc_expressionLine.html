@@ -1,0 +1,55 @@
+<template>
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="4">
+                    <span class="expression-index slds-p-top_large slds-align-bottom">
+                        {position}
+                    </span>
+            <lightning-combobox name="field"
+                                label="Field"
+                                placeholder="Field"
+                                options={fields}
+                                value={fieldName}
+                                onchange={selectField}>
+            </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="2" class="slds-p-left--small">
+            <lightning-combobox
+                    name="objectTypeField"
+                    label="Operator"
+                    value={operator}
+                    placeholder="Operator"
+                    options={availableOperators}
+                    onchange={handleOperatorChange}
+                    disabled={disabledFilter}
+            ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" class="slds-p-left--small slds-align-bottom">
+            <lightning-layout>
+                <lightning-layout-item size="11 slds-align-bottom">
+                    <label class="slds-form-element__label" for="input">Value</label>
+                    <div class="slds-form-element__control">
+                        <lightning-input
+                                name="input"
+                                type={renderType}
+                                value={value}
+                                variant="label-hidden"
+                                disabled={disabledFilter}
+                                timezone="GMT"
+                                pattern={labels.supportedCharactersRegex}
+                                message-when-pattern-mismatch={labels.unsupportedCharactersMessage}
+                                onblur={handleValueChange}
+                        ></lightning-input>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="1" class="slds-p-left--xx-small slds-align-bottom">
+                    <lightning-button-icon
+                            icon-name="utility:delete"
+                            alternative-text="Delete"
+                            onclick={handleExpressionRemove}
+                            class="slds-m-left_xx-small">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

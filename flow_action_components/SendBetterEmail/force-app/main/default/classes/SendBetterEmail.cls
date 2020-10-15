@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 10-08-2020
+ * @Last Modified On	: 10-12-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -19,16 +19,8 @@
  * 2.00.00	8/02/2020	Jack Pond, Mohith		SendBetterEmail - Optimize Bulkification #445
  * 2.00.02	8/15/2020	Jack Pond, Mohith		Modified for coverage testing
  * 2.00.02	8/16/2020	Jack Pond				Corrected singleEmail recipient name for templateTargetId
+ * 2.00.02	10-06-2020	Jack Pond				Reverted naming, fixed bugs
  *
- * Done:
- * #320 sendBetterEmail - Activity History Redesign?
- * #351 sendBetterEmail - Address bulkification consistent with Apex Gov Limits
- * #354 sendBetterEmail - Limit Class test to 2 OrgWideEmailAddresses
- * #355 sendBetterEmail - Separate Email Activity from Email Task Activity
- * #378 sendBetterEmail - Allow selection of email template by name as well as by templateID
- * #392 sendBetterEmail - Return the Activity TaskId added
- * #342 sendBetterEmail CPE For Summer '20 Release
- * #445 SendBetterEmail - Optimize Bulkification
  **/
 
 public without sharing class SendBetterEmail {
@@ -260,7 +252,7 @@ public without sharing class SendBetterEmail {
                         if (curRequest.templateName == null) {
                             thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
                         } else {
-                            templateID = sendBetterEmailUtil.gettemplateIDFromName(
+                            templateID = sendBetterEmailUtil.getTemplateIDFromName(
                                 templateName,
                                 templateLanguage,
                                 mapTemplateNameByEmailTemplates,
@@ -377,7 +369,7 @@ public without sharing class SendBetterEmail {
                 }
 
                 if (thisResponse.errors == null && templateName != null) {
-                    templateID = sendBetterEmailUtil.gettemplateIDFromName(
+                    templateID = sendBetterEmailUtil.getTemplateIDFromName(
                         templateName,
                         templateLanguage,
                         mapTemplateNameByEmailTemplates,

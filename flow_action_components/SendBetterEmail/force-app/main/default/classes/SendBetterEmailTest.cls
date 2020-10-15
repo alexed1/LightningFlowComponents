@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 10-08-2020
+ * @Last Modified On	: 10-12-2020
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -28,7 +28,7 @@
 // @Test t007_coverageIfTemplateNameDoesntExist: Error expected if Named Template non-existent 
 // @Test t008_coverageWithAttachments: Can add Attachments and send to collections (Contact, Lead, User)
 // @Test t009_coverageTestActivity: Can allow email activity and task activity on recordId object
-// @Test t010_canSendEmailCCUsers: Can send email to a collection of users, email addresses and useSalesforceSignature
+// @Test t010_canSendEmailCCUsers: Can send email to a collection of users, email addresses and UseSalesforceSignature
 // @Test t011_ErrorIfNoBody: Error expected if (templateID == null  && HTMLbody == null && plainTextBody == null)
 // @Test t012_ErrorIfSaveAsTaskAndNoRecordId: Error expected if (saveAsTask == true && recordId/whatId == null)
 // @Test t013_CoverageAttemptForOrgWideEmailAddress : Error expected if (saveAsActivity == true && recordId/whatId == null)
@@ -36,7 +36,7 @@
 // @Test t015_coverageMassMailTestActivityAndBulkification: Can allow mass email activity and task activity on recordId object if records, plus bulkification
 // @Test t016_coverageMassMailTestDescription: MassEmail should have Error if no description
 // @Test t017_coverageMassMailtargetObjectIds: MassEmail requires targetObjectIds
-// @Test t018_coverageMassMailTemplateId: MassEmail requires TemplateId
+// @Test t018_coverageMassMailTemplateId: MassEmail requires templateID
 // @Test t019_coverageMassMailTemplateName: MassEmail can find TemplateName
 // @Test t020_coverageMassMailTemplateNameNotFound: MassEmail cannnot find TemplateName
 // @Test t021_coverageMassMailTemplateIdMismatches: MassEmail count of TargetObjectIds and WhatIds doesn't match
@@ -465,7 +465,7 @@ public with sharing class SendBetterEmailTest {
 		}
 	}
 
-// @Test t010_canSendEmailCCUsers: Can send email to a collection of users, email addresses and useSalesforceSignature
+// @Test t010_canSendEmailCCUsers: Can send email to a collection of users, email addresses and UseSalesforceSignature
 	@isTest
 	public static void t010_canSendEmailCCToCollectionOfUsers() {
 
@@ -476,7 +476,7 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendBCCthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.SendCCtheEmailAddressesFromThisCollectionOfUsers = [Select Id,Email from User where Id=:UserInfo.getUserId()];
 		testReq.SendBCCthisStringCollectionOfEmailAddresses = new List<String>{EMAIL_NOSUCH};
-		testReq.useSalesforceSignature = true;
+		testReq.UseSalesforceSignature = true;
 		List<SendBetterEmailRequest> reqList = new List<SendBetterEmailRequest>();
 		reqList.add(testReq);
 
@@ -743,7 +743,7 @@ public with sharing class SendBetterEmailTest {
 			system.debug('t017_coverageMassMailtargetObjectIds error: Should have caught no targetObjectIds'+e.getMessage());
 		}
 	}
-// @Test t018_coverageMassMailTemplateId: MassEmail requires TemplateId
+// @Test t018_coverageMassMailTemplateId: MassEmail requires templateID
 	@isTest
 	public static void t018_coverageMassMailTemplateId() {
 		ID EmailTemplateId = [Select Id from EmailTemplate Limit 1].Id;

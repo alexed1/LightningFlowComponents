@@ -1,0 +1,11 @@
+<template>
+    <!-- a template for cell. File in the myCustomDatatable directory -->
+    <template if:true={wrapText}>
+        <lightning-formatted-rich-text value={value} class="slds-truncate">
+        </lightning-formatted-rich-text>
+    </template>
+    <template if:false={wrapText}>
+        <lightning-formatted-rich-text value={value}>
+        </lightning-formatted-rich-text>
+    </template>
+</template> 

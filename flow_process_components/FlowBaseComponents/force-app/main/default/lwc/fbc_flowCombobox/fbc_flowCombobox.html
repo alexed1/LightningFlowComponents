@@ -10,7 +10,7 @@
                                  role="none" style="height: 55px;">
                                 <template if:false={displayPill}>
                                     <div onkeyup={handleSearchKeyUp}>
-                                        <label class="slds-form-element__label custom-width-full" onclick={toggleMenu}>{label}</label>
+                                        <label class="slds-form-element__label custom-width-full" onclick={toggleMenu}>{label}<lightning-helptext if:true={fieldLevelHelp} class="slds-m-left_xxx-small" content={fieldLevelHelp}></lightning-helptext></label>
                                         <lightning-input
                                                 class="value-input"
                                                 name="searchText"
@@ -24,7 +24,6 @@
                                                 onkeydown={handleKeyDown}
                                                 onclick={handleOpenOptions}
                                                 autocomplete={autocomplete}
-                                                field-level-help={fieldLevelHelp}
                                         ></lightning-input>
                                     </div>
                                 </template>

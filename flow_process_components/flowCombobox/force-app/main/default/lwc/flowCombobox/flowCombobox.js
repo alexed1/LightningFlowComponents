@@ -10,7 +10,6 @@ export default class FlowCombobox extends LightningElement {
     @api builderContextFilterType;
     @api builderContextFilterCollectionBoolean;
     @api maxWidth;
-    @api fieldLevelHelp;
     @track _dataType;
     @track _value;
     @track allOptions;

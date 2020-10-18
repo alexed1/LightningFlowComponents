@@ -15,12 +15,16 @@ export default class DatatableCPE extends LightningElement {
     
 
     @track inputValues = {
-        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'}
-
+        isUserDefinedObject: {value: false, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
+        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
+        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
 
     };
 
-    
+    settings = { 
+        attributeObjectName: 'objectName',
+        attributeFieldName: 'fieldName'
+    }
 
 
     @api get builderContext() {
@@ -78,6 +82,26 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
+    handleDynamicTypeMapping(event) { 
+
+        console.log('handling a dynamic type mapping');
+        console.log('event is ' + JSON.stringify(event));
+        let typeValue = event.detail.objectType;
+        let typeName = 'T'; //this is hardcoded, which is bad, and should be a lookup to a setting. 
+        console.log('typeValue is: ' + typeValue);
+        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
+            composed: true,
+            cancelable: false,
+            bubbles: true,
+            detail: {
+                typeName, 
+                typeValue, 
+            }
+        });
+        this.dispatchEvent(dynamicTypeMapping);
+    
+    }
+
     handleFlowComboboxValueChange(event) {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
@@ -110,6 +134,24 @@ export default class DatatableCPE extends LightningElement {
     }
 
     
+    handlePickObjectAndFieldValueChange(event) {
+        if (event.detail) {
+
+//need to set a dynamic type mapping here
+
+            this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
+            this.dispatchFlowValueChangeEvent(this.settings.attributeFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
+        }
+    }
+
+    //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
+    @track openModal = false;
+    showModal() {
+        this.openModal = true;
+    }
+    closeModal() {
+        this.openModal = false;
+    }
     
 
 }

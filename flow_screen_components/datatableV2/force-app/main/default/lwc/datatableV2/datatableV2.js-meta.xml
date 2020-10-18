@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-datatable-C-P-E">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-datatable-C-P-E"> 
             <!-- ================================ New in Summer '20' - Support for Dynamic SObject Selection ================================= -->  
   
             <propertyType name="T" extends="SObject" label="Datatable Object API Name" description="Select the API Name of the SObject to use in the Datatable"/>

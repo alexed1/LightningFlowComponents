@@ -364,7 +364,7 @@
             <targetReference>Object_Picker</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Run_New_SubFlow</name>
         <label>Run New SubFlow</label>

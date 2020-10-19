@@ -1,10 +1,8 @@
 import {LightningElement, track, api} from 'lwc';
 
-
 const defaults = {
     apexDefinedTypeInputs: false,
     inputAttributePrefix: 'select_'
-
 };
 
 export default class DatatableCPE extends LightningElement {
@@ -12,13 +10,13 @@ export default class DatatableCPE extends LightningElement {
     _builderContext;
     _values;
 
-    
+    selectedSObject;
 
     @track inputValues = {
         isUserDefinedObject: {value: false, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
+        recordCollection: {value: null, valueDataType: 'reference', isCollection: true, label: 'Datatable Record Collection'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
-
     };
 
     settings = { 
@@ -26,6 +24,11 @@ export default class DatatableCPE extends LightningElement {
         attributeFieldName: 'fieldName'
     }
 
+    @api flowParams = [{
+        name: 'vSObject',
+        type: 'String',
+        value: null
+    }]
 
     @api get builderContext() {
         return this._builderContext;
@@ -40,7 +43,6 @@ export default class DatatableCPE extends LightningElement {
     }
 
     set inputVariables(value) {
-
         this._values = value;
         this.initializeValues();
     }
@@ -78,12 +80,10 @@ export default class DatatableCPE extends LightningElement {
                     curAttributeType = 'String';
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
-
         }
     }
 
     handleDynamicTypeMapping(event) { 
-
         console.log('handling a dynamic type mapping');
         console.log('event is ' + JSON.stringify(event));
         let typeValue = event.detail.objectType;
@@ -99,7 +99,8 @@ export default class DatatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(dynamicTypeMapping);
-    
+        this.selectedSObject = typeValue;
+        this.updateFlowParam('vSObject', typeValue);
     }
 
     handleFlowComboboxValueChange(event) {
@@ -107,7 +108,6 @@ export default class DatatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
-
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
@@ -124,15 +124,23 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchEvent(valueChangedEvent);
     }
 
-
-
+    updateFlowParam(name, value) {
+        this.flowParams.find(param => param.name === name).value = value;
+    }
+    
     get isSObjectInput() {
         if (this.inputValues.isUserDefinedObject) {
-            return this.inputValues.isUserDefinedObject.value === defaults.apexDefinedTypeInputs;
+            return this.inputValues.isUserDefinedObject.value === defaults.apexDefinedTypeInputs;      
         }
-
+    }
+    
+    get isObjectSelected() {
+        return this.selectedSObject != null;
     }
 
+    get wizardParams() {
+        return JSON.stringify(this.flowParams);
+    }
     
     handlePickObjectAndFieldValueChange(event) {
         if (event.detail) {
@@ -144,6 +152,10 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
+    handleFlowStatusChange(event) {
+        console.log('STATUS CHANGE', event.detail.flowParams);
+    }
+
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
     @track openModal = false;
     showModal() {
@@ -153,5 +165,4 @@ export default class DatatableCPE extends LightningElement {
         this.openModal = false;
     }
     
-
 }

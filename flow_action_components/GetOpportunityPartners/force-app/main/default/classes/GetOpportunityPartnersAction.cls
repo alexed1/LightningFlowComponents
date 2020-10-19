@@ -13,39 +13,6 @@
 **/
 global with sharing class GetOpportunityPartnersAction {
 
-    // Attributes passed in from the Flow
-    global class Requests {
-
-        @InvocableVariable(label='OpportunityId' required=true)
-        global String opportunityId;
-        
-        @InvocableVariable(label='AccountId' required=true)
-        global String accountId;
-    }
-
-    // Attributes passed back to the Flow
-    global class Results {
-
-        public Results() {
-            
-        }
-        @InvocableVariable
-        global String errors;
-
-        @InvocableVariable
-        global String successful;
-
-        @InvocableVariable
-        public List<OpportunityPartnersWrapper> outputCollection;
-
-        @InvocableVariable
-        public String outputString;
-        
-    }
-
-    // custom exception class
-    global class InvocableActionException extends Exception {}
-
     // Expose this Action to the Flow
     @InvocableMethod
         global static List <Results> get(List<Requests> requestList) {
@@ -55,17 +22,21 @@ global with sharing class GetOpportunityPartnersAction {
             String errors;
             String success = 'true';
             String stringOutput;
+            List<OpportunityPartner> opportunityPartners = new List<OpportunityPartner>();
+            List<OpportunityPartnersWrapper> opportunityPartnersSet = new List<OpportunityPartnersWrapper>();
             String accountId = requestList[0].accountId;
             String opportunityId = requestList[0].opportunityId;
-            List<OpportunityPartner> opportunityPartners = new List<OpportunityPartner>();
-            List<OpportunityPartnersWrapper> partners = new List<OpportunityPartnersWrapper>();
 
-// BEGIN APEX ACTION PROCESSING LOGIC
+            /*for (Requests curRequest : requestList){
+                String accountId = curRequest.accountId;
+                String opportunityId = curRequest.opportunityId;*/
+            
+            
             try {
 
                 if (accountId == null || opportunityId == null){
 
-                    throw new InvocableActionException ('No Account or Opportunity ID');
+                    throw new InvocableActionException ('When using the GetOpportunityPartners action, you need to provide BOTH an Account Id AND an Opportunity Id');
 
                 }
 
@@ -93,40 +64,70 @@ global with sharing class GetOpportunityPartnersAction {
                     opw.isPrimary = op.IsPrimary;
                     opw.accountLink = '/'+op.AccountToId;
 
-                    partners.add(opw);
+                    opportunityPartnersSet.add(opw);
 
                 }
 
                 // Convert Record Collection to Serialized String
-                stringOutput = JSON.serialize(partners);
+                stringOutput = JSON.serialize(opportunityPartnersSet);
 
             } catch (InvocableActionException e){
                 System.debug ('exception occured: ' + e.getMessage());
                 
                 errors = e.getMessage();
-                success = 'false';
+                success = 'false - custom exception occured';
             } catch (exception ex){
                 System.debug ('exception occured: ' + ex.getMessage());
                 
                 errors = ex.getMessage();
-                success = 'false';
+                success = 'false - exception occured';
             }
-// END APEX ACTION PROCESSING LOGIC
 
             // Prepare the response to send back to the Flow
             // Set Output Values
             response.errors = errors;
             response.successful = success;
-            response.outputCollection = partners;
+            response.outputCollection = opportunityPartnersSet;
             response.outputString = stringOutput;
             
             responseWrapper.add(response);
-    
+            
+            /*}*/
+
             // Return values back to the Flow
             return responseWrapper;
 
         }
 
+    // Attributes passed in from the Flow
+    global class Requests {
+
+        @InvocableVariable(label='Input the Related OpportunityId' required=true)
+        global String opportunityId;
+        
+        @InvocableVariable(label='Input the Opportunity\'s AccountId' required=true)
+        global String accountId;
+    }
+
+    // Attributes passed back to the Flow
+    global class Results {
+
+        @InvocableVariable
+        global String errors;
+
+        @InvocableVariable
+        global String successful;
+
+        @InvocableVariable
+        public List<OpportunityPartnersWrapper> outputCollection;
+
+        @InvocableVariable
+        public String outputString;
+        
+    }
+
+    // custom exception class
+    global class InvocableActionException extends Exception {}
 
 
 }

@@ -72,7 +72,7 @@ public with sharing class GetOpportunityPartnersActionTest {
         List <GetOpportunityPartnersAction.Results> results = GetOpportunityPartnersAction.get(requestList);
         System.assertEquals(results[0].errors, null,'Errors not expected');
         System.assertNotEquals(results[0].successful, 'false', 'Success expected');
-        System.assertEquals(true, results[0].outputCollection.size()>0, 'Opportunity Partners expected');
+        System.assertEquals(true, !String.isEmpty(results[0].outputString), 'Opportunity Partners expected');
     }
 
     @isTest

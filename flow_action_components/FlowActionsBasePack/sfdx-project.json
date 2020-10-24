@@ -1,0 +1,19 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "FlowActionsBasePack",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "usf",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "49.0",
+    "packageAliases": {
+        "FlowActionsBasePack": "0Ho4W000000k9hRSAQ",
+        "FlowActionsBasePack@2.0.0-0": "04t4W000002vXU7QAM",
+        "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2"
+    }
+}

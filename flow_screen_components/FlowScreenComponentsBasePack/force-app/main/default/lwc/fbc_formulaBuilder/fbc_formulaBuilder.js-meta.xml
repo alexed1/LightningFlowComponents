@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="formulaBuilder">
     <apiVersion>46.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>FormulaBuilder (fbc)</masterLabel>
+    <masterLabel>FormulaBuilder</masterLabel>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>

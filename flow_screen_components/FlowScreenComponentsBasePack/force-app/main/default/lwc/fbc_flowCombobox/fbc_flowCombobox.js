@@ -32,7 +32,7 @@ export default class FlowCombobox extends LightningElement {
     key = 0;
     _builderContext;
     labels = {
-        noDataAvailable: 'No data available',
+        noDataAvailable: 'No matching mergefields or variables are available ',
         staticOptionsLabel: 'OBJECT FIELDS',
         invalidReferenceError: 'This Flow doesn\'t have a defined resource with that name. If you\'re trying to enter a literal value, don\'t use {!}',
     };
@@ -443,9 +443,19 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleWindowClick(event) {
-        if (!event.path.includes(this.template.host) && !this.selfEvent) {
-            this.closeOptionDialog(true);
+        if (event.path){
+            console.log('you are apparently using chrome, and can use event.path');
+            if (!event.path.includes(this.template.host) && !this.selfEvent) {
+                this.closeOptionDialog(true);
+            }
+        
+        } else {
+            console.log('you are apparently not using chrome, so we can\'t test using event.path');
+            if (!this.selfEvent) {
+                this.closeOptionDialog(true);
+            }
         }
+       
         this.selfEvent = false;
     }
 

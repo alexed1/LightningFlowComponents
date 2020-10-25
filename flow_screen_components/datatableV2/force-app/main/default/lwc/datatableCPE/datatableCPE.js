@@ -7,6 +7,10 @@ const defaults = {
 
 export default class DatatableCPE extends LightningElement {
 
+    _bannerStyle = 'padding:0.3rem;background:#16325c;';
+    _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
+    _bannerClass = 'slds-text-color_inverse slds-text-heading_medium';
+
     _inputVariables = [];
     _builderContext = [];
     _elementInfo = {};
@@ -26,10 +30,25 @@ export default class DatatableCPE extends LightningElement {
      *     }]
      */
 
+    @api
+    get bannerStyle() {
+        return this._bannerStyle;
+    }
+
+    @api
+    get bannerMargin() {
+        return this._bannerMargin;
+    }
+
+    @api
+    get bannerClass() {
+        return this._bannerClass;
+    }
+
     @track inputValues = {
         isUserDefinedObject: {value: false, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-        recordCollection: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
+        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
     };
 
@@ -191,6 +210,8 @@ export default class DatatableCPE extends LightningElement {
     }
 
     handleFlowComboboxValueChange(event) {
+console.log('entering handleFlowComboboxValueChange');
+console.log(JSON.stringify(event));      
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
 console.log('handleFlowComboboxValueChange',changedAttribute,event.detail.newValue, event.detail.newValueDataType);

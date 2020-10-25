@@ -1,0 +1,15 @@
+h1 {
+    font-size: xx-large;
+}
+
+card {
+   /** display: block;
+    border: 2px solid grey; **/
+    flex: 1;
+    background: rgb(255, 255, 255);
+    height: 100px;
+    margin: 5px;
+    line-height: 100px;
+    color: black   ;
+    text-align: center;
+}

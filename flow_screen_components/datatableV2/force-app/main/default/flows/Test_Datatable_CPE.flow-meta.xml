@@ -30,11 +30,11 @@
         <connector>
             <targetReference>Datatable_Screen</targetReference>
         </connector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Account</object>
-        <outputReference>colAccounts</outputReference>
-        <queriedFields>Name</queriedFields>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
         <name>Datatable_Screen</name>
@@ -85,12 +85,4 @@
         </connector>
     </start>
     <status>Draft</status>
-    <variables>
-        <name>colAccounts</name>
-        <dataType>SObject</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Account</objectType>
-    </variables>
 </Flow>

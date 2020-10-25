@@ -29,7 +29,7 @@ export default class DatatableCPE extends LightningElement {
     @track inputValues = {
         isUserDefinedObject: {value: false, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-        recordCollection: {value: null, valueDataType: 'reference', isCollection: true, label: 'Datatable Record Collection'},
+        recordCollection: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
     };
 
@@ -193,6 +193,7 @@ export default class DatatableCPE extends LightningElement {
     handleFlowComboboxValueChange(event) {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
+console.log('handleFlowComboboxValueChange',changedAttribute,event.detail.newValue, event.detail.newValueDataType);
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
     }

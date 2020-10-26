@@ -1,6 +1,6 @@
 <template>
 
-    <!-- Data Source Banner-->
+    <!-- =============== Data Source Banner =============== -->
     <div style={bannerStyle} class={bannerMargin}>
         <h1 class={bannerClass}>Data Source</h1>
     </div>
@@ -64,7 +64,7 @@
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fbc_flow-combobox>
 
-    <!-- Column Wizard Banner-->
+    <!-- =============== Column Wizard Banner =============== -->
     <div style={bannerStyle} class={bannerMargin}>
         <h1 class={bannerClass}>Column Wizard</h1>
     </div>
@@ -114,13 +114,111 @@
 
     </div>
 
-    <!-- Advanced Attributes Banner-->
+    <!-- =============== Table Formatting Banner =============== -->
+    <div style={bannerStyle} class={bannerMargin}>
+        <h1 class={bannerClass}>Table Formatting</h1>
+    </div>
+
+    <!-- Table Header -->
+    <c-fbc_flow-combobox 
+        name="select_tableLabel" 
+        label={inputValues.tableLabel.label}
+        value={inputValues.tableLabel.value} 
+        value-type={inputValues.tableLabel.valueDataType}
+        builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fbc_flow-combobox>
+    <c-fbc_flow-combobox 
+        name="select_tableIcon" 
+        label={inputValues.tableIcon.label}
+        value={inputValues.tableIcon.value} 
+        value-type={inputValues.tableIcon.valueDataType}
+        field-level-help={inputValues.tableIcon.helpText}
+        builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fbc_flow-combobox>
+
+    <!-- Other Table Formatting -->
+    <lightning-input class="slds-m-vertical_xx-small"
+        type="checkbox" 
+        label={inputValues.tableBorder.label} 
+        name="select_tableBorder"
+        checked={inputValues.tableBorder.value} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>
+    <c-fbc_flow-combobox 
+        name="select_tableHeight" 
+        label={inputValues.tableHeight.label}
+        value={inputValues.tableHeight.value} 
+        value-type={inputValues.tableHeight.valueDataType}
+        field-level-help={inputValues.tableHeight.helpText}
+        builder-context-filter-collection-boolean={inputValues.tableHeight.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fbc_flow-combobox>
+    <c-fbc_flow-combobox 
+        name="select_maxNumberOfRows" 
+        label={inputValues.maxNumberOfRows.label}
+        value={inputValues.maxNumberOfRows.value} 
+        value-type={inputValues.maxNumberOfRows.valueDataType}
+        field-level-help={inputValues.maxNumberOfRows.helpText}
+        builder-context-filter-collection-boolean={inputValues.maxNumberOfRows.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fbc_flow-combobox>
+
+    <!-- =============== Table Behavior Banner =============== -->
+    <div style={bannerStyle} class={bannerMargin}>
+        <h1 class={bannerClass}>Table Behavior</h1>
+    </div>
+
+    <!-- Table Behavior Options -->
+    <lightning-input class="slds-m-vertical_xx-small"
+        type="checkbox" 
+        label={inputValues.suppressNameFieldLink.label} 
+        name="select_suppressNameFieldLink"
+        checked={inputValues.suppressNameFieldLink.value} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>
+    <lightning-input class="slds-m-vertical_xx-small"
+        if:true={isHideCheckboxColumn}
+        type="checkbox" 
+        label={inputValues.hideCheckboxColumn.label} 
+        name="select_hideCheckboxColumn"
+        checked={inputValues.hideCheckboxColumn.value} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>
+    <lightning-input class="slds-m-vertical_xx-small"
+    if:false={isCheckboxColumnHidden}
+        type="checkbox" 
+        label={inputValues.isRequired.label} 
+        name="select_isRequired"
+        checked={inputValues.isRequired.value} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>
+    <lightning-input class="slds-m-vertical_xx-small"
+        if:false={isCheckboxColumnHidden}
+        type="checkbox" 
+        label={inputValues.singleRowSelection.label} 
+        name="select_singleRowSelection"
+        checked={inputValues.singleRowSelection.value} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>   
+
+    <!-- =============== Advanced Attributes Banner =============== -->
     <div style={bannerStyle} class={bannerMargin}>
         <h1 class={bannerClass}>Advanced Attributes</h1>
     </div>
 
-    <!-- Apex Defined Object?-->
-    <lightning-input 
+    <!-- Apex Defined Object? -->
+    <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox" 
         label={inputValues.isUserDefinedObject.label} 
         name="select_isUserDefinedObject"
@@ -128,6 +226,18 @@
         onblur={handleValueChange}
         onchange={handleValueChange}>
     </lightning-input>
+
+    <!-- Key Field -->
+    <c-fbc_flow-combobox 
+        name="select_keyField" 
+        label={inputValues.keyField.label}
+        value={inputValues.keyField.value} 
+        value-type={inputValues.keyField.valueDataType}
+        field-level-help={inputValues.keyField.helpText}
+        builder-context-filter-collection-boolean={inputValues.keyField.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fbc_flow-combobox>
 
     <!-- <div class="slds-panel__header-title slds-text-heading_small slds-p-top_small">
         {inputValues.allOptionsStringFormat.label}

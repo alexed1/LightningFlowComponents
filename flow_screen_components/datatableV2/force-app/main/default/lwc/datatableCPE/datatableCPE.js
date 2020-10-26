@@ -8,7 +8,7 @@ const defaults = {
 export default class DatatableCPE extends LightningElement {
 
     // Define how you would like any banner lines to look in the CPE
-    _bannerStyle = 'padding:0.3rem;background:#16325c;';
+    _bannerStyle = 'padding:0.3rem;background:#36455C;';    //Brand is #16325c, decreasing shades: 2D405C, 36455C, 404B5C
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
     _bannerClass = 'slds-text-color_inverse slds-text-heading_medium';
 
@@ -22,6 +22,9 @@ export default class DatatableCPE extends LightningElement {
     selectedSObject = '';
     isSObjectInput = true;
     isObjectSelected = false;
+    isCheckboxColumnHidden = false;
+    isHideCheckboxColumn = true;
+    isAnyEdits = false;
 
     @api
     get bannerStyle() {
@@ -39,14 +42,32 @@ export default class DatatableCPE extends LightningElement {
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
+    // Help Text is not supported for file, toggle, and checkbox-button input types
     @track inputValues = { 
-        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
-        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
-        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
-        tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String'},
-        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection'},
-        preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String'}
+        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', helpText: null},
+        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', helpText: null},
+        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects', helpText: null},
+        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection', helpText: null},
+        tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', helpText: null},
+        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection', helpText: null},
+        preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', helpText: null},
+        tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', helpText: null},
+        tableIcon: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Icon to display on the Table Header', 
+            helpText: 'Example: standard:account'},
+        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Display a border around the datatable?', helpText: null},
+        tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height Definition',
+            helpText: 'CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
+        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
+            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
+        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "Suppress the Link on the 'Name' Field?", 
+            helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
+        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide Checkbox Column?', 
+            helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
+        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require at least 1 row to be selected?', helpText: null},
+        singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single Row Selection (Radio Buttons)?', 
+            helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
+        keyField: {value: null, valueDataType: null, isCollection: false, label: 'Key Field', 
+            helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
     };
 
     settings = { 
@@ -114,7 +135,8 @@ export default class DatatableCPE extends LightningElement {
     }
 
     handleDefaultAttributes() {
-    
+        this.inputValues.tableBorder.value = true;
+        this.inputValues.keyField.value = 'Id';
     }
 
     handleDynamicTypeMapping(event) { 
@@ -160,9 +182,27 @@ export default class DatatableCPE extends LightningElement {
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 
+            // Change the displayed Data Sources if the Apex Defined Object is selected
             if (curAttributeName == 'isUserDefinedObject') {
                 this.isSObjectInput = !event.target.checked;
                 this.isObjectSelected = (this.isSObjectInput && this.selectedSObject != '');
+            }
+
+            // Don't allow hide the checkbox column if a selection is required or any edits are allowed
+            if (curAttributeName == 'isRequired') {
+                this.isHideCheckboxColumn = !event.target.checked;
+                if (this.isAnyEdits || event.target.checked) {
+                    this.isHideCheckboxColumn = false;
+                    this.inputValues.hideCheckboxColumn.value = false;
+                    this.dispatchFlowValueChangeEvent('hideCheckboxColumn', false, 'boolean');
+                }
+            }
+
+            // Skip is required and single row options if the checkbox column is hidden
+            if (curAttributeName == 'hideCheckboxColumn') { 
+                this.isCheckboxColumnHidden = event.target.checked;
+                this.inputValues.isRequired.value = false;
+                this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
             }
         }
     
@@ -219,9 +259,6 @@ export default class DatatableCPE extends LightningElement {
     
     handlePickObjectAndFieldValueChange(event) {
         if (event.detail) {
-
-//need to set a dynamic type mapping here
-
             this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
             this.dispatchFlowValueChangeEvent(this.settings.attributeFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
         }

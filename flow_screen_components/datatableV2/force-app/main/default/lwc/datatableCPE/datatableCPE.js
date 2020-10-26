@@ -7,6 +7,7 @@ const defaults = {
 
 export default class DatatableCPE extends LightningElement {
 
+    // Define how you would like any banner lines to look in the CPE
     _bannerStyle = 'padding:0.3rem;background:#16325c;';
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
     _bannerClass = 'slds-text-color_inverse slds-text-heading_medium';
@@ -14,21 +15,13 @@ export default class DatatableCPE extends LightningElement {
     _inputVariables = [];
     _builderContext = [];
     _elementInfo = {};
-    // _typeMappings = [];
-
-    selectedSObject;
-
     _flowVariables;
     _elementType;
     _elementName;
 
-    /* array of complex object containing name-value of a input parameter.
-     * eg: [{
-     *       name: 'prop1_name',
-     *       value: 'value',
-     *       valueDataType: 'string'
-     *     }]
-     */
+    selectedSObject = '';
+    isSObjectInput = true;
+    isObjectSelected = false;
 
     @api
     get bannerStyle() {
@@ -45,17 +38,26 @@ export default class DatatableCPE extends LightningElement {
         return this._bannerClass;
     }
 
-    @track inputValues = {
-        isUserDefinedObject: {value: false, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
+    // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
+    @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object'},
-        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field'},
+        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects'},
+        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection'},
+        tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String'},
+        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection'},
+        preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String'}
     };
 
     settings = { 
         attributeObjectName: 'objectName',
         attributeFieldName: 'fieldName'
     }
+
+    selectDataSourceOptions = [
+        {label: 'SObject Collection', value: !this.inputValues.isUserDefinedObject},
+        {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
+    ];
 
     @api flowParams = [{
         name: 'vSObject',
@@ -86,13 +88,6 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
-    /* contains the information about the LWC or Action in which
-   * the configurationEditor is defined.
-   * eg: {
-   *       apiName: 'CreateCase', // dev name of the action or screen
-   *       type: 'Action' // or 'Screen'
-   *     }
-   */
     @api
     get elementInfo() {
         return this._elementInfo;
@@ -122,57 +117,6 @@ export default class DatatableCPE extends LightningElement {
     
     }
 
-    handleValueChange(event) {
-        if (event.target) {
-            let curAttributeName = event.target.name ? event.target.name.replace(defaults.inputAttributePrefix, '') : null;
-            let value = event.detail ? event.detail.value : event.target.value
-            let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : value;
-            let curAttributeType;
-            switch (event.target.type) {
-                case "checkbox":
-                    curAttributeType = 'Boolean';
-                    break;
-                case "number":
-                    curAttributeType = 'Number';
-                    break;
-                default:
-                    curAttributeType = 'String';
-            }
-            this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
-        }
-    }
-
-    /* array of complex object containing type name-value of the dynamic data types
-   * in Action or Screen
-   * eg: [{
-   *       typeName: 'T', // the type name
-   *       typeValue: 'Account' // or any other sObject
-   *     }]
-   */
-    
-    /*     
-    @api
-    get typeMappings() {
-        return this._typeMappings;
-    }
-
-    set typeMappings(mappings) {
-        this._typeMappings = mappings || {};
-        this.initializeTypeMappings();
-    } */
-    
-    /* Return a promise that resolve and return errors if any
-   *    [{
-   *      key: 'key1',
-   *      errorString: 'Error message'
-   *    }]
-   */
-    @api
-    validate() {
-        const validity = [];
-        return validity;
-    }
-
     handleDynamicTypeMapping(event) { 
         console.log('handling a dynamic type mapping');
         console.log('event is ' + JSON.stringify(event));
@@ -192,7 +136,42 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchEvent(dynamicTypeMapping);
         this.updateRecordVariablesComboboxOptions(typeValue);
         this.selectedSObject = typeValue;
+        this.isObjectSelected = true;
+        this.inputValues.tableData.value = null;
+        this.inputValues.preSelectedRows.value = null;
         this.updateFlowParam('vSObject', typeValue);
+    }
+
+    handleValueChange(event) {
+        if (event.target) {
+            let curAttributeName = event.target.name ? event.target.name.replace(defaults.inputAttributePrefix, '') : null;
+            let value = event.detail ? event.detail.value : event.target.value
+            let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : value;
+            let curAttributeType;
+            switch (event.target.type) {
+                case "checkbox":
+                    curAttributeType = 'Boolean';
+                    break;
+                case "number":
+                    curAttributeType = 'Number';
+                    break;
+                default:
+                    curAttributeType = 'String';
+            }
+            this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
+
+            if (curAttributeName == 'isUserDefinedObject') {
+                this.isSObjectInput = !event.target.checked;
+                this.isObjectSelected = (this.isSObjectInput && this.selectedSObject != '');
+            }
+        }
+    
+    }
+
+    @api
+    validate() {
+        const validity = [];
+        return validity;
     }
 
     updateRecordVariablesComboboxOptions(objectType) {
@@ -209,12 +188,9 @@ export default class DatatableCPE extends LightningElement {
         return comboboxOptions;
     }
 
-    handleFlowComboboxValueChange(event) {
-console.log('entering handleFlowComboboxValueChange');
-console.log(JSON.stringify(event));      
+    handleFlowComboboxValueChange(event) {   
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
-console.log('handleFlowComboboxValueChange',changedAttribute,event.detail.newValue, event.detail.newValueDataType);
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
     }
@@ -235,16 +211,6 @@ console.log('handleFlowComboboxValueChange',changedAttribute,event.detail.newVal
 
     updateFlowParam(name, value) {
         this.flowParams.find(param => param.name === name).value = value;
-    }
-    
-    get isSObjectInput() {
-        if (this.inputValues.isUserDefinedObject) {
-            return this.inputValues.isUserDefinedObject.value === defaults.apexDefinedTypeInputs;      
-        }
-    }
-    
-    get isObjectSelected() {
-        return this.selectedSObject != null;
     }
 
     get wizardParams() {

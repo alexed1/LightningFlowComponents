@@ -455,7 +455,7 @@ export default class FlowCombobox extends LightningElement {
                 this.closeOptionDialog(true);
             }
         }
-       
+        
         this.selfEvent = false;
     }
 

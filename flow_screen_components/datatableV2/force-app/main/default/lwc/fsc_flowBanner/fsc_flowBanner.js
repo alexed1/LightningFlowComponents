@@ -2,18 +2,32 @@ import { api, track,LightningElement } from 'lwc';
 
 export default class FlowBanner extends LightningElement { 
 
-    // Define how you would like any banner lines to look in the CPE
     // Any of these values can be overridden in the calling HTML
-    @api bannerStyle = 'padding:0.3rem;background:#36455C;';    //Brand is #16325c, decreasing shades: 2D405C, 36455C, 404B5C
+    // Define how you would like the banner lines to look in the CPE
+    @api bannerPadding = '0.3rem';
+    @api bannerColor = '#4C6E96';   //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96  
     @api bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
-    @api bannerClass = 'slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small';
-    @api bannerLabel = 'Banner Label';
+    @api bannerClass = 'slds-text-color_inverse slds-text-heading_medium';
+
+    // Info Icon Attributes
     @api bannerIcon = 'utility:info'; 
     @api bannerIconSize = 'medium';
     @api bannerVariant = 'bare-inverse';
     @api bannerTitle = 'Info';
     @api bannerAltText = 'Help Text Info';
-    @api bannerInfo = 'Modal Information Text';
+    
+    // Banner Label and Help Text passed from the calling CPE
+    @api bannerLabel = 'Banner Label';
+    @api bannerInfo = 
+        [
+            {label: 'Attribute #1 Label', helpText: 'Attribute #1 Helptext'},
+            {label: 'Attribute #2 Label', helpText: 'Attribute #2 Helptext'},
+        ];
+
+    @api
+    get bannerStyle() { 
+        return 'padding:' + this.bannerPadding + ';background:' + this.bannerColor + ';';
+    }
 
     @track openModal = false;
     showModal() {

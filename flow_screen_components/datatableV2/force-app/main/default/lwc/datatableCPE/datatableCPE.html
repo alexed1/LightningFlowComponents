@@ -2,8 +2,9 @@
 
     <!-- =============== Data Source Banner =============== -->
     <c-fsc_flow-banner
-        banner-label={helpValues.dataSource.label}
-        banner-info={helpValues.dataSource.info}
+        banner-color={bannerColor}  
+        banner-label={sectionEntries.dataSource.label}
+        banner-info={sectionEntries.dataSource.info}
     ></c-fsc_flow-banner>
 
     <!-- Select SObject -->
@@ -67,7 +68,9 @@
 
     <!-- =============== Column Wizard Banner =============== -->
     <c-fsc_flow-banner
-        banner-label="Column Wizard"
+        banner-color={colorWizardOverride}  
+        banner-label={sectionEntries.columnWizard.label}
+        banner-info={sectionEntries.columnWizard.info}
     ></c-fsc_flow-banner>
     
     <!-- Column Wizard -->
@@ -117,7 +120,9 @@
 
     <!-- =============== Table Formatting Banner =============== -->
     <c-fsc_flow-banner
-        banner-label="Table Formatting"
+        banner-color={bannerColor}  
+        banner-label={sectionEntries.tableFormatting.label}
+        banner-info={sectionEntries.tableFormatting.info}
     ></c-fsc_flow-banner>
 
     <!-- Table Header -->
@@ -173,7 +178,8 @@
 
     <!-- =============== Table Behavior Banner =============== -->
     <c-fsc_flow-banner
-        banner-label="Table Behavior"
+        banner-label={sectionEntries.tableBehavior.label}
+        banner-info={sectionEntries.tableBehavior.info}
     ></c-fsc_flow-banner>
 
     <!-- Table Behavior Options -->
@@ -215,7 +221,9 @@
 
     <!-- =============== Advanced Attributes Banner =============== -->
     <c-fsc_flow-banner
-        banner-label="Advanced Attributes"
+        banner-color={colorAdvancedOverride}
+        banner-label={sectionEntries.advancedAttributes.label}
+        banner-info={sectionEntries.advancedAttributes.info}
     ></c-fsc_flow-banner>
 
     <!-- Apex Defined Object? -->

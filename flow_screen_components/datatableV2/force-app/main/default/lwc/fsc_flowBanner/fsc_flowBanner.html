@@ -26,14 +26,18 @@
                         alternative-text="Close this window" size="large" variant="bare-inverse"
                         onclick={closeModal} class="slds-modal__close">
                     </lightning-button-icon>
-                    <h2 class="slds-modal__title slds-hyphenate">Information Screen for {bannerLabel}</h2>
+                    <h2 class="slds-modal__title slds-hyphenate slds-text-color_inverse">Information Screen for {bannerLabel}</h2>
                 </div>
 
                 <!-- Body Section -->
                 <div class="slds-modal__content slds-p-around_medium">
-                    <lightning-formatted-rich-text
-                        value={bannerInfo}
-                    ></lightning-formatted-rich-text>
+                    <template for:each={bannerInfo} for:item="attribute">
+                        <div key={attribute.label}>
+                            <strong>{attribute.label}</strong>
+                            <div>{attribute.helpText}</div>
+                            <br>
+                        </div>
+                    </template>
                 </div>
 
                 <!-- Footer Section -->

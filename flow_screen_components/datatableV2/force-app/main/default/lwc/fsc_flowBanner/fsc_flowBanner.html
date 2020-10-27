@@ -1,0 +1,51 @@
+<template>
+    <!-- =============== Flow Banner =============== -->
+    <div style={bannerStyle} class={bannerMargin}>
+        <h1 class={bannerClass}>{bannerLabel}
+            <span class="slds-float_right">
+                <lightning-button-icon 
+                    icon-name={bannerIcon} 
+                    size={bannerIconSize} 
+                    variant={bannerVariant} 
+                    title={bannerTitle} 
+                    alternative-text={bannerAltText}
+                    onclick={showModal}
+                ></lightning-button-icon>
+            </span>
+        </h1>
+    </div>
+
+    <!-- =============== Information Modal =============== -->
+    <template if:true={openModal}>
+        <div class="slds-modal slds-modal_small slds-fade-in-open slds-backdrop">
+            <div class="slds-modal__container">
+
+                <!-- Header Section -->
+                <div class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close"
+                        alternative-text="Close this window" size="large" variant="bare-inverse"
+                        onclick={closeModal} class="slds-modal__close">
+                    </lightning-button-icon>
+                    <h2 class="slds-modal__title slds-hyphenate">Information Screen for {bannerLabel}</h2>
+                </div>
+
+                <!-- Body Section -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-formatted-rich-text
+                        value={bannerInfo}
+                    ></lightning-formatted-rich-text>
+                </div>
+
+                <!-- Footer Section -->
+                <div class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button label="Close Screen" variant="neutral"
+                        icon-name="utility:close" 
+                        onclick={closeModal}>
+                    </lightning-button>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+</template>

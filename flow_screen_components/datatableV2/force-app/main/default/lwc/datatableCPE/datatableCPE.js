@@ -10,7 +10,7 @@ export default class DatatableCPE extends LightningElement {
     // Define how you would like any banner lines to look in the CPE
     _bannerStyle = 'padding:0.3rem;background:#36455C;';    //Brand is #16325c, decreasing shades: 2D405C, 36455C, 404B5C
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
-    _bannerClass = 'slds-text-color_inverse slds-text-heading_medium';
+    _bannerClass = 'slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small';
 
     _inputVariables = [];
     _builderContext = [];
@@ -25,6 +25,7 @@ export default class DatatableCPE extends LightningElement {
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
+    myBanner = 'My Banner';
 
     @api
     get bannerStyle() {
@@ -42,33 +43,65 @@ export default class DatatableCPE extends LightningElement {
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
-    // Help Text is not supported for file, toggle, and checkbox-button input types
     @track inputValues = { 
-        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', helpText: null},
-        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', helpText: null},
-        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input Records are Apex-Defined Objects', helpText: null},
-        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection', helpText: null},
-        tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', helpText: null},
-        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection', helpText: null},
-        preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', helpText: null},
-        tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', helpText: null},
+        objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 
+            helpText: 'Select the Object to use in the Datatable', 
+            section: 'dataSource'},
+        fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', helpText: null, section: 'Data Source'},
+        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection', 
+            helpText: 'Record Collection variable containing the records to display in the datatable.', 
+            section: 'dataSource'},
+        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection', 
+            helpText: 'Record Collection variable containing the records to show as pre-selected in the datatable.', 
+            section: 'dataSource'},
+        tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', 
+            helpText: 'Object Collection string variable containing the records to display in the datatable.', 
+            section: 'dataSource'},
+        preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', 
+            helpText: 'Object Collection string variable containing the records to show as pre-selected in the datatable.', 
+            section: 'dataSource'},
+        tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', 
+            helpText: 'Provide a value here if you want a header label to appear above the datatable.', 
+            section: 'tableFormatting'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Icon to display on the Table Header', 
-            helpText: 'Example: standard:account'},
-        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Display a border around the datatable?', helpText: null},
+            helpText: 'Example: standard:account', 
+            section: 'tableFormatting'},
+        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Display a border around the datatable?', 
+            helpText: 'When selected, a thin border will be displayed around the entire datatable.  This is the default setting.', 
+            section: 'tableFormatting'},
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height Definition',
-            helpText: 'CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
+            helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)', 
+            section: 'tableFormatting'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
-            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
+            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.', 
+            section: 'tableFormatting'},
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "Suppress the Link on the 'Name' Field?", 
-            helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
+            helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record", 
+            section: 'tableBehavior'},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide Checkbox Column?', 
-            helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
-        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require at least 1 row to be selected?', helpText: null},
+            helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.', 
+            section: 'tableBehavior'},
+        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require at least 1 row to be selected?', 
+            helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.', 
+            section: 'tableBehavior'},
         singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single Row Selection (Radio Buttons)?', 
-            helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
+            helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.', 
+            section: 'tableBehavior'},
+        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
+            helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.', 
+            section: 'advancedAttributes'},
         keyField: {value: null, valueDataType: null, isCollection: false, label: 'Key Field', 
-            helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
+            helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.', 
+            section: 'advancedAttributes'},
     };
+
+    @track helpValues = { 
+        dataSource: {label: 'Data Source', info: null},
+        columnWizard: {label: 'Column Wizard', info: 'Column Wizard Help Text'},
+        tableFormatting: {label: 'Table Formatting', info: null},
+        tableBehavior: {label: 'Table Behavior', info: null},
+        advancedAttributes: {label: 'Advanced Attributes', info: null},
+    }
 
     settings = { 
         attributeObjectName: 'objectName',
@@ -128,6 +161,9 @@ export default class DatatableCPE extends LightningElement {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+                    if (this.inputValues[curInputParam.name].section) { 
+                        this.handleAddHelpInfo(this.inputValues[curInputParam.name]);
+                    }
                 }
             }
         });
@@ -137,6 +173,11 @@ export default class DatatableCPE extends LightningElement {
     handleDefaultAttributes() {
         this.inputValues.tableBorder.value = true;
         this.inputValues.keyField.value = 'Id';
+    }
+
+    handleAddHelpInfo(attribute) { 
+        this.helpValues[attribute.section].info += attribute.label + '<br>';
+        this.helpValues[attribute.section].info += attribute.helpText + '<br>';
     }
 
     handleDynamicTypeMapping(event) { 

@@ -1,9 +1,10 @@
 <template>
 
     <!-- =============== Data Source Banner =============== -->
-    <div style={bannerStyle} class={bannerMargin}>
-        <h1 class={bannerClass}>Data Source</h1>
-    </div>
+    <c-fsc_flow-banner
+        banner-label={helpValues.dataSource.label}
+        banner-info={helpValues.dataSource.info}
+    ></c-fsc_flow-banner>
 
     <!-- Select SObject -->
     <c-fsc_pick-object-and-field 
@@ -65,9 +66,9 @@
     </c-fsc_flow-combobox>
 
     <!-- =============== Column Wizard Banner =============== -->
-    <div style={bannerStyle} class={bannerMargin}>
-        <h1 class={bannerClass}>Column Wizard</h1>
-    </div>
+    <c-fsc_flow-banner
+        banner-label="Column Wizard"
+    ></c-fsc_flow-banner>
     
     <!-- Column Wizard -->
     <div if:true={isObjectSelected}> 
@@ -88,7 +89,7 @@
                             alternative-text="Close this window" size="large" variant="bare-inverse"
                             onclick={closeModal} class="slds-modal__close">
                         </lightning-button-icon>
-                        <h2>Welcome To The Datatable Column Wizard</h2>
+                        <h2 class="slds-modal__title slds-hyphenate">Welcome To The Datatable Column Wizard</h2>
                     </div>
 
                     <!-- Body Section -->
@@ -115,9 +116,9 @@
     </div>
 
     <!-- =============== Table Formatting Banner =============== -->
-    <div style={bannerStyle} class={bannerMargin}>
-        <h1 class={bannerClass}>Table Formatting</h1>
-    </div>
+    <c-fsc_flow-banner
+        banner-label="Table Formatting"
+    ></c-fsc_flow-banner>
 
     <!-- Table Header -->
     <c-fsc_flow-combobox 
@@ -159,13 +160,6 @@
         builder-context={_builderContext} 
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
-    <!-- <lightning-input class="slds-m-vertical_xx-small"
-        type="number" 
-        label={inputValues.maxNumberOfRows.label} 
-        name="select_maxNumberOfRows"
-        value={inputValues.maxNumberOfRows.value} 
-        onchange={handleValueChange}>
-    </lightning-input>    -->
     <c-fsc_flow-combobox 
         name="select_maxNumberOfRows" 
         label={inputValues.maxNumberOfRows.label}
@@ -178,9 +172,9 @@
     </c-fsc_flow-combobox>
 
     <!-- =============== Table Behavior Banner =============== -->
-    <div style={bannerStyle} class={bannerMargin}>
-        <h1 class={bannerClass}>Table Behavior</h1>
-    </div>
+    <c-fsc_flow-banner
+        banner-label="Table Behavior"
+    ></c-fsc_flow-banner>
 
     <!-- Table Behavior Options -->
     <lightning-input class="slds-m-vertical_xx-small"
@@ -220,9 +214,9 @@
     </lightning-input>   
 
     <!-- =============== Advanced Attributes Banner =============== -->
-    <div style={bannerStyle} class={bannerMargin}>
-        <h1 class={bannerClass}>Advanced Attributes</h1>
-    </div>
+    <c-fsc_flow-banner
+        banner-label="Advanced Attributes"
+    ></c-fsc_flow-banner>
 
     <!-- Apex Defined Object? -->
     <lightning-input class="slds-m-vertical_xx-small"

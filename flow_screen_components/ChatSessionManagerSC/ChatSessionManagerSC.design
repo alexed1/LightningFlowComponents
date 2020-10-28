@@ -1,0 +1,6 @@
+<design:component>
+    <design:attribute name="sessionId" label="sessionId"/>
+    <design:attribute name="actionType" label="Type of Action" datasource="sendMessage,setAgentInput,endChat,initFileTransfer" default="sendMessage"/>
+    <design:attribute name="message" label="Message"/>
+    <design:attribute name="recordId" label="recordId"/>
+</design:component>

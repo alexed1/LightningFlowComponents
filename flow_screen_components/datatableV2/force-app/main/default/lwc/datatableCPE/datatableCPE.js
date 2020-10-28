@@ -350,12 +350,12 @@ export default class DatatableCPE extends LightningElement {
     }
 
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
-    @track openModel = false;
+    @track openModal = false;
     showModal() {
-        this.openModel = true;
+        this.openModal = true;
     }
     closeModal() {
-        this.openModel = false;
+        this.openModal = false;
     }
     
 }

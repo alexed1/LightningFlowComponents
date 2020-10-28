@@ -29,14 +29,14 @@ export default class FlowBanner extends LightningElement {
         return 'padding:' + this.bannerPadding + ';background:' + this.bannerColor + ';';
     }
 
-    @track openBannerModel = false;
+    @track openBannerModal = false;
 
     // Keep the ESC key from also closing the CPE
     connectedCallback() { 
         this.template.addEventListener('keydown', event => {
             var keycode = event.code;
             if(keycode == 'Escape'){
-                this.openBannerModel = false;
+                this.openBannerModal = false;
                 event.preventDefault();
                 event.stopImmediatePropagation();
             }
@@ -44,10 +44,10 @@ export default class FlowBanner extends LightningElement {
     }
 
     showModal() {
-        this.openBannerModel = true;
+        this.openBannerModal = true;
     }
     closeModal() {
-        this.openBannerModel = false;
+        this.openBannerModal = false;
     }
     
 }

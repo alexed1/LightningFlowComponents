@@ -349,6 +349,18 @@ export default class DatatableCPE extends LightningElement {
         });
     }
 
+    // Keep the ESC key from also closing the CPE
+    connectedCallback() { 
+        this.template.addEventListener('keydown', event => {
+            var keycode = event.code;
+            if(keycode == 'Escape'){
+                this.openModal = false;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }, true);
+    }
+    
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
     @track openModal = false;
     showModal() {

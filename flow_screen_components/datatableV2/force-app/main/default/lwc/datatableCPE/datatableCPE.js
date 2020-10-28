@@ -92,9 +92,12 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
     };
 
+    wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
+        + 'select columns for editing and filtering, update labels and formats and much more.';
+
     sectionEntries = { 
         dataSource: {label: 'Data Source', info: []},
-        columnWizard: {label: 'Column Wizard', info: []},
+        columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
         advancedAttributes: {label: 'Advanced Attributes', info: []}
@@ -109,9 +112,6 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'tableDataString'},
                 {name: 'preSelectedRowsString'}
             ]
-        },
-        {name: 'columnWizard',
-            attributes: []
         },
         {name: 'tableFormatting',
             attributes: [
@@ -213,8 +213,8 @@ export default class DatatableCPE extends LightningElement {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
                 this.sectionEntries[section.name].info.push({label: this.inputValues[attribute.name].label, helpText: this.inputValues[attribute.name].helpText});
-            }) 
-        })
+            });
+        });
     }
 
     handleDynamicTypeMapping(event) { 
@@ -344,15 +344,18 @@ export default class DatatableCPE extends LightningElement {
 
     handleFlowStatusChange(event) {
         console.log('STATUS CHANGE', event.detail.flowParams);  // These are values coming back from the Wizard Flow
+        event.detail.flowParams.forEach(attribute => { 
+            console.log('Field, Value', attribute.name, attribute.value);
+        });
     }
 
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
-    @track openModal = false;
+    @track openModel = false;
     showModal() {
-        this.openModal = true;
+        this.openModel = true;
     }
     closeModal() {
-        this.openModal = false;
+        this.openModel = false;
     }
     
 }

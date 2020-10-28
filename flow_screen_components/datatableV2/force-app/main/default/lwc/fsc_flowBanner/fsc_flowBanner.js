@@ -29,12 +29,25 @@ export default class FlowBanner extends LightningElement {
         return 'padding:' + this.bannerPadding + ';background:' + this.bannerColor + ';';
     }
 
-    @track openModal = false;
+    @track openBannerModel = false;
+
+    // Keep the ESC key from also closing the CPE
+    connectedCallback() { 
+        this.template.addEventListener('keydown', event => {
+            var keycode = event.code;
+            if(keycode == 'Escape'){
+                this.openBannerModel = false;
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }, true);
+    }
+
     showModal() {
-        this.openModal = true;
+        this.openBannerModel = true;
     }
     closeModal() {
-        this.openModal = false;
+        this.openBannerModel = false;
     }
     
 }

@@ -75,6 +75,9 @@ export default class DatatableV2 extends LightningElement {
     @track mydata = [];
     @track selectedRows = [];
     @track roundValueLabel;
+    @track columnWidthsLabel
+    @track isAllEdit = false;
+    @track isAllFilter = false;
     @track showClearButton = false;
 
     // Handle Lookup Field Variables   
@@ -1202,15 +1205,18 @@ console.log('COLDEF',colDef);
         // Update the column width values and the Config Mode parameter
         var colNum = 0;
         var colString = '';
+        let colWidthsTotal = 0;
         this.basicColumns.forEach(colDef => {
             this.columns[colNum]['initialWidth'] = sizes[colNum];
             if (this.filterColumns) {
                 this.filterColumns[colNum]['initialWidth'] = sizes[colNum];
             }
             colString = colString + ', ' + colDef['fieldName'] + ':' + sizes[colNum];
+            colWidthsTotal += parseInt(sizes[colNum], 10);        
             colNum += 1;
         });
         this.columnWidthParameter = colString.substring(2);
+        this.columnWidthsLabel = `Column Widths: (Total: ${colWidthsTotal})`;
     }
 
     handleChange(event) {
@@ -1229,6 +1235,7 @@ console.log('COLDEF',colDef);
             colNum += 1;
         });
         this.columnEditParameter = 'All';
+        this.isAllEdit = true;
         this.columns = [...this.filterColumns]; 
     }
 
@@ -1241,6 +1248,7 @@ console.log('COLDEF',colDef);
             colNum += 1;
         });
         this.columnFilterParameter = 'All';
+        this.isAllFilter = true;
         this.columns = [...this.filterColumns]; 
     }
 
@@ -1356,50 +1364,6 @@ console.log('COLDEF',colDef);
         this.isFiltered = true;
     }
 
-    handleRemove(event) {
-        // Pass directly to handleCopy with no additional handling
-    }
-
-    handleCopyFields(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnFieldParameter);
-    }
-
-    handleCopyAligns(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnAlignmentParameter);
-    }
-
-    handleCopyEdits(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnEditParameter);
-    }
-
-    handleCopyFilters(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnFilterParameter);
-    }
-
-    handleCopyLabels(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnLabelParameter);
-    }
-
-    handleCopyWidths(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnWidthParameter);
-    }
-
-    pushClipboard(content) {
-        // Put the selected attribute value in the clipboard
-        let inp = this.template.querySelector('.my-clipboard');
-        inp.disabled = false;
-        inp.value = content;
-        inp.select();
-        document.execCommand('copy');
-        inp.disabled = true;
-    }
-
     updateAlignmentParam() {
         // Create the Alignment Label parameter for Config Mode
         var colNum = 0;
@@ -1441,6 +1405,7 @@ console.log('COLDEF',colDef);
             colNum += 1;
         });
         this.columnEditParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.isAllEdit = allSelected;
     }
 
     updateFilterParam() {
@@ -1457,6 +1422,7 @@ console.log('COLDEF',colDef);
             colNum += 1;
         });
         this.columnFilterParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.isAllFilter = allSelected;
     }
 
     @api

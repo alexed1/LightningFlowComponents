@@ -97,7 +97,7 @@
 
                     <!-- Body Section -->
                     <div class="slds-modal__content slds-p-around_medium">
-                        <c-screen-flow width="100%" height="560"
+                        <c-screen-flow width="100%" height={wizardHeight}
                             flow-name="Datatable_Configuration_Wizard" name="uniqueName"
                             flow-params={wizardParams}
                             onflowstatuschange={handleFlowStatusChange}>
@@ -110,6 +110,12 @@
                             icon-name="utility:close" 
                             onclick={closeModal}>
                         </lightning-button>
+                        <lightning-slider value={wizardHeight} label="Wizard Height (pixels)"
+                            min="400" 
+                            max="1000" 
+                            step="10"
+                            onchange={handleHeightChange}>
+                        </lightning-slider>
                     </div>
 
                 </div>

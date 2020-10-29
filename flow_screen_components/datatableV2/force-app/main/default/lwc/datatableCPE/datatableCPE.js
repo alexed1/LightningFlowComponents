@@ -28,6 +28,7 @@ export default class DatatableCPE extends LightningElement {
     isHideCheckboxColumn = true;
     isAnyEdits = false;
     myBanner = 'My Banner';
+    wizardHeight = '560';
 
     @api
     get bannerColor() {
@@ -286,6 +287,10 @@ export default class DatatableCPE extends LightningElement {
     
     }
 
+    handleHeightChange(event) { 
+        this.wizardHeight = event.target.value;
+    }
+    
     @api
     validate() {
         const validity = [];

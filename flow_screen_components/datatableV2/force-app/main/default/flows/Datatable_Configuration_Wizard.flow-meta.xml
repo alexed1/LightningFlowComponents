@@ -21,6 +21,40 @@
             <name>fields</name>
         </outputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Get_First_10_Records</name>
+        <label>Get First 10 Records</label>
+        <locationX>837</locationX>
+        <locationY>203</locationY>
+        <actionName>QueryNRecords</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Debug_Screen</targetReference>
+        </connector>
+        <inputParameters>
+            <name>objectApiName</name>
+            <value>
+                <elementReference>vSObject</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldsToQuery</name>
+            <value>
+                <elementReference>vFieldList</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>numberOfRecords</name>
+            <value>
+                <numberValue>10.0</numberValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>vRecordList</assignToReference>
+            <name>recordString</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
@@ -34,7 +68,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Deploy_Flow</targetReference>
+            <targetReference>Get_First_10_Records</targetReference>
         </connector>
     </assignments>
     <decisions>
@@ -57,7 +91,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Deploy_Flow</targetReference>
+                <targetReference>Get_First_10_Records</targetReference>
             </connector>
             <label>YES</label>
         </rules>
@@ -128,9 +162,9 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>Deploy_Flow</name>
-        <label>Deploy Flow</label>
-        <locationX>814</locationX>
+        <name>Debug_Screen</name>
+        <label>Debug Screen</label>
+        <locationX>990</locationX>
         <locationY>203</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -142,15 +176,56 @@
         </fields>
         <fields>
             <name>debug</name>
-            <fieldText>&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>WizardTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Account</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatableV2</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>isConfigMode</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <elementReference>vFieldList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isUserDefinedObject</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableDataString</name>
+                <value>
+                    <elementReference>vRecordList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <screens>
-        <name>Object_Picker_0</name>
-        <label>Object Picker</label>
+        <name>Manual_Field_List</name>
+        <label>Manual Field List</label>
         <locationX>396</locationX>
         <locationY>203</locationY>
         <allowBack>false</allowBack>
@@ -273,7 +348,7 @@
         <locationX>270</locationX>
         <locationY>49</locationY>
         <connector>
-            <targetReference>Object_Picker_0</targetReference>
+            <targetReference>Manual_Field_List</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -291,6 +366,13 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vRecordList</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>vSObject</name>

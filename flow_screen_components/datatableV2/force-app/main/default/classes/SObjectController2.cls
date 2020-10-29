@@ -16,7 +16,7 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
- * 10/xx/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
+ * 10/07/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
  *                                              Allow case insensitive field names
  *                                              Allow custom field API names w/o the __c suffix
  *                                              Get and Return which fields are picklist fields along with Value & Label

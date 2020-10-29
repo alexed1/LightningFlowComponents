@@ -245,7 +245,7 @@ export default class DatatableCPE extends LightningElement {
     handleValueChange(event) {
         if (event.target) {
             let curAttributeName = event.target.name ? event.target.name.replace(defaults.inputAttributePrefix, '') : null;
-            let value = event.detail ? event.detail.value : event.target.value
+            let value = event.detail ? event.detail.value : event.target.value;
             let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : value;
             let curAttributeType;
             switch (event.target.type) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
     <interviewLabel>Test Datatable CPE {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test Datatable CPE</label>
     <processMetadataValues>
@@ -85,4 +86,19 @@
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>vNumber</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>vRecordString</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

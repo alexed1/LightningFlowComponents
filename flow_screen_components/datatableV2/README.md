@@ -64,92 +64,92 @@ In order to use **datatableV2**, permission must be given to access the followin
             **Bug Fixes:**      Display Picklist Labels instead of API Names for Picklist and Multipicklist fields  
                             Added a Clear Selection button for tables with just a single record
   
-09/22/20 -  Eric Smith -    Version 2.45 -  
-            Bug Fix:        Fixed inability to edit some field types (introduced by v2.44)
+**09/22/20 -  Eric Smith -    Version 2.45** -  
+            **Bug Fix:**        Fixed inability to edit some field types (introduced by v2.44)
   
-09/20/20 -  Kevin Hart -    Version 2.44 - 
-            Updates:        Added ability to display Rich Text fields  
-            Eric Smith -    Bug Fix: Fixed error when selecting column action of WrapText or ClipText  
+**09/20/20 -  Kevin Hart -    Version 2.44** - 
+            **Updates:**        Added ability to display Rich Text fields  
+            Eric Smith -    **Bug Fix:** Fixed error when selecting column action of WrapText or ClipText  
                 
-09/01/20 -  Eric Smith -    Version 2.43 -  
-            Bug Fix:        Update Percent Field Handling and set Formula Fields to be Non-Editable  
+**09/01/20 -  Eric Smith -    Version 2.43** -  
+            **Bug Fix:**        Update Percent Field Handling and set Formula Fields to be Non-Editable  
               
-08/26/20 -  Eric Smith -    Version 2.42 -  
-            Bug Fix:        Update Time fields with the User's Timezone Offset value so they display as intended  
-            Bug Fix:        Fix field type so Datetime fields display correctly    
+**08/26/20 -  Eric Smith -    Version 2.42** -  
+            **Bug Fix:**        Update Time fields with the User's Timezone Offset value so they display as intended  
+            **Bug Fix:**        Fix field type so Datetime fields display correctly    
                 
-08/14/20 -  Eric Smith -    Version 2.41 -     
-            Bug Fix:        Fixed issue with time and date-time fields being displayed as a day earlier     
+**08/14/20 -  Eric Smith -    Version 2.41** -     
+            **Bug Fix:**        Fixed issue with time and date-time fields being displayed as a day earlier     
                
-08/11/20 -  Eric Smith -    Version 2.40 -  
-            Updates:        Added attribute to allow the suppression of the record link on the SObject's 'Name' field  
-            Bug Fix:        Fixed code so the 'Name' Field column now sorts correctly  
+**08/11/20 -  Eric Smith -    Version 2.40** -  
+            **Updates:**        Added attribute to allow the suppression of the record link on the SObject's 'Name' field  
+            **Bug Fix:**        Fixed code so the 'Name' Field column now sorts correctly  
               
-07/31/20 -  Eric Smith -    Version 2.39 -   
-            Updates:        Added Datatable Configuration Helper Flow  
-            REQUIRES:       Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)  
-            REQUIRES:       Dual List Box (https://unofficialsf.com/duallistbox/)   
-            REQUIRES:       Remote Site Setting (Setup)
+**07/31/20 -  Eric Smith -    Version 2.39** -   
+            **Updates:**        Added Datatable Configuration Helper Flow  
+            **REQUIRES:**       Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)  
+            **REQUIRES:**       Dual List Box (https://unofficialsf.com/duallistbox/)   
+            **REQUIRES:**       Remote Site Setting (Setup)
                   
-07/31/20 -  Andy Hass -     Version 2.38 -  
-            Updates:        Added support for Checkbox Field Type
+**07/31/20 -  Andy Hass -     Version 2.38** -  
+            **Updates:**        Added support for Checkbox Field Type
                 
-07/07/20 -  Eric Smith -    Version 2.37 -    
-            Bug Fix:        Fixed issue with the date being displayed as a day earlier   
+**07/07/20 -  Eric Smith -    Version 2.37** -    
+            **Bug Fix:**        Fixed issue with the date being displayed as a day earlier   
               
-07/01/20 -  Eric Smith -    Version 2.36 -  
-            Updates:        Now displays the primary "Name" field as a Link (textWrap = true)  
+**07/01/20 -  Eric Smith -    Version 2.36** -  
+            **Updates:**        Now displays the primary "Name" field as a Link (textWrap = true)  
                             Added button in Config Mode to round off Column Width values  
               
-06/30/20 -  Eric Smith -    Version 2.35 -  
-            Updates:        Extended Configuration Mode to handle Column Alignments, Labels, Widths, Allow Edit & Allow Filter  
+**06/30/20 -  Eric Smith -    Version 2.35** -  
+            **Updates:**        Extended Configuration Mode to handle Column Alignments, Labels, Widths, Allow Edit & Allow Filter  
                             Added Configuration Mode buttons to select all columns for Edit and/or Filter  
                             Selecting an attribute string now copies the contents into the system Clipboard  
                               
-06/24/20 -  Eric Smith -    Version 2.34 -  
-            Updates:        Added Configuration Mode parameter (Used by Datatable Configuration Flow)  
-            Bug Fix:        Fixed issue with column widths resetting when filtering  
+**06/24/20 -  Eric Smith -    Version 2.34** -  
+            **Updates:**        Added Configuration Mode parameter (Used by Datatable Configuration Flow)  
+            **Bug Fix:**        Fixed issue with column widths resetting when filtering  
   
-06/19/20 -  Eric Smith -    Version 2.33 -  
-            Updates:        Removed default value for Table Height
-            Bug Fix:        Fixed issue with lookup fields being blank in the first record                                                    
+**06/19/20 -  Eric Smith -    Version 2.33** -  
+            **Updates:**        Removed default value for Table Height
+            **Bug Fix:**        Fixed issue with lookup fields being blank in the first record                                                    
   
-06/03/20 -  Eric Smith -    Version 2.32 -  
-            Bug Fix:        Fixed error when editing more than one column in a single row while suppressing the Cancel/Save buttons
+**06/03/20 -  Eric Smith -    Version 2.32** -  
+            **Bug Fix:**        Fixed error when editing more than one column in a single row while suppressing the Cancel/Save buttons
   
-06/03/20 -  Eric Smith -    Version 2.31 -  
-            Updates:        Changed SObjectController to SObjectController2 to allow for easier deployment to orgs 
+**06/03/20 -  Eric Smith -    Version 2.31** -  
+            **Updates:**        Changed SObjectController to SObjectController2 to allow for easier deployment to orgs 
                             that already have an earlier version of the datatable component    
                                                                                    
-06/03/20 -  Eric Smith -    Version 2.3 -  
-            Updates:        Changed SObjectController to SObjectController2 to allow for easier deployment to orgs 
+**06/03/20 -  Eric Smith -    Version 2.3** -  
+            **Updates:**        Changed SObjectController to SObjectController2 to allow for easier deployment to orgs 
                             that already have an earlier version of the datatable component
   
-06/03/20 -  Eric Smith -    Version 2.2 -  
-            Enhancements:   Added datatable border attribute
-            Updates:        Fixed attribute parsing, Fixed Spinner
+**06/03/20 -  Eric Smith -    Version 2.2** -  
+            **Enhancements:**   Added datatable border attribute
+            **Updates:**        Fixed attribute parsing, Fixed Spinner
   
-06/01/20 -  Eric Smith -    Version 2.1 -  
-            Enhancements:   Updated with features from v1.2 & v1.3                                                
+**06/01/20 -  Eric Smith -    Version 2.1** -  
+            **Enhancements:**   Updated with features from v1.2 & v1.3                                                
   
-04/22/20 -  Eric Smith -    Version 2.0 (Summer '20) -  
-            Enhancements:   Summer '20 New Feature - Dynamic Object Type
+**04/22/20 -  Eric Smith -    Version 2.0 (Summer '20)** -  
+            **Enhancements:**   Summer '20 New Feature - Dynamic Object Type
                             One version of the component now supports ALL Standard & Custom SObjects
   
-05/23/20 -  Eric Smith -    Version 1.3 -  
-            Updates:        Added support for a serialized JSON string of records of a user defined object
+**05/23/20 -  Eric Smith -    Version 1.3** -  
+            **Updates:**        Added support for a serialized JSON string of records of a user defined object
                             Added an attribute to specify the height of the datatable
                             Bug Fix - Fixed error when editing multiple rows           
   
-05/06/20 -  Eric Smith -    Version 1.2 -  
-            Updates:        Handle lookup Objects without a Name field & 
+**05/06/20 -  Eric Smith -    Version 1.2** -  
+            **Updates:**        Handle lookup Objects without a Name field & 
                             Trap non-updatable Master/Detail fields
   
-04/14/20 -  Eric Smith -    Version 1.1 -  
-            Enhancements:   New Column Attribute to support column filtering  
+**04/14/20 -  Eric Smith -    Version 1.1** -  
+            **Enhancements:**   New Column Attribute to support column filtering  
   
-04/01/20 -  Eric Smith -    Version 1.0 -  
-Features:   The only required paramters are the SObject collection of records and a list of field API names  
+**04/01/20 -  Eric Smith -    Version 1.0** -  
+**Features:**   The only required paramters are the SObject collection of records and a list of field API names  
             The field label and field type will default to what is defined in the object  
             Numeric fields will display with the correct number of decimal places as defined in the object  
             Lookup fields are supported and will display the referenced record's name field as a clickable link  

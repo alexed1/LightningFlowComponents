@@ -44,7 +44,8 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
     QueryNRecords   
     SObjectController2  
     
-Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm
+Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
+
 ---    
 Because the Datatable Configuration Helper uses Metadata APIs, you’ll need to have a Remote Site Setting on the org. If you don’t, you’ll see an error like this:
     

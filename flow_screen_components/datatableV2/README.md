@@ -41,7 +41,7 @@ Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)
 
 This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  
 
-In order to use the datatableV2 LWC, permission must be given to access the following Apex Classes:  
+In order to use **datatableV2**, permission must be given to access the following Apex Classes:  
 
     QueryNRecords   
     SObjectController2  

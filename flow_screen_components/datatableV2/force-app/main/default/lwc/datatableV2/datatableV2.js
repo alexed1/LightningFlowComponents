@@ -1,12 +1,12 @@
 /**
  * Lightning Web Component for Flow Screens:       datatableV2
  * 
- * VERSION:             2.47
+ * VERSION:             2.48
  * 
  * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
 **/
 
-const VERSION_NUMBER = 2.47;
+const VERSION_NUMBER = 2.48;
 
 import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
@@ -31,6 +31,7 @@ export default class DatatableV2 extends LightningElement {
     @api columnOtherAttribs = [];
     @api columnTypeAttribs = [];
     @api columnWidths = [];
+    @api columnWraps = [];
     @api keyField = 'Id';
     @api matchCaseOnFilters;
     @api maxNumberOfRows;
@@ -131,6 +132,7 @@ export default class DatatableV2 extends LightningElement {
     @api typeAttribs = [];
     @api typeAttributes;
     @api widths = [];
+    @api wraps = [];
     @api lookups = [];
     @api cols = [];
     @api attribCount = 0;
@@ -144,6 +146,7 @@ export default class DatatableV2 extends LightningElement {
     @track columnAlignmentParameter;
     @track columnLabelParameter;
     @track columnWidthParameter;
+    @track columnWrapParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
 
@@ -165,7 +168,10 @@ export default class DatatableV2 extends LightningElement {
 
     connectedCallback() {
 
-        console.log("VERSION_NUMBER", VERSION_NUMBER);
+        // Display the component version number in the console log
+        const logStyleText = 'color: green; font-size: 16px';
+        const logStyleNumber = 'color: red; font-size: 16px';
+        console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
 
         // JSON input attributes
         if (this.isUserDefinedObject) {
@@ -300,7 +306,6 @@ export default class DatatableV2 extends LightningElement {
                     column: this.columnReference(type),
                     type: this.columnValue(type)
                 });
-                console.log('*UD type',type);
                 this.basicColumns[this.columnReference(type)].type = this.columnValue(type);
             });
         }
@@ -312,6 +317,16 @@ export default class DatatableV2 extends LightningElement {
             this.widths.push({
                 column: this.columnReference(width),
                 width: parseInt(this.columnValue(width))
+            });
+        });
+
+        // Parse Column Wrap attribute
+        const parseWraps = (this.columnWraps.length > 0) ? this.columnWraps.replace(/\s/g, '').split(',') : [];
+        this.attribCount = (parseWraps.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
+        parseWraps.forEach(wrap => {
+            this.wraps.push({
+                column: this.columnReference(wrap),
+                wrap: this.columnValue(wrap)
             });
         });
 
@@ -621,7 +636,6 @@ export default class DatatableV2 extends LightningElement {
         let lufield = '';
 
         this.basicColumns.forEach(colDef => {
-console.log('COLDEF',colDef);
             // Standard parameters
             let label = colDef['label'];
             let fieldName = colDef['fieldName'];
@@ -632,6 +646,7 @@ console.log('COLDEF',colDef);
             let editAttrib = [];
             let filterAttrib = [];
             let widthAttrib = [];
+            let wrapAttrib = [];
             this.typeAttrib.type = type;          
 
             // Update Alignment attribute overrides by column
@@ -751,6 +766,9 @@ console.log('COLDEF',colDef);
             // Update Width attribute overrides by column
             widthAttrib = this.widths.find(i => i['column'] == columnNumber);
 
+            // Update Wrap attribute overrides by column
+            wrapAttrib = this.wraps.find(i => i['column'] == columnNumber);
+
             // Set default typeAttributes based on data type
             switch(type) {
                 case 'date':
@@ -825,7 +843,8 @@ console.log('COLDEF',colDef);
                 editable: (editAttrib) ? editAttrib.edit : false,
                 actions: (filterAttrib.filter) ? filterAttrib.actions : null,
                 sortable: 'true',
-                initialWidth: (widthAttrib) ? widthAttrib.width : null
+                initialWidth: (widthAttrib) ? widthAttrib.width : null,
+                wrapText: (wrapAttrib) ? wrapAttrib.wrap : false
             });
             console.log('this.cols',this.cols);
 
@@ -1040,13 +1059,13 @@ console.log('COLDEF',colDef);
     handleHeaderAction(event) {
         // Handle Set Filter and Clear Filter
         const actionName = event.detail.action.name;
-        if (actionName.substr(actionName.length - 4) == 'Text') {   // Exit if system header action of wrapText or clipText
+        if (!this.isConfigMode && actionName.substr(actionName.length - 4) == 'Text') {   // Exit if system header action of wrapText or clipText
             return;
         }
         this.isFiltered = false;
         const colDef = event.detail.columnDefinition;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        this.columnNumber = Number(actionName.split("_")[1]);
+        this.columnNumber = Number(colDef.actions[0].name.split("_")[1]);
         this.baseLabel = this.filterColumns[this.columnNumber].label.split(' [')[0];
         const prompt = (this.isConfigMode) ? 'Label' : 'Filter';
         this.inputLabel = 'Column ' + prompt + ': ' + this.baseLabel;
@@ -1089,6 +1108,18 @@ console.log('COLDEF',colDef);
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'afilter_'+this.columnNumber).checked ^= true;    // Flip True-False Value
                 this.columns = [...this.filterColumns]; 
                 this.updateFilterParam();
+                break;
+
+            case 'wrapText': // Config Mode Only
+                this.filterColumns[this.columnNumber].wrapText = true;
+                this.columns = [...this.filterColumns];
+                this.updateWrapParam();
+                break;
+
+            case 'clipText':
+                this.filterColumns[this.columnNumber].wrapText = false;
+                this.columns = [...this.filterColumns];
+                this.updateWrapParam();
                 break;
 
             case 'label':   // Config Mode Only
@@ -1203,8 +1234,8 @@ console.log('COLDEF',colDef);
 
     setWidth(sizes) {
         // Update the column width values and the Config Mode parameter
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
         let colWidthsTotal = 0;
         this.basicColumns.forEach(colDef => {
             this.columns[colNum]['initialWidth'] = sizes[colNum];
@@ -1229,7 +1260,7 @@ console.log('COLDEF',colDef);
     handleSelectAllEdit(event) {
         // Set the Allow Edit Value to True for All Columns
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        var colNum = 0;
+        let colNum = 0;
         this.filterColumns.forEach(colDef => {
             colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = true;
             colNum += 1;
@@ -1242,7 +1273,7 @@ console.log('COLDEF',colDef);
     handleSelectAllFilter(event) {
         // Set the Allow Edit Value to True for All Columns
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        var colNum = 0;
+        let colNum = 0;
         this.filterColumns.forEach(colDef => {
             colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = true;
             colNum += 1;
@@ -1269,7 +1300,7 @@ console.log('COLDEF',colDef);
         // Close the input dialog and handle the new column filter value
         this.isOpenFilterInput = false; 
         if (this.columnType == 'boolean') {
-            var firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
+            let firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
             if (firstChar == 't' || firstChar == 'y' || firstChar == '1') { // True, Yes, 1 - allow multiple ways to select a True value
                 this.columnFilterValue = 'true';
             } else {
@@ -1306,11 +1337,11 @@ console.log('COLDEF',colDef);
                 if (!this.isConfigMode) {
                     const rows = [...this.savePreEditData];
                     const cols = this.columnFilterValues;
-                    var filteredRows = [];
+                    let filteredRows = [];
                     rows.forEach(row => {
-                        var match = true;
-                        for (var col = 0; col < cols.length; col++) {
-                            var fieldName = this.filterColumns[col].fieldName;
+                        let match = true;
+                        for (let col = 0; col < cols.length; col++) {
+                            let fieldName = this.filterColumns[col].fieldName;
                             if (fieldName.endsWith('_lookup')) {
                                 fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
                             }                
@@ -1334,8 +1365,8 @@ console.log('COLDEF',colDef);
                                         }
                                         break;
                                     default:
-                                        var fieldValue = row[fieldName].toString();
-                                        var filterValue = this.columnFilterValues[col];
+                                        let fieldValue = row[fieldName].toString();
+                                        let filterValue = this.columnFilterValues[col];
                                         if (!this.matchCaseOnFilters) {
                                             fieldValue = fieldValue.toLowerCase();
                                             filterValue = filterValue.toLowerCase();
@@ -1366,8 +1397,8 @@ console.log('COLDEF',colDef);
 
     updateAlignmentParam() {
         // Create the Alignment Label parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
         this.filterColumns.forEach(colDef => {
             let configAlign = (this.convertType(colDef['type']) != 'number') ? 'left' : 'right';
             if (colDef['cellAttributes']['alignment'] != configAlign) {
@@ -1380,8 +1411,8 @@ console.log('COLDEF',colDef);
 
     updateLabelParam() {
         // Create the Column Label parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
         this.basicColumns.forEach(colDef => {
             if (colDef['label'] != this.filterColumns[colNum].label) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].label;
@@ -1391,11 +1422,24 @@ console.log('COLDEF',colDef);
         this.columnLabelParameter = colString.substring(2);
     }
 
+    updateWrapParam() { 
+        // Create the Column WrapText parameter for Config Mode
+        let colNum = 0;
+        let colString = '';
+        this.basicColumns.forEach(colDef => {
+            if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
+                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
+            }
+            colNum += 1;
+        });
+        this.columnWrapParameter = colString.substring(2);    
+    }
+
     updateEditParam() {
         // Create the Column Edit parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
-        var allSelected = true;
+        let colNum = 0;
+        let colString = '';
+        let allSelected = true;
         this.filterColumns.forEach(colDef => {
             if (colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked) {          
                 colString = colString + ', ' + colDef['fieldName'] + ':true';   
@@ -1410,9 +1454,9 @@ console.log('COLDEF',colDef);
 
     updateFilterParam() {
         // Create the Column Filter parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
-        var allSelected = true;
+        let colNum = 0;
+        let colString = '';
+        let allSelected = true;
         this.filterColumns.forEach(colDef => {
             if (colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked) {
                 colString = colString + ', ' + colDef['fieldName'] + ':true';

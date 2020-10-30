@@ -39,10 +39,10 @@
             <property name="columnFields" label="_ Column Fields" type="String" role="inputOnly" description="REQUIRED: Comma separated list of field API Names to display in the datatable."/>
             <property name="columnAlignments" label="- Column Alignments (Col#:alignment,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Alignment Value (left,center,right).  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
-            <property name="columnEdits" label="- Column Edits (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:True or False  
+            <property name="columnEdits" label="- Column Edits (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:true or false  
                 --  NOTE: Some data types cannot be edited in a datable (lookup, picklist, location, encrypted, rich text, long text area)
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
-            <property name="columnFilters" label="- Column Filters (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:True or False  
+            <property name="columnFilters" label="- Column Filters (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:true or false  
                 --  NOTE: Some data types cannot be filtered in a datable (location, encrypted)
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnIcons" label="- Column Icons (Col#:icon,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)  
@@ -54,6 +54,8 @@
             <property name="columnTypes" label="- Column Field Types (Col#:type,...) (User Defined)" type="String" role="inputOnly" description="Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnWidths" label="- Column Widths (Col#:width,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Width (in pixels).  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnWraps" label="- Column Wraps (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnCellAttribs" label=". Special: Column CellAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"/>
             <property name="columnOtherAttribs" label=". Special: Column Other Attributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"/>

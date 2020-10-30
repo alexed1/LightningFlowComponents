@@ -48,18 +48,6 @@ In order to use **datatableV2**, permission must be given to access the followin
     
 Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
 
----    
-Because the Datatable Configuration Helper uses Metadata APIs, you’ll need to have a Remote Site Setting on the org. If you don’t, you’ll see an error like this:
-    
-`Metadata Transfer
-Job Status: Error: "IO Exception: Unauthorized endpoint, please check Setup->Security->Remote site settings. endpoint = https://test35-dev-ed--c.visualforce.com/services/Soap/m/42.0"`
-    
-To address this, copy the root url from the error message and go to Setup –> Remote Site Settings and create a new setting.
-
-![Remote Site Setting](RemoteSiteSetting.PNG?raw=true)
-    
-This configures your org to essentially allow applications to run that call out to the internet and then back into the same org via its API endpoints.
-
 ---
 ## Release Notes
 10/14/20 -  Eric Smith -    Version 2.47 -  

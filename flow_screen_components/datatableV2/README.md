@@ -47,10 +47,10 @@ In order to use **datatableV2**, permission must be given to access the followin
     
 ---
 ## Release Notes
-10/14/20 -  Eric Smith -    Version 2.47 -  
+**10/14/20 -  Eric Smith -    Version 2.47** -  
             Bug Fix:        Display correct icon for Table Header (was always showing standard:account icon)
   
-10/07/20 -  Eric Smith -    Version 2.46 -  
+**10/07/20 -  Eric Smith -    Version 2.46** -  
             Updates:        Added new Output Parameter for the # of Selected Records 
                             (this can be used for conditional visibility on the same screen as the datatable)   
                             New Selected Record Output Parameter - Returns an SObject record if just a single record is selected 

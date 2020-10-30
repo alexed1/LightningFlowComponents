@@ -29,7 +29,7 @@
         <actionName>QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Debug_Screen</targetReference>
+            <targetReference>Wizard_Screen</targetReference>
         </connector>
         <inputParameters>
             <name>objectApiName</name>
@@ -55,6 +55,22 @@
         </outputParameters>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
+    <assignments>
+        <name>Set_Debug_Mode</name>
+        <label>Set Debug Mode</label>
+        <locationX>246</locationX>
+        <locationY>203</locationY>
+        <assignmentItems>
+            <assignToReference>vDebugMode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Manual_Field_List</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
@@ -161,68 +177,6 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <screens>
-        <name>Debug_Screen</name>
-        <label>Debug Screen</label>
-        <locationX>990</locationX>
-        <locationY>203</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>PleaseWaitMsg</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Please wait while the next section of this Flow is deployed.&lt;/b&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>debug</name>
-            <fieldText>&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>WizardTable</name>
-            <dataTypeMappings>
-                <typeName>T</typeName>
-                <typeValue>Account</typeValue>
-            </dataTypeMappings>
-            <extensionName>c:datatableV2</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>isConfigMode</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnFields</name>
-                <value>
-                    <elementReference>vFieldList</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>isUserDefinedObject</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableDataString</name>
-                <value>
-                    <elementReference>vRecordList</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>hideCheckboxColumn</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
     <screens>
         <name>Manual_Field_List</name>
         <label>Manual Field List</label>
@@ -344,11 +298,81 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>Wizard_Screen</name>
+        <label>Wizard Screen</label>
+        <locationX>988</locationX>
+        <locationY>203</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>debug</name>
+            <fieldText>&lt;p&gt;Debug Mode: {!vDebugMode}&lt;/p&gt;&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vDebugMode</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>WizardTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>Account</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatableV2</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>isConfigMode</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <elementReference>vFieldList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isUserDefinedObject</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableDataString</name>
+                <value>
+                    <elementReference>vRecordList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideCheckboxColumn</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>wizColumnLabels</assignToReference>
+                <name>wizColumnLabels</name>
+            </outputParameters>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
     <start>
         <locationX>270</locationX>
         <locationY>49</locationY>
         <connector>
-            <targetReference>Manual_Field_List</targetReference>
+            <targetReference>Set_Debug_Mode</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -359,6 +383,16 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vDebugMode</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>vFieldList</name>
@@ -380,5 +414,12 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>wizColumnLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
     </variables>
 </Flow>

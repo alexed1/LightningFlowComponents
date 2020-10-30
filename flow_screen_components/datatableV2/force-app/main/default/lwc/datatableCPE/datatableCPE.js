@@ -2,7 +2,8 @@ import {LightningElement, track, api} from 'lwc';
 
 const defaults = {
     apexDefinedTypeInputs: false,
-    inputAttributePrefix: 'select_'
+    inputAttributePrefix: 'select_',
+    wizardAttributePrefix: 'wiz_'
 };
 
 export default class DatatableCPE extends LightningElement {
@@ -163,7 +164,8 @@ export default class DatatableCPE extends LightningElement {
 
     settings = { 
         attributeObjectName: 'objectName',
-        attributeFieldName: 'fieldName'
+        attributeFieldName: 'fieldName',
+        flowDataTypeString: 'String',
     }
 
     selectDataSourceOptions = [
@@ -341,6 +343,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
+        console.log('Dispatching',id, newValue, newValueDataType);
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,
             cancelable: false,
@@ -369,15 +372,15 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
+    // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        console.log('STATUS CHANGE', event.detail.flowParams);  // These are values coming back from the Wizard Flow
         event.detail.flowParams.forEach(attribute => { 
             console.log('Flow, Field, Value, Type', attribute.flowName, attribute.name, attribute.value, attribute.dataType);
-            // if (attribute.name.substring(0,2) == 'wiz') {
-                // let wizardAttribute = attribute.name.replace('wiz','');
-                // this.inputValues[wizardAttribute].value = attribute.value;
-                // this.dispatchFlowValueChangeEvent(attribute.name, attribute.value, attribute.dataType);
-            // }
+            if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
+                let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');
+                this.inputValues[changedAttribute].value = attribute.value;
+                this.dispatchFlowValueChangeEvent(changedAttribute, attribute.value, attribute.dataType);
+            }
         });
     }
 

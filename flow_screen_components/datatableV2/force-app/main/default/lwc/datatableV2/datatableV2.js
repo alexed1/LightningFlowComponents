@@ -62,6 +62,9 @@ export default class DatatableV2 extends LightningElement {
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
+    // Configuration Wizard Only - Output Attributes
+    @api wizColumnLabels;
+
     // JSON Version Variables
     @api scales = [];
     @api types = [];
@@ -1420,8 +1423,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnLabelParameter = colString.substring(2);
-        this.dispatchFlowValueChangeEvent('columnLabels', this.columnLabelParameter, 'String');
-console.log('DISPATCHED FROM WIZARD','columnLabels', this.columnLabelParameter, 'String');
+        this.wizColumnLabels = this.columnLabelParameter;
     }
 
     updateWrapParam() { 
@@ -1471,24 +1473,24 @@ console.log('DISPATCHED FROM WIZARD','columnLabels', this.columnLabelParameter, 
         this.isAllFilter = allSelected;
     }
 
-    dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
-        // When datatable LWC is running in configuration mode -
-        // Send values back to the Datatable Configuration Wizard Flow -
-        // Which passes them back to the datatableCPE LWC as Output Variables -
-        // Which dispatches them to the Flow where a datatable LWC is being configured
-        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
-            bubbles: true,
-            cancelable: false,
-            composed: true,
-            detail: {
-                name: id,
-                newValue: newValue ? newValue : null,
-                newValueDataType: newValueDataType
-            }
-        });
-        this.dispatchEvent(valueChangedEvent);
-console.log('DISPATCHED EVENT', valueChangedEvent.detail);
-    }
+//     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
+//         // When datatable LWC is running in configuration mode -
+//         // Send values back to the Datatable Configuration Wizard Flow -
+//         // Which passes them back to the datatableCPE LWC as Output Variables -
+//         // Which dispatches them to the Flow where a datatable LWC is being configured
+//         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+//             bubbles: true,
+//             cancelable: false,
+//             composed: true,
+//             detail: {
+//                 name: id,
+//                 newValue: newValue ? newValue : null,
+//                 newValueDataType: newValueDataType
+//             }
+//         });
+//         this.dispatchEvent(valueChangedEvent);
+// console.log('DISPATCHED EVENT', valueChangedEvent.detail);
+//     }
 
     @api
     validate() {

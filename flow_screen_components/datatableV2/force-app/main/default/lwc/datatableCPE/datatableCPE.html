@@ -236,6 +236,18 @@
         modal-header-color={modalHeaderColorAdvancedOverride}
     ></c-fsc_flow-banner>
 
+    <!-- Column Labels -->
+    <c-fsc_flow-combobox 
+        name="select_columnLabels" 
+        label={inputValues.columnLabels.label}
+        value={inputValues.columnLabels.value} 
+        value-type={inputValues.columnLabels.valueDataType}
+        field-level-help={inputValues.columnLabels.helpText}
+        builder-context-filter-collection-boolean={inputValues.columnLabels.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fsc_flow-combobox>
+
     <!-- Apex Defined Object? -->
     <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox" 

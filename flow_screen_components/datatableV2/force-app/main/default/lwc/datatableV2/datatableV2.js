@@ -1420,12 +1420,14 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnLabelParameter = colString.substring(2);
+        this.dispatchFlowValueChangeEvent('columnLabels', this.columnLabelParameter, 'String');
+console.log('DISPATCHED FROM WIZARD','columnLabels', this.columnLabelParameter, 'String');
     }
 
     updateWrapParam() { 
         // Create the Column WrapText parameter for Config Mode
         let colNum = 0;
-        let colString = '';
+        var colString = '';
         this.basicColumns.forEach(colDef => {
             if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
@@ -1467,6 +1469,25 @@ export default class DatatableV2 extends LightningElement {
         });
         this.columnFilterParameter = (allSelected) ? 'All' : colString.substring(2);
         this.isAllFilter = allSelected;
+    }
+
+    dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
+        // When datatable LWC is running in configuration mode -
+        // Send values back to the Datatable Configuration Wizard Flow -
+        // Which passes them back to the datatableCPE LWC as Output Variables -
+        // Which dispatches them to the Flow where a datatable LWC is being configured
+        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+            detail: {
+                name: id,
+                newValue: newValue ? newValue : null,
+                newValueDataType: newValueDataType
+            }
+        });
+        this.dispatchEvent(valueChangedEvent);
+console.log('DISPATCHED EVENT', valueChangedEvent.detail);
     }
 
     @api

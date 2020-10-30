@@ -87,6 +87,9 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'Object Collection string variable containing the records to display in the datatable.'},
         preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', 
             helpText: 'Object Collection string variable containing the records to show as pre-selected in the datatable.'},
+        columnLabels: {value: null, valueDataType: null, isCollection: false, label: 'Column Labels (Col#:label,...)', 
+            helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', 
             helpText: 'Provide a value here if you want a header label to appear above the datatable.'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Icon to display on the Table Header', 
@@ -151,6 +154,7 @@ export default class DatatableCPE extends LightningElement {
         },
         {name: 'advancedAttributes',
             attributes: [
+                {name: 'columnLabels'},
                 {name: 'isUserDefinedObject'},
                 {name: 'keyField'}
             ]
@@ -368,7 +372,12 @@ export default class DatatableCPE extends LightningElement {
     handleFlowStatusChange(event) {
         console.log('STATUS CHANGE', event.detail.flowParams);  // These are values coming back from the Wizard Flow
         event.detail.flowParams.forEach(attribute => { 
-            console.log('Field, Value', attribute.name, attribute.value);
+            console.log('Flow, Field, Value, Type', attribute.flowName, attribute.name, attribute.value, attribute.dataType);
+            // if (attribute.name.substring(0,2) == 'wiz') {
+                // let wizardAttribute = attribute.name.replace('wiz','');
+                // this.inputValues[wizardAttribute].value = attribute.value;
+                // this.dispatchFlowValueChangeEvent(attribute.name, attribute.value, attribute.dataType);
+            // }
         });
     }
 

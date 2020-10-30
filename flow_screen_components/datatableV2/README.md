@@ -48,10 +48,10 @@ In order to use **datatableV2**, permission must be given to access the followin
 ---
 ## Release Notes
 **10/14/20 -  Eric Smith -    Version 2.47** -  
-            Bug Fix:        Display correct icon for Table Header (was always showing standard:account icon)
+            **Bug Fix:**        Display correct icon for Table Header (was always showing standard:account icon)
   
 **10/07/20 -  Eric Smith -    Version 2.46** -  
-            Updates:        Added new Output Parameter for the # of Selected Records 
+            **Updates:**        Added new Output Parameter for the # of Selected Records 
                             (this can be used for conditional visibility on the same screen as the datatable)   
                             New Selected Record Output Parameter - Returns an SObject record if just a single record is selected 
                             New Required? Parameter - Requires the user to select at least 1 row to proceed  
@@ -61,7 +61,7 @@ In order to use **datatableV2**, permission must be given to access the followin
                             Added spinners while sorting & filtering data  
                             Allow case insensitive field API names  
                             Allow custom field API names w/o the __c suffix  
-            Bug Fixes:      Display Picklist Labels instead of API Names for Picklist and Multipicklist fields  
+            **Bug Fixes:**      Display Picklist Labels instead of API Names for Picklist and Multipicklist fields  
                             Added a Clear Selection button for tables with just a single record
   
 09/22/20 -  Eric Smith -    Version 2.45 -  
@@ -171,23 +171,3 @@ Features:   The only required paramters are the SObject collection of records an
                 - Other Custom Column Attributes including those with nested values {name: {name:value}}
   
 ---
-
-Copyright (c) 2020, Eric Smith
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided 
-that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer 
-in the documentation and/or other materials provided with the distribution.
-
-3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived 
-from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, 
-BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
-SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
-DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
-NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

@@ -8,9 +8,6 @@ Additional components packaged with this LWC:
 
                     Apex Classes:   SObjectController2 
                                     SObjectController2Test
-                            
-                    Flows:          Datatable Configuration Helper
-                                    Datatable Configuration Helper - Temp SubFlow
                                                   
 **Documentation:**  https://unofficialsf.com/datatablev2-lightning-web-component-for-flow-screens/  
   
@@ -37,22 +34,17 @@ Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)
 </a>
  
 ---
-**Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**
-This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  In order to use the datatableV2 LWC, permission must be given to access the following Apex Classes:
-    `QueryNRecords 
-    SObjectController2`
----    
-Because the Datatable Configuration Helper uses Metadata APIs, you’ll need to have a Remote Site Setting on the org. If you don’t, you’ll see an error like this:
-    
-`Metadata Transfer
-Job Status: Error: "IO Exception: Unauthorized endpoint, please check Setup->Security->Remote site settings. endpoint = https://test35-dev-ed--c.visualforce.com/services/Soap/m/42.0"`
-    
-To address this, copy the root url from the error message and go to Setup –> Remote Site Settings and create a new setting.
+**Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
 
-![Remote Site Setting](RemoteSiteSetting.PNG?raw=true)
-    
-This configures your org to essentially allow applications to run that call out to the internet and then back into the same org via its API endpoints.
+Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
 
+This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  
+
+In order to use **datatableV2**, permission must be given to access the following Apex Classes:  
+
+    QueryNRecords   
+    SObjectController2  
+    
 ---
 ## Release Notes
 10/14/20 -  Eric Smith -    Version 2.47 -  

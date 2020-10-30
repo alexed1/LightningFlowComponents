@@ -8,11 +8,14 @@ const defaults = {
 export default class DatatableCPE extends LightningElement {
 
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
-    _bannerColor = '#4C6E96';    //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
     _bannerClass = 'slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small';
-    _colorAdvancedOverride = '#966594';
+    _bannerColor = '#4C6E96';    //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96
     _colorWizardOverride = '#659668';
+    _colorAdvancedOverride = '#966594';
+    _modalHeaderColor = '#657B96';
+    _modalHeaderColorWizardOverride = '#7E967F';
+    _modalHeaderColorAdvancedOverride = '#967E95';
 
     _inputVariables = [];
     _builderContext = [];
@@ -31,11 +34,6 @@ export default class DatatableCPE extends LightningElement {
     wizardHeight = '560';
 
     @api
-    get bannerColor() {
-        return this._bannerColor;
-    }
-
-    @api
     get bannerMargin() {
         return this._bannerMargin;
     }
@@ -46,13 +44,33 @@ export default class DatatableCPE extends LightningElement {
     }
 
     @api
-    get colorAdvancedOverride() { 
-        return this._colorAdvancedOverride;
+    get bannerColor() {
+        return this._bannerColor;
     }
 
     @api
     get colorWizardOverride() { 
         return this._colorWizardOverride;
+    }
+
+    @api
+    get colorAdvancedOverride() { 
+        return this._colorAdvancedOverride;
+    }
+
+    @api
+    get modalHeaderColor() {
+        return this._modalHeaderColor;
+    }
+    
+    @api
+    get modalHeaderColorWizardOverride() {
+        return this._modalHeaderColorWizardOverride;
+    }
+    
+    @api
+    get modalHeaderColorAdvancedOverride() {
+        return this._modalHeaderColorAdvancedOverride;
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
@@ -290,7 +308,7 @@ export default class DatatableCPE extends LightningElement {
     handleHeightChange(event) { 
         this.wizardHeight = event.target.value;
     }
-    
+
     @api
     validate() {
         const validity = [];

@@ -39,6 +39,8 @@ Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
 
+Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
+
 This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  
 
 In order to use **datatableV2**, permission must be given to access the following Apex Classes:  
@@ -46,8 +48,6 @@ In order to use **datatableV2**, permission must be given to access the followin
     QueryNRecords   
     SObjectController2  
     
-Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
-
 ---
 ## Release Notes
 10/14/20 -  Eric Smith -    Version 2.47 -  

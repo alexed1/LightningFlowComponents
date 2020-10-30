@@ -36,6 +36,11 @@ Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
  
+---
+**Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**
+This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  In order to use the datatableV2 LWC, permission must be given to access the following Apex Classes:
+    `QueryNRecords 
+    SObjectController2`
 ---    
 Because the Datatable Configuration Helper uses Metadata APIs, you’ll need to have a Remote Site Setting on the org. If you don’t, you’ll see an error like this:
     

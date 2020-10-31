@@ -1,3 +1,16 @@
+/**
+ * Lightning Web Component for Flow Screens:       datatableCPE
+ * 
+ * When the datatableV2 LWC is running in configuration mode
+ * It sends values back to the Datatable Configuration Wizard Flow
+ * Which passes them back to the datatableCPE LWC as Output Variables
+ * Which dispatches them to the Flow where a datatableV2 LWC is being configured
+ * 
+ * VERSION:             2.48
+ * 
+ * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
+**/
+
 import {LightningElement, track, api} from 'lwc';
 
 const defaults = {
@@ -398,6 +411,7 @@ export default class DatatableCPE extends LightningElement {
     
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
     @track openModal = false;
+
     showModal() {
         this.openModal = true;
     }

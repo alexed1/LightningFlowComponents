@@ -68,16 +68,16 @@
     </c-fsc_flow-combobox>
 
     <!-- =============== Column Wizard Banner =============== -->
-    <c-fsc_flow-banner
-        banner-color={colorWizardOverride}  
-        banner-label={sectionEntries.columnWizard.label}
-        banner-info={sectionEntries.columnWizard.info}
-        modal-header-color={modalHeaderColorWizardOverride}
-    ></c-fsc_flow-banner>
-    
-    <!-- Column Wizard -->
     <div if:true={isObjectSelected}> 
 
+        <c-fsc_flow-banner
+            banner-color={colorWizardOverride}  
+            banner-label={sectionEntries.columnWizard.label}
+            banner-info={sectionEntries.columnWizard.info}
+            modal-header-color={modalHeaderColorWizardOverride}
+        ></c-fsc_flow-banner>
+    
+    <!-- Column Wizard -->
         <div class="slds-box slds-theme_shade slds-m-top_small">
             <div align="center">
                 <lightning-button label="Load Column Wizard" icon-name="utility:lightning_extension" onclick={showModal}></lightning-button>

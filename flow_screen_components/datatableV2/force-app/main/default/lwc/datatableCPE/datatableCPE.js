@@ -102,9 +102,9 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'Select the Object to use in the Datatable'},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', 
             helpText: null},
-        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Datatable Record Collection', 
+        tableData: {value: null, valueDataType: null, isCollection: true, label: 'Display which records?', 
             helpText: 'Record Collection variable containing the records to display in the datatable.'},
-        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Pre-Selected Rows Collection', 
+        preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Which records are already selected?', 
             helpText: 'Record Collection variable containing the records to show as pre-selected in the datatable.'},
         tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', 
             helpText: 'Object Collection string variable containing the records to display in the datatable.'},
@@ -145,7 +145,7 @@ export default class DatatableCPE extends LightningElement {
         columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
-        advancedAttributes: {label: 'Advanced Attributes', info: []}
+        advancedAttributes: {label: 'Advanced', info: []}
     }
 
     helpSections = [ 

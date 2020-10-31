@@ -19,17 +19,26 @@ const defaults = {
     wizardAttributePrefix: 'wiz_'
 };
 
+const COLORS = { 
+    blue: '#4C6E96',    //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96
+    blue_light: '#657B96',
+    green: '#659668',
+    green_light: '#7E967F',
+    red: '#966594',
+    red_light: '#967E95'
+}
+
 export default class DatatableCPE extends LightningElement {
 
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
     _bannerClass = 'slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small';
-    _bannerColor = '#4C6E96';    //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96
-    _colorWizardOverride = '#659668';
-    _colorAdvancedOverride = '#966594';
-    _modalHeaderColor = '#657B96';
-    _modalHeaderColorWizardOverride = '#7E967F';
-    _modalHeaderColorAdvancedOverride = '#967E95';
+    _bannerColor = COLORS.blue;
+    _colorWizardOverride = COLORS.green;
+    _colorAdvancedOverride = COLORS.red;
+    _modalHeaderColor = COLORS.blue_light;
+    _modalHeaderColorWizardOverride = COLORS.green_light;
+    _modalHeaderColorAdvancedOverride = COLORS.red_light;
 
     _inputVariables = [];
     _builderContext = [];

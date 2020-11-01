@@ -25,7 +25,7 @@ export default class BarcodeScanner extends LightningElement {
         // Note: We _also_ disable the Scan button if there's no BarcodeScanner
         if (this.myScanner != null && this.myScanner.isAvailable()) {
             const scanningOptions = {
-                barcodeTypes: [this.myScanner.barcodeTypes.QR]
+                barcodeTypes: []
             };
             this.myScanner
                 .beginCapture(scanningOptions)

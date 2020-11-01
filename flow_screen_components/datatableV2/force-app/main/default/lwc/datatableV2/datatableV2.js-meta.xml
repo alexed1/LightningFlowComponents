@@ -36,7 +36,14 @@
             <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
             
             <!-- Configuration Mode Only - Outputs -->
-            <property name="wizColumnLabels" label="Configuration Wizard Only - Column Labels" type="String" role="outputOnly"/>
+            <property name="wizColumnFields" label="Wizard Only - Column Fields" type="String" role="outputOnly"/>
+            <property name="wizColumnAlignments" label="Wizard Only - Column Alignments" type="String" role="outputOnly"/>
+            <property name="wizColumnEdits" label="Wizard Only - Column Edits" type="String" role="outputOnly"/>
+            <property name="wizColumnFilters" label="Wizard Only - Column Filters" type="String" role="outputOnly"/>
+            <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
+            <property name="wizColumnIcons" label="Wizard Only - Column Icons" type="String" role="outputOnly"/>
+            <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
+            <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
 
             <!-- Forcing sort order of parameters with special characters _(1) -(2) .(3) -->  
             <property name="columnFields" label="_ Column Fields" type="String" role="inputOnly" description="REQUIRED: Comma separated list of field API Names to display in the datatable."/>

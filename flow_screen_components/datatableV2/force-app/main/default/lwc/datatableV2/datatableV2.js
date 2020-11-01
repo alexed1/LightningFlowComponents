@@ -63,7 +63,14 @@ export default class DatatableV2 extends LightningElement {
     @api typeAttrib = [];
     
     // Configuration Wizard Only - Output Attributes
+    @api wizColumnFields;
+    @api wizColumnAlignments;
+    @api wizColumnEdits;
+    @api wizColumnFilters;
     @api wizColumnLabels;
+    @api wizColumnIcons;
+    @api wizColumnWidths;
+    @api wizColumnWraps;
 
     // JSON Version Variables
     @api scales = [];
@@ -375,6 +382,7 @@ export default class DatatableV2 extends LightningElement {
 
             // Set other initial values here
             this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
             this.processDatatable();
@@ -1250,6 +1258,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnWidthParameter = colString.substring(2);
+        this.wizColumnWidths = this.columnWidthParameter;
         this.columnWidthsLabel = `Column Widths: (Total: ${colWidthsTotal})`;
     }
 
@@ -1269,6 +1278,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnEditParameter = 'All';
+        this.wizColumnEdits = this.columnEditParameter;
         this.isAllEdit = true;
         this.columns = [...this.filterColumns]; 
     }
@@ -1282,6 +1292,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnFilterParameter = 'All';
+        this.wizColumnFilters = this.columnFilterParameter;
         this.isAllFilter = true;
         this.columns = [...this.filterColumns]; 
     }
@@ -1409,7 +1420,8 @@ export default class DatatableV2 extends LightningElement {
             }
             colNum += 1;
         });
-        this.columnAlignmentParameter = colString.substring(2);       
+        this.columnAlignmentParameter = colString.substring(2);
+        this.wizColumnAlignments = this.columnAlignmentParameter;      
     }
 
     updateLabelParam() {
@@ -1426,6 +1438,20 @@ export default class DatatableV2 extends LightningElement {
         this.wizColumnLabels = this.columnLabelParameter;
     }
 
+    updateIconParam() {
+        // Create the Column Icon parameter for Config Mode
+        let colNum = 0;
+        let colString = '';
+        this.basicColumns.forEach(colDef => {
+            if (colDef['icon'] != this.filterColumns[colNum].icon) {
+                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].icon;
+            }
+            colNum += 1;
+        });
+        this.columnIconParameter = colString.substring(2);
+        this.wizColumnIcons = this.columnIconParameter;
+    }
+
     updateWrapParam() { 
         // Create the Column WrapText parameter for Config Mode
         let colNum = 0;
@@ -1436,7 +1462,8 @@ export default class DatatableV2 extends LightningElement {
             }
             colNum += 1;
         });
-        this.columnWrapParameter = colString.substring(2);    
+        this.columnWrapParameter = colString.substring(2);
+        this.wizColumnWraps = this.columnWrapParameter;    
     }
 
     updateEditParam() {
@@ -1453,6 +1480,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnEditParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.wizColumnEdits = this.columnEditParameter;
         this.isAllEdit = allSelected;
     }
 
@@ -1470,6 +1498,7 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnFilterParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.wizColumnFilters = this.columnFilterParameter;
         this.isAllFilter = allSelected;
     }
 

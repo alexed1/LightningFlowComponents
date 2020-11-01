@@ -16,7 +16,8 @@ import {LightningElement, track, api} from 'lwc';
 const defaults = {
     apexDefinedTypeInputs: false,
     inputAttributePrefix: 'select_',
-    wizardAttributePrefix: 'wiz_'
+    wizardAttributePrefix: 'wiz_',
+    dualListboxHeight: '570'
 };
 
 const COLORS = { 
@@ -33,10 +34,10 @@ export default class DatatableCPE extends LightningElement {
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
     _bannerClass = 'slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small';
-    _bannerColor = COLORS.blue;
+    _defaultBannerColor = COLORS.blue;
     _colorWizardOverride = COLORS.green;
     _colorAdvancedOverride = COLORS.red;
-    _modalHeaderColor = COLORS.blue_light;
+    _defaultModalHeaderColor = COLORS.blue_light;
     _modalHeaderColorWizardOverride = COLORS.green_light;
     _modalHeaderColorAdvancedOverride = COLORS.red_light;
 
@@ -54,7 +55,8 @@ export default class DatatableCPE extends LightningElement {
     isHideCheckboxColumn = true;
     isAnyEdits = false;
     myBanner = 'My Banner';
-    wizardHeight = '560';
+    wizardHeight = defaults.dualListboxHeight;
+    showColumnAttributesToggle = false;
 
     @api
     get bannerMargin() {
@@ -67,8 +69,8 @@ export default class DatatableCPE extends LightningElement {
     }
 
     @api
-    get bannerColor() {
-        return this._bannerColor;
+    get defaultBannerColor() {
+        return this._defaultBannerColor;
     }
 
     @api
@@ -82,8 +84,8 @@ export default class DatatableCPE extends LightningElement {
     }
 
     @api
-    get modalHeaderColor() {
-        return this._modalHeaderColor;
+    get defaultModalHeaderColor() {
+        return this._defaultModalHeaderColor;
     }
     
     @api
@@ -94,6 +96,11 @@ export default class DatatableCPE extends LightningElement {
     @api
     get modalHeaderColorAdvancedOverride() {
         return this._modalHeaderColorAdvancedOverride;
+    }
+
+    @api
+    get showColumnAttributes() { 
+        return (this.showColumnAttributesToggle || !this.isSObjectInput);
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
@@ -110,8 +117,30 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'Object Collection string variable containing the records to display in the datatable.'},
         preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', 
             helpText: 'Object Collection string variable containing the records to show as pre-selected in the datatable.'},
+        columnFields: {value: null, valueDataType: null, isCollection: false, label: 'Column Fields', 
+            helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable."},  
+        columnAlignments: {value: null, valueDataType: null, isCollection: false, label: 'Column Alignments (Col#:alignment,...)', 
+            helpText: "Comma separated list of ColID:Alignment Value (left,center,right)\n" +   
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnEdits: {value: null, valueDataType: null, isCollection: false, label: 'Column Edits (Col#:true,...) or All', 
+            helpText: "'All' or a Comma separated list of ColID:true or false\n" +   
+            "NOTE: Some data types cannot be edited in a datable (lookup, picklist, location, encrypted, rich text, long text area)\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnFilters: {value: null, valueDataType: null, isCollection: false, label: 'Column Filters (Col#:true,...) or All', 
+            helpText: "'All' or a Comma separated list of ColID:true or false\n" +   
+            "NOTE: Some data types cannot be filtered in a datable (location, encrypted)\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},              
+        columnIcons: {value: null, valueDataType: null, isCollection: false, label: 'Column Icons (Col#:icon,...)', 
+            helpText: "Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         columnLabels: {value: null, valueDataType: null, isCollection: false, label: 'Column Labels (Col#:label,...)', 
             helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnWidths: {value: null, valueDataType: null, isCollection: false, label: 'Column Widths (Col#:width,...)', 
+            helpText: "Comma separated list of ColID:Width (in pixels).\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
+            helpText: "Comma separated list of ColID:true or false (Default:false)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', 
             helpText: 'Provide a value here if you want a header label to appear above the datatable.'},
@@ -155,7 +184,15 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
                 {name: 'tableDataString'},
-                {name: 'preSelectedRowsString'}
+                {name: 'preSelectedRowsString'},
+                {name: 'columnFields'},
+                {name: 'columnAlignments'},
+                {name: 'columnEdits'},
+                {name: 'columnFilters'},
+                {name: 'columnIcons'},
+                {name: 'columnLabels'},
+                {name: 'columnWidths'},
+                {name: 'columnWraps'},
             ]
         },
         {name: 'tableFormatting',
@@ -177,7 +214,6 @@ export default class DatatableCPE extends LightningElement {
         },
         {name: 'advancedAttributes',
             attributes: [
-                {name: 'columnLabels'},
                 {name: 'isUserDefinedObject'},
                 {name: 'keyField'}
             ]
@@ -362,6 +398,10 @@ export default class DatatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
+    }
+
+    handleShowColumnAttributesToggle(event) { 
+        this.showColumnAttributesToggle = !this.showColumnAttributesToggle;
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {

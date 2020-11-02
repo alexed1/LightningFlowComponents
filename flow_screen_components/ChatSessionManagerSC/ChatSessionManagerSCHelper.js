@@ -1,10 +1,8 @@
 ({
-    sendMessage: function(component, event) {
+    sendMessage: function(component, event, sessionIdShort) {
         var conversationKit = component.find("conversationKit");
-        var sessionId = component.get("v.sessionId");
         
-        if (sessionId != null && sessionId != '') {
-            var sessionIdShort = (sessionId.length > 15 ? sessionId.substring(0, 15) : sessionId);
+        if (sessionIdShort != null && sessionIdShort != '') {
             conversationKit.sendMessage({
                 recordId: sessionIdShort,
                 message: {
@@ -21,12 +19,10 @@
         }
     },
     
-    setAgentInput : function(component, event) {
+    loadMessage : function(component, event, sessionIdShort) {
         var conversationKit = component.find("conversationKit");
-        var sessionId = component.get("v.sessionId");
         
-        if (sessionId != null && sessionId != '') {
-            var sessionIdShort = (sessionId.length > 15 ? sessionId.substring(0, 15) : sessionId);
+        if (sessionIdShort != null && sessionIdShort != '') {
             conversationKit.setAgentInput({
                 recordId: sessionIdShort,
                 message: {
@@ -35,20 +31,18 @@
             })
             .then(function(result){
                 if (result) {
-                    console.log("Successfully setAgentInput, message: " + component.get("v.message"));
+                    console.log("Successfully loadMessage, message: " + component.get("v.message"));
                 } else {
-                    console.log("Failed to setAgentInput, message: " + component.get("v.message"));
+                    console.log("Failed to loadMessage, message: " + component.get("v.message"));
                 }
             });
         }
     },
     
-    endChat : function(component, event) {
+    endChat : function(component, event, sessionIdShort) {
         var conversationKit = component.find("conversationKit");
-        var sessionId = component.get("v.sessionId");
         
-        if (sessionId != null && sessionId != '') {
-            var sessionIdShort = (sessionId.length > 15 ? sessionId.substring(0, 15) : sessionId);
+        if (sessionIdShort != null && sessionIdShort != '') {
             conversationKit.endChat({
                 recordId: sessionIdShort
             })
@@ -62,15 +56,11 @@
         }
     },
     
-    initFileTransfer : function(component, event) {
+    requestFile : function(component, event, sessionIdShort, recordIdShort) {
         var conversationKit = component.find("conversationKit");
-        var sessionId = component.get("v.sessionId");
-        var recordId = component.get("v.recordId");
         
-        if (sessionId != null && sessionId != '' && recordId != null && recordId != '') {
-            var sessionIdShort = (sessionId.length > 15 ? sessionId.substring(0, 15) : sessionId);
-            var recordIdShort = (recordId.length > 15 ? recordId.substring(0, 15) : recordId);
-            console.log("AutoSendChatMessage starting conversationKit initFileTransfer on sessionId: " + sessionIdShort + ", recordId: " + recordIdShort);
+        if (sessionIdShort != null && sessionIdShort != '' && recordIdShort != null && recordIdShort != '') {
+            console.log("requestFile on sessionId: " + sessionIdShort + ", recordId: " + recordIdShort);
             conversationKit.initFileTransfer({
                 recordId: sessionIdShort,
                 attachmentRecordId : recordIdShort

@@ -254,10 +254,11 @@
 
     <!-- Other Table Formatting -->
     <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox" 
-        label={inputValues.tableBorder.label} 
+        type="checkbox"
         name="select_tableBorder"
+        label={inputValues.tableBorder.label} 
         checked={inputValues.tableBorder.value} 
+        field-level-help={inputValues.tableBorder.helpText}
         onblur={handleValueChange}
         onchange={handleValueChange}>
     </lightning-input>
@@ -271,16 +272,15 @@
         builder-context={_builderContext} 
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
-    <c-fsc_flow-combobox 
-        name="select_maxNumberOfRows" 
-        label={inputValues.maxNumberOfRows.label}
-        value={inputValues.maxNumberOfRows.value} 
-        value-type={inputValues.maxNumberOfRows.valueDataType}
-        field-level-help={inputValues.maxNumberOfRows.helpText}
-        builder-context-filter-collection-boolean={inputValues.maxNumberOfRows.isCollection}
-        builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
-    </c-fsc_flow-combobox>
+    <lightning-input class="slds-m-vertical_xx-small"
+        type="number"
+        name="select_maxNumberOfRows"
+        label={inputValues.maxNumberOfRows.label} 
+        value={inputValues.maxNumberOfRows.value}
+        field-level-help={inputValues.maxNumberOfRows.helpText} 
+        onblur={handleValueChange}
+        onchange={handleValueChange}>
+    </lightning-input>
 
     <!-- =============== Table Behavior Banner =============== -->
     <c-fsc_flow-banner
@@ -291,17 +291,19 @@
     <!-- Table Behavior Options -->
     <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox" 
-        label={inputValues.suppressNameFieldLink.label} 
         name="select_suppressNameFieldLink"
+        label={inputValues.suppressNameFieldLink.label} 
         checked={inputValues.suppressNameFieldLink.value} 
+        field-level-help={inputValues.suppressNameFieldLink.helpText}
         onblur={handleValueChange}
         onchange={handleValueChange}>
     </lightning-input>
     <lightning-input class="slds-m-vertical_xx-small"
         if:true={isHideCheckboxColumn}
         type="checkbox" 
-        label={inputValues.hideCheckboxColumn.label} 
         name="select_hideCheckboxColumn"
+        label={inputValues.hideCheckboxColumn.label} 
+        field-level-help={inputValues.hideCheckboxColumn.helpText}
         checked={inputValues.hideCheckboxColumn.value} 
         onblur={handleValueChange}
         onchange={handleValueChange}>
@@ -309,8 +311,9 @@
     <lightning-input class="slds-m-vertical_xx-small"
         if:false={isCheckboxColumnHidden}
         type="checkbox" 
-        label={inputValues.isRequired.label} 
         name="select_isRequired"
+        label={inputValues.isRequired.label} 
+        field-level-help={inputValues.isRequired.helpText}
         checked={inputValues.isRequired.value} 
         onblur={handleValueChange}
         onchange={handleValueChange}>
@@ -318,8 +321,9 @@
     <lightning-input class="slds-m-vertical_xx-small"
         if:false={isCheckboxColumnHidden}
         type="checkbox" 
-        label={inputValues.singleRowSelection.label} 
         name="select_singleRowSelection"
+        label={inputValues.singleRowSelection.label} 
+        field-level-help={inputValues.singleRowSelection.helpText}
         checked={inputValues.singleRowSelection.value} 
         onblur={handleValueChange}
         onchange={handleValueChange}>
@@ -336,9 +340,10 @@
     <!-- Apex Defined Object? -->
     <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox" 
-        label={inputValues.isUserDefinedObject.label} 
         name="select_isUserDefinedObject"
+        label={inputValues.isUserDefinedObject.label} 
         checked={inputValues.isUserDefinedObject.value} 
+        field-level-help={inputValues.isUserDefinedObject.helpText}
         onblur={handleValueChange}
         onchange={handleValueChange}>
     </lightning-input>

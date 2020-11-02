@@ -1443,8 +1443,8 @@ export default class DatatableV2 extends LightningElement {
         let colNum = 0;
         let colString = '';
         this.basicColumns.forEach(colDef => {
-            if (colDef['icon'] != this.filterColumns[colNum].icon) {
-                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].icon;
+            if (colDef['icon'] != this.filterColumns[colNum].iconName) {
+                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].iconName;
             }
             colNum += 1;
         });

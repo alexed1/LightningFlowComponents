@@ -279,6 +279,7 @@ export default class DatatableCPE extends LightningElement {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+console.log('INPUT',curInputParam.name,curInputParam.valueDataType);
                 }
             }
         });
@@ -341,6 +342,7 @@ export default class DatatableCPE extends LightningElement {
                 default:
                     curAttributeType = 'String';
             }
+console.log('DISPATCHING',curAttributeName, curAttributeValue, event.target.type);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
@@ -396,6 +398,7 @@ export default class DatatableCPE extends LightningElement {
     handleFlowComboboxValueChange(event) {   
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
+console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newValue, JSON.stringify(event.detail));
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
     }
@@ -464,6 +467,7 @@ export default class DatatableCPE extends LightningElement {
     showModal() {
         this.openModal = true;
     }
+    
     closeModal() {
         this.openModal = false;
     }

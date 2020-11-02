@@ -279,7 +279,7 @@ export default class DatatableCPE extends LightningElement {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
-console.log('INPUT',curInputParam.name,curInputParam.valueDataType);
+console.log('INPUT',curInputParam.name,curInputParam.valueDataType,this.inputValues[curInputParam.name].value);
                 }
             }
         });
@@ -305,7 +305,6 @@ console.log('INPUT',curInputParam.name,curInputParam.valueDataType);
         console.log('handling a dynamic type mapping');
         console.log('event is ' + JSON.stringify(event));
         let typeValue = event.detail.objectType;
-        // let typeName = 'T'; //this is hardcoded, which is bad, and should be a lookup to a setting.
         const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
         console.log('typeValue is: ' + typeValue);
         const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
@@ -324,6 +323,7 @@ console.log('INPUT',curInputParam.name,curInputParam.valueDataType);
         this.inputValues.tableData.value = null;
         this.inputValues.preSelectedRows.value = null;
         this.updateFlowParam('vSObject', typeValue);
+        // this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
     }
 
     handleValueChange(event) {
@@ -342,7 +342,7 @@ console.log('INPUT',curInputParam.name,curInputParam.valueDataType);
                 default:
                     curAttributeType = 'String';
             }
-console.log('DISPATCHING',curAttributeName, curAttributeValue, event.target.type);
+console.log('DISPATCHING Value Change:',curAttributeName, curAttributeValue, event.target.type);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
@@ -408,7 +408,7 @@ console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newVa
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
-        console.log('Dispatching',id, newValue, newValueDataType);
+console.log('Dispatching Flow Value Change Event:',id, newValue, newValueDataType);
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,
             cancelable: false,
@@ -424,6 +424,7 @@ console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newVa
 
     updateFlowParam(name, value) {
         this.flowParams.find(param => param.name === name).value = value;
+console.log('Update Flow Param:',name,value);
     }
 
     get wizardParams() {
@@ -467,7 +468,7 @@ console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newVa
     showModal() {
         this.openModal = true;
     }
-    
+
     closeModal() {
         this.openModal = false;
     }

@@ -50,13 +50,17 @@ export default class DatatableCPE extends LightningElement {
 
     selectedSObject = '';
     isSObjectInput = true;
-    isObjectSelected = false;
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
+
+    @api
+    get isObjectSelected() { 
+        return !!this.selectedSObject;
+    }
 
     @api
     get bannerMargin() {
@@ -162,7 +166,7 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
-        keyField: {value: null, valueDataType: null, isCollection: false, label: 'Key Field', 
+        keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
     };
 
@@ -275,11 +279,15 @@ export default class DatatableCPE extends LightningElement {
 
     initializeValues() {
         this._inputVariables.forEach(curInputParam => {
+console.log('initialize',curInputParam.name, '[', curInputParam.value, ']');
             if (curInputParam.name && curInputParam.value) {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
 console.log('INPUT',curInputParam.name,curInputParam.valueDataType,this.inputValues[curInputParam.name].value);
+                    if (curInputParam.name == 'objectName') { 
+                        this.selectedSObject = curInputParam.value;
+                    }
                 }
             }
         });
@@ -288,8 +296,8 @@ console.log('INPUT',curInputParam.name,curInputParam.valueDataType,this.inputVal
     }
 
     handleDefaultAttributes() {
-        this.inputValues.tableBorder.value = true;
-        this.inputValues.keyField.value = 'Id';
+        // this.selectedSObject = this.inputValues.objectName.value;
+console.log("DatatableCPE -> handleDefaultAttributes -> this.selectedSObject", this.selectedSObject);
     }
 
     handleBuildHelpInfo() {
@@ -318,12 +326,15 @@ console.log('INPUT',curInputParam.name,curInputParam.valueDataType,this.inputVal
         });
         this.dispatchEvent(dynamicTypeMapping);
         this.updateRecordVariablesComboboxOptions(typeValue);
-        this.selectedSObject = typeValue;
-        this.isObjectSelected = true;
-        this.inputValues.tableData.value = null;
-        this.inputValues.preSelectedRows.value = null;
         this.updateFlowParam('vSObject', typeValue);
-        // this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
+        if (this.selectedSObject != typeValue) {
+            this.inputValues.tableData.value = null;
+            this.inputValues.preSelectedRows.value = null;
+            this.dispatchFlowValueChangeEvent('tableData', null, 'String');
+            this.dispatchFlowValueChangeEvent('preSelectedRows', null, 'String');
+            this.selectedSObject = typeValue;
+            this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
+        }
     }
 
     handleValueChange(event) {
@@ -348,7 +359,11 @@ console.log('DISPATCHING Value Change:',curAttributeName, curAttributeValue, eve
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (curAttributeName == 'isUserDefinedObject') {
                 this.isSObjectInput = !event.target.checked;
-                this.isObjectSelected = (this.isSObjectInput && this.selectedSObject != '');
+                if (!this.isSObjectInput) { 
+                    this.inputValues.objectName.value = null;
+                    this.selectedSObject = null;
+                    this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+                }
             }
 
             // Don't allow hide the checkbox column if a selection is required or any edits are allowed
@@ -441,7 +456,7 @@ console.log('Update Flow Param:',name,value);
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
         event.detail.flowParams.forEach(attribute => { 
-            console.log('Flow, Field, Value, Type', attribute.flowName, attribute.name, attribute.value, attribute.dataType);
+console.log('Flow, Field, Value, Type', attribute.flowName, attribute.name, attribute.value, attribute.dataType);
             if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                 let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');
                 this.inputValues[changedAttribute].value = attribute.value;

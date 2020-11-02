@@ -62,7 +62,11 @@ export default class DatatableV2 extends LightningElement {
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
+    // Configuration Wizard Only - Input Attributes
+    @api objectName;
+
     // Configuration Wizard Only - Output Attributes
+    @api wizSObject;
     @api wizColumnFields;
     @api wizColumnAlignments;
     @api wizColumnEdits;
@@ -93,7 +97,7 @@ export default class DatatableV2 extends LightningElement {
 
     // Handle Lookup Field Variables   
     @api lookupId;
-    @api objectName;
+    @api objectNameLookup;
     @api objectLinkField;
     @track lookupName;
 
@@ -384,6 +388,7 @@ export default class DatatableV2 extends LightningElement {
 
             // Set other initial values here
             this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.wizSObject = this.objectName;
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
@@ -512,7 +517,7 @@ export default class DatatableV2 extends LightningElement {
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.picklistFieldMap = returnResults.picklistFieldMap;
-                this.objectName = returnResults.objectName;
+                this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
@@ -611,7 +616,7 @@ export default class DatatableV2 extends LightningElement {
             
             // Handle Lookup for the SObject's "Name" Field
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
-            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectName + '/' + record['Id'] + '/view';
+            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';
 
             // Handle replacement of Picklist API Names with Labels
             if (this.picklistReplaceValues) {

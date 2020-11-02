@@ -35,7 +35,9 @@
             <!-- Additional Output Parameters -->
             <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
             
-            <!-- Configuration Mode Only - Outputs -->
+            <!-- Configuration Mode Only - Inputs/Outputs -->
+            <property name="objectName" label="Wizard Only - Selected SObject" type="String" role="inputOnly"/>
+            <property name="wizSObject" label="Wizard Only - Selected SObject" type="String" role="outputOnly"/>
             <property name="wizColumnFields" label="Wizard Only - Column Fields" type="String" role="outputOnly"/>
             <property name="wizColumnAlignments" label="Wizard Only - Column Alignments" type="String" role="outputOnly"/>
             <property name="wizColumnEdits" label="Wizard Only - Column Edits" type="String" role="outputOnly"/>

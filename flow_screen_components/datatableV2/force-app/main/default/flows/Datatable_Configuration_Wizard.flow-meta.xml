@@ -16,7 +16,10 @@
                 <elementReference>vSObject</elementReference>
             </value>
         </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>apexColFieldDescriptors_usf</assignToReference>
+            <name>fields</name>
+        </outputParameters>
     </actionCalls>
     <actionCalls>
         <name>Get_First_10_Records</name>
@@ -394,6 +397,10 @@
                 <assignToReference>wiz_columnWraps</assignToReference>
                 <name>wizColumnWraps</name>
             </outputParameters>
+            <outputParameters>
+                <assignToReference>wiz_objectName</assignToReference>
+                <name>wizSObject</name>
+            </outputParameters>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -496,6 +503,13 @@
     </variables>
     <variables>
         <name>wiz_columnWraps</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>wiz_objectName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

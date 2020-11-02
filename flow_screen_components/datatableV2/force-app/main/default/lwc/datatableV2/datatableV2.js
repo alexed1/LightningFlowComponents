@@ -106,7 +106,9 @@ export default class DatatableV2 extends LightningElement {
     @api isFiltered;
     @api saveOriginalValue;
     @track columnFilterValue = null;
+    @track columnIconValue = null;
     @track isOpenFilterInput = false;
+    @track isOpenIconInput = false;
     @track inputLabel;
     @track inputType = 'text';
     @track inputFormat = null;    
@@ -710,6 +712,7 @@ export default class DatatableV2 extends LightningElement {
                     {label: 'Align Left', checked: (this.convertType(type) != 'number'), name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
                     {label: 'Align Center', checked: false, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
                     {label: 'Align Right', checked: (this.convertType(type) == 'number'), name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
+                    {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
                     {label: 'Allow Edit', checked: false, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
@@ -1133,6 +1136,11 @@ export default class DatatableV2 extends LightningElement {
                 this.updateWrapParam();
                 break;
 
+            case 'icon':   // Config Mode Only
+                this.columnIconValue = this.filterColumns[this.columnNumber].iconName;
+                this.handleOpenSelectIcon();
+                break;
+
             case 'label':   // Config Mode Only
                 this.columnFilterValue = this.columnFilterValues[this.columnNumber];
                 this.columnFilterValue = (this.columnFilterValue) ? this.columnFilterValue : this.baseLabel;
@@ -1295,6 +1303,27 @@ export default class DatatableV2 extends LightningElement {
         this.wizColumnFilters = this.columnFilterParameter;
         this.isAllFilter = true;
         this.columns = [...this.filterColumns]; 
+    }
+
+    handleOpenSelectIcon() { 
+        // Display the input dialog for the icon selection
+        this.isOpenIconInput = true;
+    }
+
+    handleCloseIconModal() {
+        // Close the input dialog and cancel any changes
+        this.isOpenIconInput = false;
+    }
+
+    handleCommitIconSelection(event) { 
+        // Update the column icon value
+        let newValue = event.target.value;
+        if (newValue) {
+            this.filterColumns[this.columnNumber].iconName = newValue;
+            this.columns = [...this.filterColumns]; 
+            this.updateIconParam();
+        }
+        this.isOpenIconInput = false;
     }
 
     handleOpenFilterInput() {

@@ -56,6 +56,12 @@
             </dataTypeMappings>
             <extensionName>c:datatableV2</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Account</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -72,7 +78,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Results_From_CPE</name>
-            <fieldText>&lt;p&gt;Results From CPE&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Results From CPE&lt;/p&gt;&lt;p&gt;{!columnLabels}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -86,6 +92,13 @@
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>columnLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>vNumber</name>
         <dataType>Number</dataType>

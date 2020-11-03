@@ -15,7 +15,10 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
 const ROUNDWIDTH = 5;       // Used to round off the column widths during Config Mode to nearest value
 
-const MYDOMAIN = 'https://' + window.location.hostname.split('.')[0].replace('--c','');
+const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
+
+// Get domain url by replacing the last occurance of '--c' in the current url
+const MYDOMAIN = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 
 export default class DatatableV2 extends LightningElement {
 
@@ -188,7 +191,7 @@ export default class DatatableV2 extends LightningElement {
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
-
+console.log('window',window.location.hostname);
         // JSON input attributes
         if (this.isUserDefinedObject) {
             console.log('tableDataString - ',this.tableDataString);
@@ -388,7 +391,6 @@ export default class DatatableV2 extends LightningElement {
 
             // Set other initial values here
             this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
-            this.wizSObject = this.objectName;
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
@@ -546,6 +548,9 @@ export default class DatatableV2 extends LightningElement {
 
                 // Custom column processing
                 this.updateColumns();
+
+                // Pass object name back to wizard
+                this.wizSObject = this.objectNameLookup;
 
                 // Done processing the datatable
                 this.showSpinner = false;

@@ -2,7 +2,7 @@
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
 
     <labels>
-        <fullName>fbc_TooManyResultsMessage</fullName>
+        <fullName>fsc_TooManyResultsMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -10,7 +10,7 @@
         <value>Your search found more than 200 results.  Keep typing to make it more specific</value>
     </labels>
     <labels>
-        <fullName>fbc_NonePicklistValueLabel</fullName>
+        <fullName>fsc_NonePicklistValueLabel</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -18,7 +18,7 @@
         <value>-- None --</value>
     </labels>
     <labels>
-        <fullName>fbc_FieldIsNotSupportedMessage</fullName>
+        <fullName>fsc_FieldIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -26,7 +26,7 @@
         <value>Following fields are not supported: </value>
     </labels>
     <labels>
-        <fullName>fbc_ButtonIsNotSupportedMessage</fullName>
+        <fullName>fsc_ButtonIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -34,7 +34,7 @@
         <value>Following buttons are note supported: </value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedButtonsEmptyMessage</fullName>
+        <fullName>fsc_SupportedButtonsEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -42,7 +42,7 @@
         <value>"Supported Buttons" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedAddCapabilitiesEmptyMessage</fullName>
+        <fullName>fsc_SupportedAddCapabilitiesEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -50,7 +50,7 @@
         <value>"Add Capabilities" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_SupportedEditCapabilitiesEmptyMessage</fullName>
+        <fullName>fsc_SupportedEditCapabilitiesEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -58,7 +58,7 @@
         <value>"Edit Capabilities" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_ManagerEmptyMessage</fullName>
+        <fullName>fsc_ManagerEmptyMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -66,7 +66,7 @@
         <value>"Manager APEX Class" can not be empty</value>
     </labels>
     <labels>
-        <fullName>fbc_OWDReadWrite</fullName>
+        <fullName>fsc_OWDReadWrite</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -75,7 +75,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_MultipleGroupsForRole</fullName>
+        <fullName>fsc_MultipleGroupsForRole</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -84,7 +84,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_LackingPermissions</fullName>
+        <fullName>fsc_LackingPermissions</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -93,7 +93,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_OwnerAdminModify</fullName>
+        <fullName>fsc_OwnerAdminModify</fullName>
         <categories>messages</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -102,7 +102,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_AccessLevel</fullName>
+        <fullName>fsc_AccessLevel</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -110,7 +110,7 @@
         <value>Access Level</value>
     </labels>
     <labels>
-        <fullName>fbc_Name</fullName>
+        <fullName>fsc_Name</fullName>
         <categories>quicklinks, Labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -118,7 +118,7 @@
         <value>Name</value>
     </labels>
     <labels>
-        <fullName>fbc_Read</fullName>
+        <fullName>fsc_Read</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -126,7 +126,7 @@
         <value>Read</value>
     </labels>
     <labels>
-        <fullName>fbc_ReadWrite</fullName>
+        <fullName>fsc_ReadWrite</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -134,7 +134,7 @@
         <value>Read / Write</value>
     </labels>
     <labels>
-        <fullName>fbc_Delete</fullName>
+        <fullName>fsc_Delete</fullName>
         <categories>labels, buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -142,7 +142,7 @@
         <value>Delete</value>
     </labels>
     <labels>
-        <fullName>fbc_Reason</fullName>
+        <fullName>fsc_Reason</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -150,7 +150,7 @@
         <value>Reason</value>
     </labels>
     <labels>
-        <fullName>fbc_Search</fullName>
+        <fullName>fsc_Search</fullName>
         <categories>Actions,Buttons,quicklinks</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -158,7 +158,7 @@
         <value>Search in</value>
     </labels>
     <labels>
-        <fullName>fbc_SearchFor</fullName>
+        <fullName>fsc_SearchFor</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -166,7 +166,7 @@
         <value>For</value>
     </labels>
     <labels>
-        <fullName>fbc_Type</fullName>
+        <fullName>fsc_Type</fullName>
         <categories>Buttons,Filters,Title</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -174,7 +174,7 @@
         <value>Type</value>
     </labels>
     <labels>
-        <fullName>fbc_Back</fullName>
+        <fullName>fsc_Back</fullName>
         <categories>Buttons,Filters,Title</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -182,7 +182,7 @@
         <value>Back</value>
     </labels>
     <labels>
-        <fullName>fbc_For</fullName>
+        <fullName>fsc_For</fullName>
         <categories>Buttons</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -190,7 +190,7 @@
         <value>For</value>
     </labels>
     <labels>
-        <fullName>fbc_UserOrGroup</fullName>
+        <fullName>fsc_UserOrGroup</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -198,7 +198,7 @@
         <value>User Or Group</value>
     </labels>
     <labels>
-        <fullName>fbc_SetAccessLevel</fullName>
+        <fullName>fsc_SetAccessLevel</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -207,7 +207,7 @@
     </labels>
 
     <labels>
-        <fullName>fbc_PublicGroups</fullName>
+        <fullName>fsc_PublicGroups</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -215,7 +215,7 @@
         <value>Public Groups</value>
     </labels>
     <labels>
-        <fullName>fbc_Roles</fullName>
+        <fullName>fsc_Roles</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -223,7 +223,7 @@
         <value>Roles</value>
     </labels>
     <labels>
-        <fullName>fbc_Users</fullName>
+        <fullName>fsc_Users</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -231,7 +231,7 @@
         <value>Users</value>
     </labels>
     <labels>
-        <fullName>fbc_Queues</fullName>
+        <fullName>fsc_Queues</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -239,7 +239,7 @@
         <value>Queues</value>
     </labels>
     <labels>
-        <fullName>fbc_RelatedUsers</fullName>
+        <fullName>fsc_RelatedUsers</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>
@@ -247,7 +247,7 @@
         <value>Related Users</value>
     </labels>
     <labels>
-        <fullName>fbc_ConditionLogicHelpText</fullName>
+        <fullName>fsc_ConditionLogicHelpText</fullName>
         <categories>labels</categories>
         <language>en_US</language>
         <protected>false</protected>

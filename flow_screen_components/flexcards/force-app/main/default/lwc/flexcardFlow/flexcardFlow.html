@@ -1,0 +1,19 @@
+<template>
+
+    foobar
+    {fieldHTML}
+
+    <lightning-card title="FlexcardFlow" icon-name="custom:custom14">
+        <ul class="slds-m-around_medium">
+            <template for:each={records} for:item="record">
+               
+                <li key={record.Id} >
+                    <card class="slds-size_1-of-4">
+                         {record.Name}, {record.Rating}
+                    </card>
+                </li>
+            </template>
+        </ul>
+    </lightning-card>
+    
+</template>

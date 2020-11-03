@@ -31,7 +31,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>quickChoice1</name>
-            <extensionName>c:fbc_quickChoiceFSC</extensionName>
+            <extensionName>c:fsc_quickChoiceFSC</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>displayMode</name>

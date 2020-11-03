@@ -1,7 +1,7 @@
 import {LightningElement, track, api} from 'lwc';
 import {
     defaults
-} from 'c/fbc_dualListBoxUtils';
+} from 'c/fsc_dualListBoxUtils';
 
 export default class dualListBox extends LightningElement {
 

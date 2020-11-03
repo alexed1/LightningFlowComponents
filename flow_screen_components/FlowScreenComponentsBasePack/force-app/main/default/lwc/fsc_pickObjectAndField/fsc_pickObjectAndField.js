@@ -2,14 +2,14 @@ import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects';
-import {standardObjectOptions} from 'c/fbc_pickObjectAndFieldUtils';
-import NonePicklistValueLabel from '@salesforce/label/c.fbc_NonePicklistValueLabel';
-import FieldIsNotSupportedMessage from '@salesforce/label/c.fbc_FieldIsNotSupportedMessage';
+import {standardObjectOptions} from 'c/fsc_pickObjectAndFieldUtils';
+import NonePicklistValueLabel from '@salesforce/label/c.fsc_NonePicklistValueLabel';
+import FieldIsNotSupportedMessage from '@salesforce/label/c.fsc_FieldIsNotSupportedMessage';
 
 
-import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/fbc_flowComboboxUtils';
+import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/fsc_flowComboboxUtils';
 
-export default class fbc_pickObjectAndField extends LightningElement {
+export default class fsc_pickObjectAndField extends LightningElement {
     @api name;
     @api masterLabel;
     @api objectLabel = 'Object';

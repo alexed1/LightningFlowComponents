@@ -1,5 +1,5 @@
 <template>
-    <c-fbc_extended-base-dual-list-box if:true={isDataSet}
+    <c-fsc_extended-base-dual-list-box if:true={isDataSet}
                                    onvaluechanged={handleValueChanged}
                                    selected-values-string-format={selectedValuesStringFormat}
                                    all-options-string-format={allOptionsStringFormat}
@@ -18,7 +18,7 @@
                                    required-options={requiredOptions}
                                    selected-options={_selectedValues}
                                    use-object-value-as-output>
-    </c-fbc_extended-base-dual-list-box>
+    </c-fsc_extended-base-dual-list-box>
     <template if:false={isDataSet}>
 
     </template>

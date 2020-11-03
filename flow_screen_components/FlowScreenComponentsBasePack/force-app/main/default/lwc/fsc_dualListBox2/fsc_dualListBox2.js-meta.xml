@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fbc_dual-list-box-c-p-e" category="Input">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fsc_dual-list-box-c-p-e" category="Input">
             <property name="label" type="String" role="inputOnly"/>
             <property name="sourceLabel" type="String" role="inputOnly"/>
             <property name="fieldLevelHelp" type="String" role="inputOnly"/>

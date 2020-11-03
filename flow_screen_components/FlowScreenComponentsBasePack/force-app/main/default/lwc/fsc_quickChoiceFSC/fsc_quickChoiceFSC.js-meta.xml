@@ -7,7 +7,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fbc_quick-choice-cpe" category="Input">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fsc_quick-choice-cpe" category="Input">
             <property name="value" label="Value" type="String" description="The selected value(Output). This can be passed into QuickChoice, allowing you to set the default value dynamically(Input)."/>
             <property name="selectedLabel" label="Selected Label" type="String" role="outputOnly" description="The selected Label (V1.3+)"/>
             <property name="allValues" label="All Values" type="String[]" role="outputOnly" description="The complete set of values provided to the user. (V1.3+)"/>

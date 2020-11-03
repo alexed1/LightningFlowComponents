@@ -7,7 +7,7 @@ import {
     getDataType,
     removeFormatting,
     flowComboboxDefaults
-} from 'c/fbc_flowComboboxUtils';
+} from 'c/fsc_flowComboboxUtils';
 
 export default class FlowCombobox extends LightningElement {
     @api name;

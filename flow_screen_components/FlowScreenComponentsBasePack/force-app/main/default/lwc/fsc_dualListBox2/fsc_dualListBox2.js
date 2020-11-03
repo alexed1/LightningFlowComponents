@@ -4,7 +4,7 @@ import {
     defaults,
     inputTypeToOutputAttributeName,
     inputTypeToInputAttributeName
-} from 'c/fbc_dualListBoxUtils';
+} from 'c/fsc_dualListBoxUtils';
 
 export default class dualListBoxFSC extends LightningElement {
 
@@ -144,14 +144,14 @@ export default class dualListBoxFSC extends LightningElement {
     }
 
     getValues(valueType) {
-        let listBox = this.template.querySelector('c-fbc_extended-base-dual-list-box');
+        let listBox = this.template.querySelector('c-fsc_extended-base-dual-list-box');
         if (listBox) {
             return listBox.getValues(valueType);
         }
     }
 
     getOptions(valueType) {
-        let listBox = this.template.querySelector('c-fbc_extended-base-dual-list-box');
+        let listBox = this.template.querySelector('c-fsc_extended-base-dual-list-box');
         if (listBox) {
             return listBox.getOptions(valueType);
         }

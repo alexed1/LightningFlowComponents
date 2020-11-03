@@ -5,7 +5,7 @@ import assembleFormulaString from '@salesforce/apex/usf.ExpressionBuilder.assemb
 import disassemblyFormulaString from '@salesforce/apex/usf.ExpressionBuilder.disassemblyFormulaString';
 import describeSObjects from '@salesforce/apex/usf.SearchUtils.describeSObjects';
 
-export default class fbc_ExpressionBuilder extends LightningElement {
+export default class fsc_ExpressionBuilder extends LightningElement {
     @api name;
     @api addButtonLabel = 'Add Condition';
     @api dispatchComponentChangeEvents = false;
@@ -240,7 +240,7 @@ export default class fbc_ExpressionBuilder extends LightningElement {
         let validity = {
             isValid: true
         };
-        let inputsToVerify = this.template.querySelectorAll('c-fbc-expression-line');
+        let inputsToVerify = this.template.querySelectorAll('c-fsc-expression-line');
         if (inputsToVerify && inputsToVerify.length) {
             inputsToVerify.forEach(curInput => {
                 let reportedValidity = curInput.validate();

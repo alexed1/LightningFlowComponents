@@ -14,7 +14,7 @@ import { LightningElement,track,api,wire } from 'lwc';
 import requestMetadata from '@salesforce/apex/usf.RetrieveMetadata.RetrieveMetadataItem';
 import checkRetrieveStatus from '@salesforce/apex/usf.RetrieveMetadata.checkAsyncRequest';
 import getFileNames from '@salesforce/apex/usf.RetrieveMetadata.getFileNames';
-import fbc_deployMetadata from '@salesforce/apex/usf.DeployMetadata.deploy';
+import fsc_deployMetadata from '@salesforce/apex/usf.DeployMetadata.deploy';
 import checkDeployStatus from '@salesforce/apex/usf.DeployMetadata.checkAsyncRequest';
 import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from 'lightning/flowSupport';
 
@@ -89,7 +89,7 @@ export default class TransferMetadata extends LightningElement {
         documentContent = documentContent.replaceAll('&lbrace;', '{');
         documentContent = documentContent.replaceAll('&rbrace;', '}');
 
-        fbc_deployMetadata({ metadataText : documentContent, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })        
+        fsc_deployMetadata({ metadataText : documentContent, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })        
         .then(result => {
             console.log('result of deployment request is: ' + result);
             console.log('successfully sent async deployment request');
@@ -106,7 +106,7 @@ export default class TransferMetadata extends LightningElement {
             }
         })
         .catch(error => {
-            console.log('error calling fbc_deployMetadata from transfer');
+            console.log('error calling fsc_deployMetadata from transfer');
             this.activity = 'Error: ' + JSON.stringify(error.body.message);
             this.error = error;
         });

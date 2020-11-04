@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
-        <locationX>489</locationX>
-        <locationY>206</locationY>
+        <locationX>521</locationX>
+        <locationY>425</locationY>
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -24,8 +24,8 @@
     <actionCalls>
         <name>Get_First_10_Records</name>
         <label>Get First 10 Records</label>
-        <locationX>1054</locationX>
-        <locationY>206</locationY>
+        <locationX>1352</locationX>
+        <locationY>203</locationY>
         <actionName>QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -58,8 +58,8 @@
     <assignments>
         <name>Set_Debug_Mode</name>
         <label>Set Debug Mode</label>
-        <locationX>331</locationX>
-        <locationY>206</locationY>
+        <locationX>261</locationX>
+        <locationY>205</locationY>
         <assignmentItems>
             <assignToReference>vDebugMode</assignToReference>
             <operator>Assign</operator>
@@ -68,14 +68,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Field_Information_usf</targetReference>
+            <targetReference>Check_Field_Selection_Method_0</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
-        <locationX>911</locationX>
-        <locationY>206</locationY>
+        <locationX>1209</locationX>
+        <locationY>203</locationY>
         <assignmentItems>
             <assignToReference>vFieldList</assignToReference>
             <operator>Assign</operator>
@@ -90,8 +90,8 @@
     <decisions>
         <name>Any_Fields_Selected</name>
         <label>Any Fields Selected?</label>
-        <locationX>886</locationX>
-        <locationY>461</locationY>
+        <locationX>1036</locationX>
+        <locationY>574</locationY>
         <defaultConnector>
             <targetReference>Select_Fields</targetReference>
         </defaultConnector>
@@ -113,19 +113,93 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Check_Field_Selection_Method</name>
+        <label>Check Field Selection Method</label>
+        <locationX>826</locationX>
+        <locationY>208</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>PICK</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vSelectionMethod</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pick</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Any_Fields_Selected</targetReference>
+            </connector>
+            <label>PICK</label>
+        </rules>
+        <rules>
+            <name>MANUAL</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vSelectionMethod</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Did_User_Enter_Field_List</targetReference>
+            </connector>
+            <label>MANUAL</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Field_Selection_Method_0</name>
+        <label>Check Field Selection Method</label>
+        <locationX>416</locationX>
+        <locationY>207</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>PICK_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vSelectionMethod</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pick</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Field_Information_usf</targetReference>
+            </connector>
+            <label>PICK</label>
+        </rules>
+        <rules>
+            <name>MANUAL_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vSelectionMethod</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manual</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Select_Fields</targetReference>
+            </connector>
+            <label>MANUAL</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Did_User_Enter_Field_List</name>
         <label>Did User Enter Field List?</label>
-        <locationX>752</locationX>
-        <locationY>208</locationY>
+        <locationX>1047</locationX>
+        <locationY>206</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>YES</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>List_of_Field_Names</leftValueReference>
-                <operator>NotEqualTo</operator>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue/>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -138,9 +212,9 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>List_of_Field_Names</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <stringValue/>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -180,13 +254,13 @@
     <screens>
         <name>Select_Fields</name>
         <label>Select Fields</label>
-        <locationX>616</locationX>
+        <locationX>649</locationX>
         <locationY>206</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Did_User_Enter_Field_List</targetReference>
+            <targetReference>Check_Field_Selection_Method</targetReference>
         </connector>
         <fields>
             <name>Object</name>
@@ -268,18 +342,33 @@
                 <assignToReference>vFieldList</assignToReference>
                 <name>selectedOptionsCSV</name>
             </outputParameters>
-        </fields>
-        <fields>
-            <name>Manual_Field_Selection</name>
-            <fieldText>&lt;p&gt;. . .&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255); font-size: 16px;&quot;&gt;Instead of selecting the fields above, you can enter your own comma separated list of Field API Names below.&lt;/span&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vSelectionMethod</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Pick</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <fields>
             <name>List_of_Field_Names</name>
             <dataType>String</dataType>
-            <fieldText>List of Field Names</fieldText>
+            <fieldText>Enter a comma separated list of field API names</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vSelectionMethod</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>Manual</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
@@ -287,8 +376,8 @@
     <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
-        <locationX>1335</locationX>
-        <locationY>206</locationY>
+        <locationX>1633</locationX>
+        <locationY>203</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -303,8 +392,8 @@
     <screens>
         <name>Wizard_Screen</name>
         <label>Wizard Screen</label>
-        <locationX>1203</locationX>
-        <locationY>206</locationY>
+        <locationX>1501</locationX>
+        <locationY>203</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -446,6 +535,13 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>vSelectionMethod</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>vSObject</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -513,6 +609,6 @@
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
-        <isOutput>true</isOutput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

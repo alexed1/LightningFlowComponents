@@ -17,7 +17,8 @@ const defaults = {
     apexDefinedTypeInputs: false,
     inputAttributePrefix: 'select_',
     wizardAttributePrefix: 'wiz_',
-    dualListboxHeight: '570'
+    dualListboxHeight: '570',
+    customHelpDefinition: 'CUSTOM',
 };
 
 const COLORS = { 
@@ -63,6 +64,7 @@ export default class DatatableCPE extends LightningElement {
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
+    isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
@@ -198,7 +200,6 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent(name, value, 'String');
     }
 
-
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
     @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 
@@ -267,7 +268,7 @@ export default class DatatableCPE extends LightningElement {
 
     sectionEntries = { 
         dataSource: {label: 'Data Source', info: []},
-        columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
+        // columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
@@ -279,8 +280,6 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'objectName'},
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
-                {name: 'tableDataString'},
-                {name: 'preSelectedRowsString'},
                 {name: 'columnFields'},
                 {name: 'columnAlignments'},
                 {name: 'columnEdits'},
@@ -289,6 +288,17 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'columnLabels'},
                 {name: 'columnWidths'},
                 {name: 'columnWraps'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'Apex Defined Object Attributes', 
+                    helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
+                    '[{"field1":"StringRec1Value1","field2":"StringRec1Value2","field3":false,"field4":10},\n' + 
+                    '{"field1":"StringRec2Value1","field2":"StringRec2Value2","field3":true,"field4":20},\n' + 
+                    '{"field1":"StringRec3Value1","field2":"StringRec3Value2","field3":true,"field4":30}]'},
+                {name: 'tableDataString'},
+                {name: 'preSelectedRowsString'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'For more information on using Apex Defined Objects with Datatable',
+                    helpText: 'https://ericsplayground.wordpress.com/how-to-use-an-apex-defined-object-with-my-datatable-flow-component/'}
             ]
         },
         {name: 'tableFormatting',
@@ -327,11 +337,32 @@ export default class DatatableCPE extends LightningElement {
         {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
     ];
 
-    @api flowParams = [{
-        name: 'vSObject',
-        type: 'String',
-        value: null
-    }]
+    // Field Selection Method Radio Buttons
+    fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
+    fieldSelectionOptions = [
+        {'label': 'Pick your table columns from a list', value: 'Pick'},
+        {'label': 'Manually specify the column fields', value: 'Manual'}
+    ];
+    fieldSelectionMethod = 'Pick';
+
+    handleFieldSelectionMethod(event) { 
+        this.fieldSelectionMethod = event.detail.value;
+        this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
+    }
+
+    // Input attributes for the Wizard Flow
+    @api flowParams = [
+        {
+            name: 'vSObject',
+            type: 'String',
+            value: null
+        },
+        { 
+            name: 'vSelectionMethod',
+            type: 'String',
+            value: 'Pick'
+        }
+    ]
 
     @api 
     get builderContext() {
@@ -396,7 +427,11 @@ export default class DatatableCPE extends LightningElement {
         this.helpSections.forEach(section => {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
-                this.sectionEntries[section.name].info.push({label: this.inputValues[attribute.name].label, helpText: this.inputValues[attribute.name].helpText});
+                if (attribute.name == defaults.customHelpDefinition) { 
+                    this.sectionEntries[section.name].info.push({label: attribute.label, helpText: attribute.helpText});
+                } else {
+                    this.sectionEntries[section.name].info.push({label: this.inputValues[attribute.name].label, helpText: this.inputValues[attribute.name].helpText});
+                }
             });
         });
     }
@@ -543,6 +578,7 @@ export default class DatatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
+        this.isFlowLoaded = true;
         event.detail.flowParams.forEach(attribute => { 
             if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                 let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');                
@@ -575,6 +611,7 @@ export default class DatatableCPE extends LightningElement {
                             break;
                         default:
                     }
+                    this.isFlowLoaded = false;
                 }
             }
         });

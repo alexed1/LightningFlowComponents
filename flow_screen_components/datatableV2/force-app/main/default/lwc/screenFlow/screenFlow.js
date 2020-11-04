@@ -6,10 +6,12 @@ export default class ScreenFlow extends LightningElement {
     @api flowName;
     @api name;
     @api flowParams;
+    @api saveParams;
+    saveStatus;
     url;
 
     connectedCallback() {
-        window.addEventListener("message", (event) => {
+        window.addEventListener("message", (event) => {          
             if (event.data.flowOrigin !== this.url) {
                 return;
             }
@@ -21,10 +23,25 @@ export default class ScreenFlow extends LightningElement {
                     flowName: this.flowName
                 }
             });
+            this.saveStatus = event.data.flowStatus;
+            this.saveParams = event.data.flowParams;
             this.dispatchEvent(moveEvt);
         });
         let sfIdent = 'force.com';
         this.url = window.location.href.substring(0, window.location.href.indexOf(sfIdent) + sfIdent.length);
+    }
+
+    disconnectedCallback() { 
+        const exitEvt = new CustomEvent('flowstatuschange', {
+            detail: {
+                flowStatus: this.saveStatus,
+                flowParams: this.saveParams,
+                name: this.name,
+                flowName: this.flowName,
+                flowExit: true
+            }
+        });      
+        this.dispatchEvent(exitEvt);      
     }
 
     get fullUrl() {

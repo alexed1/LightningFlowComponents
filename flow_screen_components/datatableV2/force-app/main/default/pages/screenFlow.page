@@ -1,0 +1,28 @@
+<apex:page id="screenFlow" showHeader="false" sidebar="false" lightningStylesheets="true">
+    <html>
+    <head>
+        <apex:includeLightning />
+    </head>
+    <body class="slds-scope">
+    <div id="screenFlow"/>
+    <script>
+        let statusChange = function (event) {
+            parent.postMessage({
+                flowStatus: event.getParam("status"),
+                flowParams: event.getParam("outputVariables"),
+                flowOrigin: "{!$CurrentPage.parameters.origin}"
+            }, "{!$CurrentPage.parameters.origin}");
+        };
+        $Lightning.use("c:screenFlowApp", function () {
+            // Create the flow component and set the onstatuschange attribute
+            $Lightning.createComponent("lightning:flow", {"onstatuschange": statusChange},
+                "screenFlow",
+                function (component) {
+                    component.startFlow("{!$CurrentPage.parameters.flowname}", {!$CurrentPage.parameters.params});
+                }
+            );
+        });
+    </script>
+    </body>
+    </html>
+</apex:page>

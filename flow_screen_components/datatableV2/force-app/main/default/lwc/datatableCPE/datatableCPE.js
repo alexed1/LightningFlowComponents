@@ -17,7 +17,8 @@ const defaults = {
     apexDefinedTypeInputs: false,
     inputAttributePrefix: 'select_',
     wizardAttributePrefix: 'wiz_',
-    dualListboxHeight: '570'
+    dualListboxHeight: '570',
+    customHelpDefinition: 'CUSTOM',
 };
 
 const COLORS = { 
@@ -48,14 +49,26 @@ export default class DatatableCPE extends LightningElement {
     _elementType;
     _elementName;
 
+    // These are the parameter values coming back from the Wizard Flow
+    _wiz_columnFields;
+    _wiz_columnAlignments;
+    _wiz_columnEdits;
+    _wiz_columnFilters;
+    _wiz_columnIcons;
+    _wiz_columnLabels;
+    _wiz_columnWidths;
+    _wiz_columnWraps;
+
     selectedSObject = '';
     isSObjectInput = true;
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
+    isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
+    firstPass = true;
 
     @api
     get isObjectSelected() { 
@@ -105,6 +118,86 @@ export default class DatatableCPE extends LightningElement {
     @api
     get showColumnAttributes() { 
         return (this.showColumnAttributesToggle || !this.isSObjectInput);
+    }
+
+    @api
+    get wiz_columnFields() { 
+        return this._wiz_columnFields;
+    }
+    set wiz_columnFields(value) { 
+        const name = 'columnFields';
+        this._wiz_columnFields = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnAlignments() { 
+        return this._wiz_columnAlignments;
+    }
+    set wiz_columnAlignments(value) { 
+        const name = 'columnAlignments';
+        this._wiz_columnAlignments = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnEdits() { 
+        return this._wiz_columnEdits;
+    }
+    set wiz_columnEdits(value) { 
+        const name = 'columnEdits';
+        this._wiz_columnEdits = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnFilters() { 
+        return this._wiz_columnFilters;
+    }
+    set wiz_columnFilters(value) { 
+        const name = 'columnFilters';
+        this._wiz_columnFilters = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnIcons() { 
+        return this._wiz_columnIcons;
+    }
+    set wiz_columnIcons(value) { 
+        const name = 'columnIcons';
+        this._wiz_columnIcons = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnLabels() { 
+        return this._wiz_columnLabels;
+    }
+    set wiz_columnLabels(value) { 
+        const name = 'columnLabels';
+        this._wiz_columnLabels = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnWidths() { 
+        return this._wiz_columnWidths;
+    }
+    set wiz_columnWidths(value) { 
+        const name = 'columnWidths';
+        this._wiz_columnWidths = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+    }
+
+    @api
+    get wiz_columnWraps() { 
+        return this._wiz_columnWraps;
+    }
+    set wiz_columnWraps(value) { 
+        const name = 'columnWraps';
+        this._wiz_columnWraps = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
@@ -175,7 +268,7 @@ export default class DatatableCPE extends LightningElement {
 
     sectionEntries = { 
         dataSource: {label: 'Data Source', info: []},
-        columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
+        // columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
@@ -187,8 +280,6 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'objectName'},
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
-                {name: 'tableDataString'},
-                {name: 'preSelectedRowsString'},
                 {name: 'columnFields'},
                 {name: 'columnAlignments'},
                 {name: 'columnEdits'},
@@ -197,6 +288,17 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'columnLabels'},
                 {name: 'columnWidths'},
                 {name: 'columnWraps'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'Apex Defined Object Attributes', 
+                    helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
+                    '[{"field1":"StringRec1Value1","field2":"StringRec1Value2","field3":false,"field4":10},\n' + 
+                    '{"field1":"StringRec2Value1","field2":"StringRec2Value2","field3":true,"field4":20},\n' + 
+                    '{"field1":"StringRec3Value1","field2":"StringRec3Value2","field3":true,"field4":30}]'},
+                {name: 'tableDataString'},
+                {name: 'preSelectedRowsString'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'For more information on using Apex Defined Objects with Datatable',
+                    helpText: 'https://ericsplayground.wordpress.com/how-to-use-an-apex-defined-object-with-my-datatable-flow-component/'}
             ]
         },
         {name: 'tableFormatting',
@@ -235,21 +337,32 @@ export default class DatatableCPE extends LightningElement {
         {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
     ];
 
-    @api flowParams = [{
-        name: 'vSObject',
-        type: 'String',
-        value: null
-    }]
+    // Field Selection Method Radio Buttons
+    fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
+    fieldSelectionOptions = [
+        {'label': 'Pick your table columns from a list', value: 'Pick'},
+        {'label': 'Manually specify the column fields', value: 'Manual'}
+    ];
+    fieldSelectionMethod = 'Pick';
 
-    @api 
-    get inputVariables() {
-        return this._inputVariables;
+    handleFieldSelectionMethod(event) { 
+        this.fieldSelectionMethod = event.detail.value;
+        this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
     }
 
-    set inputVariables(variables) {
-        this._inputVariables = variables || [];
-        this.initializeValues();
-    }
+    // Input attributes for the Wizard Flow
+    @api flowParams = [
+        {
+            name: 'vSObject',
+            type: 'String',
+            value: null
+        },
+        { 
+            name: 'vSelectionMethod',
+            type: 'String',
+            value: 'Pick'
+        }
+    ]
 
     @api 
     get builderContext() {
@@ -277,34 +390,48 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
+    @api 
+    get inputVariables() {
+        return this._inputVariables;
+    }
+
+    set inputVariables(variables) {
+        this._inputVariables = variables || [];
+        this.initializeValues();
+    }
+
     initializeValues() {
         this._inputVariables.forEach(curInputParam => {
-console.log('initialize',curInputParam.name, '[', curInputParam.value, ']');
             if (curInputParam.name && curInputParam.value) {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
-console.log('INPUT',curInputParam.name,curInputParam.valueDataType,this.inputValues[curInputParam.name].value);
                     if (curInputParam.name == 'objectName') { 
-                        this.selectedSObject = curInputParam.value;
+                        this.selectedSObject = curInputParam.value;    
                     }
                 }
             }
         });
-        this.handleDefaultAttributes();
-        this.handleBuildHelpInfo();
+        if (this.firstPass) { 
+            this.handleDefaultAttributes();
+            this.handleBuildHelpInfo();
+        }
+        this.firstPass = false;
     }
 
     handleDefaultAttributes() {
-        // this.selectedSObject = this.inputValues.objectName.value;
-console.log("DatatableCPE -> handleDefaultAttributes -> this.selectedSObject", this.selectedSObject);
+
     }
 
     handleBuildHelpInfo() {
         this.helpSections.forEach(section => {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
-                this.sectionEntries[section.name].info.push({label: this.inputValues[attribute.name].label, helpText: this.inputValues[attribute.name].helpText});
+                if (attribute.name == defaults.customHelpDefinition) { 
+                    this.sectionEntries[section.name].info.push({label: attribute.label, helpText: attribute.helpText});
+                } else {
+                    this.sectionEntries[section.name].info.push({label: this.inputValues[attribute.name].label, helpText: this.inputValues[attribute.name].helpText});
+                }
             });
         });
     }
@@ -353,7 +480,6 @@ console.log("DatatableCPE -> handleDefaultAttributes -> this.selectedSObject", t
                 default:
                     curAttributeType = 'String';
             }
-console.log('DISPATCHING Value Change:',curAttributeName, curAttributeValue, event.target.type);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
@@ -413,7 +539,6 @@ console.log('DISPATCHING Value Change:',curAttributeName, curAttributeValue, eve
     handleFlowComboboxValueChange(event) {   
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
-console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newValue, JSON.stringify(event.detail));
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
         }
     }
@@ -423,7 +548,6 @@ console.log('handleFlowComboboxValueChange',changedAttribute, event.detail.newVa
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
-console.log('Dispatching Flow Value Change Event:',id, newValue, newValueDataType);
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,
             cancelable: false,
@@ -439,28 +563,56 @@ console.log('Dispatching Flow Value Change Event:',id, newValue, newValueDataTyp
 
     updateFlowParam(name, value) {
         this.flowParams.find(param => param.name === name).value = value;
-console.log('Update Flow Param:',name,value);
     }
 
     get wizardParams() {
         return JSON.stringify(this.flowParams);
     }
     
-    handlePickObjectAndFieldValueChange(event) {
-        if (event.detail) {
-            this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
-            this.dispatchFlowValueChangeEvent(this.settings.attributeFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
-        }
-    }
+    // handlePickObjectAndFieldValueChange(event) { 
+    //     if (event.detail) {
+    //         this.dispatchFlowValueChangeEvent(this.settings.attributeObjectName, event.detail.objectType, this.settings.flowDataTypeString);
+    //         this.dispatchFlowValueChangeEvent(this.settings.attributeFieldName, event.detail.fieldName, this.settings.flowDataTypeString);
+    //     }
+    // }
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
+        this.isFlowLoaded = true;
         event.detail.flowParams.forEach(attribute => { 
-console.log('Flow, Field, Value, Type', attribute.flowName, attribute.name, attribute.value, attribute.dataType);
             if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
-                let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');
-                this.inputValues[changedAttribute].value = attribute.value;
-                this.dispatchFlowValueChangeEvent(changedAttribute, attribute.value, attribute.dataType);
+                let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');                
+                if (event.detail.flowExit) { 
+                    // Update the wizard variables to force passing the changed values back to the CPE which will the post to the Flow Builder
+                    switch (changedAttribute) { 
+                        case 'columnFields':
+                            this.wiz_columnFields = attribute.value;
+                            break;
+                        case 'columnAlignments':
+                            this.wiz_columnAlignments = attribute.value;
+                            break;
+                        case 'columnEdits':
+                            this.wiz_columnEdits = attribute.value;
+                            break;
+                        case 'columnFilters':
+                            this.wiz_columnFilters = attribute.value;
+                            break;
+                        case 'columnIcons':
+                            this.wiz_columnIcons = attribute.value;
+                            break;
+                        case 'columnLabels':
+                            this.wiz_columnLabels = attribute.value;
+                            break;
+                        case 'columnWidths':
+                            this.wiz_columnWidths = attribute.value;
+                            break;
+                        case 'columnWraps':
+                            this.wiz_columnWraps = attribute.value;
+                            break;
+                        default:
+                    }
+                    this.isFlowLoaded = false;
+                }
             }
         });
     }

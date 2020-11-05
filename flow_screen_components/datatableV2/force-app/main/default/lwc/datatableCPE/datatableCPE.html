@@ -67,6 +67,17 @@
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
 
+    <!-- Pick Field Selection Method -->
+    <div if:true={isObjectSelected}>
+        <lightning-radio-group name="fieldSelectionMethod"
+            label={fieldSelectionOptionsLabel}
+            options={fieldSelectionOptions}
+            value={fieldSelectionMethod}
+            onchange={handleFieldSelectionMethod}
+            type="radio"
+        ></lightning-radio-group>
+    </div>
+
     <!-- =============== Column Wizard =============== -->
     <div if:true={isObjectSelected}> 
     
@@ -85,16 +96,21 @@
                             alternative-text="Close this window" size="large" variant="bare-inverse"
                             onclick={closeModal} class="slds-modal__close">
                         </lightning-button-icon>
-                        <h2 class="slds-modal__title slds-hyphenate">Welcome To The Datatable Column Wizard</h2>
+                        <div if:false={isFlowLoaded}>
+                            <h1 class="slds-modal__title slds-hyphenate">Please Wait... Loading Field Details</h1>
+                        </div>
+                        <div if:true={isFlowLoaded}>
+                            <h2 class="slds-modal__title slds-hyphenate">Welcome To The Datatable Column Wizard</h2>
+                        </div>
                     </div>
 
                     <!-- Body Section -->
                     <div class="slds-modal__content slds-p-around_medium">
-                        <c-screen-flow width="100%" height={wizardHeight}
-                            flow-name="Datatable_Configuration_Wizard" name="uniqueName"
-                            flow-params={wizardParams}
-                            onflowstatuschange={handleFlowStatusChange}>
-                        </c-screen-flow>
+                            <c-screen-flow width="100%" height={wizardHeight}
+                                flow-name="Datatable_Configuration_Wizard" name="uniqueName"
+                                flow-params={wizardParams}
+                                onflowstatuschange={handleFlowStatusChange}>
+                            </c-screen-flow>
                     </div>
 
                     <!-- Footer Section -->

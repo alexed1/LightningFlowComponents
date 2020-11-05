@@ -56,12 +56,6 @@
             </dataTypeMappings>
             <extensionName>c:datatableV2</extensionName>
             <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>Account</stringValue>
-                </value>
-            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>

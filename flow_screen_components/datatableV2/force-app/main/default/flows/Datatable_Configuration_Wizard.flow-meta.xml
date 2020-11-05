@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
-        <locationX>494</locationX>
-        <locationY>206</locationY>
+        <locationX>700</locationX>
+        <locationY>210</locationY>
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -24,8 +24,8 @@
     <actionCalls>
         <name>Get_First_10_Records</name>
         <label>Get First 10 Records</label>
-        <locationX>1352</locationX>
-        <locationY>203</locationY>
+        <locationX>1557</locationX>
+        <locationY>207</locationY>
         <actionName>QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -56,6 +56,22 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <name>Change_Selection_Method</name>
+        <label>Change Selection Method</label>
+        <locationX>536</locationX>
+        <locationY>210</locationY>
+        <assignmentItems>
+            <assignToReference>vSelectionMethod</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>cType</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_Field_Information_usf</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Set_Debug_Mode</name>
         <label>Set Debug Mode</label>
         <locationX>326</locationX>
@@ -68,14 +84,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Field_Information_usf</targetReference>
+            <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
-        <locationX>1209</locationX>
-        <locationY>203</locationY>
+        <locationX>1415</locationX>
+        <locationY>207</locationY>
         <assignmentItems>
             <assignToReference>vFieldList</assignToReference>
             <operator>Assign</operator>
@@ -87,27 +103,83 @@
             <targetReference>Get_First_10_Records</targetReference>
         </connector>
     </assignments>
-    <choices>
-        <name>choiceManual</name>
-        <choiceText>Manually specify the column fields</choiceText>
+    <assignments>
+        <name>Set_Quick_Choice_Options</name>
+        <label>Set Quick Choice Options</label>
+        <locationX>204</locationX>
+        <locationY>483</locationY>
+        <assignmentItems>
+            <assignToReference>colTitles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>cPick</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colTitles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>cType</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colDescriptions</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Pick your table columns from a list</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colDescriptions</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Manually specify the column fields</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colIcons</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>standard:picklist_choice</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colIcons</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>standard:text</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vSelectionMethod</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>cPick</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Field_Selection_Method_Screen</targetReference>
+        </connector>
+    </assignments>
+    <constants>
+        <name>cPick</name>
         <dataType>String</dataType>
         <value>
-            <stringValue>choiceManual</stringValue>
+            <stringValue>Pick</stringValue>
         </value>
-    </choices>
-    <choices>
-        <name>choicePick</name>
-        <choiceText>Pick your table columns from a list</choiceText>
+    </constants>
+    <constants>
+        <name>cType</name>
         <dataType>String</dataType>
         <value>
-            <stringValue>choicePick</stringValue>
+            <stringValue>Type</stringValue>
         </value>
-    </choices>
+    </constants>
     <decisions>
         <name>Any_Fields_Selected</name>
         <label>Any Fields Selected?</label>
-        <locationX>1036</locationX>
-        <locationY>574</locationY>
+        <locationX>1242</locationX>
+        <locationY>578</locationY>
         <defaultConnector>
             <targetReference>Select_Fields</targetReference>
         </defaultConnector>
@@ -131,17 +203,17 @@
     <decisions>
         <name>Check_Field_Selection_Method</name>
         <label>Check Field Selection Method</label>
-        <locationX>826</locationX>
-        <locationY>208</locationY>
+        <locationX>1032</locationX>
+        <locationY>212</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>PICK</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
+                <leftValueReference>vSelectionMethod</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>choicePick</elementReference>
+                    <elementReference>cPick</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -153,10 +225,10 @@
             <name>MANUAL</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
+                <leftValueReference>vSelectionMethod</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <elementReference>choiceManual</elementReference>
+                    <elementReference>cType</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -168,8 +240,8 @@
     <decisions>
         <name>Did_User_Enter_Field_List</name>
         <label>Did User Enter Field List?</label>
-        <locationX>1047</locationX>
-        <locationY>206</locationY>
+        <locationX>1252</locationX>
+        <locationY>210</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>YES</name>
@@ -202,6 +274,43 @@
             <label>NO</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Selection_Method</name>
+        <label>Selection Method?</label>
+        <locationX>466</locationX>
+        <locationY>485</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>PICKqc</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FieldSelectionMethod.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>cPick</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Field_Information_usf</targetReference>
+            </connector>
+            <label>PICK</label>
+        </rules>
+        <rules>
+            <name>TYPE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FieldSelectionMethod.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>cType</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Change_Selection_Method</targetReference>
+            </connector>
+            <label>TYPE</label>
+        </rules>
+    </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
     <formulas>
         <name>fListLength</name>
@@ -231,10 +340,108 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+        <name>Field_Selection_Method_Screen</name>
+        <label>Field Selection Method Screen</label>
+        <locationX>333</locationX>
+        <locationY>483</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>Selection_Method</targetReference>
+        </connector>
+        <fields>
+            <name>qcHeader</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px; background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;{!vSObject}&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>FieldSelectionMethod</name>
+            <extensionName>c:fsc_quickChoiceFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Visual</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Dual String Collections</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>numberOfColumns</name>
+                <value>
+                    <stringValue>1</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>includeIcons</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>navOnSelect</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceIcons</name>
+                <value>
+                    <elementReference>colIcons</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceLabels</name>
+                <value>
+                    <elementReference>colTitles</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceValues</name>
+                <value>
+                    <elementReference>colDescriptions</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>How do you want to select your columns?</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>iconSize</name>
+                <value>
+                    <stringValue>large</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>vSelectionMethod</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Select_Fields</name>
         <label>Select Fields</label>
-        <locationX>649</locationX>
-        <locationY>206</locationY>
+        <locationX>855</locationX>
+        <locationY>210</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -245,16 +452,6 @@
             <name>Object</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;{!vSObject}&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>How_do_you_want_to_pick_your_columns</name>
-            <choiceReferences>choicePick</choiceReferences>
-            <choiceReferences>choiceManual</choiceReferences>
-            <dataType>String</dataType>
-            <defaultSelectedChoiceReference>choicePick</defaultSelectedChoiceReference>
-            <fieldText>How do you want to pick your columns?</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
         </fields>
         <fields>
             <name>SelectFields</name>
@@ -334,10 +531,10 @@
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
+                    <leftValueReference>vSelectionMethod</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
-                        <elementReference>choicePick</elementReference>
+                        <elementReference>cPick</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -351,10 +548,10 @@
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
+                    <leftValueReference>vSelectionMethod</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
-                        <elementReference>choiceManual</elementReference>
+                        <elementReference>cType</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -365,8 +562,8 @@
     <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
-        <locationX>1633</locationX>
-        <locationY>203</locationY>
+        <locationX>1839</locationX>
+        <locationY>207</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -381,8 +578,8 @@
     <screens>
         <name>Wizard_Screen</name>
         <label>Wizard Screen</label>
-        <locationX>1501</locationX>
-        <locationY>203</locationY>
+        <locationX>1707</locationX>
+        <locationY>207</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -500,6 +697,27 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>colDescriptions</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>colIcons</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>colTitles</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>vDebugMode</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
@@ -527,7 +745,7 @@
         <name>vSelectionMethod</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

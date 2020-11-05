@@ -321,7 +321,16 @@ export default class DatatableCPE extends LightningElement {
         {name: 'advancedAttributes',
             attributes: [
                 {name: 'isUserDefinedObject'},
-                {name: 'keyField'}
+                {name: defaults.customHelpDefinition, 
+                    label: 'Apex Defined Object Attributes', 
+                    helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
+                    '[{"field1":"StringRec1Value1","field2":"StringRec1Value2","field3":false,"field4":10},\n' + 
+                    '{"field1":"StringRec2Value1","field2":"StringRec2Value2","field3":true,"field4":20},\n' + 
+                    '{"field1":"StringRec3Value1","field2":"StringRec3Value2","field3":true,"field4":30}]'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'For more information on using Apex Defined Objects with Datatable',
+                    helpText: 'https://ericsplayground.wordpress.com/how-to-use-an-apex-defined-object-with-my-datatable-flow-component/'},
+                {name: 'keyField'},
             ]
         }
     ]
@@ -338,17 +347,17 @@ export default class DatatableCPE extends LightningElement {
     ];
 
     // Field Selection Method Radio Buttons
-    fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
-    fieldSelectionOptions = [
-        {'label': 'Pick your table columns from a list', value: 'Pick'},
-        {'label': 'Manually specify the column fields', value: 'Manual'}
-    ];
-    fieldSelectionMethod = 'Pick';
+    // fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
+    // fieldSelectionOptions = [
+    //     {'label': 'Pick your table columns from a list', value: 'Pick'},
+    //     {'label': 'Manually specify the column fields', value: 'Manual'}
+    // ];
+    // fieldSelectionMethod = 'Pick';
 
-    handleFieldSelectionMethod(event) { 
-        this.fieldSelectionMethod = event.detail.value;
-        this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
-    }
+    // handleFieldSelectionMethod(event) { 
+    //     this.fieldSelectionMethod = event.detail.value;
+    //     this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
+    // }
 
     // Input attributes for the Wizard Flow
     @api flowParams = [
@@ -357,11 +366,11 @@ export default class DatatableCPE extends LightningElement {
             type: 'String',
             value: null
         },
-        { 
-            name: 'vSelectionMethod',
-            type: 'String',
-            value: 'Pick'
-        }
+        // { 
+        //     name: 'vSelectionMethod',
+        //     type: 'String',
+        //     value: 'Pick'
+        // }
     ]
 
     @api 

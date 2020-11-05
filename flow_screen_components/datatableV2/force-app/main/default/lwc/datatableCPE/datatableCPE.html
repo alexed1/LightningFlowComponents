@@ -68,7 +68,7 @@
     </c-fsc_flow-combobox>
 
     <!-- Pick Field Selection Method -->
-    <div if:true={isObjectSelected}>
+    <!-- <div if:true={isObjectSelected}>
         <lightning-radio-group name="fieldSelectionMethod"
             label={fieldSelectionOptionsLabel}
             options={fieldSelectionOptions}
@@ -76,7 +76,7 @@
             onchange={handleFieldSelectionMethod}
             type="radio"
         ></lightning-radio-group>
-    </div>
+    </div> -->
 
     <!-- =============== Column Wizard =============== -->
     <div if:true={isObjectSelected}> 
@@ -106,11 +106,14 @@
 
                     <!-- Body Section -->
                     <div class="slds-modal__content slds-p-around_medium">
-                            <c-screen-flow width="100%" height={wizardHeight}
-                                flow-name="Datatable_Configuration_Wizard" name="uniqueName"
-                                flow-params={wizardParams}
-                                onflowstatuschange={handleFlowStatusChange}>
-                            </c-screen-flow>
+                        <div if:false={isFlowLoaded}>
+                            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                        </div>
+                        <c-screen-flow width="100%" height={wizardHeight}
+                            flow-name="Datatable_Configuration_Wizard" name="uniqueName"
+                            flow-params={wizardParams}
+                            onflowstatuschange={handleFlowStatusChange}>
+                        </c-screen-flow>
                     </div>
 
                     <!-- Footer Section -->

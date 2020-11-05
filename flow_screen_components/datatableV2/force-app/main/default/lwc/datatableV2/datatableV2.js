@@ -191,7 +191,8 @@ export default class DatatableV2 extends LightningElement {
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
-console.log('window',window.location.hostname);
+        console.log('MYDOMAIN', MYDOMAIN);
+        
         // JSON input attributes
         if (this.isUserDefinedObject) {
             console.log('tableDataString - ',this.tableDataString);
@@ -1040,7 +1041,7 @@ console.log('window',window.location.hostname);
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton =  (this.tableData.length == 1 && this.numberOfRowsSelected == 1);
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection);   //Thanks to Jeff Olmstead for updated formula
     }
 
     handleClearSelection() {

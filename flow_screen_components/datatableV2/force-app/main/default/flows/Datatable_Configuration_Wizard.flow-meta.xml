@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
-        <locationX>521</locationX>
-        <locationY>425</locationY>
+        <locationX>494</locationX>
+        <locationY>206</locationY>
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -58,8 +58,8 @@
     <assignments>
         <name>Set_Debug_Mode</name>
         <label>Set Debug Mode</label>
-        <locationX>261</locationX>
-        <locationY>205</locationY>
+        <locationX>326</locationX>
+        <locationY>206</locationY>
         <assignmentItems>
             <assignToReference>vDebugMode</assignToReference>
             <operator>Assign</operator>
@@ -68,7 +68,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Check_Field_Selection_Method_0</targetReference>
+            <targetReference>Get_Field_Information_usf</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -87,6 +87,22 @@
             <targetReference>Get_First_10_Records</targetReference>
         </connector>
     </assignments>
+    <choices>
+        <name>choiceManual</name>
+        <choiceText>Manually specify the column fields</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>choiceManual</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choicePick</name>
+        <choiceText>Pick your table columns from a list</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>choicePick</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>Any_Fields_Selected</name>
         <label>Any Fields Selected?</label>
@@ -122,10 +138,10 @@
             <name>PICK</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>vSelectionMethod</leftValueReference>
+                <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Pick</stringValue>
+                    <elementReference>choicePick</elementReference>
                 </rightValue>
             </conditions>
             <connector>
@@ -137,51 +153,14 @@
             <name>MANUAL</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>vSelectionMethod</leftValueReference>
+                <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue>Manual</stringValue>
+                    <elementReference>choiceManual</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>Did_User_Enter_Field_List</targetReference>
-            </connector>
-            <label>MANUAL</label>
-        </rules>
-    </decisions>
-    <decisions>
-        <name>Check_Field_Selection_Method_0</name>
-        <label>Check Field Selection Method</label>
-        <locationX>416</locationX>
-        <locationY>207</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>PICK_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>vSelectionMethod</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Pick</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Get_Field_Information_usf</targetReference>
-            </connector>
-            <label>PICK</label>
-        </rules>
-        <rules>
-            <name>MANUAL_0</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>vSelectionMethod</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <stringValue>Manual</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Select_Fields</targetReference>
             </connector>
             <label>MANUAL</label>
         </rules>
@@ -268,6 +247,16 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
+            <name>How_do_you_want_to_pick_your_columns</name>
+            <choiceReferences>choicePick</choiceReferences>
+            <choiceReferences>choiceManual</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>choicePick</defaultSelectedChoiceReference>
+            <fieldText>How do you want to pick your columns?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
             <name>SelectFields</name>
             <extensionName>c:fsc_dualListBox2</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -281,12 +270,6 @@
                 <name>useWhichObjectKeyForData</name>
                 <value>
                     <stringValue>name</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -337,6 +320,12 @@
                     <stringValue>Available</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
@@ -345,10 +334,10 @@
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>vSelectionMethod</leftValueReference>
+                    <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
-                        <stringValue>Pick</stringValue>
+                        <elementReference>choicePick</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -362,10 +351,10 @@
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
-                    <leftValueReference>vSelectionMethod</leftValueReference>
+                    <leftValueReference>How_do_you_want_to_pick_your_columns</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
-                        <stringValue>Manual</stringValue>
+                        <elementReference>choiceManual</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>

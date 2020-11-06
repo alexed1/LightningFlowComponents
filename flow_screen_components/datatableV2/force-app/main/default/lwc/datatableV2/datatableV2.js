@@ -1289,31 +1289,31 @@ export default class DatatableV2 extends LightningElement {
         this.isFiltered = false;
     }
 
-    handleSelectAllEdit(event) {
+    handleSelectAllEdit() {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllEdit = !this.isAllEdit;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = this.isAllEdit;
             colNum += 1;
         });
-        this.columnEditParameter = 'All';
+        this.columnEditParameter = (this.isAllEdit) ? 'All' : '';
         this.wizColumnEdits = this.columnEditParameter;
-        this.isAllEdit = true;
         this.columns = [...this.filterColumns]; 
     }
 
     handleSelectAllFilter(event) {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllFilter = !this.isAllFilter;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = this.isAllFilter;
             colNum += 1;
         });
-        this.columnFilterParameter = 'All';
+        this.columnFilterParameter = (this.isAllFilter) ? 'All' : '';
         this.wizColumnFilters = this.columnFilterParameter;
-        this.isAllFilter = true;
         this.columns = [...this.filterColumns]; 
     }
 

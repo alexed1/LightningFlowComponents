@@ -119,24 +119,22 @@ Features:   The only required paramters are the SObject collection of records an
             </div>
             <div class="slds-m-horizontal_medium">
                 <div class="slds-box slds-m-vertical_xx-small">
-                    <lightning-button-group>
-                        <lightning-button-stateful class="slds-m-right_small"
-                            label-when-off="Edit All Columns" 
-                            label-when-on="All Columns are Editable"
-                            icon-name-when-off="utility:add"
-                            icon-name-when-on="utility:check"
-                            selected={isAllEdit}
-                            onclick={handleSelectAllEdit}>
-                        </lightning-button-stateful>
-                        <lightning-button-stateful class="slds-m-right_small"
-                            label-when-off="Filter All Columns"
-                            label-when-on="All Columns are Filterable"
-                            icon-name-when-off="utility:add"
-                            icon-name-when-on="utility:check" 
-                            selected={isAllFilter}
-                            onclick={handleSelectAllFilter}>
-                        </lightning-button-stateful>
-                    </lightning-button-group>
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Edit All Columns" 
+                        label-when-on="All Columns are Editable"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:check"
+                        selected={isAllEdit}
+                        onclick={handleSelectAllEdit}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Filter All Columns"
+                        label-when-on="All Columns are Filterable"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:check" 
+                        selected={isAllFilter}
+                        onclick={handleSelectAllFilter}>
+                    </lightning-button-stateful>
                 </div>          
             </div>
         </template>

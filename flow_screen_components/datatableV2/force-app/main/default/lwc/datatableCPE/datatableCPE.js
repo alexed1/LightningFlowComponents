@@ -366,11 +366,11 @@ export default class DatatableCPE extends LightningElement {
             type: 'String',
             value: null
         },
-        // { 
-        //     name: 'vSelectionMethod',
-        //     type: 'String',
-        //     value: 'Pick'
-        // }
+        { 
+            name: 'vSelectionMethod',
+            type: 'String',
+            value: ''
+        }
     ]
 
     @api 
@@ -588,35 +588,40 @@ export default class DatatableCPE extends LightningElement {
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
         this.isFlowLoaded = true;
-        event.detail.flowParams.forEach(attribute => { 
-            if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
-                let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');                
+        event.detail.flowParams.forEach(attribute => {
+            let name = attribute.name;
+            let value = attribute.value; 
+            if (name == 'vSelectionMethod') { 
+                this.flowParams.find(param => param.name === name).value = value || '';
+            }
+            if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
+                let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
                 if (event.detail.flowExit) { 
                     // Update the wizard variables to force passing the changed values back to the CPE which will the post to the Flow Builder
                     switch (changedAttribute) { 
                         case 'columnFields':
-                            this.wiz_columnFields = attribute.value;
+                            this.wiz_columnFields = value;
                             break;
                         case 'columnAlignments':
-                            this.wiz_columnAlignments = attribute.value;
+                            this.wiz_columnAlignments = value;
                             break;
                         case 'columnEdits':
-                            this.wiz_columnEdits = attribute.value;
+                            this.wiz_columnEdits = value;
                             break;
                         case 'columnFilters':
-                            this.wiz_columnFilters = attribute.value;
+                            this.wiz_columnFilters = value;
                             break;
                         case 'columnIcons':
-                            this.wiz_columnIcons = attribute.value;
+                            this.wiz_columnIcons = value;
                             break;
                         case 'columnLabels':
-                            this.wiz_columnLabels = attribute.value;
+                            this.wiz_columnLabels = value;
                             break;
                         case 'columnWidths':
-                            this.wiz_columnWidths = attribute.value;
+                            this.wiz_columnWidths = value;
                             break;
                         case 'columnWraps':
-                            this.wiz_columnWraps = attribute.value;
+                            this.wiz_columnWraps = value;
                             break;
                         default:
                     }

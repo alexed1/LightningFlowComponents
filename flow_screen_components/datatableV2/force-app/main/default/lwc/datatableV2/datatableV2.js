@@ -93,7 +93,7 @@ export default class DatatableV2 extends LightningElement {
     @track mydata = [];
     @track selectedRows = [];
     @track roundValueLabel;
-    @track columnWidthsLabel
+    @track columnWidthsLabel;
     @track isAllEdit = false;
     @track isAllFilter = false;
     @track showClearButton = false;
@@ -214,7 +214,8 @@ export default class DatatableV2 extends LightningElement {
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = "Round to Nearest " + ROUNDWIDTH;
+        // this.roundValueLabel = "Round to Nearest " + ROUNDWIDTH;
+        this.roundValueLabel = `Round to Nearest ${ROUNDWIDTH} pixels`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
@@ -1278,7 +1279,7 @@ export default class DatatableV2 extends LightningElement {
         });
         this.columnWidthParameter = colString.substring(2);
         this.wizColumnWidths = this.columnWidthParameter;
-        this.columnWidthsLabel = `Column Widths: (Total: ${colWidthsTotal})`;
+        this.columnWidthsLabel = `Current Column Widths: (Total: ${colWidthsTotal})`;
     }
 
     handleChange(event) {

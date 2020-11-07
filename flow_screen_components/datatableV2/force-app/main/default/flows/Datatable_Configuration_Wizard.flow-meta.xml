@@ -24,12 +24,12 @@
     <actionCalls>
         <name>Get_First_10_Records</name>
         <label>Get First 10 Records</label>
-        <locationX>1557</locationX>
+        <locationX>1559</locationX>
         <locationY>207</locationY>
         <actionName>QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Wizard_Screen</targetReference>
+            <targetReference>Get_Records_Result</targetReference>
         </connector>
         <inputParameters>
             <name>objectApiName</name>
@@ -69,22 +69,6 @@
         </assignmentItems>
         <connector>
             <targetReference>Get_Field_Information_usf</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Debug_Mode</name>
-        <label>Set Debug Mode</label>
-        <locationX>326</locationX>
-        <locationY>206</locationY>
-        <assignmentItems>
-            <assignToReference>vDebugMode</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -265,6 +249,31 @@
                 <targetReference>Any_Fields_Selected</targetReference>
             </connector>
             <label>NO</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Get_Records_Result</name>
+        <label>Get Records Result</label>
+        <locationX>1700</locationX>
+        <locationY>387</locationY>
+        <defaultConnector>
+            <targetReference>Wizard_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>RECORDS FOUND</defaultConnectorLabel>
+        <rules>
+            <name>NO_RECORDS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vRecordList</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>[]</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Wizard_Exit</targetReference>
+            </connector>
+            <label>NO RECORDS</label>
         </rules>
     </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
@@ -516,6 +525,22 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Wizard_Exit</name>
+        <label>Wizard Exit</label>
+        <locationX>1709</locationX>
+        <locationY>567</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>FinishMessage_0</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(182, 56, 56); font-size: 24px;&quot;&gt;&lt;i&gt;The ﻿﻿Column Wizard requires that the selected Object ({!vSObject}) has at least one record!&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
         <locationX>1839</locationX>
@@ -637,8 +662,8 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>270</locationX>
-        <locationY>49</locationY>
+        <locationX>290</locationX>
+        <locationY>203</locationY>
         <connector>
             <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>

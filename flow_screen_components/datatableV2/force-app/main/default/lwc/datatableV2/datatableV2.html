@@ -118,7 +118,7 @@ Features:   The only required paramters are the SObject collection of records an
                 </ul>
             </div>
             <div class="slds-m-horizontal_medium">
-                <div class="slds-box slds-m-vertical_xx-small">
+                <div class="slds-box slds-box_x-small slds-m-vertical_xx-small">
                     <lightning-button-stateful class="slds-m-right_small"
                         label-when-off="Edit All Columns" 
                         label-when-on="All Columns are Editable"
@@ -155,7 +155,7 @@ Features:   The only required paramters are the SObject collection of records an
                 </div>
             </label>
 
-            <div style={tableHeight} class={borderClass} id="datatable">
+            <div style={tableHeightAttribute} class={borderClass} id="datatable">
                 <c-rich-datatable
                     data={mydata}
                     columns={columns}
@@ -191,7 +191,7 @@ Features:   The only required paramters are the SObject collection of records an
 
         <!-- Special Footer parameter display for Configuration Mode -->
         <template if:true={isConfigMode}>
-            <div class="slds-box slds-box_xx-small slds-m-vertical_xx-small">
+            <div class="slds-box slds-box_xx-small slds-m-vertical_xx-small slds-m-horizontal_medium">
                 <div class="slds-p-around_xx-small">
                     <span class="slds-text-heading_small">{columnWidthsLabel}
                         <lightning-button

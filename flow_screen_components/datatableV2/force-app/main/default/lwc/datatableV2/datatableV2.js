@@ -14,6 +14,7 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
 const ROUNDWIDTH = 5;       // Used to round off the column widths during Config Mode to nearest value
+const CONFIG_TABLE_HEIGHT = '460px';    // Provide enough height for the table in Config Mode to display all Header Attributes
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 
@@ -97,6 +98,7 @@ export default class DatatableV2 extends LightningElement {
     @track isAllEdit = false;
     @track isAllFilter = false;
     @track showClearButton = false;
+    @track tableHeightAttribute = 'height:';
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -382,8 +384,11 @@ export default class DatatableV2 extends LightningElement {
         });
 
         // Set table height
-        this.tableHeight = 'height:' + this.tableHeight;
-        console.log('tableHeight',this.tableHeight);
+// if (this.isConfigMode) { 
+//     this.tableHeight = CONFIG_TABLE_HEIGHT;
+// }
+        this.tableHeightAttribute = 'height:' + this.tableHeight;
+        console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         this.borderClass = (this.tableBorder != false) ? 'slds-box' : '';

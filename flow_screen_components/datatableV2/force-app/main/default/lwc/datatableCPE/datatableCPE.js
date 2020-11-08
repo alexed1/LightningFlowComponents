@@ -64,6 +64,7 @@ export default class DatatableCPE extends LightningElement {
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
+    isAnyFilters = false;
     isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
@@ -235,12 +236,27 @@ export default class DatatableCPE extends LightningElement {
         columnLabels: {value: null, valueDataType: null, isCollection: false, label: 'Column Labels (Col#:label,...)', 
             helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnScales: {value: null, valueDataType: null, isCollection: false, label: 'Column Scales (Col#:scale,...)', 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:Scale (The number of digits to display to the right of the decimal point in currency, number and percent fields (default = 0))\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnTypes: {value: null, valueDataType: null, isCollection: false, label: 'Column Types (Col#:type,...)', 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWidths: {value: null, valueDataType: null, isCollection: false, label: 'Column Widths (Col#:width,...)', 
             helpText: "Comma separated list of ColID:Width (in pixels).\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special CellAttributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"},
+        columnTypeAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special TypeAttributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"},
+        columnOtherAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Other Attributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"},
         tableLabel: {value: null, valueDataType: null, isCollection: false, label: 'Header Label', 
             helpText: '(Optional) Provide a value here if you want a header label to appear above the datatable.'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: 'Header Icon', 
@@ -259,6 +275,11 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
         singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
             helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
+        matchCaseOnFilters: {value: null, valueDataType: null, isCollection: false, label: 'Match case on column filters',
+            helpText: "Select if you want to force an exact match on case for column filter values."},
+        suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: 'Hide Cancel/Save buttons',
+            helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
+            "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
@@ -309,7 +330,9 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'isRequired'},
                 {name: 'suppressNameFieldLink'},
                 {name: 'hideCheckboxColumn'},
-                {name: 'singleRowSelection'}
+                {name: 'singleRowSelection'},
+                {name: 'matchCaseOnFilters'},
+                {name: 'suppressBottomBar'},
             ]
         },
         {name: 'advancedAttributes',
@@ -330,8 +353,13 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'columnFilters'},
                 {name: 'columnIcons'},
                 {name: 'columnLabels'},
+                {name: 'columnScales'},
+                {name: 'columnTypes'},
                 {name: 'columnWidths'},
                 {name: 'columnWraps'},
+                {name: 'columnCellAttribs'},
+                {name: 'columnTypeAttribs'},
+                {name: 'columnOtherAttribs'},
                 {name: 'keyField'},
             ]
         }
@@ -613,7 +641,7 @@ export default class DatatableCPE extends LightningElement {
             if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                 let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
                 if (event.detail.flowExit) { 
-                    // Update the wizard variables to force passing the changed values back to the CPE which will the post to the Flow Builder
+                    // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
                     switch (changedAttribute) { 
                         case 'columnFields':
                             this.wiz_columnFields = value;
@@ -623,9 +651,11 @@ export default class DatatableCPE extends LightningElement {
                             break;
                         case 'columnEdits':
                             this.wiz_columnEdits = value;
+                            this.isAnyEdits = (value) ? true : false;
                             break;
                         case 'columnFilters':
                             this.wiz_columnFilters = value;
+                            this.isAnyFilters = (value) ? true : false;
                             break;
                         case 'columnIcons':
                             this.wiz_columnIcons = value;
@@ -680,7 +710,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     disconnectedCallback() { 
-        this.template.removeEventListener('keydown', this.handleKeyDown.bind(this), true);
+        // this.template.removeEventListener('keydown', this.handleKeyDown.bind(this)); //Causes: Error during LWC component disconnect phase: [Error during LWC component disconnect phase: [TypeError]] Failing descriptor: {builder_platform_interaction:screenEditor}
     }
 
     handleKeyDown(event) { 

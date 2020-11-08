@@ -235,6 +235,24 @@
         checked={inputValues.singleRowSelection.value} 
         onchange={handleValueChange}>
     </lightning-input>   
+    <lightning-input class="slds-m-vertical_xx-small"
+        if:true={isAnyFilters}
+        type="checkbox" 
+        name="select_matchCaseOnFilters"
+        label={inputValues.matchCaseOnFilters.label} 
+        field-level-help={inputValues.matchCaseOnFilters.helpText}
+        checked={inputValues.matchCaseOnFilters.value} 
+        onchange={handleValueChange}>
+    </lightning-input>  
+    <lightning-input class="slds-m-vertical_xx-small"
+        if:true={isAnyEdits}
+        type="checkbox" 
+        name="select_suppressBottomBar"
+        label={inputValues.suppressBottomBar.label} 
+        field-level-help={inputValues.suppressBottomBar.helpText}
+        checked={inputValues.suppressBottomBar.value} 
+        onchange={handleValueChange}>
+    </lightning-input>  
 
     <!-- =============== Advanced Attributes Banner =============== -->
     <c-fsc_flow-banner
@@ -340,6 +358,32 @@
             onvaluechanged={handleFlowComboboxValueChange}>
         </c-fsc_flow-combobox>
 
+        <!-- Column Scales -->
+        <c-fsc_flow-combobox
+            if:false={isSObjectInput}
+            name="select_columnScales" 
+            label={inputValues.columnScales.label}
+            value={inputValues.columnScales.value} 
+            value-type={inputValues.columnScales.valueDataType}
+            field-level-help={inputValues.columnScales.helpText}
+            builder-context-filter-collection-boolean={inputValues.columnScales.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+
+        <!-- Column Types -->
+        <c-fsc_flow-combobox 
+            if:false={isSObjectInput}
+            name="select_columnTypes" 
+            label={inputValues.columnTypes.label}
+            value={inputValues.columnTypes.value} 
+            value-type={inputValues.columnTypes.valueDataType}
+            field-level-help={inputValues.columnTypes.helpText}
+            builder-context-filter-collection-boolean={inputValues.columnTypes.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+    
         <!-- Column Widths -->
         <c-fsc_flow-combobox 
             name="select_columnWidths" 
@@ -360,6 +404,42 @@
             value-type={inputValues.columnWraps.valueDataType}
             field-level-help={inputValues.columnWraps.helpText}
             builder-context-filter-collection-boolean={inputValues.columnWraps.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+        
+        <!-- Special Column CellAttribs -->
+        <c-fsc_flow-combobox 
+            name="select_columnCellAttribs" 
+            label={inputValues.columnCellAttribs.label}
+            value={inputValues.columnCellAttribs.value} 
+            value-type={inputValues.columnCellAttribs.valueDataType}
+            field-level-help={inputValues.columnCellAttribs.helpText}
+            builder-context-filter-collection-boolean={inputValues.columnCellAttribs.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+
+        <!-- Special Column TypeAttribs -->
+        <c-fsc_flow-combobox 
+            name="select_columnTypeAttribs" 
+            label={inputValues.columnTypeAttribs.label}
+            value={inputValues.columnTypeAttribs.value} 
+            value-type={inputValues.columnTypeAttribs.valueDataType}
+            field-level-help={inputValues.columnTypeAttribs.helpText}
+            builder-context-filter-collection-boolean={inputValues.columnTypeAttribs.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+
+        <!-- Special Column OtherAttribs -->
+        <c-fsc_flow-combobox 
+            name="select_columnOtherAttribs" 
+            label={inputValues.columnOtherAttribs.label}
+            value={inputValues.columnOtherAttribs.value} 
+            value-type={inputValues.columnOtherAttribs.valueDataType}
+            field-level-help={inputValues.columnOtherAttribs.helpText}
+            builder-context-filter-collection-boolean={inputValues.columnOtherAttribs.isCollection}
             builder-context={_builderContext} 
             onvaluechanged={handleFlowComboboxValueChange}>
         </c-fsc_flow-combobox>

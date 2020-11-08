@@ -69,6 +69,8 @@ export default class DatatableCPE extends LightningElement {
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
     firstPass = true;
+    isNextDisabled = true;
+    nextLabel = 'Next';
 
     @api
     get isObjectSelected() { 
@@ -243,19 +245,19 @@ export default class DatatableCPE extends LightningElement {
             helpText: '(Optional) Provide a value here if you want a header label to appear above the datatable.'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: 'Header Icon', 
             helpText: '(Optional) Provide a value here if you want a header icon to appear above the datatable.  Example: standard:account'},
-        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Display a border around the datatable?', 
+        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Add Border', 
             helpText: 'When selected, a thin border will be displayed around the entire datatable.  This is the default setting.'},
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
             helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
-        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "Suppress the Link on the 'Name' Field?", 
+        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field", 
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
-        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide Checkbox Column?', 
+        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide checkbox column', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
-        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require at least 1 row to be selected?', 
+        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
-        singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single Row Selection (Radio Buttons)?', 
+        singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
             helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
@@ -280,14 +282,6 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'objectName'},
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
-                {name: 'columnFields'},
-                {name: 'columnAlignments'},
-                {name: 'columnEdits'},
-                {name: 'columnFilters'},
-                {name: 'columnIcons'},
-                {name: 'columnLabels'},
-                {name: 'columnWidths'},
-                {name: 'columnWraps'},
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 
                     helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
@@ -305,16 +299,16 @@ export default class DatatableCPE extends LightningElement {
             attributes: [
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
-                {name: 'tableBorder'},
                 {name: 'tableHeight'},
-                {name: 'maxNumberOfRows'}
+                {name: 'maxNumberOfRows'},
+                {name: 'tableBorder'},
             ]
         },
         {name: 'tableBehavior',
             attributes: [
+                {name: 'isRequired'},
                 {name: 'suppressNameFieldLink'},
                 {name: 'hideCheckboxColumn'},
-                {name: 'isRequired'},
                 {name: 'singleRowSelection'}
             ]
         },
@@ -330,6 +324,14 @@ export default class DatatableCPE extends LightningElement {
                 {name: defaults.customHelpDefinition, 
                     label: 'For more information on using Apex Defined Objects with Datatable',
                     helpText: 'https://ericsplayground.wordpress.com/how-to-use-an-apex-defined-object-with-my-datatable-flow-component/'},
+                {name: 'columnFields'},
+                {name: 'columnAlignments'},
+                {name: 'columnEdits'},
+                {name: 'columnFilters'},
+                {name: 'columnIcons'},
+                {name: 'columnLabels'},
+                {name: 'columnWidths'},
+                {name: 'columnWraps'},
                 {name: 'keyField'},
             ]
         }
@@ -570,6 +572,19 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchEvent(valueChangedEvent);
     }
 
+    dispatchFlowActionEvent(action) { 
+        const flowActionEvent = new CustomEvent('flowAction', { 
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+            detail: { 
+                id: 'flowAction',
+                name: action
+            }
+        });
+        this.dispatchEvent(flowActionEvent);
+    }
+
     updateFlowParam(name, value) {
         this.flowParams.find(param => param.name === name).value = value;
     }
@@ -593,6 +608,7 @@ export default class DatatableCPE extends LightningElement {
             let value = attribute.value; 
             if (name == 'vSelectionMethod') { 
                 this.flowParams.find(param => param.name === name).value = value || '';
+                this.isNextDisabled = (value) ? false : true;
             }
             if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                 let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
@@ -631,18 +647,52 @@ export default class DatatableCPE extends LightningElement {
         });
     }
 
-    // Keep the ESC key from also closing the CPE
-    connectedCallback() { 
-        this.template.addEventListener('keydown', event => {
-            var keycode = event.code;
-            if(keycode == 'Escape'){
-                this.openModal = false;
-                event.preventDefault();
-                event.stopImmediatePropagation();
-            }
-        }, true);
+    handleWizardCancel() { 
+        console.log('handleWizardCancel');
+    }
+
+    handleWizardRestart() { 
+        console.log('handleWizardRestart');
     }
     
+    handleWizardNext() { 
+        console.log('handleWizardNext');      
+        this.dispatchFlowActionEvent('next');
+    }
+
+    connectedCallback() {
+        this.template.addEventListener('keydown', this.handleKeyDown.bind(this), true);
+
+        // this.template.querySelector('.nextButton').addEventListener('click', event => { 
+        //     console.log('Next Button Clicked');
+        //     this.handleWizardNext();
+        // });  
+
+        // this.template.addEventListener('keydown', event => {
+        //     var keycode = event.code;
+        //     if(keycode == 'Escape'){
+        //         console.log('CPE ESC Key Pressed');
+        //         this.openModal = false;
+        //         event.preventDefault();
+        //         event.stopImmediatePropagation();
+        //     }
+        // }, true);
+    }
+
+    disconnectedCallback() { 
+        this.template.removeEventListener('keydown', this.handleKeyDown.bind(this), true);
+    }
+
+    handleKeyDown(event) { 
+        var keycode = event.code;
+        if(keycode == 'Escape'){
+            console.log('CPE ESC Key Pressed');
+            this.openModal = false;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
+    }
+
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
     @track openModal = false;
 

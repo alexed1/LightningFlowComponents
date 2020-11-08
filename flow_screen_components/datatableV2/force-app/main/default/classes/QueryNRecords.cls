@@ -28,6 +28,13 @@ public class QueryNRecords {
             try{
                 sObject[] recordList = database.query(query);
                 system.debug(recordList);
+                // Make sure there are the requested # of records
+                if (!recordList.isEmpty() && recordList.size() < 10) {
+                    for (Integer i = recordList.size(); i < queryParam.numberOfRecords; i++) { 
+                        recordList.add(recordList[0]);
+                    }
+                }
+                system.debug('Number of Records: ' + recordList.size());
                 QueryResults qr = new QueryResults();
                 qr.recordString = JSON.serialize(recordList);
                 result.add(qr);

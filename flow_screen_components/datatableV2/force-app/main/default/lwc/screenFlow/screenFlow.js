@@ -1,4 +1,5 @@
 import {LightningElement, api} from 'lwc';
+// import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from 'lightning/flowSupport';
 
 export default class ScreenFlow extends LightningElement {
     @api width;
@@ -10,8 +11,11 @@ export default class ScreenFlow extends LightningElement {
     saveStatus;
     url;
 
+    @api    // Flow Navigation Actions
+    availableActions = [];
+
     connectedCallback() {
-        window.addEventListener("message", (event) => {          
+        window.addEventListener("message", (event) => {     // screenFlow.page does a postMessage whenever the flow status changes      
             if (event.data.flowOrigin !== this.url) {
                 return;
             }
@@ -43,6 +47,15 @@ export default class ScreenFlow extends LightningElement {
         });      
         this.dispatchEvent(exitEvt);      
     }
+
+    // handleGoNext() {
+    //     // check if NEXT is allowed on this screen
+    //     if (this.availableActions.find(action => action === 'NEXT')) {
+    //         // navigate to the next screen
+    //         const navigateNextEvent = new FlowNavigationNextEvent();
+    //         this.dispatchEvent(navigateNextEvent);
+    //     }
+    // }
 
     get fullUrl() {
         let params = (this.flowParams ? '&params=' + encodeURI(this.flowParams) : '');

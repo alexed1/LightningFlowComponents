@@ -25,7 +25,7 @@
         <name>Get_First_10_Records</name>
         <label>Get First 10 Records</label>
         <locationX>1559</locationX>
-        <locationY>207</locationY>
+        <locationY>208</locationY>
         <actionName>QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -74,8 +74,8 @@
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
-        <locationX>1415</locationX>
-        <locationY>207</locationY>
+        <locationX>1256</locationX>
+        <locationY>209</locationY>
         <assignmentItems>
             <assignToReference>vFieldList</assignToReference>
             <operator>Assign</operator>
@@ -84,7 +84,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_First_10_Records</targetReference>
+            <targetReference>Did_User_Enter_Field_List</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -209,7 +209,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Did_User_Enter_Field_List</targetReference>
+                <targetReference>Set_Field_List_Parameter</targetReference>
             </connector>
             <label>MANUAL</label>
         </rules>
@@ -217,21 +217,21 @@
     <decisions>
         <name>Did_User_Enter_Field_List</name>
         <label>Did User Enter Field List?</label>
-        <locationX>1252</locationX>
-        <locationY>210</locationY>
+        <locationX>1396</locationX>
+        <locationY>211</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
             <name>YES</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>List_of_Field_Names</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>fListLength</leftValueReference>
+                <operator>GreaterThan</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <numberValue>0.0</numberValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Set_Field_List_Parameter</targetReference>
+                <targetReference>Get_First_10_Records</targetReference>
             </connector>
             <label>YES</label>
         </rules>
@@ -239,10 +239,10 @@
             <name>NO</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>List_of_Field_Names</leftValueReference>
-                <operator>IsNull</operator>
+                <leftValueReference>fListLength</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <numberValue>0.0</numberValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -407,7 +407,7 @@
         <label>Select Fields</label>
         <locationX>855</locationX>
         <locationY>210</locationY>
-        <allowBack>true</allowBack>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
@@ -482,12 +482,6 @@
                     <stringValue>Available</stringValue>
                 </value>
             </inputParameters>
-            <inputParameters>
-                <name>required</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
@@ -509,7 +503,7 @@
             <dataType>String</dataType>
             <fieldText>Enter a comma separated list of field API names</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>true</isRequired>
+            <isRequired>false</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>

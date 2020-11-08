@@ -42,8 +42,8 @@
             <property name="wizColumnAlignments" label="Wizard Only - Column Alignments" type="String" role="outputOnly"/>
             <property name="wizColumnEdits" label="Wizard Only - Column Edits" type="String" role="outputOnly"/>
             <property name="wizColumnFilters" label="Wizard Only - Column Filters" type="String" role="outputOnly"/>
-            <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
             <property name="wizColumnIcons" label="Wizard Only - Column Icons" type="String" role="outputOnly"/>
+            <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
             <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
             <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
 

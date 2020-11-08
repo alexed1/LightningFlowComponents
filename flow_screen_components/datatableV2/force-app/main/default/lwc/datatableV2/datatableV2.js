@@ -216,7 +216,7 @@ export default class DatatableV2 extends LightningElement {
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = `Adjust Coumn Widths to the Nearest ${ROUNDWIDTH} pixels`;
+        this.roundValueLabel = `Snap each Coumn Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];

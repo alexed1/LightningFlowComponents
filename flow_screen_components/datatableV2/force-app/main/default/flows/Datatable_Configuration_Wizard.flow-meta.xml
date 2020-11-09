@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
-        <locationX>700</locationX>
+        <locationX>690</locationX>
         <locationY>210</locationY>
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Select_Fields</targetReference>
+            <targetReference>Loop_All_Fields</targetReference>
         </connector>
         <inputParameters>
             <name>objectName</name>
@@ -56,10 +56,26 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <name>Add_to_Selected_Collection</name>
+        <label>Add to Selected Collection</label>
+        <locationX>934</locationX>
+        <locationY>931</locationY>
+        <assignmentItems>
+            <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Loop_All_Fields</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_All_Fields</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Save_Selection_Method</name>
         <label>Save Selection Method</label>
-        <locationX>514</locationX>
-        <locationY>336</locationY>
+        <locationX>513</locationX>
+        <locationY>344</locationY>
         <assignmentItems>
             <assignToReference>vSelectionMethod</assignToReference>
             <operator>Assign</operator>
@@ -85,6 +101,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Did_User_Enter_Field_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Field_Name</name>
+        <label>Set Field Name</label>
+        <locationX>548</locationX>
+        <locationY>664</locationY>
+        <assignmentItems>
+            <assignToReference>apexFieldDescriptor.name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_Fields</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Selected_Fields</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -136,6 +168,22 @@
         </assignmentItems>
         <connector>
             <targetReference>Field_Selection_Method_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Update_Selected_Fields</name>
+        <label>Update Selected Fields</label>
+        <locationX>641</locationX>
+        <locationY>813</locationY>
+        <assignmentItems>
+            <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>apexFieldDescriptor</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Fields</targetReference>
         </connector>
     </assignments>
     <constants>
@@ -276,6 +324,31 @@
             <label>NO RECORDS</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Is_Field_Selected</name>
+        <label>Is Field Selected?</label>
+        <locationX>1033</locationX>
+        <locationY>756</locationY>
+        <defaultConnector>
+            <targetReference>Loop_All_Fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO MATCH</defaultConnectorLabel>
+        <rules>
+            <name>MATCH</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vFieldList</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>Loop_All_Fields.name</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_to_Selected_Collection</targetReference>
+            </connector>
+            <label>MATCH</label>
+        </rules>
+    </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
     <formulas>
         <name>fListLength</name>
@@ -285,6 +358,34 @@
     </formulas>
     <interviewLabel>Datatable Configuration Wizard {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Datatable Configuration Wizard</label>
+    <loops>
+        <name>Loop_All_Fields</name>
+        <label>Loop All Fields</label>
+        <locationX>815</locationX>
+        <locationY>753</locationY>
+        <collectionReference>apexColFieldDescriptors_usf</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Is_Field_Selected</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Select_Fields</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>Loop_Fields</name>
+        <label>Loop Fields</label>
+        <locationX>639</locationX>
+        <locationY>507</locationY>
+        <collectionReference>colFieldList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_Field_Name</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Get_Field_Information_usf</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -482,10 +583,20 @@
                     <stringValue>Available</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>selectedOptionsFieldDescriptorList</name>
+                <value>
+                    <elementReference>apexColSelectedFieldDescriptors_usf</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
                 <name>selectedOptionsCSV</name>
+            </outputParameters>
+            <outputParameters>
+                <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
+                <name>selectedOptionsFieldDescriptorList</name>
             </outputParameters>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -501,6 +612,9 @@
         <fields>
             <name>List_of_Field_Names</name>
             <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>vFieldList</elementReference>
+            </defaultValue>
             <fieldText>Enter a comma separated list of field API names</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
@@ -544,7 +658,7 @@
         <allowPause>false</allowPause>
         <fields>
             <name>FinishMessage</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 24px; color: rgb(101, 150, 104);&quot;&gt;&lt;i&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;﻿Column Wizard has finished.  Please close this window.&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(101, 150, 104); font-size: 24px;&quot;&gt;&lt;i&gt;﻿﻿Column Wizard has finished.  Please close this window.&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>false</showFooter>
@@ -563,7 +677,7 @@
         </connector>
         <fields>
             <name>debug</name>
-            <fieldText>&lt;p&gt;Debug Mode: {!vDebugMode}&lt;/p&gt;&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Debug Mode: {!vDebugMode}&lt;/p&gt;&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;Selected Field Descriptors: {!apexColSelectedFieldDescriptors_usf}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -672,10 +786,33 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>apexColSelectedFieldDescriptors_usf</name>
+        <apexClass>usf__FieldDescriptor</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>apexFieldDescriptor</name>
+        <apexClass>usf__FieldDescriptor</apexClass>
+        <dataType>Apex</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>colDescriptions</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>colFieldList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
@@ -706,7 +843,7 @@
         <name>vFieldList</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>

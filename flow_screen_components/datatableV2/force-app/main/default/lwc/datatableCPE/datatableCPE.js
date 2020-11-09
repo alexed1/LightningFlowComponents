@@ -19,6 +19,8 @@ const defaults = {
     wizardAttributePrefix: 'wiz_',
     dualListboxHeight: '570',
     customHelpDefinition: 'CUSTOM',
+    type: 'Type',
+    pick: 'Pick',
 };
 
 const COLORS = { 
@@ -58,6 +60,10 @@ export default class DatatableCPE extends LightningElement {
     _wiz_columnLabels;
     _wiz_columnWidths;
     _wiz_columnWraps;
+
+    vSelectionMethod;
+    vFieldList;
+    colFieldList = [];
 
     selectedSObject = '';
     isSObjectInput = true;
@@ -376,31 +382,12 @@ export default class DatatableCPE extends LightningElement {
         {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
     ];
 
-    // Field Selection Method Radio Buttons
-    // fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
-    // fieldSelectionOptions = [
-    //     {'label': 'Pick your table columns from a list', value: 'Pick'},
-    //     {'label': 'Manually specify the column fields', value: 'Manual'}
-    // ];
-    // fieldSelectionMethod = 'Pick';
-
-    // handleFieldSelectionMethod(event) { 
-    //     this.fieldSelectionMethod = event.detail.value;
-    //     this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
-    // }
-
     // Input attributes for the Wizard Flow
     @api flowParams = [
-        {
-            name: 'vSObject',
-            type: 'String',
-            value: null
-        },
-        { 
-            name: 'vSelectionMethod',
-            type: 'String',
-            value: ''
-        }
+        {name: 'vSObject', type: 'String', value: null},
+        {name: 'vSelectionMethod', type: 'String', value: ''},
+        {name: 'vFieldList', type: 'String', value: ''},
+        {name: 'colFieldList', type: 'String', value: []},
     ]
 
     @api 
@@ -440,6 +427,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     initializeValues() {
+        console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value) {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
@@ -561,7 +549,7 @@ export default class DatatableCPE extends LightningElement {
         return validity;
     }
 
-    updateRecordVariablesComboboxOptions(objectType) {
+    updateRecordVariablesComboboxOptions(objectType) {       
         const variables = this._flowVariables.filter(
             (variable) => variable.objectType === objectType
         );
@@ -613,9 +601,18 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchEvent(flowActionEvent);
     }
 
-    updateFlowParam(name, value) {
-        this.flowParams.find(param => param.name === name).value = value;
+    updateFlowParam(name, value, ifEmpty=null) {
+        this.flowParams.find(param => param.name === name).value = value || ifEmpty;
     }
+
+    // generateFieldDescriptor(label, name, required, type) { 
+    //     return {
+    //         label: label,
+    //         name: name,
+    //         required: required,
+    //         type: type
+    //     }
+    // }
 
     get wizardParams() {
         return JSON.stringify(this.flowParams);
@@ -630,51 +627,72 @@ export default class DatatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        this.isFlowLoaded = true;
-        event.detail.flowParams.forEach(attribute => {
-            let name = attribute.name;
-            let value = attribute.value; 
-            if (name == 'vSelectionMethod') { 
-                this.flowParams.find(param => param.name === name).value = value || '';
-                this.isNextDisabled = (value) ? false : true;
-            }
-            if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
-                let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
-                if (event.detail.flowExit) { 
-                    // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
-                    switch (changedAttribute) { 
-                        case 'columnFields':
-                            this.wiz_columnFields = value;
-                            break;
-                        case 'columnAlignments':
-                            this.wiz_columnAlignments = value;
-                            break;
-                        case 'columnEdits':
-                            this.wiz_columnEdits = value;
-                            this.isAnyEdits = (value) ? true : false;
-                            break;
-                        case 'columnFilters':
-                            this.wiz_columnFilters = value;
-                            this.isAnyFilters = (value) ? true : false;
-                            break;
-                        case 'columnIcons':
-                            this.wiz_columnIcons = value;
-                            break;
-                        case 'columnLabels':
-                            this.wiz_columnLabels = value;
-                            break;
-                        case 'columnWidths':
-                            this.wiz_columnWidths = value;
-                            break;
-                        case 'columnWraps':
-                            this.wiz_columnWraps = value;
-                            break;
-                        default:
-                    }
-                    this.isFlowLoaded = false;
+        if (event.detail.flowStatus == "ERROR") { 
+            console.log('Flow Error: ',JSON.stringify(event));
+        } else {      
+            this.isFlowLoaded = true;
+            event.detail.flowParams.forEach(attribute => {
+                let name = attribute.name;
+                let value = attribute.value; 
+                console.log('Flow Output:', name, value);
+
+                if (name == 'vSelectionMethod') { 
+                    this.vSelectionMethod = value;
+                    this.updateFlowParam(name, value, '');
+                    this.isNextDisabled = (value) ? false : true;
                 }
-            }
-        });
+
+                if (name == 'vFieldList' && value) { 
+                    //Save Selected Fields & Create Collection
+                    this.vFieldList = value;
+                    this.updateFlowParam(name, value);
+                    if (this.vFieldList) {
+                        this.colFieldList = [];
+                        this.vFieldList.split(',').forEach(f => {
+                            this.colFieldList.push(f);
+                        });
+                        this.updateFlowParam('colFieldList', this.colFieldList);
+                    }
+                }
+
+                if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
+                    let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
+                    if (event.detail.flowExit) { 
+                        // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
+                        switch (changedAttribute) { 
+                            case 'columnFields':
+                                this.wiz_columnFields = value;
+                                break;
+                            case 'columnAlignments':
+                                this.wiz_columnAlignments = value;
+                                break;
+                            case 'columnEdits':
+                                this.wiz_columnEdits = value;
+                                this.isAnyEdits = (value) ? true : false;
+                                break;
+                            case 'columnFilters':
+                                this.wiz_columnFilters = value;
+                                this.isAnyFilters = (value) ? true : false;
+                                break;
+                            case 'columnIcons':
+                                this.wiz_columnIcons = value;
+                                break;
+                            case 'columnLabels':
+                                this.wiz_columnLabels = value;
+                                break;
+                            case 'columnWidths':
+                                this.wiz_columnWidths = value;
+                                break;
+                            case 'columnWraps':
+                                this.wiz_columnWraps = value;
+                                break;
+                            default:
+                        }
+                        this.isFlowLoaded = false;
+                    }
+                }
+            });
+        }
     }
 
     handleWizardCancel() { 

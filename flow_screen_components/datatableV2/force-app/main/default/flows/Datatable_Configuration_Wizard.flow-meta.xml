@@ -8,7 +8,7 @@
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Loop_All_Fields</targetReference>
+            <targetReference>Select_Fields</targetReference>
         </connector>
         <inputParameters>
             <name>objectName</name>
@@ -56,22 +56,6 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
-        <name>Add_to_Selected_Collection</name>
-        <label>Add to Selected Collection</label>
-        <locationX>934</locationX>
-        <locationY>931</locationY>
-        <assignmentItems>
-            <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Loop_All_Fields</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Loop_All_Fields</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
         <name>Save_Selection_Method</name>
         <label>Save Selection Method</label>
         <locationX>513</locationX>
@@ -84,7 +68,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_Field_Information_usf</targetReference>
+            <targetReference>Loop_Previously_Selected_Fields</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -106,17 +90,17 @@
     <assignments>
         <name>Set_Field_Name</name>
         <label>Set Field Name</label>
-        <locationX>548</locationX>
-        <locationY>664</locationY>
+        <locationX>541</locationX>
+        <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>apexFieldDescriptor.name</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Loop_Fields</elementReference>
+                <elementReference>Loop_Previously_Selected_Fields</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Selected_Fields</targetReference>
+            <targetReference>Update_Selected_Field_Descriptors</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -166,15 +150,22 @@
                 <stringValue>standard:text</stringValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vDebugMode</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Field_Selection_Method_Screen</targetReference>
         </connector>
     </assignments>
     <assignments>
-        <name>Update_Selected_Fields</name>
-        <label>Update Selected Fields</label>
-        <locationX>641</locationX>
-        <locationY>813</locationY>
+        <name>Update_Selected_Field_Descriptors</name>
+        <label>Update Selected Field Descriptors</label>
+        <locationX>698</locationX>
+        <locationY>637</locationY>
         <assignmentItems>
             <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
             <operator>Add</operator>
@@ -183,7 +174,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Loop_Fields</targetReference>
+            <targetReference>Loop_Previously_Selected_Fields</targetReference>
         </connector>
     </assignments>
     <constants>
@@ -324,31 +315,6 @@
             <label>NO RECORDS</label>
         </rules>
     </decisions>
-    <decisions>
-        <name>Is_Field_Selected</name>
-        <label>Is Field Selected?</label>
-        <locationX>1033</locationX>
-        <locationY>756</locationY>
-        <defaultConnector>
-            <targetReference>Loop_All_Fields</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>NO MATCH</defaultConnectorLabel>
-        <rules>
-            <name>MATCH</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>vFieldList</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <elementReference>Loop_All_Fields.name</elementReference>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Add_to_Selected_Collection</targetReference>
-            </connector>
-            <label>MATCH</label>
-        </rules>
-    </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
     <formulas>
         <name>fListLength</name>
@@ -359,24 +325,10 @@
     <interviewLabel>Datatable Configuration Wizard {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Datatable Configuration Wizard</label>
     <loops>
-        <name>Loop_All_Fields</name>
-        <label>Loop All Fields</label>
-        <locationX>815</locationX>
-        <locationY>753</locationY>
-        <collectionReference>apexColFieldDescriptors_usf</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Is_Field_Selected</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Select_Fields</targetReference>
-        </noMoreValuesConnector>
-    </loops>
-    <loops>
-        <name>Loop_Fields</name>
-        <label>Loop Fields</label>
-        <locationX>639</locationX>
-        <locationY>507</locationY>
+        <name>Loop_Previously_Selected_Fields</name>
+        <label>Loop Previously Selected Fields</label>
+        <locationX>690</locationX>
+        <locationY>429</locationY>
         <collectionReference>colFieldList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -677,7 +629,7 @@
         </connector>
         <fields>
             <name>debug</name>
-            <fieldText>&lt;p&gt;Debug Mode: {!vDebugMode}&lt;/p&gt;&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;Selected Field Descriptors: {!apexColSelectedFieldDescriptors_usf}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Debug Mode: {!vDebugMode}&lt;/p&gt;&lt;p&gt;Selected Object: {!vSObject}&lt;/p&gt;&lt;p&gt;Selected Fields: {!vFieldList}&lt;/p&gt;&lt;p&gt;Selected Field Descriptors: {!apexColSelectedFieldDescriptors_usf}&lt;/p&gt;&lt;p&gt;10 Records: {!vRecordList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;u&gt;Wizard Attributes&lt;/u&gt;&lt;/p&gt;&lt;p&gt;Alignments: {!wiz_columnAlignments}&lt;/p&gt;&lt;p&gt;Edits: {!wiz_columnEdits}&lt;/p&gt;&lt;p&gt;Filters: {!wiz_columnFilters}&lt;/p&gt;&lt;p&gt;Labels: {!wiz_columnLabels}&lt;/p&gt;&lt;p&gt;Icons: {!wiz_columnIcons}&lt;/p&gt;&lt;p&gt;Widths: {!wiz_columnWidths}&lt;/p&gt;&lt;p&gt;Wraps: {!wiz_columnWraps}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -711,12 +663,6 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>isUserDefinedObject</name>
-                <value>
-                    <booleanValue>true</booleanValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>tableDataString</name>
                 <value>
                     <elementReference>vRecordList</elementReference>
@@ -726,6 +672,54 @@
                 <name>hideCheckboxColumn</name>
                 <value>
                     <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isUserDefinedObject</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnAlignments</name>
+                <value>
+                    <elementReference>wiz_columnAlignments</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnEdits</name>
+                <value>
+                    <elementReference>wiz_columnEdits</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFilters</name>
+                <value>
+                    <elementReference>wiz_columnFilters</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnIcons</name>
+                <value>
+                    <elementReference>wiz_columnIcons</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnLabels</name>
+                <value>
+                    <elementReference>wiz_columnLabels</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <elementReference>wiz_columnWidths</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWraps</name>
+                <value>
+                    <elementReference>wiz_columnWraps</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -871,14 +865,14 @@
         <name>wiz_columnAlignments</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>wiz_columnEdits</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
@@ -892,35 +886,35 @@
         <name>wiz_columnFilters</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>wiz_columnIcons</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>wiz_columnLabels</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>wiz_columnWidths</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>
         <name>wiz_columnWraps</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>

@@ -21,6 +21,7 @@ const defaults = {
     customHelpDefinition: 'CUSTOM',
     type: 'Type',
     pick: 'Pick',
+    NOENCODE: true,
 };
 
 const COLORS = { 
@@ -51,7 +52,7 @@ export default class DatatableCPE extends LightningElement {
     _elementType;
     _elementName;
 
-    // These are the parameter values coming back from the Wizard Flow
+    // These are the parameter values being seeded to & coming back from the Wizard Flow
     _wiz_columnFields;
     _wiz_columnAlignments;
     _wiz_columnEdits;
@@ -136,7 +137,7 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnFields(value) { 
         const name = 'columnFields';
         this._wiz_columnFields = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchFlowValueChangeEvent(name, value, 'String');     
     }
 
     @api
@@ -147,6 +148,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnAlignments';
         this._wiz_columnAlignments = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');    
     }
 
     @api
@@ -157,6 +159,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnEdits';
         this._wiz_columnEdits = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -167,6 +170,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnFilters';
         this._wiz_columnFilters = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -177,6 +181,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnIcons';
         this._wiz_columnIcons = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -187,6 +192,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnLabels';
         this._wiz_columnLabels = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -197,6 +203,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnWidths';
         this._wiz_columnWidths = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -207,6 +214,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnWraps';
         this._wiz_columnWraps = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
@@ -388,6 +396,13 @@ export default class DatatableCPE extends LightningElement {
         {name: 'vSelectionMethod', type: 'String', value: ''},
         {name: 'vFieldList', type: 'String', value: ''},
         {name: 'colFieldList', type: 'String', value: []},
+        {name: 'wiz_columnAlignments', type: 'String', value: ''},
+        {name: 'wiz_columnEdits', type: 'String', value: ''},
+        {name: 'wiz_columnFilters', type: 'String', value: ''},
+        {name: 'wiz_columnLabels', type: 'String', value: ''},
+        {name: 'wiz_columnIcons', type: 'String', value: ''},
+        {name: 'wiz_columnWidths', type: 'String', value: ''},
+        {name: 'wiz_columnWraps', type: 'String', value: ''},
     ]
 
     @api 
@@ -431,7 +446,7 @@ export default class DatatableCPE extends LightningElement {
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value) {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
-                    this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
+                    this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
@@ -601,8 +616,16 @@ export default class DatatableCPE extends LightningElement {
         this.dispatchEvent(flowActionEvent);
     }
 
-    updateFlowParam(name, value, ifEmpty=null) {
-        this.flowParams.find(param => param.name === name).value = value || ifEmpty;
+    updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
+        // Set parameter values to pass to Wizard Flow
+        let currentValue = this.flowParams.find(param => param.name === name).value;
+        if (value != currentValue) {
+            if (noEncode) {
+                this.flowParams.find(param => param.name === name).value = value || ifEmpty;
+            } else { 
+                this.flowParams.find(param => param.name === name).value = (value) ? encodeURIComponent(value) : ifEmpty;
+            }
+        }
     }
 
     // generateFieldDescriptor(label, name, required, type) { 
@@ -615,6 +638,7 @@ export default class DatatableCPE extends LightningElement {
     // }
 
     get wizardParams() {
+        // Parameter value string to pass to Wizard Flow
         return JSON.stringify(this.flowParams);
     }
     
@@ -634,7 +658,7 @@ export default class DatatableCPE extends LightningElement {
             event.detail.flowParams.forEach(attribute => {
                 let name = attribute.name;
                 let value = attribute.value; 
-                console.log('Flow Output:', name, value);
+                console.log('Output from Wizard Flow: ', name, value);
 
                 if (name == 'vSelectionMethod') { 
                     this.vSelectionMethod = value;
@@ -643,16 +667,16 @@ export default class DatatableCPE extends LightningElement {
                 }
 
                 if (name == 'vFieldList' && value) { 
-                    //Save Selected Fields & Create Collection
-                    this.vFieldList = value;
-                    this.updateFlowParam(name, value);
+                    // Save Selected Fields & Create Collection
+                    this.vFieldList = value.split(' ').join('');  //Remove all spaces  
+                    this.updateFlowParam(name, value, null, defaults.NOENCODE);
                     if (this.vFieldList) {
                         this.colFieldList = [];
                         this.vFieldList.split(',').forEach(f => {
                             this.colFieldList.push(f);
                         });
-                        this.updateFlowParam('colFieldList', this.colFieldList);
-                    }
+                        this.updateFlowParam('colFieldList', this.colFieldList, null, defaults.NOENCODE);
+                    }                  
                 }
 
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {

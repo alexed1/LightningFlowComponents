@@ -14,7 +14,6 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
 const ROUNDWIDTH = 5;       // Used to round off the column widths during Config Mode to nearest value
-const CONFIG_TABLE_HEIGHT = '460px';    // Provide enough height for the table in Config Mode to display all Header Attributes
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 
@@ -194,7 +193,28 @@ export default class DatatableV2 extends LightningElement {
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
-        
+
+        // Decode config mode attributes
+        if (this.isConfigMode) { 
+            this.columnAlignments = decodeURIComponent(this.columnAlignments);
+            this.columnEdits = decodeURIComponent(this.columnEdits);
+            this.columnFilters = decodeURIComponent(this.columnFilters);
+            this.columnIcons = decodeURIComponent(this.columnIcons);
+            this.columnLabels = decodeURIComponent(this.columnLabels);
+            this.columnWidths = decodeURIComponent(this.columnWidths);
+            this.columnWraps = decodeURIComponent(this.columnWraps);
+            this.columnFields = decodeURIComponent(this.columnFields);
+            console.log("Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log("Config Mode Input columnEdits:", this.columnEdits);
+            console.log("Config Mode Input columnFilters:", this.columnFilters);
+            console.log("Config Mode Input columnIcons:", this.columnIcons);
+            console.log("Config Mode Input columnLabels:", this.columnLabels);
+            console.log("Config Mode Input columnWidths:", this.columnWidths);
+            console.log("Config Mode Input columnWraps:", this.columnWraps);
+            console.log("Config Mode Input columnFields:", this.columnFields);
+            this.suppressNameFieldLink = true;
+        }
+
         // JSON input attributes
         if (this.isUserDefinedObject) {
             console.log('tableDataString - ',this.tableDataString);
@@ -260,12 +280,10 @@ export default class DatatableV2 extends LightningElement {
             });
         } else {
             this.editAttribType = 'all';
+            this.isAllEdit = true;
         }
 
         // Parse Column Filter attribute
-        if (this.isConfigMode) {
-            this.columnFilters = '';
-        }
         if (this.columnFilters.toLowerCase() != 'all') {
             const parseFilters = (this.columnFilters.length > 0) ? this.columnFilters.replace(/\s/g, '').split(',') : [];
             this.attribCount = (parseFilters.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
@@ -285,6 +303,7 @@ export default class DatatableV2 extends LightningElement {
             });
         } else {
             this.filterAttribType = 'all';
+            this.isAllFilter = true;
         }
 
         // Parse Column Icon attribute
@@ -348,7 +367,7 @@ export default class DatatableV2 extends LightningElement {
         parseWraps.forEach(wrap => {
             this.wraps.push({
                 column: this.columnReference(wrap),
-                wrap: this.columnValue(wrap)
+                wrap: (this.columnValue(wrap).toLowerCase() == 'true') ? true : false
             });
         });
 
@@ -383,9 +402,6 @@ export default class DatatableV2 extends LightningElement {
         });
 
         // Set table height
-// if (this.isConfigMode) { 
-//     this.tableHeight = CONFIG_TABLE_HEIGHT;
-// }
         this.tableHeightAttribute = 'height:' + this.tableHeight;
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
@@ -564,8 +580,10 @@ export default class DatatableV2 extends LightningElement {
             })  // Handle any errors from the Apex Class
             .catch(error => {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
-                this.errorApex = 'Apex Action error: ' + error.body.message;
-                alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                if (error.body) {
+                    this.errorApex = 'Apex Action error: ' + error.body.message;
+                    alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                }
                 this.showSpinner = false;
                 return this.errorApex; 
             });
@@ -576,6 +594,7 @@ export default class DatatableV2 extends LightningElement {
 
     updateDataRows() {
         // Process Incoming Data Collection
+        console.log('Processing updateDataRows')
         let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData])) : [];
         let lookupFields = this.lookups;
         let lufield = '';
@@ -660,11 +679,13 @@ export default class DatatableV2 extends LightningElement {
 
     updateColumns() {
         // Parse column definitions
+        console.log('Processing updateColumns')
         this.cols = [];
         let columnNumber = 0;
         let lufield = '';
 
         this.basicColumns.forEach(colDef => {
+
             // Standard parameters
             let label = colDef['label'];
             let fieldName = colDef['fieldName'];
@@ -672,6 +693,7 @@ export default class DatatableV2 extends LightningElement {
             let scale = colDef['scale'];
             this.cellAttributes = {};
             this.typeAttributes = {};
+            let alignment = '';
             let editAttrib = [];
             let filterAttrib = [];
             let widthAttrib = [];
@@ -681,7 +703,7 @@ export default class DatatableV2 extends LightningElement {
             // Update Alignment attribute overrides by column
             let alignmentAttrib = this.alignments.find(i => i['column'] == columnNumber);
             if (alignmentAttrib) {
-                let alignment = alignmentAttrib.alignment.toLowerCase();
+                alignment = alignmentAttrib.alignment.toLowerCase();              
                 switch (alignment) {
                     case 'left':
                     case 'center':
@@ -718,55 +740,62 @@ export default class DatatableV2 extends LightningElement {
                         break;
                     default:                       
                 }
+                if (!editAttrib.edit) { 
+                    this.isAllEdit = false;
+                }
             }
 
             // Update Filter attribute overrides by column
-            if (this.isConfigMode) {
+            switch (this.filterAttribType) {
+                case 'cols':
+                    filterAttrib = this.filters.find(i => i['column'] == columnNumber);
+                    if (!filterAttrib) {
+                        filterAttrib = [];
+                        filterAttrib.filter = false;
+                    }
+                    break;
+                case 'all':
+                    filterAttrib.column = columnNumber; 
+                    filterAttrib.filter = true;
+                    filterAttrib.actions = [
+                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                    ]; 
+                    break;
+                default:
+                    filterAttrib.filter = false;
+            }
+
+            // Some data types are not filterable
+            if(filterAttrib) {
+                switch (type) {
+                    case 'location':
+                        filterAttrib.filter = false;
+                        this.isAllFilter = false;
+                        break;
+                    default:
+                }
+            }
+
+            if (this.isConfigMode) { 
+                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
+                let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
+                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
+                let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
+                let wizardFilter = filterAttrib.filter || false;             
                 filterAttrib.column = columnNumber; 
-                filterAttrib.filter = true;
+                filterAttrib.filter = true;             
                 filterAttrib.actions = [
-                    {label: 'Align Left', checked: (this.convertType(type) != 'number'), name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
-                    {label: 'Align Center', checked: false, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
-                    {label: 'Align Right', checked: (this.convertType(type) == 'number'), name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
+                    {label: 'Align Left', checked: wizardAlignLeft, name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
+                    {label: 'Align Center', checked: wizardAlignCenter, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
+                    {label: 'Align Right', checked: wizardAlignRight, name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
                     {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
-                    {label: 'Allow Edit', checked: false, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
-                    {label: 'Allow Filter', checked: false, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
+                    {label: 'Allow Edit', checked: wizardEdit, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
+                    {label: 'Allow Filter', checked: wizardFilter, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
                 ];
-                let configAlign = (this.convertType(type) != 'number') ? 'left' : 'right';
-                this.cellAttributes = { alignment: configAlign };
-
-            } else {
-                switch (this.filterAttribType) {
-                    case 'cols':
-                        filterAttrib = this.filters.find(i => i['column'] == columnNumber);
-                        if (!filterAttrib) {
-                            filterAttrib = [];
-                            filterAttrib.filter = false;
-                        }
-                        break;
-                    case 'all':
-                        filterAttrib.column = columnNumber; 
-                        filterAttrib.filter = true;
-                        filterAttrib.actions = [
-                            {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
-                            {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
-                        ]; 
-                        break;
-                    default:
-                        filterAttrib.filter = false;
-                }
-
-                // Some data types are not filterable
-                if(filterAttrib) {
-                    switch (type) {
-                        case 'location':
-                            filterAttrib.filter = false;
-                            break;
-                        default:
-                    }
-                }
+                this.cellAttributes = { alignment: alignment };
             }
 
             // Update Icon attribute overrides by column
@@ -1505,6 +1534,7 @@ export default class DatatableV2 extends LightningElement {
             if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
             }
+console.log("DatatableV2 -> updateWrapParam -> this.filterColumns[colNum].wrapText", colNum, this.filterColumns[colNum].wrapText);
             colNum += 1;
         });
         this.columnWrapParameter = colString.substring(2);

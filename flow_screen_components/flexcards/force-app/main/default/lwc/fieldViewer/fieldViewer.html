@@ -1,0 +1,15 @@
+<template>
+    <card class="slds-size_1-of-4">
+            <template for:each={visibleRecord} for:item="field">
+                <div key={field.apiName} class="slds-m-bottom_medium">
+                        <div class="slds-m-bottom_xx-small" style={fieldTitleStyle}>
+                            {field.label}
+                        </div>
+                        <div style={fieldValueStyle}>
+                            {field.value}
+                        </div>
+                    </div>
+            </template>
+    </card>
+</template>
+

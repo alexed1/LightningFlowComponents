@@ -11,6 +11,7 @@
  * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
 **/
 
+import IsUnreadByOwner from '@salesforce/schema/Lead.IsUnreadByOwner';
 import {LightningElement, track, api} from 'lwc';
 
 const defaults = {
@@ -65,6 +66,7 @@ export default class DatatableCPE extends LightningElement {
     vSelectionMethod;
     vFieldList;
     colFieldList = [];
+    validateErrors = [];
 
     selectedSObject = '';
     isSObjectInput = true;
@@ -220,11 +222,13 @@ export default class DatatableCPE extends LightningElement {
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
     @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 
-            helpText: 'Select the Object to use in the Datatable'},
+            helpText: 'Select the Object to use in the Datatable',
+            isError: false, errorMessage: null},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', 
             helpText: null},
         tableData: {value: null, valueDataType: null, isCollection: true, label: 'Display which records?', 
-            helpText: 'Record Collection variable containing the records to display in the datatable.'},
+            helpText: 'Record Collection variable containing the records to display in the datatable.',
+            isError: false, errorMessage: null},
         preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Which records are already selected?', 
             helpText: 'Record Collection variable containing the records to show as pre-selected in the datatable.'},
         tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', 
@@ -232,7 +236,8 @@ export default class DatatableCPE extends LightningElement {
         preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', 
             helpText: 'Object Collection string variable containing the records to show as pre-selected in the datatable.'},
         columnFields: {value: null, valueDataType: null, isCollection: false, label: 'Column Fields', 
-            helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable."},  
+            helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable.",
+            isError: false, errorMessage: null},  
         columnAlignments: {value: null, valueDataType: null, isCollection: false, label: 'Column Alignments (Col#:alignment,...)', 
             helpText: "Comma separated list of ColID:Alignment Value (left,center,right)\n" +   
             "NOTE: ColIDs can be either the column number or the field API Name"},
@@ -452,6 +457,9 @@ export default class DatatableCPE extends LightningElement {
                         this.selectedSObject = curInputParam.value;    
                     }
                 }
+                if (curInputParam.isError) { 
+                    this.inputValues[curInputParam.name].isError = false;
+                }
             }
         });
         if (this.firstPass) { 
@@ -558,12 +566,6 @@ export default class DatatableCPE extends LightningElement {
         this.wizardHeight = event.target.value;
     }
 
-    @api
-    validate() {
-        const validity = [];
-        return validity;
-    }
-
     updateRecordVariablesComboboxOptions(objectType) {       
         const variables = this._flowVariables.filter(
             (variable) => variable.objectType === objectType
@@ -601,6 +603,9 @@ export default class DatatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
+        if (newValue) {
+            this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
+        }
     }
 
     dispatchFlowActionEvent(action) { 
@@ -670,11 +675,12 @@ export default class DatatableCPE extends LightningElement {
                     // Save Selected Fields & Create Collection
                     this.vFieldList = value.split(' ').join('');  //Remove all spaces  
                     this.updateFlowParam(name, value, null, defaults.NOENCODE);
-                    if (this.vFieldList) {
+                    if (this.vFieldList.length > 0) {
                         this.colFieldList = [];
                         this.vFieldList.split(',').forEach(f => {
                             this.colFieldList.push(f);
                         });
+                        this.inputValues['columnFields'].isError = false;
                         this.updateFlowParam('colFieldList', this.colFieldList, null, defaults.NOENCODE);
                     }                  
                 }
@@ -775,5 +781,38 @@ export default class DatatableCPE extends LightningElement {
     closeModal() {
         this.openModal = false;
     }
-    
+
+    @api
+    validate() {
+        this.validateErrors.length = 0;
+
+        // Not Apex-Defined -- Check for Object, Record Collection, Columns
+        if (!this.isUserDefinedObject) {
+            this.checkError((!this.isObjectSelected), 'objectName', 'You must select an Object');
+            this.checkError((!this.inputValues.tableData.value), 'tableData', 'You must provide a Collection of Records to display');
+            this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
+        }
+
+        let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
+        if (allComboboxes) {
+            allComboboxes.forEach(curCombobox => {
+                if (!curCombobox.reportValidity()) {
+                    resultErrors.push('error');
+                }
+            });
+        }
+
+        return this.validateErrors;
+    }
+
+    checkError(isError, key, errorString) { 
+        if (isError) { 
+            this.validateErrors.push({key: key, errorString: errorString});
+            this.inputValues[key].isError = true;
+            this.inputValues[key].errorMessage = errorString;
+        } else { 
+            this.inputValues[key].isError = false;
+        }
+    }
+
 }

@@ -1,4 +1,4 @@
-import { api, track,LightningElement } from 'lwc';
+import { api, track, LightningElement } from 'lwc';
 
 export default class FlowBanner extends LightningElement { 
 

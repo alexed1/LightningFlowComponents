@@ -19,6 +19,11 @@
         hide-field-picklist=true>
     </c-fsc_pick-object-and-field>
 
+    <c-display-error 
+        is-error={inputValues.objectName.isError}
+        error-message={inputValues.objectName.errorMessage}
+    ></c-display-error>
+
     <!-- Data Source -->
     <c-fsc_flow-combobox 
         if:true={isObjectSelected}
@@ -31,6 +36,11 @@
         builder-context={_builderContext} 
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
+
+    <c-display-error 
+        is-error={inputValues.tableData.isError}
+        error-message={inputValues.tableData.errorMessage}
+    ></c-display-error>
 
     <c-fsc_flow-combobox 
         if:false={isSObjectInput}
@@ -143,6 +153,11 @@
 
         </div>
     
+    <c-display-error 
+        is-error={inputValues.columnFields.isError}
+        error-message={inputValues.columnFields.errorMessage}
+    ></c-display-error>
+
     <!-- Table Header -->
     <c-fsc_flow-combobox 
         name="select_tableLabel" 

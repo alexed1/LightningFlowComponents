@@ -2,12 +2,13 @@ import { LightningElement,api } from 'lwc';
 
 export default class FlexcardHeader extends LightningElement {
 
-@api TitleFieldName;
-@api SubtitleFieldName;
-@api StatusFieldName;
-@api SRC;
-@api Icon;
-@api Variant;
-@api HoverText
+@api titleFieldName;
+@api subtitleFieldName;
+@api statusFieldName;
+@api src;
+@api icon;
+@api variant;
+@api hoverText
+
 
 }

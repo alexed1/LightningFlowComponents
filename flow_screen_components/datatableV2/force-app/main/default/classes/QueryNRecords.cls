@@ -22,7 +22,7 @@ public class QueryNRecords {
         for (QueryParameters queryParam : queryParams) {
             if(queryParam.numberOfRecords >= 50000)
                 throw new FlowApexActionException('You cannot query more than 50000 records.');
-            
+
             string query = 'Select '+ queryParam.fieldsToQuery + ' FROM ' +  queryParam.objectApiName + ' LIMIT ' + queryParam.numberOfRecords;
             system.debug('QUERY: '+query);
             try{

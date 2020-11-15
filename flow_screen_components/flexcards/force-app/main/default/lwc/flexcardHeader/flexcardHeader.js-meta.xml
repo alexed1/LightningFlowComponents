@@ -7,13 +7,13 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" category="Input">
-            <property name="TitleFieldName" label="Title Field Name" type="String" description="Field API Name Containing Title Value"/>
-            <property name="SubtitleFieldName" label="Subtitle Field Name" type="String" description="Field API Name Containing Subtitle Value"/>
-            <property name="StatusFieldName" label="Status Field Name" type="String" description="API Name for Status Field"/>
-            <property name="Icon" label="Icon" type="String" description="Icon name for example standard:account"/>
-            <property name="SRC" label="SRC" type="String" description="URL used for custom image icon"/>
-            <property name="Variant" label="Icon Variant" type="String" description="Valid values are empty, circle, and square. This value defaults to square."/>
-            <property name="HoverText" label="Hover Text" type="String" description="This text is displayed when hovering over the icon"/>
+            <property name="titleFieldName" label="Title Field Name" type="String" description="Field API Name Containing Title Value"/>
+            <property name="subtitleFieldName" label="Subtitle Field Name" type="String" description="Field API Name Containing Subtitle Value"/>
+            <property name="statusFieldName" label="Status Field Name" type="String" description="API Name for Status Field"/>
+            <property name="icon" label="Icon" type="String" description="Icon name for example standard:account"/>
+            <property name="src" label="SRC" type="String" description="URL used for custom image icon"/>
+            <property name="variant" label="Icon Variant" type="String" description="Valid values are empty, circle, and square. This value defaults to square."/>
+            <property name="hoverText" label="Hover Text" type="String" description="This text is displayed when hovering over the icon"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

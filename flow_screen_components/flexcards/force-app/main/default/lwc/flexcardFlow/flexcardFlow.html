@@ -1,19 +1,10 @@
 <template>
-
-    foobar
-    {fieldHTML}
-
     <template if:true={isDataLoaded}>
-        <lightning-card title="FlexcardFlow" icon-name="custom:custom14">
-            <ul class="slds-m-around_medium">
-                <template for:each={records} for:item="record">
-                    <li key={record.Id} >
-                            <c-field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-field-viewer>
-                    </li>
-                </template>
-            </ul>
-        </lightning-card>
+        <template for:each={records} for:item="record">
+            <div key={record.Id} class="slds-card slds-m-bottom_medium slds-size_1-of-4">
+                <c-flexcard-header title-field-name={record.Name} icon="standard:account" variant="circle"></c-flexcard-header>
+                <c-field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-field-viewer>
+            </div>
+        </template>
     </template>
-    
-    
 </template>

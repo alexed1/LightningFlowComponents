@@ -1,0 +1,10 @@
+<design:component>
+    <design:attribute name="eventAPIName" label="Platform Event API Name (input)"/>
+    <design:attribute name="id" label="id (input)"/>
+    <design:attribute name="flowNavigationRequest" label="flow Navigation Request (input optional)" datasource="none,next,back,pause,end" default="none"/>
+    <design:attribute name="value1" label="value1 (output)"/>
+    <design:attribute name="value2" label="value1 (output)"/>
+    <design:attribute name="value3" label="value1 (output)"/>
+    <design:attribute name="value4" label="value1 (output)"/>
+    <design:attribute name="value5" label="value1 (output)"/>
+</design:component>

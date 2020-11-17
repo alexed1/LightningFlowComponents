@@ -7,19 +7,25 @@ export default class FlexcardFlow extends LightningElement {
     @api selectedLabel;
     @api records;
     @api visibleFieldNames;
+    @api src;
+    @api icon;
     @track fieldHTML='';
-    @track recordLayoutData={}; 
+    @track recordLayoutData={};
+    @track objectInfo;
     curRecord;
 
-/*     @wire(getObjectInfo, { objectApiName: 'Account' })
+     @wire(getObjectInfo, { objectApiName: 'Account' })
     recordInfo({ data, error }) {
-        if (data) console.log('AssignedResource Label => ', data.fields.AssignedResource.label);
-    } */
+        if (data) {
+            this.objectInfo = data;
+            //console.log('AssignedResource Label => ', data.fields.AssignedResource.label);
+        }
+    } 
 
 
     connectedCallback() {
         console.log('entering connectedCallback');
-        this.records.forEach(this.assembleFieldLayout,this);
+        //this.records.forEach(this.assembleFieldLayout,this);
            }
 
     //for each record:
@@ -44,6 +50,10 @@ export default class FlexcardFlow extends LightningElement {
         //console.log('this is: ' + this);
         this.fieldHTML = this.fieldHTML + ' <h2> ' + item + ' </h2>';
         console.log('fieldHTML is now: ' + this.fieldHTML);
+    }
+
+    get isDataLoaded() {
+        return this.objectInfo && this.records.length > 0;
     }
 
 }

@@ -1,0 +1,7 @@
+<aura:component implements="lightning:availableForFlowActions" access="global">
+    <aura:attribute name="sessionId" type="String" access="global"/>
+    <aura:attribute name="actionType" type="String" access="global" default="sendMessage"/>
+    <aura:attribute name="message" type="String" access="global"/>
+    <aura:attribute name="recordId" type="String" access="global"/>
+    <lightning:conversationToolkitAPI aura:id="conversationKit" />
+</aura:component>

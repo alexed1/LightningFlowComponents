@@ -262,6 +262,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenObject(event) {
+console.log('handleOpenObject', event.data);       
         event.stopPropagation();
         this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + event.currentTarget.dataset.optionValue;
         this.value = this._selectedFieldPath + '.';
@@ -415,6 +416,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenEditDialog(event) {
+console.log('handleOpenEditDialog', event.data);         
         event.stopPropagation();
         this.handleOpenOptions(event);
     }

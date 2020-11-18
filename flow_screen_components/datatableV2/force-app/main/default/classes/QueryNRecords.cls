@@ -22,12 +22,19 @@ public class QueryNRecords {
         for (QueryParameters queryParam : queryParams) {
             if(queryParam.numberOfRecords >= 50000)
                 throw new FlowApexActionException('You cannot query more than 50000 records.');
-            
+
             string query = 'Select '+ queryParam.fieldsToQuery + ' FROM ' +  queryParam.objectApiName + ' LIMIT ' + queryParam.numberOfRecords;
             system.debug('QUERY: '+query);
             try{
                 sObject[] recordList = database.query(query);
                 system.debug(recordList);
+                // Make sure there are the requested # of records
+                if (!recordList.isEmpty() && recordList.size() < 10) {
+                    for (Integer i = recordList.size(); i < queryParam.numberOfRecords; i++) { 
+                        recordList.add(recordList[0]);
+                    }
+                }
+                system.debug('Number of Records: ' + recordList.size());
                 QueryResults qr = new QueryResults();
                 qr.recordString = JSON.serialize(recordList);
                 result.add(qr);

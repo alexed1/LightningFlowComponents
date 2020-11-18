@@ -10,6 +10,7 @@ Additional components packaged with this LWC:
                                                 datatableCPE   
                                                 screenFlow
                                                 fsc_flowBanner
+                                                displayError
 
                     Apex Classes:               SObjectController2 
                                                 SObjectController2Test
@@ -106,7 +107,7 @@ Features:   The only required paramters are the SObject collection of records an
             </div>
         </template>
 
-        <!-- Special parameter display for Configuration Mode -->
+        <!-- Special Header parameter display for Configuration Mode -->
         <template if:true={isConfigMode}>
             <div class="slds-text-longform">
                 <h3 class="slds-text-heading_medium">Interact with this sample datatable to configure it the way you like.</h3>
@@ -116,36 +117,6 @@ Features:   The only required paramters are the SObject collection of records an
                     <li>Use the dropdowns to select the columns that can be Edited and/or Filtered or click a Button to select all of them.</li>
                     <li>Drag the slider at the bottom of this window to adjust the height of the Wizard.</li>                    
                 </ul>
-            </div>
-            <div class="slds-m-horizontal_medium">
-                <div class="slds-box slds-m-vertical_xx-small">
-                    <p><span class="slds-text-heading_small">{columnWidthsLabel}
-                        <lightning-button
-                            label={roundValueLabel} variant="brand-outline" onclick={handleRoundWidths} class="slds-float_right">
-                        </lightning-button>
-                    </span></p>
-                    <lightning-pill label={columnWidthParameter}></lightning-pill>
-                </div>
-                <div class="slds-box slds-m-vertical_xx-small">
-                    <lightning-button-group>
-                        <lightning-button-stateful class="slds-m-right_small"
-                            label-when-off="Edit All Columns" 
-                            label-when-on="All Columns are Editable"
-                            icon-name-when-off="utility:add"
-                            icon-name-when-on="utility:check"
-                            selected={isAllEdit}
-                            onclick={handleSelectAllEdit}>
-                        </lightning-button-stateful>
-                        <lightning-button-stateful class="slds-m-right_small"
-                            label-when-off="Filter All Columns"
-                            label-when-on="All Columns are Filterable"
-                            icon-name-when-off="utility:add"
-                            icon-name-when-on="utility:check" 
-                            selected={isAllFilter}
-                            onclick={handleSelectAllFilter}>
-                        </lightning-button-stateful>
-                    </lightning-button-group>
-                </div>          
             </div>
         </template>
 
@@ -165,7 +136,7 @@ Features:   The only required paramters are the SObject collection of records an
                 </div>
             </label>
 
-            <div style={tableHeight} class={borderClass} id="datatable">
+            <div style={tableHeightAttribute} class={borderClass} id="datatable">
                 <c-rich-datatable
                     data={mydata}
                     columns={columns}
@@ -174,6 +145,7 @@ Features:   The only required paramters are the SObject collection of records an
                     sorted-direction={sortedDirection}
                     max-row-selection={maxRowSelection}
                     selected-rows={selectedRows}
+                    show-row-number-column
                     hide-checkbox-column={hideCheckboxColumn}
                     suppress-bottom-bar={suppressBottomBar}
                     onsort={updateColumnSorting}
@@ -197,6 +169,43 @@ Features:   The only required paramters are the SObject collection of records an
             </div>
 
         </div>
+
+        <!-- Special Footer parameter display for Configuration Mode -->
+        <template if:true={isConfigMode}>
+            
+            <div class="slds-box slds-box_xx-small slds-m-vertical_xx-small slds-m-horizontal_medium">
+                <div class="slds-p-around_xx-small">
+                    <span class="slds-text-heading_small">{columnWidthsLabel}
+                        <lightning-button
+                            label={roundValueLabel} variant="brand-outline" onclick={handleRoundWidths} class="slds-text-body_small slds-float_right">
+                        </lightning-button>
+                        <p class="slds-text-body_small">{columnWidthParameter}</p>
+                    </span>
+                </div>
+            </div>
+
+            <div class="slds-m-horizontal_medium">
+                <div class="slds-box slds-box_x-small slds-m-vertical_xx-small">
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Edit All Columns" 
+                        label-when-on="All Columns are Editable"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:check"
+                        selected={isAllEdit}
+                        onclick={handleSelectAllEdit}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Filter All Columns"
+                        label-when-on="All Columns are Filterable"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:check" 
+                        selected={isAllFilter}
+                        onclick={handleSelectAllFilter}>
+                    </lightning-button-stateful>
+                </div>          
+            </div>
+
+        </template>
 
     </template>
 

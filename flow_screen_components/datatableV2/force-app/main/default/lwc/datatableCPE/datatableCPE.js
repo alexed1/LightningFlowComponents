@@ -11,6 +11,7 @@
  * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
 **/
 
+import IsUnreadByOwner from '@salesforce/schema/Lead.IsUnreadByOwner';
 import {LightningElement, track, api} from 'lwc';
 
 const defaults = {
@@ -19,6 +20,9 @@ const defaults = {
     wizardAttributePrefix: 'wiz_',
     dualListboxHeight: '570',
     customHelpDefinition: 'CUSTOM',
+    type: 'Type',
+    pick: 'Pick',
+    NOENCODE: true,
 };
 
 const COLORS = { 
@@ -49,7 +53,7 @@ export default class DatatableCPE extends LightningElement {
     _elementType;
     _elementName;
 
-    // These are the parameter values coming back from the Wizard Flow
+    // These are the parameter values being seeded to & coming back from the Wizard Flow
     _wiz_columnFields;
     _wiz_columnAlignments;
     _wiz_columnEdits;
@@ -59,16 +63,24 @@ export default class DatatableCPE extends LightningElement {
     _wiz_columnWidths;
     _wiz_columnWraps;
 
+    vSelectionMethod;
+    vFieldList;
+    colFieldList = [];
+    validateErrors = [];
+
     selectedSObject = '';
     isSObjectInput = true;
     isCheckboxColumnHidden = false;
     isHideCheckboxColumn = true;
     isAnyEdits = false;
+    isAnyFilters = false;
     isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
     firstPass = true;
+    isNextDisabled = true;
+    nextLabel = 'Next';
 
     @api
     get isObjectSelected() { 
@@ -127,7 +139,7 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnFields(value) { 
         const name = 'columnFields';
         this._wiz_columnFields = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchFlowValueChangeEvent(name, value, 'String');     
     }
 
     @api
@@ -138,6 +150,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnAlignments';
         this._wiz_columnAlignments = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');    
     }
 
     @api
@@ -148,6 +161,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnEdits';
         this._wiz_columnEdits = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -158,6 +172,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnFilters';
         this._wiz_columnFilters = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -168,6 +183,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnIcons';
         this._wiz_columnIcons = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -178,6 +194,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnLabels';
         this._wiz_columnLabels = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -188,6 +205,7 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnWidths';
         this._wiz_columnWidths = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api
@@ -198,16 +216,19 @@ export default class DatatableCPE extends LightningElement {
         const name = 'columnWraps';
         this._wiz_columnWraps = value;
         this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
     @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 
-            helpText: 'Select the Object to use in the Datatable'},
+            helpText: 'Select the Object to use in the Datatable',
+            isError: false, errorMessage: null},
         fieldName: {value: null, valueDataType: null, isCollection: false, label: 'Select Field', 
             helpText: null},
         tableData: {value: null, valueDataType: null, isCollection: true, label: 'Display which records?', 
-            helpText: 'Record Collection variable containing the records to display in the datatable.'},
+            helpText: 'Record Collection variable containing the records to display in the datatable.',
+            isError: false, errorMessage: null},
         preSelectedRows: {value: null, valueDataType: null, isCollection: true, label: 'Which records are already selected?', 
             helpText: 'Record Collection variable containing the records to show as pre-selected in the datatable.'},
         tableDataString: {value: null, valueDataType: null, isCollection: false, label: 'Datatable Record String', 
@@ -215,7 +236,8 @@ export default class DatatableCPE extends LightningElement {
         preSelectedRowsString: {value: null, valueDataType: null, isCollection: false, label: 'Pre-Selected Rows String', 
             helpText: 'Object Collection string variable containing the records to show as pre-selected in the datatable.'},
         columnFields: {value: null, valueDataType: null, isCollection: false, label: 'Column Fields', 
-            helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable."},  
+            helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable.",
+            isError: false, errorMessage: null},  
         columnAlignments: {value: null, valueDataType: null, isCollection: false, label: 'Column Alignments (Col#:alignment,...)', 
             helpText: "Comma separated list of ColID:Alignment Value (left,center,right)\n" +   
             "NOTE: ColIDs can be either the column number or the field API Name"},
@@ -233,30 +255,50 @@ export default class DatatableCPE extends LightningElement {
         columnLabels: {value: null, valueDataType: null, isCollection: false, label: 'Column Labels (Col#:label,...)', 
             helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnScales: {value: null, valueDataType: null, isCollection: false, label: 'Column Scales (Col#:scale,...)', 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:Scale (The number of digits to display to the right of the decimal point in currency, number and percent fields (default = 0))\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnTypes: {value: null, valueDataType: null, isCollection: false, label: 'Column Types (Col#:type,...)', 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))\n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWidths: {value: null, valueDataType: null, isCollection: false, label: 'Column Widths (Col#:width,...)', 
             helpText: "Comma separated list of ColID:Width (in pixels).\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
-        tableLabel: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Label to display on the Table Header', 
-            helpText: 'Provide a value here if you want a header label to appear above the datatable.'},
-        tableIcon: {value: null, valueDataType: null, isCollection: false, label: '(Optional) Icon to display on the Table Header', 
-            helpText: 'Example: standard:account'},
-        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Display a border around the datatable?', 
+        columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special CellAttributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"},
+        columnTypeAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special TypeAttributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"},
+        columnOtherAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Other Attributes',
+            helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
+            "EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"},
+        tableLabel: {value: null, valueDataType: null, isCollection: false, label: 'Header Label', 
+            helpText: '(Optional) Provide a value here if you want a header label to appear above the datatable.'},
+        tableIcon: {value: null, valueDataType: null, isCollection: false, label: 'Header Icon', 
+            helpText: '(Optional) Provide a value here if you want a header icon to appear above the datatable.  Example: standard:account'},
+        tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Add Border', 
             helpText: 'When selected, a thin border will be displayed around the entire datatable.  This is the default setting.'},
-        tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height Definition',
+        tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
             helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
-        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "Suppress the Link on the 'Name' Field?", 
+        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field", 
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
-        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide Checkbox Column?', 
+        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide checkbox column', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
-        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require at least 1 row to be selected?', 
+        isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
-        singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single Row Selection (Radio Buttons)?', 
+        singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
             helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
+        matchCaseOnFilters: {value: null, valueDataType: null, isCollection: false, label: 'Match case on column filters',
+            helpText: "Select if you want to force an exact match on case for column filter values."},
+        suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: 'Hide Cancel/Save buttons',
+            helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
+            "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
@@ -280,14 +322,6 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'objectName'},
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
-                {name: 'columnFields'},
-                {name: 'columnAlignments'},
-                {name: 'columnEdits'},
-                {name: 'columnFilters'},
-                {name: 'columnIcons'},
-                {name: 'columnLabels'},
-                {name: 'columnWidths'},
-                {name: 'columnWraps'},
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 
                     helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
@@ -305,23 +339,47 @@ export default class DatatableCPE extends LightningElement {
             attributes: [
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
-                {name: 'tableBorder'},
                 {name: 'tableHeight'},
-                {name: 'maxNumberOfRows'}
+                {name: 'maxNumberOfRows'},
+                {name: 'tableBorder'},
             ]
         },
         {name: 'tableBehavior',
             attributes: [
+                {name: 'isRequired'},
                 {name: 'suppressNameFieldLink'},
                 {name: 'hideCheckboxColumn'},
-                {name: 'isRequired'},
-                {name: 'singleRowSelection'}
+                {name: 'singleRowSelection'},
+                {name: 'matchCaseOnFilters'},
+                {name: 'suppressBottomBar'},
             ]
         },
         {name: 'advancedAttributes',
             attributes: [
                 {name: 'isUserDefinedObject'},
-                {name: 'keyField'}
+                {name: defaults.customHelpDefinition, 
+                    label: 'Apex Defined Object Attributes', 
+                    helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
+                    '[{"field1":"StringRec1Value1","field2":"StringRec1Value2","field3":false,"field4":10},\n' + 
+                    '{"field1":"StringRec2Value1","field2":"StringRec2Value2","field3":true,"field4":20},\n' + 
+                    '{"field1":"StringRec3Value1","field2":"StringRec3Value2","field3":true,"field4":30}]'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'For more information on using Apex Defined Objects with Datatable',
+                    helpText: 'https://ericsplayground.wordpress.com/how-to-use-an-apex-defined-object-with-my-datatable-flow-component/'},
+                {name: 'columnFields'},
+                {name: 'columnAlignments'},
+                {name: 'columnEdits'},
+                {name: 'columnFilters'},
+                {name: 'columnIcons'},
+                {name: 'columnLabels'},
+                {name: 'columnScales'},
+                {name: 'columnTypes'},
+                {name: 'columnWidths'},
+                {name: 'columnWraps'},
+                {name: 'columnCellAttribs'},
+                {name: 'columnTypeAttribs'},
+                {name: 'columnOtherAttribs'},
+                {name: 'keyField'},
             ]
         }
     ]
@@ -337,31 +395,19 @@ export default class DatatableCPE extends LightningElement {
         {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
     ];
 
-    // Field Selection Method Radio Buttons
-    fieldSelectionOptionsLabel = 'How do you want to pick your columns?'
-    fieldSelectionOptions = [
-        {'label': 'Pick your table columns from a list', value: 'Pick'},
-        {'label': 'Manually specify the column fields', value: 'Manual'}
-    ];
-    fieldSelectionMethod = 'Pick';
-
-    handleFieldSelectionMethod(event) { 
-        this.fieldSelectionMethod = event.detail.value;
-        this.updateFlowParam('vSelectionMethod', this.fieldSelectionMethod);
-    }
-
     // Input attributes for the Wizard Flow
     @api flowParams = [
-        {
-            name: 'vSObject',
-            type: 'String',
-            value: null
-        },
-        { 
-            name: 'vSelectionMethod',
-            type: 'String',
-            value: 'Pick'
-        }
+        {name: 'vSObject', type: 'String', value: null},
+        {name: 'vSelectionMethod', type: 'String', value: ''},
+        {name: 'vFieldList', type: 'String', value: ''},
+        {name: 'colFieldList', type: 'String', value: []},
+        {name: 'wiz_columnAlignments', type: 'String', value: ''},
+        {name: 'wiz_columnEdits', type: 'String', value: ''},
+        {name: 'wiz_columnFilters', type: 'String', value: ''},
+        {name: 'wiz_columnLabels', type: 'String', value: ''},
+        {name: 'wiz_columnIcons', type: 'String', value: ''},
+        {name: 'wiz_columnWidths', type: 'String', value: ''},
+        {name: 'wiz_columnWraps', type: 'String', value: ''},
     ]
 
     @api 
@@ -401,14 +447,18 @@ export default class DatatableCPE extends LightningElement {
     }
 
     initializeValues() {
+        console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value) {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
-                    this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : curInputParam.value;
+                    this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
                     }
+                }
+                if (curInputParam.isError) { 
+                    this.inputValues[curInputParam.name].isError = false;
                 }
             }
         });
@@ -516,13 +566,7 @@ export default class DatatableCPE extends LightningElement {
         this.wizardHeight = event.target.value;
     }
 
-    @api
-    validate() {
-        const validity = [];
-        return validity;
-    }
-
-    updateRecordVariablesComboboxOptions(objectType) {
+    updateRecordVariablesComboboxOptions(objectType) {       
         const variables = this._flowVariables.filter(
             (variable) => variable.objectType === objectType
         );
@@ -559,13 +603,47 @@ export default class DatatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
+        if (newValue) {
+            this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
+        }
     }
 
-    updateFlowParam(name, value) {
-        this.flowParams.find(param => param.name === name).value = value;
+    dispatchFlowActionEvent(action) { 
+        const flowActionEvent = new CustomEvent('flowAction', { 
+            bubbles: true,
+            cancelable: false,
+            composed: true,
+            detail: { 
+                id: 'flowAction',
+                name: action
+            }
+        });
+        this.dispatchEvent(flowActionEvent);
     }
+
+    updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
+        // Set parameter values to pass to Wizard Flow
+        let currentValue = this.flowParams.find(param => param.name === name).value;
+        if (value != currentValue) {
+            if (noEncode) {
+                this.flowParams.find(param => param.name === name).value = value || ifEmpty;
+            } else { 
+                this.flowParams.find(param => param.name === name).value = (value) ? encodeURIComponent(value) : ifEmpty;
+            }
+        }
+    }
+
+    // generateFieldDescriptor(label, name, required, type) { 
+    //     return {
+    //         label: label,
+    //         name: name,
+    //         required: required,
+    //         type: type
+    //     }
+    // }
 
     get wizardParams() {
+        // Parameter value string to pass to Wizard Flow
         return JSON.stringify(this.flowParams);
     }
     
@@ -578,57 +656,121 @@ export default class DatatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        this.isFlowLoaded = true;
-        event.detail.flowParams.forEach(attribute => { 
-            if (attribute.name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
-                let changedAttribute = attribute.name.replace(defaults.wizardAttributePrefix, '');                
-                if (event.detail.flowExit) { 
-                    // Update the wizard variables to force passing the changed values back to the CPE which will the post to the Flow Builder
-                    switch (changedAttribute) { 
-                        case 'columnFields':
-                            this.wiz_columnFields = attribute.value;
-                            break;
-                        case 'columnAlignments':
-                            this.wiz_columnAlignments = attribute.value;
-                            break;
-                        case 'columnEdits':
-                            this.wiz_columnEdits = attribute.value;
-                            break;
-                        case 'columnFilters':
-                            this.wiz_columnFilters = attribute.value;
-                            break;
-                        case 'columnIcons':
-                            this.wiz_columnIcons = attribute.value;
-                            break;
-                        case 'columnLabels':
-                            this.wiz_columnLabels = attribute.value;
-                            break;
-                        case 'columnWidths':
-                            this.wiz_columnWidths = attribute.value;
-                            break;
-                        case 'columnWraps':
-                            this.wiz_columnWraps = attribute.value;
-                            break;
-                        default:
-                    }
-                    this.isFlowLoaded = false;
+        if (event.detail.flowStatus == "ERROR") { 
+            console.log('Flow Error: ',JSON.stringify(event));
+        } else {      
+            this.isFlowLoaded = true;
+            event.detail.flowParams.forEach(attribute => {
+                let name = attribute.name;
+                let value = attribute.value; 
+                console.log('Output from Wizard Flow: ', name, value);
+
+                if (name == 'vSelectionMethod') { 
+                    this.vSelectionMethod = value;
+                    this.updateFlowParam(name, value, '');
+                    this.isNextDisabled = (value) ? false : true;
                 }
-            }
-        });
+
+                if (name == 'vFieldList' && value) { 
+                    // Save Selected Fields & Create Collection
+                    this.vFieldList = value.split(' ').join('');  //Remove all spaces  
+                    this.updateFlowParam(name, value, null, defaults.NOENCODE);
+                    if (this.vFieldList.length > 0) {
+                        this.colFieldList = [];
+                        this.vFieldList.split(',').forEach(f => {
+                            this.colFieldList.push(f);
+                        });
+                        this.inputValues['columnFields'].isError = false;
+                        this.updateFlowParam('colFieldList', this.colFieldList, null, defaults.NOENCODE);
+                    }                  
+                }
+
+                if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
+                    let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
+                    if (event.detail.flowExit) { 
+                        // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
+                        switch (changedAttribute) { 
+                            case 'columnFields':
+                                this.wiz_columnFields = value;
+                                break;
+                            case 'columnAlignments':
+                                this.wiz_columnAlignments = value;
+                                break;
+                            case 'columnEdits':
+                                this.wiz_columnEdits = value;
+                                this.isAnyEdits = (value) ? true : false;
+                                break;
+                            case 'columnFilters':
+                                this.wiz_columnFilters = value;
+                                this.isAnyFilters = (value) ? true : false;
+                                break;
+                            case 'columnIcons':
+                                this.wiz_columnIcons = value;
+                                break;
+                            case 'columnLabels':
+                                this.wiz_columnLabels = value;
+                                break;
+                            case 'columnWidths':
+                                this.wiz_columnWidths = value;
+                                break;
+                            case 'columnWraps':
+                                this.wiz_columnWraps = value;
+                                break;
+                            default:
+                        }
+                        this.isFlowLoaded = false;
+                    }
+                }
+            });
+        }
     }
 
-    // Keep the ESC key from also closing the CPE
-    connectedCallback() { 
-        this.template.addEventListener('keydown', event => {
-            var keycode = event.code;
-            if(keycode == 'Escape'){
-                this.openModal = false;
-                event.preventDefault();
-                event.stopImmediatePropagation();
-            }
-        }, true);
+    handleWizardCancel() { 
+        console.log('handleWizardCancel');
+    }
+
+    handleWizardRestart() { 
+        console.log('handleWizardRestart');
     }
     
+    handleWizardNext() { 
+        console.log('handleWizardNext');      
+        this.dispatchFlowActionEvent('next');
+    }
+
+    connectedCallback() {
+        this.template.addEventListener('keydown', this.handleKeyDown.bind(this), true);
+
+        // this.template.querySelector('.nextButton').addEventListener('click', event => { 
+        //     console.log('Next Button Clicked');
+        //     this.handleWizardNext();
+        // });  
+
+        // this.template.addEventListener('keydown', event => {
+        //     var keycode = event.code;
+        //     if(keycode == 'Escape'){
+        //         console.log('CPE ESC Key Pressed');
+        //         this.openModal = false;
+        //         event.preventDefault();
+        //         event.stopImmediatePropagation();
+        //     }
+        // }, true);
+    }
+
+    disconnectedCallback() { 
+        // this.template.removeEventListener('keydown', this.handleKeyDown.bind(this)); //Causes: Error during LWC component disconnect phase: [Error during LWC component disconnect phase: [TypeError]] Failing descriptor: {builder_platform_interaction:screenEditor}
+    }
+
+    handleKeyDown(event) { 
+        var keycode = event.code;
+        if(keycode == 'Escape'){
+            console.log('CPE ESC Key Pressed');
+            this.openModal = false;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+        }
+    }
+
     //don't forget to credit https://www.salesforcepoint.com/2020/07/LWC-modal-popup-example-code.html
     @track openModal = false;
 
@@ -639,5 +781,38 @@ export default class DatatableCPE extends LightningElement {
     closeModal() {
         this.openModal = false;
     }
-    
+
+    @api
+    validate() {
+        this.validateErrors.length = 0;
+
+        // Not Apex-Defined -- Check for Object, Record Collection, Columns
+        if (!this.isUserDefinedObject) {
+            this.checkError((!this.isObjectSelected), 'objectName', 'You must select an Object');
+            this.checkError((!this.inputValues.tableData.value), 'tableData', 'You must provide a Collection of Records to display');
+            this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
+        }
+
+        let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
+        if (allComboboxes) {
+            allComboboxes.forEach(curCombobox => {
+                if (!curCombobox.reportValidity()) {
+                    resultErrors.push('error');
+                }
+            });
+        }
+
+        return this.validateErrors;
+    }
+
+    checkError(isError, key, errorString) { 
+        if (isError) { 
+            this.validateErrors.push({key: key, errorString: errorString});
+            this.inputValues[key].isError = true;
+            this.inputValues[key].errorMessage = errorString;
+        } else { 
+            this.inputValues[key].isError = false;
+        }
+    }
+
 }

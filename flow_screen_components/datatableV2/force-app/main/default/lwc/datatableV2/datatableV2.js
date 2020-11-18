@@ -93,10 +93,11 @@ export default class DatatableV2 extends LightningElement {
     @track mydata = [];
     @track selectedRows = [];
     @track roundValueLabel;
-    @track columnWidthsLabel
+    @track columnWidthsLabel;
     @track isAllEdit = false;
     @track isAllFilter = false;
     @track showClearButton = false;
+    @track tableHeightAttribute = 'height:';
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -191,7 +192,29 @@ export default class DatatableV2 extends LightningElement {
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
-console.log('window',window.location.hostname);
+        console.log('MYDOMAIN', MYDOMAIN);
+
+        // Decode config mode attributes
+        if (this.isConfigMode) { 
+            this.columnAlignments = decodeURIComponent(this.columnAlignments);
+            this.columnEdits = decodeURIComponent(this.columnEdits);
+            this.columnFilters = decodeURIComponent(this.columnFilters);
+            this.columnIcons = decodeURIComponent(this.columnIcons);
+            this.columnLabels = decodeURIComponent(this.columnLabels);
+            this.columnWidths = decodeURIComponent(this.columnWidths);
+            this.columnWraps = decodeURIComponent(this.columnWraps);
+            this.columnFields = decodeURIComponent(this.columnFields);
+            console.log("Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log("Config Mode Input columnEdits:", this.columnEdits);
+            console.log("Config Mode Input columnFilters:", this.columnFilters);
+            console.log("Config Mode Input columnIcons:", this.columnIcons);
+            console.log("Config Mode Input columnLabels:", this.columnLabels);
+            console.log("Config Mode Input columnWidths:", this.columnWidths);
+            console.log("Config Mode Input columnWraps:", this.columnWraps);
+            console.log("Config Mode Input columnFields:", this.columnFields);
+            this.suppressNameFieldLink = true;
+        }
+
         // JSON input attributes
         if (this.isUserDefinedObject) {
             console.log('tableDataString - ',this.tableDataString);
@@ -213,7 +236,7 @@ console.log('window',window.location.hostname);
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = "Round to Nearest " + ROUNDWIDTH;
+        this.roundValueLabel = `Snap each Coumn Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
@@ -257,12 +280,10 @@ console.log('window',window.location.hostname);
             });
         } else {
             this.editAttribType = 'all';
+            this.isAllEdit = true;
         }
 
         // Parse Column Filter attribute
-        if (this.isConfigMode) {
-            this.columnFilters = '';
-        }
         if (this.columnFilters.toLowerCase() != 'all') {
             const parseFilters = (this.columnFilters.length > 0) ? this.columnFilters.replace(/\s/g, '').split(',') : [];
             this.attribCount = (parseFilters.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
@@ -282,6 +303,7 @@ console.log('window',window.location.hostname);
             });
         } else {
             this.filterAttribType = 'all';
+            this.isAllFilter = true;
         }
 
         // Parse Column Icon attribute
@@ -345,7 +367,7 @@ console.log('window',window.location.hostname);
         parseWraps.forEach(wrap => {
             this.wraps.push({
                 column: this.columnReference(wrap),
-                wrap: this.columnValue(wrap)
+                wrap: (this.columnValue(wrap).toLowerCase() == 'true') ? true : false
             });
         });
 
@@ -380,8 +402,8 @@ console.log('window',window.location.hostname);
         });
 
         // Set table height
-        this.tableHeight = 'height:' + this.tableHeight;
-        console.log('tableHeight',this.tableHeight);
+        this.tableHeightAttribute = 'height:' + this.tableHeight;
+        console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         this.borderClass = (this.tableBorder != false) ? 'slds-box' : '';
@@ -558,8 +580,10 @@ console.log('window',window.location.hostname);
             })  // Handle any errors from the Apex Class
             .catch(error => {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
-                this.errorApex = 'Apex Action error: ' + error.body.message;
-                alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                if (error.body) {
+                    this.errorApex = 'Apex Action error: ' + error.body.message;
+                    alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                }
                 this.showSpinner = false;
                 return this.errorApex; 
             });
@@ -570,6 +594,7 @@ console.log('window',window.location.hostname);
 
     updateDataRows() {
         // Process Incoming Data Collection
+        console.log('Processing updateDataRows')
         let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData])) : [];
         let lookupFields = this.lookups;
         let lufield = '';
@@ -654,11 +679,13 @@ console.log('window',window.location.hostname);
 
     updateColumns() {
         // Parse column definitions
+        console.log('Processing updateColumns')
         this.cols = [];
         let columnNumber = 0;
         let lufield = '';
 
         this.basicColumns.forEach(colDef => {
+
             // Standard parameters
             let label = colDef['label'];
             let fieldName = colDef['fieldName'];
@@ -666,6 +693,7 @@ console.log('window',window.location.hostname);
             let scale = colDef['scale'];
             this.cellAttributes = {};
             this.typeAttributes = {};
+            let alignment = '';
             let editAttrib = [];
             let filterAttrib = [];
             let widthAttrib = [];
@@ -675,7 +703,7 @@ console.log('window',window.location.hostname);
             // Update Alignment attribute overrides by column
             let alignmentAttrib = this.alignments.find(i => i['column'] == columnNumber);
             if (alignmentAttrib) {
-                let alignment = alignmentAttrib.alignment.toLowerCase();
+                alignment = alignmentAttrib.alignment.toLowerCase();              
                 switch (alignment) {
                     case 'left':
                     case 'center':
@@ -712,55 +740,62 @@ console.log('window',window.location.hostname);
                         break;
                     default:                       
                 }
+                if (!editAttrib.edit) { 
+                    this.isAllEdit = false;
+                }
             }
 
             // Update Filter attribute overrides by column
-            if (this.isConfigMode) {
+            switch (this.filterAttribType) {
+                case 'cols':
+                    filterAttrib = this.filters.find(i => i['column'] == columnNumber);
+                    if (!filterAttrib) {
+                        filterAttrib = [];
+                        filterAttrib.filter = false;
+                    }
+                    break;
+                case 'all':
+                    filterAttrib.column = columnNumber; 
+                    filterAttrib.filter = true;
+                    filterAttrib.actions = [
+                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                    ]; 
+                    break;
+                default:
+                    filterAttrib.filter = false;
+            }
+
+            // Some data types are not filterable
+            if(filterAttrib) {
+                switch (type) {
+                    case 'location':
+                        filterAttrib.filter = false;
+                        this.isAllFilter = false;
+                        break;
+                    default:
+                }
+            }
+
+            if (this.isConfigMode) { 
+                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
+                let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
+                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
+                let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
+                let wizardFilter = filterAttrib.filter || false;             
                 filterAttrib.column = columnNumber; 
-                filterAttrib.filter = true;
+                filterAttrib.filter = true;             
                 filterAttrib.actions = [
-                    {label: 'Align Left', checked: (this.convertType(type) != 'number'), name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
-                    {label: 'Align Center', checked: false, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
-                    {label: 'Align Right', checked: (this.convertType(type) == 'number'), name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
+                    {label: 'Align Left', checked: wizardAlignLeft, name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
+                    {label: 'Align Center', checked: wizardAlignCenter, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
+                    {label: 'Align Right', checked: wizardAlignRight, name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
                     {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
                     {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
-                    {label: 'Allow Edit', checked: false, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
-                    {label: 'Allow Filter', checked: false, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
+                    {label: 'Allow Edit', checked: wizardEdit, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
+                    {label: 'Allow Filter', checked: wizardFilter, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
                 ];
-                let configAlign = (this.convertType(type) != 'number') ? 'left' : 'right';
-                this.cellAttributes = { alignment: configAlign };
-
-            } else {
-                switch (this.filterAttribType) {
-                    case 'cols':
-                        filterAttrib = this.filters.find(i => i['column'] == columnNumber);
-                        if (!filterAttrib) {
-                            filterAttrib = [];
-                            filterAttrib.filter = false;
-                        }
-                        break;
-                    case 'all':
-                        filterAttrib.column = columnNumber; 
-                        filterAttrib.filter = true;
-                        filterAttrib.actions = [
-                            {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
-                            {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
-                        ]; 
-                        break;
-                    default:
-                        filterAttrib.filter = false;
-                }
-
-                // Some data types are not filterable
-                if(filterAttrib) {
-                    switch (type) {
-                        case 'location':
-                            filterAttrib.filter = false;
-                            break;
-                        default:
-                    }
-                }
+                this.cellAttributes = { alignment: alignment };
             }
 
             // Update Icon attribute overrides by column
@@ -866,7 +901,7 @@ console.log('window',window.location.hostname);
                 typeAttributes: this.typeAttributes,
                 editable: (editAttrib) ? editAttrib.edit : false,
                 actions: (filterAttrib.filter) ? filterAttrib.actions : null,
-                sortable: 'true',
+                sortable: (this.isConfigMode) ? false : true,
                 initialWidth: (widthAttrib) ? widthAttrib.width : null,
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false
             });
@@ -1040,7 +1075,7 @@ console.log('window',window.location.hostname);
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton =  (this.tableData.length == 1 && this.numberOfRowsSelected == 1);
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection);   //Thanks to Jeff Olmstead for updated formula
     }
 
     handleClearSelection() {
@@ -1277,7 +1312,7 @@ console.log('window',window.location.hostname);
         });
         this.columnWidthParameter = colString.substring(2);
         this.wizColumnWidths = this.columnWidthParameter;
-        this.columnWidthsLabel = `Column Widths: (Total: ${colWidthsTotal})`;
+        this.columnWidthsLabel = `Current Column Widths: (Total: ${colWidthsTotal})`;
     }
 
     handleChange(event) {
@@ -1287,31 +1322,31 @@ console.log('window',window.location.hostname);
         this.isFiltered = false;
     }
 
-    handleSelectAllEdit(event) {
+    handleSelectAllEdit() {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllEdit = !this.isAllEdit;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = this.isAllEdit;
             colNum += 1;
         });
-        this.columnEditParameter = 'All';
+        this.columnEditParameter = (this.isAllEdit) ? 'All' : '';
         this.wizColumnEdits = this.columnEditParameter;
-        this.isAllEdit = true;
         this.columns = [...this.filterColumns]; 
     }
 
     handleSelectAllFilter(event) {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllFilter = !this.isAllFilter;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = this.isAllFilter;
             colNum += 1;
         });
-        this.columnFilterParameter = 'All';
+        this.columnFilterParameter = (this.isAllFilter) ? 'All' : '';
         this.wizColumnFilters = this.columnFilterParameter;
-        this.isAllFilter = true;
         this.columns = [...this.filterColumns]; 
     }
 
@@ -1499,6 +1534,7 @@ console.log('window',window.location.hostname);
             if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
             }
+console.log("DatatableV2 -> updateWrapParam -> this.filterColumns[colNum].wrapText", colNum, this.filterColumns[colNum].wrapText);
             colNum += 1;
         });
         this.columnWrapParameter = colString.substring(2);

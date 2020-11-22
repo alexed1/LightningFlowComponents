@@ -47,6 +47,12 @@ In order to use **datatableV2**, permission must be given to access the followin
     
 ---
 ## Release Notes
+**11/xx/20 -  Eric Smith -    Version 2.48** -  
+            **Updates:**        New Custom Property Editor for Configuration  
+                            Clear button added when using single record selection  
+                            Fixed row number display when >99 rows  
+            **Bug Fixes:**      Sandbox URLs with __c in their name will now provide valid links for lookups  
+
 **10/14/20 -  Eric Smith -    Version 2.47** -  
             **Bug Fix:**        Display correct icon for Table Header (was always showing standard:account icon)
   

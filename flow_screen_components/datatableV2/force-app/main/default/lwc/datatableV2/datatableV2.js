@@ -8,7 +8,7 @@
 
 const VERSION_NUMBER = 2.48;
 
-import { LightningElement, api, track, wire } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 

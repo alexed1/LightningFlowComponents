@@ -11,8 +11,8 @@
  * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
 **/
 
-import IsUnreadByOwner from '@salesforce/schema/Lead.IsUnreadByOwner';
 import {LightningElement, track, api} from 'lwc';
+import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPEReturnResults';
 
 const defaults = {
     apexDefinedTypeInputs: false,
@@ -64,7 +64,8 @@ export default class DatatableCPE extends LightningElement {
     _wiz_columnWraps;
 
     vSelectionMethod;
-    vFieldList;
+    vFieldList = '';
+    isEarlyExit = true;
     colFieldList = [];
     validateErrors = [];
 
@@ -78,9 +79,15 @@ export default class DatatableCPE extends LightningElement {
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
+    useDefaultHeaderToggle = false;
+    disallowHeaderChange = false;
     firstPass = true;
     isNextDisabled = true;
     nextLabel = 'Next';
+    errorApex;
+    objectLabel;
+    objectPluralLabel;
+    objectIconName;
 
     @api
     get isObjectSelected() { 
@@ -139,7 +146,12 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnFields(value) { 
         const name = 'columnFields';
         this._wiz_columnFields = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');     
+        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        if (value) {
+            this.vFieldList = value;
+            this.updateFlowParam('vFieldList', this.vFieldList, null, defaults.NOENCODE);
+            this.createFieldCollection(this.vFieldList);
+        }
     }
 
     @api
@@ -337,6 +349,13 @@ export default class DatatableCPE extends LightningElement {
         },
         {name: 'tableFormatting',
             attributes: [
+                {name: defaults.customHelpDefinition, 
+                    label: 'Configure Columns Button',
+                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
+                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},
+                {name: defaults.customHelpDefinition,
+                    label: 'Use Default Label and Icon Toggle',
+                    helpText: 'Activate this toggle to use the default plural name and default icon for the selected SObject as a table header.'},     
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
                 {name: 'tableHeight'},
@@ -450,11 +469,17 @@ export default class DatatableCPE extends LightningElement {
         console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value) {
+                console.log('Init:', curInputParam.name, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
+                    }
+                    if (curInputParam.name == 'columnFields') { 
+                        this.vFieldList = curInputParam.value;
+                        this.updateFlowParam('vFieldList', this.vFieldList, null, defaults.NOENCODE);
+                        this.createFieldCollection(this.vFieldList);
                     }
                 }
                 if (curInputParam.isError) { 
@@ -512,6 +537,30 @@ export default class DatatableCPE extends LightningElement {
             this.selectedSObject = typeValue;
             this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
         }
+        this.handleGetObjectDetails(typeValue);
+    }
+
+    handleGetObjectDetails(objName) { 
+        console.log('Passing object name to Apex Controller', objName);
+        getCPEReturnResults({ objName: objName })
+        .then(result => {
+            let returnResults = JSON.parse(result);
+
+            // Assign return results from the Apex callout
+            this.objectLabel = returnResults.objectLabel;
+            this.objectPluralLabel = returnResults.objectPluralLabel;
+            this.objectIconName = returnResults.objectIconName;
+            console.log(`Return Values for ${objName}, Label: ${this.objectLabel}, Plural: ${this.objectPluralLabel}, Icon: ${this.objectIconName}`);
+
+        })  // Handle any errors from the Apex Class
+        .catch(error => {
+            console.log('getCPEReturnResults error is: ' + JSON.stringify(error));
+            if (error.body) {
+                this.errorApex = 'Apex Action error: ' + error.body.message;
+                alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+            }
+            return this.errorApex; 
+        });
     }
 
     handleValueChange(event) {
@@ -558,6 +607,7 @@ export default class DatatableCPE extends LightningElement {
                 this.inputValues.isRequired.value = false;
                 this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
             }
+
         }
     
     }
@@ -587,6 +637,19 @@ export default class DatatableCPE extends LightningElement {
         }
     }
 
+    handleUseDefaultHeaderToggle(event) { 
+        this.useDefaultHeaderToggle = !this.useDefaultHeaderToggle;
+        if (this.useDefaultHeaderToggle) { 
+            this.inputValues.tableLabel.value = this.objectPluralLabel;
+            this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
+            this.inputValues.tableIcon.value = this.objectIconName;
+            this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
+            this.disallowHeaderChange = true;
+        } else { 
+            this.disallowHeaderChange = false;
+        }
+    }
+
     handleShowColumnAttributesToggle(event) { 
         this.showColumnAttributesToggle = !this.showColumnAttributesToggle;
     }
@@ -603,6 +666,7 @@ export default class DatatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
+console.log('dispatchFlowValueChangeEvent', id, newValue);        
         if (newValue) {
             this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
         }
@@ -623,6 +687,7 @@ export default class DatatableCPE extends LightningElement {
 
     updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
         // Set parameter values to pass to Wizard Flow
+console.log('updateFlowParam', name, value);        
         let currentValue = this.flowParams.find(param => param.name === name).value;
         if (value != currentValue) {
             if (noEncode) {
@@ -656,6 +721,7 @@ export default class DatatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
+        console.log('=== handleFlowStatusChange ===');
         if (event.detail.flowStatus == "ERROR") { 
             console.log('Flow Error: ',JSON.stringify(event));
         } else {      
@@ -675,19 +741,18 @@ export default class DatatableCPE extends LightningElement {
                     // Save Selected Fields & Create Collection
                     this.vFieldList = value.split(' ').join('');  //Remove all spaces  
                     this.updateFlowParam(name, value, null, defaults.NOENCODE);
-                    if (this.vFieldList.length > 0) {
-                        this.colFieldList = [];
-                        this.vFieldList.split(',').forEach(f => {
-                            this.colFieldList.push(f);
-                        });
-                        this.inputValues['columnFields'].isError = false;
-                        this.updateFlowParam('colFieldList', this.colFieldList, null, defaults.NOENCODE);
-                    }                  
+                    this.createFieldCollection(this.vFieldList);               
+                }
+
+                if (name == 'vEarlyExit') { 
+                    // Determine which screen the user exited on
+                    this.isEarlyExit = value;
                 }
 
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                     let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
-                    if (event.detail.flowExit) { 
+                    if (event.detail.flowExit && !this.isEarlyExit) { 
+console.log('NOT EARLY EXIT', changedAttribute, value);                        
                         // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
                         switch (changedAttribute) { 
                             case 'columnFields':
@@ -722,6 +787,18 @@ export default class DatatableCPE extends LightningElement {
                     }
                 }
             });
+        }
+    }
+
+    createFieldCollection(fieldList) {
+        // Create collection of fields from comma separated list
+        if (fieldList && fieldList.length > 0) {
+            this.colFieldList = [];
+            fieldList.split(',').forEach(f => {
+                this.colFieldList.push(f);
+            });
+            this.inputValues['columnFields'].isError = false;
+            this.updateFlowParam('colFieldList', this.colFieldList, null, defaults.NOENCODE);
         }
     }
 

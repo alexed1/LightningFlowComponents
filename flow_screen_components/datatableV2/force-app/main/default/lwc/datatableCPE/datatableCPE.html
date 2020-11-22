@@ -122,7 +122,7 @@
                                 <h1 class="slds-modal__title slds-hyphenate">Please Wait... Loading Field Details</h1>
                             </div>
                             <div if:true={isFlowLoaded}>
-                                <h2 class="slds-modal__title slds-hyphenate">Welcome To The Datatable Column Wizard</h2>
+                                <h2 class="slds-modal__title slds-hyphenate">Configure Columns</h2>
                             </div>
                         </div>
     
@@ -139,17 +139,17 @@
                         </div>
     
                         <!-- Footer Section -->
-                        <div class="slds-modal__footer slds-modal__footer_directional">
-                            <!-- <lightning-button label="Cancel" onclick={handleWizardCancel}></lightning-button>
+                        <!-- <div class="slds-modal__footer slds-modal__footer_directional">
+                            <lightning-button label="Cancel" onclick={handleWizardCancel}></lightning-button>
                             <lightning-button label="Restart" onclick={handleWizardRestart}></lightning-button>
-                            <lightning-button label={nextLabel} onclick={handleWizardNext} variant="brand" disabled={isNextDisabled}></lightning-button> -->
+                            <lightning-button label={nextLabel} onclick={handleWizardNext} variant="brand" disabled={isNextDisabled}></lightning-button>
                             <lightning-slider value={wizardHeight} label="Wizard Height (pixels)"
                                 min="400" 
                                 max="1000" 
                                 step="10"
                                 onchange={handleHeightChange}>
                             </lightning-slider>
-                        </div>
+                        </div> -->
     
                     </div>
                 </div>
@@ -163,26 +163,40 @@
     ></c-display-error>
 
     <!-- Table Header -->
-    <c-fsc_flow-combobox 
-        name="select_tableLabel" 
-        label={inputValues.tableLabel.label}
-        value={inputValues.tableLabel.value} 
-        value-type={inputValues.tableLabel.valueDataType}
-        field-level-help={inputValues.tableLabel.helpText}
-        builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
-        builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
-    </c-fsc_flow-combobox>
-    <c-fsc_flow-combobox 
-        name="select_tableIcon" 
-        label={inputValues.tableIcon.label}
-        value={inputValues.tableIcon.value} 
-        value-type={inputValues.tableIcon.valueDataType}
-        field-level-help={inputValues.tableIcon.helpText}
-        builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
-        builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
-    </c-fsc_flow-combobox>
+    <div class="slds-box slds-box_x-small slds-m-top_small">
+        <div if:true={isObjectSelected}>
+            <!-- Default Header Toggle -->
+            <lightning-input type="toggle" class="slds-m-vertical_small"
+                name="toggle_useDefaultHeader"
+                label="Use Default Label & Icon"
+                message-toggle-active="" 
+                message-toggle-inactive=""
+                onchange={handleUseDefaultHeaderToggle}
+            ></lightning-input>
+        </div>
+        <c-fsc_flow-combobox 
+            name="select_tableLabel" 
+            label={inputValues.tableLabel.label}
+            value={inputValues.tableLabel.value} 
+            value-type={inputValues.tableLabel.valueDataType}
+            field-level-help={inputValues.tableLabel.helpText}
+            disabled={disallowHeaderChange}
+            builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+        <c-fsc_flow-combobox 
+            name="select_tableIcon" 
+            label={inputValues.tableIcon.label}
+            value={inputValues.tableIcon.value} 
+            value-type={inputValues.tableIcon.valueDataType}
+            field-level-help={inputValues.tableIcon.helpText}
+            disabled={disallowHeaderChange}
+            builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+    </div>
 
     <!-- Other Table Formatting -->
     <c-fsc_flow-combobox 

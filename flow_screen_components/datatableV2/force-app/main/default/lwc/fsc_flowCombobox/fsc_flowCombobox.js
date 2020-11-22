@@ -18,6 +18,7 @@ export default class FlowCombobox extends LightningElement {
     @api maxWidth;
     @api autocomplete = 'off';
     @api fieldLevelHelp;
+    @api disabled;
     @track _dataType;
     @track _value;
     @track allOptions;
@@ -457,7 +458,7 @@ export default class FlowCombobox extends LightningElement {
                 this.closeOptionDialog(true);
             }
         }
-       
+
         this.selfEvent = false;
     }
 

@@ -20,14 +20,16 @@ public class QueryNRecords {
         List<QueryResults> result = new List<QueryResults>();
 
         for (QueryParameters queryParam : queryParams) {
-            if(queryParam.numberOfRecords >= 50000)
+            if (queryParam.numberOfRecords >= 50000)
                 throw new FlowApexActionException('You cannot query more than 50000 records.');
 
             string query = 'Select '+ queryParam.fieldsToQuery + ' FROM ' +  queryParam.objectApiName + ' LIMIT ' + queryParam.numberOfRecords;
             system.debug('QUERY: '+query);
-            try{
+            try {
+
                 sObject[] recordList = database.query(query);
                 system.debug(recordList);
+
                 // Make sure there are the requested # of records
                 if (!recordList.isEmpty() && recordList.size() < 10) {
                     for (Integer i = recordList.size(); i < queryParam.numberOfRecords; i++) { 
@@ -35,10 +37,25 @@ public class QueryNRecords {
                     }
                 }
                 system.debug('Number of Records: ' + recordList.size());
+
+                // Include null fields in the serialized result
+                List<Map<String, Object>> records = new List<Map<String, Object>> ();
+                for (SObject so : recordList) { 
+                    Map<String, Object> rec = new Map<String, Object> ();
+                    for (SObjectField f : ((SObject)(Type.forName('Schema.'+queryParam.objectApiName).newInstance())).getSObjectType().getdescribe().fields.getmap().values()) {
+                        if (queryParam.fieldsToQuery.contains(String.valueOf(f))) {
+                            try {rec.put(String.valueOf(f), so.get(f));}
+                            catch(Exception e) {rec.put(String.valueOf(f), null);}
+                        }
+                    }
+                    records.add(rec);
+                }
+                
                 QueryResults qr = new QueryResults();
-                qr.recordString = JSON.serialize(recordList);
+                qr.recordString = JSON.serialize(records);
                 result.add(qr);
-            }catch(Exception e){
+
+            } catch(Exception e) {
                 throw e;
             }
         }

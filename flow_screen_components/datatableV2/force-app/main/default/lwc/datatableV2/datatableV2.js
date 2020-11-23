@@ -582,7 +582,7 @@ export default class DatatableV2 extends LightningElement {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
                 if (error.body) {
                     this.errorApex = 'Apex Action error: ' + error.body.message;
-                    alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                    alert(this.errorApex + '\n');  // Present the error to the user
                 }
                 this.showSpinner = false;
                 return this.errorApex; 

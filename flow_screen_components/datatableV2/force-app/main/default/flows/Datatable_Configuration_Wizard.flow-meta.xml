@@ -56,6 +56,22 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <name>Clear_Early_Exit_Flag</name>
+        <label>Clear Early Exit Flag</label>
+        <locationX>1843</locationX>
+        <locationY>207</locationY>
+        <assignmentItems>
+            <assignToReference>vEarlyExit</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Wizard_Finish</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Save_Selection_Method</name>
         <label>Save Selection Method</label>
         <locationX>513</locationX>
@@ -74,7 +90,7 @@
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
-        <locationX>1256</locationX>
+        <locationX>1242</locationX>
         <locationY>209</locationY>
         <assignmentItems>
             <assignToReference>vFieldList</assignToReference>
@@ -83,8 +99,31 @@
                 <elementReference>List_of_Field_Names</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>List_of_Field_Names</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Did_User_Enter_Field_List</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Field_List_Parameter_0</name>
+        <label>Set Field List Parameter</label>
+        <locationX>1465</locationX>
+        <locationY>583</locationY>
+        <assignmentItems>
+            <assignToReference>wiz_columnFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>List_of_Field_Names</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Get_First_10_Records</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -151,6 +190,20 @@
             </value>
         </assignmentItems>
         <assignmentItems>
+            <assignToReference>vEarlyExit</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>vFieldList</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
             <assignToReference>vDebugMode</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -165,7 +218,7 @@
         <name>Update_Selected_Field_Descriptors</name>
         <label>Update Selected Field Descriptors</label>
         <locationX>698</locationX>
-        <locationY>637</locationY>
+        <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
             <operator>Add</operator>
@@ -194,8 +247,8 @@
     <decisions>
         <name>Any_Fields_Selected</name>
         <label>Any Fields Selected?</label>
-        <locationX>1242</locationX>
-        <locationY>578</locationY>
+        <locationX>1248</locationX>
+        <locationY>584</locationY>
         <defaultConnector>
             <targetReference>Select_Fields</targetReference>
         </defaultConnector>
@@ -211,7 +264,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_First_10_Records</targetReference>
+                <targetReference>Set_Field_List_Parameter_0</targetReference>
             </connector>
             <label>YES</label>
         </rules>
@@ -294,7 +347,7 @@
         <name>Get_Records_Result</name>
         <label>Get Records Result</label>
         <locationX>1700</locationX>
-        <locationY>387</locationY>
+        <locationY>396</locationY>
         <defaultConnector>
             <targetReference>Wizard_Screen</targetReference>
         </defaultConnector>
@@ -588,7 +641,7 @@
         <name>Wizard_Exit</name>
         <label>Wizard Exit</label>
         <locationX>1709</locationX>
-        <locationY>567</locationY>
+        <locationY>578</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -603,7 +656,7 @@
     <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
-        <locationX>1839</locationX>
+        <locationX>1975</locationX>
         <locationY>207</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -625,7 +678,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Wizard_Finish</targetReference>
+            <targetReference>Clear_Early_Exit_Flag</targetReference>
         </connector>
         <fields>
             <name>debug</name>
@@ -834,6 +887,13 @@
         </value>
     </variables>
     <variables>
+        <name>vEarlyExit</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
         <name>vFieldList</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -879,7 +939,7 @@
         <name>wiz_columnFields</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>true</isOutput>
     </variables>
     <variables>

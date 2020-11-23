@@ -557,7 +557,7 @@ export default class DatatableCPE extends LightningElement {
             console.log('getCPEReturnResults error is: ' + JSON.stringify(error));
             if (error.body) {
                 this.errorApex = 'Apex Action error: ' + error.body.message;
-                alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                alert(this.errorApex + '\n');  // Present the error to the user
             }
             return this.errorApex; 
         });
@@ -666,7 +666,7 @@ export default class DatatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
-console.log('dispatchFlowValueChangeEvent', id, newValue);        
+        console.log('dispatchFlowValueChangeEvent', id, newValue);        
         if (newValue) {
             this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
         }
@@ -687,7 +687,7 @@ console.log('dispatchFlowValueChangeEvent', id, newValue);
 
     updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
         // Set parameter values to pass to Wizard Flow
-console.log('updateFlowParam', name, value);        
+        console.log('updateFlowParam', name, value);        
         let currentValue = this.flowParams.find(param => param.name === name).value;
         if (value != currentValue) {
             if (noEncode) {
@@ -752,7 +752,6 @@ console.log('updateFlowParam', name, value);
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                     let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
                     if (event.detail.flowExit && !this.isEarlyExit) { 
-console.log('NOT EARLY EXIT', changedAttribute, value);                        
                         // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
                         switch (changedAttribute) { 
                             case 'columnFields':

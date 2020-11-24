@@ -115,7 +115,6 @@ Features:   The only required paramters are the SObject collection of records an
                     <li>Drag the separators between the column headers to change the widths.</li>
                     <li>Select the column header dropdowns to change Text Wrap/Clip Modes, Column Alignments, Column Icons and Column Labels.</li>
                     <li>Use the dropdowns to select the columns that can be Edited and/or Filtered or click a Button to select all of them.</li>
-                    <li>Drag the slider at the bottom of this window to adjust the height of the Wizard.</li>                    
                 </ul>
             </div>
         </template>
@@ -187,18 +186,14 @@ Features:   The only required paramters are the SObject collection of records an
             <div class="slds-m-horizontal_medium">
                 <div class="slds-box slds-box_x-small slds-m-vertical_xx-small">
                     <lightning-button-stateful class="slds-m-right_small"
-                        label-when-off="Edit All Columns" 
-                        label-when-on="All Columns are Editable"
-                        icon-name-when-off="utility:add"
-                        icon-name-when-on="utility:check"
+                        label-when-off="Make all columns editable" 
+                        label-when-on="Make no columns editable"
                         selected={isAllEdit}
                         onclick={handleSelectAllEdit}>
                     </lightning-button-stateful>
                     <lightning-button-stateful class="slds-m-right_small"
-                        label-when-off="Filter All Columns"
-                        label-when-on="All Columns are Filterable"
-                        icon-name-when-off="utility:add"
-                        icon-name-when-on="utility:check" 
+                        label-when-off="Make all columns filterable"
+                        label-when-on="Make no columns filterable"
                         selected={isAllFilter}
                         onclick={handleSelectAllFilter}>
                     </lightning-button-stateful>

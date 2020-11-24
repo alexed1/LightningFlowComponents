@@ -15,10 +15,11 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPEReturnResults';
 
 const defaults = {
+    tableBorder: true,
     apexDefinedTypeInputs: false,
     inputAttributePrefix: 'select_',
     wizardAttributePrefix: 'wiz_',
-    dualListboxHeight: '570',
+    dualListboxHeight: '770',
     customHelpDefinition: 'CUSTOM',
     type: 'Type',
     pick: 'Pick',
@@ -79,7 +80,6 @@ export default class DatatableCPE extends LightningElement {
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
     showColumnAttributesToggle = false;
-    useDefaultHeaderToggle = false;
     disallowHeaderChange = false;
     firstPass = true;
     isNextDisabled = true;
@@ -288,19 +288,21 @@ export default class DatatableCPE extends LightningElement {
         columnOtherAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Other Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
             "EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"},
+        isDisplayHeader: {value: null, valueDataType: null, isCollection: false, label: 'Display Table Header', 
+            helpText: '(Optional) Select this option if you want a header to appear above the datatable.'}, 
         tableLabel: {value: null, valueDataType: null, isCollection: false, label: 'Header Label', 
-            helpText: '(Optional) Provide a value here if you want a header label to appear above the datatable.'},
+            helpText: '(Optional) Provide a value here for the header label.'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: 'Header Icon', 
-            helpText: '(Optional) Provide a value here if you want a header icon to appear above the datatable.  Example: standard:account'},
+            helpText: '(Optional) Provide a value here for the header icon.  Example: standard:account'},
         tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Add Border', 
-            helpText: 'When selected, a thin border will be displayed around the entire datatable.  This is the default setting.'},
+            helpText: 'When selected, a thin border will be displayed around the entire datatable.'},
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
             helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field", 
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
-        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Hide checkbox column', 
+        hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
@@ -311,7 +313,7 @@ export default class DatatableCPE extends LightningElement {
         suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: 'Hide Cancel/Save buttons',
             helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
             "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
-        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Use Apex-Defined Object', 
+        isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Apex-Defined', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
@@ -322,7 +324,6 @@ export default class DatatableCPE extends LightningElement {
 
     sectionEntries = { 
         dataSource: {label: 'Data Source', info: []},
-        // columnWizard: {label: 'Column Wizard', info: [ {label: 'Column Wizard', helpText: this.wizardHelpText} ]},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
@@ -353,12 +354,9 @@ export default class DatatableCPE extends LightningElement {
                     label: 'Configure Columns Button',
                     helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
                     'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},
-                {name: defaults.customHelpDefinition,
-                    label: 'Use Default Label and Icon Toggle',
-                    helpText: 'Activate this toggle to use the default plural name and default icon for the selected SObject as a table header.'},     
+                {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
-                {name: 'tableHeight'},
                 {name: 'maxNumberOfRows'},
                 {name: 'tableBorder'},
             ]
@@ -366,11 +364,11 @@ export default class DatatableCPE extends LightningElement {
         {name: 'tableBehavior',
             attributes: [
                 {name: 'isRequired'},
-                {name: 'suppressNameFieldLink'},
                 {name: 'hideCheckboxColumn'},
                 {name: 'singleRowSelection'},
                 {name: 'matchCaseOnFilters'},
                 {name: 'suppressBottomBar'},
+                {name: 'suppressNameFieldLink'},
             ]
         },
         {name: 'advancedAttributes',
@@ -398,6 +396,7 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
                 {name: 'columnOtherAttribs'},
+                {name: 'tableHeight'},
                 {name: 'keyField'},
             ]
         }
@@ -487,6 +486,7 @@ export default class DatatableCPE extends LightningElement {
                 }
             }
         });
+
         if (this.firstPass) { 
             this.handleDefaultAttributes();
             this.handleBuildHelpInfo();
@@ -563,7 +563,7 @@ export default class DatatableCPE extends LightningElement {
         });
     }
 
-    handleValueChange(event) {
+    handleValueChange(event) {      
         if (event.target) {
             let curAttributeName = event.target.name ? event.target.name.replace(defaults.inputAttributePrefix, '') : null;
             let value = event.detail ? event.detail.value : event.target.value;
@@ -588,6 +588,23 @@ export default class DatatableCPE extends LightningElement {
                     this.inputValues.objectName.value = null;
                     this.selectedSObject = null;
                     this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+                }
+            }
+
+            // Handle isDisplayHeader
+            if (curAttributeName == 'isDisplayHeader') {
+                if (event.target.checked) { 
+                    this.inputValues.tableLabel.value = this.objectPluralLabel;
+                    this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
+                    this.inputValues.tableIcon.value = this.objectIconName;
+                    this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
+                    // this.disallowHeaderChange = true;
+                } else { 
+                    // this.disallowHeaderChange = false;
+                    this.inputValues.tableLabel.value = '';
+                    this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
+                    this.inputValues.tableIcon.value = '';
+                    this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
                 }
             }
 
@@ -634,19 +651,6 @@ export default class DatatableCPE extends LightningElement {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
-        }
-    }
-
-    handleUseDefaultHeaderToggle(event) { 
-        this.useDefaultHeaderToggle = !this.useDefaultHeaderToggle;
-        if (this.useDefaultHeaderToggle) { 
-            this.inputValues.tableLabel.value = this.objectPluralLabel;
-            this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
-            this.inputValues.tableIcon.value = this.objectIconName;
-            this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
-            this.disallowHeaderChange = true;
-        } else { 
-            this.disallowHeaderChange = false;
         }
     }
 

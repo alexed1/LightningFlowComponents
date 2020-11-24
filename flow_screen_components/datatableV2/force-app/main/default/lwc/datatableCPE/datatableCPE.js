@@ -317,6 +317,9 @@ export default class DatatableCPE extends LightningElement {
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
+        not_tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'No Border'},                                       // Used so tableBorder can default to True
+        not_suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: 'Show navigation links on Name fields',   // Used so suppressNameFieldLink can be exposed as !suppressNameFieldLink
+            helpText: "Display the SObject's 'Name' field as a link to the record."},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -368,7 +371,7 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'singleRowSelection'},
                 {name: 'matchCaseOnFilters'},
                 {name: 'suppressBottomBar'},
-                {name: 'suppressNameFieldLink'},
+                {name: 'not_suppressNameFieldLink'},
             ]
         },
         {name: 'advancedAttributes',
@@ -480,6 +483,18 @@ export default class DatatableCPE extends LightningElement {
                         this.updateFlowParam('vFieldList', this.vFieldList, null, defaults.NOENCODE);
                         this.createFieldCollection(this.vFieldList);
                     }
+                    if (curInputParam.name == 'not_tableBorder') {
+                        this.inputValues.tableBorder.value = !curInputParam.value;
+                    }
+                    if (curInputParam.name == 'tableBorder') {
+                        this.inputValues.not_tableBorder.value = !curInputParam.value;
+                    }
+                    if (curInputParam.name == 'not_suppressNameFieldLink') {
+                        this.inputValues.suppressNameFieldLink.value = !curInputParam.value;
+                    }
+                    if (curInputParam.name == 'suppressNameFieldLink') {
+                        this.inputValues.not_suppressNameFieldLink.value = !curInputParam.value;
+                    }
                 }
                 if (curInputParam.isError) { 
                     this.inputValues[curInputParam.name].isError = false;
@@ -495,7 +510,12 @@ export default class DatatableCPE extends LightningElement {
     }
 
     handleDefaultAttributes() {
-
+        if (this.inputValues.tableBorder.value == this.inputValues.not_tableBorder.value) {
+            this.inputValues.tableBorder.value = !this.inputValues.not_tableBorder.value;
+        }
+        if (this.inputValues.not_suppressNameFieldLink.value == this.inputValues.suppressNameFieldLink.value) {
+            this.inputValues.not_suppressNameFieldLink.value = !this.inputValues.suppressNameFieldLink.value;
+        }
     }
 
     handleBuildHelpInfo() {
@@ -580,6 +600,14 @@ export default class DatatableCPE extends LightningElement {
                     curAttributeType = 'String';
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
+
+            // Handle default checkbox assignments
+            if (curAttributeName == 'tableBorder') {
+                this.dispatchFlowValueChangeEvent('not_tableBorder', !curAttributeValue, curAttributeType);
+            }
+            if (curAttributeName == 'not_suppressNameFieldLink') {
+                this.dispatchFlowValueChangeEvent('suppressNameFieldLink', !curAttributeValue, curAttributeType);
+            }
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (curAttributeName == 'isUserDefinedObject') {

@@ -88,6 +88,8 @@
             <property name="isDisplayHeader" label="Display Table Header?" type="Boolean" default="false" role="inputOnly" description="Display a header above the datatable."/>
             <property name="tableIcon" label="Table Icon" type="String" role="inputOnly" description="(Optional) Icon to display on the Table Header. Example: standard:account"/>
             <property name="tableLabel" label="Table Label" type="String" role="inputOnly" description="(Optional) Label to display on the Table Header"/>
+            <property name="not_tableBorder" label="(CPE ONLY)" type="Boolean" default="false" role="inputOnly"/>
+            <property name="not_suppressNameFieldLink" label="(CPE ONLY)" type="Boolean" default="true" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

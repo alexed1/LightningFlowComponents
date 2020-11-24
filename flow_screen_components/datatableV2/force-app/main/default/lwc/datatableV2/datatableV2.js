@@ -51,9 +51,11 @@ export default class DatatableV2 extends LightningElement {
     @api outputSelectedRow;
     @api outputEditedRows = [];
     @api tableBorder;
-    @api isDisplayHeader;   // Only referenced in the CPE
+    @api isDisplayHeader;                   // Only referenced in the CPE
     @api tableIcon;
     @api tableLabel;
+    @api not_tableBorder = false;           // Only referenced in the CPE - Used so a boolean value can default to True
+    @api not_suppressNameFieldLink;         // Only referenced in the CPE - Used so a boolean value can default to True
 
     // JSON Version Attributes (User Defined Object)
     @api isUserDefinedObject = false;

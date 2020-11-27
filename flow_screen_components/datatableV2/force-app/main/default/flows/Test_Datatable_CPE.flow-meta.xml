@@ -29,10 +29,25 @@
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Datatable_Screen</targetReference>
+            <targetReference>Get_Opportunities</targetReference>
         </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Account</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Opportunities</name>
+        <label>Get Opportunities</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Datatable_Screen</targetReference>
+        </connector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Opportunity</object>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -41,48 +56,13 @@
         <name>Datatable_Screen</name>
         <label>Datatable Screen</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
             <targetReference>Results</targetReference>
         </connector>
-        <fields>
-            <name>datatable</name>
-            <dataTypeMappings>
-                <typeName>T</typeName>
-                <typeValue>Account</typeValue>
-            </dataTypeMappings>
-            <extensionName>c:datatableV2</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>objectName</name>
-                <value>
-                    <stringValue>Account</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>tableData</name>
-                <value>
-                    <elementReference>Get_Accounts</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnFields</name>
-                <value>
-                    <stringValue>Name</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnWidths</name>
-                <value>
-                    <stringValue>Name:913</stringValue>
-                </value>
-            </inputParameters>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -90,7 +70,7 @@
         <name>Results</name>
         <label>Results</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

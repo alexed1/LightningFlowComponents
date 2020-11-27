@@ -226,7 +226,7 @@ public with sharing class SObjectController2 {
             for(String lf : lookupFields) {
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSobjectType().getDescribe().getName();
+                    String relObjName = lrid.getSObjectType().getDescribe().getName();
                     if(!objIdMap.containsKey(relObjName)) {
                         objIdMap.put(relObjName, new Set<Id>());
                     }
@@ -278,7 +278,7 @@ public with sharing class SObjectController2 {
             for(String lf : lookupFields) {         
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSobjectType().getDescribe().getName();
+                    String relObjName = lrid.getSObjectType().getDescribe().getName();
                     Map<Id, SObject> recs = dataMap.get(relObjName);
                     if (recs == null) continue;
                     SObject cso = recs.get(lrid);

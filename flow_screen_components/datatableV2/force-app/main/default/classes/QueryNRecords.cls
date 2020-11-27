@@ -43,16 +43,17 @@ public class QueryNRecords {
                 for (SObject so : recordList) { 
                     Map<String, Object> rec = new Map<String, Object> ();
                     for (SObjectField f : ((SObject)(Type.forName('Schema.'+queryParam.objectApiName).newInstance())).getSObjectType().getdescribe().fields.getmap().values()) {
-                        if (queryParam.fieldsToQuery.contains(String.valueOf(f))) {
+                        if ((queryParam.fieldsToQuery + ',Id').contains(String.valueOf(f))) {
                             try {rec.put(String.valueOf(f), so.get(f));}
                             catch(Exception e) {rec.put(String.valueOf(f), null);}
                         }
                     }
                     records.add(rec);
                 }
-                
+
                 QueryResults qr = new QueryResults();
                 qr.recordString = JSON.serialize(records);
+                // qr.recordString = JSON.serialize(recordList);
                 result.add(qr);
 
             } catch(Exception e) {

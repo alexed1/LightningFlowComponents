@@ -85,8 +85,11 @@
             <property name="suppressNameFieldLink" label="Suppress the Link on the Object's 'Name' Field" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
             <property name="tableHeight" label="Table Height" type="String" role="inputOnly" description="CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)"/>
             <property name="tableBorder" label="Table Border" type="Boolean" default="true" role="inputOnly" description="Display a border around the datatable."/>
+            <property name="isDisplayHeader" label="Display Table Header?" type="Boolean" default="false" role="inputOnly" description="Display a header above the datatable."/>
             <property name="tableIcon" label="Table Icon" type="String" role="inputOnly" description="(Optional) Icon to display on the Table Header. Example: standard:account"/>
             <property name="tableLabel" label="Table Label" type="String" role="inputOnly" description="(Optional) Label to display on the Table Header"/>
+            <property name="not_tableBorder" label="(CPE ONLY)" type="Boolean" default="false" role="inputOnly"/>
+            <property name="not_suppressNameFieldLink" label="(CPE ONLY)" type="Boolean" default="true" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

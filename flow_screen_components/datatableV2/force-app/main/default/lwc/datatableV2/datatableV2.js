@@ -51,8 +51,11 @@ export default class DatatableV2 extends LightningElement {
     @api outputSelectedRow;
     @api outputEditedRows = [];
     @api tableBorder;
+    @api isDisplayHeader;                   // Only referenced in the CPE
     @api tableIcon;
     @api tableLabel;
+    @api not_tableBorder = false;           // Only referenced in the CPE - Used so a boolean value can default to True
+    @api not_suppressNameFieldLink;         // Only referenced in the CPE - Used so a boolean value can default to True
 
     // JSON Version Attributes (User Defined Object)
     @api isUserDefinedObject = false;
@@ -236,7 +239,7 @@ export default class DatatableV2 extends LightningElement {
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = `Snap each Coumn Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
+        this.roundValueLabel = `Snap each Column Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
@@ -582,7 +585,7 @@ export default class DatatableV2 extends LightningElement {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
                 if (error.body) {
                     this.errorApex = 'Apex Action error: ' + error.body.message;
-                    alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                    alert(this.errorApex + '\n');  // Present the error to the user
                 }
                 this.showSpinner = false;
                 return this.errorApex; 
@@ -1310,9 +1313,10 @@ export default class DatatableV2 extends LightningElement {
             colWidthsTotal += parseInt(sizes[colNum], 10);        
             colNum += 1;
         });
-        this.columnWidthParameter = colString.substring(2);
+        let displayWidths = colString.substring(2);
+        this.columnWidthParameter = `${displayWidths} (Total: ${colWidthsTotal})`;
         this.wizColumnWidths = this.columnWidthParameter;
-        this.columnWidthsLabel = `Current Column Widths: (Total: ${colWidthsTotal})`;
+        this.columnWidthsLabel = `Column Data`;
     }
 
     handleChange(event) {

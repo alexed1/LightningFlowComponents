@@ -1,21 +1,24 @@
 /**
  * Lightning Web Component for Flow Screens:       datatableV2
  * 
- * VERSION:             2.47
+ * VERSION:             2.48
  * 
  * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
 **/
 
-const VERSION_NUMBER = 2.47;
+const VERSION_NUMBER = 2.48;
 
-import { LightningElement, api, track, wire } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
 const ROUNDWIDTH = 5;       // Used to round off the column widths during Config Mode to nearest value
 
-const MYDOMAIN = 'https://' + window.location.hostname.split('.')[0].replace('--c','');
+const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
+
+// Get domain url by replacing the last occurance of '--c' in the current url
+const MYDOMAIN = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 
 export default class DatatableV2 extends LightningElement {
 
@@ -31,6 +34,7 @@ export default class DatatableV2 extends LightningElement {
     @api columnOtherAttribs = [];
     @api columnTypeAttribs = [];
     @api columnWidths = [];
+    @api columnWraps = [];
     @api keyField = 'Id';
     @api matchCaseOnFilters;
     @api maxNumberOfRows;
@@ -47,8 +51,11 @@ export default class DatatableV2 extends LightningElement {
     @api outputSelectedRow;
     @api outputEditedRows = [];
     @api tableBorder;
+    @api isDisplayHeader;                   // Only referenced in the CPE
     @api tableIcon;
     @api tableLabel;
+    @api not_tableBorder = false;           // Only referenced in the CPE - Used so a boolean value can default to True
+    @api not_suppressNameFieldLink;         // Only referenced in the CPE - Used so a boolean value can default to True
 
     // JSON Version Attributes (User Defined Object)
     @api isUserDefinedObject = false;
@@ -61,6 +68,20 @@ export default class DatatableV2 extends LightningElement {
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
+    // Configuration Wizard Only - Input Attributes
+    @api objectName;
+
+    // Configuration Wizard Only - Output Attributes
+    @api wizSObject;
+    @api wizColumnFields;
+    @api wizColumnAlignments;
+    @api wizColumnEdits;
+    @api wizColumnFilters;
+    @api wizColumnLabels;
+    @api wizColumnIcons;
+    @api wizColumnWidths;
+    @api wizColumnWraps;
+
     // JSON Version Variables
     @api scales = [];
     @api types = [];
@@ -75,11 +96,15 @@ export default class DatatableV2 extends LightningElement {
     @track mydata = [];
     @track selectedRows = [];
     @track roundValueLabel;
+    @track columnWidthsLabel;
+    @track isAllEdit = false;
+    @track isAllFilter = false;
     @track showClearButton = false;
+    @track tableHeightAttribute = 'height:';
 
     // Handle Lookup Field Variables   
     @api lookupId;
-    @api objectName;
+    @api objectNameLookup;
     @api objectLinkField;
     @track lookupName;
 
@@ -92,7 +117,9 @@ export default class DatatableV2 extends LightningElement {
     @api isFiltered;
     @api saveOriginalValue;
     @track columnFilterValue = null;
+    @track columnIconValue = null;
     @track isOpenFilterInput = false;
+    @track isOpenIconInput = false;
     @track inputLabel;
     @track inputType = 'text';
     @track inputFormat = null;    
@@ -128,6 +155,7 @@ export default class DatatableV2 extends LightningElement {
     @api typeAttribs = [];
     @api typeAttributes;
     @api widths = [];
+    @api wraps = [];
     @api lookups = [];
     @api cols = [];
     @api attribCount = 0;
@@ -141,6 +169,7 @@ export default class DatatableV2 extends LightningElement {
     @track columnAlignmentParameter;
     @track columnLabelParameter;
     @track columnWidthParameter;
+    @track columnWrapParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
 
@@ -162,7 +191,32 @@ export default class DatatableV2 extends LightningElement {
 
     connectedCallback() {
 
-        console.log("VERSION_NUMBER", VERSION_NUMBER);
+        // Display the component version number in the console log
+        const logStyleText = 'color: green; font-size: 16px';
+        const logStyleNumber = 'color: red; font-size: 16px';
+        console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
+        console.log('MYDOMAIN', MYDOMAIN);
+
+        // Decode config mode attributes
+        if (this.isConfigMode) { 
+            this.columnAlignments = decodeURIComponent(this.columnAlignments);
+            this.columnEdits = decodeURIComponent(this.columnEdits);
+            this.columnFilters = decodeURIComponent(this.columnFilters);
+            this.columnIcons = decodeURIComponent(this.columnIcons);
+            this.columnLabels = decodeURIComponent(this.columnLabels);
+            this.columnWidths = decodeURIComponent(this.columnWidths);
+            this.columnWraps = decodeURIComponent(this.columnWraps);
+            this.columnFields = decodeURIComponent(this.columnFields);
+            console.log("Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log("Config Mode Input columnEdits:", this.columnEdits);
+            console.log("Config Mode Input columnFilters:", this.columnFilters);
+            console.log("Config Mode Input columnIcons:", this.columnIcons);
+            console.log("Config Mode Input columnLabels:", this.columnLabels);
+            console.log("Config Mode Input columnWidths:", this.columnWidths);
+            console.log("Config Mode Input columnWraps:", this.columnWraps);
+            console.log("Config Mode Input columnFields:", this.columnFields);
+            this.suppressNameFieldLink = true;
+        }
 
         // JSON input attributes
         if (this.isUserDefinedObject) {
@@ -185,7 +239,7 @@ export default class DatatableV2 extends LightningElement {
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = "Round to Nearest " + ROUNDWIDTH;
+        this.roundValueLabel = `Snap each Column Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
@@ -201,7 +255,7 @@ export default class DatatableV2 extends LightningElement {
                     type: 'richtext',
                     scale: 0
                 });
-            })
+            });       
         }
 
         // Parse Column Alignment attribute
@@ -229,12 +283,10 @@ export default class DatatableV2 extends LightningElement {
             });
         } else {
             this.editAttribType = 'all';
+            this.isAllEdit = true;
         }
 
         // Parse Column Filter attribute
-        if (this.isConfigMode) {
-            this.columnFilters = '';
-        }
         if (this.columnFilters.toLowerCase() != 'all') {
             const parseFilters = (this.columnFilters.length > 0) ? this.columnFilters.replace(/\s/g, '').split(',') : [];
             this.attribCount = (parseFilters.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
@@ -254,6 +306,7 @@ export default class DatatableV2 extends LightningElement {
             });
         } else {
             this.filterAttribType = 'all';
+            this.isAllFilter = true;
         }
 
         // Parse Column Icon attribute
@@ -297,7 +350,6 @@ export default class DatatableV2 extends LightningElement {
                     column: this.columnReference(type),
                     type: this.columnValue(type)
                 });
-                console.log('*UD type',type);
                 this.basicColumns[this.columnReference(type)].type = this.columnValue(type);
             });
         }
@@ -309,6 +361,16 @@ export default class DatatableV2 extends LightningElement {
             this.widths.push({
                 column: this.columnReference(width),
                 width: parseInt(this.columnValue(width))
+            });
+        });
+
+        // Parse Column Wrap attribute
+        const parseWraps = (this.columnWraps.length > 0) ? this.columnWraps.replace(/\s/g, '').split(',') : [];
+        this.attribCount = (parseWraps.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
+        parseWraps.forEach(wrap => {
+            this.wraps.push({
+                column: this.columnReference(wrap),
+                wrap: (this.columnValue(wrap).toLowerCase() == 'true') ? true : false
             });
         });
 
@@ -343,8 +405,8 @@ export default class DatatableV2 extends LightningElement {
         });
 
         // Set table height
-        this.tableHeight = 'height:' + this.tableHeight;
-        console.log('tableHeight',this.tableHeight);
+        this.tableHeightAttribute = 'height:' + this.tableHeight;
+        console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         this.borderClass = (this.tableBorder != false) ? 'slds-box' : '';
@@ -354,6 +416,7 @@ export default class DatatableV2 extends LightningElement {
 
             // Set other initial values here
             this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
             this.processDatatable();
@@ -412,7 +475,7 @@ export default class DatatableV2 extends LightningElement {
     }
 
     processDatatable() {
-        if (this.isUserDefinedObject) {
+        if (this.isUserDefinedObject && !this.isConfigMode) {
 
             // JSON Version set recordData
             this.recordData = [...this.tableData];
@@ -457,7 +520,16 @@ export default class DatatableV2 extends LightningElement {
         } else {
 
             // Call Apex Controller and get Column Definitions and update Row Data
-            let data = (this.tableData) ? JSON.parse(JSON.stringify([...this.tableData])) : [];
+            let data;
+            if (!this.isUserDefinedObject) {
+                data = (this.tableData) ? JSON.parse(JSON.stringify([...this.tableData])) : [];
+            } else { 
+                data = (this.tableData) ? JSON.parse(this.tableDataString) : [];
+                data.forEach(record => { 
+                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from SObjectController2
+                });
+            }
+
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
             console.log('Passing data to Apex Controller', data);
             getReturnResults({ records: data, fieldNames: fieldList })
@@ -472,7 +544,7 @@ export default class DatatableV2 extends LightningElement {
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.picklistFieldMap = returnResults.picklistFieldMap;
-                this.objectName = returnResults.objectName;
+                this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
@@ -502,14 +574,19 @@ export default class DatatableV2 extends LightningElement {
                 // Custom column processing
                 this.updateColumns();
 
+                // Pass object name back to wizard
+                this.wizSObject = this.objectNameLookup;
+
                 // Done processing the datatable
                 this.showSpinner = false;
 
             })  // Handle any errors from the Apex Class
             .catch(error => {
                 console.log('getReturnResults error is: ' + JSON.stringify(error));
-                this.errorApex = 'Apex Action error: ' + error.body.message;
-                alert(this.errorApex + '\n'  + error.body.stackTrace);  // Present the error to the user
+                if (error.body) {
+                    this.errorApex = 'Apex Action error: ' + error.body.message;
+                    alert(this.errorApex + '\n');  // Present the error to the user
+                }
                 this.showSpinner = false;
                 return this.errorApex; 
             });
@@ -520,6 +597,7 @@ export default class DatatableV2 extends LightningElement {
 
     updateDataRows() {
         // Process Incoming Data Collection
+        console.log('Processing updateDataRows')
         let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData])) : [];
         let lookupFields = this.lookups;
         let lufield = '';
@@ -571,7 +649,7 @@ export default class DatatableV2 extends LightningElement {
             
             // Handle Lookup for the SObject's "Name" Field
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
-            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectName + '/' + record['Id'] + '/view';
+            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';
 
             // Handle replacement of Picklist API Names with Labels
             if (this.picklistReplaceValues) {
@@ -604,6 +682,7 @@ export default class DatatableV2 extends LightningElement {
 
     updateColumns() {
         // Parse column definitions
+        console.log('Processing updateColumns')
         this.cols = [];
         let columnNumber = 0;
         let lufield = '';
@@ -617,15 +696,17 @@ export default class DatatableV2 extends LightningElement {
             let scale = colDef['scale'];
             this.cellAttributes = {};
             this.typeAttributes = {};
+            let alignment = '';
             let editAttrib = [];
             let filterAttrib = [];
             let widthAttrib = [];
+            let wrapAttrib = [];
             this.typeAttrib.type = type;          
 
             // Update Alignment attribute overrides by column
             let alignmentAttrib = this.alignments.find(i => i['column'] == columnNumber);
             if (alignmentAttrib) {
-                let alignment = alignmentAttrib.alignment.toLowerCase();
+                alignment = alignmentAttrib.alignment.toLowerCase();              
                 switch (alignment) {
                     case 'left':
                     case 'center':
@@ -662,54 +743,62 @@ export default class DatatableV2 extends LightningElement {
                         break;
                     default:                       
                 }
+                if (!editAttrib.edit) { 
+                    this.isAllEdit = false;
+                }
             }
 
             // Update Filter attribute overrides by column
-            if (this.isConfigMode) {
-                filterAttrib.column = columnNumber; 
-                filterAttrib.filter = true;
-                filterAttrib.actions = [
-                    {label: 'Align Left', checked: (this.convertType(type) != 'number'), name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
-                    {label: 'Align Center', checked: false, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
-                    {label: 'Align Right', checked: (this.convertType(type) == 'number'), name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
-                    {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
-                    {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
-                    {label: 'Allow Edit', checked: false, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
-                    {label: 'Allow Filter', checked: false, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
-                ];
-                let configAlign = (this.convertType(type) != 'number') ? 'left' : 'right';
-                this.cellAttributes = { alignment: configAlign };
+            switch (this.filterAttribType) {
+                case 'cols':
+                    filterAttrib = this.filters.find(i => i['column'] == columnNumber);
+                    if (!filterAttrib) {
+                        filterAttrib = [];
+                        filterAttrib.filter = false;
+                    }
+                    break;
+                case 'all':
+                    filterAttrib.column = columnNumber; 
+                    filterAttrib.filter = true;
+                    filterAttrib.actions = [
+                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                    ]; 
+                    break;
+                default:
+                    filterAttrib.filter = false;
+            }
 
-            } else {
-                switch (this.filterAttribType) {
-                    case 'cols':
-                        filterAttrib = this.filters.find(i => i['column'] == columnNumber);
-                        if (!filterAttrib) {
-                            filterAttrib = [];
-                            filterAttrib.filter = false;
-                        }
-                        break;
-                    case 'all':
-                        filterAttrib.column = columnNumber; 
-                        filterAttrib.filter = true;
-                        filterAttrib.actions = [
-                            {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
-                            {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
-                        ]; 
+            // Some data types are not filterable
+            if(filterAttrib) {
+                switch (type) {
+                    case 'location':
+                        filterAttrib.filter = false;
+                        this.isAllFilter = false;
                         break;
                     default:
-                        filterAttrib.filter = false;
                 }
+            }
 
-                // Some data types are not filterable
-                if(filterAttrib) {
-                    switch (type) {
-                        case 'location':
-                            filterAttrib.filter = false;
-                            break;
-                        default:
-                    }
-                }
+            if (this.isConfigMode) { 
+                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
+                let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
+                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
+                let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
+                let wizardFilter = filterAttrib.filter || false;             
+                filterAttrib.column = columnNumber; 
+                filterAttrib.filter = true;             
+                filterAttrib.actions = [
+                    {label: 'Align Left', checked: wizardAlignLeft, name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
+                    {label: 'Align Center', checked: wizardAlignCenter, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
+                    {label: 'Align Right', checked: wizardAlignRight, name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
+                    {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
+                    {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
+                    {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
+                    {label: 'Allow Edit', checked: wizardEdit, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
+                    {label: 'Allow Filter', checked: wizardFilter, name: 'afilter_' + columnNumber, iconName: 'utility:filter'}
+                ];
+                this.cellAttributes = { alignment: alignment };
             }
 
             // Update Icon attribute overrides by column
@@ -738,6 +827,9 @@ export default class DatatableV2 extends LightningElement {
 
             // Update Width attribute overrides by column
             widthAttrib = this.widths.find(i => i['column'] == columnNumber);
+
+            // Update Wrap attribute overrides by column
+            wrapAttrib = this.wraps.find(i => i['column'] == columnNumber);
 
             // Set default typeAttributes based on data type
             switch(type) {
@@ -812,8 +904,9 @@ export default class DatatableV2 extends LightningElement {
                 typeAttributes: this.typeAttributes,
                 editable: (editAttrib) ? editAttrib.edit : false,
                 actions: (filterAttrib.filter) ? filterAttrib.actions : null,
-                sortable: 'true',
-                initialWidth: (widthAttrib) ? widthAttrib.width : null
+                sortable: (this.isConfigMode) ? false : true,
+                initialWidth: (widthAttrib) ? widthAttrib.width : null,
+                wrapText: (wrapAttrib) ? wrapAttrib.wrap : false
             });
             console.log('this.cols',this.cols);
 
@@ -985,7 +1078,7 @@ export default class DatatableV2 extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton =  (this.tableData.length == 1 && this.numberOfRowsSelected == 1);
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection);   //Thanks to Jeff Olmstead for updated formula
     }
 
     handleClearSelection() {
@@ -1028,13 +1121,13 @@ export default class DatatableV2 extends LightningElement {
     handleHeaderAction(event) {
         // Handle Set Filter and Clear Filter
         const actionName = event.detail.action.name;
-        if (actionName.substr(actionName.length - 4) == 'Text') {   // Exit if system header action of wrapText or clipText
+        if (!this.isConfigMode && actionName.substr(actionName.length - 4) == 'Text') {   // Exit if system header action of wrapText or clipText
             return;
         }
         this.isFiltered = false;
         const colDef = event.detail.columnDefinition;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        this.columnNumber = Number(actionName.split("_")[1]);
+        this.columnNumber = Number(colDef.actions[0].name.split("_")[1]);
         this.baseLabel = this.filterColumns[this.columnNumber].label.split(' [')[0];
         const prompt = (this.isConfigMode) ? 'Label' : 'Filter';
         this.inputLabel = 'Column ' + prompt + ': ' + this.baseLabel;
@@ -1077,6 +1170,23 @@ export default class DatatableV2 extends LightningElement {
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'afilter_'+this.columnNumber).checked ^= true;    // Flip True-False Value
                 this.columns = [...this.filterColumns]; 
                 this.updateFilterParam();
+                break;
+
+            case 'wrapText': // Config Mode Only
+                this.filterColumns[this.columnNumber].wrapText = true;
+                this.columns = [...this.filterColumns];
+                this.updateWrapParam();
+                break;
+
+            case 'clipText':
+                this.filterColumns[this.columnNumber].wrapText = false;
+                this.columns = [...this.filterColumns];
+                this.updateWrapParam();
+                break;
+
+            case 'icon':   // Config Mode Only
+                this.columnIconValue = this.filterColumns[this.columnNumber].iconName;
+                this.handleOpenSelectIcon();
                 break;
 
             case 'label':   // Config Mode Only
@@ -1191,17 +1301,22 @@ export default class DatatableV2 extends LightningElement {
 
     setWidth(sizes) {
         // Update the column width values and the Config Mode parameter
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
+        let colWidthsTotal = 0;
         this.basicColumns.forEach(colDef => {
             this.columns[colNum]['initialWidth'] = sizes[colNum];
             if (this.filterColumns) {
                 this.filterColumns[colNum]['initialWidth'] = sizes[colNum];
             }
             colString = colString + ', ' + colDef['fieldName'] + ':' + sizes[colNum];
+            colWidthsTotal += parseInt(sizes[colNum], 10);        
             colNum += 1;
         });
-        this.columnWidthParameter = colString.substring(2);
+        let displayWidths = colString.substring(2);
+        this.columnWidthParameter = `${displayWidths} (Total: ${colWidthsTotal})`;
+        this.wizColumnWidths = this.columnWidthParameter;
+        this.columnWidthsLabel = `Column Data`;
     }
 
     handleChange(event) {
@@ -1211,28 +1326,53 @@ export default class DatatableV2 extends LightningElement {
         this.isFiltered = false;
     }
 
-    handleSelectAllEdit(event) {
+    handleSelectAllEdit() {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllEdit = !this.isAllEdit;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        var colNum = 0;
+        let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = this.isAllEdit;
             colNum += 1;
         });
-        this.columnEditParameter = 'All';
+        this.columnEditParameter = (this.isAllEdit) ? 'All' : '';
+        this.wizColumnEdits = this.columnEditParameter;
         this.columns = [...this.filterColumns]; 
     }
 
     handleSelectAllFilter(event) {
         // Set the Allow Edit Value to True for All Columns
+        this.isAllFilter = !this.isAllFilter;
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
-        var colNum = 0;
+        let colNum = 0;
         this.filterColumns.forEach(colDef => {
-            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = true;
+            colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = this.isAllFilter;
             colNum += 1;
         });
-        this.columnFilterParameter = 'All';
+        this.columnFilterParameter = (this.isAllFilter) ? 'All' : '';
+        this.wizColumnFilters = this.columnFilterParameter;
         this.columns = [...this.filterColumns]; 
+    }
+
+    handleOpenSelectIcon() { 
+        // Display the input dialog for the icon selection
+        this.isOpenIconInput = true;
+    }
+
+    handleCloseIconModal() {
+        // Close the input dialog and cancel any changes
+        this.isOpenIconInput = false;
+    }
+
+    handleCommitIconSelection(event) { 
+        // Update the column icon value
+        let newValue = event.target.value;
+        if (newValue) {
+            this.filterColumns[this.columnNumber].iconName = newValue;
+            this.columns = [...this.filterColumns]; 
+            this.updateIconParam();
+        }
+        this.isOpenIconInput = false;
     }
 
     handleOpenFilterInput() {
@@ -1252,7 +1392,7 @@ export default class DatatableV2 extends LightningElement {
         // Close the input dialog and handle the new column filter value
         this.isOpenFilterInput = false; 
         if (this.columnType == 'boolean') {
-            var firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
+            let firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
             if (firstChar == 't' || firstChar == 'y' || firstChar == '1') { // True, Yes, 1 - allow multiple ways to select a True value
                 this.columnFilterValue = 'true';
             } else {
@@ -1289,11 +1429,11 @@ export default class DatatableV2 extends LightningElement {
                 if (!this.isConfigMode) {
                     const rows = [...this.savePreEditData];
                     const cols = this.columnFilterValues;
-                    var filteredRows = [];
+                    let filteredRows = [];
                     rows.forEach(row => {
-                        var match = true;
-                        for (var col = 0; col < cols.length; col++) {
-                            var fieldName = this.filterColumns[col].fieldName;
+                        let match = true;
+                        for (let col = 0; col < cols.length; col++) {
+                            let fieldName = this.filterColumns[col].fieldName;
                             if (fieldName.endsWith('_lookup')) {
                                 fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
                             }                
@@ -1317,8 +1457,8 @@ export default class DatatableV2 extends LightningElement {
                                         }
                                         break;
                                     default:
-                                        var fieldValue = row[fieldName].toString();
-                                        var filterValue = this.columnFilterValues[col];
+                                        let fieldValue = row[fieldName].toString();
+                                        let filterValue = this.columnFilterValues[col];
                                         if (!this.matchCaseOnFilters) {
                                             fieldValue = fieldValue.toLowerCase();
                                             filterValue = filterValue.toLowerCase();
@@ -1347,54 +1487,10 @@ export default class DatatableV2 extends LightningElement {
         this.isFiltered = true;
     }
 
-    handleRemove(event) {
-        // Pass directly to handleCopy with no additional handling
-    }
-
-    handleCopyFields(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnFieldParameter);
-    }
-
-    handleCopyAligns(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnAlignmentParameter);
-    }
-
-    handleCopyEdits(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnEditParameter);
-    }
-
-    handleCopyFilters(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnFilterParameter);
-    }
-
-    handleCopyLabels(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnLabelParameter);
-    }
-
-    handleCopyWidths(event) {
-        // Copy the Pill Contents to the Clipboard
-        this.pushClipboard(this.columnWidthParameter);
-    }
-
-    pushClipboard(content) {
-        // Put the selected attribute value in the clipboard
-        let inp = this.template.querySelector('.my-clipboard');
-        inp.disabled = false;
-        inp.value = content;
-        inp.select();
-        document.execCommand('copy');
-        inp.disabled = true;
-    }
-
     updateAlignmentParam() {
         // Create the Alignment Label parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
         this.filterColumns.forEach(colDef => {
             let configAlign = (this.convertType(colDef['type']) != 'number') ? 'left' : 'right';
             if (colDef['cellAttributes']['alignment'] != configAlign) {
@@ -1402,13 +1498,14 @@ export default class DatatableV2 extends LightningElement {
             }
             colNum += 1;
         });
-        this.columnAlignmentParameter = colString.substring(2);       
+        this.columnAlignmentParameter = colString.substring(2);
+        this.wizColumnAlignments = this.columnAlignmentParameter;      
     }
 
     updateLabelParam() {
         // Create the Column Label parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
+        let colNum = 0;
+        let colString = '';
         this.basicColumns.forEach(colDef => {
             if (colDef['label'] != this.filterColumns[colNum].label) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].label;
@@ -1416,13 +1513,43 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnLabelParameter = colString.substring(2);
+        this.wizColumnLabels = this.columnLabelParameter;
+    }
+
+    updateIconParam() {
+        // Create the Column Icon parameter for Config Mode
+        let colNum = 0;
+        let colString = '';
+        this.basicColumns.forEach(colDef => {
+            if (colDef['icon'] != this.filterColumns[colNum].iconName) {
+                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].iconName;
+            }
+            colNum += 1;
+        });
+        this.columnIconParameter = colString.substring(2);
+        this.wizColumnIcons = this.columnIconParameter;
+    }
+
+    updateWrapParam() { 
+        // Create the Column WrapText parameter for Config Mode
+        let colNum = 0;
+        var colString = '';
+        this.basicColumns.forEach(colDef => {
+            if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
+                colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
+            }
+console.log("DatatableV2 -> updateWrapParam -> this.filterColumns[colNum].wrapText", colNum, this.filterColumns[colNum].wrapText);
+            colNum += 1;
+        });
+        this.columnWrapParameter = colString.substring(2);
+        this.wizColumnWraps = this.columnWrapParameter;    
     }
 
     updateEditParam() {
         // Create the Column Edit parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
-        var allSelected = true;
+        let colNum = 0;
+        let colString = '';
+        let allSelected = true;
         this.filterColumns.forEach(colDef => {
             if (colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked) {          
                 colString = colString + ', ' + colDef['fieldName'] + ':true';   
@@ -1432,13 +1559,15 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnEditParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.wizColumnEdits = this.columnEditParameter;
+        this.isAllEdit = allSelected;
     }
 
     updateFilterParam() {
         // Create the Column Filter parameter for Config Mode
-        var colNum = 0;
-        var colString = '';
-        var allSelected = true;
+        let colNum = 0;
+        let colString = '';
+        let allSelected = true;
         this.filterColumns.forEach(colDef => {
             if (colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked) {
                 colString = colString + ', ' + colDef['fieldName'] + ':true';
@@ -1448,6 +1577,8 @@ export default class DatatableV2 extends LightningElement {
             colNum += 1;
         });
         this.columnFilterParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.wizColumnFilters = this.columnFilterParameter;
+        this.isAllFilter = allSelected;
     }
 
     @api

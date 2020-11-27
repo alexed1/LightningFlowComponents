@@ -1,0 +1,3 @@
+:host {
+    --sds-c-modal-header-color-background: var(--headerColor);
+}

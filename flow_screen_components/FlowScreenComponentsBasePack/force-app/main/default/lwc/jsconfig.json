@@ -4,7 +4,12 @@
     },
     "include": [
         "**/*",
+<<<<<<< HEAD
         "../../../../../../.sfdx/typings/lwc/**/*.d.ts"
+=======
+        "../../../../../../.sfdx/typings/lwc/**/*.d.ts",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+>>>>>>> b492a7c0d86657cdf526318cf5b87414be1d4481
     ],
     "paths": {
         "c/*": [

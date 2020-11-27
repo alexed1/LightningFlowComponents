@@ -13,7 +13,8 @@
     <types>
         <members>datatableV2</members>
         <members>richDatatable</members>
+        <members>datatableCPE</members>
         <name>LightningComponentBundle</name>
     </types>
-    <version>49.0</version>
+    <version>50.0</version>
 </Package>

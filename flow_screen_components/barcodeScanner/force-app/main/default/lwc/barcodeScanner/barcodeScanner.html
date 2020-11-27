@@ -1,0 +1,32 @@
+<!-- barcodeScanner.html -->
+<template>
+    <!-- After a barcode is successfully scanned, 
+         its value is displayed here -->
+    <div
+        class="slds-var-m-vertical_large slds-var-p-vertical_medium 
+            slds-text-align_center slds-border_top slds-border_bottom">
+        Scanned barcode value is:
+        <span class="slds-text-heading_small">{scannedBarcode}</span>
+    </div>
+
+    <!-- This is static help text -->
+    <div class="slds-align_absolute-center slds-text-align_center 
+            slds-text-color_weak">
+        Click Scan Barcode to open a barcode scanner camera view. Position a
+        barcode in the scanner view to scan it.
+    </div>
+
+    <!-- The click-to-scan button;
+       Disabled if BarcodeScanner isn't available -->
+    <div class="slds-text-align_center">
+        <lightning-button
+            variant="brand"
+            class="slds-var-m-left_x-small"
+            disabled={scanButtonDisabled}
+            icon-name="utility:cases"
+            label="Scan Barcode"
+            title="Open a camera view and look for a barcode to scan"
+            onclick={handleBeginScanClick}>
+        </lightning-button>
+    </div>
+</template>

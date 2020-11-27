@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>48.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Transfer Metadata</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="zipFileString" type="String" role="outputOnly" description="Contents of the Zip File returned by the Retrieve operation."/>
+            <property name="extractedMetadataString" type="String" role="outputOnly" description="Contents of the retrieved metadata file extracted from the Zip File."/>
+            <property name="escapedMetadataString" type="String" role="outputOnly" description="Escaped version of the extracted file.  Useful if you want to display the file in the Flow."/>
+            <property name="metadataName" type="String" role="inputOnly" description="API Name of the metadata"/>
+            <property name="transferMode" type="String" role="inputOnly"  description="Options are: retrieve or deploy"/>
+            <property name="objectType" type="String" role="inputOnly" description="Metadata Object Type needs to be in CamelCase"/>
+            <property name="metadataString" type="String" role="inputOnly" description="Metadata source code"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

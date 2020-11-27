@@ -10,7 +10,9 @@
                                  role="none" style="height: 55px;">
                                 <template if:false={displayPill}>
                                     <div onkeyup={handleSearchKeyUp}>
-                                        <label class="slds-form-element__label custom-width-full" onclick={toggleMenu}>{label}</label>
+                                        <label class="slds-form-element__label custom-width-full" onclick={toggleMenu}>{label}
+                                            <lightning-helptext if:true={fieldLevelHelp} class="slds-m-left_xxx-small" content={fieldLevelHelp}></lightning-helptext>
+                                        </label>
                                         <lightning-input
                                                 class="value-input"
                                                 name="searchText"
@@ -20,15 +22,18 @@
                                                 data-id="userinput"
                                                 variant="label-hidden"
                                                 value={_value}
+                                                disabled={disabled}
                                                 onchange={handleSearchField}
                                                 onkeydown={handleKeyDown}
                                                 onclick={handleOpenOptions}
-
+                                                autocomplete={autocomplete}
                                         ></lightning-input>
                                     </div>
                                 </template>
                                 <template if:true={displayPill}>
-                                    <label class="slds-form-element__label slds-no-flex custom-width-full" onclick={toggleMenu}>{label}</label>
+                                    <label class="slds-form-element__label slds-no-flex custom-width-full" onclick={toggleMenu}>{label}
+                                        <lightning-helptext if:true={fieldLevelHelp} class="slds-m-left_xxx-small" content={fieldLevelHelp}></lightning-helptext>
+                                    </label>
                                     <div data-input-name={name} class="slds-pill_container" onclick={handleOpenOptions}>
                                         <lightning-pill
                                                 class="slds-pill_bare custom-width-full"

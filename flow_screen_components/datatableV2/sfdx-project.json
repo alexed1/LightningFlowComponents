@@ -1,0 +1,28 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowScreenComponentsBasePack@2.1.0-0"
+                },
+                {
+                    "package": "FlowActionsBasePack@2.1.0-0"
+                }
+            ],
+            "package": "datatable",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "50.0",
+    "packageAliases": {
+        "datatable": "0Ho5G000000XZNaSAO",
+        "FlowActionsBasePack": "04t4W000002vXUCQA2",
+        "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2",
+        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK"
+    }
+}

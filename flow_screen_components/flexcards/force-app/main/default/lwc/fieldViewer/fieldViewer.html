@@ -1,0 +1,13 @@
+<template>
+    <template for:each={visibleRecord} for:item="field">
+        <div key={field.fieldName} class="slds-m-bottom_medium slds-card__body slds-card__body_inner">
+                <div class="slds-m-bottom_xx-small" style={fieldTitleStyle}>
+                    {field.label}
+                </div>
+                <div style={fieldValueStyle}>
+                    {field.value}
+                </div>
+            </div>
+    </template>
+</template>
+

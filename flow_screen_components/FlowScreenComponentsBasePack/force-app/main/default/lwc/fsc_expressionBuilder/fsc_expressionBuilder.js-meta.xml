@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>46.0</apiVersion>
+    <description>ExpressionBuilder</description>
+    <isExposed>true</isExposed>
+    <masterLabel>ExpressionBuilder</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="formulaString" type="String"></property>
+            <property name="addButtonLabel" type="String" role="inputOnly"> </property>
+            <property name="contextObjectType" type="String" role="inputOnly"> </property>
+            <property name="supportedSystemTypes" type="String" role="inputOnly"> </property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

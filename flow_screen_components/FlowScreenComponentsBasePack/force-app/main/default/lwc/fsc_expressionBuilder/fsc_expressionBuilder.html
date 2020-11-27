@@ -1,0 +1,56 @@
+<template>
+    <lightning-spinner if:true={isLoading} alternative-text="Loading" size="large"></lightning-spinner>
+    <div class="slds-box slds-theme_default">
+        <div class="slds-grid slds-wrap">
+            <lightning-layout-item size="6">
+                <lightning-combobox
+                        name="objectTypeField"
+                        label="When to Execute"
+                        value={logicType}
+                        options={logicTypes}
+                        onchange={handleWhenToExecuteChange}
+                        class="slds-m-right_x-small">
+                </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" if:true={showCustomLogicInput}>
+                <div class="slds-m-left_x-small">
+                    <label class="slds-form-element__label slds-no-flex">Custom Condition</label>
+                    <lightning-helptext icon-name="utility:info" content={conditionLogicHelpText}></lightning-helptext>
+                    <lightning-input
+                            name="custom-condition"
+                            label="Custom Condition"
+                            variant="label-hidden"
+                            value={customLogic}
+                            onchange={handleCustomLogicChange}>
+                    </lightning-input>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" class="slds-m-top_x-small">
+                <template for:each={expressionLines} for:item="expression" for:index="index">
+                    <c-fsc_expression-line
+                            key={expression.id}
+                            expression-index={index}
+                            expression-id={expression.id}
+                            object-type={expression.objectType}
+                            field-name={expression.fieldName}
+                            operator={expression.operator}
+                            value={expression.parameter}
+                            render-type={expression.renderType}
+                            fields={contextFields}
+                            onexpressionremoved={handleRemoveExpression}
+                            onfieldselected={handleExpressionChange}>
+                    </c-fsc_expression-line>
+                </template>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" class="slds-m-top_x-small">
+                <lightning-button
+                        label={addButtonLabel}
+                        title={addButtonLabel}
+                        icon-name="utility:add"
+                        onclick={handleAddExpression}
+                        disabled={disabledAddButton}>
+                </lightning-button>
+            </lightning-layout-item>
+        </div>
+    </div>
+</template>

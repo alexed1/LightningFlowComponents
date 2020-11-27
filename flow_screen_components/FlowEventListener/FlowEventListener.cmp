@@ -1,0 +1,14 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global">
+    <lightning:empApi aura:id="empApi"/>
+    <aura:attribute name="eventAPIName" type="String" access="global"/>
+    <aura:attribute name="id" type="String" access="global"/>
+    <aura:attribute name="flowNavigationRequest" type="String" access="global" default="none"/>
+    <aura:attribute name="value1" type="String" access="global"/>
+    <aura:attribute name="value2" type="String" access="global"/>
+    <aura:attribute name="value3" type="String" access="global"/>
+    <aura:attribute name="value4" type="String" access="global"/>
+    <aura:attribute name="value5" type="String" access="global"/>
+    <aura:attribute name="subscription" type="Object" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+</aura:component>

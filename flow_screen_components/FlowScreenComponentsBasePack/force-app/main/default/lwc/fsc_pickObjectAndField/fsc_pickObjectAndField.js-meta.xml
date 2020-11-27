@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>46.0</apiVersion>
+    <description>Pick Object And Field</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Pick Object And Field</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="masterLabel" type="String" role="inputOnly"> </property>
+            <property name="objectLabel" type="String" role="inputOnly"> </property>
+            <property name="fieldLabel" type="String" role="inputOnly"> </property>
+            <property name="objectType" type="String"> </property>
+            <property name="field" type="String"> </property>
+            <property name="disableObjectPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="availableObjectTypes" type="String" role="inputOnly"> </property>
+            <property name="availableFields" type="String" role="inputOnly"> </property>
+            <property name="hideObjectPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
+            <property name="testproperty" type="String" role="inputOnly"> </property>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="masterLabel" type="String"> </property>
+            <property name="objectLabel" type="String"> </property>
+            <property name="fieldLabel" type="String"> </property>
+            <property name="objectType" type="String"> </property>
+            <property name="field" type="String"> </property>
+            <property name="disableObjectPicklist" type="Boolean"> </property>
+            <property name="availableObjectTypes" type="String"> </property>
+            <property name="availableFields" type="String"> </property>
+            <property name="hideObjectPicklist" type="Boolean"> </property>
+            <property name="hideFieldPicklist" type="Boolean"> </property>
+            <property name="displayFieldType" type="Boolean" > </property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen"  category="Input">
+            <property name="value" label="Value" type="String" description="The selected value(Output). This can be passed into QuickChoice, allowing you to set the default value dynamically(Input)."/>
+            <property name="selectedLabel" label="Selected Label" type="String" role="outputOnly" description="The selected Label (V1.3+)"/>
+            <property name="icon" label="Icon" type="String" description="Icon name for example standard:account"/>
+            <propertyType name="T" extends="SObject" label="Flexcard Object API Name" description="Specify the API Name of the SObject to use in the Flexcard"/>
+            <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
+            <property name="src" label="SRC" type="String" description="URL used for custom image icon"/>            
+            <property name="visibleFieldNames" label="Visible Field Names" type="String" default='Id' required='true' description="Show which fields?"/>
+
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

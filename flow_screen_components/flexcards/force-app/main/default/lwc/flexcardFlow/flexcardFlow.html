@@ -1,10 +1,13 @@
 <template>
+    <lightning-layout multiple-rows="true">
     <template if:true={isDataLoaded}>
         <template for:each={records} for:item="record">
             <div key={record.Id} class="slds-card slds-m-bottom_medium slds-size_1-of-4">
-                <c-flexcard-header title-field-name={record.Name} icon="standard:account" variant="circle"></c-flexcard-header>
+                <div class="slds-box slds-box_x-small">
+                <c-flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle"></c-flexcard-header>
                 <c-field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-field-viewer>
+                </div>
             </div>
         </template>
     </template>
-</template>
+  

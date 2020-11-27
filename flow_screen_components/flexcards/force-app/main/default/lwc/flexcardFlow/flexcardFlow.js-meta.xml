@@ -13,7 +13,7 @@
             <propertyType name="T" extends="SObject" label="Flexcard Object API Name" description="Specify the API Name of the SObject to use in the Flexcard"/>
             <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
             <property name="src" label="SRC" type="String" description="URL used for custom image icon"/>            
-            <property name="visibleFieldNames" label="Visible Field Names" type="String" description="Show which fields?"/>
+            <property name="visibleFieldNames" label="Visible Field Names" type="String" default='Id' required='true' description="Show which fields?"/>
 
 
         </targetConfig>

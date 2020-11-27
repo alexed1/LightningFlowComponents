@@ -18,6 +18,7 @@
     "sourceApiVersion": "49.0",
     "packageAliases": {
         "FlowActionsBasePack": "04t4W000002vXUCQA2",
-        "FlowScreenComponentsBasePack": "0Hof4000000XZNGCA4"
+        "FlowScreenComponentsBasePack": "0Hof4000000XZNGCA4",
+        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK"
     }
 }

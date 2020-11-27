@@ -47,7 +47,7 @@ In order to use **datatableV2**, permission must be given to access the followin
     
 ---
 ## Release Notes
-**11/xx/20 -  Eric Smith -    Version 2.48** -  
+**12/xx/20 -  Eric Smith -    Version 3.0.0** -  
             **Updates:**        New Custom Property Editor for Configuration  
                             Clear button added when using single record selection  
                             Fixed row number display when >99 rows  

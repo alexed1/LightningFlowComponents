@@ -7,7 +7,7 @@ public class QueryNRecords {
      *  Description:    QueryNRecords
      *                  Get the first 10 records of the selected Object for the Column Wizard running in the datatable CPE
      *
-     * 10/29/20 -       Eric Smith -    Version 2.48    Initial release along with datatableCPE
+     * 10/29/20 -       Eric Smith -    Version 3.0.0    Initial release along with datatableCPE
      *
      **/ 
     

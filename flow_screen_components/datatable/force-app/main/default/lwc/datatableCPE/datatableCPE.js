@@ -6,9 +6,9 @@
  * Which passes them back to the datatableCPE LWC as Output Variables
  * Which dispatches them to the Flow where a datatableV2 LWC is being configured
  * 
- * VERSION:             2.48
+ * VERSION:             3.0.0
  * 
- * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
+ * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
 import {LightningElement, track, api} from 'lwc';

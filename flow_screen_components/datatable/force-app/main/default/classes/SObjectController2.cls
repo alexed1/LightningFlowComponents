@@ -16,7 +16,7 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
- * 11/../20 -   Eric Smith -    Version 2.48    Return object plural name and icon name to the CPE
+ * 12/../20 -   Eric Smith -    Version 3.0.0   Return object plural name and icon name to the CPE
  * 
  * 10/07/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
  *                                              Allow case insensitive field names

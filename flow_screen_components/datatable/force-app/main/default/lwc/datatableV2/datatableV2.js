@@ -1,12 +1,14 @@
 /**
  * Lightning Web Component for Flow Screens:       datatableV2
  * 
- * VERSION:             2.48
+ * CREATED BY:          Eric Smith
  * 
- * RELEASE NOTES:       https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
+ * VERSION:             3.0.0
+ * 
+ * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-const VERSION_NUMBER = 2.48;
+const VERSION_NUMBER = '3.0.0';
 
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';

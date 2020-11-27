@@ -3,8 +3,8 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/datatableV2": [
-                "datatableV2/datatableV2.js"
+            "c/datatable": [
+                "datatable/datatable.js"
             ]
         }
     },

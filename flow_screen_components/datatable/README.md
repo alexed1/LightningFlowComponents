@@ -1,13 +1,26 @@
-# DatatableV2
+# Datatable
 
-Lightning Web Component for Flow Screens:       **datatableV2**
+Lightning Web Component for Flow Screens:       **datatable**
 
 **This component allows the user to configure and display a datatable in a Flow screen.**
 
 Additional components packaged with this LWC:
 
-                    Apex Classes:   SObjectController2 
+                    Apex Classes:   QueryNRecords
+                                    QueryNRecordsTest
+                                    SObjectController2 
                                     SObjectController2Test
+
+                    LWCs:           richDatatable
+                                    datatableCPE
+                                    screenFlow
+                                    displayError
+
+                    Flows:          Datatable_Configuration_Wizard
+
+                    Apex Pages:     screenFlow
+
+                    Custom Apps:    screenFlow          
                                                   
 **Documentation:**  https://unofficialsf.com/datatablev2-lightning-web-component-for-flow-screens/  
   
@@ -18,11 +31,6 @@ LinkedIn: https://www.linkedin.com/in/ericrsmith2
 Salesforce: https://trailblazer.me/id/ericsmith  
 Blog: https://ericsplayground.wordpress.com/blog/  
 Twitter: https://twitter.com/esmith35  
-
----
-**To just install datatableV2 without the Configuration helper, use these links: (v2.46)**  
-Production/Developer: https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3t000002kq5V  
-Sandbox: https://test.salesforce.com/packaging/installPackage.apexp?p0=04t3t000002kq5V  
 
 ---
 **You must install these components FIRST in order to use the Datatable Configuration Helper Flow**     
@@ -40,7 +48,7 @@ Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-n
 
 This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  
 
-In order to use **datatableV2**, permission must be given to access the following Apex Classes:  
+In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
     QueryNRecords   
     SObjectController2  

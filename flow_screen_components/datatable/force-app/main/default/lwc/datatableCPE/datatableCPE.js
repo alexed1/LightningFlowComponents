@@ -1,10 +1,12 @@
 /**
  * Lightning Web Component for Flow Screens:       datatableCPE
  * 
- * When the datatableV2 LWC is running in configuration mode
+ * When the datatable LWC is running in configuration mode
  * It sends values back to the Datatable Configuration Wizard Flow
  * Which passes them back to the datatableCPE LWC as Output Variables
- * Which dispatches them to the Flow where a datatableV2 LWC is being configured
+ * Which dispatches them to the Flow where a datatable LWC is being configured
+ * 
+ * CREATED BY:          Eric Smith
  * 
  * VERSION:             3.0.0
  * 

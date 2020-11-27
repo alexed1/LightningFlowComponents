@@ -1,5 +1,5 @@
 /**
- * Lightning Web Component for Flow Screens:       datatableV2
+ * Lightning Web Component for Flow Screens:       datatable
  * 
  * CREATED BY:          Eric Smith
  * 
@@ -22,7 +22,7 @@ const reverse = str => str.split('').reverse().join('');    // Reverse all the c
 // Get domain url by replacing the last occurance of '--c' in the current url
 const MYDOMAIN = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 
-export default class DatatableV2 extends LightningElement {
+export default class Datatable extends LightningElement {
 
     // Component Input & Output Attributes
     @api tableData = [];
@@ -196,7 +196,7 @@ export default class DatatableV2 extends LightningElement {
         // Display the component version number in the console log
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
-        console.log("%cdatatableV2 VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
+        console.log("%cdatatable VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
 
         // Decode config mode attributes
@@ -1540,7 +1540,6 @@ export default class DatatableV2 extends LightningElement {
             if (colDef['wrapText'] != this.filterColumns[colNum].wrapText) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + this.filterColumns[colNum].wrapText;
             }
-console.log("DatatableV2 -> updateWrapParam -> this.filterColumns[colNum].wrapText", colNum, this.filterColumns[colNum].wrapText);
             colNum += 1;
         });
         this.columnWrapParameter = colString.substring(2);

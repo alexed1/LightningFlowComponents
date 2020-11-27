@@ -12,7 +12,7 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <members>datatableV2</members>
+        <members>datatable</members>
         <members>richDatatable</members>
         <members>displayError</members>
         <members>screenFlow</members>

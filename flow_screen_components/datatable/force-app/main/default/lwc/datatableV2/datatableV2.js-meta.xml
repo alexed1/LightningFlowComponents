@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>datatableV2</masterLabel>
+    <description>This component allows the user to configure and display a datatable in a Flow screen.</description>
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-datatable-C-P-E"> 
+            <!-- ================================ New in Summer '20' - Support for Dynamic SObject Selection ================================= -->      
+
+            <propertyType name="T" extends="SObject" label="Datatable Object API Name" description="Select the API Name of the SObject to use in the Datatable"/>
+            <property name="tableData" label="_ Datatable Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the datatable."/>
+            <property name="preSelectedRows" label="Pre-Selected Rows" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to show as pre-selected in the datatable."/>
+            <property name="outputEditedRows" label="Output Edited Rows" type="{T[]}" role="outputOnly" description="Record Collection variable to contain only the records that were edited in the datatable. 
+                - NOTE: To write these edits back to the Object, you will need to do a Record Update in the Flow."/>
+            <property name="outputSelectedRows" label="Output Selected Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain only the records that were selected in the datatable. 
+                - NOTE: These records may not contain all of the edited values."/>
+            <property name="outputSelectedRow" label="Output Selected Row (Object)" type="{T}" role="outputOnly" description="Record Object variable that contains the single record that was selected in the datatable. 
+                - NOTE: This is only provided when just a single record is selected."/>
+    
+            <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
+            
+            <property name="isUserDefinedObject" label="_ (User Defined)  Display User Defined Object?" type="Boolean" default="false" role="inputOnly" description="Set to True if you are providing a User Defined object rather than a Salesforce SObject."/>
+            <property name="tableDataString" label="_ Datatable Record String (User Defined)" type="String" role="inputOnly" description="Object Collection string variable containing the records to display in the datatable."/>
+            <property name="preSelectedRowsString" label="Pre-Selected Rows (User Defined)" type="String" role="inputOnly" description="Object Collection string variable containing the records to show as pre-selected in the datatable."/>
+            <property name="outputSelectedRowsString" label="Output Selected Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were selected in the datatable. 
+                --  NOTE: These records may not contain all of the edited values."/>
+            <property name="outputEditedRowsString" label="Output Edited Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were edited in the datatable."/>
+    
+            <!-- ============================================================================================================================- -->  
+            
+            <!-- Additional Output Parameters -->
+            <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
+            
+            <!-- Configuration Mode Only - Inputs/Outputs -->
+            <property name="objectName" label="Wizard Only - Selected SObject" type="String" role="inputOnly"/>
+            <property name="wizSObject" label="Wizard Only - Selected SObject" type="String" role="outputOnly"/>
+            <property name="wizColumnFields" label="Wizard Only - Column Fields" type="String" role="outputOnly"/>
+            <property name="wizColumnAlignments" label="Wizard Only - Column Alignments" type="String" role="outputOnly"/>
+            <property name="wizColumnEdits" label="Wizard Only - Column Edits" type="String" role="outputOnly"/>
+            <property name="wizColumnFilters" label="Wizard Only - Column Filters" type="String" role="outputOnly"/>
+            <property name="wizColumnIcons" label="Wizard Only - Column Icons" type="String" role="outputOnly"/>
+            <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
+            <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
+            <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
+
+            <!-- Forcing sort order of parameters with special characters _(1) -(2) .(3) -->  
+            <property name="columnFields" label="_ Column Fields" type="String" role="inputOnly" description="REQUIRED: Comma separated list of field API Names to display in the datatable."/>
+            <property name="columnAlignments" label="- Column Alignments (Col#:alignment,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Alignment Value (left,center,right).  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnEdits" label="- Column Edits (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:true or false  
+                --  NOTE: Some data types cannot be edited in a datable (lookup, picklist, location, encrypted, rich text, long text area)
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnFilters" label="- Column Filters (Col#:true,...) or All" type="String" role="inputOnly" description="'All' or a Comma separated list of ColID:true or false  
+                --  NOTE: Some data types cannot be filtered in a datable (location, encrypted)
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnIcons" label="- Column Icons (Col#:icon,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnLabels" label="- Column Labels (Col#:label,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnScales" label="- Column Scale Values (Col#:scale,...) (User Defined)" type="String" role="inputOnly" description="Comma separated list of ColID:Scale (The number of digits to display to the right of the decimal point in currency, number and percent fields (default = 0))  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnTypes" label="- Column Field Types (Col#:type,...) (User Defined)" type="String" role="inputOnly" description="Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnWidths" label="- Column Widths (Col#:width,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Width (in pixels).  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnWraps" label="- Column Wraps (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnCellAttribs" label=". Special: Column CellAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"/>
+            <property name="columnOtherAttribs" label=". Special: Column Other Attributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"/>
+            <property name="columnTypeAttribs" label=". Special: Column TypeAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"/>
+            <property name="isConfigMode" label="Configuration Mode?" type="Boolean" default="false" role="inputOnly" description="Display the Field API Names and the Column Widths in a box below the table.  This parameter is designed to be used by the setup Flow."/>
+            <property name="hideCheckboxColumn" label="Hide Checkbox Column?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
+            <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
+            <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
+            <property name="maxNumberOfRows" label="Maximum Number of Records to Display" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows will be displayed in the datatable."/>
+            <property name="isRequired" label="Required?" type="Boolean" default="false" role="inputOnly" description="Require at least 1 row to be selected?"/>
+            <property name="singleRowSelection" label="Single Row Selection (Radio Buttons)?" type="Boolean" default="false" role="inputOnly" description="When set to True, Radio Buttons will be displayed and only a single row can be selected.  
+                The default (False) will display Checkboxes and allow multiple records to be selected."/>
+            <property name="suppressBottomBar" label="Suppress Cancel/Save Buttons during Edit Mode?" type="Boolean" default="false" role="inputOnly" description="Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited.  
+                When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."/>
+            <property name="suppressNameFieldLink" label="Suppress the Link on the Object's 'Name' Field" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
+            <property name="tableHeight" label="Table Height" type="String" role="inputOnly" description="CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)"/>
+            <property name="tableBorder" label="Table Border" type="Boolean" default="true" role="inputOnly" description="Display a border around the datatable."/>
+            <property name="isDisplayHeader" label="Display Table Header?" type="Boolean" default="false" role="inputOnly" description="Display a header above the datatable."/>
+            <property name="tableIcon" label="Table Icon" type="String" role="inputOnly" description="(Optional) Icon to display on the Table Header. Example: standard:account"/>
+            <property name="tableLabel" label="Table Label" type="String" role="inputOnly" description="(Optional) Label to display on the Table Header"/>
+            <property name="not_tableBorder" label="(CPE ONLY)" type="Boolean" default="false" role="inputOnly"/>
+            <property name="not_suppressNameFieldLink" label="(CPE ONLY)" type="Boolean" default="true" role="inputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

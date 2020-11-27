@@ -1,0 +1,212 @@
+<!-- 
+    
+Lightning Web Component for Flow Screens:       datatableV2
+
+This component allows the user to configure and display a datatable in a Flow screen.
+
+Additional components packaged with this LWC:
+
+                    Lightning Web Components:   richDatatable
+                                                datatableCPE   
+                                                screenFlow
+                                                fsc_flowBanner
+                                                displayError
+
+                    Apex Classes:               SObjectController2 
+                                                SObjectController2Test
+                                                QueryNRecords
+                                                QueryNRecordsTest
+
+                    Flows:                      Datatable_Configuration_Wizard
+
+VERSION:            2.48
+
+RELEASE NOTES:      https://github.com/ericrsmith35/DatatableV2/blob/master/README.md
+
+04/01/20 -  Eric Smith -    Version 1.0
+Features:   The only required paramters are the SObject collection of records and a list of field API names
+            The field label and field type will default to what is defined in the object
+            Numeric fields will display with the correct number of decimal places as defined in the object
+            Lookup fields are supported and will display the referenced record's name field as a clickable link
+            All columns are sortable, including lookups (by name)
+            The selection column can be multi-select (Checkboxes), single-select (Radio Buttons), or hidden
+            A collection of pre-selected rows can be passed into the component
+            Inline editing is supported with changed values passed back to the flow
+            Unlike the original datatable component, only the edited records will be passed back to the flow
+            The maximum number of rows to display can be set by the user
+            Optional attribute overrides are supported and can be specified by list, column # or by field name, including:
+                Alignment               
+                Editable
+                Header Icon
+                Header Label
+                Initial Column Width
+                Custom Cell Attributes including those with nested values {name: {name:value}}               
+                Custom Type Attributes including those with nested values {name: {name:value}}
+                Other Custom Column Attributes including those with nested values {name: {name:value}}
+
+-->
+
+<template>
+    <template if:false={showSpinner}>
+
+        <!-- Input dialog for entering Column Icon values -->
+        <template if:true={isOpenIconInput}>
+            <div style="height: 40px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-00" aria-modal="true" aria-describedby="modal-content-id-0" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header slds-modal__header_empty">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseIconModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-0">
+                            <lightning-input 
+                                label={inputLabel} 
+                                value={columnIconValue} 
+                                oncommit={handleCommitIconSelection}
+                            ></lightning-input>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick={handleCloseIconModal}>Cancel</button>
+                            <button class="slds-button slds-button_brand" onclick={handleCommitIconSelection}>Save</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+        
+        <!-- Input dialog for entering Column Filter values -->
+        <template if:true={isOpenFilterInput}>
+            <div style="height: 40px;">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header slds-modal__header_empty">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseModal}>
+                                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <lightning-input 
+                                type={inputType}
+                                formatter={inputFormat} 
+                                label={inputLabel} 
+                                value={columnFilterValue} 
+                                onchange={handleChange}
+                            ></lightning-input>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <button class="slds-button slds-button_neutral" onclick={handleCloseModal}>Cancel</button>
+                            <button class="slds-button slds-button_brand" onclick={handleCommit}>Save</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+
+        <!-- Special Header parameter display for Configuration Mode -->
+        <template if:true={isConfigMode}>
+            <div class="slds-text-longform">
+                <h3 class="slds-text-heading_medium">Interact with this sample datatable to configure it the way you like.</h3>
+                <ul>
+                    <li>Drag the separators between the column headers to change the widths.</li>
+                    <li>Select the column header dropdowns to change Text Wrap/Clip Modes, Column Alignments, Column Icons and Column Labels.</li>
+                    <li>Use the dropdowns to select the columns that can be Edited and/or Filtered or click a Button to select all of them.</li>
+                </ul>
+            </div>
+        </template>
+
+        <!-- DATATABLE -->
+        <div class={formElementClass}>
+            <label class="slds-form-element__label" for="datatable">
+                <div class="slds-media slds-media_center slds-media_small">
+                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
+                    <div class="slds-media__figure">
+                        <template if:true={hasIcon}>
+                            <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
+                        </template>
+                    </div>
+                    <div class="slds-media__body">
+                        <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text>
+                    </div>
+                </div>
+            </label>
+
+            <div style={tableHeightAttribute} class={borderClass} id="datatable">
+                <c-rich-datatable
+                    data={mydata}
+                    columns={columns}
+                    key-field={keyField}
+                    sorted-by={sortedBy}
+                    sorted-direction={sortedDirection}
+                    max-row-selection={maxRowSelection}
+                    selected-rows={selectedRows}
+                    show-row-number-column
+                    hide-checkbox-column={hideCheckboxColumn}
+                    suppress-bottom-bar={suppressBottomBar}
+                    onsort={updateColumnSorting}
+                    oncellchange={handleCellChange}
+                    onsave={handleSave}
+                    oncancel={cancelChanges}
+                    onheaderaction={handleHeaderAction}
+                    onrowselection={handleRowSelection}
+                    onrowaction={handleRowAction}
+                    onresize={handleResize}
+                >
+                </c-rich-datatable>
+                <div if:true={showClearButton} class="slds-m-top_x-small">
+                    <lightning-button variant="brand-outline" label="Clear Selection" icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
+                </div>
+            </div>
+            <div if:true={isWorking}>
+                <lightning-spinner
+                    alternative-text="Working..." variant="brand">
+                </lightning-spinner>
+            </div>
+
+        </div>
+
+        <!-- Special Footer parameter display for Configuration Mode -->
+        <template if:true={isConfigMode}>
+            
+            <div class="slds-box slds-box_xx-small slds-m-vertical_xx-small slds-m-horizontal_medium">
+                <div class="slds-p-around_xx-small">
+                    <span class="slds-text-heading_small">{columnWidthsLabel}
+                        <lightning-button
+                            label={roundValueLabel} variant="brand-outline" onclick={handleRoundWidths} class="slds-text-body_small slds-float_right">
+                        </lightning-button>
+                        <p class="slds-text-body_small">{columnWidthParameter}</p>
+                    </span>
+                </div>
+            </div>
+
+            <div class="slds-m-horizontal_medium">
+                <div class="slds-box slds-box_x-small slds-m-vertical_xx-small">
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Make all columns editable" 
+                        label-when-on="Make no columns editable"
+                        selected={isAllEdit}
+                        onclick={handleSelectAllEdit}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Make all columns filterable"
+                        label-when-on="Make no columns filterable"
+                        selected={isAllFilter}
+                        onclick={handleSelectAllFilter}>
+                    </lightning-button-stateful>
+                </div>          
+            </div>
+
+        </template>
+
+    </template>
+
+    <!-- Spinner -->
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template> 
+
+</template>

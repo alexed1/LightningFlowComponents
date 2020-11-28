@@ -888,6 +888,7 @@ export default class Datatable extends LightningElement {
                 fieldName = fieldName + '_lookup';
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
                 this.cellAttributes.wrapText = true;
+                wrapAttrib.wrap = true;
             }
 
             // Update CellAttribute attribute overrides by column
@@ -1181,9 +1182,11 @@ export default class Datatable extends LightningElement {
                 break;
 
             case 'clipText':
-                this.filterColumns[this.columnNumber].wrapText = false;
-                this.columns = [...this.filterColumns];
-                this.updateWrapParam();
+                if ((this.filterColumns[this.columnNumber].fieldName != this.objectLinkField) || this.suppressNameFieldLink) {      // Salesforce always forces Wrap Text on the Object's 'Name' field
+                    this.filterColumns[this.columnNumber].wrapText = false;
+                    this.columns = [...this.filterColumns];
+                    this.updateWrapParam();
+                }
                 break;
 
             case 'icon':   // Config Mode Only
@@ -1317,7 +1320,7 @@ export default class Datatable extends LightningElement {
         });
         let displayWidths = colString.substring(2);
         this.columnWidthParameter = `${displayWidths} (Total: ${colWidthsTotal})`;
-        this.wizColumnWidths = this.columnWidthParameter;
+        this.wizColumnWidths = displayWidths;
         this.columnWidthsLabel = `Column Data`;
     }
 
@@ -1491,14 +1494,13 @@ export default class Datatable extends LightningElement {
 
     updateAlignmentParam() {
         // Create the Alignment Label parameter for Config Mode
-        let colNum = 0;
         let colString = '';
         this.filterColumns.forEach(colDef => {
             let configAlign = (this.convertType(colDef['type']) != 'number') ? 'left' : 'right';
-            if (colDef['cellAttributes']['alignment'] != configAlign) {
+            let currentAlign = colDef['cellAttributes']['alignment'];
+            if (currentAlign && (currentAlign != configAlign)) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + colDef['cellAttributes']['alignment'];
             }
-            colNum += 1;
         });
         this.columnAlignmentParameter = colString.substring(2);
         this.wizColumnAlignments = this.columnAlignmentParameter;      

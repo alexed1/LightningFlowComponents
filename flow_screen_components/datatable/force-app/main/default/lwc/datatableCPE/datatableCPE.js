@@ -497,6 +497,13 @@ export default class DatatableCPE extends LightningElement {
                     if (curInputParam.name == 'suppressNameFieldLink') {
                         this.inputValues.not_suppressNameFieldLink.value = !curInputParam.value;
                     }
+
+                    // Handle Wizard Attributes
+                    let wizName = defaults.wizardAttributePrefix + curInputParam.name;
+                    if (this.flowParams.find(fp => fp.name == wizName)) {
+                        this.updateFlowParam(wizName, decodeURIComponent(curInputParam.value), '');
+                    }
+
                 }
                 if (curInputParam.isError) { 
                     this.inputValues[curInputParam.name].isError = false;

@@ -1,7 +1,7 @@
 /**
  * @description       : addNewMembers.js
  * @group             : unofficialSF
- * @last modified on  : 08-26-2020
+ * @last modified on  : 10-28-2020
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date			Author			Modification
@@ -11,8 +11,8 @@
 import {LightningElement, api, track, wire} from 'lwc';
 
 import Search from '@salesforce/label/c.sremailSearchMembers';
-import For from '@salesforce/label/c.fbc_For';
-import TooManyResultsMessage from '@salesforce/label/c.fbc_TooManyResultsMessage';
+import For from '@salesforce/label/c.fsc_For';
+import TooManyResultsMessage from '@salesforce/label/c.fsc_TooManyResultsMessage';
 import NoSearchResultsMessage from '@salesforce/label/c.sremailNoSearchResultsMessage';
 
 

@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 10-12-2020
+ * @Last Modified On	: 11-29-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -20,6 +20,7 @@
  * 2.00.02	8/15/2020	Jack Pond, Mohith		Modified for coverage testing
  * 2.00.02	8/16/2020	Jack Pond				Corrected singleEmail recipient name for templateTargetId
  * 2.00.02	10-06-2020	Jack Pond				Reverted naming, fixed bugs
+ * 2.00.03  11-28-2020  Jack Pond               Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  *
  **/
 
@@ -129,7 +130,7 @@ public without sharing class SendBetterEmail {
 
             Boolean UseSalesforceSignature = curRequest.UseSalesforceSignature ==
                 null
-                ? true
+                ? false
                 : curRequest.UseSalesforceSignature;
 
             Boolean bcc = curRequest.bcc == null ? false : curRequest.bcc; // default to false

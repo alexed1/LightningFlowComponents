@@ -15,4 +15,9 @@ global with sharing class FieldDescriptor {
         this.required = required;
 
     }
+
+    global FieldDescriptor() {
+   
+
+    }
 }

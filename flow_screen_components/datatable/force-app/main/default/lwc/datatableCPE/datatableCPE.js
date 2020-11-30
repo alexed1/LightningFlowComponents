@@ -75,9 +75,9 @@ export default class DatatableCPE extends LightningElement {
     selectedSObject = '';
     isSObjectInput = true;
     isCheckboxColumnHidden = false;
-    isHideCheckboxColumn = true;
-    isAnyEdits = false;
-    isAnyFilters = false;
+    isShowCheckboxColumn = false;
+    isNoEdits = true;
+    isNoFilters = true;
     isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
@@ -487,15 +487,24 @@ export default class DatatableCPE extends LightningElement {
                     }
                     if (curInputParam.name == 'not_tableBorder') {
                         this.inputValues.tableBorder.value = !curInputParam.value;
+                        this.updateFlowParam('tableBorder', this.inputValues.tableBorder.value, 'boolean');
                     }
                     if (curInputParam.name == 'tableBorder') {
                         this.inputValues.not_tableBorder.value = !curInputParam.value;
+                        this.updateFlowParam('not_tableBorder', this.inputValues.not_tableBorder.value, 'boolean');
                     }
                     if (curInputParam.name == 'not_suppressNameFieldLink') {
                         this.inputValues.suppressNameFieldLink.value = !curInputParam.value;
                     }
                     if (curInputParam.name == 'suppressNameFieldLink') {
                         this.inputValues.not_suppressNameFieldLink.value = !curInputParam.value;
+                    }
+                    if ((curInputParam.name == 'columnEdits') && curInputParam.value) {
+                        this.isNoEdits = false;
+                    }
+
+                    if ((curInputParam.name == 'columnFilters') && curInputParam.value) {
+                        this.isNoFilters = false;
                     }
 
                     // Handle Wizard Attributes
@@ -647,9 +656,9 @@ export default class DatatableCPE extends LightningElement {
 
             // Don't allow hide the checkbox column if a selection is required or any edits are allowed
             if (curAttributeName == 'isRequired') {
-                this.isHideCheckboxColumn = !event.target.checked;
-                if (this.isAnyEdits || event.target.checked) {
-                    this.isHideCheckboxColumn = false;
+                this.isShowCheckboxColumn = event.target.checked;
+                if (!this.isNoEdits || event.target.checked) {
+                    this.isShowCheckboxColumn = true;
                     this.inputValues.hideCheckboxColumn.value = false;
                     this.dispatchFlowValueChangeEvent('hideCheckboxColumn', false, 'boolean');
                 }
@@ -659,7 +668,9 @@ export default class DatatableCPE extends LightningElement {
             if (curAttributeName == 'hideCheckboxColumn') { 
                 this.isCheckboxColumnHidden = event.target.checked;
                 this.inputValues.isRequired.value = false;
+                this.inputValues.singleRowSelection.value = false;
                 this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
+                this.dispatchFlowValueChangeEvent('singleRowSelection', false, 'boolean');
             }
 
         }
@@ -803,11 +814,20 @@ export default class DatatableCPE extends LightningElement {
                                 break;
                             case 'columnEdits':
                                 this.wiz_columnEdits = value;
-                                this.isAnyEdits = (value) ? true : false;
+                                this.isNoEdits = (value) ? false : true;
+                                this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
+                                if (this.isNoEdits) {
+                                    this.inputValues.suppressBottomBar.value = false;
+                                    this.dispatchFlowValueChangeEvent('suppressBottomBar', false, 'boolean');
+                                }
                                 break;
                             case 'columnFilters':
                                 this.wiz_columnFilters = value;
-                                this.isAnyFilters = (value) ? true : false;
+                                this.isNoFilters = (value) ? false : true;
+                                if (this.isNoFilters) {
+                                    this.inputValues.matchCaseOnFilters.value = false;
+                                    this.dispatchFlowValueChangeEvent('matchCaseOnFilters', false, 'boolean');
+                                }
                                 break;
                             case 'columnIcons':
                                 this.wiz_columnIcons = value;

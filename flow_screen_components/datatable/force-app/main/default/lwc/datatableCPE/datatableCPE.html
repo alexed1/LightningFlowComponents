@@ -81,17 +81,6 @@
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
 
-    <!-- Pick Field Selection Method -->
-    <!-- <div if:true={isObjectSelected}>
-        <lightning-radio-group name="fieldSelectionMethod"
-            label={fieldSelectionOptionsLabel}
-            options={fieldSelectionOptions}
-            value={fieldSelectionMethod}
-            onchange={handleFieldSelectionMethod}
-            type="radio"
-        ></lightning-radio-group>
-    </div> -->
-
     <!-- =============== Table Formatting Banner =============== -->
     <c-fsc_flow-banner
         banner-color={defaultBannerColor}  
@@ -226,7 +215,7 @@
 
     <!-- Table Behavior Options -->
     <lightning-input class="slds-m-vertical_xx-small"
-        if:false={isCheckboxColumnHidden}           
+        disabled={isCheckboxColumnHidden}           
         type="checkbox" 
         name="select_isRequired"
         label={inputValues.isRequired.label} 
@@ -235,16 +224,7 @@
         onchange={handleValueChange}>
     </lightning-input>
     <lightning-input class="slds-m-vertical_xx-small"
-        if:true={isHideCheckboxColumn}
-        type="checkbox" 
-        name="select_hideCheckboxColumn"
-        label={inputValues.hideCheckboxColumn.label} 
-        field-level-help={inputValues.hideCheckboxColumn.helpText}
-        checked={inputValues.hideCheckboxColumn.value} 
-        onchange={handleValueChange}>
-    </lightning-input>
-    <lightning-input class="slds-m-vertical_xx-small"
-        if:false={isCheckboxColumnHidden}
+        disabled={isCheckboxColumnHidden}
         type="checkbox" 
         name="select_singleRowSelection"
         label={inputValues.singleRowSelection.label} 
@@ -253,7 +233,16 @@
         onchange={handleValueChange}>
     </lightning-input>   
     <lightning-input class="slds-m-vertical_xx-small"
-        if:true={isAnyFilters}
+        disabled={isShowCheckboxColumn}
+        type="checkbox" 
+        name="select_hideCheckboxColumn"
+        label={inputValues.hideCheckboxColumn.label} 
+        field-level-help={inputValues.hideCheckboxColumn.helpText}
+        checked={inputValues.hideCheckboxColumn.value} 
+        onchange={handleValueChange}>
+    </lightning-input>
+    <lightning-input class="slds-m-vertical_xx-small"
+        disabled={isNoFilters}
         type="checkbox" 
         name="select_matchCaseOnFilters"
         label={inputValues.matchCaseOnFilters.label} 
@@ -262,7 +251,7 @@
         onchange={handleValueChange}>
     </lightning-input>  
     <lightning-input class="slds-m-vertical_xx-small"
-        if:true={isAnyEdits}
+        disabled={isNoEdits}
         type="checkbox" 
         name="select_suppressBottomBar"
         label={inputValues.suppressBottomBar.label} 

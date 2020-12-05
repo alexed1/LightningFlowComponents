@@ -888,7 +888,10 @@ export default class Datatable extends LightningElement {
                 fieldName = fieldName + '_lookup';
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
                 this.cellAttributes.wrapText = true;
-                wrapAttrib.wrap = true;
+                if(!!wrapAttrib) {
+                    wrapAttrib.wrap = true;
+                }
+
             }
 
             // Update CellAttribute attribute overrides by column
@@ -919,6 +922,7 @@ export default class Datatable extends LightningElement {
             // Repeat for next column
             columnNumber += 1;
         });
+
         this.columns = this.cols;
 
     }

@@ -1,0 +1,9 @@
+.border-bottom-2px {
+    border-bottom: solid 2px;
+    border-color: var(--lwc-colorBorder)
+}
+
+/* .slds-modal__container{
+    max-width: 800rem !important;
+    width: 120% !important;
+} */

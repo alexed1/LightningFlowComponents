@@ -38,6 +38,8 @@ FlowActionsBasePack Version 2.6.0 or later
 FlowScreenComponentsBasePack Version 2.1.0 or later  
 Both Base Packs are available here: https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
+---
+**Install Datatable**
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">

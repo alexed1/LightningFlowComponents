@@ -1,6 +1,6 @@
 # Datatable
 
-Lightning Web Component for Flow Screens:       **datatable**
+Lightning Web Component for Flow Screens:       **Datatable**
 
 **This component allows the user to configure and display a datatable in a Flow screen.**
 
@@ -22,10 +22,10 @@ Additional components packaged with this LWC:
 
                     Custom Apps:    screenFlow          
                                                   
-**Documentation:**  https://unofficialsf.com/datatablev2-lightning-web-component-for-flow-screens/  
+**Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		March 2020
+**Date:**		2019 - 2020
   
 LinkedIn: https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -33,8 +33,10 @@ Blog: https://ericsplayground.wordpress.com/blog/
 Twitter: https://twitter.com/esmith35  
 
 ---
-**You must install these components FIRST in order to use the Datatable Configuration Helper Flow**     
-Flow Base Components (https://unofficialsf.com/introducing-flowbasecomponents/)  
+**You must install these components FIRST in order to use the Datatable component**     
+FlowActionsBasePack Version 2.6.0 or later
+FlowScreenComponentsBasePack Version 2.1.0 or later
+Both Base Packs are available here: https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 <a href="https://githubsfdeploy.herokuapp.com">
   <img alt="Deploy to Salesforce"
@@ -55,7 +57,7 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 ## Release Notes
-**12/xx/20 -  Eric Smith -    Version 3.0.0** -  
+**12/14/20 -  Eric Smith -    Version 3.0.0** -  
             **Updates:**        New Custom Property Editor for Configuration  
                             Clear button added when using single record selection  
                             Fixed row number display when >99 rows  

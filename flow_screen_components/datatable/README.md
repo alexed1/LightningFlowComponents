@@ -35,7 +35,7 @@ Twitter: https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use  the Datatable component**     
 FlowActionsBasePack Version 2.6.0 or later  
-FlowScreenComponentsBasePack Version 2.1.0 or later  
+FlowScreenComponentsBasePack Version 2.1.0 or later   
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/

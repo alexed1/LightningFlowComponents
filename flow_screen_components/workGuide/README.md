@@ -35,11 +35,11 @@ One Stage can contain multiple steps, in the above example we are mapping "Prepa
 
 In order to run the Work Guide on some record you need to create an instance of the process (AppProcessInstance__c) and link it to existing AppProcessDefinition__c
 Field descriptions:
-UserId - holds user Id for the current instance, if there are multiple instances related to one object, user will only see it if his/her id is specified in this field
-RecordId - holds the instance record Id, for example (Account, Contact Id)
-Current Stage - must have stage that was previously described in the definition object, in our case "Prepare to Publish" would be a correct value
-Current Step - must have Step that was previously described in the definition object, in our case "Approval" would be a correct value
-App Process Definition - Id of related Process Definition
+- UserId - holds user Id for the current instance, if there are multiple instances related to one object, user will only see it if his/her id is specified in this field
+- RecordId - holds the instance record Id, for example (Account, Contact Id)
+- Current Stage - must have stage that was previously described in the definition object, in our case "Prepare to Publish" would be a correct value
+- Current Step - must have Step that was previously described in the definition object, in our case "Approval" would be a correct value
+- App Process Definition - Id of related Process Definition
 
 With the following values:
 

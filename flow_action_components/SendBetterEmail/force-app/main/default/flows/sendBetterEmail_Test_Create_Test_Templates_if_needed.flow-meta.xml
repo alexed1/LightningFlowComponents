@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <assignments>
         <description>Create the en_US version of the template</description>
         <name>Create_en_US_Template</name>
@@ -24,28 +25,28 @@
             <assignToReference>en_US_TemplateRecord.HtmlValue</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>EnglishTemplateBodyHTML_en_US</elementReference>
+                <elementReference>en_US_Body_Template</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.Subject</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>sendBetterEmailSubject_en_US</elementReference>
+                <elementReference>en_US_Subject</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.RelatedEntityType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Account</stringValue>
+                <elementReference>RelatedRecordType</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.DeveloperName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>sendBetterEmailTest_en_US</stringValue>
+                <elementReference>DeveloperName_en_US</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -97,28 +98,28 @@
             <assignToReference>es_MX_TemplateRecord.HtmlValue</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>EnglishTemplateBodyHTML_es_MX</elementReference>
+                <elementReference>es_MX_HTML_Body</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>es_MX_TemplateRecord.Subject</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>sendBetterEmailSubject_es_MX</elementReference>
+                <elementReference>es_MX_Subject</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>es_MX_TemplateRecord.RelatedEntityType</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>Account</stringValue>
+                <elementReference>RelatedRecordType</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>es_MX_TemplateRecord.DeveloperName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>sendBetterEmailTest_es_MX</stringValue>
+                <elementReference>DeveloperName_es_MX</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -150,8 +151,8 @@
         <description>Create the en_US version of the template</description>
         <name>Create_MassEmail_Template</name>
         <label>Create MassEmail Template</label>
-        <locationX>736</locationX>
-        <locationY>272</locationY>
+        <locationX>869</locationX>
+        <locationY>244</locationY>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.Name</assignToReference>
             <operator>Assign</operator>
@@ -170,25 +171,28 @@
             <assignToReference>en_US_TemplateRecord.HtmlValue</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>EnglishTemplateBodyHTMLMassEmail</elementReference>
+                <elementReference>Mass_Email_Template</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.Subject</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>sendBetterEmailSubject_en_US</elementReference>
+                <elementReference>Mass_Email_Subject</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.RelatedEntityType</assignToReference>
             <operator>Assign</operator>
+            <value>
+                <elementReference>RelatedRecordType</elementReference>
+            </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>en_US_TemplateRecord.DeveloperName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>sendBetterEmailTest_Mass_Email</stringValue>
+                <elementReference>DeveloperName_Mass_Email</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
@@ -220,8 +224,8 @@
         <description>Create a collection of EmailTemplates to be created</description>
         <name>CreateCollection</name>
         <label>CreateCollection</label>
-        <locationX>945</locationX>
-        <locationY>47</locationY>
+        <locationX>952</locationX>
+        <locationY>48</locationY>
         <assignmentItems>
             <assignToReference>Test_Templates_Exist</assignToReference>
             <operator>Add</operator>
@@ -244,8 +248,8 @@
         <description>An empty assignment to terminate record</description>
         <name>Do_Nothing</name>
         <label>Do Nothing</label>
-        <locationX>376</locationX>
-        <locationY>379</locationY>
+        <locationX>293</locationX>
+        <locationY>364</locationY>
         <assignmentItems>
             <assignToReference>sendBetterEmailStatus</assignToReference>
             <operator>Assign</operator>
@@ -258,8 +262,8 @@
         <description>Send an error message back</description>
         <name>Error_Message</name>
         <label>Error Message</label>
-        <locationX>553</locationX>
-        <locationY>382</locationY>
+        <locationX>482</locationX>
+        <locationY>377</locationY>
         <assignmentItems>
             <assignToReference>sendBetterEmailStatus</assignToReference>
             <operator>Assign</operator>
@@ -318,8 +322,8 @@
     <decisions>
         <name>Language_or_Mass_Email</name>
         <label>Language or Mass Email</label>
-        <locationX>544</locationX>
-        <locationY>176</locationY>
+        <locationX>470</locationX>
+        <locationY>169</locationY>
         <defaultConnector>
             <targetReference>Error_Message</targetReference>
         </defaultConnector>
@@ -335,7 +339,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_en_US_Template</targetReference>
+                <targetReference>Modify_Templates</targetReference>
             </connector>
             <label>Language Templates</label>
         </rules>
@@ -350,12 +354,30 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_MassEmail_Template</targetReference>
+                <targetReference>Modify_Mass_Email_Template</targetReference>
             </connector>
             <label>MassEmailTemplates</label>
         </rules>
     </decisions>
-    <description>Flow to test if the templates named sendHTMLEmaiTest have been created, and if not, create them</description>
+    <description>Flow to test if the templates named sendBetterEmaiTest have been created, and if not, create them</description>
+    <formulas>
+        <description>The calculated developer name for the template (en_US)</description>
+        <name>DeveloperName_en_US</name>
+        <dataType>String</dataType>
+        <expression>{!sendBetterEmailTestName}&amp;&quot;_en_US&quot;</expression>
+    </formulas>
+    <formulas>
+        <description>The calculated developer name for the Español version</description>
+        <name>DeveloperName_es_MX</name>
+        <dataType>String</dataType>
+        <expression>{!sendBetterEmailTestName}&amp;&quot;_es_MX&quot;</expression>
+    </formulas>
+    <formulas>
+        <description>Calculated developer name for Mass Email Template</description>
+        <name>DeveloperName_Mass_Email</name>
+        <dataType>String</dataType>
+        <expression>{!sendBetterEmailTestName}&amp;&quot;_Mass_Email&quot;</expression>
+    </formulas>
     <formulas>
         <description>Returns an error with they invalid type requested</description>
         <name>InvalidTemplateType</name>
@@ -367,7 +389,7 @@
     <loops>
         <name>Template_Records_Found</name>
         <label>Template Records Found</label>
-        <locationX>375</locationX>
+        <locationX>295</locationX>
         <locationY>171</locationY>
         <assignNextValueToReference>en_US_TemplateRecord</assignNextValueToReference>
         <collectionReference>Test_Templates_Exist</collectionReference>
@@ -383,6 +405,12 @@
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -402,20 +430,21 @@
     <recordCreates>
         <name>Create_sendBetterEmail_Templates_0</name>
         <label>Create sendBetterEmail MassEmail Template</label>
-        <locationX>864</locationX>
-        <locationY>272</locationY>
+        <locationX>1005</locationX>
+        <locationY>244</locationY>
         <inputReference>en_US_TemplateRecord</inputReference>
     </recordCreates>
     <recordLookups>
         <description>Do the test templates exist?</description>
         <name>Test_Templates_Exist</name>
         <label>Test Templates Exist?</label>
-        <locationX>176</locationX>
+        <locationX>177</locationX>
         <locationY>171</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Template_Records_Found</targetReference>
         </connector>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Name</field>
             <operator>EqualTo</operator>
@@ -427,6 +456,118 @@
         <object>EmailTemplate</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
+    <screens>
+        <description>Modify the template</description>
+        <name>Modify_Mass_Email_Template</name>
+        <label>Modify Mass Email Template</label>
+        <locationX>724</locationX>
+        <locationY>244</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_MassEmail_Template</targetReference>
+        </connector>
+        <fields>
+            <name>Mass_Email_Subject</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>sendBetterEmailSubject_MassEmail</elementReference>
+            </defaultValue>
+            <fieldText>Mass Email  Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Mass_Email_Template</name>
+            <defaultValue>
+                <stringValue>.{!TemplateBodyHTMLMassEmail}</stringValue>
+            </defaultValue>
+            <fieldText>Mass Email Template</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <description>Modify the template</description>
+        <name>Modify_Templates</name>
+        <label>Modify Language Templates</label>
+        <locationX>478</locationX>
+        <locationY>48</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_en_US_Template</targetReference>
+        </connector>
+        <fields>
+            <name>en_US_Subject</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>sendBetterEmailSubject_en_US</elementReference>
+            </defaultValue>
+            <fieldText>en_US Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>en_US_Description</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>sendBetterEmailDescription_en_US</elementReference>
+            </defaultValue>
+            <fieldText>en_US Description</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>en_US_Body_Template</name>
+            <defaultValue>
+                <stringValue>{!TemplateBodyHTML_en_US}</stringValue>
+            </defaultValue>
+            <fieldText>en_US Body Template</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>BlankLine</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>es_MX_Subject</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>sendBetterEmailSubject_es_MX</elementReference>
+            </defaultValue>
+            <fieldText>es_MX Subject</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>es_MX_Description</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>sendBetterEmailDescription_es_MX</elementReference>
+            </defaultValue>
+            <fieldText>es_MX Description</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>es_MX_HTML_Body</name>
+            <defaultValue>
+                <stringValue>{!TemplateBodyHTML_es_MX}</stringValue>
+            </defaultValue>
+            <fieldText>es_MX HTML Body</fieldText>
+            <fieldType>LargeTextArea</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>50</locationX>
         <locationY>50</locationY>
@@ -437,17 +578,36 @@
     <status>Draft</status>
     <textTemplates>
         <description>The body of the en_US version of sendBetterEmailTest</description>
-        <name>EnglishTemplateBodyHTML_en_US</name>
-        <text>&lt;table class=&quot;ql-table-blob&quot; width=&quot;600&quot;&gt;&lt;tbody&gt;&lt;tr valign=&quot;top&quot;&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td height=&quot;300&quot; style=&quot;background-color:#FFFFFF; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;&quot;&gt;&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr height=&quot;50&quot; valign=&quot;top&quot;&gt;&lt;td style=&quot;font-size: 12pt;&quot;&gt;&lt;font face=&quot;arial&quot; style=&quot;font-size: 12pt;&quot;&gt;Dear {{{Recipient.Name}}},&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;top&quot;&gt;&lt;td style=&quot;font-size: 12pt;&quot;&gt;This is a test email about Account {{{Account.Name}}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+        <name>TemplateBodyHTML_en_US</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;html style=&quot;overflow-y: hidden;&quot;&gt;
+&lt;head&gt;
+	&lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style=&quot;height: auto; min-height: auto;&quot;&gt;&lt;span style=&quot;font-family:Arial,Helvetica,sans-serif;&quot;&gt;Dear {{{Recipient.Name}}},&lt;br /&gt;
+&lt;br /&gt;
+This is a test email about Account {{{Account.Name}}}&lt;/span&gt;&lt;br /&gt;
+&amp;nbsp;&lt;/body&gt;
+&lt;/html&gt;</text>
     </textTemplates>
     <textTemplates>
         <description>The body of the es_MX version of sendBetterEmailTest</description>
-        <name>EnglishTemplateBodyHTML_es_MX</name>
-        <text>&lt;table class=&quot;ql-table-blob&quot; width=&quot;600&quot;&gt;&lt;tbody&gt;&lt;tr valign=&quot;top&quot;&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td style=&quot;background-color:#FFFFFF; color:#000000; bEditID:r3st1; bLabel:main; font-size:12pt; font-family:arial;&quot; height=&quot;300&quot;&gt;&lt;table cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; border=&quot;0&quot;&gt;&lt;tbody&gt;&lt;tr valign=&quot;top&quot; height=&quot;50&quot;&gt;&lt;td style=&quot;font-size: 12pt;&quot;&gt;&lt;font style=&quot;font-size: 12pt;&quot; face=&quot;arial&quot;&gt;Hola {{{Recipient.Name}}},&lt;/font&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr valign=&quot;top&quot;&gt;&lt;td style=&quot;font-size: 12pt;&quot;&gt;Este es un correo electrónico de prueba sobre Cuenta {{{Account.Name}}}&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</text>
+        <name>TemplateBodyHTML_es_MX</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;html style=&quot;overflow-y: hidden;&quot;&gt;
+&lt;head&gt;
+	&lt;title&gt;&lt;/title&gt;
+&lt;/head&gt;
+&lt;body style=&quot;height: auto; min-height: auto;&quot;&gt;&lt;span style=&quot;font-family:Arial,Helvetica,sans-serif;&quot;&gt;Hola {{{Recipient.Name}}},&lt;br /&gt;
+&lt;br /&gt;
+Este es un correo electr&amp;oacute;nico de prueba sobre Cuenta {{{Account.Name}}}&lt;/span&gt;&lt;br /&gt;
+&amp;nbsp;&lt;/body&gt;
+&lt;/html&gt;</text>
     </textTemplates>
     <textTemplates>
         <description>A template for mass email creation</description>
-        <name>EnglishTemplateBodyHTMLMassEmail</name>
+        <name>TemplateBodyHTMLMassEmail</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
         <text>&lt;p&gt;This is from and automatically generated test template for the sendBetterEmail Flow&lt;/p&gt;</text>
     </textTemplates>
     <variables>
@@ -467,6 +627,27 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>EmailTemplate</objectType>
+    </variables>
+    <variables>
+        <description>The type of related record (if any) to be used for the template merge field.  The value must be one of the following types:
+· Account
+· Asset
+· Campaign
+· Case
+· Contract
+· Opportunity
+· Order
+· Product
+· Solution
+· Custom</description>
+        <name>RelatedRecordType</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>Account</stringValue>
+        </value>
     </variables>
     <variables>
         <description>The action (or error) taken</description>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>Datatable_Configuration_Wizard</members>
+        <name>Flow</name>
+    </types>
+    <types>
+        <members>QueryNRecords</members>
+        <members>QueryNRecordsTest</members>
+        <members>SObjectController2</members>
+        <members>SObjectController2Test</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>datatable</members>
+        <members>richDatatable</members>
+        <members>displayError</members>
+        <members>screenFlow</members>
+        <members>datatableCPE</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>screenFlow</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>screenFlow</members>
+        <name>CustomApplication</name>
+    </types>
+    <version>50.0</version>
+</Package>

@@ -34,20 +34,12 @@ Twitter: https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.6.0 or later  
-FlowScreenComponentsBasePack Version 2.1.0 or later   
+FlowActionsBasePack Version 2.6.1 or later  
+FlowScreenComponentsBasePack Version 2.1.1 or later   
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
----
-**Install Datatable**  
-   
-<a href="https://githubsfdeploy.herokuapp.com">
-  <img alt="Deploy to Salesforce"
-       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
-</a>
- 
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
 
@@ -62,12 +54,15 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 ## Release Notes
+**12/19/20 -  Eric Smith -    Version 3.0.4** -  
+            **Updates:**        Added option to display ALL Salesforce Objects for selection  
+  
 **12/14/20 -  Eric Smith -    Version 3.0.0** -  
             **Updates:**        New Custom Property Editor for Configuration  
                             Clear button added when using single record selection  
                             Fixed row number display when >99 rows  
             **Bug Fixes:**      Sandbox URLs with __c in their name will now provide valid links for lookups  
-
+  
 **10/14/20 -  Eric Smith -    Version 2.47** -  
             **Bug Fix:**        Display correct icon for Table Header (was always showing standard:account icon)
   

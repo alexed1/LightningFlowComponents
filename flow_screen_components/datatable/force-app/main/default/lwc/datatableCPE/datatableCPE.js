@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.0
+ * VERSION:             3.0.4
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -74,6 +74,11 @@ export default class DatatableCPE extends LightningElement {
 
     selectedSObject = '';
     isSObjectInput = true;
+    isRecordCollectionSelected = false;
+    disableAllowALl = false;
+    isDisplayAll = true;
+    isDisplayAll_Label = 'Display ALL Objects for Selection';
+    isDisplayAll_HelpText = 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.';
     isCheckboxColumnHidden = false;
     isShowCheckboxColumn = false;
     isNoEdits = true;
@@ -94,6 +99,11 @@ export default class DatatableCPE extends LightningElement {
     @api
     get isObjectSelected() { 
         return !!this.selectedSObject;
+    }
+
+    @api
+    get availableObjectTypes() {        // Allow admin to specify All object types
+        return (this.isDisplayAll) ? 'All' : '';
     }
 
     @api
@@ -378,6 +388,9 @@ export default class DatatableCPE extends LightningElement {
         },
         {name: 'advancedAttributes',
             attributes: [
+                {name: defaults.customHelpDefinition,
+                    label: this.isDisplayAll_Label,
+                    helpText: this.isDisplayAll_HelpText},
                 {name: 'isUserDefinedObject'},
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 
@@ -407,16 +420,16 @@ export default class DatatableCPE extends LightningElement {
         }
     ]
 
-    settings = { 
-        attributeObjectName: 'objectName',
-        attributeFieldName: 'fieldName',
-        flowDataTypeString: 'String',
-    }
+    // settings = { 
+    //     attributeObjectName: 'objectName',
+    //     attributeFieldName: 'fieldName',
+    //     flowDataTypeString: 'String',
+    // }
 
-    selectDataSourceOptions = [
-        {label: 'SObject Collection', value: !this.inputValues.isUserDefinedObject},
-        {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
-    ];
+    // selectDataSourceOptions = [
+    //     {label: 'SObject Collection', value: !this.inputValues.isUserDefinedObject},
+    //     {label: 'Apex Defined Object String', value: this.inputValues.isUserDefinedObject}
+    // ];
 
     // Input attributes for the Wizard Flow
     @api flowParams = [
@@ -472,11 +485,14 @@ export default class DatatableCPE extends LightningElement {
     initializeValues() {
         console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
-            if (curInputParam.name && curInputParam.value) {
+
+            if (curInputParam.name && curInputParam.value != null) {
                 console.log('Init:', curInputParam.name, curInputParam.value);             
-                if (curInputParam.name && this.inputValues[curInputParam.name]) {
+                if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
+
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
                     }
@@ -502,11 +518,10 @@ export default class DatatableCPE extends LightningElement {
                     if ((curInputParam.name == 'columnEdits') && curInputParam.value) {
                         this.isNoEdits = false;
                     }
-
                     if ((curInputParam.name == 'columnFilters') && curInputParam.value) {
                         this.isNoFilters = false;
                     }
-
+                    
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
                     if (this.flowParams.find(fp => fp.name == wizName)) {
@@ -528,6 +543,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     handleDefaultAttributes() {
+        console.log('handle default attributes');
         if (this.inputValues.tableBorder.value == this.inputValues.not_tableBorder.value) {
             this.inputValues.tableBorder.value = !this.inputValues.not_tableBorder.value;
         }
@@ -537,6 +553,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     handleBuildHelpInfo() {
+        console.log('build help info');
         this.helpSections.forEach(section => {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
@@ -633,8 +650,12 @@ export default class DatatableCPE extends LightningElement {
                 if (!this.isSObjectInput) { 
                     this.inputValues.objectName.value = null;
                     this.selectedSObject = null;
-                    this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+                    this.dispatchFlowValueChangeEvent('objectName', this.selectedSObject, 'String');
                 }
+                if (event.target.checked) {
+                    this.isDisplayAll = false;    // Clear & Disable Display All Selection when selecting User Defined Object
+                }
+                this.disableAllowAll = event.target.checked;
             }
 
             // Handle isDisplayHeader
@@ -677,6 +698,15 @@ export default class DatatableCPE extends LightningElement {
     
     }
 
+    handleAllowAllChange(event) {
+        this.isDisplayAll = event.target.checked;
+        // this.inputValues.isUserDefinedObject.value = false;
+        // this.dispatchFlowValueChangeEvent('isUserDefinedObject', false, 'Boolean');
+        this.inputValues.objectName.value = null;
+        this.selectedSObject = null;
+        this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+    }
+
     handleHeightChange(event) { 
         this.wizardHeight = event.target.value;
     }
@@ -699,6 +729,10 @@ export default class DatatableCPE extends LightningElement {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            
+            if (changedAttribute == 'tableData') {
+                this.isRecordCollectionSelected = !!event.detail.newValue;
+            }
         }
     }
 
@@ -713,12 +747,12 @@ export default class DatatableCPE extends LightningElement {
             composed: true,
             detail: {
                 name: id,
-                newValue: newValue ? newValue : null,
+                newValue: newValue ? newValue : (newValueDataType == 'Boolean' ? false : null),
                 newValueDataType: newValueDataType
             }
         });
         this.dispatchEvent(valueChangedEvent);
-        console.log('dispatchFlowValueChangeEvent', id, newValue);        
+        console.log('dispatchFlowValueChangeEvent', id, newValue, newValueDataType);        
         if (newValue) {
             this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
         }
@@ -924,9 +958,9 @@ export default class DatatableCPE extends LightningElement {
         this.validateErrors.length = 0;
 
         // Not Apex-Defined -- Check for Object, Record Collection, Columns
-        if (!this.isUserDefinedObject) {
+        if (this.isSObjectInput) {
             this.checkError((!this.isObjectSelected), 'objectName', 'You must select an Object');
-            this.checkError((!this.inputValues.tableData.value), 'tableData', 'You must provide a Collection of Records to display');
+            this.checkError((!this.isRecordCollectionSelected), 'tableData', 'You must provide a Collection of Records to display');
             this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
         }
 
@@ -950,6 +984,7 @@ export default class DatatableCPE extends LightningElement {
         } else { 
             this.inputValues[key].isError = false;
         }
+        // console.log('CPE generated error:', key, isError, (isError ? errorString : ''));
     }
 
 }

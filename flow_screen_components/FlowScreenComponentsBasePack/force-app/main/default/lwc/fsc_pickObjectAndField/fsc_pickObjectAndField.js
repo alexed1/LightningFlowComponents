@@ -1,7 +1,7 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
-import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects';
+import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects'; // Requires Greater Than v2.6
 import {standardObjectOptions} from 'c/fsc_pickObjectAndFieldUtils';
 import NonePicklistValueLabel from '@salesforce/label/c.fsc_NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.fsc_FieldIsNotSupportedMessage';
@@ -18,6 +18,7 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api builderContext;
     @api availableObjectTypes;
     @api availableFields;
+    @api isAllowAll = false;    // Eric Smith 12/18/20 - Handle a Display All Objects override
 
 
     @api disableObjectPicklist = false;
@@ -70,7 +71,9 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @wire(getObjectInfo, {objectApiName: '$_objectType'})
     _getObjectInfo({error, data}) {
         if (error) {
-            this.errors.push(error.body[0].message);
+            if (!this.isAllowAll) {     // Eric Smith 12/18/20 - Error is expected for many Objects when allowing all, will use Apex to get field information
+                this.errors.push(error.body[0].message);
+            }
         } else if (data) {
             let fields = data.fields;
             let fieldResults = [];

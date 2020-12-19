@@ -5,6 +5,16 @@ global with sharing class FieldPickerController {
         List<Member> result = new List<Member>();
         Map<String, SObjectType> allTypes = Schema.getGlobalDescribe();
 
+        // Eric Smith 12/18/20 - Handle a Display All Objects override
+        Boolean isDisplayAll = false;
+        try {
+            if (availableObjectTypes[0]?.toLowerCase() == 'all') {
+                availableObjectTypes.clear();
+                isDisplayAll = true;
+            } catch (Exception e) {   
+            }
+        }
+
         if (availableObjectTypes == null || availableObjectTypes.size() == 0) {
             availableObjectTypes = new List<String>(allTypes.keySet());
         }
@@ -16,8 +26,10 @@ global with sharing class FieldPickerController {
             String objectLabel = describeObject.getLabel();
             Boolean isCustom = describeObject.isCustom();
 
-            if (isCustom || allowedStandardObjects.containsKey(objectType)) {
-                result.add(new Member(objectType, objectLabel));
+            if (isCustom || allowedStandardObjects.containsKey(objectType) || isDisplayAll) {     // Eric Smith 12/18/20 - Handle a Display All Objects override
+                if (objectLabel.substring(0,2) != '__') {
+                    result.add(new Member(objectType, objectLabel));
+                }
             }
 
             result.sort();

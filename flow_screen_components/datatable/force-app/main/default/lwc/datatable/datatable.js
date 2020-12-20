@@ -3,12 +3,12 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.3
+ * VERSION:             3.0.4
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-const VERSION_NUMBER = '3.0.3';
+const VERSION_NUMBER = '3.0.4';
 
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';

@@ -14,6 +14,8 @@
         field-label={inputValues.fieldName.label}
         object-label={inputValues.objectName.label} 
         object-type={selectedSObject}
+        is-allow-all={isDisplayAll}
+        available-object-types={availableObjectTypes}
         field={inputValues.fieldName.value} 
         onfieldselected={handleDynamicTypeMapping}
         hide-field-picklist=true>
@@ -275,6 +277,17 @@
         banner-info={sectionEntries.advancedAttributes.info}
         modal-header-color={modalHeaderColorAdvancedOverride}
     ></c-fsc_flow-banner>
+
+    <!-- Display ALL Objects for Selection -->
+    <lightning-input class="slds-m-vertical_xx-small"
+        type="checkbox" 
+        name="isDisplayAll"
+        label={isDisplayAll_Label} 
+        checked={isDisplayAll} 
+        disabled={disableAllowAll}
+        field-level-help={isDisplayAll_HelpText}
+        onchange={handleAllowAllChange}>
+    </lightning-input>
 
     <!-- Apex Defined Object? -->
     <lightning-input class="slds-m-vertical_xx-small"

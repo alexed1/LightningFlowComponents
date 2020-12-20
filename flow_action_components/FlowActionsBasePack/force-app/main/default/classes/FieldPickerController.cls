@@ -11,8 +11,10 @@ global with sharing class FieldPickerController {
             if (availableObjectTypes[0]?.toLowerCase() == 'all') {
                 availableObjectTypes.clear();
                 isDisplayAll = true;
-            } catch (Exception e) {   
+
             }
+        } catch (Exception e) {   
+
         }
 
         if (availableObjectTypes == null || availableObjectTypes.size() == 0) {

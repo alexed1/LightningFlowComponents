@@ -25,6 +25,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -64,4 +70,25 @@
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>appProcessInstanceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>appProcessStepName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

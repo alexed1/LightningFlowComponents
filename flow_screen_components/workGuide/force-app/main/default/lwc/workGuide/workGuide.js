@@ -1,6 +1,7 @@
 import {LightningElement, api, wire} from 'lwc';
 import userId from '@salesforce/user/Id';
-import getCurrentStepInstance from '@salesforce/apex/WorkGuideController.getCurrentStepInstance';
+import getActiveWorkItemsByRecordId from '@salesforce/apex/WorkGuideController.getActiveWorkItemsByRecordId';
+import getWorkItemDetail from '@salesforce/apex/WorkGuideController.getWorkItemDetail';
 import dispatchAppProcessEvent from '@salesforce/apex/WorkGuideController.dispatchAppProcessEvent';
 
 
@@ -43,8 +44,29 @@ export default class WorkGuide extends LightningElement {
         this.url = window.location.href.substring(0, window.location.href.indexOf(sfIdent) + sfIdent.length);
     }
 
-    @wire(getCurrentStepInstance, {userId: '$curUserId', recordId: '$recordId'})
-    _getCurrentStepInstance(response) {
+    @wire(getActiveWorkItemsByRecordId, {userId: '$curUserId', recordId: '$recordId'})
+    _getActiveWorkItemsByRecordId(response) {
+        if (response.error) {
+            console.log(JSON.stringify(response.error));
+            this.isLoadCompleted = true;
+        } else if (typeof response.data !== undefined) {
+            if (response.data) {
+                console.log('response from getActiveWorkItemsByRecordId is: ' + JSON.stringify(response.data));
+                //this.labels = response.data.;
+                /* this._currentStep = response.data.currentStep__c;
+                this._currentStage = response.data.currentStage__c;
+                this._currentDefinitionId = response.data.App_Process_Definition__c;
+                this._currentInstanceId = response.data.Id;
+                this.stageToStepsNameMap = JSON.parse(response.data.App_Process_Definition__r.StageStepMappings__c);
+                this.stepToFlowMap = JSON.parse(response.data.App_Process_Definition__r.StepFlowMappings__c); */
+            }
+            this.isLoadCompleted = true;
+        }
+
+    }
+
+    @wire(getWorkItemDetail, {userId: '$curUserId', recordId: '$recordId'})
+    _getWorkItemDetail(response) {
         if (response.error) {
             console.log(JSON.stringify(response.error));
             this.isLoadCompleted = true;

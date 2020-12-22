@@ -5,7 +5,7 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack"
+                    "package": "FlowActionsBasePack@2.7.0-0"
                 }
             ],
             "package": "FlowScreenComponentsBasePack",
@@ -19,6 +19,10 @@
     "packageAliases": {
         "FlowActionsBasePack": "04t4W000002vXUCQA2",
         "FlowScreenComponentsBasePack": "0Hof4000000XZNGCA4",
-        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK"
+        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK",
+        "FlowActionsBasePack@2.6.0-0": "04t4W000002vxfAQAQ",
+        "FlowActionsBasePack@2.7.0-0": "04t4W000002vyJIQAY",
+        "FlowScreenComponentsBasePack@2.1.1-0": "04t5G000004PuV3QAK",
+        "FlowScreenComponentsBasePack@3.0.4-0": "04t5G000004PuV8QAK"
     }
 }

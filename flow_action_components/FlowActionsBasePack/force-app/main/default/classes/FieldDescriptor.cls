@@ -16,12 +16,8 @@ global with sharing class FieldDescriptor {
 
     }
 
-<<<<<<< HEAD
-    global FieldDescriptor() {}
-=======
     global FieldDescriptor() {
    
 
     }
->>>>>>> datatableCPE
 }

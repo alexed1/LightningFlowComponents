@@ -5,10 +5,10 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowScreenComponentsBasePack@2.1.0-0"
+                    "package": "FlowActionsBasePack@2.7.0-0"
                 },
                 {
-                    "package": "FlowActionsBasePack@2.1.0-0"
+                    "package": "FlowScreenComponentsBasePack@2.1.1-0"
                 }
             ],
             "package": "datatable",
@@ -20,9 +20,13 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "50.0",
     "packageAliases": {
-        "datatable": "0Ho5G000000XZNaSAO",
+        "datatable": "0Ho4x0000004CAVCA2",
         "FlowActionsBasePack": "04t4W000002vXUCQA2",
-        "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2",
-        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK"
+        "FlowActionsBasePack@2.7.0-0": "04t4W000002vyJIQAY",
+        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK",
+        "datatable@3.0.2-0": "04t5G000004PuUKQA0",
+        "datatable@3.0.3-0": "04t4x000000tgwqAAA",
+        "FlowScreenComponentsBasePack@2.1.1-0": "04t5G000004PuV3QAK",
+        "datatable@3.0.4-0": "04t4x000000th13AAA"
     }
 }

@@ -9,6 +9,8 @@ export default class WorkGuide extends LightningElement {
     @api recordId;
     @api flowHeight = 300;
     curUserId = userId;
+    curWorkItemId;
+
     stageToStepsNameMap;
     stepToFlowMap;
     _currentStep;
@@ -20,6 +22,7 @@ export default class WorkGuide extends LightningElement {
     innerWidth = 400;
     isLoadCompleted = false;
     isFlowStarted = false;
+    error;
 
     labels = {
         header: 'Work Guide',
@@ -46,12 +49,28 @@ export default class WorkGuide extends LightningElement {
 
     @wire(getActiveWorkItemsByRecordId, {userId: '$curUserId', recordId: '$recordId'})
     _getActiveWorkItemsByRecordId(response) {
+        console.log('getActiveWorkItemsByRecordId returning.... response is:' + JSON.stringify(response));
         if (response.error) {
             console.log(JSON.stringify(response.error));
             this.isLoadCompleted = true;
         } else if (typeof response.data !== undefined) {
             if (response.data) {
                 console.log('response from getActiveWorkItemsByRecordId is: ' + JSON.stringify(response.data));
+
+                this.curWorkItemId = response.data.workItemRecordIds;
+
+                console.log('now calling getWorkItemDetail');
+                getWorkItemDetail({userId : this.curUserId, contextRecordId : this.recordId, workItemRecordId : this.curWorkItemId[0]})
+                        .then((result) => {
+                            console.log('result from getWorkItemDetail: ' + JSON.stringify(result));
+                            //this.contacts = result;
+                            this.error = undefined;
+                        })
+                        .catch((error) => {
+                            this.error = error;
+                            //this.contacts = undefined;
+                        });
+                
                 //this.labels = response.data.;
                 /* this._currentStep = response.data.currentStep__c;
                 this._currentStage = response.data.currentStage__c;
@@ -65,8 +84,9 @@ export default class WorkGuide extends LightningElement {
 
     }
 
-    @wire(getWorkItemDetail, {userId: '$curUserId', recordId: '$recordId'})
+    /* @wire(getWorkItemDetail, {userId: '$curUserId', contextRecordId: '$contextRecordId', workItemRecordId: '$curWorkItemId'})
     _getWorkItemDetail(response) {
+        console.log('getWorkItemDetail returning....');
         if (response.error) {
             console.log(JSON.stringify(response.error));
             this.isLoadCompleted = true;
@@ -86,7 +106,7 @@ export default class WorkGuide extends LightningElement {
             this.isLoadCompleted = true;
         }
 
-    }
+    } */
 
     get curFlowName() {
         if (this.stepToFlowMap && this.stepToFlowMap[this._currentStep]) {

@@ -41,10 +41,11 @@ public with sharing class WorkGuideController {
 
     }
 
-
+    //return details about a work item in the form expected by the WorkGuide component
     @AuraEnabled(cacheable=true)
-    public static AppProcessInstance__c getWorkItemDetail(Id userId, Id recordId) {
-        AppProcessInstance__c workguideInstanceData = new AppProcessInstance__c();
+    public static AppProcessInstance__c getWorkItemDetail(Id userId, Id contextRecordId, Id workItemRecordId) {
+        System.debug('getting WorkItemDetail');
+        AppProcessInstance__c workItemDetails = new AppProcessInstance__c();
          /* [
                 SELECT
                         Id,
@@ -60,17 +61,79 @@ public with sharing class WorkGuideController {
        // System.debug('instanceIds:::' + APinstanceCollection);
 
 
-        //call the definitive method from Bruno
-        //however, this method arbitrarily takes only the first instance
-        //ConnectApi.OrchestrationStageInstance orchStageInstance = getActiveStageInstanceFromContextRecord(recordId) ;
-        //get step instances for the stage instance
-       // List<ConnectApi.OrchestrationStepInstance> curStepInstances = GetStepInstancesFromStageInstance(orchStageInstance);
+        //get all of the instances linked to this recordId
+        List<ConnectApi.OrchestrationInstance> allRecordOrchInstances = getAllOrchestrationInstancesFromContextRecord( contextRecordId) ;
+        System.debug ('allRecordOrchInstances is: ' + allRecordOrchInstances);
+
+        //find the instance that has the provide workItemRecordId
+        WorkItemLineage curWorkItemLineage = extractWorkItemLineage(allRecordOrchInstances, workItemRecordId);
+        System.debug('workItemLineage is: ' + curWorkItemLineage);
+
+        //use that instance to build the two mappings
+        String stageStepMapping = buildStageStepMapping(curWorkItemLineage.parentOrchInstance);
+        System.debug('current stageStepMapping is: ' + stageStepMapping);
+
+         //use that instance to build the two mappings
+         String stepFlowMapping = buildStepFlowMapping(curWorkItemLineage.parentOrchInstance);
+         System.debug('current stepFlowMapping is: ' + stepFlowMapping);
+
+        //assemble the AppProcessInstance data structure
+
+        //the step name corresponding to this work item. 
+        workItemDetails.currentStep__c = curWorkItemLineage.parentOrchStep.Name;
+        workItemDetails.currentStage__c = curWorkItemLineage.parentOrchStage.Name;
+        workItemDetails.RecordId__c = curWorkItemLineage.curWorkAssignment.contextRecordId;
+        workItemDetails.UserId__c = userId;
+        //workItemDetails.Id = curWorkItemLineage.parentOrchInstance.Id; illegal
+        workItemDetails.StageStepMapping__c = stageStepMapping;
+        workItemDetails.StepFlowMapping__c = stepFlowMapping;
 
 
-        return workguideInstanceData;
+        //this.labels = response.data.;
+                /* this._currentStep = response.data.currentStep__c;
+                this._currentStage = response.data.currentStage__c;
+                this._currentDefinitionId = response.data.App_Process_Definition__c;
+                this._currentInstanceId = response.data.Id;
+                this.stageToStepsNameMap = JSON.parse(response.data.App_Process_Definition__r.StageStepMappings__c);
+                this.stepToFlowMap = JSON.parse(response.data.App_Process_Definition__r.StepFlowMappings__c); */
+
+        //String stageStepMapping = 
+        System.debug('final data structure from apex: ' + workItemDetails);
+        return workItemDetails;
     }
 
-    @AuraEnabled(cacheable=true)
+    //when you know a workItemId but don't know its lineage
+    public static WorkItemLineage extractWorkItemLineage(List<ConnectApi.OrchestrationInstance> allRecordOrchInstances, Id workItemRecordId) {
+        
+        WorkItemLineage curWorkItemLineage = new WorkItemLineage();
+        for (ConnectApi.OrchestrationInstance curInstance : allRecordOrchInstances){
+            //for each stage
+            //for each step
+            //for each workItem
+            //if it's a match return the current instance 
+            for (ConnectApi.OrchestrationStageInstance curStage : curInstance.stageInstances) {
+                for (ConnectApi.OrchestrationStepInstance curStep : curStage.stageStepInstances) {
+                    for (ConnectApi.OrchestrationWorkAssignment curWorkItem : curStep.workAssignments) {
+                        if (curWorkItem.Id == workItemRecordId) {
+                            curWorkItemLineage.curWorkAssignment = curWorkItem;
+                            curWorkItemLineage.parentOrchInstance = curInstance;
+                            curWorkItemLineage.parentOrchStage = curStage;
+                            curWorkItemLineage.parentOrchStep = curStep;
+                            return curWorkItemLineage;
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+
+    }
+
+
+
+
+    //this is the original code from Bruno
+/*     @AuraEnabled(cacheable=true)
     public static ConnectApi.OrchestrationStageInstance getActiveStageInstanceFromContextRecord(String contextRecordId) {
         ConnectApi.OrchestrationInstanceCollection instanceCollection = ConnectApi.Orchestrator.getOrchestrationInstanceCollection(contextRecordId);
         System.debug('return from getOrchestrationInstanceCollection is: ' + instanceCollection);
@@ -91,7 +154,7 @@ public with sharing class WorkGuideController {
         }
         // no InProgress stage
         return null;
-    }
+    } */
 
     public static AppProcessInstance__c ConvertOrchestrationStageInstanceToWorkGuideDataStructure(ConnectApi.OrchestrationStageInstance  orchStageInstance) {
         AppProcessInstance__c workguideInstanceData = new AppProcessInstance__c();
@@ -148,6 +211,36 @@ public with sharing class WorkGuideController {
                 curWorkItems.addAll(curStepInstance.workAssignments);
             }
             return curWorkItems;
+    }
+
+
+
+/*     {
+        "Prepare to Publish": [
+            "Approval",
+            "Review"
+        ],
+        "Published": [
+            "Finalization"
+        ]
+    } */
+    public static String buildStageStepMapping(ConnectApi.OrchestrationInstance  orchInstance) {
+        String stageStepMapping = '{\n';
+        for(ConnectApi.OrchestrationStageInstance curStage : orchInstance.stageInstances) {
+            stageStepMapping = stageStepMapping + '\"' + curStage.label + '\": [\n';
+            for (ConnectApi.OrchestrationStepInstance curStep : curStage.stageStepInstances) {
+                stageStepMapping = stageStepMapping + '\t\"' + curStep.label + '\",';
+            }
+            stageStepMapping = stageStepMapping.removeEnd(',') + '\n],\n';
+        }
+        stageStepMapping = stageStepMapping.removeEnd(',') + '}';
+        System.debug ('stageStepMapping is: ' + stageStepMapping);
+        return stageStepMapping;
+
+    }
+
+    public static String buildStepFlowMapping(ConnectApi.OrchestrationInstance  orchInstance) {
+        return 'foo';
     }
 
 

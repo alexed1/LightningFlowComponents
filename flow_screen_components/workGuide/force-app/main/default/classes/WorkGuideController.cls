@@ -9,7 +9,7 @@ public with sharing class WorkGuideController {
         //so instead let's get all the instances
         //note that this gets all the orchestration instances that have at least one active work item that is associated with this record
         List<ConnectApi.OrchestrationInstance> orchInstances = getAllOrchestrationInstancesFromContextRecord( recordId);
-
+        System.debug('orchInstances returned are: ' + orchInstances);
         //extract the active work items from this filtered set of orchInstances
 
         List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = extractWorkItemsFromOrchInstanceCollection(orchInstances);
@@ -28,6 +28,14 @@ public with sharing class WorkGuideController {
 
         return curWorkItemValues;
     } 
+
+     //for a given recordId, get all orchestration instances
+     public static List<ConnectApi.OrchestrationInstance> getAllOrchestrationInstancesFromContextRecord(String contextRecordId) {
+        ConnectApi.OrchestrationInstanceCollection instanceCollection = ConnectApi.Orchestrator.getOrchestrationInstanceCollection(contextRecordId);
+        if (instanceCollection == null || instanceCollection.instances.size() == 0) {
+            return null;
+        } else return instanceCollection.instances;
+    }
 
     //picklists expect a list of values and a list of labels. This data structure returns things that way
     private static WorkItemValueSet buildWorkItemValueSet(List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems) {
@@ -239,6 +247,7 @@ public with sharing class WorkGuideController {
         "Review" : "HelloWorld"
     } */
     public static String buildStepFlowMapping(WorkItemLineage curWorkItemLineage) {
+        System.debug('entering buildStepFlowMapping....workItemLineage is: ' + curWorkItemLineage);
         //retrieve flowdef info that includes id and name
         List<FlowDefinitionView> curFlows = [SELECT Id,ApiName,DurableId, Label FROM FlowDefinitionView];
         String stepFlowMap = '{\n ';
@@ -247,10 +256,13 @@ public with sharing class WorkGuideController {
 
         for (ConnectApi.OrchestrationStepInstance curStep : curWorkItemLineage.parentOrchStage.stageStepInstances) {
             //get the first work item of that step
-            String flowId = curStep.workAssignments[0].screenFlowId;
-            String flowName = findFlowNameByFlowId(flowId, curFlows);
-            System.debug('for step : ' + curStep.Name + ', flowName is: ' + flowName);
-            stepFlowMap = stepFlowMap + '\"' + curStep.Name + '\" : \"' + flowName + '\",\n';
+            if(curStep.workAssignments.size() > 0 ) {
+                String flowId = curStep.workAssignments[0].screenFlowId; //unstarted steps don't have any work assignments. 
+                String flowName = findFlowNameByFlowId(flowId, curFlows);
+                System.debug('for step : ' + curStep.Name + ', flowName is: ' + flowName);
+                stepFlowMap = stepFlowMap + '\"' + curStep.Name + '\" : \"' + flowName + '\",\n';
+            }
+          
         }
 
         stepFlowMap = stepFlowMap.removeEnd(',\n') + '}';
@@ -329,13 +341,7 @@ public with sharing class WorkGuideController {
         return null;
     }
 
-     //for a given recordId, get all orchestration instances
-    public static List<ConnectApi.OrchestrationInstance> getAllOrchestrationInstancesFromContextRecord(String contextRecordId) {
-        ConnectApi.OrchestrationInstanceCollection instanceCollection = ConnectApi.Orchestrator.getOrchestrationInstanceCollection(contextRecordId);
-        if (instanceCollection == null || instanceCollection.instances.size() == 0) {
-            return null;
-        } else return instanceCollection.instances;
-    }
+    
  
     /* for each stage instance
     get the Orchestration step instances */

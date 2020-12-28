@@ -15,7 +15,7 @@ public with sharing class NotifyOrchestrationViaEvent {
             eventInfo.orchestrationInstanceId = curRequest.orchestrationInstanceId;
             eventInfo.workStatus = ConnectApi.OrchestrationWorkStatus.FlowCompleted;
             eventInfo.stageStepInstanceId = curRequest.orchestrationStepInstanceId;
-
+            eventInfo.workAssignmentId = curRequest.orchestrationWorkItemId;
             // publish event
             ConnectApi.OrchestrationEvent event =
             ConnectApi.Orchestrator.publishOrchestrationEvent(eventInfo);

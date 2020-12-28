@@ -171,6 +171,7 @@ export default class WorkGuide extends LightningElement {
         params.push(this.generateParam('orchestrationInstanceId', 'String', this._currentOrchInstanceId));
         params.push(this.generateParam('orchestrationStepName', 'String', this._currentStepName));
         params.push(this.generateParam('orchestrationStepInstanceId', 'String', this._currentOrchStepInstanceId));
+        params.push(this.generateParam('orchestrationWorkItemId', 'String', this._currentWorkItemId));
         params.push(this.generateParam('recordId', 'String', this.recordId));
         return JSON.stringify(params);
     }

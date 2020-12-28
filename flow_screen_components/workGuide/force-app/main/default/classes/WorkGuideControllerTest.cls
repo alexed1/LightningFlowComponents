@@ -19,7 +19,7 @@ public with sharing class WorkGuideControllerTest {
         System.assertEquals(WorkGuideFixtures.getFixture_WorkAssignments(), workItems);
     }
 
-    @isTest 
+  /*   @isTest 
     public static void CanGetActiveStageInstanceFromContextRecord() {
         OrchContent__c testOrchContent = new OrchContent__c();
         testOrchContent.Name = 'foobar';
@@ -27,7 +27,7 @@ public with sharing class WorkGuideControllerTest {
 
         ConnectApi.OrchestrationStageInstance  curStageInstance = WorkGuideController.getActiveStageInstanceFromContextRecord( testOrchContent.Id);
     }
-
+ */
    /*  @isTest
     public static void CanGetAllStageInstancesFromContextRecord() {
         //todo need a way to create a new instance in the eyes of the org associated with a record. basically this implies programmatically invoking an orchestration flow

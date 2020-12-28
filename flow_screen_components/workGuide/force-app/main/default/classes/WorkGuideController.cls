@@ -46,21 +46,7 @@ public with sharing class WorkGuideController {
     public static AppProcessInstance__c getWorkItemDetail(Id userId, Id contextRecordId, Id workItemRecordId) {
         System.debug('getting WorkItemDetail');
         AppProcessInstance__c workItemDetails = new AppProcessInstance__c();
-         /* [
-                SELECT
-                        Id,
-                        currentStage__c,
-                        currentStep__c,
-                        App_Process_Definition__c,
-                        App_Process_Definition__r.Name,
-                        App_Process_Definition__r.StepFlowMappings__c,
-                        App_Process_Definition__r.StageStepMappings__c
-                FROM AppProcessInstance__c
-                WHERE UserId__c = :userId AND RecordId__c = :recordId
-        ]; */
-       // System.debug('instanceIds:::' + APinstanceCollection);
-
-
+        
         //get all of the instances linked to this recordId
         List<ConnectApi.OrchestrationInstance> allRecordOrchInstances = getAllOrchestrationInstancesFromContextRecord( contextRecordId) ;
         System.debug ('allRecordOrchInstances is: ' + allRecordOrchInstances);
@@ -74,7 +60,7 @@ public with sharing class WorkGuideController {
         System.debug('current stageStepMapping is: ' + stageStepMapping);
 
          //use that instance to build the two mappings
-         String stepFlowMapping = buildStepFlowMapping(curWorkItemLineage.parentOrchInstance);
+         String stepFlowMapping = buildStepFlowMapping(curWorkItemLineage);
          System.debug('current stepFlowMapping is: ' + stepFlowMapping);
 
         //assemble the AppProcessInstance data structure
@@ -84,6 +70,10 @@ public with sharing class WorkGuideController {
         workItemDetails.currentStage__c = curWorkItemLineage.parentOrchStage.Name;
         workItemDetails.RecordId__c = curWorkItemLineage.curWorkAssignment.contextRecordId;
         workItemDetails.UserId__c = userId;
+        workItemDetails.OrchestrationInstanceId__c = curWorkItemLineage.parentOrchInstance.id;
+        System.debug('OrchestrationInstanceId__c is: ' + workItemDetails.OrchestrationInstanceId__c);
+        workItemDetails.OrchestrationStepInstanceId__c = curWorkItemLineage.parentOrchStep.id;
+        workItemDetails.OrchestrationWorkItemId__c = curWorkItemLineage.curWorkAssignment.id;
         //workItemDetails.Id = curWorkItemLineage.parentOrchInstance.Id; illegal
         workItemDetails.StageStepMapping__c = stageStepMapping;
         workItemDetails.StepFlowMapping__c = stepFlowMapping;
@@ -102,6 +92,8 @@ public with sharing class WorkGuideController {
         return workItemDetails;
     }
 
+  
+
     //when you know a workItemId but don't know its lineage
     public static WorkItemLineage extractWorkItemLineage(List<ConnectApi.OrchestrationInstance> allRecordOrchInstances, Id workItemRecordId) {
         
@@ -117,7 +109,9 @@ public with sharing class WorkGuideController {
                         if (curWorkItem.Id == workItemRecordId) {
                             curWorkItemLineage.curWorkAssignment = curWorkItem;
                             curWorkItemLineage.parentOrchInstance = curInstance;
+                            System.debug('curInstance is: ' + curInstance);
                             curWorkItemLineage.parentOrchStage = curStage;
+                            System.debug('curStep is: ' + curStep);
                             curWorkItemLineage.parentOrchStep = curStep;
                             return curWorkItemLineage;
                         }
@@ -215,7 +209,7 @@ public with sharing class WorkGuideController {
 
 
 
-/*     {
+    /*     {
         "Prepare to Publish": [
             "Approval",
             "Review"
@@ -233,16 +227,89 @@ public with sharing class WorkGuideController {
             }
             stageStepMapping = stageStepMapping.removeEnd(',') + '\n],\n';
         }
-        stageStepMapping = stageStepMapping.removeEnd(',') + '}';
+        stageStepMapping = stageStepMapping.removeEnd(',\n') + '}';
         System.debug ('stageStepMapping is: ' + stageStepMapping);
         return stageStepMapping;
 
     }
 
-    public static String buildStepFlowMapping(ConnectApi.OrchestrationInstance  orchInstance) {
-        return 'foo';
+    /* {
+        "Approval" : "ApprovalStep", 
+        "Finalization" :"finalFlow",
+        "Review" : "HelloWorld"
+    } */
+    public static String buildStepFlowMapping(WorkItemLineage curWorkItemLineage) {
+        //retrieve flowdef info that includes id and name
+        List<FlowDefinitionView> curFlows = [SELECT Id,ApiName,DurableId, Label FROM FlowDefinitionView];
+        String stepFlowMap = '{\n ';
+        //get parent stage
+        //for each step in the stage 
+
+        for (ConnectApi.OrchestrationStepInstance curStep : curWorkItemLineage.parentOrchStage.stageStepInstances) {
+            //get the first work item of that step
+            String flowId = curStep.workAssignments[0].screenFlowId;
+            String flowName = findFlowNameByFlowId(flowId, curFlows);
+            System.debug('for step : ' + curStep.Name + ', flowName is: ' + flowName);
+            stepFlowMap = stepFlowMap + '\"' + curStep.Name + '\" : \"' + flowName + '\",\n';
+        }
+
+        stepFlowMap = stepFlowMap.removeEnd(',\n') + '}';
+           
+           // get the flowId and match to the flowdef Info and 
+           //append to the string
+           
+        System.debug('curFlows is: ' + curFlows);
+
+        return stepFlowMap;
     }
 
+    public static String findFlowNameByFlowId( string flowId, List<FlowDefinitionView> curFlows) {
+        for (FlowDefinitionView curFlow : curFlows) {
+            if (curFlow.DurableId == flowId) {
+                return curFlow.ApiName;
+            }
+        }
+        return ('flowId not found: ' + flowId);
+    }
+
+
+    //flow data can only be retrieved via a tooling api call
+    public static List<FlowDefinition>  getFlowData() {
+        List<String> curFlowDefs = new  List<String>();
+        String sessionId =  getSessionIdFromVFPage();
+        String auth = 'Bearer ' + sessionId;
+        String query = 'SELECT DeveloperName,  Description, Id,FullName FROM FlowDefinition';
+        String endpoint = URL.getSalesforceBaseUrl().toExternalForm() +
+            '/services/data/v50.0/tooling/query/?q=' +
+            EncodingUtil.urlEncode(query, 'UTF-8');
+
+        HttpRequest request = new HttpRequest();
+        request.setHeader('Authorization', auth);
+        request.setEndpoint(endpoint);
+        request.setMethod('GET');
+
+        HttpResponse response = new Http().send(request);
+        
+        String responseBody = response.getBody();
+        system.debug('result of toolingapi flow call is' + responseBody);
+        ToolingAPIResponse curToolingAPIResponse = (ToolingAPIResponse)JSON.deserialize(responseBody, ToolingAPIResponse.class);
+        System.debug('tooling api response is  re: ' + curToolingAPIResponse);
+
+
+        //test
+        /* FlowDefinition curFlowDef = new FlowDefinition();
+        curFlowDef.FullName = 'foo';
+        curFlowDef.attributes.type = 'mytype';
+        ToolingAPIResponse testToolingResponse = new ToolingAPIResponse();
+        testToolingResponse.size = '15';
+        testToolingResponse.records =  */
+
+
+
+        //List<FlowDefinition> flowDefs  = (List<FlowDefinition>)JSON.deserialize(curToolingAPIResponse.records, List<FlowDefinition>.class);
+        System.debug('flowDefs are: ' + curToolingAPIResponse.records);
+        return curToolingAPIResponse.records;
+    }
 
     //for a set of orchestration instances, get all active stages
     public static ConnectApi.OrchestrationStageInstance getActiveStageFromOrchestrationInstance(ConnectApi.OrchestrationInstance  orchInstance) {
@@ -340,6 +407,19 @@ public with sharing class WorkGuideController {
         eventResult.resultObject = appProcessEvent;
         return eventResult;
     } 
+
+    public static String getSessionIdFromVFPage() {
+        if(Test.isRunningTest()) {
+            return 'SESSION_ID';
+        } else {
+            String SESSION_ID_START = 'SESSION_ID_START';
+            String SESSION_ID_END = 'SESSION_ID_END';
+            String pageContent = Page.SessionId.getContent().toString();
+            Integer startIndex = pageContent.indexOf(SESSION_ID_START) + SESSION_ID_START.length();
+            Integer endIndex = pageContent.indexOf(SESSION_ID_END);
+            return pageContent.substring(startIndex, endIndex);
+        }
+     }
 
      public class AppProcessEventResult {
         @AuraEnabled

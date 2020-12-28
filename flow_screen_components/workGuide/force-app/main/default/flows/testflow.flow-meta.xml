@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
-    <interviewLabel>HelloWorldWrapper2 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>HelloWorldWrapper2</label>
+    <apiVersion>51.0</apiVersion>
+    <interviewLabel>testflow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>testflow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -17,19 +23,17 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>HelloWorldWrapper</name>
-        <label>HelloWorldWrapper</label>
-        <locationX>274</locationX>
-        <locationY>291</locationY>
+        <name>screen1</name>
+        <label>screen1</label>
+        <locationX>380</locationX>
+        <locationY>317</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>wg</name>
-            <extensionName>c:workGuide</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;I am the body of screen 1&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -38,8 +42,8 @@
         <locationX>50</locationX>
         <locationY>50</locationY>
         <connector>
-            <targetReference>HelloWorldWrapper</targetReference>
+            <targetReference>screen1</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

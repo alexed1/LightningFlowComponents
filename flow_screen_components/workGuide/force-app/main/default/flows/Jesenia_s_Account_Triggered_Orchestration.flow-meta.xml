@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <apiVersion>51.0</apiVersion>
+    <interviewLabel>Jesenia&apos;s Account-Triggered Orchestration {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Jesenia&apos;s Account-Triggered Orchestration</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AppProcess</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Submit_Content</targetReference>
+        </connector>
+        <object>Account</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <steppedStages>
+        <name>Submit_Content</name>
+        <label>Submit Content</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <exitCriteria>
+            <leftValueReference>Submit_Content2</leftValueReference>
+            <operator>EqualTo</operator>
+            <rightValue>
+                <stringValue>Completed</stringValue>
+            </rightValue>
+        </exitCriteria>
+        <exitCriteriaLogic>and</exitCriteriaLogic>
+        <steps>
+            <name>Submit_Content2</name>
+            <actionName>nullNotFound</actionName>
+            <actionType xsi:nil="true"/>
+            <entryCriteriaLogic>and</entryCriteriaLogic>
+            <inputParameters>
+                <name>appProcessInstanceId</name>
+            </inputParameters>
+            <inputParameters>
+                <name>appProcessStepInstanceId</name>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>$Record.Id</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionInput__stepDescription</name>
+            </inputParameters>
+            <inputParameters>
+                <name>actionInput__stepLabel</name>
+                <value>
+                    <stringValue>label</stringValue>
+                </value>
+            </inputParameters>
+            <label>Submit Content</label>
+        </steps>
+    </steppedStages>
+</Flow>

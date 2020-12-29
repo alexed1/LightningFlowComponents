@@ -39,6 +39,11 @@ public with sharing class fbc_GetFieldInformation {
         return objectToFieldDescribe;
     }
     
+    /*
+    * @description Returns a map of field api names and describe results
+    * @param obj object for which to return schema describe
+    * @return Map<String, fbc_FieldDescriptor>
+    */
     public static Map<String, fbc_FieldDescriptor> describeSObjects(String obj) {
 
         Map<String, fbc_FieldDescriptor> objectToFieldDescribe = new Map<String, fbc_FieldDescriptor>();

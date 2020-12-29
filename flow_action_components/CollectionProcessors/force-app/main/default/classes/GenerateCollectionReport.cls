@@ -37,7 +37,7 @@ global with sharing class GenerateCollectionReport {
                 if(hasRelationshipFields){
                     relationshipFieldsMap.putAll(database.query('SELECT ' + string.escapeSingleQuotes(shownFields) + ' FROM ' + inputCollection[0].getSObjectType() + ' WHERE Id IN :inputCollection'));
                 }
-                
+
                 System.debug('first value in shownFieldsArray is: ' + shownFieldsArray[0]);
                 switch on displayMode {
                     when 'simple' {
@@ -175,7 +175,7 @@ global with sharing class GenerateCollectionReport {
             // Leading space to append object name to front
             if(fieldName.toLowerCase().contains('casenumber')){ // Handles cases
                 return label + ' Number';
-            } else if(fieldName.toLowerCase().contains('Subject')){ // Handles task
+            } else if(fieldName.toLowerCase().contains('subject')){ // Handles task
                 return label + ' Subject';
             } else { // All other fields
                 return label + ' Name';

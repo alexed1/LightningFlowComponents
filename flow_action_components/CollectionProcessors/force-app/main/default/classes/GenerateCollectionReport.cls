@@ -29,14 +29,21 @@ global with sharing class GenerateCollectionReport {
             if (inputCollection != null && !inputCollection.isEmpty() && shownFields != null) {
                 reportString += 'Collection Type: ' + inputCollection[0].getSObjectType().getDescribe().getName() + '\n\n';
                 List<String> shownFieldsArray = shownFields.replaceAll('[^a-zA-Z0-9\\,\\_\\.]', '').split(',');
+                for(String field : shownFieldsArray){
+                    system.debug('Shown Field: ' + field);
+                }
+                Boolean hasRelationshipFields = shownFields.contains('.');
+                Map<Id, Sobject> relationshipFieldsMap = new Map<Id, Sobject>();
+                if(hasRelationshipFields){
+                    relationshipFieldsMap.putAll(database.query('SELECT ' + string.escapeSingleQuotes(shownFields) + ' FROM ' + inputCollection[0].getSObjectType() + ' WHERE Id IN :inputCollection'));
+                }
                 System.debug('first value in shownFieldsArray is: ' + shownFieldsArray[0]);
-                //System.debug('second value in shownFieldsArray is: ' + shownFieldsArray[1]);
                 switch on displayMode {
                     when 'simple' {
-                        reportString = generateSimpleMode(reportString, shownFieldsArray, inputCollection);
+                        reportString = generateSimpleMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, hasRelationshipFields);
                     }
                     when 'table' {
-                        reportString = generateTableMode(reportString, shownFieldsArray, inputCollection);
+                        reportString = generateTableMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, hasRelationshipFields);
                     }
 
                 }
@@ -61,19 +68,33 @@ global with sharing class GenerateCollectionReport {
                 fieldValue = '';
             } else {
                 if (record != null){
-                    fieldValue = String.valueOf(record.get(fieldName));
+                    if(fieldName.contains('.')){
+                        List<String> relationshipMap = fieldName.split('\\.');
+                        for(integer i = 0; i < relationshipMap.size(); i++){
+                            if(i < relationshipMap.size() - 1){
+                                record = record.getSobject(relationshipMap[i]);
+                            } else {
+                                if(record == null){
+                                    fieldValue = '';
+                                } else {
+                                    fieldValue = String.valueOf(record.get(relationshipMap[i]));
+                                }
+                            }
+                        }
+                    } else {
+                        fieldValue = String.valueOf(record.get(fieldName));
+                    }
                     if (fieldValue == null) fieldValue = '';
                 } else fieldValue = fieldName;
-                
             } 
-
         }
         return fieldValue;
-
     }
 
-    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection) {
-       
+    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Boolean hasRelationshipField) {
+        
+        Map<String, fbc_FieldDescriptor> fieldMap = fbc_GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
+
         String tableHTML;
         if (!shownFieldsArray.isEmpty()) { 
             tableHTML = '<table style="' + tableStyleString + '">' ;
@@ -83,53 +104,77 @@ global with sharing class GenerateCollectionReport {
                 tableHTML += '<tr>';
                 //TODO make sure this works when the field is an empty screen
                 for (String fieldName : shownFieldsArray) {
-                    String fieldValue = generateCellFromFieldName(fieldName, null);   
-                    tableHTML += '<th style="' + headerStyleString + '">' + fieldValue + '</th>';
+                    String label = getFieldLabel(fieldName, fieldMap);
+                    tableHTML += '<th style="' + headerStyleString + '">' + label + '</th>';
                     System.debug('tableHTML is currently: ' + tableHTML);
                 }
                 tableHTML += '</tr>';
             }
            
-
            // for each record, build row
-
            for (SObject record : inputCollection) {
              tableHTML += '<tr>';
              for (String fieldName : shownFieldsArray) {
-                String fieldValue = generateCellFromFieldName(fieldName, record);   
+                String fieldValue = '';
+                if(!hasRelationshipField){
+                	fieldValue = generateCellFromFieldName(fieldName, record);   
+                } else {
+                	fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));
+                }
                 tableHTML += '<td style="' + rowStyleString + '">' + fieldValue + '</td>';
              } 
              tableHTML += '</tr>';
            }
-
            tableHTML += '</table>';
-
         }
         return tableHTML;
-     
-
     }
 
-    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection ) {
+    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Boolean hasRelationshipField) {
         if (!shownFieldsArray.isEmpty()) {
-            for (SObject acc : inputCollection) {
+            for (SObject record: inputCollection) {
                 reportString += 'Record: ';
-                try {
-                    reportString += acc.get('Name');
-                } catch (Exception ex) {
-                    reportString += acc.get('Id');
-                }
-                reportString += '\n';
+
+                Map<String, fbc_FieldDescriptor> fieldMap = fbc_GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
 
                 for (String fieldName : shownFieldsArray) {
-                    reportString += fieldName + ' : ' + acc.get(fieldName) + '\n';
+                    String fieldValue = '';
+                    if(!hasRelationshipField){
+                        fieldValue = generateCellFromFieldName(fieldName, record);   
+                    } else {
+                        fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));
+                    }
+                    reportString += getFieldLabel(fieldName, fieldMap) + ' : ' + fieldValue + '\n';
                 }
                 reportString += '\n\n';
             }
         }
         return reportString;
     }
-
+    
+    private static string getFieldLabel(String fieldName, Map<String, fbc_FieldDescriptor> fieldMap){
+        system.debug(fieldName);
+        if(fieldName.contains('.')){
+            String originalField = fieldName.toLowerCase().left(fieldName.IndexOf('.'));
+            if(originalField.contains('__r')){
+                originalField = originalField.replace('__r', '__c');
+            } else {
+                originalField = originalField + 'id';
+            }
+            String label = fieldMap.get(originalField).label.replace('ID', '');
+            // Leading space to append object name to front
+            if(fieldName.toLowerCase().contains('casenumber')){
+                return label + ' Number';
+            } else if(fieldName.toLowerCase().contains('Subject')){
+                return label + ' Subject';
+            } else {
+                return label + ' Name';
+            }
+        } else {
+           return fieldMap.get(fieldName.toLowerCase()).label; 
+        }
+    }
+    
     global class Requests {
         @InvocableVariable 
         global List<SObject> inputCollection;
@@ -154,9 +199,6 @@ global with sharing class GenerateCollectionReport {
 
         @InvocableVariable
         global Boolean hideHeader;
-
-        
-
     }
 
     global class Results {
@@ -165,5 +207,6 @@ global with sharing class GenerateCollectionReport {
         global String reportString;
 
     }
+    
     global class InvocableActionException extends Exception {}
 }

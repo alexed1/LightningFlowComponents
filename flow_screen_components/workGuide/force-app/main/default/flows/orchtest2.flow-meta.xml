@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
-    <interviewLabel>HelloWorld {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>HelloWorld</label>
+    <apiVersion>51.0</apiVersion>
+    <interviewLabel>orchtest2 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>orchtest2</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -17,16 +23,16 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>HelloWorld2</name>
-        <label>HelloWorld</label>
-        <locationX>256</locationX>
-        <locationY>187</locationY>
+        <name>screen1</name>
+        <label>screen1</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>HelloWorld</name>
-            <fieldText>&lt;p&gt;Hello World:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;appProcessInstanceId: &lt;/span&gt;{!appProcessInstanceId}&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;appProcessStepName:&lt;/span&gt;{!appProcessStepName}&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;recordId:&lt;/span&gt;{!recordId}&lt;/p&gt;</fieldText>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;orch step flow test 2&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -34,9 +40,9 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>HelloWorld2</targetReference>
+            <targetReference>screen1</targetReference>
         </connector>
     </start>
     <status>Active</status>

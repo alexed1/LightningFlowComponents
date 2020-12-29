@@ -4,8 +4,4 @@
     <description>Flow Wrapper</description>
     <isExposed>true</isExposed>
     <masterLabel>Flow Wrapper</masterLabel>
-<!--    <targets>-->
-<!--        <target>lightning__RecordPage</target>-->
-<!--        <target>lightning__FlowScreen</target>-->
-<!--    </targets>-->
-</LightningComponentBundle>
+    <!--    <targets>--><!--        <target>lightning__RecordPage</target>--><!--        <target>lightning__FlowScreen</target>--><!--    </targets>--></LightningComponentBundle>

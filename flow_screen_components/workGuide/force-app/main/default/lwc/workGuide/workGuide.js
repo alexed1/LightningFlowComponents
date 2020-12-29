@@ -9,17 +9,22 @@ export default class WorkGuide extends LightningElement {
     @api recordId;
     @api flowHeight = 300;
     curUserId = userId;
+    curWorkItems;
+
     stageToStepsNameMap;
     stepToFlowMap;
-    _currentStep;
+    _currentStepName;
     _currentStage;
     _currentDefinitionId;
-    _currentInstanceId;
+    _currentOrchInstanceId;
+    _currentOrchStepInstanceId;
+    _currentWorkItemId; 
     appProcess = {};
     url;
     innerWidth = 400;
     isLoadCompleted = false;
     isFlowStarted = false;
+    error;
 
     labels = {
         header: 'Work Guide',
@@ -32,11 +37,11 @@ export default class WorkGuide extends LightningElement {
     }
 
     @api get currentStep() {
-        return this._currentStep;
+        return this._currentStepName;
     }
 
     set currentStep(value) {
-        this._currentStep = value;
+        this._currentStepName = value;
     }
 
     connectedCallback() {
@@ -46,27 +51,68 @@ export default class WorkGuide extends LightningElement {
 
     @wire(getActiveWorkItemsByRecordId, {userId: '$curUserId', recordId: '$recordId'})
     _getActiveWorkItemsByRecordId(response) {
+        console.log('getActiveWorkItemsByRecordId returning.... response is:' + JSON.stringify(response));
         if (response.error) {
             console.log(JSON.stringify(response.error));
             this.isLoadCompleted = true;
         } else if (typeof response.data !== undefined) {
             if (response.data) {
                 console.log('response from getActiveWorkItemsByRecordId is: ' + JSON.stringify(response.data));
-                //this.labels = response.data.;
-                /* this._currentStep = response.data.currentStep__c;
-                this._currentStage = response.data.currentStage__c;
-                this._currentDefinitionId = response.data.App_Process_Definition__c;
-                this._currentInstanceId = response.data.Id;
-                this.stageToStepsNameMap = JSON.parse(response.data.App_Process_Definition__r.StageStepMappings__c);
-                this.stepToFlowMap = JSON.parse(response.data.App_Process_Definition__r.StepFlowMappings__c); */
+
+                this.curWorkItems = response.data.workItemRecordIds;
+
+                console.log('now calling getWorkItemDetail');
+                getWorkItemDetail({userId : this.curUserId, contextRecordId : this.recordId, workItemRecordId : this.curWorkItems[0]})
+                        .then((result) => {
+                            console.log('result from getWorkItemDetail: ' + JSON.stringify(result));
+                            if (result.error) {
+                                console.log('there was an error');
+                                console.log(JSON.stringify(result.error));
+                                this.isLoadCompleted = true;
+                            } else if (typeof result !== undefined) {
+                                if (result) {
+                                    console.log('processing result data...');
+                                    this.appProcess = {
+                                        label: 'orchdef',
+                                        link: this.url
+                                    };
+                                    console.log('values: appProcess ' + this.appProcess);
+                                    this._currentStepName = result.currentStep__c;
+                                    this._currentStage = result.currentStage__c;
+                                    this._currentDefinitionId = 'foo';
+                                    this._currentOrchInstanceId = result.OrchestrationInstanceId__c //result.data.Id;
+                                    this._currentOrchStepInstanceId = result.OrchestrationStepInstanceId__c;
+                                    this._currentWorkItemId = this.curWorkItems[0];
+                                    this.stageToStepsNameMap = JSON.parse(result.StageStepMapping__c);
+                                    this.stepToFlowMap = JSON.parse(result.StepFlowMapping__c);
+                                    console.log('values: currentStep ' + this._currentStepName);
+                                    console.log('values: stepToFlowMap ' + this.stepToFlowMap);
+                                    console.log('values: _currentOrchInstanceId ' + this._currentOrchInstanceId);
+                                    console.log('values: _currentOrchStepInstanceId ' + this._currentOrchStepInstanceId);
+                                } else {
+                                    console.log('typeof check failed');
+                                }
+                                this.isLoadCompleted = true;
+                            }
+                            
+
+                            this.error = undefined;
+                        })
+                        .catch((error) => {
+                            this.error = error;
+                            //this.contacts = undefined;
+                        });
+                
+                
             }
             this.isLoadCompleted = true;
         }
 
     }
 
-    @wire(getWorkItemDetail, {userId: '$curUserId', recordId: '$recordId'})
+    /* @wire(getWorkItemDetail, {userId: '$curUserId', contextRecordId: '$contextRecordId', workItemRecordId: '$curWorkItems'})
     _getWorkItemDetail(response) {
+        console.log('getWorkItemDetail returning....');
         if (response.error) {
             console.log(JSON.stringify(response.error));
             this.isLoadCompleted = true;
@@ -76,26 +122,26 @@ export default class WorkGuide extends LightningElement {
                     label: response.data.App_Process_Definition__r.Name,
                     link: this.url + '/' + response.data.App_Process_Definition__c
                 };
-                this._currentStep = response.data.currentStep__c;
+                this._currentStepName = response.data.currentStep__c;
                 this._currentStage = response.data.currentStage__c;
                 this._currentDefinitionId = response.data.App_Process_Definition__c;
-                this._currentInstanceId = response.data.Id;
+                this._currentOrchInstanceId = response.data.Id;
                 this.stageToStepsNameMap = JSON.parse(response.data.App_Process_Definition__r.StageStepMappings__c);
                 this.stepToFlowMap = JSON.parse(response.data.App_Process_Definition__r.StepFlowMappings__c);
             }
             this.isLoadCompleted = true;
         }
 
-    }
+    } */
 
     get curFlowName() {
-        if (this.stepToFlowMap && this.stepToFlowMap[this._currentStep]) {
-            return this.stepToFlowMap[this._currentStep];
+        if (this.stepToFlowMap && this.stepToFlowMap[this._currentStepName]) {
+            return this.stepToFlowMap[this._currentStepName];
         }
     }
 
     get isNoWorkAvailable() {
-        return (this.isLoadCompleted && (!this.stepToFlowMap || !this.stepToFlowMap[this._currentStep]));
+        return (this.isLoadCompleted && (!this.stepToFlowMap || !this.stepToFlowMap[this._currentStepName]));
     }
 
     get pathStructure() {
@@ -122,8 +168,10 @@ export default class WorkGuide extends LightningElement {
 
     get flowParams() {
         let params = [];
-        params.push(this.generateParam('appProcessInstanceId', 'String', this._currentInstanceId));
-        params.push(this.generateParam('appProcessStepName', 'String', this._currentStep));
+        params.push(this.generateParam('orchestrationInstanceId', 'String', this._currentOrchInstanceId));
+        params.push(this.generateParam('orchestrationStepName', 'String', this._currentStepName));
+        params.push(this.generateParam('orchestrationStepInstanceId', 'String', this._currentOrchStepInstanceId));
+        params.push(this.generateParam('orchestrationWorkItemId', 'String', this._currentWorkItemId));
         params.push(this.generateParam('recordId', 'String', this.recordId));
         return JSON.stringify(params);
     }
@@ -148,8 +196,8 @@ export default class WorkGuide extends LightningElement {
 
         dispatchAppProcessEvent({
             definitionId: this._currentDefinitionId,
-            instanceId: this._currentInstanceId,
-            step: this._currentStep,
+            instanceId: this._currentOrchInstanceId,
+            step: this._currentStepName,
             status: status,
             parameters: parameters
         }).then(result => {

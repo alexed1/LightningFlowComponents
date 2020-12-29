@@ -14,6 +14,7 @@ global with sharing class EvaluateFormula {
               contextDataString = '[]';
   
           String result = FormulaEvaluator.parseFormula(formulaString, contextDataString);
+
          //TO DO: need to fix this to return non-integer values effectively. we may need to pass in an indicator as to what
          //what the input type is
      

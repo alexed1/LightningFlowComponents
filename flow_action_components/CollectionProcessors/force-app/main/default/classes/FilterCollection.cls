@@ -22,6 +22,7 @@ global with sharing class FilterCollection {
                     context.add(new FormulaEvaluator.ContextWrapper('$Record', member.Id));
                     String stringContext = JSON.serialize(context);
                     String result = FormulaEvaluator.parseFormula(formulaString, stringContext);
+
                     if (result == 'true') {
                         outputCollection.add(member);
                     }

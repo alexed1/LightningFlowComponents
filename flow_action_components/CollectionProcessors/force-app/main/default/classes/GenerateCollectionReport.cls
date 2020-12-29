@@ -34,16 +34,26 @@ global with sharing class GenerateCollectionReport {
                 // Then use the resulting map to get relationship values in generateCellFromFieldName()
                 Boolean hasRelationshipFields = shownFields.contains('.');
                 Map<Id, Sobject> relationshipFieldsMap = new Map<Id, Sobject>();
+                Set<String> relationshipFields = new Set<String>();
+                Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf__FieldDescriptor>>();
                 if(hasRelationshipFields){
                     relationshipFieldsMap.putAll(database.query('SELECT ' + string.escapeSingleQuotes(shownFields) + ' FROM ' + inputCollection[0].getSObjectType() + ' WHERE Id IN :inputCollection'));
+                    for(string s : shownFieldsArray){
+                        if(s.contains('.')){
+                            relationshipFields.add(s);
+                        }
+                    }
+                    Map<String, usf__FieldDescriptor> originalObjectfieldMap = usf__GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
+                    
+                    relationshipObjectDescribe = getRelatedObjectInformation(relationshipFields, originalObjectfieldMap);
                 }
                 System.debug('first value in shownFieldsArray is: ' + shownFieldsArray[0]);
                 switch on displayMode {
                     when 'simple' {
-                        reportString = generateSimpleMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, hasRelationshipFields);
+                        reportString = generateSimpleMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, relationshipObjectDescribe);
                     }
                     when 'table' {
-                        reportString = generateTableMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, hasRelationshipFields);
+                        reportString = generateTableMode(reportString, shownFieldsArray, inputCollection, relationshipFieldsMap, relationshipObjectDescribe);
                     }
 
                 }
@@ -91,10 +101,10 @@ global with sharing class GenerateCollectionReport {
         return fieldValue;
     }
 
-    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Boolean hasRelationshipField) {
+    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap,  Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe) {
         
         Map<String, usf__FieldDescriptor> fieldMap = usf__GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
-
+        
         String tableHTML;
         if (!shownFieldsArray.isEmpty()) { 
             tableHTML = '<table style="' + tableStyleString + '">' ;
@@ -104,7 +114,7 @@ global with sharing class GenerateCollectionReport {
                 tableHTML += '<tr>';
                 //TODO make sure this works when the field is an empty screen
                 for (String fieldName : shownFieldsArray) {
-                    String label = getFieldLabel(fieldName, fieldMap);
+                    String label = getFieldLabel(fieldName, fieldMap, relationshipObjectDescribe);
                     tableHTML += '<th style="' + headerStyleString + '">' + label + '</th>';
                     System.debug('tableHTML is currently: ' + tableHTML);
                 }
@@ -116,10 +126,10 @@ global with sharing class GenerateCollectionReport {
              tableHTML += '<tr>';
              for (String fieldName : shownFieldsArray) {
                 String fieldValue = '';
-                if(!hasRelationshipField){
-                	fieldValue = generateCellFromFieldName(fieldName, record);   
+                if(relationshipObjectDescribe != null && !relationshipObjectDescribe.isEmpty()){
+                	fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));   
                 } else {
-                	fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));
+                	fieldValue = generateCellFromFieldName(fieldName, record);
                 }
                 tableHTML += '<td style="' + rowStyleString + '">' + fieldValue + '</td>';
              } 
@@ -130,7 +140,7 @@ global with sharing class GenerateCollectionReport {
         return tableHTML;
     }
 
-    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Boolean hasRelationshipField) {
+    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe) {
         if (!shownFieldsArray.isEmpty()) {
             for (SObject record: inputCollection) {
                 reportString += 'Record: ';
@@ -139,12 +149,12 @@ global with sharing class GenerateCollectionReport {
 
                 for (String fieldName : shownFieldsArray) {
                     String fieldValue = '';
-                    if(!hasRelationshipField){
-                        fieldValue = generateCellFromFieldName(fieldName, record);   
+                    if(relationshipObjectDescribe != null && !relationshipObjectDescribe.isEmpty()){
+                        fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));   
                     } else {
-                        fieldValue = generateCellFromFieldName(fieldName, relationshipFieldsMap.get(record.Id));
+                        fieldValue = generateCellFromFieldName(fieldName, record);
                     }
-                    reportString += getFieldLabel(fieldName, fieldMap) + ' : ' + fieldValue + '\n';
+                    reportString += getFieldLabel(fieldName, fieldMap, relationshipObjectDescribe) + ' : ' + fieldValue + '\n';
                 }
                 reportString += '\n\n';
             }
@@ -158,30 +168,99 @@ global with sharing class GenerateCollectionReport {
     * @param fieldMap map of the field describe results
     * @return string 
     */
-    private static string getFieldLabel(String fieldName, Map<String, usf__FieldDescriptor> fieldMap){
-        system.debug(fieldName);
+    private static string getFieldLabel(String fieldName, Map<String, usf__FieldDescriptor> fieldMap, Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe){
         // If the field contains a '.' then it is a relationship field
         // Otherwise, use the fieldmap to look up the value
         if(fieldName.contains('.')){
             // Process the field API Name to use __c for custom fields or id for standard
-            String originalField = fieldName.toLowerCase().left(fieldName.IndexOf('.'));
-            if(originalField.contains('__r')){
-                originalField = originalField.replace('__r', '__c');
-            } else {
-                originalField = originalField + 'id';
-            }
-            String label = fieldMap.get(originalField).label.replace('ID', '');
+            String originalField = getOriginalField(fieldName);
+            string relationshipToRetrieve = fieldMap.get(originalfield).referenceTo[0];
             // Leading space to append object name to front
-            if(fieldName.toLowerCase().contains('casenumber')){ // Handles cases
-                return label + ' Number';
-            } else if(fieldName.toLowerCase().contains('subject')){ // Handles task
-                return label + ' Subject';
-            } else { // All other fields
-                return label + ' Name';
-            }
+            return getRelationshipFieldName(fieldName.toLowerCase().right(fieldName.length() - fieldName.IndexOf('.') - 1), '', relationshipToRetrieve, relationshipObjectDescribe);
         } else {
            return fieldMap.get(fieldName.toLowerCase()).label; 
         }
+    }
+    
+    /*
+     * @description returns original field api name in relationship query
+     * @param fieldName current field name
+     * @return string
+     */
+    private static string getOriginalField(string fieldName){
+        String originalField = fieldName.toLowerCase().left(fieldName.IndexOf('.'));
+        if(originalField.contains('__r')){
+            originalField = originalField.replace('__r', '__c');
+        } else {
+            originalField = originalField + 'id';
+        }
+        return originalField;
+    }
+    
+    /*
+     * @description Retrieve related object details for constructing appropriate labels
+     * @param
+     * @return Map<String, List<usf__FieldDescriptor>>
+     */
+    private static Map<String, Map<String, usf__FieldDescriptor>> getRelatedObjectInformation(Set<String> relationshipFields, Map<String, usf__FieldDescriptor> originalObjectfieldMap){
+        Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf__FieldDescriptor>>();
+
+        for(string s : relationshipFields){
+            string originalField = getOriginalField(s);
+            if(originalObjectfieldMap.containsKey(originalfield)){
+                string relationshipToRetrieve = originalObjectfieldMap.get(originalfield).referenceTo[0];
+                if(relationshipObjectDescribe != null){
+                    Map<String, usf__FieldDescriptor> fieldMap = usf__GetFieldInformation.describeSobjects(relationshipToRetrieve);
+                    system.debug('>>> relationshipToRetrieve: ' + relationshipToRetrieve);
+                    if(!relationshipObjectDescribe.containsKey(relationshipToRetrieve)){
+                        relationshipObjectDescribe.put(relationshipToRetrieve, fieldMap);
+                    }
+                    
+                    // Begin processing multiple relationship fields
+                    string newRelationshipField = s.toLowerCase().right(s.length() - s.IndexOf('.') - 1); // Used if there is more than one relationship
+                    system.debug('>>> newRelationshipField: ' + newRelationshipField);
+                    if(newRelationshipField.contains('.')){ // If there isn't another relationship, nothing else to retrieve
+                        Set<String> relationshipsToRetrieve = new Set<String>();
+                        relationshipFields.add(newRelationshipField);
+                        Map<String, Map<String, usf__FieldDescriptor>> newRelationshipObjectDescribe = getRelatedObjectInformation(relationshipFields, fieldMap);
+                        for(String key : newRelationshipObjectDescribe.keySet()){
+                            if(!relationshipObjectDescribe.containsKey(key)){
+                                relationshipObjectDescribe.put(key, newRelationshipObjectDescribe.get(key));
+                            }
+                        }
+                    }
+                    // End processing if there are multiple relationship fields 
+                }
+            }
+        }
+        system.debug('>>> relationshipObjectDescribe: ' + relationshipObjectDescribe.keyset());
+        return relationshipObjectDescribe;
+    }
+    
+    /*
+     * @description Gets relationship field name recursively to construct the label
+     * @param fieldName current field API name being processed
+     * @param processedName output label of the field
+     * @param relationshipToRetrieve relationship that will be described
+     * @param relationshipObjectDescribe All the object descriptions that will be needed to construct the label
+     * @return string
+     */
+    private static String getRelationshipFieldName(string fieldName, string processedName, string relationshipToRetrieve, Map<String, Map<String, usf__FieldDescriptor>> relationshipObjectDescribe){
+        
+        Map<String, usf__FieldDescriptor> fieldMap = relationshipObjectDescribe.get(relationshipToRetrieve);
+
+        if(fieldName.contains('.')){
+            String originalField = getOriginalField(fieldName);
+            String label = fieldMap.get(originalField).label.replace('ID', '');
+            processedName += ' ' + label;
+            string newRelationshipToRetrieve = fieldMap.get(originalfield).referenceTo[0];
+            processedName = getRelationshipFieldName(fieldName.toLowerCase().right(fieldName.length() - fieldName.IndexOf('.') - 1), label, newRelationshipToRetrieve, relationshipObjectDescribe);
+        } else {
+            String label = fieldMap.get(fieldName).label;
+            processedName += ' ' + label;
+        }
+        
+        return processedName;
     }
     
     global class Requests {

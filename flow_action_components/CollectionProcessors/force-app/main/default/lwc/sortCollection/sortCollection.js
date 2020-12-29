@@ -1,5 +1,5 @@
 import {LightningElement, track, api, wire} from 'lwc';
-import describeSObjects from '@salesforce/apex/usf_SearchUtils.describeSObjects';
+import describeSObjects from '@salesforce/apex/SearchUtils.describeSObjects';
 
 export default class sortCollection extends LightningElement {
 

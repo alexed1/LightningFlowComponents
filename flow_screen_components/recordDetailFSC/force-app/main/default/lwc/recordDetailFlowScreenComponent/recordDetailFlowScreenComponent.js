@@ -188,7 +188,7 @@ export default class recordDetailFSC extends LightningElement {
     }
 
     showToast(title, message, variant, autoClose) {
-        this.template.querySelector('c-fbc_toast-message').showCustomNotice({
+        this.template.querySelector('c-fsc_toast-message').showCustomNotice({
             detail: {
                 title: title, message: message, variant: variant, autoClose: autoClose
             }

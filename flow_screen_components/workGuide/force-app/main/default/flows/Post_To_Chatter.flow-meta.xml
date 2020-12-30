@@ -21,6 +21,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>49.0</apiVersion>
     <formulas>
         <name>CurrentUserId</name>
         <dataType>String</dataType>

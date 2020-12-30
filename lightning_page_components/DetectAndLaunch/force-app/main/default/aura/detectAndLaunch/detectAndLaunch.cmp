@@ -8,7 +8,7 @@
     <aura:attribute name="targetFlowName" type="String"  />
     <aura:attribute name="launchMode" type="String" default="Modeless" description="Launch this flow when the record changes"/>
     <force:recordData aura:id="recordLoader"
-        fields="Subject"
+        fields="Id"
         recordId="{!v.recordId}"
         targetError="{!v.recordError}"
         recordUpdated="{!c.recordUpdated}"

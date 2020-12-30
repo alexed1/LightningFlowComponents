@@ -18,10 +18,11 @@ global with sharing class FilterCollection {
             //usually generated in a separate 'management' flow from the runtime flow that does this filtering.
             if (inputCollection != null && !inputCollection.isEmpty()) {
                 for (SObject member : inputCollection) {
-                    List<FormulaEvaluator.ContextWrapper> context = new List<FormulaEvaluator.ContextWrapper>();
-                    context.add(new FormulaEvaluator.ContextWrapper('$Record', member.Id));
+
+                    List<usf.FormulaEvaluator.ContextWrapper> context = new List<usf.FormulaEvaluator.ContextWrapper>();
+                    context.add(new usf.FormulaEvaluator.ContextWrapper('$Record', member.Id));
                     String stringContext = JSON.serialize(context);
-                    String result = FormulaEvaluator.parseFormula(formulaString, stringContext);
+                    String result = usf.FormulaEvaluator.parseFormula(formulaString, stringContext);
 
                     if (result == 'true') {
                         outputCollection.add(member);

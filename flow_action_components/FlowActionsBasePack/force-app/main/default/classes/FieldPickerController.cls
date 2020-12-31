@@ -34,10 +34,10 @@ global with sharing class FieldPickerController {
                 }
             }
 
-            result.sort();
-
         }
 
+        result.sort();      // Eric Smith 12/31/20 - Moved sort outside of for loop
+        
         return result;
 
     }

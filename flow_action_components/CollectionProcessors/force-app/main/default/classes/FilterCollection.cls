@@ -1,6 +1,5 @@
 global with sharing class FilterCollection {
     @InvocableMethod
-    @JsonAccess(serializable='always' deserializable='always')
     global static List <Results> filter(List<Requests> requestList) {
 
 

@@ -32,29 +32,7 @@ public with sharing class fbc_GetFieldInformation {
             Map<String, SObjectField> fieldMap = res.fields.getMap();
             for (String fieldApiName : fieldMap.keySet()) {
                 Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
-                objectToFieldDescribe.get(res.getName()).add(new fbc_FieldDescriptor(fieldDescribe));
-            }
-        }
-
-        return objectToFieldDescribe;
-    }
-    
-    /*
-    * @description Returns a map of field api names and describe results
-    * @param obj object for which to return schema describe
-    * @return Map<String, fbc_FieldDescriptor>
-    */
-    public static Map<String, fbc_FieldDescriptor> describeSObjects(String obj) {
-
-        Map<String, fbc_FieldDescriptor> objectToFieldDescribe = new Map<String, fbc_FieldDescriptor>();
-
-        Schema.DescribeSobjectResult[] results = Schema.describeSObjects(new List<String>{obj});
-
-        for (Schema.DescribeSobjectResult res : results) {
-            Map<String, SObjectField> fieldMap = res.fields.getMap();
-            for (String fieldApiName : fieldMap.keySet()) {
-                Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
-                objectToFieldDescribe.put(fieldApiName, new fbc_FieldDescriptor(fieldDescribe));
+                objectToFieldDescribe.get(res.getName()).add(new fbc_FieldDescriptor(fieldDescribe.getName(), fieldDescribe.getLabel(), fieldDescribe.getType().name(), !fieldDescribe.isNillable()));
             }
         }
 

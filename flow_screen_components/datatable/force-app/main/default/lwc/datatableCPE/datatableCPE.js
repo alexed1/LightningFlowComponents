@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.4
+ * VERSION:             3.0.5
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -76,7 +76,7 @@ export default class DatatableCPE extends LightningElement {
     isSObjectInput = true;
     isRecordCollectionSelected = false;
     disableAllowALl = false;
-    isDisplayAll = true;
+    isDisplayAll = false;
     isDisplayAll_Label = 'Display ALL Objects for Selection';
     isDisplayAll_HelpText = 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.';
     isCheckboxColumnHidden = false;
@@ -521,6 +521,9 @@ export default class DatatableCPE extends LightningElement {
                     if ((curInputParam.name == 'columnFilters') && curInputParam.value) {
                         this.isNoFilters = false;
                     }
+                    if ((curInputParam.name == 'tableData') && curInputParam.value) {
+                        this.isRecordCollectionSelected = true;
+                    }
                     
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
@@ -734,6 +737,12 @@ export default class DatatableCPE extends LightningElement {
                 this.isRecordCollectionSelected = !!event.detail.newValue;
             }
         }
+    }
+
+    handlePickIcon(event) {
+        let changedAttribute = 'tableIcon';
+        this.inputValues[changedAttribute].value = event.detail;
+        this.dispatchFlowValueChangeEvent(changedAttribute, event.detail, 'String');
     }
 
     handleShowColumnAttributesToggle(event) { 

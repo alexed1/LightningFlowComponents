@@ -25,7 +25,7 @@ Additional components packaged with this LWC:
 
 CREATED BY:         Eric Smith
 
-VERSION:            3.0.4
+VERSION:            3.0.5
 
 RELEASE NOTES:      https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 
@@ -57,8 +57,8 @@ Features:   The only required paramters are the SObject collection of records an
 
         <!-- Input dialog for entering Column Icon values -->
         <template if:true={isOpenIconInput}>
-            <div style="height: 40px;">
-                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-00" aria-modal="true" aria-describedby="modal-content-id-0" class="slds-modal slds-fade-in-open">
+            <div style="height: 400px">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-00" aria-modal="true" aria-describedby="modal-content-id-0" class="slds-modal slds-fade-in-open slds-modal_large">
                     <div class="slds-modal__container">
                         <header class="slds-modal__header slds-modal__header_empty">
                             <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCloseIconModal}>
@@ -67,11 +67,10 @@ Features:   The only required paramters are the SObject collection of records an
                             </button>
                         </header>
                         <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-0">
-                            <lightning-input 
-                                label={inputLabel} 
-                                value={columnIconValue} 
-                                oncommit={handleCommitIconSelection}
-                            ></lightning-input>
+                            <c-fsc_pick-icon
+                                first-tab-height="100"
+                                oniconselection={handlePickIcon}>
+                            </c-fsc_pick-icon>
                         </div>
                         <footer class="slds-modal__footer">
                             <button class="slds-button slds-button_neutral" onclick={handleCloseIconModal}>Cancel</button>

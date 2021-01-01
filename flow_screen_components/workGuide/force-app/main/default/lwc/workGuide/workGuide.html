@@ -15,9 +15,7 @@
 
            
 
-            <p>Selected value is: {value}</p>
-
-            <div class="slds-path slds-p-bottom_small slds-m-left_small slds-m-right_small">
+              <div class="slds-path slds-p-bottom_small slds-m-left_small slds-m-right_small">
                 <div class="slds-grid slds-path__track">
                     <div class="slds-grid slds-path__scroller-container">
                         <div class="slds-path__scroller" role="application">
@@ -43,10 +41,10 @@
             </div>
             <div class="border-bottom-2px slds-p-left_medium">
                 <div>
-                    <a href={appProcess.link}>{appProcess.label}</a>
+                    <strong>Stage Name:</strong>  {_currentStage} 
                 </div>
                 <div class="slds-p-bottom_small">
-                    Step: {_currentStep}
+                    <strong>Step:</strong> {_currentStepName}
                 </div>
             </div>
             <template if:true={curFlowName}>

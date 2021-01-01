@@ -32,7 +32,25 @@ global with sharing class GetFieldInformation {
             Map<String, SObjectField> fieldMap = res.fields.getMap();
             for (String fieldApiName : fieldMap.keySet()) {
                 Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
-                objectToFieldDescribe.get(res.getName()).add(new FieldDescriptor(fieldDescribe.getName(), fieldDescribe.getLabel(), fieldDescribe.getType().name(), !fieldDescribe.isNillable()));
+                objectToFieldDescribe.get(res.getName()).add(new FieldDescriptor(fieldDescribe)); 
+           }
+        }
+
+        return objectToFieldDescribe;
+    }
+
+
+    global static Map<String, FieldDescriptor> describeSObjects(String obj) {
+
+        Map<String, FieldDescriptor> objectToFieldDescribe = new Map<String, FieldDescriptor>();
+
+        Schema.DescribeSobjectResult[] results = Schema.describeSObjects(new List<String>{obj});
+
+        for (Schema.DescribeSobjectResult res : results) {
+            Map<String, SObjectField> fieldMap = res.fields.getMap();
+            for (String fieldApiName : fieldMap.keySet()) {
+                Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldApiName).getDescribe();
+                objectToFieldDescribe.put(fieldApiName, new FieldDescriptor(fieldDescribe));
             }
         }
 

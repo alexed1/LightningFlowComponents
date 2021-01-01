@@ -4,29 +4,33 @@ public with sharing class WorkGuideController {
     public static WorkItemValueSet getActiveWorkItemsByRecordId(Id userId, Id recordId) {
         
         System.debug('entering getActiveWorkItemsByRecordId');
-        
+        WorkItemValueSet curWorkItemValues = new WorkItemValueSet();
        
         //so instead let's get all the instances
         //note that this gets all the orchestration instances that have at least one active work item that is associated with this record
         List<ConnectApi.OrchestrationInstance> orchInstances = getAllOrchestrationInstancesFromContextRecord( recordId);
         System.debug('orchInstances returned are: ' + orchInstances);
         //extract the active work items from this filtered set of orchInstances
+        
+        if (orchInstances != null) {
+            List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = extractWorkItemsFromOrchInstanceCollection(orchInstances);
+            if (recordWorkItems != null) {
+                //get all the work items corresponding to this record
+                //since there are no assignments in 230, the component doesn't filter on assignee
+                //List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = getAllWorkItemsFromContextRecord(recordId);
+                System.debug('the work items corresponding to recordId: ' + recordId + ' are: ' + recordWorkItems);
+        
+                //convert the resulting ConnectApi.OrchestrationStageInstance into the AppProcessInstance__c that the work guide currently expects
+                //workguideInstanceData = ConvertOrchestrationStageInstanceToWorkGuideDataStructure(orchStageInstance); 
+                //return the workguideInstanceData
+        
+                return buildWorkItemValueSet(recordWorkItems);
+            } else return null;
 
-        List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = extractWorkItemsFromOrchInstanceCollection(orchInstances);
+          
+        } else return null;
+    
 
-
-        //get all the work items corresponding to this record
-        //since there are no assignments in 230, the component doesn't filter on assignee
-        //List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = getAllWorkItemsFromContextRecord(recordId);
-        System.debug('the work items corresponding to recordId: ' + recordId + ' are: ' + recordWorkItems);
-
-        //convert the resulting ConnectApi.OrchestrationStageInstance into the AppProcessInstance__c that the work guide currently expects
-        //workguideInstanceData = ConvertOrchestrationStageInstanceToWorkGuideDataStructure(orchStageInstance); 
-        //return the workguideInstanceData
-
-        WorkItemValueSet curWorkItemValues = buildWorkItemValueSet(recordWorkItems);
-
-        return curWorkItemValues;
     } 
 
      //for a given recordId, get all orchestration instances
@@ -74,8 +78,8 @@ public with sharing class WorkGuideController {
         //assemble the AppProcessInstance data structure
 
         //the step name corresponding to this work item. 
-        workItemDetails.currentStep__c = curWorkItemLineage.parentOrchStep.Name;
-        workItemDetails.currentStage__c = curWorkItemLineage.parentOrchStage.Name;
+        workItemDetails.currentStep__c = curWorkItemLineage.parentOrchStep.Label;
+        workItemDetails.currentStage__c = curWorkItemLineage.parentOrchStage.Label;
         workItemDetails.RecordId__c = curWorkItemLineage.curWorkAssignment.contextRecordId;
         workItemDetails.UserId__c = userId;
         workItemDetails.OrchestrationInstanceId__c = curWorkItemLineage.parentOrchInstance.id;
@@ -86,16 +90,6 @@ public with sharing class WorkGuideController {
         workItemDetails.StageStepMapping__c = stageStepMapping;
         workItemDetails.StepFlowMapping__c = stepFlowMapping;
 
-
-        //this.labels = response.data.;
-                /* this._currentStep = response.data.currentStep__c;
-                this._currentStage = response.data.currentStage__c;
-                this._currentDefinitionId = response.data.App_Process_Definition__c;
-                this._currentInstanceId = response.data.Id;
-                this.stageToStepsNameMap = JSON.parse(response.data.App_Process_Definition__r.StageStepMappings__c);
-                this.stepToFlowMap = JSON.parse(response.data.App_Process_Definition__r.StepFlowMappings__c); */
-
-        //String stageStepMapping = 
         System.debug('final data structure from apex: ' + workItemDetails);
         return workItemDetails;
     }
@@ -131,32 +125,6 @@ public with sharing class WorkGuideController {
 
     }
 
-
-
-
-    //this is the original code from Bruno
-/*     @AuraEnabled(cacheable=true)
-    public static ConnectApi.OrchestrationStageInstance getActiveStageInstanceFromContextRecord(String contextRecordId) {
-        ConnectApi.OrchestrationInstanceCollection instanceCollection = ConnectApi.Orchestrator.getOrchestrationInstanceCollection(contextRecordId);
-        System.debug('return from getOrchestrationInstanceCollection is: ' + instanceCollection);
-        if (instanceCollection == null || instanceCollection.instances.size() == 0) {
-            return null;
-        }
-        // there might be more than one: pick the first one (for example)
-        ConnectApi.OrchestrationInstance instance = instanceCollection.instances.get(0);
-        // instance not found, or no stages
-        if (instance.stageInstances == null || instance.stageInstances.size() == 0) {
-            return null;
-        }
-        // search for InProgress stage
-        for (ConnectApi.OrchestrationStageInstance stageInstance : instance.stageInstances) {
-            if (stageInstance.status == ConnectApi.OrchestrationInstanceStatus.InProgress) {
-                return stageInstance;
-            }
-        }
-        // no InProgress stage
-        return null;
-    } */
 
     public static AppProcessInstance__c ConvertOrchestrationStageInstanceToWorkGuideDataStructure(ConnectApi.OrchestrationStageInstance  orchStageInstance) {
         AppProcessInstance__c workguideInstanceData = new AppProcessInstance__c();
@@ -259,8 +227,8 @@ public with sharing class WorkGuideController {
             if(curStep.workAssignments.size() > 0 ) {
                 String flowId = curStep.workAssignments[0].screenFlowId; //unstarted steps don't have any work assignments. 
                 String flowName = findFlowNameByFlowId(flowId, curFlows);
-                System.debug('for step : ' + curStep.Name + ', flowName is: ' + flowName);
-                stepFlowMap = stepFlowMap + '\"' + curStep.Name + '\" : \"' + flowName + '\",\n';
+                System.debug('for step : ' + curStep.Label + ', flowName is: ' + flowName);
+                stepFlowMap = stepFlowMap + '\"' + curStep.Label + '\" : \"' + flowName + '\",\n';
             }
           
         }

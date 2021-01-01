@@ -4,6 +4,7 @@ global with sharing class GenerateCollectionReport {
     public static String headerStyleString;
     public static String rowStyleString;
     public static Boolean hideHeader;
+    
 
     @InvocableMethod
     global static List<Results> generateReport(List<Requests> requestList) {
@@ -72,8 +73,15 @@ global with sharing class GenerateCollectionReport {
 
     }
 
+<<<<<<< Updated upstream
     global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection) {
        
+=======
+    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap,  Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe) {
+        
+        Map<String, usf.FieldDescriptor> fieldMap = usf.GetFieldInformation.describeSobject(String.valueOf(inputCollection[0].getSobjectType()));
+        
+>>>>>>> Stashed changes
         String tableHTML;
         if (!shownFieldsArray.isEmpty()) { 
             tableHTML = '<table style="' + tableStyleString + '">' ;
@@ -129,7 +137,6 @@ global with sharing class GenerateCollectionReport {
         }
         return reportString;
     }
-
     global class Requests {
         @InvocableVariable 
         global List<SObject> inputCollection;

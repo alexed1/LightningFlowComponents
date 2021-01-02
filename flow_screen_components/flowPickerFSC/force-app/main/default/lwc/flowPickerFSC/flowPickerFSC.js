@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from 'lwc';
-import getFlowNamesApex from '@salesforce/apex/FlowListController.getFlowNamesApex';
+import getFlowNamesApex from '@salesforce/apex/usf.FlowListController.getFlowNamesApex';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 
 export default class flowPickerFSC extends LightningElement {

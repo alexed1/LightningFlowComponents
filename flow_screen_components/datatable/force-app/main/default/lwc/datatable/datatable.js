@@ -3,12 +3,12 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.4
+ * VERSION:             3.0.5
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-const VERSION_NUMBER = '3.0.4';
+const VERSION_NUMBER = '3.0.5';
 
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
@@ -83,6 +83,9 @@ export default class Datatable extends LightningElement {
     @api wizColumnIcons;
     @api wizColumnWidths;
     @api wizColumnWraps;
+
+    // Configuration Wizard Only - working variables
+    @api selectedIcon;
 
     // JSON Version Variables
     @api scales = [];
@@ -1373,9 +1376,13 @@ export default class Datatable extends LightningElement {
         this.isOpenIconInput = false;
     }
 
+    handlePickIcon(event) {
+        this.selectedIcon = event.detail;
+    }
+
     handleCommitIconSelection(event) { 
         // Update the column icon value
-        let newValue = event.target.value;
+        let newValue = this.selectedIcon;
         if (newValue) {
             this.filterColumns[this.columnNumber].iconName = newValue;
             this.columns = [...this.filterColumns]; 

@@ -1,6 +1,13 @@
 <template>
     
-
+    <lightning-combobox
+        name="workItemSelector"
+        label="Select Work Item"
+        value={selectedWorkItem}
+        placeholder="Select Work Item"
+        options={availableWorkItems}
+        onchange={handleWorkItemSelectorChange} >
+    </lightning-combobox>
  
     
     <div class="slds-card slds-p-top_medium slds-p-top_none slds-m-top_none">

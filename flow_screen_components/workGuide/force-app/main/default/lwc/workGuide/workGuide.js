@@ -11,6 +11,9 @@ export default class WorkGuide extends LightningElement {
     curUserId = userId;
     curWorkItems;
 
+    availableWorkItems;
+    selectedWorkItem;
+
     stageToStepsNameMap;
     stepToFlowMap;
     _currentStepName;
@@ -62,49 +65,10 @@ export default class WorkGuide extends LightningElement {
                 //set those as the value used by the picklist
                 //exit
                 //in the html if the attribute has a value, show it
-                this.curWorkItems = response.data.workItemRecordIds;
+                //this.curWorkItems = response.data.workItemRecordIds;
+                this.populateWorkItemSelector(response.data.workItemLabels,response.data.workItemRecordIds);
 
-                console.log('now calling getWorkItemDetail');
-                getWorkItemDetail({userId : this.curUserId, contextRecordId : this.recordId, workItemRecordId : this.curWorkItems[0]})
-                        .then((result) => {
-                            console.log('result from getWorkItemDetail: ' + JSON.stringify(result));
-                            if (result.error) {
-                                console.log('there was an error');
-                                console.log(JSON.stringify(result.error));
-                                this.isLoadCompleted = true;
-                            } else if (typeof result !== undefined) {
-                                if (result) {
-                                    console.log('processing result data...');
-                                    this.appProcess = {
-                                        label: 'orchdef',
-                                        link: this.url
-                                    };
-                                    //console.log('values: appProcess ' + JSON.stringify(this.appProcess));
-                                    this._currentStepName = result.currentStep__c;
-                                    this._currentStage = result.currentStage__c;
-                                    this._currentDefinitionId = 'foo';
-                                    this._currentOrchInstanceId = result.OrchestrationInstanceId__c //result.data.Id;
-                                    this._currentOrchStepInstanceId = result.OrchestrationStepInstanceId__c;
-                                    this._currentWorkItemId = this.curWorkItems[0];
-                                    this.stageToStepsNameMap = JSON.parse(result.StageStepMapping__c);
-                                    this.stepToFlowMap = JSON.parse(result.StepFlowMapping__c);
-                                    //console.log('values: _currentStepName ' + this._currentStepName);
-                                    //console.log('values: _currentStage ' + this._currentStage);
-                                    //console.log('values: _currentOrchInstanceId ' + this._currentOrchInstanceId);
-                                    //console.log('values: _currentOrchStepInstanceId ' + this._currentOrchStepInstanceId);
-                                } else {
-                                    console.log('typeof check failed');
-                                }
-                                this.isLoadCompleted = true;
-                            }
-                            
-
-                            this.error = undefined;
-                        })
-                        .catch((error) => {
-                            this.error = error;
-                            //this.contacts = undefined;
-                        });
+               
                 
                 
             }
@@ -113,6 +77,67 @@ export default class WorkGuide extends LightningElement {
 
     }
 
+
+   
+    displayWorkItem(workItemRecordId ) {
+        console.log('entering displayWorkItem');
+        getWorkItemDetail({userId : this.curUserId, contextRecordId : this.recordId , workItemRecordId : workItemRecordId})
+            .then((result) => {
+                console.log('result from getWorkItemDetail: ' + JSON.stringify(result));
+                if (result.error) {
+                    console.log('there was an error');
+                    console.log(JSON.stringify(result.error));
+                    this.isLoadCompleted = true;
+                } else if (typeof result !== undefined) {
+                    if (result) {
+                        console.log('processing result data...');
+                        this.appProcess = {
+                            label: 'orchdef',
+                            link: this.url
+                        };
+                        console.log('values: appProcess ' + JSON.stringify(this.appProcess));
+                        this._currentStepName = result.currentStep__c;
+                        this._currentStage = result.currentStage__c;
+                        this._currentDefinitionId = 'foo';
+                        this._currentOrchInstanceId = result.OrchestrationInstanceId__c //result.data.Id;
+                        this._currentOrchStepInstanceId = result.OrchestrationStepInstanceId__c;
+                        //this._currentWorkItemId = this.curWorkItems[0];
+                        this.stageToStepsNameMap = JSON.parse(result.StageStepMapping__c);
+                        this.stepToFlowMap = JSON.parse(result.StepFlowMapping__c);
+                        console.log('values: steptoFlowMap ' +JSON.parse(result.StepFlowMapping__c));
+                        //console.log('values: _currentStage ' + this._currentStage);
+                        //console.log('values: _currentOrchInstanceId ' + this._currentOrchInstanceId);
+                        //console.log('values: _currentOrchStepInstanceId ' + this._currentOrchStepInstanceId);
+                    } else {
+                        console.log('typeof check failed');
+                    }
+                    this.isLoadCompleted = true;
+                }
+                
+
+                this.error = undefined;
+            })
+            .catch((error) => {
+                this.error = error;
+                //this.contacts = undefined;
+            });
+
+    } 
+
+    populateWorkItemSelector(workItemLabels, workItemIds) {
+       // let selectionList=['foo', 'bar'];
+       console.log('entering populateWorkItemSelector. workItemLabels is: ' + workItemLabels + '  and workItemIds is: ' + workItemIds);
+       let selectionOptions = [];
+       for(let x = 0; x< workItemLabels.length; x++ ) {
+        //console.log('looping...x is: ' + x);
+         let selectionOption = {};
+         selectionOption['label'] = workItemLabels[x];
+         selectionOption['value'] = workItemIds[x];
+         selectionOptions.push(selectionOption);
+       }
+        this.availableWorkItems = selectionOptions;
+        //console.log('availableWorkItems is: ' + JSON.stringify(this.availableWorkItems));
+    }
   
 
     get curFlowName() {
@@ -122,9 +147,9 @@ export default class WorkGuide extends LightningElement {
     }
 
     get isNoWorkAvailable() {
-        //console.log('this.isLoadCompleted is: ' + this.isLoadCompleted);
-        //console.log('this.stepToFlowMap is: ' + JSON.stringify(this.stepToFlowMap));
-        //console.log('this._currentStepName is ' + this._currentStepName);
+        console.log('entering isNoWorkAvailable....this.isLoadCompleted is: ' + this.isLoadCompleted);
+        console.log('this.stepToFlowMap is: ' + JSON.stringify(this.stepToFlowMap));
+        console.log('this._currentStepName is ' + this._currentStepName);
         return (this.isLoadCompleted && (!this.stepToFlowMap || !this.stepToFlowMap[this._currentStepName]));
     }
 
@@ -179,6 +204,13 @@ export default class WorkGuide extends LightningElement {
         } else if (event.detail.flowStatus === this.constants.flowStatusFinished) {
             this.fireAppProcessEvent(event.detail.flowStatus, JSON.stringify(event.detail.flowParams));
         }
+    }
+    handleWorkItemSelectorChange(event) {
+      console.log ('entering handleWorkItemSelectorChange...');
+      console.log('value of workitem selection is: ' + event.detail.value);
+      this._currentWorkItemId = event.detail.value;
+      this.displayWorkItem(event.detail.value);
+
     }
 
     fireAppProcessEvent(status, parameters) {

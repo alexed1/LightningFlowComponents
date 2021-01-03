@@ -414,7 +414,11 @@ public with sharing class ListActionsTest {
             returnList.add(new Account(Name = TEST_RECORD_NAME + i, Website = '' + i));
         }
         if (doInsert) {
-            insert returnList;
+            //insert returnList without triggering duplicate rules
+            Database.DMLOptions dml = new Database.DMLOptions(); 
+            dml.DuplicateRuleHeader.AllowSave = true; 
+            List<Database.SaveResult> sr = Database.insert(returnList, dml);
+
         }
 
         return returnList;

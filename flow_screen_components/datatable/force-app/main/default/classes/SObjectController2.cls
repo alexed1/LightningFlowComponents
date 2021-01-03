@@ -16,7 +16,9 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
- * 12/../20 -   Eric Smith -    Version 3.0.0   Return object plural name and icon name to the CPE
+ * 12/30/20 -   Eric Smith -    Version 3.0.5   Remove Field Names from Empty Table Header
+ * 
+ * 12/14/20 -   Eric Smith -    Version 3.0.0   Return object plural name and icon name to the CPE
  * 
  * 10/07/20 -   Eric Smith -    Version 2.46    Issue error if no field names are given
  *                                              Allow case insensitive field names
@@ -95,7 +97,8 @@ public with sharing class SObjectController2 {
         if (records.isEmpty()) {
             // throw new MyApexException ('The datatable record collection is empty');
             List<String> emptyList = new List<String>();
-            curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table, Fields ['+fieldNames+']", "fieldName":"Id", "type":"text"}';
+            // curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table, Fields ['+fieldNames+']", "fieldName":"Id", "type":"text"}';   // Removed field names in v3.0.5
+            curRR.dtableColumnFieldDescriptorString = '{"label":"Empty Table", "fieldName":"Id", "type":"text"}';
             curRR.lookupFieldData = '{}';
             curRR.lookupFieldList = emptyList;
             curRR.percentFieldList = emptyList;

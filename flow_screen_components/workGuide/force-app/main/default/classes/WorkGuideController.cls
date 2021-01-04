@@ -1,5 +1,11 @@
 public with sharing class WorkGuideController {
 
+
+
+    //this runs when workguide initializes.
+    //if no work items are available, show the no work available message
+    //if 1 work item available, run it immediately
+    //if more than 1 work item, show the selector
     @AuraEnabled(cacheable=true)
     public static WorkItemValueSet getActiveWorkItemsByRecordId(Id userId, Id recordId) {
         
@@ -17,12 +23,7 @@ public with sharing class WorkGuideController {
             if (recordWorkItems != null) {
                 //get all the work items corresponding to this record
                 //since there are no assignments in 230, the component doesn't filter on assignee
-                //List<ConnectApi.OrchestrationWorkAssignment> recordWorkItems = getAllWorkItemsFromContextRecord(recordId);
                 System.debug('the work items corresponding to recordId: ' + recordId + ' are: ' + recordWorkItems);
-        
-                //convert the resulting ConnectApi.OrchestrationStageInstance into the AppProcessInstance__c that the work guide currently expects
-                //workguideInstanceData = ConvertOrchestrationStageInstanceToWorkGuideDataStructure(orchStageInstance); 
-                //return the workguideInstanceData
         
                 return buildWorkItemValueSet(recordWorkItems);
             } else return null;
@@ -86,6 +87,7 @@ public with sharing class WorkGuideController {
         System.debug('OrchestrationInstanceId__c is: ' + workItemDetails.OrchestrationInstanceId__c);
         workItemDetails.OrchestrationStepInstanceId__c = curWorkItemLineage.parentOrchStep.id;
         workItemDetails.OrchestrationWorkItemId__c = curWorkItemLineage.curWorkAssignment.id;
+        System.debug('workItemId is: ' + curWorkItemLineage.curWorkAssignment.id);
         //workItemDetails.Id = curWorkItemLineage.parentOrchInstance.Id; illegal
         workItemDetails.StageStepMapping__c = stageStepMapping;
         workItemDetails.StepFlowMapping__c = stepFlowMapping;
@@ -126,36 +128,20 @@ public with sharing class WorkGuideController {
     }
 
 
-    public static AppProcessInstance__c ConvertOrchestrationStageInstanceToWorkGuideDataStructure(ConnectApi.OrchestrationStageInstance  orchStageInstance) {
-        AppProcessInstance__c workguideInstanceData = new AppProcessInstance__c();
-        return workguideInstanceData;
-    }
-
-    //these are json data structures used by the current work guide javascript
-    public static String stageStepMapping = '';
-    public static String stepFlowMapping = '';
-
 
     //from the filtered set of orchInstances, extract the relevant work items
     public static List<ConnectApi.OrchestrationWorkAssignment>  extractWorkItemsFromOrchInstanceCollection( List<ConnectApi.OrchestrationInstance> orchInstances) {
         List<ConnectApi.OrchestrationWorkAssignment> allWorkItems = new List<ConnectApi.OrchestrationWorkAssignment> ();
         //for each orchInstance
         for (ConnectApi.OrchestrationInstance orchInstance : orchInstances) {
-            List<ConnectApi.OrchestrationWorkAssignment> curWorkItems = extractWorkItemsFromOrchInstance(orchInstance);
+            List<ConnectApi.OrchestrationWorkAssignment> curWorkItems = extractWorkItemsFromInProgressSteps(orchInstance);
             allWorkItems.addAll(curWorkItems);
         }
-            
-
-            //get the active stages
-            //List<ConnectApi.OrchestrationStageInstance> activeStages = getAllActiveStagesFromCurrentRecordOrchestrationInstances(instanceCollection.instances);
-            //get its step instances
-            //get the associated work items
        
         return allWorkItems;
-
     }
 
-    public static List<ConnectApi.OrchestrationWorkAssignment>  extractWorkItemsFromOrchInstance( ConnectApi.OrchestrationInstance orchInstance) {
+    public static List<ConnectApi.OrchestrationWorkAssignment>  extractWorkItemsFromInProgressSteps( ConnectApi.OrchestrationInstance orchInstance) {
             
             List<ConnectApi.OrchestrationWorkAssignment> curWorkItems = new  List<ConnectApi.OrchestrationWorkAssignment>();
             
@@ -185,7 +171,7 @@ public with sharing class WorkGuideController {
 
 
 
-    /*     {
+    /*  The 'StageStepMapping' is a data structure used by the WorkGuide component to populate a path visual   {
         "Prepare to Publish": [
             "Approval",
             "Review"
@@ -209,7 +195,8 @@ public with sharing class WorkGuideController {
 
     }
 
-    /* {
+    /* The StepFlow Mapping is a data structure used by the work guide component to determine which flow should be launched when a particular step is active
+    {
         "Approval" : "ApprovalStep", 
         "Finalization" :"finalFlow",
         "Review" : "HelloWorld"
@@ -232,12 +219,7 @@ public with sharing class WorkGuideController {
             }
           
         }
-
         stepFlowMap = stepFlowMap.removeEnd(',\n') + '}';
-           
-           // get the flowId and match to the flowdef Info and 
-           //append to the string
-           
         System.debug('curFlows is: ' + curFlows);
 
         return stepFlowMap;
@@ -252,46 +234,7 @@ public with sharing class WorkGuideController {
         return ('flowId not found: ' + flowId);
     }
 
-
-    //flow data can only be retrieved via a tooling api call
-    public static List<FlowDefinition>  getFlowData() {
-        List<String> curFlowDefs = new  List<String>();
-        String sessionId =  getSessionIdFromVFPage();
-        String auth = 'Bearer ' + sessionId;
-        String query = 'SELECT DeveloperName,  Description, Id,FullName FROM FlowDefinition';
-        String endpoint = URL.getSalesforceBaseUrl().toExternalForm() +
-            '/services/data/v50.0/tooling/query/?q=' +
-            EncodingUtil.urlEncode(query, 'UTF-8');
-
-        HttpRequest request = new HttpRequest();
-        request.setHeader('Authorization', auth);
-        request.setEndpoint(endpoint);
-        request.setMethod('GET');
-
-        HttpResponse response = new Http().send(request);
-        
-        String responseBody = response.getBody();
-        system.debug('result of toolingapi flow call is' + responseBody);
-        ToolingAPIResponse curToolingAPIResponse = (ToolingAPIResponse)JSON.deserialize(responseBody, ToolingAPIResponse.class);
-        System.debug('tooling api response is  re: ' + curToolingAPIResponse);
-
-
-        //test
-        /* FlowDefinition curFlowDef = new FlowDefinition();
-        curFlowDef.FullName = 'foo';
-        curFlowDef.attributes.type = 'mytype';
-        ToolingAPIResponse testToolingResponse = new ToolingAPIResponse();
-        testToolingResponse.size = '15';
-        testToolingResponse.records =  */
-
-
-
-        //List<FlowDefinition> flowDefs  = (List<FlowDefinition>)JSON.deserialize(curToolingAPIResponse.records, List<FlowDefinition>.class);
-        System.debug('flowDefs are: ' + curToolingAPIResponse.records);
-        return curToolingAPIResponse.records;
-    }
-
-    //for a set of orchestration instances, get all active stages
+    //for an orchestration instance, get the active stage
     public static ConnectApi.OrchestrationStageInstance getActiveStageFromOrchestrationInstance(ConnectApi.OrchestrationInstance  orchInstance) {
         
     
@@ -330,58 +273,6 @@ public with sharing class WorkGuideController {
 
 
 
-    /* for each Step Instance:
-    add to the stagestep mapping object
-    add to the step/flownames object
-    get the OrchestrationWorkAssignments, passing in the stage and step names and instanceId
-    for each one add to a list
-    return the list */
-/*     public static List<ConnectApi.OrchestrationWorkAssignment> GetWorkAssignmentsFromStepInstance(ConnectApi.OrchestrationStepInstance curStepInstance) {
-        List<ConnectApi.OrchestrationWorkAssignment> curWorkAssignments = curStepInstance.workAssignments;
-        System.debug('provided stepInstance: ' + curStepInstance);
-        //build a portion of the stageStepMapping structure;
-        //stageStepMapping = stageStepMapping + '\"' + curStepInstance.name + '\",\n';
-        //build a portion of the step/flowname structure;
-        //stepFlowMapping = stepFlowMapping + '\"' + curStepInstance.name  + '\" : \"' + curWorkAssignments[0].screenFlowId + '\"';   //get the flow name from one of the work items
-       
-
-        return curWorkAssignments; */
-
-    
-
-
-
-
-
-     @AuraEnabled
-    public static AppProcessEventResult dispatchAppProcessEvent(Id definitionId, Id instanceId, String step, String status, String parameters) {
-        AppProcessEvent__e appProcessEvent = new AppProcessEvent__e(
-                appProcessDefinitionId__c = definitionId,
-                appProcessInstanceId__c = instanceId,
-                appProcessStepId__c = step,
-                parameters__c = parameters,
-                status__c = status
-        );
-
-        AppProcessEventResult eventResult = new AppProcessEventResult();
-        /*
-        List<Database.SaveResult> results = EventBus.publish(new List<AppProcessEvent__e>{
-                appProcessEvent
-        });
-        for (Database.SaveResult result : results) {
-            if (!result.isSuccess()) {
-                eventResult.isSuccess = false;
-                for (Database.Error error : result.getErrors()) {
-                    eventResult.message += error.getStatusCode() + ' : ' + error.getMessage();
-                }
-            } else {
-                eventResult.isSuccess = true;
-            }
-        }*/
-        eventResult.resultObject = appProcessEvent;
-        return eventResult;
-    } 
-
     public static String getSessionIdFromVFPage() {
         if(Test.isRunningTest()) {
             return 'SESSION_ID';
@@ -395,12 +286,5 @@ public with sharing class WorkGuideController {
         }
      }
 
-     public class AppProcessEventResult {
-        @AuraEnabled
-        public Boolean isSuccess;
-        @AuraEnabled
-        public SObject resultObject;
-        @AuraEnabled
-        public String message;
-    } 
+     
 }

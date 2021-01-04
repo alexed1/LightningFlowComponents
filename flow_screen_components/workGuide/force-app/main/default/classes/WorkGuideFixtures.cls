@@ -38,6 +38,8 @@ public with sharing class WorkGuideFixtures {
         return curWorkAssignments;
     }
 
+    //STEP INSTANCES
+
     public static ConnectApi.OrchestrationStepInstance getFixture_OrchestrationStepInstance1() {
         ConnectApi.OrchestrationStepInstance orchSI1 = new ConnectApi.OrchestrationStepInstance();
 
@@ -52,17 +54,49 @@ public with sharing class WorkGuideFixtures {
         return orchSI1;
     }
 
+    public static ConnectApi.OrchestrationStepInstance getFixture_OrchestrationStepInstance2() {
+        ConnectApi.OrchestrationStepInstance orchStep2 = new ConnectApi.OrchestrationStepInstance();
+
+        orchStep2.workAssignments =  getFixture_WorkAssignments();
+
+        orchStep2.id='0jL9A000000000VUAQ'; 
+        orchStep2.label='Step2 Label';
+        orchStep2.name='Step2_Name'; 
+        orchStep2.status=ConnectApi.OrchestrationInstanceStatus.NotStarted;
+        orchStep2.type=ConnectApi.OrchestrationStepType.Task;
+         
+        return orchStep2;
+    }
+
+    public static ConnectApi.OrchestrationStepInstance getFixture_OrchestrationStepInstance3() {
+        ConnectApi.OrchestrationStepInstance orchStep3 = new ConnectApi.OrchestrationStepInstance();
+
+        orchStep3.workAssignments =  getFixture_WorkAssignments();
+
+        orchStep3.id='0jL9A000000000VUAQ'; 
+        orchStep3.label='Step 3 Label';
+        orchStep3.name='Step3_Name'; 
+        orchStep3.status=ConnectApi.OrchestrationInstanceStatus.Completed;
+        orchStep3.type=ConnectApi.OrchestrationStepType.Task;
+         
+        return orchStep3;
+    }
+
+
     public static List<ConnectApi.OrchestrationStepInstance> getFixture_OrchestrationStepInstances() {
         List<ConnectApi.OrchestrationStepInstance> curStepInstances = new List<ConnectApi.OrchestrationStepInstance> ();
         curStepInstances.add(getFixture_OrchestrationStepInstance1());
+        curStepInstances.add(getFixture_OrchestrationStepInstance2());
+        curStepInstances.add(getFixture_OrchestrationStepInstance3());
         return curStepInstances;
     }
 
+
+    //STAGE INSTANCES
     public static ConnectApi.OrchestrationStageInstance getFixture_OrchestrationStageInstance1() {
         ConnectApi.OrchestrationStageInstance orchStage1 = new ConnectApi.OrchestrationStageInstance();
 
         orchStage1.stageStepInstances =  getFixture_OrchestrationStepInstances();
-
         orchStage1.id='0jL9A000000000KUAQ'; 
         orchStage1.label='Stage1';
         orchStage1.name='Stage1'; 
@@ -72,16 +106,32 @@ public with sharing class WorkGuideFixtures {
         return orchStage1;
     }
 
+    public static ConnectApi.OrchestrationStageInstance getFixture_OrchestrationStageInstance2() {
+        ConnectApi.OrchestrationStageInstance orchStage2 = new ConnectApi.OrchestrationStageInstance();
+
+        orchStage2.stageStepInstances =  getFixture_OrchestrationStepInstances();
+        orchStage2.id='0jL9A000000000LUAQ'; 
+        orchStage2.label='Stage2';
+        orchStage2.name='Stage2'; 
+        orchStage2.status=ConnectApi.OrchestrationInstanceStatus.NotStarted;
+        orchStage2.position=1;
+         
+        return orchStage2;
+    }
+
     public static List<ConnectApi.OrchestrationStageInstance> getFixture_OrchestrationStageInstances() {
         List<ConnectApi.OrchestrationStageInstance> orchStages = new List<ConnectApi.OrchestrationStageInstance>();
         orchStages.add(getFixture_OrchestrationStageInstance1());
+        orchStages.add(getFixture_OrchestrationStageInstance2());
         return orchStages;
     }
 
+    //ORCHESTRATION INSTANCES
 
     public static List<ConnectApi.OrchestrationInstance> getFixture_OrchestrationInstances() {
         List<ConnectApi.OrchestrationInstance> curOrchInstanceCollection = new List<ConnectApi.OrchestrationInstance>();
         curOrchInstanceCollection.add(getFixture_OrchestrationInstance1());
+        curOrchInstanceCollection.add(getFixture_OrchestrationInstance2());
         return curOrchInstanceCollection;
     }
 
@@ -90,7 +140,12 @@ public with sharing class WorkGuideFixtures {
         curOrchInstance.id='0jL9A000000000vUAQ'; 
         curOrchInstance.stageInstances = getFixture_OrchestrationStageInstances();
         return curOrchInstance;
+    }
 
-
+    public static ConnectApi.OrchestrationInstance getFixture_OrchestrationInstance2() {
+        ConnectApi.OrchestrationInstance curOrchInstance = new ConnectApi.OrchestrationInstance();
+        curOrchInstance.id='0jL9A000000000eUAQ'; 
+        curOrchInstance.stageInstances = getFixture_OrchestrationStageInstances();
+        return curOrchInstance;
     }
 }

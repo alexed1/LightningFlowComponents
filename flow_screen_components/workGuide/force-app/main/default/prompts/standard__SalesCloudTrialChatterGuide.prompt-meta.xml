@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Sales Cloud Trial Chatter Guide</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Get the Guide</actionButtonLabel>
+        <actionButtonLink>https://org62.my.salesforce.com/sfc/p/000000000062/a/0M000000IjQZ/LvdNHcMGVRpKM.UL3XDbGKpvdryaySQnLaA6gT.9OQ0</actionButtonLink>
+        <body>Chatter is a communication hub for your sales team and leadership. Read this guide to learn how Chatter can help you get your team on board with Sales Cloud.</body>
+        <customApplication>standard__LightningSales</customApplication>
+        <delayDays>1</delayDays>
+        <dismissButtonLabel>Dismiss</dismissButtonLabel>
+        <displayPosition>TopCenter</displayPosition>
+        <displayType>FloatingPanel</displayType>
+        <isPublished>true</isPublished>
+        <masterLabel>Sales Cloud Trial Chatter Guide</masterLabel>
+        <publishedDate>2020-10-08</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>chatter</targetPageKey1>
+        <targetPageType>standard__namedPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Connect with your team on Chatter</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

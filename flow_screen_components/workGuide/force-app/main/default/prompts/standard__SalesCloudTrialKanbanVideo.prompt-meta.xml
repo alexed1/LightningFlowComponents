@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Sales Cloud Trial Kanban Video</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://trailhead.salesforce.com/content/learn/projects/customize-a-sales-path-for-your-team/customize-a-sales-path</actionButtonLink>
+        <body>&lt;p&gt;See how kanban gives you a complete view of your deals, progress toward closing, and what action you can take to move deals forward.&lt;/p&gt;</body>
+        <customApplication>standard__LightningSales</customApplication>
+        <delayDays>1</delayDays>
+        <description>&quot;See how kanban gives you a complete view of your deals, progress toward closing, and what action you can take to move deals forward.
+&quot;</description>
+        <displayType>DockedComposer</displayType>
+        <header>Kanban</header>
+        <isPublished>true</isPublished>
+        <masterLabel>Sales Cloud Trial Kanban Video</masterLabel>
+        <publishedDate>2020-11-11</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>Opportunity</targetPageKey1>
+        <targetPageKey2>list</targetPageKey2>
+        <targetPageType>standard__objectPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Track your deals with Kanban</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+        <videoLink>https://play.vidyard.com/FguLyMvCG8jZGkj8SmNYeo</videoLink>
+    </promptVersions>
+</Prompt>

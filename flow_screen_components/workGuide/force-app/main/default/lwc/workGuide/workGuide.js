@@ -3,7 +3,8 @@ import userId from '@salesforce/user/Id';
 import getActiveWorkItemsByRecordId from '@salesforce/apex/WorkGuideController.getActiveWorkItemsByRecordId';
 import getWorkItemDetail from '@salesforce/apex/WorkGuideController.getWorkItemDetail';
 import dispatchAppProcessEvent from '@salesforce/apex/WorkGuideController.dispatchAppProcessEvent';
-
+import orchestrate1 from '@salesforce/resourceUrl/orchestrate1';
+import orchestrate2 from '@salesforce/resourceUrl/orchestrate2';
 
 export default class WorkGuide extends LightningElement {
     @api recordId;
@@ -13,6 +14,7 @@ export default class WorkGuide extends LightningElement {
 
     availableWorkItems;
     selectedWorkItem;
+    displayMode = 'workdetail'; //'worklist' or 'workdetail'
 
     stageToStepsNameMap;
     stepToFlowMap;
@@ -28,9 +30,10 @@ export default class WorkGuide extends LightningElement {
     isLoadCompleted = false;
     isFlowStarted = false;
     error;
+    orchestratelogo1 = orchestrate1; //+ 'orchestrate1.png';
 
     labels = {
-        header: 'Work Guide',
+        header: 'Orchestrator Work Guide',
         noWorkAvailable: 'No work is currently available'
     }
 
@@ -60,17 +63,14 @@ export default class WorkGuide extends LightningElement {
             this.isLoadCompleted = true;
         } else if (typeof response.data !== undefined) {
             if (response.data) {
-                //console.log('response from getActiveWorkItemsByRecordId is: ' + JSON.stringify(response.data));
-                //assemble combination strings from the labels and record ids
-                //set those as the value used by the picklist
-                //exit
-                //in the html if the attribute has a value, show it
-                //this.curWorkItems = response.data.workItemRecordIds;
-                this.populateWorkItemSelector(response.data.workItemLabels,response.data.workItemRecordIds);
-
-               
-                
-                
+                if (response.data.workItemRecordIds.length == 1) {
+                    this.displayWorkItem(response.data.workItemRecordIds[0]);
+                } else if (response.data.workItemRecordIds.length >= 1) {
+                    this.displayMode = 'worklist';
+                    this.populateWorkItemSelector(response.data.workItemLabels,response.data.workItemRecordIds);
+                } else {
+                    console.log('0 work items. no work available');
+                }
             }
             this.isLoadCompleted = true;
         }
@@ -81,6 +81,7 @@ export default class WorkGuide extends LightningElement {
    
     displayWorkItem(workItemRecordId ) {
         console.log('entering displayWorkItem');
+        this.displayMode = 'workdetail';
         getWorkItemDetail({userId : this.curUserId, contextRecordId : this.recordId , workItemRecordId : workItemRecordId})
             .then((result) => {
                 console.log('result from getWorkItemDetail: ' + JSON.stringify(result));
@@ -101,10 +102,11 @@ export default class WorkGuide extends LightningElement {
                         this._currentDefinitionId = 'foo';
                         this._currentOrchInstanceId = result.OrchestrationInstanceId__c //result.data.Id;
                         this._currentOrchStepInstanceId = result.OrchestrationStepInstanceId__c;
-                        //this._currentWorkItemId = this.curWorkItems[0];
+                        this._currentWorkItemId = result.OrchestrationWorkItemId__c;
+                        console.log('currentworkitem is: ' + this._currentWorkItemId);
                         this.stageToStepsNameMap = JSON.parse(result.StageStepMapping__c);
                         this.stepToFlowMap = JSON.parse(result.StepFlowMapping__c);
-                        console.log('values: steptoFlowMap ' +JSON.parse(result.StepFlowMapping__c));
+                        //console.log('values: steptoFlowMap ' +JSON.parse(result.StepFlowMapping__c));
                         //console.log('values: _currentStage ' + this._currentStage);
                         //console.log('values: _currentOrchInstanceId ' + this._currentOrchInstanceId);
                         //console.log('values: _currentOrchStepInstanceId ' + this._currentOrchStepInstanceId);
@@ -147,10 +149,14 @@ export default class WorkGuide extends LightningElement {
     }
 
     get isNoWorkAvailable() {
-        console.log('entering isNoWorkAvailable....this.isLoadCompleted is: ' + this.isLoadCompleted);
-        console.log('this.stepToFlowMap is: ' + JSON.stringify(this.stepToFlowMap));
-        console.log('this._currentStepName is ' + this._currentStepName);
+        //console.log('entering isNoWorkAvailable....this.isLoadCompleted is: ' + this.isLoadCompleted);
+        //console.log('this.stepToFlowMap is: ' + JSON.stringify(this.stepToFlowMap));
+       // console.log('this._currentStepName is ' + this._currentStepName);
         return (this.isLoadCompleted && (!this.stepToFlowMap || !this.stepToFlowMap[this._currentStepName]));
+    }
+
+    get isDisplayModeWorkList() {
+        return (this.displayMode == 'worklist');
     }
 
     get pathStructure() {

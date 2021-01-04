@@ -3,7 +3,11 @@
 #
 
 **profile
+**prompts
 package.xml
+objects/Lead
+objects/Account
+objects/AppProcessDefinition__c
 
 # LWC configuration files
 **/jsconfig.json

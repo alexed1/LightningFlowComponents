@@ -29,7 +29,7 @@
             <targetReference>Submit_Content</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <steppedStages>
         <name>Submit_Content</name>
         <label>Submit Content</label>
@@ -52,7 +52,7 @@
         <exitCriteriaLogic>and</exitCriteriaLogic>
         <steps>
             <name>Submit_Content_for_Approval</name>
-            <actionName>orchtest2</actionName>
+            <actionName>testflow</actionName>
             <actionType>createWorkItem</actionType>
             <entryCriteriaLogic>and</entryCriteriaLogic>
             <inputParameters>
@@ -64,7 +64,7 @@
             <inputParameters>
                 <name>actionInput__recordId</name>
                 <value>
-                    <stringValue>0019A00000GiBuQQAV</stringValue>
+                    <stringValue>00Q9A000001TWozUAG</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -86,7 +86,7 @@
         </steps>
         <steps>
             <name>Approve_Content_Submission</name>
-            <actionName>orchtest2</actionName>
+            <actionName>testflow</actionName>
             <actionType>createWorkItem</actionType>
             <entryCriteria>
                 <leftValueReference>Submit_Content_for_Approval</leftValueReference>
@@ -97,22 +97,25 @@
             </entryCriteria>
             <entryCriteriaLogic>and</entryCriteriaLogic>
             <inputParameters>
-                <name>appProcessStepName</name>
-                <value>
-                    <stringValue>Approve Content</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>actionInput__recordId</name>
-            </inputParameters>
-            <inputParameters>
-                <name>recordId</name>
+                <value>
+                    <stringValue>00Q9A000001TWozUAG</stringValue>
+                </value>
             </inputParameters>
             <inputParameters>
                 <name>actionInput__stepLabel</name>
                 <value>
                     <stringValue>Approve Content</stringValue>
                 </value>
+            </inputParameters>
+            <inputParameters>
+                <name>appProcessStepName</name>
+                <value>
+                    <stringValue>Approve Content</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>recordId</name>
             </inputParameters>
             <label>Approve Content Submission</label>
         </steps>

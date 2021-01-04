@@ -7,6 +7,7 @@
         <locationY>398</locationY>
         <actionName>NotifyOrchestrationViaEvent</actionName>
         <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>orchestrationInstanceId</name>
             <value>
@@ -65,6 +66,11 @@
             <fieldText>&lt;p&gt;Click Next to Submit for Approval&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
+        <fields>
+            <name>disp4</name>
+            <fieldText>&lt;p&gt;Inputs:&lt;/p&gt;&lt;p&gt;orchestrationInstanceId {!orchestrationInstanceId}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;orchestrationStepInstanceId{!orchestrationStepInstanceId}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;orchestrationStepName {!orchestrationStepName}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;orchestrationWorkItemId&lt;/p&gt;&lt;p&gt;{!orchestrationWorkItemId}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
@@ -94,14 +100,7 @@
             <targetReference>screen1</targetReference>
         </connector>
     </start>
-    <status>Active</status>
-    <variables>
-        <name>appProcessStepName</name>
-        <dataType>String</dataType>
-        <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>false</isOutput>
-    </variables>
+    <status>Obsolete</status>
     <variables>
         <name>orchestrationInstanceId</name>
         <dataType>String</dataType>
@@ -111,6 +110,13 @@
     </variables>
     <variables>
         <name>orchestrationStepInstanceId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>orchestrationStepName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

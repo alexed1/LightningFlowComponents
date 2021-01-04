@@ -1,52 +1,70 @@
 @isTest(SeeAllData=true)
 public with sharing class WorkGuideControllerTest {
 
-    @isTest
-    public static void CanConvertOrchestrationStageInstanceToWorkGuideDataStructure() {
 
-        //AppProcessInstance__c curAPInstance = new AppProcessInstance__c();
-        ConnectApi.OrchestrationStageInstance  orchStageInstance = new ConnectApi.OrchestrationStageInstance();
-        AppProcessInstance__c curAPIInstance = WorkGuideController.ConvertOrchestrationStageInstanceToWorkGuideDataStructure(orchStageInstance);
+
+    @isTest
+    public static void CanExtractWorkItemLineage() {
+        String workItemId = '0jf9A0000000006QAA';
+        List<ConnectApi.OrchestrationInstance> allRecordOrchInstances = WorkGuideFixtures.getFixture_OrchestrationInstances();
+        WorkItemLineage curWorkItemLineage = WorkGuideController.extractWorkItemLineage(allRecordOrchInstances, workItemId);
+        System.assertEquals('0jf9A0000000006QAA', curWorkItemLineage.curWorkAssignment.Id);
+
+    }
+
+
+    @isTest
+    public static void CanExtractWorkItemsFromInProgressSteps( ) {
+    ConnectApi.OrchestrationInstance orchInstance = WorkGuideFixtures.getFixture_OrchestrationInstance1();
+    List<ConnectApi.OrchestrationWorkAssignment> curWorkAssignments = WorkGuideController.extractWorkItemsFromInProgressSteps(orchInstance);
+    System.assertEquals(2,curWorkAssignments.size() );
+
+    }
+
+    @isTest
+    public static void CanBuildStepFlowMapping() {
+        String workItemId = '0jf9A0000000006QAA';
+        List<ConnectApi.OrchestrationInstance> allRecordOrchInstances = WorkGuideFixtures.getFixture_OrchestrationInstances();
+        WorkItemLineage curWorkItemLineage = WorkGuideController.extractWorkItemLineage(allRecordOrchInstances, workItemId);
+        String stepFlowMapping = WorkGuideController.buildStepFlowMapping(curWorkItemLineage);
+        system.assertEquals('foo', stepFlowMapping);
+    }
+
+    @isTest
+    public static void CanBuildStageStepMapping() {
+        ConnectApi.OrchestrationInstance orchInstance = WorkGuideFixtures.getFixture_OrchestrationInstance1();
+        String stageStepMapping = WorkGuideController.buildStageStepMapping(orchInstance);
+        String expectedStageStepMapping =   '{\n\"Stage1\": [\n' +
+            '\t\"Submit Content for Approval\",' +
+            '\t\"Step2 Label\",' +
+            '\t\"Step 3 Label\"\n' +
+        '],\n'+
+        '\"Stage2\": [\n' +
+            '\t\"Submit Content for Approval\",' +
+            '\t\"Step2 Label\",' +
+            '\t\"Step 3 Label\"' +
+        '\n]' +
+        '}';
+        System.assertEquals(expectedStageStepMapping, stageStepMapping);
+    }
+
+
+    @isTest
+    public static void CanGetActiveStageFromOrchestrationInstance() {
+        ConnectApi.OrchestrationInstance orchInstance = WorkGuideFixtures.getFixture_OrchestrationInstance1();
+        ConnectApi.OrchestrationStageInstance activeStage = WorkGuideController.getActiveStageFromOrchestrationInstance(orchInstance);
+        System.assertEquals('0jL9A000000000KUAQ', activeStage.id);
+    }
         
-        System.assertNotEquals(null, curAPIInstance);
-        
-    }
+    
 
     @isTest
-    public static void CanExtractWorkItemsFromOrchInstanceCollection() {
-        List<ConnectApi.OrchestrationInstance> orchInstances = WorkGuideFixtures.getFixture_OrchestrationInstances();
-        List<ConnectApi.OrchestrationWorkAssignment> workItems =  WorkGuideController.extractWorkItemsFromOrchInstanceCollection( orchInstances);
-        System.assertEquals(WorkGuideFixtures.getFixture_WorkAssignments(), workItems);
+    public static void CanGetInProgressStepInstancesFromStageInstance() {
+        ConnectApi.OrchestrationStageInstance orchStageInstance = WorkGuideFixtures.getFixture_OrchestrationStageInstance1();
+        List<ConnectApi.OrchestrationStepInstance> inProgressStepInstances =  WorkGuideController.GetInProgressStepInstancesFromStageInstance( orchStageInstance);
+        System.assertEquals(1, inProgressStepInstances.size());
     }
 
-  /*   @isTest 
-    public static void CanGetActiveStageInstanceFromContextRecord() {
-        OrchContent__c testOrchContent = new OrchContent__c();
-        testOrchContent.Name = 'foobar';
-        insert testOrchContent;
-
-        ConnectApi.OrchestrationStageInstance  curStageInstance = WorkGuideController.getActiveStageInstanceFromContextRecord( testOrchContent.Id);
-    }
- */
-   /*  @isTest
-    public static void CanGetAllStageInstancesFromContextRecord() {
-        //todo need a way to create a new instance in the eyes of the org associated with a record. basically this implies programmatically invoking an orchestration flow
-        String contextRecordId = 'foo';
-        ConnectApi.OrchestrationInstanceCollection instanceCollection = ConnectApi.Orchestrator.getOrchestrationInstanceCollection(contextRecordId);
- 
-    } */
-
-/* 
-    @isTest
-    public static void CanGetWorkAssignmentsFromStepInstance() {
-
-        //build test data
-        List<ConnectApi.OrchestrationWorkAssignment> testWorkAssignments =  WorkGuideFixtures.getFixture_WorkAssignments();
-        ConnectApi.OrchestrationStepInstance  testStepInstance = WorkGuideFixtures.getFixture_OrchestrationStepInstance1();
-
-        List<ConnectApi.OrchestrationWorkAssignment> returnedWorkAssignments = WorkGuideController.extractWorkItemsFromOrchInstance(testStepInstance);
-        System.assertEquals(testWorkAssignments, returnedWorkAssignments);
-    } */
 
 
 }

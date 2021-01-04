@@ -4,11 +4,19 @@
 }
 
 .work-guide-header {
-    background: rgba(170, 204, 255, 0.76);
+    background: rgba(158, 158, 158, 0.76);
     font-weight: var(--lwc-fontWeightBold);
 }
 
 .spinner-container {
     position:relative;
     padding: var(--lwc-spacingXxLarge);
+}
+
+img {
+    height: 50px;
+}
+
+.header-icon {
+    height: 50px;
 }

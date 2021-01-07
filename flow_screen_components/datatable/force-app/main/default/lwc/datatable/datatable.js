@@ -3,7 +3,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.5
+ * VERSION:             3.0.6
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -414,7 +414,7 @@ export default class Datatable extends LightningElement {
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
-        this.borderClass = (this.tableBorder != false) ? 'slds-box' : '';
+        this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
 
         // Generate datatable
         if (this.tableData) {
@@ -1347,7 +1347,7 @@ export default class Datatable extends LightningElement {
             colDef['actions'].find(a => a.name == 'aedit_'+colNum).checked = this.isAllEdit;
             colNum += 1;
         });
-        this.columnEditParameter = (this.isAllEdit) ? 'All' : '';
+        this.columnEditParameter = (this.isAllEdit) ? 'All' : null;
         this.wizColumnEdits = this.columnEditParameter;
         this.columns = [...this.filterColumns]; 
     }
@@ -1361,7 +1361,7 @@ export default class Datatable extends LightningElement {
             colDef['actions'].find(a => a.name == 'afilter_'+colNum).checked = this.isAllFilter;
             colNum += 1;
         });
-        this.columnFilterParameter = (this.isAllFilter) ? 'All' : '';
+        this.columnFilterParameter = (this.isAllFilter) ? 'All' : null;
         this.wizColumnFilters = this.columnFilterParameter;
         this.columns = [...this.filterColumns]; 
     }

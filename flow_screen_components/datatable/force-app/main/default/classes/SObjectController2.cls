@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 01/06/21 -   Eric Smith -    Version 3.0.6   Handle Textarea as Richtext
+ * 
  * 12/30/20 -   Eric Smith -    Version 3.0.5   Remove Field Names from Empty Table Header
  * 
  * 12/14/20 -   Eric Smith -    Version 3.0.0   Return object plural name and icon name to the CPE
@@ -360,6 +362,9 @@ public with sharing class SObjectController2 {
             }
             when 'CHECKBOX' {
                 return 'checkbox';
+            }
+            when 'TEXTAREA' {
+                return 'richtext';
             }
             when 'STRING' {
                 if (isFormula) return 'richtext';

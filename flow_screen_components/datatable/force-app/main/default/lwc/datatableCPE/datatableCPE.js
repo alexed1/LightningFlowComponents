@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.5
+ * VERSION:             3.0.6
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -485,7 +485,6 @@ export default class DatatableCPE extends LightningElement {
     initializeValues() {
         console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
-
             if (curInputParam.name && curInputParam.value != null) {
                 console.log('Init:', curInputParam.name, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
@@ -503,11 +502,9 @@ export default class DatatableCPE extends LightningElement {
                     }
                     if (curInputParam.name == 'not_tableBorder') {
                         this.inputValues.tableBorder.value = !curInputParam.value;
-                        this.updateFlowParam('tableBorder', this.inputValues.tableBorder.value, 'boolean');
                     }
                     if (curInputParam.name == 'tableBorder') {
                         this.inputValues.not_tableBorder.value = !curInputParam.value;
-                        this.updateFlowParam('not_tableBorder', this.inputValues.not_tableBorder.value, 'boolean');
                     }
                     if (curInputParam.name == 'not_suppressNameFieldLink') {
                         this.inputValues.suppressNameFieldLink.value = !curInputParam.value;
@@ -668,9 +665,7 @@ export default class DatatableCPE extends LightningElement {
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = this.objectIconName;
                     this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
-                    // this.disallowHeaderChange = true;
                 } else { 
-                    // this.disallowHeaderChange = false;
                     this.inputValues.tableLabel.value = '';
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = '';
@@ -732,7 +727,7 @@ export default class DatatableCPE extends LightningElement {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
-            
+
             if (changedAttribute == 'tableData') {
                 this.isRecordCollectionSelected = !!event.detail.newValue;
             }
@@ -756,14 +751,17 @@ export default class DatatableCPE extends LightningElement {
             composed: true,
             detail: {
                 name: id,
-                newValue: newValue ? newValue : (newValueDataType == 'Boolean' ? false : null),
+                newValue: newValue ? newValue : null,
                 newValueDataType: newValueDataType
             }
         });
         this.dispatchEvent(valueChangedEvent);
-        console.log('dispatchFlowValueChangeEvent', id, newValue, newValueDataType);        
+        console.log('dispatchFlowValueChangeEvent', id, newValue, newValueDataType);
+        if (!newValue) { 
+            this.inputValues[id].value = newValue;  // You need to force any cleared values back to inputValues
+        }                
         if (newValue) {
-            this.inputValues[id].isError = false;   //Clear any prior error before validating again if the field has any value
+            this.inputValues[id].isError = false;   // Clear any prior error before validating again if the field has any value
         }
     }
 

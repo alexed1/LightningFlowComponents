@@ -42,8 +42,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t4x000000tl2xAAA)   
-[Version 3.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t4x000000tl2xAAA)
+[Version 3.0.6 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t4x000000tpKUAAY)   
+[Version 3.0.6 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t4x000000tpKUAAY)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -59,6 +59,13 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 # Release Notes
+## 01/06/21 -  Eric Smith -    Version 3.0.6  
+**Bug Fixes:**  
+-   Fixed checkbox behavior in the CPE 
+-   Fixed an error selecting checkboxes in the CPE  
+-   Fixed an error with attributes not being able to be cleared  
+-   Fixed an error with Textarea not showing Rich Text correctly  
+   
 ## 01/01/21 -  Eric Smith -    Version 3.0.5 
 **Updates:**
 -   Added Icon Pickers to the CPE and Column Wizard  (Requires FlowScreenComponentBasePack v2.1.2 or later)

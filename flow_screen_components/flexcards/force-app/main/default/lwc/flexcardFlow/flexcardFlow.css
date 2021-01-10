@@ -13,3 +13,8 @@ card {
     color: black   ;
     text-align: center;
 }
+
+.fc-body { 
+    display: flex; 
+    justify-content: space-between;
+  }

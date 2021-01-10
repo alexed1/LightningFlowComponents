@@ -1,10 +1,114 @@
 <template>
-    <lightning-progress-indicator  current-step="foo" type="path" variant="base">
-        <lightning-progress-step label="Step One" value="step1" onstepblur={handleStepBlur} onstepfocus={handleStepFocus} onstepmouseenter={handleStepMouseEnter} onstepmouseleave={handleStepMouseLeave}>
-        </lightning-progress-step>
-        <lightning-progress-step label="Step Two" value="step2" onstepblur={handleStepBlur} onstepfocus={handleStepFocus} onstepmouseenter={handleStepMouseEnter} onstepmouseleave={handleStepMouseLeave} >
-        </lightning-progress-step>
-        <lightning-progress-step label="Step Three" value="step3" onstepblur={handleStepBlur} onstepfocus={handleStepFocus} onstepmouseenter={handleStepMouseEnter} onstepmouseleave={handleStepMouseLeave} >
-        </lightning-progress-step>
-    </lightning-progress-indicator>
-</template>
+    <!-- <c-modal
+      modal-header="Close Status Required"
+      modal-tagline="Set the specific close status to proceed!"
+      modal-save-handler={modalSaveHandler}
+    > -->
+      
+        <article class="slds-card" slot="body">
+          <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-path">
+              <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                  <div
+                    class="slds-path__scroller"
+                    tabindex="-1"
+                    role="application"
+                  >
+                    <div class="slds-path__scroller_inner">
+                      <ul
+                        class="slds-path__nav"
+                        role="listbox"
+                        aria-orientation="horizontal"
+                      >
+                        <template for:each={visibleStatuses} for:item="stage">
+                          
+                          <li
+                            class={stage.class}
+                            role="presentation"
+                            key={stage.label}
+                            
+                          >
+                            <a
+                              class="slds-path__link"
+                              tabindex="-1"
+                              role="option"
+                              title={stage.label}
+                              onclick={handleStatusClick}
+                              aria-selected={stage.ariaSelected}
+                            >
+                              <span class="slds-path__stage">
+                                <lightning-icon
+                                  variant="bare"
+                                  class="slds-button__icon"
+                                  icon-name="utility:check"
+                                  size="x-small"
+                                  alternative-text={stage}
+                                  
+                                ></lightning-icon>
+                                
+                              </span>
+                              <span class="slds-path__title"  title={stage.label} onclick={handleStatusClick}>{stage.label}</span>
+                            </a>
+                          </li>
+                        </template>
+                      </ul>
+                    </div>
+                  </div>
+                  <!-- <template if:true={showAdvanceButton}>
+                    <div class="slds-grid slds-path__action">
+                      <lightning-button
+                        class="slds-path__mark-complete slds-no-flex slds-m-horizontal__medium"
+                        variant="brand"
+                        icon-name={pathActionIconName}
+                        onclick={handleAdvanceButtonClick}
+                        title={advanceButtonText}
+                        label={advanceButtonText}
+                      >
+                      </lightning-button>
+                    </div>
+                  </template> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+        <div slot="modalContent">
+          <template if:true={showClosedOptions}>
+            <lightning-combobox
+              class="slds-m-around_small slds-form-element"
+              name="status"
+              label="Status"
+              value={currentClosedStatus}
+              placeholder="Select Closed Status"
+              options={closedStatuses}
+              onchange={handleClosedStatusChange}
+              required
+              message-when-value-missing="Please select a closed status"
+            ></lightning-combobox>
+            <template if:true={customCloseDateSelected}>
+              <p>
+                The date you use below will cause the lead to reopen in the
+                future. Assignment rules will be rerun at the time; if you are
+                still the owner, you will be notified, otherwise the new owner
+                will be.
+              </p>
+              <lightning-input
+                class="slds-form-element slds-m-around_small"
+                label="Reopen Date"
+                type="date"
+                date-style="short"
+                value={dateValue}
+                onchange={handleDateOnChange}
+                required
+              >
+              </lightning-input>
+              <p>
+                Once you're done selecting the date, click "Save" to proceed!
+              </p>
+            </template>
+          </template>
+        </div>
+   
+    <!-- </c-modal> -->
+  </template>

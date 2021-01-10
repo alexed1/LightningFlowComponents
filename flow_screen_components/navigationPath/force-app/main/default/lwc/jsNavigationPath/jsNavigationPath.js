@@ -82,8 +82,13 @@ export default class CustomPath extends LightningElement {
     this._handleWireCallback({ data, error, cb: leadStatusCb });
   } */
 
+  connectedCallback() {
+      console.log('entering connectedCallback');
+      this._updateVisibleStatuses();
+  }
+
   renderedCallback() {
-      console.log('entering renderedCallback');
+     // console.log('entering renderedCallback');
      
     if (!this._hasRendered && this.hasData) {
       //prevents the advance button from jumping to the side
@@ -91,27 +96,30 @@ export default class CustomPath extends LightningElement {
       this.showAdvanceButton = true;
       this._hasRendered = true;
     }
-    console.log('entering renderedcallback2');
+
+    //this.visibleStatuses.forEach((status, index) => {
+      
+        
+        
+    //  }
+    //); 
+    //const pathItem = this._getPathItemFromStatus(status.label);
+    //console.log('entering renderedcallback2');
     //if (this.hasData) {
        // console.log('entering hasdata');
       //on the first render with actual data
       //we have to manually set the aria-selected value
-      const current = this.visibleStatuses.find((status) =>
+      /* const current = this.visibleStatuses.find((status) =>
         this.storedStatus.includes(status.label)
-      ) || { label: 'Unknown' };
-      current.ariaSelected = true;
+      ) || { label: 'Unknown' }; */
+      /* current.ariaSelected = true;
       current.class = 'slds-path__item slds-is-current slds-is-active';
-
       const currentIndex = this.visibleStatuses.indexOf(current);
-      this.visibleStatuses.forEach((status, index) => {
-        if (index < currentIndex) {
-          status.class = status.class.replace(
-            'slds-is-incomplete',
-            'slds-is-complete'
-          );
-        }
-      });
-      this._updateVisibleStatuses();
+
+
+
+      */
+      //this._updateVisibleStatuses();
   }
 
   /* private fields for tracking */
@@ -124,7 +132,7 @@ export default class CustomPath extends LightningElement {
   @track showClosedOptions = false;
   @track status;
   @track storedStatus;
-  @track visibleStatuses = [{label : 'foo', value : 'bar', class:'slds-is-incomplete' },{label : 'baz', value : 'qux',  class:'slds-is-incomplete'}];
+  @track visibleStatuses = [{label : 'foo', value : 'bar', class:'slds-is-incomplete'},{label : 'baz', value : 'qux',  class:'slds-is-incomplete'}];
 
 
   //truly private fields
@@ -157,14 +165,15 @@ export default class CustomPath extends LightningElement {
   }; */
 
   handleStatusClick(event) {
+    console.log('entering handleStatusClick. event label is: ' + JSON.stringify(event.target.title) + ' and event detail id is:  ' + event.detail.id +'and id is: ' + event.target.id);
     event.stopPropagation();
     //update the stored status, but don't update the record
     //till the save button is clicked
     const updatedStatusName = event.target.textContent;
-    this.advanceButtonText =
+    /* this.advanceButtonText =
       updatedStatusName === this.status
         ? MARK_COMPLETED
-        : 'Mark As Current Status';
+        : 'Mark As Current Status'; */
     this.storedStatus = updatedStatusName;
 
     if (this.status !== this.storedStatus) {
@@ -231,19 +240,23 @@ export default class CustomPath extends LightningElement {
   };
 
   _getPathItemFromStatus(status) {
+    //console.log('entering getPathItemFromStatus...')
     const ariaSelected = !!this.storedStatus
       ? this.storedStatus.includes(status)
       : false;
     const isCurrent = !!this.status ? this.status.includes(status) : false;
     const classList = ['slds-path__item'];
-    if (ariaSelected) {
+    /* if (ariaSelected) {
       classList.push('slds-is-active');
     } else {
       classList.push('slds-is-incomplete');
-    }
-    if (isCurrent) {
+    } */
+    //all items are active in this implementation;
+    classList.push('slds-is-active');
+
+    /* if (isCurrent) {
       classList.push('slds-is-current');
-    }
+    } */
     return {
       ariaSelected: false,
       class: classList.join(' '),
@@ -299,16 +312,17 @@ export default class CustomPath extends LightningElement {
   }
 
   _updateVisibleStatuses() {
+    console.log('entering _updateVisibleStatuses');
     //update the shown statuses based on the selection
     const newStatuses = [];
     for (let index = 0; index < this.visibleStatuses.length; index++) {
       const status = this.visibleStatuses[index];
       const pathItem = this._getPathItemFromStatus(status.label);
-      if (this.status !== this.storedStatus || pathItem.label !== this.status) {
+      /* if (this.status !== this.storedStatus || pathItem.label !== this.status) {
         pathItem.class = pathItem.class
           .replace('slds-is-complete', '')
           .replace('  ', ' ');
-      }
+      } */
       newStatuses.push(pathItem);
     }
     this.visibleStatuses = newStatuses;

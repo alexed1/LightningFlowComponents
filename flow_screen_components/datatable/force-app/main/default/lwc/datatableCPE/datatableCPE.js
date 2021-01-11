@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.6
+ * VERSION:             3.0.8
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/

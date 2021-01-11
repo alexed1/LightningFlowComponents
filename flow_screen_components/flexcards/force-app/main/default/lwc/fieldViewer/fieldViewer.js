@@ -48,7 +48,7 @@ export default class FieldViewer extends LightningElement {
         let visibleFields = [];
         let fieldData = {};
         this.fieldNames.split(',').forEach(field => {
-            visibleFields.push(field);
+            visibleFields.push(field.trim());
             })
         this.fieldNames = Array.from(new Set(visibleFields));
     }

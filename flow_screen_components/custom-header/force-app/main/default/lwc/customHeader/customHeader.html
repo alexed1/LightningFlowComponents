@@ -1,0 +1,57 @@
+<template>
+    <div data-id="stylesheet">{stylesheet}</div>
+        
+    <template if:true={displayAsHorizontalLine}>
+
+        <div class={customHeaderCSSName}></div>
+    </template>
+    <template if:true={showHeader}>
+        <div class={customHeaderCSSName}>
+            <div class="slds-grid slds-wrap">
+            <template if:true={showTextOnly}>
+                <div class="slds-col slds-size_1-of-1">
+                    <template if:true={isTextAHyperlink}><span><a href={urlToRedirect} target={linkTarget} class="linkCSS">{headerText}</a></span></template>
+                    <template if:false={isTextAHyperlink}><span>{headerText}</span></template>
+                </div>
+            </template>
+
+            <template if:true={showTextOnLeftImageOnRight}>
+                <div class="slds-col slds-size_11-of-12">
+                    <template if:true={isTextAHyperlink}><span><a href={urlToRedirect} target={linkTarget} class="linkCSS">{headerText}</a></span></template>
+                    <template if:false={isTextAHyperlink}><span>{headerText}</span></template>
+                </div>
+                <template if:true={showLightningIcon}>
+                    <div class="slds-clearfix">
+                    <div class="slds-col slds-size_1-of-12" style="margin:0 auto;">
+                        <lightning-icon  icon-name={lightningIcon} class="iconCSS" alternative-text="Lightning Icon" size={lightningIconSize}>
+                            </lightning-icon>
+                    </div>
+                    </div>
+                </template>
+                <template if:true={showStaticResource}>
+                    <div class="slds-clearfix">
+                        <div class="slds-col slds-size_1-of-12" style="margin:0 auto;">
+                        <img src={staticResourceUrl} height={imgHeight} width={imgWidth} class="iconCSS" style="max-width:none;">
+                    </div>
+                    </div>
+                </template>
+            </template>
+
+            <template if:true={showTextAndImageOnLeftOfText}>
+                <div class="slds-col slds-size_1-of-1">
+                    <template if:true={showLightningIcon}>
+                        
+                        <span><lightning-icon icon-name={lightningIcon} alternative-text="Lightning Icon" size={lightningIconSize} class="iconCSS"></lightning-icon></span>
+                        <template if:true={isTextAHyperlink}><span><a href={urlToRedirect} target={linkTarget} class="linkCSS">{headerText}</a></span></template>
+                        <template if:false={isTextAHyperlink}><span>{headerText}</span></template>
+                    </template>
+                    <template if:true={showStaticResource}>
+                        <span><img src={staticResourceUrl} height={imgHeight} width={imgWidth} class="iconCSS"></span><span>{headerText}</span>
+                    </template>
+                </div>
+            </template>
+            </div>
+        </div>
+    </template>
+
+</template>

@@ -1,0 +1,62 @@
+<template>
+      
+    <article class="slds-card" slot="body">
+      <div class="slds-card__body slds-card__body_inner">
+        <div class="slds-path">
+          <div class="slds-grid slds-path__track">
+            <div class="slds-grid slds-path__scroller-container">
+              <div
+                class="slds-path__scroller"
+                tabindex="-1"
+                role="application"
+              >
+                <div class="slds-path__scroller_inner">
+                  <ul
+                    class="slds-path__nav"
+                    role="listbox"
+                    aria-orientation="horizontal"
+                  >
+                    <template for:each={visibleStatuses} for:item="stage">
+                      
+                      <li
+                        class={stage.class}
+                        role="presentation"
+                        key={stage.label}
+                        
+                      >
+                        <a
+                          class="slds-path__link"
+                          tabindex="-1"
+                          role="option"
+                          title={stage.label}
+                          onclick={handleStatusClick}
+                          aria-selected={stage.ariaSelected}
+                        >
+                          <span class="slds-path__stage">
+                            <lightning-icon
+                              variant="bare"
+                              class="slds-button__icon"
+                              icon-name="utility:check"
+                              size="x-small"
+                              alternative-text={stage}
+                              
+                            ></lightning-icon>
+                            
+                          </span>
+                          <span class="slds-path__title"  title={stage.label} onclick={handleStatusClick}>{stage.label}</span>
+                        </a>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+   
+
+
+</template>

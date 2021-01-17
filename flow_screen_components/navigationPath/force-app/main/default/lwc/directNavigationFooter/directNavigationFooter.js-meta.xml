@@ -7,8 +7,8 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" >
-            <property name="targetStringCollection" label="Target String Collection" type="String" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
-            <property name="targetStringCSV" label="Target String CSV" type="String" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
+            <property name="nextTargetName" label="Name of the Next Screen" type="String" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
+            <property name="prevTargetName" label="Name of the Previous Screen" type="String" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
             <property name="selectedTarget" label="Selected Target" type="String" role="outputOnly" description="The label of the button that the user clicked on"/>
 
         </targetConfig>

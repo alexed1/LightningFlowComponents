@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>50.0</apiVersion>
+    <assignments>
+        <name>Build_Test_String_Collection</name>
+        <label>Build Test String Collection</label>
+        <locationX>493</locationX>
+        <locationY>200</locationY>
+        <assignmentItems>
+            <assignToReference>testStringCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Screen 1</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>testStringCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Screen 2</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>testStringCollection</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Screen 3</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Screen1</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Navigate_Based_on_Button_Click</name>
         <label>Navigate Based on Button Click</label>
@@ -53,8 +83,8 @@
             <label>Nav to Screen 3</label>
         </rules>
     </decisions>
-    <interviewLabel>Direct Access Test {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Direct Access Test</label>
+    <interviewLabel>Direct Access Test Collection {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Direct Access Test Collection</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -86,7 +116,7 @@
             <targetReference>Navigate_Based_on_Button_Click</targetReference>
         </connector>
         <fields>
-            <name>screen1Header</name>
+            <name>navHeader1</name>
             <extensionName>c:directNavigationHeader</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -107,7 +137,7 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>navfooter1</name>
+            <name>directnavFooter1</name>
             <extensionName>c:directNavigationFooter</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -117,10 +147,7 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>targetLabel</assignToReference>
-                <name>selectedTarget</name>
-            </outputParameters>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -137,7 +164,7 @@
             <targetReference>Navigate_Based_on_Button_Click</targetReference>
         </connector>
         <fields>
-            <name>screen2Header</name>
+            <name>navPath2</name>
             <extensionName>c:directNavigationHeader</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -172,7 +199,7 @@
             <targetReference>Navigate_Based_on_Button_Click</targetReference>
         </connector>
         <fields>
-            <name>screen3Header</name>
+            <name>navHeader3</name>
             <extensionName>c:directNavigationHeader</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
@@ -182,10 +209,7 @@
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
-            <outputParameters>
-                <assignToReference>targetLabel</assignToReference>
-                <name>selectedTarget</name>
-            </outputParameters>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
             <name>disp3</name>
@@ -199,7 +223,7 @@
         <locationX>490</locationX>
         <locationY>48</locationY>
         <connector>
-            <targetReference>Screen1</targetReference>
+            <targetReference>Build_Test_String_Collection</targetReference>
         </connector>
     </start>
     <status>Draft</status>
@@ -207,6 +231,13 @@
         <name>targetLabel</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testStringCollection</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>

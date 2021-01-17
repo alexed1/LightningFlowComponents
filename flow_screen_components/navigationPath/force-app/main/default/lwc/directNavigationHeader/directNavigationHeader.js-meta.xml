@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen" >
+            <property name="targetStringCollection" label="Target String Collection" type="String[]" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
+            <property name="targetStringCSV" label="Target String CSV" type="String" role="inputOnly" description="These strings will be used both for what the user sees in the button bar and the value that is passed out of the button bar when the user clicks"/>
+            <property name="selectedTarget" label="Selected Target" type="String" role="outputOnly" description="The label of the button that the user clicked on"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

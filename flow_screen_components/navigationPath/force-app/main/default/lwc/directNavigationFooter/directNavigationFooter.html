@@ -1,0 +1,11 @@
+<template>
+    <hr>
+    <lightning-button-group class='buttonBar'>
+        <template if:true={showPrevButton}>
+            <lightning-button label={prevButtonLabel} title='PreviousButton' onclick={handleButtonClick} class='customButton'></lightning-button>
+        </template>
+        <template if:true={showNextButton}>
+             <lightning-button label={nextButtonLabel} title='NextButton' onclick={handleButtonClick} class='customButton'></lightning-button>
+        </template>
+    </lightning-button-group>
+</template>

@@ -203,6 +203,14 @@
     </lightning-input>
     <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox"
+        name="select_showRowNumbers"
+        label={inputValues.showRowNumbers.label} 
+        checked={inputValues.showRowNumbers.value} 
+        field-level-help={inputValues.showRowNumbers.helpText}
+        onchange={handleValueChange}>
+    </lightning-input>
+    <lightning-input class="slds-m-vertical_xx-small"
+        type="checkbox"
         name="select_tableBorder"
         label={inputValues.tableBorder.label} 
         checked={inputValues.tableBorder.value} 

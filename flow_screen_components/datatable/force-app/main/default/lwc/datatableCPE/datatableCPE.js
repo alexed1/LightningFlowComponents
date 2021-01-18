@@ -335,6 +335,8 @@ export default class DatatableCPE extends LightningElement {
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
+        showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
+            helpText: 'Display a row number column as the first column in the table.'},            
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
         singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
@@ -392,6 +394,7 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
                 {name: 'maxNumberOfRows'},
+                {name: 'showRowNumbers'},
                 {name: 'tableBorder'},
             ]
         },

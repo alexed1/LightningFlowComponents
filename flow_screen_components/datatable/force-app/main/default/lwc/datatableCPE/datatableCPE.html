@@ -155,42 +155,40 @@
 
     <!-- Table Header -->
     <div class="slds-box slds-box_x-small slds-m-top_small">
-        <div if:true={isObjectSelected}>
-            <!-- Display Header Checkbox -->
-            <lightning-input class="slds-m-vertical_xx-small"
-                type="checkbox"
-                name="select_isDisplayHeader"
-                label={inputValues.isDisplayHeader.label} 
-                checked={inputValues.isDisplayHeader.value} 
-                field-level-help={inputValues.isDisplayHeader.helpText}
-                onchange={handleValueChange}>
-            </lightning-input>
-            <c-fsc_flow-combobox 
-                name="select_tableLabel" 
-                label={inputValues.tableLabel.label}
-                value={inputValues.tableLabel.value} 
-                value-type={inputValues.tableLabel.valueDataType}
-                field-level-help={inputValues.tableLabel.helpText}
-                disabled={disallowHeaderChange}
-                builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}>
-            </c-fsc_flow-combobox>
-            <c-fsc_flow-combobox 
-                name="select_tableIcon" 
-                label={inputValues.tableIcon.label}
-                value={inputValues.tableIcon.value} 
-                value-type={inputValues.tableIcon.valueDataType}
-                field-level-help={inputValues.tableIcon.helpText}
-                disabled={disallowHeaderChange}
-                builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}>
-            </c-fsc_flow-combobox>
-            <c-fsc_pick-icon
-                oniconselection={handlePickIcon}>
-            </c-fsc_pick-icon>
-        </div>
+        <!-- Display Header Checkbox -->
+        <lightning-input class="slds-m-vertical_xx-small"
+            type="checkbox"
+            name="select_isDisplayHeader"
+            label={inputValues.isDisplayHeader.label} 
+            checked={inputValues.isDisplayHeader.value} 
+            field-level-help={inputValues.isDisplayHeader.helpText}
+            onchange={handleValueChange}>
+        </lightning-input>
+        <c-fsc_flow-combobox 
+            name="select_tableLabel" 
+            label={inputValues.tableLabel.label}
+            value={inputValues.tableLabel.value} 
+            value-type={inputValues.tableLabel.valueDataType}
+            field-level-help={inputValues.tableLabel.helpText}
+            disabled={disallowHeaderChange}
+            builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+        <c-fsc_flow-combobox 
+            name="select_tableIcon" 
+            label={inputValues.tableIcon.label}
+            value={inputValues.tableIcon.value} 
+            value-type={inputValues.tableIcon.valueDataType}
+            field-level-help={inputValues.tableIcon.helpText}
+            disabled={disallowHeaderChange}
+            builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox>
+        <c-fsc_pick-icon
+            oniconselection={handlePickIcon}>
+        </c-fsc_pick-icon>
     </div>
 
     <!-- Other Table Formatting -->
@@ -499,5 +497,9 @@
         builder-context={_builderContext} 
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
+
+    <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">
+        Datatable Version #: {versionNumber}
+    </div>
 
 </template>

@@ -3,19 +3,17 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.8
+ * VERSION:             3.x.x
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-const VERSION_NUMBER = '3.0.8';
-
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { getConstants } from 'c/datatableUtils';
 
-const MAXROWCOUNT = 1000;   // Limit the total number of records to be handled by this component
-const ROUNDWIDTH = 5;       // Used to round off the column widths during Config Mode to nearest value
+const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 
@@ -45,6 +43,7 @@ export default class Datatable extends LightningElement {
     @api isRequired;
     @api isConfigMode;
     @api hideCheckboxColumn;
+    @api showRowNumbers = false;
     @api singleRowSelection;
     @api suppressBottomBar = false;
     @api suppressNameFieldLink = false;
@@ -199,7 +198,7 @@ export default class Datatable extends LightningElement {
         // Display the component version number in the console log
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
-        console.log("%cdatatable VERSION_NUMBER: %c"+VERSION_NUMBER, logStyleText, logStyleNumber);
+        console.log("%cdatatable VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
 
         // Decode config mode attributes
@@ -238,13 +237,13 @@ export default class Datatable extends LightningElement {
         }
 
         // Restrict the number of records handled by this component
-        let min = Math.min(MAXROWCOUNT, this.maxNumberOfRows);
+        let min = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
         if (this.tableData.length > min) {
             this.tableData = [...this.tableData].slice(0,min);
         }
 
         // Set roundValue for setting Column Widths in Config Mode
-        this.roundValueLabel = `Snap each Column Width to the Nearest ${ROUNDWIDTH} pixel Boundary`;
+        this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
 
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
@@ -570,7 +569,7 @@ export default class Datatable extends LightningElement {
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';
                 this.basicColumns = JSON.parse(this.dtableColumnFieldDescriptorString);
-                console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString,this.basicColumns);
+                console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
                 
                 // Update row data for lookup, time, picklist and percent fields
@@ -1305,7 +1304,7 @@ export default class Datatable extends LightningElement {
         // Round the Width values to the nearest ROUNDWIDTH 
         let widths = [];     
         this.columnWidthValues.forEach(w => {
-            widths.push(Math.round(w/ROUNDWIDTH)*ROUNDWIDTH);
+            widths.push(Math.round(w/CONSTANTS.ROUNDWIDTH)*CONSTANTS.ROUNDWIDTH);
         });
         this.setWidth(widths);
         this.columns = [...this.columns];

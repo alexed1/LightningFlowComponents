@@ -15,6 +15,7 @@ Additional components packaged with this LWC:
                                     datatableCPE
                                     screenFlow
                                     displayError
+                                    datatableUtils
 
                     Flows:          Datatable_Configuration_Wizard
 
@@ -59,6 +60,17 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 # Release Notes
+## xx/xx/21 -  Eric Smith -    Version 3.0.9 
+**Updates:** 
+-   Add option to Display Row Numbers (default=false)
+-   Allow setting of Table Header for Apex Defined Objects
+-   Display the current Version # at the bottom of the CPE
+  
+**Bug Fixes:**
+-   Allow a TypeAttribute to set the Minimum number of decimal places to display to be less than the field default
+-   Fix initial attribute display in the CPE when using an Apex Defined Object
+-   Fix attribute corruption when updating multiple times
+  
 ## 01/08/21 -  Eric Smith -    Version 3.0.8 
 **Updates:** 
 -   Relocate to correct packaging org

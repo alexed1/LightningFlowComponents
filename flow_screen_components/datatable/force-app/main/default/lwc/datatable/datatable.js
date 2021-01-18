@@ -889,6 +889,8 @@ export default class Datatable extends LightningElement {
                 this.typeAttrib.type = 'url';
                 fieldName = fieldName + '_lookup';
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
+                editAttrib.edit = false;       // Do not allow a lookup to be editable
+                this.isAllEdit = false;
                 this.cellAttributes.wrapText = true;
                 if(!!wrapAttrib) {
                     wrapAttrib.wrap = true;

@@ -333,12 +333,12 @@ public without sharing class SendBetterEmail {
                 ) {
                     mail.setOrgWideEmailAddressId(orgWideEmailAddressId);
                 } else {
-                    // Specify the address used when the recipients reply to the email.
-                    mail.setReplyTo(replyEmailAddress);
-
                     // Specify the name used as the display name.
                     mail.setSenderDisplayName(senderDisplayName);
                 }
+		
+		// Specify the address used when the recipients reply to the email.
+                mail.setReplyTo(replyEmailAddress);
 
                 // Specify the subject line for your email address.
                 mail.setSubject(subject);

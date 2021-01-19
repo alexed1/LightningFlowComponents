@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Sales Cloud Trail Pre-configured Dashboards Guide</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Get the Guide</actionButtonLabel>
+        <actionButtonLink>https://org62.my.salesforce.com/sfc/p/000000000062/a/0M000000kCCa/Bc5kj4O9SKaBh0AoQ9rNRvqe8VfVVzcgpeJWeGh77Yk</actionButtonLink>
+        <body>The dashboards in your Preconfigured Sales Dashboards folder are designed to deliver real-time insights for your team. Read this guide to learn how to take advantage of your dashboards.</body>
+        <customApplication>standard__LightningSales</customApplication>
+        <delayDays>1</delayDays>
+        <dismissButtonLabel>Dismiss</dismissButtonLabel>
+        <displayPosition>TopCenter</displayPosition>
+        <displayType>FloatingPanel</displayType>
+        <isPublished>true</isPublished>
+        <masterLabel>Sales Cloud Trail Pre-configured Dashboards Guide</masterLabel>
+        <publishedDate>2020-10-08</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>Dashboard</targetPageKey1>
+        <targetPageKey2>home</targetPageKey2>
+        <targetPageType>standard__objectPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Get insights with dashboards</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

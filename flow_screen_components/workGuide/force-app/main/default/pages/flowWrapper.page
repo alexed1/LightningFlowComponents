@@ -1,7 +1,7 @@
 <apex:page id="flowWrapper" showHeader="false" sidebar="false" lightningStylesheets="true">
     <html>
     <head>
-        <apex:includeLightning/>
+        <apex:includeLightning />
     </head>
     <body class="slds-scope">
     <div id="flowContainer"/>

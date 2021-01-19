@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Release Readiness Sales</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://admin.salesforce.com/release-resources</actionButtonLink>
+        <body>Check out the one-stop shop for all the admin resources you&apos;ll need to learn about the upcoming release. Find Trailhead modules, release notes, webinars, and more to help you prepare your org and users.</body>
+        <customApplication>standard__LightningSales</customApplication>
+        <delayDays>3</delayDays>
+        <dismissButtonLabel>Dismiss</dismissButtonLabel>
+        <displayPosition>TopCenter</displayPosition>
+        <displayType>FloatingPanel</displayType>
+        <isPublished>true</isPublished>
+        <masterLabel>Release Readiness Sales</masterLabel>
+        <publishedDate>2020-11-12</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2021-04-20</startDate>
+        <targetPageKey1>home</targetPageKey1>
+        <targetPageType>standard__namedPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Get ready for the next release</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

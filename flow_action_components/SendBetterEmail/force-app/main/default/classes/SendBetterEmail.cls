@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-16-2020
+ * @Last Modified On	: 11-29-2020
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -19,16 +19,9 @@
  * 2.00.00	8/02/2020	Jack Pond, Mohith		SendBetterEmail - Optimize Bulkification #445
  * 2.00.02	8/15/2020	Jack Pond, Mohith		Modified for coverage testing
  * 2.00.02	8/16/2020	Jack Pond				Corrected singleEmail recipient name for templateTargetId
+ * 2.00.02	10-06-2020	Jack Pond				Reverted naming, fixed bugs
+ * 2.00.03  11-28-2020  Jack Pond               Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  *
- * Done:
- * #320 sendBetterEmail - Activity History Redesign?
- * #351 sendBetterEmail - Address bulkification consistent with Apex Gov Limits
- * #354 sendBetterEmail - Limit Class test to 2 OrgWideEmailAddresses
- * #355 sendBetterEmail - Separate Email Activity from Email Task Activity
- * #378 sendBetterEmail - Allow selection of email template by name as well as by TemplateId
- * #392 sendBetterEmail - Return the Activity TaskId added
- * #342 sendBetterEmail CPE For Summer '20 Release
- * #445 SendBetterEmail - Optimize Bulkification
  **/
 
 public without sharing class SendBetterEmail {
@@ -98,18 +91,18 @@ public without sharing class SendBetterEmail {
         String localeKey = SendBetterEmailConstant.getOrganization();
 
         // Cache Query results for Templates
-        mapTemplateNameByEmailTemplates = SendEmailUtil.getMapTemplateNameByEmailTemplates(
+        mapTemplateNameByEmailTemplates = sendBetterEmailUtil.getMapTemplateNameByEmailTemplates(
             templateNames,
             mapIdByEmailTemplate
         );
 
         // Cache Query results for ContentDocument Ids
-        mapContentDocumentIdByContentVersion = SendEmailUtil.getMapContentDocumentIdByContentVersions(
+        mapContentDocumentIdByContentVersion = sendBetterEmailUtil.getMapContentDocumentIdByContentVersions(
             contentDocumentIds
         );
 
         // Cache a Map of targetObjectIds(Contact, Lead, User or other Custom Objects)
-        mapRecordIdByName = SendEmailUtil.getMapRecordIdByName(
+        mapRecordIdByName = sendBetterEmailUtil.getMapRecordIdByName(
             listTargetObjectIds
         );
 
@@ -135,10 +128,10 @@ public without sharing class SendBetterEmail {
                 ? 'singleEmail'
                 : curRequest.emailMessageType;
 
-            Boolean useSalesforceSignature = curRequest.useSalesforceSignature ==
+            Boolean UseSalesforceSignature = curRequest.UseSalesforceSignature ==
                 null
-                ? true
-                : curRequest.useSalesforceSignature;
+                ? false
+                : curRequest.UseSalesforceSignature;
 
             Boolean bcc = curRequest.bcc == null ? false : curRequest.bcc; // default to false
 
@@ -162,7 +155,7 @@ public without sharing class SendBetterEmail {
 	
 				setBccSender(bcc)
 				setReplyTo(replyAddress)
-				setTemplateID(templateId)
+				setTemplateID(templateID)
 				setSaveAsActivity(saveAsActivity)
 				setSenderDisplayName(displayName)
 				setUseSignature(useSignature)
@@ -192,7 +185,7 @@ public without sharing class SendBetterEmail {
                 //	setSaveAsActivity(saveAsActivity)
                 //	setSenderDisplayName(displayName)
                 //	setTargetObjectIds(targetObjectIds)
-                //	setTemplateID(templateId)
+                //	setTemplateID(templateID)
                 //	setUseSignature(useSignature)
                 //	setWhatIds(whatIds)
                 Messaging.MassEmailMessage mmail = new Messaging.MassEmailMessage();
@@ -247,27 +240,27 @@ public without sharing class SendBetterEmail {
                         }
                     }
                 }
-                //	setTemplateID(templateId)
+                //	setTemplateID(templateID)
                 if (thisResponse.errors == null) {
                     if (
                         thisResponse.errors == null &&
                         (templateName != null &&
                         templateID != null)
                     ) {
-                        thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).';
+                        thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateID represents a specific Salesforce Email Template (either Classic or Lightning).';
                     }
                     if (curRequest.templateID == null) {
                         if (curRequest.templateName == null) {
                             thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
                         } else {
-                            templateId = SendEmailUtil.gettemplateIdFromName(
+                            templateID = sendBetterEmailUtil.getTemplateIDFromName(
                                 templateName,
                                 templateLanguage,
                                 mapTemplateNameByEmailTemplates,
                                 localeKey
                             );
-                            if (templateId != null) {
-                                mmail.setTemplateID(TemplateId);
+                            if (templateID != null) {
+                                mmail.setTemplateID(templateID);
                             } else {
                                 thisResponse.errors = 'An Email template with the specified template name could not be found';
                             }
@@ -279,9 +272,9 @@ public without sharing class SendBetterEmail {
                 //	setUseSignature(useSignature)
                 if (thisResponse.errors == null) {
                     mmail.setUseSignature(
-                        curRequest.useSalesforceSignature == null
+                        curRequest.UseSalesforceSignature == null
                             ? false
-                            : curRequest.useSalesforceSignature
+                            : curRequest.UseSalesforceSignature
                     );
                 }
 
@@ -311,16 +304,16 @@ public without sharing class SendBetterEmail {
                     : curRequest.setSaveAsActivity;
                 // Strings to hold the email addresses to which you are sending the email.
                 //String[] toAddresses = new String[] {oneAddress};
-                Map<String, Object> m = SendEmailUtil.generateMap(curRequest);
-                curRequest.toAddresses = SendEmailUtil.buildAddressList(
+                Map<String, Object> m = sendBetterEmailUtil.generateMap(curRequest);
+                curRequest.toAddresses = sendBetterEmailUtil.buildAddressList(
                     'TO',
                     m
                 );
-                curRequest.ccAddresses = SendEmailUtil.buildAddressList(
+                curRequest.ccAddresses = sendBetterEmailUtil.buildAddressList(
                     'CC',
                     m
                 );
-                curRequest.bccAddresses = SendEmailUtil.buildAddressList(
+                curRequest.bccAddresses = sendBetterEmailUtil.buildAddressList(
                     'BCC',
                     m
                 );
@@ -356,8 +349,13 @@ public without sharing class SendBetterEmail {
                 // Optionally append the salesforce.com email signature to the email.
                 // The email address of the user executing the Apex Code will be used.
                 // True by default unless the user passes a value in.
-                mail.setUseSignature(useSalesforceSignature);
-                mail = SendBetterEmailAddAttachmentToEmail.addAttachments(
+				mail.setUseSignature(
+					curRequest.UseSalesforceSignature == null
+						? false
+						: curRequest.UseSalesforceSignature
+				);
+
+				mail = SendBetterEmailAddAttachmentToEmail.addAttachments(
                     mail,
                     curRequest.contentDocumentAttachments,
                     mapContentDocumentIdByContentVersion
@@ -368,40 +366,40 @@ public without sharing class SendBetterEmail {
                     (templateName != null &&
                     templateID != null)
                 ) {
-                    thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateId represents a specific Salesforce Email Template (either Classic or Lightning).';
+                    thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateID represents a specific Salesforce Email Template (either Classic or Lightning).';
                 }
 
                 if (thisResponse.errors == null && templateName != null) {
-                    templateId = SendEmailUtil.gettemplateIdFromName(
+                    templateID = sendBetterEmailUtil.getTemplateIDFromName(
                         templateName,
                         templateLanguage,
                         mapTemplateNameByEmailTemplates,
                         localeKey
                     );
-                    if (templateId == null) {
+                    if (templateID == null) {
                         thisResponse.errors =
                             'Could not find email template named "' +
                             templateName +
                             '".  Please have your administrator check the name and/or accessibility of this template';
                     }
-                    thisResponse.templateUsed = TemplateId;
+                    thisResponse.templateUsed = templateID;
                 }
 
                 if (
                     thisResponse.errors == null &&
-                    (templateId != null &&
+                    (templateID != null &&
                     ((HTMLbody != null) || (plainTextBody != null)))
                 ) {
-                    thisResponse.errors = 'You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateId, which represents a Salesforce Email Template (either Classic or Lightning).';
+                    thisResponse.errors = 'You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateID, which represents a Salesforce Email Template (either Classic or Lightning).';
                 }
 
                 if (
                     thisResponse.errors == null &&
-                    (TemplateId == null &&
+                    (templateID == null &&
                     HTMLbody == null &&
                     plainTextBody == null)
                 ) {
-                    thisResponse.errors = 'Body text must be provided to Send Better Email Action, either via HTMLbody, plainTextBody, or a templateId';
+                    thisResponse.errors = 'Body text must be provided to Send Better Email Action, either via HTMLbody, plainTextBody, or a templateID';
                 }
 
                 if (
@@ -434,10 +432,10 @@ public without sharing class SendBetterEmail {
                     mail.setSaveAsActivity(curRequest.setSaveAsActivity);
                 }
 
-                if (templateId != null) {
+                if (templateID != null) {
                     try {
-                        mail.setTemplateId(templateId);
-                        thisResponse.templateUsed = templateId;
+                        mail.setTemplateID(templateID);
+                        thisResponse.templateUsed = templateID;
                     } catch (Exception e) {
                         thisResponse.isSuccess = false;
                         thisResponse.errors = e.getMessage();
@@ -488,7 +486,7 @@ public without sharing class SendBetterEmail {
                     Schema.User.sObjectType)
                 ) {
                     response.isSuccess = false;
-                    response.errors = SendEmailUtil.getErrorString(
+                    response.errors = sendBetterEmailUtil.getErrorString(
                         emailResult.getErrors()
                     );
                 } else {
@@ -550,7 +548,7 @@ public without sharing class SendBetterEmail {
                     Schema.User.sObjectType)
                 ) {
                     response.isSuccess = false;
-                    response.errors = SendEmailUtil.getErrorString(
+                    response.errors = sendBetterEmailUtil.getErrorString(
                         emailResult.getErrors()
                     );
                 } else {
@@ -605,7 +603,7 @@ public without sharing class SendBetterEmail {
                     'Task Insert failed for RecordId ' +
                     taskRecord.whatId +
                     ' with error ' +
-                    SendEmailUtil.getDatabaseErrorString(taskResult.getErrors())
+                    sendBetterEmailUtil.getDatabaseErrorString(taskResult.getErrors())
                 );
             }
         }

@@ -7,6 +7,7 @@ export default class FlexcardFlow extends LightningElement {
     @api selectedLabel;
     @api records;
     @api visibleFieldNames;
+    @api visibleFlowNames;
     @api src;
     @api icon;
     @track fieldHTML='';

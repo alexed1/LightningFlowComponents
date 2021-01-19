@@ -1,3 +1,4 @@
+@JsonAccess(serializable='always' deserializable='always')
 global with sharing class FormulaEvaluator {
 
     global static String parseFormula(String formula, String context) {
@@ -463,7 +464,8 @@ global with sharing class FormulaEvaluator {
 
         context.outputString = context.outputString.replaceAll('\\s+', ' ');
     }
-
+    
+    @JsonAccess(serializable='always' deserializable='always')
     global class ContextWrapper {
         global String name;
         global String value;

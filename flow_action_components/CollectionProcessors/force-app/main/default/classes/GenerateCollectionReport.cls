@@ -4,6 +4,7 @@ global with sharing class GenerateCollectionReport {
     public static String headerStyleString;
     public static String rowStyleString;
     public static Boolean hideHeader;
+    
 
     @InvocableMethod
     global static List<Results> generateReport(List<Requests> requestList) {
@@ -129,7 +130,6 @@ global with sharing class GenerateCollectionReport {
         }
         return reportString;
     }
-
     global class Requests {
         @InvocableVariable 
         global List<SObject> inputCollection;

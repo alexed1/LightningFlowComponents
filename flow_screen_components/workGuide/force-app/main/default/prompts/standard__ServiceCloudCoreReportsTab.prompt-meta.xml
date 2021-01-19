@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Service Cloud Core Reports Tab</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://help.salesforce.com/articleView?id=analytics_overview.htm</actionButtonLink>
+        <body>&lt;p&gt;Learn how to analyze data, track progress, inform stakeholders, and make the right decisions with reports and dashboards.&lt;/p&gt;</body>
+        <customApplication>standard__Service</customApplication>
+        <delayDays>3</delayDays>
+        <displayType>DockedComposer</displayType>
+        <header>Admin Setup Tip</header>
+        <isPublished>true</isPublished>
+        <masterLabel>Service Cloud Core Reports Tab</masterLabel>
+        <publishedDate>2020-11-11</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>Report</targetPageKey1>
+        <targetPageKey2>home</targetPageKey2>
+        <targetPageType>standard__objectPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Explore reports and dashboards</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+        <videoLink>https://play.vidyard.com/qGpi4cPjtUWQ7XV1jT6xnM</videoLink>
+    </promptVersions>
+</Prompt>

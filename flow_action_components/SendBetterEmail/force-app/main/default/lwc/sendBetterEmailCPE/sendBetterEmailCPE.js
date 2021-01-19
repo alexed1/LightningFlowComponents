@@ -5,11 +5,15 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 08-31-2020
+ * @Last Modified On	: 11-29-2020
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
  * 2.00.02	08-31-2020	Jack D. Pond		#469 thisOneEmailAddress failing when assigned to string
+ * 2.00.02	09-02-2020	Jack D. Pond		#478 unchecked value sets to null when changed to false 
+ * 2.00.02	09-02-2020	Jack D. Pond		#481 allow flow formulas (string) to be selected in flow combo boxes 
+ * 2.00.02	10-06-2020	Jack D. Pond		Reverted naming, fixed bugs
+ * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  * 
  **/
 import {api, track, LightningElement} from 'lwc';
@@ -234,10 +238,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 				}
 			}
 		});
-		let stringVariables = flowContext.variables.filter(curValue => {
-			return curValue.dataType === 'String' && curValue.isCollection
-		});
-
 
 		allowedTypes.forEach(curType => {
 			if (curType === 'String'){
@@ -249,11 +249,22 @@ export default class SendBetterEmailCPE extends LightningElement {
 					return curValue.dataType === curType && !curValue.isCollection
 				});
 				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+				allVariables = flowContext.formulas.filter(curValue => {
+					return curValue.dataType === curType && !curValue.isCollection
+				});
+				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
 			} else {
 				let allVariables = flowContext.variables.filter(curValue => {
 					return curValue.dataType === 'SObject' && curValue.objectType === curType
 				});
 				this.addToOutputTypes(outputTypes,allVariables,curType,true);
+			}
+			if (!(this.settings.stringVariablesOption in outputTypes)){
+				outputTypes[this.settings.stringVariablesOption] = {
+					data: [],
+					valueFieldName: 'name',
+					labelFieldName: 'name'
+				}
 			}
 		});
 		this.convertedFlowContext = outputTypes;
@@ -313,7 +324,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			composed: true,
 			detail: {
 				name: id,
-				newValue: newValue ? newValue : null,
+				newValue: newValue ? newValue : (newValueDataType === 'Boolean' ? newValue : null),
 				newValueDataType: newValueDataType
 			}
 		});

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Service Cloud Core Cases</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://help.salesforce.com/articleView?id=basics_list_views_lex_best_practices.htm</actionButtonLink>
+        <body>&lt;p&gt;Find customer information, close cases faster, and build stronger customer relationships with list views. Customize and optimize case list views for yourself and your users. Then, use what you learned when interacting with list views on other objects.&lt;/p&gt;</body>
+        <customApplication>standard__Service</customApplication>
+        <delayDays>3</delayDays>
+        <displayType>DockedComposer</displayType>
+        <header>Admin Setup Tip</header>
+        <isPublished>true</isPublished>
+        <masterLabel>Service Cloud Core Cases</masterLabel>
+        <publishedDate>2020-11-11</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>Case</targetPageKey1>
+        <targetPageKey2>list</targetPageKey2>
+        <targetPageType>standard__objectPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Learn how to work with customer data</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+        <videoLink>https://play.vidyard.com/jEZ9QGzY2brdBgvBmwNwF7</videoLink>
+    </promptVersions>
+</Prompt>

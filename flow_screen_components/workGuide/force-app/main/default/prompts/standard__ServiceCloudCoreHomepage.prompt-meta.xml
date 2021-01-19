@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Service Cloud Core Homepage</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://help.salesforce.com/articleView?id=admin_home_lex_intro.htm</actionButtonLink>
+        <body>Discover how easily your users can see what’s on their plate, find answers, and keep tasks from falling through the cracks. Then, learn how to customize the page for different types of users.</body>
+        <customApplication>standard__Service</customApplication>
+        <delayDays>3</delayDays>
+        <description>Discover how easily your users can see what’s on their plate, find answers, and keep tasks from falling through the cracks. Then, learn how to customize the page for different types of users.</description>
+        <dismissButtonLabel>Dismiss</dismissButtonLabel>
+        <displayPosition>TopCenter</displayPosition>
+        <displayType>FloatingPanel</displayType>
+        <isPublished>true</isPublished>
+        <masterLabel>Service Cloud Core Homepage</masterLabel>
+        <publishedDate>2020-10-08</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>home</targetPageKey1>
+        <targetPageType>standard__namedPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Help users organize their day</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+    </promptVersions>
+</Prompt>

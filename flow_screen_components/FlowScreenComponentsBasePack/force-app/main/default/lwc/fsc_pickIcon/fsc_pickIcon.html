@@ -1,0 +1,85 @@
+<!-- 
+    
+Lightning Web Component for Flow Screens & CPE:     fsc_pickIcon
+
+This component allows the user to display and select a Salesforce icon
+
+    Additional components packaged with this LWC:
+
+                        Lightning Web Components:   fsc_searchableDataTable
+
+                        Apex Classes:               
+
+                        Flows:                      
+
+                        Apex Pages:                 
+
+                        Custom Applications:        
+
+CREATED BY:         Eric Smith
+
+CREDITS:            Based on code in a Salesforce Labs App (Activity Timeline)
+                    https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000G0yN3UAJ
+
+VERSION:            1.0.0
+
+RELEASE NOTES:      
+
+12/29/20 -          Eric Smith -    Version 1.0.0
+
+-->
+
+<template>
+    <div class=slds-form-element>
+        <div class="slds-form-element__control">
+            <label class="slds-form-element__label" style="width: 100%;">Icon Picker
+                <lightning-tabset>
+                    <lightning-tab style={tabStyle}
+                        label="SELECT TYPE"
+                        title="Select one of the 4 tabs to the right to pick an Icon Type">
+                    </lightning-tab>
+                    <lightning-tab
+                        label="Standard Icons" 
+                        icon-name="standard:case"
+                        title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                        <div style={tabHeight}>
+                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={standardIcons}
+                                columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
+                            </c-fsc_searchable-data-table>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab 
+                        label="Action Icons" 
+                        icon-name="action:flow"
+                        title="Action icons are for use with quick actions on touch-screen devices">
+                        <div style={tabHeight}>
+                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={actionIcons}
+                                columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
+                            </c-fsc_searchable-data-table>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab 
+                        label="Custom Icons" 
+                        icon-name="custom:custom61"
+                        title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                        <div style={tabHeight}>
+                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={customIcons}
+                                columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
+                            </c-fsc_searchable-data-table>
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab 
+                        label="Utility Icons" 
+                        icon-name="utility:einstein"
+                        title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
+                        <div style={tabHeight}>
+                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={utilityIcons}
+                                columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
+                            </c-fsc_searchable-data-table>
+                        </div>
+                    </lightning-tab>
+                </lightning-tabset>
+            </label>
+        </div>    
+    </div>
+</template>

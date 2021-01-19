@@ -1,0 +1,22 @@
+<template>
+    <div class="slds-p-bottom_small">
+        <lightning-input type="text" placeholder={searchPlaceholder} onchange={filterRows}></lightning-input>
+    </div>
+    <div style={tableStyle} class={cssClass}>
+        <template if:false={isGettingIcons}>
+            <lightning-datatable key-field={keyField} data={dataForTable} columns={columns} onrowselection={onRowSelection}
+                column-widths-mode={columnWidthsMode} default-sort-direction={defaultSortDirection}
+                draft-values={draftValues} enable-infinite-loading={enableInfiniteLoading} errors={errors}
+                hide-checkbox-column={hideCheckboxColumn} hide-table-header={hideTable} is-loading={isLoading}
+                load-more-offset={loadMoreOffset} max-column-width={maxColumnWidth} max-row-selection={maxRowSelection}
+                min-column-width={minColumnWidth} resize-column-disabled={resizeColumnDisabled} resize-step={resizeStep}
+                row-number-offset={rowNumberOffset} selected-rows={selectedRows}
+                show-row-number-column={showRowNumberColumn} sorted-by={sortedBy} sorted-direction={sortedDirection}
+                suppress-bottom-bar={suppressBottomBar} wrap-text-max-lines={wrapTextMaxLines}>
+            </lightning-datatable>
+        </template>
+        <template if:true={isGettingIcons}>
+            <lightning-spinner></lightning-spinner>
+        </template>
+    </div>
+</template>

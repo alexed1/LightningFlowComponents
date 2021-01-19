@@ -1,5 +1,7 @@
 ## Installation Instructions ##
 
+This package is dependent on both [Flow Base BasePacks](https://unofficialsf.com/introducing-flow-basepacks/), FlowActionsBasePack and FlowScreenComponentsBasePack.  You must install both before installing sendBetterEmail!!!!
+
 1. Install/update [Flow Base Components](https://unofficialsf.com/introducing-flowbasecomponents "Flow Base Components").  This is a firm pre-requisite.
 2. Install the latest package found at [Send Rich Email (Send Better Email Action)](https://unofficialsf.com/send-rich-email-with-the-new-sendhtmlemail-action/).
 
@@ -29,3 +31,4 @@ This improved email flow action supports:
     - Mass Email Messaging Support
     - Activity Attachment for targeted recipient records
     - Task Attachments of email information for records related to the targeted recipient records
+    - Bulk Email

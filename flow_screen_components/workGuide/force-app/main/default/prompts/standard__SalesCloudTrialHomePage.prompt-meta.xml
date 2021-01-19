@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prompt xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Sales Cloud Trial Home Page</masterLabel>
+    <promptVersions>
+        <actionButtonLabel>Tell Me More</actionButtonLabel>
+        <actionButtonLink>https://help.salesforce.com/articleView?id=admin_home_lex_intro.htm</actionButtonLink>
+        <body>&lt;p&gt;See how the Home page helps you organize tasks, prioritize next steps, and track progress toward your goals.&lt;/p&gt;</body>
+        <customApplication>standard__LightningSales</customApplication>
+        <delayDays>1</delayDays>
+        <description>See how the Home page helps you organize tasks, prioritize next steps, and track progress toward your goals.</description>
+        <displayType>DockedComposer</displayType>
+        <header>Meet Your Home Page</header>
+        <isPublished>true</isPublished>
+        <masterLabel>Sales Cloud Trial Home Page</masterLabel>
+        <publishedDate>2020-11-17</publishedDate>
+        <shouldDisplayActionButton>true</shouldDisplayActionButton>
+        <shouldIgnoreGlobalDelay>false</shouldIgnoreGlobalDelay>
+        <startDate>2020-10-08</startDate>
+        <targetPageKey1>home</targetPageKey1>
+        <targetPageType>standard__namedPage</targetPageType>
+        <timesToDisplay>3</timesToDisplay>
+        <title>Organize your day with the Home page</title>
+        <uiFormulaRule>
+            <criteria>
+                <leftValue>{!$Permission.StandardPermission.CustomizeApplication}</leftValue>
+                <operator>EQUAL</operator>
+                <rightValue>TRUE</rightValue>
+            </criteria>
+        </uiFormulaRule>
+        <userAccess>SpecificPermissions</userAccess>
+        <userProfileAccess>Everyone</userProfileAccess>
+        <versionNumber>1</versionNumber>
+        <videoLink>https://play.vidyard.com/PGUReuuG8DHk7ED6cwYxwz</videoLink>
+    </promptVersions>
+</Prompt>

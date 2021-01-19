@@ -11,11 +11,11 @@ Additional components packaged with this LWC:
                                     SObjectController2 
                                     SObjectController2Test
 
-                    LWCs:           richDatatable
+                    LWCs:           datatableUtils
                                     datatableCPE
                                     screenFlow
                                     displayError
-                                    datatableUtils
+                                    richDatatable
 
                     Flows:          Datatable_Configuration_Wizard
 
@@ -67,7 +67,7 @@ In order to use **datatable**, permission must be given to access the following 
 -   Display the current Version # at the bottom of the CPE
   
 **Bug Fixes:**
--   Allow a TypeAttribute to set the Minimum number of decimal places to display to be less than the field default
+-   Allow a TypeAttribute to set the Maximum number of decimal places to display to be less than the field default Minimum
 -   Fix initial attribute display in the CPE when using an Apex Defined Object
 -   Fix attribute corruption when updating multiple times
   

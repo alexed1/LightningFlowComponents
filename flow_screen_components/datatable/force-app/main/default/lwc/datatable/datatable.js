@@ -889,8 +889,10 @@ export default class Datatable extends LightningElement {
                 this.typeAttrib.type = 'url';
                 fieldName = fieldName + '_lookup';
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
-                editAttrib.edit = false;       // Do not allow a lookup to be editable
-                this.isAllEdit = false;
+                if (editAttrib) {
+                    editAttrib.edit = false;       // Do not allow a lookup to be editable
+                    this.isAllEdit = false;
+                }
                 this.cellAttributes.wrapText = true;
                 if(!!wrapAttrib) {
                     wrapAttrib.wrap = true;
@@ -963,6 +965,14 @@ export default class Datatable extends LightningElement {
                         break;
                     case 'type':
                         this.typeAttributes[result['name']] = result['value'];
+                        // Check for MaximumFractionDigits override
+                        if (result['name'] == 'maximumFractionDigits') {
+                            let max = result['value'];
+                            let min = (this.typeAttributes.minimumFractionDigits) ? this.typeAttributes.minimumFractionDigits : 0;
+                            if (min > max) {
+                                delete this.typeAttributes.minimumFractionDigits
+                            }
+                        }
                         break;
                     default: // 'other'
                         this.cols[columnNumber][result['name']] = result['value'];
@@ -1617,4 +1627,5 @@ export default class Datatable extends LightningElement {
     setIsInvalidFlag(value) {
         this.isInvalid = value;
     }
+
 }

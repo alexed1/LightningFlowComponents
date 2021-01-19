@@ -166,6 +166,14 @@ export default class QuickChoiceFSC extends LightningElement {
         return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2' : 'slds-visual-picker slds-visual-picker_vertical';
     }
 
+    get cardSize() {
+        return this.dualColumns ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+    }
+
+    get responsiveSize() {
+        return this.dualColumns ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
+    }
+
     setPicklistOptions() {
         this.options = this.picklistOptionsStorage;
         if (this.selectedValue) {

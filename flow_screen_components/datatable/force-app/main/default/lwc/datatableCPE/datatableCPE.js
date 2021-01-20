@@ -393,6 +393,10 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
+                {name: defaults.customHelpDefinition,
+                    label: 'Icon Picker',
+                    helpText: 'Select More to show all Icon Types, Select an Icon Type tab to see a list of icons, Select any icon to update the Header Icon value, ' +
+                    'Select SELECT TYPE to hide the list of icons.'},
                 {name: 'maxNumberOfRows'},
                 {name: 'showRowNumbers'},
                 {name: 'tableBorder'},

@@ -11,10 +11,11 @@ Additional components packaged with this LWC:
                                     SObjectController2 
                                     SObjectController2Test
 
-                    LWCs:           richDatatable
+                    LWCs:           datatableUtils
                                     datatableCPE
                                     screenFlow
                                     displayError
+                                    richDatatable
 
                     Flows:          Datatable_Configuration_Wizard
 
@@ -42,8 +43,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.8 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWaQAK)   
-[Version 3.0.8 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWaQAK)
+[Version 3.0.9 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)   
+[Version 3.0.9 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -59,6 +60,17 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 # Release Notes
+## 01/19/21 -  Eric Smith -    Version 3.0.9 
+**Updates:** 
+-   Add option to Display Row Numbers (default=false)
+-   Allow setting of Table Header for Apex Defined Objects
+-   Display the current Version # at the bottom of the CPE
+  
+**Bug Fixes:**
+-   Allow a TypeAttribute to set the Maximum number of decimal places to display to be less than the field default Minimum
+-   Fix initial attribute display in the CPE when using an Apex Defined Object
+-   Fix attribute corruption when updating multiple times
+  
 ## 01/08/21 -  Eric Smith -    Version 3.0.8 
 **Updates:** 
 -   Relocate to correct packaging org

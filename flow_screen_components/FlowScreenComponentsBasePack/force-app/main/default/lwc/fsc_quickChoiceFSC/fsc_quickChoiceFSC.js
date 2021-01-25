@@ -31,6 +31,7 @@ export default class QuickChoiceFSC extends LightningElement {
     @api includeIcons;
     @api iconSize;
     @api navOnSelect;
+    @api isResponsive;
 
     //-------------For displayMode = Picklist or Radio
     @api style_width = 320;
@@ -167,11 +168,11 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get cardSize() {
-        return this.dualColumns ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        return (this.dualColumns || !this.isResponsive) ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
     }
 
     get responsiveSize() {
-        return this.dualColumns ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
+        return (this.dualColumns || !this.isResponsive) ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
     }
 
     setPicklistOptions() {

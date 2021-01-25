@@ -17,7 +17,7 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPEReturnResults';
 import { getConstants } from 'c/datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH
+const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
 const defaults = {
     tableBorder: true,

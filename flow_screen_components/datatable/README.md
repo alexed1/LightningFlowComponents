@@ -60,6 +60,13 @@ In order to use **datatable**, permission must be given to access the following 
     
 ---
 # Release Notes
+## xx/xx/21 -  Eric Smith -    Version 3.0.10 
+**Updates:** 
+-   Record links updated to support a Flow running in a Community
+  
+**Bug Fixes:**
+-   Fixed links when running in a Sandbox whose name started with the letter c
+  
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 
 -   Add option to Display Row Numbers (default=false)

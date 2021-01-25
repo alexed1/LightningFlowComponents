@@ -13,12 +13,10 @@ import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResul
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { getConstants } from 'c/datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH
+const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
-const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
-
-// Get domain url by replacing the last occurance of '--c' in the current url
-const MYDOMAIN = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
+const MYDOMAIN = CONSTANTS.MYDOMAIN;
+const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
 
 export default class Datatable extends LightningElement {
 
@@ -641,19 +639,26 @@ export default class Datatable extends LightningElement {
 
                     // Get the lookup field details
                     lookupFieldObject = this.lookupFieldArray.filter(obj => Object.keys(obj).some(key => obj[key].includes(lufield)))[0];
-
                     if (record[lufield]) {               
                         record[lufield + '_name'] = record[lufield][lookupFieldObject['nameField']];
                         record[lufield + '_id'] = record[lufield]['Id'];
                         // Add new column with correct Lookup urls
-                        record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
+                        if (ISCOMMUNITY) {
+                            record[lufield + '_lookup'] = MYDOMAIN + 'detail/' + record[lufield + '_id'];
+                        } else {
+                            record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
+                        }
                     }
                 }
             }); 
             
             // Handle Lookup for the SObject's "Name" Field
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
-            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';
+            if (ISCOMMUNITY) {
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
+            } else {
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
+            }
 
             // Handle replacement of Picklist API Names with Labels
             if (this.picklistReplaceValues) {

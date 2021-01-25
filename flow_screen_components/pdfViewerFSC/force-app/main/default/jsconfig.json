@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "baseUrl": ".",
+        "paths": {
+            "c/errorPanel": [
+                "errorPanel/errorPanel.js"
+            ],
+            "c/showPdfById": [
+                "showPdfById/showPdfById.js"
+            ],
+            "c/showPdfRelatedToRecordId": [
+                "showPdfRelatedToRecordId/showPdfRelatedToRecordId.js"
+            ]
+        }
+    },
+    "include": [
+        "**/*",
+        "../../../../.sfdx/typings/lwc/**/*.d.ts"
+    ],
+    "typeAcquisition": {
+        "include": [
+            "jest"
+        ]
+    }
+}

@@ -1,5 +1,7 @@
 # Formula Evaluator
 
+# See https://unofficialsf.com/formula-builder-expression-builder-and-formula-engine/
+
 Processes Salesforce-style formula strings and returns the result.
 
 This is wrapped around the formula engine written by Enreeco’s rich apex formula parser. (https://blog.enree.co/2015/08/salesforce-apex-formula-help-me-testing.html)  We took his engine and added the ability to include mergefields in formulas, and pass in context information at evaluation time, which replaces the mergefields prior to the formula being evaluated. This makes it possible to create formulas in tools like Flow Builder that include mergefields that won't get calculated until a later runtime.

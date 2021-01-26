@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Custom Header</masterLabel>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+    <targetConfigs>
+
+    <targetConfig targets="lightningCommunity__Default, lightning__HomePage, lightning__AppPage, lightning__FlowScreen">
+        <property label="Display as horizontal line?" 
+        name="displayAsHorizontalLine" 
+        type="Boolean" 
+        default="false"
+        description="If selected gets the highest priority and the header is displayed as a horizontal line. Once selected, control it by Banner Height and Banner Background-color" />
+        <property label="Is header text only?" 
+        name="isTextOnly" 
+        type="Boolean" 
+        default="true"/>
+        <property label="Banner Text" 
+        name="headerText" 
+        type="String" 
+        default="Banner Text Goes Here"/>
+        <property label="Banner Text Alignment" 
+        name="headerTextAlignment" 
+        type="String" 
+        default="center"
+        description="Valid inputs: left, center, right"/>
+        <property label="Display text as hyperlink?" 
+        name="isTextAHyperlink" 
+        type="Boolean" 
+        default="false"
+        description="Once selected, be sure to fill out the URL to redirect field with a valid URL"/>
+        <property label="Remove text-decoration for the link?" 
+        name="removeTextDecoration" 
+        type="Boolean" 
+        default="false"
+        description="Works with 'Display text as hyperlink?'"/>
+        <property label="Open link in new window?" 
+        name="linkTargetNewWindow" 
+        type="Boolean" 
+        default="false"
+        description="Works with 'Display text as hyperlink?'"/>
+        <property label="Order Number" 
+        name="orderNumber" 
+        type="String"
+        description="when using the header multiple times on the same page, make sure that order number has different values for each header so that the styling gets applied accordingly"/>
+        <property label="URL to redirect" 
+        name="urlToRedirect" 
+        type="String"/>
+        
+
+        <property label="Header has text (left aligned) and image (right aligned)" 
+        name="isTextLeftImageRight" 
+        type="Boolean" 
+        default="false"/>
+
+        <property label="Header has image and text (with image on left of text)" 
+        name="isTextAndImageOnLeftOfText" 
+        type="Boolean" 
+        default="false"/>
+
+        <property label="Image Name"
+        description="provide lightning icon name like utility:add or image name stored as a static resource(public). Utility:add here is a lightning icon. Visit https://lightningdesignsystem.com/icons/ for lightning icons." 
+        name="imageName" 
+        type="String" 
+        default="utility:add"/>
+
+        <property label="Is image a Lightning Icon?" 
+        name="imageIsALightningIcon" 
+        type="Boolean" 
+        default="false"
+        description="Gets priority over- 'Is image a static resource' if both are selected"/>
+        <property label="Lightning Icon Size" 
+        name="iconSize" 
+        type="String" 
+        default="medium"
+        description="Valid inputs: xx-small, x-small, small, medium, or large."/>
+        <property label="Icon Margin" 
+        name="iconPadding" 
+        type="String" 
+        default="0px 7px 0px 0px"
+        description="Provide margin to include space between icon and text-useful when the icon is left aligned and text follows the icon"/>
+        
+        <property label="Is image a static resource?" 
+        name="imageIsAStaticResource" 
+        type="Boolean" 
+        default="false"/>
+        <property label="Static Resource Image Width" 
+        name="staticResourceImageWidth" 
+        type="String"/>
+        
+        <property label="Static Resource Image Height" 
+        name="staticResourceImageHeight" 
+        type="String"/>
+        
+        
+
+        <property label="Banner Height" 
+        name="headerHeight" 
+        type="String" 
+        default="10"/>
+        <property label="Banner Background Color" 
+        name="headerBgColor" 
+        type="String" 
+        default="rgb(243, 242, 242)"
+        description="Use any- #hexcode or RGB(0, 0, 0) or color name"/>
+        <property label="Banner Text Color (#000000)" 
+        name="headerTxtColor" 
+        type="String" 
+        default="Black"/>
+        <property label="Banner Text Font Style (provide 3 separated by ;)" 
+        name="headerTxtFont" 
+        type="String" 
+        default="Arial"/>
+        <property label="Banner Text Font Size" 
+        name="headerTxtSize" 
+        type="String" 
+        default="medium"
+        description="Valid inputs: xx-small, x-small, small, medium, or large."/>
+        <property label="Banner Border Radius (in px)" 
+        name="headerBrdrRadius" 
+        type="String" 
+        default="12"/>
+        <property label="Banner Border" 
+        name="headerBrdr" 
+        type="String" 
+        default="12px Solid Red"
+        description="include width, style (required) and color, example- 0px 0px 5px 0px dotted red;"/>
+        <property label="Banner Margin" 
+        name="headerMargin" 
+        type="String" 
+        default="5px 5px 5px 5px"/>
+        <property label="Banner Padding" 
+        name="headerPadding" 
+        type="String" 
+        default="5px 5px 5px 5px"/>
+
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <property label="Display for Record Id?" 
+        name="displayForRecordId" 
+        type="String" 
+        default="a4l3t000000qUBVAA2"
+        description="To show the banner for a particular record, update the field value with recordId (from URL). Else leave it blank to display the banner on all records"/>
+       
+        <property label="Display as horizontal line?" 
+        name="displayAsHorizontalLine" 
+        type="Boolean" 
+        default="false"
+        description="If selected gets the highest priority and the header is displayed as a horizontal line. Once selected, control it by Banner Height and Banner Background-color" />
+        <property label="Is header text only?" 
+        name="isTextOnly" 
+        type="Boolean" 
+        default="true"/>
+        <property label="Banner Text" 
+        name="headerText" 
+        type="String" 
+        default="Banner Text Goes Here"/>
+        <property label="Banner Text Alignment" 
+        name="headerTextAlignment" 
+        type="String" 
+        default="center"
+        description="Valid inputs: left, center, right"/>
+        <property label="Display text as hyperlink?" 
+        name="isTextAHyperlink" 
+        type="Boolean" 
+        default="false"
+        description="Once selected, be sure to fill out the URL to redirect field with a valid URL"/>
+        <property label="Remove text-decoration for the link?" 
+        name="removeTextDecoration" 
+        type="Boolean" 
+        default="false"
+        description="Works with 'Display text as hyperlink?'"/>
+        <property label="Open link in new window?" 
+        name="linkTargetNewWindow" 
+        type="Boolean" 
+        default="false"
+        description="Works with 'Display text as hyperlink?'"/>
+        <property label="Order Number" 
+        name="orderNumber" 
+        type="String"
+        description="when using the header multiple times on the same page, make sure that order number has different values for each header so that the styling gets applied accordingly"/>
+        <property label="URL to redirect" 
+        name="urlToRedirect" 
+        type="String"/>
+        
+
+        <property label="Header has text (left aligned) and image (right aligned)" 
+        name="isTextLeftImageRight" 
+        type="Boolean" 
+        default="false"/>
+
+        <property label="Header has image and text (with image on left of text)" 
+        name="isTextAndImageOnLeftOfText" 
+        type="Boolean" 
+        default="false"/>
+
+        <property label="Image Name"
+        description="provide lightning icon name like utility:add or image name stored as a static resource(public). Utility:add here is a lightning icon. Visit https://lightningdesignsystem.com/icons/ for lightning icons." 
+        name="imageName" 
+        type="String" 
+        default="utility:add"/>
+
+        <property label="Is image a Lightning Icon?" 
+        name="imageIsALightningIcon" 
+        type="Boolean" 
+        default="false"
+        description="Gets priority over- 'Is image a static resource' if both are selected"/>
+        <property label="Lightning Icon Size" 
+        name="iconSize" 
+        type="String" 
+        default="medium"
+        description="Valid inputs: xx-small, x-small, small, medium, or large."/>
+        <property label="Icon Margin" 
+        name="iconPadding" 
+        type="String" 
+        default="0px 7px 0px 0px"
+        description="Provide margin to include space between icon and text-useful when the icon is left aligned and text follows the icon"/>
+        
+        <property label="Is image a static resource?" 
+        name="imageIsAStaticResource" 
+        type="Boolean" 
+        default="false"/>
+        <property label="Static Resource Image Width" 
+        name="staticResourceImageWidth" 
+        type="String"/>
+        
+        <property label="Static Resource Image Height" 
+        name="staticResourceImageHeight" 
+        type="String"/>
+        
+        
+
+        <property label="Banner Height" 
+        name="headerHeight" 
+        type="String" 
+        default="10"/>
+        <property label="Banner Background Color" 
+        name="headerBgColor" 
+        type="String" 
+        default="rgb(243, 242, 242)"
+        description="Use any- #hexcode or RGB(0, 0, 0) or color name"/>
+        <property label="Banner Text Color (#000000)" 
+        name="headerTxtColor" 
+        type="String" 
+        default="Black"/>
+        <property label="Banner Text Font Style (provide 3 separated by ;)" 
+        name="headerTxtFont" 
+        type="String" 
+        default="Arial"/>
+        <property label="Banner Text Font Size" 
+        name="headerTxtSize" 
+        type="String" 
+        default="medium"
+        description="Valid inputs: xx-small, x-small, small, medium, or large."/>
+        <property label="Banner Border Radius (in px)" 
+        name="headerBrdrRadius" 
+        type="String" 
+        default="12"/>
+        <property label="Banner Border" 
+        name="headerBrdr" 
+        type="String" 
+        default="12px Solid Red"
+        description="include width, style (required) and color, example- 0px 0px 5px 0px dotted red;"/>
+        <property label="Banner Margin" 
+        name="headerMargin" 
+        type="String" 
+        default="5px 5px 5px 5px"/>
+        <property label="Banner Padding" 
+        name="headerPadding" 
+        type="String" 
+        default="5px 5px 5px 5px"/>
+            </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

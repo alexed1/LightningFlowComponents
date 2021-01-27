@@ -34,7 +34,7 @@ global without sharing class FindCommonAndUniqueRecords {
 					Map<String, sObject> sourceMap = new Map<String, sObject>();
                     
                     // get the fields on the object... this will likely fail if the collection doesnt have Ids yet
-           			Map<String, SObjectField> sourceFieldMap = sourceRecordCollection[0].Id.getSObjectType().getDescribe().fields.getMap();
+           			Map<String, SObjectField> sourceFieldMap = sourceRecordCollection[0].getSObjectType().getDescribe().fields.getMap();
                     
                     // The key to the map is the api name of the field
            			Schema.SobjectField sourceCurField = sourceFieldMap.get(request.sourceUniqueID);
@@ -56,7 +56,7 @@ global without sharing class FindCommonAndUniqueRecords {
 					Map<String, sObject> targetMap = new Map<String, sObject>();
                     
                     // Construct a field map of the first record in the target record collection
-           			Map<String, SObjectField> targetFieldMap = targetRecordCollection[0].Id.getSObjectType().getDescribe().fields.getMap();
+           			Map<String, SObjectField> targetFieldMap = targetRecordCollection[0].getSObjectType().getDescribe().fields.getMap();
                     // The key to the map is the api name of the field
            			Schema.SobjectField targetCurField = targetFieldMap.get(request.targetUniqueID);
                     

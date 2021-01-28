@@ -17,9 +17,12 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
 
+1/19/21 -   clifford-fra -  Version 2.32
+                            Made the visual text boxes in single column view responsive
+
 9/14/20 -   Eric Smith -    Version 2.3 
                             Fixed visual card selection when no Master Label is provided  
-  
+
 8/27/20 -   Eric Smith -    Version 2.2
                             Added an option to sort the Picklist labels
 
@@ -59,7 +62,7 @@ Additional components packaged with this LWC:
             <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
             <div class={gridClass} style={gridStyle}>
                 <template for:each={items} for:item="item">
-                    <div key={item.name} class={columnClass}>
+                    <div key={item.name} class={columnClass} style={responsiveSize}>
                         <input type="radio" id={item.name} value={item.name} name={radioGroup} data-id={item.name} onclick={handleChange} />
                         <label for={item.name}>
 
@@ -67,7 +70,7 @@ Additional components packaged with this LWC:
                             <template if:true={includeIcons}>
                                 <span
                                     class="slds-visual-picker__figure slds-visual-picker__text class=slds-box slds-box_link slds-box_x-small slds-media"
-                                    style="width:25rem">
+                                    style={cardSize}>
                                     <div
                                         class="slds-media__figure slds-media__figure_fixed-width slds-align_absolute-center slds-m-left_xx-small">
                                         <lightning-avatar size={iconSize} src={item.icon} fallback-icon-name={item.icon}></lightning-avatar>
@@ -86,7 +89,9 @@ Additional components packaged with this LWC:
 
                             <!-- Display Visual Card Pickers without Icons-->                            
                             <template if:false={includeIcons}>
-                                <span class="slds-visual-picker__figure slds-visual-picker__text">
+                                <span
+                                    class="slds-visual-picker__figure slds-visual-picker__text"
+                                    style={cardSize}>
                                     <span>
                                         <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
                                         <span class="slds-text-title">{item.description}</span>

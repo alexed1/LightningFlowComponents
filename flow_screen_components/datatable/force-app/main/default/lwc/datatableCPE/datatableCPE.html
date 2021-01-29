@@ -192,15 +192,17 @@
     </div>
 
     <!-- Other Table Formatting -->
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="number"
-        name="select_maxNumberOfRows"
-        label={inputValues.maxNumberOfRows.label} 
-        value={inputValues.maxNumberOfRows.value}
-        field-level-help={inputValues.maxNumberOfRows.helpText} 
-        onblur={handleValueChange}
-        onchange={handleValueChange}>
-    </lightning-input>
+    <c-fsc_flow-combobox 
+        name="select_maxNumberOfRows" 
+        label={inputValues.maxNumberOfRows.label}
+        value={inputValues.maxNumberOfRows.value} 
+        value-type={inputValues.maxNumberOfRows.valueDataType}
+        field-level-help={inputValues.maxNumberOfRows.helpText}
+        builder-context-filter-type="Number"
+        builder-context-filter-collection-boolean={inputValues.maxNumberOfRows.isCollection}
+        builder-context={_builderContext} 
+        onvaluechanged={handleFlowComboboxValueChange}>
+    </c-fsc_flow-combobox>
     <lightning-input class="slds-m-vertical_xx-small"
         type="checkbox"
         name="select_showRowNumbers"

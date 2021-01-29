@@ -63,9 +63,12 @@ In order to use **datatable**, permission must be given to access the following 
 ## xx/xx/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community
+-   Allow the use of a Flow variable to set the MAximum Number of Rows value 
   
 **Bug Fixes:**
 -   Fixed links when running in a Sandbox whose name started with the letter c
+-   Stop requiring Checkbox column if any columns are selected for editing 
+-   Set the Number of Rows Selected to 0 when clearing the row selections  
   
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 

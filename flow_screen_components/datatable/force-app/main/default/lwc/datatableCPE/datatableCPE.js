@@ -513,7 +513,7 @@ export default class DatatableCPE extends LightningElement {
         console.log('datatableCPE - initializeValues');
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value != null) {
-                console.log('Init:', curInputParam.name, curInputParam.value);             
+                console.log('Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
 
                     this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
@@ -699,10 +699,10 @@ export default class DatatableCPE extends LightningElement {
                 }
             }
 
-            // Don't allow hide the checkbox column if a selection is required or any edits are allowed
+            // Don't allow hide the checkbox column if a selection is required
             if (curAttributeName == 'isRequired') {
                 this.isShowCheckboxColumn = event.target.checked;
-                if (!this.isNoEdits || event.target.checked) {
+                if (event.target.checked) {
                     this.isShowCheckboxColumn = true;
                     this.inputValues.hideCheckboxColumn.value = false;
                     this.dispatchFlowValueChangeEvent('hideCheckboxColumn', false, 'boolean');
@@ -752,7 +752,12 @@ export default class DatatableCPE extends LightningElement {
     handleFlowComboboxValueChange(event) {   
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
-            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            let newType = event.detail.newValueDataType;
+            let newValue = event.detail.newValue;
+            if (changedAttribute == 'maxNumberOfRows' && newType != 'reference') {
+                newType = 'Number';
+            }
+            this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
 
             if (changedAttribute == 'tableData') {
                 this.isRecordCollectionSelected = !!event.detail.newValue;

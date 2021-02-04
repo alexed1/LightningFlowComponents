@@ -32,7 +32,7 @@ const defaults = {
 };
 
 const COLORS = { 
-    blue: '#4C6E96',    //Brand is #1B5297, decreasing shades: 346096, 4C6E96, 657B96
+    blue: '#4C6E96',        //Brand is #1B5297, decreasing shades: #346096, #4C6E96, #657B96
     blue_light: '#657B96',
     green: '#659668',
     green_light: '#7E967F',
@@ -1008,6 +1008,7 @@ export default class DatatableCPE extends LightningElement {
             allComboboxes.forEach(curCombobox => {
                 if (!curCombobox.reportValidity()) {
                     resultErrors.push('error');
+                    console.log('ComboBox Error:', error);
                 }
             });
         }
@@ -1020,10 +1021,10 @@ export default class DatatableCPE extends LightningElement {
             this.validateErrors.push({key: key, errorString: errorString});
             this.inputValues[key].isError = true;
             this.inputValues[key].errorMessage = errorString;
+            console.log('CPE generated error:', key, isError, errorString);
         } else { 
             this.inputValues[key].isError = false;
         }
-        // console.log('CPE generated error:', key, isError, (isError ? errorString : ''));
     }
 
 }

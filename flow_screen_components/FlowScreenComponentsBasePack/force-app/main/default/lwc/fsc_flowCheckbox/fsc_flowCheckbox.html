@@ -1,0 +1,38 @@
+<!-- 
+    
+Lightning Web Component for Flow Custom Property Editors:     fsc_flowCheckbox
+
+This component allows the developer to display a Checkbox in a Custom Property Editor
+
+    This component avoids the issues with a CPE checkbox not being persistent unless it is selected more than once.  
+    It also support the ability to give a boolean attribute a default value of True.
+
+    Find complete instructions at https://unofficialsf.com/checkbox-component-for-custom-property-editors/
+
+CREATED BY:         Eric Smith
+
+VERSION:            1.0.0
+
+RELEASE NOTES:      
+
+02/08/21 -          Eric Smith -    Version 1.0.0
+
+-->
+
+<template>
+    <div class="slds-form-element">
+        <div class="slds-form-element__control">
+            <lightning-input
+                class={cbClass}
+                type="checkbox" 
+                label={label}
+                name={name}
+                disabled={disabled}
+                checked={isChecked}
+                field-level-help={fieldLevelHelp}
+                onblur={handleCheckboxChange}
+                onchange={handleCheckboxChange}
+            ></lightning-input>
+        </div>
+    </div>
+</template>

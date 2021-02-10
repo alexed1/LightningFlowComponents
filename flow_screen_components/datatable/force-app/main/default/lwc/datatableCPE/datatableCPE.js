@@ -8,13 +8,16 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.0.8
+ * VERSION:             3.x.x
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
 import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPEReturnResults';
+import { getConstants } from 'c/datatableUtils';
+
+const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH
 
 const defaults = {
     tableBorder: true,
@@ -38,6 +41,8 @@ const COLORS = {
 }
 
 export default class DatatableCPE extends LightningElement {
+
+    versionNumber;
 
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
     _bannerMargin = 'slds-m-top_small slds-m-bottom_xx-small';
@@ -73,7 +78,6 @@ export default class DatatableCPE extends LightningElement {
     validateErrors = [];
 
     selectedSObject = '';
-    isSObjectInput = true;
     isRecordCollectionSelected = false;
     disableAllowALl = false;
     isDisplayAll = false;
@@ -95,10 +99,16 @@ export default class DatatableCPE extends LightningElement {
     objectLabel;
     objectPluralLabel;
     objectIconName;
+    dispatchValue;
+
+    @api 
+    get isSObjectInput() {
+        return !this.inputValues.isUserDefinedObject.value;
+    }
 
     @api
     get isObjectSelected() { 
-        return !!this.selectedSObject;
+        return (!!this.selectedSObject && this.isSObjectInput);
     }
 
     @api
@@ -158,7 +168,9 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnFields(value) { 
         const name = 'columnFields';
         this._wiz_columnFields = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, ''); 
         if (value) {
             this.vFieldList = value;
             this.updateFlowParam('vFieldList', this.vFieldList, null, defaults.NOENCODE);
@@ -173,7 +185,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnAlignments(value) { 
         const name = 'columnAlignments';
         this._wiz_columnAlignments = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');    
     }
 
@@ -184,7 +197,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnEdits(value) { 
         const name = 'columnEdits';
         this._wiz_columnEdits = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -195,7 +209,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnFilters(value) { 
         const name = 'columnFilters';
         this._wiz_columnFilters = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -206,7 +221,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnIcons(value) { 
         const name = 'columnIcons';
         this._wiz_columnIcons = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -217,7 +233,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnLabels(value) { 
         const name = 'columnLabels';
         this._wiz_columnLabels = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -228,7 +245,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnWidths(value) { 
         const name = 'columnWidths';
         this._wiz_columnWidths = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -239,7 +257,8 @@ export default class DatatableCPE extends LightningElement {
     set wiz_columnWraps(value) { 
         const name = 'columnWraps';
         this._wiz_columnWraps = value;
-        this.dispatchFlowValueChangeEvent(name, value, 'String');
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
@@ -316,6 +335,8 @@ export default class DatatableCPE extends LightningElement {
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
+        showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
+            helpText: 'Display a row number column as the first column in the table.'},            
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
         singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
@@ -372,7 +393,12 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
+                {name: defaults.customHelpDefinition,
+                    label: 'Icon Picker',
+                    helpText: 'Select More to show all Icon Types, Select an Icon Type tab to see a list of icons, Select any icon to update the Header Icon value, ' +
+                    'Select SELECT TYPE to hide the list of icons.'},
                 {name: 'maxNumberOfRows'},
+                {name: 'showRowNumbers'},
                 {name: 'tableBorder'},
             ]
         },
@@ -439,6 +465,7 @@ export default class DatatableCPE extends LightningElement {
         {name: 'colFieldList', type: 'String', value: []},
         {name: 'wiz_columnAlignments', type: 'String', value: ''},
         {name: 'wiz_columnEdits', type: 'String', value: ''},
+        {name: 'wiz_columnFields', type: 'String', value: ''},
         {name: 'wiz_columnFilters', type: 'String', value: ''},
         {name: 'wiz_columnLabels', type: 'String', value: ''},
         {name: 'wiz_columnIcons', type: 'String', value: ''},
@@ -646,12 +673,11 @@ export default class DatatableCPE extends LightningElement {
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (curAttributeName == 'isUserDefinedObject') {
-                this.isSObjectInput = !event.target.checked;
-                if (!this.isSObjectInput) { 
-                    this.inputValues.objectName.value = null;
-                    this.selectedSObject = null;
-                    this.dispatchFlowValueChangeEvent('objectName', this.selectedSObject, 'String');
-                }
+                // if (!this.isSObjectInput) { 
+                //     this.inputValues.objectName.value = null;
+                //     this.selectedSObject = null;
+                //     this.dispatchFlowValueChangeEvent('objectName', this.selectedSObject, 'String');
+                // }
                 if (event.target.checked) {
                     this.isDisplayAll = false;    // Clear & Disable Display All Selection when selecting User Defined Object
                 }
@@ -659,7 +685,7 @@ export default class DatatableCPE extends LightningElement {
             }
 
             // Handle isDisplayHeader
-            if (curAttributeName == 'isDisplayHeader') {
+            if ((curAttributeName == 'isDisplayHeader') && this.isObjectSelected) {
                 if (event.target.checked) { 
                     this.inputValues.tableLabel.value = this.objectPluralLabel;
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
@@ -780,7 +806,7 @@ export default class DatatableCPE extends LightningElement {
 
     updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
         // Set parameter values to pass to Wizard Flow
-        console.log('updateFlowParam', name, value);        
+        console.log('updateFlowParam:', name, value);        
         let currentValue = this.flowParams.find(param => param.name === name).value;
         if (value != currentValue) {
             if (noEncode) {
@@ -834,7 +860,7 @@ export default class DatatableCPE extends LightningElement {
                     // Save Selected Fields & Create Collection
                     this.vFieldList = value.split(' ').join('');  //Remove all spaces  
                     this.updateFlowParam(name, value, null, defaults.NOENCODE);
-                    this.createFieldCollection(this.vFieldList);               
+                    this.createFieldCollection(this.vFieldList);
                 }
 
                 if (name == 'vEarlyExit') { 
@@ -918,7 +944,8 @@ export default class DatatableCPE extends LightningElement {
 
     connectedCallback() {
         this.template.addEventListener('keydown', this.handleKeyDown.bind(this), true);
-
+        this.versionNumber = CONSTANTS.VERSION_NUMBER;
+        
         // this.template.querySelector('.nextButton').addEventListener('click', event => { 
         //     console.log('Next Button Clicked');
         //     this.handleWizardNext();

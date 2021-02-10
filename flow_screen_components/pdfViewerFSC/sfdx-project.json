@@ -1,0 +1,33 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "pdfViewerFSC",
+            "versionName": "ver 0.1",
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@2.12.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@2.1.0-0"
+                },
+                {
+                    "package":  "datatable@3.0.8-0"
+                }
+            ],
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "50.0",
+    "packageAliases": {
+        "pdfViewerFSC": "0Ho5G000000XZNuSAO",
+        "pdfViewerFSC@1.0.0-0": "04t5G000004PuX4QAK",
+        "datatable@3.0.8-0": "04t5G000004PuWaQAK",
+        "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
+        "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK"
+    }
+   
+}

@@ -6,6 +6,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
     @track inputValues = {
         displayMode: {value: null, valueDataType: null, isCollection: false, label: 'Display the choices as:'},
+        isResponsive: {value: null, valueDataType: null, isCollection: false, label: 'Make Card Size Responsive'},
         inputMode: {value: null, valueDataType: null, isCollection: false, label: 'Select datasource:'},
         allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
         sortList: {value: null, valueDataType: null, isCollection: false, label: 'Sort Picklist by Label'},
@@ -35,14 +36,15 @@ export default class QuickChoiceCpe extends LightningElement {
         inputValueRecordTypeId: 'recordTypeId',
         choiceLabelsPicklistLabelsLabel: 'Choice Labels',
         choiceLabelsPicklistValuesLabel: 'Choice Values',
-        choiceLabelsCardLabelsLabel: 'Card Titles',
-        choiceLabelsCardValuesLabel: 'Card Descriptions',
+        choiceLabelsCardLabelsLabel: 'Card Titles (Labels)',
+        choiceLabelsCardValuesLabel: 'Card Descriptions (Values)',
         attributeObjectName: 'objectName',
         attributeFieldName: 'fieldName',
         attributeInputMode: 'inputMode',
         flowDataTypeString: 'String',
         availableFieldTypesPicklist: 'Picklist',
-        inputAttributePrefix: 'select_'
+        inputAttributePrefix: 'select_',
+        singleColumn: '1'
     }
 
     displayChoicesAsOptions = [
@@ -88,6 +90,10 @@ export default class QuickChoiceCpe extends LightningElement {
 
     get isVisualCards() {
         return this.inputValues.displayMode.value === this.settings.displayModeVisualCards;
+    }
+
+    get isSingleColumn() {
+        return this.inputValues.numberOfColumns.value === this.settings.singleColumn;
     }
 
     get isDatasourcePicklist() {

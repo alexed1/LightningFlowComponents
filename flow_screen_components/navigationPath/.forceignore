@@ -3,6 +3,8 @@
 #
 
 package.xml
+**profiles
+**prompts
 
 # LWC configuration files
 **/jsconfig.json

@@ -23,6 +23,7 @@
             <property name="masterLabel" label="Master Label" type="String" description="The main label for the picklist or radio button group"/>
             <property name="required" label="Required" type="Boolean" default="false" description="Will prevent transition if set to {!$GlobalConstant.True}"/>
             <property name="displayMode" label="Display Mode" type="String" description="Either “Visual”, “Picklist” or “Radio”, depending on which control you want"/>
+            <property name="isResponsive" label="Make Width Responsive?" type="Boolean" default="false" description="Set this to true to adjust the size of single column visual cards to fit the screen and the amount of text."/>
             <property name="recordTypeId" label="Record Type Id" type="String" description="Record Type Id (for Picklist Field)"/>
             <property name="objectName" label="Object Name" type="String" description="Object Name (for Picklist Field)"/>
             <property name="fieldName" label="Field Name" type="String" description="Field Name (for Picklist Field)"/>

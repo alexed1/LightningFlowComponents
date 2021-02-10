@@ -186,14 +186,26 @@ public with sharing class ListActionsTest {
 
     @isTest
     static void generateReportTest() {
+        // Simple Mode
         List<GenerateCollectionReport.Requests> requests = new List<GenerateCollectionReport.Requests>();
         GenerateCollectionReport.Requests request = new GenerateCollectionReport.Requests();
         List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
         request.inputCollection = testAccounts;
-        request.shownFields = 'Name';
+        request.shownFields = 'Name,Parent.Name';
         requests.add(request);
         List<GenerateCollectionReport.Results> responseWrapper = GenerateCollectionReport.generateReport(requests);
         System.assertEquals(responseWrapper.size(), 1);
+        System.assertEquals(true, responseWrapper[0].reportString.startsWith('Collection Type: Account'));
+        
+        // TableMode
+        List<GenerateCollectionReport.Requests> requestsTable = new List<GenerateCollectionReport.Requests>();
+        GenerateCollectionReport.Requests requestTable = new GenerateCollectionReport.Requests();
+        requestTable.inputCollection = testAccounts;
+        requestTable.shownFields = 'Name,Parent.Name';
+        requestTable.displayMode = 'table';
+        requestsTable.add(requestTable);
+        List<GenerateCollectionReport.Results> responseWrapperTable = GenerateCollectionReport.generateReport(requestsTable);
+        System.assertEquals(responseWrapperTable.size(), 1);
         System.assertEquals(true, responseWrapper[0].reportString.startsWith('Collection Type: Account'));
     }
 

@@ -10,6 +10,7 @@ export default class FlexcardFlow extends LightningElement {
     @api visibleFlowNames;
     @api src;
     @api icon;
+  //  @api cardSize;
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
@@ -57,5 +58,9 @@ export default class FlexcardFlow extends LightningElement {
     get isDataLoaded() {
         return this.objectInfo && this.records.length > 0;
     }
+
+   // get sizeWidth() {
+   //     return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
+  //    }
 
 }

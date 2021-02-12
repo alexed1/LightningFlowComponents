@@ -4,6 +4,7 @@
 
 package.xml
 **profile
+**prompt
 
 # LWC configuration files
 **/jsconfig.json

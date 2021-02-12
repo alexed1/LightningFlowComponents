@@ -59,7 +59,13 @@
             <inputParameters>
                 <name>visibleFieldNames</name>
                 <value>
-                    <stringValue>Id</stringValue>
+                    <stringValue>Id, Name, Rating</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>visibleFlowNames</name>
+                <value>
+                    <stringValue>UpdateAccount</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>

@@ -3,18 +3,16 @@ h1 {
 }
 
 card {
-   /** display: block; 
-    border: 2px solid grey;**/
-    flex: 1;
-    background: rgb(255, 255, 255);
-    height: 100px;
-    margin: 5px;
-    line-height: 100px;
-    color: black   ;
-    text-align: center;
-}
+    /** display: block; 
+     border: 2px solid grey;**/    
+     background: rgb(255, 255, 255);
+     color: black   ;
+     text-align: center;
+     overflow-wrap: break-word;
+ }
 
-.fc-body { 
+.fc-body {
     display: flex; 
-    justify-content: space-between;
+    justify-content: space-evenly;
+    overflow-wrap: break-word;
   }

@@ -30,10 +30,13 @@ export default class ActionList extends LightningElement {
 
     removeDuplicateFlows() {
         let flows = [];
-        this.flowNames.split(',').forEach(flow => {
-            flows.push(flow.trim());
-            })
-        this.visibleFlows = Array.from(new Set(flows));
+        if(this.flowNames != null) {
+            this.flowNames.split(',').forEach(flow => {
+                flows.push(flow.trim());
+                })
+            this.visibleFlows = Array.from(new Set(flows));
+        }
+       
     }
 
 

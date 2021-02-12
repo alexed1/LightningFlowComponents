@@ -13,6 +13,6 @@ card {
 
 .fc-body {
     display: flex; 
-    justify-content: space-evenly;
+    justify-content: space-between;
     overflow-wrap: break-word;
   }

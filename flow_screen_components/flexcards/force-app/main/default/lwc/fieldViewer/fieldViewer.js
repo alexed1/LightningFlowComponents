@@ -6,10 +6,10 @@ export default class FieldViewer extends LightningElement {
     fieldNames = [];
 
     @api
-    fieldTitleStyle = 'text-transform: uppercase';
+    fieldTitleStyle = 'text-transform: uppercase; overflow-wrap: break-word';
 
     @api
-    fieldValueStyle;
+    fieldValueStyle = 'overflow-wrap: break-word';
 
     @api
     objectInfo;

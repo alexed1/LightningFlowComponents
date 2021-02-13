@@ -58,4 +58,5 @@ export default class FlexcardFlow extends LightningElement {
         return this.objectInfo && this.records.length > 0;
     }
 
+
 }

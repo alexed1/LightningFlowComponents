@@ -670,7 +670,21 @@ export default class DatatableCPE extends LightningElement {
                 //     this.dispatchFlowValueChangeEvent('objectName', this.selectedSObject, 'String');
                 // }
                 if (event.target.checked) {
-                    this.isDisplayAll = false;    // Clear & Disable Display All Selection when selecting User Defined Object
+                    this.isDisplayAll = false;                          // Clear & Disable Display All Selection when selecting User Defined Object
+                    if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
+                        let typeValue = 'User';                         // Aribtrary Object just so we can dispatch the event
+                        const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
+                        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
+                            composed: true,
+                            cancelable: false,
+                            bubbles: true,
+                            detail: {
+                                typeName, 
+                                typeValue,  
+                            }
+                        });
+                        this.dispatchEvent(dynamicTypeMapping);
+                    }
                 }
                 this.disableAllowAll = event.target.checked;
             }
@@ -998,6 +1012,8 @@ export default class DatatableCPE extends LightningElement {
     @api
     validate() {
         this.validateErrors.length = 0;
+console.log("🚀 ~ file: datatableCPE.js ~ line 1001 ~ DatatableCPE ~ validate ~ this.validateErrors", this.validateErrors);
+console.log("🚀 ~ file: datatableCPE.js ~ line 1005 ~ DatatableCPE ~ validate ~ this.isSObjectInput", this.isSObjectInput);
 
         // Not Apex-Defined -- Check for Object, Record Collection, Columns
         if (this.isSObjectInput) {

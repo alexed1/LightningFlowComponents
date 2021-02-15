@@ -70,6 +70,7 @@ In order to use **datatable**, permission must be given to access the following 
 -   Stop requiring Checkbox column if any columns are selected for editing 
 -   Set the Number of Rows Selected to 0 when clearing the row selections
 -   Retain the setting when clearing a checkbox in the CPE
+-   Fixed error when trying to exit the CPE after selecting the Apex Defined Object option
   
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 

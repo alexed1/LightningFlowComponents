@@ -6,10 +6,10 @@ export default class FieldViewer extends LightningElement {
     fieldNames = [];
 
     @api
-    fieldTitleStyle = 'text-transform: uppercase';
+    fieldTitleStyle = 'text-transform: uppercase; overflow-wrap: break-word';
 
     @api
-    fieldValueStyle;
+    fieldValueStyle = 'overflow-wrap: break-word';
 
     @api
     objectInfo;
@@ -31,9 +31,9 @@ export default class FieldViewer extends LightningElement {
     setupVisibleData() {
         if(this.objectInfo && this.objectInfo.fields) {
             this.visibleRecord =  [...Object.keys(this.objectInfo.fields).map(key => {
-                let apiName = this.objectInfo.fields[key].apiName;
+                let apiName = this.objectInfo.fields[key].apiName, label = this.objectInfo.fields[key].label;
                 if(this.fieldNames.includes(apiName)) {
-                    return {fieldName: apiName, label: key, value: this.record[apiName]};
+                    return {fieldName: apiName, label, value: this.record[apiName]};
                 }
             })];
             this.visibleRecord = this.visibleRecord.filter(item => {return item != null});

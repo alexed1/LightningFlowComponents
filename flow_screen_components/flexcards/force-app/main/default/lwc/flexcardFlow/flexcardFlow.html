@@ -2,7 +2,7 @@
     <lightning-layout multiple-rows="true">
         <template if:true={isDataLoaded}>
             <template for:each={records} for:item="record">
-                <div key={record.Id} class="slds-card slds-m-bottom_medium slds-size_1-of-4">
+                <div key={record.Id} class="slds-card slds-m-bottom_medium" style="width: 350px;">
                     <div class="slds-box slds-box_x-small">
                     <c-flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle"></c-flexcard-header>
                     <div class ="fc-body">

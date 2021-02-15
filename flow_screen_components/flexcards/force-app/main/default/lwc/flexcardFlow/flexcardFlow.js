@@ -26,15 +26,16 @@ export default class FlexcardFlow extends LightningElement {
 
     connectedCallback() {
         console.log('entering connectedCallback');
-        //this.records.forEach(this.assembleFieldLayout,this);
+        console.log('records are: ' + JSON.stringify(this.records));
            }
 
     //for each record:
     // for each fieldname, create a data structure called fieldData with that fieldname, the label of that field, and the value
     // add the fieldData to recordLayoutData 
-
+           //TODO: remove this because it's not used? 
     assembleFieldLayout(item, index) {
         this.curRecord = item;
+        console.log('visibleFieldNames is: ' + JSON.stringify(this.visibleFieldNames));
         this.visibleFieldNames.split(",").forEach(this.appendFieldInfo, this);
 
     }
@@ -56,5 +57,6 @@ export default class FlexcardFlow extends LightningElement {
     get isDataLoaded() {
         return this.objectInfo && this.records.length > 0;
     }
+
 
 }

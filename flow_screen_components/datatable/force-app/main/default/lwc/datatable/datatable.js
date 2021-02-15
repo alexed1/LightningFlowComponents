@@ -17,6 +17,7 @@ const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAX
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
+const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
 
@@ -34,27 +35,73 @@ export default class Datatable extends LightningElement {
     @api columnWidths = [];
     @api columnWraps = [];
     @api keyField = 'Id';
-    @api matchCaseOnFilters;
     @api maxNumberOfRows;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
-    @api isRequired;
     @api isConfigMode;
-    @api hideCheckboxColumn;
-    @api showRowNumbers = false;
-    @api singleRowSelection;
-    @api suppressBottomBar = false;
-    @api suppressNameFieldLink = false;
     @api tableHeight;
     @api outputSelectedRows = [];
     @api outputSelectedRow;
     @api outputEditedRows = [];
-    @api tableBorder;
-    @api isDisplayHeader;                   // Only referenced in the CPE
     @api tableIcon;
     @api tableLabel;
-    @api not_tableBorder = false;           // Only referenced in the CPE - Used so a boolean value can default to True
-    @api not_suppressNameFieldLink;         // Only referenced in the CPE - Used so a boolean value can default to True
+    
+    @api 
+    get isRequired() {
+        return (this.cb_isRequired == CB_TRUE) ? true : false;
+    }
+    @api cb_isRequired;
+
+    @api 
+    get hideCheckboxColumn() {
+        return (this.cb_hideCheckboxColumn == CB_TRUE) ? true : false;
+    }
+    @api cb_hideCheckboxColumn;
+    
+    @api 
+    get showRowNumbers() {
+        return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
+    }
+    @api cb_showRowNumbers;
+    
+    @api 
+    get singleRowSelection() {
+        return (this.cb_singleRowSelection == CB_TRUE) ? true : false;
+    }
+    @api cb_singleRowSelection;
+    
+    @api 
+    get suppressBottomBar() {
+        return (this.cb_suppressBottomBar == CB_TRUE) ? true : false;
+    }
+    @api cb_suppressBottomBar;
+
+    @api 
+    get matchCaseOnFilters() {
+        return (this.cb_matchCaseOnFilters == CB_TRUE) ? true : false;
+    }
+    @api cb_matchCaseOnFilters;
+    
+    @api 
+    get tableBorder() {
+        return (this.cb_tableBorder == CB_TRUE) ? true : false;
+    }
+    @api cb_tableBorder = CB_TRUE;
+    
+    @api 
+    get isDisplayHeader() {
+        return (this.cb_isDisplayHeader == CB_TRUE) ? true : false;
+    }
+    @api cb_isDisplayHeader;
+
+    @api 
+    get not_suppressNameFieldLink() {       // Default value is to show the links
+        return (this.cb_not_suppressNameFieldLink == CB_TRUE) ? true : false;
+    }
+    @api cb_not_suppressNameFieldLink = CB_TRUE;
+    
+    @api suppressNameFieldLink = false;     // OBSOLETE as of 3.0.10
+    @api not_tableBorder = false;           // OBSOLETE as of 3.0.10 - Only referenced in the CPE - Used so a boolean value can default to True
 
     // JSON Version Attributes (User Defined Object)
     @api isUserDefinedObject = false;
@@ -217,7 +264,7 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnWidths:", this.columnWidths);
             console.log("Config Mode Input columnWraps:", this.columnWraps);
             console.log("Config Mode Input columnFields:", this.columnFields);
-            this.suppressNameFieldLink = true;
+            this.not_suppressNameFieldLink = false;
         }
 
         // JSON input attributes
@@ -890,7 +937,7 @@ export default class Datatable extends LightningElement {
             }
 
             // Switch the SObject's "Name" Field to a Lookup
-            if (fieldName == this.objectLinkField && !this.suppressNameFieldLink) {
+            if (fieldName == this.objectLinkField && this.not_suppressNameFieldLink) {
                 this.typeAttrib.type = 'url';
                 fieldName = fieldName + '_lookup';
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
@@ -1206,7 +1253,7 @@ export default class Datatable extends LightningElement {
                 break;
 
             case 'clipText':
-                if ((this.filterColumns[this.columnNumber].fieldName != this.objectLinkField) || this.suppressNameFieldLink) {      // Salesforce always forces Wrap Text on the Object's 'Name' field
+                if ((this.filterColumns[this.columnNumber].fieldName != this.objectLinkField) || !this.not_suppressNameFieldLink) { // Salesforce always forces Wrap Text on the Object's 'Name' field
                     this.filterColumns[this.columnNumber].wrapText = false;
                     this.columns = [...this.filterColumns];
                     this.updateWrapParam();

@@ -18,6 +18,9 @@ import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPERetur
 import { getConstants } from 'c/datatableUtils';
 
 const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CB_TRUE = CONSTANTS.CB_TRUE;
+const CB_FALSE = CONSTANTS.CB_FALSE;
+const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
 
 const defaults = {
     tableBorder: true,
@@ -321,38 +324,47 @@ export default class DatatableCPE extends LightningElement {
             "EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"},
         isDisplayHeader: {value: null, valueDataType: null, isCollection: false, label: 'Display Table Header', 
             helpText: '(Optional) Select this option if you want a header to appear above the datatable.'}, 
+        cb_isDisplayHeader: {value: null, valueDataType: null, isCollection: false, label: ''},    
         tableLabel: {value: null, valueDataType: null, isCollection: false, label: 'Header Label', 
             helpText: '(Optional) Provide a value here for the header label.'},
         tableIcon: {value: null, valueDataType: null, isCollection: false, label: 'Header Icon', 
             helpText: '(Optional) Provide a value here for the header icon.  Example: standard:account'},
         tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'Add Border', 
             helpText: 'When selected, a thin border will be displayed around the entire datatable.'},
+        cb_tableBorder: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
             helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
-        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field", 
+        suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field",                     // OBSOLETE as of v3.0.10
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
+        cb_hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
-            helpText: 'Display a row number column as the first column in the table.'},            
+            helpText: 'Display a row number column as the first column in the table.'}, 
+        cb_showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: ''},            
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
+        cb_isRequired: {value: null, valueDataType: null, isCollection: false, label: ''},
         singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: 'Single row selection only', 
             helpText: 'When this option is selected, Radio Buttons will be displayed and only a single row can be selected.  The default (False) will display Checkboxes and allow multiple records to be selected.'},
+        cb_singleRowSelection: {value: null, valueDataType: null, isCollection: false, label: ''},    
         matchCaseOnFilters: {value: null, valueDataType: null, isCollection: false, label: 'Match case on column filters',
             helpText: "Select if you want to force an exact match on case for column filter values."},
+        cb_matchCaseOnFilters: {value: null, valueDataType: null, isCollection: false, label: ''},
         suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: 'Hide Cancel/Save buttons',
             helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
             "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
+        cb_suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: ''},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Apex-Defined', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
-        not_tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'No Border'},                                       // Used so tableBorder can default to True
-        not_suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: 'Show navigation links on Name fields',   // Used so suppressNameFieldLink can be exposed as !suppressNameFieldLink
+        not_tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'No Border'},                                       // OBSOLETE as of v3.0.10 - Used so tableBorder can default to True
+        not_suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: 'Show navigation links on Name fields',   // Default value is to show the links
             helpText: "Display the SObject's 'Name' field as a link to the record."},
+        cb_not_suppressNameFieldLink: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -511,6 +523,7 @@ export default class DatatableCPE extends LightningElement {
 
     initializeValues() {
         console.log('datatableCPE - initializeValues');
+        this.isCheckboxColumnHidden = false;
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value != null) {
                 console.log('Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
@@ -527,18 +540,6 @@ export default class DatatableCPE extends LightningElement {
                         this.updateFlowParam('vFieldList', this.vFieldList, null, defaults.NOENCODE);
                         this.createFieldCollection(this.vFieldList);
                     }
-                    if (curInputParam.name == 'not_tableBorder') {
-                        this.inputValues.tableBorder.value = !curInputParam.value;
-                    }
-                    if (curInputParam.name == 'tableBorder') {
-                        this.inputValues.not_tableBorder.value = !curInputParam.value;
-                    }
-                    if (curInputParam.name == 'not_suppressNameFieldLink') {
-                        this.inputValues.suppressNameFieldLink.value = !curInputParam.value;
-                    }
-                    if (curInputParam.name == 'suppressNameFieldLink') {
-                        this.inputValues.not_suppressNameFieldLink.value = !curInputParam.value;
-                    }
                     if ((curInputParam.name == 'columnEdits') && curInputParam.value) {
                         this.isNoEdits = false;
                     }
@@ -548,7 +549,10 @@ export default class DatatableCPE extends LightningElement {
                     if ((curInputParam.name == 'tableData') && curInputParam.value) {
                         this.isRecordCollectionSelected = true;
                     }
-                    
+                    if ((curInputParam.name == 'hideCheckboxColumn') && curInputParam.value) {
+                        this.isCheckboxColumnHidden = true;
+                    }
+
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
                     if (this.flowParams.find(fp => fp.name == wizName)) {
@@ -571,12 +575,7 @@ export default class DatatableCPE extends LightningElement {
 
     handleDefaultAttributes() {
         console.log('handle default attributes');
-        if (this.inputValues.tableBorder.value == this.inputValues.not_tableBorder.value) {
-            this.inputValues.tableBorder.value = !this.inputValues.not_tableBorder.value;
-        }
-        if (this.inputValues.not_suppressNameFieldLink.value == this.inputValues.suppressNameFieldLink.value) {
-            this.inputValues.not_suppressNameFieldLink.value = !this.inputValues.suppressNameFieldLink.value;
-        }
+
     }
 
     handleBuildHelpInfo() {
@@ -663,14 +662,6 @@ export default class DatatableCPE extends LightningElement {
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 
-            // Handle default checkbox assignments
-            if (curAttributeName == 'tableBorder') {
-                this.dispatchFlowValueChangeEvent('not_tableBorder', !curAttributeValue, curAttributeType);
-            }
-            if (curAttributeName == 'not_suppressNameFieldLink') {
-                this.dispatchFlowValueChangeEvent('suppressNameFieldLink', !curAttributeValue, curAttributeType);
-            }
-
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (curAttributeName == 'isUserDefinedObject') {
                 // if (!this.isSObjectInput) { 
@@ -684,9 +675,19 @@ export default class DatatableCPE extends LightningElement {
                 this.disableAllowAll = event.target.checked;
             }
 
+        }
+    
+    }
+
+    handleCheckboxChange(event) {
+        if (event.target && event.detail) {
+            let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
+            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            this.dispatchFlowValueChangeEvent(CB_PREFIX+changedAttribute, event.detail.newStringValue, 'String');
+
             // Handle isDisplayHeader
-            if ((curAttributeName == 'isDisplayHeader') && this.isObjectSelected) {
-                if (event.target.checked) { 
+            if ((changedAttribute == 'isDisplayHeader') && this.isObjectSelected) {
+                if (event.detail.newValue) { 
                     this.inputValues.tableLabel.value = this.objectPluralLabel;
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = this.objectIconName;
@@ -700,26 +701,29 @@ export default class DatatableCPE extends LightningElement {
             }
 
             // Don't allow hide the checkbox column if a selection is required
-            if (curAttributeName == 'isRequired') {
-                this.isShowCheckboxColumn = event.target.checked;
-                if (event.target.checked) {
-                    this.isShowCheckboxColumn = true;
-                    this.inputValues.hideCheckboxColumn.value = false;
-                    this.dispatchFlowValueChangeEvent('hideCheckboxColumn', false, 'boolean');
+            if (changedAttribute == 'isRequired') {
+                this.isShowCheckboxColumn = event.detail.newValue;
+                if (this.isShowCheckboxColumn) {
+                    this.updateCheckboxValue('hideCheckboxColumn', false);
                 }
             }
-
+            
             // Skip is required and single row options if the checkbox column is hidden
-            if (curAttributeName == 'hideCheckboxColumn') { 
-                this.isCheckboxColumnHidden = event.target.checked;
-                this.inputValues.isRequired.value = false;
-                this.inputValues.singleRowSelection.value = false;
-                this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
-                this.dispatchFlowValueChangeEvent('singleRowSelection', false, 'boolean');
+            if (changedAttribute == 'hideCheckboxColumn') { 
+                this.isCheckboxColumnHidden = event.detail.newValue;
+                this.updateCheckboxValue('isRequired', false);
+                this.updateCheckboxValue('singleRowSelection', false);
             }
 
         }
-    
+
+    }
+
+    updateCheckboxValue(name, value) {
+        this.inputValues[name].value = value;
+        this.dispatchFlowValueChangeEvent(name, value, 'boolean');
+        this.inputValues[CB_PREFIX+name].value = (value) ? CB_TRUE : CB_FALSE;
+        this.dispatchFlowValueChangeEvent(CB_PREFIX+name, this.inputValues[CB_PREFIX+name].value, 'String');
     }
 
     handleAllowAllChange(event) {
@@ -897,8 +901,7 @@ export default class DatatableCPE extends LightningElement {
                                 this.wiz_columnFilters = value;
                                 this.isNoFilters = (value) ? false : true;
                                 if (this.isNoFilters) {
-                                    this.inputValues.matchCaseOnFilters.value = false;
-                                    this.dispatchFlowValueChangeEvent('matchCaseOnFilters', false, 'boolean');
+                                    this.updateCheckboxValue('matchCaseOnFilters', false);
                                 }
                                 break;
                             case 'columnIcons':

@@ -156,14 +156,13 @@
     <!-- Table Header -->
     <div class="slds-box slds-box_x-small slds-m-top_small">
         <!-- Display Header Checkbox -->
-        <lightning-input class="slds-m-vertical_xx-small"
-            type="checkbox"
+        <c-fsc_flow-checkbox
             name="select_isDisplayHeader"
             label={inputValues.isDisplayHeader.label} 
-            checked={inputValues.isDisplayHeader.value} 
+            checked={inputValues.cb_isDisplayHeader.value} 
             field-level-help={inputValues.isDisplayHeader.helpText}
-            onchange={handleValueChange}>
-        </lightning-input>
+            oncheckboxchanged={handleCheckboxChange}
+        ></c-fsc_flow-checkbox>
         <c-fsc_flow-combobox 
             name="select_tableLabel" 
             label={inputValues.tableLabel.label}
@@ -203,22 +202,20 @@
         builder-context={_builderContext} 
         onvaluechanged={handleFlowComboboxValueChange}>
     </c-fsc_flow-combobox>
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox"
+    <c-fsc_flow-checkbox
         name="select_showRowNumbers"
         label={inputValues.showRowNumbers.label} 
-        checked={inputValues.showRowNumbers.value} 
+        checked={inputValues.cb_showRowNumbers.value} 
         field-level-help={inputValues.showRowNumbers.helpText}
-        onchange={handleValueChange}>
-    </lightning-input>
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox"
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+    <c-fsc_flow-checkbox
         name="select_tableBorder"
         label={inputValues.tableBorder.label} 
-        checked={inputValues.tableBorder.value} 
+        checked={inputValues.cb_tableBorder.value} 
         field-level-help={inputValues.tableBorder.helpText}
-        onchange={handleValueChange}>
-    </lightning-input>
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
 
     <!-- =============== Table Behavior Banner =============== -->
     <c-fsc_flow-banner
@@ -227,59 +224,53 @@
     ></c-fsc_flow-banner>
 
     <!-- Table Behavior Options -->
-    <lightning-input class="slds-m-vertical_xx-small"
+    <c-fsc_flow-checkbox
         disabled={isCheckboxColumnHidden}           
-        type="checkbox" 
         name="select_isRequired"
         label={inputValues.isRequired.label} 
         field-level-help={inputValues.isRequired.helpText}
-        checked={inputValues.isRequired.value} 
-        onchange={handleValueChange}>
-    </lightning-input>
-    <lightning-input class="slds-m-vertical_xx-small"
+        checked={inputValues.cb_isRequired.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+    <c-fsc_flow-checkbox
         disabled={isCheckboxColumnHidden}
-        type="checkbox" 
         name="select_singleRowSelection"
         label={inputValues.singleRowSelection.label} 
         field-level-help={inputValues.singleRowSelection.helpText}
-        checked={inputValues.singleRowSelection.value} 
-        onchange={handleValueChange}>
-    </lightning-input>   
-    <lightning-input class="slds-m-vertical_xx-small"
+        checked={inputValues.cb_singleRowSelection.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>   
+    <c-fsc_flow-checkbox
         disabled={isShowCheckboxColumn}
-        type="checkbox" 
         name="select_hideCheckboxColumn"
-        label={inputValues.hideCheckboxColumn.label} 
+        label={inputValues.hideCheckboxColumn.label}
         field-level-help={inputValues.hideCheckboxColumn.helpText}
-        checked={inputValues.hideCheckboxColumn.value} 
-        onchange={handleValueChange}>
-    </lightning-input>
-    <lightning-input class="slds-m-vertical_xx-small"
+        checked={inputValues.cb_hideCheckboxColumn.value}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+    <c-fsc_flow-checkbox
         disabled={isNoFilters}
-        type="checkbox" 
         name="select_matchCaseOnFilters"
         label={inputValues.matchCaseOnFilters.label} 
         field-level-help={inputValues.matchCaseOnFilters.helpText}
-        checked={inputValues.matchCaseOnFilters.value} 
-        onchange={handleValueChange}>
-    </lightning-input>  
-    <lightning-input class="slds-m-vertical_xx-small"
+        checked={inputValues.cb_matchCaseOnFilters.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+    <c-fsc_flow-checkbox
         disabled={isNoEdits}
-        type="checkbox" 
         name="select_suppressBottomBar"
         label={inputValues.suppressBottomBar.label} 
         field-level-help={inputValues.suppressBottomBar.helpText}
-        checked={inputValues.suppressBottomBar.value} 
-        onchange={handleValueChange}>
-    </lightning-input>  
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox" 
+        checked={inputValues.cb_suppressBottomBar.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>  
+    <c-fsc_flow-checkbox
         name="select_not_suppressNameFieldLink"
         label={inputValues.not_suppressNameFieldLink.label} 
-        checked={inputValues.not_suppressNameFieldLink.value} 
+        checked={inputValues.cb_not_suppressNameFieldLink.value} 
         field-level-help={inputValues.not_suppressNameFieldLink.helpText}
-        onchange={handleValueChange}>
-    </lightning-input>
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox> 
 
     <!-- =============== Advanced Attributes Banner =============== -->
     <c-fsc_flow-banner

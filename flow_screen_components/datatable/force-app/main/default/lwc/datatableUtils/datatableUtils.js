@@ -25,6 +25,9 @@ const getConstants = () => {
         ROUNDWIDTH : 5,             // Used to round off the column widths during Config Mode to nearest value
         MYDOMAIN : myDomain,        // Used for building links for lookup fields
         ISCOMMUNITY : isCommunity,  // Used for building links for lookup fields
+        CB_TRUE : 'CB_TRUE',        // Used with fsc_flowCheckbox component
+        CB_FALSE : 'CB_FALSE',      // Used with fsc_flowCheckbox component
+        CB_ATTRIB_PREFIX : 'cb_',   // Used with fsc_flowCheckbox component
     }
 }
 

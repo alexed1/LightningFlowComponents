@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 11-29-2020
+ * @Last Modified On	: 02-14-2021
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -21,6 +21,7 @@
  * 2.00.02	8/16/2020	Jack Pond				Corrected singleEmail recipient name for templateTargetId
  * 2.00.02	10-06-2020	Jack Pond				Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack Pond               Updated for Flow Action BasePack and Flow Screen Component Base Pack.
+ * 2.00.05  11-28-2020  Jack Pond               Added setTreatTargetObjectAsRecipient Fix: #586
  *
  **/
 
@@ -123,6 +124,7 @@ public without sharing class SendBetterEmail {
             String templateName = curRequest.templateName;
             String templateLanguage = curRequest.templateLanguage;
             String templateTargetObjectId = curRequest.templateTargetObjectId;
+            Boolean setTreatTargetObjectAsRecipient = curRequest.setTreatTargetObjectAsRecipient == null ? SendBetterEmailConstant.DEFAULT_TREAT_TARGET_OBJECT_AS_RECIPIENT : curRequest.setTreatTargetObjectAsRecipient;
 
             String emailMessageType = curRequest.emailMessageType == null
                 ? 'singleEmail'
@@ -435,6 +437,7 @@ public without sharing class SendBetterEmail {
                 if (templateID != null) {
                     try {
                         mail.setTemplateID(templateID);
+                        mail.setTreatTargetObjectAsRecipient(setTreatTargetObjectAsRecipient);
                         thisResponse.templateUsed = templateID;
                     } catch (Exception e) {
                         thisResponse.isSuccess = false;
@@ -532,7 +535,6 @@ public without sharing class SendBetterEmail {
                     }
                 }
             }
-
             for (integer i = 0; i < singleSendEmailResults.size(); i++) {
                 SendBetterEmailRequest request = singleEmailRequestToSend[i];
                 SendBetterEmailResponse response = responseList[request.index];
@@ -557,10 +559,7 @@ public without sharing class SendBetterEmail {
                         string[] allRecipients = request.toAddresses;
                         allRecipients.addall(request.ccAddresses);
                         allRecipients.addall(request.bccAddresses);
-                        if (
-                            request.recordId != null &&
-                            allRecipients.size() > 0
-                        ) {
+                        if (request.recordId != null) {
                             lstTaskWrapper.addAll(
                                 SendBetterEmailAddTasksToEmail.addTasks(
                                     request,
@@ -580,7 +579,6 @@ public without sharing class SendBetterEmail {
         ) {
             lstTaskToInsert.add(taskWrap.taskRec);
         }
-
         List<Database.SaveResult> taskInsertResults = Database.insert(
             lstTaskToInsert,
             false

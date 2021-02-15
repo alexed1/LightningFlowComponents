@@ -233,7 +233,7 @@
         <name>X4_Email_Using_Template_Action</name>
         <label>4. Email Using Template Action</label>
         <locationX>1561</locationX>
-        <locationY>852</locationY>
+        <locationY>850</locationY>
         <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -412,6 +412,92 @@
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <description>Email Using Template - An email using a Lightning EmailTemplate</description>
+        <name>X8_Email_Using_Template_Action</name>
+        <label>8. Email Using Template, Recipient, Target, WhatId</label>
+        <locationX>1797</locationX>
+        <locationY>1394</locationY>
+        <actionName>SendBetterEmail</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>ScreenConsole1</targetReference>
+        </connector>
+        <inputParameters>
+            <name>not_setTreatTargetObjectAsRecipient</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>recordId</name>
+            <value>
+                <elementReference>templateWhatId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>replyEmailAddress</name>
+            <value>
+                <elementReference>testReturnAddress</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsActivity</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>saveAsTask</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderDisplayName</name>
+            <value>
+                <elementReference>testSenderName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>SendTOthisOneEmailAddress</name>
+            <value>
+                <elementReference>templateRecipientId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>setTreatTargetObjectAsRecipient</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateTargetObjectId</name>
+            <value>
+                <elementReference>templateTargetId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateID</name>
+            <value>
+                <elementReference>testTemplateId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>UseSalesforceSignature</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>errorsFromEmail</assignToReference>
+            <name>errors</name>
+        </outputParameters>
+        <outputParameters>
+            <assignToReference>isSuccess</assignToReference>
+            <name>isSuccess</name>
+        </outputParameters>
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
@@ -622,7 +708,7 @@ Also create an empty string collection of email addresses</description>
         <name>X4_Assign_from_Screen</name>
         <label>4. Assign from Screen</label>
         <locationX>1246</locationX>
-        <locationY>852</locationY>
+        <locationY>854</locationY>
         <assignmentItems>
             <assignToReference>testSenderName</assignToReference>
             <operator>Assign</operator>
@@ -785,6 +871,60 @@ Also create an empty string collection of email addresses</description>
             <targetReference>Bulk_Set_up_Test_Requests</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <description>Assign variables from screen</description>
+        <name>X8_Assign_from_Screen</name>
+        <label>8. Assign from Screen</label>
+        <locationX>1237</locationX>
+        <locationY>1394</locationY>
+        <assignmentItems>
+            <assignToReference>testSenderName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X8_Screen_Sender_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>templateTargetId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X8_Screen_Template_Target_Record_Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>templateWhatId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X8_Screen_Related_RecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>templateRecipientId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X8_Screen_Recipient_Record_ID</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>X8_Email_Using_Template_Action</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>X8_Assign_Template</name>
+        <label>8. Assign Template</label>
+        <locationX>783</locationX>
+        <locationY>1386</locationY>
+        <assignmentItems>
+            <assignToReference>testTemplateId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X8_Screen_Template_RecordId</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>X8_Assign_from_Screen</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>whichExampleChoice1</name>
         <choiceText>1) Simple Email Text - with To, Sender, Reply-To, Subject, Body (All text)</choiceText>
@@ -839,6 +979,14 @@ Also create an empty string collection of email addresses</description>
         <dataType>Number</dataType>
         <value>
             <numberValue>7.0</numberValue>
+        </value>
+    </choices>
+    <choices>
+        <name>whichExampleChoice8</name>
+        <choiceText>&lt;span style=&quot;background-color: rgb(255, 255, 255);&quot;&gt;8) Email Using Template - An email using a Lightning EmailTemplate  &lt;/span&gt;&lt;span style=&quot;color: rgb(156, 220, 254);&quot;&gt;setTreatTargetObjectAsRecipient FALSE&lt;/span&gt;</choiceText>
+        <dataType>Number</dataType>
+        <value>
+            <numberValue>8.0</numberValue>
         </value>
     </choices>
     <constants>
@@ -1029,7 +1177,7 @@ Also create an empty string collection of email addresses</description>
     <decisions>
         <name>Which_Choice</name>
         <label>Which Choice</label>
-        <locationX>611</locationX>
+        <locationX>614</locationX>
         <locationY>469</locationY>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
         <rules>
@@ -1137,6 +1285,21 @@ Also create an empty string collection of email addresses</description>
             </connector>
             <label>7, Bulk Email - Send bulk email using request collections</label>
         </rules>
+        <rules>
+            <name>X8_Email_Template_Target_Not_Recipient</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Choose_Example</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>whichExampleChoice8</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X8_Email_Using_Template</targetReference>
+            </connector>
+            <label>8. Email Template Target Not Recipient</label>
+        </rules>
     </decisions>
     <decisions>
         <name>X4_TemplateID_Identified</name>
@@ -1166,6 +1329,38 @@ Also create an empty string collection of email addresses</description>
             </conditions>
             <connector>
                 <targetReference>X4_Assign_Template</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>X8_TemplateID_Identified</name>
+        <label>8. TemplateID Provided</label>
+        <locationX>394</locationX>
+        <locationY>1394</locationY>
+        <defaultConnector>
+            <targetReference>X8_Create_Test_Templates_if_Needed</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Check to Add</defaultConnectorLabel>
+        <rules>
+            <name>X8_TID_Provided</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>X8_Screen_Template_RecordId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>X8_Screen_Template_RecordId</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue/>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>X8_Assign_Template</targetReference>
             </connector>
             <label>Yes</label>
         </rules>
@@ -1237,8 +1432,8 @@ Also create an empty string collection of email addresses</description>
         <description>Loop through for each of the subjects</description>
         <name>Bulk_Set_up_Test_Requests</name>
         <label>7. Set up Test Requests</label>
-        <locationX>1373</locationX>
-        <locationY>1268</locationY>
+        <locationX>1375</locationX>
+        <locationY>1267</locationY>
         <collectionReference>bulkSubjectNames</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -1367,10 +1562,33 @@ Also create an empty string collection of email addresses</description>
             <field>Id</field>
         </outputAssignments>
     </recordLookups>
+    <recordLookups>
+        <name>X8_Get_Id_From_TemplateName</name>
+        <label>8. Get Id From TemplateName</label>
+        <locationX>986</locationX>
+        <locationY>1466</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>X8_Assign_from_Screen</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>X8_Screen_Email_Template_Name</elementReference>
+            </value>
+        </filters>
+        <object>EmailTemplate</object>
+        <outputAssignments>
+            <assignToReference>testTemplateId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+    </recordLookups>
     <screens>
         <name>Choose_Example_Screen</name>
         <label>Choose Example</label>
-        <locationX>520</locationX>
+        <locationX>523</locationX>
         <locationY>311</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1380,7 +1598,7 @@ Also create an empty string collection of email addresses</description>
         </connector>
         <fields>
             <name>SelectExampleInstructions</name>
-            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Sends a simple better text email&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Send an email using collections of recipients.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Attachments and Signature&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; -&lt;span style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Single Mail Template with merge fields from Recipient Record, Related To Record, Activity to Recipient and Task to Related To&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - Sending &lt;span style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Multi-Lingual with Email Templates&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;6) Mass Email&lt;/b&gt; - Send an email using MassEmail messaging&lt;/p&gt;&lt;p&gt;&lt;b&gt;7) Bulk Email &lt;/b&gt;- Send bulk email using request collections&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Select the example/test you would like to execute.  For examples 3-5, you will need to do some prior setup of records and/or templates as described in the instructions for each when selected.  The choices are:&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgba(25, 30, 35, 0.2);&quot;&gt;1) Simple Email Text&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Sends a simple better text email&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;2) Simple Email with Address Collections&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Send an email using collections of recipients.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;3) Email with Attachments&lt;/b&gt; - &lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Attachments and Signature&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;4) Email Using Template&lt;/b&gt; -&lt;span style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Single Mail Template with merge fields from Recipient Record, Related To Record, Activity to Recipient and Task to Related To&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;5) Multi-Lingual Using Email Templates&lt;/b&gt; - Sending &lt;span style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Multi-Lingual with Email Templates&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;6) Mass Email&lt;/b&gt; - Send an email using MassEmail messaging&lt;/p&gt;&lt;p&gt;&lt;b&gt;7) Bulk Email &lt;/b&gt;- Send bulk email using request collections&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;8) Email Using Template Target Not Recipient&lt;/b&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt; -&lt;/span&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60); font-size: 10.5pt; font-family: Arial, sans-serif;&quot;&gt;Single Mail Template with merge fields from Target Record, Related To Record, Different Recipient&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;NOTE&lt;/b&gt;:  By default, &lt;span style=&quot;color: rgb(23, 43, 77); font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Oxygen, Ubuntu, &amp;quot;Fira Sans&amp;quot;, &amp;quot;Droid Sans&amp;quot;, &amp;quot;Helvetica Neue&amp;quot;, sans-serif; font-size: 14px; background-color: rgb(255, 255, 255);&quot;&gt;UseSalesforceSignature and saveAsActivity are set to true if unspecified.  This often has unintended consequences, so  explicitly setting these variables is best practice - especially if they are not desired features.&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
@@ -1392,6 +1610,7 @@ Also create an empty string collection of email addresses</description>
             <choiceReferences>whichExampleChoice5</choiceReferences>
             <choiceReferences>whichExampleChoice6</choiceReferences>
             <choiceReferences>whichExampleChoice7</choiceReferences>
+            <choiceReferences>whichExampleChoice8</choiceReferences>
             <dataType>Number</dataType>
             <fieldText>Choose Example</fieldText>
             <fieldType>DropdownBox</fieldType>
@@ -1898,7 +2117,7 @@ Also create an empty string collection of email addresses</description>
     <screens>
         <name>X4_Email_Using_Template</name>
         <label>4. Email Using Template</label>
-        <locationX>639</locationX>
+        <locationX>640</locationX>
         <locationY>847</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -1934,14 +2153,14 @@ Also create an empty string collection of email addresses</description>
             <fieldText>Recipient Record Id (also for template merge fields and recording related Email as an activity)</fieldText>
             <fieldType>InputField</fieldType>
             <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendBetterEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
         </fields>
         <fields>
             <name>X4_Screen_Related_RecordId</name>
             <dataType>String</dataType>
             <fieldText>Related Record Id (also for template merge fields for related record and creating task on same)</fieldText>
             <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
+            <isRequired>true</isRequired>
             <validationRule>
                 <errorMessage>&lt;p&gt;Related Record Id and Related Record Type both must either be used or blank.   One of them is blank.&lt;/p&gt;</errorMessage>
                 <formulaExpression>ISBLANK({!X4_Related_RecordType}) == ISBLANK({!X4_Screen_Related_RecordId})</formulaExpression>
@@ -2257,6 +2476,127 @@ Also create an empty string collection of email addresses</description>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
+    <screens>
+        <name>X8_Email_Using_Template</name>
+        <label>8. Email Using Template (Recipient and Target)</label>
+        <locationX>402</locationX>
+        <locationY>1048</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <connector>
+            <targetReference>X8_TemplateID_Identified</targetReference>
+        </connector>
+        <fields>
+            <name>Example8Details</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Flow Example 8&lt;/b&gt;&lt;span style=&quot;font-size: 10.5pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt; Single Mail Template with merge fields from Recipient Record, Related To Record, Activity to Recipient and Task to Related To and a different Recipient&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;&lt;i&gt;NOTE: Before running this example flow, you must create record(s) for both the Recipient (a contact by default) and the Related Record (an Account Record by default) and have the Record Ids available&lt;/i&gt;&lt;/b&gt;&lt;i style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;.&lt;/i&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;This sends out an email using a specified Email Template with the addressee specified through the Recipient Record Id (TargetObjectId) and optionally (dependent on your Template) merge fields with an associated object record (WhatId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;Parameters used:&lt;/span&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;sender [&lt;/span&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;Sender Display Name(sendSender)&lt;/b&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;]&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 9pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;reply to &lt;/span&gt;&lt;b style=&quot;font-size: 9pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;[Reply Email Address&lt;/b&gt;&lt;b&gt;(testReturnAddress)]&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;with&amp;nbsp;[&lt;/span&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;Email Template Id(&lt;/b&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;templateId&lt;/b&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;)&lt;/b&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;] (looked up or created if specified by name)&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;sent to &lt;/span&gt;&lt;b style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;[&lt;/b&gt;&lt;b style=&quot;font-size: 9pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;Recipient Record Id&lt;/b&gt;&lt;b&gt;(templateTargetId)]&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 9pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;with related record &lt;/span&gt;&lt;b style=&quot;font-size: 9pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;[Related Record Id(templateWhatId)]&lt;/b&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;Save Email as Activity on Recipient Record(s)&lt;/span&gt;[true]&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: black; background-color: white;&quot;&gt;Save Email as Task on recipient related record(s)&lt;/span&gt;[true]&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;For this example, you will need to create or use a template. Templates also require that you have a recipient record (targetObjectId) (e.g., Contact, User, . . .) which must also pre-exist.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;You will be required enter the ID for that record as the Recipient Record Id&lt;/span&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;. Additionally if you intend to test merge fields (RelatedTo) with your template, You must also pre-create the related object record and have available the Id for that record as the Record Object Id (RecordId).&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;If you are using the defaults, you will also need to:&lt;/span&gt;&lt;/p&gt;&lt;ol&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;Create a Contact (for Recipient Object) and/or have the Id available.&lt;/span&gt;&lt;/li&gt;&lt;li&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif;&quot;&gt;Create an Account (for Related Record) and/or have the Id available.&lt;/span&gt;&lt;/li&gt;&lt;/ol&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;This example also creates an activity for the email which will be assigned to the Recipient Record Id and a task related to the Related Record Id.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;Note: These are independently settable in the Action.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;If you specify template by name and the templates do not exist, they will be created using Contact for the &lt;/span&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;Recipient RecordType and Account for the Related RecordType.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60);&quot;&gt;If you use the default test templates (&lt;/span&gt;&lt;span style=&quot;font-size: 10pt; font-family: Arial, sans-serif; color: rgb(62, 62, 60); background-color: white;&quot;&gt;sendBetterEmailTest) the Target ID should be a ContactId and the Related Record should be an AccountId.&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>X8_Screen_Template_RecordId</name>
+            <dataType>String</dataType>
+            <fieldText>Email Template Id (If Preferred)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>X8_Screen_Email_Template_Name</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>DefaultTemplateName</elementReference>
+            </defaultValue>
+            <fieldText>Email Template Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>X8_Screen_Recipient_Record_ID</name>
+            <dataType>String</dataType>
+            <fieldText>Recipient Record Id (Send to this record)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>X8_Screen_Template_Target_Record_Id</name>
+            <dataType>String</dataType>
+            <fieldText>Target Record Id (also for template merge fields and recording related Email as an activity)</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;This must be an existing record.  If you are using the default test templates (sendBetterEmailTest), it should be a ContactId&lt;/p&gt;</helpText>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>X8_Screen_Related_RecordId</name>
+            <dataType>String</dataType>
+            <fieldText>Related Record Id (also for template merge fields for related record and creating task on same)</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;Related Record Id and Related Record Type both must either be used or blank.   One of them is blank.&lt;/p&gt;</errorMessage>
+                <formulaExpression>ISBLANK({!X4_Related_RecordType}) == ISBLANK({!X4_Screen_Related_RecordId})</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>X8_Screen_Related_RecordType</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>RelatedRecordType</elementReference>
+            </defaultValue>
+            <fieldText>Related Record Type</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;&lt;span style=&quot;color: rgb(62, 62, 60); background-color: rgb(255, 255, 255);&quot;&gt;This must be an existing record of a type that allows File Attachments.  If you are using the default test templates (sendBetterEmailTest), it should be an Accoun&lt;/span&gt;&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+            <validationRule>
+                <errorMessage>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Related Record Id and Related Record Type both must either be used or blank.   One of them is blank.&lt;/span&gt;&lt;/p&gt;</errorMessage>
+                <formulaExpression>ISBLANK({!X4_Related_RecordType}) == ISBLANK({!X4_Screen_Related_RecordId})</formulaExpression>
+            </validationRule>
+        </fields>
+        <fields>
+            <name>X8_Screen_Reply_To_Email_Address</name>
+            <extensionName>flowruntime:email</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>ReplyTo Email Address</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>placeholder</name>
+                <value>
+                    <elementReference>testReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>testReturnAddress</elementReference>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <outputParameters>
+                <assignToReference>testReturnAddress</assignToReference>
+                <name>value</name>
+            </outputParameters>
+        </fields>
+        <fields>
+            <name>X8_Screen_Sender_Name</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testSenderName</elementReference>
+            </defaultValue>
+            <fieldText>Sender Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
         <locationX>147</locationX>
         <locationY>292</locationY>
@@ -2270,7 +2610,7 @@ Also create an empty string collection of email addresses</description>
         <name>X4_Create_Test_Templates_if_Needed</name>
         <label>4. Create Test Templates if Needed</label>
         <locationX>895</locationX>
-        <locationY>860</locationY>
+        <locationY>859</locationY>
         <connector>
             <targetReference>X4_Get_Id_From_TemplateName</targetReference>
         </connector>
@@ -2325,6 +2665,23 @@ Also create an empty string collection of email addresses</description>
             <name>sendBetterEmailTestType</name>
             <value>
                 <stringValue>MassEmail</stringValue>
+            </value>
+        </inputAssignments>
+    </subflows>
+    <subflows>
+        <description>sendBetterEmail Test - Create Test Templates if Needed</description>
+        <name>X8_Create_Test_Templates_if_Needed</name>
+        <label>8. Create Test Templates if Needed</label>
+        <locationX>650</locationX>
+        <locationY>1466</locationY>
+        <connector>
+            <targetReference>X8_Get_Id_From_TemplateName</targetReference>
+        </connector>
+        <flowName>sendBetterEmail_Test_Create_Test_Templates_if_needed</flowName>
+        <inputAssignments>
+            <name>sendBetterEmailTestName</name>
+            <value>
+                <elementReference>X8_Screen_Email_Template_Name</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -2538,6 +2895,13 @@ The value must be one of the following types:
         <dataType>String</dataType>
         <isCollection>true</isCollection>
         <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>templateRecipientId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>

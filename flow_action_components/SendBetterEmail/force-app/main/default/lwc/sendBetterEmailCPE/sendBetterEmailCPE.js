@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 11-29-2020
+ * @Last Modified On	: 02-14-2021
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -14,93 +14,109 @@
  * 2.00.02	09-02-2020	Jack D. Pond		#481 allow flow formulas (string) to be selected in flow combo boxes 
  * 2.00.02	10-06-2020	Jack D. Pond		Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
+ * 2.00.05  11-28-2020  Jack D. Pond		Added setTreatTargetObjectAsRecipient
  * 
  **/
 import {api, track, LightningElement} from 'lwc';
+const constVal = {
+	specifyBodyOption: 'specifyBody',
+	useTemplateOption: 'useTemplate',
+	useTemplateNameOption: 'useTemplateName',
+	singleEmailOption: 'singleEmail',
+	massEmailOption: 'massEmail',
+	flowDataTypeString: 'String',
+	flowDataTypeBoolean: 'Boolean',
+	flowDataTypeNumber: 'Number',
+	eventDataTypeNumber: 'number',
+	eventDataTypeCheckbox: 'checkbox',
+	stringCollectionVariablesOption: 'String Collection',
+	stringVariablesOption: 'String Variables (or type an address)',
+	stringDataType: 'String',
+	referenceDataType: 'reference',
+	nullValue: ''
+}
+
+// This code is for setting up checkbox with defaults - should be forward compatible
+const cbConstants = {
+	checkbox_prefix: 'select_',
+	GlobalConstantTrue: '$GlobalConstant.True',
+	GlobalConstantFalse: '$GlobalConstant.False',
+	flowDataTypeBoolean: 'Boolean',
+	notPrefix: 'cb_'
+}
+// end of checkbox with default code
 
 export default class SendBetterEmailCPE extends LightningElement {
 	_builderContext;
 	_values;
 	convertedFlowContext;
-
-	settings = {
-		specifyBodyOption: 'specifyBody',
-		useTemplateOption: 'useTemplate',
-		useTemplateNameOption: 'useTemplateName',
-		singleEmailOption: 'singleEmail',
-		massEmailOption: 'massEmail',
-		flowDataTypeString: 'String',
-		stringCollectionVariablesOption: 'String Collection',
-		stringVariablesOption: 'String Variables (or type an address)',
-		stringDataType: 'String',
-		referenceDataType: 'reference',
-		nullValue: ''
-	}
-
+	
 	@track inputValues = {
-		orgWideEmailAddressId: {value: null, valueDataType: null, isCollection: false, label: 'Organization Wide Email Address'},
-		senderDisplayName: {value: null, valueDataType: null, isCollection: false, label: 'Sender Display Name'},
-		subject: {value: null, valueDataType: null, isCollection: false, label: 'Subject'},
-		HTMLbody: {value: null, valueDataType: null, isCollection: false, label: 'HTML Body'},
-		plainTextBody: {value: null, valueDataType: null, isCollection: false, label: 'Plain Text'},
-		templateID: {value: null, valueDataType: null, isCollection: false, label: 'Email Template Id'},
-		templateTargetObjectId: {value: null, valueDataType: null, isCollection: false, label: 'Recipient Record Id (also for template merge fields and recording related Email as an activity)'},
-		bodyOption: {value: this.settings.specifyBodyOption, dataType: this.settings.flowDataTypeString, isCollection: false, label: 'Body'},
-		emailMessageType: {value: null, dataType: null, isCollection: false, label: 'Email Type'},
-		description: {value: null, dataType: null, isCollection: false, label: 'Description (sent in internal email with status after action completes)'},
-		bcc: {value: null, dataType: null, isCollection: false, label: 'Sender receives BCC of first email sent?'},
-		senderDisplayName: {value: null, dataType: null, isCollection: false, label: 'Sender Display Name'},
-		replyEmailAddress: {value: null, dataType: null, isCollection: false, label: 'Reply Email Address'},
-		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, label: 'Use Salesforce Signature if executing user has one?'},
-		templateName: {value: null, dataType: null, isCollection: false, label: 'Template Name'},
-		templateLanguage: {value: null, dataType: null, isCollection: false, label: 'Template Language'},
-		targetObjectIds: {value: null, dataType: null, isCollection: true, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
-		whatIds: {value: null, dataType: null, isCollection: true, label: 'Related Record Id Collection(for template merge fields and recording Email as a task)'},
-		saveAsActivity: {value: null, dataType: null, isCollection: false, label: 'Save Email as Activity on Recipient Record(s)?'},
-		saveAsTask: {value: null, dataType: null, isCollection: false, label: 'Save Email as Task on recipient related record(s)?'},
-		recordId: {value: null, valueDataType: null, isCollection: false, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
-		SendTOthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendTOthisOneEmailAddress'},
-		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendTOthisStringCollectionOfEmailAddresses'},
-		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
-		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
-		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
-		SendCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendCCthisOneEmailAddress'},
-		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendCCthisStringCollectionOfEmailAddresses'},
-		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
-		SendBCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, label: 'SendBCCthisOneEmailAddress'},
-		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
-		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
-		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, label: 'Attach which Content Document Links?'}
+		orgWideEmailAddressId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Organization Wide Email Address'},
+		senderDisplayName: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
+		subject: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Subject'},
+		HTMLbody: {value: null, valueDataType: null, isCollection: false, default: null, label: 'HTML Body'},
+		plainTextBody: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Plain Text'},
+		templateID: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Email Template Id'},
+		templateTargetObjectId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Recipient Record Id (also for template merge fields and recording related Email as an activity)'},
+		bodyOption: {value: constVal.specifyBodyOption, dataType: constVal.flowDataTypeString, isCollection: false, default: null, label: 'Body'},
+		emailMessageType: {value: null, dataType: null, isCollection: false, default: null, label: 'Email Type'},
+		description: {value: null, dataType: null, isCollection: false, default: null, label: 'Description (sent in internal email with status after action completes)'},
+		bcc: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
+		senderDisplayName: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
+		replyEmailAddress: {value: null, dataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
+		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		templateName: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Name'},
+		templateLanguage: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Language'},
+		targetObjectIds: {value: null, dataType: null, isCollection: true, default: null, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
+		whatIds: {value: null, dataType: null, isCollection: true, default: null, default: null, label: 'Related Record Id Collection(for template merge fields and recording Email as a task)'},
+		saveAsActivity: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Activity on Recipient Record(s)?'},
+		saveAsTask: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Task on recipient related record(s)?'},
+		setTreatTargetObjectAsRecipient: {value: null, dataType: null, isCollection: false, default: true, label: 'Treat the target as a recipient. Defaults to True'},
+		cb_setTreatTargetObjectAsRecipient: {value: 'CB_TRUE', dataType: null, isCollection: false, default: false, label: '!Treat the target as a recipient.'},
+		recordId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
+		SendTOthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendTOthisOneEmailAddress'},
+		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOthisStringCollectionOfEmailAddresses'},
+		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
+		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
+		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
+		SendCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendCCthisOneEmailAddress'},
+		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCthisStringCollectionOfEmailAddresses'},
+		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
+		SendBCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendBCCthisOneEmailAddress'},
+		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
+		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
+		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Attach which Content Document Links?'}
 	};
 
 	bodyOptions = [
-		{label: 'Specify Body here', value: this.settings.specifyBodyOption,fields: ['HTMLbody','plainTextBody']},
-		{label: 'Use Email Template',value: this.settings.useTemplateOption,fields: ['templateID','templateTargetObjectId']}
+		{label: 'Specify Body here', value: constVal.specifyBodyOption,fields: ['HTMLbody','plainTextBody']},
+		{label: 'Use Email Template',value: constVal.useTemplateOption,fields: ['templateID','templateTargetObjectId','templateName']}
 	];
 
 	emailTemplateOptions = [
-		{label: 'Specify Template by Id Here', value: this.settings.specifyBodyOption,fields: ['templateID','templateTargetObjectId']},
-		{label: 'Use template with this name',value: this.settings.useTemplateNameOption,fields: ['templateName','templateLanguage']}
+		{label: 'Specify Template by Id Here', value: constVal.specifyBodyOption,fields: ['templateID','templateTargetObjectId']},
+		{label: 'Use template with this name',value: constVal.useTemplateNameOption,fields: ['templateName','templateLanguage']}
 	];
 
 	emailOptions = [
-		{label: 'Standard Email', value: this.settings.singleEmailOption},
-		{label: 'Mass Email',value: this.settings.massEmailOption}
+		{label: 'Standard Email', value: constVal.singleEmailOption},
+		{label: 'Mass Email',value: constVal.massEmailOption}
 	];
 
 	@track convertedFlowContext;
 	@track stringOptions = [];
 
 	@track isInitialized = true; //helps ensure all data structures are ready before rendering starts
-	@track selectedBodyOption = this.settings.specifyBodyOption;
+	@track selectedBodyOption = constVal.specifyBodyOption;
 	get isSpecifyBodyOption() {
-		return this.selectedBodyOption === this.settings.specifyBodyOption;
+		return this.selectedBodyOption === constVal.specifyBodyOption;
 	}
-	@track selectedEmailOption = this.settings.singleEmailOption;
+	@track selectedEmailOption = constVal.singleEmailOption;
 	@track isMassEmail = true;
 
 
@@ -168,6 +184,22 @@ export default class SendBetterEmailCPE extends LightningElement {
 				if (curInputParam.name && this.inputValues[curInputParam.name]) {
 					this.inputValues[curInputParam.name].value = curInputParam.value;
 					this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+// This code is for setting up checkbox with defaults - should be forward compatible
+					if (curInputParam.valueDataType == cbConstants.flowDataTypeBoolean){
+						if (curInputParam.value == cbConstants.GlobalConstantTrue){
+							this.inputValues[curInputParam.name].value = true;
+						}
+						if (curInputParam.value == cbConstants.GlobalConstantFalse){
+							this.inputValues[curInputParam.name].value = false;
+						}
+						if (this.inputValues[curInputParam.name].value != null){
+							let notName = curInputParam.name.substring(0,cbConstants.notPrefix.length) == cbConstants.notPrefix?curInputParam.name.substring(cbConstants.notPrefix.length):cbConstants.notPrefix+curInputParam.name;
+							if (this.inputValues[notName] != null){
+								this.inputValues[notName].value = !this.inputValues[curInputParam.name].value;
+							}
+						}
+					}
+// end of checkbox with default code
 				}
 				this.initializeAvailableRecipientsValues(curInputParam, roleManagerValues);
 			});
@@ -209,14 +241,16 @@ export default class SendBetterEmailCPE extends LightningElement {
 			curBodyOption.fields.forEach(curBodyField => {
 				if (!hasValue && this.inputValues[curBodyField].value) {
 					this.selectedBodyOption = curBodyOption.value;
+					hasValue = true;
 				}
 			});
 		});
 	}
 
-	initializeEmailOptions() {
-		this.inputValues.emailMessageType.value = this.inputValues.emailMessageType.value ? this.inputValues.emailMessageType.value : this.settings.singleEmailOption;
-		this.isMassEmail = this.inputValues.emailMessageType.value === this.settings.massEmailOption;
+
+initializeEmailOptions() {
+		this.inputValues.emailMessageType.value = this.inputValues.emailMessageType.value ? this.inputValues.emailMessageType.value : constVal.singleEmailOption;
+		this.isMassEmail = this.inputValues.emailMessageType.value === constVal.massEmailOption;
 	}
 
 	convertContextIntoRoleManagerParams(flowContext) {
@@ -244,23 +278,23 @@ export default class SendBetterEmailCPE extends LightningElement {
 				let allVariables = flowContext.variables.filter(curValue => {
 					return curValue.dataType === curType && curValue.isCollection
 				});
-				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringCollectionVariablesOption,false);
+				this.addToOutputTypes(outputTypes,allVariables,constVal.stringCollectionVariablesOption,false);
 				allVariables = flowContext.variables.filter(curValue => {
 					return curValue.dataType === curType && !curValue.isCollection
 				});
-				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+				this.addToOutputTypes(outputTypes,allVariables,constVal.stringVariablesOption,false);
 				allVariables = flowContext.formulas.filter(curValue => {
 					return curValue.dataType === curType && !curValue.isCollection
 				});
-				this.addToOutputTypes(outputTypes,allVariables,this.settings.stringVariablesOption,false);
+				this.addToOutputTypes(outputTypes,allVariables,constVal.stringVariablesOption,false);
 			} else {
 				let allVariables = flowContext.variables.filter(curValue => {
 					return curValue.dataType === 'SObject' && curValue.objectType === curType
 				});
 				this.addToOutputTypes(outputTypes,allVariables,curType,true);
 			}
-			if (!(this.settings.stringVariablesOption in outputTypes)){
-				outputTypes[this.settings.stringVariablesOption] = {
+			if (!(constVal.stringVariablesOption in outputTypes)){
+				outputTypes[constVal.stringVariablesOption] = {
 					data: [],
 					valueFieldName: 'name',
 					labelFieldName: 'name'
@@ -298,7 +332,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		if (valuesToCleanUp.length) {
 			valuesToCleanUp.forEach(valueToCleanUp => {
 				if (valueToCleanUp && valueToCleanUp.value) {
-					this.dispatchFlowValueChangeEvent(valueToCleanUp.name, this.settings.nullValue, this.settings.stringCollectionVariablesOption);
+					this.dispatchFlowValueChangeEvent(valueToCleanUp.name, constVal.nullValue, constVal.stringCollectionVariablesOption);
 				}
 			});
 		}
@@ -310,7 +344,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 			bodyOptionToClear.forEach(curBodyOption => {
 				curBodyOption.fields.forEach(curBodyField => {
 					if (this.inputValues[curBodyField].value) {
-						this.dispatchFlowValueChangeEvent(curBodyField, this.settings.nullValue, this.settings.stringDataType);
+						this.dispatchFlowValueChangeEvent(curBodyField, constVal.nullValue, constVal.stringDataType);
 					}
 				});
 			});
@@ -324,11 +358,10 @@ export default class SendBetterEmailCPE extends LightningElement {
 			composed: true,
 			detail: {
 				name: id,
-				newValue: newValue ? newValue : (newValueDataType === 'Boolean' ? newValue : null),
+				newValue: newValue,
 				newValueDataType: newValueDataType
 			}
 		});
-
 		this.dispatchEvent(valueChangedEvent);
 	}
 
@@ -337,6 +370,20 @@ export default class SendBetterEmailCPE extends LightningElement {
 		this.doClearBodyOptions();
 	}
 
+// This code is for setting up checkbox with defaults - should be forward compatible
+//	handleCBValueChange(event) {   // Handle a change of event for a Checkbox to store as boolean value
+	handleCheckboxChange(event) {
+	if (event.target) {
+			let curAttributeName = event.target.name ? event.target.name.replace(cbConstants.checkbox_prefix, '') : null;
+			let newValue = event.target.checked == true?true:false;
+			this.inputValues[curAttributeName].value = newValue == true?true:null;
+			this.dispatchFlowValueChangeEvent(curAttributeName, newValue, cbConstants.flowDataTypeBoolean);
+			this.inputValues[cbConstants.notPrefix+curAttributeName].value = newValue != true;
+			this.dispatchFlowValueChangeEvent(cbConstants.notPrefix+curAttributeName, !newValue, cbConstants.flowDataTypeBoolean);
+		}
+	}
+//	end of checkbox with default code
+
 	handleClearAll(event) {
 		this.doCleanRoleManager();
 	}
@@ -344,14 +391,14 @@ export default class SendBetterEmailCPE extends LightningElement {
 	handleEmailOptionChange(event) {
 		let curAttributeName = event.target.name ? event.target.name : null;
 		this.inputValues.emailMessageType.value = event.detail.value;
-		this.isMassEmail = this.inputValues.emailMessageType.value === this.settings.massEmailOption;
-		this.dispatchFlowValueChangeEvent(curAttributeName, event.detail.value, 'String');
+		this.isMassEmail = this.inputValues.emailMessageType.value === constVal.massEmailOption;
+		this.dispatchFlowValueChangeEvent(curAttributeName, event.detail.value, constVal.flowDataTypeBoolean);
 		//		this.doClearBodyOptions();
 	}
 
 	handleFlowComboboxValueChange(event) {
 		if (event.target && event.detail) {
-			let formattedValue = (event.detail.newValueDataType === this.settings.flowDataTypeString || !event.detail.newValue) ? event.detail.newValue : '{!' + event.detail.newValue + '}';
+			let formattedValue = (event.detail.newValueDataType === constVal.flowDataTypeString || !event.detail.newValue) ? event.detail.newValue : '{!' + event.detail.newValue + '}';
 			this.dispatchFlowValueChangeEvent(event.target.name, formattedValue, event.detail.newValueDataType);
 		}
 	}
@@ -359,17 +406,17 @@ export default class SendBetterEmailCPE extends LightningElement {
 	handleValueChange(event) {
 		if (event.target) {
 			let curAttributeName = event.target.name ? event.target.name : null;
-			let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
+			let curAttributeValue = event.target.type === constVal.eventDataTypeCheckbox ? event.target.checked : event.detail.value;
 			let curAttributeType;
 			switch (event.target.type) {
-				case 'checkbox':
-					curAttributeType = 'Boolean';
+				case constVal.eventDataTypeCheckbox:
+					curAttributeType = constVal.flowDataTypeBoolean;
 					break;
-				case 'number':
-					curAttributeType = 'Number';
+				case constVal.eventDataTypeNumber:
+					curAttributeType = constVal.flowDataTypeNumber;
 					break;
 				default:
-					curAttributeType = 'String';
+					curAttributeType = constVal.flowDataTypeString;
 			}
 			this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
 		}
@@ -383,10 +430,10 @@ export default class SendBetterEmailCPE extends LightningElement {
 			let attributeToChange = curRecipient.typeMap[event.detail.newValueObjectType];
 			let newLabel = event.detail.newValue ? curRecipient.baseLabel + ' (' + event.detail.newValue + ')' : curRecipient.baseLabel;
 			curRecipient.label = newLabel;
-			if (event.detail.newValueType === this.settings.stringCollectionVariablesOption) {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : this.settings.nullValue, this.settings.stringCollectionVariablesOption);
+			if (event.detail.newValueType === constVal.stringCollectionVariablesOption) {
+				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? event.detail.newValue : constVal.nullValue, constVal.stringCollectionVariablesOption);
 			} else {
-				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? ( event.detail.newValueType === this.settings.referenceDataType ? '{!' + event.detail.newValue + '}': event.detail.newValue) : this.settings.nullValue, event.detail.newValueType);
+				this.dispatchFlowValueChangeEvent(attributeToChange, event.detail.newValue ? ( event.detail.newValueType === constVal.referenceDataType ? '{!' + event.detail.newValue + '}': event.detail.newValue) : constVal.nullValue, event.detail.newValueType);
 			}
 		}
 	}

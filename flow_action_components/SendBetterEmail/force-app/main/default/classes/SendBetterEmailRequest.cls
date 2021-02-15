@@ -3,7 +3,7 @@
  * @author            : Alex Edelstein - etal
  * @license           
  * @group             : 
- * @last modified on  : 10-12-2020
+ * @last modified on  : 02-14-2021
  * @last modified by  : Jack D. Pond
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Modifications Log 
@@ -138,7 +138,15 @@ public inherited sharing class SendBetterEmailRequest {
 	@AuraEnabled
 	public Boolean saveAsTask;
 
-	@invocableVariable
+	@invocableVariable(description='Treat the target as a recipient. Defaults to True')
+	@AuraEnabled
+	public Boolean setTreatTargetObjectAsRecipient;
+
+	@invocableVariable(description='!(Treat the target as a recipient).')
+	@AuraEnabled
+	public Boolean cb_setTreatTargetObjectAsRecipient;
+
+ 	@invocableVariable
 	@AuraEnabled
 	public String subject;
 	
@@ -170,4 +178,3 @@ public inherited sharing class SendBetterEmailRequest {
 	@AuraEnabled
 	public List<String> whatIds;
 }
-

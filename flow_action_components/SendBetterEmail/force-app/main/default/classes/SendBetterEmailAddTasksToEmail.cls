@@ -2,7 +2,7 @@
  * @description       : SendBetterEmailAddTasksToEmail - helper
  * @author            : Mohith Shrivastava
  * @group             : 
- * @last modified on  : 10-12-2020
+ * @last modified on  : 02-14-2021
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date		Author				Modification
@@ -19,7 +19,6 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
 		List<String> thisResultIds = new List<String>();
 		String recipientListIds;
 		string subject = request.subject;
-
 		if (
 			request.templateID != null &&
 			subject == null &&

@@ -3,13 +3,14 @@
  * @author            : Alex Edelstein - etal
  * @license           
  * @group             : 
- * @last modified on  : 02-15-2021
+ * @last modified on  : 02-16-2021
  * @last modified by  : Jack D. Pond
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Modifications Log 
  * Ver		Date		Author				Modification
  * 2.00.02	10-12-2020	Mohith Shrivastava	Separated from sendBetterEmail (code refactoring)
  * 2.00.02	10-12-2020	Jack D. Pond		Reverted names for backward compatibility
+ * 2.00.05	02-12-2021	Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
 **/
 public inherited sharing class SendBetterEmailRequest {
 
@@ -39,6 +40,10 @@ public inherited sharing class SendBetterEmailRequest {
 	@invocableVariable
 	@AuraEnabled
 	public String HTMLbody;
+
+	@invocableVariable(label='MessageId List of existing email if this is InReplyTo' description='Use the MessageId of an existing email to add this message to that email thread')
+	@AuraEnabled
+	public List<String> InReplyTo;
 
 	@invocableVariable
 	@AuraEnabled

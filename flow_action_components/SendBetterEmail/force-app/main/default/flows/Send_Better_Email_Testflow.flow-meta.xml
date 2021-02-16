@@ -398,8 +398,8 @@
         <description>Use the SendBetterEmail Action with a collection of requests</description>
         <name>X7_BulkSendBetterEmail_Action</name>
         <label>7. SendBetterEmail Bulk</label>
-        <locationX>1698</locationX>
-        <locationY>1272</locationY>
+        <locationX>1684</locationX>
+        <locationY>1273</locationY>
         <actionName>SendBetterEmailBulk</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -417,7 +417,7 @@
         <description>Email Using Template - An email using a Lightning EmailTemplate</description>
         <name>X8_Email_Using_Template_Action</name>
         <label>8. Email Using Template, Recipient, Target, WhatId</label>
-        <locationX>1797</locationX>
+        <locationX>1744</locationX>
         <locationY>1394</locationY>
         <actionName>SendBetterEmail</actionName>
         <actionType>apex</actionType>
@@ -428,6 +428,12 @@
             <name>cb_setTreatTargetObjectAsRecipient</name>
             <value>
                 <stringValue>CB_FALSE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>InReplyTo</name>
+            <value>
+                <elementReference>ListOfInReplyToEmailMessageIds</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -537,6 +543,23 @@
         </assignmentItems>
         <connector>
             <targetReference>All_Uploaded_CD_Ids</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Add the messageId to the InReplyTo collection if given</description>
+        <name>Add_MessageId_to_Collection</name>
+        <label>Add MessageId to Collection</label>
+        <locationX>1594</locationX>
+        <locationY>1449</locationY>
+        <assignmentItems>
+            <assignToReference>ListOfInReplyToEmailMessageIds</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>MessageId_of_existing_email_if_this_is_InReplyTo</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>X8_Email_Using_Template_Action</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -906,7 +929,7 @@ Also create an empty string collection of email addresses</description>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>X8_Email_Using_Template_Action</targetReference>
+            <targetReference>InReplyTo</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -1172,6 +1195,32 @@ Also create an empty string collection of email addresses</description>
                 <targetReference>Get_Users</targetReference>
             </connector>
             <label>No Email 2?</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Was an InReplyTo Message ID entered?</description>
+        <name>InReplyTo</name>
+        <label>InReplyTo MessageId Given?</label>
+        <locationX>1429</locationX>
+        <locationY>1396</locationY>
+        <defaultConnector>
+            <targetReference>X8_Email_Using_Template_Action</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No InReplyTo</defaultConnectorLabel>
+        <rules>
+            <name>InReplyTo_MessageId_Entered</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MessageId_of_existing_email_if_this_is_InReplyTo</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_MessageId_to_Collection</targetReference>
+            </connector>
+            <label>Yes</label>
         </rules>
     </decisions>
     <decisions>
@@ -2551,6 +2600,14 @@ Also create an empty string collection of email addresses</description>
             </validationRule>
         </fields>
         <fields>
+            <name>MessageId_of_existing_email_if_this_is_InReplyTo</name>
+            <dataType>String</dataType>
+            <fieldText>MessageId of existing email if this is InReplyTo</fieldText>
+            <fieldType>InputField</fieldType>
+            <helpText>&lt;p&gt;Use the MessageId of an existing email to add this message to that email thread&lt;/p&gt;</helpText>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
             <name>X8_Screen_Reply_To_Email_Address</name>
             <extensionName>flowruntime:email</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -2832,6 +2889,14 @@ Also create an empty string collection of email addresses</description>
         <name>isSuccess</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>List of MessageIds of existing email if this is InReplyTo</description>
+        <name>ListOfInReplyToEmailMessageIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>

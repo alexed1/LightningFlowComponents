@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-14-2021
+ * @Last Modified On	: 02-16-2021
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -22,6 +22,7 @@
  * 2.00.02	10-06-2020	Jack Pond				Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack Pond               Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  * 2.00.05  11-28-2020  Jack Pond               Added setTreatTargetObjectAsRecipient Fix: #586
+ * 2.00.05  02-15-2021  Jack Pond               ReplyEmail with SendBetterEmail #595
  *
  **/
 
@@ -356,6 +357,10 @@ public without sharing class SendBetterEmail {
 						? false
 						: curRequest.UseSalesforceSignature
 				);
+
+                if (curRequest.InReplyTo != null && curRequest.InReplyTo.size() > 0){
+                    mail.setInReplyTo(curRequest.InReplyTo);
+                }
 
 				mail = SendBetterEmailAddAttachmentToEmail.addAttachments(
                     mail,

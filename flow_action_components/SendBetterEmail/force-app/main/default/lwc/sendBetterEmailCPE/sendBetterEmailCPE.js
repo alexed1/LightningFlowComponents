@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-15-2021
+ * @Last Modified On	: 02-16-2021
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -14,8 +14,8 @@
  * 2.00.02	09-02-2020	Jack D. Pond		#481 allow flow formulas (string) to be selected in flow combo boxes 
  * 2.00.02	10-06-2020	Jack D. Pond		Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
- * 2.00.05  02-14-2020  Jack D. Pond		Added setTreatTargetObjectAsRecipient and fsc_flowcheckbox
- * 
+ * 2.00.05  02-14-2020  Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
+* 
  **/
 import {api, track, LightningElement} from 'lwc';
 const constVal = {
@@ -42,7 +42,7 @@ const cbConstants = {
 	GlobalConstantTrue: '$GlobalConstant.True',
 	GlobalConstantFalse: '$GlobalConstant.False',
 	flowDataTypeBoolean: 'Boolean',
-	cbPrefix: 'cb_'
+	cbNotPrefix: 'cb_'
 }
 // end of checkbox with default code
 
@@ -65,7 +65,8 @@ export default class SendBetterEmailCPE extends LightningElement {
 		bcc: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
 		senderDisplayName: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
 		replyEmailAddress: {value: null, dataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
-		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		UseSalesforceSignature: {value: null, dataType: null, isCollection: true, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		InReplyTo: {value: null, dataType: null, isCollection: true, default: null, label: 'MessageId List of existing email if this is InReplyTo'},
 		templateName: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Name'},
 		templateLanguage: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Language'},
 		targetObjectIds: {value: null, dataType: null, isCollection: true, default: null, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
@@ -358,7 +359,7 @@ initializeEmailOptions() {
 		if (event.target && event.detail) {
 			let changedAttribute = event.target.name.replace(cbConstants.checkbox_prefix, '');
 			this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
-			this.dispatchFlowValueChangeEvent(cbConstants.cbPrefix+changedAttribute, event.detail.newStringValue, 'String');
+			this.dispatchFlowValueChangeEvent(cbConstants.cbNotPrefix+changedAttribute, event.detail.newStringValue, 'String');
 		}
 	}
 //	end of checkbox with default code

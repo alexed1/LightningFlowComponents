@@ -5,17 +5,18 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 10-12-2020
+ * @Last Modified On	: 02-16-2021
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
  * -------	----------	----------------------	------------------------------------------
- * 1.32		2/05/2020	Jack D. Pond			Updated Versioning
- * 1.33.1	4/11/2020	Jack D. Pond			Added tests for Issues #308,#316
- * 1.33.2	5/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
- * 1.33.2	5/29/2020	Jack D. Pond			Fixed Lead (Company rqd for Summer'20)
- * 1.33.2	6/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
- * 2.00.2	6/02/2020	Jack D. Pond			Added bulkification coverage tests
+ * 1.32		02/05/2020	Jack D. Pond			Updated Versioning
+ * 1.33.1	04/11/2020	Jack D. Pond			Added tests for Issues #308,#316
+ * 1.33.2	05/17/2020	Jack D. Pond			Version 1.33.2 upgrade - Issues #320,#351,#354, #355, #392
+ * 1.33.2	05/29/2020	Jack D. Pond			Fixed Lead (Company rqd for Summer'20)
+ * 1.33.2	06/02/2020	Jack D. Pond			Finalized MassEmail and added Tests
+ * 2.00.2	06/02/2020	Jack D. Pond			Added bulkification coverage tests
+ * 2.00.5	02/14/2021	Jack D. Pond			Added t031 for ReplyEmail with SendBetterEmail #595
  * 
  * To Do: Tests for MassEmail
 **/
@@ -49,6 +50,7 @@
 // @Test t028_CoverageSingleEMailTask: Single Email saveAsTask recordId is User
 // @Test t029_CoverageMassBetterEmailAddTasks: Test separated tasks and activities (massEmail)
 // @Test t030_CoverageSingleBetterEmailAddTasks: Test separated tasks and activities (singleEmail)
+// @Test t031_canSendEmailwithInReplyTo: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
 
 @isTest
 public with sharing class SendBetterEmailTest {
@@ -1097,5 +1099,45 @@ public with sharing class SendBetterEmailTest {
 		System.assertEquals(lstTaskWrapper[0].taskRec.ActivityDate, System.today());
 		System.assertEquals(lstTaskWrapper[0].taskRec.WhatId, UserInfo.getUserId());
 		System.assertEquals(lstTaskWrapper[0].requestIndex, 0);
+	}
+	// @Test t031_canSendEmailwithInReplyTo: emailDeliverabilityEnabled and capacity not exceeded or not emailDeliverabilityEnabled
+	@isTest
+	public static void t031_canSendEmailwithInReplyTo () {
+		Messaging.reserveSingleEmailCapacity(2);
+
+		Messaging.SingleEmailMessage message = new Messaging.SingleEmailMessage();
+		message.setToAddresses(new String[] {EMAIL_NOSUCH});
+		message.setSubject('Created For ReplyTo');
+		message.setPlainTextBody('Body of Created Email Message');
+		Messaging.sendEmail(new Messaging.SingleEmailMessage[] { message });
+	
+		SendBetterEmailRequest testReq = new SendBetterEmailRequest();
+		testReq.Subject = EMAIL_SUBJECT;
+		testReq.HTMLbody = EMAIL_BODY;
+		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
+		testReq.SendCCthisOneEmailAddress = EMAIL_NOSUCH;
+		testReq.SendBCCthisOneEmailAddress = EMAIL_NOSUCH;
+		list<EmailMessage> emailMessageIds = [SELECT Id FROM EmailMessage limit 1];
+		testReq.InReplyTo = new List<String> {emailMessageIds[0].Id};
+
+		List<SendBetterEmailRequest> reqList = new List<SendBetterEmailRequest>();
+		reqList.add(testReq);
+
+		Boolean exceptionHit = false;
+		try {            
+			List<SendBetterEmailResponse> testSendBetterEmailResponseList = SendBetterEmail.SendEmail(reqList);
+		} catch (SendBetterEmail.InvocableActionException e) {
+			exceptionHit=true;
+			system.debug('t031_canSendEmailwithInReplyTo: IfNoAddress: '+e.getMessage());
+		}
+		
+		Boolean emailDeliverabilityEnabled = emailDeliverabilityEnabled();
+		if(emailDeliverabilityEnabled){
+			System.assertEquals(exceptionHit,false,'emailDeliverabilityEnabled and capacity exceeded');
+		} else {
+			System.assertEquals(emailDeliverabilityEnabled,false,'emailDeliverabilityEnabled');
+		}
+		List<List<SendBetterEmailRequest>> theseRequests = SendBetterEmailBulkRequestSetup.SendEmail(reqList);
+		System.assertEquals(theseRequests.size(), 1, 't031_canSendEmailwithInReplyTo (Should have sent 1 with reply)');
 	}
 }

@@ -5,13 +5,13 @@
   @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
   @Group				: 
   @Last Modified By		: Jack D. Pond
-  @Last Modified On		: 02-15-2021
+  @Last Modified On		: 02-16-2021
   @Modification Log		: 
   @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
   1.0		6/29/2020	Jack D. Pond	Initial Version
   2.00.03	11-28-2020  Jack D. Pond	Updated for Flow Action BasePack and Flow Screen Component Base Pack.
-  2.00.05  11-28-2020	Jack D. Pond	Added setTreatTargetObjectAsRecipient
+  2.00.05  11-28-2020	Jack D. Pond	setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail Fix: #595
 
 -->
 <template>
@@ -149,6 +149,14 @@
 					<lightning-input name="UseSalesforceSignature" label={inputValues.UseSalesforceSignature.label}
 						type="checkbox" checked={inputValues.UseSalesforceSignature.value} onchange={handleValueChange}>
 					</lightning-input>
+				</div>
+				<div style="padding:5px 0 5px 0;margin-left:12px;">
+					<c-fsc_flow-combobox name="InReplyTo" label={inputValues.InReplyTo.label}
+						value={inputValues.InReplyTo.value} value-type={inputValues.InReplyTo.dataType}
+						builder-context-filter-type="String"
+						builder-context-filter-collection-boolean={inputValues.InReplyTo.isCollection}
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					</c-fsc_flow-combobox>
 				</div>
 			</div>
 			<div style="padding:0.5rem;background:#16325c;">

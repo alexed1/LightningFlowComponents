@@ -5,7 +5,7 @@
   @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
   @Group				: 
   @Last Modified By		: Jack D. Pond
-  @Last Modified On		: 02-14-2021
+  @Last Modified On		: 02-15-2021
   @Modification Log		: 
   @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
@@ -221,12 +221,20 @@
 						</c-fsc_flow-combobox>
 					</div>
 					<div style="padding:5px 12px 0 0;">
-						<c-fsc_flow-checkbox name="select_setTreatTargetObjectAsRecipient"
+						<c-fsc_flow-checkbox name="checkbox_sel_setTreatTargetObjectAsRecipient"
 							label={inputValues.setTreatTargetObjectAsRecipient.label}
-							checked={inputValues.cb_setTreatTargetObjectAsRecipient.value}
 							field-level-help={inputValues.setTreatTargetObjectAsRecipient.helpText}
+							checked={inputValues.cb_setTreatTargetObjectAsRecipient.value}
 							oncheckboxchanged={handleCheckboxChange}>
 						</c-fsc_flow-checkbox>
+						<!--
+						<lightning-input type="checkbox" name="checkbox_sel_setTreatTargetObjectAsRecipient"
+							label={inputValues.setTreatTargetObjectAsRecipient.label}
+							checked={inputValues.setTreatTargetObjectAsRecipient.value}
+							field-level-help={inputValues.setTreatTargetObjectAsRecipient.helpText}
+							onchange={handleCheckboxChange}>
+						</lightning-input>
+-->
 					</div>
 					<div style="padding:5px 0 5px 0;margin-left:12px;">
 						<c-fsc_flow-combobox name="templateLanguage" label={inputValues.templateLanguage.label}

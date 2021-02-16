@@ -3,7 +3,7 @@
  * @author            : Alex Edelstein - etal
  * @license           
  * @group             : 
- * @last modified on  : 02-14-2021
+ * @last modified on  : 02-15-2021
  * @last modified by  : Jack D. Pond
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Modifications Log 
@@ -144,7 +144,7 @@ public inherited sharing class SendBetterEmailRequest {
 
 	@invocableVariable(description='!(Treat the target as a recipient).')
 	@AuraEnabled
-	public Boolean cb_setTreatTargetObjectAsRecipient;
+	public String cb_setTreatTargetObjectAsRecipient;
 
  	@invocableVariable
 	@AuraEnabled

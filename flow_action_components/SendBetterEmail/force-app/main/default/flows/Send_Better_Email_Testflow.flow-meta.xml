@@ -322,7 +322,7 @@
         <inputParameters>
             <name>saveAsActivity</name>
             <value>
-                <booleanValue>false</booleanValue>
+                <booleanValue>true</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -425,12 +425,6 @@
             <targetReference>ScreenConsole1</targetReference>
         </connector>
         <inputParameters>
-            <name>not_setTreatTargetObjectAsRecipient</name>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </inputParameters>
-        <inputParameters>
             <name>recordId</name>
             <value>
                 <elementReference>templateWhatId</elementReference>
@@ -464,12 +458,6 @@
             <name>SendTOthisOneEmailAddress</name>
             <value>
                 <elementReference>templateRecipientId</elementReference>
-            </value>
-        </inputParameters>
-        <inputParameters>
-            <name>setTreatTargetObjectAsRecipient</name>
-            <value>
-                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <inputParameters>

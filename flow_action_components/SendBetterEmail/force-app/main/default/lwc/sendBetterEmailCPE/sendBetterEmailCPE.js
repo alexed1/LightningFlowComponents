@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-14-2021
+ * @Last Modified On	: 02-15-2021
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -14,7 +14,7 @@
  * 2.00.02	09-02-2020	Jack D. Pond		#481 allow flow formulas (string) to be selected in flow combo boxes 
  * 2.00.02	10-06-2020	Jack D. Pond		Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
- * 2.00.05  11-28-2020  Jack D. Pond		Added setTreatTargetObjectAsRecipient
+ * 2.00.05  02-14-2020  Jack D. Pond		Added setTreatTargetObjectAsRecipient and fsc_flowcheckbox
  * 
  **/
 import {api, track, LightningElement} from 'lwc';
@@ -38,11 +38,11 @@ const constVal = {
 
 // This code is for setting up checkbox with defaults - should be forward compatible
 const cbConstants = {
-	checkbox_prefix: 'select_',
+	checkbox_prefix: 'checkbox_sel_',
 	GlobalConstantTrue: '$GlobalConstant.True',
 	GlobalConstantFalse: '$GlobalConstant.False',
 	flowDataTypeBoolean: 'Boolean',
-	notPrefix: 'cb_'
+	cbPrefix: 'cb_'
 }
 // end of checkbox with default code
 
@@ -184,22 +184,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 				if (curInputParam.name && this.inputValues[curInputParam.name]) {
 					this.inputValues[curInputParam.name].value = curInputParam.value;
 					this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
-// This code is for setting up checkbox with defaults - should be forward compatible
-					if (curInputParam.valueDataType == cbConstants.flowDataTypeBoolean){
-						if (curInputParam.value == cbConstants.GlobalConstantTrue){
-							this.inputValues[curInputParam.name].value = true;
-						}
-						if (curInputParam.value == cbConstants.GlobalConstantFalse){
-							this.inputValues[curInputParam.name].value = false;
-						}
-						if (this.inputValues[curInputParam.name].value != null){
-							let notName = curInputParam.name.substring(0,cbConstants.notPrefix.length) == cbConstants.notPrefix?curInputParam.name.substring(cbConstants.notPrefix.length):cbConstants.notPrefix+curInputParam.name;
-							if (this.inputValues[notName] != null){
-								this.inputValues[notName].value = !this.inputValues[curInputParam.name].value;
-							}
-						}
-					}
-// end of checkbox with default code
 				}
 				this.initializeAvailableRecipientsValues(curInputParam, roleManagerValues);
 			});
@@ -246,7 +230,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 			});
 		});
 	}
-
 
 initializeEmailOptions() {
 		this.inputValues.emailMessageType.value = this.inputValues.emailMessageType.value ? this.inputValues.emailMessageType.value : constVal.singleEmailOption;
@@ -371,15 +354,11 @@ initializeEmailOptions() {
 	}
 
 // This code is for setting up checkbox with defaults - should be forward compatible
-//	handleCBValueChange(event) {   // Handle a change of event for a Checkbox to store as boolean value
-	handleCheckboxChange(event) {
-	if (event.target) {
-			let curAttributeName = event.target.name ? event.target.name.replace(cbConstants.checkbox_prefix, '') : null;
-			let newValue = event.target.checked == true?true:false;
-			this.inputValues[curAttributeName].value = newValue == true?true:null;
-			this.dispatchFlowValueChangeEvent(curAttributeName, newValue, cbConstants.flowDataTypeBoolean);
-			this.inputValues[cbConstants.notPrefix+curAttributeName].value = newValue != true;
-			this.dispatchFlowValueChangeEvent(cbConstants.notPrefix+curAttributeName, !newValue, cbConstants.flowDataTypeBoolean);
+	handleCheckboxChange(event) {   // Handle a change of event for a Checkbox to store as boolean value
+		if (event.target && event.detail) {
+			let changedAttribute = event.target.name.replace(cbConstants.checkbox_prefix, '');
+			this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+			this.dispatchFlowValueChangeEvent(cbConstants.cbPrefix+changedAttribute, event.detail.newStringValue, 'String');
 		}
 	}
 //	end of checkbox with default code

@@ -1117,8 +1117,8 @@ public with sharing class SendBetterEmailTest {
 		testReq.SendTOthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.SendCCthisOneEmailAddress = EMAIL_NOSUCH;
 		testReq.SendBCCthisOneEmailAddress = EMAIL_NOSUCH;
-		list<EmailMessage> emailMessageIds = [SELECT Id FROM EmailMessage limit 1];
-		testReq.InReplyTo = new List<String> {emailMessageIds[0].Id};
+		list<EmailMessage> emailMessageIds = [SELECT Id,MessageIdentifier FROM EmailMessage limit 1];
+		testReq.InReplyTo = new List<String> {emailMessageIds[0].MessageIdentifier};
 
 		List<SendBetterEmailRequest> reqList = new List<SendBetterEmailRequest>();
 		reqList.add(testReq);

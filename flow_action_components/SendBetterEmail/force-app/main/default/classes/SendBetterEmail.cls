@@ -359,7 +359,7 @@ public without sharing class SendBetterEmail {
 				);
 
                 if (curRequest.InReplyTo != null && curRequest.InReplyTo.size() > 0){
-                    mail.setInReplyTo(curRequest.InReplyTo);
+                    mail.setInReplyTo(String.Join(curRequest.InReplyTo,','));
                 }
 
 				mail = SendBetterEmailAddAttachmentToEmail.addAttachments(

@@ -1012,8 +1012,6 @@ export default class DatatableCPE extends LightningElement {
     @api
     validate() {
         this.validateErrors.length = 0;
-console.log("🚀 ~ file: datatableCPE.js ~ line 1001 ~ DatatableCPE ~ validate ~ this.validateErrors", this.validateErrors);
-console.log("🚀 ~ file: datatableCPE.js ~ line 1005 ~ DatatableCPE ~ validate ~ this.isSObjectInput", this.isSObjectInput);
 
         // Not Apex-Defined -- Check for Object, Record Collection, Columns
         if (this.isSObjectInput) {
@@ -1035,11 +1033,13 @@ console.log("🚀 ~ file: datatableCPE.js ~ line 1005 ~ DatatableCPE ~ validate 
         return this.validateErrors;
     }
 
-    checkError(isError, key, errorString) { 
+    checkError(isError, key, errorString) {
+        this.inputValues[key].class = 'slds-form-element';
         if (isError) { 
             this.validateErrors.push({key: key, errorString: errorString});
             this.inputValues[key].isError = true;
             this.inputValues[key].errorMessage = errorString;
+            this.inputValues[key].class += ' slds-has-error';
             console.log('CPE generated error:', key, isError, errorString);
         } else { 
             this.inputValues[key].isError = false;

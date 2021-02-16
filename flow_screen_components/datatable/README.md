@@ -64,6 +64,7 @@ In order to use **datatable**, permission must be given to access the following 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community
 -   Allow the use of a Flow variable to set the Maximum Number of Rows value 
+-   Changed display of error messages to match Salesforce standard
   
 **Bug Fixes:**
 -   Fixed links when running in a Sandbox whose name started with the letter c

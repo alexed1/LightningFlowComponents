@@ -7,7 +7,7 @@
  * Modifications Log 
  * Ver		Date		Author				Modification
  * 2.00.02	10-06-2020	Mohith Shrivastava  Refactored from SendBetterEmail
- * 2.00.05	02-17-2021	Jack Pond			Use Title instead of PathOnClient for attachment name
+ * 2.00.05	02-17-2021	Jack Pond			Use Title.FileExtension instead of PathOnClient for attachment name
  * 2.00.05	02-17-2021	Jack Pond			Template Description empty causes error Fixes: #602
  * 
 **/
@@ -118,7 +118,7 @@ public inherited sharing class SendBetterEmailUtil {
 	) {
 		Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
 		for (ContentVersion cv : [
-			SELECT Id, PathOnClient, Title, VersionData, FileType, ContentDocumentId
+			SELECT Id, PathOnClient, Title, VersionData, FileType, ContentDocumentId, FileExtension
 			FROM ContentVersion
 			WHERE ContentDocumentId IN :contentDocumentIds
 		]) {

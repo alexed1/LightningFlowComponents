@@ -39,7 +39,7 @@ public inherited sharing class SendBetterEmailAddAttachmentToEmail {
                     ) {
                         curAttachments.add(
                             new StaticResource(
-                                Name = cv.Title,
+                                Name = cv.Title + ((cv.FileExtension != null) ? '.'+cv.FileExtension : ''),
                                 Body = cv.VersionData
                             )
                         );

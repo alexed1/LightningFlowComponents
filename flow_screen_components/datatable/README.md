@@ -63,6 +63,7 @@ In order to use **datatable**, permission must be given to access the following 
 ## xx/xx/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community
+-   Added a new Table Behavior option to specify if Links should open in the same Tab
 -   Allow the use of a Flow variable to set the Maximum Number of Rows value 
 -   Changed display of error messages to match Salesforce standard
 -   Allow full TypeAttibutes for Date fields (This will switch datetime fields to UTC)

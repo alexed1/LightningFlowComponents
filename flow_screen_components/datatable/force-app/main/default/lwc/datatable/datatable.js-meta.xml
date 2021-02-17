@@ -98,6 +98,8 @@
             <property name="tableLabel" label="Table Label" type="String" role="inputOnly" description="(Optional) Label to display on the Table Header"/>
             <property name="not_suppressNameFieldLink" label="Show the Link on the Object's 'Name' Field" type="Boolean" default="true" role="inputOnly" description="Show the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
             <property name="cb_not_suppressNameFieldLink" type="String" role="inputOnly"/>
+            <property name="openLinkinSameTab" type="Boolean" role="inputOnly"/>
+            <property name="cb_openLinkinSameTab" type="String" role="inputOnly"/>
             <property name="suppressNameFieldLink" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
             <property name="not_tableBorder" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly"/>
         </targetConfig>

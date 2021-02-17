@@ -153,7 +153,7 @@
                         </div>
                     </div>
                 </template>
-                
+
             </div>
         </div>
         <c-display-error 
@@ -278,6 +278,14 @@
         label={inputValues.not_suppressNameFieldLink.label} 
         checked={inputValues.cb_not_suppressNameFieldLink.value} 
         field-level-help={inputValues.not_suppressNameFieldLink.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox> 
+    <c-fsc_flow-checkbox
+        disabled={isNoLinks}
+        name="select_openLinkinSameTab"
+        label={inputValues.openLinkinSameTab.label} 
+        checked={inputValues.cb_openLinkinSameTab.value} 
+        field-level-help={inputValues.openLinkinSameTab.helpText}
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox> 
 

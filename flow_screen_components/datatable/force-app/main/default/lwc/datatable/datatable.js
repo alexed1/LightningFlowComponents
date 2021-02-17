@@ -99,6 +99,12 @@ export default class Datatable extends LightningElement {
         return (this.cb_not_suppressNameFieldLink == CB_TRUE) ? true : false;
     }
     @api cb_not_suppressNameFieldLink = CB_TRUE;
+
+    @api
+    get openLinkinSameTab() {
+        return (this.cb_openLinkinSameTab == CB_TRUE) ? true : false;
+    }
+    @api cb_openLinkinSameTab;
     
     @api suppressNameFieldLink = false;     // OBSOLETE as of 3.0.10
     @api not_tableBorder = false;           // OBSOLETE as of 3.0.10 - Only referenced in the CPE - Used so a boolean value can default to True
@@ -236,6 +242,10 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
+    }
+
+    get linkTarget() {
+        return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
 
     connectedCallback() {
@@ -930,7 +940,7 @@ export default class Datatable extends LightningElement {
                         lufield = fieldName.replace(/__c$/gi,'__r');
                     }
                     fieldName = lufield + '_lookup';
-                    this.typeAttributes = { label: { fieldName: lufield + '_name' }, target: '_blank' };
+                    this.typeAttributes = { label: { fieldName: lufield + '_name' }, target: this.linkTarget };
                 } else {
                     this.typeAttrib.type = 'text';      // Non reparentable Master-Detail fields are not supported
                 }
@@ -940,7 +950,7 @@ export default class Datatable extends LightningElement {
             if (fieldName == this.objectLinkField && this.not_suppressNameFieldLink) {
                 this.typeAttrib.type = 'url';
                 fieldName = fieldName + '_lookup';
-                this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
+                this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: this.linkTarget };
                 if (editAttrib) {
                     editAttrib.edit = false;       // Do not allow a lookup to be editable
                     this.isAllEdit = false;

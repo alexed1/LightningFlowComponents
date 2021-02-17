@@ -165,6 +165,11 @@ export default class DatatableCPE extends LightningElement {
     }
 
     @api
+    get isNoLinks() {
+        return (this.inputValues.cb_not_suppressNameFieldLink.value == CB_FALSE);
+    }
+
+    @api
     get wiz_columnFields() { 
         return this._wiz_columnFields;
     }
@@ -365,6 +370,9 @@ export default class DatatableCPE extends LightningElement {
         not_suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: 'Show navigation links on Name fields',   // Default value is to show the links
             helpText: "Display the SObject's 'Name' field as a link to the record."},
         cb_not_suppressNameFieldLink: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
+        openLinkinSameTab: {value: null, valueDataType: null, isCollection: false, label: 'Open links in the same Tab', 
+            helpText: 'When this option is selected, clicking on a link will open the record in the same browser or console Tab instead of a new browser Tab.  This is especially useful when the user is running in a Console.'},
+        cb_openLinkinSameTab: {value: null, valueDataType: null, isCollection: false, label: ''},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -422,6 +430,7 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'matchCaseOnFilters'},
                 {name: 'suppressBottomBar'},
                 {name: 'not_suppressNameFieldLink'},
+                {name: 'openLinkinSameTab'},
             ]
         },
         {name: 'advancedAttributes',

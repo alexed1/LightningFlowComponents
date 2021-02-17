@@ -1,3 +1,14 @@
+/**
+ * @description       : 
+ * @author            : Mothith
+ * @group             : 
+ * @last modified on  : 02-16-2021
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver      Date         Author         Modification
+ * 1.0      07-16-2020  Mohith          Initial Version
+ * 2.0.5    02-16-2021  Jack D. Pond    Fixed CDL Title (credit to Eric Schubert) Fix: #598
+**/
 public inherited sharing class SendBetterEmailAddAttachmentToEmail {
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
     public static Messaging.SingleEmailMessage addAttachments(
@@ -27,7 +38,7 @@ public inherited sharing class SendBetterEmailAddAttachmentToEmail {
                     ) {
                         curAttachments.add(
                             new StaticResource(
-                                Name = cv.PathOnClient,
+                                Name = cv.Title,
                                 Body = cv.VersionData
                             )
                         );

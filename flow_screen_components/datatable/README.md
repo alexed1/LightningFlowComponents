@@ -66,6 +66,7 @@ In order to use **datatable**, permission must be given to access the following 
 -   Allow the use of a Flow variable to set the Maximum Number of Rows value 
 -   Changed display of error messages to match Salesforce standard
 -   Allow full TypeAttibutes for Date fields (This will switch datetime fields to UTC)
+-   Added a Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the Datatable Flow Screen LWC
   
 **Bug Fixes:**
 -   Fixed links when running in a Sandbox whose name started with the letter c

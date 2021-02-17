@@ -14,6 +14,7 @@
             <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
             <property name="visibleFieldNames" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
             <property name="visibleFlowNames" label="Visible Flow Names" type="String" description="Show which flow?"/>
+            <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

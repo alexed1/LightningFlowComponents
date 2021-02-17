@@ -1,13 +1,14 @@
 /**
  * @description       : 
- * @author            : Mothith
+ * @author            : Refactored from Alex Edelstein
  * @group             : 
- * @last modified on  : 02-16-2021
+ * @last modified on  : 02-17-2021
  * @last modified by  : Jack D. Pond
  * Modifications Log 
- * Ver      Date         Author         Modification
- * 1.0      07-16-2020  Mohith          Initial Version
- * 2.0.5    02-16-2021  Jack D. Pond    Fixed CDL Title (credit to Eric Schubert) Fix: #598
+ * Ver      Date        Author              Modification
+ * 1.0      02-16-2021  Alex Edelstein      Initial Version
+ * 2.0.5    02-16-2021  Jack D. Pond        Use Title instead of PathOnClient for attachment name
+ * 
 **/
 public inherited sharing class SendBetterEmailAddAttachmentToEmail {
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/

@@ -2,11 +2,12 @@
  * @description       : SendBetterEmailUtil - helper utilities for SendBetterEmail
  * @author            : Refactored from Alex Edelstein
  * @group             : 
- * @last modified on  : 10-12-2020
+ * @last modified on  : 02-17-2021
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date		Author				Modification
  * 2.00.02	10-06-2020	Mohith Shrivastava  Refactored from SendBetterEmail
+ * 2.00.05	02-17-2021	Jack Pond			Use Title instead of PathOnClient for attachment name
 **/
 public inherited sharing class SendBetterEmailUtil {
 	public static String[] buildAddressList(
@@ -115,7 +116,7 @@ public inherited sharing class SendBetterEmailUtil {
 	) {
 		Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
 		for (ContentVersion cv : [
-			SELECT Id, PathOnClient, VersionData, FileType, ContentDocumentId
+			SELECT Id, PathOnClient, Title, VersionData, FileType, ContentDocumentId
 			FROM ContentVersion
 			WHERE ContentDocumentId IN :contentDocumentIds
 		]) {

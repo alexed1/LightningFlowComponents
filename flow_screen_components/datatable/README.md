@@ -75,6 +75,8 @@ In order to use **datatable**, permission must be given to access the following 
 -   Set the Number of Rows Selected to 0 when clearing the row selections
 -   Retain the setting when clearing a checkbox in the CPE
 -   Fixed error when trying to exit the CPE after selecting the Apex Defined Object option
+-   Fixed delay when selecting a large (>200) number of records
+-   Fixed delay when editing multiple (>20) number of records
   
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 

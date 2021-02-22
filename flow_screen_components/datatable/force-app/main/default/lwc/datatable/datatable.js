@@ -35,7 +35,7 @@ export default class Datatable extends LightningElement {
     @api columnWidths = [];
     @api columnWraps = [];
     @api keyField = 'Id';
-    @api maxNumberOfRows;
+    @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
     @api isConfigMode;
@@ -292,10 +292,12 @@ export default class Datatable extends LightningElement {
         }
 
         // Restrict the number of records handled by this component
-        let min = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-        if (this.tableData.length > min) {
-            this.tableData = [...this.tableData].slice(0,min);
+        if (this.maxNumberOfRows == 0) {
+            this.maxNumberOfRows = CONSTANTS.MAXROWCOUNT;
         }
+        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        let cnt = Math.min(this.tableData.length, max);
+        this.tableData = [...this.tableData].slice(0,cnt);
 
         // Set roundValue for setting Column Widths in Config Mode
         this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
@@ -1111,12 +1113,6 @@ export default class Datatable extends LightningElement {
                     this.outputEditedRows = [...otherEditedRows];
                 } 
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
-                if (this.isUserDefinedObject) {
-                    this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                        //JSON Version
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));    //JSON Version
-                } else {
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-                }
             }
             return eitem;
         });  
@@ -1142,19 +1138,7 @@ export default class Datatable extends LightningElement {
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
-        let sdata = [];
-        currentSelectedRows.forEach(srow => {
-            const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
-            sdata.push(selData);
-        });
-        this.outputSelectedRows = [...sdata]; // Set output attribute values
-        if (this.isUserDefinedObject) {
-            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version             
-        } else {
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-        }
-        console.log('outputSelectedRows',this.outputSelectedRows);
+        this.outputSelectedRows = [...currentSelectedRows];       
     }
 
     updateNumberOfRowsSelected(currentSelectedRows) {
@@ -1674,6 +1658,28 @@ export default class Datatable extends LightningElement {
 
     @api
     validate() {
+        console.log("validate and exit");
+
+        // Finalize Selected and Edited Records for Output
+        let sdata = [];
+        this.outputSelectedRows.forEach(srow => {
+            const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
+            sdata.push(selData);
+        });
+        this.outputSelectedRows = [...sdata]; // Set output attribute values
+
+        if (this.isUserDefinedObject) {
+            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version  
+            this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                            //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));        //JSON Version           
+        } else {
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+        }
+        console.log('outputSelectedRows',this.outputSelectedRows);
+        console.log('outputEditedRows',this.outputEditedRows);
+
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 
             this.setIsInvalidFlag(false);
@@ -1688,6 +1694,7 @@ export default class Datatable extends LightningElement {
                 errorMessage: 'This is a required entry.  At least 1 row must be selected.' 
             }; 
         }
+        
     }
 
     setIsInvalidFlag(value) {

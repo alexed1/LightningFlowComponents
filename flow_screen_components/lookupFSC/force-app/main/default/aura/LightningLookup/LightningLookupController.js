@@ -75,7 +75,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     getMasterFilterValue : function(component, event, helper) {
         console.log('getMasterFilterValue')
         console.log(component.get('v.parentChild') + ' == Child && ' + component.get('v.parentId') + ' == ' + event.getParam('parent'));
-        if(component.get('v.parentChild') == 'Child' && component.get('v.parentId') == event.getParam('parent')) {
+        if((component.get('v.parentChild') == 'Child' || component.get('v.parentChild') == 'Both') && component.get('v.parentId') == event.getParam('parent')) {
             component.set("v.masterFilterValue", event.getParam("MasterFilterValue"));
             helper.clearField(component,true);
             helper.toggleIcons(component,true);

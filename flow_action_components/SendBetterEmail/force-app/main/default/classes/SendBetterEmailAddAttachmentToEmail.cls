@@ -1,3 +1,15 @@
+/**
+ * @description       : 
+ * @author            : Refactored from Alex Edelstein
+ * @group             : 
+ * @last modified on  : 02-17-2021
+ * @last modified by  : Jack D. Pond
+ * Modifications Log 
+ * Ver      Date        Author              Modification
+ * 1.0      02-16-2021  Alex Edelstein      Initial Version
+ * 2.0.5    02-16-2021  Jack D. Pond        Use Title instead of PathOnClient for attachment name
+ * 
+**/
 public inherited sharing class SendBetterEmailAddAttachmentToEmail {
     //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
     public static Messaging.SingleEmailMessage addAttachments(
@@ -27,7 +39,7 @@ public inherited sharing class SendBetterEmailAddAttachmentToEmail {
                     ) {
                         curAttachments.add(
                             new StaticResource(
-                                Name = cv.PathOnClient,
+                                Name = cv.Title + ((cv.FileExtension != null) ? '.'+cv.FileExtension : ''),
                                 Body = cv.VersionData
                             )
                         );

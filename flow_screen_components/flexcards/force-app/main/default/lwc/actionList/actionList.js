@@ -4,6 +4,9 @@ import flowLabels from '@salesforce/apex/FlexCardController.getFlowLabel';
 export default class ActionList extends LightningElement {
     @api
     flowNames;
+
+    @api 
+    recordId;
     
     @track
     openModal = false;
@@ -56,5 +59,10 @@ export default class ActionList extends LightningElement {
     
     handleFlowStatusChange(event) {
         console.log(JSON.stringify(event.detail));
+    }
+
+    get flowParams() {
+        let params = [{name: 'recordId', type: 'String', value: this.recordId || ''}];
+        return JSON.stringify(params);
     }
 }

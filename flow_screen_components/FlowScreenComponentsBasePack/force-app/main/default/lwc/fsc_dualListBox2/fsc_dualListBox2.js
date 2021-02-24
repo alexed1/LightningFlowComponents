@@ -171,7 +171,11 @@ export default class dualListBoxFSC extends LightningElement {
 
     @api
     validate() {
-        if(this.required == true && this._selectedValues == []) { 
+        console.log('entering validate');
+        console.log("entering validate: required=" + this.required + " values=" + this._selectedValues);
+
+        if(this.required == true && (this._selectedValues == [] || this._selectedValues == '')) { 
+            console.log('validate reporting false');
             return { 
                 isValid: false, 
                 errorMessage: 'At least one value must be selected.' 

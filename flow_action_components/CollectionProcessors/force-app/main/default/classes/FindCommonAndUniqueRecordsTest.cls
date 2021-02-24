@@ -63,4 +63,22 @@ public class FindCommonAndUniqueRecordsTest {
         System.assertEquals(2, results[0].sourceCommonRecordCollection.size(), 'sourceCommon failed');
     }
     
+    @IsTest
+    static void testEmptyCollection() {
+        List<Account> accountsInSource = [Select Id from Account];
+        List<Contact> contactsInTarget = [Select Id,AccountId from Contact WHERE FirstName = 'Darth'];
+        
+        List<FindCommonAndUniqueRecords.Request> flowRequests = new List<FindCommonAndUniqueRecords.Request>();
+        FindCommonAndUniqueRecords.Request flowRequest = new FindCommonAndUniqueRecords.Request();
+        flowRequest.sourceRecordCollection = accountsInSource;
+        flowRequest.targetRecordCollection = contactsInTarget;
+        flowRequest.sourceUniqueID = 'Id';
+        flowRequest.targetUniqueID = 'AccountId';
+        flowRequests.add(flowRequest);
+        Test.startTest();
+        List<FindCommonAndUniqueRecords.Result> results = FindCommonAndUniqueRecords.compareRecords(flowRequests);
+        Test.stopTest();
+        System.assertEquals(3, results[0].sourceUniqueRecordCollection.size(), 'sourceUnique failed');
+        System.assertEquals(0, results[0].sourceCommonRecordCollection.size(), 'sourceCommon failed');
+    }
 }

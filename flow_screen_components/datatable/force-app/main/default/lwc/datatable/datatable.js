@@ -313,7 +313,7 @@ export default class Datatable extends LightningElement {
                 this.basicColumns.push({
                     label: field,
                     fieldName: field,
-                    type: 'richtext',
+                    type: 'text',
                     scale: 0
                 });
             });       
@@ -798,6 +798,11 @@ export default class Datatable extends LightningElement {
                     editAttrib.edit = false;
             }
 
+            // The Key Field is not editable
+            if (fieldName == this.keyField) {
+                editAttrib.edit = false;
+            }
+            
             // Some data types are not editable
             if(editAttrib) {
                 switch (type) {

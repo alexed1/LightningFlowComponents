@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 02/25/21 -   Eric Smith -    Version 3.0.10  Handle regular Textarea (255 or fewer Characters) as Text
+ * 
  * 01/06/21 -   Eric Smith -    Version 3.0.6   Handle Textarea as Richtext
  * 
  * 12/30/20 -   Eric Smith -    Version 3.0.5   Remove Field Names from Empty Table Header
@@ -162,7 +164,7 @@ public with sharing class SObjectController2 {
             datatableColumnFieldDescriptor = datatableColumnFieldDescriptor 
                 + ',{"label" : "' + dfr.getLabel() 
                 + '", "fieldName" : "' + dfr.getName()      // pass back correct API name if user did not pass in correct case (Name vs name)
-                + '", "type" : "' + convertType(dfr.getType().name(), dfr.isCalculated()) 
+                + '", "type" : "' + convertType(dfr.getType().name(), dfr.isCalculated(), dfr.getLength()) 
                 + '", "scale" : "' + dfr.getScale() 
                 + '"}';
 
@@ -319,7 +321,7 @@ public with sharing class SObjectController2 {
     }
 
     //convert the apex type to the corresponding javascript type that datatable will understand
-    private static String convertType (String apexType, Boolean isFormula){
+    private static String convertType (String apexType, Boolean isFormula, Integer length){
         switch on apexType {
             when 'BOOLEAN' {
                 return 'boolean';
@@ -364,7 +366,8 @@ public with sharing class SObjectController2 {
                 return 'checkbox';
             }
             when 'TEXTAREA' {
-                return 'richtext';
+                if (length > 255) return 'richtext';
+                return 'text';
             }
             when 'STRING' {
                 if (isFormula) return 'richtext';

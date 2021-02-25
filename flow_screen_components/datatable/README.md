@@ -57,6 +57,8 @@ In order to use **datatable**, permission must be given to access the following 
 
     QueryNRecords   
     SObjectController2  
+
+A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
 # Release Notes
@@ -77,6 +79,9 @@ In order to use **datatable**, permission must be given to access the following 
 -   Fixed error when trying to exit the CPE after selecting the Apex Defined Object option
 -   Fixed delay when selecting a large (>200) number of records
 -   Fixed delay when editing multiple (>20) number of records
+-   Fixed issue with being unable to edit Apex-Defined columns unless Type was specified
+-   Made sure that the Key Field could not be edited
+-   Allow regular Textarea fields of 255 characters or less to be edited
   
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 

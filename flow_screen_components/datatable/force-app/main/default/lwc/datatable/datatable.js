@@ -762,6 +762,7 @@ export default class Datatable extends LightningElement {
             let fieldName = colDef['fieldName'];
             let type = colDef['type'];
             let scale = colDef['scale'];
+            let length = colDef['length'];
             this.cellAttributes = {};
             this.typeAttributes = {};
             let alignment = '';
@@ -1072,6 +1073,11 @@ export default class Datatable extends LightningElement {
     }
 
     handleCellChange(event) {
+// console.log("🚀 ~ file: datatable.js ~ line 1076 ~ Datatable ~ handleCellChange ~ event", event.detail.draftValues);
+        let rowKey =  event.detail.draftValues[0][this.keyField];
+// TODO - Add validation logic here (and change cellattribute to show red background?)
+// TODO - Build collection of errors by Row/Field, Check & Clear if error is resolved, SuppressBottomBar and show messages instead if there are any errors in the collection
+// TODO - Add support for User Defined Validation Rules
         // If suppressBottomBar is false, wait for the Save or Cancel button
         if (this.suppressBottomBar) {
             this.handleSave(event);
@@ -1081,6 +1087,7 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
+// console.log("🚀 ~ file: datatable.js ~ line 1087 ~ Datatable ~ handleSave ~ draftValues", draftValues);
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1665,7 +1672,7 @@ export default class Datatable extends LightningElement {
     validate() {
         console.log("validate and exit");
 
-        // Finalize Selected and Edited Records for Output
+        // Finalize Selected Records for Output
         let sdata = [];
         this.outputSelectedRows.forEach(srow => {
             const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
@@ -1673,15 +1680,37 @@ export default class Datatable extends LightningElement {
         });
         this.outputSelectedRows = [...sdata]; // Set output attribute values
 
+/*         // Validate Edited Rows
+        let errorMessage = '';
+        this.outputEditedRows.forEach(erow => {
+            console.log("🚀 ~ file: datatable.js ~ line 1679 ~ Datatable ~ validate ~ erow", erow);
+            let fieldNames = Object.keys(erow);
+            fieldNames.forEach(fld => {
+                console.log("🚀 ~ file: datatable.js ~ line 1682 ~ Datatable ~ validate ~ fld", fld, erow[fld]);
+                const basic = this.basicColumns.find(b => b.fieldName == fld);
+                console.log("🚀 ~ file: datatable.js ~ line 1684 ~ Datatable ~ validate ~ basic", basic);
+                if (basic?.type.includes("text")) {
+                    if (erow[fld]?.length > basic.length) {
+                        let errorRow = this.mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
+                        console.log("🚀 ~ file: datatable.js ~ line 1689 ~ Datatable ~ validate ~ errorRow", errorRow);
+                        errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
+                    }
+                }
+            });
+        });
+        if (errorMessage) {
+            this.setIsInvalidFlag(true);
+            return { 
+                isValid: false, 
+                errorMessage: errorMessage 
+            }; 
+        } */
+        
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version  
             this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                            //JSON Version
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));        //JSON Version           
-        } else {
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
         }
+
         console.log('outputSelectedRows',this.outputSelectedRows);
         console.log('outputEditedRows',this.outputEditedRows);
 

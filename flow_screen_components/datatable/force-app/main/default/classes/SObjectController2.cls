@@ -166,6 +166,7 @@ public with sharing class SObjectController2 {
                 + '", "fieldName" : "' + dfr.getName()      // pass back correct API name if user did not pass in correct case (Name vs name)
                 + '", "type" : "' + convertType(dfr.getType().name(), dfr.isCalculated(), dfr.getLength()) 
                 + '", "scale" : "' + dfr.getScale() 
+                + '", "length" : "' + dfr.getLength() 
                 + '"}';
 
             if (!dfr.isUpdateable() || dfr.isCalculated()) noEditFields.add(fieldName);  // Check for Read Only and Formula fields

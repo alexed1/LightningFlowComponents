@@ -12,12 +12,13 @@ export default class FlexcardFlow extends LightningElement {
     @api icon;
     @api cardSize = 300;
     @api avatarField;
+    @api objectAPIName;
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
     curRecord;
 
-     @wire(getObjectInfo, { objectApiName: 'Account' })
+     @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
     recordInfo({ data, error }) {
         if (data) {
             this.objectInfo = data;

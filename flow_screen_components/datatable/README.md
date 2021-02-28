@@ -21,7 +21,9 @@ Additional components packaged with this LWC:
 
                     Apex Pages:     screenFlow
 
-                    Custom Apps:    screenFlow          
+                    Custom Apps:    screenFlow 
+
+                    Permission Set: USF Flow Screen Component - Datatable          
                                                   
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
@@ -36,15 +38,15 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.3 or later  
+FlowScreenComponentsBasePack Version 2.1.6 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.9 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)   
-[Version 3.0.9 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)
+[Version 3.0.10 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)   
+[Version 3.0.10 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -62,7 +64,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
-## xx/xx/21 -  Eric Smith -    Version 3.0.10 
+## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community
 -   Added a new Table Behavior option to specify if Links should open in the same Tab

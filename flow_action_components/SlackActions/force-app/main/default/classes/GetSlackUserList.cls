@@ -10,14 +10,22 @@ global inherited sharing class GetSlackUserList {
                 List<String> idList = new List<String>();
                 Response curResponse = new Response();
                 String body =  'token='+curRequest.token;
-                String response = SlackUtils.PrepareAndSend(body, 'users.list');
+
+                String response; 
                 
-                 Map<String,Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response);
+                if(!Test.isRunningTest()) {
+                    response = SlackUtils.PrepareAndSend(body, 'users.list');             
+                } else {             
+                    response = sampleResponse; 
+                }
+
+                Map<String,Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(response);
+                System.debug('response from get slack channel list is: ' + responseMap);
                 if(responseMap.get('ok') == true) {
+                    curResponse.ok = true;
                     System.debug('responseMap are ' + responseMap);
                     List<Object> userObjects = (List<Object>)responseMap.get('members');
                     System.debug('userlObjects are ' + userObjects);
-                    //List<Map<String, String>> finalChannelsList = new List<Map<String, String>>(); 
                    
                     for (Object curChannel : userObjects) {
                         String json_instance = Json.serialize(curChannel);
@@ -42,7 +50,16 @@ global inherited sharing class GetSlackUserList {
     
 
               
-      
+        final static String sampleResponse = '{'
+        + ' "ok": true,'
+        +' "members": ['
+            +' { '
+                +'"id": "W012A3CDE",'
+                +'"team_id": "T012AB3C4",'
+                +'"name": "spengler"'
+            +' }'
+         +' ]'
+     + '}';
         
     
         global class InvocableActionException extends Exception{}
@@ -62,7 +79,8 @@ global inherited sharing class GetSlackUserList {
                 nameList = new List<String>();
                 idList = new List<String>();
             }
-    
+            @invocableVariable
+            global Boolean ok;
     
             @invocableVariable
             global List<String> nameList;

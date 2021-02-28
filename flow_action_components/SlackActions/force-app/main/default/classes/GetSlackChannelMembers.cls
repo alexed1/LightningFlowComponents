@@ -10,22 +10,22 @@ global inherited sharing class GetSlackChannelMembers {
             List<String> nameList = new List<String>(); //these list structures are easier to work with when it comes to screen UI
             List<String> idList = new List<String>();
             String body =  'token='+curRequest.token + '&channel=' + curRequest.channelId;
-            String response = SlackUtils.PrepareAndSend(body, 'conversations.members');
-            List<SlackConversation> fullConversationDetails = new List<SlackConversation>(); 
-            SlackResponse curSlackResponse = (SlackResponse) JSON.deserialize(response, SlackResponse.class);
-            if(curSlackResponse.ok == 'true') {
-          
-                
-                System.debug('serialized return is: ' + curSlackResponse.members);
-               // List<String> objectsString = (List<String>)memberObjects;
-               // System.debug('cast to string is:' + objectsString);
-               // List<string> memberStrings= new List<String>();
-               // System.debug('serialized return is: ' + memberStrings);
 
-/*                 for(Object a: memberObjects){
-                    memberStrings.add((String)a);
-                } */
- 
+            String response; 
+                
+            if(!Test.isRunningTest()) {
+                response = SlackUtils.PrepareAndSend(body, 'conversations.members');             
+            } else {             
+                response = sampleResponse; 
+            }
+
+
+
+            List<SlackConversation> fullConversationDetails = new List<SlackConversation>(); 
+            SlackResponse_GetChannelMembers curSlackResponse = (SlackResponse_GetChannelMembers) JSON.deserialize(response, SlackResponse_GetChannelMembers.class);
+            if(curSlackResponse.ok == 'true') {
+                curResponse.ok = true;
+                System.debug('serialized return is: ' + curSlackResponse.members);
                 for (String curMemberId : curSlackResponse.members) {
                     idList.add(curMemberId);         
                 }
@@ -41,7 +41,18 @@ global inherited sharing class GetSlackChannelMembers {
         return responses;
 
     }
-
+    final static String sampleResponse = '{'
+    + ' "ok": true,'
+    +' "members": ['
+            +' "U023BECGF",'
+            +' "U061F7AUR",'
+            +' "W012A3CDE"'
+        +'],'
+        +'"response_metadata": {'
+            +'"next_cursor": "e3VzZXJfaWQ6IFcxMjM0NTY3fQ=="'
+        +'}'
+    +'}';
+    
   
     
 
@@ -60,14 +71,12 @@ global inherited sharing class GetSlackChannelMembers {
     global class Response {
 
         global Response() {
-           
             idList = new List<String>();
-            
         }
 
-
-
-
+        @invocableVariable
+        global boolean ok; 
+        
         @invocableVariable
         global List<String> idList;
 

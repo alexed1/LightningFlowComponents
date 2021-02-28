@@ -21,10 +21,11 @@ global with sharing class PostToSlack {
                     
                     String testResponse = sampleResponse;
                     responseMap = (Map<String, Object>) JSON.deserializeUntyped(testResponse);
-                    System.debug('response from get slack channel list is: ' + responseMap);
+                    System.debug('response from chat.postMessage is: ' + responseMap);
                 }
                
                 curResponse.timeStamp = (String)responseMap.get('ts');
+                curResponse.ok = (Boolean)responseMap.get('ok');
                 curResponse.errorMessage = (String)responseMap.get('error');
                 curResponses.add(curResponse);
             }
@@ -36,7 +37,7 @@ global with sharing class PostToSlack {
             String body = '{';
             body = body + '"channel":"' + curRequest.channelId + '",';
             if(curRequest.blocks != null && curRequest.blocks != '') {
-                body = body + '"blocks":"' + curRequest.blocks.escapeEcmaScript() + '",';
+                body = body + '"blocks":' + curRequest.blocks+ ',';
             }
             if(curRequest.thread_ts != null && curRequest.thread_ts != '') {
                 body = body + '"thread_ts":"' + curRequest.thread_ts + '",';
@@ -113,7 +114,8 @@ global with sharing class PostToSlack {
             @invocableVariable
             global String timeStamp;
 
-          
+            @invocableVariable
+            global Boolean ok;
         }
 
       }

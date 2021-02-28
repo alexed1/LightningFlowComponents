@@ -26,8 +26,8 @@ global inherited sharing class ManageSlackChannel {
                 }
                 when 'kickUser' {		
                     endpoint = endpoint + 'conversations.kick';
-                    //TODO validate that only a single userId is in the userList input
-                    body = '{"channel":"'+curRequest.channelId + '","users":"' + curRequest.userList + '"}';
+                    //TODO need to validate that only one value was selected in the dual list box if this is the action
+                    body = '{"channel":"'+curRequest.channelId + '","user":"' + curRequest.userId + '"}';
                
                 }
                 when else {		 
@@ -70,6 +70,9 @@ global inherited sharing class ManageSlackChannel {
     global class Request {
         @InvocableVariable
         global String userList; //comma separated list of user IDs. Up to 1000
+
+        @InvocableVariable
+        global String userId; //comma separated list of user IDs. Up to 1000
         
         @InvocableVariable
         global String action; //{archive,kickuser,inviteUser}

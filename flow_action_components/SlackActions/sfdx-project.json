@@ -1,11 +1,32 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@2.12.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@2.1.3-0"
+                },
+                {
+                    "package": "datatable@3.0.9-0"
+                }
+            ],
+            "package": "slackActions",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "50.0",
+    "packageAliases": {
+        "slackActions": "0Ho5G000000XZOJSA4",
+        "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
+        "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
+        "datatable@3.0.9-0": "04t5G000004PuWuQAK",
+        "slackActions@1.0.0-0": "04t5G000004PudrQAC"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "50.0"
 }

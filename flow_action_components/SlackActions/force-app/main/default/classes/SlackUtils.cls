@@ -2,11 +2,7 @@ global inherited sharing class SlackUtils {
     
 
     global static String PrepareAndSend(String body, String apiName){
-        String endpoint = 'https://slack.com/api/' + apiName;
-        
-       // Map<String,Object> responseMap = new Map<String,Object>();
-     
-
+        String endpoint = 'https://slack.com/api/' + apiName;     
         String response;
         try {
             response = SlackUtils.SendUsingUUEncoding(endpoint, body);
@@ -26,12 +22,8 @@ global inherited sharing class SlackUtils {
             req.setMethod('POST');
             req.setHeader('Content-type', 'application/x-www-form-urlencoded');
             req.setBody(body);
-            Http http = new Http();
-            System.debug('req is: ' + req);
-            System.debug('body is: ' + req.getBody());
-            HttpResponse res = http.send(req);
-            System.debug('made it back: ' + res.getBody());
-            return res.getBody();
+            String result = transmit(req);
+            return result;
             
         } catch (Exception e) {
            throw new InvocableActionException('Something went wrong calling Slack: ' + e.getMessage());
@@ -49,12 +41,9 @@ global inherited sharing class SlackUtils {
             req.setHeader('Content-type', 'application/json; charset=utf-8');
             req.setHeader('Authorization', 'Bearer ' + token);
             req.setBody(body);
-            Http http = new Http();
-            System.debug('req is: ' + req);
-            System.debug('body is: ' + req.getBody());
-            HttpResponse res = http.send(req);
-            System.debug('made it back: ' + res.getBody());
-            responseMap = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+            String res = transmit(req);
+            
+            responseMap = (Map<String, Object>) JSON.deserializeUntyped(res);
             if(responseMap.get('ok') == true) {
                 return responseMap;
                
@@ -68,7 +57,18 @@ global inherited sharing class SlackUtils {
         }
     }
 
-
+    private  static  string transmit(HttpRequest req) {
+        Http http = new Http();
+        System.debug('req is: ' + req);
+        System.debug('body is: ' + req.getBody());
+        if(!Test.isRunningTest()){
+            HttpResponse res = http.send(req);
+            System.debug('made it back: ' + res.getBody());
+            return res.getBody();
+        } else {
+            return '{"ok":true}';
+        }
+    }
 
 
     global class InvocableActionException extends Exception{}

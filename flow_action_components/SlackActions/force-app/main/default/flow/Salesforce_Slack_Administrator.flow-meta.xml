@@ -107,8 +107,8 @@
     <actionCalls>
         <name>Get_Slack_Channel_List</name>
         <label>Get Slack Channel List</label>
-        <locationX>642</locationX>
-        <locationY>440</locationY>
+        <locationX>639</locationX>
+        <locationY>422</locationY>
         <actionName>GetSlackChannelList</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -530,8 +530,8 @@
     <screens>
         <name>Select_Activity</name>
         <label>Select Activity</label>
-        <locationX>494</locationX>
-        <locationY>440</locationY>
+        <locationX>483</locationX>
+        <locationY>456</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -711,8 +711,8 @@
     <screens>
         <name>Show_Channel_Information</name>
         <label>Show Channel Information</label>
-        <locationX>1424</locationX>
-        <locationY>729</locationY>
+        <locationX>1412</locationX>
+        <locationY>720</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

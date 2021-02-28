@@ -21,7 +21,9 @@ Additional components packaged with this LWC:
 
                     Apex Pages:     screenFlow
 
-                    Custom Apps:    screenFlow          
+                    Custom Apps:    screenFlow 
+
+                    Permission Set: USF Flow Screen Component - Datatable          
                                                   
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
@@ -36,15 +38,15 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.3 or later  
+FlowScreenComponentsBasePack Version 2.1.6 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.9 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)   
-[Version 3.0.9 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PuWuQAK)
+[Version 3.0.10 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)   
+[Version 3.0.10 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -57,9 +59,32 @@ In order to use **datatable**, permission must be given to access the following 
 
     QueryNRecords   
     SObjectController2  
+
+A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
 # Release Notes
+## 02/27/21 -  Eric Smith -    Version 3.0.10 
+**Updates:** 
+-   Record links updated to support a Flow running in a Community
+-   Added a new Table Behavior option to specify if Links should open in the same Tab
+-   Allow the use of a Flow variable to set the Maximum Number of Rows value 
+-   Changed display of error messages to match Salesforce standard
+-   Allow full TypeAttibutes for Date fields (This will switch datetime fields to UTC)
+-   Added a Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the Datatable Flow Screen LWC
+  
+**Bug Fixes:**
+-   Fixed links when running in a Sandbox whose name started with the letter c
+-   Stop requiring Checkbox column if any columns are selected for editing 
+-   Set the Number of Rows Selected to 0 when clearing the row selections
+-   Retain the setting when clearing a checkbox in the CPE
+-   Fixed error when trying to exit the CPE after selecting the Apex Defined Object option
+-   Fixed delay when selecting a large (>200) number of records
+-   Fixed delay when editing multiple (>20) number of records
+-   Fixed issue with being unable to edit Apex-Defined columns unless Type was specified
+-   Made sure that the Key Field could not be edited
+-   Allow regular Textarea fields of 255 characters or less to be edited
+  
 ## 01/19/21 -  Eric Smith -    Version 3.0.9 
 **Updates:** 
 -   Add option to Display Row Numbers (default=false)

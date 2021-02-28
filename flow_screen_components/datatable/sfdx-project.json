@@ -8,17 +8,18 @@
                     "package": "FlowActionsBasePack@2.12.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@2.1.3-0"
+                    "package": "FlowScreenComponentsBasePack@2.1.6-0"
                 }
             ],
             "package": "datatable",
             "versionName": "Datatable v3",
+            "versionDescription": "Datatable Flow Screen Component by Eric Smith",
             "versionNumber": "0.1.0.NEXT"
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "51.0",
     "packageAliases": {
         "datatable": "0Ho5G000000XZNaSAO",
         "FlowActionsBasePack": "04t4W000002vXUCQA2",
@@ -34,6 +35,8 @@
         "datatable@3.0.6-0": "04t4x000000tpKUAAY",
         "datatable@3.0.7-0": "04t5G000004PuWVQA0",
         "datatable@3.0.8-0": "04t5G000004PuWaQAK",
-        "datatable@3.0.9-0": "04t5G000004PuWuQAK"
+        "datatable@3.0.9-0": "04t5G000004PuWuQAK",
+        "FlowScreenComponentsBasePack@2.1.6-0": "04t5G000004PucZQAS",
+        "datatable@3.0.10-0": "04t5G000004PudhQAC"
     }
 }

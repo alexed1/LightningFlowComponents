@@ -74,23 +74,34 @@
             <property name="columnTypeAttribs" label=". Special: Column TypeAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"/>
             <property name="isConfigMode" label="Configuration Mode?" type="Boolean" default="false" role="inputOnly" description="Display the Field API Names and the Column Widths in a box below the table.  This parameter is designed to be used by the setup Flow."/>
             <property name="hideCheckboxColumn" label="Hide Checkbox Column?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
+            <property name="cb_hideCheckboxColumn" type="String" role="inputOnly"/>
             <property name="showRowNumbers" label="Show Row Numbers" type="Boolean" default="false" role="inputOnly" description="Display a row number column as the first column in the table."/>
+            <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
             <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
+            <property name="cb_matchCaseOnFilters" type="String" role="inputOnly"/>
             <property name="maxNumberOfRows" label="Maximum Number of Records to Display" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows will be displayed in the datatable."/>
             <property name="isRequired" label="Required?" type="Boolean" default="false" role="inputOnly" description="Require at least 1 row to be selected?"/>
+            <property name="cb_isRequired" type="String" role="inputOnly"/>
             <property name="singleRowSelection" label="Single Row Selection (Radio Buttons)?" type="Boolean" default="false" role="inputOnly" description="When set to True, Radio Buttons will be displayed and only a single row can be selected.  
                 The default (False) will display Checkboxes and allow multiple records to be selected."/>
+            <property name="cb_singleRowSelection" type="String" role="inputOnly"/>
             <property name="suppressBottomBar" label="Suppress Cancel/Save Buttons during Edit Mode?" type="Boolean" default="false" role="inputOnly" description="Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited.  
                 When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."/>
-            <property name="suppressNameFieldLink" label="Suppress the Link on the Object's 'Name' Field" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
+            <property name="cb_suppressBottomBar" type="String" role="inputOnly"/>
             <property name="tableHeight" label="Table Height" type="String" role="inputOnly" description="CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)"/>
             <property name="tableBorder" label="Table Border" type="Boolean" default="true" role="inputOnly" description="Display a border around the datatable."/>
+            <property name="cb_tableBorder" type="String" role="inputOnly"/>
             <property name="isDisplayHeader" label="Display Table Header?" type="Boolean" default="false" role="inputOnly" description="Display a header above the datatable."/>
+            <property name="cb_isDisplayHeader" type="String" role="inputOnly"/>
             <property name="tableIcon" label="Table Icon" type="String" role="inputOnly" description="(Optional) Icon to display on the Table Header. Example: standard:account"/>
             <property name="tableLabel" label="Table Label" type="String" role="inputOnly" description="(Optional) Label to display on the Table Header"/>
-            <property name="not_tableBorder" label="(CPE ONLY)" type="Boolean" default="false" role="inputOnly"/>
-            <property name="not_suppressNameFieldLink" label="(CPE ONLY)" type="Boolean" default="true" role="inputOnly"/>
+            <property name="not_suppressNameFieldLink" label="Show the Link on the Object's 'Name' Field" type="Boolean" default="true" role="inputOnly" description="Show the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
+            <property name="cb_not_suppressNameFieldLink" type="String" role="inputOnly"/>
+            <property name="openLinkinSameTab" type="Boolean" role="inputOnly"/>
+            <property name="cb_openLinkinSameTab" type="String" role="inputOnly"/>
+            <property name="suppressNameFieldLink" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
+            <property name="not_tableBorder" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

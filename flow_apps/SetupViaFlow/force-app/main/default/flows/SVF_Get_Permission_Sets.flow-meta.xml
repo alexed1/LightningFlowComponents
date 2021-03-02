@@ -112,7 +112,7 @@
         </fields>
         <fields>
             <name>SelectPermissionSets</name>
-            <extensionName>c:fbc_dualListBox2</extensionName>
+            <extensionName>c:fsc_dualListBox2</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>allOptionsStringFormat</name>

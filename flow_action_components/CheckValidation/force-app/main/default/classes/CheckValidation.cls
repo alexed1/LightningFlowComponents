@@ -76,6 +76,7 @@ global inherited sharing class CheckValidation {
             String firstInsertedId = '';
             List<String> insertedIdCollection = new List<String>();
             Boolean isFirst = true;
+            Boolean invalidFieldName = false;
 
             // Get Input Value(s)
             SObject inputRecord = req.inputRecord;
@@ -108,14 +109,10 @@ global inherited sharing class CheckValidation {
                 throw new InvocableActionException('Flow Action Inputs Error: You must pass only one of Record or Record Collection into this action.');
             }
             try {
-                if (recordField != 'Id') {
-                    String testFieldName = inputCollection[0].get(recordField).toString();     // This will error out if the recordField is not a valid field API name
-                }
+                String testFieldName = inputCollection[0].get(recordField).toString();     // This will error out if the recordField is not a valid field API name
             }
             catch (Exception e) {
-                errorFlag = true;
-                errorMessages = e.getMessage();
-                throw new InvocableActionException('Flow Action Inputs Error: ' + e.getMessage());
+                invalidFieldName = true;
             }
 
 // BEGIN APEX ACTION PROCESSING LOGIC
@@ -130,7 +127,7 @@ global inherited sharing class CheckValidation {
                     if (recordField == 'Id' && ir.Id == null) {
                         recIdentifier = '<new record>';
                     } else {
-                        recIdentifier = ir.get(recordField).toString();
+                        recIdentifier = (!invalidFieldName) ? ir.get(recordField).toString() : '';
                     }
                     recordFieldIdentifierList.add(recIdentifier);
                     recCounter ++;

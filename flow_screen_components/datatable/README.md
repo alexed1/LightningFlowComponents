@@ -63,13 +63,7 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes 
-## 0x/xx/21 -  Eric Smith -    Version 3.1.1 
-**Updates:** 
-  
-**Bug Fixes:**
--   Text formula fields will now wrap correctly
-  
+# Release Notes
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community

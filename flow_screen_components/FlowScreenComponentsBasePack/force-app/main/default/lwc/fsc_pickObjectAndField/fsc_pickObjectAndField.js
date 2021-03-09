@@ -5,6 +5,7 @@ import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects'; 
 import {standardObjectOptions} from 'c/fsc_pickObjectAndFieldUtils';
 import NonePicklistValueLabel from '@salesforce/label/c.fsc_NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.fsc_FieldIsNotSupportedMessage';
+import FieldTypeNotSuportedMessage from '@salesforce/label/c.FieldTypeNotSuportedMessage';
 
 
 import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/fsc_flowComboboxUtils';
@@ -14,12 +15,13 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
+    @api picklistFieldTypeLabel = 'picklist';
     @api disableMergefieldSelection = false;
     @api builderContext;
     @api availableObjectTypes;
     @api availableFields;
     @api isAllowAll = false;    // Eric Smith 12/18/20 - Handle a Display All Objects override
-
+    @api DataTypeFilter;
 
     @api disableObjectPicklist = false;
     @api hideObjectPicklist = false;
@@ -38,7 +40,8 @@ export default class fsc_pickObjectAndField extends LightningElement {
 
     labels = {
         none: NonePicklistValueLabel,
-        fieldNotSupported: FieldIsNotSupportedMessage
+        fieldNotSupported: FieldIsNotSupportedMessage,
+        dataTypeNotSupported: FieldTypeNotSuportedMessage
     };
 
     @api get objectType() {
@@ -50,12 +53,18 @@ export default class fsc_pickObjectAndField extends LightningElement {
     }
 
     @api get field() {
-        return this._objectType;
+        return this._field;
     }
 
     set field(value) {
         this._field = value;
         this.fieldDataType = getDataType(value);
+    }
+
+    connectedCallback() {
+        if(this.DataTypeFilter && this.DataTypeFilter.toLowerCase() !== this.picklistFieldTypeLabel.toLowerCase()) {
+            this.errors.push(this.labels.dataTypeNotSupported);
+        }
     }
 
     @wire(getObjects, {availableObjectTypes: '$availableObjectTypesList'})
@@ -79,7 +88,7 @@ export default class fsc_pickObjectAndField extends LightningElement {
             let fieldResults = [];
             for (let field in this.fields = fields) {
                 if (Object.prototype.hasOwnProperty.call(fields, field)) {
-                    if (this.isTypeSupported(fields[field])) {
+                    if (this.isTypeSupported(fields[field]) && this.isFieldTypeSupported(fields[field])) {
                         fieldResults.push({
                             label: fields[field].label,
                             value: fields[field].apiName,
@@ -129,6 +138,17 @@ export default class fsc_pickObjectAndField extends LightningElement {
                     result = true;
                 }
             });
+        }
+        return result;
+    }
+
+    isFieldTypeSupported(field) {
+        let result = false;
+        if (!this.DataTypeFilter) {
+            result = true;
+        }
+        if (!result && this.DataTypeFilter.toLowerCase() === field.dataType.toLowerCase()) {
+            result = true;    
         }
         return result;
     }

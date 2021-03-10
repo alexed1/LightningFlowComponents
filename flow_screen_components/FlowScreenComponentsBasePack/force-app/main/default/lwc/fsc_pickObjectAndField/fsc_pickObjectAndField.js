@@ -15,7 +15,6 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api masterLabel;
     @api objectLabel = 'Object';
     @api fieldLabel = 'Field';
-    @api picklistFieldTypeLabel = 'picklist';
     @api disableMergefieldSelection = false;
     @api builderContext;
     @api availableObjectTypes;
@@ -37,6 +36,7 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @track isLoadFinished = false;
     fieldDataType;
     showCollections = false;
+    picklistFieldTypeLabel = 'picklist';
 
     labels = {
         none: NonePicklistValueLabel,

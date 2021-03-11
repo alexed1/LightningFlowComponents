@@ -144,10 +144,7 @@ export default class fsc_pickObjectAndField extends LightningElement {
 
     isFieldTypeSupported(field) {
         let result = false;
-        if (!this.DataTypeFilter) {
-            result = true;
-        }
-        if (!result && this.DataTypeFilter.toLowerCase() === field.dataType.toLowerCase()) {
+        if (!this.DataTypeFilter || (!result && this.DataTypeFilter.toLowerCase() === field.dataType.toLowerCase())) {
             result = true;    
         }
         return result;

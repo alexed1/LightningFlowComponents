@@ -16,6 +16,7 @@ export default class FlexcardFlow extends LightningElement {
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
+    @track recs = [];
     curRecord;
 
      @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
@@ -30,6 +31,7 @@ export default class FlexcardFlow extends LightningElement {
     connectedCallback() {
         console.log('entering connectedCallback');
         console.log('records are: ' + JSON.stringify(this.records));
+		this.recs = JSON.parse(JSON.stringify(this.records));
            }
 
     //for each record:
@@ -63,9 +65,26 @@ export default class FlexcardFlow extends LightningElement {
 
 //set card width and height
 
-get sizeWidth() {
-    return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
-  }
+    get sizeWidth() {
+        return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
+    }
+  
+    handleClick(event){
+       
+       this.recs.find(record => {
+           if(record.Id === event.currentTarget.dataset.id) {
+            record.clickedCard = 'clickedCard';
+           }else {
+            record.clickedCard = 'card';
+           }
+        });
+
+        this.selectedRecord =  event.currentTarget.dataset.id;
+        console.log(this.value=this.selectedRecord);
+        
+     }    
+             
 
 
+   
 }

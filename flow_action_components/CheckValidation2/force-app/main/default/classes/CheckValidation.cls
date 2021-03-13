@@ -1,9 +1,9 @@
 /** 
  *  Check Validation Flow Action
  * 
- *  Eric Smith - March 2021 - v1.0
+ *  Eric Smith - March 2021 - v1.1
  * 
- *  Eric Smith - 3/13/21 - v1.1
+ *  Eric Smith - 3/13/21 - v1.2
  *  Added an attribute to allow for the checking of Duplication Rules
  * 
  *  This class temporarily writes a record to an SObject to see if any  

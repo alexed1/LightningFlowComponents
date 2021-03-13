@@ -194,7 +194,8 @@ public with sharing class SObjectDeepClone {
         if (fMap != null) {
             for (Schema.SObjectField ft : fMap.values()) { // loop through all field tokens (ft)
                 Schema.DescribeFieldResult fd = ft.getDescribe(); // describe each field (fd)
-                if (fd.isCreateable()) { // field is creatable
+                // *** Added Not Unique - Eric Smith - 3/6/21
+                if (fd.isCreateable() && !fd.isUnique()) { // field is creatable
                     selectFields.add(fd.getName());
                 }
             }

@@ -5,13 +5,13 @@ public with sharing class GetProfiles {
         System.debug('entering GetProfiles');
         List<ResultSet> responseWrapper = new List<ResultSet>();
         for (Request curRequest : requestList) {
-            fbc_MetadataService.MetadataPort service = fbc_MetadataService.createService();
+            usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
             List<String> profileNames = new List<String>();
             profileNames.add(curRequest.singleProfileName);
             profileNames.addAll(curRequest.profileNameCollection);
 
-            List<fbc_MetadataService.Profile> retrievedProfiles =
-                (List<fbc_MetadataService.Profile>) service.readMetadata('Profile',
+            List<usf.MetadataService.Profile> retrievedProfiles =
+                (List<usf.MetadataService.Profile>) service.readMetadata('Profile',
                     profileNames).getRecords();
                     
             System.debug('retrieved profiles: ' + retrievedProfiles);
@@ -19,7 +19,7 @@ public with sharing class GetProfiles {
             //Create a ResultSet object to hold the return values
             ResultSet response = new ResultSet();
             response.singleProfile = CopyMetadataToDMC(retrievedProfiles[0]);
-            for(fbc_MetadataService.Profile curProfile : retrievedProfiles) {
+            for(usf.MetadataService.Profile curProfile : retrievedProfiles) {
                 response.collectionProfiles.add(CopyMetadataToDMC(curProfile));
             }
             responseWrapper.add(response);
@@ -30,14 +30,14 @@ public with sharing class GetProfiles {
     }
 
 
-    public static flowDMC_Profile CopyMetadataToDMC (fbc_MetadataService.Profile originalProfile) {
+    public static flowDMC_Profile CopyMetadataToDMC (usf.MetadataService.Profile originalProfile) {
         originalProfile = FillInNulls(originalProfile);
         flowDMC_Profile finalProfile = new flowDMC_Profile();
         finalProfile.recordTypeVisibilities = new List<flowDMC_ProfileRecordTypeVisibility>();
         finalProfile.fullName = originalProfile.fullName;
         finalProfile.type = originalProfile.type;
         finalProfile.userLicense = originalProfile.userLicense;
-        for (fbc_MetadataService.ProfileRecordTypeVisibility curRecordTypeVisibility : originalProfile.recordTypeVisibilities) {
+        for (usf.MetadataService.ProfileRecordTypeVisibility curRecordTypeVisibility : originalProfile.recordTypeVisibilities) {
             flowDMC_ProfileRecordTypeVisibility finalRecordTypeVisibility  = new flowDMC_ProfileRecordTypeVisibility();
             finalRecordTypeVisibility.recordType = curRecordTypeVisibility.recordType;
             finalRecordTypeVisibility.visible = curRecordTypeVisibility.visible;
@@ -50,9 +50,9 @@ public with sharing class GetProfiles {
     }
 
     //the data structures created by the MetadataService do not initialize Lists and if you leave them null, the code may through a null reference
-    private static fbc_MetadataService.Profile FillInNulls(fbc_MetadataService.Profile originalProfile) {
+    private static usf.MetadataService.Profile FillInNulls(usf.MetadataService.Profile originalProfile) {
         if (originalProfile.recordTypeVisibilities == null)
-            originalProfile.recordTypeVisibilities = new List<fbc_MetadataService.ProfileRecordTypeVisibility>();
+            originalProfile.recordTypeVisibilities = new List<usf.MetadataService.ProfileRecordTypeVisibility>();
         return originalProfile;
     }
 

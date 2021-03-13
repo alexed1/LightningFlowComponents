@@ -1,13 +1,13 @@
 <template>
     <lightning-layout multiple-rows="true">
         <template if:true={isDataLoaded}>
-            <template for:each={records} for:item="record">
-                <div key={record.Id} class="slds-grid slds-col slds-wrap">
-                    <div class="slds-box slds-box_x-small" style={sizeWidth}>
+            <template for:each={recs} for:item="record">
+                <div key={record.Id}  class="slds-grid slds-container_large slds-gutters_xxx-small slds-p-vertical_xxx-small slds-col slds-wrap" >                  
+                    <div class={record.clickedCard} data-id={record.Id} onclick={handleClick} style={sizeWidth}>
                     <c-flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle"></c-flexcard-header>
                     <div class ="fc-body">
                         <c-field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-field-viewer>
-                        <c-action-list flow-names={visibleFlowNames} record-id={record.Id}></c-action-list>
+                        <c-action-list flow-names={visibleFlowNames} record-id={record.Id}></c-action-list>                        
                     </div>
                     </div>
                 </div>

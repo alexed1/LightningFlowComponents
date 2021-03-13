@@ -1,18 +1,23 @@
-# Salesforce DX Project: Next Steps
-
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
-
-## How Do You Plan to Deploy Your Changes?
-
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
-
-## Configure Your Salesforce DX Project
-
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
-
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+/** 
+ *  Check Validation Flow Action
+ * 
+ *  Eric Smith - March 2021 - v1.0
+ * 
+ *  Eric Smith - 3/13/21 - v1.1
+ *  Added an attribute to allow for the checking of Duplication Rules
+ * 
+ *  This class temporarily writes a record to an SObject to see if any  
+ *  validation errors occurr and passes the errors back to the flow
+ * 
+ *  If there are multiple types of errors, only one type of error will be returned.
+ *  If any Text fields are over their size limit, only those errors will be returned.
+ *  If any Validation Rule fails, all Validation Rule failures will be returned.
+ *  If any Required Fields are missing, only those errors will be returned.
+ *  If any Lookup field values violate the defined Filter, only those errors will be returned.
+ *  If specified in the attributes, Duplication Rules will be checked on new records.
+ * 
+ *  Fields over their size limit are handled first, followed by Validation Rules, followed by Required Fields,
+ *  followed by Filter violations, optionally followed by Duplicate Rule checks.
+ * 
+ * 
+**/ 

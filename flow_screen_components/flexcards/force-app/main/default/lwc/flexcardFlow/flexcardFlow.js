@@ -13,6 +13,8 @@ export default class FlexcardFlow extends LightningElement {
     @api cardSize = 300;
     @api avatarField;
     @api objectAPIName;
+    @api isClickable;
+    @api Cardcss;
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
@@ -32,6 +34,9 @@ export default class FlexcardFlow extends LightningElement {
         console.log('entering connectedCallback');
         console.log('records are: ' + JSON.stringify(this.records));
 		this.recs = JSON.parse(JSON.stringify(this.records));
+        this.recs.find(record => {
+            record.Cardcss = 'card';
+           })
            }
 
     //for each record:
@@ -67,15 +72,16 @@ export default class FlexcardFlow extends LightningElement {
 
     get sizeWidth() {
         return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
-    }
-  
+}
+    
+
     handleClick(event){
        
        this.recs.find(record => {
-           if(record.Id === event.currentTarget.dataset.id) {
-            record.clickedCard = 'clickedCard';
+           if(record.Id === event.currentTarget.dataset.id && this.isClickable==true) {
+            record.Cardcss = 'clickedCard';
            }else {
-            record.clickedCard = 'card';
+            record.Cardcss = 'card';
            }
         });
 

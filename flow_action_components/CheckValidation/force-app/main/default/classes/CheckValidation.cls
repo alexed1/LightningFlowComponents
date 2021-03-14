@@ -1,7 +1,10 @@
 /** 
  *  Check Validation Flow Action
  * 
- *  Eric Smith - March 2021
+ *  Eric Smith - March 2021 - v1.1
+ * 
+ *  Eric Smith - 3/13/21 - v1.2
+ *  Added an attribute to allow for the checking of Duplication Rules
  * 
  *  This class temporarily writes a record to an SObject to see if any  
  *  validation errors occurr and passes the errors back to the flow
@@ -10,7 +13,11 @@
  *  If any Text fields are over their size limit, only those errors will be returned.
  *  If any Validation Rule fails, all Validation Rule failures will be returned.
  *  If any Required Fields are missing, only those errors will be returned.
- *  Fields over their size limit are handled first, followed by Validation Rules, followed by Required Fields.
+ *  If any Lookup field values violate the defined Filter, only those errors will be returned.
+ *  If specified in the attributes, Duplication Rules will be checked on new records.
+ * 
+ *  Fields over their size limit are handled first, followed by Validation Rules, followed by Required Fields,
+ *  followed by Filter violations, optionally followed by Duplicate Rule checks.
  * 
  * 
 **/ 
@@ -31,6 +38,9 @@ global inherited sharing class CheckValidation {
 
         @InvocableVariable(Label='If no errors, commit inserted & updated records?')
         global Boolean isCommit;
+
+        @InvocableVariable(Label='Check duplicate rules on new records?')
+        global Boolean checkDuplicates;
 
     }
 
@@ -83,6 +93,7 @@ global inherited sharing class CheckValidation {
             List<SObject> inputCollection = req.inputCollection;
             String recordField = req.recordField;
             Boolean isCommit = req.isCommit == null ? false : true;
+            Boolean allowSave = !req.checkDuplicates;
 
             // Process input attributes
             if (inputRecord == null) {
@@ -115,6 +126,11 @@ global inherited sharing class CheckValidation {
                 invalidFieldName = true;
             }
 
+            // Process Check for Duplicates Attribute
+            Database.DMLOptions dml = new Database.DMLOptions();
+            dml.DuplicateRuleHeader.AllowSave = allowSave;
+            dml.DuplicateRuleHeader.runAsCurrentUser = true;
+
 // BEGIN APEX ACTION PROCESSING LOGIC
 
             if (!errorFlag) {
@@ -145,10 +161,10 @@ global inherited sharing class CheckValidation {
 
                 // Check for Insert Errors
                 if (insertCollection.size() > 0) {
-                    Database.SaveResult[] srListInsert = Database.insert(insertCollection, false);
-                
-                    recCounter = 0;
-                    for (Database.SaveResult sr : srListInsert) {
+                    // Process inserts individually so duplicate rules will fire
+                    for (SObject ir : insertCollection) {
+                        recCounter = 0;
+                        Database.SaveResult sr = Database.insert(ir, dml);
                         recordIdentifier = recordFieldIdentifierList.get(recCounter);
                         recCounter ++;
                         if (sr.isSuccess()) {
@@ -163,8 +179,14 @@ global inherited sharing class CheckValidation {
                         } else {
                             errorFlag = true;
                             for (Database.Error err : sr.getErrors()) {
-                                errorMessages += 'New Record Error: ' + recordIdentifier + ' [' + err.getMessage() + ']\n';
                                 System.debug ('New Record Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                                if (err.getStatusCode() === StatusCode.DUPLICATES_DETECTED) {                               
+                                    Datacloud.DuplicateResult duplicateResult = ((Database.DuplicateError)err).getDuplicateResult();
+                                    errorMessages += 'Duplicate Rule Error: ' + recordIdentifier + ' [' + duplicateResult.getDuplicateRule() + ']\n';
+                                    System.debug('Duplicate Rule Error: ' + duplicateResult.getDuplicateRule());
+                                } else {
+                                    errorMessages += 'New Record Error: ' + recordIdentifier + ' [' + err.getMessage() + ']\n';
+                                }
                             }
                         }
                     }
@@ -172,21 +194,27 @@ global inherited sharing class CheckValidation {
 
                 // Check for Update Errors
                 if (updateCollection.size() > 0) {
-                    Database.SaveResult[] srListUpdate = Database.update(updateCollection, false);
-
-                    recCounter = 0;
-                    for (Database.SaveResult sr : srListUpdate) {
-                        recordIdentifier = recordFieldIdentifierList.get(recCounter);
-                        recCounter ++;            
-                        if (sr.isSuccess()) {
-                            System.debug ('Update Record Passed Validation: ' + sr.getId() + ' ' + recordIdentifier);
-                        } else {
-                            errorFlag = true;
-                            for (Database.Error err : sr.getErrors()) {
-                                errorMessages += recordIdentifier + ' [' + err.getMessage() + ']\n';
-                                System.debug ('Record Update Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                    try {
+                        Database.SaveResult[] srListUpdate = Database.update(updateCollection, false);
+                        recCounter = 0;
+                        for (Database.SaveResult sr : srListUpdate) {
+                            recordIdentifier = recordFieldIdentifierList.get(recCounter);
+                            recCounter ++;            
+                            if (sr.isSuccess()) {
+                                System.debug ('Update Record Passed Validation: ' + sr.getId() + ' ' + recordIdentifier);
+                            } else {
+                                errorFlag = true;
+                                for (Database.Error err : sr.getErrors()) {
+                                    errorMessages += recordIdentifier + ' [' + err.getMessage() + ']\n';
+                                    System.debug ('Record Update Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                                }
                             }
                         }
+                    }
+                    catch (exception e) {
+                        errorFlag = true;
+                        errorMessages += 'Update Error: ' + e.getMessage();
+                        System.debug ('Update Error: ' + e.getMessage());
                     }
                 }
                 

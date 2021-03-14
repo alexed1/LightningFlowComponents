@@ -16,6 +16,7 @@ public with sharing class CheckValidationTest {
         accts.add(a2);
         testRequest.inputCollection = accts;
         testRequest.isCommit = true;
+        testRequest.checkDuplicates = true;
         testRequestList.add(testRequest);
         List<CheckValidation.Results> testResultList = CheckValidation.checkForValidationErrors(testRequestList);
         System.assert(!testResultList[0].isError);
@@ -27,6 +28,7 @@ public with sharing class CheckValidationTest {
         a2.Name = '';
         testRequest.inputRecord = a2;
         testRequest.isCommit = false;
+        testRequest.checkDuplicates = false;
         testRequestList.clear();
         testRequestList.add(testRequest);
         testResultList = CheckValidation.checkForValidationErrors(testRequestList);
@@ -38,6 +40,7 @@ public with sharing class CheckValidationTest {
         a2.Name = '';
         a2.Id = null;
         testRequest.inputRecord = a2;
+        testRequest.checkDuplicates = true;
         testRequestList.clear();
         testRequestList.add(testRequest);
         testResultList = CheckValidation.checkForValidationErrors(testRequestList);

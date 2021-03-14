@@ -16,6 +16,8 @@
             <property name="visibleFieldNames" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
             <property name="visibleFlowNames" label="Visible Flow Names" type="String" description="Show which flow?"/>
             <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>
+            <property name="isClickable" role="inputOnly" label="isClickable" type="Boolean" default="false" description="Set as true if you wish to select individual cards for action further downstream in flow default is false"/>
+            <property name="Cardcss" label="Card CSS" default="card" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

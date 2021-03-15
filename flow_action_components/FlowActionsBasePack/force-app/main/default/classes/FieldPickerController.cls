@@ -1,5 +1,6 @@
 global with sharing class FieldPickerController {
-
+    final static string CUSTOM_FIELD_POSTFIX = '__c';
+    
     @AuraEnabled(cacheable=true)
     global static List<Member> getObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();
@@ -45,15 +46,21 @@ global with sharing class FieldPickerController {
     global static List<Member> getPicklistValues(String objectApiName, String fieldName) {
 
         List<Member> options = new List<Member>();
+        if(fieldName.endsWith(CUSTOM_FIELD_POSTFIX)) {
+            List<MetadataService.CustomValue> picklistValueList = RetrieveMetadata.getPickListValuesForCustomField(objectApiName +'.' + fieldName);
+            
+            for(MetadataService.CustomValue item : picklistValueList) {
+                options.add(new Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
+            }
+        } else {
+            Schema.DescribeSObjectResult describeObject = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
+            Map<String, Schema.SObjectField> fieldMap = describeObject.fields.getMap();
+            List<Schema.PicklistEntry> values = fieldMap.get(fieldName).getDescribe().getPickListValues();
 
-        Schema.DescribeSObjectResult describeObject = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
-        Map<String, Schema.SObjectField> fieldMap = describeObject.fields.getMap();
-        List<Schema.PicklistEntry> values = fieldMap.get(fieldName).getDescribe().getPickListValues();
-
-        for (Schema.PicklistEntry a : values) {
-            options.add(new Member(a.getValue(), a.getLabel()));
+            for (Schema.PicklistEntry a : values) {
+                options.add(new Member(a.getValue(), a.getLabel(), a.isActive(), a.isDefaultValue()));
+            }
         }
-
         options.sort();
 
         return options;
@@ -66,10 +73,21 @@ global with sharing class FieldPickerController {
         global String label;
         @AuraEnabled
         global String value;
+        @AuraEnabled
+        global Boolean isActive;
+        @AuraEnabled
+        global Boolean isDefaultValue;
 
         global Member(String value, String label) {
             this.label = label;
             this.value = value;
+        }
+
+        global Member(String value, String label, Boolean isActive, Boolean isDefaultValue) {
+            this.value = value;
+            this.label = label;         
+            this.isActive = isActive;
+            this.isDefaultValue = isDefaultValue;
         }
 
         global Integer compareTo(Object compareTo) {

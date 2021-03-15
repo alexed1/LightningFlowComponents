@@ -232,6 +232,13 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
                 '<version>48.0</version>' + 
             '</Package>';		
     }
+
+	global static List<MetadataService.CustomValue> getPickListValuesForCustomField(String apiName) {
+        MetadataService.MetadataPort service = createService();
+
+        MetadataService.CustomField customField = (MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+		return customField.valueSet.valueSetDefinition.value;
+    }
 	
 	/**
 	 * Simple container class for retrieve metadata file, may as well leverage the Metadata API class for this

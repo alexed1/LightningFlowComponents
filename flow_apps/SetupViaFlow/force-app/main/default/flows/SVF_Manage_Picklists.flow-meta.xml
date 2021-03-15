@@ -1,6 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Retrieve_Picklist_values</name>
+        <label>Retrieve Picklist values</label>
+        <locationX>182</locationX>
+        <locationY>278</locationY>
+        <actionName>RetrievePicklistValues</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Is_Custom_Field</targetReference>
+        </connector>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <elementReference>ObjectPick.field</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>objectApiName</name>
+            <value>
+                <elementReference>ObjectPick.objectType</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>51.0</apiVersion>
+    <choices>
+        <name>choiceActivateAction</name>
+        <choiceText>Activate</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>activate</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceDeactivateAction</name>
+        <choiceText>Deactivate</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>deactivate</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>choiceDeleteAction</name>
+        <choiceText>Delete</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>delete</stringValue>
+        </value>
+    </choices>
+    <constants>
+        <name>isCustomField</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>true</stringValue>
+        </value>
+    </constants>
+    <constants>
+        <name>IsNotCustomField</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>false</stringValue>
+        </value>
+    </constants>
+    <decisions>
+        <name>Is_Custom_Field</name>
+        <label>Is Custom Field</label>
+        <locationX>182</locationX>
+        <locationY>398</locationY>
+        <defaultConnector>
+            <targetReference>API_Lmitation_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Custom_Field</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Retrieve_Picklist_values.isCustomField</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Picklist_Values</targetReference>
+            </connector>
+            <label>If Custom Field</label>
+        </rules>
+    </decisions>
     <interviewLabel>SVF Manage Picklist {!$Flow.CurrentDateTime}</interviewLabel>
     <label>SVF Manage Picklists</label>
     <processMetadataValues>
@@ -23,13 +110,32 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+        <name>API_Lmitation_Message</name>
+        <label>API Lmitation Message</label>
+        <locationX>314</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>APILimitationMessage</name>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); font-size: 15px; font-family: Slack-Lato, appleLogo, sans-serif; color: rgb(29, 28, 29);&quot;&gt;Because this is a Standard field, SetupViaFlow is unable to get active/inactive status due to an API limitation&lt;/span&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Mange_Picklist</name>
         <label>Mange Picklist</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Retrieve_Picklist_values</targetReference>
+        </connector>
         <fields>
             <name>ObjectPick</name>
             <extensionName>c:fsc_pickObjectAndField</extensionName>
@@ -46,12 +152,116 @@
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
-    <start>
+    <screens>
+        <name>Picklist_Values</name>
+        <label>Picklist Values</label>
         <locationX>50</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>TestInfo</targetReference>
+        </connector>
+        <fields>
+            <name>PicklistActions</name>
+            <choiceReferences>choiceActivateAction</choiceReferences>
+            <choiceReferences>choiceDeactivateAction</choiceReferences>
+            <choiceReferences>choiceDeleteAction</choiceReferences>
+            <dataType>String</dataType>
+            <defaultSelectedChoiceReference>choiceActivateAction</defaultSelectedChoiceReference>
+            <fieldText>Apply Which Action to Selected Picklist Values?</fieldText>
+            <fieldType>RadioButtons</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>PicklistResult</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>User</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>cb_isDisplayHeader</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isUserDefinedObject</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>value,label,isActive, isDefaultValue</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>keyField</name>
+                <value>
+                    <stringValue>value</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableDataString</name>
+                <value>
+                    <elementReference>PikclistValues</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnLabels</name>
+                <value>
+                    <stringValue>value:Name,label:Label,isActive:Activation Status,isDefaultValue:Default Status</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnTypes</name>
+                <value>
+                    <stringValue>isActive:boolean,isDefaultValue:boolean</stringValue>
+                </value>
+            </inputParameters>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>TestInfo</name>
+        <label>TestInfo</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>TestRule</name>
+            <fieldText>&lt;p&gt;{!PicklistActions}&lt;/p&gt;&lt;p&gt;{!PicklistResult.outputSelectedRowsString}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Mange_Picklist</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>PikclistValues</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <elementReference>Retrieve_Picklist_values.memberListJSON</elementReference>
+        </value>
+    </variables>
 </Flow>

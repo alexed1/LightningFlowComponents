@@ -32,7 +32,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				</div>
 				<div class="slds-media__figure slds-media__figure_reverse slds-p-right_xxx-small">
 					<lightning:buttonIcon tooltip="Clear Selection" variant="bare" type="reset" iconName="utility:clear"
-						onclick="{!v.onremove}"></lightning:buttonIcon>
+						alternativeText="Clear Selection" onclick="{!v.onremove}"></lightning:buttonIcon>
 				</div>
 			</div>
 		</lightning:layoutItem>

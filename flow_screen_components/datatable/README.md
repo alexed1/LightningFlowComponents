@@ -13,15 +13,10 @@ Additional components packaged with this LWC:
 
                     LWCs:           datatableUtils
                                     datatableCPE
-                                    screenFlow
                                     displayError
                                     richDatatable
 
                     Flows:          Datatable_Configuration_Wizard
-
-                    Apex Pages:     screenFlow
-
-                    Custom Apps:    screenFlow 
 
                     Permission Set: USF Flow Screen Component - Datatable          
                                                   
@@ -38,7 +33,7 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.6 or later  
+FlowScreenComponentsBasePack Version 2.1.7 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/

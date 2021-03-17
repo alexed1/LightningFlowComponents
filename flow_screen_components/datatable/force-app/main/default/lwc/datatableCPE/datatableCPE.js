@@ -543,6 +543,7 @@ export default class DatatableCPE extends LightningElement {
 
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
+console.log("🚀 ~ file: datatableCPE.js ~ line 546 ~ DatatableCPE ~ initializeValues ~ this.selectedSObject", this.selectedSObject);
                     }
                     if (curInputParam.name == 'columnFields') { 
                         this.vFieldList = curInputParam.value;

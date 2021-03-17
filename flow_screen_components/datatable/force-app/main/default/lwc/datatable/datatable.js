@@ -109,8 +109,19 @@ export default class Datatable extends LightningElement {
     @api suppressNameFieldLink = false;     // OBSOLETE as of 3.0.10
     @api not_tableBorder = false;           // OBSOLETE as of 3.0.10 - Only referenced in the CPE - Used so a boolean value can default to True
 
+    @api 
+    get displayAll() {
+        return (this.cb_displayALl == CB_TRUE) ? true : false;
+    }
+    @api cb_displayAll;
+
     // JSON Version Attributes (User Defined Object)
-    @api isUserDefinedObject = false;
+    @api 
+    get isUserDefinedObject() {
+        return (this.cb_isUserDefinedObject == CB_TRUE) ? true : false;
+    }
+    @api cb_isUserDefinedObject;
+
     @api tableDataString = [];
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';

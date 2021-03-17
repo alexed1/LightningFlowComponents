@@ -83,9 +83,6 @@ export default class DatatableCPE extends LightningElement {
     selectedSObject = '';
     isRecordCollectionSelected = false;
     disableAllowALl = false;
-    isDisplayAll = false;
-    isDisplayAll_Label = 'Display ALL Objects for Selection';
-    isDisplayAll_HelpText = 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.';
     isCheckboxColumnHidden = false;
     isShowCheckboxColumn = false;
     isNoEdits = true;
@@ -103,6 +100,14 @@ export default class DatatableCPE extends LightningElement {
     objectPluralLabel;
     objectIconName;
     dispatchValue;
+
+    @api
+    get isDisplayAll() {
+        return this.inputValues.displayAll.value;
+    }
+    set isDisplayAll(value) {
+        this.inputValues.displayAll.value = value;
+    }
 
     @api 
     get isSObjectInput() {
@@ -364,6 +369,7 @@ export default class DatatableCPE extends LightningElement {
         cb_suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: ''},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Apex-Defined', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
+        cb_isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: ''},
         keyField: {value: 'Id', valueDataType: null, isCollection: false, label: 'Key Field', 
             helpText: 'This is normally the Id field, but you can specify a different field if all field values are unique.'},
         not_tableBorder: {value: null, valueDataType: null, isCollection: false, label: 'No Border'},                                       // OBSOLETE as of v3.0.10 - Used so tableBorder can default to True
@@ -373,6 +379,10 @@ export default class DatatableCPE extends LightningElement {
         openLinkinSameTab: {value: null, valueDataType: null, isCollection: false, label: 'Open links in the same Tab', 
             helpText: 'When this option is selected, clicking on a link will open the record in the same browser or console Tab instead of a new browser Tab.  This is especially useful when the user is running in a Console.'},
         cb_openLinkinSameTab: {value: null, valueDataType: null, isCollection: false, label: ''},
+        displayAll: {value: null, valueDataType: null, isCollection: false, label: 'Display ALL Objects for Selection', 
+            helpText: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.'},
+        cb_displayAll: {value: null, valueDataType: null, isCollection: false, label: ''},
+
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -435,9 +445,7 @@ export default class DatatableCPE extends LightningElement {
         },
         {name: 'advancedAttributes',
             attributes: [
-                {name: defaults.customHelpDefinition,
-                    label: this.isDisplayAll_Label,
-                    helpText: this.isDisplayAll_HelpText},
+                {name: 'displayAll'},
                 {name: 'isUserDefinedObject'},
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 
@@ -543,7 +551,6 @@ export default class DatatableCPE extends LightningElement {
 
                     if (curInputParam.name == 'objectName') { 
                         this.selectedSObject = curInputParam.value;    
-console.log("🚀 ~ file: datatableCPE.js ~ line 546 ~ DatatableCPE ~ initializeValues ~ this.selectedSObject", this.selectedSObject);
                     }
                     if (curInputParam.name == 'columnFields') { 
                         this.vFieldList = curInputParam.value;
@@ -671,36 +678,7 @@ console.log("🚀 ~ file: datatableCPE.js ~ line 546 ~ DatatableCPE ~ initialize
                     curAttributeType = 'String';
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
-
-            // Change the displayed Data Sources if the Apex Defined Object is selected
-            if (curAttributeName == 'isUserDefinedObject') {
-                // if (!this.isSObjectInput) { 
-                //     this.inputValues.objectName.value = null;
-                //     this.selectedSObject = null;
-                //     this.dispatchFlowValueChangeEvent('objectName', this.selectedSObject, 'String');
-                // }
-                if (event.target.checked) {
-                    this.isDisplayAll = false;                          // Clear & Disable Display All Selection when selecting User Defined Object
-                    if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
-                        let typeValue = 'User';                         // Aribtrary Object just so we can dispatch the event
-                        const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
-                        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
-                            composed: true,
-                            cancelable: false,
-                            bubbles: true,
-                            detail: {
-                                typeName, 
-                                typeValue,  
-                            }
-                        });
-                        this.dispatchEvent(dynamicTypeMapping);
-                    }
-                }
-                this.disableAllowAll = event.target.checked;
-            }
-
         }
-    
     }
 
     handleCheckboxChange(event) {
@@ -722,6 +700,35 @@ console.log("🚀 ~ file: datatableCPE.js ~ line 546 ~ DatatableCPE ~ initialize
                     this.inputValues.tableIcon.value = '';
                     this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
                 }
+            }
+
+            // Handle displayALl
+            if (changedAttribute == 'displayAll') {
+                this.inputValues.objectName.value = null;
+                this.selectedSObject = null;
+                this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+            }
+
+            // Change the displayed Data Sources if the Apex Defined Object is selected
+            if (changedAttribute == 'isUserDefinedObject') {
+                if (event.detail.newValue) {
+                    this.isDisplayAll = false;                          // Clear & Disable Display All Selection when selecting User Defined Object
+                    if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
+                        let typeValue = 'User';                         // Aribtrary Object just so we can dispatch the event
+                        const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
+                        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
+                            composed: true,
+                            cancelable: false,
+                            bubbles: true,
+                            detail: {
+                                typeName, 
+                                typeValue,  
+                            }
+                        });
+                        this.dispatchEvent(dynamicTypeMapping);
+                    }
+                }
+                this.disableAllowAll = event.detail.newValue;
             }
 
             // Don't allow hide the checkbox column if a selection is required
@@ -748,15 +755,6 @@ console.log("🚀 ~ file: datatableCPE.js ~ line 546 ~ DatatableCPE ~ initialize
         this.dispatchFlowValueChangeEvent(name, value, 'boolean');
         this.inputValues[CB_PREFIX+name].value = (value) ? CB_TRUE : CB_FALSE;
         this.dispatchFlowValueChangeEvent(CB_PREFIX+name, this.inputValues[CB_PREFIX+name].value, 'String');
-    }
-
-    handleAllowAllChange(event) {
-        this.isDisplayAll = event.target.checked;
-        // this.inputValues.isUserDefinedObject.value = false;
-        // this.dispatchFlowValueChangeEvent('isUserDefinedObject', false, 'Boolean');
-        this.inputValues.objectName.value = null;
-        this.selectedSObject = null;
-        this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
     }
 
     handleHeightChange(event) { 

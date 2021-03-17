@@ -298,26 +298,23 @@
     ></c-fsc_flow-banner>
 
     <!-- Display ALL Objects for Selection -->
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox" 
-        name="isDisplayAll"
-        label={isDisplayAll_Label} 
-        checked={isDisplayAll} 
-        disabled={disableAllowAll}
-        field-level-help={isDisplayAll_HelpText}
-        onchange={handleAllowAllChange}>
-    </lightning-input>
+    <c-fsc_flow-checkbox
+        name="select_displayAll"
+        label={inputValues.displayAll.label}
+        checked={inputValues.cb_displayAll.value}
+        field-level-help={inputValues.displayAll.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
 
     <!-- Apex Defined Object? -->
-    <lightning-input class="slds-m-vertical_xx-small"
-        type="checkbox" 
+    <c-fsc_flow-checkbox
         name="select_isUserDefinedObject"
-        label={inputValues.isUserDefinedObject.label} 
-        checked={inputValues.isUserDefinedObject.value} 
+        label={inputValues.isUserDefinedObject.label}
+        checked={inputValues.cb_isUserDefinedObject.value}
         field-level-help={inputValues.isUserDefinedObject.helpText}
-        onchange={handleValueChange}>
-    </lightning-input>
-    
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
     <div if:true={isObjectSelected}>
             <!-- Column Attributes Toggle -->
             <lightning-input type="toggle" class="slds-m-vertical_small"

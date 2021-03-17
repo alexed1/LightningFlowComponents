@@ -66,6 +66,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Text formula fields will now wrap correctly
 -   Display ALL Objects for Selection attribute is now persistent
 -   Input data is Apex-Defined attribute is now persistent
+-   The number of pre-selected rows will now not exceed the maximum number of records to be displayed attribute value
   
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 

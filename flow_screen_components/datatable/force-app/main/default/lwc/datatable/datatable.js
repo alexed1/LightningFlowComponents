@@ -498,7 +498,7 @@ export default class Datatable extends LightningElement {
         }
 
         // Handle pre-selected records
-        this.outputSelectedRows = this.preSelectedRows;
+        this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version

@@ -4,14 +4,14 @@ public with sharing class UpdateProfile {
         System.debug('entering UpdateProfile');
         List<Result> responseWrapper = new List<Result>();
         for (Request curRequest : requestList) {
-            fbc_MetadataService.MetadataPort service = fbc_MetadataService.createService();
+            usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
 
-            List<fbc_MetadataService.Profile> profilesToUpdate = new List<fbc_MetadataService.Profile>();
+            List<usf.MetadataService.Profile> profilesToUpdate = new List<usf.MetadataService.Profile>();
 
             //process single profile input
             if(curRequest.singleProfile != null) {
                 flowDMC_Profile profileToUpdate = curRequest.singleProfile;
-                fbc_MetadataService.Profile metadata_profileToUpdate = ConvertApexTypeToMetadataService_Profile(profileToUpdate);
+                usf.MetadataService.Profile metadata_profileToUpdate = ConvertApexTypeToMetadataService_Profile(profileToUpdate);
                 System.debug ('single perm set to update is: ' + metadata_profileToUpdate);
                 profilesToUpdate.add(metadata_profileToUpdate);
             }
@@ -30,7 +30,7 @@ public with sharing class UpdateProfile {
            
 
 
-            fbc_MetadataService.handleSaveResults(service.updateMetadata(profilesToUpdate)[0]);
+            usf.MetadataService.handleSaveResults(service.updateMetadata(profilesToUpdate)[0]);
 
                     
                    
@@ -45,14 +45,14 @@ public with sharing class UpdateProfile {
     }
 
   
-    public static fbc_MetadataService.Profile ConvertApexTypeToMetadataService_Profile(flowDMC_Profile originalProfile) {
-        fbc_MetadataService.Profile finalProfile = new  fbc_MetadataService.Profile();
-        finalProfile.recordTypeVisibilities = new List<fbc_MetadataService.ProfileRecordTypeVisibility>();
+    public static usf.MetadataService.Profile ConvertApexTypeToMetadataService_Profile(flowDMC_Profile originalProfile) {
+        usf.MetadataService.Profile finalProfile = new  usf.MetadataService.Profile();
+        finalProfile.recordTypeVisibilities = new List<usf.MetadataService.ProfileRecordTypeVisibility>();
         System.debug('inside Convert in Update Profile: finalprofile is: ' + finalProfile);
         System.debug('inside Convert in Update Profile: originalProfile is: ' + originalProfile);
         finalProfile.fullName = originalProfile.fullName;
         for (flowDMC_ProfileRecordTypeVisibility curRecordTypeVisibility : originalProfile.recordTypeVisibilities) {
-            fbc_MetadataService.ProfileRecordTypeVisibility finalMetadataRecordTypeVisibility = new fbc_MetadataService.ProfileRecordTypeVisibility();
+            usf.MetadataService.ProfileRecordTypeVisibility finalMetadataRecordTypeVisibility = new usf.MetadataService.ProfileRecordTypeVisibility();
             finalMetadataRecordTypeVisibility.recordType = curRecordTypeVisibility.recordType;
             finalMetadataRecordTypeVisibility.visible = curRecordTypeVisibility.visible;
             finalMetadataRecordTypeVisibility.default_x = curRecordTypeVisibility.default_x;

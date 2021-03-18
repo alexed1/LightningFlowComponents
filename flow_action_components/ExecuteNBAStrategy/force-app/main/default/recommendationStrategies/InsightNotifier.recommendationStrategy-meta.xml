@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>InsightNotifier</label>
+    <map>
+        <childNode>Load_Accounts_With_Active_Insights</childNode>
+        <label>Map Accounts to Recommendations</label>
+        <name>Map_Accounts_to_Recommendations</name>
+        <mapExpression>
+            <expression>&apos;Go There&apos;</expression>
+            <name>AcceptanceLabel</name>
+            <type>Text</type>
+        </mapExpression>
+        <mapExpression>
+            <expression>&apos;No Thanks&apos;</expression>
+            <name>RejectionLabel</name>
+            <type>Text</type>
+        </mapExpression>
+        <mapExpression>
+            <expression>&apos;NavigateToRecord&apos;</expression>
+            <name>ActionReference</name>
+            <type>Text</type>
+        </mapExpression>
+        <mapExpression>
+            <expression>Name</expression>
+            <name>Name</name>
+            <type>Text</type>
+        </mapExpression>
+        <mapExpression>
+            <expression>&apos;This account has insights&apos;</expression>
+            <name>Description</name>
+            <type>Text</type>
+        </mapExpression>
+        <mapExpression>
+            <expression>Id</expression>
+            <name>recordId</name>
+            <type>Text</type>
+        </mapExpression>
+    </map>
+    <recommendationLoad>
+        <label>Load Accounts With Active Insights</label>
+        <name>Load_Accounts_With_Active_Insights</name>
+        <condition>
+            <field>HasAvailableInsight__c</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>BOOLEAN</type>
+                <value>true</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+    </recommendationLoad>
+    <union>
+        <childNode>Map_Accounts_to_Recommendations</childNode>
+        <label>Output</label>
+        <name>Output_dff63af84c224f0bbb6e811e285504da</name>
+    </union>
+</RecommendationStrategy>

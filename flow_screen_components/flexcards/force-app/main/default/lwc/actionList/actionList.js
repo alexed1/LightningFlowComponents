@@ -49,6 +49,7 @@ export default class ActionList extends LightningElement {
 
     closeModal() {
         this.openModal = false;
+        console.log('closing modal');
     }
 
     launchFlow(event) {
@@ -58,7 +59,9 @@ export default class ActionList extends LightningElement {
     }
     
     handleFlowStatusChange(event) {
+        console.log('flow status change:');
         console.log(JSON.stringify(event.detail));
+        
     }
 
     get flowParams() {

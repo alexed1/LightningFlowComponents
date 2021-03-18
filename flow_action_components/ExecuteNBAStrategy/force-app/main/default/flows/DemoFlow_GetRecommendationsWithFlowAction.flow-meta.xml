@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Recommendations</name>
         <label>Get Recommendations</label>
-        <locationX>197</locationX>
-        <locationY>50</locationY>
+        <locationX>679</locationX>
+        <locationY>206</locationY>
         <actionName>ExecuteNBAStrategy</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -36,8 +36,8 @@
     <assignments>
         <name>Extract_Recommendations_from_Response</name>
         <label>Extract Recommendations from Response</label>
-        <locationX>370</locationX>
-        <locationY>50</locationY>
+        <locationX>679</locationX>
+        <locationY>326</locationY>
         <assignmentItems>
             <assignToReference>returnedRecs</assignToReference>
             <operator>Assign</operator>
@@ -58,6 +58,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -67,8 +73,8 @@
     <screens>
         <name>Display_Recommendations</name>
         <label>Display Recommendations</label>
-        <locationX>511</locationX>
-        <locationY>50</locationY>
+        <locationX>679</locationX>
+        <locationY>446</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

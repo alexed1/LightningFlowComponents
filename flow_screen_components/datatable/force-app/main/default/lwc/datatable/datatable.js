@@ -10,15 +10,14 @@
 
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+// import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { getConstants } from 'c/datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH
+const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
-const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
-
-// Get domain url by replacing the last occurance of '--c' in the current url
-const MYDOMAIN = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
+const MYDOMAIN = CONSTANTS.MYDOMAIN;
+const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
+const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
 
@@ -36,27 +35,79 @@ export default class Datatable extends LightningElement {
     @api columnWidths = [];
     @api columnWraps = [];
     @api keyField = 'Id';
-    @api matchCaseOnFilters;
-    @api maxNumberOfRows;
+    @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
-    @api isRequired;
     @api isConfigMode;
-    @api hideCheckboxColumn;
-    @api showRowNumbers = false;
-    @api singleRowSelection;
-    @api suppressBottomBar = false;
-    @api suppressNameFieldLink = false;
     @api tableHeight;
     @api outputSelectedRows = [];
     @api outputSelectedRow;
     @api outputEditedRows = [];
-    @api tableBorder;
-    @api isDisplayHeader;                   // Only referenced in the CPE
     @api tableIcon;
     @api tableLabel;
-    @api not_tableBorder = false;           // Only referenced in the CPE - Used so a boolean value can default to True
-    @api not_suppressNameFieldLink;         // Only referenced in the CPE - Used so a boolean value can default to True
+    
+    @api 
+    get isRequired() {
+        return (this.cb_isRequired == CB_TRUE) ? true : false;
+    }
+    @api cb_isRequired;
+
+    @api 
+    get hideCheckboxColumn() {
+        return (this.cb_hideCheckboxColumn == CB_TRUE) ? true : false;
+    }
+    @api cb_hideCheckboxColumn;
+    
+    @api 
+    get showRowNumbers() {
+        return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
+    }
+    @api cb_showRowNumbers;
+    
+    @api 
+    get singleRowSelection() {
+        return (this.cb_singleRowSelection == CB_TRUE) ? true : false;
+    }
+    @api cb_singleRowSelection;
+    
+    @api 
+    get suppressBottomBar() {
+        return (this.cb_suppressBottomBar == CB_TRUE) ? true : false;
+    }
+    @api cb_suppressBottomBar;
+
+    @api 
+    get matchCaseOnFilters() {
+        return (this.cb_matchCaseOnFilters == CB_TRUE) ? true : false;
+    }
+    @api cb_matchCaseOnFilters;
+    
+    @api 
+    get tableBorder() {
+        return (this.cb_tableBorder == CB_TRUE) ? true : false;
+    }
+    @api cb_tableBorder = CB_TRUE;
+    
+    @api 
+    get isDisplayHeader() {
+        return (this.cb_isDisplayHeader == CB_TRUE) ? true : false;
+    }
+    @api cb_isDisplayHeader;
+
+    @api 
+    get not_suppressNameFieldLink() {       // Default value is to show the links
+        return (this.cb_not_suppressNameFieldLink == CB_TRUE) ? true : false;
+    }
+    @api cb_not_suppressNameFieldLink = CB_TRUE;
+
+    @api
+    get openLinkinSameTab() {
+        return (this.cb_openLinkinSameTab == CB_TRUE) ? true : false;
+    }
+    @api cb_openLinkinSameTab;
+    
+    @api suppressNameFieldLink = false;     // OBSOLETE as of 3.0.10
+    @api not_tableBorder = false;           // OBSOLETE as of 3.0.10 - Only referenced in the CPE - Used so a boolean value can default to True
 
     // JSON Version Attributes (User Defined Object)
     @api isUserDefinedObject = false;
@@ -193,6 +244,10 @@ export default class Datatable extends LightningElement {
         return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
     }
 
+    get linkTarget() {
+        return (this.openLinkinSameTab) ? '_self' : '_blank';
+    }
+
     connectedCallback() {
 
         // Display the component version number in the console log
@@ -219,7 +274,7 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnWidths:", this.columnWidths);
             console.log("Config Mode Input columnWraps:", this.columnWraps);
             console.log("Config Mode Input columnFields:", this.columnFields);
-            this.suppressNameFieldLink = true;
+            this.not_suppressNameFieldLink = false;
         }
 
         // JSON input attributes
@@ -237,10 +292,12 @@ export default class Datatable extends LightningElement {
         }
 
         // Restrict the number of records handled by this component
-        let min = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-        if (this.tableData.length > min) {
-            this.tableData = [...this.tableData].slice(0,min);
+        if (this.maxNumberOfRows == 0) {
+            this.maxNumberOfRows = CONSTANTS.MAXROWCOUNT;
         }
+        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        let cnt = Math.min(this.tableData.length, max);
+        this.tableData = [...this.tableData].slice(0,cnt);
 
         // Set roundValue for setting Column Widths in Config Mode
         this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
@@ -256,7 +313,7 @@ export default class Datatable extends LightningElement {
                 this.basicColumns.push({
                     label: field,
                     fieldName: field,
-                    type: 'richtext',
+                    type: 'text',
                     scale: 0
                 });
             });       
@@ -434,9 +491,9 @@ export default class Datatable extends LightningElement {
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
+            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
         } else {
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         }    
         const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
         selected.forEach(record => {
@@ -641,19 +698,26 @@ export default class Datatable extends LightningElement {
 
                     // Get the lookup field details
                     lookupFieldObject = this.lookupFieldArray.filter(obj => Object.keys(obj).some(key => obj[key].includes(lufield)))[0];
-
                     if (record[lufield]) {               
                         record[lufield + '_name'] = record[lufield][lookupFieldObject['nameField']];
                         record[lufield + '_id'] = record[lufield]['Id'];
                         // Add new column with correct Lookup urls
-                        record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
+                        if (ISCOMMUNITY) {
+                            record[lufield + '_lookup'] = MYDOMAIN + 'detail/' + record[lufield + '_id'];
+                        } else {
+                            record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
+                        }
                     }
                 }
             }); 
             
             // Handle Lookup for the SObject's "Name" Field
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
-            record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';
+            if (ISCOMMUNITY) {
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
+            } else {
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
+            }
 
             // Handle replacement of Picklist API Names with Labels
             if (this.picklistReplaceValues) {
@@ -698,6 +762,7 @@ export default class Datatable extends LightningElement {
             let fieldName = colDef['fieldName'];
             let type = colDef['type'];
             let scale = colDef['scale'];
+            let length = colDef['length'];
             this.cellAttributes = {};
             this.typeAttributes = {};
             let alignment = '';
@@ -734,6 +799,11 @@ export default class Datatable extends LightningElement {
                     editAttrib.edit = false;
             }
 
+            // The Key Field is not editable
+            if (fieldName == this.keyField) {
+                editAttrib.edit = false;
+            }
+            
             // Some data types are not editable
             if(editAttrib) {
                 switch (type) {
@@ -878,17 +948,17 @@ export default class Datatable extends LightningElement {
                         lufield = fieldName.replace(/__c$/gi,'__r');
                     }
                     fieldName = lufield + '_lookup';
-                    this.typeAttributes = { label: { fieldName: lufield + '_name' }, target: '_blank' };
+                    this.typeAttributes = { label: { fieldName: lufield + '_name' }, target: this.linkTarget };
                 } else {
                     this.typeAttrib.type = 'text';      // Non reparentable Master-Detail fields are not supported
                 }
             }
 
             // Switch the SObject's "Name" Field to a Lookup
-            if (fieldName == this.objectLinkField && !this.suppressNameFieldLink) {
+            if (fieldName == this.objectLinkField && this.not_suppressNameFieldLink) {
                 this.typeAttrib.type = 'url';
                 fieldName = fieldName + '_lookup';
-                this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: '_blank' };
+                this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: this.linkTarget };
                 if (editAttrib) {
                     editAttrib.edit = false;       // Do not allow a lookup to be editable
                     this.isAllEdit = false;
@@ -905,6 +975,9 @@ export default class Datatable extends LightningElement {
 
             // Update TypeAttribute attribute overrides by column
             this.parseAttributes('type',this.typeAttribs,columnNumber);
+            if (this.typeAttrib.type == 'date-local' && this.typeAttributes) {      // If the user wants to override the default attributes, switch back to date (also switches to UTC time)
+                this.typeAttrib.type = 'date';
+            }
 
             // Save the updated column definitions
             this.cols.push({
@@ -1000,6 +1073,11 @@ export default class Datatable extends LightningElement {
     }
 
     handleCellChange(event) {
+// console.log("🚀 ~ file: datatable.js ~ line 1076 ~ Datatable ~ handleCellChange ~ event", event.detail.draftValues);
+        let rowKey =  event.detail.draftValues[0][this.keyField];
+// TODO - Add validation logic here (and change cellattribute to show red background?)
+// TODO - Build collection of errors by Row/Field, Check & Clear if error is resolved, SuppressBottomBar and show messages instead if there are any errors in the collection
+// TODO - Add support for User Defined Validation Rules
         // If suppressBottomBar is false, wait for the Save or Cancel button
         if (this.suppressBottomBar) {
             this.handleSave(event);
@@ -1009,6 +1087,7 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
+// console.log("🚀 ~ file: datatable.js ~ line 1087 ~ Datatable ~ handleSave ~ draftValues", draftValues);
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1046,12 +1125,6 @@ export default class Datatable extends LightningElement {
                     this.outputEditedRows = [...otherEditedRows];
                 } 
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
-                if (this.isUserDefinedObject) {
-                    this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                        //JSON Version
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));    //JSON Version
-                } else {
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-                }
             }
             return eitem;
         });  
@@ -1077,28 +1150,16 @@ export default class Datatable extends LightningElement {
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
-        let sdata = [];
-        currentSelectedRows.forEach(srow => {
-            const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
-            sdata.push(selData);
-        });
-        this.outputSelectedRows = [...sdata]; // Set output attribute values
-        if (this.isUserDefinedObject) {
-            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version             
-        } else {
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-        }
-        console.log('outputSelectedRows',this.outputSelectedRows);
+        this.outputSelectedRows = [...currentSelectedRows];       
     }
 
     updateNumberOfRowsSelected(currentSelectedRows) {
         // Handle updating output attribute for the number of selected rows
         this.numberOfRowsSelected = currentSelectedRows.length;
-        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
+        // this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
+        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
         this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection);   //Thanks to Jeff Olmstead for updated formula
     }
 
@@ -1106,7 +1167,8 @@ export default class Datatable extends LightningElement {
         this.showClearButton = false;
         this.selectedRows = [];
         this.outputSelectedRows = this.selectedRows;
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.updateNumberOfRowsSelected(this.outputSelectedRows);
+        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
     }
 
     updateColumnSorting(event) {
@@ -1200,7 +1262,7 @@ export default class Datatable extends LightningElement {
                 break;
 
             case 'clipText':
-                if ((this.filterColumns[this.columnNumber].fieldName != this.objectLinkField) || this.suppressNameFieldLink) {      // Salesforce always forces Wrap Text on the Object's 'Name' field
+                if ((this.filterColumns[this.columnNumber].fieldName != this.objectLinkField) || !this.not_suppressNameFieldLink) { // Salesforce always forces Wrap Text on the Object's 'Name' field
                     this.filterColumns[this.columnNumber].wrapText = false;
                     this.columns = [...this.filterColumns];
                     this.updateWrapParam();
@@ -1608,6 +1670,50 @@ export default class Datatable extends LightningElement {
 
     @api
     validate() {
+        console.log("validate and exit");
+
+        // Finalize Selected Records for Output
+        let sdata = [];
+        this.outputSelectedRows.forEach(srow => {
+            const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
+            sdata.push(selData);
+        });
+        this.outputSelectedRows = [...sdata]; // Set output attribute values
+
+/*         // Validate Edited Rows
+        let errorMessage = '';
+        this.outputEditedRows.forEach(erow => {
+            console.log("🚀 ~ file: datatable.js ~ line 1679 ~ Datatable ~ validate ~ erow", erow);
+            let fieldNames = Object.keys(erow);
+            fieldNames.forEach(fld => {
+                console.log("🚀 ~ file: datatable.js ~ line 1682 ~ Datatable ~ validate ~ fld", fld, erow[fld]);
+                const basic = this.basicColumns.find(b => b.fieldName == fld);
+                console.log("🚀 ~ file: datatable.js ~ line 1684 ~ Datatable ~ validate ~ basic", basic);
+                if (basic?.type.includes("text")) {
+                    if (erow[fld]?.length > basic.length) {
+                        let errorRow = this.mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
+                        console.log("🚀 ~ file: datatable.js ~ line 1689 ~ Datatable ~ validate ~ errorRow", errorRow);
+                        errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
+                    }
+                }
+            });
+        });
+        if (errorMessage) {
+            this.setIsInvalidFlag(true);
+            return { 
+                isValid: false, 
+                errorMessage: errorMessage 
+            }; 
+        } */
+        
+        if (this.isUserDefinedObject) {
+            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
+            this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                            //JSON Version
+        }
+
+        console.log('outputSelectedRows',this.outputSelectedRows);
+        console.log('outputEditedRows',this.outputEditedRows);
+
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 
             this.setIsInvalidFlag(false);
@@ -1622,6 +1728,7 @@ export default class Datatable extends LightningElement {
                 errorMessage: 'This is a required entry.  At least 1 row must be selected.' 
             }; 
         }
+        
     }
 
     setIsInvalidFlag(value) {

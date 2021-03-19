@@ -26,7 +26,7 @@ export default class FlowCarousel extends LightningElement {
             uniqueId: this.altText[index] + " + " + index     
           });
           console.log("items is: " + items);
-          index + 1;
+          index += 1;
         });
         this.items = items;
     }

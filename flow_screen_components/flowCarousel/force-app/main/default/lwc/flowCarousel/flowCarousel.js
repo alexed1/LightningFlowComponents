@@ -17,7 +17,7 @@ export default class FlowCarousel extends LightningElement {
         let index = 0;
         console.log("Headers is: " + this.headers);
         
-        this.Headers.forEach(header => {
+        this.headers.forEach(header => {
           items.push({
             header: header,
             src: this.imageURLs[index],

@@ -1,0 +1,17 @@
+<template>       
+    <div class="slds-align_absolute-center slds-size_xx-large" >
+        <div class="slds-text-align_center">{carouselTitle}            
+            <lightning-carousel > 
+                <template for:each={items} for:item="item">                              
+                   <lightning-carousel-image key={item.uniqueId}             
+                    src = {item.src}
+                    header = {item.header}
+                    description = {item.description}
+                    alternative-text = {item.alttext}
+                    href = "javascript:void(0);">
+                </lightning-carousel-image> 
+            </template>                                         
+            </lightning-carousel>        
+        </div>
+    </div>
+</template>

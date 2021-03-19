@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Manage_Picklist_Field</name>
+        <label>Manage Picklist Field</label>
+        <locationX>518</locationX>
+        <locationY>806</locationY>
+        <actionName>ManagePicklistField</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_Deploy_Status</targetReference>
+        </connector>
+        <inputParameters>
+            <name>action</name>
+            <value>
+                <elementReference>PicklistActions</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fieldName</name>
+            <value>
+                <elementReference>ObjectPick.field</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>objectApiName</name>
+            <value>
+                <elementReference>ObjectPick.objectType</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>picklistValueNameListJSON</name>
+            <value>
+                <elementReference>PicklistResult.outputSelectedRowsString</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Retrieve_Picklist_values</name>
         <label>Retrieve Picklist values</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>584</locationX>
+        <locationY>326</locationY>
         <actionName>RetrievePicklistValues</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -41,14 +77,6 @@
             <stringValue>deactivate</stringValue>
         </value>
     </choices>
-    <choices>
-        <name>choiceDeleteAction</name>
-        <choiceText>Delete</choiceText>
-        <dataType>String</dataType>
-        <value>
-            <stringValue>delete</stringValue>
-        </value>
-    </choices>
     <constants>
         <name>isCustomField</name>
         <dataType>String</dataType>
@@ -64,10 +92,35 @@
         </value>
     </constants>
     <decisions>
+        <name>Check_Deploy_Status</name>
+        <label>Check Deploy Status</label>
+        <locationX>506</locationX>
+        <locationY>965</locationY>
+        <defaultConnector>
+            <targetReference>TestInfo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>If_Metadata_Deploy_is_not_Successed</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Manage_Picklist_Field.isSuccess</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Error_Message</targetReference>
+            </connector>
+            <label>If Metadata Deploy is not Successed</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Custom_Field</name>
         <label>Is Custom Field</label>
-        <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationX>584</locationX>
+        <locationY>446</locationY>
         <defaultConnector>
             <targetReference>API_Lmitation_Message</targetReference>
         </defaultConnector>
@@ -99,7 +152,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -112,8 +165,8 @@
     <screens>
         <name>API_Lmitation_Message</name>
         <label>API Lmitation Message</label>
-        <locationX>314</locationX>
-        <locationY>518</locationY>
+        <locationX>782</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -126,10 +179,29 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Error_Message</name>
+        <label>Error Message</label>
+        <locationX>154</locationX>
+        <locationY>804</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Picklist_Values</targetReference>
+        </connector>
+        <fields>
+            <name>ErrorMessage</name>
+            <fieldText>&lt;p&gt;{!Manage_Picklist_Field.errorMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Mange_Picklist</name>
         <label>Mange Picklist</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
+        <locationX>584</locationX>
+        <locationY>206</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -155,19 +227,18 @@
     <screens>
         <name>Picklist_Values</name>
         <label>Picklist Values</label>
-        <locationX>50</locationX>
-        <locationY>518</locationY>
+        <locationX>386</locationX>
+        <locationY>566</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>TestInfo</targetReference>
+            <targetReference>Manage_Picklist_Field</targetReference>
         </connector>
         <fields>
             <name>PicklistActions</name>
             <choiceReferences>choiceActivateAction</choiceReferences>
             <choiceReferences>choiceDeactivateAction</choiceReferences>
-            <choiceReferences>choiceDeleteAction</choiceReferences>
             <dataType>String</dataType>
             <defaultSelectedChoiceReference>choiceActivateAction</defaultSelectedChoiceReference>
             <fieldText>Apply Which Action to Selected Picklist Values?</fieldText>
@@ -233,22 +304,22 @@
     <screens>
         <name>TestInfo</name>
         <label>TestInfo</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
+        <locationX>512</locationX>
+        <locationY>1125</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>TestRule</name>
-            <fieldText>&lt;p&gt;{!PicklistActions}&lt;/p&gt;&lt;p&gt;{!PicklistResult.outputSelectedRowsString}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Success&lt;/p&gt;&lt;p&gt;{!PicklistResult.outputSelectedRowsString}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
-        <locationY>0</locationY>
+        <locationX>458</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Mange_Picklist</targetReference>
         </connector>

@@ -1,5 +1,7 @@
 global with sharing class DeployMetadata {
- 
+    final static String ACTIVATE_STATUS = 'Activate';
+    final static String DEACTIVATE_STATUS = 'Deactivate';
+    final static String LEAVE_ONE_PICLIST_VALUE_MESSAGE = 'Please, leave at least one active value';
     @AuraEnabled 
     global static String deploy(String metadataText, String metadataName, String testLevel, String objectType) {
         System.debug('entering deploy. metadata text, objectname, testlevel, and object type are:' );
@@ -52,7 +54,38 @@ global with sharing class DeployMetadata {
 		}
 		else return 'inprocess';
 	}
-        
+
+    global static void deployPickListValues(String apiName, Map<String, String> selectedPicklistValueMap, String picklistAction) {
+        MetadataService.MetadataPort service = createService();   
+        MetadataService.CustomField customField = (MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        Integer activeValuesSize = 0;
+
+        if(String.isNotEmpty(picklistAction)) {
+            for(MetadataService.CustomValue objCustomValue : customField.valueSet.valueSetDefinition.value){
+                if(selectedPicklistValueMap.containsKey(objCustomValue.fullName)) {
+                    objCustomValue.isActive = picklistAction == ACTIVATE_STATUS ? true : false;
+                }
+
+                if(objCustomValue.isActive==null || objCustomValue.isActive) {
+                    activeValuesSize++;
+                }
+            }
+        }
+
+        //check active values size
+        if(activeValuesSize == 0) {
+            throw new CustomException(LEAVE_ONE_PICLIST_VALUE_MESSAGE);
+        }
+
+        // Update picklist values
+        List<MetadataService.SaveResult> lstResults = service.updateMetadata( new MetadataService.Metadata[] { customField });
+
+        for (MetadataService.SaveResult objResult : lstResults) {
+            if (!objResult.success && objResult.errors.size() > 0) {
+                throw new CustomException('eror : ' + objResult.errors[0].message);
+            }
+        }
+    }
 
     global static String generateZipfile(String classText, String objectName, String objectType) {
             Zippex sampleZip = new Zippex();
@@ -118,6 +151,10 @@ global with sharing class DeployMetadata {
             return boilerplate;
 	
         }
+
+        class  CustomException extends Exception {
+            
+        } 
 
         
             

@@ -7,10 +7,10 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-         <property name="ImageURLs" label="Image URLs" type="String[]"></property>
-         <property name="Headers" label="Headers" type="String[]"></property>
-         <property name="Descriptions" label="Descriptions" type="String[]"></property>
-         <property name="AltText" label="Alternate Text" type="String[]"></property>         
+         <property name="imageURLs" label="Image URLs" type="String[]"></property>
+         <property name="headers" label="Headers" type="String[]"></property>
+         <property name="descriptions" label="Descriptions" type="String[]"></property>
+         <property name="altText" label="Alternate Text" type="String[]"></property>         
          <property name="carouselTitle" label="Carousel Title" type="String"></property>
         </targetConfig>         
     </targetConfigs>

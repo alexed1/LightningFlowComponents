@@ -24,9 +24,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 		description="Full name of the SObject field the component is for" />
 	<aura:attribute name="displayedFieldName" type="String" access="public" required="true"
 		description="Name of the field of the sObjectName that will be displayed in the list - normally 'Name'" />
-	<!-- Added searchFiledName. If this is set, this will be used for search instead of displayFieldName -->
-    <aura:attribute name="searchFieldName" type="String" access="public" required="true"
-		description="Name of a field of the sObjectName to be searched upon instead of the displayFieldName" />
+	<!--If searchFieldName is set, it will be used for search instead of displayedFieldName -->
+    <aura:attribute name="searchFieldName" type="String" access="public" required="false"
+		description="Name of a field of the sObjectName to be searched upon instead of displayedFieldName" />
     <aura:attribute name="valueFieldName" type="String" access="public" required="true"
 		description="Name of the field of the sObjectName that holds the 'value' of the selected item - normally 'Id'" />
 	<aura:attribute name="whereClause" type="String" access="public" required="false"

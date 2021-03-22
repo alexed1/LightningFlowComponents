@@ -122,7 +122,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchWhereClause = component.get("v.searchWhereClause");
             console.log(searchWhereClause);
             var displayedFieldName = component.get("v.displayedFieldName");
-            //Added searchFiedName
+            //Added searchFieldName
             var searchFieldName = component.get("v.searchFieldName");
             var valueFieldName = component.get("v.valueFieldName");
             if(!document.getElementById(component.getGlobalId() + "_myinput")){
@@ -282,7 +282,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             else{
                 var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
                     searchString.replace(/'/g,'\\\'') + "%'";
-                //If searchFieldName is set use that instead of displayFieldName
+                //If searchFieldName is set use that instead of displayedFieldName
                 if(!$A.util.isUndefinedOrNull(searchFieldName)){
                     searchWhereClause = searchFieldName +" LIKE '%" + searchString.replace(/'/g,'\\\'') + "%'";
                 }

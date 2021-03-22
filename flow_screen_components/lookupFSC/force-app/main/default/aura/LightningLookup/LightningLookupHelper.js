@@ -122,6 +122,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var searchWhereClause = component.get("v.searchWhereClause");
             console.log(searchWhereClause);
             var displayedFieldName = component.get("v.displayedFieldName");
+            //Added searchFiedName
+            var searchFieldName = component.get("v.searchFieldName");
             var valueFieldName = component.get("v.valueFieldName");
             if(!document.getElementById(component.getGlobalId() + "_myinput")){
                 return;
@@ -137,7 +139,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             var isParent = (component.get('v.parentChild') == 'Parent' || component.get('v.parentChild') == 'Both');
             var isChild = (component.get('v.parentChild') == 'Child' || component.get('v.parentChild') == 'Both');
             console.log('hlpGetRecords: I1_'+ sObjectName + ' I2_' + displayedFieldName + ' isI_' + isInit + ' isP_' + isParent +
-                        ' isC_' + isChild + ' I6_' + filteredFieldName + ' I7_' + filterFieldValue + ' M_' + component.get("v.masterFilterValue") + 
+                        ' isC_' + isChild + ' I6_' + filteredFieldName + ' I7_' + filterFieldValue +' I8_' + searchFieldName + ' M_' + component.get("v.masterFilterValue") + 
                         ' W_' + whereClause + ' D_' + component.get("v.defaultValue"));
             
             if(isChild){
@@ -257,6 +259,8 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             // selectedName is tied to the value of the input, we should save what the user has typed and restore
             // it after we change selectedName
             var searchString = document.getElementById(component.getGlobalId() + "_myinput").value;
+            //Added searchFieldName
+            var searchFieldName = component.get("v.searchFieldName");
             console.log(searchString);
             this.clearField(component,false);
             document.getElementById(component.getGlobalId() + "_myinput").value = searchString;
@@ -278,6 +282,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             else{
                 var searchWhereClause = component.get("v.displayedFieldName") + " LIKE '%" +
                     searchString.replace(/'/g,'\\\'') + "%'";
+                //If searchFieldName is set use that instead of displayFieldName
+                if(!$A.util.isUndefinedOrNull(searchFieldName)){
+                    searchWhereClause = searchFieldName +" LIKE '%" + searchString.replace(/'/g,'\\\'') + "%'";
+                }
                 component.set("v.searchWhereClause", searchWhereClause);	
             }
             

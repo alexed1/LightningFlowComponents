@@ -46,21 +46,14 @@ global with sharing class FieldPickerController {
     global static List<Member> getPicklistValues(String objectApiName, String fieldName) {
 
         List<Member> options = new List<Member>();
-        if(fieldName.endsWith(CUSTOM_FIELD_POSTFIX)) {
-            List<MetadataService.CustomValue> picklistValueList = RetrieveMetadata.getPickListValuesForCustomField(objectApiName +'.' + fieldName);
-            
-            for(MetadataService.CustomValue item : picklistValueList) {
-                options.add(new Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
-            }
-        } else {
-            Schema.DescribeSObjectResult describeObject = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
-            Map<String, Schema.SObjectField> fieldMap = describeObject.fields.getMap();
-            List<Schema.PicklistEntry> values = fieldMap.get(fieldName).getDescribe().getPickListValues();
+        Schema.DescribeSObjectResult describeObject = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
+        Map<String, Schema.SObjectField> fieldMap = describeObject.fields.getMap();
+        List<Schema.PicklistEntry> values = fieldMap.get(fieldName).getDescribe().getPickListValues();
 
-            for (Schema.PicklistEntry a : values) {
-                options.add(new Member(a.getValue(), a.getLabel(), a.isActive(), a.isDefaultValue()));
-            }
+        for (Schema.PicklistEntry a : values) {
+            options.add(new Member(a.getValue(), a.getLabel(), a.isActive(), a.isDefaultValue()));
         }
+        
         options.sort();
 
         return options;

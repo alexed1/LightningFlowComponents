@@ -2,12 +2,32 @@ public with sharing class RetrievePicklistValues {
     final static string CUSTOM_FIELD_POSTFIX = '__c';
     @InvocableMethod
     public static List<Results> getPicklistValues (List<Requests> requestList) {
-        System.debug('Result:' + requestList);
         List<Results> resultList = new List<Results>();
         for(Requests request : requestList) {
-             resultList.add(new Results(JSON.serialize(ufs.FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName)), request.fieldName.endsWith(CUSTOM_FIELD_POSTFIX)));
-        }// add ufs name space
+            List<Object> picklistValuesList = new List<Object>();/*usf.*/
+            if(request.fieldName.endsWith(CUSTOM_FIELD_POSTFIX)) {
+                picklistValuesList = getPickListValuesForCustomField(request.objectApiName + '.' + request.fieldName);
+            } else {
+                picklistValuesList = FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName);
+            }
+            resultList.add(new Results(
+                JSON.serialize(picklistValuesList), 
+                request.fieldName.endsWith(CUSTOM_FIELD_POSTFIX),
+                picklistValuesList.size()
+
+            ));
+        }
         return resultList;
+    }
+
+    public static List<usf.FieldPickerController.Member> getPickListValuesForCustomField(String apiName) {
+        usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
+        List<usf.FieldPickerController.Member> picklistValueList = new List<usf.FieldPickerController.Member>();
+        usf.MetadataService.CustomField customField = (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        for(usf.MetadataService.CustomValue item : customField.valueSet.valueSetDefinition.value) {
+            picklistValueList.add(new usf.FieldPickerController.Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
+        }
+		return picklistValueList;
     }
 
     public class Requests {
@@ -25,10 +45,13 @@ public with sharing class RetrievePicklistValues {
         public String memberListJSON;
         @InvocableVariable
         public Boolean isCustomField;
+        @InvocableVariable
+        public Integer listSize;
 
-        public Results(String memberListJSON, Boolean isCustomField) {
+        public Results(String memberListJSON, Boolean isCustomField, Integer listSize) {
             this.memberListJSON = memberListJSON;
             this.isCustomField = isCustomField;
+            this.listSize = listSize;
         }
     }
 }

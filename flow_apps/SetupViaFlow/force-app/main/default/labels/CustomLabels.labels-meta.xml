@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>ACTIVATE_STATUS_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ACTIVATE_STATUS_LABEL</shortDescription>
+        <value>Activate</value>
+    </labels>
+    <labels>
+        <fullName>CUSTOM_FIELD_POSTFIX_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CUSTOM_FIELD_POSTFIX_LABEL</shortDescription>
+        <value>__c</value>
+    </labels>
+    <labels>
+        <fullName>DEACTIVATE_STATUS_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DEACTIVATE_STATUS_LABEL</shortDescription>
+        <value>Deactivate</value>
+    </labels>
+    <labels>
+        <fullName>LEAVE_ONE_PICLIST_VALUE_MESSAGE</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>LEAVE_ONE_PICLIST_VALUE_MESSAGE</shortDescription>
+        <value>Please, leave at least one active value</value>
+    </labels>
+    <labels>
+        <fullName>METADATA_DEPLOY_ERROR</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>METADATA_DEPLOY_ERROR</shortDescription>
+        <value>Error Picklist Values metadata Deploy</value>
+    </labels>
+    
+</CustomLabels>

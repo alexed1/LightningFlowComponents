@@ -1,10 +1,4 @@
 public with sharing class ManagePicklistField {
-    public final static String CUSTOM_FIELD_POSTFIX = '__c';
-    public final static String ACTIVATE_STATUS = 'Activate';
-    public final static String DEACTIVATE_STATUS = 'Deactivate';
-    final static String LEAVE_ONE_PICLIST_VALUE_MESSAGE = 'Please, leave at least one active value';
-    final static String METADATA_DEPLOY_ERROR = 'Error Picklist Values metadata Deploy';
-
     @InvocableMethod
     public static List<Results> managePicklistField (List<Requests> requestList) {
         List<Results> resultList = new List<Results>();
@@ -33,7 +27,7 @@ public with sharing class ManagePicklistField {
         if(String.isNotEmpty(picklistAction)) {
             for(usf.MetadataService.CustomValue objCustomValue : customField.valueSet.valueSetDefinition.value){
                 if(selectedPicklistValueMap.containsKey(objCustomValue.fullName)) {
-                    objCustomValue.isActive = picklistAction == ACTIVATE_STATUS ? true : false;
+                    objCustomValue.isActive = picklistAction == label.ACTIVATE_STATUS_LABEL ? true : false;
                 }
 
                 if(objCustomValue.isActive==null || objCustomValue.isActive) {
@@ -44,7 +38,7 @@ public with sharing class ManagePicklistField {
 
         //check active values size
         if(activeValuesSize == 0) {
-            throw new CustomException(LEAVE_ONE_PICLIST_VALUE_MESSAGE);
+            throw new CustomException(Label.LEAVE_ONE_PICLIST_VALUE_MESSAGE);
         }
 
         // Update picklist values
@@ -52,7 +46,7 @@ public with sharing class ManagePicklistField {
 
         for (usf.MetadataService.SaveResult objResult : lstResults) {
             if (!objResult.success) {
-                throw new CustomException(METADATA_DEPLOY_ERROR);
+                throw new CustomException(Label.METADATA_DEPLOY_ERROR);
             }
         }
     }

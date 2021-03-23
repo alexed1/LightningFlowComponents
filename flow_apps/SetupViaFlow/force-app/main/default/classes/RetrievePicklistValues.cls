@@ -1,18 +1,17 @@
 public with sharing class RetrievePicklistValues {
-    final static string CUSTOM_FIELD_POSTFIX = '__c';
     @InvocableMethod
     public static List<Results> getPicklistValues (List<Requests> requestList) {
         List<Results> resultList = new List<Results>();
         for(Requests request : requestList) {
-            List<Object> picklistValuesList = new List<Object>();/*usf.*/
-            if(request.fieldName.endsWith(CUSTOM_FIELD_POSTFIX)) {
+            List<Object> picklistValuesList = new List<Object>();
+            if(request.fieldName.endsWith(Label.CUSTOM_FIELD_POSTFIX_LABEL)) {
                 picklistValuesList = getPickListValuesForCustomField(request.objectApiName + '.' + request.fieldName);
             } else {
-                picklistValuesList = FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName);
+                picklistValuesList = usf.FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName);
             }
             resultList.add(new Results(
                 JSON.serialize(picklistValuesList), 
-                request.fieldName.endsWith(CUSTOM_FIELD_POSTFIX),
+                request.fieldName.endsWith(Label.CUSTOM_FIELD_POSTFIX_LABEL),
                 picklistValuesList.size()
 
             ));

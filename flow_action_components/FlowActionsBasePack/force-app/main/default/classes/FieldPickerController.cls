@@ -1,6 +1,4 @@
-global with sharing class FieldPickerController {
-    final static string CUSTOM_FIELD_POSTFIX = '__c';
-    
+global with sharing class FieldPickerController { 
     @AuraEnabled(cacheable=true)
     global static List<Member> getObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();

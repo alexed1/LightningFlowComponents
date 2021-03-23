@@ -1,5 +1,4 @@
 global with sharing class DeployMetadata {
-
     @AuraEnabled 
     global static String deploy(String metadataText, String metadataName, String testLevel, String objectType) {
         System.debug('entering deploy. metadata text, objectname, testlevel, and object type are:' );
@@ -117,12 +116,5 @@ global with sharing class DeployMetadata {
             return boilerplate;
 	
         }
-
-        class  CustomException extends Exception {
-            
-        } 
-
-        
-            
 
 }

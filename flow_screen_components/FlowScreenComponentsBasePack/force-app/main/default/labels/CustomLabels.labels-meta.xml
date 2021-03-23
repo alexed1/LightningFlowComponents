@@ -26,6 +26,14 @@
         <value>Following fields are not supported: </value>
     </labels>
     <labels>
+        <fullName>fsc_FieldTypeNotSuportedMessage</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>fsc_FieldTypeNotSuportedMessage</shortDescription>
+        <value>You provided an unsupported value for the DataTypeFilter input on Object and Field Picker. Currently the only supported value is ’picklist’ </value>
+    </labels>
+    <labels>
         <fullName>fsc_ButtonIsNotSupportedMessage</fullName>
         <categories>messages</categories>
         <language>en_US</language>

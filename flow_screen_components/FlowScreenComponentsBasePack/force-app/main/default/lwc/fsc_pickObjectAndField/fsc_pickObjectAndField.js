@@ -5,7 +5,7 @@ import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects'; 
 import {standardObjectOptions} from 'c/fsc_pickObjectAndFieldUtils';
 import NonePicklistValueLabel from '@salesforce/label/c.fsc_NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.fsc_FieldIsNotSupportedMessage';
-import FieldTypeNotSuportedMessage from '@salesforce/label/c.FieldTypeNotSuportedMessage';
+import FieldTypeNotSuportedMessage from '@salesforce/label/c.fsc_FieldTypeNotSuportedMessage';
 
 
 import {flowComboboxDefaults, formattedValue, getDataType, isReference} from 'c/fsc_flowComboboxUtils';

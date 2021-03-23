@@ -144,6 +144,9 @@ export default class fsc_pickObjectAndField extends LightningElement {
 
     isFieldTypeSupported(field) {
         let result = false;
+        /*Sahib Gadzhiev3/32/2021 DataTypeFilter property can filled in FLow Screen for field type setting. 
+        used toLowerCase to remove case sensitivity(Example: 'Picklist' = 'picklist')
+        */  
         if (!this.DataTypeFilter || (!result && this.DataTypeFilter.toLowerCase() === field.dataType.toLowerCase())) {
             result = true;    
         }

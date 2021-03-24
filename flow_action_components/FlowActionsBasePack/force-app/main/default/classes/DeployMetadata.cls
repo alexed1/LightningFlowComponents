@@ -1,5 +1,4 @@
 global with sharing class DeployMetadata {
- 
     @AuraEnabled 
     global static String deploy(String metadataText, String metadataName, String testLevel, String objectType) {
         System.debug('entering deploy. metadata text, objectname, testlevel, and object type are:' );
@@ -52,7 +51,6 @@ global with sharing class DeployMetadata {
 		}
 		else return 'inprocess';
 	}
-        
 
     global static String generateZipfile(String classText, String objectName, String objectType) {
             Zippex sampleZip = new Zippex();
@@ -118,8 +116,5 @@ global with sharing class DeployMetadata {
             return boilerplate;
 	
         }
-
-        
-            
 
 }

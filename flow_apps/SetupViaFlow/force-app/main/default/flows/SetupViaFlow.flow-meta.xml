@@ -204,6 +204,14 @@
         </value>
     </choices>
     <choices>
+        <name>choiceManagePicklistFields</name>
+        <choiceText>Manage Picklist Fields</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>ManagePicklistFields</stringValue>
+        </value>
+    </choices>
+    <choices>
         <name>choicePermissionSets</name>
         <choiceText>Permission Sets</choiceText>
         <dataType>String</dataType>
@@ -255,6 +263,21 @@
                 <targetReference>Select_Record_Type_Activation</targetReference>
             </connector>
             <label>RecordTypePermissions</label>
+        </rules>
+        <rules>
+            <name>ManagePicklists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Select_Activity</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>choiceManagePicklistFields</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Manage_Picklists</targetReference>
+            </connector>
+            <label>ManagePicklists</label>
         </rules>
     </decisions>
     <decisions>
@@ -490,6 +513,7 @@
         <fields>
             <name>Select_Activity</name>
             <choiceReferences>choiceEditRecordTypeAssignments</choiceReferences>
+            <choiceReferences>choiceManagePicklistFields</choiceReferences>
             <choiceReferences>SomethingElse</choiceReferences>
             <dataType>String</dataType>
             <fieldText>Select Activity</fieldText>
@@ -765,6 +789,13 @@
         </connector>
     </start>
     <status>Draft</status>
+    <subflows>
+        <name>Manage_Picklists</name>
+        <label>Manage Picklists</label>
+        <locationX>522</locationX>
+        <locationY>361</locationY>
+        <flowName>SVF_Manage_Picklists</flowName>
+    </subflows>
     <subflows>
         <name>subflowGet_Permission_Sets</name>
         <label>Get Permission Sets</label>

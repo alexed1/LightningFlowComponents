@@ -6,6 +6,7 @@ export default class FlowCarousel extends LightningElement {
     @api descriptions;
     @api altText;
     @api carouselTitle;
+    @api slideStyle;
     @track items = [];
 
     connectedCallback() {

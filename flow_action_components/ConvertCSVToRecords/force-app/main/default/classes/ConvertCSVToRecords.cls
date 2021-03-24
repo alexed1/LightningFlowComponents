@@ -30,6 +30,7 @@ public with sharing class ConvertCSVToRecords {
                 for (String field : fields) {
                     String fieldApiName = field;
                     if(fieldMap.get(fieldApiName) == null) {
+                        fieldApiName = fieldApiName.replaceAll('/', '_');
                         fieldApiName = fieldApiName.replaceAll(' ', '_').replaceAll('[^a-zA-Z0-9_]', '');   // Convert to alphanumeric and underscore
                         fieldApiName = fieldApiName.replaceAll('__', '_')+'__c';                            // Remove extra _s and add __c to end  
                     }                       
@@ -49,6 +50,7 @@ public with sharing class ConvertCSVToRecords {
                         String Tsep = curInput.Tsep;
                         String Dsep = curInput.Dsep;
                         String vCur = curInput.vCur;
+
                         Schema.DisplayType fieldType = fieldToFieldTypeMap.get(fields[i]);
                         try {
                             obj.put( fieldName.get(fields[i]), getConvertedFieldValue(fieldType, fieldValue, Tsep, Dsep, vCur) );
@@ -172,6 +174,7 @@ public with sharing class ConvertCSVToRecords {
 
         return convertedFieldValue;
     }
+
 
     @TestVisible
     static Schema.DisplayType getFieldType(map<String, SObjectField> fieldMap, String fieldApiName) {

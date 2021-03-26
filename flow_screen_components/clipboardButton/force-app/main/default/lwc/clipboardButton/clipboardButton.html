@@ -1,0 +1,50 @@
+<template>
+  <div
+    class="slds-box slds-theme_default slds-p-horizontal_none slds-p-vertical_xxx-small"
+  >
+    <lightning-layout>
+      <lightning-layout-item size={contentSize} class="slds-p-left_small">
+        <div class={visibility}>
+          <div if:true={hasLabel}>{clipboardLabel}</div>
+          <input
+            class="my-clipboard slds-input"
+            disabled
+            value={clipboardContent}
+          />
+        </div>
+      </lightning-layout-item>
+
+      <lightning-layout-item>
+        <div if:false={iconOnly}>
+          <div if:true={hasLabel}>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          <lightning-button
+            label={buttonLabel}
+            icon-name={buttonIcon}
+            variant={buttonVariant}
+            onclick={handleClick}
+            class={buttonClass}
+            name={buttonName}
+            title="Copy to Clipboard"
+            alternative-text="Copy to Clipboard"
+          >
+          </lightning-button>
+        </div>
+
+        <div if:true={iconOnly}>
+          <div if:true={hasLabel}>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          <lightning-button-icon
+            icon-name={buttonIcon}
+            variant={buttonVariant}
+            onclick={handleClick}
+            class={buttonClass}
+            name={buttonName}
+            size={buttonSize}
+            title="Copy to Clipboard"
+            alternative-text="Copy to Clipboard"
+          >
+          </lightning-button-icon>
+        </div>
+      </lightning-layout-item>
+    </lightning-layout>
+  </div>
+</template>

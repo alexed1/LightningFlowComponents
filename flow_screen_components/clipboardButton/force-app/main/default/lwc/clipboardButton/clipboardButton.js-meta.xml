@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>Copy to Clipboard Button</masterLabel>
+    <description>This component adds a Copy to Clipboard button</description>
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig
+      targets="lightning__FlowScreen"
+      configurationEditor="c-clipboard-Button-C-P-E"
+    >
+            <property
+        name="buttonLabel"
+        label="Button Label"
+        type="String"
+        description="Label to use on the button (Optional)"
+      />
+            <property
+        name="clipboardContent"
+        label="Clipboard Content"
+        type="String"
+        description="Set attribute to the value to pass into the Clipboard"
+      />
+            <property
+        name="clipboardLabel"
+        label="Clipboard Label"
+        type="String"
+        description="Label to appear above the Clipboard contents box (Optional)"
+      />
+            <property
+        name="contentSize"
+        label="Content Size (In 12ths)"
+        type="Integer"
+        description="Set the size of the contents box in 12ths of the total container width (Optional)"
+      />
+            <property
+        name="removeClipboard"
+        label="Hide Clipboard Display after Selection?"
+        type="Boolean"
+        default="false"
+        description="Remove the clipboard contents display from the screen once the button is clicked."
+      />
+            <property
+        name="cb_removeClipboard"
+        type="String"
+        role="inputOnly"
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

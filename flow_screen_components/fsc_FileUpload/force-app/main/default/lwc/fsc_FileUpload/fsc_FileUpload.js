@@ -7,7 +7,7 @@ export default class FileUpload extends LightningElement {
     @api icon;
     @api contentDocumentIds;
     @track lstAllFiles = [];
-    @track listAllFiles = [];
+   
    
  
     get acceptedFormats() {
@@ -18,8 +18,7 @@ export default class FileUpload extends LightningElement {
         // Get the list of uploaded files
         const lstUploadedFiles = event.detail.files;
         lstUploadedFiles.forEach(fileIterator => this.lstAllFiles.push(fileIterator.name));
-        lstUploadedFiles.forEach(fileIterator => this.listAllFiles.push(fileIterator.documentId));
-        console.log(this.contentDocumentIds=this.listAllfiles);
+        
         
 
     }

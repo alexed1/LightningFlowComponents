@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property description="Label for the file upload button" type="String" name="label"/>
+            <property description="Id of the record to associate the file/s" type="String" name="recordId"/>
+            <property description="Lightning Icon" type="String" name="icon"/>
+            <property description="String Collection of ContentDocumentIds" type="String[]" name="contentDocumentIds"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

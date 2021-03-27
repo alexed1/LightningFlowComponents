@@ -37,10 +37,10 @@ global inherited sharing class CheckValidation {
         global String recordField;
 
         @InvocableVariable(Label='If no errors, commit inserted & updated records?')
-        global Boolean isCommit;
+        global Boolean isCommit = false;
 
         @InvocableVariable(Label='Check duplicate rules on new records?')
-        global Boolean checkDuplicates;
+        global Boolean checkDuplicates = false;
 
     }
 

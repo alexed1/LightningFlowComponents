@@ -1,0 +1,131 @@
+<template>
+  <!-- =============== Clipboard Button Banner =============== -->
+  <c-fsc_flow-banner
+    banner-color={defaultBannerColor}
+    banner-label={sectionEntries.clipboardButton.label}
+    banner-info={sectionEntries.clipboardButton.info}
+    modal-header-color={defaultModalHeaderColor}
+  ></c-fsc_flow-banner>
+
+  <!-- Select SObject
+    <div class={inputValues.objectName.class}>
+        <div class="slds-form-element__control">
+            <c-fsc_pick-object-and-field 
+                if:true={isSObjectInput}
+                field-label={inputValues.fieldName.label}
+                object-label={inputValues.objectName.label} 
+                object-type={selectedSObject}
+                is-allow-all={isDisplayAll}
+                available-object-types={availableObjectTypes}
+                field={inputValues.fieldName.value} 
+                onfieldselected={handleDynamicTypeMapping}
+                hide-field-picklist=true>
+            </c-fsc_pick-object-and-field>
+        </div>
+        <c-display-error 
+            is-error={inputValues.objectName.isError}
+            error-message={inputValues.objectName.errorMessage}
+        ></c-display-error>
+    </div> -->
+
+  <div class="slds-box slds-box_x-small slds-m-top_small">
+    <!-- Clipboard Label -->
+    <c-fsc_flow-combobox
+      name="select_clipboardLabel"
+      label={inputValues.clipboardLabel.label}
+      value={inputValues.clipboardLabel.value}
+      value-type={inputValues.clipboardLabel.valueDataType}
+      field-level-help={inputValues.clipboardLabel.helpText}
+      builder-context-filter-collection-boolean={inputValues.clipboardLabel.isCollection}
+      builder-context={_builderContext}
+      onvaluechanged={handleFlowComboboxValueChange}
+    >
+    </c-fsc_flow-combobox>
+
+    <!-- Button Label -->
+    <div class={attributeSpacing}>
+      <c-fsc_flow-combobox
+        name="select_buttonLabel"
+        label={inputValues.buttonLabel.label}
+        value={inputValues.buttonLabel.value}
+        value-type={inputValues.buttonLabel.valueDataType}
+        field-level-help={inputValues.buttonLabel.helpText}
+        builder-context-filter-collection-boolean={inputValues.buttonLabel.isCollection}
+        builder-context={_builderContext}
+        onvaluechanged={handleFlowComboboxValueChange}
+      >
+      </c-fsc_flow-combobox>
+    </div>
+
+    <!-- Clipboard Content -->
+    <div class={attributeSpacing}>
+      <c-fsc_flow-combobox
+        name="select_clipboardContent"
+        label={inputValues.clipboardContent.label}
+        value={inputValues.clipboardContent.value}
+        value-type={inputValues.clipboardContent.valueDataType}
+        field-level-help={inputValues.clipboardContent.helpText}
+        builder-context-filter-collection-boolean={inputValues.clipboardContent.isCollection}
+        builder-context={_builderContext}
+        onvaluechanged={handleFlowComboboxValueChange}
+      >
+      </c-fsc_flow-combobox>
+    </div>
+
+    <!-- Field API Name -->
+    <!-- <c-fsc_flow-combobox 
+            name="select_fieldApiName" 
+            label={inputValues.fieldApiName.label}
+            value={inputValues.fieldApiName.value} 
+            value-type={inputValues.fieldApiName.valueDataType}
+            field-level-help={inputValues.fieldApiName.helpText}
+            builder-context-filter-collection-boolean={inputValues.fieldApiName.isCollection}
+            builder-context={_builderContext} 
+            onvaluechanged={handleFlowComboboxValueChange}>
+        </c-fsc_flow-combobox> -->
+
+    <!-- Content Size -->
+    <div class={inputValues.contentSize.class}>
+      <div class="slds-form-element__control">
+        <c-fsc_flow-combobox
+          name="select_contentSize"
+          label={inputValues.contentSize.label}
+          value={inputValues.contentSize.value}
+          value-type={inputValues.contentSize.valueDataType}
+          field-level-help={inputValues.contentSize.helpText}
+          builder-context-filter-type="Number"
+          builder-context-filter-collection-boolean={inputValues.contentSize.isCollection}
+          builder-context={_builderContext}
+          onvaluechanged={handleFlowComboboxValueChange}
+        >
+        </c-fsc_flow-combobox>
+      </div>
+      <!-- <c-display-error 
+                is-error={inputValues.contentSize.isError}
+                error-message={inputValues.contentSize.errorMessage}
+            ></c-display-error>  -->
+      <template if:true={inputValues.contentSize.isError}>
+        <div class="slds-form-element__help">
+          {inputValues.contentSize.errorMessage}
+        </div>
+      </template>
+    </div>
+
+    <!-- Remove Clipboard Content Option -->
+    <div class={attributeSpacing}>
+      <c-fsc_flow-checkbox
+        name="select_removeClipboard"
+        label={inputValues.removeClipboard.label}
+        field-level-help={inputValues.removeClipboard.helpText}
+        checked={inputValues.cb_removeClipboard.value}
+        oncheckboxchanged={handleCheckboxChange}
+      ></c-fsc_flow-checkbox>
+    </div>
+  </div>
+
+  <div
+    class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success"
+  >
+    Clipboard Button Version #: {versionNumber}
+  </div>
+</template>

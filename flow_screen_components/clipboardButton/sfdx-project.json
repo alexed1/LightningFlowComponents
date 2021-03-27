@@ -1,0 +1,29 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "dependencies": [
+        {
+          "package": "FlowActionsBasePack@2.12.0-0"
+        },
+        {
+          "package": "FlowScreenComponentsBasePack@2.1.6-0"
+        }
+      ],
+      "package": "clipboardButton",
+      "versionName": "Version 1.0",
+      "versionDescription": "Copy to Clipboard Button Flow Screen Component by Eric Smith",
+      "versionNumber": "0.1.0.NEXT"
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "51.0",
+  "packageAliases": {
+    "clipboardButton": "0Ho5G000000CahKSAS",
+    "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
+    "FlowScreenComponentsBasePack@2.1.6-0": "04t5G000004PucZQAS",
+    "clipboardButton@1.0.0-0": "04t5G0000047xEYQAY"
+  }
+}

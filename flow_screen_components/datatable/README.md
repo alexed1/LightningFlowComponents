@@ -13,7 +13,6 @@ Additional components packaged with this LWC:
 
                     LWCs:           datatableUtils
                                     datatableCPE
-                                    displayError
                                     richDatatable
 
                     Flows:          Datatable_Configuration_Wizard
@@ -32,16 +31,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.7 or later  
+FlowActionsBasePack Version 2.14 or later  
+FlowScreenComponentsBasePack Version 2.2.0 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.10 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)   
-[Version 3.0.10 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)
+[Version 3.1.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004Pxxxxxx)   
+[Version 3.1.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004Pxxxxxx)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  

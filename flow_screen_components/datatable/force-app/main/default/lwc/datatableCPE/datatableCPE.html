@@ -23,10 +23,10 @@
                 hide-field-picklist=true>
             </c-fsc_pick-object-and-field>
         </div>
-        <c-display-error 
+        <c-fsc_display-error 
             is-error={inputValues.objectName.isError}
             error-message={inputValues.objectName.errorMessage}
-        ></c-display-error>
+        ></c-fsc_display-error>
     </div>
 
     <!-- Data Source -->
@@ -45,10 +45,10 @@
                 onvaluechanged={handleFlowComboboxValueChange}>
             </c-fsc_flow-combobox>
         </div>
-        <c-display-error 
+        <c-fsc_display-error 
             is-error={inputValues.tableData.isError}
             error-message={inputValues.tableData.errorMessage}
-        ></c-display-error> 
+        ></c-fsc_display-error> 
     </div>
 
     <c-fsc_flow-combobox 
@@ -156,10 +156,10 @@
 
             </div>
         </div>
-        <c-display-error 
+        <c-fsc_display-error 
             is-error={inputValues.columnFields.isError}
             error-message={inputValues.columnFields.errorMessage}
-        ></c-display-error>
+        ></c-fsc_display-error>
     </div>
 
     <!-- Table Header -->

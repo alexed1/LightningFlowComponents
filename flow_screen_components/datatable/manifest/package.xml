@@ -14,7 +14,6 @@
     <types>
         <members>datatable</members>
         <members>richDatatable</members>
-        <members>displayError</members>
         <members>datatableCPE</members>
         <name>LightningComponentBundle</name>
     </types>

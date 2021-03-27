@@ -1737,8 +1737,8 @@ global class MetadataService {
 		private String[] field_order_type_info=new String[]{'field'};
 	}
 	global virtual class CustomValue extends Metadata {
-		public String type = 'CustomValue';
-        public String fullName;
+		global String type = 'CustomValue';
+        global String fullName;
         private String[] fullName_type_info = new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
 		global String color;
 		global Boolean default_x;

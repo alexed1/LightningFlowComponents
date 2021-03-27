@@ -57,7 +57,7 @@ global with sharing class FieldPickerController {
         return options;
     }
 
-
+    @JsonAccess(serializable='always' deserializable='always')
     global class Member implements Comparable {
 
         @AuraEnabled

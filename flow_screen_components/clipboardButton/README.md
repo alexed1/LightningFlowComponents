@@ -23,7 +23,7 @@ Twitter: https://twitter.com/esmith35
 
 ---
 
-**You must install these components FIRST in order to install and use the Datatable component**  
+**You must install these components FIRST in order to install and use this component**  
 FlowActionsBasePack Version 2.12 or later  
 FlowScreenComponentsBasePack Version 2.1.6 or later
 

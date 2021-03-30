@@ -10,7 +10,7 @@
             <property description="Label for the file upload button" type="String" name="label"/>
             <property description="Id of the record to associate the file/s" type="String" name="recordId"/>
             <property description="Lightning Icon" type="String" name="icon"/>
-            <property description="String Collection of ContentDocumentIds" type="String[]" name="contentDocumentIds"/>
+            <property description="String Collection of ContentDocumentIds" type="String[]" role="outputOnly" name="contentDocumentIds"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

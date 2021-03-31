@@ -17,8 +17,6 @@ global with sharing class PostToMSTeams {
 
             Http http = new Http();
             HttpResponse res = http.send(req);
-            System.debug('request ' + req.getBody());
-            System.debug('response ' + res.getBody());
             if(res.getStatusCode() == 201) {
                 Map<String, Object> response = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
 

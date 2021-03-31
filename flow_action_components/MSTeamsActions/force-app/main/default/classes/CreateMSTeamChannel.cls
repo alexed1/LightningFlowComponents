@@ -17,7 +17,6 @@ global with sharing class CreateMSTeamChannel {
 
             Http http = new Http();
             HttpResponse res = http.send(req);
-            System.debug('response ' + res.getBody());
             Response newRes = new Response();
             if(res.getStatusCode() == 201) {
                 Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
@@ -30,16 +29,12 @@ global with sharing class CreateMSTeamChannel {
             }
             responseList.add(newRes);
            
-            
         }
         return responseList;
 
     }
 
           
-  
-    
-
     global class InvocableActionException extends Exception{}
 
     global class Request {

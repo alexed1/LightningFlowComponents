@@ -1,6 +1,7 @@
 public with sharing class MSTeamsUtils {
     public final static STRING GET_METHOD = 'GET';
     public final static STRING POST_METHOD = 'POST';
+    public final static STRING DELETE_METHOD = 'DELETE';
     public static HTTPRequest prepareHTTPRequest(String endpoint, String method, String body, String token) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(endpoint);

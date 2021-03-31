@@ -17,7 +17,6 @@ global with sharing class GetMSTeams {
 
             Http http = new http();
             HttpResponse res = http.send(req);
-            System.debug('response ' + res.getBody());
             Response newRes = new Response();
             Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
             if(res.getStatusCode() == 200) {
@@ -41,7 +40,6 @@ global with sharing class GetMSTeams {
 
     }
     
-
     global class InvocableActionException extends Exception{}
 
     global class Request {

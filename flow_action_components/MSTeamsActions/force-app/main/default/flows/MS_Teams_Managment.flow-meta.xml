@@ -47,6 +47,40 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <actionCalls>
+        <name>Delete_MS_Team_Channe</name>
+        <label>Delete MS Team Channe;</label>
+        <locationX>250</locationX>
+        <locationY>1190</locationY>
+        <actionName>DeleteMSTeamChannel</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Delete_Success_Screen</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>channelId</name>
+            <value>
+                <elementReference>DeleteChannelList.value</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>teamId</name>
+            <value>
+                <elementReference>MSTeamsList.value</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>token</name>
+            <value>
+                <elementReference>Access_Token</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Get_Channel_List</name>
         <label>Get Channel List</label>
         <locationX>576</locationX>
@@ -54,7 +88,7 @@
         <actionName>GetMSTeams</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Message_To_Channel_Screen</targetReference>
+            <targetReference>Delete_Channel_Or_Post_Message</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Error_Screen</targetReference>
@@ -125,8 +159,8 @@
     <actionCalls>
         <name>Post_Message_To_channel</name>
         <label>Post Message To channel</label>
-        <locationX>563</locationX>
-        <locationY>1206</locationY>
+        <locationX>510</locationX>
+        <locationY>1216</locationY>
         <actionName>PostToMSTeams</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -175,6 +209,14 @@
         <dataType>String</dataType>
         <value>
             <stringValue>CreateChannel</stringValue>
+        </value>
+    </choices>
+    <choices>
+        <name>DeleteChannel</name>
+        <choiceText>Delete Channel</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>DeleteChannel</stringValue>
         </value>
     </choices>
     <choices>
@@ -244,6 +286,46 @@
                 <targetReference>Create_Channel_Screen</targetReference>
             </connector>
             <label>Create Channel</label>
+        </rules>
+        <rules>
+            <name>Delete_Channel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MS_Team_Actions</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>DeleteChannel</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Channel_List</targetReference>
+            </connector>
+            <label>Delete Channel</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Delete_Channel_Or_Post_Message</name>
+        <label>Delete Channel Or Post Message</label>
+        <locationX>559</locationX>
+        <locationY>850</locationY>
+        <defaultConnector>
+            <targetReference>Message_To_Channel_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Delete_Channel</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MS_Team_Actions</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>DeleteChannel</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Delete_Channel_Screen</targetReference>
+            </connector>
+            <label>Is Delete Channel</label>
         </rules>
     </decisions>
     <interviewLabel>MS Teams Managment {!$Flow.CurrentDateTime}</interviewLabel>
@@ -344,6 +426,77 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Delete_Channel_Screen</name>
+        <label>Delete Channel Screen</label>
+        <locationX>303</locationX>
+        <locationY>1070</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Delete_MS_Team_Channe</targetReference>
+        </connector>
+        <fields>
+            <name>DeleteChannelList</name>
+            <extensionName>c:fsc_quickChoiceFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>displayMode</name>
+                <value>
+                    <stringValue>Picklist</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>inputMode</name>
+                <value>
+                    <stringValue>Dual String Collections</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceLabels</name>
+                <value>
+                    <elementReference>ChannelNameList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>choiceValues</name>
+                <value>
+                    <elementReference>ChannelIdList</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>masterLabel</name>
+                <value>
+                    <stringValue>Choose Channel to Delete</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Delete_Success_Screen</name>
+        <label>Delete Success Screen</label>
+        <locationX>69</locationX>
+        <locationY>1283</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>MS_Team_Actions_Screen</targetReference>
+        </connector>
+        <fields>
+            <name>ChannelDeletedMessage</name>
+            <fieldText>&lt;p&gt;Channel Deleted successfuly&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Error_Screen</name>
         <label>Error Screen</label>
         <locationX>50</locationX>
@@ -362,8 +515,8 @@
     <screens>
         <name>Message_To_Channel_Screen</name>
         <label>Message To Channel Screen</label>
-        <locationX>572</locationX>
-        <locationY>974</locationY>
+        <locationX>524</locationX>
+        <locationY>1035</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -440,6 +593,7 @@
             <choiceReferences>KickUser</choiceReferences>
             <choiceReferences>PostToChannel</choiceReferences>
             <choiceReferences>CreateChannel</choiceReferences>
+            <choiceReferences>DeleteChannel</choiceReferences>
             <dataType>String</dataType>
             <fieldText>MS Team Actions</fieldText>
             <fieldType>RadioButtons</fieldType>

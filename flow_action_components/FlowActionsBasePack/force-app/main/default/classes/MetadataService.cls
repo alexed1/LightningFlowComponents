@@ -1737,11 +1737,21 @@ global class MetadataService {
 		private String[] field_order_type_info=new String[]{'field'};
 	}
 	global virtual class CustomValue extends Metadata {
+		global String type = 'CustomValue';
+        global String fullName;
+        private String[] fullName_type_info = new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
 		global String color;
 		global Boolean default_x;
 		global String description;
 		global Boolean isActive;
 		global String label;
+		private String[] color_type_info = new String[]{'color',SOAP_M_URI,null,'0','1','false'};
+        private String[] default_x_type_info = new String[]{'default',SOAP_M_URI,null,'1','1','false'};
+        private String[] description_type_info = new String[]{'description',SOAP_M_URI,null,'0','1','false'};
+        private String[] isActive_type_info = new String[]{'isActive',SOAP_M_URI,null,'0','1','false'};
+        private String[] label_type_info = new String[]{'label',SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'fullName','color','default_x','description','isActive','label'};
 	}
 	global class ListView extends Metadata {
 		global String type='ListView';

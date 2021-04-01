@@ -1,5 +1,4 @@
-global with sharing class FieldPickerController {
-
+global with sharing class FieldPickerController { 
     @AuraEnabled(cacheable=true)
     global static List<Member> getObjects(List<String> availableObjectTypes) {
         List<Member> result = new List<Member>();
@@ -45,31 +44,42 @@ global with sharing class FieldPickerController {
     global static List<Member> getPicklistValues(String objectApiName, String fieldName) {
 
         List<Member> options = new List<Member>();
-
         Schema.DescribeSObjectResult describeObject = Schema.getGlobalDescribe().get(objectApiName).getDescribe();
         Map<String, Schema.SObjectField> fieldMap = describeObject.fields.getMap();
         List<Schema.PicklistEntry> values = fieldMap.get(fieldName).getDescribe().getPickListValues();
 
         for (Schema.PicklistEntry a : values) {
-            options.add(new Member(a.getValue(), a.getLabel()));
+            options.add(new Member(a.getValue(), a.getLabel(), a.isActive(), a.isDefaultValue()));
         }
-
+        
         options.sort();
 
         return options;
     }
 
-
+    @JsonAccess(serializable='always' deserializable='always')
     global class Member implements Comparable {
 
         @AuraEnabled
         global String label;
         @AuraEnabled
         global String value;
+        @AuraEnabled
+        global Boolean isActive;
+        @AuraEnabled
+        global Boolean isDefaultValue;
 
+    
         global Member(String value, String label) {
             this.label = label;
             this.value = value;
+        }
+
+        global Member(String value, String label, Boolean isActive, Boolean isDefaultValue) {
+            this.value = value;
+            this.label = label;         
+            this.isActive = isActive;
+            this.isDefaultValue = isDefaultValue;
         }
 
         global Integer compareTo(Object compareTo) {

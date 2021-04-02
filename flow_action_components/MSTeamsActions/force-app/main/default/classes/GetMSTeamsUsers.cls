@@ -1,7 +1,10 @@
-global with sharing class GetMSTeams {
-    final static String GET_MSTEAMS_LIST_ENDPOINT = '/groups';
-    final static String GET_CHANNEL_LIST_ENDPOINT = '/teams/{0}/channels'; // 0 - team id
-    @InvocableMethod(label='Get MS Teams or Channels' callout=true)
+global with sharing class GetMSTeamsUsers {
+    final static Map<String, String> GET_USER_LIST_ENDPOINT_MAP = new Map<String, String> {
+        'all' => '/users',
+        'team' => '/teams/{0}/members',
+        'channel' => '/teams/{0}/channels/{1}/members'
+    };
+    @InvocableMethod(label='Get MS Teams Users' callout=true)
     global static List<Response> execute(List<Request> requestList) {
 
         List<Response> responseList = new List<Response>();
@@ -9,7 +12,7 @@ global with sharing class GetMSTeams {
         for (Request item : requestList ){
             HttpRequest req = new HttpRequest();
             req = MSTeamsUtils.prepareHTTPRequest(
-                Label.MSTEAM_API_ENDPOINT + ((item.entityType == 'channels') ? String.format(GET_CHANNEL_LIST_ENDPOINT, new List<String> {item.teamId}): GET_MSTEAMS_LIST_ENDPOINT),
+                Label.MSTEAM_API_ENDPOINT + String.format(GET_USER_LIST_ENDPOINT_MAP.get(item.userScope), new List<String> {item.teamId, item.channelId}),
                 MSTeamsUtils.GET_METHOD,
                 null, 
                 item.token
@@ -17,20 +20,21 @@ global with sharing class GetMSTeams {
 
             Http http = new http();
             HttpResponse res = http.send(req);
+            System.debug(item);
+            System.debug(req.getEndpoint());
+            System.debug(res.getBody());
             Response newRes = new Response();
             Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
             if(res.getStatusCode() == 200) {
                 newRes.isSuccess = true;
                 if(responseMap.get('value') != null) {
                     List<MSTeamsUtils.MSTeamsEntity> teamList = (List<MSTeamsUtils.MSTeamsEntity>)JSON.deserialize(JSON.serialize(responseMap.get('value')), List<MSTeamsUtils.MSTeamsEntity>.Class);
-
+                    newRes.labelList = new List<String>();
+                    newRes.valueList = new List<String>();
                     for(MSTeamsUtils.MSTeamsEntity team : teamList) {
+                        System.debug('user ' + team);
                         newRes.labelList.add(team.displayName);
                         newRes.valueList.add(team.id);
-                        if(team.membershipType == MSTeamsUtils.PRIVATE_MEMBERSHIP) {
-                            newRes.privateChannelLabelList.add(team.displayName);
-                            newRes.privateChannelValueList.add(team.id);
-                        }
                     }
                 }
             } else {
@@ -47,10 +51,13 @@ global with sharing class GetMSTeams {
 
     global class Request {
         @InvocableVariable
-        global String entityType;// 'channels or teams' values
+        global String userScope = 'all';// 'channel or team all' values. all is default
 
         @InvocableVariable
-        global String teamId;// if entityType == 'channels'
+        global String teamId;
+
+        @InvocableVariable
+        global String channelId;
 
         @InvocableVariable
         global String token;
@@ -64,16 +71,10 @@ global with sharing class GetMSTeams {
         }
 
         @invocableVariable
-        global List<String> valueList = new List<String>();
+        global List<String> valueList;
 
         @invocableVariable
-        global List<String> labelList = new List<String>();
-
-        @invocableVariable
-        global List<String> privateChannelValueList = new List<String>();
-
-        @invocableVariable
-        global List<String> privateChannelLabelList = new List<String>();
+        global List<String> labelList;
 
         @invocableVariable
         global Boolean isSuccess;
@@ -81,5 +82,4 @@ global with sharing class GetMSTeams {
         @invocableVariable
         global String error;
     }
-
 }

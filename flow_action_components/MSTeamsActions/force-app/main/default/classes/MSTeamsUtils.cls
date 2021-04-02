@@ -1,7 +1,8 @@
 public with sharing class MSTeamsUtils {
-    public final static STRING GET_METHOD = 'GET';
-    public final static STRING POST_METHOD = 'POST';
-    public final static STRING DELETE_METHOD = 'DELETE';
+    public final static String GET_METHOD = 'GET';
+    public final static String POST_METHOD = 'POST';
+    public final static String DELETE_METHOD = 'DELETE';
+    public final static String PRIVATE_MEMBERSHIP = 'private';
     public static HTTPRequest prepareHTTPRequest(String endpoint, String method, String body, String token) {
         HttpRequest req = new HttpRequest();
         req.setEndpoint(endpoint);
@@ -27,6 +28,7 @@ public with sharing class MSTeamsUtils {
         public String id;
         public String displayName;
         public MSteamsError error;
+        public String membershipType;
 
         public MSTeamsEntity() {
 

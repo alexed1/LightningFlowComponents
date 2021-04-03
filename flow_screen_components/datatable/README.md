@@ -60,6 +60,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 # Release Notes 
 ## 0x/xx/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
+-   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
   
 **Bug Fixes:**
 -   Text formula fields will now wrap correctly

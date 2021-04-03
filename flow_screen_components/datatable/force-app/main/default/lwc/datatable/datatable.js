@@ -812,7 +812,10 @@ export default class Datatable extends LightningElement {
 
             // The Key Field is not editable
             if (fieldName == this.keyField) {
-                editAttrib.edit = false;
+                this.isAllEdit = false;
+                if (editAttrib) {
+                    editAttrib.edit = false;
+                }
             }
             
             // Some data types are not editable
@@ -972,8 +975,8 @@ export default class Datatable extends LightningElement {
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: this.linkTarget };
                 if (editAttrib) {
                     editAttrib.edit = false;       // Do not allow a lookup to be editable
-                    this.isAllEdit = false;
                 }
+                this.isAllEdit = false;
                 this.cellAttributes.wrapText = true;
                 if(!!wrapAttrib) {
                     wrapAttrib.wrap = true;

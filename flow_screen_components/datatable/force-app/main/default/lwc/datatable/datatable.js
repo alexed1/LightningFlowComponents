@@ -1540,9 +1540,9 @@ export default class Datatable extends LightningElement {
                             let fieldName = this.filterColumns[col].fieldName;
                             if (fieldName.endsWith('_lookup')) {
                                 fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
-                            }                
+                            }
                             if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
-                                if (!row[fieldName] || row[fieldName] == null) {    // No match because the field is empty
+                                if (this.filterColumns[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
                                     match = false;
                                     break; 
                                 }                   

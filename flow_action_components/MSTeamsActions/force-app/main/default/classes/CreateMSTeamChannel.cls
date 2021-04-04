@@ -28,13 +28,16 @@ global with sharing class CreateMSTeamChannel {
                 throw new InvocableActionException(MSTeamsUtils.getErrorMessageFromResponse(res.getBody()));
             }
             responseList.add(newRes);
-           
+              
         }
         return responseList;
 
     }
 
           
+  
+    
+
     global class InvocableActionException extends Exception{}
 
     global class Request {
@@ -77,10 +80,6 @@ global with sharing class CreateMSTeamChannel {
         public String description;
         public String displayName;
         public String membershipType;
-
-        public Channel() {
-
-        }
 
         public Channel(String displayName, String description, String membershipType) {
             this.description = description;

@@ -20,9 +20,6 @@ global with sharing class GetMSTeamsUsers {
 
             Http http = new http();
             HttpResponse res = http.send(req);
-            System.debug(item);
-            System.debug(req.getEndpoint());
-            System.debug(res.getBody());
             Response newRes = new Response();
             Map<String, Object> responseMap = (Map<String, Object>)JSON.deserializeUntyped(res.getBody());
             if(res.getStatusCode() == 200) {
@@ -32,7 +29,6 @@ global with sharing class GetMSTeamsUsers {
                     newRes.labelList = new List<String>();
                     newRes.valueList = new List<String>();
                     for(MSTeamsUtils.MSTeamsEntity team : teamList) {
-                        System.debug('user ' + team);
                         newRes.labelList.add(team.displayName);
                         newRes.valueList.add(team.id);
                     }

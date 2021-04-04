@@ -18,11 +18,12 @@ public with sharing class MSTeamsUtils {
     }
 
     public static String getErrorMessageFromResponse(String responseBody) {
+        String result;
         MSTeamsEntity errorEntity = (MSTeamsEntity)JSON.deserialize(responseBody, MSTeamsEntity.class);
         if(errorEntity != null && errorEntity.error != null){
-            return errorEntity.error.code + ' : ' + errorEntity.error.message;
+            result = errorEntity.error.code + ' : ' + errorEntity.error.message;
         }
-        return null;
+        return result;
     }
     public class MSTeamsEntity {
         public String id;

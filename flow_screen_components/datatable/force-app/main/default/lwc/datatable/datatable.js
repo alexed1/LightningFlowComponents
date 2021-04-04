@@ -1181,6 +1181,7 @@ export default class Datatable extends LightningElement {
         this.showClearButton = false;
         this.selectedRows = [];
         this.outputSelectedRows = this.selectedRows;
+        this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
     }

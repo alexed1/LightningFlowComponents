@@ -69,6 +69,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   The number of pre-selected rows will now not exceed the maximum number of records to be displayed attribute value
 -   Don't require the key field to be explicitly listed in the Column Edits attribute for Apex Defined Objects
 -   Clear Selection button will no longer appear on single row tables when Disallow row selection is checked
+-   Clear Selection button will clear the Output Selected Record String for Apex Defined Objects
   
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 

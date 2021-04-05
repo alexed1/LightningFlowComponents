@@ -5,6 +5,8 @@ export default class FileUpload extends LightningElement {
     @api label;
     @api icon;
     @api contentDocumentIds;
+    @api allowMultiple;
+    @api acceptedFormats;
     @track lstAllFiles = [];
     @track docIds =[];
    

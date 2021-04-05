@@ -72,6 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Clear Selection button will no longer appear on single row tables when Disallow row selection is checked
 -   Clear Selection button will clear the Output Selected Record String for Apex Defined Objects
 -   Fixed Column Filter on Checkbox Fields when the filter value is 'false' 
+-   Fixed vertical alignment of table header text
   
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 

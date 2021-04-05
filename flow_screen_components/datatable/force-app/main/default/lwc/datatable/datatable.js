@@ -258,7 +258,8 @@ export default class Datatable extends LightningElement {
     }
 
     get formattedTableLabel() {
-        return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
+        // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
+        return this.tableLabel;
     }
 
     get linkTarget() {

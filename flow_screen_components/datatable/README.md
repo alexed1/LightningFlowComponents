@@ -61,6 +61,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ## 0x/xx/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
 -   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
+-   Added an attribute to hide all column header actions such as Sort, Clip/Wrap Text and Filters
 
 **Bug Fixes:**
 -   Text formula fields will now wrap correctly

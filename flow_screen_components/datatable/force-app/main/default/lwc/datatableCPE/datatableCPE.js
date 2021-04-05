@@ -351,6 +351,9 @@ export default class DatatableCPE extends LightningElement {
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
         cb_hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: ''}, 
+        hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
+            helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
+        cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
             helpText: 'Display a row number column as the first column in the table.'}, 
         cb_showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: ''},            
@@ -399,6 +402,7 @@ export default class DatatableCPE extends LightningElement {
         {name: 'dataSource', 
             attributes: [
                 {name: 'objectName'},
+                {name: 'displayAll'},
                 {name: 'tableData'},
                 {name: 'preSelectedRows'},
                 {name: defaults.customHelpDefinition, 
@@ -439,13 +443,13 @@ export default class DatatableCPE extends LightningElement {
                 {name: 'singleRowSelection'},
                 {name: 'matchCaseOnFilters'},
                 {name: 'suppressBottomBar'},
+                {name: 'hideHeaderActions'},
                 {name: 'not_suppressNameFieldLink'},
                 {name: 'openLinkinSameTab'},
             ]
         },
         {name: 'advancedAttributes',
             attributes: [
-                {name: 'displayAll'},
                 {name: 'isUserDefinedObject'},
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 

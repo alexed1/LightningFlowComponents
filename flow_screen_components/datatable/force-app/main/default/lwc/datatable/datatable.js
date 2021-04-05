@@ -59,6 +59,12 @@ export default class Datatable extends LightningElement {
     @api cb_hideCheckboxColumn;
     
     @api 
+    get hideHeaderActions() {
+        return (this.cb_hideHeaderActions == CB_TRUE) ? true : false;
+    }
+    @api cb_hideHeaderActions;
+
+    @api 
     get showRowNumbers() {
         return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
     }
@@ -1000,10 +1006,11 @@ export default class Datatable extends LightningElement {
                 fieldName: fieldName,
                 type: this.typeAttrib.type,
                 cellAttributes: this.cellAttributes,
-                typeAttributes: this.typeAttributes,
+                typeAttributes: this.typeAttributes,            
                 editable: (editAttrib) ? editAttrib.edit : false,
-                actions: (filterAttrib.filter) ? filterAttrib.actions : null,
-                sortable: (this.isConfigMode) ? false : true,
+                actions: (filterAttrib.filter && !this.hideHeaderActions) ? filterAttrib.actions : null,
+                sortable: (this.isConfigMode || this.hideHeaderActions) ? false : true,
+                hideDefaultActions: this.hideHeaderActions,  
                 initialWidth: (widthAttrib) ? widthAttrib.width : null,
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false
             });

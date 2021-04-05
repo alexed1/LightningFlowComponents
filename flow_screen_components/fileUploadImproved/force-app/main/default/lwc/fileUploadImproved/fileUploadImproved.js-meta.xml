@@ -11,10 +11,8 @@
             <property description="Id of the record to associate the file/s" type="String" name="recordId"/>
             <property description="Lightning Icon" type="String" name="icon"/>
             <property description="String Collection of ContentDocumentIds" type="String[]" role="outputOnly" name="contentDocumentIds"/>
-             <property description="	Specifies whether a user can upload more than one file simultaneously.
-            The default is false." type="Boolean" name="allowMultiple" label="Allow Multiple Files"/>
-            <property description="Comma-separated list of file extensions that can be uploaded
-            in the format [.ext], such as [.pdf, .jpg, .png]. Can be a string text variable" type="String" name="acceptedFormats" label="Accepted Formats"/>
+            <property description="	Specifies whether a user can upload more than one file simultaneously The default is false." type="Boolean" name="allowMultiple" label="Allow Multiple Files"/>
+            <property description="Comma-separated list of file extensions that can be uploaded in the format [.ext], such as [.pdf, .jpg, .png]. Can be a string text variable" type="String" name="acceptedFormats" label="Accepted Formats"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

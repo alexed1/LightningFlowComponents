@@ -31,14 +31,6 @@ public with sharing class MSTeamsUtils {
         public MSteamsError error;
         public String membershipType;
 
-        public MSTeamsEntity() {
-
-        }
-
-        public MSTeamsEntity(String id, String displayName) {
-            this.id = id;
-            this.displayName = displayName;
-        }
     }
 
     public class MSTeamsError {

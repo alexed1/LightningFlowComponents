@@ -17,9 +17,7 @@ global with sharing class KickUserFromMSTeamChannel {
             Http http = new http();
             HttpResponse res = http.send(req);
             Response newRes = new Response();
-            System.debug(item.userId);
-            System.debug(req.getBody());
-            System.debug(res.getBody());
+
             if(res.getStatusCode() == 204) {
                 newRes.isSuccess = true;
             } else {

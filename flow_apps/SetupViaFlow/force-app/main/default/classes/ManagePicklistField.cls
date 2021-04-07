@@ -20,7 +20,7 @@ public with sharing class ManagePicklistField {
 
     public static void deployPickListValues(String apiName, Map<String, String> selectedPicklistValueMap, String picklistAction) {
         usf.MetadataService.MetadataPort service = usf.MetadataService.createService();   
-        usf.MetadataService.CustomField customField = (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        usf.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
         
         Integer activeValuesSize = 0;
 
@@ -42,7 +42,7 @@ public with sharing class ManagePicklistField {
         }
 
         // Update picklist values
-        List<usf.MetadataService.SaveResult> lstResults = service.updateMetadata( new usf.MetadataService.Metadata[] { customField });
+        List<usf.MetadataService.SaveResult> lstResults = Test.isRunningTest() ? ManagePicklistFieldTest.getSaveResult() : service.updateMetadata( new usf.MetadataService.Metadata[] { customField });
 
         for (usf.MetadataService.SaveResult objResult : lstResults) {
             if (!objResult.success) {

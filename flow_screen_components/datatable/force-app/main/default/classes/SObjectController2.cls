@@ -354,6 +354,9 @@ public with sharing class SObjectController2 {
             when 'PHONE' {
                 return 'phone';
             }
+            when 'PICKLIST' {       // Custom type for combobox
+                return 'combobox';
+            }
             when 'REFERENCE' {
                 return 'lookup';    // Custom type for this component
             }

@@ -22,7 +22,7 @@ public with sharing class RetrievePicklistValues {
     public static List<usf.FieldPickerController.Member> getPickListValuesForCustomField(String apiName) {
         usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
         List<usf.FieldPickerController.Member> picklistValueList = new List<usf.FieldPickerController.Member>();
-        usf.MetadataService.CustomField customField = (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        usf.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
         for(usf.MetadataService.CustomValue item : customField.valueSet.valueSetDefinition.value) {
             picklistValueList.add(new usf.FieldPickerController.Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
         }

@@ -1,8 +1,8 @@
 {
   "orgName": "aedelstein company",
   "edition": "Developer",
-  "features": [],
+  "features": ["EnableSetPasswordInApi"],
   "settings": {
-    
+
   }
 }

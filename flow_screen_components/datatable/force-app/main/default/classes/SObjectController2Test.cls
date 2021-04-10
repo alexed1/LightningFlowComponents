@@ -20,6 +20,8 @@ public with sharing class SObjectController2Test {
         String testResponse = SObjectController2.getReturnResults(accts, fieldnames);
         System.assert(testResponse.contains('"noEditFieldList":['));
         System.assert(testResponse.contains('"lookupFieldList":["OwnerId"]'));
+
+        String testCPEResponse = SObjectController2.getCPEReturnResults('Account');
         
         Account[] empty = [Select Id, Name, OwnerId from Account Where Name='NotInAccounts'];
         String testEmpty = SObjectController2.getReturnResults(empty, fieldnames);

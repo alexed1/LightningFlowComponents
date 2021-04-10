@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>50.0</apiVersion>
+    <apiVersion>51.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Pick an Icon</masterLabel>
     <description>Icon Picker</description>
@@ -9,6 +9,8 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
+            <property name="accordionMode" type="Boolean" default="false" role="inputOnly"/>
+            <property name="hideActionIcons" type="Boolean" default="false" role="inputOnly"/>
             <property name="iconName" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>MSTEAM_API_ENDPOINT</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>MSTEAM_API_ENDPOINT</shortDescription>
+        <value>https://graph.microsoft.com/v1.0</value>
+    </labels>
+</CustomLabels>

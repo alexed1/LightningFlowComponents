@@ -17,6 +17,7 @@
  *              records that now include both the Id and Name for each lookup.
  * 
  * 04/10/21 -   Eric Smith -    Version 3.1.1   Convert currency field values to the User's currency (Provided by Novarg1)
+ *                                              Added support for picklist field type (Provided by Guillaume Davies & Jerry Poon)
  * 
  * 02/25/21 -   Eric Smith -    Version 3.0.10  Handle regular Textarea (255 or fewer Characters) as Text
  * 
@@ -378,6 +379,9 @@ public with sharing class SObjectController2 {
             }
             when 'PHONE' {
                 return 'phone';
+            }
+            when 'PICKLIST' {       // Custom type for combobox
+                return 'combobox';
             }
             when 'REFERENCE' {
                 return 'lookup';    // Custom type for this component

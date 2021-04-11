@@ -490,6 +490,9 @@ export default class Datatable extends LightningElement {
         // Set table border display
         this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
 
+        // Add overflow if max height is not set so combobox spill outside the table
+        this.borderClass += (this.tableHeight == null) ? ' overflowEnabled' : '';
+
         // Generate datatable
         if (this.tableData) {
 
@@ -955,6 +958,18 @@ export default class Datatable extends LightningElement {
                 case 'richtext':
                     this.typeAttrib.type = 'richtext';
                     break;
+                case 'combobox':
+                    // To use custom types, information will need to be passed using typeAttributes
+                    this.typeAttributes = {
+                        editable: (editAttrib ? editAttrib.edit : false),
+                        fieldName: fieldName,
+                        keyField: this.keyField,
+                        keyFieldValue: {fieldName: this.keyField},
+                        picklistValues: this.picklistFieldMap[fieldName]
+                    };
+                    wrapAttrib = {};    //For combobox, we need to force wrap = true or the dropdown will be truncated
+                    wrapAttrib.wrap = true; 
+                    break;                   
                 default:
                     
             }
@@ -1531,6 +1546,13 @@ export default class Datatable extends LightningElement {
         this.columnFilterValue = this.saveOriginalValue;
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         this.isOpenFilterInput = false;
+    }
+
+    handleComboValueChange(event) {
+        // Handle change on combobox
+        // Handle combobox value change separately if required
+        event.stopPropagation();
+        this.handleCellChange(event);
     }
 
     filterColumnData() {

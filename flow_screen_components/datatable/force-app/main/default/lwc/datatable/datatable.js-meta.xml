@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <masterLabel>Datatable</masterLabel>
     <description>This component allows the user to configure and display a datatable in a Flow screen.</description>
-    <apiVersion>50.0</apiVersion>
+    <apiVersion>51.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>

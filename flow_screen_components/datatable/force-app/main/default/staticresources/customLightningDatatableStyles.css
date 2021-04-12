@@ -24,7 +24,13 @@ c-combobox-column-type .slds-dropdown {
     max-height: 180px;
 }
 /* highlight combobox if value is changed*/
-c-combobox-column-type .isChanged input,
+c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
 c-combobox-column-type .isChanged input:focus{
     background-color: rgb(250, 255, 189);
+}
+/* Remove position:absolute on the dropdown icon so that it doesn't appear on top of column action dropdown*/
+c-combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon {
+    top: 0;
+    position: static;
+    padding-right: 1.3rem;
 }

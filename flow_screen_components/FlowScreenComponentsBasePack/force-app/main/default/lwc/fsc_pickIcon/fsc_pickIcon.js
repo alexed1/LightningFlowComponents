@@ -907,8 +907,17 @@ export default class ObjectIconSelector extends LightningElement {
     @track standardIcons = STANDARD_ICONS;
     @track columns = columns;
 
+    activeSections = [];            // 'S', 'U', 'C', 'A'
+    @api showAccordion = false;
+
+    @api accordionMode = false;
+    @api hideActionIcons = false;
     @api iconName = null;
-    
+
+    @api isAccordionLoading;        // Reserved for future improvements
+    @api iconPickerButtonLabel;     // Reserved for future improvements
+    @api hideAccordion;             // Reserved for future improvements
+
     @api 
     get tabStyle() {
         let style;
@@ -924,6 +933,14 @@ export default class ObjectIconSelector extends LightningElement {
     }
 
     @api firstTabHeight;
+
+    connectedCallback() {
+
+    }
+
+    renderedCallback() {
+
+    }
 
     iconSelected(event){
         const selRow = event.detail.selectedRows[0];

@@ -27,7 +27,7 @@ export default class SearchableDataTable extends LightningElement {
     @api sortedBy;
     @api sortedDirection;
     @api suppressBottomBar;
-    @api wrapTextMaxLines
+    @api wrapTextMaxLines;
 
     @api searchPlaceholder;
     @track searchText;

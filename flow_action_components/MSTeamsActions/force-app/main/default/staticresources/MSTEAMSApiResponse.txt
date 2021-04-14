@@ -1,0 +1,28 @@
+{
+  "value": [
+    {
+      "id": "19:561fbdbbfca848a484f0a6f00ce9dbbd@thread.tacv2",
+      "createdDateTime": "2020-05-27T19:22:25.692Z",
+      "displayName": "General",
+      "description": "AutoTestTeam_20210311_150740.2550_fim3udfdjen9",
+      "membershipType": "standard"
+    },
+    {
+      "id": "19:561fbdbbfca848a484f0a6f00ce9dbbd@thread.tacv2",
+      "createdDateTime": "2020-05-27T19:22:25.692Z",
+      "displayName": "Private Channel",
+      "description": "AutoTestTeam_20210311_150740.2550_fim3udfdjen9",
+      "membershipType": "private"
+    }
+  ],
+
+"error": {
+        "code": "InvalidAuthenticationToken",
+        "message": "Access token has expired or is not yet valid.",
+        "innerError": {
+            "date": "2021-04-04T10:27:47",
+            "request-id": "99c437fb-3aa2-4bb7-8644-f85e8d9f983c",
+            "client-request-id": "99c437fb-3aa2-4bb7-8644-f85e8d9f983c"
+        }
+    }
+}

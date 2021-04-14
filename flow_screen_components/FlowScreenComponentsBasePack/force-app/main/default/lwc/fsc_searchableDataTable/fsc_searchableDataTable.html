@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-p-bottom_small">
+    <div class="slds-m-top_xx-small slds-p-bottom_small">
         <lightning-input type="text" placeholder={searchPlaceholder} onchange={filterRows}></lightning-input>
     </div>
     <div style={tableStyle} class={cssClass}>
@@ -16,7 +16,7 @@
             </lightning-datatable>
         </template>
         <template if:true={isGettingIcons}>
-            <lightning-spinner></lightning-spinner>
+            <lightning-spinner alternative-text="Loading Icons"></lightning-spinner>
         </template>
     </div>
 </template>

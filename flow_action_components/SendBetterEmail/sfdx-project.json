@@ -3,8 +3,8 @@
         {
             "path": "force-app",
             "package": "sendBetterEmail",
-            "versionName": "ver 2.0.5",
-            "versionNumber": "2.0.5.NEXT",
+            "versionName": "ver 2.0.6",
+            "versionNumber": "2.0.6.NEXT",
             "versionDescription": "SendBetterEmail Action Component for Flow",
             "dependencies": [
                 {
@@ -19,7 +19,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "51.0",
     "packageAliases": {
         "FlowActionsBasePack": "0334W000000hBcGQAU",
         "FlowScreenComponentsBasePack": "033f4000000mjNrAAI",

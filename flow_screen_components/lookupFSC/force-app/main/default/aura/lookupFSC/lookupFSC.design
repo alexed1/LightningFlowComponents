@@ -7,6 +7,8 @@
     <design:attribute name="parentChild" label="I5_'Parent', 'Child' or 'Both' Lookup?" />
     <design:attribute name="filterFieldName" label="I6_Filter on which field?" />
     <design:attribute name="filterFieldValue" label="I7_Filter Value" />
+   <!--If searchFieldName is set, it will be used for search instead of displayFieldName-->
+    <design:attribute name="searchFieldName" label="I8_Search this Field instead of Display Field" />
     <design:attribute name="selectedValue" label="O1_Output Value" />
     <design:attribute name="required" label="Required?" />
     <design:attribute name="defaultValue" label="Default Value" />

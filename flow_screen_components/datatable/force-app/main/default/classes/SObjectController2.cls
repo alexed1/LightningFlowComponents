@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 04/10/21 -   Eric Smith -    Version 3.1.1   Convert currency field values to the User's currency (Provided by Novarg1)
+ * 
  * 02/25/21 -   Eric Smith -    Version 3.0.10  Handle regular Textarea (255 or fewer Characters) as Text
  * 
  * 01/06/21 -   Eric Smith -    Version 3.0.6   Handle Textarea as Richtext
@@ -69,6 +71,7 @@ public with sharing class SObjectController2 {
         List<String> noEditFieldList;
         list<String> timeFieldList;
         list<String> picklistFieldList;
+        List<String> currencyFieldList;
         String objectName;
         String objectLinkField;
         String timezoneOffset;
@@ -109,6 +112,7 @@ public with sharing class SObjectController2 {
             curRR.noEditFieldList = emptyList;
             curRR.timeFieldList = emptyList;
             curRR.picklistFieldList = emptyList;
+            curRR.currencyFieldList = emptyList;
             curRR.rowData = records;
             curRR.objectName = 'EmptyCollection';
             curRR.objectLinkField = '';
@@ -116,7 +120,7 @@ public with sharing class SObjectController2 {
             String objName = records[0].getSObjectType().getDescribe().getName();
             curRR = getColumnData(curRR, fieldNames, objName);
             curRR = getLookupData(curRR, records, curRR.lookupFieldList, objName);
-            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList);
+            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList, curRR.currencyFieldList);
             curRR.objectName = objName;
         }
         curRR.timezoneOffset = getTimezoneOffset().format();
@@ -142,6 +146,7 @@ public with sharing class SObjectController2 {
         List<String> noEditFields = new List<String>();
         List<String> timeFields = new List<String>();
         List<String> picklistFields = new List<String>();
+        List<String> currencyFields = new List<String>();
         Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
         String objectLinkField = getNameUniqueField(objName);   // Name (link) Field for the Datatable SObject
         System.debug('*** OBJ/LINK' + objname + '/' + objectLinkField);
@@ -190,7 +195,10 @@ public with sharing class SObjectController2 {
                         noEditFields.add(fieldName);
                     }
                 }
-                when 'CURRENCY', 'DECIMAL', 'DOUBLE', 'INTEGER', 'LONG' {
+                when 'CURRENCY' {
+                    currencyFields.add(fieldName);
+                }
+                when 'DECIMAL', 'DOUBLE', 'INTEGER', 'LONG' {
                     // *** create scale attrib in datatableColumnFieldDescriptor and pass the getScale() values in that way. ***
                 }
                 when 'TIME' {
@@ -222,6 +230,7 @@ public with sharing class SObjectController2 {
         curRR.picklistFieldList = picklistFields;
         curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;
+        curRR.currencyFieldList = currencyFields;
         return curRR;
     }
 
@@ -265,12 +274,28 @@ public with sharing class SObjectController2 {
     }
 
     @AuraEnabled
-    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields) {
+    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields, List<String> currencyFields) {
         // Update object to include values for the "Name" field referenced by Lookup fields
         String lookupFieldData = '';
         Map<String,Boolean> firstRecord = new Map<String,Boolean>();
         for(String lf : lookupFields) {
             firstRecord.put(lf,true);
+        }
+
+        // Convert currency fields to running user's currency
+        if (currencyFields.size() > 0 && UserInfo.isMultiCurrencyOrganization()) {
+            String currencyFieldsQuery = 'SELECT Id';
+            for (String currField : currencyFields) {
+                currencyFieldsQuery += ', convertCurrency(' + currField + ')';
+            }
+            currencyFieldsQuery += ' FROM ' + objName + ' WHERE Id IN :records';
+            Map<Id, SObject> sobjCurrencyFields = new Map<Id, SObject>(Database.query(currencyFieldsQuery));
+            for (SObject so : records) {
+                SObject converted = sobjCurrencyFields.get(so.Id);
+                for (String currField : currencyFields) {
+                    so.put(currField, converted.get(currField));
+                }
+            }
         }
 
         for(SObject so : records) {   

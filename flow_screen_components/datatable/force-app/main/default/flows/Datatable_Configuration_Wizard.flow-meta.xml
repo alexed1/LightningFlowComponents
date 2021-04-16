@@ -10,6 +10,7 @@
         <connector>
             <targetReference>Select_Fields</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectName</name>
             <value>
@@ -31,6 +32,7 @@
         <connector>
             <targetReference>Get_Records_Result</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectApiName</name>
             <value>
@@ -347,7 +349,7 @@
         <name>Get_Records_Result</name>
         <label>Get Records Result</label>
         <locationX>1700</locationX>
-        <locationY>396</locationY>
+        <locationY>395</locationY>
         <defaultConnector>
             <targetReference>Wizard_Screen</targetReference>
         </defaultConnector>
@@ -502,6 +504,7 @@
                     <elementReference>vSelectionMethod</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -594,6 +597,7 @@
                     <elementReference>apexColSelectedFieldDescriptors_usf</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
@@ -699,7 +703,7 @@
             <name>WizardTable</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
-                <typeValue>Account</typeValue>
+                <typeValue>User</typeValue>
             </dataTypeMappings>
             <extensionName>c:datatable</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -775,6 +779,13 @@
                     <elementReference>wiz_columnWraps</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>cb_isUserDefinedObject</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>wiz_columnLabels</assignToReference>

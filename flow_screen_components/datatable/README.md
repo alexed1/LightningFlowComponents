@@ -31,8 +31,8 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.14 or later  
-FlowScreenComponentsBasePack Version 2.2.0 or later  
+FlowActionsBasePack Version 2.17 or later  
+FlowScreenComponentsBasePack Version 2.2.1 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
@@ -58,7 +58,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
-## 0x/xx/21 -  Eric Smith -    Version 3.1.1 
+## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
 -   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
 -   Added an attribute to hide all column header actions such as Sort, Clip/Wrap Text and Filters

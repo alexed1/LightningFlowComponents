@@ -36,6 +36,7 @@ c-combobox-column-type .isChanged input:focus,
 c-combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon,
 .slds-scope c-combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-input__icon {
     top: 0;
+    margin-top: 0.8rem;
     position: static;
     padding-right: 1.3rem;
 }

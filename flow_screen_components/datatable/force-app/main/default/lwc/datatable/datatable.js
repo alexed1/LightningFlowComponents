@@ -955,6 +955,18 @@ export default class Datatable extends LightningElement {
                 case 'richtext':
                     this.typeAttrib.type = 'richtext';
                     break;
+                case 'combobox':
+                    // To use custom types, information will need to be passed using typesAttributes
+                    this.typeAttributes = {
+                        editable: (editAttrib ? editAttrib.edit : false),
+                        fieldName: fieldName,
+                        keyField: this.keyField,
+                        keyFieldValue: {fieldName: this.keyField},
+                        picklistValues: this.picklistFieldMap[fieldName]
+                    };
+                    wrapAttrib = {}; //For combobox, we need to force wrap = true or the dropdown will be truncated
+                    wrapAttrib.wrap = true;
+                    break;                    
                 default:
                     
             }
@@ -1094,8 +1106,32 @@ export default class Datatable extends LightningElement {
         });
     }
 
+    //handle change on combobox
+    handleComboValueChange(event) {
+        //Handle combobox value change separately if required
+        event.stopPropagation();
+
+        //Manipulate the datatable draftValues
+        //Find if there is existing draftValue that matches the keyField
+        let draftValues = this.template.querySelector('c-custom-lightning-datatable').draftValues;
+        let eventDraftValue = event.detail.draftValues[0]
+        let foundIndex = draftValues.findIndex(value => value[this.keyField] == eventDraftValue[this.keyField]);
+
+        //If found, combine the draftValue
+        if(foundIndex > -1) {
+            draftValues[foundIndex] = {...draftValues[foundIndex], ...eventDraftValue};
+        } else {
+            //else, add the new draft value
+            draftValues.push(eventDraftValue);
+        }
+
+        this.template.querySelector('c-custom-lightning-datatable').draftValues = draftValues;
+
+        //call the usual handleCellChange        
+        this.handleCellChange(event);
+    }
+    
     handleCellChange(event) {
-// console.log("🚀 ~ file: datatable.js ~ line 1076 ~ Datatable ~ handleCellChange ~ event", event.detail.draftValues);
         let rowKey =  event.detail.draftValues[0][this.keyField];
 // TODO - Add validation logic here (and change cellattribute to show red background?)
 // TODO - Build collection of errors by Row/Field, Check & Clear if error is resolved, SuppressBottomBar and show messages instead if there are any errors in the collection
@@ -1156,6 +1192,8 @@ export default class Datatable extends LightningElement {
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
         }
+        //clear draftValues. this is required for custom column types that need to specifically write into draftValues
+        this.template.querySelector('c-custom-lightning-datatable').draftValues = [];
     }
 
     cancelChanges(event) {

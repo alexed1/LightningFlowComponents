@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <masterLabel>custom-lighting-datatable</masterLabel>
+    <description>This component extends lightning datatable to use custom data types</description>
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+</LightningComponentBundle>

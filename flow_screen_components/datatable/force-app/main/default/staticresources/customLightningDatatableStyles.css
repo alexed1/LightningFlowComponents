@@ -1,0 +1,46 @@
+/************************************/
+/* style sheet to bypass shadow dom */
+/************************************/
+
+/********************************/
+/* c-custom-lightning-datatable */
+/********************************/
+
+/* allow overflow of combobox if class overflowEnabled is present */
+.overflowEnabled c-custom-lightning-datatable .slds-scrollable_x,
+.overflowEnabled c-custom-lightning-datatable .slds-scrollable_y {
+    overflow: visible;
+}
+/* stretch cell width of combobox to 100% */
+c-custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenate {
+    width: 100%;
+}
+
+/********************************/
+/**** c-combobox-column-type ****/
+/********************************/
+/* height of combobox */
+c-combobox-column-type .slds-dropdown {
+    max-height: 180px;
+}
+/* highlight combobox if value is changed*/
+c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
+c-combobox-column-type .isChanged input[readonly][role=combobox],
+c-combobox-column-type .isChanged input:focus,
+.slds-scope c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
+.slds-scope c-combobox-column-type .isChanged input[readonly][role=combobox],
+.slds-scope c-combobox-column-type .isChanged input:focus {
+    background-color: rgb(250, 255, 189);
+}
+/* Remove position:absolute on the dropdown icon so that it doesn't appear on top of column action dropdown*/
+c-combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon{
+    top: 0;
+    position: static;
+    padding-right: 1.3rem;
+}
+.slds-scope c-combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-input__icon {
+    top: 0;
+    margin-top: 0.1rem;
+    position: static;
+    padding-right: 1.3rem;
+}

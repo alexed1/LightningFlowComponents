@@ -11,9 +11,13 @@ Additional components packaged with this LWC:
                                     SObjectController2 
                                     SObjectController2Test
 
-                    LWCs:           datatableUtils
+                    LWCs:           comboboxColumnType
+                                    customLightningDatatable
+                                    datatableUtils
                                     datatableCPE
                                     richDatatable
+
+                    StaticResources:customLightningDatatableStyles
 
                     Flows:          Datatable_Configuration_Wizard
 
@@ -57,7 +61,15 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes 
+# Release Notes
+
+## xx/xx/21 -  Eric Smith -    Version 3.2.0 
+**Updates:** 
+-   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
+    Does not yet support Dependent picklists nor filtering by Record Type   
+
+**Bug Fixes:**
+
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
 -   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source

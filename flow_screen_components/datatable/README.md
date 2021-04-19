@@ -66,7 +66,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ## xx/xx/21 -  Eric Smith -    Version 3.2.0 
 **Updates:** 
 -   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
-    Does not yet support Dependent picklists nor filtering by Record Type   
+    Does not yet support Dependent picklists nor filtering by Record Type
+-   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
 
 **Bug Fixes:**
 

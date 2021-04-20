@@ -28,6 +28,11 @@
         "FlowScreenComponentsBasePack@3.0.4-0": "04t5G000004PuV8QAK",
         "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
         "FlowScreenComponentsBasePack@2.1.4-0": "04t5G000004PuWQQA0",
+<<<<<<< Updated upstream
         "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI"
+=======
+        "FlowScreenComponentsBasePack@2.1.7-0": "04t5G0000047xDpQAI",
+        "FlowScreenComponentsBasePack@2.1.8-0": "04t5G0000047xE4QAI"
+>>>>>>> Stashed changes
     }
 }

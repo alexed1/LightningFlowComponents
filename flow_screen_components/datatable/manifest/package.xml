@@ -14,18 +14,8 @@
     <types>
         <members>datatable</members>
         <members>richDatatable</members>
-        <members>displayError</members>
-        <members>screenFlow</members>
         <members>datatableCPE</members>
         <name>LightningComponentBundle</name>
     </types>
-    <types>
-        <members>screenFlow</members>
-        <name>ApexPage</name>
-    </types>
-    <types>
-        <members>screenFlow</members>
-        <name>CustomApplication</name>
-    </types>
-    <version>50.0</version>
+    <version>51.0</version>
 </Package>

@@ -8,8 +8,7 @@ Additional components packaged with this LWC:
 
                     Lightning Web Components:   richDatatable
                                                 datatableCPE   
-                                                screenFlow
-                                                displayError
+                                                datatableUtils
 
                     Apex Classes:               SObjectController2 
                                                 SObjectController2Test
@@ -17,10 +16,6 @@ Additional components packaged with this LWC:
                                                 QueryNRecordsTest
 
                     Flows:                      Datatable_Configuration_Wizard
-
-                    Apex Pages:                 screenFlow
-
-                    Custom Applications:        screenFlow
 
                     Permission Sets:            USF_Flow_Screen_Component_Datatable
 
@@ -136,7 +131,8 @@ Features:   The only required paramters are the SObject collection of records an
                         </template>
                     </div>
                     <div class="slds-media__body">
-                        <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text>
+                        <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
+                        <div style="font-size: 1.5em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>   <!-- Styling is equivalent to H2 -->
                     </div>
                 </div>
             </label>

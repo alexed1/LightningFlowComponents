@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-16-2021
+ * @Last Modified On	: 04-14-2021
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -15,7 +15,8 @@
  * 2.00.02	10-06-2020	Jack D. Pond		Reverted naming, fixed bugs
  * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  * 2.00.05  02-14-2020  Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
-* 
+ * 2.00.06	2021-04-14	Jack D. Pond		Filter-type on attachments fixed (ContentDocumentLink) Fix: #570, #568
+ * 
  **/
 import {api, track, LightningElement} from 'lwc';
 const constVal = {
@@ -65,7 +66,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		bcc: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
 		senderDisplayName: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
 		replyEmailAddress: {value: null, dataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
-		UseSalesforceSignature: {value: null, dataType: null, isCollection: true, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
 		InReplyTo: {value: null, dataType: null, isCollection: true, default: null, label: 'MessageId List of existing email if this is InReplyTo'},
 		templateName: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Name'},
 		templateLanguage: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Language'},
@@ -77,21 +78,21 @@ export default class SendBetterEmailCPE extends LightningElement {
 		cb_setTreatTargetObjectAsRecipient: {value: 'CB_TRUE', dataType: null, isCollection: false, default: false, label: '!Treat the target as a recipient.'},
 		recordId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
 		SendTOthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendTOthisOneEmailAddress'},
-		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOthisStringCollectionOfEmailAddresses'},
-		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
-		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
-		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
+		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendTOthisStringCollectionOfEmailAddresses'},
+		SendTOtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfContacts'},
+		SendTOtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfUsers'},
+		SendTOtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendTOtheEmailAddressesFromThisCollectionOfLeads'},
 		SendCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendCCthisOneEmailAddress'},
-		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCthisStringCollectionOfEmailAddresses'},
-		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
+		SendCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendCCthisStringCollectionOfEmailAddresses'},
+		SendCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendCCtheEmailAddressesFromThisCollectionOfLeads'},
 		SendBCCthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendBCCthisOneEmailAddress'},
 		SendBCCthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCthisStringCollectionOfEmailAddresses'},
-		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
-		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
-		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: false, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
-		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Attach which Content Document Links?'}
+		SendBCCtheEmailAddressesFromThisCollectionOfContacts: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfContacts'},
+		SendBCCtheEmailAddressesFromThisCollectionOfUsers: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfUsers'},
+		SendBCCtheEmailAddressesFromThisCollectionOfLeads: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendBCCtheEmailAddressesFromThisCollectionOfLeads'},
+		contentDocumentAttachments: {value: null, valueDataType: null, isCollection: true, default: null, label: 'Attach which Content Document Links?'}
 	};
 
 	bodyOptions = [

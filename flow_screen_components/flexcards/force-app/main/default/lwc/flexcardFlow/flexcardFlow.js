@@ -32,6 +32,9 @@ export default class FlexcardFlow extends LightningElement {
 
     connectedCallback() {
         console.log('entering connectedCallback');
+        if(!this.records) {
+            throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
+        }
         console.log('records are: ' + JSON.stringify(this.records));
 		this.recs = JSON.parse(JSON.stringify(this.records));
         this.recs.find(record => {

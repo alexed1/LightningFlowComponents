@@ -6,7 +6,9 @@
 	<aura:attribute name="whereClause" type="String" />
 	<aura:attribute name="objectName" type="String" default="Opportunity" />
 	<aura:attribute name="displayFieldName" type="String" default="Name" />
-	<aura:attribute name="valueFieldName" type="String" default="Id" />
+	<!--If searchFieldName is set, it will be used for search instead of displayFieldName -->
+    <aura:attribute name="searchFieldName" type="String"/>
+    <aura:attribute name="valueFieldName" type="String" default="Id" />
 	<aura:attribute name="label" type="String" />
 	<aura:attribute name="selectedValue" type="String" />
 	<aura:attribute name="filterFieldName" type="String" />
@@ -31,7 +33,7 @@
 		</lightning:layoutItem>
 
 		<lightning:layoutItem size="12">
-			<c:LightningLookup sObjectName="{!v.objectName}" displayedFieldName="{!v.displayFieldName}"
+			<c:LightningLookup sObjectName="{!v.objectName}" displayedFieldName="{!v.displayFieldName}" searchFieldName="{!v.searchFieldName}"
 				whereClause="{!v.whereClause}" valueFieldName="{!v.valueFieldName}" label="{!v.label}"
 				selectedValue="{!v.selectedValue}" filteredFieldName="{!v.filterFieldName}"
 				filterFieldValue="{!v.filterFieldValue}" parentChild="{!v.parentChild}" required="{!v.required}"

@@ -24,6 +24,7 @@
             <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
             
             <property name="isUserDefinedObject" label="_ (User Defined)  Display User Defined Object?" type="Boolean" default="false" role="inputOnly" description="Set to True if you are providing a User Defined object rather than a Salesforce SObject."/>
+            <property name="cb_isUserDefinedObject" type="String" role="inputOnly"/>
             <property name="tableDataString" label="_ Datatable Record String (User Defined)" type="String" role="inputOnly" description="Object Collection string variable containing the records to display in the datatable."/>
             <property name="preSelectedRowsString" label="Pre-Selected Rows (User Defined)" type="String" role="inputOnly" description="Object Collection string variable containing the records to show as pre-selected in the datatable."/>
             <property name="outputSelectedRowsString" label="Output Selected Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were selected in the datatable. 
@@ -75,6 +76,8 @@
             <property name="isConfigMode" label="Configuration Mode?" type="Boolean" default="false" role="inputOnly" description="Display the Field API Names and the Column Widths in a box below the table.  This parameter is designed to be used by the setup Flow."/>
             <property name="hideCheckboxColumn" label="Hide Checkbox Column?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
             <property name="cb_hideCheckboxColumn" type="String" role="inputOnly"/>
+            <property name="hideHeaderActions" label="Hide Column Header Actions?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide all column header actions including Sort, Clip Text, Wrap Text + Filter."/>
+            <property name="cb_hideHeaderActions" type="String" role="inputOnly"/>
             <property name="showRowNumbers" label="Show Row Numbers" type="Boolean" default="false" role="inputOnly" description="Display a row number column as the first column in the table."/>
             <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
@@ -102,6 +105,8 @@
             <property name="cb_openLinkinSameTab" type="String" role="inputOnly"/>
             <property name="suppressNameFieldLink" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly" description="Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"/>
             <property name="not_tableBorder" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly"/>
+            <property name="displayAll" type="Boolean" role="inputOnly"/>
+            <property name="cb_displayAll" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

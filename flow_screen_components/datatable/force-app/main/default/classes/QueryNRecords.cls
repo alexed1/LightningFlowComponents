@@ -57,6 +57,7 @@ public class QueryNRecords {
                 result.add(qr);
 
             } catch(Exception e) {
+                system.debug('QueryNRecords Error: ' + e);
                 throw e;
             }
         }

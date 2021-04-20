@@ -59,6 +59,12 @@ export default class Datatable extends LightningElement {
     @api cb_hideCheckboxColumn;
     
     @api 
+    get hideHeaderActions() {
+        return (this.cb_hideHeaderActions == CB_TRUE) ? true : false;
+    }
+    @api cb_hideHeaderActions;
+
+    @api 
     get showRowNumbers() {
         return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
     }
@@ -109,8 +115,19 @@ export default class Datatable extends LightningElement {
     @api suppressNameFieldLink = false;     // OBSOLETE as of 3.0.10
     @api not_tableBorder = false;           // OBSOLETE as of 3.0.10 - Only referenced in the CPE - Used so a boolean value can default to True
 
+    @api 
+    get displayAll() {
+        return (this.cb_displayALl == CB_TRUE) ? true : false;
+    }
+    @api cb_displayAll;
+
     // JSON Version Attributes (User Defined Object)
-    @api isUserDefinedObject = false;
+    @api 
+    get isUserDefinedObject() {
+        return (this.cb_isUserDefinedObject == CB_TRUE) ? true : false;
+    }
+    @api cb_isUserDefinedObject;
+
     @api tableDataString = [];
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
@@ -241,7 +258,8 @@ export default class Datatable extends LightningElement {
     }
 
     get formattedTableLabel() {
-        return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
+        // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
+        return this.tableLabel;
     }
 
     get linkTarget() {
@@ -487,7 +505,7 @@ export default class Datatable extends LightningElement {
         }
 
         // Handle pre-selected records
-        this.outputSelectedRows = this.preSelectedRows;
+        this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
@@ -801,7 +819,10 @@ export default class Datatable extends LightningElement {
 
             // The Key Field is not editable
             if (fieldName == this.keyField) {
-                editAttrib.edit = false;
+                this.isAllEdit = false;
+                if (editAttrib) {
+                    editAttrib.edit = false;
+                }
             }
             
             // Some data types are not editable
@@ -961,8 +982,8 @@ export default class Datatable extends LightningElement {
                 this.typeAttributes = { label: { fieldName: this.objectLinkField }, target: this.linkTarget };
                 if (editAttrib) {
                     editAttrib.edit = false;       // Do not allow a lookup to be editable
-                    this.isAllEdit = false;
                 }
+                this.isAllEdit = false;
                 this.cellAttributes.wrapText = true;
                 if(!!wrapAttrib) {
                     wrapAttrib.wrap = true;
@@ -986,10 +1007,11 @@ export default class Datatable extends LightningElement {
                 fieldName: fieldName,
                 type: this.typeAttrib.type,
                 cellAttributes: this.cellAttributes,
-                typeAttributes: this.typeAttributes,
+                typeAttributes: this.typeAttributes,            
                 editable: (editAttrib) ? editAttrib.edit : false,
-                actions: (filterAttrib.filter) ? filterAttrib.actions : null,
-                sortable: (this.isConfigMode) ? false : true,
+                actions: (filterAttrib.filter && !this.hideHeaderActions) ? filterAttrib.actions : null,
+                sortable: (this.isConfigMode || this.hideHeaderActions) ? false : true,
+                hideDefaultActions: this.hideHeaderActions,  
                 initialWidth: (widthAttrib) ? widthAttrib.width : null,
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false
             });
@@ -1160,13 +1182,14 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection);   //Thanks to Jeff Olmstead for updated formula
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn;
     }
 
     handleClearSelection() {
         this.showClearButton = false;
         this.selectedRows = [];
         this.outputSelectedRows = this.selectedRows;
+        this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
     }
@@ -1525,9 +1548,9 @@ export default class Datatable extends LightningElement {
                             let fieldName = this.filterColumns[col].fieldName;
                             if (fieldName.endsWith('_lookup')) {
                                 fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
-                            }                
+                            }
                             if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
-                                if (!row[fieldName] || row[fieldName] == null) {    // No match because the field is empty
+                                if (this.filterColumns[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
                                     match = false;
                                     break; 
                                 }                   

@@ -80,8 +80,13 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @wire(getObjectInfo, {objectApiName: '$_objectType'})
     _getObjectInfo({error, data}) {
         if (error) {
-            if (!this.isAllowAll) {     // Eric Smith 12/18/20 - Error is expected for many Objects when allowing all, will use Apex to get field information
-                this.errors.push(error.body[0].message);
+console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAndField ~ _getObjectInfo ~ error", error, this.isAllowAll, this._objectType);
+            if (!this.isAllowAll && standardObjectOptions.findIndex(obj => obj.value == this._objectType) != -1) {     // Eric Smith 12/18/20 - Error is expected for many Objects when allowing all, will use Apex to get field information
+                if (Array.isArray(error.body)) {
+                    this.errors.push(error.body[0].message);
+                } else{
+                    this.errors.push(error.body.message);
+                }
             }
         } else if (data) {
             let fields = data.fields;

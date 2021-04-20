@@ -13,15 +13,9 @@ Additional components packaged with this LWC:
 
                     LWCs:           datatableUtils
                                     datatableCPE
-                                    screenFlow
-                                    displayError
                                     richDatatable
 
                     Flows:          Datatable_Configuration_Wizard
-
-                    Apex Pages:     screenFlow
-
-                    Custom Apps:    screenFlow 
 
                     Permission Set: USF Flow Screen Component - Datatable          
                                                   
@@ -37,16 +31,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.6 or later  
+FlowActionsBasePack Version 2.17 or later  
+FlowScreenComponentsBasePack Version 2.2.1 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.10 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)   
-[Version 3.0.10 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)
+[Version 3.1.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)   
+[Version 3.1.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -63,7 +57,24 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes
+# Release Notes 
+## 04/15/21 -  Eric Smith -    Version 3.1.1 
+**Updates:** 
+-   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
+-   Added an attribute to hide all column header actions such as Sort, Clip/Wrap Text and Filters
+-   If Multi-Currency is enabled, convert currency field values to the User's currency (Thanks to Novarg1)
+
+**Bug Fixes:**
+-   Text formula fields will now wrap correctly
+-   Display ALL Objects for Selection attribute is now persistent
+-   Input data is Apex-Defined attribute is now persistent
+-   The number of pre-selected rows will now not exceed the maximum number of records to be displayed attribute value
+-   Don't require the key field to be explicitly listed in the Column Edits attribute for Apex Defined Objects
+-   Clear Selection button will no longer appear on single row tables when Disallow row selection is checked
+-   Clear Selection button will clear the Output Selected Record String for Apex Defined Objects
+-   Fixed Column Filter on Checkbox Fields when the filter value is 'false' 
+-   Fixed vertical alignment of table header text
+  
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community

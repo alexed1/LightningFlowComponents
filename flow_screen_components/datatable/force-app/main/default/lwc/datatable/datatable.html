@@ -122,20 +122,22 @@ Features:   The only required paramters are the SObject collection of records an
 
         <!-- DATATABLE -->
         <div class={formElementClass}>
-            <label class="slds-form-element__label" for="datatable">
-                <div class="slds-media slds-media_center slds-media_small">
-                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
-                    <div class="slds-media__figure">
-                        <template if:true={hasIcon}>
-                            <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
-                        </template>
+            <template if:true={isDisplayHeader}>
+                <label class="slds-form-element__label" for="datatable">
+                    <div class="slds-media slds-media_center slds-media_small">
+                        <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
+                        <div class="slds-media__figure">
+                            <template if:true={hasIcon}>
+                                <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
+                            </template>
+                        </div>
+                        <div class="slds-media__body">
+                            <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
+                            <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
+                        </div>
                     </div>
-                    <div class="slds-media__body">
-                        <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
-                        <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
-                    </div>
-                </div>
-            </label>
+                </label>
+            </template>
 
             <div style={tableHeightAttribute} class={borderClass} id="datatable">
                 <c-custom-lightning-datatable

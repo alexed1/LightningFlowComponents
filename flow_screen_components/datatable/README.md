@@ -70,6 +70,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
 
 **Bug Fixes:**
+-   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
 
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 

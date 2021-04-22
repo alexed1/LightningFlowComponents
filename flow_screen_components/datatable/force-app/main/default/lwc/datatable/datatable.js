@@ -10,7 +10,7 @@
 
 import { LightningElement, api, track } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
-// import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { getConstants } from 'c/datatableUtils';
 
 const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
@@ -509,9 +509,9 @@ export default class Datatable extends LightningElement {
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
         } else {
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         }    
         const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
         selected.forEach(record => {
@@ -1216,10 +1216,10 @@ export default class Datatable extends LightningElement {
     updateNumberOfRowsSelected(currentSelectedRows) {
         // Handle updating output attribute for the number of selected rows
         this.numberOfRowsSelected = currentSelectedRows.length;
-        // this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
-        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
         this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn;
     }
 
@@ -1229,7 +1229,7 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = this.selectedRows;
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
-        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
     }
 
     updateColumnSorting(event) {

@@ -15,6 +15,10 @@
 c-custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenate {
     width: 100%;
 }
+/* ensures that custom column cells remain higlighted on hover when edited */
+.slds-scope .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
+    background-color: rgb(250, 255, 189);
+}
 
 /********************************/
 /**** c-combobox-column-type ****/
@@ -24,14 +28,15 @@ c-combobox-column-type .slds-dropdown {
     max-height: 180px;
 }
 /* highlight combobox if value is changed*/
-c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
+/* removed. highlighting is now controlled by manipulating fieldValues*/
+/*c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
 c-combobox-column-type .isChanged input[readonly][role=combobox],
 c-combobox-column-type .isChanged input:focus,
 .slds-scope c-combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
 .slds-scope c-combobox-column-type .isChanged input[readonly][role=combobox],
 .slds-scope c-combobox-column-type .isChanged input:focus {
     background-color: rgb(250, 255, 189);
-}
+} */
 /* Remove position:absolute on the dropdown icon so that it doesn't appear on top of column action dropdown*/
 c-combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon{
     top: 0;

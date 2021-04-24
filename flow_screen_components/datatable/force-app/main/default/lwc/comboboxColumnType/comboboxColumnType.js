@@ -41,6 +41,6 @@ export default class ComboboxColumnType extends LightningElement {
         this.dispatchEvent(customEvent)
 
         //set isChanged so that cell is highlighted
-        this.cellClass = 'isChanged';
+        //this.cellClass = 'isChanged'; removed. highlighting controlled by manipulating fieldValues on the datatable
     }
 }

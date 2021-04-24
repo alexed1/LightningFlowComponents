@@ -16,7 +16,8 @@ c-custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenate {
     width: 100%;
 }
 /* ensures that custom column cells remain higlighted on hover when edited */
-.slds-scope .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
+.slds-scope .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited,
+.slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
     background-color: rgb(250, 255, 189);
 }
 

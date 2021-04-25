@@ -207,6 +207,7 @@ export default class Datatable extends LightningElement {
     @api lookupFieldArray = [];
     @api columnArray = [];
     @api percentFieldArray = [];
+    @api numberFieldArray = [];
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
     @api picklistFieldArray = [];
@@ -566,6 +567,10 @@ export default class Datatable extends LightningElement {
                         this.percentFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'percent';
                         break;
+                    case 'number':
+                        this.numberFieldArray.push(this.basicColumns[t.column].fieldName);
+                        this.basicColumns[t.column].type = 'number';
+                        break;                          
                     case 'time':
                         this.timeFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'time';
@@ -619,6 +624,7 @@ export default class Datatable extends LightningElement {
                 this.recordData = [...returnResults.rowData];
                 this.lookups = returnResults.lookupFieldList;
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
+                this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
@@ -682,6 +688,7 @@ export default class Datatable extends LightningElement {
         let lufield = '';
         let timeFields = this.timeFieldArray;
         let percentFields = this.percentFieldArray;
+        let numberFields = this.numberFieldArray;
         let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
@@ -699,8 +706,14 @@ export default class Datatable extends LightningElement {
 
             // Store percent field data as value/100
             percentFields.forEach(pct => {
-                record[pct] = record[pct]/100;
+                // record[pct] = record[pct]/100;
+                record[pct] = parseFloat(record[pct])/100;
             });
+
+            // Convert and store number field data
+            numberFields.forEach(nb => {
+                record[nb] = parseFloat(record[nb]);
+            })
 
             // Flatten returned data
             lookupFields.forEach(lookup => {
@@ -949,7 +962,7 @@ export default class Datatable extends LightningElement {
                         let minDigits = (this.scaleAttrib) ? this.scaleAttrib.scale : scale;
                         this.typeAttributes = { minimumFractionDigits: minDigits };      // JSON Version
                     } else {
-                        this.typeAttributes = { minimumFractionDigits:scale };   // Show the number of decimal places defined for the field
+                        this.typeAttributes = { minimumFractionDigits: scale };   // Show the number of decimal places defined for the field
                     }
                     break;
                 case 'richtext':
@@ -1145,7 +1158,6 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
-// console.log("🚀 ~ file: datatable.js ~ line 1087 ~ Datatable ~ handleSave ~ draftValues", draftValues);
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1165,10 +1177,11 @@ export default class Datatable extends LightningElement {
             if (edraft != undefined) {
                 let efieldNames = Object.keys(edraft);
                 efieldNames.forEach(ef => {
-                    // if(this.percentFieldArray.indexOf(ef) != -1) {
-                    //     eitem[ef] = Number(edraft[ef])*100; // Percent field
-                    // }
-                    eitem[ef] = edraft[ef];
+                    if(this.percentFieldArray.indexOf(ef) != -1) {
+                        eitem[ef] = Number(edraft[ef])*100; // Percent field
+                    } else {
+                        eitem[ef] = edraft[ef];
+                    }
                 });
 
                 // Add/update edited record to output collection
@@ -1182,6 +1195,20 @@ export default class Datatable extends LightningElement {
                     });
                     this.outputEditedRows = [...otherEditedRows];
                 } 
+
+                // Correct the data formatting, so that decimal numbers are recognized no matter the Country-related decimal-format 
+                let field = eitem
+                let numberFields = this.numberFieldArray;
+                numberFields.forEach(nb => {
+                    field[nb] = parseFloat(field[nb]);
+                });
+
+                // Correct formatting for percent fields
+                let pctfield = this.percentFieldArray;
+                pctfield.forEach(pct => {
+                    field[pct] = parseFloat(field[pct]);
+                });
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
@@ -1409,6 +1436,8 @@ export default class Datatable extends LightningElement {
                 return 'number';
             case 'percent':
                 return 'number';
+            case 'number':
+                return 'number';                
             case 'text':
                 return 'text';
             default:
@@ -1744,16 +1773,12 @@ export default class Datatable extends LightningElement {
 /*         // Validate Edited Rows
         let errorMessage = '';
         this.outputEditedRows.forEach(erow => {
-            console.log("🚀 ~ file: datatable.js ~ line 1679 ~ Datatable ~ validate ~ erow", erow);
             let fieldNames = Object.keys(erow);
             fieldNames.forEach(fld => {
-                console.log("🚀 ~ file: datatable.js ~ line 1682 ~ Datatable ~ validate ~ fld", fld, erow[fld]);
                 const basic = this.basicColumns.find(b => b.fieldName == fld);
-                console.log("🚀 ~ file: datatable.js ~ line 1684 ~ Datatable ~ validate ~ basic", basic);
                 if (basic?.type.includes("text")) {
                     if (erow[fld]?.length > basic.length) {
                         let errorRow = this.mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
-                        console.log("🚀 ~ file: datatable.js ~ line 1689 ~ Datatable ~ validate ~ errorRow", errorRow);
                         errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
                     }
                 }

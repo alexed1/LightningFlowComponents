@@ -72,6 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:**
 -   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
 -   Make output attributes available to visibility filters (this was inadvertantly removed from some prior releases)
+-   Better handling of number & percent fields from different locales (Thanks to GDuboc-hub)
 
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 

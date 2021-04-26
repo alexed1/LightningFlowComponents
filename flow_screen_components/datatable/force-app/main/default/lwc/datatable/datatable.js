@@ -943,7 +943,7 @@ export default class Datatable extends LightningElement {
             switch(type) {
                 case 'date':
                 case 'date-local':
-                    this.typeAttributes = { year:'numeric', month:'numeric', day:'numeric' }
+                    // this.typeAttributes = { year:'numeric', month:'numeric', day:'numeric' }
                     break;
                 case 'datetime':
                     type = 'date';
@@ -1021,6 +1021,7 @@ export default class Datatable extends LightningElement {
 
             // Update TypeAttribute attribute overrides by column
             this.parseAttributes('type',this.typeAttribs,columnNumber);
+console.log("🚀 ~ file: datatable.js ~ line 1025 ~ Datatable ~ updateColumns ~ this.typeAttribs", columnNumber, type, this.typeAttrib.type, this.typeAttributes);
             if (this.typeAttrib.type == 'date-local' && this.typeAttributes) {      // If the user wants to override the default attributes, switch back to date (also switches to UTC time)
                 this.typeAttrib.type = 'date';
             }

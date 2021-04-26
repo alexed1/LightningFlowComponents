@@ -1191,9 +1191,9 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];            // Reset the current table values
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
+            //clear draftValues. this is required for custom column types that need to specifically write into draftValues
+            this.template.querySelector('c-custom-lightning-datatable').draftValues = [];
         }
-        //clear draftValues. this is required for custom column types that need to specifically write into draftValues
-        this.template.querySelector('c-custom-lightning-datatable').draftValues = [];
     }
 
     cancelChanges(event) {

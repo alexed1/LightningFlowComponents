@@ -1,7 +1,7 @@
 public with sharing class ManageMultiselectField {
   
     @InvocableMethod(label='Manage Multiselect Field' description='Caries out a specified operation on the value of a specified multiselect field')
-    public static List<Response> getNrecords(List<Request> requests) {
+    public static List<Response> execute(List<Request> requests) {
         
         List<Response> result = new List<Response>();
 
@@ -16,9 +16,37 @@ public with sharing class ManageMultiselectField {
             switch on curRequest.operation {
                 when 'CheckForValue' {
                     System.debug('selected values are: ' + selectedValues);
-                    if (selectedValues.contains(curRequest.value)) {
+                    if (selectedValues.contains(curRequest.targetValue)) {
                         curResponse.targetPresent= true;
                     } else curResponse.targetPresent = false;
+
+                }
+                when 'ReturnStringCollection' {
+                    //System.debug('selected values are: ' + selectedValues);
+                    if (selectedValues.contains(curRequest.targetValue)) {
+                        curResponse.targetPresent= true;
+                    } else curResponse.targetPresent = false;
+
+                }
+                when 'AddValue' {
+                    //System.debug('selected values are: ' + selectedValues);
+                    if (!selectedValues.contains(curRequest.targetValue)) {
+                        selectedValues.add(curRequest.targetValue);
+                    } else curResponse.targetPresent = false;
+
+                }
+                when 'RemoveValue' {
+                    //System.debug('selected values are: ' + selectedValues);
+                    if (selectedValues.contains(curRequest.targetValue)) {
+                        Integer counter = 0;
+                        for(int x = 0; x<= selectedValues.size(); x++) {
+                            if (memberString == curRequest.targetValue) {
+                                counter = x;
+                            }
+                        }
+                        System.debug('index position is: ' + counter);
+                        selectValues.remove(counter);
+                    } 
 
                 }
                 when else {
@@ -64,7 +92,7 @@ public with sharing class ManageMultiselectField {
         public string operation;
         
         @InvocableVariable(label='Target Value')
-        public string value;
+        public string targetValue;
 
         @InvocableVariable(label='SaveAutomatically')
         public string saveAutomatically;
@@ -80,6 +108,9 @@ public with sharing class ManageMultiselectField {
         
         @InvocableVariable(label='Boolean result of a check for whether the provided value is present')
         public Boolean targetPresent;
+
+        @InvocableVariable(label='Values of the Multiselect Field, returned as a semicolon string')
+        public String valueString; 
     }
 
     public class InvocableActionException extends Exception{}

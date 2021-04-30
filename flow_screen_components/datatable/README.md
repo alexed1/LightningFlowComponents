@@ -73,6 +73,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
 -   Make output attributes available to visibility filters (this was inadvertantly removed from some prior releases)
 -   Better handling of number & percent fields from different locales (Thanks to GDuboc-hub)
+    (Edited percent fields must be the actual number ie: .25 = 25%)
+    (Edited percent fields lose 2 decimal places during the edit from what is defined for the field)
 -   Edited date fields will stay in the User's local time-zone rather than switching to UTC
 
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 

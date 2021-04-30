@@ -57,7 +57,7 @@ public with sharing class ManageMultiselectFieldTest {
         testRequest.operation = 'AddValue';
         ManageMultiselectField.Response testResponse = execute(testRequest);
 
-        System.assertEquals('Apple;Strawberry;Rasberry;Pear', testResponse.value);
+        System.assertEquals('Apple;Strawberry;Rasberry;Pear', testResponse.valueString);
         testRequest.value = 'Foobar';
         try {
             testResponse = execute(testRequest);
@@ -75,6 +75,6 @@ public with sharing class ManageMultiselectFieldTest {
         testRequest.operation = 'RemoveValue';
         ManageMultiselectField.Response testResponse = execute(testRequest);
 
-        System.assertEquals('Apple;Strawberry', testResponse.value);
+        System.assertEquals('Apple;Strawberry', testResponse.valueString);
     }
 }

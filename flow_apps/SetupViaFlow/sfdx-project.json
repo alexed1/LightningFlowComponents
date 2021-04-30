@@ -5,7 +5,7 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.15.0-0"
+                    "package": "FlowActionsBasePack@2.16.0-0"
                 },
                 {
                     "package": "FlowScreenComponentsBasePack@2.2.0-0"
@@ -28,6 +28,7 @@
         "SetupViaFlow@1.0.0-0": "04tf4000004PuQhAAK",
         "FlowActionsBasePack@2.14.0-0": "04t4W00000307e7QAA",
         "FlowActionsBasePack@2.15.0-0": "04t4W00000307gXQAQ",
+        "FlowActionsBasePack@2.16.0-0": "04t4W00000307grQAA",
         "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI",
         "datatable@3.0.10-0": "04t5G000004PudhQAC"
     }

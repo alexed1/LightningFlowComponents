@@ -8,9 +8,10 @@
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import {getPicklistValues} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/datatableUtils';
 
 const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
@@ -196,6 +197,9 @@ export default class Datatable extends LightningElement {
     @track inputType = 'text';
     @track inputFormat = null;    
 
+    // Picklist variables
+    masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
+
     // Component working variables
     @api savePreEditData = [];
     @api editedData = [];
@@ -266,6 +270,42 @@ export default class Datatable extends LightningElement {
     get linkTarget() {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
+
+    // @wire(getPicklistValues, {
+    //     recordTypeId: "$recordTypeId",
+    //     fieldApiName: "$calculatedObjectAndFieldName"
+    // })
+    // picklistValues({error, data}) {
+    //     if (data) {
+
+    //         let picklistOptions = [];
+    //         if (this.allowNoneToBeChosen)
+    //             picklistOptions.push({label: "--None--", value: "None"});
+
+    //         // Picklist values
+    //         data.values.forEach(key => {
+    //             picklistOptions.push({
+    //                 label: key.label,
+    //                 value: key.value
+    //             });
+    //         });
+
+    //     } else if (error) {
+    //         this.error = JSON.stringify(error);
+    //         console.log("getPicklistValues wire service returned error: " + this.error);
+    //     }
+    // }
+
+    // get calculatedObjectAndFieldName() {
+    //     console.log('in getter: objectApiName is: ' + this.objectName);
+    //     console.log('in getter: fieldApiName is: ' + this.fieldName);
+
+    //     if ((this.objectName) && (this.fieldName)) {
+    //         console.log('satisfied calculatedObjectAndFieldName test');
+    //         return `${this.objectName}.${this.fieldName}`;
+    //     }
+    //     return undefined;
+    // }
 
     connectedCallback() {
 

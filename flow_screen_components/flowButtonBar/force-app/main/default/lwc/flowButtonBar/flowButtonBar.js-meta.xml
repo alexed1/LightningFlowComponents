@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Flow Button Bar</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>  
+
+    <targetConfigs>
+            <targetConfig targets="lightning__FlowScreen" configurationEditor="c-flow-buttons-cpe">
+                <!-- Input -->
+                <property name="button1Label" label="Button 1 Label" type="string" role="inputOnly"></property>
+                <property name="button1Value" label="Button 1 Value" type="string" role="inputOnly"></property>
+                <property name="button1DescriptionText" label="Button 1 Description Text" type="string" role="inputOnly"></property>
+
+                <property name="button2Label" label="Button 2 Label" type="string" role="inputOnly"></property>
+                <property name="button2Value" label="Button 2 Value" type="string" role="inputOnly"></property>
+                <property name="button2DescriptionText" label="Button 2 Description Text" type="string" role="inputOnly"></property>
+
+                <property name="button3Label" label="Button 3 Label" type="string" role="inputOnly"></property>
+                <property name="button3Value" label="Button 3 Value" type="string" role="inputOnly"></property>
+                <property name="button3DescriptionText" label="Button 3 Description Text" type="string" role="inputOnly"></property>
+
+                <property name="button4Label" label="Button 4 Label" type="string" role="inputOnly"></property>
+                <property name="button4Value" label="Button 4 Value" type="string" role="inputOnly"></property>
+                <property name="button4DescriptionText" label="Button 4 Description Text" type="string" role="inputOnly"></property>
+
+                <property name="button5Label" label="Button 5 Label" type="string" role="inputOnly"></property>
+                <property name="button5Value" label="Button 5 Value" type="string" role="inputOnly"></property>
+                <property name="button5DescriptionText" label="Button 5 Description Text" type="string" role="inputOnly"></property>
+
+
+                <property name="alignment" label="Button position" type="string" description="Enter 'left', 'center', or 'right' (default)." default="right" role="inputOnly"></property>
+                <property name="orientation" label="Button orientation" type="string" description="Enter 'horizontal' (default), or 'vertical'." default="horizontal" role="inputOnly"></property>
+                <property name="includeLine" label="Include horizontal line above buttons" type="boolean" description="Check the box to include a horizontal line above the buttons, giving separation between the buttons and the element above them" default="false" role="inputOnly"></property>
+                <property name="groupAsToggle" label="Group buttons as toggle" description="Enter true to group buttons togther as a toggle isntead of individual buttons https://www.lightningdesignsystem.com/components/button-groups/#Base" type="boolean" default="false" role="inputOnly"></property>
+                <property name="doNotTransitionOnClick" label="Do Not Transition on Click" type="boolean" default="false" role="inputOnly"></property>
+                
+                <!-- Output -->
+                <property name="selectedValue" label="Selected Value" type="string" description="Value that holds the label of the button that's clicked, pass this to a Decision block to route the Flow"></property>
+            </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

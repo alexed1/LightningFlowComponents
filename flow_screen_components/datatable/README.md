@@ -43,8 +43,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.1.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)   
-[Version 3.1.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)
+[Version 3.2.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xGFQAY)   
+[Version 3.2.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xGFQAY)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -63,7 +63,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
 
-## xx/xx/21 -  Eric Smith -    Version 3.2.0 
+## 05/03/21 -  Eric Smith -    Version 3.2.0 
 **Updates:** 
 -   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
     (Does not yet support Dependent picklists nor filtering by Record Type)

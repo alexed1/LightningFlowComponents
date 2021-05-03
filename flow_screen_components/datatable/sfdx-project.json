@@ -42,6 +42,7 @@
         "FlowActionsBasePack@2.17.0-0": "04t4W00000307ppQAA",
         "FlowScreenComponentsBasePack@2.2.1-0": "04t5G0000047xFHQAY",
         "datatable@3.1.1-0": "04t5G0000047xFMQAY",
-        "datatable@3.1.2-0": "04t5G0000047xGAQAY"
+        "datatable@3.1.2-0": "04t5G0000047xGAQAY",
+        "datatable@3.2.0-0": "04t5G0000047xGFQAY"
     }
 }

@@ -1,10 +1,10 @@
-public class QueryNRecords {
+public class ers_QueryNRecords {
 
     /**
      * Based on a component (QueryNRecords) created by: Narender Singh (ForcePanda)
      * https://forcepanda.wordpress.com/2019/12/24/workaround-for-query-only-first-n-records-in-flows-part-3generic-solution-spring20delight/
      *
-     * Description:     QueryNRecords
+     * Description:     ers_QueryNRecords
      *                  Get the first 10 records of the selected Object for the Column Wizard running in the datatable CPE
      *
      * 10/29/20 -       Eric Smith -    Version 3.0.0    Initial release along with datatableCPE
@@ -57,7 +57,7 @@ public class QueryNRecords {
                 result.add(qr);
 
             } catch(Exception e) {
-                system.debug('QueryNRecords Error: ' + e);
+                system.debug('ers_QueryNRecords Error: ' + e);
                 throw e;
             }
         }

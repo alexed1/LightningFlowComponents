@@ -1,6 +1,6 @@
 import {LightningElement, api} from 'lwc';
 
-export default class ComboboxColumnType extends LightningElement {
+export default class ers_comboboxColumnType extends LightningElement {
     @api editable;
     @api fieldName;
     @api keyField;

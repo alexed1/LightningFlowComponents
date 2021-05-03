@@ -9,12 +9,12 @@
 **/
 
 import { LightningElement, api, track, wire } from 'lwc';
-import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
+import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import {getPicklistValues} from "lightning/uiObjectInfoApi";
-import { getConstants } from 'c/datatableUtils';
+import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -650,7 +650,7 @@ export default class Datatable extends LightningElement {
             } else { 
                 data = (this.tableData) ? JSON.parse(this.tableDataString) : [];
                 data.forEach(record => { 
-                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from SObjectController2
+                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
                 });
             }
 
@@ -1166,7 +1166,7 @@ export default class Datatable extends LightningElement {
 
         //Manipulate the datatable draftValues
         //Find if there is existing draftValue that matches the keyField
-        let draftValues = this.template.querySelector('c-custom-lightning-datatable').draftValues;
+        let draftValues = this.template.querySelector('c-ers_custom-lightning-datatable').draftValues;
         let eventDraftValue = event.detail.draftValues[0]
         let foundIndex = draftValues.findIndex(value => value[this.keyField] == eventDraftValue[this.keyField]);
 
@@ -1178,7 +1178,7 @@ export default class Datatable extends LightningElement {
             draftValues.push(eventDraftValue);
         }
 
-        this.template.querySelector('c-custom-lightning-datatable').draftValues = draftValues;
+        this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = draftValues;
 
         //call the usual handleCellChange        
         this.handleCellChange(event);
@@ -1259,7 +1259,7 @@ export default class Datatable extends LightningElement {
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
             //clear draftValues. this is required for custom column types that need to specifically write into draftValues
-            this.template.querySelector('c-custom-lightning-datatable').draftValues = [];
+            this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
         }
     }
 

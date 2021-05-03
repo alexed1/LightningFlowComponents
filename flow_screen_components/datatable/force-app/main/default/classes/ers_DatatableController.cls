@@ -58,7 +58,7 @@
  * 
  **/
 
-public with sharing class SObjectController2 {
+public with sharing class ers_DatatableController {
 
     // this is just a convenient way to return multiple unique pieces of data to the component
     public class ReturnResults {

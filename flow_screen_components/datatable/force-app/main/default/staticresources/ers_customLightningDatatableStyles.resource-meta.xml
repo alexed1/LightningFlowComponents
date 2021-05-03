@@ -2,5 +2,5 @@
 <StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
     <cacheControl>Public</cacheControl>
     <contentType>text/css</contentType>
-    <description>customLightningDatatableStyles</description>
+    <description>ers_customLightningDatatableStyles</description>
 </StaticResource>

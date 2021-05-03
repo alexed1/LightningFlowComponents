@@ -4,21 +4,6 @@ Lightning Web Component for Flow Screens:       datatable
 
 This component allows the user to configure and display a datatable in a Flow screen.
 
-Additional components packaged with this LWC:
-
-                    Lightning Web Components:   richDatatable
-                                                datatableCPE   
-                                                datatableUtils
-
-                    Apex Classes:               SObjectController2 
-                                                SObjectController2Test
-                                                QueryNRecords
-                                                QueryNRecordsTest
-
-                    Flows:                      Datatable_Configuration_Wizard
-
-                    Permission Sets:            USF_Flow_Screen_Component_Datatable
-
 CREATED BY:         Eric Smith
 
 VERSION:            3.x.x
@@ -140,7 +125,7 @@ Features:   The only required paramters are the SObject collection of records an
             </template>
 
             <div style={tableHeightAttribute} class={borderClass} id="datatable">
-                <c-custom-lightning-datatable
+                <c-ers_custom-lightning-datatable
                     data={mydata}
                     columns={columns}
                     key-field={keyField}
@@ -161,7 +146,7 @@ Features:   The only required paramters are the SObject collection of records an
                     onresize={handleResize}
                     oncombovaluechange={handleComboValueChange}
                 >
-                </c-custom-lightning-datatable>
+                </c-ers_custom-lightning-datatable>
                 <div if:true={showClearButton} class="slds-m-top_x-small">
                     <lightning-button variant="brand-outline" label="Clear Selection" icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
                 </div>

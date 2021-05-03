@@ -1,9 +1,9 @@
 /**
- * Lightning Web Component for Flow Screens:       datatableCPE
+ * Lightning Web Component for Flow Screens:       ers_datatableCPE
  * 
  * When the datatable LWC is running in configuration mode
  * It sends values back to the Datatable Configuration Wizard Flow
- * Which passes them back to the datatableCPE LWC as Output Variables
+ * Which passes them back to the ers_datatableCPE LWC as Output Variables
  * Which dispatches them to the Flow where a datatable LWC is being configured
  * 
  * CREATED BY:          Eric Smith
@@ -14,10 +14,10 @@
 **/
 
 import {LightningElement, track, api} from 'lwc';
-import getCPEReturnResults from '@salesforce/apex/SObjectController2.getCPEReturnResults';
-import { getConstants } from 'c/datatableUtils';
+import getCPEReturnResults from '@salesforce/apex/ers_DatatableController.getCPEReturnResults';
+import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
@@ -43,7 +43,7 @@ const COLORS = {
     red_light: '#967E95'
 }
 
-export default class DatatableCPE extends LightningElement {
+export default class ers_datatableCPE extends LightningElement {
 
     versionNumber;
 
@@ -543,7 +543,7 @@ export default class DatatableCPE extends LightningElement {
     }
 
     initializeValues() {
-        console.log('datatableCPE - initializeValues');
+        console.log('ers_datatableCPE - initializeValues');
         this.isCheckboxColumnHidden = false;
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value != null) {
@@ -1032,7 +1032,7 @@ export default class DatatableCPE extends LightningElement {
             this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
         }
 
-        let allComboboxes = this.template.querySelectorAll('c-flow-combobox');
+        let allComboboxes = this.template.querySelectorAll('c-fsc_flow-combobox');
         if (allComboboxes) {
             allComboboxes.forEach(curCombobox => {
                 if (!curCombobox.reportValidity()) {

@@ -6,22 +6,22 @@ Lightning Web Component for Flow Screens:       **Datatable**
 
 Additional components packaged with this LWC:
 
-                    Apex Classes:   QueryNRecords
-                                    QueryNRecordsTest
-                                    SObjectController2 
-                                    SObjectController2Test
+                Apex Classes:       ers_QueryNRecords
+                                    ers_QueryNRecordsTest
+                                    ers_DatatableController 
+                                    ers_DatatableControllerTest
 
-                    LWCs:           comboboxColumnType
-                                    customLightningDatatable
-                                    datatableUtils
-                                    datatableCPE
-                                    richDatatable
+                LWCs:               ers_comboboxColumnType
+                                    ers_customLightningDatatable
+                                    ers_datatableUtils
+                                    ers_datatableCPE
+                                    ers_richTextColumnType
 
-                    StaticResources:customLightningDatatableStyles
+                StaticResources:    ers_customLightningDatatableStyles
 
-                    Flows:          Datatable_Configuration_Wizard
+                Flows:              Datatable_Configuration_Wizard
 
-                    Permission Set: USF Flow Screen Component - Datatable          
+                Permission Set:     USF Flow Screen Component - Datatable          
                                                   
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
@@ -55,8 +55,8 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
 
 In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
-    QueryNRecords   
-    SObjectController2  
+    ers_QueryNRecords   
+    ers_DatatableController  
 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
@@ -68,6 +68,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
     (Does not yet support Dependent picklists nor filtering by Record Type)
 -   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
+-   Renamed components used by Datatable to reduce conflicts and allow easier upgrading from older versions
 
 **Bug Fixes:**
 -   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked

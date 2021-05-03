@@ -1,14 +1,14 @@
 import LightningDatatable from "lightning/datatable";
-import richTextColumnType from "./richTextColumnType.html";
-import comboboxColumnType from "./comboboxColumnType.html";
-import stylesheet from '@salesforce/resourceUrl/customLightningDatatableStyles';
+import ers_richTextColumnType from "./ers_richTextColumnType.html";
+import ers_comboboxColumnType from "./ers_comboboxColumnType.html";
+import stylesheet from '@salesforce/resourceUrl/ers_customLightningDatatableStyles';
 import {loadStyle} from "lightning/platformResourceLoader";
 
 /**
  * Custom component that extends LightningDatatable
  * and adds a new column type
  */
-export default class customLightningDatatable extends LightningDatatable {
+export default class ers_customLightningDatatable extends LightningDatatable {
     constructor() {
         super();
         //load style sheets to bypass shadow dom
@@ -24,11 +24,11 @@ export default class customLightningDatatable extends LightningDatatable {
     static customTypes={
         // custom type definition
         richtext: {
-            template: richTextColumnType,
+            template: ers_richTextColumnType,
             standardCellLayout: true
         },
         combobox: {
-            template: comboboxColumnType,
+            template: ers_comboboxColumnType,
             standardCellLayout: true,
             typeAttributes: ['editable', 'fieldName', 'keyField', 'keyFieldValue', 'picklistValues']
         }

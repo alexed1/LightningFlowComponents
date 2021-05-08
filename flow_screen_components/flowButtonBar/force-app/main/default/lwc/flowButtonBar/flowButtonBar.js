@@ -44,6 +44,15 @@ export default class FlowButtonBar extends LightningElement {
     @api button5Value;
     @api button5DescriptionText;
 
+    @api
+    get buttons() {
+        return this._buttons;
+    }
+    set buttons(value) {
+        this._buttons = JSON.parse(value);        
+    }
+    _buttons;
+
     @api alignment;
     @api orientation;
     @api groupAsToggle;
@@ -82,6 +91,7 @@ export default class FlowButtonBar extends LightningElement {
         return classList.join(' ');
     }
 
+    /*
     get buttons() {
         let buttons = [];
         for (let i = 0; i < this.maxNumButtons; i++) {
@@ -99,11 +109,12 @@ export default class FlowButtonBar extends LightningElement {
         }
         return buttons;
     }
+    */
 
     /* LIFECYCLE HOOKS */
     renderedCallback() {
         if (this.rendered) return;
-        this.rendered = true;
+        this.rendered = true;        
         this.toggleButtons();
     }
 

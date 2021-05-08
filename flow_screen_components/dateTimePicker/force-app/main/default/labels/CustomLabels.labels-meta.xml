@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>CARD_TITLE</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>CARD_TITLE</shortDescription>
+        <value>Set a Schedule</value>
+    </labels>
+    <labels>
+        <fullName>DATETIME_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>DATETIME_LABEL</shortDescription>
+        <value>Enter a Start Date value</value>
+    </labels>
+    <labels>
+        <fullName>FREQUENCY_INPUT_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FREQUENCY_INPUT_LABEL</shortDescription>
+        <value>Select Frequency</value>
+    </labels>
+    <labels>
+        <fullName>FREQUENCY_LABEL</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FREQUENCY_LABEL</shortDescription>
+        <value>Frequency</value>
+    </labels>
+</CustomLabels>

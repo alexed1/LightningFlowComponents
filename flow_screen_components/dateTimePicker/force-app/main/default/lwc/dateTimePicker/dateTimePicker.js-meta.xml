@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Date Time Picker</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="startDate" label="Start Date" type="Datetime"/>
+            <property name="frequency" label="Frequency" type="String" datasource="Daily,Weekly,Monthly,Yearly,Hourly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -27,7 +27,7 @@
         <label>Get First 10 Records</label>
         <locationX>1559</locationX>
         <locationY>208</locationY>
-        <actionName>QueryNRecords</actionName>
+        <actionName>ers_QueryNRecords</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Get_Records_Result</targetReference>

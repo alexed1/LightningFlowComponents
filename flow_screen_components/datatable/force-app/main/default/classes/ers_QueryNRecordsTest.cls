@@ -1,5 +1,5 @@
 @isTest
-public with sharing class QueryNRecordsTest {
+public with sharing class ers_QueryNRecordsTest {
 
     static testMethod void test() {
         Account a1 = new Account(Name='Test1',
@@ -15,15 +15,15 @@ public with sharing class QueryNRecordsTest {
             Description='D2');
         insert a2;
 
-        QueryNRecords.QueryParameters testRequest = new QueryNRecords.QueryParameters();
+        ers_QueryNRecords.QueryParameters testRequest = new ers_QueryNRecords.QueryParameters();
         testRequest.objectApiName = 'Account';
         testRequest.fieldsToQuery = 'Name, AccountNumber, Website, Type, Description';
         testRequest.numberOfRecords = 3;
 
-        List<QueryNRecords.QueryParameters> testRequestList = new List<QueryNRecords.QueryParameters>();
+        List<ers_QueryNRecords.QueryParameters> testRequestList = new List<ers_QueryNRecords.QueryParameters>();
         testRequestList.add(testRequest);
 
-        List<QueryNRecords.QueryResults> testResponseList = QueryNRecords.getNRecords(testRequestList);
+        List<ers_QueryNRecords.QueryResults> testResponseList = ers_QueryNRecords.getNRecords(testRequestList);
         System.assert(testResponseList[0].recordString.contains('"Type":"Type2"'));
 
     }

@@ -63,6 +63,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
 
+## xx/xx/21 -  Eric Smith -    Version 3.2.1 
+**Updates:** 
+
+**Bug Fixes:**
+-   Text formula fields will now wrap correctly (This regressed in v3.2.0)
+
 ## 05/03/21 -  Eric Smith -    Version 3.2.0 
 **Updates:** 
 -   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.

@@ -199,6 +199,10 @@ export default class Datatable extends LightningElement {
 
     // Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
+    recordTypeId;
+    picklistObjectName;
+    picklistFieldName;
+    allowNoneToBeChosen = true;
 
     // Component working variables
     @api savePreEditData = [];
@@ -271,41 +275,41 @@ export default class Datatable extends LightningElement {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
 
-    // @wire(getPicklistValues, {
-    //     recordTypeId: "$recordTypeId",
-    //     fieldApiName: "$calculatedObjectAndFieldName"
-    // })
-    // picklistValues({error, data}) {
-    //     if (data) {
+    @wire(getPicklistValues, {
+        recordTypeId: "$recordTypeId",
+        fieldApiName: "$calculatedObjectAndFieldName"
+    })
+    picklistValues({error, data}) {
+        if (data) {
 
-    //         let picklistOptions = [];
-    //         if (this.allowNoneToBeChosen)
-    //             picklistOptions.push({label: "--None--", value: "None"});
+            let picklistOptions = [];
+            if (this.allowNoneToBeChosen)
+                picklistOptions.push({label: "--None--", value: "None"});
 
-    //         // Picklist values
-    //         data.values.forEach(key => {
-    //             picklistOptions.push({
-    //                 label: key.label,
-    //                 value: key.value
-    //             });
-    //         });
+            // Picklist values
+            data.values.forEach(key => {
+                picklistOptions.push({
+                    label: key.label,
+                    value: key.value
+                });
+            });
 
-    //     } else if (error) {
-    //         this.error = JSON.stringify(error);
-    //         console.log("getPicklistValues wire service returned error: " + this.error);
-    //     }
-    // }
+        } else if (error) {
+            this.error = JSON.stringify(error);
+            console.log("getPicklistValues wire service returned error: " + this.error);
+        }
+    }
 
-    // get calculatedObjectAndFieldName() {
-    //     console.log('in getter: objectApiName is: ' + this.objectName);
-    //     console.log('in getter: fieldApiName is: ' + this.fieldName);
+    get calculatedObjectAndFieldName() {
+        console.log('in getter: picklistObjectApiName is: ' + this.picklistObjectName);
+        console.log('in getter: picklistFieldApiName is: ' + this.picklistFieldName);
 
-    //     if ((this.objectName) && (this.fieldName)) {
-    //         console.log('satisfied calculatedObjectAndFieldName test');
-    //         return `${this.objectName}.${this.fieldName}`;
-    //     }
-    //     return undefined;
-    // }
+        if ((this.picklistObjectName) && (this.picklistFieldName)) {
+            console.log('satisfied calculatedObjectAndFieldName test');
+            return `${this.picklistObjectName}.${this.picklistFieldName}`;
+        }
+        return undefined;
+    }
 
     connectedCallback() {
 
@@ -670,9 +674,13 @@ export default class Datatable extends LightningElement {
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.picklistFieldMap = returnResults.picklistFieldMap;
                 this.objectNameLookup = returnResults.objectName;
+                this.picklistObjectName = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
+
+                // Picklist field processing
+                if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
                 // Check for differences in picklist API Values vs Labels
                 if (this.picklistReplaceValues) {
@@ -1008,8 +1016,10 @@ export default class Datatable extends LightningElement {
                 case 'richtext':
                     this.typeAttrib.type = 'richtext';
                     break;
-                case 'combobox':
+                case 'combobox':    // Picklist
                     // To use custom types, information will need to be passed using typesAttributes
+                    this.picklistFieldName = fieldName;
+console.log("🚀 ~ file: datatable.js ~ line 1022 ~ Datatable ~ updateColumns ~ this.picklistFieldName", this.picklistFieldName);
                     this.typeAttributes = {
                         editable: (editAttrib ? editAttrib.edit : false),
                         fieldName: fieldName,
@@ -1017,7 +1027,8 @@ export default class Datatable extends LightningElement {
                         keyFieldValue: {fieldName: this.keyField},
                         picklistValues: this.picklistFieldMap[fieldName]
                     };
-                    wrapAttrib = {}; //For combobox, we need to force wrap = true or the dropdown will be truncated
+console.log("🚀 ~ file: datatable.js ~ line 1030 ~ Datatable ~ updateColumns ~ this.picklistFieldMap[fieldName]", this.picklistFieldMap[fieldName]);
+                    wrapAttrib = {}; // For combobox, we need to force wrap = true or the dropdown will be truncated
                     wrapAttrib.wrap = true;
                     break;                    
                 default:

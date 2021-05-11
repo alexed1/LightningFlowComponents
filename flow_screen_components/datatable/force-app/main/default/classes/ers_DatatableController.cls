@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 04/22/21 -   Eric Smith -    Version 3.2.0   Better handling of number & percent fields from different locales (Provided by GDuboc-hub)
+ * 
  * 04/10/21 -   Eric Smith -    Version 3.1.1   Convert currency field values to the User's currency (Provided by Novarg1)
  * 
  * 02/25/21 -   Eric Smith -    Version 3.0.10  Handle regular Textarea (255 or fewer Characters) as Text
@@ -56,7 +58,7 @@
  * 
  **/
 
-public with sharing class SObjectController2 {
+public with sharing class ers_DatatableController {
 
     // this is just a convenient way to return multiple unique pieces of data to the component
     public class ReturnResults {
@@ -72,6 +74,7 @@ public with sharing class SObjectController2 {
         list<String> timeFieldList;
         list<String> picklistFieldList;
         List<String> currencyFieldList;
+        List<String> numberFieldList;
         String objectName;
         String objectLinkField;
         String timezoneOffset;
@@ -113,6 +116,7 @@ public with sharing class SObjectController2 {
             curRR.timeFieldList = emptyList;
             curRR.picklistFieldList = emptyList;
             curRR.currencyFieldList = emptyList;
+            curRR.numberFieldList = emptyList;
             curRR.rowData = records;
             curRR.objectName = 'EmptyCollection';
             curRR.objectLinkField = '';
@@ -120,7 +124,7 @@ public with sharing class SObjectController2 {
             String objName = records[0].getSObjectType().getDescribe().getName();
             curRR = getColumnData(curRR, fieldNames, objName);
             curRR = getLookupData(curRR, records, curRR.lookupFieldList, objName);
-            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList, curRR.currencyFieldList);
+            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList, curRR.currencyFieldList, curRR.numberFieldList);
             curRR.objectName = objName;
         }
         curRR.timezoneOffset = getTimezoneOffset().format();
@@ -147,6 +151,7 @@ public with sharing class SObjectController2 {
         List<String> timeFields = new List<String>();
         List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
+        List<String> numberFields = new List<String>();
         Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
         String objectLinkField = getNameUniqueField(objName);   // Name (link) Field for the Datatable SObject
         System.debug('*** OBJ/LINK' + objname + '/' + objectLinkField);
@@ -199,6 +204,7 @@ public with sharing class SObjectController2 {
                     currencyFields.add(fieldName);
                 }
                 when 'DECIMAL', 'DOUBLE', 'INTEGER', 'LONG' {
+                    numberFields.add(fieldName);
                     // *** create scale attrib in datatableColumnFieldDescriptor and pass the getScale() values in that way. ***
                 }
                 when 'TIME' {
@@ -231,6 +237,7 @@ public with sharing class SObjectController2 {
         curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;
         curRR.currencyFieldList = currencyFields;
+        curRR.numberFieldList = numberFields;
         return curRR;
     }
 
@@ -274,7 +281,7 @@ public with sharing class SObjectController2 {
     }
 
     @AuraEnabled
-    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields, List<String> currencyFields) {
+    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields, List<String> currencyFields, List<String> numberFields) {
         // Update object to include values for the "Name" field referenced by Lookup fields
         String lookupFieldData = '';
         Map<String,Boolean> firstRecord = new Map<String,Boolean>();
@@ -378,6 +385,9 @@ public with sharing class SObjectController2 {
             }
             when 'PHONE' {
                 return 'phone';
+            }
+            when 'PICKLIST' {       // Custom type for combobox
+                return 'combobox';
             }
             when 'REFERENCE' {
                 return 'lookup';    // Custom type for this component

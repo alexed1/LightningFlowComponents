@@ -19,19 +19,14 @@
     top: 0;    
 }
 
+/* Hide the drag n drop handle and the Edit/Delete actions until the user mouses over a particular button */
 .dragHandle, .buttonAction {
     opacity: 0;
     transition: opacity 0.25s;
     cursor: pointer;
 }
-
 .buttonContainer:hover .dragHandle, .buttonContainer:hover .buttonAction{
     opacity: 1;
-}
-
-.dropzone_final:hover {
-    height: 3em;
-    transition: height 0.25s;
 }
 
 .dropzone {
@@ -42,14 +37,14 @@
 }
 
 .dropzone.dropzone_active {
-    /*border: 1em solid #005fb2;*/
     min-height: 0.5em;
 }
 
-.insertAbove {
-    border-top: 1em solid #005fb2;
+.variantContainer {
+    width: 100%;
+    position: absolute;
 }
 
-.insertBelow {
-    border-bottom: 1em solid #005fb2;
+.slds-modal__content {
+    overflow: initial;
 }

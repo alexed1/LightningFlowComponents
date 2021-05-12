@@ -11,7 +11,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
-import {getPicklistValues} from "lightning/uiObjectInfoApi";
+import {getPicklistValues, getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
@@ -200,9 +200,12 @@ export default class Datatable extends LightningElement {
     // Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
     recordTypeId;
-    picklistObjectName;
-    picklistFieldName;
     allowNoneToBeChosen = true;
+    _picklistData;
+    picklistObjectName;     // XXXXX
+    @api picklistFieldName; // XXXXX
+    picklistObjectField;    // XXXXX
+    error;                  // XXXXX
 
     // Component working variables
     @api savePreEditData = [];
@@ -218,9 +221,9 @@ export default class Datatable extends LightningElement {
     @api numberFieldArray = [];
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
-    @api picklistFieldArray = [];
-    @api picklistReplaceValues = false;
-    @api picklistFieldMap = [];
+    @api picklistFieldArray = [];           // Obsolete
+    @api picklistReplaceValues = false;     // Obsolete
+    // @api picklistFieldMap = {};
     @api picklistMap = [];
     @api edits = [];
     @api isEditAttribSet = false;
@@ -275,31 +278,94 @@ export default class Datatable extends LightningElement {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
 
-    @wire(getPicklistValues, {
-        recordTypeId: "$recordTypeId",
-        fieldApiName: "$calculatedObjectAndFieldName"
+    @wire(getPicklistValuesByRecordType, {
+        objectApiName: '$wireObjectName',
+        recordTypeId: '$recordTypeId'
+    })
+    allPicklistValues({error, data}) {
+        if (data) {
+            this._picklistData = data;
+console.log("🚀 ~ file: datatable.js ~ line 286 ~ Datatable ~ allPicklistValues ~ data", data);
+console.log("🚀 ~ file: datatable.js ~ line 287 ~ Datatable ~ allPicklistValues ~ data.picklistFieldValues", data.picklistFieldValues);
+            // this.picklistFieldMap = {};
+            // let picklistValues = data.picklistFieldValues;
+            // Object.keys(picklistValues).forEach((picklist) => {
+            //     this.picklistFieldMap[picklist] = {};
+            //     if (this.allowNoneToBeChosen) {
+            //         this.picklistFieldMap[picklist]["--None--"] = "";
+            //     }
+            //     picklistValues[picklist].values.forEach((item) => {
+            //         this.picklistFieldMap[picklist][item.value] = item.label;
+            //     });
+            // });
+console.log("🚀 ~ file: datatable.js ~ line 299 ~ Datatable ~ Object.keys ~ this.picklistFieldMap", this.picklistFieldMap);
+        } else if (error) {
+            // this.error = JSON.stringify(error);
+            console.log('getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
+        }
+    }
+
+    get wireObjectName() {
+        if (this.objectName) {
+console.log("🚀 ~ file: datatable.js ~ line 319 ~ Datatable ~ getwireObjectName ~ this.objectName", this.objectName);
+            return this.objectName;
+        }
+        return undefined;
+    }
+
+    @api
+    get picklistFieldMap() {
+        let result;
+        let array;
+        if (this._picklistData) {
+            result = {};
+            let picklistValues = this._picklistData.picklistFieldValues;
+            Object.keys(picklistValues).forEach((picklist) => {
+                result[picklist] = {};
+                array = [];
+                picklistValues[picklist].values.map((item) => {
+                    // result[picklist][item.label] = item.value;
+                    array.push({label: item.label, value: item.value});
+                });
+                array.reverse();
+                array.forEach(item => {
+                    result[picklist][item.label] = item.value;
+                });
+                if (this.allowNoneToBeChosen) {
+                    result[picklist][""] = "--None--";
+                }
+            });
+        }
+        return result;
+    }
+
+    @wire(getPicklistValues, {          // XXXXX
+        // recordTypeId: "$recordTypeId",
+        // fieldApiName: "$picklistObjectField"
     })
     picklistValues({error, data}) {
         if (data) {
 
-            let picklistOptions = [];
-            if (this.allowNoneToBeChosen)
-                picklistOptions.push({label: "--None--", value: "None"});
+            // let picklistOptions = [];
+            // if (this.allowNoneToBeChosen)
+            //     picklistOptions.push({label: "--None--", value: "None"});
 
-            // Picklist values
-            data.values.forEach(key => {
-                picklistOptions.push({
-                    label: key.label,
-                    value: key.value
-                });
-            });
+            // // Picklist values
+            // data.values.forEach(key => {
+            //     picklistOptions.push({
+            //         label: key.label,
+            //         value: key.value
+            //     });
+            // });
+console.log("🚀 ~ file: datatable.js ~ line 292 ~ Datatable ~ picklistValues ~ picklistOptions", picklistOptions);            
 
         } else if (error) {
-            this.error = JSON.stringify(error);
-            console.log("getPicklistValues wire service returned error: " + this.error);
+            // this.error = JSON.stringify(error);
+            // console.log("getPicklistValues wire service returned error: " + this.error);
         }
     }
 
+    @api    // XXXXX
     get calculatedObjectAndFieldName() {
         console.log('in getter: picklistObjectApiName is: ' + this.picklistObjectName);
         console.log('in getter: picklistFieldApiName is: ' + this.picklistFieldName);
@@ -318,6 +384,10 @@ export default class Datatable extends LightningElement {
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatable VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
+
+        // Picklist field processing
+        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+console.log("🚀 ~ file: datatable.js ~ line 365 ~ Datatable ~ connectedCallback ~ this.recordTypeId", this.recordTypeId, this.objectName);
 
         // Decode config mode attributes
         if (this.isConfigMode) { 
@@ -670,30 +740,28 @@ export default class Datatable extends LightningElement {
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
-                this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
-                this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
-                this.picklistFieldMap = returnResults.picklistFieldMap;
+                // this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
+                // this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
+                // this.picklistFieldMap = returnResults.picklistFieldMap;
+console.log("🚀 ~ file: datatable.js ~ line 700 ~ Datatable ~ processDatatable ~ this.picklistFieldMap", this.picklistFieldMap);
                 this.objectNameLookup = returnResults.objectName;
-                this.picklistObjectName = returnResults.objectName;
+                // this.picklistObjectName = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
 
-                // Picklist field processing
-                if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
-
                 // Check for differences in picklist API Values vs Labels
-                if (this.picklistReplaceValues) {
-                    let noMatch = false;
-                    this.picklistFieldArray.forEach(picklist => {
-                        Object.keys(this.picklistFieldMap[picklist]).forEach(map => {                         
-                            if (map != this.picklistFieldMap[picklist][map]) {                              
-                                noMatch = true;
-                            }
-                        });
-                    });
-                    this.picklistReplaceValues = noMatch;
-                }
+                // if (this.picklistReplaceValues) {
+                //     let noMatch = false;
+                //     this.picklistFieldArray.forEach(picklist => {
+                //         Object.keys(this.picklistFieldMap[picklist]).forEach(map => {                         
+                //             if (map != this.picklistFieldMap[picklist][map]) {                              
+                //                 noMatch = true;
+                //             }
+                //         });
+                //     });
+                //     this.picklistReplaceValues = noMatch;
+                // }
 
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';
@@ -737,7 +805,7 @@ export default class Datatable extends LightningElement {
         let timeFields = this.timeFieldArray;
         let percentFields = this.percentFieldArray;
         let numberFields = this.numberFieldArray;
-        let picklistFields = this.picklistFieldArray;
+        // let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
         data.forEach(record => {
@@ -799,17 +867,17 @@ export default class Datatable extends LightningElement {
             }
 
             // Handle replacement of Picklist API Names with Labels
-            if (this.picklistReplaceValues) {
-                picklistFields.forEach(picklist => {
-                    if (record[picklist]) {
-                        let picklistLabels = [];
-                        record[picklist].split(';').forEach(picklistValue => {                    
-                            picklistLabels.push(this.picklistFieldMap[picklist][picklistValue]);
-                        });
-                        record[picklist] = picklistLabels.join(';');
-                    }
-                });
-            }
+            // if (this.picklistReplaceValues) {
+            //     picklistFields.forEach(picklist => {
+            //         if (record[picklist]) {
+            //             let picklistLabels = [];
+            //             record[picklist].split(';').forEach(picklistValue => {                    
+            //                 picklistLabels.push(this.picklistFieldMap[picklist][picklistValue]);
+            //             });
+            //             record[picklist] = picklistLabels.join(';');
+            //         }
+            //     });
+            // }
 
             // If needed, add more fields to datatable records
             // (Useful for Custom Row Actions/Buttons)
@@ -1018,7 +1086,7 @@ export default class Datatable extends LightningElement {
                     break;
                 case 'combobox':    // Picklist
                     // To use custom types, information will need to be passed using typesAttributes
-                    this.picklistFieldName = fieldName;
+// this.picklistObjectField = `$this.picklistObjectName.$fieldName`;
 console.log("🚀 ~ file: datatable.js ~ line 1022 ~ Datatable ~ updateColumns ~ this.picklistFieldName", this.picklistFieldName);
                     this.typeAttributes = {
                         editable: (editAttrib ? editAttrib.edit : false),

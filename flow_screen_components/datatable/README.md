@@ -6,18 +6,22 @@ Lightning Web Component for Flow Screens:       **Datatable**
 
 Additional components packaged with this LWC:
 
-                    Apex Classes:   QueryNRecords
-                                    QueryNRecordsTest
-                                    SObjectController2 
-                                    SObjectController2Test
+                Apex Classes:       ers_QueryNRecords
+                                    ers_QueryNRecordsTest
+                                    ers_DatatableController 
+                                    ers_DatatableControllerTest
 
-                    LWCs:           datatableUtils
-                                    datatableCPE
-                                    richDatatable
+                LWCs:               ers_comboboxColumnType
+                                    ers_customLightningDatatable
+                                    ers_datatableUtils
+                                    ers_datatableCPE
+                                    ers_richTextColumnType
 
-                    Flows:          Datatable_Configuration_Wizard
+                StaticResources:    ers_customLightningDatatableStyles
 
-                    Permission Set: USF Flow Screen Component - Datatable          
+                Flows:              Datatable_Configuration_Wizard
+
+                Permission Set:     USF Flow Screen Component - Datatable          
                                                   
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
@@ -39,8 +43,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.1.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)   
-[Version 3.1.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xFMQAY)
+[Version 3.2.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xGFQAY)   
+[Version 3.2.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xGFQAY)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -51,13 +55,29 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
 
 In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
-    QueryNRecords   
-    SObjectController2  
+    ers_QueryNRecords   
+    ers_DatatableController  
 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes 
+# Release Notes
+
+## 05/03/21 -  Eric Smith -    Version 3.2.0 
+**Updates:** 
+-   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
+    (Does not yet support Dependent picklists nor filtering by Record Type)
+-   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
+-   Renamed components used by Datatable to reduce conflicts and allow easier upgrading from older versions
+
+**Bug Fixes:**
+-   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
+-   Make output attributes available to visibility filters (this was inadvertantly removed from some prior releases)
+-   Better handling of number & percent fields from different locales (Thanks to GDuboc-hub)
+    (Edited percent fields must be the actual number ie: .25 = 25%)
+    (Edited percent fields lose 2 decimal places during the edit from what is defined for the field)
+-   Edited date fields will stay in the User's local time-zone rather than switching to UTC
+
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
 -   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source

@@ -1,10 +1,16 @@
 /** 
  *  Check Validation Flow Action
  * 
- *  Eric Smith - March 2021 - v1.1
+ *  Eric Smith - 4/30/21 - v1.4
+ *  Fixed default for Commit record to be False
+ * 
+ *  Eric Smith - 4/30/21 - v1.3
+ *  Fixed the default values for the optional attributes
  * 
  *  Eric Smith - 3/13/21 - v1.2
  *  Added an attribute to allow for the checking of Duplication Rules
+ *
+ *  Eric Smith - March 2021 - v1.1
  * 
  *  This class temporarily writes a record to an SObject to see if any  
  *  validation errors occurr and passes the errors back to the flow

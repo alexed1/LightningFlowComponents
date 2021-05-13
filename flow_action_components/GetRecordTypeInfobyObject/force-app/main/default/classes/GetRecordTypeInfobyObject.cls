@@ -2,7 +2,7 @@ global with sharing class GetRecordTypeInfobyObject {
     //given a target object name, return a collection of strings representing the available record types
     //great for extracting the Names and IDs of record types available for selection
     // source: https://github.com/alexed1/LightningFlowComponents/blob/master/flow_screen_components/quickChoiceFSCproject/force-app/main/default/classes/GetRecordTypeInfobyObject.cls
-    // adapted by Tamar Erlich, added a toggle to ignore the master record type.
+    // adapted by Tamar Erlich, added a toggle to ignore the master record type and to return the default record type.
     
     
         @InvocableMethod
@@ -18,6 +18,8 @@ global with sharing class GetRecordTypeInfobyObject {
                 List<String> recordTypeNames = new List<String>();
                 List<String> recordTypeIds = new List<String>();
                 String errors;
+                String defaultId;
+                String defaultName;
                 // Send the email you have created.
                 try {
                     
@@ -42,6 +44,10 @@ global with sharing class GetRecordTypeInfobyObject {
                             recordTypeNames.add(curRecord.getName());
                             recordTypeIds.add(curRecord.getRecordTypeId());
                         }
+                        if (curRecord.isDefaultRecordTypeMapping()){
+                            defaultId = curRecord.getRecordTypeId();
+                            defaultName = curRecord.getName();
+                        }
                        
                     }
         
@@ -52,6 +58,8 @@ global with sharing class GetRecordTypeInfobyObject {
                 } 
                 response.recordTypeNames = recordTypeNames;
                 response.recordTypeIds = recordTypeIds;
+                response.defaultRecordTypeId = defaultId;
+                response.defaultRecordTypeName = defaultName;                
                 response.errors = errors;
               
                 responseWrapper.add(response);
@@ -80,9 +88,6 @@ global with sharing class GetRecordTypeInfobyObject {
     
         global class Results {
     
-            public Results() {
-                
-            }
             @InvocableVariable
             global String errors;
     
@@ -91,6 +96,12 @@ global with sharing class GetRecordTypeInfobyObject {
     
             @InvocableVariable
             global List<String> recordTypeIds;
+
+            @InvocableVariable
+            global String defaultRecordTypeId;
+
+            @InvocableVariable
+            global String defaultRecordTypeName;
         }
     
         global class InvocableActionException extends Exception {}

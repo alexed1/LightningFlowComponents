@@ -1,0 +1,24 @@
+<template>
+    <lightning-card title={cardTitle} class="slds-m-horizontal_medium">
+        <div class="slds-m-horizontal_medium slds-size_1-of-4">
+            <lightning-input 
+                required="true"
+                value={startDate} 
+                type="datetime" 
+                name="dateTime" 
+                label={datetimeLabel} 
+                onchange={handleDatetimeChange}>
+            </lightning-input>
+        </div>
+        <div class="slds-m-horizontal_medium slds-size_1-of-4">
+            <lightning-combobox 
+                required="true"
+                name="frequency"
+                label={frequencyLabel}
+                value={frequency}
+                placeholder={frequencyInputLabel}
+                options={frequencyUptionList}
+                onchange={handleChange} ></lightning-combobox>
+        </div>
+    </lightning-card>
+</template>

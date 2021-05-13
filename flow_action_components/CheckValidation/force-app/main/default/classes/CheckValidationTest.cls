@@ -16,7 +16,7 @@ public with sharing class CheckValidationTest {
         accts.add(a2);
         testRequest.inputCollection = accts;
         testRequest.isCommit = true;
-        testRequest.checkDuplicates = true;
+        testRequest.checkDuplicates = false;
         testRequestList.add(testRequest);
         List<CheckValidation.Results> testResultList = CheckValidation.checkForValidationErrors(testRequestList);
         System.assert(!testResultList[0].isError);
@@ -46,5 +46,6 @@ public with sharing class CheckValidationTest {
         testResultList = CheckValidation.checkForValidationErrors(testRequestList);
         System.assert(testResultList[0].isError);
         System.assert(testResultList[0].errorMessages.contains('Required fields are missing'));
+        
     }
 }

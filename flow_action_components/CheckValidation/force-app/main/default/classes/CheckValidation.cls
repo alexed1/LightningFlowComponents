@@ -1,10 +1,19 @@
 /** 
  *  Check Validation Flow Action
  * 
- *  Eric Smith - March 2021 - v1.1
+ *  Eric Smith - 5/5/21 - v1.5
+ *  Disable duplicate check on inserts of more than 150 records to avoid too many DML statements error
+ * 
+ *  Eric Smith - 4/30/21 - v1.4
+ *  Fixed default for Commit record to be False
+ * 
+ *  Eric Smith - 4/30/21 - v1.3
+ *  Fixed the default values for the optional attributes
  * 
  *  Eric Smith - 3/13/21 - v1.2
  *  Added an attribute to allow for the checking of Duplication Rules
+ *
+ *  Eric Smith - March 2021 - v1.1
  * 
  *  This class temporarily writes a record to an SObject to see if any  
  *  validation errors occurr and passes the errors back to the flow
@@ -92,8 +101,9 @@ global inherited sharing class CheckValidation {
             SObject inputRecord = req.inputRecord;
             List<SObject> inputCollection = req.inputCollection;
             String recordField = req.recordField;
-            Boolean isCommit = req.isCommit == null ? false : true;
-            Boolean allowSave = !req.checkDuplicates;
+            Boolean isCommit = (req.isCommit != true) ? false : true;
+            Boolean isCheckDuplicates = (req.checkDuplicates != true) ? false : true;
+            Boolean allowSave = !isCheckDuplicates;
 
             // Process input attributes
             if (inputRecord == null) {
@@ -161,38 +171,83 @@ global inherited sharing class CheckValidation {
 
                 // Check for Insert Errors
                 if (insertCollection.size() > 0) {
-                    // Process inserts individually so duplicate rules will fire
-                    for (SObject ir : insertCollection) {
-                        recCounter = 0;
-                        Database.SaveResult sr = Database.insert(ir, dml);
-                        recordIdentifier = recordFieldIdentifierList.get(recCounter);
-                        recCounter ++;
-                        if (sr.isSuccess()) {
-                            if (isCommit) {
-                                if (isFirst) {
-                                    isFirst = false;
-                                    firstInsertedId = sr.getId();
+
+                    // Disable individual inserts if insertCollection size is > 150
+                    if (insertCollection.size() > 150) {
+                        isCheckDuplicates = false;
+                    }
+
+                    if (isCheckDuplicates) {
+
+                        // Process inserts individually so duplicate rules will fire
+                        for (SObject ir : insertCollection) {
+                            recCounter = 0;
+                            Database.SaveResult sr = Database.insert(ir, dml);
+                            recordIdentifier = recordFieldIdentifierList.get(recCounter);
+                            recCounter ++;
+                            if (sr.isSuccess()) {
+                                if (isCommit) {
+                                    if (isFirst) {
+                                        isFirst = false;
+                                        firstInsertedId = sr.getId();
+                                    }
+                                    insertedIdCollection.add(sr.getId());
                                 }
-                                insertedIdCollection.add(sr.getId());
-                            }
-                            System.debug ('Insert Record Passed Validation: ' + sr.getId() + ' ' + recordIdentifier);
-                        } else {
-                            errorFlag = true;
-                            for (Database.Error err : sr.getErrors()) {
-                                System.debug ('New Record Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
-                                if (err.getStatusCode() === StatusCode.DUPLICATES_DETECTED) {                               
-                                    Datacloud.DuplicateResult duplicateResult = ((Database.DuplicateError)err).getDuplicateResult();
-                                    errorMessages += 'Duplicate Rule Error: ' + recordIdentifier + ' [' + duplicateResult.getDuplicateRule() + ']\n';
-                                    System.debug('Duplicate Rule Error: ' + duplicateResult.getDuplicateRule());
-                                } else {
-                                    errorMessages += 'New Record Error: ' + recordIdentifier + ' [' + err.getMessage() + ']\n';
+                                System.debug ('Insert Record Passed Validation: ' + sr.getId() + ' ' + recordIdentifier);
+                            } else {
+                                errorFlag = true;
+                                for (Database.Error err : sr.getErrors()) {
+                                    System.debug ('New Record Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                                    if (err.getStatusCode() === StatusCode.DUPLICATES_DETECTED) {                               
+                                        Datacloud.DuplicateResult duplicateResult = ((Database.DuplicateError)err).getDuplicateResult();
+                                        errorMessages += 'Duplicate Rule Error: ' + recordIdentifier + ' [' + duplicateResult.getDuplicateRule() + ']\n';
+                                        System.debug('Duplicate Rule Error: ' + duplicateResult.getDuplicateRule());
+                                    } else {
+                                        errorMessages += 'New Record Error: ' + recordIdentifier + ' [' + err.getMessage() + ']\n';
+                                    }
                                 }
                             }
                         }
+
+                    } else {
+
+                        // Check for Insert Collection Errors
+                        if (insertCollection.size() > 0) {
+                            try {
+                                Database.SaveResult[] srListInsert = Database.insert(insertCollection, false);
+                                recCounter = 0;
+                                for (Database.SaveResult sr : srListInsert) {
+                                    recordIdentifier = recordFieldIdentifierList.get(recCounter);
+                                    recCounter ++;            
+                                    if (sr.isSuccess()) {
+                                        if (isCommit) {
+                                            if (isFirst) {
+                                                isFirst = false;
+                                                firstInsertedId = sr.getId();
+                                            }
+                                            insertedIdCollection.add(sr.getId());
+                                        }
+                                        System.debug ('Insert Record Passed Validation: ' + sr.getId() + ' ' + recordIdentifier);
+                                    } else {
+                                        errorFlag = true;
+                                        for (Database.Error err : sr.getErrors()) {
+                                            errorMessages += recordIdentifier + ' [' + err.getMessage() + ']\n';
+                                            System.debug ('Record Insert Validation Error: ' + err.getStatusCode() + ' - ' + err.getMessage());
+                                        }
+                                    }
+                                }
+                            }
+                            catch (exception e) {
+                                errorFlag = true;
+                                errorMessages += 'Insert Error: ' + e.getMessage();
+                                System.debug ('Insert Error: ' + e.getMessage());
+                            }
+                        }
+
                     }
                 }
 
-                // Check for Update Errors
+                // Check for Update Collection Errors
                 if (updateCollection.size() > 0) {
                     try {
                         Database.SaveResult[] srListUpdate = Database.update(updateCollection, false);

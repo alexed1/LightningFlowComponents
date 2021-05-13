@@ -8,12 +8,13 @@
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
 
-import { LightningElement, api, track } from 'lwc';
-import getReturnResults from '@salesforce/apex/SObjectController2.getReturnResults';
-// import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
-import { getConstants } from 'c/datatableUtils';
+import { LightningElement, api, track, wire } from 'lwc';
+import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import {getPicklistValues} from "lightning/uiObjectInfoApi";
+import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -196,6 +197,9 @@ export default class Datatable extends LightningElement {
     @track inputType = 'text';
     @track inputFormat = null;    
 
+    // Picklist variables
+    masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
+
     // Component working variables
     @api savePreEditData = [];
     @api editedData = [];
@@ -207,6 +211,7 @@ export default class Datatable extends LightningElement {
     @api lookupFieldArray = [];
     @api columnArray = [];
     @api percentFieldArray = [];
+    @api numberFieldArray = [];
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
     @api picklistFieldArray = [];
@@ -265,6 +270,42 @@ export default class Datatable extends LightningElement {
     get linkTarget() {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
+
+    // @wire(getPicklistValues, {
+    //     recordTypeId: "$recordTypeId",
+    //     fieldApiName: "$calculatedObjectAndFieldName"
+    // })
+    // picklistValues({error, data}) {
+    //     if (data) {
+
+    //         let picklistOptions = [];
+    //         if (this.allowNoneToBeChosen)
+    //             picklistOptions.push({label: "--None--", value: "None"});
+
+    //         // Picklist values
+    //         data.values.forEach(key => {
+    //             picklistOptions.push({
+    //                 label: key.label,
+    //                 value: key.value
+    //             });
+    //         });
+
+    //     } else if (error) {
+    //         this.error = JSON.stringify(error);
+    //         console.log("getPicklistValues wire service returned error: " + this.error);
+    //     }
+    // }
+
+    // get calculatedObjectAndFieldName() {
+    //     console.log('in getter: objectApiName is: ' + this.objectName);
+    //     console.log('in getter: fieldApiName is: ' + this.fieldName);
+
+    //     if ((this.objectName) && (this.fieldName)) {
+    //         console.log('satisfied calculatedObjectAndFieldName test');
+    //         return `${this.objectName}.${this.fieldName}`;
+    //     }
+    //     return undefined;
+    // }
 
     connectedCallback() {
 
@@ -509,9 +550,9 @@ export default class Datatable extends LightningElement {
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
         } else {
-            // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         }    
         const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
         selected.forEach(record => {
@@ -566,6 +607,10 @@ export default class Datatable extends LightningElement {
                         this.percentFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'percent';
                         break;
+                    case 'number':
+                        this.numberFieldArray.push(this.basicColumns[t.column].fieldName);
+                        this.basicColumns[t.column].type = 'number';
+                        break;                          
                     case 'time':
                         this.timeFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'time';
@@ -605,7 +650,7 @@ export default class Datatable extends LightningElement {
             } else { 
                 data = (this.tableData) ? JSON.parse(this.tableDataString) : [];
                 data.forEach(record => { 
-                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from SObjectController2
+                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
                 });
             }
 
@@ -619,6 +664,7 @@ export default class Datatable extends LightningElement {
                 this.recordData = [...returnResults.rowData];
                 this.lookups = returnResults.lookupFieldList;
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
+                this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
@@ -682,6 +728,7 @@ export default class Datatable extends LightningElement {
         let lufield = '';
         let timeFields = this.timeFieldArray;
         let percentFields = this.percentFieldArray;
+        let numberFields = this.numberFieldArray;
         let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
@@ -699,8 +746,14 @@ export default class Datatable extends LightningElement {
 
             // Store percent field data as value/100
             percentFields.forEach(pct => {
-                record[pct] = record[pct]/100;
+                // record[pct] = record[pct]/100;
+                record[pct] = parseFloat(record[pct])/100;
             });
+
+            // Convert and store number field data
+            numberFields.forEach(nb => {
+                record[nb] = parseFloat(record[nb]);
+            })
 
             // Flatten returned data
             lookupFields.forEach(lookup => {
@@ -930,7 +983,7 @@ export default class Datatable extends LightningElement {
             switch(type) {
                 case 'date':
                 case 'date-local':
-                    this.typeAttributes = { year:'numeric', month:'numeric', day:'numeric' }
+                    // this.typeAttributes = { year:'numeric', month:'numeric', day:'numeric' } // Default is User's locale formatting
                     break;
                 case 'datetime':
                     type = 'date';
@@ -949,12 +1002,24 @@ export default class Datatable extends LightningElement {
                         let minDigits = (this.scaleAttrib) ? this.scaleAttrib.scale : scale;
                         this.typeAttributes = { minimumFractionDigits: minDigits };      // JSON Version
                     } else {
-                        this.typeAttributes = { minimumFractionDigits:scale };   // Show the number of decimal places defined for the field
+                        this.typeAttributes = { minimumFractionDigits: scale };   // Show the number of decimal places defined for the field
                     }
                     break;
                 case 'richtext':
                     this.typeAttrib.type = 'richtext';
                     break;
+                case 'combobox':
+                    // To use custom types, information will need to be passed using typesAttributes
+                    this.typeAttributes = {
+                        editable: (editAttrib ? editAttrib.edit : false),
+                        fieldName: fieldName,
+                        keyField: this.keyField,
+                        keyFieldValue: {fieldName: this.keyField},
+                        picklistValues: this.picklistFieldMap[fieldName]
+                    };
+                    wrapAttrib = {}; //For combobox, we need to force wrap = true or the dropdown will be truncated
+                    wrapAttrib.wrap = true;
+                    break;                    
                 default:
                     
             }
@@ -996,7 +1061,7 @@ export default class Datatable extends LightningElement {
 
             // Update TypeAttribute attribute overrides by column
             this.parseAttributes('type',this.typeAttribs,columnNumber);
-            if (this.typeAttrib.type == 'date-local' && this.typeAttributes) {      // If the user wants to override the default attributes, switch back to date (also switches to UTC time)
+            if (this.typeAttrib.type == 'date-local' && Object.keys(this.typeAttributes).length > 0) {      // If the user wants to override the default attributes, switch back to date (also switches to UTC time)
                 this.typeAttrib.type = 'date';
             }
 
@@ -1094,8 +1159,32 @@ export default class Datatable extends LightningElement {
         });
     }
 
+    //handle change on combobox
+    handleComboValueChange(event) {
+        //Handle combobox value change separately if required
+        event.stopPropagation();
+
+        //Manipulate the datatable draftValues
+        //Find if there is existing draftValue that matches the keyField
+        let draftValues = this.template.querySelector('c-ers_custom-lightning-datatable').draftValues;
+        let eventDraftValue = event.detail.draftValues[0]
+        let foundIndex = draftValues.findIndex(value => value[this.keyField] == eventDraftValue[this.keyField]);
+
+        //If found, combine the draftValue
+        if(foundIndex > -1) {
+            draftValues[foundIndex] = {...draftValues[foundIndex], ...eventDraftValue};
+        } else {
+            //else, add the new draft value
+            draftValues.push(eventDraftValue);
+        }
+
+        this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = draftValues;
+
+        //call the usual handleCellChange        
+        this.handleCellChange(event);
+    }
+    
     handleCellChange(event) {
-// console.log("🚀 ~ file: datatable.js ~ line 1076 ~ Datatable ~ handleCellChange ~ event", event.detail.draftValues);
         let rowKey =  event.detail.draftValues[0][this.keyField];
 // TODO - Add validation logic here (and change cellattribute to show red background?)
 // TODO - Build collection of errors by Row/Field, Check & Clear if error is resolved, SuppressBottomBar and show messages instead if there are any errors in the collection
@@ -1109,7 +1198,6 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
-// console.log("🚀 ~ file: datatable.js ~ line 1087 ~ Datatable ~ handleSave ~ draftValues", draftValues);
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1129,10 +1217,11 @@ export default class Datatable extends LightningElement {
             if (edraft != undefined) {
                 let efieldNames = Object.keys(edraft);
                 efieldNames.forEach(ef => {
-                    // if(this.percentFieldArray.indexOf(ef) != -1) {
-                    //     eitem[ef] = Number(edraft[ef])*100; // Percent field
-                    // }
-                    eitem[ef] = edraft[ef];
+                    if(this.percentFieldArray.indexOf(ef) != -1) {
+                        eitem[ef] = Number(edraft[ef])*100; // Percent field
+                    } else {
+                        eitem[ef] = edraft[ef];
+                    }
                 });
 
                 // Add/update edited record to output collection
@@ -1146,6 +1235,20 @@ export default class Datatable extends LightningElement {
                     });
                     this.outputEditedRows = [...otherEditedRows];
                 } 
+
+                // Correct the data formatting, so that decimal numbers are recognized no matter the Country-related decimal-format 
+                let field = eitem
+                let numberFields = this.numberFieldArray;
+                numberFields.forEach(nb => {
+                    field[nb] = parseFloat(field[nb]);
+                });
+
+                // Correct formatting for percent fields
+                let pctfield = this.percentFieldArray;
+                pctfield.forEach(pct => {
+                    field[pct] = parseFloat(field[pct]);
+                });
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
@@ -1155,6 +1258,8 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];            // Reset the current table values
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
+            //clear draftValues. this is required for custom column types that need to specifically write into draftValues
+            this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
         }
     }
 
@@ -1178,10 +1283,10 @@ export default class Datatable extends LightningElement {
     updateNumberOfRowsSelected(currentSelectedRows) {
         // Handle updating output attribute for the number of selected rows
         this.numberOfRowsSelected = currentSelectedRows.length;
-        // this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
-        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
         this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn;
     }
 
@@ -1191,7 +1296,7 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = this.selectedRows;
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
-        // this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
     }
 
     updateColumnSorting(event) {
@@ -1371,6 +1476,8 @@ export default class Datatable extends LightningElement {
                 return 'number';
             case 'percent':
                 return 'number';
+            case 'number':
+                return 'number';                
             case 'text':
                 return 'text';
             default:
@@ -1706,16 +1813,12 @@ export default class Datatable extends LightningElement {
 /*         // Validate Edited Rows
         let errorMessage = '';
         this.outputEditedRows.forEach(erow => {
-            console.log("🚀 ~ file: datatable.js ~ line 1679 ~ Datatable ~ validate ~ erow", erow);
             let fieldNames = Object.keys(erow);
             fieldNames.forEach(fld => {
-                console.log("🚀 ~ file: datatable.js ~ line 1682 ~ Datatable ~ validate ~ fld", fld, erow[fld]);
                 const basic = this.basicColumns.find(b => b.fieldName == fld);
-                console.log("🚀 ~ file: datatable.js ~ line 1684 ~ Datatable ~ validate ~ basic", basic);
                 if (basic?.type.includes("text")) {
                     if (erow[fld]?.length > basic.length) {
                         let errorRow = this.mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
-                        console.log("🚀 ~ file: datatable.js ~ line 1689 ~ Datatable ~ validate ~ errorRow", errorRow);
                         errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
                     }
                 }

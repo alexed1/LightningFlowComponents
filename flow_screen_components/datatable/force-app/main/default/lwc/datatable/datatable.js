@@ -1356,7 +1356,8 @@ console.log("🚀 ~ file: datatable.js ~ line 1030 ~ Datatable ~ updateColumns ~
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
-        this.outputSelectedRows = [...currentSelectedRows];       
+        this.outputSelectedRows = [...currentSelectedRows];
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));       
     }
 
     updateNumberOfRowsSelected(currentSelectedRows) {

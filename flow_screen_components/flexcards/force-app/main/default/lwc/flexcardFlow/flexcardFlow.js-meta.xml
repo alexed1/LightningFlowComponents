@@ -12,7 +12,7 @@
             <property name="icon" label="Icon" type="String" description="Icon name for example standard:account"/>
             <propertyType name="T" extends="SObject" label="Flexcard Object API Name" description="Specify the API Name of the SObject to use in the Flexcard"/>
             <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly" description="The SObject API Name used to query fields and values"/>
-            <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
+            <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" required="true" description="Record Collection variable containing the records to display in the flexcard."/>
             <property name="visibleFieldNames" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
             <property name="visibleFlowNames" label="Visible Flow Names" type="String" description="Show which flow?"/>
             <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>

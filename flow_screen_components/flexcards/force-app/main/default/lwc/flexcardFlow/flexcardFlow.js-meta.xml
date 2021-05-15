@@ -18,6 +18,7 @@
             <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>
             <property name="isClickable" role="inputOnly" label="isClickable" type="Boolean" default="false" description="Set as true if you wish to select individual cards for action further downstream in flow default is false"/>
             <property name="Cardcss" label="Card CSS" default="card" type="String"/>
+            <property name="headerStyle" label="Header Style" type="String" description="Add your own style attribute to the card headers ie. background-color:red;"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -46,6 +46,7 @@ export default class Datatable extends LightningElement {
     @api outputEditedRows = [];
     @api tableIcon;
     @api tableLabel;
+    @api recordTypeId;
     
     @api 
     get isRequired() {
@@ -129,6 +130,12 @@ export default class Datatable extends LightningElement {
     }
     @api cb_isUserDefinedObject;
 
+    @api 
+    get allowNoneToBeChosen() {
+        return (this.cb_allowNoneToBeChosen == CB_TRUE) ? true : false;
+    }
+    @api cb_allowNoneToBeChosen = CB_TRUE;
+
     @api tableDataString = [];
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
@@ -197,10 +204,8 @@ export default class Datatable extends LightningElement {
     @track inputType = 'text';
     @track inputFormat = null;    
 
-    // Picklist variables
+    // Other Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
-    recordTypeId;
-    allowNoneToBeChosen = true;
     _picklistData;
 
     // Component working variables

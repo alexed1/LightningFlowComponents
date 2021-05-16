@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 05/16/21 -   Eric Smith -    Version 3.2.1   Removed Picklist field handling - now being processed in datatable.js
+ * 
  * 04/22/21 -   Eric Smith -    Version 3.2.0   Better handling of number & percent fields from different locales (Provided by GDuboc-hub)
  * 
  * 04/10/21 -   Eric Smith -    Version 3.1.1   Convert currency field values to the User's currency (Provided by Novarg1)
@@ -68,11 +70,11 @@ public with sharing class ers_DatatableController {
         List<String> lookupFieldList;
         Map<String, Map<Id, SObject>> dataMap;
         Map<String, String> objNameFieldMap;
-        Map<String, Map<String,String>> picklistFieldMap;   // Field API Name, <Picklist Value, Picklist Label>
+        // Map<String, Map<String,String>> picklistFieldMap;   // Field API Name, <Picklist Value, Picklist Label>
         List<String> percentFieldList;
         List<String> noEditFieldList;
         list<String> timeFieldList;
-        list<String> picklistFieldList;
+        // list<String> picklistFieldList;
         List<String> currencyFieldList;
         List<String> numberFieldList;
         String objectName;
@@ -114,7 +116,7 @@ public with sharing class ers_DatatableController {
             curRR.percentFieldList = emptyList;
             curRR.noEditFieldList = emptyList;
             curRR.timeFieldList = emptyList;
-            curRR.picklistFieldList = emptyList;
+            // curRR.picklistFieldList = emptyList;
             curRR.currencyFieldList = emptyList;
             curRR.numberFieldList = emptyList;
             curRR.rowData = records;
@@ -149,10 +151,10 @@ public with sharing class ers_DatatableController {
         List<String> percentFields = new List<String>();
         List<String> noEditFields = new List<String>();
         List<String> timeFields = new List<String>();
-        List<String> picklistFields = new List<String>();
+        // List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
         List<String> numberFields = new List<String>();
-        Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
+        // Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
         String objectLinkField = getNameUniqueField(objName);   // Name (link) Field for the Datatable SObject
         System.debug('*** OBJ/LINK' + objname + '/' + objectLinkField);
 
@@ -211,15 +213,15 @@ public with sharing class ers_DatatableController {
                     timeFields.add(fieldName);
                 }
                 when 'PICKLIST', 'MULTIPICKLIST' {
-                    picklistFields.add(dfr.getName());
-                    if (!noEditFields.contains(fieldName)) {
-                        noEditFields.add(fieldName);
-                    }
-                    Map<String, String> valueLabelPair = new Map<String, String>();
-                    for(Schema.PicklistEntry ple : dfr.getPicklistValues()) {
-                        valueLabelPair.put(ple.getValue(), ple.getLabel());
-                    }
-                    picklistFieldLabels.put(dfr.getName(), valueLabelPair);
+                    // picklistFields.add(dfr.getName());
+                    // if (!noEditFields.contains(fieldName)) {
+                    //     noEditFields.add(fieldName);
+                    // }
+                    // Map<String, String> valueLabelPair = new Map<String, String>();
+                    // for(Schema.PicklistEntry ple : dfr.getPicklistValues()) {
+                    //     valueLabelPair.put(ple.getValue(), ple.getLabel());
+                    // }
+                    // picklistFieldLabels.put(dfr.getName(), valueLabelPair);
                 }
                 when else {
                 }
@@ -233,8 +235,8 @@ public with sharing class ers_DatatableController {
         curRR.percentFieldList = percentFields;
         curRR.noEditFieldList = noEditFields;
         curRR.timeFieldList = timeFields;
-        curRR.picklistFieldList = picklistFields;
-        curRR.picklistFieldMap = picklistFieldLabels;
+        // curRR.picklistFieldList = picklistFields;
+        // curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;
         curRR.currencyFieldList = currencyFields;
         curRR.numberFieldList = numberFields;

@@ -9,10 +9,11 @@ h1 {
      color: black   ;
      text-align: left;
      overflow-wrap: break-word;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
       }
       
 .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
       }
       
 .clickedCard {
@@ -22,10 +23,11 @@ h1 {
      color: black   ;
      text-align: left;
      overflow-wrap: break-word;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
        }
 
 .clickedCard:hover {
-      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
        }
 
 .fc-body {

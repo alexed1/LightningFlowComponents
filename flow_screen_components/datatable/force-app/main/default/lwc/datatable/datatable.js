@@ -285,14 +285,20 @@ export default class Datatable extends LightningElement {
     allPicklistValues({error, data}) {
         if (data) {
             this._picklistData = data;
+            if (data != undefined) {
+                // Update row data for lookup, time, picklist and percent fields
+                this.updateDataRows();
+                // Custom column processing
+                this.updateColumns();
+            }
         } else if (error) {
             console.log('getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
         }
     }
 
     get wireObjectName() {
-        if (this.objectName) {
-            return this.objectName;
+        if (this.objectNameLookup) {
+            return this.objectNameLookup;
         }
         return undefined;
     }
@@ -695,11 +701,11 @@ export default class Datatable extends LightningElement {
                 console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
                 
+                // *** Moved to @wire ***
                 // Update row data for lookup, time, picklist and percent fields
-                this.updateDataRows();
-
+                // this.updateDataRows();
                 // Custom column processing
-                this.updateColumns();
+                // this.updateColumns();
 
                 // Pass object name back to wizard
                 this.wizSObject = this.objectNameLookup;
@@ -865,7 +871,7 @@ export default class Datatable extends LightningElement {
                     editAttrib.edit = false;
                 }
             }
-            
+
             // Some data types are not editable
             if(editAttrib) {
                 switch (type) {

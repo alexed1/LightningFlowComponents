@@ -68,7 +68,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Picklist values can now be restricted to a single record type 
 
 **Bug Fixes:**
--   Text formula fields will now wrap correctly (This regressed in v3.2.0)
+-   Text formula fields will now wrap correctly (This had regressed in v3.2.0)
 -   Output Selected Rows is no longer null if the screen containing the Datatable also has a Section
 
 ## 05/03/21 -  Eric Smith -    Version 3.2.0 

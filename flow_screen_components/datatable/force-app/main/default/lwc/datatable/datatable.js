@@ -327,7 +327,7 @@ console.log("🚀 ~ file: datatable.js ~ line 319 ~ Datatable ~ getwireObjectNam
                     // result[picklist][item.label] = item.value;
                     array.push({label: item.label, value: item.value});
                 });
-                array.reverse();
+                array.reverse();    // Since the .push adds to the front of the list, we need to reverse the list to keep the original system picklist order
                 array.forEach(item => {
                     result[picklist][item.label] = item.value;
                 });

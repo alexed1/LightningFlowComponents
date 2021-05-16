@@ -330,6 +330,9 @@ export default class Datatable extends LightningElement {
         console.log("%cdatatable VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
 
+        // Picklist field processing
+        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+        
         // Decode config mode attributes
         if (this.isConfigMode) { 
             this.columnAlignments = decodeURIComponent(this.columnAlignments);
@@ -685,9 +688,6 @@ export default class Datatable extends LightningElement {
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
-
-                // Picklist field processing
-                if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';

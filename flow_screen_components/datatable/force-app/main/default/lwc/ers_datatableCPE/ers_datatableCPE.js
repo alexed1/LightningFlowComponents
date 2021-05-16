@@ -388,7 +388,7 @@ export default class ers_datatableCPE extends LightningElement {
         recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Record Type Id for Picklist Values',
             helpText: "Specify a Record Type Id value here to restrict the values in editable picklists to be only those supported by the specified Record Type. \n" +
             "This selection will apply to all records in the table no matter their individual Record Type."},
-        allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Include a --None-- option in each Picklist', 
+        allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Include a --None-- Picklist Option', 
             helpText: 'Select if you want editable picklist fields to include a --None-- (null) option. (default=true)'},
         cb_allowNoneToBeChosen: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
     };

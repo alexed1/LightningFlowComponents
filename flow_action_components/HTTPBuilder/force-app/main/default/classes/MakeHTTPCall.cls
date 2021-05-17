@@ -82,7 +82,7 @@ public with sharing class MakeHTTPCall {
             system.debug('setMethod : '+ curRequest.Method.toUpperCase());
             
             //set Endpoint
-             List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(Params, List<QueryParams>.class);
+             List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(curRequest.Params, List<QueryParams>.class);
             String url = curRequest.Endpoint+'?';
             for (QueryParams param:listParams){
                 if(listParams.size()>1){

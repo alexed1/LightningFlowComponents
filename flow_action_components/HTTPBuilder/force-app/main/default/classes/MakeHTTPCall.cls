@@ -79,8 +79,18 @@ public with sharing class MakeHTTPCall {
             system.debug('setMethod : '+ curRequest.Method.toUpperCase());
             
             //set Endpoint
-            req.setEndpoint(curRequest.Endpoint);
-            system.debug('setEndpoint : '+ curRequest.Endpoint);
+             List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(Params, List<QueryParams>.class);
+            String url = curRequest.Endpoint+'?';
+            for (QueryParams param:listParams){
+                if(listParams.size()>1){
+                    queryPar += param.key+'='+param.value+'&';
+                 
+                }else{
+                    queryPar += param.key+'='+param.value;
+                }
+                system.debug('setEndpoint : '+ curRequest.Endpoint);
+            }
+            req.setEndpoint(url);
             
             //set Body, there's possibility Body is null
             if (curRequest.BodyAsBlob == True && curRequest.BodyAsBlob != Null){
@@ -155,5 +165,9 @@ public with sharing class MakeHTTPCall {
             ListHeaders.add(singleHeader);
         }
         return ListHeaders;
+    }
+    private class QueryParams{
+        private String key;
+        private String value;
     }
 }

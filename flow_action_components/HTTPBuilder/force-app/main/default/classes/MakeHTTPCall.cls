@@ -86,10 +86,10 @@ public with sharing class MakeHTTPCall {
             String url = curRequest.Endpoint+'?';
             for (QueryParams param:listParams){
                 if(listParams.size()>1){
-                    queryPar += param.key+'='+param.value+'&';
+                    url += param.key+'='+param.value+'&';
                  
                 }else{
-                    queryPar += param.key+'='+param.value;
+                    url += param.key+'='+param.value;
                 }
                 system.debug('setEndpoint : '+ curRequest.Endpoint);
             }

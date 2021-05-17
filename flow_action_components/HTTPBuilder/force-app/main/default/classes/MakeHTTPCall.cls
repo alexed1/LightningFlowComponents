@@ -32,6 +32,9 @@ public with sharing class MakeHTTPCall {
         @InvocableVariable(label='Timeout in millisecods, default is 10000ms'
                            description='Timeout in milliseconds, default is 10000ms/10s')
         public Integer Timeout;
+        @InvocableVariable(label='Params e.g => [{“key”:”queryObject”,”value”:”Account”},{“key”:”queryField”,”value”:”Rating”}]'
+                           description='e.g => [{“key”:”queryObject”,”value”:”Account”},{“key”:”queryField”,”value”:”Rating”}]')
+        public String Params;
         @InvocableVariable(label='Headers e.g => [{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}]'
                            description='e.g => [{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}]')
         public String Headers;

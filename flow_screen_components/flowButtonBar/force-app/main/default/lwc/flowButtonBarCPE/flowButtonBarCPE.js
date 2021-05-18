@@ -96,7 +96,7 @@ export default class FlowButtonBarCPE extends LightningElement {
     };
 
     initializeValues() {
-        console.log('in initializeValues');
+        // console.log('in initializeValues');
         if (this._values && this._values.length) {
             this._values.forEach(curInputParam => {
                 this.log(curInputParam);
@@ -385,7 +385,6 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     handleComboboxChange(event) {
         if (event.detail) {
-            console.log(event.currentTarget.name);
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, event.detail.value, DATA_TYPE.STRING);
         }
     }
@@ -400,7 +399,6 @@ export default class FlowButtonBarCPE extends LightningElement {
             if (name === 'doNotTransitionOnClick' && value) {
                 for (let button of this.buttons) {
                     button.variant = VARIANTS.LIST.NEUTRAL;//this.getObjectFromInput(BUTTON_STYLES).value;
-                    console.log('updated button: ', JSON.stringify(button));
                 }
                 this.reorderButtons();
             }
@@ -408,9 +406,7 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     handleInputValueChange(event) {
-        console.log('in handleInputValueChange');
         if (event.detail && event.currentTarget.name) {
-            console.log(event.currentTarget.name, event.detail.value);
             let dataType = DATA_TYPE.STRING;
             if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
             if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
@@ -455,7 +451,7 @@ export default class FlowButtonBarCPE extends LightningElement {
         let dzIndex = this.activeDropZoneIndex;
         if (originIndex == dzIndex || originIndex == (dzIndex - 1)) {
             // ignore, it's not actually moving
-            console.log('false alarm');
+            // console.log('false alarm');
         } else {
             //console.log('in handleContainerDrop: moving ' + originIndex + ' into dropzone #' + dzIndex);
             let draggedButton = this.buttons.splice(originIndex, 1);
@@ -492,18 +488,15 @@ export default class FlowButtonBarCPE extends LightningElement {
             class: event.currentTarget.className
         }
         */
-        console.log('in handleStyleSelect', event.currentTarget.variant);
         //this.selectedButton.variant = event.currentTarget.variant;
         this.selectedButton.variant = VARIANTS.getVariant(event.currentTarget.variant);
     }
 
     handleSelectIcon(event) {
-        console.log('in handle select icon', event.detail);
         this.selectedButton.iconName = event.detail;
     }
 
     handleIconPositionChange(event) {
-        console.log('in handleIconPositionChange', event.detail.value);
         this.selectedButton.iconPosition = event.detail.value;
     }
 

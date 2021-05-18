@@ -59,7 +59,7 @@ public with sharing class MakeHTTPCall {
         public String Error_message;
     }
     
-    @InvocableMethod(label='Invocable Callout' description='Invocable Callout')
+    @InvocableMethod(label='Invocable Callout' description='Invocable Callout' configurationEditor='c:MakeHTTPCallCPE')
     public static List<Response> Invoke (List<Request> requests) {
         List<Response> responseList = new List<Response>();
         String[] AllowedMethods = new String[]{'GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'TRACE', 'CONNECT', 'HEAD', 'OPTIONS'};
@@ -82,17 +82,25 @@ public with sharing class MakeHTTPCall {
             system.debug('setMethod : '+ curRequest.Method.toUpperCase());
             
             //set Endpoint
-             List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(Params, List<QueryParams>.class);
-            String url = curRequest.Endpoint+'?';
-            for (QueryParams param:listParams){
-                if(listParams.size()>1){
-                    url += param.key+'='+param.value+'&';
-                 
-                }else{
-                    url += param.key+'='+param.value;
+            String url = curRequest.Endpoint;
+            if(String.isNotEmpty(curRequest.Params)) {
+                List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(curRequest.Params, List<QueryParams>.class);
+                //url+='?';
+                List<String> paramsList = new List<string>();
+                for (QueryParams param:listParams){
+                    if(String.isNotBlank( param.key) && String.isNotBlank( param.key)) {
+                        paramsList.add(param.key+'='+EncodingUtil.urlEncode(param.value, 'UTF-8'));
+                    }
+                       
+                    
+
+                    
                 }
-                system.debug('setEndpoint : '+ curRequest.Endpoint);
+                if(paramsList.size() > 0) {
+                    url += '?' + String.join(paramsList, '&');
+                }
             }
+            system.debug('setEndpoint : '+ url);
             req.setEndpoint(url);
             
             //set Body, there's possibility Body is null
@@ -122,7 +130,7 @@ public with sharing class MakeHTTPCall {
                 system.debug('setCompressed succeed');
             }
             
-            system.debug('Ready to Callout...');
+            system.debug('Ready to Callout...' + req);
             
             try {
                 HttpResponse res = http.send(req);

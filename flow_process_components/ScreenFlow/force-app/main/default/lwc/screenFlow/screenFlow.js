@@ -13,6 +13,7 @@ export default class ScreenFlow extends LightningElement {
             if (event.data.flowOrigin !== this.url) {
                 return;
             }
+
             const moveEvt = new CustomEvent('flowstatuschange', {
                 detail: {
                     flowStatus: event.data.flowStatus,
@@ -22,6 +23,7 @@ export default class ScreenFlow extends LightningElement {
                 }
             });
             this.dispatchEvent(moveEvt);
+
         });
         let sfIdent = 'force.com';
         this.url = window.location.href.substring(0, window.location.href.indexOf(sfIdent) + sfIdent.length);

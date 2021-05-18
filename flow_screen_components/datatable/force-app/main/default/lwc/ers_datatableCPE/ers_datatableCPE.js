@@ -385,7 +385,12 @@ export default class ers_datatableCPE extends LightningElement {
         displayAll: {value: null, valueDataType: null, isCollection: false, label: 'Display ALL Objects for Selection', 
             helpText: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.'},
         cb_displayAll: {value: null, valueDataType: null, isCollection: false, label: ''},
-
+        recordTypeId: {value: null, valueDataType: null, isCollection: false, label: 'Record Type Id for Picklist Values',
+            helpText: "Specify a Record Type Id value here to restrict the values in editable picklists to be only those supported by the specified Record Type. \n" +
+            "This selection will apply to all records in the table no matter their individual Record Type."},
+        allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Include a --None-- Picklist Option', 
+            helpText: 'Select if you want editable picklist fields to include a --None-- (null) option. (default=true)'},
+        cb_allowNoneToBeChosen: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -473,6 +478,8 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
                 {name: 'columnOtherAttribs'},
+                {name: 'recordTypeId'},
+                {name: 'allowNoneToBeChosen'},
                 {name: 'tableHeight'},
                 {name: 'keyField'},
             ]

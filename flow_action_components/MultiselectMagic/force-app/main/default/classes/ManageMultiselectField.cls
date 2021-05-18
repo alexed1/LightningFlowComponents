@@ -12,57 +12,57 @@ public with sharing class ManageMultiselectField {
             validateFieldType(curRequest);
             String fieldValue = (String)curRequest.curRecord.get(curRequest.fieldApiName);
             List<String> selectedValueList = fieldValue.split(';');
-
-            switch on curRequest.operation {
-                when 'CheckForValue' {
-                    System.debug('selected values are: ' + selectedValueList);
-                    if (selectedValueList.contains(curRequest.targetValue)) {
-                        curResponse.targetPresent= true;
-                    } else curResponse.targetPresent = false;
-                  
-                }
-                when 'ReturnStringCollection' {
-                    
-
-                }
-                when 'AddValue' {
-                    
-                    if (!selectedValueList.contains(curRequest.targetValue)) {
-                        //verify that the targetValue is an allowed value
-                        List<String> availableValues = getPicklistValues(curRequest.objectApiName, curRequest.fieldApiName);
-                        if (availableValues.contains(curRequest.targetValue)) {
-                            selectedValueList.add(curRequest.targetValue);
-                        } else throw new InvocableActionException('The value: ' + curRequest.targetValue + 'is not an allowed value for the picklist: ' + curRequest.fieldApiName + ' in object: ' + curRequest.objectApiName);
-                        
+            List<String> availableValuesList = getPicklistValues(curRequest.objectApiName, curRequest.fieldApiName);
+            
+            if (curRequest.operation != null) {
+                switch on curRequest.operation {
+                    when 'CheckForValue' {
+                        System.debug('selected values are: ' + selectedValueList);
+                        if (selectedValueList.contains(curRequest.targetValue)) {
+                            curResponse.targetPresent= true;
+                        } else curResponse.targetPresent = false;
+                      
                     }
-
-                }
-                when 'RemoveValue' {
-                    //System.debug('selected values are: ' + selectedValueList);
-                    if (selectedValueList.contains(curRequest.targetValue)) {
-                        Integer counter = 0;
-                        for(Integer x = 0; x< selectedValueList.size(); x++) {
-                            System.debug('x is: ' + x);
-                            if (selectedValueList[x] == curRequest.targetValue) {
-                                
-                                counter = x;
-                            }
+                    when 'AddValue' {
+                        
+                        if (!selectedValueList.contains(curRequest.targetValue)) {
+                            //verify that the targetValue is an allowed value
+                             if (availableValuesList.contains(curRequest.targetValue)) {
+                                selectedValueList.add(curRequest.targetValue);
+                            } else throw new InvocableActionException('The value: ' + curRequest.targetValue + 'is not an allowed value for the picklist: ' + curRequest.fieldApiName + ' in object: ' + curRequest.objectApiName);
+                            
                         }
-                        System.debug('index position is: ' + counter);
-                        selectedValueList.remove(counter);
-                    } 
-
-                }
-                when else {
-                    throw new InvocableActionException('You didn\'t provide an opearation value that is currently supported');
+    
+                    }
+                    when 'RemoveValue' {
+                        //System.debug('selected values are: ' + selectedValueList);
+                        if (selectedValueList.contains(curRequest.targetValue)) {
+                            Integer counter = 0;
+                            for(Integer x = 0; x< selectedValueList.size(); x++) {
+                                System.debug('x is: ' + x);
+                                if (selectedValueList[x] == curRequest.targetValue) {
+                                    
+                                    counter = x;
+                                }
+                            }
+                            System.debug('index position is: ' + counter);
+                            selectedValueList.remove(counter);
+                        } 
+    
+                    }
+                    when else {
+                        throw new InvocableActionException('You provided an invalid value for the operation value');
+                    }
                 }
             }
-            //update the valueString
-            curResponse.fieldValues = selectedValueList;
-            curResponse.valueString = string.join(selectedValueList, ';');
-            System.debug('updated valueString is: ' + curResponse.valueString);
+           
+            
+            curResponse.selectedValuesList = selectedValueList;
+            curResponse.availableValuesList = availableValuesList;
+            curResponse.selectedValuesSemicolonString = String.join(selectedValueList, ';');
+            System.debug('updated selectedValuesSemicolonString is: ' + curResponse.selectedValuesSemicolonString);
             if (curRequest.saveAutomatically == true) {
-                curRequest.curRecord.put(curRequest.fieldApiName, curResponse.valueString);
+                curRequest.curRecord.put(curRequest.fieldApiName, curResponse.selectedValuesSemicolonString);
                 update curRequest.curRecord;
             }
           
@@ -114,7 +114,7 @@ public with sharing class ManageMultiselectField {
         @InvocableVariable(label='Api name of the target Field' required = true )
         public string fieldApiName;
         
-        @InvocableVariable(label='Desired Action to carry out on the target multiselect field' required = true)
+        @InvocableVariable(label='Desired Action to carry out on the target multiselect field' )
         public string operation;
         
         @InvocableVariable(label='Target Value')
@@ -129,14 +129,19 @@ public with sharing class ManageMultiselectField {
     
     /* Output parameters of the Apex action */
     public class Response{
-        @InvocableVariable(label='Values of the Multiselect Field, returned as a collection of strings')
-        public List<String> fieldValues; 
+        @InvocableVariable(label='Selected Values, returned as a collection of strings')
+        public List<String> selectedValuesList; 
+
+        @InvocableVariable(label='Selected Values, returned as a semicolon string')
+        public String selectedValuesSemicolonString; 
+
+        @InvocableVariable(label='Available Values, returned as a collection of strings')
+        public List<String> availableValuesList; 
         
-        @InvocableVariable(label='Boolean result of a check for whether the provided value is present')
+        @InvocableVariable(label='Is Target Present?')
         public Boolean targetPresent;
 
-        @InvocableVariable(label='Values of the Multiselect Field, returned as a semicolon string')
-        public String valueString; 
+    
     }
 
     public class InvocableActionException extends Exception{}

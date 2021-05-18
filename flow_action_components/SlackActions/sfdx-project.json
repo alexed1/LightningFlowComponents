@@ -27,6 +27,7 @@
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
         "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
         "datatable@3.0.9-0": "04t5G000004PuWuQAK",
-        "slackActions@1.0.0-0": "04t5G000004PudrQAC"
+        "slackActions@1.0.0-0": "04t5G000004PudrQAC",
+        "slackActions@1.1.0-0": "04t5G0000047xDVQAY"
     }
 }

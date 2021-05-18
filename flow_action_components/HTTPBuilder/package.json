@@ -2,7 +2,7 @@
   "name": "salesforce-app",
   "private": true,
   "version": "1.0.0",
-  "description": "Salesforce App",
+  "description": "",
   "scripts": {
     "lint": "npm run lint:lwc && npm run lint:aura",
     "lint:aura": "eslint **/aura/**",

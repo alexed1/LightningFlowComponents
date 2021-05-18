@@ -52,16 +52,16 @@ export default class FlowButtonBar extends LightningElement {
         return this._buttons;
     }
     set buttons(value) {
-        console.log(JSON.parse(JSON.stringify(value)));
-        for (let button of JSON.parse(JSON.stringify(value))) {
-            console.log('looping through button: ', button);
-        }
+        // console.log(JSON.parse(JSON.stringify(value)));
+        // for (let button of JSON.parse(JSON.stringify(value))) {
+        //     console.log('looping through button: ', button);
+        // }
         if (Array.isArray(value)) {
             this._buttons = value;
         } else {
             this._buttons = JSON.parse(value);
         }
-        console.log(this._buttons);
+        // console.log(this._buttons);
     }
     _buttons;
 
@@ -127,9 +127,9 @@ export default class FlowButtonBar extends LightningElement {
         this.rendered = true;
         this.toggleButtons();
         //this.groupAsToggle = true;
-        console.log('groupAsToggle = ' + this.groupAsToggle);
-        console.log('doNotTransitionOnClick = ' + this.doNotTransitionOnClick);
-        console.log('availableActions = ' + this.availableActions);
+        // console.log('groupAsToggle = ' + this.groupAsToggle);
+        // console.log('doNotTransitionOnClick = ' + this.doNotTransitionOnClick);
+        // console.log('availableActions = ' + this.availableActions);
     }
 
     /* EVENT HANDLERS */
@@ -139,26 +139,26 @@ export default class FlowButtonBar extends LightningElement {
         }
 
         let index = event.currentTarget.dataset.index;
-        console.log('in handleButtonClick, index = ', index);
+        // console.log('in handleButtonClick, index = ', index);
         // If the current selected button is being clicked again, deselect it. Otherwise, select the button that was just clicked
         this.selectedButton = (index == this.selectedButton.index) ? {} : this.buttons[index];
 
         this.dispatchEvent(new FlowAttributeChangeEvent('selectedValue', this.selectedButton.value));
 
         if (this.doNotTransitionOnClick) {
-            console.log('not transitioning');
+            // console.log('not transitioning');
             this.toggleButtons();
         } else {
-            console.log('navigating');
+            // console.log('navigating');
             // NAVIGATING            
             if (this.selectedButton.value.toLowerCase() === 'previous') {
                 this.dispatchEvent(new FlowNavigationBackEvent());
             } else {
                 if (this.availableActions.find(action => action === 'FINISH')) {
-                    console.log('finishing');
+                    // console.log('finishing');
                     this.dispatchEvent(new FlowNavigationFinishEvent());
                 } else {
-                    console.log('nexting');
+                    // console.log('nexting');
                     this.dispatchEvent(new FlowNavigationNextEvent());
                 }
             }

@@ -1,0 +1,7 @@
+.slds-form-element {
+    max-width: 30em;
+}
+
+.slds-modal__content {
+    overflow: initial;
+}

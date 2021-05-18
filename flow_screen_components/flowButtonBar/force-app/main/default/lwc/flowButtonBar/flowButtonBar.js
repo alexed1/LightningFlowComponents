@@ -28,6 +28,7 @@ export default class FlowButtonBar extends LightningElement {
     /* PUBLIC PROPERTIES */
     @api maxNumButtons = 5;
 
+    /*
     @api button1Label;
     @api button1Value;
     @api button1DescriptionText;
@@ -43,13 +44,24 @@ export default class FlowButtonBar extends LightningElement {
     @api button5Label;
     @api button5Value;
     @api button5DescriptionText;
+    */
+
 
     @api
     get buttons() {
         return this._buttons;
     }
     set buttons(value) {
-        this._buttons = JSON.parse(value);        
+        console.log(JSON.parse(JSON.stringify(value)));
+        for (let button of JSON.parse(JSON.stringify(value))) {
+            console.log('looping through button: ', button);
+        }
+        if (Array.isArray(value)) {
+            this._buttons = value;
+        } else {
+            this._buttons = JSON.parse(value);
+        }
+        console.log(this._buttons);
     }
     _buttons;
 
@@ -57,8 +69,11 @@ export default class FlowButtonBar extends LightningElement {
     @api orientation;
     @api groupAsToggle;
     @api includeLine;
+    @api showLines;
 
     @api doNotTransitionOnClick;
+
+    @api previewMode;
 
     @api
     get selectedValue() {
@@ -66,7 +81,7 @@ export default class FlowButtonBar extends LightningElement {
     }
     set selectedValue(value) {
         this._selectedValue = value;
-        this.selectedButton = this.buttons.find(el => el.Value === value) || {};
+        this.selectedButton = this.buttons.find(el => el.value === value) || {};
         this.toggleButtons();
     }
 
@@ -77,6 +92,13 @@ export default class FlowButtonBar extends LightningElement {
 
     /* GETTERS */
     get isVertical() { return this.orientation === VERTICAL; }
+
+    get alignmentClass() {
+        let alignment = this.getValueFromInput(ALIGNMENTS, this.alignment);
+        if (!this.groupAsToggle)
+            return alignment + ' notToggle';
+        return alignment;
+    }
 
     get buttonGroupClass() {
         let classList = [];
@@ -91,50 +113,52 @@ export default class FlowButtonBar extends LightningElement {
         return classList.join(' ');
     }
 
-    /*
-    get buttons() {
-        let buttons = [];
-        for (let i = 0; i < this.maxNumButtons; i++) {
-            if (this['button' + (i + 1) + 'Label']) {
-                let button = {
-                    index: buttons.length
-                }
-                for (let property of BUTTON_PROPERTIES) {
-                    button[property] = this['button' + (i + 1) + property];
-                }
-                if (!button.Value && button.Label)
-                    button.Value = button.Label;
-                buttons.push(button);
-            }
-        }
-        return buttons;
+    get lineAbove() {
+        return this.showLines == 'above' || this.showLines == 'both';
     }
-    */
+
+    get lineBelow() {
+        return this.showLines == 'below' || this.showLines == 'both';
+    }
 
     /* LIFECYCLE HOOKS */
     renderedCallback() {
         if (this.rendered) return;
-        this.rendered = true;        
+        this.rendered = true;
         this.toggleButtons();
+        //this.groupAsToggle = true;
+        console.log('groupAsToggle = ' + this.groupAsToggle);
+        console.log('doNotTransitionOnClick = ' + this.doNotTransitionOnClick);
+        console.log('availableActions = ' + this.availableActions);
     }
 
     /* EVENT HANDLERS */
     handleButtonClick(event) {
+        if (this.previewMode) {
+            return;
+        }
+
         let index = event.currentTarget.dataset.index;
+        console.log('in handleButtonClick, index = ', index);
         // If the current selected button is being clicked again, deselect it. Otherwise, select the button that was just clicked
         this.selectedButton = (index == this.selectedButton.index) ? {} : this.buttons[index];
-        
-        this.dispatchEvent(new FlowAttributeChangeEvent('selectedValue', this.selectedButton.Value));
+
+        this.dispatchEvent(new FlowAttributeChangeEvent('selectedValue', this.selectedButton.value));
+
         if (this.doNotTransitionOnClick) {
+            console.log('not transitioning');
             this.toggleButtons();
         } else {
+            console.log('navigating');
             // NAVIGATING            
-            if (this.selectedButton.Value.toLowerCase() === 'previous') {
+            if (this.selectedButton.value.toLowerCase() === 'previous') {
                 this.dispatchEvent(new FlowNavigationBackEvent());
             } else {
                 if (this.availableActions.find(action => action === 'FINISH')) {
+                    console.log('finishing');
                     this.dispatchEvent(new FlowNavigationFinishEvent());
                 } else {
+                    console.log('nexting');
                     this.dispatchEvent(new FlowNavigationNextEvent());
                 }
             }
@@ -143,13 +167,13 @@ export default class FlowButtonBar extends LightningElement {
 
     /* ACTION FUNCTIONS */
     toggleButtons() {
-        for (let buttonEl of this.template.querySelectorAll('button')) {
-            if (buttonEl.dataset.index == this.selectedButton.index) {
-                buttonEl.classList.add('slds-button_brand');
-                buttonEl.classList.remove('slds-button_neutral');
-            } else {
-                buttonEl.classList.add('slds-button_neutral');
-                buttonEl.classList.remove('slds-button_brand');
+        if (this.doNotTransitionOnClick) {
+            for (let buttonEl of this.template.querySelectorAll('lightning-button')) {
+                if (buttonEl.dataset.index == this.selectedButton.index) {
+                    buttonEl.variant = 'brand';
+                } else {
+                    buttonEl.variant = 'neutral';
+                }
             }
         }
     }

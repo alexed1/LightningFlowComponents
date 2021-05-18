@@ -10,19 +10,62 @@ const ALIGNMENT = {
     RIGHT: 'right',
     LEFT: 'left',
     CENTER: 'center',
-    get LIST() { return [this.RIGHT, this.LEFT, this.CENTER] },
+    get LIST() { return [this.LEFT, this.CENTER, this.RIGHT] },
     get DEFAULT() { return this.RIGHT; }
 }
 
+const SHOW_LINES = {
+    ABOVE: 'above',
+    BELOW: 'below',
+    BOTH: 'both',
+    NEITHER: 'neither',
+    get LIST() { return [this.ABOVE, this.BELOW, this.BOTH, this.NEITHER] },
+    get DEFAULT() { return this.NEITHER; }
+}
+
+const VARIANTS = {
+    LIST: {
+        NEUTRAL: { label: 'Neutral Button', value: 'neutral' },
+        BASE: { label: 'Base Button', value: 'base' },
+        OUTLINE_BRAND: { label: 'Outline Brand Button', value: 'brand-outline' },
+        BRAND: { label: 'Brand', value: 'brand' },
+        DESTRUCTIVE: { label: 'Destructive Button', value: 'destructive' },
+        TEXT_DESTRUCTIVE: { label: 'Text Destructive Button', value: 'destructive-text' },
+        SUCCESS: { label: 'Success Button', value: 'success' },
+    },
+    get OPTIONS() { return Object.values(this.LIST); },
+    get DEFAULT() { return this.LIST.NEUTRAL; },
+    getVariant: function (value) {
+        let variant = this.OPTIONS.find(variant => variant.value === value);
+        return variant || this.DEFAULT;
+    },
+}
+
 const BUTTON_STYLES = [
-    { input: 'Neutral Button', value: 'slds-button_neutral', default: true },
-    { input: 'Bare Button', value: null },
-    { input: 'Brand Button', value: 'slds-button_brand' },
-    { input: 'Outline Brand Button', value: 'slds-button_outline-brand' },
-    { input: 'Destructive Button', value: 'slds-button_destructive' },
-    { input: 'Text Destructive Button', value: 'slds-button_text-destructive' },
-    { input: 'Success Button', value: 'slds-button_success' }
+    { input: 'Neutral Button', deprecated: 'slds-button_neutral', value: 'neutral', default: true },
+    { input: 'Base Button', deprecated: null, value: 'base' },
+    { input: 'Brand Button', deprecated: 'slds-button_brand', value: 'brand' },
+    { input: 'Outline Brand Button', deprecated: 'slds-button_outline-brand', value: 'brand-outline' },
+    { input: 'Destructive Button', deprecated: 'slds-button_destructive', value: 'destructive' },
+    { input: 'Text Destructive Button', deprecated: 'slds-button_text-destructive', value: 'destructive-text' },
+    { input: 'Success Button', deprecated: 'slds-button_success', value: 'success' }
 ];
+
+const CLICK_ACTIONS = [
+    { input: 'Yes', value: 'yes' },
+    { input: 'No', value: '', default: true },
+]
+
+const DATA_TYPE = {
+    STRING: 'String',
+    BOOLEAN: 'Boolean',
+    NUMBER: 'Number'
+}
+
+const FLOW_EVENT_TYPE = {
+    DELETE: 'configuration_editor_input_value_deleted',
+    CHANGE: 'configuration_editor_input_value_changed'
+}
 
 const BASE_BUTTON_CLASS = 'slds-button';
 
@@ -31,43 +74,36 @@ export default class FlowButtonBarCPE extends LightningElement {
     _builderContext;
     _values;
 
-    @api get builderContext() {
-        return this._builderContext;
-    }
+    @api builderContext;
 
-    set builderContext(value) {
-        this._builderContext = value;
-    }
-
-    @api get inputVariables() {
+    @api
+    get inputVariables() {
         return this._values;
     }
-
     set inputVariables(value) {
-
         this._values = value;
         this.initializeValues();
     }
 
     @track inputValues = {
-        alignment: {value: null, valueDataType: null, isCollection: false, label: 'Alignment'},
-        orientation: {value: null, valueDataType: null, isCollection: false, label: 'Orientation'},        
-        buttons: {value: null, valueDataType: null, isCollection: false, label: 'Buttons'},        
-        groupAsToggle: {value: null, valueDataType: null, isCollection: false, label: 'Group as toggle'},
-        includeLine: {value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line above buttons'},
-        doNotTransitionOnClick: {value: null, valueDataType: null, isCollection: false, label: 'Do not transition on click'}
+        alignment: { value: null, valueDataType: null, isCollection: false, label: 'Alignment' },
+        orientation: { value: null, valueDataType: null, isCollection: false, label: 'Orientation' },
+        buttons: { value: null, valueDataType: null, isCollection: false, label: 'Buttons' },
+        groupAsToggle: { value: null, valueDataType: null, isCollection: false, label: 'Group as toggle' },
+        includeLine: { value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line above buttons' },
+        showLines: { value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line(s)' },
+        doNotTransitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Do not transition on click' }
     };
 
     initializeValues() {
         console.log('in initializeValues');
         if (this._values && this._values.length) {
-            
             this._values.forEach(curInputParam => {
                 this.log(curInputParam);
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
                     if (curInputParam.name == 'buttons') {
-                        this.buttons = JSON.parse(curInputParam.value);                        
-                    } else {                        
+                        this.buttons = JSON.parse(curInputParam.value);
+                    } else {
                         this.inputValues[curInputParam.name].value = curInputParam.value;
                         this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     }
@@ -78,7 +114,7 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
         //console.log('in dispatch to flow: ', id, newValue, newValueDataType);
-        const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
+        const valueChangedEvent = new CustomEvent(FLOW_EVENT_TYPE.CHANGE, {
             bubbles: true,
             cancelable: false,
             composed: true,
@@ -95,8 +131,8 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     @api maxNumButtons = 5;
 
-    @api orientation;
-    @api alignment;
+    //@api orientation;
+    //@api alignment;
     @api groupAsToggle;
     @api includeLine;
     @api testInputValue;
@@ -105,43 +141,64 @@ export default class FlowButtonBarCPE extends LightningElement {
     @track selectedButton = this.newButton();
     //@track draggedButtonIndex = {};
     dragIsActive;
-    //modalIsNewButton;
 
     get activeDropZoneIndex() {
         return this._activeDropZoneIndex;
     }
     set activeDropZoneIndex(dzIndex) {
+        //console.log('in set activeDropZoneIndex, to: '+ dzIndex);
         this._activeDropZoneIndex = dzIndex;
         for (let dz of this.template.querySelectorAll('.dropzone')) {
+            //console.log(JSON.stringify(dz));
             if (dzIndex >= 0 && dz.dataset.index == dzIndex) {
                 dz.classList.add('dropzone_active');
             } else {
                 dz.classList.remove('dropzone_active');
-            }        
+            }
         }
     }
     _activeDropZoneIndex;
 
     accordionSections = ['buttons', 'settings'];
+    _openAccordionSections = ['buttons'];//, 'settings'];
+    get openAccordionSections() {
+        return this._openAccordionSections;
+    }
+    set openAccordionSections(value) {
+        this._openAccordionSections = value;
+        //this.dispatchFlowValueChangeEvent()
+    }
 
     showModal;
     showConfirmDelete;
+    showPreviewModal;
 
     displayVariants;
+
+    positionOptions = [
+        { label: 'Left', value: 'left' },
+        { label: 'Right', value: 'right' }
+    ]
 
     connectedCallback() {
         this.setDefaults();
     }
 
-    setDefaults() {        
+    setDefaults() {
         this.inputValues.orientation.value = this.inputValues.orientation.value || ORIENTATION.DEFAULT;
         this.inputValues.alignment.value = this.inputValues.alignment.value || ALIGNMENT.DEFAULT;
+        this.inputValues.showLines.value = this.inputValues.showLines.value || SHOW_LINES.DEFAULT;
+        this.inputValues.doNotTransitionOnClick.value = this.getObjectFromInput(CLICK_ACTIONS, this.inputValues.doNotTransitionOnClick.value).value;
+        this.inputValues.groupAsToggle.value = this.getObjectFromInput(CLICK_ACTIONS, this.inputValues.groupAsToggle.value).value;
         if (this.buttons.length === 0) {
-            this.buttons.push(
-               this.newButton('Previous', 'previous'),
-               this.newButton('Next', 'previous'),
-               this.newButton('Cancel', 'cancel'),
+            let newButtons = [];
+            newButtons.push(
+                //this.buttons.push(
+                this.newButton('Previous', 'previous'),
+                this.newButton('Next', 'next'),
+                this.newButton('Cancel', 'cancel'),
             );
+            //this.dispatchFlowValueChangeEvent('buttons', newButtons, DATA_TYPE.STRING);
             this.reorderButtons();
         }
     }
@@ -149,6 +206,7 @@ export default class FlowButtonBarCPE extends LightningElement {
     /* GETTERS */
     get isVertical() { return this.inputValues.orientation.value === ORIENTATION.VERTICAL; }
     get isHorizontal() { return !this.isVertical; }
+    get isTransition() { return !this.inputValues.doNotTransitionOnClick.value; }
 
     get newButtonDisabled() { return this.buttons.length >= this.maxNumButtons; }
 
@@ -164,21 +222,36 @@ export default class FlowButtonBarCPE extends LightningElement {
         });
     }
 
+    get showLinesOptions() {
+        return SHOW_LINES.LIST.map(el => {
+            return { label: el, value: el }
+        });
+    }
+
+    get clickActionOptions() {
+        return CLICK_ACTIONS.map(el => {
+            return { label: el.input, value: el.value }
+        });
+    }
+
+    get variantOptions() {
+        return VARIANTS.OPTIONS;
+    }
+
     get styleOptions() {
-        let defaultClasses = [BASE_BUTTON_CLASS];
         let options = BUTTON_STYLES.map(style => {
-            return { 
+            return {
                 label: style.input,
-                value: style.value,
-                class: [...defaultClasses, style.value].join(' ')
+                value: style.value
             }
         });
         return options
     }
 
     /* ACTION FUNCTIONS */
-    openModal() {
+    openModal(isNew) {
         this.showModal = true;
+        this.modalIsNewButton = isNew;
     }
 
     closeModal() {
@@ -196,10 +269,11 @@ export default class FlowButtonBarCPE extends LightningElement {
     reorderButtons() {
         for (let i = 0; i < this.buttons.length; i++) {
             this.buttons[i].index = i;
-            this.buttons[i].num = (i + 1);
+            //this.buttons[i].num = (i + 1);
         }
-        this.log(this.buttons);
-        this.dispatchFlowValueChangeEvent('buttons', JSON.stringify(this.buttons), 'String');
+        //this.log(this.buttons);
+        this.dispatchFlowValueChangeEvent('buttons', JSON.stringify(this.buttons), DATA_TYPE.STRING);
+        //this.dispatchFlowValueChangeEvent('buttons', this.buttons, 'apex://FlowButton[]');
     }
 
     confirmDelete() {
@@ -224,18 +298,29 @@ export default class FlowButtonBarCPE extends LightningElement {
     /* EVENT HANDLERS */
     /* BUTTON CLICK EVENT HANDLERS */
     handleModalSaveClick() {
-        // Determine whether the modal is saving an existing button or a new one
-        let existingButton = this.buttons.find(button => {
-            return button.index === this.selectedButton.index;
-        });
+        // TODO: VALIDATION
+        if (this.selectedButton.label && this.selectedButton.value) {
 
-        if (existingButton) {
-            this.buttons[existingButton.index] = Object.assign({}, this.selectedButton);
+            // Determine whether the modal is saving an existing button or a new one
+            let existingButton = this.buttons.find(button => {
+                return button.index === this.selectedButton.index;
+            });
+
+            if (existingButton) {
+                this.buttons[existingButton.index] = Object.assign({}, this.selectedButton);
+            } else {
+                this.buttons.push(Object.assign({}, this.selectedButton));
+            }
+            this.reorderButtons();
+            this.closeModal();
         } else {
-            this.buttons.push(Object.assign({}, this.selectedButton));
+            let allValid = true;
+            for (let requiredField of this.template.querySelectorAll('.slds-modal [required]')) {
+                let fieldValid = requiredField.reportValidity();
+                if (!fieldValid)
+                    allValid = false;
+            }
         }
-        this.reorderButtons();
-        this.closeModal();
     }
 
     handleModalCancelClick() {
@@ -256,7 +341,17 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     handleNewButtonClick() {
-        this.openModal();
+        this.openModal(true);
+    }
+
+    handleShowPreviewClick() {
+        this.previewMode = true;
+        this.showPreviewModal = true;
+    }
+
+    handlePreviewModalClose() {
+        this.previewMode = false;
+        this.showPreviewModal = false;
     }
 
     /* INPUT CHANGE EVENT HANDLERS */
@@ -272,6 +367,8 @@ export default class FlowButtonBarCPE extends LightningElement {
     handleModalDescriptionChange(event) {
         this.selectedButton.descriptionText = event.detail.value;
     }
+
+    /* Replacing with generic handleComboboxChange
     handleOrientationChange(event) {
         if (event.detail) {
             this.dispatchFlowValueChangeEvent('orientation', event.detail.value, 'String');
@@ -284,48 +381,65 @@ export default class FlowButtonBarCPE extends LightningElement {
             //this.alignment = event.detail.value;
         }
     }
+    */
+
+    handleComboboxChange(event) {
+        if (event.detail) {
+            console.log(event.currentTarget.name);
+            this.dispatchFlowValueChangeEvent(event.currentTarget.name, event.detail.value, DATA_TYPE.STRING);
+        }
+    }
+
+    handleToggleChange(event) {
+        let name = event.currentTarget.name;
+        if (name) {
+            let value = event.detail.value;
+            this.inputValues[name].value = value;
+            this.dispatchFlowValueChangeEvent(name, value, DATA_TYPE.STRING);
+
+            if (name === 'doNotTransitionOnClick' && value) {
+                for (let button of this.buttons) {
+                    button.variant = VARIANTS.LIST.NEUTRAL;//this.getObjectFromInput(BUTTON_STYLES).value;
+                    console.log('updated button: ', JSON.stringify(button));
+                }
+                this.reorderButtons();
+            }
+        }
+    }
 
     handleInputValueChange(event) {
+        console.log('in handleInputValueChange');
         if (event.detail && event.currentTarget.name) {
-            let dataType = 'String';
-            if (event.currentTarget.type == 'checkbox') dataType = 'Boolean';
-            if (event.currentTarget.type == 'number') dataType = 'Number';
+            console.log(event.currentTarget.name, event.detail.value);
+            let dataType = DATA_TYPE.STRING;
+            if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
+            if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
 
             let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
-
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
         }
     }
 
+    handleClickActionChange(event) {
+
+    }
+
     /* DRAG AND DROP EVENT HANDLERS */
     handleDragStart(event) {
-        let index = event.currentTarget.dataset.index;        
+        let index = event.currentTarget.dataset.index;
         event.dataTransfer.setData('text/plain', index);
     }
 
-    handleButtonDragOver(event) {
-        event.preventDefault();
-        let rect = event.currentTarget.getBoundingClientRect();
-        let mouseY = event.clientY - rect.top;
-        let dzIndex = event.currentTarget.dataset.index;
-        let isTopHalf = (mouseY / rect.height < 0.5);
-        this.activeDropZoneIndex = Number(dzIndex) + isTopHalf ? 0 : 1;
-    }
-
-    handleDragLeave(event) {
+    // Anytime the drag leaves an element, set activeDropZoneIndex to null. (If it leaves the element for another dropzone-triggering element, the active dropzone will be reset.)
+    handleDragLeave() {
         this.activeDropZoneIndex = null;
     }
 
-    handleDragOver(event) {
+    handleRowContainerDragOver(event) {
         event.preventDefault();
-        let dataset = event.currentTarget.dataset;
-        let newActiveDropZoneIndex = dataset.index;
-        if (!dataset.isDropzone) {
-            let rect = event.currentTarget.getBoundingClientRect();
-            let mouseY = event.clientY - rect.top;
-            let isTopHalf = (mouseY / rect.height < 0.5);
-            if (!isTopHalf)
-                newActiveDropZoneIndex++;
+        let newActiveDropZoneIndex = event.currentTarget.dataset.index;
+        if (newActiveDropZoneIndex && !this.isMouseInTopHalf(event)) {
+            newActiveDropZoneIndex++;
         }
         this.activeDropZoneIndex = newActiveDropZoneIndex;
     }
@@ -338,19 +452,27 @@ export default class FlowButtonBarCPE extends LightningElement {
     handleContainerDrop(event) {
         event.preventDefault();
         let originIndex = event.dataTransfer.getData('text/plain');
-        if (originIndex || originIndex == 0) {
-
-        }
-        console.log('in handleContainerDrop: moving '+ originIndex +' into dropzone #'+ this.activeDropZoneIndex);
-
-        let draggedButton = this.buttons.splice(originIndex, 1);
-        if (!draggedButton.length) {
-            console.log('somethings weird, what? error');
+        let dzIndex = this.activeDropZoneIndex;
+        if (originIndex == dzIndex || originIndex == (dzIndex - 1)) {
+            // ignore, it's not actually moving
+            console.log('false alarm');
         } else {
-            this.buttons.splice(this.activeDropZoneIndex, 0, draggedButton[0]);
+            //console.log('in handleContainerDrop: moving ' + originIndex + ' into dropzone #' + dzIndex);
+            let draggedButton = this.buttons.splice(originIndex, 1);
+            let startPos = dzIndex;
+            // insert at dzIndex. -1 if origin < dzIndex
+            if (originIndex < dzIndex) {
+                //console.log('an element is moving down in the list, meaning when it falls into place it will actually be one further back');
+                startPos--;
+            }
+            //console.log('originIndex = ' + originIndex, 'dzIndex = ' + dzIndex, 'startPos = ' + startPos);
+
+            if (draggedButton.length) {
+                this.buttons.splice(startPos, 0, draggedButton[0]);
+            }
+            this.reorderButtons();
         }
         this.activeDropZoneIndex = null;
-        this.reorderButtons();        
     }
 
     /* STYLE EVENT HANDLERS */
@@ -363,11 +485,26 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     handleStyleSelect(event) {
+        /*
         this.selectedButton.style = {            
             label: event.currentTarget.dataset.label,
             value: event.currentTarget.dataset.value,
             class: event.currentTarget.className
         }
+        */
+        console.log('in handleStyleSelect', event.currentTarget.variant);
+        //this.selectedButton.variant = event.currentTarget.variant;
+        this.selectedButton.variant = VARIANTS.getVariant(event.currentTarget.variant);
+    }
+
+    handleSelectIcon(event) {
+        console.log('in handle select icon', event.detail);
+        this.selectedButton.iconName = event.detail;
+    }
+
+    handleIconPositionChange(event) {
+        console.log('in handleIconPositionChange', event.detail.value);
+        this.selectedButton.iconPosition = event.detail.value;
     }
 
     /* UTILITY FUNCTIONS */
@@ -391,24 +528,31 @@ export default class FlowButtonBarCPE extends LightningElement {
         return returnValue;
     }
 
-    newButton(label, value, descriptionText, style) {
-        return {
+    getDefault(list, defaultParam = 'default') {
+        return list.find(el => {
+            return el[defaultParam];
+        })
+    }
+
+    newButton(label, value, descriptionText, variant) {
+        let newButton = {
             label: label,
             value: value,
             descriptionText: descriptionText,
-            style: this.newStyle(style),
-        }
-    }
-
-    newStyle(style) {
-        let s = this.getObjectFromInput(BUTTON_STYLES, style);
-        return {
-            label: s.input,
-            value: s.value,
-            get class() {
-                return BASE_BUTTON_CLASS + (s.value ? ' '+ s.value : null)
+            iconPosition: 'left',
+            variant: VARIANTS.DEFAULT,
+            get num() {
+                return (this.index + 1);
             }
         }
+        return newButton;
+    }
+
+    isMouseInTopHalf(event) {
+        let rect = event.currentTarget.getBoundingClientRect();
+        let mouseY = event.clientY - rect.top;
+        let isTopHalf = (mouseY / rect.height < 0.5);
+        return isTopHalf;
     }
 
     p(str) {

@@ -1,0 +1,11 @@
+<template>
+    <div>
+        <span class="slds-text-title">{label}</span>
+        <template if:true={helpText}>
+            <lightning-helptext class="slds-p-horizontal_x-small" content={helpText}>
+            </lightning-helptext>
+        </template>
+        <lightning-radio-group label={label} type="button" options={options} value={value} onchange={handleToggleChange}
+            variant="label-hidden"></lightning-radio-group>
+    </div>
+</template>

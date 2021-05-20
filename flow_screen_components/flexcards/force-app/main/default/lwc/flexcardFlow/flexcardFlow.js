@@ -16,6 +16,9 @@ export default class FlexcardFlow extends LightningElement {
     @api isClickable;
     @api Cardcss;
     @api headerStyle;
+    @api allowMultiSelect;
+    @api recordValue;
+    @api selectedRecords = [];
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
@@ -77,20 +80,34 @@ export default class FlexcardFlow extends LightningElement {
     get sizeWidth() {
         return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
 }
-    
+  
+           
+    handleChange(event) {
+        console.log(event.target.checked);
+        if( event.target.checked == true){
+        this.recordValue = event.target.value;
+        this.selectedRecords.push(this.recordValue);
+            }
+        else{
+            const remove = this.selectedRecords.indexOf(this.selectedRecords.find(element => element.Id === event.target.value));
+            this.selectedRecords.splice(remove,1);
+    }
+        }
 
     handleClick(event){
        
        this.recs.find(record => {
            if(record.Id === event.currentTarget.dataset.id && this.isClickable==true) {
             record.Cardcss = 'clickedCard';
-           }else {
-            record.Cardcss = 'card';
+            this.selectedRecord = event.currentTarget.dataset.id;
+        console.log(this.value=this.selectedRecord);
+           }
+           else {
+               record.Cardcss = 'card';            
            }
         });
 
-        this.selectedRecord =  event.currentTarget.dataset.id;
-        console.log(this.value=this.selectedRecord);
+        
         
      }    
              

@@ -12,13 +12,15 @@
             <property name="icon" label="Icon" type="String" description="Icon name for example standard:account"/>
             <propertyType name="T" extends="SObject" label="Flexcard Object API Name" description="Specify the API Name of the SObject to use in the Flexcard"/>
             <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly" description="The SObject API Name used to query fields and values"/>
-            <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" required="true" description="Record Collection variable containing the records to display in the flexcard."/>
+            <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
             <property name="visibleFieldNames" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
             <property name="visibleFlowNames" label="Visible Flow Names" type="String" description="Show which flow?"/>
             <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>
             <property name="isClickable" role="inputOnly" label="isClickable" type="Boolean" default="false" description="Set as true if you wish to select individual cards for action further downstream in flow default is false"/>
             <property name="Cardcss" label="Card CSS" default="card" type="String"/>
             <property name="headerStyle" label="Header Style" type="String" description="Add your own style attribute to the card headers ie. background-color:red;"/>
+            <property name="allowMultiSelect" label="Allow Multi-Select" type="Boolean" default="false" description="Allow for multiselect of cards when enabled checkboxes appear on cards and adds selected cards to collection"/>
+            <property name="selectedRecords" label="Selected Records" type="String[]" role="outputOnly" description="String Collection of selected Record ID's"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

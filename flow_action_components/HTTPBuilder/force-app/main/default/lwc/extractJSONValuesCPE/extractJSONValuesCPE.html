@@ -1,0 +1,25 @@
+<template>
+
+    <div><b>Extract JSON Values</b></div>
+    
+    <c-fsc_flow-combobox 
+        label='Input JSON String' 
+        builder-context={_builderContext} 
+        name="inputJSONString"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={inputJSONString} 
+        value-type="reference">
+
+    </c-fsc_flow-combobox>
+
+    <c-target-key-section 
+        master-label="Specify the keys that you want to extract:" 
+        add-button-label="Add Target Key" 
+        list-data={keysToExtract} 
+        onchangelist={changekeysToExtract}>
+    </c-target-key-section>
+    <!-- @InvocableVariable
+    public String inputJSONString;
+    @InvocableVariable
+    public String keysToExtract; -->
+</template>

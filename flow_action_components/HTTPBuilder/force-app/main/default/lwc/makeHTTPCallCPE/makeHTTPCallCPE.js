@@ -50,13 +50,11 @@ export default class MakeHTTPCallCPE extends LightningElement {
 
     get compressedGzip() {
         const param = this.inputVariables.find(({ name }) => name === 'Compressed_gzip');
-        console.log('params', param);
         return param && param.value;
     }
 
     get bodyAsBlob() {
         const param = this.inputVariables.find(({ name }) => name === 'BodyAsBlob');
-        console.log('params', param);
         return param && param.value;
     }
 
@@ -101,21 +99,17 @@ export default class MakeHTTPCallCPE extends LightningElement {
     }
 
     changeTimeout(event) {
-        console.log(typeof event.detail.value, event.detail.value);
         this.dispatchFlowValueChangeEvent('Timeout', Number(event.detail.value), 'Number');
     }
 
     changeCompressedGzip(event) {
-        console.log(typeof event.detail.checked, event.detail.checked);
         this.dispatchFlowValueChangeEvent('Compressed_gzip', event.detail.checked ? event.detail.checked : null, 'Boolean');
     }
 
     changeBodyAsBlob(event) {
-        console.log(typeof event.detail.checked, event.detail.checked);
         this.dispatchFlowValueChangeEvent('BodyAsBlob', event.detail.checked ? event.detail.checked : null, 'Boolean');
     }
     changeBody(event) {
-        console.log(typeof event.detail.value, event.detail.value);
         this.dispatchFlowValueChangeEvent('Body', event.detail.value, 'String');
     }
 

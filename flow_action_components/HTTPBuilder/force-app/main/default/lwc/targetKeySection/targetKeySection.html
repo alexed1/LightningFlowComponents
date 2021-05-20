@@ -1,0 +1,7 @@
+<template>
+    <div class="slds-m-top_medium"><b>{masterLabel}</b></div>
+    <template for:each={listData} for:item="item">
+        <c-target-key-input key={item.order} entity={item} onchangeinput={changeItem} onremoveitem={removeItem}></c-target-key-input>
+    </template>
+    <lightning-button label={addButtonLabel} onclick={addItem} ></lightning-button>
+</template>

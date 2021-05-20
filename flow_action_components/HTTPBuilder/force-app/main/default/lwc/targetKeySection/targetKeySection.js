@@ -1,8 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 
-export default class ListBuilder extends LightningElement {
-
-
+export default class TargetKeySection extends LightningElement {
     @api masterLabel;
     @api addButtonLabel;
     @api set listData(value) {
@@ -29,8 +27,7 @@ export default class ListBuilder extends LightningElement {
     @track _itemList; //= [{key :'', value : ''}];
 
     addItem() {
-        this._itemList.push({key:'', value:'', order : this._itemList.length});
-       
+        this._itemList.push({key:'value' + (this._itemList.length + 1), value:'', order : this._itemList.length});   
     }
 
     changeItem(event) {
@@ -45,7 +42,10 @@ export default class ListBuilder extends LightningElement {
         let item = event.detail.entity;
         
         this._itemList.splice(item.order, 1);
+        let count = 1;
         this._itemList.forEach(element => {
+            element.key = 'value' + count;
+            count++;
             if(element.order > item.order){
                 element.order--;
             }

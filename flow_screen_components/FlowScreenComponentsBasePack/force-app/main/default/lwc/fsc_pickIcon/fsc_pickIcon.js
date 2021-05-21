@@ -994,6 +994,8 @@ export default class ObjectIconSelector extends LightningElement {
     get tabMode() { return this.mode === MODES.TAB; }
     get accordionMode() { return this.mode === MODES.ACCORDION; }
     get comboboxMode() { return this.mode === MODES.COMBOBOX; }
+    get invalidMode() { return !this.tabMode && !this.accordionMode && !this.comboboxMode; }
+
     get displayedIcons() {
         return this.filteredIcons.slice(0, this.currentMaxResults);
     }

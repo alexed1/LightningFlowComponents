@@ -231,6 +231,10 @@ Updates:    Added an option to hide the Actions Icons
                     </div>
                 </div>
             </template>
+
+            <template if:true={invalidMode}>
+                <div class="slds-text-color_error">Icon Selector error: a valid display mode has not been entered. Choose 'accordion', 'tab', or 'combobox'.</div>
+            </template>
         </div>
     </div>
 </template>

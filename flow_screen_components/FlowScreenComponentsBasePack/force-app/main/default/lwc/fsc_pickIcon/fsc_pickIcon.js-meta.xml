@@ -9,8 +9,12 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="accordionMode" type="Boolean" default="false" role="inputOnly"/>
-            <property name="hideActionIcons" type="Boolean" default="false" role="inputOnly"/>
+            <property name="mode" label="Display Mode" type="String" description="Enter 'tab', 'accordion', or 'combobox'" required="true" role="inputOnly"/>
+            <property name="excludeStandardIcons" label="Exclude Standard icons" type="Boolean" default="false" role="inputOnly"/>
+            <property name="excludeCustomIcons" label="Exclude Custom icons" type="Boolean" default="false" role="inputOnly"/>
+            <property name="excludeUtilityIcons" label="Exclude Utility icons" type="Boolean" default="false" role="inputOnly"/>
+            <property name="excludeActionIcons" label="Exclude Action icons" type="Boolean" default="false" role="inputOnly"/>
+            <property name="label" label="Label" type="String" role="inputOnly"/>
             <property name="iconName" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>

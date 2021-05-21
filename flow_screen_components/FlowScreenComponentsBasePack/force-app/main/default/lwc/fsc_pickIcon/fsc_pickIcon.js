@@ -1,4 +1,4 @@
-import { LightningElement, track,api } from 'lwc';
+import { LightningElement, track, api } from 'lwc';
 
 const TABLE_STYLE = "height: 400px; width:99%";
 
@@ -896,6 +896,23 @@ const UTILITY_ICONS = [
     { 'iconName': 'utility:zoomin', 'id': 'utility:zoomin' },
     { 'iconName': 'utility:zoomout', 'id': 'utility:zoomout' }
 ]
+
+const MODES = {
+    ACCORDION: 'accordion',
+    TAB: 'tab',
+    COMBOBOX: 'combobox'
+}
+const CLASSES = {
+    OPEN: 'slds-is-open'
+}
+
+const SEARCHBOX_ICONS = {
+    CLEAR: 'utility:clear',
+    SEARCH: 'utility:search'
+}
+
+const DEFAULT_MAX_RESULTS = 50;
+
 const columns = [
     { label: 'Icon', fieldName: 'id', cellAttributes:{ iconName: { fieldName: 'iconName' } }}
 ];
@@ -905,18 +922,59 @@ export default class ObjectIconSelector extends LightningElement {
     @track customIcons = CUSTOM_ICONS;
     @track utilityIcons = UTILITY_ICONS;
     @track standardIcons = STANDARD_ICONS;
+
+    @api excludeStandardIcons;
+    @api excludeCustomIcons;
+    @api excludeUtilityIcons;    
+    @api excludeActionIcons;
+
+    @api mode;
+    @api label = 'Pick an Icon';
+    // @api iconName = null;
+    @api
+    get iconName() {
+        return this._iconName || null;
+    }
+    set iconName(iconName) {
+        this._iconName = iconName;
+        if (!this.rendered) {
+            return;
+        }
+        if (this.comboboxMode) {
+            if (iconName) {            
+                this.addClass('.comboboxInput', 'slds-combobox__input-value');
+                this.switchClass('.slds-combobox__form-element', 'slds-input-has-icon_right', 'slds-input-has-icon_left-right');
+                this.addClass('.slds-combobox_container', 'slds-has-selection');
+                this.template.querySelector('.comboboxInput').setAttribute('readonly', '');
+                this.template.querySelector('.comboboxInput').value = iconName;
+                this.blurSearchbox();
+            } else {
+                this.removeClass('.comboboxInput', 'slds-combobox__input-value');
+                this.switchClass('.slds-combobox__form-element', 'slds-input-has-icon_left-right', 'slds-input-has-icon_right');            
+                this.removeClass('.slds-combobox_container', 'slds-has-selection');
+                this.template.querySelector('.comboboxInput').removeAttribute('readonly');
+                this.template.querySelector('.comboboxInput').value = null;
+            }
+            //this.dispatchEvent(new CustomEvent('selecticon', { detail: iconName }));
+            const iconSelectedEvent = new CustomEvent('iconselection', { detail: iconName });
+            this.dispatchEvent(iconSelectedEvent);    
+        }
+    }
+    _iconName;
+    @track icons = [];
+
     @track columns = columns;
 
     activeSections = [];            // 'S', 'U', 'C', 'A'
-    @api showAccordion = false;
-
-    @api accordionMode = false;
-    @api hideActionIcons = false;
-    @api iconName = null;
+    maxResults = DEFAULT_MAX_RESULTS
+    currentMaxResults = this.maxResults;
+    searchText;
+    noMatchesFoundString = 'No matches found';
+    blockBlur;
+    rendered;
+    
 
     @api isAccordionLoading;        // Reserved for future improvements
-    @api iconPickerButtonLabel;     // Reserved for future improvements
-    @api hideAccordion;             // Reserved for future improvements
 
     @api 
     get tabStyle() {
@@ -930,15 +988,56 @@ export default class ObjectIconSelector extends LightningElement {
     @api
     get tableStyle() {
         return TABLE_STYLE;
-    }
+    }    
 
     @api firstTabHeight;
 
-    connectedCallback() {
+    get tabMode() { return this.mode === MODES.TAB; }
+    get accordionMode() { return this.mode === MODES.ACCORDION; }
+    get comboboxMode() { return this.mode === MODES.COMBOBOX; }
+    get displayedIcons() {
+        // console.log(this.filteredIcons.slice(0, this.currentMaxResults));
+        return this.filteredIcons.slice(0, this.currentMaxResults);
+    }
 
+    get filteredIcons() {
+        if (!this.searchText) {
+            return this.icons;
+        }      
+        let icons = [];
+        for (let icon of this.icons) {
+            if (!this.searchText || icon.iconName.toLowerCase().includes(this.searchText)) {
+                icons.push(icon);
+            }
+        }
+        return icons;
+    }
+
+    get resultsExceedMax() {
+        return this.filteredIcons.length > this.currentMaxResults;
+    }
+
+    get loadMoreString() {
+        return 'Load more ('+ this.currentMaxResults +' of '+ this.filteredIcons.length +' '+ (this.searchText ? 'matches' : 'options') +' displayed)';
+    }
+
+    get searchboxIcon() {
+        return (this.searchText || this.iconName) ? SEARCHBOX_ICONS.CLEAR : SEARCHBOX_ICONS.SEARCH;
+    }
+
+    connectedCallback() {
+        if (!this.excludeStandardIcons) this.icons.push(...this.standardIcons);
+        if (!this.excludeCustomIcons) this.icons.push(...this.customIcons);
+        if (!this.excludeUtilityIcons) this.icons.push(...this.utilityIcons);
+        //if (!this.excludeActionIcons) this.icons.push(...this.actionIcons);
     }
 
     renderedCallback() {
+        if (this.rendered) return;
+        this.rendered = true;
+
+        if (this.iconName)
+            this.iconName = this.iconName;
 
     }
 
@@ -948,4 +1047,97 @@ export default class ObjectIconSelector extends LightningElement {
         const iconSelectedEvent = new CustomEvent('iconselection', { detail: this.iconName });
         this.dispatchEvent(iconSelectedEvent);
     }
+
+
+    doSearch(searchText) {
+        this.searchText = searchText ? searchText.toLowerCase() : null;
+        this.showList();
+    }
+
+    showList() {
+        this.addClass('.slds-dropdown-trigger', CLASSES.OPEN);
+        this.focusSearchbox();
+    }
+
+    hideList() {
+        this.removeClass('.slds-dropdown-trigger', CLASSES.OPEN);
+    }
+
+    loadMore() {
+        this.currentMaxResults += this.maxResults;
+    }
+
+    focusSearchbox() {
+        this.template.querySelector('input').focus();
+    }
+
+    blurSearchbox() {
+        this.template.querySelector('input').blur();
+    }
+
+    clearSearchbox() {
+        this.iconName = null;
+        this.blockBlur = true;
+        this.doSearch();
+    }
+
+
+    /* EVENT HANDLERS */
+    handleIconSelect(event) {
+        let icon = event.currentTarget.dataset.icon;
+        this.iconName = icon;        
+    }
+
+    handleSearchFocus(event) {
+        if (!this.iconName)
+            this.doSearch(event.currentTarget.value);
+    }
+
+    handleSearchChange(event) {        
+        this.doSearch(event.currentTarget.value);
+    }    
+
+    handleSearchBlur() {
+        if (this.blockBlur) {            
+            this.focusSearchbox();
+            this.blockBlur = false;
+        } else {
+            this.currentMaxResults = this.maxResults;
+            this.hideList();
+        }
+    }
+
+    handleDropdownClick() {
+        this.blockBlur = true;
+    }
+
+    handleSearchboxIconClick(event) {
+        //if (this.iconName || this.searchText) {
+            console.log('in searchboxicon click '+ event.currentTarget.iconName);
+        if (event.currentTarget.iconName == SEARCHBOX_ICONS.CLEAR) {
+            this.clearSearchbox();
+        } else {
+            this.doSearch();
+        }
+    }
+
+    /* UTITLITY FUNCTIONS */
+    addClass(selector, className) {
+        let el = this.template.querySelector(selector);
+        if (el)
+            el.classList.add(className);
+        return !!el;
+    }
+
+    removeClass(selector, className) {
+        let el = this.template.querySelector(selector);
+        if (el)
+            el.classList.remove(className);
+        return !!el;
+    }
+
+    switchClass(selector, removeClass, addClass) {
+        this.removeClass(selector, removeClass);
+        this.addClass(selector, addClass);
+    }    
 }

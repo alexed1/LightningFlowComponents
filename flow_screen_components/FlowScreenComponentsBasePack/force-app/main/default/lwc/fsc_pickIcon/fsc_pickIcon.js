@@ -930,7 +930,7 @@ export default class ObjectIconSelector extends LightningElement {
 
     @api mode;
     @api label = 'Pick an Icon';
-    // @api iconName = null;
+
     @api
     get iconName() {
         return this._iconName || null;
@@ -955,10 +955,9 @@ export default class ObjectIconSelector extends LightningElement {
                 this.template.querySelector('.comboboxInput').removeAttribute('readonly');
                 this.template.querySelector('.comboboxInput').value = null;
             }
-            //this.dispatchEvent(new CustomEvent('selecticon', { detail: iconName }));
-            const iconSelectedEvent = new CustomEvent('iconselection', { detail: iconName });
-            this.dispatchEvent(iconSelectedEvent);    
         }
+        const iconSelectedEvent = new CustomEvent('iconselection', { detail: iconName });
+        this.dispatchEvent(iconSelectedEvent);    
     }
     _iconName;
     @track icons = [];
@@ -996,7 +995,6 @@ export default class ObjectIconSelector extends LightningElement {
     get accordionMode() { return this.mode === MODES.ACCORDION; }
     get comboboxMode() { return this.mode === MODES.COMBOBOX; }
     get displayedIcons() {
-        // console.log(this.filteredIcons.slice(0, this.currentMaxResults));
         return this.filteredIcons.slice(0, this.currentMaxResults);
     }
 
@@ -1006,7 +1004,7 @@ export default class ObjectIconSelector extends LightningElement {
         }      
         let icons = [];
         for (let icon of this.icons) {
-            if (!this.searchText || icon.iconName.toLowerCase().includes(this.searchText)) {
+            if (icon.iconName.toLowerCase().includes(this.searchText)) {
                 icons.push(icon);
             }
         }
@@ -1029,6 +1027,7 @@ export default class ObjectIconSelector extends LightningElement {
         if (!this.excludeStandardIcons) this.icons.push(...this.standardIcons);
         if (!this.excludeCustomIcons) this.icons.push(...this.customIcons);
         if (!this.excludeUtilityIcons) this.icons.push(...this.utilityIcons);
+        // Action icons display weirdly in the combobox so I'm leaving them out for now
         //if (!this.excludeActionIcons) this.icons.push(...this.actionIcons);
     }
 
@@ -1044,8 +1043,9 @@ export default class ObjectIconSelector extends LightningElement {
     iconSelected(event){
         const selRow = event.detail.selectedRows[0];
         this.iconName=selRow.iconName;
-        const iconSelectedEvent = new CustomEvent('iconselection', { detail: this.iconName });
-        this.dispatchEvent(iconSelectedEvent);
+        // Moving the dispatch to iconName setter
+        // const iconSelectedEvent = new CustomEvent('iconselection', { detail: this.iconName });
+        // this.dispatchEvent(iconSelectedEvent);
     }
 
 
@@ -1068,11 +1068,11 @@ export default class ObjectIconSelector extends LightningElement {
     }
 
     focusSearchbox() {
-        this.template.querySelector('input').focus();
+        this.template.querySelector('.comboboxInput').focus();
     }
 
     blurSearchbox() {
-        this.template.querySelector('input').blur();
+        this.template.querySelector('.comboboxInput').blur();
     }
 
     clearSearchbox() {
@@ -1112,8 +1112,6 @@ export default class ObjectIconSelector extends LightningElement {
     }
 
     handleSearchboxIconClick(event) {
-        //if (this.iconName || this.searchText) {
-            console.log('in searchboxicon click '+ event.currentTarget.iconName);
         if (event.currentTarget.iconName == SEARCHBOX_ICONS.CLEAR) {
             this.clearSearchbox();
         } else {

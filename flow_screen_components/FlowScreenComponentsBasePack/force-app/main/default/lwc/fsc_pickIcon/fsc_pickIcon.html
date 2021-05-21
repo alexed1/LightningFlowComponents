@@ -99,8 +99,9 @@ Updates:    Added an option to hide the Actions Icons
                 <label class="slds-form-element__label" style="width: 100%;">{label}
                     <lightning-tabset>
                         <lightning-tab style={tabStyle} label="SELECT TYPE"
-                            title="Select one of the 4 tabs to the right to pick an Icon Type">
+                            title="Select one of the tabs to the right to pick an Icon Type">
                         </lightning-tab>
+                        <template if:false={excludeStandardIcons}>
                         <lightning-tab label="Standard Icons" icon-name="standard:case"
                             title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                             <div style={tabHeight}>
@@ -110,6 +111,8 @@ Updates:    Added an option to hide the Actions Icons
                                 </c-fsc_searchable-data-table>
                             </div>
                         </lightning-tab>
+                        </template>
+                        <template if:false={excludeUtilityIcons}>
                         <lightning-tab label="Utility Icons" icon-name="utility:einstein"
                             title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
                             <div style={tabHeight}>
@@ -119,6 +122,8 @@ Updates:    Added an option to hide the Actions Icons
                                 </c-fsc_searchable-data-table>
                             </div>
                         </lightning-tab>
+                        </template>
+                        <template if:false={excludeCustomIcons}>
                         <lightning-tab label="Custom Icons" icon-name="custom:custom61"
                             title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                             <div style={tabHeight}>
@@ -128,7 +133,8 @@ Updates:    Added an option to hide the Actions Icons
                                 </c-fsc_searchable-data-table>
                             </div>
                         </lightning-tab>
-                        <template if:false={hideActionIcons}>
+                        </template>
+                        <template if:false={excludeActionIcons}>
                             <lightning-tab label="Action Icons" icon-name="action:flow"
                                 title="Action icons are for use with quick actions on touch-screen devices">
                                 <div style={tabHeight}>

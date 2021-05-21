@@ -102,37 +102,37 @@ Updates:    Added an option to hide the Actions Icons
                             title="Select one of the tabs to the right to pick an Icon Type">
                         </lightning-tab>
                         <template if:false={excludeStandardIcons}>
-                        <lightning-tab label="Standard Icons" icon-name="standard:case"
-                            title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
-                                    table-data={standardIcons} columns={columns} max-row-selection="1"
-                                    onrowselection={iconSelected} table-style={tableStyle}>
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
+                            <lightning-tab label="Standard Icons" icon-name="standard:case"
+                                title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={standardIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
                         </template>
                         <template if:false={excludeUtilityIcons}>
-                        <lightning-tab label="Utility Icons" icon-name="utility:einstein"
-                            title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
-                                    table-data={utilityIcons} columns={columns} max-row-selection="1"
-                                    onrowselection={iconSelected} table-style={tableStyle}>
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
+                            <lightning-tab label="Utility Icons" icon-name="utility:einstein"
+                                title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={utilityIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
                         </template>
                         <template if:false={excludeCustomIcons}>
-                        <lightning-tab label="Custom Icons" icon-name="custom:custom61"
-                            title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
-                                    table-data={customIcons} columns={columns} max-row-selection="1"
-                                    onrowselection={iconSelected} table-style={tableStyle}>
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
+                            <lightning-tab label="Custom Icons" icon-name="custom:custom61"
+                                title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={customIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
                         </template>
                         <template if:false={excludeActionIcons}>
                             <lightning-tab label="Action Icons" icon-name="action:flow"
@@ -183,10 +183,12 @@ Updates:    Added an option to hide the Actions Icons
                                             <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
                                                 role="option">
                                                 <span class="slds-media__figure slds-listbox__option-icon">
-                                                    <lightning-icon icon-name={icon.iconName} size="small"></lightning-icon>
+                                                    <lightning-icon icon-name={icon.iconName} size="small">
+                                                    </lightning-icon>
                                                 </span>
                                                 <span class="slds-media__body">
-                                                    <span class="slds-truncate" title={icon.iconName}>{icon.iconName}</span>
+                                                    <span class="slds-truncate"
+                                                        title={icon.iconName}>{icon.iconName}</span>
                                                 </span>
                                             </div>
                                         </li>

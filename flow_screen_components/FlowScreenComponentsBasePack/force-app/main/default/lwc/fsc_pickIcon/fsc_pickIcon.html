@@ -45,7 +45,7 @@ Updates:    Added an option to hide the Actions Icons
                         </lightning-tab>
                         <lightning-tab label="Open" title="Click here to open the Icon Picker">
                             <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
-                                <template if:false={excludeStandardIcons}>
+                                <template if:false={hideStandardIcons}>
                                     <lightning-accordion-section name="S" label="Standard Icons"
                                         title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                                         <div style={tabHeight}>
@@ -56,7 +56,7 @@ Updates:    Added an option to hide the Actions Icons
                                         </div>
                                     </lightning-accordion-section>
                                 </template>
-                                <template if:false={excludeUtilityIcons}>
+                                <template if:false={hideUtilityIcons}>
                                     <lightning-accordion-section name="U" label="Utility Icons"
                                         title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
                                         <div style={tabHeight}>
@@ -67,7 +67,7 @@ Updates:    Added an option to hide the Actions Icons
                                         </div>
                                     </lightning-accordion-section>
                                 </template>
-                                <template if:false={excludeCustomIcons}>
+                                <template if:false={hideCustomIcons}>
                                     <lightning-accordion-section name="C" label="Custom Icons"
                                         title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                                         <div style={tabHeight}>
@@ -78,7 +78,7 @@ Updates:    Added an option to hide the Actions Icons
                                         </div>
                                     </lightning-accordion-section>
                                 </template>
-                                <template if:false={excludeActionIcons}>
+                                <template if:false={hideActionIcons}>
                                     <lightning-accordion-section name="A" label="Action Icons"
                                         title="Action icons are for use with quick actions on touch-screen devices">
                                         <div style={tabHeight}>
@@ -101,7 +101,7 @@ Updates:    Added an option to hide the Actions Icons
                         <lightning-tab style={tabStyle} label="SELECT TYPE"
                             title="Select one of the tabs to the right to pick an Icon Type">
                         </lightning-tab>
-                        <template if:false={excludeStandardIcons}>
+                        <template if:false={hideStandardIcons}>
                             <lightning-tab label="Standard Icons" icon-name="standard:case"
                                 title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                                 <div style={tabHeight}>
@@ -112,7 +112,7 @@ Updates:    Added an option to hide the Actions Icons
                                 </div>
                             </lightning-tab>
                         </template>
-                        <template if:false={excludeUtilityIcons}>
+                        <template if:false={hideUtilityIcons}>
                             <lightning-tab label="Utility Icons" icon-name="utility:einstein"
                                 title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
                                 <div style={tabHeight}>
@@ -123,7 +123,7 @@ Updates:    Added an option to hide the Actions Icons
                                 </div>
                             </lightning-tab>
                         </template>
-                        <template if:false={excludeCustomIcons}>
+                        <template if:false={hideCustomIcons}>
                             <lightning-tab label="Custom Icons" icon-name="custom:custom61"
                                 title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                                 <div style={tabHeight}>
@@ -134,7 +134,7 @@ Updates:    Added an option to hide the Actions Icons
                                 </div>
                             </lightning-tab>
                         </template>
-                        <template if:false={excludeActionIcons}>
+                        <template if:false={hideActionIcons}>
                             <lightning-tab label="Action Icons" icon-name="action:flow"
                                 title="Action icons are for use with quick actions on touch-screen devices">
                                 <div style={tabHeight}>

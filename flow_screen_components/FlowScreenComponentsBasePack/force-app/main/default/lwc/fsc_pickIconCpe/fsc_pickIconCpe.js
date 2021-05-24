@@ -1,4 +1,5 @@
 import { LightningElement, track, api } from 'lwc';
+
 const ICON_CATEGORY_OPTIONS = [
     { label: 'Standard', value: 'standard', default: true },
     { label: 'Custom', value: 'custom', default: true },
@@ -38,28 +39,23 @@ export default class Fsc_pickIconCpe extends LightningElement {
 
     @track inputValues = {
         mode: { value: null, valueDataType: null, isCollection: false, label: 'Mode' },
-        // iconCategories: this.inputValue('Available Icon Categories', false, this.defaultCategories.join()),
         iconCategories: { value: null, valueDataType: null, isCollection: false, label: 'Available Icon Categories' },
         label: { value: DEFAULT_LABEL, valueDataType: null, isCollection: false, label: 'Label' },
         iconName: { value: null, valueDataType: null, isCollection: false, label: 'Icon Name' }
     };
     
-    @track iconCategories = ['standard', 'custom', 'utility'];
+    @track iconCategories = this.defaultCategories;
 
     initializeValues() {
-        // console.log('in initializeValues');
-        console.log('loading initializevalues, '+ JSON.stringify(this._values));
         if (this._values && this._values.length) {
             this._values.forEach(curInputParam => {
                 if (curInputParam.name && this.inputValues[curInputParam.name]) {
-                    let inputValue = this.inputValues[curInputParam.name];
-                    console.log('in initializeValues: ' + JSON.stringify(curInputParam));
                     if (curInputParam.name == 'iconCategories') {
                         this.iconCategories = curInputParam.value.split(',');
                     } else {
-                        inputValue.value = curInputParam.value;
+                        this.inputValues[curInputParam.name].value = curInputParam.value;
+                        this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     }                    
-                    inputValue.valueDataType = curInputParam.valueDataType;
                 }
             });
         }
@@ -80,13 +76,9 @@ export default class Fsc_pickIconCpe extends LightningElement {
         console.log('dispatched flow change event, detail: ' + JSON.stringify(valueChangedEvent.detail));
     }
 
-    inputValue(label, isCollection, defaultValue) {
-        return { value: undefined, valueDataType: null, isCollection: isCollection, label: label, defaultValue: defaultValue };
-    }
-
     /* COMPONENT */
 
-    @track iconCategoryOptions = ICON_CATEGORY_OPTIONS;
+    iconCategoryOptions = ICON_CATEGORY_OPTIONS;
     displayModeOptions = DISPLAY_MODE_OPTIONS;
 
     get defaultCategories() {
@@ -96,18 +88,15 @@ export default class Fsc_pickIconCpe extends LightningElement {
                 defaults.push(category.value);
             }
         };
-        console.log(defaults);
         return defaults;
     }
 
     handleToggleChange(event) {
         let name = event.currentTarget.name;
         if (name) {
-            // let value = event.currentTarget.multiselect ? event.detail.values.join() : event.detail.value;
             let value = event.detail.values.join();
             if (value)
                 this.template.querySelector('.modeToggle').errorMessage = null;
-            console.log('in toggle change for '+ name +', dispatching value = '+ value);
             this.dispatchFlowValueChangeEvent(name, value, DATA_TYPE.STRING);
         }
     }

@@ -913,7 +913,7 @@ const SEARCHBOX_ICONS = {
     SEARCH: 'utility:search'
 }
 
-const DEFAULT_MAX_RESULTS = 50;
+const DEFAULT_MAX_RESULTS = 100;
 
 const columns = [
     { label: 'Icon', fieldName: 'id', cellAttributes: { iconName: { fieldName: 'iconName' } } }
@@ -939,12 +939,9 @@ export default class ObjectIconSelector extends LightningElement {
     }
     set iconCategories(iconCategories) {
         this._iconCategories = iconCategories;
-        console.log('incoming iconCategories: '+ JSON.stringify(iconCategories));
         for (let category of ICON_CATEGORIES) {
             let hideProperty = 'hide' + category.charAt(0).toUpperCase() + category.slice(1) +'Icons';
-            console.log('hideproperty = '+ hideProperty, this[hideProperty]);
             this[hideProperty] = !iconCategories.includes(category);
-            console.log('new value: '+ this[hideProperty]);
         }
         
     }
@@ -1044,8 +1041,6 @@ export default class ObjectIconSelector extends LightningElement {
         if (!this.hideUtilityIcons) this.icons.push(...this.utilityIcons);
         // Action icons display weirdly in the combobox so I'm leaving them out for now
         //if (!this.hideActionIcons) this.icons.push(...this.actionIcons);
-
-        console.log(this.iconCategories);
     }
 
     renderedCallback() {

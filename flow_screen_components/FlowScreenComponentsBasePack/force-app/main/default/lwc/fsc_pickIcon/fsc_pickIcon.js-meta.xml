@@ -9,14 +9,18 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fsc_pick-icon-cpe">
+            <!-- Custom Property Editor (CPE) properties-->
+            <property name="iconCategories" type="String" role="inputOnly"/>
             <property name="mode" label="Display Mode" type="String" description="Enter 'tab', 'accordion', or 'combobox'" role="inputOnly"/>
+            <property name="label" label="Label" type="String" default="Pick an Icon" role="inputOnly"/>
+
+            <property name="iconName" label="Icon Name" type="String"/>
+
+            <!-- These properties are available to be set via API but are not exposed in the CPE -->
             <property name="hideStandardIcons" label="Hide Standard icons" type="Boolean" default="false" role="inputOnly"/>
             <property name="hideCustomIcons" label="Hide Custom icons" type="Boolean" default="false" role="inputOnly"/>
             <property name="hideUtilityIcons" label="Hide Utility icons" type="Boolean" default="false" role="inputOnly"/>
             <property name="hideActionIcons" label="Hide Action icons" type="Boolean" default="false" description="Note: Action icons are not available in combobox mode" role="inputOnly"/>
-            <property name="label" label="Label" type="String" default="Pick an Icon" role="inputOnly"/>
-            <property name="iconName" label="Icon Name" type="String"/>
-            <property name="iconCategories" type="String" role="inputOnly"/>
 
             <!-- Legacy properties -->
             <property name="accordionMode" label="zzz(legacy) Accordion Mode" description="This is a legacy property included for backwards compatibility and is not recommended for future use. Use the new 'mode' property instead." type="boolean" role="inputOnly"/>

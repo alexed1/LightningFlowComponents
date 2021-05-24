@@ -897,6 +897,8 @@ const UTILITY_ICONS = [
     { 'iconName': 'utility:zoomout', 'id': 'utility:zoomout' }
 ]
 
+const ICON_CATEGORIES = [ 'standard', 'custom', 'utility', 'action'];
+
 const MODES = {
     ACCORDION: 'accordion',
     TAB: 'tab',
@@ -930,6 +932,22 @@ export default class ObjectIconSelector extends LightningElement {
     @api hideCustomIcons;
     @api hideUtilityIcons;
     @api hideActionIcons;
+    
+    @api 
+    get iconCategories() {
+        return this._iconCategories;
+    }
+    set iconCategories(iconCategories) {
+        this._iconCategories = iconCategories;
+        console.log('incoming iconCategories: '+ JSON.stringify(iconCategories));
+        for (let category of ICON_CATEGORIES) {
+            let hideProperty = 'hide' + category.charAt(0).toUpperCase() + category.slice(1) +'Icons';
+            console.log('hideproperty = '+ hideProperty, this[hideProperty]);
+            this[hideProperty] = !iconCategories.includes(category);
+            console.log('new value: '+ this[hideProperty]);
+        }
+        
+    }
 
     @api mode;
     @api label = 'Pick an Icon';
@@ -1026,6 +1044,8 @@ export default class ObjectIconSelector extends LightningElement {
         if (!this.hideUtilityIcons) this.icons.push(...this.utilityIcons);
         // Action icons display weirdly in the combobox so I'm leaving them out for now
         //if (!this.hideActionIcons) this.icons.push(...this.actionIcons);
+
+        console.log(this.iconCategories);
     }
 
     renderedCallback() {

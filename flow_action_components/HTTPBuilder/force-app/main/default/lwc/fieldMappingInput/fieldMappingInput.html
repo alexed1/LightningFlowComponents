@@ -1,0 +1,17 @@
+<template>
+    <lightning-layout vertical-align="end">
+        <lightning-layout-item size="5" padding="around-small">
+            <c-fsc_pick-object-and-field field-label="Set this output field:" object-type={sobjectType} field={key} onfieldselected={changeKey} hide-object-picklist="true"></c-fsc_pick-object-and-field>
+        </lightning-layout-item>
+        <lightning-layout-item padding="around-small" size="5">
+            <lightning-input label="To the value of this key" onchange={changeValue} value={value}></lightning-input>
+        </lightning-layout-item>
+
+        <lightning-layout-item padding="around-small" size="2">
+            <template if:true={showButton}>
+                <lightning-button-icon icon-name="utility:close"  alternative-text="Delete" class="slds-m-left_xx-small slds-align_absolute-bottom"  title="Delete" onclick={remove}></lightning-button-icon>
+                <!-- <lightning-button label="remove"  class="slds-is-absolute-bottom"></lightning-button> -->
+            </template>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

@@ -1,8 +1,10 @@
 import { LightningElement, api, track } from 'lwc';
 
-export default class TargetKeySection extends LightningElement {
+export default class FieldMappingSection extends LightningElement {
     @api masterLabel;
     @api addButtonLabel;
+    @api sobjectType;
+
     @api set listData(value) {
        if(value) {
            this._itemList = JSON.parse(value);
@@ -14,9 +16,9 @@ export default class TargetKeySection extends LightningElement {
                }
            );
        } else {
-           if(!this._itemList) {
-               this._itemList = [{key :'value1', value : '', order: 0}];
-           }
+           //if(!this._itemList) {
+               this._itemList = [{key :'', value : '', order: 0}];
+           //}
        }
 
     };
@@ -25,7 +27,7 @@ export default class TargetKeySection extends LightningElement {
         if(this._itemList) {
             return this._itemList;
         } else {
-            this._itemList = [{key: 'value1', value: '', order: 0}];
+            this._itemList = [{key: '', value: '', order: 0}];
             return this._itemList;
         }
     }
@@ -33,7 +35,7 @@ export default class TargetKeySection extends LightningElement {
     @track _itemList; //= [{key :'', value : ''}];
 
     addItem() {
-        this._itemList.push({key:'value' + (this._itemList.length + 1), value:'', order : this._itemList.length});   
+        this._itemList.push({key:'', value:'', order : this._itemList.length});   
     }
 
     changeItem(event) {
@@ -50,7 +52,6 @@ export default class TargetKeySection extends LightningElement {
         this._itemList.splice(item.order, 1);
         let count = 1;
         this._itemList.forEach(element => {
-            element.key = 'value' + count;
             count++;
             if(element.order > item.order){
                 element.order--;

@@ -5,20 +5,19 @@ public with sharing class ExtractJSONValues {
         for(Request req : requests) {
             Map<String, Object> inputJSONMap = (Map<String, Object>)JSON.deserializeUntyped(req.inputJSONString);
             Map<String, String> responseMap = new Map<String,String>();
-            //System.debug(logLevel, o)
+            
             List<HeaderKeyValue> keysToExtractList = (List<HeaderKeyValue>)JSON.deserialize(req.keysToExtract, List<HeaderKeyValue>.class);
             for(HeaderKeyValue item : keysToExtractList) {
                 if(item.value.contains('.')) {
                     List<String> keyList = item.value.split('\\.');
-                    System.debug('keyList: ' + keyList);
+                    
                     Object result = inputJSONMap.get(keyList[0]);
-                    System.debug('result: ' + result);
 
                     for(Integer i = 1; i < keyList.size(); i++) {
                         if(result != null && result instanceof Map<string, Object>) {
                             Map<string, Object> temp = (Map<string, Object>) result;
                             result = temp.get(keyList[i]);
-                            System.debug('result in loop: ' + result);
+
                         }
                     }
 

@@ -24,7 +24,7 @@ public with sharing class MapJSONArray {
                 responseList.add(resp);
             } catch(Exception e) {
                 Response resp = new Response();
-                resp.errors = e.getMessage();
+                resp.errors = e.getMessage() + e.getStackTraceString();
                 responseList.add(resp);
             }
         }

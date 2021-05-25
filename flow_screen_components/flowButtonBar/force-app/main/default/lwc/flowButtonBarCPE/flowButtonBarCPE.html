@@ -15,7 +15,8 @@
                                 ondragleave={handleDragLeave}>
                                 <div>
                                     <lightning-icon icon-name="utility:drag_and_drop" class="dragHandle"
-                                        draggable="true" data-index={index} ondragstart={handleDragStart}></lightning-icon>
+                                        draggable="true" data-index={index} ondragstart={handleDragStart}>
+                                    </lightning-icon>
                                 </div>
                                 <div class="slds-col">
                                     <lightning-button label={button.label} data-value={button.value} data-index={index}
@@ -58,8 +59,8 @@
                     <!-- <lightning-combobox label={inputValues.orientation.label} name="orientation"
                         value={inputValues.orientation.value} options={orientationOptions}
                         onchange={handleComboboxChange}></lightning-combobox> -->
-                    <c-toggle-input label={inputValues.orientation.label}
-                        name="orientation" options={orientationOptions} value={inputValues.orientation.value}
+                    <c-toggle-input label={inputValues.orientation.label} name="orientation"
+                        options={orientationOptions} value={inputValues.orientation.value}
                         ontogglechange={handleToggleChange}></c-toggle-input>
 
                     <template if:false={isVertical}>
@@ -67,9 +68,8 @@
                             value={inputValues.alignment.value} options={alignmentOptions}
                             onchange={handleComboboxChange}></lightning-combobox> -->
 
-                        <c-toggle-input label={inputValues.alignment.label}
-                            name="alignment" options={alignmentOptions} value={inputValues.alignment.value}
-                            ontogglechange={handleToggleChange}></c-toggle-input>
+                        <c-toggle-input label={inputValues.alignment.label} name="alignment" options={alignmentOptions}
+                            value={inputValues.alignment.value} ontogglechange={handleToggleChange}></c-toggle-input>
 
                         <c-toggle-input label={inputValues.groupAsToggle.label}
                             help-text="Horizontal buttons can be displayed individually or as a toggle/button group (like this very option!)"
@@ -160,8 +160,9 @@
                         </div>
 
                         <div class="slds-size_1-of-2 slds-p-around_xx-small">
-                            <c-icon-selector onselecticon={handleSelectIcon} exclude-standard-icons="true"
-                                exclude-custom-icons="true" value={selectedButton.iconName}></c-icon-selector>
+                            <c-fsc_pick-icon oniconselection={handleSelectIcon} hide-standard-icons="true"
+                                hide-custom-icons="true" hide-action-icons="true" mode="combobox"
+                                icon-name={selectedButton.iconName}></c-fsc_pick-icon>
                             <template if:true={selectedButton.iconName}>
                                 <lightning-radio-group label="Icon Position" type="button" options={positionOptions}
                                     value={selectedButton.iconPosition} onchange={handleIconPositionChange}>

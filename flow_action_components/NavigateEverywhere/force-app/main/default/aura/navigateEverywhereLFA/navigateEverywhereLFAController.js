@@ -135,7 +135,7 @@
                 break;    
                 case 'relatedlist' :
                     validActionValues = ['view'];
-                    if(!destinationRecordId || !destinationName || !destinationAction || !relationshipName) {
+                    if( !( !destinationRecordId || !destinationName || !destinationAction || !relationshipName ) ) {
                         pageReference.type = 'standard__recordRelationshipPage';
                         pageReference.attributes.recordId = destinationRecordId;
                         pageReference.attributes.objectApiName = destinationName;
@@ -154,10 +154,9 @@
 
         } else {
             throw new Error("Unsupported or missing destination Type. Currently this component supports object, record, url, namedpage, tab, knowledge, relatedlist, and app");
-                 
         }
-         console.log('page reference is: ' + JSON.stringify(pageReference));
-         navService.navigate(pageReference);  
-     } 
+        console.log('page reference is: ' + JSON.stringify(pageReference));
+        navService.navigate(pageReference);  
+    } 
             
 })

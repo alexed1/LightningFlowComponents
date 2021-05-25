@@ -1,0 +1,31 @@
+<template>
+    <template if:true={includeLine}>
+        <hr class="slds-m-vertical_small">
+    </template>
+
+    <template if:true={buttons.length}>        
+        <template if:false={isVertical}>
+            <div class="slds-clearfix">
+                <div class={buttonGroupClass}>
+                    <template for:each={buttons} for:item="button" for:index="index">
+                        <button class="slds-button slds-button_neutral" key={button.Label} data-value={button.Value} data-index={index} onclick={handleButtonClick}>{button.Label}</button>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template if:true={isVertical}>
+                <template for:each={buttons} for:item="button" for:index="index">
+                    <div class="rowContainer slds-grid slds-wrap slds-grid_vertical-stretch" key={button.label}>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_10-of-12 slds-box slds-shrink-none">
+                            {button.DescriptionText}
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12 slds-box slds-align_absolute-center">
+                            <button class="slds-button slds-button_neutral slds-button_stretch" key={button.Label} data-value={button.Value} data-index={index} onclick={handleButtonClick}>{button.Label}</button>
+                        </div>
+                    </div>
+                </template>
+        </template>
+    </template>
+</template> 

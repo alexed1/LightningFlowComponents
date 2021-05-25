@@ -15,5 +15,11 @@
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0"
+  "sourceApiVersion": "51.0",
+  "packageAliases": {
+
+    "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
+    "FlowScreenComponentsBasePack@2.1.7-0": "04t5G0000047xDpQAI"
+
+}
 }

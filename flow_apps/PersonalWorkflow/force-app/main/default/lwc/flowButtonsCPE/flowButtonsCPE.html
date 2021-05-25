@@ -1,0 +1,37 @@
+<template>
+    <article class="slds-p-top_small">
+        <div class="slds-clearfix">
+            <h3 class="slds-text-heading_small slds-float_left">Buttons <span class="slds-text-body_small slds-p-horizontal_x-small">(click to edit)</span></h3>
+            <div class="slds-float_right">
+                <button class="slds-button slds-button_neutral" disabled={newButtonDisabled} onclick={handleNewButtonClick}>New</button>
+            </div>
+        </div>
+
+        <template for:each={buttons} for:item="button" for:index="index">
+            <div class="buttonContainer slds-p-around_xx-small" key={button.value}>
+                <button class="slds-button slds-button_neutral" key={button.label} data-value={button.value} data-index={index} onclick={handleButtonClick}>{button.label}</button>
+                <span class="slds-text-body_small slds-p-horizontal_x-small">
+                    Value: {button.value}
+                </span>
+            </div>
+        </template>
+    </article>
+    <article class="slds-p-top_small">
+        <h3 class="slds-text-heading_small">Settings</h3>
+        <lightning-combobox label="Orientation" value={orientation} options={orientationOptions}
+            onchange={handleOrientationChange}></lightning-combobox>
+        <template if:false={isVertical}>
+            <lightning-combobox label="Alignment" value={alignment} options={alignmentOptions}
+                onchange={handleAlignmentChange}></lightning-combobox>
+            <lightning-input type="toggle" label="Group as toggle"
+                field-level-help="When active, buttonset is grouped together as a toggle isntead of individual buttons (see: https://www.lightningdesignsystem.com/components/button-groups/#Base)">
+            </lightning-input>
+        </template>
+        <lightning-input type="toggle" label="Display horizontal line above buttons"
+            field-level-help="When active, displays a horizontal line above the buttons, giving separation between the buttons and the element above them. Useful if you are replacing the standard footer but want to still look like it.">
+        </lightning-input>
+        <lightning-input type="toggle" label="Do not transition on click"
+            field-level-help="When active, the buttonset does NOT trigger a Flow navigation event when clicked. It does still pass the selected value to the Flow.">
+        </lightning-input>
+    </article>
+</template> 

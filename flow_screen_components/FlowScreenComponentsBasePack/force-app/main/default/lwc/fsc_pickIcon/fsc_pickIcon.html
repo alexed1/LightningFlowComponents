@@ -39,42 +39,52 @@ Updates:    Added an option to hide the Actions Icons
         <div class="slds-form-element__control">
 
             <template if:true={accordionMode}>
-                <label class="slds-form-element__label" style="width: 100%;">Icon Picker
+                <label class="slds-form-element__label" style="width: 100%;">{label}
                     <lightning-tabset>
-                        <lightning-tab style={tabStyle}
-                            label="Close"
-                            title="Click here to close the Icon Picker">
+                        <lightning-tab style={tabStyle} label="Close" title="Click here to close the Icon Picker">
                         </lightning-tab>
-                        <lightning-tab
-                            label="Open" 
-                            title="Click here to open the Icon Picker">
+                        <lightning-tab label="Open" title="Click here to open the Icon Picker">
                             <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
-                                <lightning-accordion-section name="S" label="Standard Icons" title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                                    <div style={tabHeight}>
-                                        <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={standardIcons}
-                                            columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
-                                        </c-fsc_searchable-data-table>
-                                    </div>
-                                </lightning-accordion-section>
-                                <lightning-accordion-section name="U" label="Utility Icons" title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
-                                    <div style={tabHeight}>
-                                        <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={utilityIcons}
-                                            columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
-                                        </c-fsc_searchable-data-table>
-                                    </div>
-                                </lightning-accordion-section>
-                                <lightning-accordion-section name="C" label="Custom Icons" title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                                    <div style={tabHeight}>
-                                        <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={customIcons}
-                                            columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
-                                        </c-fsc_searchable-data-table>
-                                    </div>
-                                </lightning-accordion-section>
-                                <template if:false={hideActionIcons}>
-                                    <lightning-accordion-section name="A" label="Action Icons" title="Action icons are for use with quick actions on touch-screen devices">
+                                <template if:false={hideStandardIcons}>
+                                    <lightning-accordion-section name="S" label="Standard Icons"
+                                        title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
                                         <div style={tabHeight}>
-                                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={actionIcons}
-                                                columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
+                                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                                table-data={standardIcons} columns={columns} max-row-selection="1"
+                                                onrowselection={iconSelected} table-style={tableStyle}>
+                                            </c-fsc_searchable-data-table>
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                                <template if:false={hideUtilityIcons}>
+                                    <lightning-accordion-section name="U" label="Utility Icons"
+                                        title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
+                                        <div style={tabHeight}>
+                                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                                table-data={utilityIcons} columns={columns} max-row-selection="1"
+                                                onrowselection={iconSelected} table-style={tableStyle}>
+                                            </c-fsc_searchable-data-table>
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                                <template if:false={hideCustomIcons}>
+                                    <lightning-accordion-section name="C" label="Custom Icons"
+                                        title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                                        <div style={tabHeight}>
+                                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                                table-data={customIcons} columns={columns} max-row-selection="1"
+                                                onrowselection={iconSelected} table-style={tableStyle}>
+                                            </c-fsc_searchable-data-table>
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                                <template if:false={hideActionIcons}>
+                                    <lightning-accordion-section name="A" label="Action Icons"
+                                        title="Action icons are for use with quick actions on touch-screen devices">
+                                        <div style={tabHeight}>
+                                            <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                                table-data={actionIcons} columns={columns} max-row-selection="1"
+                                                onrowselection={iconSelected} table-style={tableStyle}>
                                             </c-fsc_searchable-data-table>
                                         </div>
                                     </lightning-accordion-section>
@@ -85,51 +95,52 @@ Updates:    Added an option to hide the Actions Icons
                 </label>
             </template>
 
-            <template if:false={accordionMode}>
-                <label class="slds-form-element__label" style="width: 100%;">Icon Picker
+            <template if:true={tabMode}>
+                <label class="slds-form-element__label" style="width: 100%;">{label}
                     <lightning-tabset>
-                        <lightning-tab style={tabStyle}
-                            label="SELECT TYPE"
-                            title="Select one of the 4 tabs to the right to pick an Icon Type">
+                        <lightning-tab style={tabStyle} label="SELECT TYPE"
+                            title="Select one of the tabs to the right to pick an Icon Type">
                         </lightning-tab>
-                        <lightning-tab
-                            label="Standard Icons" 
-                            icon-name="standard:case"
-                            title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={standardIcons}
-                                    columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}> 
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
-                        <lightning-tab 
-                            label="Utility Icons" 
-                            icon-name="utility:einstein"
-                            title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={utilityIcons}
-                                    columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
-                        <lightning-tab 
-                            label="Custom Icons" 
-                            icon-name="custom:custom61"
-                            title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
-                            <div style={tabHeight}>
-                                <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={customIcons}
-                                    columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
-                                </c-fsc_searchable-data-table>
-                            </div>
-                        </lightning-tab>
+                        <template if:false={hideStandardIcons}>
+                            <lightning-tab label="Standard Icons" icon-name="standard:case"
+                                title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={standardIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
+                        </template>
+                        <template if:false={hideUtilityIcons}>
+                            <lightning-tab label="Utility Icons" icon-name="utility:einstein"
+                                title="Utility icons are simple, single-color glyphs that identify labels and actions across form factors">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={utilityIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
+                        </template>
+                        <template if:false={hideCustomIcons}>
+                            <lightning-tab label="Custom Icons" icon-name="custom:custom61"
+                                title="Standard and Custom Object icons represent Salesforce entities and objects (Account, Case, etc.)">
+                                <div style={tabHeight}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={customIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
+                                    </c-fsc_searchable-data-table>
+                                </div>
+                            </lightning-tab>
+                        </template>
                         <template if:false={hideActionIcons}>
-                            <lightning-tab 
-                                label="Action Icons" 
-                                icon-name="action:flow"
+                            <lightning-tab label="Action Icons" icon-name="action:flow"
                                 title="Action icons are for use with quick actions on touch-screen devices">
                                 <div style={tabHeight}>
-                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id" table-data={actionIcons}
-                                        columns={columns} max-row-selection="1" onrowselection={iconSelected} table-style={tableStyle}>
+                                    <c-fsc_searchable-data-table search-placeholder="Search ..." key-field="id"
+                                        table-data={actionIcons} columns={columns} max-row-selection="1"
+                                        onrowselection={iconSelected} table-style={tableStyle}>
                                     </c-fsc_searchable-data-table>
                                 </div>
                             </lightning-tab>
@@ -138,6 +149,87 @@ Updates:    Added an option to hide the Actions Icons
                 </label>
             </template>
 
-        </div>    
+            <template if:true={comboboxMode}>
+                <label class="slds-form-element__label">{label}</label>
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                    <div class="slds-combobox_container">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" role="combobox">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                role="none">
+                                <button
+                                    class="slds-icon slds-input__icon slds-theme_default slds-p-right_small slds-p-bottom_small">
+                                    <lightning-icon size="x-small" icon-name={searchboxIcon}
+                                        onmousedown={handleSearchboxIconClick}></lightning-icon>
+                                </button>
+                                <template if:true={iconName}>
+                                    <span class="slds-icon_container slds-combobox__input-entity-icon">
+                                        <lightning-icon
+                                            class="slds-icon slds-icon_small slds-input__icon_left searchboxIcon"
+                                            icon-name={iconName}></lightning-icon>
+                                    </span>
+                                </template>
+                                <input type="text" placeholder="Type to search"
+                                    class="slds-input slds-combobox__input comboboxInput" onfocus={handleSearchFocus}
+                                    onkeyup={handleSearchChange} onchange={handleSearchChange}
+                                    onblur={handleSearchBlur} />
+                            </div>
+
+                            <div class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                                role="listbox" onmousedown={handleDropdownClick}>
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={displayedIcons} for:item="icon">
+                                        <li role="presentation" class="slds-listbox__item" key={icon.iconName}
+                                            data-icon={icon.iconName} onmousedown={handleIconSelect}>
+                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                role="option">
+                                                <span class="slds-media__figure slds-listbox__option-icon">
+                                                    <lightning-icon icon-name={icon.iconName} size="small">
+                                                    </lightning-icon>
+                                                </span>
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate"
+                                                        title={icon.iconName}>{icon.iconName}</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </template>
+
+                                    <!-- If the number of icons that match the current search term is greater than the amount of results currently set to be displayed  -->
+                                    <template if:true={resultsExceedMax}>
+                                        <li role="presentation"
+                                            class="slds-listbox__item slds-border_top slds-theme_default"
+                                            onclick={loadMore}>
+                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                role="option">
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate">{loadMoreString}</span>
+                                                </span>
+                                            </div>
+
+                                        </li>
+                                    </template>
+
+                                    <!-- If no matches were found, let the user know -->
+                                    <template if:false={displayedIcons.length}>
+                                        <li role="presentation" class="slds-listbox__item">
+                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                role="option">
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate">{noMatchesFoundString}</span>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template if:true={invalidMode}>
+                <div class="slds-text-color_error">Icon Selector error: a valid display mode has not been entered. Choose 'accordion', 'tab', or 'combobox'.</div>
+            </template>
+        </div>
     </div>
 </template>

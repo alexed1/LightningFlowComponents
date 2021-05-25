@@ -3,5 +3,5 @@
     <template for:each={listData} for:item="item">
         <c-target-key-input key={item.order} entity={item} onchangeinput={changeItem} onremoveitem={removeItem}></c-target-key-input>
     </template>
-    <lightning-button label={addButtonLabel} onclick={addItem} ></lightning-button>
+    <lightning-button label={addButtonLabel} onclick={addItem} disabled={isButtonDisable}></lightning-button>
 </template>

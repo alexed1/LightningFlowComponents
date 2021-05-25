@@ -30,10 +30,19 @@ export default class TargetKeySection extends LightningElement {
         }
     }
 
+    get isButtonDisable() {
+        if(this.listData.length >= 20) {
+            return true;
+        }
+        return false;
+    }
+
     @track _itemList; //= [{key :'', value : ''}];
 
     addItem() {
-        this._itemList.push({key:'value' + (this._itemList.length + 1), value:'', order : this._itemList.length});   
+        if(this._itemList.length < 20) {
+            this._itemList.push({key:'value' + (this._itemList.length + 1), value:'', order : this._itemList.length});
+        }
     }
 
     changeItem(event) {

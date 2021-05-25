@@ -8,13 +8,15 @@ public with sharing class MapJSONArray {
                 List<Object> entityList = (List<Object>)JSON.deserializeUntyped(req.inputJSONString);
                 List<ObjectKeyValue> keysToExtractList = (List<ObjectKeyValue>)JSON.deserialize(req.keysToExtract, List<ObjectKeyValue>.class);
                 for(Object item : entityList) {
-                    
+                    SObject sobj = Schema.getGlobalDescribe().get(req.sobjectType).newSObject();
                     Map<String,Object> entityMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(item));
                     for(ObjectKeyValue objectKey : keysToExtractList) {
-                        SObject sobj = Schema.getGlobalDescribe().get(req.sobjectType).newSObject();
+                        
                         sobj.put(objectKey.key, entityMap.get(objectKey.value));
-                        sobjectList.add(sobj);
+                        
                     }
+
+                    sobjectList.add(sobj);
                 }
 
                 Response resp = new Response();

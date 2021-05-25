@@ -21,10 +21,11 @@ public with sharing class ExtractJSONValues {
                         }
                     }
 
-                    responseMap.put(item.key, String.valueOf(result));
+                    responseMap.put(item.key,((result instanceof Map<String, Object>) || (result instanceof List<Object>)) ? JSON.serialize(result) : String.valueOf(result));
 
                 } else {
-                    responseMap.put(item.key, String.valueOf(inputJSONMap.get(item.value)));
+                    Object result = inputJSONMap.get(item.value);
+                    responseMap.put(item.key, ((result instanceof Map<String, Object>) || (result instanceof List<Object>)) ? JSON.serialize(result) : String.valueOf(result));
                 }
             }
 

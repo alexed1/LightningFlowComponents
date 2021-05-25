@@ -1,5 +1,5 @@
-import SystemModstamp from '@salesforce/schema/Account.SystemModstamp';
 import { LightningElement, track, api } from 'lwc';
+import makeTestRESTCall from "@salesforce/apex/MakeHTTPCallCPEController.makeTestHTTPCallout";
 const METHOD_LIST = [
     {value: 'GET', label: 'GET'},
     {value: 'POST', label: 'POST'},
@@ -16,7 +16,7 @@ export default class MakeHTTPCallCPE extends LightningElement {
     @track inputValues = {};
 
     @api inputVariables;
-
+    testResult;
     get methodList() {
         return METHOD_LIST;
     }
@@ -111,6 +111,30 @@ export default class MakeHTTPCallCPE extends LightningElement {
     }
     changeBody(event) {
         this.dispatchFlowValueChangeEvent('Body', event.detail.value, 'String');
+    }
+
+    makeTestCallout() {
+        let request = {
+            Method : this.method,
+            Endpoint : this.url,
+            Body : this.body,
+            Timeout : this.timeout,
+            Params : this.paramList,
+            Headers : this.headerList,
+            BodyAsBlob : this.bodyAsBlob,
+            Compressed_gzip : this.compressedGzip
+
+        };
+        console.log('request', request);
+        makeTestRESTCall( {
+            'requestJSON' : JSON.stringify(request)
+        }).then(result => {
+            console.log('result', result);
+            this.testResult = JSON.parse(result);
+
+        }).catch(error => {
+            console.error('error', error);
+        });
     }
 
 

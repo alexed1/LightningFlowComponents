@@ -18,6 +18,21 @@
 
     <lightning-input type="checkbox" checked={bodyAsBlob} label="Request Body as Blob?" class="slds-m-around_medium" onchange={changeBodyAsBlob}></lightning-input>
 
-
+    <lightning-button label="Test Callout" onclick={makeTestCallout}></lightning-button>
+    <template if:true={testResult}>
+        <div class="slds-m-around_medium">
+            <b>Response Result</b>
+            <div class="slds-m-around_small">
+                <template if:true={testResult.Error_message}>
+                    Error Message : {testResult.Error_message}<br/>
+                </template>
+                <template if:false={testResult.Error_message}>
+                    Status : {testResult.Status} <br/>
+                    Status_code : {testResult.Status_code}<br/>
+                    Body : {testResult.Body}<br/>
+                </template>
+            </div>
+        </div>
+    </template>
     
 </template>

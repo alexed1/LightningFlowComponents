@@ -1,35 +1,35 @@
 <template>
-    <div>Make HTTP Call</div>
+    <div>{labels.Make_HTTP_Call}</div>
 
-    <lightning-input label="url" onchange={changeURL} value={url} class="slds-m-around_medium" required="true"></lightning-input>
-    <lightning-combobox label="HTTP Method" options={methodList} onchange={changeMethod} value={method} class="slds-m-around_medium" required="true"></lightning-combobox>
-    <lightning-input label="Timeout in ms" onchange={changeTimeout} value={timeout} class="slds-m-around_medium" type="number"></lightning-input>
-    <c-list-builder master-label="Specify Params:" add-button-label="Add Param" list-data={paramList} onchangelist={changeParams}></c-list-builder>
-    <c-list-builder master-label="Specify Headers:" add-button-label="Add Header" list-data={headerList} onchangelist={changeHeaders}></c-list-builder>
+    <lightning-input label={labels.urlLabel} onchange={changeURL} value={url} class="slds-m-around_medium" required="true"></lightning-input>
+    <lightning-combobox label={labels.HTTP_Method} options={methodList} onchange={changeMethod} value={method} class="slds-m-around_medium" required="true"></lightning-combobox>
+    <lightning-input label={labels.Timeout_in_ms} onchange={changeTimeout} value={timeout} class="slds-m-around_medium" type="number"></lightning-input>
+    <c-list-builder master-label={labels.Specify_Params} add-button-label={labels.Add_Param} list-data={paramList} onchangelist={changeParams}></c-list-builder>
+    <c-list-builder master-label={labels.Specify_Headers} add-button-label={labels.Add_Header} list-data={headerList} onchangelist={changeHeaders}></c-list-builder>
 
     <lightning-textarea
         class="slds-m-around_medium"
-        label="Body"
+        label={labels.Body_Label}
         value={body}
         onchange={changeBody}>
     </lightning-textarea>
 
-    <lightning-input type="checkbox" checked={compressedGzip} label="Compress Request body to gzip?" class="slds-m-around_medium" onchange={changeCompressedGzip}></lightning-input>
+    <lightning-input type="checkbox" checked={compressedGzip} label={labels.Compress_Request_body_to_gzip} class="slds-m-around_medium" onchange={changeCompressedGzip}></lightning-input>
 
-    <lightning-input type="checkbox" checked={bodyAsBlob} label="Request Body as Blob?" class="slds-m-around_medium" onchange={changeBodyAsBlob}></lightning-input>
+    <lightning-input type="checkbox" checked={bodyAsBlob} label={labels.Request_Body_as_Blob} class="slds-m-around_medium" onchange={changeBodyAsBlob}></lightning-input>
 
-    <lightning-button label="Test Callout" onclick={makeTestCallout}></lightning-button>
+    <lightning-button label={labels.Test_Callout} onclick={makeTestCallout}></lightning-button>
     <template if:true={testResult}>
         <div class="slds-m-around_medium">
-            <b>Response Result</b>
+            <b>{labels.Response_Result}</b>
             <div class="slds-m-around_small">
                 <template if:true={testResult.Error_message}>
-                    Error Message : {testResult.Error_message}<br/>
+                    {labels.Error_Message} {testResult.Error_message}<br/>
                 </template>
                 <template if:false={testResult.Error_message}>
-                    Status : {testResult.Status} <br/>
-                    Status_code : {testResult.Status_code}<br/>
-                    Body : {testResult.Body}<br/>
+                    {labels.Status} {testResult.Status} <br/>
+                    {labels.Status_code} {testResult.Status_code}<br/>
+                    {labels.Body_Label} : {testResult.Body}<br/>
                 </template>
             </div>
         </div>

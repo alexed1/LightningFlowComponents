@@ -1,8 +1,13 @@
 import { LightningElement, api, track } from 'lwc';
+import Set_this_Output from '@salesforce/label/c.Set_this_Output';
+import To_the_value_of_this_key from '@salesforce/label/c.To_the_value_of_this_key';
 
 export default class TargetKeyInput extends LightningElement {
     @api entity = {};
-
+    labels = {
+        Set_this_Output,
+        To_the_value_of_this_key
+    }
     get key(){
         return this.entity.key;
     }

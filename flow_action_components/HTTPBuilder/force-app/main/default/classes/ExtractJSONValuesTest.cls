@@ -20,7 +20,6 @@ public with sharing class ExtractJSONValuesTest {
         request.keysToExtract = KEY_TO_EXTRACT_JSON_SAMPLE;
 
         ExtractJSONValues.Response response = ExtractJSONValues.Invoke(new List<ExtractJSONValues.Request> {request})[0];
-        System.debug(response);
         System.assertEquals(response.value1, 'true');
         System.assertEquals(response.value2, 'U34567890');
         System.assertEquals(response.value10, 'Updated text you carefully authored');

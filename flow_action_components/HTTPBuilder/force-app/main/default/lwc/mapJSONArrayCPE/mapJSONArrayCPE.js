@@ -1,5 +1,14 @@
 import { LightningElement,api, track } from 'lwc';
+import Map_JSON_Array from '@salesforce/label/c.Map_JSON_Array';
+import Target_Object_Type from '@salesforce/label/c.Target_Object_Type';
+import Input_JSON_String from '@salesforce/label/c.Input_JSON_String';
+import Confirm_Object_Type from '@salesforce/label/c.Confirm_Object_Type';
+import Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array from '@salesforce/label/c.Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array';
+import Add_Target_Key from '@salesforce/label/c.Add_Target_Key';
 
+
+
+import urlLabel from '@salesforce/label/c.url';
 export default class MapJSONArrayCPE extends LightningElement {
     @api 
     get builderContext() {
@@ -13,6 +22,15 @@ export default class MapJSONArrayCPE extends LightningElement {
             const { variables } = this._builderContext;
             this._flowVariables = [...variables];
         }
+    }
+
+    labels = {
+        Map_JSON_Array,
+        Target_Object_Type,
+        Input_JSON_String,
+        Confirm_Object_Type,
+        Add_Target_Key,
+        Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array
     }
 
     @api inputVariables;

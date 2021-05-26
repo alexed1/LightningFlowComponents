@@ -1,8 +1,15 @@
 import { LightningElement, api } from 'lwc';
+import Set_this_output_field from '@salesforce/label/c.Set_this_output_field';
+import To_the_value_of_this_key from '@salesforce/label/c.To_the_value_of_this_key';
 
 export default class FieldMappingInput extends LightningElement {
     @api entity = {};
     @api sobjectType;
+    labels = {
+        Set_this_output_field,
+        To_the_value_of_this_key
+    }    
+    
     get key(){
         return this.entity.key;
     }

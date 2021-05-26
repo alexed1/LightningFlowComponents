@@ -100,7 +100,6 @@ public with sharing class MakeHTTPCall {
                     url += '?' + String.join(paramsList, '&');
                 }
             }
-            system.debug('setEndpoint : '+ url);
             req.setEndpoint(url);
             
             //set Body, there's possibility Body is null
@@ -114,7 +113,7 @@ public with sharing class MakeHTTPCall {
             }
 			
             //set Timeout. If null, Timeout is 10000ms
-            if (curRequest.Timeout != Null){
+            if (curRequest.Timeout != Null || curRequest.Timeout != 0){
                 req.setTimeout(curRequest.Timeout);
                 system.debug('setTimeout : '+curRequest.Timeout);
             }

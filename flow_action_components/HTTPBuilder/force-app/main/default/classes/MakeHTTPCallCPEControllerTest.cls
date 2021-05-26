@@ -15,7 +15,6 @@ public with sharing class MakeHTTPCallCPEControllerTest {
 
 
         String responseJSON = MakeHTTPCallCPEController.makeTestHTTPCallout(JSON.serialize(request));
-        System.debug(responseJSON);
         MakeHTTPCall.Response response = (MakeHTTPCall.Response)JSON.deserialize(responseJSON, MakeHTTPCall.Response.Class);
         System.assertEquals(response.Status_code, 200);
         

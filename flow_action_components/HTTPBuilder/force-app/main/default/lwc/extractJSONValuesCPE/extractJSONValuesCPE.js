@@ -1,6 +1,19 @@
 import { LightningElement, api, track } from 'lwc';
+import Extract_JSON_Values from '@salesforce/label/c.Extract_JSON_Values';
+//import HTTP_Method from '@salesforce/label/c.HTTP_Method';
+import Input_JSON_String from '@salesforce/label/c.Input_JSON_String';
+import Specify_the_keys_that_you_want_to_extract from '@salesforce/label/c.Specify_the_keys_that_you_want_to_extract';
+import Add_Target_Key from '@salesforce/label/c.Add_Target_Key';
+//import HTTP_Method from '@salesforce/label/c.HTTP_Method';
+
 
 export default class ExtractJSONValuesCPE extends LightningElement {
+    labels = {
+        Extract_JSON_Values,
+        Input_JSON_String,
+        Specify_the_keys_that_you_want_to_extract,
+        Add_Target_Key
+    }
     @api 
     get builderContext() {
         return this._builderContext;

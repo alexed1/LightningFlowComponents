@@ -1,10 +1,10 @@
 <template>
     <lightning-layout vertical-align="end">
         <lightning-layout-item size="5" padding="around-small">
-            <c-fsc_pick-object-and-field field-label="Set this output field:" object-type={sobjectType} field={key} onfieldselected={changeKey} hide-object-picklist="true"></c-fsc_pick-object-and-field>
+            <c-fsc_pick-object-and-field field-label={labels.Set_this_output_field} object-type={sobjectType} field={key} onfieldselected={changeKey} hide-object-picklist="true"></c-fsc_pick-object-and-field>
         </lightning-layout-item>
         <lightning-layout-item padding="around-small" size="5">
-            <lightning-input label="To the value of this key" onchange={changeValue} value={value}></lightning-input>
+            <lightning-input label={labels.To_the_value_of_this_key} onchange={changeValue} value={value}></lightning-input>
         </lightning-layout-item>
 
         <lightning-layout-item padding="around-small" size="2">

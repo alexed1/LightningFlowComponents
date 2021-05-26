@@ -6,6 +6,22 @@ public with sharing class ListActionsTest {
     private final static String FLOW_DATE_FORMAT = 'MMMM dd, yyyy';
     private final static String FLOW_DATE_TIME_FORMAT = 'MM/dd/yyyy, hh:mm aa';
 
+    @isTest
+    static void canCalculateCollection(){
+        List<Account> testAccounts = createAccounts(3, true);
+        CollectionCalculate.Requests request = new CollectionCalculate.Requests();
+        request.inputCollection = testAccounts;
+        request.fieldName = 'AnnualRevenue';
+        request.operation = 'Add';
+        List<CollectionCalculate.Requests> requests = new List<CollectionCalculate.Requests>();
+        requests.add(request);
+
+        
+        List<CollectionCalculate.Results> responses = CollectionCalculate.execute(requests);
+        CollectionCalculate.Results response = responses[0];
+        System.assertEquals(15000, response.outputDecimalResult);
+
+    }
 
     @isTest
     static void canGetLookupCollection() {
@@ -423,7 +439,7 @@ public with sharing class ListActionsTest {
 
         List<Account> returnList = new List<Account>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Account(Name = TEST_RECORD_NAME + i, Website = '' + i));
+            returnList.add(new Account(Name = TEST_RECORD_NAME + i, Website = '' + i, AnnualRevenue=5000));
         }
         if (doInsert) {
             //insert returnList without triggering duplicate rules

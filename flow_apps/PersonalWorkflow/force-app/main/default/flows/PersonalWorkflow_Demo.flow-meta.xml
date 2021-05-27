@@ -45,7 +45,7 @@
             <targetReference>Screen1</targetReference>
         </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Personal_Flow__c</object>
+        <object>PersonalFlow__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
@@ -65,7 +65,7 @@
             <name>personalFlowFlexcards</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
-                <typeValue>Personal_Flow__c</typeValue>
+                <typeValue>PersonalFlow__c</typeValue>
             </dataTypeMappings>
             <extensionName>c:flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
@@ -90,7 +90,7 @@
             <inputParameters>
                 <name>objectAPIName</name>
                 <value>
-                    <stringValue>Personal_Flow__c</stringValue>
+                    <stringValue>PersonalFlow__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -135,6 +135,6 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Personal_Flow__c</objectType>
+        <objectType>PersonalFlow__c</objectType>
     </variables>
 </Flow>

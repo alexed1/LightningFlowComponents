@@ -56,6 +56,8 @@
             <lightning-accordion-section label="Button Bar Settings" name="settings"
                 class="slds-p-around_none slds-m-around_none">
                 <article>
+                    <lightning-input label={inputValues.label.label} name="label" value={inputValues.label.value} onchange={handleInputValueChange}></lightning-input>
+
                     <c-fsc_flow-button-bar label={inputValues.actionMode.label} name="actionMode"
                         options={actionModes.options} value={inputValues.actionMode.value}
                         onbuttonclick={handleButtonClick} required
@@ -230,9 +232,10 @@
                     <div class={inputValues.alignment.value}>
                         <c-fsc_flow-button-bar options={buttons} orientation={inputValues.orientation.value}
                             action-mode={inputValues.actionMode.value} alignment={inputValues.alignment.value}
-                            show-lines={inputValues.showLines.value} class="slds-p-around_medium" preview-mode="true">
+                            show-lines={inputValues.showLines.value} class="slds-p-around_medium previewButtonBar" preview-mode="true">
                         </c-fsc_flow-button-bar>
                     </div>
+                    <div class="slds-text-body_small">Note: Navigation, required, and multiselect are not reflected in preview mode</div>
                 </div>
                 <footer class="slds-modal__footer slds-is-relative">
                     <button class="slds-button slds-button_neutral" onclick={handlePreviewModalClose}>Close</button>

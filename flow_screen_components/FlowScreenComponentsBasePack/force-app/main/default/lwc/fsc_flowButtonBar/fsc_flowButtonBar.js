@@ -38,16 +38,12 @@ export default class FlowButtonBar extends LightningElement {
     }
     set buttons(buttons) {
         if (Array.isArray(buttons)) {
-            // Copy button inputs so they can be edited
-            // this._buttons = buttons.map(button => {
-            //     return Object.assign({}, button);
-            // });
             this._buttons = buttons;
         } else {
             this._buttons = JSON.parse(buttons);
         }
-        console.log('in set buttons:');
-        console.log(JSON.parse(JSON.stringify(this._buttons)));
+        // console.log('in set buttons:');
+        // console.log(JSON.parse(JSON.stringify(this._buttons)));
         this.updateSelected();
     }
     _buttons = [];
@@ -57,7 +53,7 @@ export default class FlowButtonBar extends LightningElement {
         return this._options;
     }
     set options(options) {
-        console.log('setting options: ' + JSON.stringify(options));
+        // console.log('setting options: ' + JSON.stringify(options));
         this.buttons = options;
         this._options = options;
     }
@@ -85,6 +81,10 @@ export default class FlowButtonBar extends LightningElement {
     }
     set actionMode(mode) {
         this._actionMode = mode;
+        // if (!this.isSelectionMode) {
+        //     this.required = false;
+        //     this.multiselect = false;
+        // }
     }
     _actionMode;
 
@@ -94,7 +94,7 @@ export default class FlowButtonBar extends LightningElement {
     }
     set selectedValue(value) {
         this._selectedValue = value;
-        this.selectedButton = this.buttons.find(el => el.value === value) || {};
+        this.selectedButton = this.buttons.find(el => el.value == value) || {};
         this.toggleButtons();
     }
 
@@ -103,7 +103,7 @@ export default class FlowButtonBar extends LightningElement {
         return this._values;
     }
     set values(values) {
-        console.log('setting values, ' + JSON.stringify(values));
+        // console.log('setting values, ' + JSON.stringify(values));
         this._values = values ? [...values] : []; // using spread operator to create a shallow clone of the array for mutability
         //if (this.rendered && this.isSelectionMode) {
             this.updateSelected();
@@ -113,7 +113,7 @@ export default class FlowButtonBar extends LightningElement {
 
     @api
     get value() {
-        return this.values[0] || null;
+        return this.values.length ? this.values[0] : null;
     }
     set value(value) {
         this.values = [value];
@@ -131,10 +131,6 @@ export default class FlowButtonBar extends LightningElement {
     get isVertical() { return this.orientation === VERTICAL; }
 
     get isSelectionMode() { 
-        // console.log('in get isSelectionMode');
-        // console.log('actionMode = '+ this.actionMode);
-        // console.log('navigation mode = '+ ACTION_MODES.NAVIGATION);
-        // console.log('returning '+ (this.actionMode !== ACTION_MODES.NAVIGATION)); 
         return this.actionMode !== ACTION_MODES.NAVIGATION; 
     }
 
@@ -156,46 +152,17 @@ export default class FlowButtonBar extends LightningElement {
 
     /* LIFECYCLE HOOKS */
     renderedCallback() {
-        if (this.rendered) return;
-        // console.log('rendered = true');
+        if (this.rendered) 
+            return;
+        console.log('alignment = '+ this.alignment);
         this.rendered = true;
-        // this.groupAsToggle = this.isSelectionMode;
-        // this.doNotTransitionOnClick = this.isSelectionMode;
-        // for (let button of this.buttons) {
-            // console.log(JSON.parse(JSON.stringify(button)));
-        // }
         this.updateSelected();
     }
 
     /* EVENT HANDLERS */
-    /* No longer in use
     handleButtonClick(event) {
-        if (this.previewMode) {
-            return;
-        }
-
-        let index = event.currentTarget.dataset.index;
-        // console.log('in handleButtonClick, index = ', index);
-        // If the current selected button is being clicked again, deselect it. Otherwise, select the button that was just clicked
-        this.selectedButton = (index == this.selectedButton.index) ? {} : this.buttons[index];
-
-        this.dispatchEvent(new FlowAttributeChangeEvent('selectedValue', this.selectedButton.value));
-
-        if (this.doNotTransitionOnClick) {
-            // console.log('not transitioning');
-            this.toggleButtons();
-        } else {
-            // console.log('navigating');
-            // NAVIGATING            
-        }
-    }
-    */
-
-    handleButtonClick2(event) {
-        // console.log('in handleButtonClick2');
         let clickedValue = event.currentTarget.value;
-        // console.log('clickedValue = ' + clickedValue);
-        let curIndex = this.values.findIndex(value => value === clickedValue);
+        let curIndex = this.values.findIndex(value => value == clickedValue);
         if (curIndex >= 0) {
             if (!this.required || this.values.length > 1)
                 this.values.splice(curIndex, 1);
@@ -215,7 +182,6 @@ export default class FlowButtonBar extends LightningElement {
 
     /* ACTION FUNCTIONS */
     dispatchClickEvent() {
-        console.log('in dispatchClickEvent');
         this.dispatchEvent(new FlowAttributeChangeEvent('value', this.value));
         this.dispatchEvent(new FlowAttributeChangeEvent('values', this.values));
         this.dispatchEvent(new CustomEvent('buttonclick', {
@@ -224,30 +190,18 @@ export default class FlowButtonBar extends LightningElement {
                 values: this.values
             }
         }));
-        console.log('completed dispatchClickEvent');
     }
 
     updateSelected() {
         
         if (this.isSelectionMode) {
-            // console.log('in updateselected for value = '+ this.value);
-            // for (let button of this._buttons) {
             for (let button of this.template.querySelectorAll('lightning-button')) {
-                // console.log('looping through button ('+ button.label +') and selected='+this.values.includes(button.value)+', '+ JSON.stringify(button));
-                if (this.values.includes(button.value)) {
-                    button.variant = VARIANTS.SELECTED;
-                    // console.log('in updateSelected: setting '+ button.label +' to '+ button.variant);
-                } else {
-                    button.variant = VARIANTS.UNSELECTED;
-                    // console.log('in updateSelected: setting '+ button.label +' to '+ button.variant);
-                }
+                button.variant = this.values.includes(button.value) ? VARIANTS.SELECTED : VARIANTS.UNSELECTED;
             }
-            // this.dispatchClickEvent();           
         }
     }
 
     navigateFlow() {
-        console.log('in navigateFlow for ' + this.value);
         if (this.value && this.value.toLowerCase() === 'previous' && this.availableActions.find(action => action === 'PREVIOUS')) {
             this.dispatchEvent(new FlowNavigationBackEvent());
         } else {
@@ -260,6 +214,40 @@ export default class FlowButtonBar extends LightningElement {
     }
 
     /* UTILITY FUNCTIONS */
+    transformConstantObject(constant) {
+        return {
+            list: constant,
+            get options() { return Object.values(this.list); },
+            get default() { return this.options.find(option => option.default); },
+            findFromValue: function (value) {
+                let entry = this.options.find(option => option.value == value);
+                return entry || this.default;
+            },
+            findFromLabel: function (label) {
+                let entry = this.options.find(option => option.label == label);
+                return entry || this.default;
+            }
+        }
+    }
+
+
+    /* DEAD CODE GRAVEYARD */
+    /*
+    get buttonGroupClass() {
+        let classList = [];
+        if (this.isVertical) {
+            classList.push(VERTICAL_CLASS);
+        } else {
+            if (this.groupAsToggle) {
+                classList.push(BUTTON_GROUP_CLASS);
+            }
+            classList.push(this.getValueFromInput(ALIGNMENTS, this.alignment));
+        }
+        return classList.join(' ');
+    }
+    */
+
+    /*
     // Helper function used to map user-friendly input to a corresponding value
     // If no input or invalid input was found, look for a default value
     // Used for the colourVariants and alignments arrays above
@@ -287,38 +275,28 @@ export default class FlowButtonBar extends LightningElement {
             return null;
         return returnValue[valueParam];
     }
-
-    transformConstantObject(constant) {
-        return {
-            list: constant,
-            get options() { return Object.values(this.list); },
-            get default() { return this.options.find(option => option.default); },
-            findFromValue: function (value) {
-                let entry = this.options.find(option => option.value === value);
-                return entry || this.default;
-            },
-            findFromLabel: function (label) {
-                let entry = this.options.find(option => option.label === label);
-                return entry || this.default;
-            }
-        }
-    }
-
-
-    /* DEAD CODE GRAVEYARD */
-    /*
-    get buttonGroupClass() {
-        let classList = [];
-        if (this.isVertical) {
-            classList.push(VERTICAL_CLASS);
-        } else {
-            if (this.groupAsToggle) {
-                classList.push(BUTTON_GROUP_CLASS);
-            }
-            classList.push(this.getValueFromInput(ALIGNMENTS, this.alignment));
-        }
-        return classList.join(' ');
-    }
     */
 
+        /* No longer in use
+    handleButtonClick(event) {
+        if (this.previewMode) {
+            return;
+        }
+
+        let index = event.currentTarget.dataset.index;
+        // console.log('in handleButtonClick, index = ', index);
+        // If the current selected button is being clicked again, deselect it. Otherwise, select the button that was just clicked
+        this.selectedButton = (index == this.selectedButton.index) ? {} : this.buttons[index];
+
+        this.dispatchEvent(new FlowAttributeChangeEvent('selectedValue', this.selectedButton.value));
+
+        if (this.doNotTransitionOnClick) {
+            // console.log('not transitioning');
+            this.toggleButtons();
+        } else {
+            // console.log('navigating');
+            // NAVIGATING            
+        }
+    }
+    */
 }

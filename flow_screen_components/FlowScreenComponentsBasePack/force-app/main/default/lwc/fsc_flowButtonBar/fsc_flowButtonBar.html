@@ -2,7 +2,7 @@
     <template if:true={lineAbove}>
         <hr class="slds-m-vertical_small">
     </template>
-
+{actionMode}
     <template if:true={buttons.length}>
         <!-- Label, Required indicator, and Help text -->
         <div class="slds-text-title slds-grid slds-grid_vertical-align-center slds-p-vertical_xxx-small">
@@ -27,7 +27,7 @@
                             <template for:each={buttons} for:item="button" for:index="index">
                                 <lightning-button label={button.label} variant={button.variant}
                                     icon-name={button.iconName} icon-position={button.iconPosition} key={button.value}
-                                    value={button.value} data-index={index} onclick={handleButtonClick2}>
+                                    value={button.value} data-index={index} onclick={handleButtonClick}>
                                 </lightning-button>
                             </template>
                         </lightning-button-group>
@@ -36,7 +36,7 @@
                         <template for:each={buttons} for:item="button" for:index="index">
                             <lightning-button label={button.label} variant={button.variant} icon-name={button.iconName}
                                 icon-position={button.iconPosition} key={button.value} value={button.value}
-                                data-index={index} onclick={handleButtonClick2}>
+                                data-index={index} onclick={handleButtonClick}>
                             </lightning-button>
                         </template>
                     </template>
@@ -54,12 +54,16 @@
                     <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12 slds-align_absolute-center slds-shrink-none">
                         <lightning-button label={button.label} variant={button.variant} icon-name={button.iconName}
                             icon-position={button.iconPosition} key={button.value} value={button.value}
-                            data-index={index} onclick={handleButtonClick2}>
+                            data-index={index} onclick={handleButtonClick}>
                         </lightning-button>
                     </div>
                 </div>
             </template>
         </template>
+    </template>
+
+    <template if:true={errorMessage}>
+        <div class="slds-text-color_error">{errorMessage}</div>
     </template>
 
     <template if:true={lineBelow}>

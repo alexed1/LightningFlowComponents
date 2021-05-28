@@ -1,0 +1,28 @@
+<template>
+    <div>
+        <div class="slds-text-title slds-grid slds-grid_vertical-align-center slds-p-vertical_xxx-small">
+            <span>
+                <template if:true={required}>
+                    <span class="slds-text-color_error slds-p-horizontal_xxx-small">*</span>
+                </template>
+                {label}
+            </span>
+            <template if:true={helpText}>
+                <lightning-helptext class="slds-p-horizontal_x-small" content={helpText}>
+                </lightning-helptext>
+            </template>
+        </div>
+
+
+        <lightning-button-group>
+            <template for:each={options} for:item="option">
+                <lightning-button label={option.label} value={option.value} key={option.value}
+                    onclick={handleToggleClick}></lightning-button>
+            </template>
+        </lightning-button-group>
+
+        <template if:true={errorMessage}>
+            <div class="slds-text-color_error">{errorMessage}</div>
+        </template>
+    </div>
+</template>

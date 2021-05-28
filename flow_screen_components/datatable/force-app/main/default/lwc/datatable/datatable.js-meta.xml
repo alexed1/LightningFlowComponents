@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-datatable-C-P-E"> 
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-ers_datatable-C-P-E"> 
             <!-- ================================ New in Summer '20' - Support for Dynamic SObject Selection ================================= -->      
 
             <propertyType name="T" extends="SObject" label="Datatable Object API Name" description="Select the API Name of the SObject to use in the Datatable"/>
@@ -107,6 +107,9 @@
             <property name="not_tableBorder" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly"/>
             <property name="displayAll" type="Boolean" role="inputOnly"/>
             <property name="cb_displayAll" type="String" role="inputOnly"/>
+            <property name="recordTypeId" type="String" role="inputOnly"/>
+            <property name="allowNoneToBeChosen" type="Boolean" role="inputOnly"/>
+            <property name="cb_allowNoneToBeChosen" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

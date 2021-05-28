@@ -6,9 +6,10 @@ public inherited sharing class CreateSlackChannelTest {
     public static void CanCreateSlackChannel() {
         String channelName = 'foo';
   
-
+        
 
         CreateSlackChannel.Request curRequest = new CreateSlackChannel.Request();
+        curRequest.channelName = channelName;
         curRequest.token = token;
         List<CreateSlackChannel.Request> curRequests = new List<CreateSlackChannel.Request>();
         curRequests.add(curRequest);

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <interviewLabel>Main Edit Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Main Edit Flow</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Edit_Existing_Workflow</name>
+        <label>Edit Existing Workflow</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Core_Edit_Flow</targetReference>
+        </connector>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Personal_Flow__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Edit_Existing_Workflow</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <subflows>
+        <name>Core_Edit_Flow</name>
+        <label>Core Edit Flow</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <flowName>Core_Edit_Flow</flowName>
+        <inputAssignments>
+            <name>currentPersonalWorkflow</name>
+            <value>
+                <elementReference>Edit_Existing_Workflow</elementReference>
+            </value>
+        </inputAssignments>
+    </subflows>
+</Flow>

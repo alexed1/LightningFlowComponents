@@ -1,11 +1,19 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "MultiselectMagic",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "MultiselectMagic": "0Ho5G000000CaheSAC",
+        "MultiselectMagic@1.0.0-0": "04t5G0000047xGyQAI",
+        "MultiselectMagic@1.0.2-0": "04t5G0000047xH3QAI"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "50.0"
 }

@@ -3,6 +3,7 @@
 #
 
 package.xml
+ListView
 
 # LWC configuration files
 **/jsconfig.json

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Flow Button Bar2</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>  
+
+    <targetConfigs>
+            <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fsc_flow-button-bar-c-p-e">
+                <!-- Input -->
+                <property name="alignment" label="Button position" type="string" description="Enter 'left', 'center', or 'right' (default)." default="right" role="inputOnly"></property>
+                <property name="orientation" label="Button orientation" type="string" description="Enter 'horizontal' (default), or 'vertical'." default="horizontal" role="inputOnly"></property>
+                <property name="showLines" label="Include horizontal line above buttons" type="String" description="You can optionally add lines below and/or above the button bar to separate it from the rest of the screen" role="inputOnly"></property>
+                <!-- <property name="groupAsToggle" label="Group buttons as toggle" description="Enter true to group buttons togther as a toggle isntead of individual buttons https://www.lightningdesignsystem.com/components/button-groups/#Base" type="string" default="false" role="inputOnly"></property> -->
+                <!-- <property name="doNotTransitionOnClick" label="Do Not Transition on Click" type="string" default="false" role="inputOnly"></property> -->
+                <property name="buttons" label="Buttons" type="String" role="inputOnly"></property>
+                <property name="actionMode" label="Action Mode" type="String" role="inputOnly"></property>
+                
+
+                <property name="required" label="Required" type="String" role="inputOnly"></property>
+                <property name="multiselect" label="Multi-Select" type="String" role="inputOnly"></property>
+
+                <property name="value" label="Value" type="String"></property>
+                <property name="values" label="Values" type="String[]"></property>                
+
+                <!-- Output -->
+                <property name="selectedValue" label="Selected Value" type="string" description="Value that holds the label of the button that's clicked, pass this to a Decision block to route the Flow"></property>
+            </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

@@ -1,0 +1,68 @@
+<template>
+    <template if:true={lineAbove}>
+        <hr class="slds-m-vertical_small">
+    </template>
+
+    <template if:true={buttons.length}>
+        <!-- Label, Required indicator, and Help text -->
+        <div class="slds-text-title slds-grid slds-grid_vertical-align-center slds-p-vertical_xxx-small">
+            <span>
+                <template if:true={required}>
+                    <span class="slds-text-color_error slds-p-horizontal_xxx-small">*</span>
+                </template>
+                {label}
+            </span>
+            <template if:true={helpText}>
+                <lightning-helptext class="slds-p-horizontal_x-small" content={helpText}>
+                </lightning-helptext>
+            </template>
+        </div>
+
+        <!-- Horizontal buttons-->
+        <template if:false={isVertical}>
+            <div class="slds-clearfix">
+                <div class={alignmentClass}>
+                    <template if:true={isSelectionMode}>
+                        <lightning-button-group>
+                            <template for:each={buttons} for:item="button" for:index="index">
+                                <lightning-button label={button.label} variant={button.variant}
+                                    icon-name={button.iconName} icon-position={button.iconPosition} key={button.value}
+                                    value={button.value} data-index={index} onclick={handleButtonClick2}>
+                                </lightning-button>
+                            </template>
+                        </lightning-button-group>
+                    </template>
+                    <template if:false={isSelectionMode}>
+                        <template for:each={buttons} for:item="button" for:index="index">
+                            <lightning-button label={button.label} variant={button.variant} icon-name={button.iconName}
+                                icon-position={button.iconPosition} key={button.value} value={button.value}
+                                data-index={index} onclick={handleButtonClick2}>
+                            </lightning-button>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <!-- Vertical buttons -->
+        <template if:true={isVertical}>
+            <template for:each={buttons} for:item="button" for:index="index">
+                <div class="rowContainer slds-box slds-grid slds-wrap slds-grid_vertical-stretch" key={button.label}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_10-of-12 slds-shrink-none slds-p-right_small">
+                        {button.descriptionText}
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_2-of-12 slds-align_absolute-center slds-shrink-none">
+                        <lightning-button label={button.label} variant={button.variant} icon-name={button.iconName}
+                            icon-position={button.iconPosition} key={button.value} value={button.value}
+                            data-index={index} onclick={handleButtonClick2}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+        </template>
+    </template>
+
+    <template if:true={lineBelow}>
+        <hr class="slds-m-vertical_small">
+    </template>
+</template>

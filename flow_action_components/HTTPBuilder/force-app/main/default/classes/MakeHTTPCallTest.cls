@@ -1,7 +1,7 @@
 
     @isTest
-    private with sharing class MakeHTTPCallTest {
-        private class MakeHTTPCallMockGenerator implements HttpCalloutMock {
+    public with sharing class MakeHTTPCallTest {
+        public class MakeHTTPCallMockGenerator implements HttpCalloutMock {
             public HTTPResponse respond(HTTPRequest req) {
                 // Create a fake response
                 if (req.getEndpoint() != 'localhost'){
@@ -29,6 +29,7 @@
             req1.Body = '{"key":"value"}';
             req1.Timeout = 15000;
             req1.Headers = '[{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}]';
+            req1.Params = '[{"key":"paramname1","value":"value1"},{"key":"paramname2","value":"value2"}]';
             req1.BodyAsBlob = True;
             req1.Compressed_gzip = True;
             listRequest.add(req1);

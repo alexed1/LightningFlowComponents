@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Add_Header</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Header</shortDescription>
+        <value>Add Header</value>
+    </labels>
+    <labels>
+        <fullName>Add_Param</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Param</shortDescription>
+        <value>Add Param</value>
+    </labels>
+    <labels>
+        <fullName>Add_Target_Key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Target Key</shortDescription>
+        <value>Add Target Key</value>
+    </labels>
+    <labels>
+        <fullName>Body_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Body Label</shortDescription>
+        <value>Body</value>
+    </labels>
+    <labels>
+        <fullName>Compress_Request_body_to_gzip</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Compress Request body to gzip?</shortDescription>
+        <value>Compress Request body to gzip?</value>
+    </labels>
+    <labels>
+        <fullName>Confirm_Object_Type</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Confirm Object Type</shortDescription>
+        <value>Confirm Object Type</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message :</shortDescription>
+        <value>Error Message :</value>
+    </labels>
+    <labels>
+        <fullName>Extract_JSON_Values</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Extract JSON Values</shortDescription>
+        <value>Extract JSON Values</value>
+    </labels>
+    <labels>
+        <fullName>HTTP_Method</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>HTTP Method</shortDescription>
+        <value>HTTP Method</value>
+    </labels>
+    <labels>
+        <fullName>Input_JSON_String</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Input JSON String</shortDescription>
+        <value>Input JSON String</value>
+    </labels>
+    <labels>
+        <fullName>Key_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Key Label</shortDescription>
+        <value>Key</value>
+    </labels>
+    <labels>
+        <fullName>Make_HTTP_Call</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Make HTTP Call</shortDescription>
+        <value>Make HTTP Call</value>
+    </labels>
+    <labels>
+        <fullName>Map_JSON_Array</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Map JSON Array</shortDescription>
+        <value>Map JSON Array</value>
+    </labels>
+    <labels>
+        <fullName>Request_Body_as_Blob</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Request Body as Blob?</shortDescription>
+        <value>Request Body as Blob?</value>
+    </labels>
+    <labels>
+        <fullName>Response_Result</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Response Result</shortDescription>
+        <value>Response Result</value>
+    </labels>
+    <labels>
+        <fullName>Set_this_Output</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Set this Output</shortDescription>
+        <value>Set this Output</value>
+    </labels>
+    <labels>
+        <fullName>Set_this_output_field</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Set this output field:</shortDescription>
+        <value>Set this output field:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_Headers</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify Headers</shortDescription>
+        <value>Specify Headers:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_Params</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify Params</shortDescription>
+        <value>Specify Params:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_the_keys_that_you_want_to_extract</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify the keys that you want to extract:</shortDescription>
+        <value>Specify the keys that you want to extract:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify the keys that you want to extract from the objects in the array:</shortDescription>
+        <value>Specify the keys that you want to extract from the objects in the array:</value>
+    </labels>
+    <labels>
+        <fullName>Status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status :</shortDescription>
+        <value>Status :</value>
+    </labels>
+    <labels>
+        <fullName>Status_code</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status code :</shortDescription>
+        <value>Status code :</value>
+    </labels>
+    <labels>
+        <fullName>Target_Object_Type</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Target Object Type</shortDescription>
+        <value>Target Object Type</value>
+    </labels>
+    <labels>
+        <fullName>Test_Callout</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Test Callout</shortDescription>
+        <value>Test Callout</value>
+    </labels>
+    <labels>
+        <fullName>Timeout_in_ms</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeout in ms</shortDescription>
+        <value>Timeout in ms</value>
+    </labels>
+    <labels>
+        <fullName>To_the_value_of_this_key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>To the value of this key</shortDescription>
+        <value>To the value of this key</value>
+    </labels>
+    <labels>
+        <fullName>Value_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Value Label</shortDescription>
+        <value>Value</value>
+    </labels>
+    <labels>
+        <fullName>url</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>url</shortDescription>
+        <value>url</value>
+    </labels>
+</CustomLabels>

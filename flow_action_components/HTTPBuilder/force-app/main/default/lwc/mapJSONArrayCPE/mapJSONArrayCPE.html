@@ -1,0 +1,33 @@
+<template>
+    <template if:true={isError}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+            <h2> {errorMessage} </h2>
+        </div>
+    </template>
+    <div><b>{labels.Map_JSON_Array}</b></div>
+    <!-- <lightning-input  label="key" onchange={changeSObjectType} value={sObjectType}></lightning-input> -->
+    <c-fsc_pick-object-and-field object-label={labels.Target_Object_Type} object-type={sObjectType} onfieldselected={changeSObjectType} hide-field-picklist="true"></c-fsc_pick-object-and-field>
+    <c-fsc_flow-combobox 
+        label={labels.Input_JSON_String} 
+        builder-context={_builderContext} 
+        name="inputJSONString"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={inputJSONString} 
+        value-type="reference">
+        
+    </c-fsc_flow-combobox>
+    <c-fsc_pick-object-and-field object-label={labels.Confirm_Object_Type} object-type={sObjectTypeForValidate} onfieldselected={changeSObjectTypeForValidate} hide-field-picklist="true"></c-fsc_pick-object-and-field>
+    <template if:true={isSObjectSelected}>
+        <c-field-mapping-section 
+            master-label={labels.Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array} 
+            add-button-label={labels.Add_Target_Key} 
+            list-data={keysToExtract} 
+            onchangelist={changekeysToExtract}
+            sobject-type={sObjectType}>
+        </c-field-mapping-section>
+    </template>
+    <!-- @InvocableVariable
+    public String inputJSONString;
+    @InvocableVariable
+    public String keysToExtract; -->
+</template>

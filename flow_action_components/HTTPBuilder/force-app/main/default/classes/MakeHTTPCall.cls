@@ -32,6 +32,9 @@ public with sharing class MakeHTTPCall {
         @InvocableVariable(label='Timeout in millisecods, default is 10000ms'
                            description='Timeout in milliseconds, default is 10000ms/10s')
         public Integer Timeout;
+        @InvocableVariable(label='Params e.g => [{“key”:”queryObject”,”value”:”Account”},{“key”:”queryField”,”value”:”Rating”}]'
+                           description='e.g => [{“key”:”queryObject”,”value”:”Account”},{“key”:”queryField”,”value”:”Rating”}]')
+        public String Params;
         @InvocableVariable(label='Headers e.g => [{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}]'
                            description='e.g => [{"key":"Content-Type","value":"application/json"},{"key":"Accept","value":"*/*"}]')
         public String Headers;
@@ -56,7 +59,7 @@ public with sharing class MakeHTTPCall {
         public String Error_message;
     }
     
-    @InvocableMethod(label='Invocable Callout' description='Invocable Callout')
+    @InvocableMethod(label='Invocable Callout' description='Invocable Callout' configurationEditor='c:MakeHTTPCallCPE')
     public static List<Response> Invoke (List<Request> requests) {
         List<Response> responseList = new List<Response>();
         String[] AllowedMethods = new String[]{'GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'TRACE', 'CONNECT', 'HEAD', 'OPTIONS'};
@@ -79,8 +82,25 @@ public with sharing class MakeHTTPCall {
             system.debug('setMethod : '+ curRequest.Method.toUpperCase());
             
             //set Endpoint
-            req.setEndpoint(curRequest.Endpoint);
-            system.debug('setEndpoint : '+ curRequest.Endpoint);
+            String url = curRequest.Endpoint;
+            if(String.isNotEmpty(curRequest.Params)) {
+                List<QueryParams> listParams = (List<QueryParams>) System.JSON.deserialize(curRequest.Params, List<QueryParams>.class);
+                //url+='?';
+                List<String> paramsList = new List<string>();
+                for (QueryParams param:listParams){
+                    if(String.isNotBlank( param.key) && String.isNotBlank( param.key)) {
+                        paramsList.add(param.key+'='+EncodingUtil.urlEncode(param.value, 'UTF-8'));
+                    }
+                       
+                    
+
+                    
+                }
+                if(paramsList.size() > 0) {
+                    url += '?' + String.join(paramsList, '&');
+                }
+            }
+            req.setEndpoint(url);
             
             //set Body, there's possibility Body is null
             if (curRequest.BodyAsBlob == True && curRequest.BodyAsBlob != Null){
@@ -93,7 +113,7 @@ public with sharing class MakeHTTPCall {
             }
 			
             //set Timeout. If null, Timeout is 10000ms
-            if (curRequest.Timeout != Null){
+            if (curRequest.Timeout != Null || curRequest.Timeout != 0){
                 req.setTimeout(curRequest.Timeout);
                 system.debug('setTimeout : '+curRequest.Timeout);
             }
@@ -109,7 +129,7 @@ public with sharing class MakeHTTPCall {
                 system.debug('setCompressed succeed');
             }
             
-            system.debug('Ready to Callout...');
+            system.debug('Ready to Callout...' + req);
             
             try {
                 HttpResponse res = http.send(req);
@@ -155,5 +175,9 @@ public with sharing class MakeHTTPCall {
             ListHeaders.add(singleHeader);
         }
         return ListHeaders;
+    }
+    private class QueryParams{
+        private String key;
+        private String value;
     }
 }

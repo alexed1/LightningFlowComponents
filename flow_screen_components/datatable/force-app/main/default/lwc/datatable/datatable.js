@@ -1254,7 +1254,8 @@ export default class Datatable extends LightningElement {
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
-        });  
+        }); 
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
 
         this.savePreEditData = [...data];   // Resave the current table values
         this.mydata = [...data];            // Reset the current table values
@@ -1300,6 +1301,7 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
     }
 
     updateColumnSorting(event) {
@@ -1812,8 +1814,9 @@ export default class Datatable extends LightningElement {
             sdata.push(selData);
         });
         this.outputSelectedRows = [...sdata]; // Set output attribute values
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
 
-/*         // Validate Edited Rows
+/*      // Validate Edited Rows
         let errorMessage = '';
         this.outputEditedRows.forEach(erow => {
             let fieldNames = Object.keys(erow);
@@ -1838,6 +1841,8 @@ export default class Datatable extends LightningElement {
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
             this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);                                            //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
         }
 
         console.log('outputSelectedRows',this.outputSelectedRows);

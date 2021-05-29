@@ -54,6 +54,10 @@ const FLOW_EVENT_TYPE = {
     CHANGE: 'configuration_editor_input_value_changed'
 }
 
+const ERROR_MESSAGES={
+    REQUIRED_FIELD: 'Required field, please select an option.'
+}
+
 export default class FlowButtonBarCPE extends LightningElement {
     @track variants = this.getConstant(VARIANTS);
     @track orientations = this.getConstant(ORIENTATIONS);
@@ -78,26 +82,56 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     @track inputValues = {
-        alignment: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Alignment' },
-        orientation: { value: null, valueDataType: null, isCollection: false, label: 'Orientation' },
-        buttons: { value: null, valueDataType: null, isCollection: false, label: 'Buttons' },
-        showLines: { value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line(s)' },
-        actionMode: { value: null, valueDataType: null, isCollection: false, label: 'Action mode' },
-        required: { value: null, valueDataType: null, isCollection: false, label: 'Required' },
-        multiselect: { value: null, valueDataType: null, isCollection: false, label: 'Multi-select' },
-        label: { value: null, valueDataType: null, isCollection: false, label: 'Label' },
+        // alignment: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Alignment' },
+        // orientation: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Orientation' },
+        // buttons: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Buttons' },
+        // showLines: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Display horizontal line(s)' },
+        // actionMode: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Action mode' },
+        // required: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Required' },
+        // multiselect: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Multi-select' },
+        // label: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Label' },
+        buttons: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Buttons' },
+        label: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Label' },
+
+        alignment: { value: this.alignments.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Alignment' },
+        orientation: { value: this.orientations.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Orientation' },
+        showLines: { value: this.showLines.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Display horizontal line(s)' },
+        actionMode: { value: this.actionModes.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Action mode' },
+        required: { value: this.yesNo.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Required' },
+        multiselect: { value: this.yesNo.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Multi-select' },
+
+
+
         // groupAsToggle: { value: null, valueDataType: null, isCollection: false, label: 'Group as toggle' },
         // includeLine: { value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line above buttons' },
         // doNotTransitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Do not transition on click' },
     };
+
+    newInputValue(label, value, defaultValue, valueDataType, isCollection) {
+        let inputValue = {
+            label: label,
+            defaultValue: defaultValue,
+            value: value,
+            valueDataType: valueDataType,
+            isCollection: !!isCollection,    // convert to boolean
+            dispatchDefaultIfNecessary() {
+                if (!this.value && this.defaultValue) {
+                    //this.value
+                }
+            }
+        };
+
+
+        return inputValue;
+    }
 
     defaultValues = {
         alignment: this.alignments.default.value,
         orientation: this.orientations.default.value,
         showLines: this.showLines.default.value,
         actionMode: this.actionModes.default.value,
-        required: this.yesNo.default.value,
-        multiselect: this.yesNo.default.value
+        // required: this.yesNo.default.value,
+        // multiselect: this.yesNo.default.value
     }
 
 
@@ -105,25 +139,16 @@ export default class FlowButtonBarCPE extends LightningElement {
         // console.log('in initializeValues');
         if (this._values && this._values.length) {
             this._values.forEach(curInputParam => {
-                if (curInputParam.name && this.inputValues[curInputParam.name]) {
+                let inputValue = this.inputValues[curInputParam.name];
+                if (curInputParam.name && inputValue) {
                     if (curInputParam.name == 'buttons') {
                         this.buttons = JSON.parse(curInputParam.value);
                     } else {
-                        this.inputValues[curInputParam.name].value = curInputParam.value;
-                        this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+                        inputValue.value = curInputParam.value;
+                        inputValue.valueDataType = curInputParam.valueDataType;
                     }
                 }
             });
-        }
-
-        // Set default values if necessary
-        for (let [name, value] of Object.entries(this.inputValues)) {
-            console.log('value ['+ name +']= '+ JSON.stringify(value));
-            if (!value.value && this.defaultValues[name]) {
-                console.log(name +' not found, so going with default value of '+ this.defaultValues[name]);
-                // this.inputValues[name].value = this.defaultValues[name];
-                // this.updateInputValue(name, this.defaultValues[name], value.valueDataType);
-            }
         }
     }
 
@@ -136,14 +161,28 @@ export default class FlowButtonBarCPE extends LightningElement {
             detail: {
                 name: id,
                 newValue: newValue ? newValue : null,
-                newValueDataType: newValueDataType
+                newValueDataType: newValueDataType || DATA_TYPE.STRING
             }
         });
         this.dispatchEvent(valueChangedEvent);
     }
 
     /* COMPONENT ELEMENTS */
-
+    @api validate() {
+        const validity = [];
+        for (let buttonBarInput of this.template.querySelectorAll('c-fsc_flow-button-bar')) {
+            console.log('logging through buttonBarInput');
+            if (buttonBarInput.required && !(buttonBarInput.values && buttonBarInput.values.length)) {
+                buttonBarInput.errorMessage = ERROR_MESSAGES.REQUIRED_FIELD;
+                validity.push({
+                    key: 'Required Field',
+                    errorString: ERROR_MESSAGES.REQUIRED_FIELD,
+                });
+    
+            }
+        }
+        return validity;
+    }
 
     @api maxNumButtons = 5;
 
@@ -185,37 +224,74 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     showModal;
-    showConfirmDelete;
     showPreviewModal;
+    showConfirmDelete; // Reserved for future use
 
     displayVariants;
 
+    // Used for icon position
     positionOptions = [
         { label: 'Left', value: 'left' },
         { label: 'Right', value: 'right' }
-    ]
-
+    ];
 
     /* GETTERS */
-    get isVertical() { 
-        return this.inputValues.orientation.value === ORIENTATIONS.VERTICAL; 
+    get isVertical() {
+        return this.inputValues.orientation.value === ORIENTATIONS.VERTICAL.value;
     }
-    get isHorizontal() { 
-        return !this.isVertical; 
+    get isHorizontal() {
+        return !this.isVertical;
     }
-    get isSelectionMode() { 
+    get isSelectionMode() {
         return this.inputValues.actionMode.value !== ACTION_MODES.NAVIGATION.value;
     }
 
-    get newButtonDisabled() { 
-        return this.buttons.length >= this.maxNumButtons; 
+    get newButtonDisabled() {
+        return this.buttons.length >= this.maxNumButtons;
     }
-    
+
     get selectedButtonVariantLabel() {
         return this.variants.findFromValue(this.selectedButton.variant).label;
     }
 
     /* LIFECYCLE HOOKS */
+    connectedCallback() {
+        this.setDefaults();
+    }
+
+    setDefaults() {
+        // this.inputValues.orientation.value = this.inputValues.orientation.value || this.orientations.default.value;
+        // this.inputValues.alignment.value = this.inputValues.alignment.value || this.alignments.default.value;
+        // this.inputValues.showLines.value = this.inputValues.showLines.value || this.showLines.default.value;
+        // this.actionModes.default.value = this.actionModes.default.value || this.actionModes.default.value;
+
+        // let valuesNeedingDefaults = this.inputValues.filter(input => {
+        //     return input.value && !this._values.find(_value => { return _value.name === input.name
+
+
+        //     })
+        // });
+        // for (let inputValue of valuesNeedingDefaults) {
+
+        // }
+
+        for (let [name, value] of Object.entries(this.inputValues)) {
+            // console.log('value ['+ name +']= '+ JSON.stringify(value));
+            // if (this.defaultValues[name]) {
+            if (value) {
+                let hadValueSet = !this._values.some(_value => {
+                    return _value.name === name;
+                });
+                if (hadValueSet) {
+                    console.log(name + ' not found, so going with default value of ' + this.defaultValues[name]);
+                    this.inputValues[name].value = this.defaultValues[name];
+                    this.updateInputValue(name, this.defaultValues[name]);
+                }
+            }
+        }
+
+    }
+
     renderedCallback() {
         // if (this.showPreviewModal) {
         //     this.updatePreviewButtonBar('required', this.inputValues.required.value);
@@ -269,7 +345,7 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     updateInputValue(name, value) {
         if (this.inputValues[name]) {
-            this.dispatchFlowValueChangeEvent(name, value, this.inputValues[name].valueDataType);    
+            this.dispatchFlowValueChangeEvent(name, value, this.inputValues[name].valueDataType || DATA_TYPE.STRING);
         }
     }
 

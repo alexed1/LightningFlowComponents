@@ -56,7 +56,8 @@
             <lightning-accordion-section label="Button Bar Settings" name="settings"
                 class="slds-p-around_none slds-m-around_none">
                 <article>
-                    <lightning-input label={inputValues.label.label} name="label" value={inputValues.label.value} onchange={handleInputValueChange}></lightning-input>
+                    <lightning-input label={inputValues.label.label} name="label" value={inputValues.label.value}
+                        onchange={handleInputValueChange}></lightning-input>
 
                     <c-fsc_flow-button-bar label={inputValues.actionMode.label} name="actionMode"
                         options={actionModes.options} value={inputValues.actionMode.value}
@@ -120,7 +121,7 @@
                     <div class="slds-grid slds-wrap">
 
                         <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Label"
-                            value={selectedButton.label} onchange={handleModalLabelChange} onblur={handleModalLabelBlur}
+                            value={selectedButton.label} oncommit={handleModalLabelChange} onblur={handleModalLabelBlur}
                             required></lightning-input>
 
                         <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Value"
@@ -169,13 +170,14 @@
                         </div>
 
                         <div class="slds-size_1-of-2 slds-p-around_xx-small">
-                            <c-fsc_pick-icon oniconselection={handleSelectIcon} hide-standard-icons="true"
-                                hide-custom-icons="true" hide-action-icons="true" mode="combobox"
-                                icon-name={selectedButton.iconName}></c-fsc_pick-icon>
+                            <c-fsc_pick-icon oniconselection={handleSelectIcon} label="Icon Name"
+                                hide-standard-icons="true" hide-custom-icons="true" hide-action-icons="true"
+                                mode="combobox" icon-name={selectedButton.iconName}></c-fsc_pick-icon>
                             <template if:true={selectedButton.iconName}>
-                                <lightning-radio-group label="Icon Position" type="button" options={positionOptions}
-                                    value={selectedButton.iconPosition} onchange={handleIconPositionChange}>
-                                </lightning-radio-group>
+                                <c-fsc_flow-button-bar label="Icon Position" options={positionOptions}
+                                    value={selectedButton.iconPosition} onbuttonclick={handleIconPositionChange}
+                                    required>
+                                </c-fsc_flow-button-bar>
                             </template>
                         </div>
 
@@ -232,10 +234,12 @@
                     <div class={inputValues.alignment.value}>
                         <c-fsc_flow-button-bar options={buttons} orientation={inputValues.orientation.value}
                             action-mode={inputValues.actionMode.value} alignment={inputValues.alignment.value}
-                            show-lines={inputValues.showLines.value} class="slds-p-around_medium previewButtonBar" preview-mode="true">
+                            show-lines={inputValues.showLines.value} class="slds-p-around_medium previewButtonBar"
+                            preview-mode="true">
                         </c-fsc_flow-button-bar>
                     </div>
-                    <div class="slds-text-body_small">Note: Navigation, required, and multiselect are not reflected in preview mode</div>
+                    <div class="slds-text-body_small">Note: Navigation, required, and multiselect are not reflected in
+                        preview mode</div>
                 </div>
                 <footer class="slds-modal__footer slds-is-relative">
                     <button class="slds-button slds-button_neutral" onclick={handlePreviewModalClose}>Close</button>

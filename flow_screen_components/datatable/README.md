@@ -63,6 +63,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## xx/xx/21 -  Eric Smith -    Version 3.2.2 
+**Updates:** 
+-   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version   
+ 
+**Bug Fixes:** 
+-   Fixed occasional error message about the not_suppressNameFieldLink attribute      
+ 
 ## 05/18/21 -  Eric Smith -    Version 3.2.1 
 **Updates:** 
 -   Picklist values can now be restricted to a single record type 

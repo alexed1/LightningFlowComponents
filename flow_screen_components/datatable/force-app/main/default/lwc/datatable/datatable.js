@@ -357,7 +357,7 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnWidths:", this.columnWidths);
             console.log("Config Mode Input columnWraps:", this.columnWraps);
             console.log("Config Mode Input columnFields:", this.columnFields);
-            this.not_suppressNameFieldLink = false;
+            // this.not_suppressNameFieldLink = false;
         }
 
         // JSON input attributes

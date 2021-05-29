@@ -1,11 +1,25 @@
 <!-- Combobox Column Type -->
 <template>
+    <!-- slds-hide is used instead of template if, as it allows us to focus on the combobox when edit icon is clicked -->
     <lightning-combobox
-    class={cellClass}
-    name="combobox"
-    variant="label-hidden"
-    value={value}
-    options={options}
-    onchange={handleChange}
-    dropdown-alignment="auto"></lightning-combobox>
+        name="combobox"
+        class="slds-p-vertical_xx-small slds-p-horizontal_x-small slds-hide"
+        variant="label-hidden"
+        value={value}
+        options={options}
+        onchange={handleChange}
+        dropdown-alignment="auto"
+        onblur= {focusout}
+    ></lightning-combobox>
+
+    <template if:false={editMode}>
+        <div class="combobox-view__min-height cell__is-editable slds-grid slds-p-vertical_xx-small slds-p-horizontal_x-small slds-var-m-around_xxx-small">
+            <div class="slds-col_bump-right slds-align-middle slds-truncate">
+                {value}
+            </div>
+            <div class="slds-align-middle">
+                <lightning-button-icon icon-name="utility:edit" size="medium" variant="bare" class="cell-icon__edit" onclick={editCombobox}></lightning-button-icon>
+            </div>
+        </div>
+    </template>
 </template>

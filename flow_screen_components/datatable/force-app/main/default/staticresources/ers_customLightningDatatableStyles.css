@@ -16,11 +16,20 @@ c-ers_custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenat
     width: 100%;
 }
 /* ensures that custom column cells remain higlighted on hover when edited */
-.slds-scope .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited,
-.slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
+.slds-scope c-ers_custom-lightning-datatable .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited,
+c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
     background-color: rgb(250, 255, 189);
 }
-
+/* show edit pen when td is hovered */
+.slds-scope c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover lightning-button-icon.cell-icon__edit .slds-button_icon,
+c-ers_custom-lightning-datatable .slds-table:not(.slds-no-row-hover) tbody td:hover lightning-button-icon.cell-icon__edit .slds-button_icon {
+    visibility: visible;
+}
+/* show white background on hover if cell is editable */
+.slds-scope c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover:not(.slds-is-edited) .cell__is-editable,
+c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover:not(.slds-is-edited) .cell__is-editable {
+    background-color: white;
+}
 /********************************/
 /**** c-ers_combobox-column-type ****/
 /********************************/
@@ -28,16 +37,6 @@ c-ers_custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenat
 c-ers_combobox-column-type .slds-dropdown {
     max-height: 180px;
 }
-/* highlight combobox if value is changed*/
-/* removed. highlighting is now controlled by manipulating fieldValues*/
-/*c-ers_combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
-c-ers_combobox-column-type .isChanged input[readonly][role=combobox],
-c-ers_combobox-column-type .isChanged input:focus,
-.slds-scope c-ers_combobox-column-type .isChanged input[lightning-basecombobox_basecombobox],
-.slds-scope c-ers_combobox-column-type .isChanged input[readonly][role=combobox],
-.slds-scope c-ers_combobox-column-type .isChanged input:focus {
-    background-color: rgb(250, 255, 189);
-} */
 /* Remove position:absolute on the dropdown icon so that it doesn't appear on top of column action dropdown*/
 c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon{
     top: 0;
@@ -49,4 +48,15 @@ c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon lightnin
     margin-top: 0.1rem;
     position: static;
     padding-right: 1.3rem;
+}
+
+/********************************/
+/******** custom classes ********/
+/********************************/
+.combobox-view__min-height {
+    min-height: 36px;
+}
+.cell-icon__edit {
+    opacity: 0.5;
+    visibility: hidden;
 }

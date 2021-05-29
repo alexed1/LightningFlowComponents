@@ -7,7 +7,7 @@ export default class ers_comboboxColumnType extends LightningElement {
     @api keyFieldValue;
     @api picklistValues;
     @api value;
-    cellClass;
+    editMode = false;
 
     get options() {
         let _options = [];
@@ -40,7 +40,28 @@ export default class ers_comboboxColumnType extends LightningElement {
         });
         this.dispatchEvent(customEvent)
 
-        //set isChanged so that cell is highlighted
-        //this.cellClass = 'isChanged'; removed. highlighting controlled by manipulating fieldValues on the datatable
+        this.toggleEditMode();
+        //remove combobox and remove focus
+        this.template.querySelector("lightning-combobox").classList.add("slds-hide");
+        this.template.querySelector("lightning-combobox").blur();
+    }
+
+    editCombobox(){
+        this.toggleEditMode();
+        //show the combobox & focus on it
+        this.template.querySelector("lightning-combobox").classList.remove("slds-hide");
+        this.template.querySelector("lightning-combobox").focus();
+    }
+
+    toggleEditMode() {
+        this.editMode = !this.editMode;
+    }
+    
+    //remove combobox when not focused
+    focusout() {
+        if(this.editMode) {
+            this.toggleEditMode();
+            this.template.querySelector("lightning-combobox").classList.add("slds-hide");
+        }
     }
 }

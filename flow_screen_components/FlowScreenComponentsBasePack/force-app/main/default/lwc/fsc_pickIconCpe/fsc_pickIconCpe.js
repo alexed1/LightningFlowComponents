@@ -91,7 +91,7 @@ export default class Fsc_pickIconCpe extends LightningElement {
         return defaults;
     }
 
-    handleToggleChange(event) {
+    handleButtonClick(event) {
         let name = event.currentTarget.name;
         if (name) {
             let value = event.detail.values.join();

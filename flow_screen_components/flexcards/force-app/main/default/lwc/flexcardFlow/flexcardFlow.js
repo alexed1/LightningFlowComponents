@@ -18,7 +18,7 @@ export default class FlexcardFlow extends LightningElement {
     @api headerStyle;
     @api allowMultiSelect;
     @api recordValue;
-    @api selectedRecords = [];
+    @api selectedRecordIds = [];
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
@@ -86,11 +86,11 @@ export default class FlexcardFlow extends LightningElement {
         console.log(event.target.checked);
         if( event.target.checked == true){
         this.recordValue = event.target.value;
-        this.selectedRecords.push(this.recordValue);
+        this.selectedRecordIds.push(this.recordValue);
             }
         else{
-            const remove = this.selectedRecords.indexOf(this.selectedRecords.find(element => element.Id === event.target.value));
-            this.selectedRecords.splice(remove,1);
+            const remove = this.selectedRecordIds.indexOf(this.selectedRecordIds.find(element => element.Id === event.target.value));
+            this.selectedRecordIds.splice(remove,1);
     }
         }
 

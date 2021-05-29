@@ -39,7 +39,7 @@ export default class Datatable extends LightningElement {
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
-    @api isConfigMode;
+    @api isConfigMode = false;
     @api tableHeight;
     @api outputSelectedRows = [];
     @api outputSelectedRow;
@@ -290,6 +290,8 @@ export default class Datatable extends LightningElement {
                 this.updateDataRows();
                 // Custom column processing
                 this.updateColumns();
+                // Extract Keys for Pre-Selected Rows 
+                this.updatePreSelectedRows();
             }
         } else if (error) {
             console.log('getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
@@ -329,7 +331,6 @@ export default class Datatable extends LightningElement {
     }
 
     connectedCallback() {
-
         // Display the component version number in the console log
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
@@ -569,20 +570,6 @@ export default class Datatable extends LightningElement {
             this.showSpinner = false;
         }
 
-        // Handle pre-selected records
-        this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
-        this.updateNumberOfRowsSelected(this.outputSelectedRows);
-        if (this.isUserDefinedObject) {
-            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
-        } else {
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-        }    
-        const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
-        selected.forEach(record => {
-            this.selectedRows.push(record[this.keyField]);            
-        });
-
     }
 
     removeSpaces(string) {
@@ -661,6 +648,9 @@ export default class Datatable extends LightningElement {
                 this.sortedBy = this.cols[0].fieldName;
                 this.doSort(this.sortedBy, 'asc');
             }
+
+            // Handle Pre-Selected Rows
+            this.updatePreSelectedRows();
 
             // Done processing the datatable
             this.showSpinner = false;
@@ -1085,6 +1075,24 @@ export default class Datatable extends LightningElement {
 
         this.columns = this.cols;
 
+    }
+
+    updatePreSelectedRows() {
+        // Handle pre-selected records
+        this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
+        this.updateNumberOfRowsSelected(this.outputSelectedRows);
+        if (this.isUserDefinedObject) {
+            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
+        } else {
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        }    
+        const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
+        let selectedKeys = [];
+        selected.forEach(record => {
+            selectedKeys.push(record[this.keyField]);            
+        });
+        this.selectedRows = selectedKeys;
     }
 
     parseAttributes(propertyType,inputAttributes,columnNumber) {

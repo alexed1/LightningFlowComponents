@@ -65,11 +65,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## xx/xx/21 -  Eric Smith -    Version 3.2.2 
 **Updates:** 
--   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version  
 -   Editable picklist fields now show a pencil icon when editable (Same behavior as all other field edits) 
+-   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version 
  
 **Bug Fixes:** 
--   Fixed occasional error message about the not_suppressNameFieldLink attribute      
+-   Fixed occasional error message about the not_suppressNameFieldLink attribute  
+-   Fixed v3.2.1 bug where pre-selected rows did not display as selected    
  
 ## 05/18/21 -  Eric Smith -    Version 3.2.1 
 **Updates:** 

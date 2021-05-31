@@ -51,8 +51,11 @@ export default class TransferMetadata extends LightningElement {
     }
 
     retrieve() {
-        console.log('beginning retrieval');
-        requestMetadata({ metadataName : this.metadataName })
+        console.log('beginning retrieval', this.objectType);
+        requestMetadata({ 
+            metadataName : this.metadataName,
+            metadataType : this.objectType            
+        })
         .then(result => {
             
             console.log('successfully sent async retrieval request');
@@ -81,9 +84,8 @@ export default class TransferMetadata extends LightningElement {
             console.log('ERROR: objectType parameter should be in CamelCase');
         }
         // this.modifiedName = this.metadataName + '_Converted';
-        this.modifiedName = this.metadataName;
+        this.modifiedName = this.metadataName.replaceAll('.', '_');
         console.log('this.metadataName is: ' + this.modifiedName);
-
         // Special Processing to unescape characters that could be passed in by a flow
         let documentContent = this.metadataString;
         documentContent = documentContent.replaceAll('&lbrace;', '{');

@@ -32,6 +32,26 @@ export default class FlowButtonBar extends LightningElement {
     /* PUBLIC PROPERTIES */
     @api maxNumButtons = 5;
 
+    // 'Navigation mode'-oriented properties
+    @api alignment;
+    @api orientation;    
+    @api showLines;
+
+    // 'Selection mode'-oriented properties
+    @api label;
+    @api helpText;
+    @api multiselect = '';
+    @api required = '';
+    @api errorMessage;
+
+    @api previewMode;   // Reserved for future use
+
+    // @api includeLine; replaced by showLines    
+    // @api groupAsToggle;  replaced by actionMode
+    // @api doNotTransitionOnClick;   replaced by actionMode
+
+    /* PUBLIC GETTERS AND SETTERS */
+    // buttons expects either an array of button objects (defined in the CPE) or a JSON string that parses into an array of buttons
     @api
     get buttons() {
         return this._buttons;
@@ -42,38 +62,20 @@ export default class FlowButtonBar extends LightningElement {
         } else {
             this._buttons = JSON.parse(buttons);
         }
-        // console.log('in set buttons:');
-        // console.log(JSON.parse(JSON.stringify(this._buttons)));
         this.updateSelected();
     }
     _buttons = [];
 
+    // options is simply another way of setting buttons. Meant as a convenience for developers using this component as an input element, to more closely parallel the native components.
     @api
     get options() {
         return this._options;
     }
     set options(options) {
-        // console.log('setting options: ' + JSON.stringify(options));
-        this.buttons = options;
         this._options = options;
+        this.buttons = options;
     }
     _options = [];
-
-    @api alignment;
-    @api orientation;
-    // @api groupAsToggle;
-    @api includeLine;
-    @api showLines;
-
-    @api label;
-    @api helpText;
-    @api multiselect;
-    @api required;
-    @api errorMessage;
-
-    // @api doNotTransitionOnClick;
-
-    @api previewMode;
 
     @api
     get actionMode() {
@@ -89,13 +91,11 @@ export default class FlowButtonBar extends LightningElement {
     _actionMode;
 
     @api
-    get selectedValue() {
-        return this._selectedValue;
+    get value() {
+        return this.values[0] || null;
     }
-    set selectedValue(value) {
-        this._selectedValue = value;
-        this.selectedButton = this.buttons.find(el => el.value == value) || {};
-        this.toggleButtons();
+    set value(value) {
+        this.values = [value];
     }
 
     @api
@@ -105,34 +105,38 @@ export default class FlowButtonBar extends LightningElement {
     set values(values) {
         // console.log('setting values, ' + JSON.stringify(values));
         this._values = values ? [...values] : []; // using spread operator to create a shallow clone of the array for mutability
-        //if (this.rendered && this.isSelectionMode) {
-            this.updateSelected();
-        // }
+        this.updateSelected();
     }
-    _values = [];
+    _values = [];    
 
+
+
+
+    /* Replaced by value and values
     @api
-    get value() {
-        return this.values.length ? this.values[0] : null;
+    get selectedValue() {
+        return this._selectedValue;
     }
-    set value(value) {
-        this.values = [value];
+    set selectedValue(value) {
+        this._selectedValue = value;
+        this.selectedButton = this.buttons.find(el => el.value == value) || {};
+        this.toggleButtons();
     }
+    */
+
+
 
     /* PRIVATE VARIABLES */
-    @track _selectedValue;
+    // @track _selectedValue;
     @track selectedButton = {};
 
     @track alignments = this.transformConstantObject(ALIGNMENTS2);
 
     rendered;
 
-    /* GETTERS */
+    /* PRIVATE GETTERS AND SETTERS */
     get isVertical() { return this.orientation === VERTICAL; }
-
-    get isSelectionMode() { 
-        return this.actionMode !== ACTION_MODES.NAVIGATION; 
-    }
+    get isSelectionMode() { return this.actionMode !== ACTION_MODES.NAVIGATION; }
 
     get alignmentClass() {
         //let alignment = this.getValueFromInput(ALIGNMENTS, this.alignment);
@@ -154,16 +158,16 @@ export default class FlowButtonBar extends LightningElement {
     renderedCallback() {
         if (this.rendered) 
             return;
-        console.log('alignment = '+ this.alignment);
         this.rendered = true;
         this.updateSelected();
     }
 
     /* EVENT HANDLERS */
-    handleButtonClick(event) {
-        let clickedValue = event.currentTarget.value;
+    handleButtonClick(event, externalValue) {
+        let clickedValue = externalValue || event.currentTarget.value;
         let curIndex = this.values.findIndex(value => value == clickedValue);
         if (curIndex >= 0) {
+            // Don't unselect a button if it is both required and the only selected button
             if (!this.required || this.values.length > 1)
                 this.values.splice(curIndex, 1);
         } else {
@@ -211,6 +215,12 @@ export default class FlowButtonBar extends LightningElement {
                 this.dispatchEvent(new FlowNavigationNextEvent());
             }
         }
+    }
+
+    @api
+    pressButton(buttonIndex) {
+        //const button = this.buttons[buttonIndex];
+        this.handleButtonClick(null, buttonIndex);
     }
 
     /* UTILITY FUNCTIONS */

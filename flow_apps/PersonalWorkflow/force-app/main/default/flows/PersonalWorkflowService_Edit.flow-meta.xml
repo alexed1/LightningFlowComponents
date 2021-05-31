@@ -100,7 +100,7 @@
                 <typeName>T</typeName>
                 <typeValue>PersonalAction__c</typeValue>
             </dataTypeMappings>
-            <extensionName>c:flexcardFlow</extensionName>
+            <extensionName>c:fsc_flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>visibleFieldNames</name>
@@ -179,12 +179,12 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>buttonEditTrigger</name>
-                    <extensionName>c:RC_FlowButton</extensionName>
+                    <extensionName>c:fsc_flowButtonBar</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
-                        <name>buttonLabel</name>
+                        <name>buttons</name>
                         <value>
-                            <stringValue>Edit</stringValue>
+                            <stringValue>[{&quot;label&quot;:&quot;Edit&quot;,&quot;value&quot;:&quot;Edit&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:{&quot;label&quot;:&quot;Neutral Button&quot;,&quot;value&quot;:&quot;neutral&quot;},&quot;num&quot;:null,&quot;index&quot;:0}]</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -230,12 +230,12 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>buttonEditAction</name>
-                    <extensionName>c:RC_FlowButton</extensionName>
+                    <extensionName>c:fsc_flowButtonBar</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
-                        <name>buttonLabel</name>
+                        <name>buttons</name>
                         <value>
-                            <stringValue>Edit</stringValue>
+                            <stringValue>[{&quot;label&quot;:&quot;Edit&quot;,&quot;value&quot;:&quot;Edit&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:{&quot;label&quot;:&quot;Neutral Button&quot;,&quot;value&quot;:&quot;neutral&quot;},&quot;num&quot;:null,&quot;index&quot;:0}]</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>

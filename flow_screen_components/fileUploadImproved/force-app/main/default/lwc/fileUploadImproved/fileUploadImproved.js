@@ -1,0 +1,24 @@
+import { LightningElement, track, api } from 'lwc';
+ 
+export default class FileUpload extends LightningElement {
+    @api recordId;
+    @api label;
+    @api icon;
+    @api contentDocumentIds;
+    @api allowMultiple;
+    @api acceptedFormats;
+    @track lstAllFiles = [];
+    @track docIds =[];
+
+    
+    handleUploadFinished(event) {
+        // Get the list of uploaded files
+        const lstUploadedFiles = event.detail.files;
+        lstUploadedFiles.forEach(fileIterator => this.lstAllFiles.push(fileIterator.name));
+        lstUploadedFiles.forEach(fileIterator => this.docIds.push(fileIterator.documentId));
+        console.log(this.contentDocumentIds=this.docIds);     
+        
+        
+
+    }
+}

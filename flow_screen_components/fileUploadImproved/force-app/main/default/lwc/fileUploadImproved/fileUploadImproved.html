@@ -1,0 +1,31 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-horizontal_x-small" >
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <div class="slds-p-left_medium">
+                        <lightning-file-upload
+                            label={label}
+                            name="uploadFile"
+                            accept={acceptedFormats}
+                            record-id={recordId}    
+                            onuploadfinished={handleUploadFinished}
+                            multiple={allowMultiple}>
+                        </lightning-file-upload>
+                    </div> 
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                    <div class="slds-p-left_medium">
+                        Uploaded Files: <br/>
+                        <template for:each={lstAllFiles} for:item="fileIterator">
+                            <div key={fileIterator} style="margin-top:10px;">
+                                <lightning-icon icon-name={icon} size="small" title="Image"></lightning-icon>
+                                &nbsp; {fileIterator}
+                            </div>
+                        </template>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+</template>

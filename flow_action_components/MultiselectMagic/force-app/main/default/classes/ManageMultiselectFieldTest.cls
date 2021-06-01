@@ -21,7 +21,7 @@ public with sharing class ManageMultiselectFieldTest {
         testRequest.fieldApiName='Fruit__c';
         testRequest.curRecord = testAcct1;
         testRequest.operation = 'CheckForValue';
-        testRequest.value = 'Strawberry';
+        testRequest.targetValue = 'Strawberry';
 
         return testRequest;
     }
@@ -42,7 +42,7 @@ public with sharing class ManageMultiselectFieldTest {
         System.assertEquals(true, testResponse.targetPresent);
 
       
-        testRequest.value = 'foobar';
+        testRequest.targetValue = 'foobar';
         testResponse = execute(testRequest);
         
         System.assertEquals(false, testResponse.targetPresent);
@@ -53,16 +53,16 @@ public with sharing class ManageMultiselectFieldTest {
     @isTest
     public static void canAddAValue() { 
         ManageMultiselectField.Request testRequest = initRequest();
-        testRequest.value = 'Pear';
+        testRequest.targetValue = 'Pear';
         testRequest.operation = 'AddValue';
         ManageMultiselectField.Response testResponse = execute(testRequest);
 
-        System.assertEquals('Apple;Strawberry;Rasberry;Pear', testResponse.value);
-        testRequest.value = 'Foobar';
+        System.assertEquals('Apple;Strawberry;Rasberry;Pear', testResponse.selectedValuesSemicolonString);
+        testRequest.targetValue = 'Foobar';
         try {
             testResponse = execute(testRequest);
         } catch(ManageMultiselectField.InvocableActionException e) {
-            System.assert( e.getMessage().contains('You attempted to add an invalid value to the set of selected multiselect picklist field'), 
+            System.assert( e.getMessage().contains('The value: Foobaris not an allowed value for the picklist: Fruit__c in object: Account'), 
             e.getMessage() );
         }
 
@@ -71,10 +71,10 @@ public with sharing class ManageMultiselectFieldTest {
     @isTest
     public static void canRemoveAValue() { 
         ManageMultiselectField.Request testRequest = initRequest();
-        testRequest.value = 'Rasberry';
+        testRequest.targetValue = 'Rasberry';
         testRequest.operation = 'RemoveValue';
         ManageMultiselectField.Response testResponse = execute(testRequest);
 
-        System.assertEquals('Apple;Strawberry', testResponse.value);
+        System.assertEquals('Apple;Strawberry', testResponse.selectedValuesSemicolonString);
     }
 }

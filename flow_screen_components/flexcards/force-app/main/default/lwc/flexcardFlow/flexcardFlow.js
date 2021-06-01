@@ -13,9 +13,16 @@ export default class FlexcardFlow extends LightningElement {
     @api cardSize = 300;
     @api avatarField;
     @api objectAPIName;
+    @api isClickable;
+    @api Cardcss;
+    @api headerStyle;
+    @api allowMultiSelect;
+    @api recordValue;
+    @api selectedRecordIds = [];
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
+    @track recs = [];
     curRecord;
 
      @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
@@ -29,7 +36,14 @@ export default class FlexcardFlow extends LightningElement {
 
     connectedCallback() {
         console.log('entering connectedCallback');
+        if(!this.records) {
+            throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
+        }
         console.log('records are: ' + JSON.stringify(this.records));
+		this.recs = JSON.parse(JSON.stringify(this.records));
+        this.recs.find(record => {
+            record.Cardcss = 'card';
+           })
            }
 
     //for each record:
@@ -63,9 +77,41 @@ export default class FlexcardFlow extends LightningElement {
 
 //set card width and height
 
-get sizeWidth() {
-    return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
-  }
+    get sizeWidth() {
+        return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
+}
+  
+           
+    handleChange(event) {
+        console.log(event.target.checked);
+        if( event.target.checked == true){
+        this.recordValue = event.target.value;
+        this.selectedRecordIds.push(this.recordValue);
+            }
+        else{
+            const remove = this.selectedRecordIds.indexOf(this.selectedRecordIds.find(element => element.Id === event.target.value));
+            this.selectedRecordIds.splice(remove,1);
+    }
+        }
+
+    handleClick(event){
+       
+       this.recs.find(record => {
+           if(record.Id === event.currentTarget.dataset.id && this.isClickable==true) {
+            record.Cardcss = 'clickedCard';
+            this.selectedRecord = event.currentTarget.dataset.id;
+        console.log(this.value=this.selectedRecord);
+           }
+           else {
+               record.Cardcss = 'card';            
+           }
+        });
+
+        
+        
+     }    
+             
 
 
+   
 }

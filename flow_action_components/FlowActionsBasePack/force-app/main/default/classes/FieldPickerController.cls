@@ -69,6 +69,7 @@ global with sharing class FieldPickerController {
         @AuraEnabled
         global Boolean isDefaultValue;
 
+    
         global Member(String value, String label) {
             this.label = label;
             this.value = value;

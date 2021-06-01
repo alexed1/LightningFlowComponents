@@ -3,15 +3,15 @@
         {
             "path": "force-app",
             "package": "sendBetterEmail",
-            "versionName": "ver 2.0.5",
-            "versionNumber": "2.0.5.NEXT",
+            "versionName": "ver 2.0.6",
+            "versionNumber": "2.0.6.NEXT",
             "versionDescription": "SendBetterEmail Action Component for Flow",
             "dependencies": [
                 {
                     "package": "FlowActionsBasePack@2.12.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@2.1.6-0"
+                    "package": "FlowScreenComponentsBasePack@2.2.0-0"
                 }
             ],
             "default": true
@@ -19,16 +19,17 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "51.0",
     "packageAliases": {
         "FlowActionsBasePack": "0334W000000hBcGQAU",
         "FlowScreenComponentsBasePack": "033f4000000mjNrAAI",
-        "sendBetterEmail": "0Ho3h000000XZEsCAO",
+        "sendBetterEmail": "0Hof4000000XZM3CAO",
         "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2",
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
         "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK",
-        "FlowScreenComponentsBasePack@2.1.6-0": "04t5G000004PucZQAS",
+        "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI",
         "sendBetterEmail@2.0.3-0": "04t3h0000045r04AAA",
-        "sendBetterEmail@2.0.5-1": "04t4U0000011VU5QAM"
+        "sendBetterEmail@2.0.5-1": "04t4U0000011VU5QAM",
+        "sendBetterEmail@2.1.1-0": "04t5G0000047xEiQAI"
     }
 }

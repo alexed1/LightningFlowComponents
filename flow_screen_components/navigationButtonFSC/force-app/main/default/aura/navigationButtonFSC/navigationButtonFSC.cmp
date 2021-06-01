@@ -5,10 +5,11 @@
         Eric Smith - 1/22/2019		Changed from ui:button to lightning:button to support button variant style	
         Eric Smith - 3/9/2019       Added support for 3rd button
         Eric Smith - 4/29/2019      Added option to show button as disabled
+        Eric Smith - 3/26/2021      Added support for 5 buttons and for right justification (default is left)
 -->
 
 <aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" controller="UIThemeController"
-    access="global">
+    access="global">    
     <aura:attribute name="label" type="String" />
     <aura:attribute name="destinationURL" type="String" default="https://salesforce.com/" />
     <aura:attribute name="destinationType" type="String" default="standard" />
@@ -34,11 +35,31 @@
     <aura:attribute name="variantType3" type="String" default="neutral" />
     <aura:attribute name="disabledFlag3" type="Boolean" default="false" />
     <aura:attribute name="fire3" type="Boolean" default="false" />
-    <aura:attribute name="Buttons3" type="Boolean" default="false" />    
+    <aura:attribute name="Buttons3" type="Boolean" default="false" />
+    <aura:attribute name="label4" type="String" />
+    <aura:attribute name="destinationURL4" type="String" default="https://salesforce.com/" />
+    <aura:attribute name="destinationType4" type="String" default="standard" />
+    <aura:attribute name="targetRecordId4" type="String" />
+    <aura:attribute name="navigationType4" type="String" default="next"/>
+    <aura:attribute name="variantType4" type="String" default="neutral" />
+    <aura:attribute name="disabledFlag4" type="Boolean" default="false" />
+    <aura:attribute name="fire4" type="Boolean" default="false" />
+    <aura:attribute name="Buttons4" type="Boolean" default="false" />    
+    <aura:attribute name="label5" type="String" />
+    <aura:attribute name="destinationURL5" type="String" default="https://salesforce.com/" />
+    <aura:attribute name="destinationType5" type="String" default="standard" />
+    <aura:attribute name="targetRecordId5" type="String" />
+    <aura:attribute name="navigationType5" type="String" default="next"/>
+    <aura:attribute name="variantType5" type="String" default="neutral" />
+    <aura:attribute name="disabledFlag5" type="Boolean" default="false" />
+    <aura:attribute name="fire5" type="Boolean" default="false" />
+    <aura:attribute name="Buttons5" type="Boolean" default="false" />        
     <aura:attribute name="h_destinationURL" type="String" />
     <aura:attribute name="h_destinationType" type="String" />
     <aura:attribute name="h_targetRecordId" type="String" />
     <aura:attribute name="h_navigationType" type="String" />
+    <aura:attribute name="rightJustify" type="Boolean" default="false" />
+    <aura:attribute name="justification" type="String" default="slds-float_left" />
 
     <aura:attribute name="Theme" type="String" />
     <aura:attribute name="isLEX" type="Boolean" />
@@ -46,22 +67,34 @@
     <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
     <div class="slds-form-element">
-        <div class="container">
-            <lightning:layout>
-                <lightning:layoutItem padding="around-small">
-                    <lightning:button variant="{!v.variantType}" label="{!v.label}" disabled="{!v.disabledFlag}" onclick="{!c.handleClick}" />
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small">
-                    <aura:if isTrue="{!v.Buttons2}">
-                        <lightning:button variant="{!v.variantType2}" label="{!v.label2}" disabled="{!v.disabledFlag2}" onclick="{!c.handleClick2}" />
-                    </aura:if>
-                </lightning:layoutItem>
-                <lightning:layoutItem padding="around-small">
-                    <aura:if isTrue="{!v.Buttons3}">
-                        <lightning:button variant="{!v.variantType3}" label="{!v.label3}" disabled="{!v.disabledFlag3}" onclick="{!c.handleClick3}" />
-                    </aura:if>
-                </lightning:layoutItem>
-            </lightning:layout>
+        <div class="container slds-clearfix">
+            <div class="{!v.justification}">
+                <lightning:layout>
+                    <lightning:layoutItem padding="around-small">
+                        <lightning:button variant="{!v.variantType}" label="{!v.label}" disabled="{!v.disabledFlag}" onclick="{!c.handleClick}" />
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <aura:if isTrue="{!v.Buttons2}">
+                            <lightning:button variant="{!v.variantType2}" label="{!v.label2}" disabled="{!v.disabledFlag2}" onclick="{!c.handleClick2}" />
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <aura:if isTrue="{!v.Buttons3}">
+                            <lightning:button variant="{!v.variantType3}" label="{!v.label3}" disabled="{!v.disabledFlag3}" onclick="{!c.handleClick3}" />
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <aura:if isTrue="{!v.Buttons4}">
+                            <lightning:button variant="{!v.variantType4}" label="{!v.label4}" disabled="{!v.disabledFlag4}" onclick="{!c.handleClick4}" />
+                        </aura:if>
+                    </lightning:layoutItem>
+                    <lightning:layoutItem padding="around-small">
+                        <aura:if isTrue="{!v.Buttons5}">
+                            <lightning:button variant="{!v.variantType5}" label="{!v.label5}" disabled="{!v.disabledFlag5}" onclick="{!c.handleClick5}" />
+                        </aura:if>
+                    </lightning:layoutItem>
+                </lightning:layout>
+            </div>
         </div>
     </div>
 </aura:component>

@@ -63,6 +63,11 @@ global without sharing class FindCommonAndUniqueRecords {
                                 sourceMap.put(sourceCurrentFieldValue, sourceRecord);
                             }
                             
+                            //if the unique ID is blank then we know it is unique compared to the other collection
+                            else {
+                                 result.sourceUniqueRecordCollection.add(sourceRecord);
+                            }
+                            
                         }
                                              
                         //puts the target collection into a map so we can compare with the source collection
@@ -83,10 +88,15 @@ global without sharing class FindCommonAndUniqueRecords {
                                 targetMap.put(targetCurFieldValue, targetRecord);
                             }
                             
+                            //if the unique ID is blank then we know it is unique compared to the other collection
+                            else {
+                                 result.targetUniqueRecordCollection.add(targetRecord);
+                            }
+                            
                         }
                         
                         // we loop over the 'Source' collection to see if the record is in the 'Target' collection'.
-                        for (sObject sourceRecord : sourceRecordCollection ) {
+                        for (sObject sourceRecord : sourceMap.values() ) {
                             //if it is, we add it to the common record collection and remove it from the target map. We do this
                             String sourceFieldValue = sourceRecord.get(request.sourceUniqueID).toString();
     
@@ -100,7 +110,7 @@ global without sharing class FindCommonAndUniqueRecords {
                         }
                         
                         // we loop over the 'Target' collection to see if the record is in the 'Source' collection'.
-                        for (sObject targetRecord : targetRecordCollection ) {
+                        for (sObject targetRecord : targetMap.values() ) {
                             //if it is, we add it to the common record collection and remove it from the target map. We do this
                             String targetFieldValue = targetRecord.get(request.targetUniqueID).toString();
     

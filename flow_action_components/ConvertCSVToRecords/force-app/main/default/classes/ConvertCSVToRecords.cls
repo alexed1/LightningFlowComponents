@@ -30,6 +30,7 @@ public with sharing class ConvertCSVToRecords {
                 for (String field : fields) {
                     String fieldApiName = field;
                     if(fieldMap.get(fieldApiName) == null) {
+                        fieldApiName = fieldApiName.replaceAll('/', '_');
                         fieldApiName = fieldApiName.replaceAll(' ', '_').replaceAll('[^a-zA-Z0-9_]', '');   // Convert to alphanumeric and underscore
                         fieldApiName = fieldApiName.replaceAll('__', '_')+'__c';                            // Remove extra _s and add __c to end  
                     }                       
@@ -46,6 +47,7 @@ public with sharing class ConvertCSVToRecords {
                     String[] fieldInputValues = row.split(',');
                     for (Integer i = 0; i < fields.size(); i++) {
                         String fieldValue = replaceComma(fieldInputValues[i], tempRepl);
+                        fieldValue = removeQuotes(fieldValue);      // Remove " characters if they bracket the field value
                         Schema.DisplayType fieldType = fieldToFieldTypeMap.get(fields[i]);
                         try {
                             obj.put( fieldName.get(fields[i]), getConvertedFieldValue(fieldType, fieldValue) );
@@ -127,6 +129,10 @@ public with sharing class ConvertCSVToRecords {
         return text.replace(tempRepl, ',');
     }
 
+    static String removeQuotes(String text) {
+        return text.removeStart('\"').removeEnd('\"');
+    }
+    
     @TestVisible
     static Schema.DisplayType getFieldType(map<String, SObjectField> fieldMap, String fieldApiName) {
         if(fieldMap.get(fieldApiName) == null) {

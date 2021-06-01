@@ -1,0 +1,16 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "flowCarousel"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "flowCarousel": "0Ho5G000000CahASAS",
+        "flowCarousel@1.1.0-0": "04t5G0000047xF7QAI"
+    }
+}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>51.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="imageURLs" label="Image URLs" description="Text collection of Image URL's for the slide images" type="String[]"/>
+            <property name="headers" label="Headers" description="Text collection containing the Headers for each slide" type="String[]"/>
+            <property name="descriptions" label="Descriptions" description="Text collection of each slides description" type="String[]"/>
+            <property name="hyperlinkURLs" label="Hyperlink URLs" description="Text collection containing URL's to launch when clicking on slide" type="String[]"/>
+            <property name="altText" label="Alternate Text" description="Text collection of Alternate Text for a fall back of each image for screen readers and accessability these need to be uniqe" type="String[]"/>
+            <property name="slideSize" label="Slide style" description="Control alignment and size i.e.slds-text-align_center slds-size_x-large"  type="String"/>      
+            <property name="carouselTitle" label="Carousel Title" description="Text Variable to add a header to your carousel" type="String"/>
+        </targetConfig>                 
+    </targetConfigs>
+</LightningComponentBundle>

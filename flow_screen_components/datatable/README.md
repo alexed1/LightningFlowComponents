@@ -6,24 +6,22 @@ Lightning Web Component for Flow Screens:       **Datatable**
 
 Additional components packaged with this LWC:
 
-                    Apex Classes:   QueryNRecords
-                                    QueryNRecordsTest
-                                    SObjectController2 
-                                    SObjectController2Test
+                Apex Classes:       ers_QueryNRecords
+                                    ers_QueryNRecordsTest
+                                    ers_DatatableController 
+                                    ers_DatatableControllerTest
 
-                    LWCs:           datatableUtils
-                                    datatableCPE
-                                    screenFlow
-                                    displayError
-                                    richDatatable
+                LWCs:               ers_comboboxColumnType
+                                    ers_customLightningDatatable
+                                    ers_datatableUtils
+                                    ers_datatableCPE
+                                    ers_richTextColumnType
 
-                    Flows:          Datatable_Configuration_Wizard
+                StaticResources:    ers_customLightningDatatableStyles
 
-                    Apex Pages:     screenFlow
+                Flows:              Datatable_Configuration_Wizard
 
-                    Custom Apps:    screenFlow 
-
-                    Permission Set: USF Flow Screen Component - Datatable          
+                Permission Set:     USF Flow Screen Component - Datatable          
                                                   
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
@@ -37,16 +35,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.12 or later  
-FlowScreenComponentsBasePack Version 2.1.6 or later  
+FlowActionsBasePack Version 2.17 or later  
+FlowScreenComponentsBasePack Version 2.2.1 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.0.10 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)   
-[Version 3.0.10 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004PudhQAC)
+[Version 3.2.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xH8QAI)   
+[Version 3.2.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xH8QAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -57,13 +55,54 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
 
 In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
-    QueryNRecords   
-    SObjectController2  
+    ers_QueryNRecords   
+    ers_DatatableController  
 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
 # Release Notes
+ 
+## 05/18/21 -  Eric Smith -    Version 3.2.1 
+**Updates:** 
+-   Picklist values can now be restricted to a single record type 
+ 
+**Bug Fixes:** 
+-   Text formula fields will now wrap correctly (This had regressed in v3.2.0) 
+-   Output Selected Rows is no longer null if the screen containing the Datatable also has a Section 
+ 
+## 05/03/21 -  Eric Smith -    Version 3.2.0 
+**Updates:** 
+-   Picklist fields are now editable.  Big thanks to Jerry Poon and Guillaume Davies.
+    (Does not yet support Dependent picklists nor filtering by Record Type)
+-   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
+-   Renamed components used by Datatable to reduce conflicts and allow easier upgrading from older versions
+
+**Bug Fixes:**
+-   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
+-   Make output attributes available to visibility filters (this was inadvertantly removed from some prior releases)
+-   Better handling of number & percent fields from different locales (Thanks to GDuboc-hub)
+    (Edited percent fields must be the actual number ie: .25 = 25%)
+    (Edited percent fields lose 2 decimal places during the edit from what is defined for the field)
+-   Edited date fields will stay in the User's local time-zone rather than switching to UTC
+
+## 04/15/21 -  Eric Smith -    Version 3.1.1 
+**Updates:** 
+-   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
+-   Added an attribute to hide all column header actions such as Sort, Clip/Wrap Text and Filters
+-   If Multi-Currency is enabled, convert currency field values to the User's currency (Thanks to Novarg1)
+
+**Bug Fixes:**
+-   Text formula fields will now wrap correctly
+-   Display ALL Objects for Selection attribute is now persistent
+-   Input data is Apex-Defined attribute is now persistent
+-   The number of pre-selected rows will now not exceed the maximum number of records to be displayed attribute value
+-   Don't require the key field to be explicitly listed in the Column Edits attribute for Apex Defined Objects
+-   Clear Selection button will no longer appear on single row tables when Disallow row selection is checked
+-   Clear Selection button will clear the Output Selected Record String for Apex Defined Objects
+-   Fixed Column Filter on Checkbox Fields when the filter value is 'false' 
+-   Fixed vertical alignment of table header text
+  
 ## 02/27/21 -  Eric Smith -    Version 3.0.10 
 **Updates:** 
 -   Record links updated to support a Flow running in a Community

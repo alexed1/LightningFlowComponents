@@ -1,11 +1,29 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@2.12.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@2.1.7-0"
+                }
+            ],
+            "package": "flexcards",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "flexcards": "0Ho5G000000Cah0SAC",
+        "flexcards@1.0.0-0": "04t5G0000047xDkQAI",
+        "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
+        "FlowScreenComponentsBasePack@2.1.7-0": "04t5G0000047xDpQAI",
+        "flexcards@1.0.1-0": "04t5G0000047xDzQAI"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "49.0"
 }

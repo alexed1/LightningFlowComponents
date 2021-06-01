@@ -1,0 +1,17 @@
+<template>
+    <lightning-input name="label" label={inputValues.label.label} value={inputValues.label.value}
+        onchange={handleInputChange}></lightning-input>
+
+    <div class="slds-p-top_xx-small">
+        <c-fsc_flow-button-bar name="mode" label={inputValues.mode.label} options={displayModeOptions}
+            value={inputValues.mode.value} onbuttonclick={handleButtonClick} class="modeToggle" required>
+        </c-fsc_flow-button-bar>
+    </div>
+
+    <div class="slds-p-top_xx-small">
+        <c-fsc_flow-button-bar name="iconCategories" label={inputValues.iconCategories.label} options={iconCategoryOptions}
+            help-text="Note: Action icons are not available in combobox mode" values={iconCategories}
+            onbuttonclick={handleButtonClick} class="slds-m-vertical_medium" multiselect required>
+        </c-fsc_flow-button-bar>
+    </div>
+</template>

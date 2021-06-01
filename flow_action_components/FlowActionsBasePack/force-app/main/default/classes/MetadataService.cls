@@ -40,6 +40,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningBoltFeatures {
 		global String description;
 		global Integer order;
@@ -50,6 +52,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','order','title'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatDeployment extends Metadata {
 		global String type='LiveChatDeployment';
 		global String fullName;
@@ -80,6 +84,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'brandingImage','connectionTimeoutDuration','connectionWarningDuration','displayQueuePosition','domainWhiteList','enablePrechatApi','enableTranscriptSave','label','mobileBrandingImage','site','windowTitle'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportFilterItem {
 		global String column;
 		global Boolean columnToColumn;
@@ -96,6 +102,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'column','columnToColumn','isUnlocked','operator','snapshot','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowElementReferenceOrValue {
 		global Boolean booleanValue;
 		global DateTime dateTimeValue;
@@ -112,6 +120,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'booleanValue','dateTimeValue','dateValue','elementReference','numberValue','stringValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowWaitEventOutputParameter extends FlowBaseElement {
 		global String type='FlowWaitEventOutputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -124,12 +134,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MacroSettings {
 		global Boolean enableAdvancedSearch;
 		private String[] enableAdvancedSearch_type_info=new String[]{'enableAdvancedSearch',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableAdvancedSearch'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeSuggestedArticlesSettings {
 		global MetadataService.KnowledgeCaseFieldsSettings caseFields;
 		global Boolean useSuggestedArticlesForCase;
@@ -142,6 +156,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'caseFields','useSuggestedArticlesForCase','workOrderFields','workOrderLineItemFields'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SaveResult {
 		global MetadataService.Error[] errors;
 		global String fullName;
@@ -152,12 +168,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errors','fullName','success'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ExtendedErrorDetails {
 		global String extendedErrorCode;
 		private String[] extendedErrorCode_type_info=new String[]{'extendedErrorCode',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'extendedErrorCode'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SessionSettings {
 		global Boolean disableTimeoutWarning;
 		global Boolean enableCSPOnEmail;
@@ -220,6 +240,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'disableTimeoutWarning','enableCSPOnEmail','enableCSRFOnGet','enableCSRFOnPost','enableCacheAndAutocomplete','enableClickjackNonsetupSFDC','enableClickjackNonsetupUser','enableClickjackNonsetupUserHeaderless','enableClickjackSetup','enableContentSniffingProtection','enablePostForSessions','enableSMSIdentity','enableUpgradeInsecureRequests','enableXssProtection','enforceIpRangesEveryRequest','forceLogoutOnSessionTimeout','forceRelogin','hstsOnForcecomSites','identityConfirmationOnEmailChange','identityConfirmationOnTwoFactorRegistrationEnabled','lockSessionsToDomain','lockSessionsToIp','logoutURL','redirectionWarning','referrerPolicy','requireHttpOnly','requireHttps','securityCentralKillSession','sessionTimeout'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingOwnerRule extends SharingBaseRule {
 		global String type='SharingOwnerRule';
 		global String fullName;
@@ -240,6 +262,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessLevel','accountSettings','description','label','sharedTo', 'sharedFrom'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomExperienceTabSet {
 		global String[] customTab;
 		global String defaultTab;
@@ -250,6 +274,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customTab','defaultTab','standardTab'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldMappingField {
 		global String dataServiceField;
 		global String dataServiceObjectName;
@@ -260,6 +286,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dataServiceField','dataServiceObjectName','priority'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CaseSettings extends Metadata {
 		global String type='CaseSettings';
 		global String fullName;
@@ -328,18 +356,24 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'caseAssignNotificationTemplate','caseCloseNotificationTemplate','caseCommentNotificationTemplate','caseCreateNotificationTemplate','caseFeedItemSettings','closeCaseThroughStatusChange','defaultCaseOwner','defaultCaseOwnerType','defaultCaseUser','emailActionDefaultsHandlerClass','emailToCase','enableCaseFeed','enableDraftEmails','enableEarlyEscalationRuleTriggers','enableEmailActionDefaultsHandler','enableSuggestedArticlesApplication','enableSuggestedArticlesCustomerPortal','enableSuggestedArticlesPartnerPortal','enableSuggestedSolutions','keepRecordTypeOnAssignmentRule','notifyContactOnCaseComment','notifyDefaultCaseOwner','notifyOwnerOnCaseComment','notifyOwnerOnCaseOwnerChange','showEmailAttachmentsInCaseAttachmentsRL','showFewerCloseActions','systemUserEmail','useSystemEmailAddress','useSystemUserAsDefaultCaseUser','webToCase'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMetadataResponse_element {
 		global MetadataService.ReadResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecommendationDefinition {
 		global MetadataService.RecommendationDefinitionDetail[] recommendationDefinitionDetails;
 		private String[] recommendationDefinitionDetails_type_info=new String[]{'recommendationDefinitionDetails',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'recommendationDefinitionDetails'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MiniLayout {
 		global String[] fields;
 		global MetadataService.RelatedListItem[] relatedLists;
@@ -348,6 +382,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fields','relatedLists'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldValue {
 		global String name;
 		global String value;
@@ -356,6 +392,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LicensedCustomPermissions {
 		global String customPermission;
 		global String licenseDefinition;
@@ -364,6 +402,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customPermission','licenseDefinition'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class UpsertResult {
 		global Boolean created;
 		global MetadataService.Error[] errors;
@@ -376,6 +416,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'created','errors','fullName','success'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdDimension {
 		global MetadataService.WaveXmdDimensionCustomAction[] customActions;
 		global Boolean customActionsEnabled;
@@ -426,6 +468,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customActions','customActionsEnabled','dateFormat','description','field','fullyQualifiedName','imageTemplate','isDerived','isMultiValue','label','linkTemplate','linkTemplateEnabled','linkTooltip','members','origin','recordDisplayFields','recordIdField','recordOrganizationIdField','salesforceActions','salesforceActionsEnabled','showDetailsDefaultFieldIndex','showInExplorer','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppAttribute {
 		global String formula;
 		global String key;
@@ -434,6 +478,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'formula','key'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowFieldUpdate extends WorkflowAction {
 		global String type='WorkflowFieldUpdate';
 		global String fullName;
@@ -466,6 +512,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','field','formula','literalValue','lookupValue','lookupValueType','name','notifyAssignee','operation','protected_x','reevaluateOnChange','targetObject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AssignmentRule extends Metadata {
 		global String type='AssignmentRule';
 		global String fullName;
@@ -478,6 +526,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','ruleEntry'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValueSettings {
 		global String[] controllingFieldValue;
 		global String valueName;
@@ -486,12 +536,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'controllingFieldValue','valueName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatButtonDeployments {
 		global String[] deployment;
 		private String[] deployment_type_info=new String[]{'deployment',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'deployment'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DataCategoryGroup extends Metadata {
 		global String type='DataCategoryGroup';
 		global String fullName;
@@ -510,6 +564,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','dataCategory','description','label','objectUsage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardGridComponent {
 		global Integer colSpan;
 		global Integer columnIndex;
@@ -524,6 +580,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'colSpan','columnIndex','dashboardComponent','rowIndex','rowSpan'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomDataTypeComponent {
 		global String developerSuffix;
 		global Boolean enforceFieldRequiredness;
@@ -546,6 +604,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'developerSuffix','enforceFieldRequiredness','label','length','precision','scale','sortOrder','sortPriority','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NetworkBranding extends MetadataWithContent {
 		global String type='NetworkBranding';
 		global String fullName;
@@ -594,6 +654,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'loginFooterText','loginLogo','loginLogoName','loginPrimaryColor','loginQuaternaryColor','loginRightFrameUrl','network','pageFooter','pageHeader','primaryColor','primaryComplementColor','quaternaryColor','quaternaryComplementColor','secondaryColor','staticLogoImageUrl','tertiaryColor','tertiaryComplementColor','zeronaryColor','zeronaryComplementColor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class UserCriteria extends Metadata {
 		global String type='UserCriteria';
 		global String fullName;
@@ -614,12 +676,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'creationAgeInSeconds','description','lastChatterActivityAgeInSeconds','masterLabel','profiles','userTypes'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeSitesSettings {
 		global String[] site;
 		private String[] site_type_info=new String[]{'site',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'site'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningBoltImages {
 		global String image;
 		global Integer order;
@@ -628,6 +694,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'image','order'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SearchLayouts {
 		global String[] customTabListAdditionalFields;
 		global String[] excludedStandardButtons;
@@ -650,12 +718,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customTabListAdditionalFields','excludedStandardButtons','listViewButtons','lookupDialogsAdditionalFields','lookupFilterFields','lookupPhoneDialogsAdditionalFields','searchFilterFields','searchResultsAdditionalFields','searchResultsCustomButtons'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class retrieve_element {
 		global MetadataService.RetrieveRequest retrieveRequest;
 		private String[] retrieveRequest_type_info=new String[]{'retrieveRequest',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'retrieveRequest'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AssignmentRules extends Metadata {
 		global String type='AssignmentRules';
 		global String fullName;
@@ -666,6 +738,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assignmentRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DeleteResult {
 		global MetadataService.Error[] errors;
 		global String fullName;
@@ -676,6 +750,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errors','fullName','success'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PackageTypeMembers {
 		global String[] members;
 		global String name;
@@ -684,6 +760,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'members','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardFilter {
 		global MetadataService.DashboardFilterOption[] dashboardFilterOptions;
 		global String name;
@@ -692,12 +770,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dashboardFilterOptions','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecommendationAudience {
 		global MetadataService.RecommendationAudienceDetail[] recommendationAudienceDetails;
 		private String[] recommendationAudienceDetails_type_info=new String[]{'recommendationAudienceDetails',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'recommendationAudienceDetails'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileApplicationVisibility {
 		global String application;
 		global Boolean default_x;
@@ -708,6 +790,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'application','default_x','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportParam {
 		global String name;
 		global String value;
@@ -716,6 +800,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RelatedListItem {
 		global String[] customButtons;
 		global String[] excludeButtons;
@@ -732,6 +818,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customButtons','excludeButtons','fields','relatedList','sortField','sortOrder'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SynonymDictionary extends Metadata {
 		global String type='SynonymDictionary';
 		global String fullName;
@@ -746,6 +834,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'groups','isProtected','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmd extends Metadata{
 		global String application;
 		global String dataset;
@@ -772,6 +862,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'application','dataset','datasetConnector','datasetFullyQualifiedName','dates','dimensions','measures','organizations','origin','type_x','waveVisualization'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WebLinkTranslation {
 		global String label;
 		global String name;
@@ -780,6 +872,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningExperienceTheme {
 		global String defaultBrandingSet;
 		global String description;
@@ -792,6 +886,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'defaultBrandingSet','description','masterLabel','shouldOverrideLoadingImage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileCategoryGroupVisibility {
 		global String[] dataCategories;
 		global String dataCategoryGroup;
@@ -802,6 +898,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dataCategories','dataCategoryGroup','visibility'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomTabTranslation {
 		global String label;
 		global String name;
@@ -810,6 +908,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PackageVersion {
 		global Integer majorNumber;
 		global Integer minorNumber;
@@ -820,6 +920,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'majorNumber','minorNumber','namespace'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DescribeMetadataObject {
 		global String[] childXmlNames;
 		global String directoryName;
@@ -836,6 +938,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'childXmlNames','directoryName','inFolder','metaFile','suffix','xmlName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveAgentSettings extends Metadata {
 		global String type='LiveAgentSettings';
 		global String fullName;
@@ -846,6 +950,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableLiveAgent'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowFlowAction {
 		global String description;
 		global String flow;
@@ -862,6 +968,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','flow','flowInputs','label','language','protected_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveApplication extends Metadata {
 		global String type='WaveApplication';
 		global String fullName;
@@ -884,12 +992,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assetIcon','description','folder','masterLabel','shares','templateOrigin','templateVersion'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AllOrNoneHeader_element {
 		global Boolean allOrNone;
 		private String[] allOrNone_type_info=new String[]{'allOrNone',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allOrNone'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowTaskTranslation {
 		global String description;
 		global String name;
@@ -900,6 +1012,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','name','subject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SearchSettings extends Metadata {
 		global String type='SearchSettings';
 		global String fullName;
@@ -926,6 +1040,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'documentContentSearchEnabled','optimizeSearchForCJKEnabled','recentlyViewedUsersForBlankLookupEnabled','searchSettingsByObject','sidebarAutoCompleteEnabled','sidebarDropDownListEnabled','sidebarLimitToItemsIOwnCheckboxEnabled','singleSearchResultShortcutEnabled','spellCorrectKnowledgeSearchEnabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class listMetadata_element {
 		global MetadataService.ListMetadataQuery[] queries;
 		global Double asOfVersion;
@@ -934,6 +1050,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'queries','asOfVersion'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AuraDefinitionBundle extends Metadata {
 		global String type='AuraDefinitionBundle';
 		global String fullName;
@@ -970,6 +1088,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'SVGContent','apiVersion','controllerContent','description','designContent','documentationContent','helperContent','markup','modelContent','packageVersions','rendererContent','styleContent','testsuiteContent','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Queue extends Metadata {
 		global String type='Queue';
 		global String fullName;
@@ -990,6 +1110,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'doesSendEmailToMembers','email','name','queueMembers','queueRoutingConfig','queueSobject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CleanDataService {
 		global MetadataService.CleanRule[] cleanRules;
 		global String description;
@@ -1002,6 +1124,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'cleanRules','description','masterLabel','matchEngine'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class HomePageLayout extends Metadata {
 		global String type='HomePageLayout';
 		global String fullName;
@@ -1014,6 +1138,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'narrowComponents','wideComponents'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveLens extends MetadataWithContent {
 		global String type='WaveLens';
 		global String fullName;
@@ -1036,6 +1162,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'application','datasets','description','masterLabel','templateAssetSourceName','visualizationType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionSendEmailOptions {
 		global String defaultEmailTemplateName;
 		global Boolean ignoreDefaultEmailTemplateSubject;
@@ -1044,12 +1172,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'defaultEmailTemplateName','ignoreDefaultEmailTemplateSubject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCategoryItems {
 		global String flow;
 		private String[] flow_type_info=new String[]{'flow',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'flow'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppPreferences {
 		global Boolean enableCustomizeMyTabs;
 		global Boolean enableKeyboardShortcuts;
@@ -1072,6 +1204,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableCustomizeMyTabs','enableKeyboardShortcuts','enableListViewHover','enableListViewReskin','enableMultiMonitorComponents','enablePinTabs','enableTabHover','enableTabLimits','saveUserSessions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SocialCustomerServiceSettings extends Metadata {
 		global String type='SocialCustomerServiceSettings';
 		global String fullName;
@@ -1082,6 +1216,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'caseSubjectOption'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MilestoneType extends Metadata {
 		global String type='MilestoneType';
 		global String fullName;
@@ -1094,6 +1230,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','recurrenceType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WeightedSourceCategory {
 		global String sourceCategoryApiName;
 		global Double weight;
@@ -1102,6 +1240,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sourceCategoryApiName','weight'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalProcess extends Metadata {
 		global String type='ApprovalProcess';
 		global String fullName;
@@ -1150,6 +1290,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','allowRecall','allowedSubmitters','approvalPageFields','approvalStep','description','emailTemplate','enableMobileDeviceAccess','entryCriteria','finalApprovalActions','finalApprovalRecordLock','finalRejectionActions','finalRejectionRecordLock','initialSubmissionActions','label','nextAutomatedApprover','postTemplate','recallActions','recordEditability','showApprovalHistory'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmbeddedServiceQuickAction {
 		global String embeddedServiceLiveAgent;
 		global Integer order;
@@ -1160,6 +1302,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'embeddedServiceLiveAgent','order','quickActionDefinition'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EntitlementProcess extends Metadata {
 		global String type='EntitlementProcess';
 		global String fullName;
@@ -1200,6 +1344,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'SObjectType','active','businessHours','description','entryStartDateField','exitCriteriaBooleanFilter','exitCriteriaFilterItems','exitCriteriaFormula','isRecordTypeApplied','isVersionDefault','milestones','name','recordType','versionMaster','versionNotes','versionNumber'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordDelete extends FlowNode {
 		global String type='FlowRecordDelete';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -1228,6 +1374,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filters','inputReference','object_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenFieldTranslation {
 		global String fieldText;
 		global String helpText;
@@ -1240,6 +1388,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fieldText','helpText','name','validationRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApexTestSuite extends Metadata {
 		global String type='ApexTestSuite';
 		global String fullName;
@@ -1250,6 +1400,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'testClassName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class GlobalQuickActionTranslation {
 		global String label;
 		global String name;
@@ -1258,6 +1410,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Holiday {
 		global Date activityDate;
 		global String[] businessHours;
@@ -1294,6 +1448,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'activityDate','businessHours','description','endTime','isRecurring','name','recurrenceDayOfMonth','recurrenceDayOfWeek','recurrenceDayOfWeekMask','recurrenceEndDate','recurrenceInstance','recurrenceInterval','recurrenceMonthOfYear','recurrenceStartDate','recurrenceType','startTime'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Layout extends Metadata {
 		global String type='Layout';
 		global String fullName;
@@ -1348,6 +1504,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customButtons','customConsoleComponents','emailDefault','excludeButtons','feedLayout','headers','layoutSections','miniLayout','multilineLayoutFields','platformActionList','quickActionList','relatedContent','relatedLists','relatedObjects','runAssignmentRulesDefault','showEmailCheckbox','showHighlightsPanel','showInteractionLogPanel','showKnowledgeComponent','showRunAssignmentRulesCheckbox','showSolutionSection','showSubmitAndAttachButton','summaryLayout'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatButton extends Metadata {
 		global String type='LiveChatButton';
 		global String fullName;
@@ -1428,6 +1586,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'animation','autoGreeting','chasitorIdleTimeout','chasitorIdleTimeoutWarning','chatPage','customAgentName','deployments','enableQueue','inviteEndPosition','inviteImage','inviteStartPosition','isActive','label','numberOfReroutingAttempts','offlineImage','onlineImage','optionsCustomRoutingIsEnabled','optionsHasChasitorIdleTimeout','optionsHasInviteAfterAccept','optionsHasInviteAfterReject','optionsHasRerouteDeclinedRequest','optionsIsAutoAccept','optionsIsInviteAutoRemove','overallQueueLength','perAgentQueueLength','postChatPage','postChatUrl','preChatFormPage','preChatFormUrl','pushTimeOut','routingType','site','skills','timeToRemoveInvite','type_x','windowLanguage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowDefinitionTranslation {
 		global MetadataService.FlowTranslation[] flows;
 		global String fullName;
@@ -1438,6 +1598,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'flows','fullName','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2SettingsOpportunityFilter {
 		global String apexClassName;
 		global Boolean enableFilter;
@@ -1448,6 +1610,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexClassName','enableFilter','runOnCreate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ActivitiesSettings extends Metadata {
 		global String type='ActivitiesSettings';
 		global String fullName;
@@ -1496,6 +1660,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'allowUsersToRelateMultipleContactsToTasksAndEvents','autoRelateEventAttendees','enableActivityReminders','enableClickCreateEvents','enableDragAndDropScheduling','enableEmailTracking','enableGroupTasks','enableListViewScheduling','enableLogNote','enableMultidayEvents','enableRecurringEvents','enableRecurringTasks','enableSidebarCalendarShortcut','enableSimpleTaskCreateUI','enableUNSTaskDelegatedToNotifications','meetingRequestsLogo','showCustomLogoMeetingRequests','showEventDetailsMultiUserCalendar','showHomePageHoverLinksForEvents','showMyTasksHoverLinks'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowWaitEvent extends FlowElement {
 		global String type='FlowWaitEvent';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -1522,6 +1688,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'conditionLogic','conditions','connector','eventType','inputParameters','label','outputParameters'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApexComponent extends MetadataWithContent {
 		global String type='ApexComponent';
 		global String fullName;
@@ -1540,6 +1708,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'apiVersion','description','label','packageVersions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StrategyNode {
 		global String definition;
 		global String description;
@@ -1554,6 +1724,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'definition','description','name','parentNode','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AutoResponseRule extends Metadata {
 		global String type='AutoResponseRule';
 		global String fullName;
@@ -1566,6 +1738,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','ruleEntry'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NamedCredential extends Metadata {
 		global String type='NamedCredential';
 		global String fullName;
@@ -1602,6 +1776,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'allowMergeFieldsInBody','allowMergeFieldsInHeader','authProvider','certificate','endpoint','generateAuthorizationHeader','label','oauthRefreshToken','oauthScope','oauthToken','password','principalType','protocol','username'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickAction extends Metadata {
 		global String type='QuickAction';
 		global String fullName;
@@ -1650,6 +1826,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'canvas','description','fieldOverrides','flowDefinition','height','icon','isProtected','label','lightningComponent','optionsCreateFeedItem','page_x','quickActionLayout','quickActionSendEmailOptions','standardLabel','successMessage','targetObject','targetParentField','targetRecordType','type_x','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingCriteriaRule extends SharingBaseRule {
 		global String type='SharingCriteriaRule';
 		global String fullName;
@@ -1672,6 +1850,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessLevel','accountSettings','description','label','sharedTo', 'booleanFilter','criteriaItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowAssignment extends FlowNode {
 		global String type='FlowAssignment';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -1694,6 +1874,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignmentItems','connector'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MatchingRules extends Metadata {
 		global String type='MatchingRules';
 		global String fullName;
@@ -1704,6 +1886,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'matchingRules'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Index {
 		global MetadataService.IndexField[] fields;
 		global String label;
@@ -1712,6 +1896,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fields','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Attachment {
 		global String content;
 		global String name;
@@ -1720,6 +1906,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'content','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PathAssistantStep {
 		global String[] fieldNames;
 		global String info;
@@ -1730,15 +1918,19 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fieldNames','info','picklistValueName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChannelLayoutItem {
 		global String field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class CustomValue extends Metadata {
-		public String type = 'CustomValue';
-        public String fullName;
+		global String type = 'CustomValue';
+        global String fullName;
         private String[] fullName_type_info = new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
 		global String color;
 		global Boolean default_x;
@@ -1753,6 +1945,8 @@ global class MetadataService {
         private String[] apex_schema_type_info = new String[]{SOAP_M_URI,'true','false'};
         private String[] field_order_type_info = new String[]{'fullName','color','default_x','description','isActive','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ListView extends Metadata {
 		global String type='ListView';
 		global String fullName;
@@ -1779,6 +1973,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'booleanFilter','columns','division','filterScope','filters','label','language','queue','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomApplicationTranslation {
 		global String label;
 		global String name;
@@ -1787,6 +1983,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeCaseSettings {
 		global String articlePDFCreationProfile;
 		global MetadataService.KnowledgeCommunitiesSettings articleglobalSharingCommunities;
@@ -1815,6 +2013,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'articlePDFCreationProfile','articleglobalSharingCommunities','articleglobalSharingSites','articleglobalSharingSitesChatterAnswers','assignTo','customizationClass','defaultContributionArticleType','editor','enableArticleCreation','enableArticleglobalSharingSites','enableCaseDataCategoryMapping','useProfileForPDFCreation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FiscalYearSettings {
 		global String fiscalYearNameBasedOn;
 		global String startMonth;
@@ -1823,6 +2023,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fiscalYearNameBasedOn','startMonth'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Approver {
 		global String name;
 		global String type_x;
@@ -1831,6 +2033,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectNameCaseValue {
 		global String article;
 		global String caseType;
@@ -1845,6 +2049,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'article','caseType','plural','possessive','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SiteWebAddress {
 		global String certificate;
 		global String domainName;
@@ -1855,6 +2061,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'certificate','domainName','primary'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowInputValidationRule {
 		global String errorMessage;
 		global String formulaExpression;
@@ -1863,6 +2071,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errorMessage','formulaExpression'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CompanySettings extends Metadata {
 		global String type='CompanySettings';
 		global String fullName;
@@ -1873,6 +2083,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'fiscalYear'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenField extends FlowElement {
 		global String type='FlowScreenField';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -1913,6 +2125,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceReferences','dataType','defaultSelectedChoiceReference','defaultValue','extensionName','fieldText','fieldType','helpText','inputParameters','isRequired','isVisible','outputParameters','scale','validationRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LookupFilterTranslation {
 		global String errorMessage;
 		global String informationalMessage;
@@ -1921,6 +2135,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errorMessage','informationalMessage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LetterheadLine {
 		global String color;
 		global Integer height;
@@ -1929,6 +2145,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'color','height'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValidationRule extends Metadata {
 		global String type='ValidationRule';
 		global String fullName;
@@ -1947,6 +2165,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','description','errorConditionFormula','errorDisplayField','errorMessage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChatterAnswersReputationLevel {
 		global String name;
 		global Integer value;
@@ -1955,12 +2175,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Role {
 		global String parentRole;
 		private String[] parentRole_type_info=new String[]{'parentRole',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'parentRole'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdDate {
 		global String alias;
 		global Boolean compact;
@@ -2013,12 +2237,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'alias','compact','dateFieldDay','dateFieldEpochDay','dateFieldEpochSecond','dateFieldFiscalMonth','dateFieldFiscalQuarter','dateFieldFiscalWeek','dateFieldFiscalYear','dateFieldFullYear','dateFieldHour','dateFieldMinute','dateFieldMonth','dateFieldQuarter','dateFieldSecond','dateFieldWeek','dateFieldYear','description','firstDayOfWeek','fiscalMonthOffset','isYearEndFiscalYear','label','showInExplorer','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class globalGroups {
 		global String[] globalGroup;
 		private String[] globalGroup_type_info=new String[]{'globalGroup',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'globalGroup'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FeedLayoutFilter {
 		global String feedFilterName;
 		global String feedFilterType;
@@ -2029,8 +2257,12 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'feedFilterName','feedFilterType','feedItemType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class WorkflowAction extends Metadata {
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class State {
 		global Boolean active;
 		global String integrationValue;
@@ -2047,18 +2279,24 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','integrationValue','isoCode','label','standard','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SupervisorAgentConfigSkills {
 		global String[] skill;
 		private String[] skill_type_info=new String[]{'skill',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'skill'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class describeValueTypeResponse_element {
 		global MetadataService.DescribeValueTypeResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ActionOverride {
 		global String actionName;
 		global String comment;
@@ -2075,6 +2313,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionName','comment','content','formFactor','skipRecordTypeSelect','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Translations extends Metadata {
 		global String type='Translations';
 		global String fullName;
@@ -2101,6 +2341,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customApplications','customDataTypeTranslations','customLabels','customPageWebLinks','customTabs','flowDefinitions','quickActions','reportTypes','scontrols'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WebToCaseSettings {
 		global String caseOrigin;
 		global String defaultResponseTemplate;
@@ -2111,6 +2353,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'caseOrigin','defaultResponseTemplate','enableWebToCase'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomMetadata extends Metadata {
 		global String type='CustomMetadata';
 		global String fullName;
@@ -2127,11 +2371,15 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','label','protected_x','values'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class FlowNode extends FlowElement {
 		global String label;
 		global Integer locationX;
 		global Integer locationY;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FileProperties {
 		global String createdById;
 		global String createdByName;
@@ -2160,6 +2408,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'createdById','createdByName','createdDate','fileName','fullName','id','lastModifiedById','lastModifiedByName','lastModifiedDate','manageableState','namespacePrefix','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OrderSettings extends Metadata {
 		global String type='OrderSettings';
 		global String fullName;
@@ -2176,6 +2426,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableNegativeQuantity','enableOrders','enableReductionOrders','enableZeroQuantity'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportTimeFrameFilter {
 		global String dateColumn;
 		global Date endDate;
@@ -2188,6 +2440,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dateColumn','endDate','interval','startDate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContentAssetLink {
 		global String access;
 		global Boolean isManagingWorkspace;
@@ -2198,6 +2452,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'access','isManagingWorkspace','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StandardValue extends CustomValue {
 		global String type='StandardValue';
 		global String fullName;
@@ -2238,12 +2494,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','color','default_x','description','isActive','label', 'allowEmail','closed','converted','cssExposed','forecastCategory','groupingString','highPriority','probability','reverseRole','reviewed','won'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NavigationSubMenu {
 		global MetadataService.NavigationMenuItem[] navigationMenuItem;
 		private String[] navigationMenuItem_type_info=new String[]{'navigationMenuItem',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'navigationMenuItem'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProductSettings extends Metadata {
 		global String type='ProductSettings';
 		global String fullName;
@@ -2258,6 +2518,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableCascadeActivateToRelatedPrices','enableQuantitySchedule','enableRevenueSchedule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowTask extends WorkflowAction {
 		global String type='WorkflowTask';
 		global String fullName;
@@ -2286,18 +2548,24 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assignedTo','assignedToType','description','dueDateOffset','notifyAssignee','offsetFromField','priority','protected_x','status','subject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class GlobalValueSetTranslation {
 		global MetadataService.ValueTranslation[] valueTranslation;
 		private String[] valueTranslation_type_info=new String[]{'valueTranslation',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'valueTranslation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deployResponse_element {
 		global MetadataService.AsyncResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FeedItemSettings {
 		global Integer characterLimit;
 		global Boolean collapseThread;
@@ -2310,6 +2578,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'characterLimit','collapseThread','displayFormat','feedItemType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmbeddedServiceFieldService {
 		global String appointmentBookingFlowName;
 		global String cancelApptBookingFlowName;
@@ -2336,6 +2606,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'appointmentBookingFlowName','cancelApptBookingFlowName','embeddedServiceConfig','enabled','fieldServiceConfirmCardImg','fieldServiceHomeImg','fieldServiceLogoImg','masterLabel','modifyApptBookingFlowName','shouldShowExistingAppointment','shouldShowNewAppointment'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AgentConfigAssignments {
 		global MetadataService.AgentConfigProfileAssignments profiles;
 		global MetadataService.AgentConfigUserAssignments users;
@@ -2344,6 +2616,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'profiles','users'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalStepApprover {
 		global MetadataService.Approver[] approver;
 		global String whenMultipleApprovers;
@@ -2352,6 +2626,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'approver','whenMultipleApprovers'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApexTrigger extends MetadataWithContent {
 		global String type='ApexTrigger';
 		global String fullName;
@@ -2368,6 +2644,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'apiVersion','packageVersions','status'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomConsoleComponents {
 		global MetadataService.PrimaryTabComponents primaryTabComponents;
 		global MetadataService.SubtabComponents subtabComponents;
@@ -2376,6 +2654,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'primaryTabComponents','subtabComponents'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TouchMobileSettings {
 		global Boolean enableTouchAppIPad;
 		global Boolean enableTouchAppIPhone;
@@ -2390,6 +2670,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableTouchAppIPad','enableTouchAppIPhone','enableTouchBrowserIPad','enableTouchIosPhone','enableVisualforceInTouch'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppMenu extends Metadata {
 		global String type='AppMenu';
 		global String fullName;
@@ -2400,12 +2682,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'appMenuItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DebuggingInfo_element {
 		global String debugLog;
 		private String[] debugLog_type_info=new String[]{'debugLog',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'debugLog'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Report extends Metadata {
 		global String type='Report';
 		global String fullName;
@@ -2478,6 +2764,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'aggregates','block','blockInfo','buckets','chart','colorRanges','columns','crossFilters','currency_x','dataCategoryFilters','description','division','filter','folderName','format','groupingsAcross','groupingsDown','historicalSelector','name','numSubscriptions','params','reportType','roleHierarchyFilter','rowLimit','scope','showCurrentDate','showDetails','sortColumn','sortOrder','territoryHierarchyFilter','timeFrameFilter','userFilter'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeSettings extends Metadata {
 		global String type='KnowledgeSettings';
 		global String fullName;
@@ -2514,6 +2802,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'answers','cases','defaultLanguage','enableChatterQuestionKBDeflection','enableCreateEditOnArticlesTab','enableExternalMediaContent','enableKnowledge','enableLightningKnowledge','languages','showArticleSummariesCustomerPortal','showArticleSummariesInternalApp','showArticleSummariesPartnerPortal','showValidationStatusField','suggestedArticles'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StaticResource extends MetadataWithContent {
 		global String type='StaticResource';
 		global String fullName;
@@ -2530,6 +2820,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'cacheControl','contentType','description'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportTypeColumn {
 		global Boolean checkedByDefault;
 		global String displayNameOverride;
@@ -2542,6 +2834,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'checkedByDefault','displayNameOverride','field','table'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalStep {
 		global Boolean allowDelegate;
 		global MetadataService.ApprovalAction approvalActions;
@@ -2566,6 +2860,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allowDelegate','approvalActions','assignedApprover','description','entryCriteria','ifCriteriaNotMet','label','name','rejectBehavior','rejectionActions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecordTypeTranslation {
 		global String description;
 		global String label;
@@ -2576,6 +2872,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowInputFieldAssignment extends FlowBaseElement {
 		global String type='FlowInputFieldAssignment';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -2588,6 +2886,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'field','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowActionReference {
 		global String name;
 		global String type_x;
@@ -2596,6 +2896,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FilterItem {
 		global String field;
 		global String operation;
@@ -2608,12 +2910,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','operation','value','valueField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OpportunityListFieldsUnselectedSettings {
 		global String[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportChartComponentLayoutItem {
 		global Boolean cacheData;
 		global String contextFilterableField;
@@ -2634,12 +2940,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'cacheData','contextFilterableField','error','hideOnError','includeContext','reportName','showTitle','size'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StandardValueSetTranslation {
 		global MetadataService.ValueTranslation[] valueTranslation;
 		private String[] valueTranslation_type_info=new String[]{'valueTranslation',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'valueTranslation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class BrandingSet extends Metadata {
 		global String type='BrandingSet';
 		global String fullName;
@@ -2656,6 +2966,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'brandingSetProperty','description','masterLabel','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChatterAnswersSettings extends Metadata {
 		global String type='ChatterAnswersSettings';
 		global String fullName;
@@ -2688,6 +3000,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'emailFollowersOnBestAnswer','emailFollowersOnReply','emailOwnerOnPrivateReply','emailOwnerOnReply','enableAnswerViaEmail','enableChatterAnswers','enableFacebookSSO','enableInlinePublisher','enableReputation','enableRichTextEditor','facebookAuthProvider','showInPortals'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppCanvasConfig {
 		global String accessMethod;
 		global String canvasUrl;
@@ -2704,12 +3018,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'accessMethod','canvasUrl','lifecycleClass','locations','options','samlInitiationMethod'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuotasSettings {
 		global Boolean showQuotas;
 		private String[] showQuotas_type_info=new String[]{'showQuotas',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'showQuotas'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OrgPreferenceSettings extends Metadata {
 		global String type='OrgPreferenceSettings';
 		global String fullName;
@@ -2720,6 +3038,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'preferences'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Community extends Metadata {
 		global String type='Community';
 		global String fullName;
@@ -2758,6 +3078,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','chatterAnswersFacebookSsoUrl','communityFeedPage','dataCategoryName','description','emailFooterDocument','emailHeaderDocument','emailNotificationUrl','enableChatterAnswers','enablePrivateQuestions','expertsGroup','portal','reputationLevels','showInPortal','site'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class BusinessProcess extends Metadata {
 		global String type='BusinessProcess';
 		global String fullName;
@@ -2772,6 +3094,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','isActive','values'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailToCaseRoutingAddress {
 		global String addressType;
 		global String authorizedSenders;
@@ -2802,6 +3126,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'addressType','authorizedSenders','caseOrigin','caseOwner','caseOwnerType','casePriority','createTask','emailAddress','emailServicesAddress','isVerified','routingName','saveEmailHeaders','taskStatus'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DataCategory {
 		global MetadataService.DataCategory[] dataCategory;
 		global String label;
@@ -2812,6 +3138,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dataCategory','label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetTabSetting {
 		global String tab;
 		global String visibility;
@@ -2820,18 +3148,24 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'tab','visibility'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportHistoricalSelector {
 		global String[] snapshot;
 		private String[] snapshot_type_info=new String[]{'snapshot',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'snapshot'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Users {
 		global String[] user_x;
 		private String[] user_x_type_info=new String[]{'user',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'user_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetUserPermission {
 		global Boolean enabled;
 		global String name;
@@ -2840,6 +3174,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingRules extends Metadata {
 		global String type='SharingRules';
 		global String fullName;
@@ -2854,12 +3190,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'sharingCriteriaRules','sharingOwnerRules','sharingTerritoryRules'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingRecalculation {
 		global String className;
 		private String[] className_type_info=new String[]{'className',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'className'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomLabels extends Metadata {
 		global String type='CustomLabels';
 		global String fullName;
@@ -2870,6 +3210,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'labels'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldSetTranslation {
 		global String label;
 		global String name;
@@ -2878,12 +3220,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RelatedContentItem {
 		global MetadataService.LayoutItem layoutItem;
 		private String[] layoutItem_type_info=new String[]{'layoutItem',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'layoutItem'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveAgentConfig {
 		global Boolean enableLiveChat;
 		global Boolean openNewAccountSubtab;
@@ -2904,6 +3250,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableLiveChat','openNewAccountSubtab','openNewCaseSubtab','openNewContactSubtab','openNewLeadSubtab','openNewVFPageSubtab','pageNamesToOpen','showKnowledgeArticles'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RunTestsResult {
 		global String apexLogId;
 		global MetadataService.CodeCoverageResult[] codeCoverage;
@@ -2924,6 +3272,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexLogId','codeCoverage','codeCoverageWarnings','failures','numFailures','numTestsRun','successes','totalTime'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityThemeDefinition {
 		global MetadataService.CommunityCustomThemeLayoutType[] customThemeLayoutType;
 		global String description;
@@ -2938,6 +3288,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customThemeLayoutType','description','enableExtendedCleanUpOnDelete','masterLabel','themeSetting'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LicenseDefinition extends Metadata {
 		global String type='LicenseDefinition';
 		global String fullName;
@@ -2970,6 +3322,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'aggregationGroup','description','isPublished','label','licensedCustomPermissions','licensingAuthority','licensingAuthorityProvider','minPlatformVersion','origin','revision','trialLicenseDuration','trialLicenseQuantity'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowOutputFieldAssignment extends FlowBaseElement {
 		global String type='FlowOutputFieldAssignment';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -2982,6 +3336,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowApexPluginCallOutputParameter extends FlowBaseElement {
 		global String type='FlowApexPluginCallOutputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -2994,6 +3350,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardGridLayout {
 		global MetadataService.DashboardGridComponent[] dashboardGridComponents;
 		global Integer numberOfColumns;
@@ -3004,6 +3362,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dashboardGridComponents','numberOfColumns','rowHeight'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AdjustmentsSettings {
 		global Boolean enableAdjustments;
 		global Boolean enableOwnerAdjustments;
@@ -3012,6 +3372,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableAdjustments','enableOwnerAdjustments'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SummaryLayoutItem {
 		global String customLink;
 		global String field;
@@ -3026,6 +3388,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customLink','field','posX','posY','posZ'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionLayoutItem {
 		global Boolean emptySpace;
 		global String field;
@@ -3036,6 +3400,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'emptySpace','field','uiBehavior'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DeployDetails {
 		global MetadataService.DeployMessage[] componentFailures;
 		global MetadataService.DeployMessage[] componentSuccesses;
@@ -3048,6 +3414,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'componentFailures','componentSuccesses','retrieveResult','runTestResult'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlexiPage extends Metadata {
 		global String type='FlexiPage';
 		global String fullName;
@@ -3074,6 +3442,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','flexiPageRegions','masterLabel','parentFlexiPage','platformActionlist','quickActionList','sobjectType','template','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EntitlementProcessMilestoneTimeTrigger {
 		global MetadataService.WorkflowActionReference[] actions;
 		global Integer timeLength;
@@ -3084,12 +3454,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actions','timeLength','workflowTimeTriggerUnit'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NavigationLinkSet {
 		global MetadataService.NavigationMenuItem[] navigationMenuItem;
 		private String[] navigationMenuItem_type_info=new String[]{'navigationMenuItem',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'navigationMenuItem'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityTemplateBundleInfo {
 		global String description;
 		global String image;
@@ -3104,6 +3478,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','image','order','title','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class UiFormulaCriterion {
 		global String leftValue;
 		global String operator;
@@ -3114,6 +3490,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'leftValue','operator','rightValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PlatformActionList {
 		global String actionListContext;
 		global MetadataService.PlatformActionListItem[] platformActionListItems;
@@ -3124,6 +3502,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionListContext','platformActionListItems','relatedSourceEntity'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CallCenter extends Metadata {
 		global String type='CallCenter';
 		global String fullName;
@@ -3146,6 +3526,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'adapterUrl','customSettings','displayName','displayNameLabel','internalNameLabel','sections','version'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningComponentBundle {
 		global Double apiVersion;
 		global Boolean isExposed;
@@ -3154,6 +3536,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apiVersion','isExposed'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MarketingActionSettings extends Metadata {
 		global String type='MarketingActionSettings';
 		global String fullName;
@@ -3164,6 +3548,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableMarketingAction'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AccountSharingRuleSettings {
 		global String caseAccessLevel;
 		global String contactAccessLevel;
@@ -3174,12 +3560,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'caseAccessLevel','contactAccessLevel','opportunityAccessLevel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AgentConfigButtons {
 		global String[] button;
 		private String[] button_type_info=new String[]{'button',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'button'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomShortcut {
 		global String description;
 		global String eventName;
@@ -3188,12 +3578,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','eventName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ArticleTypeChannelDisplay {
 		global MetadataService.ArticleTypeTemplate[] articleTypeTemplates;
 		private String[] articleTypeTemplates_type_info=new String[]{'articleTypeTemplates',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'articleTypeTemplates'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowWaitEventInputParameter extends FlowBaseElement {
 		global String type='FlowWaitEventInputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -3206,6 +3600,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowOutboundMessage extends WorkflowAction {
 		global String type='WorkflowOutboundMessage';
 		global String fullName;
@@ -3232,6 +3628,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'apiVersion','description','endpointUrl','fields','includeSessionId','integrationUser','name','protected_x','useDeadLetterQueue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveDataset extends Metadata {
 		global String type='WaveDataset';
 		global String fullName;
@@ -3248,6 +3646,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'application','description','masterLabel','templateAssetSourceName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CorsWhitelistOrigin extends Metadata {
 		global String type='CorsWhitelistOrigin';
 		global String fullName;
@@ -3258,12 +3658,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'urlPattern'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SessionHeader_element {
 		global String sessionId;
 		private String[] sessionId_type_info=new String[]{'sessionId',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sessionId'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AnalyticSnapshot extends Metadata {
 		global String type='AnalyticSnapshot';
 		global String fullName;
@@ -3286,16 +3690,22 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','groupColumn','mappings','name','runningUser','sourceReport','targetObject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class FlowElement extends FlowBaseElement {
 		global String description;
 		global String name;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationPointsRules {
 		global MetadataService.ReputationPointsRule[] pointsRule;
 		private String[] pointsRule_type_info=new String[]{'pointsRule',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'pointsRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileCustomPermissions {
 		global Boolean enabled;
 		global String name;
@@ -3304,6 +3714,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenFieldInputParameter {
 		global String name;
 		global MetadataService.FlowElementReferenceOrValue value;
@@ -3312,12 +3724,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deployRecentValidationResponse_element {
 		global String result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Orchestration {
 		global String context;
 		global String masterLabel;
@@ -3326,12 +3742,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'context','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ScheduledRecommendation {
 		global MetadataService.ScheduledRecommendationDetail[] scheduledRecommendationDetails;
 		private String[] scheduledRecommendationDetails_type_info=new String[]{'scheduledRecommendationDetails',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'scheduledRecommendationDetails'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IpRange {
 		global String description;
 		global String end_x;
@@ -3342,12 +3762,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','end_x','start'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deployRecentValidation_element {
 		global String validationId;
 		private String[] validationId_type_info=new String[]{'validationId',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'validationId'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenRule {
 		global String conditionLogic;
 		global MetadataService.FlowCondition[] conditions;
@@ -3360,6 +3784,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'conditionLogic','conditions','label','ruleActions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ManagedTopics extends Metadata {
 		global String type='ManagedTopics';
 		global String fullName;
@@ -3370,6 +3796,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'managedTopic'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FeedFilterCriterion {
 		global String feedItemType;
 		global String feedItemVisibility;
@@ -3380,6 +3808,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'feedItemType','feedItemVisibility','relatedSObjectType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportBlockInfo {
 		global MetadataService.ReportAggregateReference[] aggregateReferences;
 		global String blockId;
@@ -3390,6 +3820,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregateReferences','blockId','joinTable'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class Folder extends Metadata {
 		global String accessType;
 		global MetadataService.FolderShare[] folderShares;
@@ -3397,6 +3829,8 @@ global class MetadataService {
 		global String globalFolderAccess;
 		global MetadataService.SharedTo sharedTo;
 	}
+
+	@JsonAccess(serializable='always' deserializable = 'always')
 	global class Profile extends Metadata {
 		global String type='Profile';
 		global String fullName;
@@ -3441,6 +3875,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'applicationVisibilities','categoryGroupVisibilities','classAccesses','custom','customPermissions','description','externalDataSourceAccesses','fieldPermissions','layoutAssignments','loginHours','loginIpRanges','objectPermissions','pageAccesses','profileActionOverrides','recordTypeVisibilities','tabVisibilities','userLicense','userPermissions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeLanguage {
 		global Boolean active;
 		global String defaultAssignee;
@@ -3457,6 +3893,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','defaultAssignee','defaultAssigneeType','defaultReviewer','defaultReviewerType','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DeployOptions {
 		global Boolean allowMissingFiles;
 		global Boolean autoUpdatePackage;
@@ -3481,6 +3919,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allowMissingFiles','autoUpdatePackage','checkOnly','ignoreWarnings','performRetrieve','purgeOnDelete','rollbackOnError','runTests','singlePackage','testLevel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class InsightType {
 		global String defaultTrendType;
 		global String description;
@@ -3497,6 +3937,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'defaultTrendType','description','isProtected','masterLabel','parentType','title'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldSet extends Metadata {
 		global String type='FieldSet';
 		global String fullName;
@@ -3513,6 +3955,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'availableFields','description','displayedFields','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileLoginHours {
 		global String fridayEnd;
 		global String fridayStart;
@@ -3545,6 +3989,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fridayEnd','fridayStart','mondayEnd','mondayStart','saturdayEnd','saturdayStart','sundayEnd','sundayStart','thursdayEnd','thursdayStart','tuesdayEnd','tuesdayStart','wednesdayEnd','wednesdayStart'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowChoiceUserInput extends FlowBaseElement {
 		global String type='FlowChoiceUserInput';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -3559,6 +4005,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'isRequired','promptText','validationRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class HomePageComponent extends Metadata {
 		global String type='HomePageComponent';
 		global String fullName;
@@ -3583,6 +4031,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'body','height','links','page_x','pageComponentType','showLabel','showScrollbars','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetFieldPermissions {
 		global Boolean editable;
 		global String field;
@@ -3593,6 +4043,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'editable','field','readable'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RetrieveRequest {
 		global Double apiVersion;
 		global String[] packageNames;
@@ -3607,6 +4059,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apiVersion','packageNames','singlePackage','specificFiles','unpackaged'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectRelationship {
 		global MetadataService.ObjectRelationship join_x;
 		global Boolean outerJoin;
@@ -3617,6 +4071,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'join_x','outerJoin','relationship'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportLayoutSection {
 		global MetadataService.ReportTypeColumn[] columns;
 		global String masterLabel;
@@ -3625,6 +4081,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'columns','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CompactLayout extends Metadata {
 		global String type='CompactLayout';
 		global String fullName;
@@ -3637,6 +4095,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'fields','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class VisualizationType {
 		global String description;
 		global String developerName;
@@ -3651,6 +4111,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','developerName','icon','masterLabel','scriptBootstrapMethod'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class SharingBaseRule extends Metadata {
 		global String accessLevel;
 		global MetadataService.AccountSharingRuleSettings accountSettings;
@@ -3658,6 +4120,8 @@ global class MetadataService {
 		global String label;
 		global MetadataService.SharedTo sharedTo;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AuthProvider extends Metadata {
 		global String type='AuthProvider';
 		global String fullName;
@@ -3706,6 +4170,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'authorizeUrl','consumerKey','consumerSecret','customMetadataTypeRecord','defaultScopes','errorUrl','executionUser','friendlyName','iconUrl','idTokenIssuer','includeOrgIdInIdentifier','logoutUrl','plugin','portal','providerType','registrationHandler','sendAccessTokenInHeader','sendClientCredentialsInHeader','tokenUrl','userInfoUrl'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowDynamicChoiceSet extends FlowElement {
 		global String type='FlowDynamicChoiceSet';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -3740,12 +4206,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'dataType','displayField','filters','limit_x','object_x','outputAssignments','picklistField','picklistObject','sortField','sortOrder','valueField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RelatedContent {
 		global MetadataService.RelatedContentItem[] relatedContentItems;
 		private String[] relatedContentItems_type_info=new String[]{'relatedContentItems',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'relatedContentItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WebLink extends Metadata {
 		global String type='WebLink';
 		global String fullName;
@@ -3796,6 +4266,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'availability','description','displayType','encodingKey','hasMenubar','hasScrollbars','hasToolbar','height','isResizable','linkType','masterLabel','openType','page_x','position','protected_x','requireRowSelection','scontrol','showsLocation','showsStatus','url','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Flow extends Metadata {
 		global String type='Flow';
 		global String fullName;
@@ -3856,6 +4328,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actionCalls','apexPluginCalls','assignments','choices','constants','decisions','description','dynamicChoiceSets','formulas','interviewLabel','label','loops','processMetadataValues','processType','recordCreates','recordDeletes','recordLookups','recordUpdates','screens','stages','startElementReference','steps','subflows','textTemplates','variables','waits'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomMetadataValue {
 		global String field;
 		global String value;
@@ -3864,6 +4338,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QueueMembers {
 		global MetadataService.globalGroups globalGroups;
 		global MetadataService.RoleAndSubordinates roleAndSubordinates;
@@ -3878,6 +4354,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'globalGroups','roleAndSubordinates','roleAndSubordinatesInternal','roles','users'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ArticleTypeTemplate {
 		global String channel;
 		global String page_x;
@@ -3888,6 +4366,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'channel','page_x','template'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveDataflow extends MetadataWithContent {
 		global String type='WaveDataflow';
 		global String fullName;
@@ -3904,6 +4384,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'dataflowType','description','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StandardValueSet extends Metadata {
 		global String type='StandardValueSet';
 		global String fullName;
@@ -3918,6 +4400,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'groupingStringEnum','sorted','standardValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FileUploadAndDownloadSecuritySettings extends Metadata {
 		global String type='FileUploadAndDownloadSecuritySettings';
 		global String fullName;
@@ -3930,6 +4414,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'dispositions','noHtmlUploadAsAttachment'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LetterheadHeaderFooter {
 		global String backgroundColor;
 		global Integer height;
@@ -3944,6 +4430,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'backgroundColor','height','horizontalAlignment','logo','verticalAlignment'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PicklistValueTranslation {
 		global String masterLabel;
 		global String translation;
@@ -3952,12 +4440,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'masterLabel','translation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CountriesAndStates {
 		global MetadataService.Country[] countries;
 		private String[] countries_type_info=new String[]{'countries',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'countries'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PathAssistant {
 		global Boolean active;
 		global String entityName;
@@ -3974,6 +4466,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','entityName','fieldName','masterLabel','pathAssistantSteps','recordTypeName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AsyncResult {
 		global Boolean done;
 		global String id;
@@ -3988,6 +4482,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'done','id','message','state','statusCode'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class XOrgHub extends Metadata {
 		global String type='XOrgHub';
 		global String fullName;
@@ -4004,6 +4500,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'label','lockSharedObjects','permissionSets','sharedObjects'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningBoltItems {
 		global String name;
 		global String type_x;
@@ -4012,6 +4510,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomLabel extends Metadata {
 		global String type='CustomLabel';
 		global String fullName;
@@ -4030,6 +4530,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'categories','language','protected_x','shortDescription','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChatterExtension {
 		global String compositionComponent;
 		global String description;
@@ -4054,6 +4556,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'compositionComponent','description','extensionName','headerText','hoverText','icon','isProtected','masterLabel','renderComponent','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NameSettings extends Metadata {
 		global String type='NameSettings';
 		global String fullName;
@@ -4066,6 +4570,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableMiddleName','enableNameSuffix'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EventType extends Metadata {
 		global String type='EventType';
 		global String fullName;
@@ -4080,12 +4586,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','fields','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class checkRetrieveStatusResponse_element {
 		global MetadataService.RetrieveResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2Settings extends Metadata {
 		global String type='Territory2Settings';
 		global String fullName;
@@ -4104,6 +4614,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'defaultAccountAccessLevel','defaultCaseAccessLevel','defaultContactAccessLevel','defaultOpportunityAccessLevel','opportunityFilterSettings'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PlatformCachePartition {
 		global String description;
 		global Boolean isDefaultPartition;
@@ -4116,6 +4628,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','isDefaultPartition','masterLabel','platformCachePartitionTypes'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppIpRange {
 		global String description;
 		global String end_x;
@@ -4126,6 +4640,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','end_x','start'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ExternalDataSource extends Metadata {
 		global String type='ExternalDataSource';
 		global String fullName;
@@ -4166,12 +4682,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'authProvider','certificate','customConfiguration','endpoint','isWritable','label','oauthRefreshToken','oauthScope','oauthToken','password','principalType','protocol','repository','type_x','username','version'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class retrieveResponse_element {
 		global MetadataService.AsyncResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ComponentInstance {
 		global MetadataService.ComponentInstanceProperty[] componentInstanceProperties;
 		global String componentName;
@@ -4182,6 +4702,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'componentInstanceProperties','componentName','visibilityRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LayoutSectionTranslation {
 		global String label;
 		global String section;
@@ -4190,6 +4712,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','section'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowActionCallOutputParameter extends FlowBaseElement {
 		global String type='FlowActionCallOutputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -4202,6 +4726,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MarketingResourceType extends Metadata {
 		global String type='MarketingResourceType';
 		global String fullName;
@@ -4218,6 +4744,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','masterLabel','object_x','provider'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalSubmitter {
 		global String submitter;
 		global String type_x;
@@ -4226,6 +4754,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'submitter','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordCreate extends FlowNode {
 		global String type='FlowRecordCreate';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -4256,12 +4786,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignRecordIdToReference','connector','faultConnector','inputAssignments','inputReference','object_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class upsertMetadataResponse_element {
 		global MetadataService.UpsertResult[] result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChannelLayout extends Metadata {
 		global String type='ChannelLayout';
 		global String fullName;
@@ -4278,12 +4812,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enabledChannels','label','layoutItems','recordType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatDeploymentDomainWhitelist {
 		global String[] domain;
 		private String[] domain_type_info=new String[]{'domain',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'domain'};
 	}
+	
+	@JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetRecordTypeVisibility {
 		global String recordType;
 		global Boolean visible;
@@ -4292,6 +4830,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'recordType','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdOrganization {
 		global String instanceUrl;
 		global String label;
@@ -4304,12 +4844,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'instanceUrl','label','organizationIdentifier','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class cancelDeploy_element {
 		global String String_x;
 		private String[] String_x_type_info=new String[]{'String',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'String_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportFolder extends Folder {
 		global String type='ReportFolder';
 		global String fullName;
@@ -4328,6 +4872,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessType','folderShares','name','globalFolderAccess','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardComponentSection {
 		global String columnSize;
 		global MetadataService.DashboardComponent[] components;
@@ -4336,6 +4882,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'columnSize','components'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EscalationRule extends Metadata {
 		global String type='EscalationRule';
 		global String fullName;
@@ -4348,6 +4896,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','ruleEntry'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RunTestFailure {
 		global String id;
 		global String message;
@@ -4372,12 +4922,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'id','message','methodName','name','namespace','packageName','seeAllData','stackTrace','time_x','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SubtabComponents {
 		global MetadataService.Container[] containers;
 		private String[] containers_type_info=new String[]{'containers',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'containers'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppMobileDetailConfig {
 		global String applicationBinaryFile;
 		global String applicationBinaryFileName;
@@ -4406,6 +4960,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'applicationBinaryFile','applicationBinaryFileName','applicationBundleIdentifier','applicationFileLength','applicationIconFile','applicationIconFileName','applicationInstallUrl','devicePlatform','deviceType','minimumOsVersion','privateApp','version'};
 	}
+
+	@JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSet extends Metadata {
 		global String type='PermissionSet';
 		global String fullName;
@@ -4442,6 +4998,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'applicationVisibilities','classAccesses','customPermissions','description','externalDataSourceAccesses','fieldPermissions','hasActivationRequired','label','license','objectPermissions','pageAccesses','recordTypeVisibilities','tabSettings','userPermissions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowRule extends Metadata {
 		global String type='WorkflowRule';
 		global String fullName;
@@ -4466,6 +5024,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actions','active','booleanFilter','criteriaItems','description','formula','triggerType','workflowTimeTriggers'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRule extends FlowElement {
 		global String type='FlowRule';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -4486,6 +5046,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'conditionLogic','conditions','connector','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NetworkPageOverride {
 		global String changePasswordPageOverrideSetting;
 		global String forgotPasswordPageOverrideSetting;
@@ -4500,6 +5062,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'changePasswordPageOverrideSetting','forgotPasswordPageOverrideSetting','homePageOverrideSetting','loginPageOverrideSetting','selfRegProfilePageOverrideSetting'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ModerationRule extends Metadata {
 		global String type='ModerationRule';
 		global String fullName;
@@ -4530,6 +5094,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'action','actionLimit','active','description','entitiesAndFields','masterLabel','notifyLimit','timePeriod','type_x','userCriteria','userMessage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValueTranslation {
 		global String masterLabel;
 		global String translation;
@@ -4538,12 +5104,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'masterLabel','translation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeWorkOrderField {
 		global String name;
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetApexClassAccess {
 		global String apexClass;
 		global Boolean enabled;
@@ -4552,6 +5122,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexClass','enabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CampaignInfluenceModel {
 		global Boolean isActive;
 		global Boolean isDefaultModel;
@@ -4568,6 +5140,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'isActive','isDefaultModel','isModelLocked','modelDescription','name','recordPreference'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OrchestrationContextEvent {
 		global String eventType;
 		global String orchestrationEvent;
@@ -4580,6 +5154,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'eventType','orchestrationEvent','platformEvent','platformEventPrimaryKey'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenTranslation {
 		global MetadataService.FlowScreenFieldTranslation[] fields;
 		global String helpText;
@@ -4592,6 +5168,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fields','helpText','name','pausedText'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityRoles {
 		global String customerUserRole;
 		global String employeeUserRole;
@@ -4602,12 +5180,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customerUserRole','employeeUserRole','partnerUserRole'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RoleAndSubordinatesInternal {
 		global String[] roleAndSubordinateInternal;
 		private String[] roleAndSubordinateInternal_type_info=new String[]{'roleAndSubordinateInternal',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'roleAndSubordinateInternal'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomTab extends Metadata {
 		global String type='CustomTab';
 		global String fullName;
@@ -4648,6 +5230,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actionOverrides','auraComponent','customObject','description','flexiPage','frameHeight','hasSidebar','icon','label','mobileReady','motif','page_x','scontrol','splashPageLink','url','urlEncodingKey'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatAgentConfig extends Metadata {
 		global String type='LiveChatAgentConfig';
 		global String fullName;
@@ -4712,6 +5296,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assignments','autoGreeting','capacity','criticalWaitTime','customAgentName','enableAgentFileTransfer','enableAgentSneakPeek','enableAssistanceFlag','enableAutoAwayOnDecline','enableAutoAwayOnPushTimeout','enableChatConferencing','enableChatMonitoring','enableChatTransferToAgent','enableChatTransferToButton','enableChatTransferToSkill','enableLogoutSound','enableNotifications','enableRequestSound','enableSneakPeek','enableVisitorBlocking','enableWhisperMessage','label','supervisorDefaultAgentStatusFilter','supervisorDefaultButtonFilter','supervisorDefaultSkillFilter','supervisorSkills','transferableButtons','transferableSkills'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldMapping {
 		global String SObjectType;
 		global String developerName;
@@ -4724,6 +5310,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'SObjectType','developerName','fieldMappingRows','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailToCaseSettings {
 		global Boolean enableE2CSourceTracking;
 		global Boolean enableEmailToCase;
@@ -4750,6 +5338,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableE2CSourceTracking','enableEmailToCase','enableHtmlEmail','enableOnDemandEmailToCase','enableThreadIDInBody','enableThreadIDInSubject','notifyOwnerOnNewCaseEmail','overEmailLimitAction','preQuoteSignature','routingAddresses','unauthorizedSenderAction'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowSubflowOutputAssignment extends FlowBaseElement {
 		global String type='FlowSubflowOutputAssignment';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -4762,6 +5352,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SecuritySettings extends Metadata {
 		global String type='SecuritySettings';
 		global String fullName;
@@ -4776,6 +5368,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'networkAccess','passwordPolicies','sessionSettings'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportChart {
 		global String backgroundColor1;
 		global String backgroundColor2;
@@ -4828,6 +5422,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'backgroundColor1','backgroundColor2','backgroundFadeDir','chartSummaries','chartType','enableHoverLabels','expandOthers','groupingColumn','legendPosition','location','secondaryGroupingColumn','showAxisLabels','showPercentage','showTotal','showValues','size','summaryAxisManualRangeEnd','summaryAxisManualRangeStart','summaryAxisRange','textColor','textSize','title','titleColor','titleSize'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppMenuItem {
 		global String name;
 		global String type_x;
@@ -4836,6 +5432,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TabLimitConfig {
 		global String maxNumberOfPrimaryTabs;
 		global String maxNumberOfSubTabs;
@@ -4844,6 +5442,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'maxNumberOfPrimaryTabs','maxNumberOfSubTabs'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectMapping {
 		global String inputObject;
 		global MetadataService.ObjectMappingField[] mappingFields;
@@ -4854,6 +5454,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'inputObject','mappingFields','outputObject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ModeratedEntityField {
 		global String entityName;
 		global String fieldName;
@@ -4864,6 +5466,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'entityName','fieldName','keywordList'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecordType extends Metadata {
 		global String type='RecordType';
 		global String fullName;
@@ -4884,6 +5488,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','businessProcess','compactLayoutAssignment','description','label','picklistValues'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EventSubscription extends Metadata {
 		global String type='EventSubscription';
 		global String fullName;
@@ -4900,6 +5506,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','eventParameters','eventType','referenceData'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldOverride {
 		global String field;
 		global String formula;
@@ -4910,6 +5518,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','formula','literalValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileTabVisibility {
 		global String tab;
 		global String visibility;
@@ -4918,6 +5528,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'tab','visibility'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportCrossFilter {
 		global MetadataService.ReportFilterItem[] criteriaItems;
 		global String operation;
@@ -4932,6 +5544,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'criteriaItems','operation','primaryTableColumn','relatedTable','relatedTableJoinColumn'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LookupFilter {
 		global Boolean active;
 		global String booleanFilter;
@@ -4950,6 +5564,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','booleanFilter','description','errorMessage','filterItems','infoMessage','isOptional'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class UiPlugin {
 		global String description;
 		global String extensionPointIdentifier;
@@ -4964,6 +5580,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','extensionPointIdentifier','isEnabled','language','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppBrand {
 		global String footerColor;
 		global String headerColor;
@@ -4978,6 +5596,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'footerColor','headerColor','logo','logoVersion','shouldOverrideOrgTheme'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowLoop extends FlowNode {
 		global String type='FlowLoop';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -5006,6 +5626,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignNextValueToReference','collectionReference','iterationOrder','nextValueConnector','noMoreValuesConnector'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowDefinition {
 		global Integer activeVersionNumber;
 		global String description;
@@ -5016,12 +5638,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'activeVersionNumber','description','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationLevelDefinitions {
 		global MetadataService.ReputationLevel[] level;
 		private String[] level_type_info=new String[]{'level',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'level'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomPageWebLink extends Metadata {
 		global String type='CustomPageWebLink';
 		global String fullName;
@@ -5072,6 +5698,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'availability','description','displayType','encodingKey','hasMenubar','hasScrollbars','hasToolbar','height','isResizable','linkType','masterLabel','openType','page_x','position','protected_x','requireRowSelection','scontrol','showsLocation','showsStatus','url','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardFlexTableComponentProperties {
 		global MetadataService.DashboardComponentColumn[] flexTableColumn;
 		global MetadataService.DashboardComponentSortInfo flexTableSortInfo;
@@ -5082,12 +5710,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'flexTableColumn','flexTableSortInfo','hideChatterPhotos'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalAction {
 		global MetadataService.WorkflowActionReference[] action;
 		private String[] action_type_info=new String[]{'action',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'action'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IntegrationHubSettings {
 		global String canonicalName;
 		global String canonicalNameBindingChar;
@@ -5122,6 +5754,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'canonicalName','canonicalNameBindingChar','description','isEnabled','isProtected','masterLabel','setupData','setupDefinition','setupNamespace','setupSimpleName','uUID','version','versionBuild','versionMajor','versionMinor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingSet extends Metadata {
 		global String type='SharingSet';
 		global String fullName;
@@ -5138,6 +5772,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'accessMappings','description','name','profiles'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveTemplateBundle {
 		global String assetIcon;
 		global Double assetVersion;
@@ -5156,6 +5792,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assetIcon','assetVersion','description','label','templateBadgeIcon','templateDetailIcon','templateType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityThemeSetting {
 		global String customThemeLayoutType;
 		global String themeLayout;
@@ -5166,6 +5804,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customThemeLayoutType','themeLayout','themeLayoutType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LayoutColumn {
 		global MetadataService.LayoutItem[] layoutItems;
 		global String reserved;
@@ -5174,6 +5814,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'layoutItems','reserved'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Error {
 		global MetadataService.ExtendedErrorDetails[] extendedErrorDetails;
 		global String[] fields;
@@ -5186,6 +5828,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'extendedErrorDetails','fields','message','statusCode'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2RuleItem {
 		global String field;
 		global String operation;
@@ -5196,6 +5840,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','operation','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStep extends FlowNode {
 		global String type='FlowStep';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -5216,12 +5862,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connectors'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class updateMetadata_element {
 		global MetadataService.Metadata[] metadata;
 		private String[] metadata_type_info=new String[]{'metadata',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'metadata'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OrchestrationContext {
 		global String description;
 		global MetadataService.OrchestrationContextEvent[] events;
@@ -5238,6 +5888,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','events','masterLabel','runtimeType','salesforceObject','salesforceObjectPrimaryKey'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AccountSettings extends Metadata {
 		global String type='AccountSettings';
 		global String fullName;
@@ -5252,6 +5904,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableAccountOwnerReport','enableAccountTeams','showViewHierarchyLink'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContentAssetVersion {
 		global String number_x;
 		global String pathOnClient;
@@ -5262,6 +5916,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'number_x','pathOnClient','zipEntry'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CancelDeployResult {
 		global Boolean done;
 		global String id;
@@ -5270,12 +5926,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'done','id'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AgentConfigUserAssignments {
 		global String[] user_x;
 		private String[] user_x_type_info=new String[]{'user',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'user_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EventParameterMap {
 		global String parameterName;
 		global String parameterValue;
@@ -5284,6 +5944,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'parameterName','parameterValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TransactionSecurityAction {
 		global Boolean block;
 		global Boolean endSession;
@@ -5298,18 +5960,24 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'block','endSession','freezeUser','notifications','twoFactorAuthentication'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeWorkOrderLineItemField {
 		global String name;
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardFilterColumn {
 		global String column;
 		private String[] column_type_info=new String[]{'column',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'column'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CspTrustedSite extends Metadata {
 		global String type='CspTrustedSite';
 		global String fullName;
@@ -5324,6 +5992,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','endpointUrl','isActive'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowVariable extends FlowElement {
 		global String type='FlowVariable';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -5350,6 +6020,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'dataType','isCollection','isInput','isOutput','objectType','scale','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCategory {
 		global String description;
 		global MetadataService.FlowCategoryItems[] flowCategoryItems;
@@ -5360,6 +6032,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','flowCategoryItems','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingTerritoryRule extends SharingBaseRule {
 		global String type='SharingTerritoryRule';
 		global String fullName;
@@ -5378,6 +6052,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessLevel','accountSettings','description','label','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowFlowActionParameter {
 		global String name;
 		global String value;
@@ -5386,6 +6062,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ScontrolTranslation {
 		global String label;
 		global String name;
@@ -5394,6 +6072,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PlatformActionListItem {
 		global String actionName;
 		global String actionType;
@@ -5406,12 +6086,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionName','actionType','sortOrder','subtype'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CallOptions_element {
 		global String client;
 		private String[] client_type_info=new String[]{'client',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'client'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalEntryCriteria {
 		global String booleanFilter;
 		global MetadataService.FilterItem[] criteriaItems;
@@ -5422,6 +6106,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'booleanFilter','criteriaItems','formula'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CallCenterItem {
 		global String label;
 		global String name;
@@ -5432,6 +6118,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Document extends MetadataWithContent {
 		global String type='Document';
 		global String fullName;
@@ -5452,6 +6140,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'description','internalUseOnly','keywords','name','global_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LightningBolt {
 		global String category;
 		global MetadataService.LightningBoltFeatures[] lightningBoltFeatures;
@@ -5470,12 +6160,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'category','lightningBoltFeatures','lightningBoltImages','lightningBoltItems','masterLabel','publisher','summary'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class upsertMetadata_element {
 		global MetadataService.Metadata[] metadata;
 		private String[] metadata_type_info=new String[]{'metadata',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'metadata'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileExternalDataSourceAccess {
 		global Boolean enabled;
 		global String externalDataSource;
@@ -5484,6 +6178,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','externalDataSource'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValueTypeField {
 		global MetadataService.ValueTypeField[] fields;
 		global String[] foreignKeyDomain;
@@ -5506,6 +6202,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fields','foreignKeyDomain','isForeignKey','isNameField','minOccurs','name','picklistValues','soapType','valueRequired'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowAssignmentItem extends FlowBaseElement {
 		global String type='FlowAssignmentItem';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -5520,12 +6218,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'assignToReference','operator','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class GlobalPicklistValue extends Metadata {
 		global String color;
 		global Boolean default_x;
 		global String description;
 		global Boolean isActive;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailFolder extends Folder {
 		global String type='EmailFolder';
 		global String fullName;
@@ -5544,6 +6246,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessType','folderShares','name','globalFolderAccess','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class renameMetadata_element {
 		global String type_x;
 		global String oldFullName;
@@ -5554,6 +6258,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'type_x','oldFullName','newFullName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DelegateGroup extends Metadata {
 		global String type='DelegateGroup';
 		global String fullName;
@@ -5576,6 +6282,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customObjects','groups','label','loginAccess','permissionSets','profiles','roles'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PicklistValue extends GlobalPicklistValue {
 		global String type='PicklistValue';
 		global String fullName;
@@ -5614,12 +6322,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','color','default_x','description','isActive', 'allowEmail','closed','controllingFieldValues','converted','cssExposed','forecastCategory','highPriority','probability','reverseRole','reviewed','won'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SkillProfileAssignments {
 		global String[] profile;
 		private String[] profile_type_info=new String[]{'profile',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'profile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EscalationAction {
 		global String assignedTo;
 		global String assignedToTemplate;
@@ -5640,6 +6352,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assignedTo','assignedToTemplate','assignedToType','minutesToEscalation','notifyCaseOwner','notifyEmail','notifyTo','notifyToTemplate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CaseSubjectParticle extends Metadata {
 		global String type='CaseSubjectParticle';
 		global String fullName;
@@ -5654,6 +6368,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'index','textField','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdDimensionSalesforceAction {
 		global Boolean enabled;
 		global String salesforceActionName;
@@ -5664,6 +6380,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','salesforceActionName','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Workflow extends Metadata {
 		global String type='Workflow';
 		global String fullName;
@@ -5688,12 +6406,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'alerts','fieldUpdates','flowActions','knowledgePublishes','outboundMessages','rules','send','tasks'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Roles {
 		global String[] role;
 		private String[] role_type_info=new String[]{'role',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'role'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowKnowledgePublish extends WorkflowAction {
 		global String type='WorkflowKnowledgePublish';
 		global String fullName;
@@ -5712,6 +6434,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'action','description','label','language','protected_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomFieldTranslation {
 		global MetadataService.ObjectNameCaseValue[] caseValues;
 		global String gender;
@@ -5734,6 +6458,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'caseValues','gender','help','label','lookupFilter','name','picklistValues','relationshipLabel','startsWith'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FileTypeDispositionAssignmentBean {
 		global String behavior;
 		global String fileType;
@@ -5744,12 +6470,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'behavior','fileType','securityRiskFileType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppWorkspaceConfig {
 		global MetadataService.WorkspaceMapping[] mappings;
 		private String[] mappings_type_info=new String[]{'mappings',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'mappings'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ScheduledRecommendationDetail {
 		global String channel;
 		global Boolean enabled;
@@ -5762,6 +6492,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'channel','enabled','rank','recommendationAudience'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class UiFormulaRule {
 		global String booleanFilter;
 		global MetadataService.UiFormulaCriterion[] criteria;
@@ -5770,6 +6502,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'booleanFilter','criteria'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class VisualizationPlugin extends Metadata {
 		global String type='VisualizationPlugin';
 		global String fullName;
@@ -5790,6 +6524,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','developerName','icon','masterLabel','visualizationResources','visualizationTypes'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DataPipeline {
 		global Double apiVersion;
 		global String label;
@@ -5800,12 +6536,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apiVersion','label','scriptType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QueueSobject {
 		global String sobjectType;
 		private String[] sobjectType_type_info=new String[]{'sobjectType',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sobjectType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApexClass extends MetadataWithContent {
 		global String type='ApexClass';
 		global String fullName;
@@ -5822,6 +6562,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'apiVersion','packageVersions','status'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldMappingRow {
 		global String SObjectType;
 		global MetadataService.FieldMappingField[] fieldMappingFields;
@@ -5834,6 +6576,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'SObjectType','fieldMappingFields','fieldName','mappingOperation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EntitlementTemplate extends Metadata {
 		global String type='EntitlementTemplate';
 		global String fullName;
@@ -5854,6 +6598,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'businessHours','casesPerEntitlement','entitlementProcess','isPerIncident','term','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Group_x extends Metadata {
 		global String type='Group_x';
 		global String fullName;
@@ -5866,12 +6612,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'doesIncludeBosses','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdRecordDisplayLookup {
 		global String recordDisplayField;
 		private String[] recordDisplayField_type_info=new String[]{'recordDisplayField',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'recordDisplayField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IntegrationHubSettingsType {
 		global String canonicalName;
 		global String canonicalNameBindingChar;
@@ -5902,21 +6652,29 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'canonicalName','canonicalNameBindingChar','description','isEnabled','isProtected','masterLabel','setupNamespace','setupSimpleName','uUID','version','versionBuild','versionMajor','versionMinor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeLanguageSettings {
 		global MetadataService.KnowledgeLanguage[] language;
 		private String[] language_type_info=new String[]{'language',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'language'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeCaseField {
 		global String name;
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name'};
 	}
+
+	@JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class Metadata {
 		global String fullName;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DebuggingHeader_element {
 		global MetadataService.LogInfo[] categories;
 		global String debugLevel;
@@ -5925,12 +6683,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'categories','debugLevel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalPageField {
 		global String[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetApexPageAccess {
 		global String apexPage;
 		global Boolean enabled;
@@ -5939,6 +6701,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexPage','enabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomExperience {
 		global Boolean allowInternalUserLogin;
 		global MetadataService.CustomExperienceBranding branding;
@@ -5977,6 +6741,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allowInternalUserLogin','branding','changePasswordEmailTemplate','emailFooterLogo','emailFooterText','emailSenderAddress','emailSenderName','enableErrorPageOverridesForVisualforce','forgotPasswordEmailTemplate','picassoSite','sObjectType','sendWelcomeEmail','site','siteAsContainerEnabled','tabs','urlPathPrefix','welcomeEmailTemplate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ExternalServiceRegistration extends Metadata {
 		global String type='ExternalServiceRegistration';
 		global String fullName;
@@ -5999,6 +6765,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','label','namedCredential','schema','schemaType','schemaUrl','status'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowChoice extends FlowElement {
 		global String type='FlowChoice';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -6019,6 +6787,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceText','dataType','userInput','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdDimensionMember {
 		global String color;
 		global String label;
@@ -6031,6 +6801,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'color','label','member','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedApp extends Metadata {
 		global String type='ConnectedApp';
 		global String fullName;
@@ -6071,12 +6843,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'attributes','canvasConfig','contactEmail','contactPhone','description','iconUrl','infoUrl','ipRanges','label','logoUrl','mobileAppConfig','mobileStartUrl','oauthConfig','plugin','samlConfig','startUrl'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class describeMetadata_element {
 		global Double asOfVersion;
 		private String[] asOfVersion_type_info=new String[]{'asOfVersion',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'asOfVersion'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LayoutItem {
 		global MetadataService.AnalyticsCloudComponentLayoutItem analyticsCloudComponent;
 		global String behavior;
@@ -6109,6 +6885,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'analyticsCloudComponent','behavior','canvas','component','customLink','emptySpace','field','height','page_x','reportChartComponent','scontrol','showLabel','showScrollbars','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Portal extends Metadata {
 		global String type='Portal';
 		global String fullName;
@@ -6167,12 +6945,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','admin','defaultLanguage','description','emailSenderAddress','emailSenderName','enableSelfCloseCase','footerDocument','forgotPassTemplate','headerDocument','isSelfRegistrationActivated','loginHeaderDocument','logoDocument','logoutUrl','newCommentTemplate','newPassTemplate','newUserTemplate','ownerNotifyTemplate','selfRegNewUserUrl','selfRegUserDefaultProfile','selfRegUserDefaultRole','selfRegUserTemplate','showActionConfirmation','stylesheetDocument','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContentAssetVersions {
 		global MetadataService.ContentAssetVersion[] version;
 		private String[] version_type_info=new String[]{'version',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'version'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RunTestSuccess {
 		global String id;
 		global String methodName;
@@ -6189,6 +6971,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'id','methodName','name','namespace','seeAllData','time_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetExternalDataSourceAccess {
 		global Boolean enabled;
 		global String externalDataSource;
@@ -6197,6 +6981,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','externalDataSource'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomDataType extends Metadata {
 		global String type='CustomDataType';
 		global String fullName;
@@ -6219,6 +7005,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customDataTypeComponents','description','displayFormula','editComponentsOnSeparateLines','label','rightAligned','supportComponentsInReports'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowConnector extends FlowBaseElement {
 		global String type='FlowConnector';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -6229,6 +7017,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'targetReference'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EventDelivery extends Metadata {
 		global String type='EventDelivery';
 		global String fullName;
@@ -6245,12 +7035,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'eventParameters','eventSubscription','referenceData','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveMessageSettings {
 		global Boolean enableLiveMessage;
 		private String[] enableLiveMessage_type_info=new String[]{'enableLiveMessage',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableLiveMessage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ListMetadataQuery {
 		global String folder;
 		global String type_x;
@@ -6259,6 +7053,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'folder','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LogInfo {
 		global String category;
 		global String level;
@@ -6267,6 +7063,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'category','level'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharedTo {
 		global String allCustomerPortalUsers;
 		global String allInternalUsers;
@@ -6313,6 +7111,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allCustomerPortalUsers','allInternalUsers','allPartnerUsers','channelProgramGroup','channelProgramGroups','group_x','groups','managerSubordinates','managers','portalRole','portalRoleAndSubordinates','queue','role','roleAndSubordinates','roleAndSubordinatesInternal','roles','rolesAndSubordinates','territories','territoriesAndSubordinates','territory','territoryAndSubordinates'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PlatformCachePartitionType {
 		global Integer allocatedCapacity;
 		global Integer allocatedPurchasedCapacity;
@@ -6325,6 +7125,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allocatedCapacity','allocatedPurchasedCapacity','allocatedTrialCapacity','cacheType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationPointsRule {
 		global String eventType;
 		global Integer points;
@@ -6333,6 +7135,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'eventType','points'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordLookup extends FlowNode {
 		global String type='FlowRecordLookup';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -6371,24 +7175,32 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignNullValuesIfNoRecordsFound','connector','faultConnector','filters','object_x','outputAssignments','outputReference','queriedFields','sortField','sortOrder'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionLayoutColumn {
 		global MetadataService.QuickActionLayoutItem[] quickActionLayoutItems;
 		private String[] quickActionLayoutItems_type_info=new String[]{'quickActionLayoutItems',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'quickActionLayoutItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ForecastingDisplayedFamilySettings {
 		global String productFamily;
 		private String[] productFamily_type_info=new String[]{'productFamily',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'productFamily'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationBranding {
 		global String smallImage;
 		private String[] smallImage_type_info=new String[]{'smallImage',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'smallImage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationLevel {
 		global MetadataService.ReputationBranding branding;
 		global String label;
@@ -6399,6 +7211,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'branding','label','lowerThreshold'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContentAssetRelationships {
 		global MetadataService.ContentAssetLink[] insightsApplication;
 		global MetadataService.ContentAssetLink[] network;
@@ -6411,6 +7225,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'insightsApplication','network','organization','workspace'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileLayoutAssignment {
 		global String layout;
 		global String recordType;
@@ -6419,6 +7235,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'layout','recordType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionTranslation {
 		global String label;
 		global String name;
@@ -6427,6 +7245,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportTypeTranslation {
 		global String description;
 		global String label;
@@ -6439,6 +7259,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','label','name','sections'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ActionLinkGroupTemplate extends Metadata {
 		global String type='ActionLinkGroupTemplate';
 		global String fullName;
@@ -6459,6 +7281,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actionLinkTemplates','category','executionsAllowed','hoursUntilExpiration','isPublished','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportDataCategoryFilter {
 		global String dataCategory;
 		global String dataCategoryGroup;
@@ -6469,6 +7293,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dataCategory','dataCategoryGroup','operator'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportBucketFieldSourceValue {
 		global String from_x;
 		global String sourceValue;
@@ -6479,6 +7305,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'from_x','sourceValue','to'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValidationRuleTranslation {
 		global String errorMessage;
 		global String name;
@@ -6487,6 +7315,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errorMessage','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DocumentFolder extends Folder {
 		global String type='DocumentFolder';
 		global String fullName;
@@ -6505,12 +7335,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessType','folderShares','name','globalFolderAccess','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class createMetadataResponse_element {
 		global MetadataService.SaveResult[] result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Dashboard extends Metadata {
 		global String type='Dashboard';
 		global String fullName;
@@ -6567,12 +7401,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'backgroundEndColor','backgroundFadeDirection','backgroundStartColor','chartTheme','colorPalette','dashboardChartTheme','dashboardColorPalette','dashboardFilters','dashboardGridLayout','dashboardResultRefreshedDate','dashboardResultRunningUser','dashboardType','description','folderName','isGridLayout','leftSection','middleSection','numSubscriptions','rightSection','runningUser','textColor','title','titleColor','titleSize'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PersonListSettings {
 		global Boolean enablePersonList;
 		private String[] enablePersonList_type_info=new String[]{'enablePersonList',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enablePersonList'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KeyboardShortcuts {
 		global MetadataService.CustomShortcut[] customShortcuts;
 		global MetadataService.DefaultShortcut[] defaultShortcuts;
@@ -6581,6 +7419,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customShortcuts','defaultShortcuts'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ManagedTopic {
 		global String managedTopicType;
 		global String name;
@@ -6595,6 +7435,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'managedTopicType','name','parentName','position','topicDescription'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SkillAssignments {
 		global MetadataService.SkillProfileAssignments profiles;
 		global MetadataService.SkillUserAssignments users;
@@ -6603,6 +7445,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'profiles','users'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowEmailRecipient {
 		global String field;
 		global String recipient;
@@ -6613,6 +7457,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','recipient','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CodeCoverageResult {
 		global MetadataService.CodeLocation[] dmlInfo;
 		global String id;
@@ -6639,6 +7485,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dmlInfo','id','locationsNotCovered','methodInfo','name','namespace','numLocations','numLocationsNotCovered','soqlInfo','soslInfo','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecordTypePicklistValue {
 		global String picklist;
 		global MetadataService.PicklistValue[] values;
@@ -6647,6 +7495,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'picklist','values'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowApexPluginCall extends FlowNode {
 		global String type='FlowApexPluginCall';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -6675,6 +7525,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'apexClass','connector','faultConnector','inputParameters','outputParameters'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Container {
 		global Integer height;
 		global Boolean isContainerAutoSizeEnabled;
@@ -6693,6 +7545,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'height','isContainerAutoSizeEnabled','region','sidebarComponents','style','unit','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FeedLayout {
 		global Boolean autocollapsePublisher;
 		global Boolean compactFeed;
@@ -6717,12 +7571,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'autocollapsePublisher','compactFeed','feedFilterPosition','feedFilters','fullWidthFeed','hideSidebar','highlightExternalFeedItems','leftComponents','rightComponents','useInlineFiltersInConsole'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NetworkAccess {
 		global MetadataService.IpRange[] ipRanges;
 		private String[] ipRanges_type_info=new String[]{'ipRanges',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'ipRanges'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileActionOverride {
 		global String actionName;
 		global String content;
@@ -6739,6 +7597,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionName','content','formFactor','pageOrSobjectType','recordType','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IdeasSettings extends Metadata {
 		global String type='IdeasSettings';
 		global String fullName;
@@ -6759,6 +7619,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableChatterProfile','enableIdeaThemes','enableIdeas','enableIdeasReputation','halfLife','ideasProfilePage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailServicesFunction extends Metadata {
 		global String type='EmailServicesFunction';
 		global String fullName;
@@ -6797,6 +7659,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'apexClass','attachmentOption','authenticationFailureAction','authorizationFailureAction','authorizedSenders','emailServicesAddresses','errorRoutingAddress','functionInactiveAction','functionName','isActive','isAuthenticationRequired','isErrorRoutingEnabled','isTextAttachmentsAsBinary','isTlsRequired','overLimitAction'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomDataTypeTranslation {
 		global MetadataService.CustomDataTypeComponentTranslation[] components;
 		global String customDataTypeName;
@@ -6809,6 +7673,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'components','customDataTypeName','description','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMetadata_element {
 		global String type_x;
 		global String[] fullNames;
@@ -6817,6 +7683,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'type_x','fullNames'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PostTemplate extends Metadata {
 		global String type='PostTemplate';
 		global String fullName;
@@ -6833,6 +7701,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'default_x','description','fields','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValueSet {
 		global String controllingField;
 		global Boolean restricted;
@@ -6847,6 +7717,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'controllingField','restricted','valueSetDefinition','valueSetName','valueSettings'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IndexField {
 		global String name;
 		global String sortDirection;
@@ -6855,12 +7727,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','sortDirection'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionList {
 		global MetadataService.QuickActionListItem[] quickActionListItems;
 		private String[] quickActionListItems_type_info=new String[]{'quickActionListItems',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'quickActionListItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlexiPageRegion {
 		global String appendable;
 		global MetadataService.ComponentInstance[] componentInstances;
@@ -6879,12 +7755,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'appendable','componentInstances','mode','name','prependable','replaceable','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PrimaryTabComponents {
 		global MetadataService.Container[] containers;
 		private String[] containers_type_info=new String[]{'containers',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'containers'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory {
 		global String accountAccessLevel;
 		global String parentTerritory;
@@ -6893,12 +7773,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'accountAccessLevel','parentTerritory'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class updateMetadataResponse_element {
 		global MetadataService.SaveResult[] result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FolderShare {
 		global String accessLevel;
 		global String sharedTo;
@@ -6909,12 +7793,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'accessLevel','sharedTo','sharedToType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionListItem {
 		global String quickActionName;
 		private String[] quickActionName_type_info=new String[]{'quickActionName',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'quickActionName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SiteDotCom extends MetadataWithContent {
 		global String type='SiteDotCom';
 		global String fullName;
@@ -6929,6 +7817,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'label','siteType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MobileSettings extends Metadata {
 		global String type='MobileSettings';
 		global String fullName;
@@ -6945,6 +7835,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'chatterMobile','dashboardMobile','salesforceMobile','touchMobile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectMappingField {
 		global String inputField;
 		global String outputField;
@@ -6953,6 +7845,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'inputField','outputField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DescribeValueTypeResult {
 		global Boolean apiCreatable;
 		global Boolean apiDeletable;
@@ -6969,6 +7863,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apiCreatable','apiDeletable','apiReadable','apiUpdatable','parentField','valueTypeFields'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EntitlementSettings extends Metadata {
 		global String type='EntitlementSettings';
 		global String fullName;
@@ -6997,6 +7893,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assetLookupLimitedToActiveEntitlementsOnAccount','assetLookupLimitedToActiveEntitlementsOnContact','assetLookupLimitedToSameAccount','assetLookupLimitedToSameContact','enableEntitlementVersioning','enableEntitlements','entitlementLookupLimitedToActiveStatus','entitlementLookupLimitedToSameAccount','entitlementLookupLimitedToSameAsset','entitlementLookupLimitedToSameContact'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2RuleAssociation {
 		global Boolean inherited;
 		global String ruleName;
@@ -7005,6 +7903,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'inherited','ruleName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowChoiceTranslation {
 		global String choiceText;
 		global String name;
@@ -7015,6 +7915,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'choiceText','name','userInput'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetCustomPermissions {
 		global Boolean enabled;
 		global String name;
@@ -7023,6 +7925,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomApplicationComponent extends Metadata {
 		global String type='CustomApplicationComponent';
 		global String fullName;
@@ -7051,6 +7955,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'buttonIconUrl','buttonStyle','buttonText','buttonWidth','height','isHeightFixed','isHidden','isWidthFixed','visualforcePage','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ComponentInstanceProperty {
 		global String name;
 		global String type_x;
@@ -7061,12 +7967,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','type_x','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChatterMobileSettings {
 		global Boolean enablePushNotifications;
 		private String[] enablePushNotifications_type_info=new String[]{'enablePushNotifications',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enablePushNotifications'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowAlert extends WorkflowAction {
 		global String type='WorkflowAlert';
 		global String fullName;
@@ -7089,12 +7999,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'ccEmails','description','protected_x','recipients','senderAddress','senderType','template'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeCaseFieldsSettings {
 		global MetadataService.KnowledgeCaseField[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailTemplate extends MetadataWithContent {
 		global String type='EmailTemplate';
 		global String fullName;
@@ -7135,6 +8049,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'apiVersion','attachedDocuments','attachments','available','description','encodingKey','letterhead','name','packageVersions','relatedEntityType','style','subject','textOnly','type_x','uiType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowTextTemplate extends FlowElement {
 		global String type='FlowTextTemplate';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7149,6 +8065,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'text'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PushNotification {
 		global String[] fieldNames;
 		global String objectName;
@@ -7157,6 +8075,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fieldNames','objectName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TransactionSecurityPolicy {
 		global MetadataService.TransactionSecurityAction action;
 		global Boolean active;
@@ -7185,6 +8105,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'action','active','apexClass','description','developerName','eventName','eventType','executionUser','flow','masterLabel','resourceName','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreen extends FlowNode {
 		global String type='FlowScreen';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7223,12 +8145,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'allowBack','allowFinish','allowPause','connector','fields','helpText','pausedText','rules','showFooter','showHeader'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OpportunityListFieldsSelectedSettings {
 		global String[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Certificate extends MetadataWithContent {
 		global String type='Certificate';
 		global String fullName;
@@ -7251,6 +8177,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'caSigned','encryptedWithPlatformEncryption','expirationDate','keySize','masterLabel','privateKeyExportable'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdDimensionCustomAction {
 		global String customActionName;
 		global Boolean enabled;
@@ -7271,6 +8199,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customActionName','enabled','icon','method','sortIndex','target','tooltip','url'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AccessMapping {
 		global String accessLevel;
 		global String object_x;
@@ -7283,6 +8213,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'accessLevel','object_x','objectField','userField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AnalyticSnapshotMapping {
 		global String aggregateType;
 		global String sourceField;
@@ -7295,6 +8227,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregateType','sourceField','sourceType','targetField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DefaultShortcut {
 		global String action;
 		global Boolean active;
@@ -7305,6 +8239,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'action','active','keyCommand'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkspaceMapping {
 		global String fieldName;
 		global String tab;
@@ -7313,6 +8249,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fieldName','tab'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenRuleAction {
 		global String attribute;
 		global String fieldReference;
@@ -7323,6 +8261,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'attribute','fieldReference','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowSend extends WorkflowAction {
 		global String type='WorkflowSend';
 		global String fullName;
@@ -7341,6 +8281,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'action','description','label','language','protected_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordFilter extends FlowBaseElement {
 		global String type='FlowRecordFilter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7355,6 +8297,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'field','operator','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deleteMetadata_element {
 		global String type_x;
 		global String[] fullNames;
@@ -7363,6 +8307,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'type_x','fullNames'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ForecastRangeSettings {
 		global Integer beginning;
 		global Integer displaying;
@@ -7373,6 +8319,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'beginning','displaying','periodType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowActionCall extends FlowNode {
 		global String type='FlowActionCall';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7403,6 +8351,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'actionName','actionType','connector','faultConnector','inputParameters','outputParameters'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ListViewFilter {
 		global String field;
 		global String operation;
@@ -7413,6 +8363,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','operation','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardTableColumn {
 		global String aggregateType;
 		global Boolean calculatePercent;
@@ -7429,6 +8381,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregateType','calculatePercent','column','decimalPlaces','showTotal','sortBy'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2 extends Metadata {
 		global String type='Territory2';
 		global String fullName;
@@ -7457,6 +8411,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'accountAccessLevel','caseAccessLevel','contactAccessLevel','customFields','description','name','opportunityAccessLevel','parentTerritory','ruleAssociations','territory2Type'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ListPlacement {
 		global Integer height;
 		global String location;
@@ -7469,6 +8425,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'height','location','units','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PicklistEntry {
 		global Boolean active;
 		global Boolean defaultValue;
@@ -7483,6 +8441,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','defaultValue','label','validFor','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportBucketField {
 		global String bucketType;
 		global String developerName;
@@ -7503,6 +8463,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'bucketType','developerName','masterLabel','nullTreatment','otherBucketLabel','sourceColumnName','useOther','values'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlexiPageTemplateInstance {
 		global String name;
 		global MetadataService.ComponentInstanceProperty[] properties;
@@ -7511,12 +8473,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','properties'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeCommunitiesSettings {
 		global String[] community;
 		private String[] community_type_info=new String[]{'community',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'community'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppComponentList {
 		global String alignment;
 		global String[] components;
@@ -7525,12 +8491,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'alignment','components'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeWorkOrderLineItemFieldsSettings {
 		global MetadataService.KnowledgeWorkOrderLineItemField[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OpportunitySettings extends Metadata {
 		global String type='OpportunitySettings';
 		global String fullName;
@@ -7551,6 +8521,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'autoActivateNewReminders','enableFindSimilarOpportunities','enableOpportunityTeam','enableUpdateReminders','findSimilarOppFilter','promptToAddProducts'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CodeCoverageWarning {
 		global String id;
 		global String message;
@@ -7563,6 +8535,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'id','message','name','namespace'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomLabelTranslation {
 		global String label;
 		global String name;
@@ -7571,6 +8545,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeAnswerSettings {
 		global String assignTo;
 		global String defaultArticleType;
@@ -7581,6 +8557,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assignTo','defaultArticleType','enableArticleCreation'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Letterhead extends Metadata {
 		global String type='Letterhead';
 		global String fullName;
@@ -7609,6 +8587,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'available','backgroundColor','bodyColor','bottomLine','description','footer','header','middleLine','name','topLine'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AddressSettings extends Metadata {
 		global String type='AddressSettings';
 		global String fullName;
@@ -7619,6 +8599,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'countriesAndStates'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowApexPluginCallInputParameter extends FlowBaseElement {
 		global String type='FlowApexPluginCallInputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7631,12 +8613,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PathAssistantSettings {
 		global Boolean pathAssistantEnabled;
 		private String[] pathAssistantEnabled_type_info=new String[]{'pathAssistantEnabled',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'pathAssistantEnabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DuplicateRuleMatchRule {
 		global String matchRuleSObjectType;
 		global String matchingRule;
@@ -7647,6 +8633,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'matchRuleSObjectType','matchingRule','objectMapping'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EventTypeParameter {
 		global String defaultValue;
 		global String description;
@@ -7667,6 +8655,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'defaultValue','description','label','maxOccurs','minOccurs','name','sObjectType','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuoteSettings extends Metadata {
 		global String type='QuoteSettings';
 		global String fullName;
@@ -7677,6 +8667,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableQuote'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomExperienceBranding {
 		global String loginFooterText;
 		global String loginLogo;
@@ -7707,6 +8699,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'loginFooterText','loginLogo','pageFooter','pageHeader','primaryColor','primaryComplementColor','quaternaryColor','quaternaryComplementColor','secondaryColor','tertiaryColor','tertiaryComplementColor','zeronaryColor','zeronaryComplementColor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class BusinessHoursEntry extends Metadata {
 		global String type='BusinessHoursEntry';
 		global String fullName;
@@ -7751,6 +8745,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','default_x','fridayEndTime','fridayStartTime','mondayEndTime','mondayStartTime','name','saturdayEndTime','saturdayStartTime','sundayEndTime','sundayStartTime','thursdayEndTime','thursdayStartTime','timeZoneId','tuesdayEndTime','tuesdayStartTime','wednesdayEndTime','wednesdayStartTime'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NetworkMemberGroup {
 		global String[] permissionSet;
 		global String[] profile;
@@ -7759,6 +8755,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'permissionSet','profile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApexPage extends MetadataWithContent {
 		global String type='ApexPage';
 		global String fullName;
@@ -7781,6 +8779,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'apiVersion','availableInTouch','confirmationTokenRequired','description','label','packageVersions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomSite extends Metadata {
 		global String type='CustomSite';
 		global String fullName;
@@ -7881,6 +8881,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'active','allowHomePage','allowStandardAnswersPages','allowStandardIdeasPages','allowStandardLookups','allowStandardPortalPages','allowStandardSearch','analyticsTrackingCode','authorizationRequiredPage','bandwidthExceededPage','browserXssProtection','changePasswordPage','chatterAnswersForgotPasswordConfirmPage','chatterAnswersForgotPasswordPage','chatterAnswersHelpPage','chatterAnswersLoginPage','chatterAnswersRegistrationPage','clickjackProtectionLevel','contentSniffingProtection','cspUpgradeInsecureRequests','customWebAddresses','description','favoriteIcon','fileNotFoundPage','forgotPasswordPage','genericErrorPage','guestProfile','inMaintenancePage','inactiveIndexPage','indexPage','masterLabel','myProfilePage','portal','referrerPolicyOriginWhenCrossOrigin','requireHttps','requireInsecurePortalAccess','robotsTxtPage','rootComponent','selfRegPage','serverIsDown','siteAdmin','siteRedirectMappings','siteTemplate','siteType','subdomain','urlPathPrefix'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Skill extends Metadata {
 		global String type='Skill';
 		global String fullName;
@@ -7895,12 +8897,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'assignments','description','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class renameMetadataResponse_element {
 		global MetadataService.SaveResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RelatedList {
 		global Boolean hideOnDetail;
 		global String name;
@@ -7909,6 +8915,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'hideOnDetail','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SynonymGroup {
 		global String[] languages;
 		global String[] terms;
@@ -7917,6 +8925,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'languages','terms'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowSubflow extends FlowNode {
 		global String type='FlowSubflow';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -7943,6 +8953,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','flowName','inputAssignments','outputAssignments'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MatchingRule extends Metadata {
 		global String type='MatchingRule';
 		global String fullName;
@@ -7961,6 +8973,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'booleanFilter','description','label','matchingRuleItems','ruleStatus'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PasswordPolicies {
 		global String apiOnlyUserHomePageURL;
 		global String complexity;
@@ -7989,6 +9003,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apiOnlyUserHomePageURL','complexity','expiration','historyRestriction','lockoutInterval','maxLoginAttempts','minimumPasswordLength','minimumPasswordLifetime','obscureSecretAnswer','passwordAssistanceMessage','passwordAssistanceURL','questionRestriction'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AnalyticsCloudComponentLayoutItem {
 		global String assetType;
 		global String devName;
@@ -8013,6 +9029,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assetType','devName','error','filter','height','hideOnError','showHeader','showSharing','showTitle','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ServiceCloudConsoleConfig {
 		global MetadataService.AppComponentList componentList;
 		global String detailPageRefreshMethod;
@@ -8041,6 +9059,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'componentList','detailPageRefreshMethod','footerColor','headerColor','keyboardShortcuts','listPlacement','listRefreshMethod','liveAgentConfig','primaryTabColor','pushNotifications','tabLimitConfig','whitelistedDomains'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SFDCMobileSettings {
 		global Boolean enableMobileLite;
 		global Boolean enableUserToDeviceLinking;
@@ -8049,6 +9069,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableMobileLite','enableUserToDeviceLinking'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingReason extends Metadata {
 		global String type='SharingReason';
 		global String fullName;
@@ -8059,6 +9081,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowDecision extends FlowNode {
 		global String type='FlowDecision';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -8083,6 +9107,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'defaultConnector','defaultConnectorLabel','rules'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomFeedFilter {
 		global MetadataService.FeedFilterCriterion[] criteria;
 		global String description;
@@ -8095,6 +9121,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'criteria','description','isProtected','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileRecordTypeVisibility {
 		global Boolean default_x;
 		global Boolean personAccountDefault;
@@ -8107,12 +9135,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'default_x','personAccountDefault','recordType','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardMobileSettings {
 		global Boolean enableDashboardIPadApp;
 		private String[] enableDashboardIPadApp_type_info=new String[]{'enableDashboardIPadApp',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enableDashboardIPadApp'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SiteRedirectMapping {
 		global String action;
 		global Boolean isActive;
@@ -8125,18 +9157,24 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'action','isActive','source','target'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AgentConfigProfileAssignments {
 		global String[] profile;
 		private String[] profile_type_info=new String[]{'profile',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'profile'};
 	}
+
 	global interface IReadResult {
 		MetadataService.Metadata[] getRecords();
 	}
+
 	global interface IReadResponseElement {
 		IReadResult getResult();
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomSiteResult implements IReadResult {
 		global MetadataService.CustomSite[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8144,6 +9182,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomSiteResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomSiteResult result;
 		global IReadResult getResult() { return result; }
@@ -8151,6 +9191,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadListViewResult implements IReadResult {
 		global MetadataService.ListView[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8158,6 +9200,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readListViewResponse_element implements IReadResponseElement {
 		global MetadataService.ReadListViewResult result;
 		global IReadResult getResult() { return result; }
@@ -8165,6 +9209,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadInstalledPackageResult implements IReadResult {
 		global MetadataService.InstalledPackage[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8172,6 +9218,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readInstalledPackageResponse_element implements IReadResponseElement {
 		global MetadataService.ReadInstalledPackageResult result;
 		global IReadResult getResult() { return result; }
@@ -8179,6 +9227,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomFieldResult implements IReadResult {
 		global MetadataService.CustomField[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8186,6 +9236,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomFieldResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomFieldResult result;
 		global IReadResult getResult() { return result; }
@@ -8193,6 +9245,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadFieldSetResult implements IReadResult {
 		global MetadataService.FieldSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8200,6 +9254,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readFieldSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadFieldSetResult result;
 		global IReadResult getResult() { return result; }
@@ -8207,6 +9263,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPicklistValueResult implements IReadResult {
 		global MetadataService.PicklistValue[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8214,6 +9272,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPicklistValueResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPicklistValueResult result;
 		global IReadResult getResult() { return result; }
@@ -8221,6 +9281,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadRecordTypeResult implements IReadResult {
 		global MetadataService.RecordType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8228,6 +9290,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readRecordTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadRecordTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -8235,6 +9299,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWebLinkResult implements IReadResult {
 		global MetadataService.WebLink[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8242,6 +9308,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWebLinkResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWebLinkResult result;
 		global IReadResult getResult() { return result; }
@@ -8249,6 +9317,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAddressSettingsResult implements IReadResult {
 		global MetadataService.AddressSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8256,6 +9326,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAddressSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAddressSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -8263,6 +9335,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCaseSettingsResult implements IReadResult {
 		global MetadataService.CaseSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8270,6 +9344,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCaseSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCaseSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -8277,6 +9353,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomObjectResult implements IReadResult {
 		global MetadataService.CustomObject[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8284,6 +9362,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomObjectResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomObjectResult result;
 		global IReadResult getResult() { return result; }
@@ -8291,6 +9371,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLayoutResult implements IReadResult {
 		global MetadataService.Layout[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8298,6 +9380,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLayoutResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLayoutResult result;
 		global IReadResult getResult() { return result; }
@@ -8305,6 +9389,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmailTemplateResult implements IReadResult {
 		global MetadataService.EmailTemplate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8312,6 +9398,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmailTemplateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmailTemplateResult result;
 		global IReadResult getResult() { return result; }
@@ -8319,6 +9407,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadScontrolResult implements IReadResult {
 		global MetadataService.Scontrol[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8326,6 +9416,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readScontrolResponse_element implements IReadResponseElement {
 		global MetadataService.ReadScontrolResult result;
 		global IReadResult getResult() { return result; }
@@ -8333,6 +9425,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApexPageResult implements IReadResult {
 		global MetadataService.ApexPage[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8340,6 +9434,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApexPageResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApexPageResult result;
 		global IReadResult getResult() { return result; }
@@ -8347,6 +9443,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApexComponentResult implements IReadResult {
 		global MetadataService.ApexComponent[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8354,6 +9452,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApexComponentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApexComponentResult result;
 		global IReadResult getResult() { return result; }
@@ -8361,6 +9461,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApexClassResult implements IReadResult {
 		global MetadataService.ApexClass[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8368,6 +9470,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApexClassResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApexClassResult result;
 		global IReadResult getResult() { return result; }
@@ -8375,6 +9479,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApexTriggerResult implements IReadResult {
 		global MetadataService.ApexTrigger[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8382,6 +9488,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApexTriggerResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApexTriggerResult result;
 		global IReadResult getResult() { return result; }
@@ -8389,6 +9497,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadStaticResourceResult implements IReadResult {
 		global MetadataService.StaticResource[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8396,6 +9506,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readStaticResourceResponse_element implements IReadResponseElement {
 		global MetadataService.ReadStaticResourceResult result;
 		global IReadResult getResult() { return result; }
@@ -8403,6 +9515,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDocumentResult implements IReadResult {
 		global MetadataService.Document[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8410,6 +9524,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDocumentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDocumentResult result;
 		global IReadResult getResult() { return result; }
@@ -8417,6 +9533,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomLabelsResult implements IReadResult {
 		global MetadataService.CustomLabels[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8424,6 +9542,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomLabelsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomLabelsResult result;
 		global IReadResult getResult() { return result; }
@@ -8431,6 +9551,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomLabelResult implements IReadResult {
 		global MetadataService.CustomLabel[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8438,6 +9560,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomLabelResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomLabelResult result;
 		global IReadResult getResult() { return result; }
@@ -8445,6 +9569,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAccountSettingsResult implements IReadResult {
 		global MetadataService.AccountSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8452,6 +9578,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAccountSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAccountSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -8459,6 +9587,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadQueueResult implements IReadResult {
 		global MetadataService.Queue[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8466,6 +9596,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readQueueResponse_element implements IReadResponseElement {
 		global MetadataService.ReadQueueResult result;
 		global IReadResult getResult() { return result; }
@@ -8473,6 +9605,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomDataTypeResult implements IReadResult {
 		global MetadataService.CustomDataType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8480,6 +9614,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomDataTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomDataTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -8487,6 +9623,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadExternalDataSourceResult implements IReadResult {
 		global MetadataService.ExternalDataSource[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8494,6 +9632,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readExternalDataSourceResponse_element implements IReadResponseElement {
 		global MetadataService.ReadExternalDataSourceResult result;
 		global IReadResult getResult() { return result; }
@@ -8501,6 +9641,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadGroupResult implements IReadResult {
 		global MetadataService.Group_x[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8508,6 +9650,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readGroupResponse_element implements IReadResponseElement {
 		global MetadataService.ReadGroupResult result;
 		global IReadResult getResult() { return result; }
@@ -8515,6 +9659,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadBusinessProcessResult implements IReadResult {
 		global MetadataService.BusinessProcess[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8522,6 +9668,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readBusinessProcessResponse_element implements IReadResponseElement {
 		global MetadataService.ReadBusinessProcessResult result;
 		global IReadResult getResult() { return result; }
@@ -8529,6 +9677,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCompactLayoutResult implements IReadResult {
 		global MetadataService.CompactLayout[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8536,6 +9686,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCompactLayoutResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCompactLayoutResult result;
 		global IReadResult getResult() { return result; }
@@ -8543,6 +9695,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingReasonResult implements IReadResult {
 		global MetadataService.SharingReason[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8550,6 +9704,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingReasonResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingReasonResult result;
 		global IReadResult getResult() { return result; }
@@ -8557,6 +9713,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadValidationRuleResult implements IReadResult {
 		global MetadataService.ValidationRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8564,6 +9722,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readValidationRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadValidationRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -8571,6 +9731,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadReportTypeResult implements IReadResult {
 		global MetadataService.ReportType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8578,6 +9740,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readReportTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadReportTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -8585,6 +9749,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadReportResult implements IReadResult {
 		global MetadataService.Report[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8592,6 +9758,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readReportResponse_element implements IReadResponseElement {
 		global MetadataService.ReadReportResult result;
 		global IReadResult getResult() { return result; }
@@ -8599,6 +9767,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDashboardResult implements IReadResult {
 		global MetadataService.Dashboard[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8606,6 +9776,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDashboardResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDashboardResult result;
 		global IReadResult getResult() { return result; }
@@ -8613,6 +9785,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAnalyticSnapshotResult implements IReadResult {
 		global MetadataService.AnalyticSnapshot[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8620,6 +9794,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAnalyticSnapshotResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAnalyticSnapshotResult result;
 		global IReadResult getResult() { return result; }
@@ -8627,6 +9803,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomPageWebLinkResult implements IReadResult {
 		global MetadataService.CustomPageWebLink[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8634,6 +9812,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomPageWebLinkResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomPageWebLinkResult result;
 		global IReadResult getResult() { return result; }
@@ -8641,6 +9821,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadQuickActionResult implements IReadResult {
 		global MetadataService.QuickAction[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8648,6 +9830,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readQuickActionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadQuickActionResult result;
 		global IReadResult getResult() { return result; }
@@ -8655,6 +9839,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadFlexiPageResult implements IReadResult {
 		global MetadataService.FlexiPage[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8662,6 +9848,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readFlexiPageResponse_element implements IReadResponseElement {
 		global MetadataService.ReadFlexiPageResult result;
 		global IReadResult getResult() { return result; }
@@ -8669,6 +9857,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomTabResult implements IReadResult {
 		global MetadataService.CustomTab[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8676,6 +9866,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomTabResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomTabResult result;
 		global IReadResult getResult() { return result; }
@@ -8683,6 +9875,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomApplicationComponentResult implements IReadResult {
 		global MetadataService.CustomApplicationComponent[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8690,6 +9884,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomApplicationComponentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomApplicationComponentResult result;
 		global IReadResult getResult() { return result; }
@@ -8697,6 +9893,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomApplicationResult implements IReadResult {
 		global MetadataService.CustomApplication[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8704,6 +9902,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomApplicationResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomApplicationResult result;
 		global IReadResult getResult() { return result; }
@@ -8711,6 +9911,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPortalResult implements IReadResult {
 		global MetadataService.Portal[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8718,6 +9920,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPortalResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPortalResult result;
 		global IReadResult getResult() { return result; }
@@ -8725,6 +9929,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLetterheadResult implements IReadResult {
 		global MetadataService.Letterhead[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8732,6 +9938,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLetterheadResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLetterheadResult result;
 		global IReadResult getResult() { return result; }
@@ -8739,6 +9947,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadFlowResult implements IReadResult {
 		global MetadataService.Flow[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8746,6 +9956,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readFlowResponse_element implements IReadResponseElement {
 		global MetadataService.ReadFlowResult result;
 		global IReadResult getResult() { return result; }
@@ -8753,6 +9965,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowResult implements IReadResult {
 		global MetadataService.Workflow[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8760,6 +9974,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowResult result;
 		global IReadResult getResult() { return result; }
@@ -8767,6 +9983,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowRuleResult implements IReadResult {
 		global MetadataService.WorkflowRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8774,6 +9992,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -8781,6 +10001,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAssignmentRulesResult implements IReadResult {
 		global MetadataService.AssignmentRules[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8788,6 +10010,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAssignmentRulesResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAssignmentRulesResult result;
 		global IReadResult getResult() { return result; }
@@ -8795,6 +10019,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAssignmentRuleResult implements IReadResult {
 		global MetadataService.AssignmentRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8802,6 +10028,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAssignmentRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAssignmentRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -8809,6 +10037,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAutoResponseRulesResult implements IReadResult {
 		global MetadataService.AutoResponseRules[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8816,6 +10046,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAutoResponseRulesResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAutoResponseRulesResult result;
 		global IReadResult getResult() { return result; }
@@ -8823,6 +10055,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAutoResponseRuleResult implements IReadResult {
 		global MetadataService.AutoResponseRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8830,6 +10064,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAutoResponseRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAutoResponseRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -8837,6 +10073,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEscalationRulesResult implements IReadResult {
 		global MetadataService.EscalationRules[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8844,6 +10082,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEscalationRulesResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEscalationRulesResult result;
 		global IReadResult getResult() { return result; }
@@ -8851,6 +10091,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEscalationRuleResult implements IReadResult {
 		global MetadataService.EscalationRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8858,6 +10100,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEscalationRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEscalationRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -8865,6 +10109,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPostTemplateResult implements IReadResult {
 		global MetadataService.PostTemplate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8872,6 +10118,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPostTemplateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPostTemplateResult result;
 		global IReadResult getResult() { return result; }
@@ -8879,6 +10127,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApprovalProcessResult implements IReadResult {
 		global MetadataService.ApprovalProcess[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8886,6 +10136,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApprovalProcessResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApprovalProcessResult result;
 		global IReadResult getResult() { return result; }
@@ -8893,6 +10145,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadHomePageComponentResult implements IReadResult {
 		global MetadataService.HomePageComponent[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8900,6 +10154,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readHomePageComponentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadHomePageComponentResult result;
 		global IReadResult getResult() { return result; }
@@ -8907,6 +10163,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadHomePageLayoutResult implements IReadResult {
 		global MetadataService.HomePageLayout[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8914,6 +10172,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readHomePageLayoutResponse_element implements IReadResponseElement {
 		global MetadataService.ReadHomePageLayoutResult result;
 		global IReadResult getResult() { return result; }
@@ -8921,6 +10181,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomObjectTranslationResult implements IReadResult {
 		global MetadataService.CustomObjectTranslation[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8928,6 +10190,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomObjectTranslationResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomObjectTranslationResult result;
 		global IReadResult getResult() { return result; }
@@ -8935,6 +10199,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTranslationsResult implements IReadResult {
 		global MetadataService.Translations[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8942,6 +10208,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTranslationsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadTranslationsResult result;
 		global IReadResult getResult() { return result; }
@@ -8949,6 +10217,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadProfileResult implements IReadResult {
 		global MetadataService.Profile[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8956,6 +10226,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readProfileResponse_element implements IReadResponseElement {
 		global MetadataService.ReadProfileResult result;
 		global IReadResult getResult() { return result; }
@@ -8963,6 +10235,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPermissionSetResult implements IReadResult {
 		global MetadataService.PermissionSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8970,6 +10244,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPermissionSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPermissionSetResult result;
 		global IReadResult getResult() { return result; }
@@ -8977,6 +10253,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDataCategoryGroupResult implements IReadResult {
 		global MetadataService.DataCategoryGroup[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8984,6 +10262,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDataCategoryGroupResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDataCategoryGroupResult result;
 		global IReadResult getResult() { return result; }
@@ -8991,6 +10271,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadRemoteSiteSettingResult implements IReadResult {
 		global MetadataService.RemoteSiteSetting[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -8998,6 +10280,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readRemoteSiteSettingResponse_element implements IReadResponseElement {
 		global MetadataService.ReadRemoteSiteSettingResult result;
 		global IReadResult getResult() { return result; }
@@ -9005,6 +10289,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPackageResult implements IReadResult {
 		global MetadataService.Package_x[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9012,6 +10298,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPackageResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPackageResult result;
 		global IReadResult getResult() { return result; }
@@ -9019,6 +10307,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAuthProviderResult implements IReadResult {
 		global MetadataService.AuthProvider[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9026,6 +10316,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAuthProviderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAuthProviderResult result;
 		global IReadResult getResult() { return result; }
@@ -9033,6 +10325,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadKnowledgeSettingsResult implements IReadResult {
 		global MetadataService.KnowledgeSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9040,6 +10334,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readKnowledgeSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadKnowledgeSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9047,6 +10343,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingSetResult implements IReadResult {
 		global MetadataService.SharingSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9054,6 +10352,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingSetResult result;
 		global IReadResult getResult() { return result; }
@@ -9061,6 +10361,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSecuritySettingsResult implements IReadResult {
 		global MetadataService.SecuritySettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9068,6 +10370,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSecuritySettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSecuritySettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9075,6 +10379,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadIdeasSettingsResult implements IReadResult {
 		global MetadataService.IdeasSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9082,6 +10388,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readIdeasSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadIdeasSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9089,6 +10397,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadChatterAnswersSettingsResult implements IReadResult {
 		global MetadataService.ChatterAnswersSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9096,6 +10406,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readChatterAnswersSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadChatterAnswersSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9103,6 +10415,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCommunityResult implements IReadResult {
 		global MetadataService.Community[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9110,6 +10424,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCommunityResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCommunityResult result;
 		global IReadResult getResult() { return result; }
@@ -9117,6 +10433,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadActivitiesSettingsResult implements IReadResult {
 		global MetadataService.ActivitiesSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9124,6 +10442,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readActivitiesSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadActivitiesSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9131,6 +10451,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadContractSettingsResult implements IReadResult {
 		global MetadataService.ContractSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9138,6 +10460,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readContractSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadContractSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9145,6 +10469,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadOrderSettingsResult implements IReadResult {
 		global MetadataService.OrderSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9152,6 +10478,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readOrderSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadOrderSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9159,6 +10487,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadOpportunitySettingsResult implements IReadResult {
 		global MetadataService.OpportunitySettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9166,6 +10496,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readOpportunitySettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadOpportunitySettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9173,6 +10505,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadProductSettingsResult implements IReadResult {
 		global MetadataService.ProductSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9180,6 +10514,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readProductSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadProductSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9187,6 +10523,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadQuoteSettingsResult implements IReadResult {
 		global MetadataService.QuoteSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9194,6 +10532,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readQuoteSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadQuoteSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9201,6 +10541,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCallCenterResult implements IReadResult {
 		global MetadataService.CallCenter[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9208,6 +10550,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCallCenterResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCallCenterResult result;
 		global IReadResult getResult() { return result; }
@@ -9215,6 +10559,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEntitlementProcessResult implements IReadResult {
 		global MetadataService.EntitlementProcess[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9222,6 +10568,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEntitlementProcessResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEntitlementProcessResult result;
 		global IReadResult getResult() { return result; }
@@ -9229,6 +10577,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMilestoneTypeResult implements IReadResult {
 		global MetadataService.MilestoneType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9236,6 +10586,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMilestoneTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMilestoneTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -9243,6 +10595,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEntitlementTemplateResult implements IReadResult {
 		global MetadataService.EntitlementTemplate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9250,6 +10604,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEntitlementTemplateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEntitlementTemplateResult result;
 		global IReadResult getResult() { return result; }
@@ -9257,6 +10613,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEntitlementSettingsResult implements IReadResult {
 		global MetadataService.EntitlementSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9264,6 +10622,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEntitlementSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEntitlementSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9271,6 +10631,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadBusinessHoursSettingsResult implements IReadResult {
 		global MetadataService.BusinessHoursSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9278,6 +10640,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readBusinessHoursSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadBusinessHoursSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9285,6 +10649,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadBusinessHoursEntryResult implements IReadResult {
 		global MetadataService.BusinessHoursEntry[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9292,6 +10658,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readBusinessHoursEntryResponse_element implements IReadResponseElement {
 		global MetadataService.ReadBusinessHoursEntryResult result;
 		global IReadResult getResult() { return result; }
@@ -9299,6 +10667,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadConnectedAppResult implements IReadResult {
 		global MetadataService.ConnectedApp[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9306,6 +10676,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readConnectedAppResponse_element implements IReadResponseElement {
 		global MetadataService.ReadConnectedAppResult result;
 		global IReadResult getResult() { return result; }
@@ -9313,6 +10685,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAppMenuResult implements IReadResult {
 		global MetadataService.AppMenu[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9320,6 +10694,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAppMenuResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAppMenuResult result;
 		global IReadResult getResult() { return result; }
@@ -9327,6 +10703,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMobileSettingsResult implements IReadResult {
 		global MetadataService.MobileSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9334,6 +10712,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMobileSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMobileSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9341,6 +10721,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadNetworkResult implements IReadResult {
 		global MetadataService.Network[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9348,6 +10730,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readNetworkResponse_element implements IReadResponseElement {
 		global MetadataService.ReadNetworkResult result;
 		global IReadResult getResult() { return result; }
@@ -9355,6 +10739,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCompanySettingsResult implements IReadResult {
 		global MetadataService.CompanySettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9362,6 +10748,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCompanySettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCompanySettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9369,6 +10757,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadForecastingSettingsResult implements IReadResult {
 		global MetadataService.ForecastingSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9376,6 +10766,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readForecastingSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadForecastingSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9383,6 +10775,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSamlSsoConfigResult implements IReadResult {
 		global MetadataService.SamlSsoConfig[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9390,6 +10784,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSamlSsoConfigResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSamlSsoConfigResult result;
 		global IReadResult getResult() { return result; }
@@ -9397,6 +10793,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLiveAgentSettingsResult implements IReadResult {
 		global MetadataService.LiveAgentSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9404,6 +10802,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLiveAgentSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLiveAgentSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9411,6 +10811,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSkillResult implements IReadResult {
 		global MetadataService.Skill[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9418,6 +10820,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSkillResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSkillResult result;
 		global IReadResult getResult() { return result; }
@@ -9425,6 +10829,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLiveChatDeploymentResult implements IReadResult {
 		global MetadataService.LiveChatDeployment[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9432,6 +10838,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLiveChatDeploymentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLiveChatDeploymentResult result;
 		global IReadResult getResult() { return result; }
@@ -9439,6 +10847,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLiveChatButtonResult implements IReadResult {
 		global MetadataService.LiveChatButton[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9446,6 +10856,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLiveChatButtonResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLiveChatButtonResult result;
 		global IReadResult getResult() { return result; }
@@ -9453,6 +10865,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLiveChatAgentConfigResult implements IReadResult {
 		global MetadataService.LiveChatAgentConfig[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9460,6 +10874,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLiveChatAgentConfigResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLiveChatAgentConfigResult result;
 		global IReadResult getResult() { return result; }
@@ -9467,6 +10883,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSynonymDictionaryResult implements IReadResult {
 		global MetadataService.SynonymDictionary[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9474,6 +10892,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSynonymDictionaryResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSynonymDictionaryResult result;
 		global IReadResult getResult() { return result; }
@@ -9481,6 +10901,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadFolderResult implements IReadResult {
 		global MetadataService.Folder[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9488,6 +10910,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readFolderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadFolderResult result;
 		global IReadResult getResult() { return result; }
@@ -9495,6 +10919,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadReportFolderResult implements IReadResult {
 		global MetadataService.ReportFolder[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9502,6 +10928,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readReportFolderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadReportFolderResult result;
 		global IReadResult getResult() { return result; }
@@ -9509,6 +10937,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDashboardFolderResult implements IReadResult {
 		global MetadataService.DashboardFolder[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9516,6 +10946,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDashboardFolderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDashboardFolderResult result;
 		global IReadResult getResult() { return result; }
@@ -9523,6 +10955,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDocumentFolderResult implements IReadResult {
 		global MetadataService.DocumentFolder[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9530,6 +10964,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDocumentFolderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDocumentFolderResult result;
 		global IReadResult getResult() { return result; }
@@ -9537,6 +10973,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmailFolderResult implements IReadResult {
 		global MetadataService.EmailFolder[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9544,6 +10982,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmailFolderResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmailFolderResult result;
 		global IReadResult getResult() { return result; }
@@ -9551,6 +10991,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadRoleOrTerritoryResult implements IReadResult {
 		global MetadataService.RoleOrTerritory[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9558,6 +11000,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readRoleOrTerritoryResponse_element implements IReadResponseElement {
 		global MetadataService.ReadRoleOrTerritoryResult result;
 		global IReadResult getResult() { return result; }
@@ -9565,6 +11009,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowActionResult implements IReadResult {
 		global MetadataService.WorkflowAction[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9572,6 +11018,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowActionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowActionResult result;
 		global IReadResult getResult() { return result; }
@@ -9579,6 +11027,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSiteDotComResult implements IReadResult {
 		global MetadataService.SiteDotCom[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9586,6 +11036,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSiteDotComResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSiteDotComResult result;
 		global IReadResult getResult() { return result; }
@@ -9593,6 +11045,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowTaskResult implements IReadResult {
 		global MetadataService.WorkflowTask[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9600,6 +11054,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowTaskResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowTaskResult result;
 		global IReadResult getResult() { return result; }
@@ -9607,6 +11063,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowSendResult implements IReadResult {
 		global MetadataService.WorkflowSend[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9614,6 +11072,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowSendResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowSendResult result;
 		global IReadResult getResult() { return result; }
@@ -9621,6 +11081,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowOutboundMessageResult implements IReadResult {
 		global MetadataService.WorkflowOutboundMessage[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9628,6 +11090,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowOutboundMessageResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowOutboundMessageResult result;
 		global IReadResult getResult() { return result; }
@@ -9635,6 +11099,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowKnowledgePublishResult implements IReadResult {
 		global MetadataService.WorkflowKnowledgePublish[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9642,6 +11108,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowKnowledgePublishResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowKnowledgePublishResult result;
 		global IReadResult getResult() { return result; }
@@ -9649,6 +11117,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowFieldUpdateResult implements IReadResult {
 		global MetadataService.WorkflowFieldUpdate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9656,6 +11126,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowFieldUpdateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowFieldUpdateResult result;
 		global IReadResult getResult() { return result; }
@@ -9663,6 +11135,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWorkflowAlertResult implements IReadResult {
 		global MetadataService.WorkflowAlert[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9670,6 +11144,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWorkflowAlertResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWorkflowAlertResult result;
 		global IReadResult getResult() { return result; }
@@ -9677,6 +11153,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadVisualizationPluginResult implements IReadResult {
 		global MetadataService.VisualizationPlugin[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9684,6 +11162,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readVisualizationPluginResponse_element implements IReadResponseElement {
 		global MetadataService.ReadVisualizationPluginResult result;
 		global IReadResult getResult() { return result; }
@@ -9691,6 +11171,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomMetadataResult implements IReadResult {
 		global MetadataService.CustomMetadata[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9698,6 +11180,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomMetadataResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomMetadataResult result;
 		global IReadResult getResult() { return result; }
@@ -9705,6 +11189,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadNameSettingsResult implements IReadResult {
 		global MetadataService.NameSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9712,6 +11198,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readNameSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadNameSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9719,6 +11207,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMarketingActionSettingsResult implements IReadResult {
 		global MetadataService.MarketingActionSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9726,6 +11216,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMarketingActionSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMarketingActionSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9733,6 +11225,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomPermissionResult implements IReadResult {
 		global MetadataService.CustomPermission[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9740,6 +11234,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomPermissionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomPermissionResult result;
 		global IReadResult getResult() { return result; }
@@ -9747,6 +11243,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadAuraDefinitionBundleResult implements IReadResult {
 		global MetadataService.AuraDefinitionBundle[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9754,6 +11252,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readAuraDefinitionBundleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadAuraDefinitionBundleResult result;
 		global IReadResult getResult() { return result; }
@@ -9761,6 +11261,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCorsWhitelistOriginResult implements IReadResult {
 		global MetadataService.CorsWhitelistOrigin[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9768,6 +11270,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCorsWhitelistOriginResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCorsWhitelistOriginResult result;
 		global IReadResult getResult() { return result; }
@@ -9775,6 +11279,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadManagedTopicsResult implements IReadResult {
 		global MetadataService.ManagedTopics[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9782,6 +11288,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readManagedTopicsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadManagedTopicsResult result;
 		global IReadResult getResult() { return result; }
@@ -9789,6 +11297,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTerritory2Result implements IReadResult {
 		global MetadataService.Territory2[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9796,6 +11306,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTerritory2Response_element implements IReadResponseElement {
 		global MetadataService.ReadTerritory2Result result;
 		global IReadResult getResult() { return result; }
@@ -9803,6 +11315,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTerritory2ModelResult implements IReadResult {
 		global MetadataService.Territory2Model[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9810,6 +11324,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTerritory2ModelResponse_element implements IReadResponseElement {
 		global MetadataService.ReadTerritory2ModelResult result;
 		global IReadResult getResult() { return result; }
@@ -9817,6 +11333,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTerritory2SettingsResult implements IReadResult {
 		global MetadataService.Territory2Settings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9824,6 +11342,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTerritory2SettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadTerritory2SettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9831,6 +11351,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTerritory2TypeResult implements IReadResult {
 		global MetadataService.Territory2Type[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9838,6 +11360,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTerritory2TypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadTerritory2TypeResult result;
 		global IReadResult getResult() { return result; }
@@ -9845,6 +11369,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadXOrgHubResult implements IReadResult {
 		global MetadataService.XOrgHub[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9852,6 +11378,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readXOrgHubResponse_element implements IReadResponseElement {
 		global MetadataService.ReadXOrgHubResult result;
 		global IReadResult getResult() { return result; }
@@ -9859,6 +11387,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadActionLinkGroupTemplateResult implements IReadResult {
 		global MetadataService.ActionLinkGroupTemplate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9866,6 +11396,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readActionLinkGroupTemplateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadActionLinkGroupTemplateResult result;
 		global IReadResult getResult() { return result; }
@@ -9873,6 +11405,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLicenseDefinitionResult implements IReadResult {
 		global MetadataService.LicenseDefinition[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9880,6 +11414,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLicenseDefinitionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLicenseDefinitionResult result;
 		global IReadResult getResult() { return result; }
@@ -9887,6 +11423,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMarketingResourceTypeResult implements IReadResult {
 		global MetadataService.MarketingResourceType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9894,6 +11432,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMarketingResourceTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMarketingResourceTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -9901,6 +11441,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMatchingRuleResult implements IReadResult {
 		global MetadataService.MatchingRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9908,6 +11450,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMatchingRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMatchingRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -9915,6 +11459,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMatchingRulesResult implements IReadResult {
 		global MetadataService.MatchingRules[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9922,6 +11468,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMatchingRulesResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMatchingRulesResult result;
 		global IReadResult getResult() { return result; }
@@ -9929,6 +11477,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadNamedCredentialResult implements IReadResult {
 		global MetadataService.NamedCredential[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9936,6 +11486,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readNamedCredentialResponse_element implements IReadResponseElement {
 		global MetadataService.ReadNamedCredentialResult result;
 		global IReadResult getResult() { return result; }
@@ -9943,6 +11495,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadPersonalJourneySettingsResult implements IReadResult {
 		global MetadataService.PersonalJourneySettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9950,6 +11504,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readPersonalJourneySettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadPersonalJourneySettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -9957,6 +11513,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingRulesResult implements IReadResult {
 		global MetadataService.SharingRules[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9964,6 +11522,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingRulesResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingRulesResult result;
 		global IReadResult getResult() { return result; }
@@ -9971,6 +11531,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingBaseRuleResult implements IReadResult {
 		global MetadataService.SharingBaseRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9978,6 +11540,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingBaseRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingBaseRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -9985,6 +11549,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingCriteriaRuleResult implements IReadResult {
 		global MetadataService.SharingCriteriaRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -9992,6 +11558,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingCriteriaRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingCriteriaRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -9999,6 +11567,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingOwnerRuleResult implements IReadResult {
 		global MetadataService.SharingOwnerRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10006,6 +11576,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingOwnerRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingOwnerRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -10013,6 +11585,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSharingTerritoryRuleResult implements IReadResult {
 		global MetadataService.SharingTerritoryRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10020,6 +11594,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSharingTerritoryRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSharingTerritoryRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -10027,6 +11603,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadMetadataWithContentResult implements IReadResult {
 		global MetadataService.MetadataWithContent[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10034,6 +11612,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readMetadataWithContentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadMetadataWithContentResult result;
 		global IReadResult getResult() { return result; }
@@ -10041,6 +11621,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadDelegateGroupResult implements IReadResult {
 		global MetadataService.DelegateGroup[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10048,6 +11630,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readDelegateGroupResponse_element implements IReadResponseElement {
 		global MetadataService.ReadDelegateGroupResult result;
 		global IReadResult getResult() { return result; }
@@ -10055,6 +11639,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEventDeliveryResult implements IReadResult {
 		global MetadataService.EventDelivery[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10062,6 +11648,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEventDeliveryResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEventDeliveryResult result;
 		global IReadResult getResult() { return result; }
@@ -10069,6 +11657,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEventSubscriptionResult implements IReadResult {
 		global MetadataService.EventSubscription[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10076,6 +11666,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEventSubscriptionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEventSubscriptionResult result;
 		global IReadResult getResult() { return result; }
@@ -10083,6 +11675,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEventTypeResult implements IReadResult {
 		global MetadataService.EventType[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10090,6 +11684,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEventTypeResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEventTypeResult result;
 		global IReadResult getResult() { return result; }
@@ -10097,6 +11693,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCertificateResult implements IReadResult {
 		global MetadataService.Certificate[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10104,6 +11702,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCertificateResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCertificateResult result;
 		global IReadResult getResult() { return result; }
@@ -10111,6 +11711,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadModerationRuleResult implements IReadResult {
 		global MetadataService.ModerationRule[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10118,6 +11720,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readModerationRuleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadModerationRuleResult result;
 		global IReadResult getResult() { return result; }
@@ -10125,6 +11729,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWaveApplicationResult implements IReadResult {
 		global MetadataService.WaveApplication[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10132,6 +11738,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWaveApplicationResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWaveApplicationResult result;
 		global IReadResult getResult() { return result; }
@@ -10139,6 +11747,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWaveDatasetResult implements IReadResult {
 		global MetadataService.WaveDataset[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10146,6 +11756,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWaveDatasetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWaveDatasetResult result;
 		global IReadResult getResult() { return result; }
@@ -10153,6 +11765,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWaveDashboardResult implements IReadResult {
 		global MetadataService.WaveDashboard[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10160,6 +11774,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWaveDashboardResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWaveDashboardResult result;
 		global IReadResult getResult() { return result; }
@@ -10167,6 +11783,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWaveDataflowResult implements IReadResult {
 		global MetadataService.WaveDataflow[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10174,6 +11792,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWaveDataflowResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWaveDataflowResult result;
 		global IReadResult getResult() { return result; }
@@ -10181,6 +11801,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWaveLensResult implements IReadResult {
 		global MetadataService.WaveLens[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10188,6 +11810,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWaveLensResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWaveLensResult result;
 		global IReadResult getResult() { return result; }
@@ -10195,6 +11819,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadOrgPreferenceSettingsResult implements IReadResult {
 		global MetadataService.OrgPreferenceSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10202,6 +11828,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readOrgPreferenceSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadOrgPreferenceSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -10209,6 +11837,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSearchSettingsResult implements IReadResult {
 		global MetadataService.SearchSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10216,6 +11846,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSearchSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSearchSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -10223,6 +11855,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadGlobalValueSetResult implements IReadResult {
 		global MetadataService.GlobalValueSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10230,6 +11864,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readGlobalValueSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadGlobalValueSetResult result;
 		global IReadResult getResult() { return result; }
@@ -10237,6 +11873,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadGlobalPicklistValueResult implements IReadResult {
 		global MetadataService.GlobalPicklistValue[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10244,6 +11882,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readGlobalPicklistValueResponse_element implements IReadResponseElement {
 		global MetadataService.ReadGlobalPicklistValueResult result;
 		global IReadResult getResult() { return result; }
@@ -10251,6 +11891,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadStandardValueSetResult implements IReadResult {
 		global MetadataService.StandardValueSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10258,6 +11900,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readStandardValueSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadStandardValueSetResult result;
 		global IReadResult getResult() { return result; }
@@ -10265,6 +11909,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadStandardValueResult implements IReadResult {
 		global MetadataService.StandardValue[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10272,6 +11918,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readStandardValueResponse_element implements IReadResponseElement {
 		global MetadataService.ReadStandardValueResult result;
 		global IReadResult getResult() { return result; }
@@ -10279,6 +11927,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCustomValueResult implements IReadResult {
 		global MetadataService.CustomValue[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10286,6 +11936,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCustomValueResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCustomValueResult result;
 		global IReadResult getResult() { return result; }
@@ -10293,6 +11945,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadApexTestSuiteResult implements IReadResult {
 		global MetadataService.ApexTestSuite[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10300,6 +11954,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readApexTestSuiteResponse_element implements IReadResponseElement {
 		global MetadataService.ReadApexTestSuiteResult result;
 		global IReadResult getResult() { return result; }
@@ -10307,6 +11963,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadChannelLayoutResult implements IReadResult {
 		global MetadataService.ChannelLayout[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10314,6 +11972,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readChannelLayoutResponse_element implements IReadResponseElement {
 		global MetadataService.ReadChannelLayoutResult result;
 		global IReadResult getResult() { return result; }
@@ -10321,6 +11981,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadContentAssetResult implements IReadResult {
 		global MetadataService.ContentAsset[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10328,6 +11990,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readContentAssetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadContentAssetResult result;
 		global IReadResult getResult() { return result; }
@@ -10335,6 +11999,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmailServicesFunctionResult implements IReadResult {
 		global MetadataService.EmailServicesFunction[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10342,6 +12008,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmailServicesFunctionResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmailServicesFunctionResult result;
 		global IReadResult getResult() { return result; }
@@ -10349,6 +12017,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmbeddedServiceBrandingResult implements IReadResult {
 		global MetadataService.EmbeddedServiceBranding[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10356,6 +12026,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmbeddedServiceBrandingResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmbeddedServiceBrandingResult result;
 		global IReadResult getResult() { return result; }
@@ -10363,6 +12035,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmbeddedServiceConfigResult implements IReadResult {
 		global MetadataService.EmbeddedServiceConfig[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10370,6 +12044,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmbeddedServiceConfigResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmbeddedServiceConfigResult result;
 		global IReadResult getResult() { return result; }
@@ -10377,6 +12053,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEmbeddedServiceLiveAgentResult implements IReadResult {
 		global MetadataService.EmbeddedServiceLiveAgent[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10384,6 +12062,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEmbeddedServiceLiveAgentResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEmbeddedServiceLiveAgentResult result;
 		global IReadResult getResult() { return result; }
@@ -10391,6 +12071,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCaseSubjectParticleResult implements IReadResult {
 		global MetadataService.CaseSubjectParticle[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10398,6 +12080,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCaseSubjectParticleResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCaseSubjectParticleResult result;
 		global IReadResult getResult() { return result; }
@@ -10405,6 +12089,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadNetworkBrandingResult implements IReadResult {
 		global MetadataService.NetworkBranding[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10412,6 +12098,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readNetworkBrandingResponse_element implements IReadResponseElement {
 		global MetadataService.ReadNetworkBrandingResult result;
 		global IReadResult getResult() { return result; }
@@ -10419,6 +12107,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadSocialCustomerServiceSettingsResult implements IReadResult {
 		global MetadataService.SocialCustomerServiceSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10426,6 +12116,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readSocialCustomerServiceSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadSocialCustomerServiceSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -10433,6 +12125,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadTopicsForObjectsResult implements IReadResult {
 		global MetadataService.TopicsForObjects[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10440,6 +12134,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readTopicsForObjectsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadTopicsForObjectsResult result;
 		global IReadResult getResult() { return result; }
@@ -10447,6 +12143,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadBrandingSetResult implements IReadResult {
 		global MetadataService.BrandingSet[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10454,6 +12152,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readBrandingSetResponse_element implements IReadResponseElement {
 		global MetadataService.ReadBrandingSetResult result;
 		global IReadResult getResult() { return result; }
@@ -10461,6 +12161,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadProfilePasswordPolicyResult implements IReadResult {
 		global MetadataService.ProfilePasswordPolicy[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10468,6 +12170,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readProfilePasswordPolicyResponse_element implements IReadResponseElement {
 		global MetadataService.ReadProfilePasswordPolicyResult result;
 		global IReadResult getResult() { return result; }
@@ -10475,6 +12179,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadProfileSessionSettingResult implements IReadResult {
 		global MetadataService.ProfileSessionSetting[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10482,6 +12188,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readProfileSessionSettingResponse_element implements IReadResponseElement {
 		global MetadataService.ReadProfileSessionSettingResult result;
 		global IReadResult getResult() { return result; }
@@ -10489,6 +12197,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadCspTrustedSiteResult implements IReadResult {
 		global MetadataService.CspTrustedSite[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10496,6 +12206,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readCspTrustedSiteResponse_element implements IReadResponseElement {
 		global MetadataService.ReadCspTrustedSiteResult result;
 		global IReadResult getResult() { return result; }
@@ -10503,6 +12215,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadEclairGeoDataResult implements IReadResult {
 		global MetadataService.EclairGeoData[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10510,6 +12224,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readEclairGeoDataResponse_element implements IReadResponseElement {
 		global MetadataService.ReadEclairGeoDataResult result;
 		global IReadResult getResult() { return result; }
@@ -10517,6 +12233,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadExternalServiceRegistrationResult implements IReadResult {
 		global MetadataService.ExternalServiceRegistration[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10524,6 +12242,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readExternalServiceRegistrationResponse_element implements IReadResponseElement {
 		global MetadataService.ReadExternalServiceRegistrationResult result;
 		global IReadResult getResult() { return result; }
@@ -10531,6 +12251,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadFileUploadAndDownloadSecuritySettingsResult implements IReadResult {
 		global MetadataService.FileUploadAndDownloadSecuritySettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10538,6 +12260,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readFileUploadAndDownloadSecuritySettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadFileUploadAndDownloadSecuritySettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -10545,6 +12269,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadLeadConvertSettingsResult implements IReadResult {
 		global MetadataService.LeadConvertSettings[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10552,6 +12278,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readLeadConvertSettingsResponse_element implements IReadResponseElement {
 		global MetadataService.ReadLeadConvertSettingsResult result;
 		global IReadResult getResult() { return result; }
@@ -10559,6 +12287,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadUserCriteriaResult implements IReadResult {
 		global MetadataService.UserCriteria[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10566,6 +12296,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readUserCriteriaResponse_element implements IReadResponseElement {
 		global MetadataService.ReadUserCriteriaResult result;
 		global IReadResult getResult() { return result; }
@@ -10573,6 +12305,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadWavexmdResult implements IReadResult {
 		global MetadataService.Wavexmd[] records;
 		global MetadataService.Metadata[] getRecords() { return records; }
@@ -10580,6 +12314,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class readWavexmdResponse_element implements IReadResponseElement {
 		global MetadataService.ReadWavexmdResult result;
 		global IReadResult getResult() { return result; }
@@ -10587,12 +12323,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReadResult {
 		global MetadataService.Metadata[] records;
 		private String[] records_type_info=new String[]{'records',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'records'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportBucketFieldValue {
 		global MetadataService.ReportBucketFieldSourceValue[] sourceValues;
 		global String value;
@@ -10601,6 +12341,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sourceValues','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class BrandingSetProperty {
 		global String propertyName;
 		global String propertyValue;
@@ -10609,6 +12351,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'propertyName','propertyValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileApexPageAccess {
 		global String apexPage;
 		global Boolean enabled;
@@ -10617,6 +12361,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexPage','enabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Scontrol extends MetadataWithContent {
 		global String type='Scontrol';
 		global String fullName;
@@ -10641,6 +12387,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'contentSource','description','encodingKey','fileContent','fileName','name','supportsCaching'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Network extends Metadata {
 		global String type='Network';
 		global String fullName;
@@ -10747,6 +12495,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'allowInternalUserLogin','allowMembersToFlag','allowedExtensions','caseCommentEmailTemplate','changePasswordTemplate','communityRoles','description','disableReputationRecordConversations','emailFooterLogo','emailFooterText','emailSenderAddress','emailSenderName','enableCustomVFErrorPageOverrides','enableDirectMessages','enableGuestChatter','enableGuestFileAccess','enableInvitation','enableKnowledgeable','enableNicknameDisplay','enablePrivateMessages','enableReputation','enableShowAllNetworkSettings','enableSiteAsContainer','enableTalkingAboutStats','enableTopicAssignmentRules','enableTopicSuggestions','enableUpDownVote','feedChannel','forgotPasswordTemplate','gatherCustomerSentimentData','logoutUrl','maxFileSizeKb','navigationLinkSet','networkMemberGroups','networkPageOverrides','newSenderAddress','picassoSite','recommendationAudience','recommendationDefinition','reputationLevels','reputationPointsRules','selfRegProfile','selfRegistration','sendWelcomeEmail','site','status','tabs','urlPathPrefix','welcomeTemplate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ActionLinkTemplate {
 		global String actionUrl;
 		global String headers;
@@ -10775,6 +12525,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionUrl','headers','isConfirmationRequired','isGroupDefault','label','labelKey','linkType','method','position','requestBody','userAlias','userVisibility'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EntitlementProcessMilestoneItem {
 		global String businessHours;
 		global String criteriaBooleanFilter;
@@ -10799,6 +12551,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'businessHours','criteriaBooleanFilter','milestoneCriteriaFilterItems','milestoneCriteriaFormula','milestoneName','minutesCustomClass','minutesToComplete','successActions','timeTriggers','useCriteriaStartTime'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportFilter {
 		global String booleanFilter;
 		global MetadataService.ReportFilterItem[] criteriaItems;
@@ -10809,6 +12563,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'booleanFilter','criteriaItems','language'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RetrieveResult {
 		global Boolean done;
 		global String errorMessage;
@@ -10831,12 +12587,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'done','errorMessage','errorStatusCode','fileProperties','id','messages','status','success','zipFile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KnowledgeWorkOrderFieldsSettings {
 		global MetadataService.KnowledgeWorkOrderField[] field;
 		private String[] field_type_info=new String[]{'field',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2Model extends Metadata {
 		global String type='Territory2Model';
 		global String fullName;
@@ -10851,12 +12611,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customFields','description','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SearchSettingsByObject {
 		global MetadataService.ObjectSearchSetting[] searchSettingsByObject;
 		private String[] searchSettingsByObject_type_info=new String[]{'searchSettingsByObject',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'searchSettingsByObject'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomObject extends Metadata {
 		global String type='CustomObject';
 		global String fullName;
@@ -10967,6 +12731,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actionOverrides','allowInChatterGroups','articleTypeChannelDisplay','businessProcesses','compactLayoutAssignment','compactLayouts','customHelp','customHelpPage','customSettingsType','dataStewardGroup','dataStewardUser','deploymentStatus','deprecated','description','enableActivities','enableBulkApi','enableChangeDataCapture','enableDivisions','enableEnhancedLookup','enableFeeds','enableHistory','enableReports','enableSearch','enableSharing','enableStreamingApi','eventType','externalDataSource','externalName','externalRepository','externalSharingModel','fieldSets','fields','gender','historyRetentionPolicy','household','indexes','label','listViews','nameField','pluralLabel','recordTypeTrackFeedHistory','recordTypeTrackHistory','recordTypes','searchLayouts','sharingModel','sharingReasons','sharingRecalculations','startsWith','validationRules','visibility','webLinks'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowTranslation {
 		global MetadataService.FlowChoiceTranslation[] choices;
 		global String fullName;
@@ -10979,6 +12745,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'choices','fullName','label','screens'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DuplicateRuleFilter {
 		global String booleanFilter;
 		global MetadataService.DuplicateRuleFilterItem[] duplicateRuleFilterItems;
@@ -10987,6 +12755,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'booleanFilter','duplicateRuleFilterItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LayoutSection {
 		global Boolean customLabel;
 		global Boolean detailHeading;
@@ -11003,12 +12773,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customLabel','detailHeading','editHeading','label','layoutColumns','style'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class cancelDeployResponse_element {
 		global MetadataService.CancelDeployResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowMetadataValue {
 		global String name;
 		global MetadataService.FlowElementReferenceOrValue value;
@@ -11017,6 +12791,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveRecipe {
 		global String dataflow;
 		global String masterLabel;
@@ -11029,6 +12805,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dataflow','masterLabel','securityPredicate','targetDatasetAlias'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileObjectPermissions {
 		global Boolean allowCreate;
 		global Boolean allowDelete;
@@ -11047,6 +12825,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allowCreate','allowDelete','allowEdit','allowRead','modifyAllRecords','object_x','viewAllRecords'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportGrouping {
 		global String aggregateType;
 		global String dateGranularity;
@@ -11063,6 +12843,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregateType','dateGranularity','field','sortByName','sortOrder','sortType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DeployMessage {
 		global Boolean changed;
 		global Integer columnNumber;
@@ -11093,6 +12875,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'changed','columnNumber','componentType','created','createdDate','deleted','fileName','fullName','id','lineNumber','problem','problemType','success'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmailServicesAddress {
 		global String authorizedSenders;
 		global String developerName;
@@ -11107,6 +12891,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'authorizedSenders','developerName','isActive','localPart','runAsUser'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetObjectPermissions {
 		global Boolean allowCreate;
 		global Boolean allowDelete;
@@ -11125,6 +12911,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'allowCreate','allowDelete','allowEdit','allowRead','modifyAllRecords','object_x','viewAllRecords'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileApexClassAccess {
 		global String apexClass;
 		global Boolean enabled;
@@ -11133,6 +12921,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'apexClass','enabled'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileLoginIpRange {
 		global String description;
 		global String endAddress;
@@ -11143,6 +12933,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','endAddress','startAddress'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileSessionSetting extends Metadata {
 		global String type='ProfileSessionSetting';
 		global String fullName;
@@ -11165,6 +12957,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'externalCommunityUserIdentityVerif','forceLogout','profile','requiredSessionLevel','sessionPersistence','sessionTimeout','sessionTimeoutWarning'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardComponentColumn {
 		global Double breakPoint1;
 		global Double breakPoint2;
@@ -11187,6 +12981,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'breakPoint1','breakPoint2','breakPointOrder','highRangeColor','lowRangeColor','midRangeColor','reportColumn','showTotal','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowWait extends FlowNode {
 		global String type='FlowWait';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -11213,6 +13009,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'defaultConnector','defaultConnectorLabel','faultConnector','waitEvents'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStage {
 		global Boolean isActive;
 		global String label;
@@ -11223,6 +13021,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'isActive','label','stageOrder'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ChartSummary {
 		global String aggregate;
 		global String axisBinding;
@@ -11233,6 +13033,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregate','axisBinding','column'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class InstalledPackage extends Metadata {
 		global String type='InstalledPackage';
 		global String fullName;
@@ -11245,6 +13047,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'password','versionNumber'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NavigationMenuItem {
 		global String defaultListViewId;
 		global String label;
@@ -11265,6 +13069,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'defaultListViewId','label','position','globallyAvailable','subMenu','target','targetPreference','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class checkRetrieveStatus_element {
 		global String asyncProcessId;
 		global Boolean includeZip;
@@ -11273,6 +13079,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'asyncProcessId','includeZip'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Country {
 		global Boolean active;
 		global String integrationValue;
@@ -11293,12 +13101,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','integrationValue','isoCode','label','orgDefault','standard','states','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectUsage {
 		global String[] object_x;
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'object_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Package_x extends Metadata {
 		global String type='Package_x';
 		global String fullName;
@@ -11327,6 +13139,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'apiAccessLevel','description','namespacePrefix','objectPermissions','packageType','postInstallClass','setupWeblink','types','uninstallClass','version'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SharingReasonTranslation {
 		global String label;
 		global String name;
@@ -11335,6 +13149,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomDataTypeComponentTranslation {
 		global String developerSuffix;
 		global String label;
@@ -11343,6 +13159,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'developerSuffix','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomNotificationType {
 		global String customNotifTypeName;
 		global String description;
@@ -11359,6 +13177,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customNotifTypeName','description','desktop','email','masterLabel','mobile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FeedLayoutComponent {
 		global String componentType;
 		global Integer height;
@@ -11369,6 +13189,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'componentType','height','page_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AssistantRecommendationType {
 		global String description;
 		global String masterLabel;
@@ -11383,6 +13205,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','masterLabel','platformActionlist','sobjectType','title'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCondition extends FlowBaseElement {
 		global String type='FlowCondition';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -11397,6 +13221,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'leftValueReference','operator','rightValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CallCenterSection {
 		global MetadataService.CallCenterItem[] items;
 		global String label;
@@ -11407,6 +13233,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'items','label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecommendationStrategy {
 		global String description;
 		global String masterLabel;
@@ -11419,6 +13247,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','masterLabel','recommendationStrategyName','strategyNode'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveDashboard extends MetadataWithContent {
 		global String type='WaveDashboard';
 		global String fullName;
@@ -11437,6 +13267,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'application','description','masterLabel','templateAssetSourceName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomApplication extends Metadata {
 		global String type='CustomApplication';
 		global String fullName;
@@ -11481,6 +13313,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'actionOverrides','brand','consoleConfig','defaultLandingTab','description','formFactors','isServiceCloudConsole','label','logo','navType','preferences','profileActionOverrides','setupExperience','subscriberTabs','tabs','uiType','utilityBar','workspaceConfig'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DescribeMetadataResult {
 		global MetadataService.DescribeMetadataObject[] metadataObjects;
 		global String organizationNamespace;
@@ -11493,6 +13327,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'metadataObjects','organizationNamespace','partialSaveAllowed','testRequired'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LeadConvertSettings extends Metadata {
 		global String type='LeadConvertSettings';
 		global String fullName;
@@ -11507,6 +13343,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'allowOwnerChange','objectMapping','opportunityCreationOptions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OpportunityListFieldsLabelMapping {
 		global String field;
 		global String label;
@@ -11515,6 +13353,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportType extends Metadata {
 		global String type='ReportType';
 		global String fullName;
@@ -11539,12 +13379,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'autogenerated','baseObject','category','deployed','description','join_x','label','sections'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deleteMetadataResponse_element {
 		global MetadataService.DeleteResult[] result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CodeLocation {
 		global Integer column;
 		global Integer line;
@@ -11557,12 +13401,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'column','line','numExecutions','time_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Keyword {
 		global String keyword;
 		private String[] keyword_type_info=new String[]{'keyword',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'keyword'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetApplicationVisibility {
 		global String application;
 		global Boolean visible;
@@ -11571,18 +13419,24 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'application','visible'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppActionOverride {
 		global String pageOrSobjectType;
 		private String[] pageOrSobjectType_type_info=new String[]{'pageOrSobjectType',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'pageOrSobjectType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RoleAndSubordinates {
 		global String[] roleAndSubordinate;
 		private String[] roleAndSubordinate_type_info=new String[]{'roleAndSubordinate',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'roleAndSubordinate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class StandardFieldTranslation {
 		global String label;
 		global String name;
@@ -11591,6 +13445,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmbeddedServiceBranding extends Metadata {
 		global String type='EmbeddedServiceBranding';
 		global String fullName;
@@ -11615,6 +13471,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'contrastInvertedColor','contrastPrimaryColor','embeddedServiceConfig','font','masterLabel','navBarColor','primaryColor','secondaryColor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfilePasswordPolicy extends Metadata {
 		global String type='ProfilePasswordPolicy';
 		global String fullName;
@@ -11643,6 +13501,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'lockoutInterval','maxLoginAttempts','minimumPasswordLength','minimumPasswordLifetime','obscure','passwordComplexity','passwordExpiration','passwordHistory','passwordQuestion','profile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecommendationAudienceDetail {
 		global String audienceCriteriaType;
 		global String audienceCriteriaValue;
@@ -11653,6 +13513,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'audienceCriteriaType','audienceCriteriaValue','setupName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RoleOrTerritory extends Metadata {
 		global String type='RoleOrTerritory';
 		global String fullName;
@@ -11673,6 +13535,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'caseAccessLevel','contactAccessLevel','description','mayForecastManagerShare','name','opportunityAccessLevel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowSubflowInputAssignment extends FlowBaseElement {
 		global String type='FlowSubflowInputAssignment';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -11685,12 +13549,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatButtonSkills {
 		global String[] skill;
 		private String[] skill_type_info=new String[]{'skill',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'skill'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RemoteSiteSetting extends Metadata {
 		global String type='RemoteSiteSetting';
 		global String fullName;
@@ -11707,6 +13575,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','disableProtocolSecurity','isActive','url'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppOauthConfig {
 		global String callbackUrl;
 		global String certificate;
@@ -11723,6 +13593,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'callbackUrl','certificate','consumerKey','consumerSecret','scopes','singleLogoutUrl'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ObjectSearchSetting {
 		global Boolean enhancedLookupEnabled;
 		global Boolean lookupAutoCompleteEnabled;
@@ -11735,6 +13607,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enhancedLookupEnabled','lookupAutoCompleteEnabled','name','resultsPerPageCount'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class VisualizationResource {
 		global String description;
 		global String file;
@@ -11747,6 +13621,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','file','rank','type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldServiceSettings {
 		global Boolean fieldServiceNotificationsOrgPref;
 		global Boolean fieldServiceOrgPref;
@@ -11761,6 +13637,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fieldServiceNotificationsOrgPref','fieldServiceOrgPref','serviceAppointmentsDueDateOffsetOrgValue','workOrderLineItemSearchFields','workOrderSearchFields'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NextAutomatedApprover {
 		global Boolean useApproverFieldOfRecordOwner;
 		global String userHierarchyField;
@@ -11769,6 +13647,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'useApproverFieldOfRecordOwner','userHierarchyField'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ValueSetValuesDefinition {
 		global Boolean sorted;
 		global MetadataService.CustomValue[] value;
@@ -11777,6 +13657,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sorted','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2Rule {
 		global Boolean active;
 		global String booleanFilter;
@@ -11791,6 +13673,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','booleanFilter','name','objectType','ruleItems'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RetrieveMessage {
 		global String fileName;
 		global String problem;
@@ -11799,6 +13683,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fileName','problem'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ForecastingCategoryMapping {
 		global String forecastingItemCategoryApiName;
 		global MetadataService.WeightedSourceCategory[] weightedSourceCategories;
@@ -11807,6 +13693,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'forecastingItemCategoryApiName','weightedSourceCategories'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EclairMap {
 		global Double boundingBoxBottom;
 		global Double boundingBoxLeft;
@@ -11825,6 +13713,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'boundingBoxBottom','boundingBoxLeft','boundingBoxRight','boundingBoxTop','mapLabel','mapName','projection'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class HistoryRetentionPolicy {
 		global Integer archiveAfterMonths;
 		global Integer archiveRetentionYears;
@@ -11837,6 +13727,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'archiveAfterMonths','archiveRetentionYears','description','gracePeriodDays'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowFormula extends FlowElement {
 		global String type='FlowFormula';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -11855,6 +13747,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'dataType','expression','scale'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Picklist {
 		global String controllingField;
 		global MetadataService.PicklistValue[] picklistValues;
@@ -11867,6 +13761,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{'http://soap.sforce.com/2006/04/metadata','true','false'};
 		private String[] field_order_type_info=new String[]{'controllingField','picklistValues','restrictedPicklist','sorted'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class deploy_element {
 		global String ZipFile;
 		global MetadataService.DeployOptions DeployOptions;
@@ -11875,6 +13771,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'ZipFile','DeployOptions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportTypeSectionTranslation {
 		global MetadataService.ReportTypeColumnTranslation[] columns;
 		global String label;
@@ -11885,6 +13783,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'columns','label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PersonalJourneySettings extends Metadata {
 		global String type='PersonalJourneySettings';
 		global String fullName;
@@ -11895,12 +13795,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableExactTargetForSalesforceApps'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AppProfileActionOverride {
 		global String profile;
 		private String[] profile_type_info=new String[]{'profile',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'profile'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomPermission extends Metadata {
 		global String type='CustomPermission';
 		global String fullName;
@@ -11917,6 +13821,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'connectedApp','description','label','requiredPermission'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DuplicateRule {
 		global String actionOnInsert;
 		global String actionOnUpdate;
@@ -11945,6 +13851,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionOnInsert','actionOnUpdate','alertText','description','duplicateRuleFilter','duplicateRuleMatchRules','isActive','masterLabel','operationsOnInsert','operationsOnUpdate','securityOption','sortOrder'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenFieldOutputParameter {
 		global String assignToReference;
 		global String name;
@@ -11953,12 +13861,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assignToReference','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AgentConfigSkills {
 		global String[] skill;
 		private String[] skill_type_info=new String[]{'skill',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'skill'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DeployResult {
 		global String canceledBy;
 		global String canceledByName;
@@ -12015,6 +13927,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'canceledBy','canceledByName','checkOnly','completedDate','createdBy','createdByName','createdDate','details','done','errorMessage','errorStatusCode','id','ignoreWarnings','lastModifiedDate','numberComponentErrors','numberComponentsDeployed','numberComponentsTotal','numberTestErrors','numberTestsCompleted','numberTestsTotal','rollbackOnError','runTestsEnabled','startDate','stateDetail','status','success'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class IdeaReputationLevel {
 		global String name;
 		global Integer value;
@@ -12023,6 +13937,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmbeddedServiceConfig extends Metadata {
 		global String type='EmbeddedServiceConfig';
 		global String fullName;
@@ -12035,6 +13951,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'masterLabel','site'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WorkflowTimeTrigger {
 		global MetadataService.WorkflowActionReference[] actions;
 		global String offsetFromField;
@@ -12047,6 +13965,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actions','offsetFromField','timeLength','workflowTimeTriggerUnit'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class AutoResponseRules extends Metadata {
 		global String type='AutoResponseRules';
 		global String fullName;
@@ -12057,6 +13977,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'autoResponseRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LayoutTranslation {
 		global String layout;
 		global String layoutType;
@@ -12067,6 +13989,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'layout','layoutType','sections'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardFolder extends Folder {
 		global String type='DashboardFolder';
 		global String fullName;
@@ -12085,6 +14009,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','accessType','folderShares','name','globalFolderAccess','sharedTo'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ForecastingSettings extends Metadata {
 		global String type='ForecastingSettings';
 		global String fullName;
@@ -12103,12 +14029,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'displayCurrency','enableForecasts','forecastingCategoryMappings','forecastingDisplayedFamilySettings','forecastingTypeSettings'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportAggregateReference {
 		global String aggregate;
 		private String[] aggregate_type_info=new String[]{'aggregate',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregate'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityTemplateDefinition {
 		global String baseTemplate;
 		global MetadataService.CommunityTemplateBundleInfo[] bundlesInfo;
@@ -12133,6 +14063,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'baseTemplate','bundlesInfo','category','defaultBrandingSet','defaultThemeDefinition','description','enableExtendedCleanUpOnDelete','masterLabel','navigationLinkSet','pageSetting'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardFilterOption {
 		global String operator;
 		global String[] values;
@@ -12141,6 +14073,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'operator','values'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowConstant extends FlowElement {
 		global String type='FlowConstant';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -12157,6 +14091,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'dataType','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ConnectedAppSamlConfig {
 		global String acsUrl;
 		global String certificate;
@@ -12183,6 +14119,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'acsUrl','certificate','encryptionCertificate','encryptionType','entityUrl','issuer','samlIdpSLOBindingEnum','samlNameIdFormat','samlSloUrl','samlSubjectCustomAttr','samlSubjectType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class LiveChatSensitiveDataRule {
 		global String actionType;
 		global String description;
@@ -12199,12 +14137,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionType','description','enforceOn','isEnabled','pattern','replacement'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ApprovalStepRejectBehavior {
 		global String type_x;
 		private String[] type_x_type_info=new String[]{'type',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class XOrgHubSharedObject {
 		global String[] fields;
 		global String name;
@@ -12213,12 +14155,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'fields','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class createMetadata_element {
 		global MetadataService.Metadata[] metadata;
 		private String[] metadata_type_info=new String[]{'metadata',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'metadata'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContentAsset extends Metadata {
 		global String type='ContentAsset';
 		global String fullName;
@@ -12239,6 +14185,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'format','language','masterLabel','originNetwork','relationships','versions'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DuplicateRuleFilterItem {
 		global Integer sortOrder;
 		global String table;
@@ -12247,6 +14195,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sortOrder','table'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomPageWebLinkTranslation {
 		global String label;
 		global String name;
@@ -12255,12 +14205,16 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'label','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class describeMetadataResponse_element {
 		global MetadataService.DescribeMetadataResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomPermissionDependencyRequired {
 		global String customPermission;
 		global Boolean dependency;
@@ -12269,6 +14223,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customPermission','dependency'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileFieldLevelSecurity {
 		global Boolean editable;
 		global String field;
@@ -12279,6 +14235,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'editable','field','readable'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class checkDeployStatus_element {
 		global String asyncProcessId;
 		global Boolean includeDetails;
@@ -12287,9 +14245,13 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'asyncProcessId','includeDetails'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class MetadataWithContent extends Metadata {
 		global String content;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RecommendationDefinitionDetail {
 		global String actionUrl;
 		global String description;
@@ -12306,6 +14268,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'actionUrl','description','linkText','scheduledRecommendations','setupName','title'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowActionCallInputParameter extends FlowBaseElement {
 		global String type='FlowActionCallInputParameter';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -12318,18 +14282,24 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues', 'name','value'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SkillUserAssignments {
 		global String[] user_x;
 		private String[] user_x_type_info=new String[]{'user',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'user_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class checkDeployStatusResponse_element {
 		global MetadataService.DeployResult result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordUpdate extends FlowNode {
 		global String type='FlowRecordUpdate';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
@@ -12360,12 +14330,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filters','inputAssignments','inputReference','object_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowInputValidationRuleTranslation {
 		global String errorMessage;
 		private String[] errorMessage_type_info=new String[]{'errorMessage',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'errorMessage'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CleanRule {
 		global Boolean bulkEnabled;
 		global Boolean bypassTriggers;
@@ -12392,6 +14366,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'bulkEnabled','bypassTriggers','bypassWorkflow','description','developerName','fieldMappings','masterLabel','matchRule','sourceSobjectType','status','targetSobjectType'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardComponent {
 		global Boolean autoselectColumnsFromReport;
 		global String chartAxisRange;
@@ -12482,6 +14458,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'autoselectColumnsFromReport','chartAxisRange','chartAxisRangeMax','chartAxisRangeMin','chartSummary','componentChartTheme','componentType','dashboardFilterColumns','dashboardTableColumn','displayUnits','drillDownUrl','drillEnabled','drillToDetailEnabled','enableHover','expandOthers','flexComponentProperties','footer','gaugeMax','gaugeMin','groupingColumn','header','indicatorBreakpoint1','indicatorBreakpoint2','indicatorHighColor','indicatorLowColor','indicatorMiddleColor','legendPosition','maxValuesDisplayed','metricLabel','page_x','pageHeightInPixels','report','scontrol','scontrolHeightInPixels','showPercentage','showPicturesOnCharts','showPicturesOnTables','showRange','showTotal','showValues','sortBy','title','useReportChart'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportColorRange {
 		global String aggregate;
 		global String columnName;
@@ -12500,6 +14478,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregate','columnName','highBreakpoint','highColor','lowBreakpoint','lowColor','midColor'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class OrganizationSettingsDetail {
 		global String settingName;
 		global Boolean settingValue;
@@ -12508,6 +14488,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'settingName','settingValue'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EclairGeoData extends MetadataWithContent {
 		global String type='EclairGeoData';
 		global String fullName;
@@ -12522,6 +14504,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName','content', 'maps','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SummaryLayout {
 		global String masterLabel;
 		global Integer sizeX;
@@ -12538,6 +14522,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'masterLabel','sizeX','sizeY','sizeZ','summaryLayoutItems','summaryLayoutStyle'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class GlobalValueSet extends Metadata {
 		global String type='GlobalValueSet';
 		global String fullName;
@@ -12554,6 +14540,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'customValue','description','masterLabel','sorted'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class QuickActionLayout {
 		global String layoutSectionStyle;
 		global MetadataService.QuickActionLayoutColumn[] quickActionLayoutColumns;
@@ -12562,6 +14550,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'layoutSectionStyle','quickActionLayoutColumns'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class Territory2Type extends Metadata {
 		global String type='Territory2Type';
 		global String fullName;
@@ -12576,12 +14566,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'description','name','priority'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class listMetadataResponse_element {
 		global MetadataService.FileProperties[] result;
 		private String[] result_type_info=new String[]{'result',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'result'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityCustomThemeLayoutType {
 		global String description;
 		global String label;
@@ -12590,6 +14584,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','label'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CommunityTemplatePageSetting {
 		global String page_x;
 		global String themeLayout;
@@ -12598,6 +14594,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'page_x','themeLayout'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SamlSsoConfig extends Metadata {
 		global String type='SamlSsoConfig';
 		global String fullName;
@@ -12652,12 +14650,16 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'attributeName','attributeNameIdFormat','decryptionCertificate','errorUrl','executionUserId','identityLocation','identityMapping','issuer','loginUrl','logoutUrl','name','oauthTokenEndpoint','redirectBinding','requestSignatureMethod','requestSigningCertId','salesforceLoginUrl','samlEntityId','samlJitHandlerId','samlVersion','singleLogoutBinding','singleLogoutUrl','userProvisioning','validationCert'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class describeValueType_element {
 		global String type_x;
 		private String[] type_x_type_info=new String[]{'type',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'type_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReputationLevels {
 		global MetadataService.ChatterAnswersReputationLevel[] chatterAnswersReputationLevels;
 		global MetadataService.IdeaReputationLevel[] ideaReputationLevels;
@@ -12666,9 +14668,13 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'chatterAnswersReputationLevels','ideaReputationLevels'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class FlowBaseElement {
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class WaveXmdMeasure {
 		global String dateFormat;
 		global String description;
@@ -12707,6 +14713,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'dateFormat','description','field','formatCustomFormat','formatDecimalDigits','formatIsNegativeParens','formatPrefix','formatSuffix','formatUnit','formatUnitMultiplier','fullyQualifiedName','isDerived','label','origin','showDetailsDefaultFieldIndex','showInExplorer','sortIndex'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class SidebarComponent {
 		global String componentType;
 		global String createAction;
@@ -12733,6 +14741,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'componentType','createAction','enableLinking','height','label','lookup','page_x','relatedLists','unit','updateAction','width'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class PermissionSetGroup {
 		global String description;
 		global Boolean isCalculatingChanges;
@@ -12745,6 +14755,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','isCalculatingChanges','label','permissionSets'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TransactionSecurityNotification {
 		global Boolean inApp;
 		global Boolean sendEmail;
@@ -12755,6 +14767,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'inApp','sendEmail','user_x'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportColumn {
 		global String[] aggregateTypes;
 		global String field;
@@ -12767,6 +14781,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'aggregateTypes','field','reverseColors','showChanges'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class BusinessHoursSettings extends Metadata {
 		global String type='BusinessHoursSettings';
 		global String fullName;
@@ -12779,6 +14795,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'businessHours','holidays'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class TopicsForObjects extends Metadata {
 		global String type='TopicsForObjects';
 		global String fullName;
@@ -12791,6 +14809,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'enableTopics','entityApiName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowChoiceUserInputTranslation {
 		global String promptText;
 		global MetadataService.FlowInputValidationRuleTranslation validationRule;
@@ -12799,6 +14819,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'promptText','validationRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FieldSetItem {
 		global String field;
 		global Boolean isFieldManaged;
@@ -12809,6 +14831,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'field','isFieldManaged','isRequired'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ProfileUserPermission {
 		global Boolean enabled;
 		global String name;
@@ -12817,6 +14841,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'enabled','name'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class FindSimilarOppFilter {
 		global String[] similarOpportunitiesDisplayColumns;
 		global String[] similarOpportunitiesMatchFields;
@@ -12825,6 +14851,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'similarOpportunitiesDisplayColumns','similarOpportunitiesMatchFields'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ReportAggregate {
 		global String acrossGroupingContext;
 		global String calculatedFormula;
@@ -12851,6 +14879,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'acrossGroupingContext','calculatedFormula','datatype','description','developerName','downGroupingContext','isActive','isCrossBlock','masterLabel','reportType','scale'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ContractSettings extends Metadata {
 		global String type='ContractSettings';
 		global String fullName;
@@ -12871,6 +14901,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'autoCalculateEndDate','autoExpirationDelay','autoExpirationRecipient','autoExpireContracts','enableContractHistoryTracking','notifyOwnersOnContractExpiration'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EscalationRules extends Metadata {
 		global String type='EscalationRules';
 		global String fullName;
@@ -12881,6 +14913,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'escalationRule'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class NetworkTabSet {
 		global String[] customTab;
 		global String defaultTab;
@@ -12891,6 +14925,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'customTab','defaultTab','standardTab'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class EmbeddedServiceLiveAgent extends Metadata {
 		global String type='EmbeddedServiceLiveAgent';
 		global String fullName;
@@ -12935,6 +14971,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'avatarImg','customPrechatComponent','embeddedServiceConfig','embeddedServiceQuickActions','enabled','fontSize','headerBackgroundImg','liveAgentChatUrl','liveAgentContentUrl','liveChatButton','liveChatDeployment','masterLabel','prechatBackgroundImg','prechatEnabled','prechatJson','scenario','smallCompanyLogoImg','waitingStateBackgroundImg'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomField extends Metadata {
 		global String type='CustomField';
 		global String fullName;
@@ -13053,6 +15091,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'businessOwnerGroup','businessOwnerUser','businessStatus','caseSensitive','customDataType','defaultValue','deleteConstraint','deprecated','description','displayFormat','displayLocationInDecimal','encrypted','escapeMarkup','externalDeveloperName','externalId','fieldManageability','formula','formulaTreatBlanksAs','inlineHelpText','isConvertLeadDisabled','isFilteringDisabled','isNameField','isSortingDisabled','label','length','lookupFilter','maskChar','maskType','metadataRelationshipControllingField','populateExistingRows','precision','referenceTargetField','referenceTo','relationshipLabel','relationshipName','relationshipOrder','reparentableMasterDetail','required','restrictedAdminField','scale','securityClassification','startingNumber','stripMarkup','summarizedField','summaryFilterItems','summaryForeignKey','summaryOperation','trackFeedHistory','trackHistory','trackTrending','type_x','unique','valueSet','visibleLines','writeRequiresMasterRead'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class KeywordList {
 		global String description;
 		global MetadataService.Keyword[] keywords;
@@ -13063,6 +15103,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'description','keywords','masterLabel'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MatchingRuleItem {
 		global String blankValueBehavior;
 		global String fieldName;
@@ -13073,6 +15115,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'blankValueBehavior','fieldName','matchingMethod'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class RuleEntry {
 		global String assignedTo;
 		global String assignedToType;
@@ -13111,6 +15155,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'assignedTo','assignedToType','booleanFilter','businessHours','businessHoursSource','criteriaItems','disableEscalationWhenModified','escalationAction','escalationStartTime','formula','notifyCcRecipients','overrideExistingTeams','replyToEmail','senderEmail','senderName','team','template'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class DashboardComponentSortInfo {
 		global String sortColumn;
 		global String sortOrder;
@@ -13119,6 +15165,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'sortColumn','sortOrder'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class CustomObjectTranslation extends Metadata {
 		global String type='CustomObjectTranslation';
 		global String fullName;
@@ -13155,6 +15203,8 @@ global class MetadataService {
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'fullName', 'caseValues','fieldSets','fields','gender','layouts','nameFieldLabel','quickActions','recordTypes','sharingReasons','standardFields','startsWith','validationRules','webLinks','workflowTasks'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class ForecastingTypeSettings {
 		global Boolean active;
 		global MetadataService.AdjustmentsSettings adjustmentsSettings;
@@ -13199,6 +15249,8 @@ global class MetadataService {
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'active','adjustmentsSettings','displayedCategoryApiNames','forecastRangeSettings','forecastedCategoryApiNames','forecastingDateType','hasProductFamily','isAmount','isAvailable','isQuantity','managerAdjustableCategoryApiNames','masterLabel','name','opportunityListFieldsLabelMappings','opportunityListFieldsSelectedSettings','opportunityListFieldsUnselectedSettings','opportunitySplitName','ownerAdjustableCategoryApiNames','quotasSettings','territory2ModelName'};
 	}
+
+    @JsonAccess(serializable='always' deserializable = 'always')
 	global class MetadataPort {
 		global String endpoint_x=URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/42.0';
 		global Map<String,String> inputHttpHeaders_x;

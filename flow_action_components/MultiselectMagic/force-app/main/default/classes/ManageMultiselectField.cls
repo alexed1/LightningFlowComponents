@@ -1,7 +1,7 @@
 public with sharing class ManageMultiselectField {
   
-    @InvocableMethod(label='Manage Multiselect Field' description='Caries out a specified operation on the value of a specified multiselect field')
-    public static List<Response> getNrecords(List<Request> requests) {
+    @InvocableMethod(label='Manage Multiselect Field'  description='Caries out a specified operation on the value of a specified multiselect field')
+    public static List<Response> execute(List<Request> requests) {
         
         List<Response> result = new List<Response>();
 
@@ -11,28 +11,82 @@ public with sharing class ManageMultiselectField {
             //verify type of specified field
             validateFieldType(curRequest);
             String fieldValue = (String)curRequest.curRecord.get(curRequest.fieldApiName);
-            List<String> selectedValues = fieldValue.split(';');
-
-            switch on curRequest.operation {
-                when 'CheckForValue' {
-                    System.debug('selected values are: ' + selectedValues);
-                    if (selectedValues.contains(curRequest.value)) {
-                        curResponse.targetPresent= true;
-                    } else curResponse.targetPresent = false;
-
-                }
-                when else {
-                    throw new InvocableActionException('You didn\'t provide an opearation value that is currently supported');
+            List<String> selectedValueList = fieldValue.split(';');
+            List<String> availableValuesList = getPicklistValues(curRequest.objectApiName, curRequest.fieldApiName);
+            
+            if (curRequest.operation != null) {
+                switch on curRequest.operation {
+                    when 'CheckForValue' {
+                        System.debug('selected values are: ' + selectedValueList);
+                        if (selectedValueList.contains(curRequest.targetValue)) {
+                            curResponse.targetPresent= true;
+                        } else curResponse.targetPresent = false;
+                      
+                    }
+                    when 'AddValue' {
+                        
+                        if (!selectedValueList.contains(curRequest.targetValue)) {
+                            //verify that the targetValue is an allowed value
+                             if (availableValuesList.contains(curRequest.targetValue)) {
+                                selectedValueList.add(curRequest.targetValue);
+                            } else throw new InvocableActionException('The value: ' + curRequest.targetValue + 'is not an allowed value for the picklist: ' + curRequest.fieldApiName + ' in object: ' + curRequest.objectApiName);
+                            
+                        }
+    
+                    }
+                    when 'RemoveValue' {
+                        //System.debug('selected values are: ' + selectedValueList);
+                        if (selectedValueList.contains(curRequest.targetValue)) {
+                            Integer counter = 0;
+                            for(Integer x = 0; x< selectedValueList.size(); x++) {
+                                System.debug('x is: ' + x);
+                                if (selectedValueList[x] == curRequest.targetValue) {
+                                    
+                                    counter = x;
+                                }
+                            }
+                            System.debug('index position is: ' + counter);
+                            selectedValueList.remove(counter);
+                        } 
+    
+                    }
+                    when else {
+                        throw new InvocableActionException('You provided an invalid value for the operation value');
+                    }
                 }
             }
-
-
-            List<String> valueCollection = new List<String>();
-            curResponse.fieldValues = selectedValues;
+           
+            
+            curResponse.selectedValuesList = selectedValueList;
+            curResponse.availableValuesList = availableValuesList;
+            curResponse.selectedValuesSemicolonString = String.join(selectedValueList, ';');
+            System.debug('updated selectedValuesSemicolonString is: ' + curResponse.selectedValuesSemicolonString);
+            if (curRequest.saveAutomatically == true) {
+                curRequest.curRecord.put(curRequest.fieldApiName, curResponse.selectedValuesSemicolonString);
+                update curRequest.curRecord;
+            }
+          
+           
             result.add(curResponse);
  
         }
         return result;
+    }
+
+    private static List<String> getPicklistValues(String ObjectApi_name,String Field_name){ 
+
+        List<String> lstPickvals=new List<String>();
+        Schema.SObjectType targetType = Schema.getGlobalDescribe().get(ObjectApi_name);//From the Object Api name retrieving the SObject
+        Sobject Object_name = targetType.newSObject();
+        Schema.sObjectType sobject_type = Object_name.getSObjectType(); //grab the sobject that was passed
+        Schema.DescribeSObjectResult sobject_describe = sobject_type.getDescribe(); //describe the sobject
+        Map<String, Schema.SObjectField> field_map = sobject_describe.fields.getMap(); //get a map of fields for the passed sobject
+        List<Schema.PicklistEntry> pick_list_values = field_map.get(Field_name).getDescribe().getPickListValues(); //grab the list of picklist values for the passed field on the sobject
+        for (Schema.PicklistEntry a : pick_list_values) { //for all values in the picklist list
+            lstPickvals.add(a.getValue());//add the value  to our final list
+         }
+      
+        return lstPickvals;
     }
 
     private static void validateFieldType(Request curRequest) {
@@ -60,14 +114,14 @@ public with sharing class ManageMultiselectField {
         @InvocableVariable(label='Api name of the target Field' required = true )
         public string fieldApiName;
         
-        @InvocableVariable(label='Desired Action to carry out on the target multiselect field' required = true)
+        @InvocableVariable(label='Desired Action to carry out on the target multiselect field' )
         public string operation;
         
         @InvocableVariable(label='Target Value')
-        public string value;
+        public string targetValue;
 
         @InvocableVariable(label='SaveAutomatically')
-        public string saveAutomatically;
+        public Boolean saveAutomatically;
 
         @InvocableVariable(label='Input Record')
         public SObject curRecord;
@@ -75,11 +129,19 @@ public with sharing class ManageMultiselectField {
     
     /* Output parameters of the Apex action */
     public class Response{
-        @InvocableVariable(label='Values of the Multiselect Field, returned as a collection of strings')
-        public List<String> fieldValues; 
+        @InvocableVariable(label='Selected Values, returned as a collection of strings')
+        public List<String> selectedValuesList; 
+
+        @InvocableVariable(label='Selected Values, returned as a semicolon string')
+        public String selectedValuesSemicolonString; 
+
+        @InvocableVariable(label='Available Values, returned as a collection of strings')
+        public List<String> availableValuesList; 
         
-        @InvocableVariable(label='Boolean result of a check for whether the provided value is present')
+        @InvocableVariable(label='Is Target Present?')
         public Boolean targetPresent;
+
+    
     }
 
     public class InvocableActionException extends Exception{}

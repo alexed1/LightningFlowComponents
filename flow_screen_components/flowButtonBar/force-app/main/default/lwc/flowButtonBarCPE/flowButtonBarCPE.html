@@ -1,0 +1,237 @@
+<template>
+    <!-- SIDEBAR -->
+    <div class="shiftback">
+        <lightning-accordion allow-multiple-sections-open active-section-name={openAccordionSections}
+            class="slds-p-around_none slds-m-around_none">
+            <!-- BUTTONS -->
+            <lightning-accordion-section label="Buttons" name="buttons" class="slds-p-around_none slds-m-around_none">
+                <article>
+                    <div class="dragdropContainer" ondrop={handleContainerDrop}>
+                        <template for:each={buttons} for:item="button" for:index="index">
+                            <div class="dropzone" data-index={index} key={button.value}
+                                ondragover={handleDropzoneDragOver} ondragleave={handleDragLeave}></div>
+                            <div class="slds-grid buttonContainer slds-p-around_xx-small" key={button.value}
+                                data-index={index} ondragover={handleRowContainerDragOver}
+                                ondragleave={handleDragLeave}>
+                                <div>
+                                    <lightning-icon icon-name="utility:drag_and_drop" class="dragHandle"
+                                        draggable="true" data-index={index} ondragstart={handleDragStart}>
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-button label={button.label} data-value={button.value} data-index={index}
+                                        variant={button.variant.value} icon-name={button.iconName}
+                                        icon-position={button.iconPosition} onclick={handleButtonOpenClick}>
+                                    </lightning-button>
+                                    <div class="slds-text-body_small">
+                                        Value: {button.value}
+                                    </div>
+                                </div>
+                                <div class="slds-p-around_x-small buttonRowActionsContainer">
+                                    <lightning-icon icon-name="utility:edit" class="buttonAction slds-p-around_xx-small"
+                                        size="xx-small" data-index={index} onclick={handleButtonOpenClick}>
+                                    </lightning-icon>
+                                    <lightning-icon icon-name="utility:delete"
+                                        class="buttonAction slds-p-around_xx-small" size="xx-small" data-index={index}
+                                        onclick={handleButtonDeleteClick}></lightning-icon>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="dropzone" data-index={buttons.length} ondragover={handleDropzoneDragOver}
+                            ondragleave={handleDragLeave}></div>
+
+                        <div class="buttonBarActions">
+                            <template if:false={newButtonDisabled}>
+                                <span class="slds-text-link slds-text-link_reset" onclick={handleNewButtonClick}>Add new
+                                    button</span>
+                            </template>
+                            <span><span class="slds-text-link slds-text-link_reset"
+                                    onclick={handleShowPreviewClick}>Show preview</span></span>
+                        </div>
+                    </div>
+                </article>
+            </lightning-accordion-section>
+
+            <!-- SETTINGS -->
+            <lightning-accordion-section label="Button Bar Settings" name="settings"
+                class="slds-p-around_none slds-m-around_none">
+                <article>
+                    <!-- <lightning-combobox label={inputValues.orientation.label} name="orientation"
+                        value={inputValues.orientation.value} options={orientationOptions}
+                        onchange={handleComboboxChange}></lightning-combobox> -->
+                    <c-toggle-input label={inputValues.orientation.label} name="orientation"
+                        options={orientationOptions} value={inputValues.orientation.value}
+                        ontogglechange={handleToggleChange}></c-toggle-input>
+
+                    <template if:false={isVertical}>
+                        <!-- <lightning-combobox label={inputValues.alignment.label} name="alignment"
+                            value={inputValues.alignment.value} options={alignmentOptions}
+                            onchange={handleComboboxChange}></lightning-combobox> -->
+
+                        <c-toggle-input label={inputValues.alignment.label} name="alignment" options={alignmentOptions}
+                            value={inputValues.alignment.value} ontogglechange={handleToggleChange}></c-toggle-input>
+
+                        <c-toggle-input label={inputValues.groupAsToggle.label}
+                            help-text="Horizontal buttons can be displayed individually or as a toggle/button group (like this very option!)"
+                            name="groupAsToggle" options={clickActionOptions} value={inputValues.groupAsToggle.value}
+                            ontogglechange={handleToggleChange}></c-toggle-input>
+                    </template>
+                    <c-toggle-input label={inputValues.doNotTransitionOnClick.label}
+                        help-text="By default, clicking any button triggers a Flow navigation action. Set this to 'Yes' for selection buttons instead of navigation buttons. Clicking a button selects it but does not navigate in the Flow. Only one button can be selected at a time. WARNING: This will remove all variants (colours) from the buttons, as each button is either Neutral (unselected) or Brand (selected)."
+                        name="doNotTransitionOnClick" options={clickActionOptions}
+                        value={inputValues.doNotTransitionOnClick.value} ontogglechange={handleToggleChange}>
+                    </c-toggle-input>
+                    <lightning-combobox name="showLines" label={inputValues.showLines.label}
+                        value={inputValues.showLines.value}
+                        field-level-help="You can optionally add lines below and/or above the button bar to separate it from the rest of the screen. Useful if you want to replace the standard Flow footer; use 'above' to replicate the standard UI"
+                        options={showLinesOptions} onchange={handleComboboxChange}></lightning-combobox>
+
+                </article>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+
+    <!-- BUTTON EDIT MODAL -->
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title slds-hyphenate">Build-A-Button</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-text-title slds-align_absolute-center">Preview</div>
+                    <div class="slds-align_absolute-center">
+                        <lightning-button label={selectedButton.label} variant={selectedButton.variant.value}
+                            icon-name={selectedButton.iconName} icon-position={selectedButton.iconPosition}>
+                        </lightning-button>
+                    </div>
+
+                    <hr class="slds-m-vertical_medium">
+                    <div class="slds-grid slds-wrap">
+
+                        <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Label"
+                            value={selectedButton.label} onchange={handleModalLabelChange} onblur={handleModalLabelBlur}
+                            required></lightning-input>
+
+                        <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Value"
+                            value={selectedButton.value} onchange={handleModalValueChange} required></lightning-input>
+
+                        <!-- Select style (variant) for each button -->
+                        <div class="slds-size_1-of-2 slds-p-around_xx-small">
+                            <div class="slds-form-element">
+                                <label class="slds-form-element__label">Variant</label>
+                                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                    <template if:false={inputValues.doNotTransitionOnClick.value}>
+                                        <lightning-icon size="x-small"
+                                            class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                            icon-name="utility:down"></lightning-icon>
+                                        <input type="text" placeholder="Select button variant"
+                                            value={selectedButton.variant.label} class="slds-input"
+                                            onfocus={handleStyleFocus} onblur={handleStyleBlur} />
+                                    </template>
+                                    <template if:true={inputValues.doNotTransitionOnClick.value}>
+                                        <input type="text" value={selectedButton.variant.label} class="slds-input"
+                                            disabled />
+                                        <span class="slds-text-body_small slds-text-color_weak slds-nubbin_bottom-left">
+                                            Colour variants are available only when
+                                            "{inputValues.doNotTransitionOnClick.label}" is set to false.
+                                        </span>
+                                    </template>
+
+                                    <template if:true={displayVariants}>
+                                        <div class="slds-dropdown slds-dropdown_fluid" role="listbox">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                <template for:each={variantOptions} for:item="variant">
+                                                    <li role="presentation"
+                                                        class="slds-listbox__item slds-align_absolute-center slds-p-around_x-small"
+                                                        key={variant.label}>
+                                                        <lightning-button label={variant.label} variant={variant.value}
+                                                            onmousedown={handleStyleSelect}></lightning-button>
+                                                        <!--
+                                                        <button class={style.class} data-value={style.value} data-label={style.label} data-variant={style.variant} onmousedown={handleStyleSelect}>{style.label}</button>
+                                                        -->
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slds-size_1-of-2 slds-p-around_xx-small">
+                            <c-fsc_pick-icon oniconselection={handleSelectIcon} hide-standard-icons="true"
+                                hide-custom-icons="true" hide-action-icons="true" mode="combobox"
+                                icon-name={selectedButton.iconName}></c-fsc_pick-icon>
+                            <template if:true={selectedButton.iconName}>
+                                <lightning-radio-group label="Icon Position" type="button" options={positionOptions}
+                                    value={selectedButton.iconPosition} onchange={handleIconPositionChange}>
+                                </lightning-radio-group>
+                            </template>
+                        </div>
+
+                        <!-- <div class="slds-size_1-of-2 slds-p-around_xx-small">
+                            <lightning-combobox label="Flow Navigation Type"></lightning-combobox>
+                        </div> -->
+
+
+
+                        <lightning-input class="slds-size_1-of-1 slds-p-around_xx-small" label="Description Text"
+                            value={selectedButton.descriptionText} onchange={handleModalDescriptionChange}
+                            disabled={isHorizontal}>
+                        </lightning-input>
+                        <template if:true={isHorizontal}>
+                            <span class="slds-text-body_small slds-text-color_weak slds-nubbin_bottom-left">
+                                Description Text is only visible on vertical orientation
+                            </span>
+                        </template>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-is-relative">
+                    <span>
+                        <template if:true={showConfirmDelete}>
+                            <!--
+                            <section class="slds-popover slds-nubbin_bottom-left slds-popover_small confirmDialog" role="dialog">
+                                <div class="slds-popover__body">
+                                    <p>Confirm delete?</p>
+                                </div>
+                            </section>
+                            -->
+                            <!--<button class="slds-button slds-button_destructive confirmButton" onclick={handleButtonConfirmDeleteClick}>Confirm Delete</button>-->
+                        </template>
+                    </span>
+                    <template if:false={modalIsNewButton}>
+                        <button class="slds-button slds-button_text-destructive"
+                            onclick={handleButtonDeleteClick}>Delete</button>
+                    </template>
+                    <button class="slds-button slds-button_neutral" onclick={handleModalCancelClick}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={handleModalSaveClick}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- PREVIEW MODAL -->
+    <template if:true={showPreviewModal}>
+        <section role="dialog" tabindex="0" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title slds-hyphenate">Preview</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class={inputValues.alignment.value}>
+                        <c-flow-button-bar buttons={buttons} orientation={inputValues.orientation.value}
+                            alignment={inputValues.alignment.value} group-as-toggle={inputValues.groupAsToggle.value}
+                            show-lines={inputValues.showLines.value} class="slds-p-around_medium" preview-mode="true">
+                        </c-flow-button-bar>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-is-relative">
+                    <button class="slds-button slds-button_neutral" onclick={handlePreviewModalClose}>Close</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

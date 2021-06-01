@@ -14,6 +14,7 @@ public with sharing class ExecuteNBAStrategy {
 
         //add the return values to the Results object
         response.curRecs = curApexDefinedRecList;
+        response.recCount = curApexDefinedRecList.recommendations.size();
 
         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper = new List<Results>();
@@ -123,6 +124,9 @@ public with sharing class ExecuteNBAStrategy {
 
         @InvocableVariable
         public NBARecommendationsList curRecs;
+
+        @InvocableVariable
+        public Integer recCount;
 
     }
 

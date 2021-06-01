@@ -1,0 +1,57 @@
+/* For some reason the accordion section juts out to the right a little, so this is my clumsy way of shifting it back */
+.shiftback {
+    position: relative;
+    left: -1em;
+}
+
+.buttonContainer {
+    position: relative;
+    left: -1em;
+}
+
+.confirmDialog {
+    position: relative;
+    bottom: 0;
+}
+
+.confirmButton {
+    position: absolute;
+    left: 0;
+    top: 0;    
+}
+
+/* Hide the drag n drop handle and the Edit/Delete actions until the user mouses over a particular button */
+.dragHandle, .buttonAction {
+    opacity: 0;
+    transition: opacity 0.25s;
+    cursor: pointer;
+}
+.buttonContainer:hover .dragHandle, .buttonContainer:hover .buttonAction{
+    opacity: 1;
+}
+
+.dropzone {
+    background-color: #005fb2;
+    border: 0;
+    min-height: 0;
+    transition: min-height 0.1s;
+}
+
+.dropzone.dropzone_active {
+    min-height: .75em;
+}
+
+.variantContainer {
+    width: 100%;
+    position: absolute;
+}
+
+.slds-modal__content {
+    overflow: initial;
+}
+
+.buttonBarActions span + span {
+    padding-left: .75em;
+    margin-left: .75em;
+    border-left: solid 1px grey;
+}

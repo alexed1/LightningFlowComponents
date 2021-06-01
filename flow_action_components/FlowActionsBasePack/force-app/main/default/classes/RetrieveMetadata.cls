@@ -80,15 +80,20 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 
     
     @auraEnabled
-	global static String RetrieveMetadataItem(String metadataName)
-	{		
+
+	global static String RetrieveMetadataItem(String metadataName){		
+	   	String jobId = RetrieveMetadataItemV2(metadataName, 'Flow');
+						
+		return jobId;	
+    }
+
+	@auraEnabled
+	global static String RetrieveMetadataItemV2(String metadataName, String metadataType){		
+
         
 	   System.debug('entering RetrieveMetadataItem with metadataName: ' + metadataName);
 
 
-
-
-        
 		// Reset state from any previous requests
 		MetaDataRetrieveZip = null;
 		MetadataFiles = null;

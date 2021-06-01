@@ -11,7 +11,7 @@
 **/
 
 import { LightningElement,track,api,wire } from 'lwc';
-import requestMetadata from '@salesforce/apex/usf.RetrieveMetadata.RetrieveMetadataItem';
+import requestMetadata from '@salesforce/apex/usf.RetrieveMetadata.RetrieveMetadataItemV2';
 import checkRetrieveStatus from '@salesforce/apex/usf.RetrieveMetadata.checkAsyncRequest';
 import getFileNames from '@salesforce/apex/usf.RetrieveMetadata.getFileNames';
 import fsc_deployMetadata from '@salesforce/apex/usf.DeployMetadata.deploy';

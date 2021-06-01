@@ -80,13 +80,11 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 
     
     @auraEnabled
-	global static String RetrieveMetadataItem(String metadataName, String metadataType)
+	global static String RetrieveMetadataItem(String metadataName)
 	{		
         
 	   System.debug('entering RetrieveMetadataItem with metadataName: ' + metadataName);
-	   if(metadataType == 'Workflow' && metadataName.contains('.')) {
-			metadataName = metadataName.split('\\.')[0];
-		}
+
 
 
 
@@ -108,7 +106,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
         MetadataService.PackageTypeMembers packageType = new MetadataService.PackageTypeMembers();
         
         //Flow-specific code
-		packageType.name = metadataType; 
+		packageType.name = 'Flow'; 
 		packageType.members = new String[] { metadataName };
         retrieveRequest.unpackaged.types.add(packageType);
         System.debug('retrieve request is: ' + retrieveRequest);

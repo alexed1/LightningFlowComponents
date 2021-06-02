@@ -32,6 +32,22 @@ export default class FieldMappingSection extends LightningElement {
         }
     }
 
+    _builderContext;
+    _flowVariables;
+    @api 
+    get builderContext() {
+        return this._builderContext;
+    }
+
+    set builderContext(context) {
+        
+        this._builderContext = context || {};
+        if (this._builderContext) {
+            const { variables } = this._builderContext;
+            this._flowVariables = [...variables];
+        }
+    }
+
     @track _itemList; //= [{key :'', value : ''}];
 
     addItem() {

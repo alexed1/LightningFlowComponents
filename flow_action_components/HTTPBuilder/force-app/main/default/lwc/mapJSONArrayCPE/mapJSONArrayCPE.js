@@ -43,6 +43,12 @@ export default class MapJSONArrayCPE extends LightningElement {
         return param && param.value;
     }
 
+    get inputJSONStringType() {
+        //return this.inputValues['Endpoint'];
+        const param = this.inputVariables.find(({ name }) => name === 'inputJSONString');
+        return param && param.valueDataType;
+    }
+
     get keysToExtract() {
 
         const param = this.inputVariables.find(({ name }) => name === 'keysToExtract');
@@ -69,7 +75,7 @@ export default class MapJSONArrayCPE extends LightningElement {
         return this.errors.length > 0;
     }
 
-    __builderContext;
+    _builderContext;
     _flowVariables;
 
     @api validate() {

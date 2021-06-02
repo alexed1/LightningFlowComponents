@@ -1,18 +1,53 @@
 <template>
     <div>{labels.Make_HTTP_Call}</div>
 
-    <lightning-input label={labels.urlLabel} onchange={changeURL} value={url} class="slds-m-around_medium" required="true"></lightning-input>
-    <lightning-combobox label={labels.HTTP_Method} options={methodList} onchange={changeMethod} value={method} class="slds-m-around_medium" required="true"></lightning-combobox>
-    <lightning-input label={labels.Timeout_in_ms} onchange={changeTimeout} value={timeout} class="slds-m-around_medium" type="number"></lightning-input>
-    <c-list-builder master-label={labels.Specify_Params} add-button-label={labels.Add_Param} list-data={paramList} onchangelist={changeParams}></c-list-builder>
-    <c-list-builder master-label={labels.Specify_Headers} add-button-label={labels.Add_Header} list-data={headerList} onchangelist={changeHeaders}></c-list-builder>
+    <c-fsc_flow-combobox 
+        label={labels.urlLabel} 
+        builder-context={_builderContext} 
+        name="Endpoint"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={url} 
+        value-type={urlType} 
+        class="slds-m-around_medium">
+        
+    </c-fsc_flow-combobox>
 
-    <lightning-textarea
-        class="slds-m-around_medium"
-        label={labels.Body_Label}
-        value={body}
-        onchange={changeBody}>
-    </lightning-textarea>
+    <c-fsc_flow-combobox 
+        label={labels.HTTP_Method} 
+        builder-context={_builderContext} 
+        name="Method"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={method} 
+        value-type={methodType} 
+        class="slds-m-around_medium">
+        
+    </c-fsc_flow-combobox>
+    <lightning-input label={labels.Timeout_in_ms} onchange={changeTimeout} value={timeout} type="number"></lightning-input>
+    <c-list-builder 
+        master-label={labels.Specify_Params} 
+        add-button-label={labels.Add_Param} 
+        list-data={paramList} 
+        onchangelist={changeParams}
+        builder-context={builderContext}>
+    </c-list-builder>
+    <c-list-builder 
+        master-label={labels.Specify_Headers} 
+        add-button-label={labels.Add_Header} 
+        list-data={headerList} 
+        onchangelist={changeHeaders}
+        builder-context={builderContext}>
+    </c-list-builder>
+
+    <c-fsc_flow-combobox 
+        label={labels.Body_Label} 
+        builder-context={_builderContext} 
+        name="Body"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={body} 
+        value-type={bodyType} 
+        class="slds-m-around_medium">
+        
+    </c-fsc_flow-combobox>
 
     <lightning-input type="checkbox" checked={compressedGzip} label={labels.Compress_Request_body_to_gzip} class="slds-m-around_medium" onchange={changeCompressedGzip}></lightning-input>
 

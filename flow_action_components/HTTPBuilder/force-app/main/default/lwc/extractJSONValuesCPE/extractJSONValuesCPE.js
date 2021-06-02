@@ -36,12 +36,18 @@ export default class ExtractJSONValuesCPE extends LightningElement {
         return param && param.value;
     }
 
+    get inputJSONStringType() {
+        //return this.inputValues['Endpoint'];
+        const param = this.inputVariables.find(({ name }) => name === 'inputJSONString');
+        return param && param.valueDataType;
+    }
+
     get keysToExtract() {
         //return this.inputValues['Endpoint'];
         const param = this.inputVariables.find(({ name }) => name === 'keysToExtract');
         return param && param.value;
     }
-    __builderContext;
+    _builderContext;
     _flowVariables;
 
     handleFlowComboboxValueChange(event) {

@@ -1,9 +1,9 @@
 <template>
     <lightning-layout vertical-align="end">
-        <lightning-layout-item size="5" padding="around-small">
+        <lightning-layout-item padding="horizontal-small" size="5" >
             <c-fsc_pick-object-and-field field-label={labels.Set_this_output_field} object-type={sobjectType} field={key} onfieldselected={changeKey} hide-object-picklist="true"></c-fsc_pick-object-and-field>
         </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="5">
+        <lightning-layout-item padding="horizontal-small" size="5">
             <c-fsc_flow-combobox 
                 label={labels.To_the_value_of_this_key} 
                 builder-context={_builderContext} 
@@ -15,9 +15,9 @@
             </c-fsc_flow-combobox>
         </lightning-layout-item>
 
-        <lightning-layout-item padding="around-small" size="2">
+        <lightning-layout-item  size="2">
             <template if:true={showButton}>
-                <lightning-button-icon icon-name="utility:close"  alternative-text="Delete" class="slds-m-left_xx-small slds-align_absolute-bottom"  title="Delete" onclick={remove}></lightning-button-icon>
+                <lightning-button-icon size="small" icon-name="utility:delete"  alternative-text="Delete" class="slds-m-left_xx-small slds-align_absolute-bottom"  title="Delete" onclick={remove}></lightning-button-icon>
             </template>
         </lightning-layout-item>
     </lightning-layout>

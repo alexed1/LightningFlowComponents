@@ -136,7 +136,6 @@ export default class FlowButtonBarCPE extends LightningElement {
 
 
     initializeValues() {
-        // console.log('in initializeValues');
         if (this._values && this._values.length) {
             this._values.forEach(curInputParam => {
                 let inputValue = this.inputValues[curInputParam.name];
@@ -153,7 +152,7 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
-        console.log('in CPE dispatch to flow: ', id, newValue, newValueDataType);
+        // console.log('in CPE dispatch to flow: ', id, newValue, newValueDataType);
         const valueChangedEvent = new CustomEvent(FLOW_EVENT_TYPE.CHANGE, {
             bubbles: true,
             cancelable: false,
@@ -171,7 +170,6 @@ export default class FlowButtonBarCPE extends LightningElement {
     @api validate() {
         const validity = [];
         for (let buttonBarInput of this.template.querySelectorAll('c-fsc_flow-button-bar')) {
-            console.log('logging through buttonBarInput');
             if (buttonBarInput.required && !(buttonBarInput.values && buttonBarInput.values.length)) {
                 buttonBarInput.errorMessage = ERROR_MESSAGES.REQUIRED_FIELD;
                 validity.push({
@@ -200,10 +198,8 @@ export default class FlowButtonBarCPE extends LightningElement {
         return this._activeDropZoneIndex;
     }
     set activeDropZoneIndex(dzIndex) {
-        //console.log('in set activeDropZoneIndex, to: '+ dzIndex);
         this._activeDropZoneIndex = dzIndex;
         for (let dz of this.template.querySelectorAll('.dropzone')) {
-            //console.log(JSON.stringify(dz));
             if (dzIndex >= 0 && dz.dataset.index == dzIndex) {
                 dz.classList.add('dropzone_active');
             } else {
@@ -259,44 +255,26 @@ export default class FlowButtonBarCPE extends LightningElement {
         this.setDefaults();
     }
 
+    // TODO: Defaults are wonky, need to fix them
     setDefaults() {
         // this.inputValues.orientation.value = this.inputValues.orientation.value || this.orientations.default.value;
         // this.inputValues.alignment.value = this.inputValues.alignment.value || this.alignments.default.value;
         // this.inputValues.showLines.value = this.inputValues.showLines.value || this.showLines.default.value;
         // this.actionModes.default.value = this.actionModes.default.value || this.actionModes.default.value;
 
-        // let valuesNeedingDefaults = this.inputValues.filter(input => {
-        //     return input.value && !this._values.find(_value => { return _value.name === input.name
-
-
-        //     })
-        // });
-        // for (let inputValue of valuesNeedingDefaults) {
-
-        // }
-
         for (let [name, value] of Object.entries(this.inputValues)) {
-            // console.log('value ['+ name +']= '+ JSON.stringify(value));
             // if (this.defaultValues[name]) {
             if (value) {
                 let hadValueSet = !this._values.some(_value => {
                     return _value.name === name;
                 });
                 if (hadValueSet) {
-                    console.log(name + ' not found, so going with default value of ' + this.defaultValues[name]);
                     this.inputValues[name].value = this.defaultValues[name];
                     this.updateInputValue(name, this.defaultValues[name]);
                 }
             }
         }
 
-    }
-
-    renderedCallback() {
-        // if (this.showPreviewModal) {
-        //     this.updatePreviewButtonBar('required', this.inputValues.required.value);
-        //     this.updatePreviewButtonBar('multiselect', this.inputValues.multiselect.value);
-        // }
     }
 
     /* ACTION FUNCTIONS */
@@ -417,16 +395,17 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     /* INPUT CHANGE EVENT HANDLERS */
     handleModalLabelChange(event) {
-        this.selectedButton.label = event.detail.value;
+        this.selectedButton.label = event.currentTarget.value;
     }
-    handleModalLabelBlur() {
+    handleModalLabelBlur(event) {
+        this.selectedButton.label = event.currentTarget.value;
         this.setValueFromLabel();
     }
     handleModalValueChange(event) {
-        this.selectedButton.value = event.detail.value;
+        this.selectedButton.value = event.currentTarget.value;
     }
     handleModalDescriptionChange(event) {
-        this.selectedButton.descriptionText = event.detail.value;
+        this.selectedButton.descriptionText = event.currentTarget.value;
     }
 
     handleComboboxChange(event) {
@@ -442,7 +421,6 @@ export default class FlowButtonBarCPE extends LightningElement {
             let value = event.detail.value;
             // console.log('in handleButtonClick, name = '+ name, 'value = '+ value);
             this.inputValues[name].value = value;
-            // console.log(JSON.parse(JSON.stringify(this.inputValues)));
             this.dispatchFlowValueChangeEvent(name, value, DATA_TYPE.STRING);
 
             // // Update preview button bar
@@ -467,7 +445,7 @@ export default class FlowButtonBarCPE extends LightningElement {
             if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
             if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
 
-            let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
+            let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.currentTarget.value;
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
         }
     }
@@ -503,7 +481,6 @@ export default class FlowButtonBarCPE extends LightningElement {
         let dzIndex = this.activeDropZoneIndex;
         if (originIndex == dzIndex || originIndex == (dzIndex - 1)) {
             // ignore, it's not actually moving
-            // console.log('false alarm');
         } else {
             let draggedButton = this.buttons.splice(originIndex, 1);
             let startPos = dzIndex;

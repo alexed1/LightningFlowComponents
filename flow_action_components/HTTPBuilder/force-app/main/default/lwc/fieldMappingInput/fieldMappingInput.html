@@ -1,14 +1,14 @@
 <template>
     <lightning-layout vertical-align="end">
         <lightning-layout-item padding="horizontal-small" size="5" >
-            <c-fsc_pick-object-and-field field-label={labels.Set_this_output_field} object-type={sobjectType} field={key} onfieldselected={changeKey} hide-object-picklist="true"></c-fsc_pick-object-and-field>
+            <c-fsc_pick-object-and-field name="key" field-label={labels.Set_this_output_field} object-type={sobjectType} field={key} onfieldselected={changeinput} hide-object-picklist="true"></c-fsc_pick-object-and-field>
         </lightning-layout-item>
         <lightning-layout-item padding="horizontal-small" size="5">
             <c-fsc_flow-combobox 
                 label={labels.To_the_value_of_this_key} 
                 builder-context={_builderContext} 
-                name="key"  
-                onvaluechanged={changeValue} 
+                name="value"  
+                onvaluechanged={changeinput} 
                 value={value} 
                 value-type={valueType}>
 

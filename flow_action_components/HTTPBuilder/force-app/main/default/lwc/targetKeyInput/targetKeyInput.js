@@ -46,33 +46,33 @@ export default class TargetKeyInput extends LightningElement {
     get showButton() {
         return this.entity.order > 0;
     }
-    changeKey(event) {
-        this.entity = JSON.parse(JSON.stringify(this.entity));
-        this.entity.key = event.detail.value;
-        const valueChangedEvent = new CustomEvent('changeinput', {
-            detail: {
-                entity: this.entity,
-            }
-        });
-        this.dispatchEvent(valueChangedEvent);
-    }
+    
 
-    changeValue(event) {
+    changeinput(event) {
+        let inputName = event.target.name;
         this.entity = JSON.parse(JSON.stringify(this.entity));
-        if(event && event.detail) {
-            this.entity.value = event.detail.newValue;
-            if(event.detail.newValueDataType === 'reference') {
-                this.entity.value = '{!' + this.entity.value + '}';
+        if(inputName === 'key') {
+            this.entity.key = event.detail.value;
+        }
+
+        if(inputName === 'value') {
+            if(event && event.detail) {
+                this.entity.value = event.detail.newValue;
+                if(event.detail.newValueDataType === 'reference') {
+                    this.entity.value = '{!' + this.entity.value + '}';
+                }
             }
         }
-        const valueChangedEvent = new CustomEvent('changeinput', {
-            detail: {
-                entity: this.entity,
-            }
+
+        this.dispatchValueChangeEvent('changeinput', {entity : this.entity});
+    }
+
+    dispatchValueChangeEvent(eventName, detail) {
+        const valueChangedEvent = new CustomEvent(eventName, {
+            detail: detail
         });
         this.dispatchEvent(valueChangedEvent);
     }
-
     remove() {
         const removeItemEvent = new CustomEvent('removeitem', {
             detail: {

@@ -1,14 +1,14 @@
 <template>
     <lightning-layout vertical-align="end">
         <lightning-layout-item size="5" padding="horizontal-small">
-            <lightning-input  label={labels.Key_Label} onchange={changeKey} value={key}></lightning-input>
+            <lightning-input  name="key" label={labels.Key_Label} onchange={changeinput} value={key}></lightning-input>
         </lightning-layout-item>
         <lightning-layout-item padding="horizontal-small" size="5">
             <c-fsc_flow-combobox 
                 label={labels.Value_Label} 
                 builder-context={_builderContext} 
-                name="key"  
-                onvaluechanged={changeValue} 
+                name="value"  
+                onvaluechanged={changeinput} 
                 value={value} 
                 value-type={valueType}>
 

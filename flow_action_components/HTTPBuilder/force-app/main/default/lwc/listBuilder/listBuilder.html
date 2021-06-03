@@ -3,5 +3,7 @@
     <template for:each={listData} for:item="item">
         <c-params-input key={item.order} entity={item} onchangeinput={changeItem} onremoveitem={removeItem} builder-context={builderContext}></c-params-input>
     </template>
-    <lightning-button label={addButtonLabel} onclick={addItem} ></lightning-button>
+    <div class="slds-m-top_small">
+        <lightning-button label={addButtonLabel} onclick={addItem} ></lightning-button>
+    </div>
 </template>

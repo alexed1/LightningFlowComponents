@@ -197,9 +197,11 @@ export default class MakeHTTPCallCPE extends LightningElement {
             'requestJSON' : JSON.stringify(request)
         }).then(result => {
             this.testResult = JSON.parse(result);
-
         }).catch(error => {
             console.error('error', error);
+            this.testResult = {
+                Error_message : error.body.message
+            }
         });
     }
 

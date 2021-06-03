@@ -78,23 +78,6 @@ export default class MapJSONArrayCPE extends LightningElement {
     _builderContext;
     _flowVariables;
 
-    @api validate() {
-        let validity = [];
-        this.errors = [
-        ];
-
-    if(this.sObjectType !== this.sObjectTypeForValidate) { 
-        this.errors = [
-            'Target Object Type and Confirm Object Type are not equal'
-        ];
-        validity.push({ 
-            key: 'Sobject type',
-            errorString: 'Target Object Type and Confirm Object Type are not equal',
-        }); 
-    } 
-
-        return validity;
-}
     handleFlowComboboxValueChange(event) {
         if(event && event.detail) {
             this.dispatchFlowValueChangeEvent(event.detail.id, event.detail.newValue, event.detail.newValueDataType);
@@ -138,15 +121,11 @@ export default class MapJSONArrayCPE extends LightningElement {
         if(event && event.detail && this.sObjectType !== event.detail.objectType) {
             this.dispatchFlowGenericTypeChangeEvent('U__sobjectList', event.detail.objectType);
             this.dispatchFlowValueChangeEvent('keysToExtract', '', 'String');
-            //this.dispatchFlowValueChangeEvent('sobjectType', event.detail.objectType, 'String');
+            this.dispatchFlowValueChangeEvent('sobjectType', event.detail.objectType, 'String');
         }
 
     }
 
-    changeSObjectTypeForValidate(event) {
-            this.dispatchFlowValueChangeEvent('sobjectType', event.detail.objectType, 'String');
-
-    }
 
     get isSObjectSelected() {
         return this.sObjectType;

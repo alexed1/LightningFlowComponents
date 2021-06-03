@@ -113,7 +113,8 @@ public with sharing class MakeHTTPCall {
             }
 			
             //set Timeout. If null, Timeout is 10000ms
-            if (curRequest.Timeout != Null || curRequest.Timeout != 0){
+            System.debug('curRequest' + curRequest.Timeout);
+            if (curRequest.Timeout != null && curRequest.Timeout != 0){
                 req.setTimeout(curRequest.Timeout);
                 system.debug('setTimeout : '+curRequest.Timeout);
             }
@@ -157,7 +158,9 @@ public with sharing class MakeHTTPCall {
     private static HTTPRequest setRequestHeaders(String Headers, HTTPRequest req){
         List<HeaderKeyValue> ListHeaders = (List<HeaderKeyValue>) System.JSON.deserialize(Headers, List<HeaderKeyValue>.class);
         for (HeaderKeyValue Header:ListHeaders){
-            req.setHeader(Header.key, Header.value);
+            if(String.isNotEmpty(Header.key)) {
+                req.setHeader(Header.key, Header.value);
+            }
             System.debug('setHeader Key : '+Header.key+' with value : '+Header.value);
         }
         return req;

@@ -55,7 +55,7 @@
 
     <lightning-button label={labels.Test_Callout} onclick={makeTestCallout}></lightning-button>
     <template if:true={testResult}>
-        <div class="slds-m-around_medium">
+        <div class="slds-m-around_medium slds-hyphenate" >
             <b>{labels.Response_Result}</b>
             <div class="slds-m-around_small">
                 <template if:true={testResult.Error_message}>

@@ -3,6 +3,7 @@ import { LightningElement, track, api } from 'lwc';
 const TABLE_STYLE = "height: 400px; width:99%";
 
 // Icons updated 6/3/21
+// Lightning Design System Release 2.15.8 - May 27, 2021 
 
 const ACTION_ICONS = [
     { 'iconName': 'action:add_contact', 'id': 'action:add_contact' },

@@ -354,6 +354,9 @@ export default class ers_datatableCPE extends LightningElement {
         hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
             helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
         cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
+        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection Button', 
+            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table.'},
+        cb_hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
             helpText: 'Display a row number column as the first column in the table.'}, 
         cb_showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: ''},            
@@ -449,6 +452,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'matchCaseOnFilters'},
                 {name: 'suppressBottomBar'},
                 {name: 'hideHeaderActions'},
+                {name: 'hideClearSelectionButton'},
                 {name: 'not_suppressNameFieldLink'},
                 {name: 'openLinkinSameTab'},
             ]

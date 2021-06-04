@@ -67,6 +67,12 @@ export default class Datatable extends LightningElement {
     @api cb_hideHeaderActions;
 
     @api 
+    get hideClearSelectionButton() {
+        return (this.cb_hideClearSelectionButton == CB_TRUE) ? true : false;
+    }
+    @api cb_hideClearSelectionButton;
+
+    @api 
     get showRowNumbers() {
         return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
     }
@@ -1291,7 +1297,7 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn;
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
     }
 
     handleClearSelection() {

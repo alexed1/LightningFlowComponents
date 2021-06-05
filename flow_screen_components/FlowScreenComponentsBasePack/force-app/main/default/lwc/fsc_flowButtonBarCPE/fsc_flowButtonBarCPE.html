@@ -62,7 +62,7 @@
                     <c-fsc_flow-button-bar label={inputValues.actionMode.label} name="actionMode"
                         options={actionModes.options} value={inputValues.actionMode.value}
                         onbuttonclick={handleButtonClick} required
-                        help-text="In Navigation mode, clicking any button causes the user to navigate to the next/previous Flow element, where the button's value can be input to a Decision element to determine where to route them. In Selection mode, clicking the button does not cause navigation, it simply allows the user to select one or more of the options provided.">
+                        help-text="In Navigation mode, clicking any button causes the user to navigate to the next Flow element, where the button's value can be input to a Decision element to determine where to route them. In Selection mode, clicking the button does not cause navigation, it simply allows the user to select one or more of the options provided.">
                     </c-fsc_flow-button-bar>
 
                     <!-- Navigation mode settings -->
@@ -82,12 +82,12 @@
 
                     <!-- Selection mode settings -->
                     <template if:true={isSelectionMode}>
-                        <c-fsc_flow-button-bar label={inputValues.required.label} name="required"
+                        <c-fsc_flow-button-bar label={inputValues.required.label} name="required" helptext="Display a red 'required' asterisk in front of the label."
                             options={yesNo.options} value={inputValues.required.value} onbuttonclick={handleButtonClick}
                             required>
                         </c-fsc_flow-button-bar>
 
-                        <c-fsc_flow-button-bar label={inputValues.multiselect.label} name="multiselect"
+                        <c-fsc_flow-button-bar label={inputValues.multiselect.label} name="multiselect" helptext="If multi-select is not enabled, clicking any button unselects any selected buttons."
                             options={yesNo.options} value={inputValues.multiselect.value}
                             onbuttonclick={handleButtonClick} required>
                         </c-fsc_flow-button-bar>
@@ -121,10 +121,10 @@
                     <div class="slds-grid slds-wrap">
 
                         <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Label"
-                            value={selectedButton.label} oncommit={handleModalLabelChange} onblur={handleModalLabelBlur}
+                            value={selectedButton.label} oncommit={handleModalLabelChange} onblur={handleModalLabelBlur} placeholder="e.g. Cancel, Continue, Save, Next..."
                             required></lightning-input>
 
-                        <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Value"
+                        <lightning-input class="slds-size_1-of-2 slds-p-around_xx-small" label="Value" field-level-help="Value can be the same as label or you can change it."
                             value={selectedButton.value} onchange={handleModalValueChange} required></lightning-input>
 
                         <!-- Select style (variant) for each button -->

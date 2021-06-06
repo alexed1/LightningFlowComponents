@@ -1005,7 +1005,8 @@ export default class Datatable extends LightningElement {
                         fieldName: fieldName,
                         keyField: this.keyField,
                         keyFieldValue: {fieldName: this.keyField},
-                        picklistValues: this.picklistFieldMap[fieldName]
+                        picklistValues: this.picklistFieldMap[fieldName],
+                        alignment: 'slds-text-align_' + this.cellAttributes.alignment
                     };
                     wrapAttrib = {}; //For combobox, we need to force wrap = true or the dropdown will be truncated
                     wrapAttrib.wrap = true;
@@ -1357,6 +1358,7 @@ export default class Datatable extends LightningElement {
 
             case 'alignl':   // Config Mode Only
                 this.filterColumns[this.columnNumber].cellAttributes = {alignment: 'left'};
+                this.filterColumns[this.columnNumber].typeAttributes["alignment"] = 'slds-text-align_left'; //required for custom data table not using standard layout
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignl_'+this.columnNumber).checked = true;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignc_'+this.columnNumber).checked = false;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignr_'+this.columnNumber).checked = false;
@@ -1366,6 +1368,7 @@ export default class Datatable extends LightningElement {
 
             case 'alignc':   // Config Mode Only
                 this.filterColumns[this.columnNumber].cellAttributes = {alignment: 'center'};
+                this.filterColumns[this.columnNumber].typeAttributes["alignment"] = 'slds-text-align_center'; //required for custom data table not using standard layout
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignl_'+this.columnNumber).checked = false;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignc_'+this.columnNumber).checked = true;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignr_'+this.columnNumber).checked = false;
@@ -1375,6 +1378,7 @@ export default class Datatable extends LightningElement {
 
             case 'alignr':   // Config Mode Only
                 this.filterColumns[this.columnNumber].cellAttributes = {alignment: 'right'};
+                this.filterColumns[this.columnNumber].typeAttributes["alignment"] = 'slds-text-align_right'; //required for custom data table not using standard layout
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignl_'+this.columnNumber).checked = false;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignc_'+this.columnNumber).checked = false;
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'alignr_'+this.columnNumber).checked = true;

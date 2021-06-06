@@ -30,7 +30,7 @@ export default class ers_customLightningDatatable extends LightningDatatable {
         combobox: {
             template: ers_comboboxColumnType,
             standardCellLayout: false,
-            typeAttributes: ['editable', 'fieldName', 'keyField', 'keyFieldValue', 'picklistValues']
+            typeAttributes: ['editable', 'fieldName', 'keyField', 'keyFieldValue', 'picklistValues', 'alignment']
         }
     }
 }

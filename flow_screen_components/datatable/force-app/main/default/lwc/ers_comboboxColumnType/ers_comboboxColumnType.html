@@ -13,11 +13,11 @@
     ></lightning-combobox>
 
     <template if:false={editMode}>
-        <div class="combobox-view__min-height cell__is-editable slds-grid slds-p-vertical_xx-small slds-p-horizontal_x-small slds-var-m-around_xxx-small">
-            <div class="slds-col_bump-right slds-align-middle slds-truncate">
+        <div class={cellClass}>
+            <div class={valueClass}>
                 {value}
             </div>
-            <div class="slds-align-middle">
+            <div class="slds-align-middle slds-m-left_x-small">
                 <lightning-button-icon icon-name="utility:edit" size="medium" variant="bare" class="cell-icon__edit" onclick={editCombobox}></lightning-button-icon>
             </div>
         </div>

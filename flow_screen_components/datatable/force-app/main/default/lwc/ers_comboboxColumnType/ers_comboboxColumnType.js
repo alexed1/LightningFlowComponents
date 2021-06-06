@@ -7,6 +7,7 @@ export default class ers_comboboxColumnType extends LightningElement {
     @api keyFieldValue;
     @api picklistValues;
     @api value;
+    @api alignment
     editMode = false;
 
     get options() {
@@ -18,6 +19,26 @@ export default class ers_comboboxColumnType extends LightningElement {
             _options.unshift(option);
         }
         return _options
+    }
+
+    //bump left/right depending on alignment. For center, we will align the grids on a the cell level
+    get valueClass() {
+        let _valueClass = "slds-col_bump-right slds-align-middle slds-truncate";
+        if(this.alignment.includes("right")) {
+            _valueClass = "slds-col_bump-left slds-align-middle slds-truncate";
+        } else if(this.alignment.includes("center")) {
+            _valueClass = "slds-align-middle slds-truncate";
+        }
+        return _valueClass;
+    }
+
+    //if alignment is center, we align the grid to center
+    get cellClass() {
+        let _cellClass = "combobox-view__min-height cell__is-editable slds-grid slds-p-vertical_xx-small slds-p-horizontal_x-small slds-var-m-around_xxx-small";
+        if(this.alignment.includes("center")) {
+            _cellClass += " slds-grid_align-center";
+        }
+        return _cellClass;
     }
 
     handleChange(event) {

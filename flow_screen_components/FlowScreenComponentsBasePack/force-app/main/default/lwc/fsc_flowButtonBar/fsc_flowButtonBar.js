@@ -206,7 +206,7 @@ export default class FlowButtonBar extends LightningElement {
     }
 
     navigateFlow() {
-        if (this.value && this.value.toLowerCase() === 'previous' && this.availableActions.find(action => action === 'PREVIOUS')) {
+        if (this.value && this.value.toLowerCase() === 'previous' && this.availableActions.find(action => action === 'BACK')) {
             this.dispatchEvent(new FlowNavigationBackEvent());
         } else {
             if (this.availableActions.find(action => action === 'FINISH')) {

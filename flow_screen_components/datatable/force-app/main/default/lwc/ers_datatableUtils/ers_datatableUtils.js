@@ -20,7 +20,7 @@ if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '3.2.1',   // Current Source Code Version #
+        VERSION_NUMBER : '3.2.2',   // Current Source Code Version #
         MAXROWCOUNT : 1000,         // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,             // Used to round off the column widths during Config Mode to nearest value
         MYDOMAIN : myDomain,        // Used for building links for lookup fields

@@ -1,16 +1,23 @@
 <template>
     <lightning-layout vertical-align="end">
-        <lightning-layout-item size="5" padding="around-small">
-            <lightning-input  label={labels.Key_Label} onchange={changeKey} value={key}></lightning-input>
+        <lightning-layout-item size="5" padding="horizontal-small">
+            <lightning-input  name="key" label={labels.Key_Label} onchange={changeinput} value={key}></lightning-input>
         </lightning-layout-item>
-        <lightning-layout-item padding="around-small" size="5">
-            <lightning-input label={labels.Value_Label} onchange={changeValue} value={value}></lightning-input>
+        <lightning-layout-item padding="horizontal-small" size="5">
+            <c-fsc_flow-combobox 
+                label={labels.Value_Label} 
+                builder-context={_builderContext} 
+                name="value"  
+                onvaluechanged={changeinput} 
+                value={value} 
+                value-type={valueType}>
+
+            </c-fsc_flow-combobox>
         </lightning-layout-item>
 
-        <lightning-layout-item padding="around-small" size="2">
+        <lightning-layout-item  size="2">
             <template if:true={showButton}>
-                <lightning-button-icon icon-name="utility:close"  alternative-text="Delete" class="slds-m-left_xx-small slds-align_absolute-bottom"  title="Delete" onclick={remove}></lightning-button-icon>
-                <!-- <lightning-button label="remove"  class="slds-is-absolute-bottom"></lightning-button> -->
+                <lightning-button-icon size="small" icon-name="utility:delete"  alternative-text="Delete" class="slds-m-left_xx-small slds-align_absolute-bottom"  title="Delete" onclick={remove}></lightning-button-icon>
             </template>
         </lightning-layout-item>
     </lightning-layout>

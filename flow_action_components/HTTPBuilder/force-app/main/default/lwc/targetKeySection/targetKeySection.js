@@ -30,6 +30,22 @@ export default class TargetKeySection extends LightningElement {
         }
     }
 
+    _builderContext;
+    _flowVariables;
+    @api 
+    get builderContext() {
+        return this._builderContext;
+    }
+
+    set builderContext(context) {
+        
+        this._builderContext = context || {};
+        if (this._builderContext) {
+            const { variables } = this._builderContext;
+            this._flowVariables = [...variables];
+        }
+    }
+
     get isButtonDisable() {
         if(this.listData.length >= 20) {
             return true;
@@ -42,6 +58,8 @@ export default class TargetKeySection extends LightningElement {
     addItem() {
         if(this._itemList.length < 20) {
             this._itemList.push({key:'value' + (this._itemList.length + 1), value:'', order : this._itemList.length});
+            this.dispatchChange();
+
         }
     }
 

@@ -53,6 +53,21 @@ export default class MakeHTTPCallCPE extends LightningElement {
         Status_code,
         Make_HTTP_Call
     }
+    _builderContext;
+    _flowVariables;
+    @api 
+    get builderContext() {
+        return this._builderContext;
+    }
+
+    set builderContext(context) {
+        
+        this._builderContext = context || {};
+        if (this._builderContext) {
+            const { variables } = this._builderContext;
+            this._flowVariables = [...variables];
+        }
+    }
     get methodList() {
         return METHOD_LIST;
     }
@@ -63,10 +78,21 @@ export default class MakeHTTPCallCPE extends LightningElement {
         return param && param.value;
     }
 
+    get urlType() {
+        //return this.inputValues['Endpoint'];
+        const param = this.inputVariables.find(({ name }) => name === 'Endpoint');
+        return param && param.valueDataType;
+    }
+
     get method() {
         //return this.inputValues['Method'];
         const param = this.inputVariables.find(({ name }) => name === 'Method');
         return param && param.value;
+    }
+    get methodType() {
+        //return this.inputValues['Method'];
+        const param = this.inputVariables.find(({ name }) => name === 'Method');
+        return param && param.valueDataType;
     }
 
     get headerList() {
@@ -97,6 +123,11 @@ export default class MakeHTTPCallCPE extends LightningElement {
     get body() {
         const param = this.inputVariables.find(({ name }) => name === 'Body');
         return param && param.value;
+    }
+
+    get bodyType() {
+        const param = this.inputVariables.find(({ name }) => name === 'Body');
+        return param && param.valueDataType;
     }
 
     
@@ -166,10 +197,19 @@ export default class MakeHTTPCallCPE extends LightningElement {
             'requestJSON' : JSON.stringify(request)
         }).then(result => {
             this.testResult = JSON.parse(result);
-
         }).catch(error => {
             console.error('error', error);
+            this.testResult = {
+                Error_message : error.body.message
+            }
         });
+    }
+
+    handleFlowComboboxValueChange(event) {
+        if(event && event.detail) {
+            this.dispatchFlowValueChangeEvent(event.detail.id, event.detail.newValue, event.detail.newValueDataType);
+        }
+
     }
 
 

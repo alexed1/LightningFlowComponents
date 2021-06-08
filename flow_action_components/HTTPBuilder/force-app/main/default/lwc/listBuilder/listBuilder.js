@@ -5,6 +5,9 @@ export default class ListBuilder extends LightningElement {
 
     @api masterLabel;
     @api addButtonLabel;
+    _builderContext;
+    _flowVariables;
+    
     @api set listData(value) {
        if(value) {
            this._itemList = JSON.parse(value);
@@ -24,6 +27,20 @@ export default class ListBuilder extends LightningElement {
 
     get listData () {
        return this._itemList;
+    }
+
+    @api 
+    get builderContext() {
+        return this._builderContext;
+    }
+
+    set builderContext(context) {
+        
+        this._builderContext = context || {};
+        if (this._builderContext) {
+            const { variables } = this._builderContext;
+            this._flowVariables = [...variables];
+        }
     }
 
     @track _itemList; //= [{key :'', value : ''}];

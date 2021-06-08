@@ -8,7 +8,7 @@
         name="inputJSONString"  
         onvaluechanged={handleFlowComboboxValueChange} 
         value={inputJSONString} 
-        value-type="reference">
+        value-type={inputJSONStringType}>
 
     </c-fsc_flow-combobox>
 
@@ -16,10 +16,7 @@
         master-label={labels.Specify_the_keys_that_you_want_to_extract} 
         add-button-label={labels.Add_Target_Key} 
         list-data={keysToExtract} 
-        onchangelist={changekeysToExtract}>
+        onchangelist={changekeysToExtract}
+        builder-context={builderContext}>
     </c-target-key-section>
-    <!-- @InvocableVariable
-    public String inputJSONString;
-    @InvocableVariable
-    public String keysToExtract; -->
 </template>

@@ -203,4 +203,12 @@
         <shortDescription>url</shortDescription>
         <value>url</value>
     </labels>
+    <labels>
+        <fullName>JSON_ARRAY_EXCEPTION</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>JSON_ARRAY_EXCEPTION</shortDescription>
+        <value>Map JSON Array didn’t recognize the input string as a properly formed JSON array. Check to make sure that it starts with ’[‘ and ends with ’]‘ and that it contains one or more objects enclosed by { and }</value>
+    </labels>
+    
 </CustomLabels>

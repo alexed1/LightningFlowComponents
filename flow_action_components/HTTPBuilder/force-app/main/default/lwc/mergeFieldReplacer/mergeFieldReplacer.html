@@ -13,11 +13,11 @@
                 <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.Use_these_values_for}</h2>
             </header>
             <!-- Modal/Popup Box LWC body starts here -->
-            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="slds-modal__content slds-p-around_medium slds-hyphenate" id="modal-content-id-1" >
                 <template for:each={mergeFieldList} for:item="item">
                     <lightning-layout key={item.mergeValue} vertical-align="end">
                         
-                        <lightning-layout-item size="3"><b>{item.mergeValue}</b></lightning-layout-item>
+                        <lightning-layout-item size="4" padding="horizontal-small"><b>{item.mergeValue}</b></lightning-layout-item>
                         <lightning-layout-item size="6">
                             <lightning-input value={item.replacedValue} name={item.mergeValue} onchange={changeMergeValue}></lightning-input>
                         </lightning-layout-item>

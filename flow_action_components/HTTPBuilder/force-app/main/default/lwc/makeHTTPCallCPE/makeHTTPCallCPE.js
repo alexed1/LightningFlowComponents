@@ -55,13 +55,24 @@ export default class MakeHTTPCallCPE extends LightningElement {
     }
     _builderContext;
     _flowVariables;
+    _automaticOutputVariables;
+    @track isShowMergeFeildReplacer = false;
+    @track mergeFieldList = [];
+
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
     @api 
     get builderContext() {
         return this._builderContext;
     }
 
     set builderContext(context) {
-        
         this._builderContext = context || {};
         if (this._builderContext) {
             const { variables } = this._builderContext;
@@ -112,12 +123,12 @@ export default class MakeHTTPCallCPE extends LightningElement {
 
     get compressedGzip() {
         const param = this.inputVariables.find(({ name }) => name === 'Compressed_gzip');
-        return param && param.value;
+        return param && this.getFLowBooleanValue(param.value);
     }
 
     get bodyAsBlob() {
         const param = this.inputVariables.find(({ name }) => name === 'BodyAsBlob');
-        return param && param.value;
+        return param && this.getFLowBooleanValue(param.value);
     }
 
     get body() {
@@ -130,7 +141,6 @@ export default class MakeHTTPCallCPE extends LightningElement {
         return param && param.valueDataType;
     }
 
-    
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
@@ -181,18 +191,52 @@ export default class MakeHTTPCallCPE extends LightningElement {
     }
 
     makeTestCallout() {
-        let request = {
-            Method : this.method,
-            Endpoint : this.url,
-            Body : this.body,
-            Timeout : this.timeout,
-            Params : this.paramList,
-            Headers : this.headerList,
-            BodyAsBlob : this.bodyAsBlob,
-            Compressed_gzip : this.compressedGzip
+        this.testResult = null;
+        let requestJSON = this.getRequestJSON();        
 
-        };
+        this.mergeFieldList = requestJSON.match(/\{!(\d*\w*\.*\d*\w*)\}/g);//
+        if(!this.mergeFieldList || this.mergeFieldList.length < 1) {
+            this.makeRESTCall(JSON.parse(requestJSON));
+        } else {
+            this.isShowMergeFeildReplacer = true;
+        }
+    }
+
+    handleFlowComboboxValueChange(event) {
+        if(event && event.detail) {
+            this.dispatchFlowValueChangeEvent(event.detail.id, event.detail.newValue, event.detail.newValueDataType);
+        }
+
+    }
+
+    closeMergeFieldReplacer(event) {
+        if(event.detail) {
+            let mergeFieldList = event.detail.value;
+            
+            this.testResult = null;
+            let requestJSON = this.getRequestJSON();
+            mergeFieldList.forEach(element => {
+                requestJSON = requestJSON.replaceAll(element.mergeValue, element.replacedValue);
+            });
+
+            //let request = JSON.parse(requestJSON);
+            this.makeRESTCall(JSON.parse(requestJSON));
+        }
+        this.isShowMergeFeildReplacer = false;
         
+    }
+
+    getFLowBooleanValue(value) {
+        if(value === '$GlobalConstant.True') {
+            return true;
+        } else if('$GlobalConstant.False') {
+            return false;
+        }
+
+        return value;
+    }
+
+    makeRESTCall(request) {
         makeTestRESTCall( {
             'requestJSON' : JSON.stringify(request)
         }).then(result => {
@@ -205,13 +249,19 @@ export default class MakeHTTPCallCPE extends LightningElement {
         });
     }
 
-    handleFlowComboboxValueChange(event) {
-        if(event && event.detail) {
-            this.dispatchFlowValueChangeEvent(event.detail.id, event.detail.newValue, event.detail.newValueDataType);
-        }
+    getRequestJSON() {
+        let request = {
+            Method : this.methodType === 'reference' ? '{!' + this.method + '}' : this.method,
+            Endpoint : this.urlType === 'reference' ? '{!' + this.url + '}' : this.url,
+            Body : this.bodyType === 'reference' ? '{!' + this.body + '}' : this.body,
+            Timeout : this.timeout,
+            Params : this.paramList,
+            Headers : this.headerList,
+            BodyAsBlob : this.bodyAsBlob,
+            Compressed_gzip : this.compressedGzip
 
+        };
+        return JSON.stringify(request);
     }
-
-
     
 }

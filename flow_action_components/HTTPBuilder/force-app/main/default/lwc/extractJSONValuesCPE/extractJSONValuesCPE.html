@@ -8,7 +8,8 @@
         name="inputJSONString"  
         onvaluechanged={handleFlowComboboxValueChange} 
         value={inputJSONString} 
-        value-type={inputJSONStringType}>
+        value-type={inputJSONStringType}
+        automatic-output-variables={automaticOutputVariables}>
 
     </c-fsc_flow-combobox>
 
@@ -17,6 +18,7 @@
         add-button-label={labels.Add_Target_Key} 
         list-data={keysToExtract} 
         onchangelist={changekeysToExtract}
-        builder-context={builderContext}>
+        builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
     </c-target-key-section>
 </template>

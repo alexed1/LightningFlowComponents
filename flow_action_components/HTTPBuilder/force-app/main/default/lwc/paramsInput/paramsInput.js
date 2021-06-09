@@ -24,6 +24,15 @@ export default class ParamsInput extends LightningElement {
             this._flowVariables = [...variables];
         }
     }
+    
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
     get key(){
         return this.entity.key;
     }

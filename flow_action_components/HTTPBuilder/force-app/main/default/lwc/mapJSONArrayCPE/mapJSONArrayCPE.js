@@ -16,12 +16,19 @@ export default class MapJSONArrayCPE extends LightningElement {
     }
 
     set builderContext(context) {
-        
         this._builderContext = context || {};
         if (this._builderContext) {
             const { variables } = this._builderContext;
             this._flowVariables = [...variables];
         }
+    }
+
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
     }
 
     labels = {
@@ -77,6 +84,8 @@ export default class MapJSONArrayCPE extends LightningElement {
 
     _builderContext;
     _flowVariables;
+    _automaticOutputVariables;
+    
 
     handleFlowComboboxValueChange(event) {
         if(event && event.detail) {

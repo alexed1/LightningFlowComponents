@@ -87,6 +87,15 @@
                                                                     size="x-small"
                                                                     onclick={handleOpenObject}
                                                     ></lightning-icon>
+
+                                                    <lightning-icon if:true={curOption.isActionCall}
+                                                                    data-option-value={curOptionElement.value}
+                                                                    data-object-type={curOptionElement.objectType}
+                                                                    icon-name="utility:chevronright"
+                                                                    class="slds-float--right"
+                                                                    size="x-small"
+                                                                    onclick={handleOpenAction}
+                                                    ></lightning-icon>
                                                 </div>
                                             </template>
                                         </li>

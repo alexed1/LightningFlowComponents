@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CallDuration__c</fullName>
+    <description>The time in Mili-Seconds to process the call in the Salesforce platform</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Use this field to indicate how much time it takes to process the call</inlineHelpText>
+    <label>Call Duration (ms)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

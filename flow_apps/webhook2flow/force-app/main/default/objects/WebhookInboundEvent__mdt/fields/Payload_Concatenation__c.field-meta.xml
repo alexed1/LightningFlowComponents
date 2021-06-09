@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Payload_Concatenation__c</fullName>
+    <description>Some webhooks require concatenation of header information to ensure the payload is secure. The format for this is a set of semicolon delimited strings.  If the string is enclosed in quotes, it will be used as a constant.  Otherwise a header parameter.
+Example for Slack: &quot;v0:&quot;;X-Slack-Request-Timestamp;&quot;:&quot;</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Some webhooks require concatenation of header information to ensure the payload is secure. The format for this is a set of semicolon delimited strings.  If the string is enclosed in quotes, it will be used as a constant.  Otherwise a header parameter.
+Example for Slack: &quot;v0:&quot;;X-Slack-Request-Timestamp;&quot;:&quot;</inlineHelpText>
+    <label>Payload Concatenation</label>
+    <length>255</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

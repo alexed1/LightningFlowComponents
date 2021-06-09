@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Today_s_Logs</fullName>
+    <columns>NAME</columns>
+    <columns>Source__c</columns>
+    <columns>fLastMod__c</columns>
+    <columns>Host__c</columns>
+    <columns>Request__c</columns>
+    <columns>Severity__c</columns>
+    <columns>Response__c</columns>
+    <columns>Type__c</columns>
+    <columns>Message__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>TODAY</value>
+    </filters>
+    <label>Today&apos;s Logs</label>
+</ListView>

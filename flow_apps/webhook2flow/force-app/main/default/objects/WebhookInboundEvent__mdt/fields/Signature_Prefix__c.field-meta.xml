@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Signature_Prefix__c</fullName>
+    <description>Some webhook signatures have an embedded prefix as part of the signature parameter (for example, github uses &quot;sha256=&quot;.  Optional - can be empty if not used.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Some webhook signatures have an embedded prefix as part of the signature parameter (for example, github uses &quot;sha256=&quot;.  Optional - can be empty if not used.</inlineHelpText>
+    <label>Signature Prefix</label>
+    <length>50</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

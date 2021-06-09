@@ -1,0 +1,19 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "package": "webhook2flow",
+            "versionName": "ver 1.0.0",
+            "versionNumber": "1.0.0.NEXT",
+            "versionDescription": "Webhook2Workflow Integrator for Flow",
+            "default": true
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "51.0",
+    "packageAliases": {
+        "webhook2flow": "0Ho3h000000k9wsCAA",
+        "webhook2flow@1.0.0-0": "04t3h000004m8lWAAQ"
+    }
+}

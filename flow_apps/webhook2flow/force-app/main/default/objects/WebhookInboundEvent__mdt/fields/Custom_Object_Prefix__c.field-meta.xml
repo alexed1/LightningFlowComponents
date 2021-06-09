@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Custom_Object_Prefix__c</fullName>
+    <description>Many webhooks use the same name for their objects, though the content may be different.  Common examples of this are &quot;Event&quot;, &quot;User&quot;, &quot;Message&quot;.  This prefix allows you to create custom apex-defined objects with the same name, but distinguished by a prefix.  Example:  If you define the prefix &quot;slack_&quot;, then all the custom apex-defined object &quot;Event&quot; would be &quot;slack_Event&quot;.</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Many webhooks use the same name for their objects, though the content may be different.  Common examples of this are &quot;Event&quot;, &quot;User&quot;, &quot;Message&quot;.  This prefix allows you to create custom apex-defined objects with the same name, but distinguished by a prefix.  Example:  If you define the prefix &quot;slack_&quot;, then all the custom apex-defined object &quot;Event&quot; would be &quot;slack_Event&quot;.</inlineHelpText>
+    <label>Custom Object Prefix</label>
+    <length>32</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

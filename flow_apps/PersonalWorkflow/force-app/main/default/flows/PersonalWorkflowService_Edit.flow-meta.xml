@@ -14,10 +14,10 @@
             <name>TriggerOutcome</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>buttonEditTrigger.buttonClicked</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>buttonEditTrigger.selectedValue</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -278,7 +278,7 @@
             <targetReference>Reload_Personal_Workflow</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

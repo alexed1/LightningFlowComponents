@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ResponseHeaders__c</fullName>
+    <description>Response Header from API call.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Use this field to show the response header</inlineHelpText>
+    <label>Response Headers</label>
+    <length>16000</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

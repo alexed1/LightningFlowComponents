@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusCode__c</fullName>
+    <description>This field will be populated with status code (Success -200, failure 500 ..etc)  while calling the  Rest API call</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Use this field to indicate the status code  (Success -200, failure 500 ..etc)</inlineHelpText>
+    <label>Status Code</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

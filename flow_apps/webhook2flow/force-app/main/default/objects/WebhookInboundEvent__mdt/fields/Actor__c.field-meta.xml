@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Actor__c</fullName>
+    <defaultValue>&apos;Webhook2Flow.WebHook2FlowHandler&apos;</defaultValue>
+    <description>Entity used by Agent to handle the logic.  (i.e.  flow name, platform event name, etc...)</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Entity used by Agent to handle the logic.  (i.e.  flow name, platform event name, etc...)</inlineHelpText>
+    <label>Actor</label>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

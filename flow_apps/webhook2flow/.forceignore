@@ -1,0 +1,47 @@
+# List files or directories below to ignore them when running force:source:push, force:source:pull, and force:source:status
+# More information: https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_exclude_source.htm
+#
+
+package.xml
+
+# LWC configuration files
+**/jsconfig.json
+**/.eslintrc.json
+
+# LWC Jest
+**/__tests__/**
+
+#ignore Profiles for push,deploy,status
+force-app/main/default/profiles/Marketing Profile.profile-meta.xml 
+
+#ignore Profiles for pull,retrieve,status
+Custom%3A Marketing Profile.profile 
+Custom%3A Support Profile.profile
+Custom%3A Sales Profile.profile
+**/profiles/
+
+
+#ignore injected site resources, pages and classes
+**/staticresources/
+**/pages/
+**/components/
+**/sites/
+force-app\main\default\classes\SiteLoginController.cls-meta.xml
+force-app\main\default\classes\SiteLoginController.cls
+force-app\main\default\classes\SiteLoginControllerTest.cls-meta.xml
+force-app\main\default\classes\SiteLoginControllerTest.cls
+force-app\main\default\classes\SiteRegisterController.cls
+force-app\main\default\classes\SiteRegisterControllerTest.cls-meta.xml
+force-app\main\default\classes\SiteRegisterControllerTest.cls
+force-app\main\default\classes\ChangePasswordController.cls-meta.xml
+force-app\main\default\classes\ChangePasswordController.cls
+force-app\main\default\classes\ChangePasswordControllerTest.cls-meta.xml
+force-app\main\default\classes\ChangePasswordControllerTest.cls
+force-app\main\default\classes\ForgotPasswordController.cls-meta.xml
+force-app\main\default\classes\ForgotPasswordController.cls
+force-app\main\default\classes\ForgotPasswordControllerTest.cls-meta.xml
+force-app\main\default\classes\ForgotPasswordControllerTest.cls
+force-app\main\default\classes\MyProfilePageController.cls-meta.xml
+force-app\main\default\classes\MyProfilePageController.cls
+force-app\main\default\classes\MyProfilePageControllerTest.cls-meta.xml
+force-app\main\default\classes\MyProfilePageControllerTest.cls

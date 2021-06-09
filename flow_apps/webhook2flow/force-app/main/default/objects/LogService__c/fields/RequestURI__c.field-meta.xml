@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RequestURI__c</fullName>
+    <description>This field will be populated with request URI while calling the  Rest API call</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Use this field to show the request URL</inlineHelpText>
+    <label>Request URI</label>
+    <length>4000</length>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

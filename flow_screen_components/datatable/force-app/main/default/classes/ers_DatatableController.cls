@@ -16,6 +16,8 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 06/10/21 -   Eric Smith -    Version 3.2.2   Saved list of Date fields for time-zone offset processing
+ * 
  * 05/16/21 -   Eric Smith -    Version 3.2.1   Removed Picklist field handling - now being processed in datatable.js
  * 
  * 04/22/21 -   Eric Smith -    Version 3.2.0   Better handling of number & percent fields from different locales (Provided by GDuboc-hub)
@@ -74,6 +76,7 @@ public with sharing class ers_DatatableController {
         List<String> percentFieldList;
         List<String> noEditFieldList;
         list<String> timeFieldList;
+        list<String> dateFieldList;
         // list<String> picklistFieldList;
         List<String> currencyFieldList;
         List<String> numberFieldList;
@@ -116,6 +119,7 @@ public with sharing class ers_DatatableController {
             curRR.percentFieldList = emptyList;
             curRR.noEditFieldList = emptyList;
             curRR.timeFieldList = emptyList;
+            curRR.dateFieldList = emptyList;
             // curRR.picklistFieldList = emptyList;
             curRR.currencyFieldList = emptyList;
             curRR.numberFieldList = emptyList;
@@ -151,6 +155,7 @@ public with sharing class ers_DatatableController {
         List<String> percentFields = new List<String>();
         List<String> noEditFields = new List<String>();
         List<String> timeFields = new List<String>();
+        List<String> dateFields = new List<String>();
         // List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
         List<String> numberFields = new List<String>();
@@ -212,6 +217,9 @@ public with sharing class ers_DatatableController {
                 when 'TIME' {
                     timeFields.add(fieldName);
                 }
+                when 'DATE' {   // Only saving DATE, not DATETIME for TimeZone Offset Conversion
+                    dateFields.add(fieldName);
+                }
                 when 'PICKLIST', 'MULTIPICKLIST' {
                     // picklistFields.add(dfr.getName());
                     // if (!noEditFields.contains(fieldName)) {
@@ -235,6 +243,7 @@ public with sharing class ers_DatatableController {
         curRR.percentFieldList = percentFields;
         curRR.noEditFieldList = noEditFields;
         curRR.timeFieldList = timeFields;
+        curRR.dateFieldList = dateFields;
         // curRR.picklistFieldList = picklistFields;
         // curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;

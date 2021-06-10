@@ -69,9 +69,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version 
  
 **Bug Fixes:** 
+-   Fixed alignment of picklist fields when selecting Center or Right alignment 
+-   Adjust edited Date fields by the running User's timezone offset to keep the correct day   
 -   Fixed occasional error message about the not_suppressNameFieldLink attribute  
--   Fixed v3.2.1 bug where pre-selected rows did not display as selected
--   Fixed alignment of picklist fields when selecting Center or Right alignment    
+-   Fixed v3.2.1 bug where pre-selected rows did not display as selected  
  
 ## 05/18/21 -  Eric Smith -    Version 3.2.1 
 **Updates:** 

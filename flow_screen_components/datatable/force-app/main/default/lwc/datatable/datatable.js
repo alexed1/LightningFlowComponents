@@ -228,6 +228,7 @@ export default class Datatable extends LightningElement {
     @api numberFieldArray = [];
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
+    dateFieldArray = [];
     @api picklistFieldArray = [];           // Obsolete
     @api picklistReplaceValues = false;     // Obsolete
     @api picklistMap = [];
@@ -632,6 +633,10 @@ export default class Datatable extends LightningElement {
                         this.timeFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'time';
                         break;
+                    // case 'date':
+                    //     this.dateFieldArray.push(this.basicColumns[t.column].fieldName);
+                    //     this.basicColumns[t.column].type = 'date-local';
+                    //     break;                        
                     case 'lookup':
                         this.lookupFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.lookups.push(this.basicColumns[t.column].fieldName); 
@@ -686,6 +691,7 @@ export default class Datatable extends LightningElement {
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
+                this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
@@ -731,6 +737,7 @@ export default class Datatable extends LightningElement {
         let lookupFields = this.lookups;
         let lufield = '';
         let timeFields = this.timeFieldArray;
+        let dateFields = this.dateFieldArray;
         let percentFields = this.percentFieldArray;
         let numberFields = this.numberFieldArray;
         let lookupFieldObject = '';
@@ -744,6 +751,15 @@ export default class Datatable extends LightningElement {
                     let dt = Date.parse(record[time]);
                     let d = new Date();
                     record[time] = d.setTime(Number(dt) - Number(this.timezoneOffset));
+                }
+            });
+
+            // Adjust date with offset based on User's timezone
+            dateFields.forEach(date => {
+                if (record[date]) {
+                    let dt = Date.parse(record[date]);
+                    let d = new Date();
+                    record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
                 }
             });
 

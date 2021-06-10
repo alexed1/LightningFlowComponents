@@ -70,7 +70,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 **Bug Fixes:** 
 -   Fixed alignment of picklist fields when selecting Center or Right alignment 
--   Adjust edited Date fields by the running User's timezone offset to keep the correct day   
+-   Adjust edited Date fields by the running User's timezone offset to keep the correct day 
+-   Enforced no edits on fields such as Rollups and Formulas 
 -   Fixed occasional error message about the not_suppressNameFieldLink attribute  
 -   Fixed v3.2.1 bug where pre-selected rows did not display as selected  
  

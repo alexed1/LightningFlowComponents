@@ -702,6 +702,7 @@ export default class Datatable extends LightningElement {
                 this.basicColumns = JSON.parse(this.dtableColumnFieldDescriptorString);
                 console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
+console.log("🚀 ~ file: datatable.js ~ line 705 ~ Datatable ~ processDatatable ~ this.noEditFieldArray", this.noEditFieldArray);
                 
                 // *** Moved to @wire ***
                 // Update row data for lookup, time, picklist and percent fields
@@ -892,10 +893,8 @@ export default class Datatable extends LightningElement {
                     case 'time':
                         editAttrib.edit = false;
                         break;
-                    case 'text':
-                        if (this.noEditFieldArray.indexOf(fieldName) != -1) editAttrib.edit = false;
-                        break;
-                    default:                       
+                    default:  
+                        if (this.noEditFieldArray.indexOf(fieldName) != -1) editAttrib.edit = false;                     
                 }
                 if (!editAttrib.edit) { 
                     this.isAllEdit = false;

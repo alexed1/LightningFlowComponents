@@ -36,15 +36,15 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 2.20 or later  
-FlowScreenComponentsBasePack Version 2.3.4 or later  
+FlowScreenComponentsBasePack Version 2.3.5 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.2.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xH8QAI)   
-[Version 3.2.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xH8QAI)
+[Version 3.2.2 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJdQAI)   
+[Version 3.2.2 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJdQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -63,10 +63,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## xx/xx/21 -  Eric Smith -    Version 3.2.2 
+## 06/11/21 -  Eric Smith -    Version 3.2.2 
 **Updates:** 
 -   Editable picklist fields now show a pencil icon when editable (Same behavior as all other field edits) 
 -   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version 
+-   Added a new attribute to optionaly hide the Clear Selection button that appears on a table with radio button selection
  
 **Bug Fixes:** 
 -   Fixed alignment of picklist fields when selecting Center or Right alignment 

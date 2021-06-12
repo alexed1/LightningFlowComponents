@@ -8,7 +8,8 @@
         onvaluechanged={handleFlowComboboxValueChange} 
         value={url} 
         value-type={urlType} 
-        class="slds-m-around_medium">
+        class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
         
     </c-fsc_flow-combobox>
 
@@ -19,7 +20,8 @@
         onvaluechanged={handleFlowComboboxValueChange} 
         value={method} 
         value-type={methodType} 
-        class="slds-m-around_medium">
+        class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
         
     </c-fsc_flow-combobox>
     <lightning-input label={labels.Timeout_in_ms} onchange={changeTimeout} value={timeout} type="number"></lightning-input>
@@ -28,14 +30,16 @@
         add-button-label={labels.Add_Param} 
         list-data={paramList} 
         onchangelist={changeParams}
-        builder-context={builderContext}>
+        builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
     </c-list-builder>
     <c-list-builder 
         master-label={labels.Specify_Headers} 
         add-button-label={labels.Add_Header} 
         list-data={headerList} 
         onchangelist={changeHeaders}
-        builder-context={builderContext}>
+        builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
     </c-list-builder>
 
     <c-fsc_flow-combobox 
@@ -45,7 +49,8 @@
         onvaluechanged={handleFlowComboboxValueChange} 
         value={body} 
         value-type={bodyType} 
-        class="slds-m-around_medium">
+        class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
         
     </c-fsc_flow-combobox>
 
@@ -68,6 +73,12 @@
                 </template>
             </div>
         </div>
+    </template>
+
+    <template if:true={isShowMergeFeildReplacer}>
+        <c-merge-field-replacer merge-field-list={mergeFieldList} onclosemodal={closeMergeFieldReplacer}>
+
+        </c-merge-field-replacer>
     </template>
     
 </template>

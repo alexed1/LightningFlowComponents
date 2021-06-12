@@ -43,6 +43,14 @@ export default class ListBuilder extends LightningElement {
         }
     }
 
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
     @track _itemList; //= [{key :'', value : ''}];
 
     addItem() {

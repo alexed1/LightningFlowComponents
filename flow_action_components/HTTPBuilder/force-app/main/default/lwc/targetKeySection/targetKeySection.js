@@ -46,6 +46,14 @@ export default class TargetKeySection extends LightningElement {
         }
     }
 
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
     get isButtonDisable() {
         if(this.listData.length >= 20) {
             return true;

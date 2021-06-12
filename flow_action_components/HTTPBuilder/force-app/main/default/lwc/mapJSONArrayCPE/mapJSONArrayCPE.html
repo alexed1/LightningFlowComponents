@@ -15,7 +15,8 @@
                 name="inputJSONString"  
                 onvaluechanged={handleFlowComboboxValueChange} 
                 value={inputJSONString} 
-                value-type={inputJSONStringType} >
+                value-type={inputJSONStringType} 
+                automatic-output-variables={automaticOutputVariables}>
                 
             </c-fsc_flow-combobox>
         </lightning-layout-item>
@@ -38,7 +39,8 @@
             list-data={keysToExtract} 
             onchangelist={changekeysToExtract}
             sobject-type={sObjectType}
-            builder-context={builderContext}>
+            builder-context={builderContext}
+            automatic-output-variables={automaticOutputVariables}>
         </c-field-mapping-section>
     </template>
 </template>

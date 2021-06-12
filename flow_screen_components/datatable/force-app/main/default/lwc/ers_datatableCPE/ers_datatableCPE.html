@@ -209,8 +209,7 @@
             onvaluechanged={handleFlowComboboxValueChange}>
         </c-fsc_flow-combobox>
         <c-fsc_pick-icon
-            accordion-mode=true
-            hide-action-icons=true
+            mode="combobox"
             oniconselection={handlePickIcon}>
         </c-fsc_pick-icon>
     </div>
@@ -300,6 +299,13 @@
         checked={inputValues.cb_hideHeaderActions.value} 
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
+    <c-fsc_flow-checkbox
+        name="select_hideClearSelectionButton"
+        label={inputValues.hideClearSelectionButton.label} 
+        field-level-help={inputValues.hideClearSelectionButton.helpText}
+        checked={inputValues.cb_hideClearSelectionButton.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>      
     <c-fsc_flow-checkbox
         name="select_not_suppressNameFieldLink"
         label={inputValues.not_suppressNameFieldLink.label} 

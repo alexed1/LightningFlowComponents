@@ -43,8 +43,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.2.2 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJdQAI)   
-[Version 3.2.2 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJdQAI)
+[Version 3.2.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)   
+[Version 3.2.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -63,7 +63,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## 06/11/21 -  Eric Smith -    Version 3.2.2 
+## 06/13/21 -  Eric Smith -    Version 3.2.3 
+**Updates:** 
+-   When the running User doesn't have Read access to the Datatable's SObject, Record Type Id for Picklist Values is ignored
+    and all picklist values will be available when editing a picklist field
+ 
+ ## 06/11/21 -  Eric Smith -    Version 3.2.2 
 **Updates:** 
 -   Editable picklist fields now show a pencil icon when editable (Same behavior as all other field edits) 
 -   Icon Pickers in the CPE and Configure Column Wizard have been updated to the latest version 

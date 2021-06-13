@@ -15,6 +15,8 @@
  *              use the recordId values in the lookup fields get the values
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
+ *   
+ * 06/13/21 -   Eric Smith -    Version 3.2.3   Return all Picklist values when the running user doesn't have Read access to table's SObject
  * 
  * 06/10/21 -   Eric Smith -    Version 3.2.2   Saved list of Date fields for time-zone offset processing
  * 
@@ -72,12 +74,12 @@ public with sharing class ers_DatatableController {
         List<String> lookupFieldList;
         Map<String, Map<Id, SObject>> dataMap;
         Map<String, String> objNameFieldMap;
-        // Map<String, Map<String,String>> picklistFieldMap;   // Field API Name, <Picklist Value, Picklist Label>
+        Map<String, Map<String,String>> picklistFieldMap;   // Field API Name, <Picklist Value, Picklist Label>
         List<String> percentFieldList;
         List<String> noEditFieldList;
         list<String> timeFieldList;
         list<String> dateFieldList;
-        // list<String> picklistFieldList;
+        list<String> picklistFieldList;
         List<String> currencyFieldList;
         List<String> numberFieldList;
         String objectName;
@@ -120,7 +122,7 @@ public with sharing class ers_DatatableController {
             curRR.noEditFieldList = emptyList;
             curRR.timeFieldList = emptyList;
             curRR.dateFieldList = emptyList;
-            // curRR.picklistFieldList = emptyList;
+            curRR.picklistFieldList = emptyList;
             curRR.currencyFieldList = emptyList;
             curRR.numberFieldList = emptyList;
             curRR.rowData = records;
@@ -156,10 +158,10 @@ public with sharing class ers_DatatableController {
         List<String> noEditFields = new List<String>();
         List<String> timeFields = new List<String>();
         List<String> dateFields = new List<String>();
-        // List<String> picklistFields = new List<String>();
+        List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
         List<String> numberFields = new List<String>();
-        // Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
+        Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
         String objectLinkField = getNameUniqueField(objName);   // Name (link) Field for the Datatable SObject
         System.debug('*** OBJ/LINK' + objname + '/' + objectLinkField);
 
@@ -186,7 +188,8 @@ public with sharing class ers_DatatableController {
                 + '", "length" : "' + dfr.getLength() 
                 + '"}';
 
-            if (!dfr.isUpdateable() || dfr.isCalculated()) noEditFields.add(fieldName);  // Check for Read Only and Formula fields
+            // if (!dfr.isUpdateable() || dfr.isCalculated()) noEditFields.add(fieldName);  // Check for Read Only and Formula fields
+            if (dfr.isCalculated()) noEditFields.add(fieldName);  // Check for Formula fields
 
             switch on dfr.getType().name() {
                 when 'REFERENCE' {
@@ -221,15 +224,15 @@ public with sharing class ers_DatatableController {
                     dateFields.add(fieldName);
                 }
                 when 'PICKLIST', 'MULTIPICKLIST' {
-                    // picklistFields.add(dfr.getName());
+                    picklistFields.add(dfr.getName());
                     // if (!noEditFields.contains(fieldName)) {
                     //     noEditFields.add(fieldName);
                     // }
-                    // Map<String, String> valueLabelPair = new Map<String, String>();
-                    // for(Schema.PicklistEntry ple : dfr.getPicklistValues()) {
-                    //     valueLabelPair.put(ple.getValue(), ple.getLabel());
-                    // }
-                    // picklistFieldLabels.put(dfr.getName(), valueLabelPair);
+                    Map<String, String> valueLabelPair = new Map<String, String>();
+                    for(Schema.PicklistEntry ple : dfr.getPicklistValues()) {
+                        valueLabelPair.put(ple.getValue(), ple.getLabel());
+                    }
+                    picklistFieldLabels.put(dfr.getName(), valueLabelPair);
                 }
                 when else {
                 }
@@ -244,8 +247,8 @@ public with sharing class ers_DatatableController {
         curRR.noEditFieldList = noEditFields;
         curRR.timeFieldList = timeFields;
         curRR.dateFieldList = dateFields;
-        // curRR.picklistFieldList = picklistFields;
-        // curRR.picklistFieldMap = picklistFieldLabels;
+        curRR.picklistFieldList = picklistFields;
+        curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;
         curRR.currencyFieldList = currencyFields;
         curRR.numberFieldList = numberFields;

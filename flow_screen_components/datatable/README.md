@@ -67,6 +67,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Updates:** 
 -   When the running User doesn't have Read access to the Datatable's SObject, Record Type Id for Picklist Values is ignored
     and all picklist values will be available when editing a picklist field
+-   Fields that are Read Only to the running User can still be edited when the Flow is running in System Mode
  
  ## 06/11/21 -  Eric Smith -    Version 3.2.2 
 **Updates:** 

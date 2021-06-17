@@ -211,7 +211,9 @@ public with sharing class ers_DatatableController {
                     }
                 }
                 when 'CURRENCY' {
-                    currencyFields.add(fieldName);
+                    if (dfr.isUpdateable() && !dfr.isCalculated()) {
+                        currencyFields.add(fieldName);
+                    }
                 }
                 when 'DECIMAL', 'DOUBLE', 'INTEGER', 'LONG' {
                     numberFields.add(fieldName);

@@ -63,6 +63,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## xx/xx/21 -  Eric Smith -    Version 3.2.4 
+**Updates:** 
+-   
+ 
+**Bug Fixes:** 
+-   Orgs with multi-currency enabled can now add currency rollup and currency formula fields to the datatable 
+ 
 ## 06/13/21 -  Eric Smith -    Version 3.2.3 
 **Updates:** 
 -   When the running User doesn't have Read access to the Datatable's SObject, Record Type Id for Picklist Values is ignored

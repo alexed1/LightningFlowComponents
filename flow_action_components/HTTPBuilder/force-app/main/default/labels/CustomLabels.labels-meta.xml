@@ -215,7 +215,7 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>url</shortDescription>
-        <value>url</value>
+        <value>URL</value>
     </labels>
     <labels>
         <fullName>Method_is_invalid</fullName>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agent__c</fullName>
+    <description>Apex class to use for handling the verification and response.  (should we use a seperate Agent for verification?)</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Apex class to use for handling the verification and response.  (should we use an seperate Agent for verification?)</inlineHelpText>
+    <label>Agent (ApexClass)</label>
+    <length>100</length>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

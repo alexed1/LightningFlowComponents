@@ -1,4 +1,3 @@
-  
 import { LightningElement,api } from 'lwc';
 
 export default class FlexcardHeader extends LightningElement {
@@ -9,7 +8,8 @@ export default class FlexcardHeader extends LightningElement {
 @api src;
 @api icon;
 @api variant;
-@api hoverText
+@api hoverText;
+@api headerStyle;
 
 
 }

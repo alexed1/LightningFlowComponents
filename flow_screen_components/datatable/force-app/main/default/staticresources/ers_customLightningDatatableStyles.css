@@ -1,0 +1,62 @@
+/************************************/
+/* style sheet to bypass shadow dom */
+/************************************/
+
+/********************************/
+/* c-ers_custom-lightning-datatable */
+/********************************/
+
+/* allow overflow of combobox if class overflowEnabled is present */
+.overflowEnabled c-ers_custom-lightning-datatable .slds-scrollable_x,
+.overflowEnabled c-ers_custom-lightning-datatable .slds-scrollable_y {
+    overflow: visible;
+}
+/* stretch cell width of combobox to 100% */
+c-ers_custom-lightning-datatable lightning-primitive-cell-factory .slds-hyphenate {
+    width: 100%;
+}
+/* ensures that custom column cells remain higlighted on hover when edited */
+.slds-scope c-ers_custom-lightning-datatable .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited,
+c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody tr:hover>td.slds-is-edited {
+    background-color: rgb(250, 255, 189);
+}
+/* show edit pen when td is hovered */
+.slds-scope c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover lightning-button-icon.cell-icon__edit .slds-button_icon,
+c-ers_custom-lightning-datatable .slds-table:not(.slds-no-row-hover) tbody td:hover lightning-button-icon.cell-icon__edit .slds-button_icon {
+    visibility: visible;
+}
+/* show white background on hover if cell is editable */
+.slds-scope c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover:not(.slds-is-edited) .cell__is-editable,
+c-ers_custom-lightning-datatable  .slds-table:not(.slds-no-row-hover) tbody td:hover:not(.slds-is-edited) .cell__is-editable {
+    background-color: white;
+}
+/********************************/
+/**** c-ers_combobox-column-type ****/
+/********************************/
+/* height of combobox */
+c-ers_combobox-column-type .slds-dropdown {
+    max-height: 180px;
+}
+/* Remove position:absolute on the dropdown icon so that it doesn't appear on top of column action dropdown*/
+c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon lightning-icon.slds-input__icon{
+    top: 0;
+    position: static;
+    padding-right: 1.3rem;
+}
+.slds-scope c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-input__icon {
+    top: 0;
+    margin-top: 0.1rem;
+    position: static;
+    padding-right: 1.3rem;
+}
+
+/********************************/
+/******** custom classes ********/
+/********************************/
+.combobox-view__min-height {
+    min-height: 36px;
+}
+.cell-icon__edit {
+    opacity: 0.5;
+    visibility: hidden;
+}

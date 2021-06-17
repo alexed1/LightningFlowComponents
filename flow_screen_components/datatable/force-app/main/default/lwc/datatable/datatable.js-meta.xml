@@ -8,7 +8,7 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-datatable-C-P-E"> 
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-ers_datatable-C-P-E"> 
             <!-- ================================ New in Summer '20' - Support for Dynamic SObject Selection ================================= -->      
 
             <propertyType name="T" extends="SObject" label="Datatable Object API Name" description="Select the API Name of the SObject to use in the Datatable"/>
@@ -78,6 +78,8 @@
             <property name="cb_hideCheckboxColumn" type="String" role="inputOnly"/>
             <property name="hideHeaderActions" label="Hide Column Header Actions?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide all column header actions including Sort, Clip Text, Wrap Text + Filter."/>
             <property name="cb_hideHeaderActions" type="String" role="inputOnly"/>
+            <property name="hideClearSelectionButton" label="Hide Clear Selection Button?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table."/>
+            <property name="cb_hideClearSelectionButton" type="String" role="inputOnly"/>
             <property name="showRowNumbers" label="Show Row Numbers" type="Boolean" default="false" role="inputOnly" description="Display a row number column as the first column in the table."/>
             <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
@@ -107,6 +109,9 @@
             <property name="not_tableBorder" label="OBSOLETE as of v3.0.10" type="Boolean" default="false" role="inputOnly"/>
             <property name="displayAll" type="Boolean" role="inputOnly"/>
             <property name="cb_displayAll" type="String" role="inputOnly"/>
+            <property name="recordTypeId" type="String" role="inputOnly"/>
+            <property name="allowNoneToBeChosen" type="Boolean" role="inputOnly"/>
+            <property name="cb_allowNoneToBeChosen" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

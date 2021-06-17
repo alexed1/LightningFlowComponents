@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Used for handling various platform event using a name to identify the event type and a body that contains a serialized data need for the named event.  General Event is published after the Apex transaction commits where General Immediate Event fires immediately after it is enqueued.</description>
+    <eventType>HighVolume</eventType>
+    <label>General Immediate Event</label>
+    <pluralLabel>General Immediate Events</pluralLabel>
+    <publishBehavior>PublishImmediately</publishBehavior>
+</CustomObject>

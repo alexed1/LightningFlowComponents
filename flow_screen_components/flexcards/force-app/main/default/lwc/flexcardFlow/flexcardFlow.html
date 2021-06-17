@@ -2,14 +2,22 @@
     <lightning-layout multiple-rows="true">
         <template if:true={isDataLoaded}>
             <template for:each={recs} for:item="record">
-                <div key={record.Id}  class="slds-grid slds-grid_align-center slds-container_large slds-gutters_xxx-small slds-p-vertical_xxx-small slds-col slds-wrap" >                  
-                    <div class={record.Cardcss} data-id={record.Id} onclick={handleClick} style={sizeWidth}>
-                    <c-flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle"></c-flexcard-header>
+                <div key={record.Id}  class="slds-grid slds-grid_align-center slds-wrap">    
+                    <div class="slds-col slds-p-around_small slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_8-of-12">           
+                    <div class={record.Cardcss} data-id={record.Id} onclick={handleClick} style={sizeWidth}>                      
+                    <c-flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle" header-style={headerStyle}></c-flexcard-header>
                     <div class ="fc-body">
                         <c-field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-field-viewer>
-                        <c-action-list flow-names={visibleFlowNames} record-id={record.Id}></c-action-list>                        
-                    </div>
-                    </div>
+                        <c-action-list flow-names={visibleFlowNames} record-id={record.Id}></c-action-list>
+                        <br/>
+                        <p>
+                        <template if:true={allowMultiSelect}>
+                            <lightning-input class="slds-float_right" type="checkbox-button" label="Save" name="SavedRecord" value={record.Id} onchange={handleChange}></lightning-input>                        
+                        </template>
+                        </p>                         
+                    </div>                    
+                 </div> 
+                </div>
                 </div>
             </template>
         </template>

@@ -1,0 +1,21 @@
+<!-- ers_comboboxColumnType -->
+<template>
+    <!-- editable -->
+    <template if:true={typeAttributes.editable}>
+        <c-ers_combobox-column-type
+                value={value}
+                field-name={typeAttributes.fieldName}
+                key-field={typeAttributes.keyField}
+                key-field-value={typeAttributes.keyFieldValue}
+                picklist-values={typeAttributes.picklistValues}
+                alignment={typeAttributes.alignment}
+                ></c-ers_combobox-column-type>
+    </template>
+
+    <!-- readonly -->
+    <template if:false={typeAttributes.editable}>
+        <div class="slds-p-vertical_xx-small slds-p-horizontal_x-small">
+            <div class={typeAttributes.alignment}>{value}</div>
+        </div>
+    </template>
+</template>

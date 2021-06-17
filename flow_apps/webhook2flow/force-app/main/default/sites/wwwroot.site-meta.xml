@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomSite xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowHomePage>false</allowHomePage>
+    <allowStandardAnswersPages>false</allowStandardAnswersPages>
+    <allowStandardIdeasPages>false</allowStandardIdeasPages>
+    <allowStandardLookups>false</allowStandardLookups>
+    <allowStandardPortalPages>true</allowStandardPortalPages>
+    <allowStandardSearch>false</allowStandardSearch>
+    <authorizationRequiredPage>InMaintenance</authorizationRequiredPage>
+    <bandwidthExceededPage>InMaintenance</bandwidthExceededPage>
+    <browserXssProtection>true</browserXssProtection>
+    <clickjackProtectionLevel>SameOriginOnly</clickjackProtectionLevel>
+    <contentSniffingProtection>true</contentSniffingProtection>
+    <cspUpgradeInsecureRequests>true</cspUpgradeInsecureRequests>
+    <enableAuraRequests>true</enableAuraRequests>
+    <fileNotFoundPage>InMaintenance</fileNotFoundPage>
+    <genericErrorPage>InMaintenance</genericErrorPage>
+    <inMaintenancePage>InMaintenance</inMaintenancePage>
+    <inactiveIndexPage>InMaintenance</inactiveIndexPage>
+    <indexPage>InMaintenance</indexPage>
+    <masterLabel>wwwroot</masterLabel>
+    <referrerPolicyOriginWhenCrossOrigin>true</referrerPolicyOriginWhenCrossOrigin>
+    <requireHttps>true</requireHttps>
+    <siteAdmin>test-73ztkdxtowiy@example.com</siteAdmin>
+    <siteGuestRecordDefaultOwner>test-73ztkdxtowiy@example.com</siteGuestRecordDefaultOwner>
+    <siteTemplate>InMaintenance</siteTemplate>
+    <siteType>Visualforce</siteType>
+    <subdomain>wh-developer-edition</subdomain>
+</CustomSite>

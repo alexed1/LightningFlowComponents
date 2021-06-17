@@ -8,8 +8,9 @@
     </targets>  
 
     <targetConfigs>
-            <targetConfig targets="lightning__FlowScreen" configurationEditor="c-flow-buttons-cpe">
+            <targetConfig targets="lightning__FlowScreen" configurationEditor="c-flow-button-bar-c-p-e">
                 <!-- Input -->
+                <!-- No longer manually inputting values per button
                 <property name="button1Label" label="Button 1 Label" type="string" role="inputOnly"></property>
                 <property name="button1Value" label="Button 1 Value" type="string" role="inputOnly"></property>
                 <property name="button1DescriptionText" label="Button 1 Description Text" type="string" role="inputOnly"></property>
@@ -28,14 +29,17 @@
 
                 <property name="button5Label" label="Button 5 Label" type="string" role="inputOnly"></property>
                 <property name="button5Value" label="Button 5 Value" type="string" role="inputOnly"></property>
-                <property name="button5DescriptionText" label="Button 5 Description Text" type="string" role="inputOnly"></property>
-
+                <property name="button5DescriptionText" label="Button 5 Description Text" type="string" role="inputOnly"></property> 
+                -->
 
                 <property name="alignment" label="Button position" type="string" description="Enter 'left', 'center', or 'right' (default)." default="right" role="inputOnly"></property>
                 <property name="orientation" label="Button orientation" type="string" description="Enter 'horizontal' (default), or 'vertical'." default="horizontal" role="inputOnly"></property>
-                <property name="includeLine" label="Include horizontal line above buttons" type="boolean" description="Check the box to include a horizontal line above the buttons, giving separation between the buttons and the element above them" default="false" role="inputOnly"></property>
-                <property name="groupAsToggle" label="Group buttons as toggle" description="Enter true to group buttons togther as a toggle isntead of individual buttons https://www.lightningdesignsystem.com/components/button-groups/#Base" type="boolean" default="false" role="inputOnly"></property>
-                <property name="doNotTransitionOnClick" label="Do Not Transition on Click" type="boolean" default="false" role="inputOnly"></property>
+                <!-- <property name="includeLine" label="Include horizontal line above buttons" type="boolean" description="Check the box to include a horizontal line above the buttons, giving separation between the buttons and the element above them" default="false" role="inputOnly"></property> -->
+                <property name="showLines" label="Include horizontal line above buttons" type="String" description="You can optionally add lines below and/or above the button bar to separate it from the rest of the screen" role="inputOnly"></property>
+                <property name="groupAsToggle" label="Group buttons as toggle" description="Enter true to group buttons togther as a toggle isntead of individual buttons https://www.lightningdesignsystem.com/components/button-groups/#Base" type="string" default="false" role="inputOnly"></property>
+                <property name="doNotTransitionOnClick" label="Do Not Transition on Click" type="string" default="false" role="inputOnly"></property>
+                <!-- <property name="buttons" label="Buttons" type="apex://FlowButton[]" role="inputOnly"></property> -->
+                <property name="buttons" label="Buttons" type="String" role="inputOnly"></property>
                 
                 <!-- Output -->
                 <property name="selectedValue" label="Selected Value" type="string" description="Value that holds the label of the button that's clicked, pass this to a Decision block to route the Flow"></property>

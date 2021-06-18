@@ -42,6 +42,7 @@ export default class FlowCombobox extends LightningElement {
     };
     iconsPerType = {
         String: 'utility:text',
+        string: 'utility:text',
         Boolean: 'utility:check',
         Date: 'utility:date_input',
         DateTime: 'utility:date_time',
@@ -56,7 +57,9 @@ export default class FlowCombobox extends LightningElement {
         Url: 'utility:link',
         SObject: 'utility:sobject',
         reference: 'utility:merge_field',
-        actionCalls : 'utility:fallback'
+        actionCalls : 'utility:fallback',
+        screenComponent : 'utility:fallback',
+        Apex : 'utility:apex'
 
     };
 
@@ -71,7 +74,7 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'constants', label: 'Global Constants', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'textTemplates', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'stages', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
-        // {apiName: 'screens.fields', label: 'Screen Components', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: 'screens.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},
         // {
         //     apiName: 'screens.fields.inputParameters',
         //     label: 'Screen Components',
@@ -373,8 +376,9 @@ export default class FlowCombobox extends LightningElement {
     getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor) {
         let typeOptions = [];
         objectArray.forEach(curObject => {
-            let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType) ;
-            let curDataType = isActionCall ? flowComboboxDefaults.actionType : this.getTypeByDescriptor(curObject[typeField], typeDescriptor);
+            let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType);
+            let isScreenComponent = (typeDescriptor.dataType === flowComboboxDefaults.screenComponentType) && curObject.storeOutputAutomatically;
+            let curDataType = (isActionCall) ? flowComboboxDefaults.actionType :  isScreenComponent ? flowComboboxDefaults.screenComponentType : this.getTypeByDescriptor(curObject[typeField], typeDescriptor);
             let label = isActionCall ?  OUTPUTS_FROM_LABEL + curObject['name'] : curObject[labelField] ? curObject[labelField] : curObject[valueField];
             let curIsCollection = this.isCollection(curObject, isCollectionField);
             typeOptions.push(this.generateOptionLine(
@@ -386,7 +390,9 @@ export default class FlowCombobox extends LightningElement {
                 this.getIconNameByType(curDataType),
                 (curDataType === flowComboboxDefaults.dataTypeSObject || typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType),
                 curDataType === flowComboboxDefaults.dataTypeSObject ? curObject[objectTypeField] : curDataType,
-                flowComboboxDefaults.defaultKeyPrefix + this.key++
+                flowComboboxDefaults.defaultKeyPrefix + this.key++,
+                null,
+                curObject.storeOutputAutomatically
             ));
         });
         return typeOptions;
@@ -410,7 +416,7 @@ export default class FlowCombobox extends LightningElement {
         }
     }
 
-    generateOptionLine(type, label, value, isCollection, objectType, optionIcon, isObject, displayType, key, flowType) {
+    generateOptionLine(type, label, value, isCollection, objectType, optionIcon, isObject, displayType, key, flowType, storeOutputAutomatically) {
         return {
             type: type,
             label: label,
@@ -421,7 +427,8 @@ export default class FlowCombobox extends LightningElement {
             isObject: isObject,
             displayType: displayType,
             key: key,
-            flowType: flowType ? flowType : flowComboboxDefaults.referenceDataType
+            flowType: flowType ? flowType : flowComboboxDefaults.referenceDataType,
+            storeOutputAutomatically : storeOutputAutomatically
         };
     }
 
@@ -429,8 +436,10 @@ export default class FlowCombobox extends LightningElement {
         this.doOpenObject(event, event.currentTarget.dataset.optionValue, event.currentTarget.dataset.objectType);
     }
 
-    handleOpenAction(event) {
-        this.doOpenAction(event, event.currentTarget.dataset.optionValue);
+
+    handleOpenScreenComponent(event) {
+        let screenComponentName = event.currentTarget.dataset.optionValue.split('.');
+        this.doOpenAction(event, screenComponentName.length > 1 ? screenComponentName[1] : event.currentTarget.dataset.optionValue);
     }
 
     handleSetSelectedRecord(event) {
@@ -463,15 +472,16 @@ export default class FlowCombobox extends LightningElement {
 
     getActionOutputs(actionName) {
         let tempOptions = [];
+        console.log('actioName', actionName.split('.'));
         this.automaticOutputVariables[actionName].forEach(
             output => {
 
-                        let curObjectType = output.sobjectType;
+                        let curObjectType = output.sobjectType ? output.sobjectType : output.subtype;
                         let curDataType  = output.dataType === 'sobject' ? 'SObject' : output.dataType;
                         tempOptions.push(this.generateOptionLine(
                             output.dataType,
-                            output.label,
-                            output.name,
+                            output.label? output.label : output.apiName,
+                            output.apiName ? output.apiName : output.name,
                             false,
                             curObjectType,
                             this.getIconNameByType(curDataType),
@@ -588,8 +598,7 @@ export default class FlowCombobox extends LightningElement {
                 if (localOptions.length) {
                     this._options.push({
                         ...curOption, ...{
-                            options: localOptions,
-                            isActionCall : curOption.type === "ACTIONS" ? true : false
+                            options: localOptions
                         }
                     });
                 }

@@ -472,7 +472,6 @@ export default class FlowCombobox extends LightningElement {
 
     getActionOutputs(actionName) {
         let tempOptions = [];
-        console.log('actioName', actionName.split('.'));
         this.automaticOutputVariables[actionName].forEach(
             output => {
 
@@ -633,7 +632,6 @@ export default class FlowCombobox extends LightningElement {
 
     handleOpenOptions(event) {
         // event.stopPropagation();
-        console.log('handleOpenOptions');
         this.selfEvent = true;
         if (this.isMenuOpen) {
             this.isDataSelected = false;

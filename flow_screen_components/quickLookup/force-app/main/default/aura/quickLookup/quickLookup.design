@@ -1,4 +1,4 @@
-<design:component label="quickLookUp">
+<design:component label="Quick LookUp">
 
     <design:attribute name="objectName" label="I1_Object Name" />
     <design:attribute name="displayFieldName" label="I2_Display Which Field?" />

@@ -14,6 +14,7 @@
     "sourceApiVersion": "52.0",
     "packageAliases": {
         "quickLookup": "0Ho5G000000CaiDSAS",
-        "quickLookup@1.0.0-0": "04t5G0000047xKMQAY"
+        "quickLookup@1.0.0-0": "04t5G0000047xKMQAY",
+        "quickLookup@1.0.1-0": "04t5G0000047xKRQAY"
     }
 }

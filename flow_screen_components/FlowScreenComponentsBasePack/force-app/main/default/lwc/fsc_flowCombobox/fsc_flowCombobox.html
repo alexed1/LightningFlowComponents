@@ -1,5 +1,5 @@
 <template>
-    <div style={inputStyle}>
+    <div style={inputStyle} onmouseleave={handleInputFocus}>
         <div>
             <div class={formElementClass}>
                 <div class="slds-form-element__control">
@@ -27,6 +27,7 @@
                                                 onkeydown={handleKeyDown}
                                                 onclick={handleOpenOptions}
                                                 autocomplete={autocomplete}
+                                                
                                         ></lightning-input>
                                     </div>
                                 </template>

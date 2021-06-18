@@ -536,6 +536,7 @@ export default class FlowCombobox extends LightningElement {
 
     connectedCallback() {
         document.addEventListener('click', this.handleWindowClick.bind(this));
+        document.addEventListener('blur', this.handleInputFocus.bind(this));
     }
 
     disconnectedCallback() {
@@ -733,6 +734,22 @@ export default class FlowCombobox extends LightningElement {
             variant: variant,
         });
         dispatchEvent(showToast);
+    }
+
+    handleInputFocus(event) {
+        if (this._value) {
+            this.isDataSelected = true;
+        }
+        //this.isMenuOpen = false;
+        //this.dropdownClass = 'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click';
+
+        
+        this.setValueInput();
+
+        if (this.isDataModified) {
+            this.dispatchValueChangedEvent();
+            this.isDataModified = false;
+        }
     }
 
 }

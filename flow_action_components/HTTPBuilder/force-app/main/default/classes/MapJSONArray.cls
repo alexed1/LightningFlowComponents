@@ -30,7 +30,7 @@ public with sharing class MapJSONArray {
                 responseList.add(resp);
             } catch(Exception e) {
                 Response resp = new Response();
-                resp.errors = e.getMessage() + ' ' + Label.JSON_ARRAY_EXCEPTION;
+                resp.errors = Label.JSON_ARRAY_EXCEPTION;
                 responseList.add(resp);
             } 
         }

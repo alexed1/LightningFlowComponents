@@ -1,0 +1,20 @@
+<design:component label="Quick LookUp">
+
+    <design:attribute name="objectName" label="I1_Object Name" />
+    <design:attribute name="displayFieldName" label="I2_Display Which Field?" />
+    <design:attribute name="label" label="I3_Field Label" />
+    <design:attribute name="valueFieldName" label="I4_Output Which Field as Value?" />
+    <design:attribute name="parentChild" label="I5_'Parent', 'Child' or 'Both' Lookup?" />
+    <design:attribute name="filterFieldName" label="I6_Filter on which field?" />
+    <design:attribute name="filterFieldValue" label="I7_Filter Value" />
+   <!--If searchFieldName is set, it will be used for search instead of displayFieldName-->
+    <design:attribute name="searchFieldName" label="I8_Search this Field instead of Display Field" />
+    <design:attribute name="selectedValue" label="O1_Output Value" />
+    <design:attribute name="required" label="Required?" />
+    <design:attribute name="defaultValue" label="Default Value" />
+    <design:attribute name="cmpid" label="Component ID" />
+    <design:attribute name="parentId" label="Parent ID" />
+    <design:attribute name="whereClause" label="Where Clause" />
+    <design:attribute name="svg" label="Icon" />
+
+</design:component>

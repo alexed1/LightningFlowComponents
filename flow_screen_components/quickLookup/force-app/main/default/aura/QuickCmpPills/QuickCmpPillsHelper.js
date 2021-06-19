@@ -1,0 +1,4 @@
+({
+	helperMethod : function() {
+	}
+})

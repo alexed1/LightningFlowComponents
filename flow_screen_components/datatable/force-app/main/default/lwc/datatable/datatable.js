@@ -229,8 +229,9 @@ export default class Datatable extends LightningElement {
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
     dateFieldArray = [];
-    @api picklistFieldArray = [];           // Obsolete
-    @api picklistReplaceValues = false;     // Obsolete
+    @api picklistFieldArray = [];
+    @api picklistReplaceValues = false;     
+    apex_picklistFieldMap = [];
     @api picklistMap = [];
     @api edits = [];
     @api isEditAttribSet = false;
@@ -292,16 +293,18 @@ export default class Datatable extends LightningElement {
     allPicklistValues({error, data}) {
         if (data) {
             this._picklistData = data;
-            if (data != undefined) {
-                // Update row data for lookup, time, picklist and percent fields
-                this.updateDataRows();
-                // Custom column processing
-                this.updateColumns();
-                // Extract Keys for Pre-Selected Rows 
-                this.updatePreSelectedRows();
-            }
         } else if (error) {
+            // An error is expected here if the running user does not have Read access to the datatable SObject
+            // All picklist values will be used instead of just those specified by the supplied Record Type Id
             console.log('getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
+        }
+        if (data != undefined || error != undefined) {
+            // Update row data for lookup, time, picklist and percent fields
+            this.updateDataRows();
+            // Custom column processing
+            this.updateColumns();
+            // Extract Keys for Pre-Selected Rows 
+            this.updatePreSelectedRows();
         }
     }
 
@@ -333,6 +336,8 @@ export default class Datatable extends LightningElement {
                     result[picklist][""] = "--None--";
                 }
             });
+        } else {
+            result = this.apex_picklistFieldMap;
         }
         return result;
     }
@@ -691,18 +696,33 @@ export default class Datatable extends LightningElement {
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
+                this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
+                this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
+                this.apex_picklistFieldMap = returnResults.picklistFieldMap;
                 this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
 
+                // Check for differences in picklist API Values vs Labels
+                if (this.picklistReplaceValues) {
+                    let noMatch = false;
+                    this.picklistFieldArray.forEach(picklist => {
+                        Object.keys(this.apex_picklistFieldMap[picklist]).forEach(map => {                         
+                            if (map != this.apex_picklistFieldMap[picklist][map]) {                              
+                                noMatch = true;
+                            }
+                        });
+                    });
+                    this.picklistReplaceValues = noMatch;
+                }
+
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';
                 this.basicColumns = JSON.parse(this.dtableColumnFieldDescriptorString);
                 console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
-console.log("🚀 ~ file: datatable.js ~ line 705 ~ Datatable ~ processDatatable ~ this.noEditFieldArray", this.noEditFieldArray);
                 
                 // *** Moved to @wire ***
                 // Update row data for lookup, time, picklist and percent fields
@@ -741,6 +761,7 @@ console.log("🚀 ~ file: datatable.js ~ line 705 ~ Datatable ~ processDatatable
         let dateFields = this.dateFieldArray;
         let percentFields = this.percentFieldArray;
         let numberFields = this.numberFieldArray;
+        let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
         data.forEach(record => {
@@ -808,6 +829,19 @@ console.log("🚀 ~ file: datatable.js ~ line 705 ~ Datatable ~ processDatatable
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
             } else {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
+            }
+
+            // Handle replacement of Picklist API Names with Labels
+            if (this.picklistReplaceValues) {
+                picklistFields.forEach(picklist => {
+                    if (record[picklist]) {
+                        let picklistLabels = [];
+                        record[picklist].split(';').forEach(picklistValue => {                    
+                            picklistLabels.push(this.apex_picklistFieldMap[picklist][picklistValue]);
+                        });
+                        record[picklist] = picklistLabels.join(';');
+                    }
+                });
             }
 
             // If needed, add more fields to datatable records

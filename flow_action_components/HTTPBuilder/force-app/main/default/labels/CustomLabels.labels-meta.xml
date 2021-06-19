@@ -71,6 +71,13 @@
         <value>Input JSON String</value>
     </labels>
     <labels>
+        <fullName>JSON_ARRAY_EXCEPTION</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>JSON_ARRAY_EXCEPTION</shortDescription>
+        <value>Map JSON Array didn’t recognize the input string as a properly formed JSON array. Check to make sure that it starts with ’[‘ and ends with ’]‘ and that it contains one or more objects enclosed by { and }</value>
+    </labels>
+    <labels>
         <fullName>Key_Label</fullName>
         <language>en_US</language>
         <protected>true</protected>
@@ -208,14 +215,20 @@
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>url</shortDescription>
-        <value>url</value>
+        <value>URL</value>
     </labels>
     <labels>
-        <fullName>JSON_ARRAY_EXCEPTION</fullName>
+        <fullName>Method_is_invalid</fullName>
         <language>en_US</language>
         <protected>true</protected>
-        <shortDescription>JSON_ARRAY_EXCEPTION</shortDescription>
-        <value>Map JSON Array didn’t recognize the input string as a properly formed JSON array. Check to make sure that it starts with ’[‘ and ends with ’]‘ and that it contains one or more objects enclosed by { and }</value>
+        <shortDescription>Method is invalid</shortDescription>
+        <value>Method is invalid (Available methods : GET, POST, PATCH, PUT, DELETE, TRACE, CONNECT, HEAD, OPTIONS).</value>
     </labels>
-    
+    <labels>
+        <fullName>URL_is_invalid</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>URL is invalid</shortDescription>
+        <value>URL is invalid</value>
+    </labels>
 </CustomLabels>

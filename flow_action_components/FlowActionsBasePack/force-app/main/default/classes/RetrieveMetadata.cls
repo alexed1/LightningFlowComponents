@@ -238,7 +238,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
                     '<members>' + flowName + '</members>' +
                     '<name>Flow</name>' + 
                 '</types>' + 
-                '<version>48.0</version>' + 
+                '<version>51.0</version>' + 
             '</Package>';		
     }
 	

@@ -1,6 +1,6 @@
 import { api, LightningElement, track } from 'lwc';
-import Use_these_values_for from '@salesforce/label/c.Use_these_values_for';
-
+//import Use_these_values_for from '@salesforce/label/c.Use_these_values_for';
+ 
 export default class MergeFieldReplacer extends LightningElement {
     @api get mergeFieldList () {
         return this._mergeFieldList;
@@ -19,9 +19,9 @@ export default class MergeFieldReplacer extends LightningElement {
         }
     }
     _mergeFieldList = [];
-    label = {
+    /* label = {
         Use_these_values_for
-    };
+    }; */
 
     closeModal() {
         const closeModal = new CustomEvent('closemodal'//, {

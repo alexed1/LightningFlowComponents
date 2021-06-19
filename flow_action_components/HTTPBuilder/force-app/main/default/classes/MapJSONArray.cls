@@ -11,8 +11,14 @@ public with sharing class MapJSONArray {
                     SObject sobj = Schema.getGlobalDescribe().get(req.sobjectType).newSObject();
                     Map<String,Object> entityMap = (Map<String,Object>)JSON.deserializeUntyped(JSON.serialize(item));
                     for(ObjectKeyValue objectKey : keysToExtractList) {
-                        
-                        sobj.put(objectKey.key, entityMap.get(objectKey.value));
+                        Schema.DisplayType FldType = getFieldType(req.sobjectType, objectKey.key);
+                        if(FldType == Schema.DisplayType.DATETIME) {
+                            sobj.put(objectKey.key, Datetime.parse(String.valueOf(entityMap.get(objectKey.value))));
+                        } else if(FldType == Schema.DisplayType.DATE) {
+                            sobj.put(objectKey.key, Date.parse(String.valueOf(entityMap.get(objectKey.value))));
+                        } else {
+                            sobj.put(objectKey.key, entityMap.get(objectKey.value));
+                        }
                         
                     }
 
@@ -23,14 +29,25 @@ public with sharing class MapJSONArray {
                 resp.sobjectList = sobjectList;
                 responseList.add(resp);
             } catch(Exception e) {
+                //throw new InvocableActionException(e.getMessage());
                 Response resp = new Response();
-                resp.errors = Label.JSON_ARRAY_EXCEPTION;
+                resp.errors = e.getMessage(); //Label.JSON_ARRAY_EXCEPTION;
                 responseList.add(resp);
-            }
+            } 
         }
 
         return responseList;
     }
+
+    public class InvocableActionException extends Exception {}
+
+    private static Schema.DisplayType getFieldType(String objectName, String fieldName) {
+        Map<String, Schema.SObjectField> M = Schema.getGlobalDescribe().get(objectName).getDescribe().fields.getMap();
+        Schema.SObjectField field = M.get(fieldName);
+        Schema.DisplayType FldType = field.getDescribe().getType();
+
+        return FldType;
+    } 
 
     public class Request {
         @InvocableVariable

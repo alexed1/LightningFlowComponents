@@ -1,4 +1,11 @@
 <template>
+
+    <template if:true={isError}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+            <h2> {errorMessage} </h2>
+        </div>
+    </template>
+
     <div>{labels.Make_HTTP_Call}</div>
 
     <c-fsc_flow-combobox 
@@ -9,6 +16,7 @@
         value={url} 
         value-type={urlType} 
         class="slds-m-around_medium"
+        required="true"
         automatic-output-variables={automaticOutputVariables}>
         
     </c-fsc_flow-combobox>
@@ -21,6 +29,7 @@
         value={method} 
         value-type={methodType} 
         class="slds-m-around_medium"
+        required="true"
         automatic-output-variables={automaticOutputVariables}>
         
     </c-fsc_flow-combobox>

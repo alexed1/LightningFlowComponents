@@ -6,12 +6,12 @@
             "package": "FlowActionsBasePack",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT",
-            "ancestorVersion": "2.16.0.0"
+            "ancestorVersion": "2.20.0.0"
         }
     ],
     "namespace": "usf",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "51.0",
     "packageAliases": {
         "FlowActionsBasePack": "0Ho4W000000k9hRSAQ",
         "FlowActionsBasePack@2.0.0-0": "04t4W000002vXU7QAM",
@@ -25,6 +25,8 @@
         "FlowActionsBasePack@2.13.1-0": "04t4W000002vz7uQAA",
         "FlowActionsBasePack@2.14.0-0": "04t4W00000307e2QAA",
         "FlowActionsBasePack@2.15.0-0": "04t4W00000307gXQAQ",
-        "FlowActionsBasePack@2.16.0-0": "04t4W00000307grQAA"
+        "FlowActionsBasePack@2.16.0-0": "04t4W00000307grQAA",
+        "FlowActionsBasePack@2.17.0-0": "04t4W00000307ppQAA"
+
     }
 }

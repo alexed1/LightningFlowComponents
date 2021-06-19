@@ -23,14 +23,17 @@ public with sharing class MapJSONArray {
                 resp.sobjectList = sobjectList;
                 responseList.add(resp);
             } catch(Exception e) {
+                //throw new InvocableActionException(e.getMessage());
                 Response resp = new Response();
-                resp.errors = Label.JSON_ARRAY_EXCEPTION;
+                resp.errors = e.getMessage(); //Label.JSON_ARRAY_EXCEPTION;
                 responseList.add(resp);
             }
         }
 
         return responseList;
     }
+
+    public class InvocableActionException extends Exception {}
 
     public class Request {
         @InvocableVariable

@@ -15,7 +15,8 @@ const flowComboboxDefaults = {
     recordUpdatesType:'recordUpdates',
     dataTypeSObject: 'SObject',
     isCollectionField: 'isCollection',
-    actionType: 'actionCalls'
+    actionType: 'actionCalls',
+    screenComponentType: 'screenComponent'
 
 }
 

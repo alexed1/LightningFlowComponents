@@ -1,0 +1,40 @@
+<!-- 
+Copyright 2017 OpFocus, Inc
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the 
+Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES 
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR 
+IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ -->
+
+<aura:component access="GLOBAL">
+	<aura:attribute name="label" type="String" required="true" />
+	<aura:attribute name="onremove" type="Object" required="false" />
+	<aura:attribute name="iconName" type="String" required="false" />
+
+	<lightning:layout class="slds-p-around_xx-small slds-card slds-card_boundary slds-align_absolute-center">
+		<lightning:layoutItem size="12">
+			<div class="slds-media slds-media_center">
+				<aura:renderIf isTrue="{!v.iconName != null}">
+					<div class="slds-media__figure">
+						<lightning:icon iconName="{!v.iconName}" size="small" />
+					</div>
+				</aura:renderIf>
+				<div class="slds-media__body slds-p-left_x-small">
+					<div>{!v.label}</div>
+				</div>
+				<div class="slds-media__figure slds-media__figure_reverse slds-p-right_xxx-small">
+					<lightning:buttonIcon tooltip="Clear Selection" variant="bare" type="reset" iconName="utility:clear"
+						alternativeText="Clear Selection" onclick="{!v.onremove}"></lightning:buttonIcon>
+				</div>
+			</div>
+		</lightning:layoutItem>
+	</lightning:layout>
+</aura:component>

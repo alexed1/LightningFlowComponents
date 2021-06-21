@@ -1,0 +1,20 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "quickLookup",
+            "versionName": "quickLookup",
+            "versionDescription": "Lookup Flow Screen Component by OpFocus & Eric Smith",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "quickLookup": "0Ho5G000000CaiDSAS",
+        "quickLookup@1.0.0-0": "04t5G0000047xKMQAY",
+        "quickLookup@1.0.1-0": "04t5G0000047xKRQAY"
+    }
+}

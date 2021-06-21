@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-16-2021
+ * @Last Modified On	: 06-11-2021
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -23,6 +23,7 @@
  * 2.00.03  11-28-2020  Jack Pond               Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  * 2.00.05  11-28-2020  Jack Pond               Added setTreatTargetObjectAsRecipient Fix: #586
  * 2.00.05  02-15-2021  Jack Pond               ReplyEmail with SendBetterEmail #595
+ * 2.01.02  2021-06-11  Jack Pond               Modified so that all checks for null also check for .length() > 0 #702
  *
  **/
 
@@ -64,7 +65,7 @@ public without sharing class SendBetterEmail {
 
         // Collect all inputs for SOQL
         for (SendBetterEmailRequest curRequest : requests) {
-            if (curRequest.templateName != null) {
+            if (curRequest.templateName != null && curRequest.templateName.length() > 0) {
                 templateNames.add(curRequest.templateName);
             }
             // Collect ContentDocument Link
@@ -83,7 +84,7 @@ public without sharing class SendBetterEmail {
                     listTargetObjectIds.addAll(curRequest.targetObjectIds);
                 }
             } else {
-                if (curRequest.templateTargetObjectId != null) {
+                if (curRequest.templateTargetObjectId != null && curRequest.templateName.length() > 0) {
                     listTargetObjectIds.add(curRequest.templateTargetObjectId);
                 }
             }
@@ -247,8 +248,8 @@ public without sharing class SendBetterEmail {
                 if (thisResponse.errors == null) {
                     if (
                         thisResponse.errors == null &&
-                        (templateName != null &&
-                        templateID != null)
+                        (templateName != null && templateName.length() > 0 ) &&
+                        (templateID != null && templateID.length() > 0 )
                     ) {
                         thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateID represents a specific Salesforce Email Template (either Classic or Lightning).';
                     }
@@ -262,7 +263,7 @@ public without sharing class SendBetterEmail {
                                 mapTemplateNameByEmailTemplates,
                                 localeKey
                             );
-                            if (templateID != null) {
+                            if (templateID != null && templateID.length() > 0 ) {
                                 mmail.setTemplateID(templateID);
                             } else {
                                 thisResponse.errors = 'An Email template with the specified template name could not be found';
@@ -332,7 +333,7 @@ public without sharing class SendBetterEmail {
                 //outgoing email can either use an orgWideEmailAddress or specify it here, but not both
                 if (
                     orgWideEmailAddressId != null &&
-                    orgWideEmailAddressId != ''
+                    orgWideEmailAddressId.length() > 0 
                 ) {
                     mail.setOrgWideEmailAddressId(orgWideEmailAddressId);
                 } else {
@@ -370,13 +371,15 @@ public without sharing class SendBetterEmail {
 
                 if (
                     thisResponse.errors == null &&
-                    (templateName != null &&
-                    templateID != null)
+                    (
+                        (templateName != null && templateName.length() > 0) &&
+                        (templateID != null && templateID.length() > 0)
+                    )
                 ) {
                     thisResponse.errors = 'You\'re trying to pass in both the name of the template and a template ID. Gotta pick one or the other. Use templateName to select the first matching template qualified with \'Language="xxx_YY"\' in the Description.  The templateID represents a specific Salesforce Email Template (either Classic or Lightning).';
                 }
 
-                if (thisResponse.errors == null && templateName != null) {
+                if (thisResponse.errors == null && (templateName != null && templateName.length() > 0) ) {
                     templateID = sendBetterEmailUtil.getTemplateIDFromName(
                         templateName,
                         templateLanguage,
@@ -394,7 +397,7 @@ public without sharing class SendBetterEmail {
 
                 if (
                     thisResponse.errors == null &&
-                    (templateID != null &&
+                    ((templateID != null && templateID.length() > 0) &&
                     ((HTMLbody != null) || (plainTextBody != null)))
                 ) {
                     thisResponse.errors = 'You\'re trying to pass in both a plaintext/html body and a template ID. Gotta pick one or the other. Make sure you\'re not confusing the Text Template resources in Flow, (which you can pass into either the HTMLBody or the plainTextBody) with the templateID, which represents a Salesforce Email Template (either Classic or Lightning).';
@@ -419,10 +422,10 @@ public without sharing class SendBetterEmail {
 
                 Boolean completed = true;
                 String error;
-                if (templateTargetObjectId != null) {
+                if (templateTargetObjectId != null && templateTargetObjectId.length() > 0 ) {
                     mail.setTargetObjectId(templateTargetObjectId);
                 }
-                if (recordId != null) {
+                if (recordId != null && recordId.length() > 0 ) {
                     mail.setWhatId(ID.valueOf(recordId));
                 }
 
@@ -439,7 +442,7 @@ public without sharing class SendBetterEmail {
                     mail.setSaveAsActivity(curRequest.setSaveAsActivity);
                 }
 
-                if (templateID != null) {
+                if (templateID != null && templateID.length()>0) {
                     try {
                         mail.setTemplateID(templateID);
                         mail.setTreatTargetObjectAsRecipient(setTreatTargetObjectAsRecipient);
@@ -564,7 +567,7 @@ public without sharing class SendBetterEmail {
                         string[] allRecipients = request.toAddresses;
                         allRecipients.addall(request.ccAddresses);
                         allRecipients.addall(request.bccAddresses);
-                        if (request.recordId != null) {
+                        if (request.recordId != null && request.recordId.length()> 0) {
                             lstTaskWrapper.addAll(
                                 SendBetterEmailAddTasksToEmail.addTasks(
                                     request,

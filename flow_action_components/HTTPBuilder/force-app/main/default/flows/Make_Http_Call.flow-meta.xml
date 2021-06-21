@@ -17,13 +17,13 @@
         <inputParameters>
             <name>Endpoint</name>
             <value>
-                <stringValue>https://app-customization-54912-dev-ed--c.visualforce.com/services/data/v51.0/query</stringValue>
+                <stringValue>https://v6.exchangerate-api.com/v6/73dbd0b41b4bf00008b4e469/latest/USD</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>Headers</name>
             <value>
-                <stringValue>[{&quot;key&quot;:&quot;Authorization&quot;,&quot;value&quot;:&quot;00DN0000000GA2q!ARIAQP3sa30EMvsB5P57kWlUlFy9teXZhwVWtLLGwIKFO_xNGyedIZMeQXXtXks8mTyFqQ6b5.h8ye3H6l_NbAN5cwxLnaKm&quot;,&quot;order&quot;:0},{&quot;key&quot;:&quot;Content-Type&quot;,&quot;value&quot;:&quot; application/json; charset=UTF-8&quot;,&quot;order&quot;:1},{&quot;key&quot;:&quot;Accept&quot;,&quot;value&quot;:&quot;application/json&quot;,&quot;order&quot;:2},{&quot;key&quot;:&quot;qreqwrq&quot;,&quot;value&quot;:&quot;erewr&quot;,&quot;order&quot;:3}]</stringValue>
+                <stringValue>[{&quot;key&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;order&quot;:0}]</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -35,13 +35,13 @@
         <inputParameters>
             <name>Params</name>
             <value>
-                <stringValue>[{&quot;key&quot;:&quot;q&quot;,&quot;value&quot;:&quot;select Name, Id FROm account&quot;,&quot;order&quot;:0}]</stringValue>
+                <stringValue>[{&quot;key&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;order&quot;:0}]</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>Timeout</name>
             <value>
-                <numberValue>10000.0</numberValue>
+                <numberValue>0.0</numberValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>

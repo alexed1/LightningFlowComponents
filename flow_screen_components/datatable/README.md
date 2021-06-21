@@ -69,6 +69,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 **Bug Fixes:** 
 -   Orgs with multi-currency enabled can now add currency rollup and currency formula fields to the datatable 
+-   The edit picklist dropdown will overflow the displayed table if necessary (Only if the Table Height attribute is not set)
  
 ## 06/13/21 -  Eric Smith -    Version 3.2.3 
 **Updates:** 

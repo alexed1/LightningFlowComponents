@@ -55,7 +55,8 @@
                     builder-context-filter-type={selectedSObject}
                     builder-context-filter-collection-boolean={inputValues.tableData.isCollection}
                     builder-context={_builderContext} 
-                    onvaluechanged={handleFlowComboboxValueChange}>
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
                 </c-fsc_flow-combobox>
             </div>
             <c-fsc_display-error 
@@ -73,7 +74,8 @@
             field-level-help={inputValues.tableDataString.helpText}
             builder-context-filter-collection-boolean={inputValues.tableDataString.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Pre-Selected Rows -->
@@ -87,7 +89,8 @@
             builder-context-filter-type={selectedSObject}
             builder-context-filter-collection-boolean={inputValues.preSelectedRows.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <c-fsc_flow-combobox
@@ -99,7 +102,8 @@
             field-level-help={inputValues.preSelectedRowsString.helpText}
             builder-context-filter-collection-boolean={inputValues.preSelectedRowsString.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
     </div>
 
@@ -195,7 +199,8 @@
             disabled={disallowHeaderChange}
             builder-context-filter-collection-boolean={inputValues.tableLabel.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
         <c-fsc_flow-combobox 
             name="select_tableIcon" 
@@ -206,7 +211,8 @@
             disabled={disallowHeaderChange}
             builder-context-filter-collection-boolean={inputValues.tableIcon.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
         <c-fsc_pick-icon
             mode="combobox"
@@ -224,7 +230,8 @@
         builder-context-filter-type="Number"
         builder-context-filter-collection-boolean={inputValues.maxNumberOfRows.isCollection}
         builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
+        onvaluechanged={handleFlowComboboxValueChange}
+        automatic-output-variables={automaticOutputVariables}>
     </c-fsc_flow-combobox>
 
     <div class="slds-m-top_xx-small">
@@ -362,7 +369,8 @@
             field-level-help={inputValues.columnFields.helpText}
             builder-context-filter-collection-boolean={inputValues.columnFields.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Alignments -->
@@ -374,7 +382,8 @@
             field-level-help={inputValues.columnAlignments.helpText}
             builder-context-filter-collection-boolean={inputValues.columnAlignments.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Edits -->
@@ -386,7 +395,8 @@
             field-level-help={inputValues.columnEdits.helpText}
             builder-context-filter-collection-boolean={inputValues.columnEdits.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Filters -->
@@ -398,7 +408,8 @@
             field-level-help={inputValues.columnFilters.helpText}
             builder-context-filter-collection-boolean={inputValues.columnFilters.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Icons -->
@@ -410,7 +421,8 @@
             field-level-help={inputValues.columnIcons.helpText}
             builder-context-filter-collection-boolean={inputValues.columnIcons.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Labels -->
@@ -422,7 +434,8 @@
             field-level-help={inputValues.columnLabels.helpText}
             builder-context-filter-collection-boolean={inputValues.columnLabels.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Scales -->
@@ -435,7 +448,8 @@
             field-level-help={inputValues.columnScales.helpText}
             builder-context-filter-collection-boolean={inputValues.columnScales.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Types -->
@@ -448,7 +462,8 @@
             field-level-help={inputValues.columnTypes.helpText}
             builder-context-filter-collection-boolean={inputValues.columnTypes.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
     
         <!-- Column Widths -->
@@ -460,7 +475,8 @@
             field-level-help={inputValues.columnWidths.helpText}
             builder-context-filter-collection-boolean={inputValues.columnWidths.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Column Wraps -->
@@ -472,7 +488,8 @@
             field-level-help={inputValues.columnWraps.helpText}
             builder-context-filter-collection-boolean={inputValues.columnWraps.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
         
         <!-- Special Column CellAttribs -->
@@ -484,7 +501,8 @@
             field-level-help={inputValues.columnCellAttribs.helpText}
             builder-context-filter-collection-boolean={inputValues.columnCellAttribs.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Special Column TypeAttribs -->
@@ -496,7 +514,8 @@
             field-level-help={inputValues.columnTypeAttribs.helpText}
             builder-context-filter-collection-boolean={inputValues.columnTypeAttribs.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
         <!-- Special Column OtherAttribs -->
@@ -508,7 +527,8 @@
             field-level-help={inputValues.columnOtherAttribs.helpText}
             builder-context-filter-collection-boolean={inputValues.columnOtherAttribs.isCollection}
             builder-context={_builderContext} 
-            onvaluechanged={handleFlowComboboxValueChange}>
+            onvaluechanged={handleFlowComboboxValueChange}
+            automatic-output-variables={automaticOutputVariables}>
         </c-fsc_flow-combobox>
 
     </div>
@@ -522,7 +542,8 @@
         field-level-help={inputValues.recordTypeId.helpText}
         builder-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
         builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
+        onvaluechanged={handleFlowComboboxValueChange}
+        automatic-output-variables={automaticOutputVariables}>
     </c-fsc_flow-combobox>
 
     <!-- Add --None-- to Picklists -->
@@ -545,7 +566,8 @@
         field-level-help={inputValues.tableHeight.helpText}
         builder-context-filter-collection-boolean={inputValues.tableHeight.isCollection}
         builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
+        onvaluechanged={handleFlowComboboxValueChange}
+        automatic-output-variables={automaticOutputVariables}>
     </c-fsc_flow-combobox>
 
     <!-- Key Field -->
@@ -557,7 +579,8 @@
         field-level-help={inputValues.keyField.helpText}
         builder-context-filter-collection-boolean={inputValues.keyField.isCollection}
         builder-context={_builderContext} 
-        onvaluechanged={handleFlowComboboxValueChange}>
+        onvaluechanged={handleFlowComboboxValueChange}
+        automatic-output-variables={automaticOutputVariables}>
     </c-fsc_flow-combobox>
 
     <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">

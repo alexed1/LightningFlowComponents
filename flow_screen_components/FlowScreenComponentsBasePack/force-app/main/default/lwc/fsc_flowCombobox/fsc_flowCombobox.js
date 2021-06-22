@@ -59,7 +59,9 @@ export default class FlowCombobox extends LightningElement {
         reference: 'utility:merge_field',
         actionCalls : 'utility:fallback',
         screenComponent : 'utility:fallback',
-        Apex : 'utility:apex'
+        Apex : 'utility:apex',
+        int : 'utility:text',
+        boolean : 'utility:crossfilter'
 
     };
 
@@ -392,7 +394,7 @@ export default class FlowCombobox extends LightningElement {
                 curDataType === flowComboboxDefaults.dataTypeSObject ? curObject[objectTypeField] : curDataType,
                 flowComboboxDefaults.defaultKeyPrefix + this.key++,
                 null,
-                curObject.storeOutputAutomatically
+                curObject.storeOutputAutomatically && typeDescriptor.dataType !== 'SObject'
             ));
         });
         return typeOptions;
@@ -481,7 +483,7 @@ export default class FlowCombobox extends LightningElement {
                             output.dataType,
                             output.label? output.label : output.apiName,
                             output.apiName ? output.apiName : output.name,
-                            false,
+                            output.maxOccurs > 1,
                             curObjectType,
                             this.getIconNameByType(curDataType),
                             curDataType === 'SObject',
@@ -583,11 +585,15 @@ export default class FlowCombobox extends LightningElement {
                 let localOptions = curOption.options;
 
                 if (this.builderContextFilterType) {
-                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || (opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
+                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || opToFilter.storeOutputAutomatically === true || (  opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
                 }
 
                 if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {
-                    localOptions = localOptions.filter(opToFilter => opToFilter.isCollection === this.builderContextFilterCollectionBoolean);
+                    localOptions = localOptions.filter(opToFilter =>  {
+                        return((opToFilter.isCollection === this.builderContextFilterCollectionBoolean) 
+                         || (opToFilter.storeOutputAutomatically === true))}
+
+                    ) ;
                 }
 
                 if (searchLC) {

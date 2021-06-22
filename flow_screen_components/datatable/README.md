@@ -65,7 +65,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## xx/xx/21 -  Eric Smith -    Version 3.2.4 
 **Updates:** 
--   
+-   New Output Attribute for the Number of Rows Edited (Because even when no rows are edited, the OutputEditedRows attribute is not null)
  
 **Bug Fixes:** 
 -   Orgs with multi-currency enabled can now add currency rollup and currency formula fields to the datatable 

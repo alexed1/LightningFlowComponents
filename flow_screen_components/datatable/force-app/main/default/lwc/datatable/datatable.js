@@ -39,6 +39,7 @@ export default class Datatable extends LightningElement {
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
+    @api numberOfRowsEdited = 0;
     @api isConfigMode = false;
     @api tableHeight;
     @api outputSelectedRows = [];
@@ -1907,8 +1908,9 @@ export default class Datatable extends LightningElement {
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
         }
 
-        console.log('outputSelectedRows',this.outputSelectedRows);
-        console.log('outputEditedRows',this.outputEditedRows);
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+        console.log('outputSelectedRows', this.outputSelectedRows.length, this.outputSelectedRows);
+        console.log('outputEditedRows',this.outputEditedRows.length, this.outputEditedRows);
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

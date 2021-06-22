@@ -394,7 +394,7 @@ export default class FlowCombobox extends LightningElement {
                 curDataType === flowComboboxDefaults.dataTypeSObject ? curObject[objectTypeField] : curDataType,
                 flowComboboxDefaults.defaultKeyPrefix + this.key++,
                 null,
-                curObject.storeOutputAutomatically && typeDescriptor.dataType != 'SObject'
+                curObject.storeOutputAutomatically && typeDescriptor.dataType !== 'SObject'
             ));
         });
         return typeOptions;
@@ -585,7 +585,7 @@ export default class FlowCombobox extends LightningElement {
                 let localOptions = curOption.options;
 
                 if (this.builderContextFilterType) {
-                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || opToFilter.storeOutputAutomatically === true || (  opToFilter.type === 'SObject') && !this.builderContextFilterCollectionBoolean);
+                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || opToFilter.storeOutputAutomatically === true || (  opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
                 }
 
                 if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {

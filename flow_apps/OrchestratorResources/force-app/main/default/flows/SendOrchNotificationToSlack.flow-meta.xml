@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Flow_to_Slack</name>
+        <label>Send Flow to Slack</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>PostSlackApplication</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>buttonLabel</name>
+            <value>
+                <stringValue>Launch</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>buttonMessageBlocks</name>
+            <value>
+                <elementReference>announcementText</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>channel</name>
+            <value>
+                <stringValue>C01NX4NF25Q</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>flowName</name>
+            <value>
+                <stringValue>OrchNotification</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>requireButtonBeforeLaunch</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <interviewLabel>SendOrchNotificationToSlack {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SendOrchNotificationToSlack</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Send_Flow_to_Slack</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>announcementText</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>{
+			&quot;type&quot;: &quot;section&quot;,
+			&quot;text&quot;: {
+				&quot;type&quot;: &quot;mrkdwn&quot;,
+				&quot;text&quot;: &quot;This is a notification from Salesforce Orchestrator&quot;
+			}
+		}</text>
+    </textTemplates>
+</Flow>

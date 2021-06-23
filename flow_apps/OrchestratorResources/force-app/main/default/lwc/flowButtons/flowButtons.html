@@ -1,0 +1,15 @@
+<template>
+    <template if:true={buttons}>
+        <div class="slds-clearfix">
+            <template if:true={includeLine}>
+                <hr class="slds-m-vertical_small">
+            </template>
+            <div class={floatClass}>
+                <template for:each={buttons} for:item="button">
+                    <lightning-button label={button.label} variant={button.variant} key={button.label} onclick={handleButtonClick}>
+                    </lightning-button>
+                </template>
+            </div>
+        </div>
+    </template>
+</template>

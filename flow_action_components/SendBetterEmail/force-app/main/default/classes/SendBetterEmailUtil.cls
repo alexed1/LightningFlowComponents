@@ -2,13 +2,14 @@
  * @description       : SendBetterEmailUtil - helper utilities for SendBetterEmail
  * @author            : Refactored from Alex Edelstein
  * @group             : 
- * @last modified on  : 02-17-2021
+ * @last modified on  : 2021-06-22
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date		Author				Modification
  * 2.00.02	10-06-2020	Mohith Shrivastava  Refactored from SendBetterEmail
  * 2.00.05	02-17-2021	Jack Pond			Use Title.FileExtension instead of PathOnClient for attachment name
  * 2.00.05	02-17-2021	Jack Pond			Template Description empty causes error Fixes: #602
+ * 2.03.11	06-22-2021	Jack Pond			Temporary fix for #786 - cached TemplateName Overflows
  * 
 **/
 public inherited sharing class SendBetterEmailUtil {
@@ -145,20 +146,22 @@ public inherited sharing class SendBetterEmailUtil {
 		Map<Id, EmailTemplate> mapIdByEmailTemplate
 	) {
 		Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates = new Map<String, List<EmailTemplate>>();
-		for (EmailTemplate et : [
-			SELECT Id, Description, Name
-			FROM EmailTemplate
-			WHERE Name IN :templateNames AND isActive = TRUE
-		]) {
-			if (!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
-				mapTemplateNameByEmailTemplates.put(
-					et.Name,
-					new List<EmailTemplate>{ et }
-				);
-			} else {
-				mapTemplateNameByEmailTemplates.get(et.Name).add(et);
+		if (templateNames != null && templateNames.size() != 0){
+			for (EmailTemplate et : [
+				SELECT Id, Description, Name
+				FROM EmailTemplate
+				WHERE Name IN :templateNames AND isActive = TRUE
+			]) {
+				if (!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
+					mapTemplateNameByEmailTemplates.put(
+						et.Name,
+						new List<EmailTemplate>{ et }
+					);
+				} else {
+					mapTemplateNameByEmailTemplates.get(et.Name).add(et);
+				}
+				mapIdByEmailTemplate.put(et.Id, et);
 			}
-			mapIdByEmailTemplate.put(et.Id, et);
 		}
 		return mapTemplateNameByEmailTemplates;
 	}

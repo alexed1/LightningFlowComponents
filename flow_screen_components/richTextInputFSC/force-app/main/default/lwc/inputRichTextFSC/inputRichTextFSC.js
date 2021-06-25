@@ -1,3 +1,5 @@
+// 06/25/21    Eric Smith       Added a Required attribute and increased the bottom margin to better match standard components
+
 import { LightningElement, api, track } from 'lwc';
 
 export default class inputRichTextFSC_LWC extends LightningElement {
@@ -11,6 +13,8 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @api warnOnly = false;
     @api label;
     @api characterLimit;
+    @api required = false;
+
     formats = ['font', 'size', 'bold', 'italic', 'underline',
         'strike', 'list', 'indent', 'align', 'link',
         'image', 'clean', 'table', 'header', 'color','background','code','code-block','script','blockquote','direction'];
@@ -20,6 +24,15 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         if(!this.disableAdvancedTools){
             this.value = this.richText;
         }
+
+        let errorMessage = "You must make a selection in: " + this.label + " to continue";
+        if (this.required === true && !this.value) {
+            return {
+                isValid: false,
+                errorMessage: errorMessage
+            };
+        }
+
         if(this.disableAdvancedTools || this.warnOnly){
             return {isValid:true};
         }else if(this.characterCap && (this.characterCount > this.characterLimit)){

@@ -334,7 +334,8 @@ export default class Datatable extends LightningElement {
                     result[picklist][item.label] = item.value;
                 });
                 if (this.allowNoneToBeChosen) {
-                    result[picklist][""] = "--None--";
+                    // result[picklist][""] = "--None--";
+                    result[picklist]["--None--"] = "";
                 }
             });
         } else {
@@ -703,6 +704,7 @@ export default class Datatable extends LightningElement {
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
+                console.log("Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
                 this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;

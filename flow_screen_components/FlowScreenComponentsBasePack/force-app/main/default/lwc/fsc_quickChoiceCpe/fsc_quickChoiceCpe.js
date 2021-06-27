@@ -148,7 +148,7 @@ export default class QuickChoiceCpe extends LightningElement {
                     this.inputValues[curInputParam.name].value = curInputParam.value;
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                     if (curInputParam.name === 'staticChoicesString') {
-                        // console.log('The current input param is staticChoicesString, so we parse it into our staticChoices variable.');
+                        // console.log('The current input param is staticChoicesString, so we parse it into our staticChoices variable. '+ curInputParam.value);
                         this.staticChoices = JSON.parse(curInputParam.value);
                     }
 
@@ -223,7 +223,7 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     // Static Choice event handlers
-    
+    // When a lightning-input receives focus, automatically select all text in the input (to make it easier to cut, copy, edit, etc)
     handleStaticChoiceFocus(event) {
         if (event.currentTarget) {
             let value = event.currentTarget.value;
@@ -248,64 +248,30 @@ export default class QuickChoiceCpe extends LightningElement {
     */
 
     handleStaticChoiceChange(event) {
-        console.log('in handleStaticChoiceChange');
         const index = event.currentTarget.dataset.index;
         const value = event.currentTarget.value;
         let propertyName = event.currentTarget.dataset.property;
-        console.log('index = ' + index, 'value = ' + value, 'propertyName = ' + propertyName);
-        console.log('changedChoice = ' + JSON.stringify(this.tempStaticChoices[index]));
-        // changedChoice[propertyName] = value;
+        console.log('We are setting the "' + propertyName + '" property on choice with index #' + index + ' to: ' + value);
         this.tempStaticChoices[index][propertyName] = value;
-        console.log('changedChoice = ' + JSON.stringify(this.tempStaticChoices[index]));
     }
 
     handleAddChoiceClick() {
-        // console.log('in handleAddChoiceClick');
-        let newChoice = this.newChoice();
-        console.log('newChoice = ' + JSON.stringify(newChoice));
-        this.tempStaticChoices.push(newChoice);
-        console.log('tempStaticChoices = ' + JSON.stringify(this.tempStaticChoices), 'length = '+ this.tempStaticChoices.length);
-        let newIndex = this.tempStaticChoices.length - 1;
-        console.log('newIndex = '+ newIndex);
-        // let focusSelectorString = '.staticChoiceRow lightning-input[data-index="'+ (this.tempStaticChoices.length - 1) +'"]';
-        let focusSelectorString = '.staticChoiceRow lightning-input[data-index="'+ newIndex +'"]';
-
-
-        this.staticChoicesModal.focusSelectorString = focusSelectorString;
-        console.log('this.staticChoicesModal.focusSelectorString = '+ this.staticChoicesModal.focusSelectorString);
-        return;
-        
-
-        console.log('focusSelectorString = '+ focusSelectorString);
-        let inputs = this.template.querySelectorAll(focusSelectorString);
-        console.log('inputs = '+ JSON.stringify(inputs) +' there are '+ inputs.length +' inputs');
-        if (inputs.length) {
-            let firstInput = inputs[0];            
-            console.log('firstInput = '+ firstInput);
-            this.staticChoicesModal.focusElement(firstInput);
-        }
-        //let focusSuccess = this.staticChoicesModal.focusSelector(focusSelectorString);
-        // console.log('focus success = '+ focusSuccess);
-
-        // this.staticChoicesModal.focusIndex = (this.tempStaticChoices.length * 2 - 2);   // TODO: Focus doesn't work properly right now
+        this.tempStaticChoices.push(this.newChoice());
+        this.staticChoicesModal.focusSelectorString = '.staticChoiceRow lightning-input[data-index="' + (this.tempStaticChoices.length - 1) + '"]';
     }
 
     handleClearAllChoicesClick() {
         this.tempStaticChoices = [this.newChoice()];
         this.staticChoices.focusSelectorString = '.staticChoiceRow lightning-input';
-        // this.staticChoicesModal.updateFocusElements();
     }
 
     handleStaticChoicesOpen() {
-        // console.log('opening modal');
+        // Create a clone of the list of static choices to use as temp values while the modal is open
         this.tempStaticChoices = this.staticChoices.map(choice => { return Object.assign({}, choice); });
-        // if (!this.tempStaticChoices.length)
-        //     this.tempStaticChoices = [this.newChoice()];
         this.staticChoicesModal.open();
     }
 
     handleStaticChoiceMoveUp(event) {
-        console.log('in handleStaticChoiceMoveUp');
         let index = event.currentTarget.dataset.index;
         if (index) {// this includes index of 0, which can't be moved up
             const movingChoice = this.tempStaticChoices.splice(index, 1);
@@ -314,19 +280,16 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     handleStaticChoiceMoveDown(event) {
-        console.log('in handleStaticChoiceMoveDown');
         let index = event.currentTarget.dataset.index;
         if (index && this.index != this.tempStaticChoices.length - 1) { // this includes the final index, which can't be moved down
             const movingChoice = this.tempStaticChoices.splice(index, 1);
-            index++;
-            this.tempStaticChoices.splice(index, 0, ...movingChoice);
+            // index++;
+            this.tempStaticChoices.splice(Number(index) + 1, 0, ...movingChoice);
         }
     }
 
 
     handleStaticChoicesSave() {
-        console.log('in handleStaticChoicesSave');
-        // this.staticChoices = this.tempStaticChoices.map(choice => { return choice; } );
         let isValid = true;
         let inputs = this.template.querySelectorAll('c-lwc-modal lightning-input');
         if (!inputs.length || !this.tempStaticChoices.length) {
@@ -338,12 +301,14 @@ export default class QuickChoiceCpe extends LightningElement {
             isValid = input.reportValidity() && isValid;
         }
         if (isValid) {
+            // Clone the updated tempStaticChoices into staticChoices, then delete the temps
             this.staticChoices = this.tempStaticChoices.map(choice => {
                 return { label: choice.label, value: choice.value }
             })
-            console.log('on save, staticChoices = '+ JSON.stringify(this.staticChoices));
             this.tempStaticChoices = [];
+            
             this.staticChoicesModal.close();
+            // Stringify the new saved list of choices, and dispatch that value. This will be parsed in initializeValues() when the component is next loaded 
             this.inputValues.staticChoicesString.value = JSON.stringify(this.staticChoices);
             this.dispatchFlowValueChangeEvent('staticChoicesString', this.inputValues.staticChoicesString.value, this.settings.flowDataTypeString);
         }

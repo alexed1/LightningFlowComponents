@@ -30,6 +30,7 @@
             <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean" description="Set this to true to include a None choice. (For Input Mode “Picklist Field” only)"/>
             <property name="style_width" label="Set Width in Pixels" type="Integer" description="Set the width of the component for Picklist and Radio Buttons (Default 320 pixels)"/>
             <property name="sortList" label="Sort the Picklist by Label?" type="Boolean" description="Set this to true to sort the list of Picklist labels.  Default will the the order they were added."/>
+            <property name="staticChoicesString" label="Static Choices" type="String" description="JSON string containing the list of label/value pairs"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

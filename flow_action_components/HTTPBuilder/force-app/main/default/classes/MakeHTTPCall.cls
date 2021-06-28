@@ -59,7 +59,7 @@ public with sharing class MakeHTTPCall {
         public String Error_message;
     }
     
-    @InvocableMethod(label='Invocable Callout' description='Invocable Callout' configurationEditor='c:MakeHTTPCallCPE')
+    @InvocableMethod(label='Make HTTP Call' description='Make HTTP Call' configurationEditor='c:MakeHTTPCallCPE')
     public static List<Response> Invoke (List<Request> requests) {
         List<Response> responseList = new List<Response>();
         String[] AllowedMethods = new String[]{'GET', 'POST', 'PATCH', 'PUT', 'DELETE', 'TRACE', 'CONNECT', 'HEAD', 'OPTIONS'};

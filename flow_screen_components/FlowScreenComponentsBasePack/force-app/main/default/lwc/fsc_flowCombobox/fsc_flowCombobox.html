@@ -1,5 +1,5 @@
 <template>
-    <div style={inputStyle}>
+    <div style={inputStyle} onmouseleave={handleInputFocus}>
         <div>
             <div class={formElementClass}>
                 <div class="slds-form-element__control">
@@ -27,6 +27,7 @@
                                                 onkeydown={handleKeyDown}
                                                 onclick={handleOpenOptions}
                                                 autocomplete={autocomplete}
+                                                
                                         ></lightning-input>
                                     </div>
                                 </template>
@@ -88,13 +89,13 @@
                                                                     onclick={handleOpenObject}
                                                     ></lightning-icon>
 
-                                                    <lightning-icon if:true={curOption.isActionCall}
+                                                    <lightning-icon if:true={curOptionElement.storeOutputAutomatically}
                                                                     data-option-value={curOptionElement.value}
                                                                     data-object-type={curOptionElement.objectType}
                                                                     icon-name="utility:chevronright"
                                                                     class="slds-float--right"
                                                                     size="x-small"
-                                                                    onclick={handleOpenAction}
+                                                                    onclick={handleOpenScreenComponent}
                                                     ></lightning-icon>
                                                 </div>
                                             </template>

@@ -34,5 +34,8 @@ ehthumbs.db
 [Dd]esktop.ini
 $RECYCLE.BIN/
 *.iml
+
+# Other files
 .npmignore
 .gitignore
+package-lock.json

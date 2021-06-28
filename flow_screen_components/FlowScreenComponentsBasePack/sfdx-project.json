@@ -5,7 +5,7 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.12.0-0"
+                    "package": "FlowActionsBasePack@2.24.0-0"
                 }
             ],
             "package": "FlowScreenComponentsBasePack",
@@ -24,15 +24,24 @@
         "FlowActionsBasePack@2.7.0-0": "04t4W000002vyJIQAY",
         "FlowActionsBasePack@2.9.0-0": "04t4W000002vyNKQAY",
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNKQAY",
+        "FlowActionsBasePack@2.20.0-0": "04t4W00000308ACQAY",
+        "FlowActionsBasePack@2.24.0-0": "04t4W00000308DpQAI",
         "FlowScreenComponentsBasePack@2.1.1-0": "04t5G000004PuV3QAK",
         "FlowScreenComponentsBasePack@3.0.4-0": "04t5G000004PuV8QAK",
         "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
         "FlowScreenComponentsBasePack@2.1.4-0": "04t5G000004PuWQQA0",
-<<<<<<< Updated upstream
-        "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI"
-=======
+        "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI",
         "FlowScreenComponentsBasePack@2.1.7-0": "04t5G0000047xDpQAI",
-        "FlowScreenComponentsBasePack@2.1.8-0": "04t5G0000047xE4QAI"
->>>>>>> Stashed changes
+        "FlowScreenComponentsBasePack@2.1.8-0": "04t5G0000047xE4QAI",
+        "FlowScreenComponentsBasePack@2.3.2-0": "04t5G0000047xIaQAI",
+        "FlowScreenComponentsBasePack@1.1.2-0": "04t5G0000047xIfQAI",
+        "FlowScreenComponentsBasePack@2.3.3-0": "04t5G0000047xIpQAI",
+        "FlowScreenComponentsBasePack@2.3.4-0": "04t5G0000047xIuQAI",
+        "FlowScreenComponentsBasePack@2.3.5-0": "04t5G0000047xJOQAY",
+        "FlowScreenComponentsBasePack@2.3.6-0": "04t5G0000047xJYQAY",
+        "FlowScreenComponentsBasePack@2.3.7-0": "04t5G0000047xJiQAI",
+        "FlowScreenComponentsBasePack@2.3.8-0": "04t5G0000047xKWQAY",
+        "FlowScreenComponentsBasePack@2.3.9-0": "04t5G0000047xKqQAI",
+        "FlowScreenComponentsBasePack@2.3.10-0": "04t5G0000047xKvQAI"
     }
 }

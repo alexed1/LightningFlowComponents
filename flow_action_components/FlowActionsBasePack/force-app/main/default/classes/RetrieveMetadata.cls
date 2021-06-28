@@ -91,7 +91,11 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 	global static String RetrieveMetadataItemV2(String metadataName, String metadataType){		
 
         
-	   System.debug('entering RetrieveMetadataItem with metadataName: ' + metadataName);
+	   	System.debug('entering RetrieveMetadataItem with metadataName: ' + metadataName);
+
+	   	if(metadataType == 'Workflow' && metadataName.contains('.')) {
+			metadataName = metadataName.split('\\.')[0];
+		}
 
 
 		// Reset state from any previous requests
@@ -111,7 +115,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
         MetadataService.PackageTypeMembers packageType = new MetadataService.PackageTypeMembers();
         
         //Flow-specific code
-		packageType.name = 'Flow'; 
+		packageType.name = metadataType; 
 		packageType.members = new String[] { metadataName };
         retrieveRequest.unpackaged.types.add(packageType);
         System.debug('retrieve request is: ' + retrieveRequest);
@@ -234,7 +238,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
                     '<members>' + flowName + '</members>' +
                     '<name>Flow</name>' + 
                 '</types>' + 
-                '<version>48.0</version>' + 
+                '<version>51.0</version>' + 
             '</Package>';		
     }
 	

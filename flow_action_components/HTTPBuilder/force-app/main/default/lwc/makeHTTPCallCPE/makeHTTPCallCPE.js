@@ -16,18 +16,20 @@ import Error_Message from '@salesforce/label/c.Error_Message';
 import Status from '@salesforce/label/c.Status';
 import Status_code from '@salesforce/label/c.Status_code';
 import Make_HTTP_Call from '@salesforce/label/c.Make_HTTP_Call';
+import Method_is_invalid from '@salesforce/label/c.Method_is_invalid';
+import URL_is_invalid from '@salesforce/label/c.URL_is_invalid';
 
 
 const METHOD_LIST = [
-    {value: 'GET', label: 'GET'},
-    {value: 'POST', label: 'POST'},
-    {value: 'PATCH', label: 'PATCH'},
-    {value: 'PUT', label: 'PUT'},
-    {value: 'DELETE', label: 'DELETE'},
-    {value: 'TRACE', label: 'TRACE'},
-    {value: 'CONNECT', label: 'CONNECT'},
-    {value: 'HEAD', label: 'HEAD'},
-    {value: 'OPTIONS', label: 'OPTIONS'},
+    'GET',
+    'POST',
+    'PATCH',
+    'PUT',
+    'DELETE',
+    'TRACE',
+    'CONNECT',
+    'HEAD',
+    'OPTIONS'
 ];
 export default class MakeHTTPCallCPE extends LightningElement {
 
@@ -51,7 +53,9 @@ export default class MakeHTTPCallCPE extends LightningElement {
         Error_Message,
         Status,
         Status_code,
-        Make_HTTP_Call
+        Make_HTTP_Call,
+        URL_is_invalid,
+        Method_is_invalid
     }
     _builderContext;
     _flowVariables;
@@ -141,7 +145,43 @@ export default class MakeHTTPCallCPE extends LightningElement {
         return param && param.valueDataType;
     }
 
+    @track errors = [];
+    
+    get errorMessage() {
+        return this.errors.join('; ');
+    }
+    get isError() {
+        return this.errors.length > 0;
+    }
 
+    @api validate() {
+        let urlRegexp = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/gm;
+        let url =this.url ? this.url.replaceAll(/\{!(\d*\w*\.*\d*\w*)\}/g, '') : this.url;
+        let validity = [];
+        this.errors = [
+        ];
+
+        if((!url || !urlRegexp.test(url)) && this.urlType != 'reference') { 
+            this.errors.push(this.labels.URL_is_invalid);
+            validity.push({ 
+                key: this.labels.URL_is_invalid,
+                errorString: this.labels.URL_is_invalid,
+            }); 
+        }
+
+        if((!this.method || !METHOD_LIST.includes(this.method.toUpperCase())) && this.methodType != 'reference') { 
+            this.errors.push(this.labels.Method_is_invalid);
+            validity.push({ 
+                key: this.labels.Method_is_invalid,
+                errorString: this.labels.Method_is_invalid,
+            }); 
+        } 
+
+
+
+        return validity;
+
+    }
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,

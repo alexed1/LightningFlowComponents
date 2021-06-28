@@ -710,6 +710,7 @@ export default class Datatable extends LightningElement {
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
+                console.log("Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
 
                 // Check for differences in picklist API Values vs Labels
                 if (this.picklistReplaceValues) {
@@ -1313,6 +1314,14 @@ export default class Datatable extends LightningElement {
                     field[pct] = parseFloat(field[pct]);
                 });
 
+                // Revert formatting for time fields
+                let timefield = this.timeFieldArray;
+                timefield.forEach(time => {
+                    if (field[time]) {
+                        field[time] = this.convertTime(field[time]);
+                    }
+                });                
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
@@ -1331,6 +1340,18 @@ export default class Datatable extends LightningElement {
     cancelChanges(event) {
         // Only used with inline editing
         this.mydata = [...this.savePreEditData];
+    }
+
+    convertTime(dtValue) {
+        // Return a Salesforce formatted time value based a datetime value
+        const dtv = new Date(dtValue);
+        const hours = dtv.getHours() - (this.timezoneOffset / 2880000);
+        let timeString = ("00"+hours).slice(-2)+":";
+        timeString += ("00"+dtv.getMinutes()).slice(-2)+":";
+        timeString += ("00"+dtv.getSeconds()).slice(-2)+".";
+        timeString += ("000"+dtv.getMilliseconds()).slice(-3);
+        timeString += "Z";
+        return timeString;
     }
 
     handleRowSelection(event) {

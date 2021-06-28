@@ -63,6 +63,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## xx/xx/21 -  Eric Smith -    Version 3.2.5 
+**Updates:** 
+-   
+ 
+**Bug Fixes:** 
+-   Fixed error that ocurred when trying to save an edited row from a datatable that contained a time field 
+
 ## 06/26/21 -  Eric Smith -    Version 3.2.4 
 **Updates:** 
 -   New Output Attribute for the Number of Rows Edited (Because even when no rows are edited, the OutputEditedRows attribute is not null)

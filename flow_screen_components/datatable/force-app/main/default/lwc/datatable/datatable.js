@@ -709,7 +709,7 @@ export default class Datatable extends LightningElement {
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
-                this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
+                this.timezoneOffset = returnResults.timezoneOffset.replace(/[^\d-]/g, '');  // Numeric characters and - only
                 console.log("Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
 
                 // Check for differences in picklist API Values vs Labels

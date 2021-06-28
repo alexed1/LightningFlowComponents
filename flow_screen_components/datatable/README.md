@@ -35,16 +35,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.20 or later  
-FlowScreenComponentsBasePack Version 2.3.5 or later  
+FlowActionsBasePack Version 2.24 or later  
+FlowScreenComponentsBasePack Version 2.3.10 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.2.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)   
-[Version 3.2.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)
+[Version 3.2.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xLeQAI)   
+[Version 3.2.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xLeQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -62,6 +62,16 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
+ 
+## 06/26/21 -  Eric Smith -    Version 3.2.4 
+**Updates:** 
+-   New Output Attribute for the Number of Rows Edited (Because even when no rows are edited, the OutputEditedRows attribute is not null)
+-   The Datatable CPE now supports Automatic Output Variables in the Flow Builder
+ 
+**Bug Fixes:** 
+-   Orgs with multi-currency enabled can now add currency rollup and currency formula fields to the datatable 
+-   The edit picklist dropdown will overflow the displayed table if necessary (Only if the Table Height attribute is not set)
+-   The dropdown picklist values when editing will show the picklist labels instead of the picklist API names (The selected edit prior to selecting Save will show as the API name)
  
 ## 06/13/21 -  Eric Smith -    Version 3.2.3 
 **Updates:** 

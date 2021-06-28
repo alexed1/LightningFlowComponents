@@ -39,6 +39,7 @@ export default class Datatable extends LightningElement {
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
+    @api numberOfRowsEdited = 0;
     @api isConfigMode = false;
     @api tableHeight;
     @api outputSelectedRows = [];
@@ -333,7 +334,8 @@ export default class Datatable extends LightningElement {
                     result[picklist][item.label] = item.value;
                 });
                 if (this.allowNoneToBeChosen) {
-                    result[picklist][""] = "--None--";
+                    // result[picklist][""] = "--None--";
+                    result[picklist]["--None--"] = "";
                 }
             });
         } else {
@@ -568,6 +570,9 @@ export default class Datatable extends LightningElement {
         // Set table border display
         this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
 
+        // Add overflow if max height is not set so the combobox will spill outside the table
+        this.borderClass += (this.tableHeight == null) ? ' overflowEnabled' : '';
+        
         // Generate datatable
         if (this.tableData) {
 
@@ -699,6 +704,7 @@ export default class Datatable extends LightningElement {
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
+                console.log("Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
                 this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
@@ -1904,8 +1910,9 @@ export default class Datatable extends LightningElement {
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
         }
 
-        console.log('outputSelectedRows',this.outputSelectedRows);
-        console.log('outputEditedRows',this.outputEditedRows);
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+        console.log('outputSelectedRows', this.outputSelectedRows.length, this.outputSelectedRows);
+        console.log('outputEditedRows',this.outputEditedRows.length, this.outputEditedRows);
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

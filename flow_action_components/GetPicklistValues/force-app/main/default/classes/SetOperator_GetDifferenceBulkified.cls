@@ -1,4 +1,4 @@
-public with sharing class SetOperator_GetDifference {
+public with sharing class SetOperator_GetDifferenceBulkified {
  
   
     @InvocableMethod

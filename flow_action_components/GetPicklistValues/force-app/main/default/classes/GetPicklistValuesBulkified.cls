@@ -1,7 +1,7 @@
 //invocable action that, when provided with the name of an object and a picklist field, returns the vales of the picklist
 //see https://unofficialsf.com/flow-action-get-picklist-values/
 
-public with sharing class GetPicklistValues {
+public with sharing class GetPicklistValuesBulkified {
   
   @InvocableMethod(label='Get Picklist Values' description='Batchable version of GetPicklistValues')
   public static List <Results> getPicklistVals(List<Requests> requestList) {

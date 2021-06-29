@@ -530,14 +530,14 @@ export default class ers_datatableCPE extends LightningElement {
         }
     }
 
-    @api get automaticOutputVariables () {
+    @api 
+    get automaticOutputVariables () {
         return this._automaticOutputVariables;
     }
 
-    set automaticOutputVariables (value) {
+    set automaticOutputVariables(value) {
         this._automaticOutputVariables = value;
     }
-
 
     @api
     get elementInfo() {

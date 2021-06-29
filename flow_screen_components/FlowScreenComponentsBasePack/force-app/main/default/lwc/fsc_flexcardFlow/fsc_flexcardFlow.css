@@ -1,0 +1,37 @@
+h1 {
+    font-size: xx-large;
+}
+
+.card {
+    /** display: block; **/ 
+     border: 1px solid grey;   
+     background: rgb(255, 255, 255);
+     color: black   ;
+     text-align: left;
+     overflow-wrap: break-word;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      }
+      
+.card:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+      }
+      
+.clickedCard {
+    /** display: block; **/ 
+     border: 2px solid blue;   
+     background: rgb(255, 255, 255);
+     color: black   ;
+     text-align: left;
+     overflow-wrap: break-word;
+     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+       }
+
+.clickedCard:hover {
+      box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+       }
+
+.fc-body {
+    display: flex; 
+    justify-content: space-between;
+    overflow-wrap: break-word;
+  }

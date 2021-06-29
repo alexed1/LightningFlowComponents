@@ -1,5 +1,5 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import flowLabels from '@salesforce/apex/FlexCardController.getFlowLabel';
+import flowLabels from '@salesforce/apex/usf.FlexCardController.getFlowLabel';
 
 export default class fsc_ActionList extends LightningElement {
     @api

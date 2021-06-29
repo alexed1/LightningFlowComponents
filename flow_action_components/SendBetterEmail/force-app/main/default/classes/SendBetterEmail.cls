@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 06-11-2021
+ * @Last Modified On	: 2021-06-29
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -24,6 +24,7 @@
  * 2.00.05  11-28-2020  Jack Pond               Added setTreatTargetObjectAsRecipient Fix: #586
  * 2.00.05  02-15-2021  Jack Pond               ReplyEmail with SendBetterEmail #595
  * 2.01.02  2021-06-11  Jack Pond               Modified so that all checks for null also check for .length() > 0 #702
+ * 2.01.05  2021-06-29  Jack Pond               Pasted Typo fix #797 for null pointer exception
  *
  **/
 
@@ -84,7 +85,7 @@ public without sharing class SendBetterEmail {
                     listTargetObjectIds.addAll(curRequest.targetObjectIds);
                 }
             } else {
-                if (curRequest.templateTargetObjectId != null && curRequest.templateName.length() > 0) {
+                if (curRequest.templateTargetObjectId != null) {
                     listTargetObjectIds.add(curRequest.templateTargetObjectId);
                 }
             }

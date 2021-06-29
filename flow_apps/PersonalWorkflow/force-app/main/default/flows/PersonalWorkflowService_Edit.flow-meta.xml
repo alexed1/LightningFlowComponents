@@ -214,7 +214,7 @@
             </value>
         </filters>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>Personal_Flow__c</object>
+        <object>PersonalFlow__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
@@ -236,7 +236,7 @@
                 <typeName>T</typeName>
                 <typeValue>PersonalAction__c</typeValue>
             </dataTypeMappings>
-            <extensionName>c:flexcardFlow</extensionName>
+            <extensionName>c:fsc_flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>visibleFieldNames</name>

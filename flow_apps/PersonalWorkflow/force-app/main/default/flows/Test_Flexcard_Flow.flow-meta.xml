@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
     <interviewLabel>Test Flexcard Flow {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test Flexcard Flow</label>
     <processMetadataValues>
@@ -48,7 +49,7 @@
                 <typeName>T</typeName>
                 <typeValue>Account</typeValue>
             </dataTypeMappings>
-            <extensionName>c:flexcardFlow</extensionName>
+            <extensionName>c:fsc_flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>records</name>

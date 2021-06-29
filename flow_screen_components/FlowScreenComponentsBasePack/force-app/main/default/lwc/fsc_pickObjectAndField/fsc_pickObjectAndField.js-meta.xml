@@ -19,6 +19,8 @@
             <property name="availableObjectTypes" type="String" role="inputOnly"> </property>
             <property name="availableFields" type="String" role="inputOnly"> </property>
             <property name="hideObjectPicklist" type="Boolean" role="inputOnly"> </property>
+            <property name="isObjectRequired" type="Boolean" role="inputOnly"> </property>
+            <property name="isFieldRequired" type="Boolean" role="inputOnly"> </property>
             <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
             <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
             <property name="testproperty" type="String" role="inputOnly"> </property>
@@ -35,6 +37,8 @@
             <property name="availableFields" type="String"> </property>
             <property name="hideObjectPicklist" type="Boolean"> </property>
             <property name="hideFieldPicklist" type="Boolean"> </property>
+            <property name="isObjectRequired" type="Boolean"> </property>
+            <property name="isFieldRequired" type="Boolean"> </property>
             <property name="displayFieldType" type="Boolean" > </property>
         </targetConfig>
     </targetConfigs>

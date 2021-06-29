@@ -28,6 +28,9 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api displayFieldType = false;
     @api testproperty;
 
+    @api isObjectRequired = false;
+    @api isFieldRequired = false;;
+
     @track _objectType;
     @track _field;
     @track objectTypes = standardObjectOptions;

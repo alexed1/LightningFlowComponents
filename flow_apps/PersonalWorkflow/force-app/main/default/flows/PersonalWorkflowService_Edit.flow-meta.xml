@@ -126,10 +126,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Is_Create_Mode</name>
+        <label>Is Create Mode</label>
+        <locationX>534</locationX>
+        <locationY>1190</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Create</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Mode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Create</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Personal_Flow</targetReference>
+            </connector>
+            <label>Is Create</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Track_Which_Event</name>
         <label>Track Which Event?</label>
         <locationX>314</locationX>
         <locationY>758</locationY>
+        <defaultConnector>
+            <targetReference>Is_Create_Mode</targetReference>
+        </defaultConnector>
         <defaultConnectorLabel>Delete Record</defaultConnectorLabel>
         <rules>
             <name>New_Record</name>
@@ -183,6 +208,35 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_Personal_Flow</name>
+        <label>Create Personal Flow</label>
+        <locationX>402</locationX>
+        <locationY>1310</locationY>
+        <assignRecordIdToReference>recordId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Deploy_Flow</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Activity__c</field>
+            <value>
+                <elementReference>Action</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Personal_Workflow_Name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Triggering_Event__c</field>
+            <value>
+                <elementReference>Trigger</elementReference>
+            </value>
+        </inputAssignments>
+        <object>PersonalFlow__c</object>
+    </recordCreates>
     <recordLookups>
         <name>Load_Actions</name>
         <label>Load Actions</label>
@@ -218,6 +272,49 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
+        <name>Deploy_Flow</name>
+        <label>Deploy Flow</label>
+        <locationX>402</locationX>
+        <locationY>1430</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>Deployflow</name>
+            <extensionName>c:fsc_transferMetadata</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>transferMode</name>
+                <value>
+                    <stringValue>deploy</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Flow</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>metadataString</name>
+                <value>
+                    <elementReference>TriggerFlowTemplate</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>metadataName</name>
+                <value>
+                    <elementReference>Trigger</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Edit_Action</name>
         <label>Edit Action</label>
         <locationX>754</locationX>
@@ -225,6 +322,9 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Is_Create_Mode</targetReference>
+        </connector>
         <fields>
             <name>dispChooseTrigger_0</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Choose Your Action&lt;/b&gt;&lt;/p&gt;</fieldText>
@@ -293,6 +393,50 @@
                 <name>Edit_Personal_Workflow_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
+                    <name>Personal_Workflow_Name</name>
+                    <dataType>String</dataType>
+                    <fieldText>Personal Workflow Name</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>true</isRequired>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Mode</leftValueReference>
+                            <operator>EqualTo</operator>
+                            <rightValue>
+                                <stringValue>Create</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Edit_Personal_Workflow_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>Edit_Personal_Workflow_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Edit_Personal_Workflow_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
                     <name>Trigger</name>
                     <dataType>String</dataType>
                     <defaultValue>
@@ -311,7 +455,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Edit_Personal_Workflow_Section1_Column2</name>
+                <name>Edit_Personal_Workflow_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>buttonEditTrigger</name>
@@ -368,10 +512,10 @@
             <isRequired>false</isRequired>
         </fields>
         <fields>
-            <name>Edit_Personal_Workflow_Section2</name>
+            <name>Edit_Personal_Workflow_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Edit_Personal_Workflow_Section2_Column1</name>
+                <name>Edit_Personal_Workflow_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Action</name>
@@ -392,7 +536,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Edit_Personal_Workflow_Section2_Column2</name>
+                <name>Edit_Personal_Workflow_Section3_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>buttonEditAction</name>
@@ -459,6 +603,9 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Is_Create_Mode</targetReference>
+        </connector>
         <fields>
             <name>radioWhatTypeOfChange</name>
             <choiceReferences>choiceAnyChange</choiceReferences>
@@ -669,6 +816,9 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Is_Create_Mode</targetReference>
+        </connector>
         <fields>
             <name>Which_record_creates</name>
             <choiceReferences>choiceAllCreates</choiceReferences>
@@ -718,7 +868,78 @@
             <targetReference>Reload_Personal_Workflow</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <textTemplates>
+        <name>TriggerFlowTemplate</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Flow xmlns=&quot;http://soap.sforce.com/2006/04/metadata&quot;&gt;
+    &lt;actionCalls&gt;
+        &lt;name&gt;Post_to_Slack&lt;/name&gt;
+        &lt;label&gt;Post to Slack&lt;/label&gt;
+        &lt;locationX&gt;176&lt;/locationX&gt;
+        &lt;locationY&gt;335&lt;/locationY&gt;
+        &lt;actionName&gt;PostToSlack&lt;/actionName&gt;
+        &lt;actionType&gt;apex&lt;/actionType&gt;
+        &lt;flowTransactionModel&gt;CurrentTransaction&lt;/flowTransactionModel&gt;
+        &lt;inputParameters&gt;
+            &lt;name&gt;channelId&lt;/name&gt;
+            &lt;value&gt;
+                &lt;stringValue&gt;qwerty&lt;/stringValue&gt;
+            &lt;/value&gt;
+        &lt;/inputParameters&gt;
+        &lt;storeOutputAutomatically&gt;true&lt;/storeOutputAutomatically&gt;
+    &lt;/actionCalls&gt;
+    &lt;apiVersion&gt;52.0&lt;/apiVersion&gt;
+    &lt;interviewLabel&gt;test workflow trigger {!$Flow.CurrentDateTime}&lt;/interviewLabel&gt;
+    &lt;label&gt;{!Trigger}&lt;/label&gt;
+    &lt;processMetadataValues&gt;
+        &lt;name&gt;BuilderType&lt;/name&gt;
+        &lt;value&gt;
+            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
+        &lt;/value&gt;
+    &lt;/processMetadataValues&gt;
+    &lt;processMetadataValues&gt;
+        &lt;name&gt;CanvasMode&lt;/name&gt;
+        &lt;value&gt;
+            &lt;stringValue&gt;AUTO_LAYOUT_CANVAS&lt;/stringValue&gt;
+        &lt;/value&gt;
+    &lt;/processMetadataValues&gt;
+    &lt;processMetadataValues&gt;
+        &lt;name&gt;OriginBuilderType&lt;/name&gt;
+        &lt;value&gt;
+            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
+        &lt;/value&gt;
+    &lt;/processMetadataValues&gt;
+    &lt;processType&gt;AutoLaunchedFlow&lt;/processType&gt;
+    &lt;start&gt;
+        &lt;locationX&gt;50&lt;/locationX&gt;
+        &lt;locationY&gt;0&lt;/locationY&gt;
+        &lt;connector&gt;
+            &lt;targetReference&gt;Post_to_Slack&lt;/targetReference&gt;
+        &lt;/connector&gt;
+        &lt;filterLogic&gt;and&lt;/filterLogic&gt;
+        &lt;filters&gt;
+            &lt;field&gt;Name&lt;/field&gt;
+            &lt;operator&gt;IsNull&lt;/operator&gt;
+            &lt;value&gt;
+                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
+            &lt;/value&gt;
+        &lt;/filters&gt;
+        &lt;filters&gt;
+            &lt;field&gt;BillingCity&lt;/field&gt;
+            &lt;operator&gt;IsNull&lt;/operator&gt;
+            &lt;value&gt;
+                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
+            &lt;/value&gt;
+        &lt;/filters&gt;
+        &lt;object&gt;{!contextObjectType.objectType}&lt;/object&gt;
+        &lt;recordTriggerType&gt;Create&lt;/recordTriggerType&gt;
+        &lt;triggerType&gt;RecordAfterSave&lt;/triggerType&gt;
+    &lt;/start&gt;
+    &lt;status&gt;InvalidDraft&lt;/status&gt;
+&lt;/Flow&gt;</text>
+    </textTemplates>
     <variables>
         <name>choicesEventValues</name>
         <dataType>String</dataType>
@@ -732,6 +953,16 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Mode</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>Edit</stringValue>
+        </value>
     </variables>
     <variables>
         <name>recordId</name>

@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>49.0</apiVersion>
+    <decisions>
+        <name>Is_New_Workflow</name>
+        <label>Is New Workflow</label>
+        <locationX>182</locationX>
+        <locationY>518</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>New_Workflow</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>NewWorkflow.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>New Workflow</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Workflow</targetReference>
+            </connector>
+            <label>New Workflow</label>
+        </rules>
+    </decisions>
     <interviewLabel>PersonalWorkflow Demo {!$Flow.CurrentDateTime}</interviewLabel>
     <label>PersonalWorkflow Demo</label>
     <processMetadataValues>
@@ -25,7 +47,7 @@
     <recordLookups>
         <name>Get_Accounts</name>
         <label>Get Accounts</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -38,24 +60,65 @@
     <recordLookups>
         <name>Get_Personal_Workflows</name>
         <label>Get Personal Workflows</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>278</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Screen1</targetReference>
         </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Personal_Flow__c</object>
+        <object>PersonalFlow__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
         <name>Screen1</name>
         <label>Screen1</label>
-        <locationX>176</locationX>
+        <locationX>182</locationX>
         <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Is_New_Workflow</targetReference>
+        </connector>
+        <fields>
+            <name>NewWorkflow</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;New Workflow&quot;,&quot;value&quot;:&quot;New Workflow&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;num&quot;:null,&quot;index&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>right</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>neither</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>navigation</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
         <fields>
             <name>disp1</name>
             <fieldText>&lt;p&gt;Your Personal Workflows&lt;/p&gt;</fieldText>
@@ -65,9 +128,9 @@
             <name>personalFlowFlexcards</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
-                <typeValue>Personal_Flow__c</typeValue>
+                <typeValue>PersonalFlow__c</typeValue>
             </dataTypeMappings>
-            <extensionName>c:flexcardFlow</extensionName>
+            <extensionName>c:fsc_flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>visibleFieldNames</name>
@@ -90,7 +153,7 @@
             <inputParameters>
                 <name>objectAPIName</name>
                 <value>
-                    <stringValue>Personal_Flow__c</stringValue>
+                    <stringValue>PersonalFlow__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -122,19 +185,33 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>56</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Get_Accounts</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <subflows>
+        <name>Create_Workflow</name>
+        <label>Create Workflow</label>
+        <locationX>50</locationX>
+        <locationY>638</locationY>
+        <flowName>PersonalWorkflowService_Edit</flowName>
+        <inputAssignments>
+            <name>Mode</name>
+            <value>
+                <stringValue>Create</stringValue>
+            </value>
+        </inputAssignments>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </subflows>
     <variables>
         <name>personalWorkflows</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Personal_Flow__c</objectType>
+        <objectType>PersonalFlow__c</objectType>
     </variables>
 </Flow>

@@ -607,6 +607,11 @@
             <targetReference>Is_Create_Mode</targetReference>
         </connector>
         <fields>
+            <name>dispTriggerEdit</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Trigger When Records Change&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
             <name>radioWhatTypeOfChange</name>
             <choiceReferences>choiceAnyChange</choiceReferences>
             <choiceReferences>choiceSpecificField</choiceReferences>
@@ -620,6 +625,43 @@
             <fieldType>RegionContainer</fieldType>
             <fields>
                 <name>Edit_Record_Change_Configuration_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>radioWhatTypeOfChange</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <stringValue>specificField</stringValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Edit_Record_Change_Configuration_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Edit_Record_Change_Configuration_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>1</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Edit_Record_Change_Configuration_Section2_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>pickField</name>
@@ -660,6 +702,43 @@
                     <fieldType>RadioButtons</fieldType>
                     <isRequired>false</isRequired>
                 </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>11</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>radioWhatTypeOfChange</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>choiceSpecificField</elementReference>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Edit_Record_Change_Configuration_Section3</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Edit_Record_Change_Configuration_Section3_Column1</name>
+                <fieldType>Region</fieldType>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>2</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Edit_Record_Change_Configuration_Section3_Column2</name>
+                <fieldType>Region</fieldType>
                 <fields>
                     <name>expFieldChanges</name>
                     <extensionName>c:fsc_expressionBuilder</extensionName>
@@ -687,25 +766,15 @@
                 <inputParameters>
                     <name>width</name>
                     <value>
-                        <stringValue>12</stringValue>
+                        <stringValue>10</stringValue>
                     </value>
                 </inputParameters>
                 <isRequired>false</isRequired>
             </fields>
             <isRequired>false</isRequired>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>radioWhatTypeOfChange</leftValueReference>
-                    <operator>EqualTo</operator>
-                    <rightValue>
-                        <stringValue>specificField</stringValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Edit_Trigger</name>
@@ -806,7 +875,7 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Record_Create_Event_Details</name>
@@ -819,6 +888,11 @@
         <connector>
             <targetReference>Is_Create_Mode</targetReference>
         </connector>
+        <fields>
+            <name>dispRecordCreate</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Trigger When Records are Created&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>Which_record_creates</name>
             <choiceReferences>choiceAllCreates</choiceReferences>
@@ -859,7 +933,7 @@
             </visibilityRule>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>408</locationX>

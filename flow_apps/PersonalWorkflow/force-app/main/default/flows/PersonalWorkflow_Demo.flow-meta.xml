@@ -88,7 +88,7 @@
             <inputParameters>
                 <name>buttons</name>
                 <value>
-                    <stringValue>[{&quot;label&quot;:&quot;New Workflow&quot;,&quot;value&quot;:&quot;New Workflow&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;num&quot;:null,&quot;index&quot;:0}]</stringValue>
+                    <stringValue>[{&quot;label&quot;:&quot;New Workflow&quot;,&quot;value&quot;:&quot;New Workflow&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:{&quot;label&quot;:&quot;Neutral Button&quot;,&quot;value&quot;:&quot;neutral&quot;},&quot;num&quot;:null,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -191,7 +191,7 @@
             <targetReference>Get_Accounts</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Create_Workflow</name>
         <label>Create Workflow</label>

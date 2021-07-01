@@ -31,6 +31,34 @@ public with sharing class ConvertCSVToRecordsTest {
     }
 
     @isTest
+    static void testIsTrimFlagPositive() {
+        ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
+        flowInputs[0].isTrim = true;
+        Test.startTest();
+        ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
+        Test.stopTest();
+        System.assertEquals(flowOutputs[0].convertedCSVRows.size(), 3, 'Expected to see three rows from the converted csv');
+        Account acc = (Account) flowOutputs[0].convertedCSVRows[0];
+        System.assertEquals(acc.Description, 'Sample Description', 'Leading space was not trimmed from the Rating field');
+        System.assertEquals(acc.Rating, 'Hot', 'Leading space was not trimmed from the Rating field');
+        System.assertEquals(acc.Site, 'New York', 'Trailing space was not trimmed from the Site field');
+    }
+
+    @isTest
+    static void testIsTrimFlagNegative() {
+        ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
+        flowInputs[0].isTrim = false;
+        Test.startTest();
+        ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
+        Test.stopTest();
+        System.assertEquals(flowOutputs[0].convertedCSVRows.size(), 3, 'Expected to see three rows from the converted csv');
+        Account acc = (Account) flowOutputs[0].convertedCSVRows[0];
+        System.assertEquals(acc.Description, ' Sample Description', 'Leading space was trimmed from the Rating field');
+        System.assertEquals(acc.Rating, ' Hot', 'Leading space was trimmed from the Rating field');
+        System.assertEquals(acc.Site, 'New York ', 'Trailing space was trimmed from the Site field');
+    }
+
+    @isTest
     static void testGetFieldTypeMethodException() {
         try {
             ConvertCSVToRecords.getFieldType(Schema.SObjectType.Account.fields.getMap(), 'TestField');
@@ -46,9 +74,9 @@ public with sharing class ConvertCSVToRecordsTest {
 
         String csvHeader = String.join(fields, ',') + '\n';
         csvStringContent = csvHeader;
-        csvStringContent += 'Sample description,500000,300,Hot,"Acme, Inc",New York';
+        csvStringContent += ' Sample Description,500000,300, Hot,"Acme, Inc",New York ';
         csvStringContent += '\n';
-        csvStringContent += '"Sample description,\nwith new line",40000,30,Hot,"Universal Containers","Washington, DC"';
+        csvStringContent += '"Sample Description,\nwith new line",40000,30,Hot,"Universal Containers","Washington, DC"';
         csvStringContent += '\n';
         csvStringContent += ',40000,20,Hot,"Universal Containers",';
         return Blob.valueOf(csvStringContent);

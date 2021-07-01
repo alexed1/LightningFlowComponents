@@ -26,7 +26,7 @@ public with sharing class ConvertCSVToRecords {
                 Map<String, Schema.DisplayType> fieldToFieldTypeMap = new Map<String, Schema.DisplayType>();
                 Map<String, String> fieldName = new Map<String, String>();
                 for (String field : fields) {
-                    String fieldApiName = field;
+                    String fieldApiName = field.trim(); //Since fieldnames will never contain spaces, we will always trim
                     if (fieldMap.get(fieldApiName) == null) {
                         fieldApiName = fieldApiName.replaceAll('/', '_');
                         fieldApiName = fieldApiName.replaceAll(' ', '_').replaceAll('[^a-zA-Z0-9_]', ''); // Convert to alphanumeric and underscore
@@ -45,6 +45,9 @@ public with sharing class ConvertCSVToRecords {
                     for (Integer i = 0; i < fields.size(); i++) {
                         String fieldValue = replaceComma(fieldInputValues[i], commaRepl);
                         fieldValue = removeQuotes(fieldValue); // Remove " characters if they bracket the field value
+                        if (curInput.isTrim) {
+                            fieldValue = fieldValue.trim();
+                        }
                         Schema.DisplayType fieldType = fieldToFieldTypeMap.get(fields[i]);
                         try {
                             obj.put(fieldName.get(fields[i]), getConvertedFieldValue(fieldType, fieldValue));
@@ -180,6 +183,9 @@ public with sharing class ConvertCSVToRecords {
 
         @InvocableVariable(label='List of CSV File IDs')
         public List<String> contentDocumentIdList;
+
+        @InvocableVariable(label='Trim leading and trailing spaces')
+        public Boolean isTrim = false;
     }
 
     public class Response {

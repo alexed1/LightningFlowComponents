@@ -1,16 +1,22 @@
 <template>
     <lightning-layout multiple-rows="true">
         <lightning-layout-item size="4">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="1">
                     <span class="expression-index slds-p-top_large slds-align-bottom">
                         {position}
                     </span>
-            <lightning-combobox name="field"
-                                label="Field"
-                                placeholder="Field"
-                                options={fields}
-                                value={fieldName}
-                                onchange={selectField}>
-            </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="11">
+                    <lightning-combobox name="field"
+                                        label="Field"
+                                        placeholder="Field"
+                                        options={fields}
+                                        value={fieldName}
+                                        onchange={selectField}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
         </lightning-layout-item>
         <lightning-layout-item size="2" class="slds-p-left--small">
             <lightning-combobox
@@ -46,7 +52,8 @@
                             icon-name="utility:delete"
                             alternative-text="Delete"
                             onclick={handleExpressionRemove}
-                            class="slds-m-left_xx-small">
+                            class="slds-m-left_xx-small"
+                            disabled={disableRemoveExpression}>
                     </lightning-button-icon>
                 </lightning-layout-item>
             </lightning-layout>

@@ -12,5 +12,5 @@
   <rule ref="category/apex/security.xml/ApexSOQLInjection" />
   <rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred" />
   <rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse" />
-  <rule ref="category/apex/security.xml/ApexXSSFromURLParam" />
+  <rule ref="category/apex/security.xml/ApexXSSFromURLParam" /> 
 </ruleset>

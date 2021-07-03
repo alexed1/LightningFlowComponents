@@ -1,0 +1,25 @@
+<template>
+    <lightning-layout multiple-rows="true">
+        <template if:true={isDataLoaded}>
+            <template for:each={recs} for:item="record">
+                <div key={record.Id}  class="slds-grid slds-grid_align-center slds-wrap">    
+                    <div class="slds-col slds-p-around_small slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_8-of-12">           
+                    <div class={record.Cardcss} data-id={record.Id} onclick={handleClick} style={sizeWidth}>                      
+                    <c-fsc_flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle" header-style={headerStyle}></c-fsc_flexcard-header>
+                    <div class ="fc-body">
+                        <c-fsc_field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames}></c-fsc_field-viewer>
+                        <c-fsc_action-list flow-names={visibleFlowNames} record-id={record.Id}></c-fsc_action-list>
+                        <br/>
+                        <p>
+                        <template if:true={allowMultiSelect}>
+                            <lightning-input class="slds-float_right" type="checkbox-button" label="Save" name="SavedRecord" value={record.Id} onchange={handleChange}></lightning-input>                        
+                        </template>
+                        </p>                         
+                    </div>                    
+                 </div> 
+                </div>
+                </div>
+            </template>
+        </template>
+    </lightning-layout>
+</template>

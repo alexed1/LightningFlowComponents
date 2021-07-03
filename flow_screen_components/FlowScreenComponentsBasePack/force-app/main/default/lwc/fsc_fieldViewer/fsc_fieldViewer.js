@@ -1,7 +1,7 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 
-export default class FieldViewer extends LightningElement {
+export default class fsc_FieldViewer extends LightningElement {
     @api
     fieldNames = [];
 

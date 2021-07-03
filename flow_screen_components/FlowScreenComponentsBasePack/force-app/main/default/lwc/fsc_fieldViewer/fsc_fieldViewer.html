@@ -5,9 +5,10 @@
                     {field.label}
                 </div>
                 <div style={fieldValueStyle}>
-                    {field.value}
+                    <lightning-formatted-rich-text
+                    value={field.value}>
+                    </lightning-formatted-rich-text>
                 </div>
             </div>
     </template>
 </template>
-

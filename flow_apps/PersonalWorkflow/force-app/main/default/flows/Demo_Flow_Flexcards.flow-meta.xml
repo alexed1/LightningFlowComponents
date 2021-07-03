@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
-    <interviewLabel>Test Flexcard Flow {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test Flexcard Flow</label>
+    <apiVersion>51.0</apiVersion>
+    <interviewLabel>Demo Flow - Flexcards {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Demo Flow - Flexcards</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -23,28 +23,29 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>Get_Accounts</name>
-        <label>Get Accounts</label>
+        <name>Get_All_account</name>
+        <label>Get All account</label>
         <locationX>176</locationX>
         <locationY>158</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Screen1</targetReference>
+            <targetReference>FlexCardFlow</targetReference>
         </connector>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>Account</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputReference>AccountList</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
     </recordLookups>
     <screens>
-        <name>Screen1</name>
-        <label>Screen1</label>
+        <name>FlexCardFlow</name>
+        <label>FlexCardFlow</label>
         <locationX>176</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>flexcard1</name>
+            <name>TestRule</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
                 <typeValue>Account</typeValue>
@@ -54,21 +55,28 @@
             <inputParameters>
                 <name>records</name>
                 <value>
-                    <elementReference>Get_Accounts</elementReference>
+                    <elementReference>AccountList</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>visibleFieldNames</name>
                 <value>
-                    <stringValue>Id, Name, Rating</stringValue>
+                    <stringValue>Id,Name</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>visibleFlowNames</name>
+                <name>objectAPIName</name>
                 <value>
-                    <stringValue>UpdateAccount</stringValue>
+                    <stringValue>Account</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>cardSize</name>
+                <value>
+                    <numberValue>300.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -79,8 +87,16 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Accounts</targetReference>
+            <targetReference>Get_All_account</targetReference>
         </connector>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>AccountList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Account</objectType>
+    </variables>
 </Flow>

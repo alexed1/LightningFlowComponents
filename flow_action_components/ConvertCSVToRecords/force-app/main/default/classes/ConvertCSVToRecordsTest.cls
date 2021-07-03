@@ -1,5 +1,10 @@
 @isTest
 public with sharing class ConvertCSVToRecordsTest {
+    private static final String SPACE = ' ';
+    private static final String SAMPLE_DESCRIPTION = 'Sample Description';
+    private static final String NEW_YORK = 'New York';
+    private static final String HOT = 'Hot';
+
     @TestSetup
     static void createData() {
         ContentVersion cv = new ContentVersion(Title = 'Demo Accounts CSV', VersionData = createCSVBlob(), PathOnClient = 'DemoAccounts.csv');
@@ -39,9 +44,9 @@ public with sharing class ConvertCSVToRecordsTest {
         Test.stopTest();
         System.assertEquals(flowOutputs[0].convertedCSVRows.size(), 3, 'Expected to see three rows from the converted csv');
         Account acc = (Account) flowOutputs[0].convertedCSVRows[0];
-        System.assertEquals(acc.Description, 'Sample Description', 'Leading space was not trimmed from the Rating field');
-        System.assertEquals(acc.Rating, 'Hot', 'Leading space was not trimmed from the Rating field');
-        System.assertEquals(acc.Site, 'New York', 'Trailing space was not trimmed from the Site field');
+        System.assertEquals(acc.Description, SAMPLE_DESCRIPTION, 'Setting isTrim to true did not trim the leading space from Description field');
+        System.assertEquals(acc.Rating, HOT, 'Setting isTrim to true did not trim the leading space from Rating field');
+        System.assertEquals(acc.Site, NEW_YORK, 'Setting isTrim to true did not trim the trailing space from City field');
     }
 
     @isTest
@@ -53,9 +58,9 @@ public with sharing class ConvertCSVToRecordsTest {
         Test.stopTest();
         System.assertEquals(flowOutputs[0].convertedCSVRows.size(), 3, 'Expected to see three rows from the converted csv');
         Account acc = (Account) flowOutputs[0].convertedCSVRows[0];
-        System.assertEquals(acc.Description, ' Sample Description', 'Leading space was trimmed from the Rating field');
-        System.assertEquals(acc.Rating, ' Hot', 'Leading space was trimmed from the Rating field');
-        System.assertEquals(acc.Site, 'New York ', 'Trailing space was trimmed from the Site field');
+        System.assertEquals(acc.Description, SPACE + SAMPLE_DESCRIPTION, 'Setting isTrim to false did not stop the leading space from being trimmed from the description field');
+        System.assertEquals(acc.Rating, SPACE + HOT, 'Setting isTrim to false did not stop the leading space from being trimmed from the rating field');
+        System.assertEquals(acc.Site, NEW_YORK + SPACE, 'Setting isTrim to false did not stop the trailing space from being trimmed from the city field');
     }
 
     @isTest
@@ -74,7 +79,7 @@ public with sharing class ConvertCSVToRecordsTest {
 
         String csvHeader = String.join(fields, ',') + '\n';
         csvStringContent = csvHeader;
-        csvStringContent += ' Sample Description,500000,300, Hot,"Acme, Inc",New York ';
+        csvStringContent += SPACE + SAMPLE_DESCRIPTION + ',500000,300,' + SPACE + HOT + ',"Acme, Inc",' + NEW_YORK + SPACE;
         csvStringContent += '\n';
         csvStringContent += '"Sample Description,\nwith new line",40000,30,Hot,"Universal Containers","Washington, DC"';
         csvStringContent += '\n';

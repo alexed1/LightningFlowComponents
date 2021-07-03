@@ -5,9 +5,19 @@
             console.log ('changeType is: ' + eventParams.changeType);
             if(component.get("v.launchMode") == 'Modal') {
                 component.set('v.openModal',true);
+​
+                //Set input variable
+                var inputVariable = [
+                    {
+                        name : "recordId",
+                        type : "String",
+                        value: component.get("v.recordId")
+                    }
+                ];
+​
                 var flow = component.find("flow");
-                flow.startFlow(component.get("v.targetFlowName"));
-
+                flow.startFlow(component.get("v.targetFlowName"), inputVariable); //added input variable
+​
             } else {
                 //launch modelessly in a tab or browser window
                 var workspaceAPI = component.find("workspace");
@@ -17,7 +27,7 @@
                     //we are in console mode
                     workspaceAPI.getFocusedTabInfo()
                     .then(function(response) {
-                        var targetUrl = '/flow/' + component.get("v.targetFlowName");
+                        var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable;
                         workspaceAPI.openSubtab({
                             parentTabId: response.tabId,
                             url:  targetUrl,
@@ -30,7 +40,7 @@
                     });
                 } else {
                     console.log('need to launch flow a different way');
-                    var targetUrl = '/flow/' + component.get("v.targetFlowName");
+                    var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable;
                     console.log('targetURL is: ' + targetUrl);
                     window.open(targetUrl);
                 }
@@ -39,16 +49,16 @@
             
         
             
-
+​
         }   
         else if(eventParams.changeType === "REMOVED") {
             console.log('record is being deleted');
             //the other launch paths don't work well when the underlying page is deleted
-            var targetUrl = '/flow/' + component.get("v.targetFlowName");
+            var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable
             console.log('targetURL is: ' + targetUrl);
             window.open(targetUrl);
         }
     }
-
+​
     
 })

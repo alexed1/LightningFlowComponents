@@ -27,13 +27,13 @@ public with sharing class QuickLightningLookupController
 	@AuraEnabled
 	public static LookupRecords getRecords(String sObjectName, String valueFieldName, 
 											String displayedFieldName, String otherFields, String whereClause,
-                                          	String filteredFieldName, String filterFieldValue)
+											String filteredFieldName, String filterFieldValue)
 	{
 		try
 		{
 			system.debug('======> sObjectName = ' + sObjectName + ', valueFieldName = ' + valueFieldName + 
 							', displayedFieldName = ' + displayedFieldName + ', whereClause = ' + whereClause + 
-                        	', filterField = ' + filteredFieldName + ', filterFieldValue = ' + filterFieldValue);
+							', filterField = ' + filteredFieldName + ', filterFieldValue = ' + filterFieldValue);
             
 			if(valueFieldName == null || displayedFieldName == null || valueFieldName == '' || displayedFieldName == '')
 			{
@@ -73,17 +73,33 @@ public with sharing class QuickLightningLookupController
             
             soql += ' ORDER BY ' + displayedFieldName + ' Limit 100';
 			system.debug('========> soql = ' + soql);
-			SObject[] lstRec = Database.query(soql);
-			if(lstRec.isEmpty()){
-				retVal.add(Schema.getGlobalDescribe().get(sObjectName).newSObject(),'','No records found!');
+			// added if..then to accomodate a unique problem specific to Location object, where 
+            // SF confuses system.Location and schema.Location.  
+            if(sObjectName != 'Location'){
+				// this is the previous logic
+				SObject[] lstRec = Database.query(soql);
+				if(lstRec.isEmpty()){
+					retVal.add(Schema.getGlobalDescribe().get(sObjectName).newSObject(),'','No records found!');
+				}
+				for( SObject obj : lstRec)
+				{
+					retVal.add( obj,
+								String.valueOf(obj.get(valueFieldName)), 
+								String.valueOf(obj.get(displayedFieldName)));
+				}
+			} else {
+            	// this is the Location specific logic to overcome SF's confusion
+                List<schema.Location> lstRec = Database.query(soql);
+                if(lstRec.isEmpty()){
+                    retVal.add(new schema.Location(),'','No records found!');
+                }
+                for(schema.Location l :lstRec){
+                    sObject obj = (sObject)l;
+                    retVal.add( obj,
+								String.valueOf(obj.get(valueFieldName)), 
+								String.valueOf(obj.get(displayedFieldName)));
+                }
 			}
-			for( SObject obj : lstRec)
-			{
-				retVal.add( obj,
-							String.valueOf(obj.get(valueFieldName)), 
-							String.valueOf(obj.get(displayedFieldName)));
-			}
-
 			return retVal;
 		}
 		catch (Exception ex)

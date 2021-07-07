@@ -1,6 +1,6 @@
 public with sharing class SlackChannelLookupController {
     public final static String CHANNEL_LIST_CACHE_KEY = 'channelList';
-    public final static String USER_LIST_CACHE_KEY = 'channelList';
+    public final static String USER_LIST_CACHE_KEY = 'userList';
     @AuraEnabled
     public static List<SlackEntity> getConversations(String token){
         List<SlackEntity> channelList = new List<SlackEntity>();

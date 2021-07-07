@@ -1,8 +1,10 @@
 public with sharing class SlackChannelLookupController {
+    public final static String CHANNEL_LIST_CACHE_KEY = 'channelList';
+    public final static String USER_LIST_CACHE_KEY = 'channelList';
     @AuraEnabled
     public static List<SlackEntity> getConversations(String token){
         List<SlackEntity> channelList = new List<SlackEntity>();
-        String channelListJSON = (String)Cache.Org.get('channelList');
+        String channelListJSON = (String)Cache.Org.get(CHANNEL_LIST_CACHE_KEY);
         if(String.isNotEmpty(channelListJSON)) {
             channelList = (List<SlackEntity>)JSON.deserialize(channelListJSON, List<SlackEntity>.class);
         } else {
@@ -18,7 +20,7 @@ public with sharing class SlackChannelLookupController {
                 channelList.add(new SlackEntity(conv.id, conv.name));
             }
 
-            Cache.Org.put('channelList', JSON.serialize(channelList), 3600);
+            Cache.Org.put(CHANNEL_LIST_CACHE_KEY, JSON.serialize(channelList), 3600);
         }
 
         return channelList;
@@ -28,7 +30,7 @@ public with sharing class SlackChannelLookupController {
     @AuraEnabled
     public static List<SlackEntity> getUsers(String token){
         List<SlackEntity> userList = new List<SlackEntity>();
-        String userListJSON = (String)Cache.Org.get('userList');
+        String userListJSON = (String)Cache.Org.get(USER_LIST_CACHE_KEY);
         if(String.isNotEmpty(userListJSON)) {
             userList = (List<SlackEntity>)JSON.deserialize(userListJSON, List<SlackEntity>.class);
         } else {
@@ -43,7 +45,7 @@ public with sharing class SlackChannelLookupController {
             for(Integer i = 0; i < userIdList.size(); i++) {
                 userList.add(new SlackEntity(userIdList[i], userNameList[i]));
             }
-            Cache.Org.put('userList', JSON.serialize(userList), 3600);
+            Cache.Org.put(USER_LIST_CACHE_KEY, JSON.serialize(userList), 3600);
         }
 
         

@@ -84,6 +84,7 @@ export default class slackChannelLookup extends LightningElement {
     _channelList = [];
     _sObjectList = [];
     isOpenMenu = false;
+    isSetOnClick = false;
     slackChannel;
     @track _options = [];
     @track _optionsToDisplay = [];
@@ -102,6 +103,8 @@ export default class slackChannelLookup extends LightningElement {
     }
 
     connectedCallback() {
+        this._options = [];
+        this._optionsToDisplay = [];
         if(this.lockupType === 'slack') {
             getChannels({token : this.slackAuthToken}).then(
                 result => {
@@ -135,19 +138,21 @@ export default class slackChannelLookup extends LightningElement {
                 }
             );
         }
-
-        document.addEventListener('click', this.handleWindowClick.bind(this));
+        if(!this.isSetOnClick) {
+            document.addEventListener('click', this.handleWindowClick.bind(this));
+            this.isSetOnClick = true;
+        }
     }
 
     handleWindowClick(event) {
         if (event.path){
             if (!event.path.includes(this.template.host) && !this.selfEvent) {
-                this.closeOptionDialog(true);
+                this.closeOptionDialog();
             }
         
         } else {
             if (!this.selfEvent) {
-                this.closeOptionDialog(true);
+                this.closeOptionDialog();
             }
         }
 
@@ -159,6 +164,7 @@ export default class slackChannelLookup extends LightningElement {
 
     updateConversationList() {
         this._options = [];
+        this._optionsToDisplay = [];
         if(this._userList) {
             this._userList.forEach(
                 item => {
@@ -192,7 +198,8 @@ export default class slackChannelLookup extends LightningElement {
             );
         }
 
-        this._optionsToDisplay = this._options;
+        this._optionsToDisplay = [...this._options];
+        console.log(this._options, this._optionsToDisplay);
     }
 
     handleSearchKeyUp(event) {
@@ -222,6 +229,9 @@ export default class slackChannelLookup extends LightningElement {
     }
     handleOpenOptions(event) {
         this.openOptionDialog();
+        if(!this._options || this._options.length === 0) {
+            this.connectedCallback();
+        }     
     }
 
     closeOptionDialog() {

@@ -5,11 +5,9 @@ public with sharing class SlackChannelLookupControllerTest {
         String token = 'test token';
         List<SlackChannelLookupController.SlackEntity> channelList = SlackChannelLookupController.getConversations(token);
         System.assert(channelList.size() > 0);
-        System.assert(Cache.Org.get(SlackChannelLookupController.CHANNEL_LIST_CACHE_KEY) != null);
 
         channelList = SlackChannelLookupController.getConversations(token);
         System.assert(channelList.size() > 0);
-        System.assert(Cache.Org.get(SlackChannelLookupController.CHANNEL_LIST_CACHE_KEY) != null);
     }
 
     @isTest
@@ -17,11 +15,9 @@ public with sharing class SlackChannelLookupControllerTest {
         String token = 'test token';
         List<SlackChannelLookupController.SlackEntity> channelList = SlackChannelLookupController.getUsers(token);
         System.assert(channelList.size() > 0);
-        System.assert(Cache.Org.get(SlackChannelLookupController.USER_LIST_CACHE_KEY) != null);
 
         channelList = SlackChannelLookupController.getUsers(token);
         System.assert(channelList.size() > 0);
-        System.assert(Cache.Org.get(SlackChannelLookupController.USER_LIST_CACHE_KEY) != null);
     }
 
     @isTest

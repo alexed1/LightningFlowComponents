@@ -4,7 +4,13 @@ public with sharing class SlackChannelLookupController {
     @AuraEnabled
     public static List<SlackEntity> getConversations(String token){
         List<SlackEntity> channelList = new List<SlackEntity>();
-        String channelListJSON = (String)Cache.Org.get(CHANNEL_LIST_CACHE_KEY);
+        String channelListJSON = '';
+        try {
+            channelListJSON = (String)Cache.Org.get(CHANNEL_LIST_CACHE_KEY);
+        }catch(Cache.Org.OrgCacheException e) {
+
+        }
+        
         if(String.isNotEmpty(channelListJSON)) {
             channelList = (List<SlackEntity>)JSON.deserialize(channelListJSON, List<SlackEntity>.class);
         } else {
@@ -19,8 +25,11 @@ public with sharing class SlackChannelLookupController {
             for(SlackConversation conv : conversationList) {
                 channelList.add(new SlackEntity(conv.id, conv.name));
             }
-
-            Cache.Org.put(CHANNEL_LIST_CACHE_KEY, JSON.serialize(channelList), 3600);
+            try {
+                Cache.Org.put(CHANNEL_LIST_CACHE_KEY, JSON.serialize(channelList), 3600);
+            }catch(Cache.Org.OrgCacheException e) {
+                
+            }
         }
 
         return channelList;
@@ -30,7 +39,12 @@ public with sharing class SlackChannelLookupController {
     @AuraEnabled
     public static List<SlackEntity> getUsers(String token){
         List<SlackEntity> userList = new List<SlackEntity>();
-        String userListJSON = (String)Cache.Org.get(USER_LIST_CACHE_KEY);
+        String userListJSON = '';
+        try {
+            userListJSON = (String)Cache.Org.get(USER_LIST_CACHE_KEY);
+        }catch(Exception e) {
+
+        }
         if(String.isNotEmpty(userListJSON)) {
             userList = (List<SlackEntity>)JSON.deserialize(userListJSON, List<SlackEntity>.class);
         } else {
@@ -45,7 +59,12 @@ public with sharing class SlackChannelLookupController {
             for(Integer i = 0; i < userIdList.size(); i++) {
                 userList.add(new SlackEntity(userIdList[i], userNameList[i]));
             }
-            Cache.Org.put(USER_LIST_CACHE_KEY, JSON.serialize(userList), 3600);
+
+            try {
+                Cache.Org.put(USER_LIST_CACHE_KEY, JSON.serialize(userList), 3600);
+            }catch(Cache.Org.OrgCacheException e) {
+                
+            }        
         }
 
         

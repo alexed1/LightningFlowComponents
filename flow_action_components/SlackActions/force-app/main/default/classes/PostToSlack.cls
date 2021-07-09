@@ -1,7 +1,7 @@
 global with sharing class PostToSlack {
 
         
-        @InvocableMethod(label='Post to Slack' description='Post Message to Slack' callout=true)
+        @InvocableMethod(label='Post to Slack' description='Post Message to Slack' callout=true configurationEditor='c:postToSlackCPE')
         global static List<Response> execute(List<Request> requests) {
             
             String endpoint = 'https://slack.com/api/' + 'chat.postMessage';

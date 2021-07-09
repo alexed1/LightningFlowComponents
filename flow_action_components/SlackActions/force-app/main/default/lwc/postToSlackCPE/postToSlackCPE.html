@@ -1,0 +1,102 @@
+<template>
+    <div class="slds-m-top_medium">
+        <c-slack-channel-lookup 
+            label={labels.Username}
+            slack-auth-token={token} 
+            onvaluechanged={handleSlackChannelLookupValueChange}
+            builder-context={_builderContext}  
+            automatic-output-variables={automaticOutputVariables}
+            selected-values={username}>
+        </c-slack-channel-lookup>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Token} 
+            builder-context={_builderContext} 
+            name="token"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={token} 
+            value-type={tokenType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Blocks}  
+            builder-context={_builderContext} 
+            name="blocks"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={blocks} 
+            value-type={blocksType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Text}   
+            builder-context={_builderContext} 
+            name="text"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={text} 
+            value-type={textType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Channel_Id}  
+            builder-context={_builderContext} 
+            name="channelId"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={channelId} 
+            value-type={channelIdType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Thread_ts}
+            builder-context={_builderContext} 
+            name="thread_ts"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={thread_ts} 
+            value-type={thread_tsType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Unfurl_Links}
+            builder-context={_builderContext} 
+            name="unfurl_links"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={unfurl_links} 
+            value-type={unfurl_linksType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+    <div class="slds-m-top_medium">
+        <c-fsc_flow-combobox 
+            label={labels.Attachments}
+            builder-context={_builderContext} 
+            name="attachments"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={attachments} 
+            value-type={attachmentsType}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+</template>

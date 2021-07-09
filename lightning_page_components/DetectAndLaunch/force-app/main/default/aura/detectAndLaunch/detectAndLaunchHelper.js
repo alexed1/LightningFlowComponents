@@ -5,7 +5,7 @@
             console.log ('changeType is: ' + eventParams.changeType);
             if(component.get("v.launchMode") == 'Modal') {
                 component.set('v.openModal',true);
-​
+
                 //Set input variable
                 var inputVariable = [
                     {
@@ -14,10 +14,10 @@
                         value: component.get("v.recordId")
                     }
                 ];
-​
+
                 var flow = component.find("flow");
                 flow.startFlow(component.get("v.targetFlowName"), inputVariable); //added input variable
-​
+
             } else {
                 //launch modelessly in a tab or browser window
                 var workspaceAPI = component.find("workspace");
@@ -49,7 +49,7 @@
             
         
             
-​
+
         }   
         else if(eventParams.changeType === "REMOVED") {
             console.log('record is being deleted');
@@ -59,6 +59,6 @@
             window.open(targetUrl);
         }
     }
-​
+
     
 })

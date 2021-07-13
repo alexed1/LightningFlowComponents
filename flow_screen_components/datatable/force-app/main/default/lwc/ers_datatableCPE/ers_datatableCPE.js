@@ -17,7 +17,7 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/ers_DatatableController.getCPEReturnResults';
 import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, WIZROWCOUNT
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
@@ -73,6 +73,9 @@ export default class ers_datatableCPE extends LightningElement {
     _wiz_columnLabels;
     _wiz_columnWidths;
     _wiz_columnWraps;
+    _wiz_columnCellAttribs;
+    _wiz_columnTypeAttribs;
+    _wiz_columnOtherAttribs;
 
     vSelectionMethod;
     vFieldList = '';
@@ -167,6 +170,11 @@ export default class ers_datatableCPE extends LightningElement {
     @api
     get showColumnAttributes() { 
         return (this.showColumnAttributesToggle || !this.isSObjectInput);
+    }
+
+    @api
+    get showHideColumnAttributes() {
+        return this.showColumnAttributes ? 'slds-show' : 'slds-hide';
     }
 
     @api
@@ -275,6 +283,42 @@ export default class ers_datatableCPE extends LightningElement {
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
+    @api
+    get wiz_columnCellAttribs() { 
+        return this._wiz_columnCellAttribs;
+    }
+    set wiz_columnCellAttribs(value) { 
+        const name = 'columnCellAttribs';
+        this._wiz_columnCellAttribs = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
+    @api
+    get wiz_columnTypeAttribs() { 
+        return this._wiz_columnTypeAttribs;
+    }
+    set wiz_columnTypeAttribs(value) { 
+        const name = 'columnTypeAttribs';
+        this._wiz_columnTypeAttribs = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
+    @api
+    get wiz_columnOtherAttribs() { 
+        return this._wiz_columnOtherAttribs;
+    }
+    set wiz_columnOtherAttribs(value) { 
+        const name = 'columnOtherAttribs';
+        this._wiz_columnOtherAttribs = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
     @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 
@@ -323,10 +367,10 @@ export default class ers_datatableCPE extends LightningElement {
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
-        columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special CellAttributes',
+        columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Cell Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
             "EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"},
-        columnTypeAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special TypeAttributes',
+        columnTypeAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Type Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
             "EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"},
         columnOtherAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Other Attributes',
@@ -515,6 +559,10 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'wiz_columnIcons', type: 'String', value: ''},
         {name: 'wiz_columnWidths', type: 'String', value: ''},
         {name: 'wiz_columnWraps', type: 'String', value: ''},
+        {name: 'wiz_columnCellAttribs', type: 'String', value: ''},
+        {name: 'wiz_columnTypeAttribs', type: 'String', value: ''},
+        {name: 'wiz_columnOtherAttribs', type: 'String', value: ''},
+        {name: 'vWizRecordCount', type: 'String', value: ''},
     ]
 
     @api 
@@ -883,6 +931,7 @@ export default class ers_datatableCPE extends LightningElement {
 
     get wizardParams() {
         // Parameter value string to pass to Wizard Flow
+        this.updateFlowParam('vWizRecordCount', CONSTANTS.WIZROWCOUNT);
         return JSON.stringify(this.flowParams);
     }
     
@@ -962,6 +1011,15 @@ export default class ers_datatableCPE extends LightningElement {
                             case 'columnWraps':
                                 this.wiz_columnWraps = value;
                                 break;
+                            case 'columnCellAttribs': 
+                                this.wiz_columnCellAttribs = value;
+                                break;
+                            case 'columnTypeAttribs': 
+                                this.wiz_columnTypeAttribs = value;
+                                break;
+                            case 'columnOtherAttribs': 
+                                this.wiz_columnOtherAttribs = value;
+                                break;                                
                             default:
                         }
                         this.isFlowLoaded = false;

@@ -165,6 +165,9 @@ export default class Datatable extends LightningElement {
     @api wizColumnIcons;
     @api wizColumnWidths;
     @api wizColumnWraps;
+    @api wizColumnCellAttribs;
+    @api wizColumnTypeAttributes;
+    @api wizColumnOtherAttributes;
 
     // Configuration Wizard Only - working variables
     @api selectedIcon;
@@ -364,6 +367,9 @@ export default class Datatable extends LightningElement {
             this.columnWidths = decodeURIComponent(this.columnWidths);
             this.columnWraps = decodeURIComponent(this.columnWraps);
             this.columnFields = decodeURIComponent(this.columnFields);
+            this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
+            this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
+            this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
             console.log("Config Mode Input columnAlignments:", this.columnAlignments);
             console.log("Config Mode Input columnEdits:", this.columnEdits);
             console.log("Config Mode Input columnFilters:", this.columnFilters);
@@ -372,6 +378,9 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnWidths:", this.columnWidths);
             console.log("Config Mode Input columnWraps:", this.columnWraps);
             console.log("Config Mode Input columnFields:", this.columnFields);
+            console.log("Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            console.log("Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            console.log("Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
 
@@ -1722,6 +1731,11 @@ export default class Datatable extends LightningElement {
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         // Force a redisplay of the datatable with the filter value shown in the column header
         this.columns = [...this.filterColumns]; 
+    }
+
+    // TODO: Add ability to update special attributes in the Configuration Wizard 
+    handleAttributeChange(event) {
+
     }
 
     handleCloseModal() {

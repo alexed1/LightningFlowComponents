@@ -48,6 +48,9 @@
             <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
             <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
             <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
+            <property name="wizColumnCellAttribs" label="Wizard Only - Special Cell Attributes" type="String" role="outputOnly"/>
+            <property name="wizColumnTypeAttributes" label="Wizard Only - Special Type Attributes" type="String" role="outputOnly"/>
+            <property name="wizColumnOtherAttributes" label="Wizard Only - Special Other Attributes" type="String" role="outputOnly"/>
 
             <!-- Forcing sort order of parameters with special characters _(1) -(2) .(3) -->  
             <property name="columnFields" label="_ Column Fields" type="String" role="inputOnly" description="REQUIRED: Comma separated list of field API Names to display in the datatable."/>

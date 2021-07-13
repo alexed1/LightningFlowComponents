@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
-        <locationX>690</locationX>
+        <locationX>1263</locationX>
         <locationY>210</locationY>
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
@@ -23,9 +23,9 @@
         </outputParameters>
     </actionCalls>
     <actionCalls>
-        <name>Get_First_10_Records</name>
-        <label>Get First 10 Records</label>
-        <locationX>1559</locationX>
+        <name>Get_First_xx_Records</name>
+        <label>Get First xx Records</label>
+        <locationX>2132</locationX>
         <locationY>208</locationY>
         <actionName>ers_QueryNRecords</actionName>
         <actionType>apex</actionType>
@@ -48,7 +48,7 @@
         <inputParameters>
             <name>numberOfRecords</name>
             <value>
-                <numberValue>10.0</numberValue>
+                <elementReference>vWizRecordCount</elementReference>
             </value>
         </inputParameters>
         <outputParameters>
@@ -58,9 +58,196 @@
     </actionCalls>
     <apiVersion>49.0</apiVersion>
     <assignments>
+        <name>Add_Config_Quick_Choice_Option</name>
+        <label>Add Config Quick Choice Option</label>
+        <locationX>547</locationX>
+        <locationY>637</locationY>
+        <assignmentItems>
+            <assignToReference>colTitles</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>cConfig</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colDescriptions</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Load the column configuration from a custom Configuration record</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colIcons</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>utility:component_customization</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Field_Selection_Method_Screen</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Last_Field</name>
+        <label>Add Last Field</label>
+        <locationX>949</locationX>
+        <locationY>760</locationY>
+        <assignmentItems>
+            <assignToReference>colFieldList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>vConfigFields</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Previously_Selected_Fields</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Config_Fields</name>
+        <label>Assign Config Fields</label>
+        <locationX>819</locationX>
+        <locationY>757</locationY>
+        <assignmentItems>
+            <assignToReference>colFieldList</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vLoadedConfig</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vFieldList</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Field_API_Names__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vConfigFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Field_API_Names__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vSelectionMethod</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Selection_Method__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnAlignments</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Alignments__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnEdits</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Edits__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Field_API_Names__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnFilters</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Filters__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnIcons</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Icons__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnLabels</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Labels__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnWidths</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Widths__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnWraps</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Wraps__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnCellAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Cell_Attributes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnOtherAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Other_Attributes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnTypeAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow.Type_Attributes__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ConfigTable.outputSelectedRow</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Last_Field</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_PreSelected</name>
+        <label>Assign PreSelected</label>
+        <locationX>555</locationX>
+        <locationY>893</locationY>
+        <assignmentItems>
+            <assignToReference>colPreSelectedConfigs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Get_Available_Config_Records</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_Config_Quick_Choice_Option</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Clear_Early_Exit_Flag</name>
         <label>Clear Early Exit Flag</label>
-        <locationX>1843</locationX>
+        <locationX>2421</locationX>
         <locationY>207</locationY>
         <assignmentItems>
             <assignToReference>vEarlyExit</assignToReference>
@@ -70,14 +257,166 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Wizard_Finish</targetReference>
+            <targetReference>Save_Configuration_Data</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Clear_Record_Id</name>
+        <label>Clear Record Id</label>
+        <locationX>3060</locationX>
+        <locationY>281</locationY>
+        <assignmentItems>
+            <assignToReference>objConfig.Id</assignToReference>
+            <operator>Assign</operator>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_New_Config_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Get_Config_Record_Count</name>
+        <label>Get Config Record Count</label>
+        <locationX>259</locationX>
+        <locationY>895</locationY>
+        <assignmentItems>
+            <assignToReference>vConfigCount</assignToReference>
+            <operator>AssignCount</operator>
+            <value>
+                <elementReference>Get_Available_Config_Records</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>How_Many_Records</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Process_Config_Field</name>
+        <label>Process Config Field</label>
+        <locationX>677</locationX>
+        <locationY>855</locationY>
+        <assignmentItems>
+            <assignToReference>colFieldList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>fFirstField</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vConfigFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fRemoveField</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Last_Field</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Save_Configuration_Data</name>
+        <label>Save Configuration Data</label>
+        <locationX>2561</locationX>
+        <locationY>207</locationY>
+        <assignmentItems>
+            <assignToReference>objConfig.Selection_Method__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>vSelectionMethod</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Object_API_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>vSObject</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Cell_Attributes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnCellAttribs</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Alignments__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnAlignments</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Edits__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnEdits</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Field_API_Names__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnFields</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Filters__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnFilters</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Icons__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnIcons</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Labels__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnLabels</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Widths__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnWidths</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Wraps__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnWraps</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Other_Attributes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnOtherAttribs</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Type_Attributes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>wiz_columnTypeAttribs</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Config_Record</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Save_Selection_Method</name>
         <label>Save Selection Method</label>
-        <locationX>513</locationX>
-        <locationY>344</locationY>
+        <locationX>633</locationX>
+        <locationY>427</locationY>
         <assignmentItems>
             <assignToReference>vSelectionMethod</assignToReference>
             <operator>Assign</operator>
@@ -86,13 +425,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Loop_Previously_Selected_Fields</targetReference>
+            <targetReference>Selected_Option</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Field_List_Parameter</name>
         <label>Set Field List Parameter</label>
-        <locationX>1242</locationX>
+        <locationX>1823</locationX>
         <locationY>209</locationY>
         <assignmentItems>
             <assignToReference>vFieldList</assignToReference>
@@ -115,7 +454,7 @@
     <assignments>
         <name>Set_Field_List_Parameter_0</name>
         <label>Set Field List Parameter</label>
-        <locationX>1465</locationX>
+        <locationX>2038</locationX>
         <locationY>583</locationY>
         <assignmentItems>
             <assignToReference>wiz_columnFields</assignToReference>
@@ -125,13 +464,13 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Get_First_10_Records</targetReference>
+            <targetReference>Get_First_xx_Records</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Set_Field_Name</name>
         <label>Set Field Name</label>
-        <locationX>541</locationX>
+        <locationX>1114</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>apexFieldDescriptor.name</assignToReference>
@@ -145,10 +484,42 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Set_Metadata_Name</name>
+        <label>Set Metadata Name</label>
+        <locationX>2908</locationX>
+        <locationY>124</locationY>
+        <assignmentItems>
+            <assignToReference>objConfig.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Configuration_Record_Name_Change</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Clear_Record_Id</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Metadata_Name_0</name>
+        <label>Set Metadata Name</label>
+        <locationX>2924</locationX>
+        <locationY>283</locationY>
+        <assignmentItems>
+            <assignToReference>objConfig.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Configuration_Record_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Clear_Record_Id</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Set_Quick_Choice_Options</name>
         <label>Set Quick Choice Options</label>
-        <locationX>204</locationX>
-        <locationY>483</locationY>
+        <locationX>213</locationX>
+        <locationY>495</locationY>
         <assignmentItems>
             <assignToReference>colTitles</assignToReference>
             <operator>Add</operator>
@@ -212,14 +583,21 @@
                 <booleanValue>false</booleanValue>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vConfigFields</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>fTrimFieldList</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
-            <targetReference>Field_Selection_Method_Screen</targetReference>
+            <targetReference>Get_Available_Config_Records</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Update_Selected_Field_Descriptors</name>
         <label>Update Selected Field Descriptors</label>
-        <locationX>698</locationX>
+        <locationX>1271</locationX>
         <locationY>638</locationY>
         <assignmentItems>
             <assignToReference>apexColSelectedFieldDescriptors_usf</assignToReference>
@@ -232,6 +610,13 @@
             <targetReference>Loop_Previously_Selected_Fields</targetReference>
         </connector>
     </assignments>
+    <constants>
+        <name>cConfig</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>Config</stringValue>
+        </value>
+    </constants>
     <constants>
         <name>cPick</name>
         <dataType>String</dataType>
@@ -249,7 +634,7 @@
     <decisions>
         <name>Any_Fields_Selected</name>
         <label>Any Fields Selected?</label>
-        <locationX>1248</locationX>
+        <locationX>1821</locationX>
         <locationY>584</locationY>
         <defaultConnector>
             <targetReference>Select_Fields</targetReference>
@@ -274,9 +659,9 @@
     <decisions>
         <name>Check_Field_Selection_Method</name>
         <label>Check Field Selection Method</label>
-        <locationX>1032</locationX>
+        <locationX>1605</locationX>
         <locationY>212</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Error</defaultConnectorLabel>
         <rules>
             <name>PICK</name>
             <conditionLogic>and</conditionLogic>
@@ -309,11 +694,80 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Config_Record</name>
+        <label>Config Record?</label>
+        <locationX>2692</locationX>
+        <locationY>209</locationY>
+        <defaultConnector>
+            <targetReference>Wizard_Finish</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO CONFIG RECORD</defaultConnectorLabel>
+        <rules>
+            <name>SAVE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SaveConfig.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Save</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ConfigTable.outputSelectedRow.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>Configuration_Record_Name_Change</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Save_Config_Record</targetReference>
+            </connector>
+            <label>SAVE</label>
+        </rules>
+        <rules>
+            <name>SAVE_AS</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SaveConfig.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Save</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>ConfigTable.outputSelectedRow.Name</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>Configuration_Record_Name_Change</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Metadata_Name</targetReference>
+            </connector>
+            <label>SAVE AS</label>
+        </rules>
+        <rules>
+            <name>CREATE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>CreateConfig.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Create</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Metadata_Name_0</targetReference>
+            </connector>
+            <label>CREATE</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Did_User_Enter_Field_List</name>
         <label>Did User Enter Field List?</label>
-        <locationX>1396</locationX>
+        <locationX>1969</locationX>
         <locationY>211</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <defaultConnectorLabel>Error</defaultConnectorLabel>
         <rules>
             <name>YES</name>
             <conditionLogic>and</conditionLogic>
@@ -325,7 +779,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_First_10_Records</targetReference>
+                <targetReference>Get_First_xx_Records</targetReference>
             </connector>
             <label>YES</label>
         </rules>
@@ -346,9 +800,34 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Found_Config_Records</name>
+        <label>Found Config Records?</label>
+        <locationX>377</locationX>
+        <locationY>637</locationY>
+        <defaultConnector>
+            <targetReference>Field_Selection_Method_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO</defaultConnectorLabel>
+        <rules>
+            <name>YES_md</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Available_Config_Records</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Config_Record_Count</targetReference>
+            </connector>
+            <label>YES</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Get_Records_Result</name>
         <label>Get Records Result</label>
-        <locationX>1700</locationX>
+        <locationX>2273</locationX>
         <locationY>395</locationY>
         <defaultConnector>
             <targetReference>Wizard_Screen</targetReference>
@@ -370,20 +849,115 @@
             <label>NO RECORDS</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>How_Many_Records</name>
+        <label>How Many Records?</label>
+        <locationX>379</locationX>
+        <locationY>897</locationY>
+        <defaultConnector>
+            <targetReference>Add_Config_Quick_Choice_Option</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>MULTIPLE</defaultConnectorLabel>
+        <rules>
+            <name>JUST_ONE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vConfigCount</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_PreSelected</targetReference>
+            </connector>
+            <label>JUST ONE</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Last_Field</name>
+        <label>Last Field?</label>
+        <locationX>811</locationX>
+        <locationY>903</locationY>
+        <defaultConnector>
+            <targetReference>Process_Config_Field</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO</defaultConnectorLabel>
+        <rules>
+            <name>YES_lf</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fHasComma</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Last_Field</targetReference>
+            </connector>
+            <label>YES</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Selected_Option</name>
+        <label>Selected Option?</label>
+        <locationX>811</locationX>
+        <locationY>429</locationY>
+        <defaultConnector>
+            <targetReference>Loop_Previously_Selected_Fields</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Pick or Type</defaultConnectorLabel>
+        <rules>
+            <name>Config</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vSelectionMethod</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>cConfig</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Select_Config_Record</targetReference>
+            </connector>
+            <label>Config</label>
+        </rules>
+    </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
+    <formulas>
+        <name>fFirstField</name>
+        <dataType>String</dataType>
+        <expression>TRIM(LEFT({!vConfigFields},FIND(&quot;,&quot;,{!vConfigFields})-1))</expression>
+    </formulas>
+    <formulas>
+        <name>fHasComma</name>
+        <dataType>Boolean</dataType>
+        <expression>FIND(&quot;,&quot;,{!vConfigFields})&gt;0</expression>
+    </formulas>
     <formulas>
         <name>fListLength</name>
         <dataType>Number</dataType>
         <expression>LEN({!vFieldList})</expression>
         <scale>0</scale>
     </formulas>
+    <formulas>
+        <name>fRemoveField</name>
+        <dataType>String</dataType>
+        <expression>MID({!vConfigFields},FIND(&quot;,&quot;,{!vConfigFields})+1,999)</expression>
+    </formulas>
+    <formulas>
+        <name>fTrimFieldList</name>
+        <dataType>String</dataType>
+        <expression>TRIM({!vFieldList})</expression>
+    </formulas>
     <interviewLabel>Datatable Configuration Wizard {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Datatable Configuration Wizard</label>
     <loops>
         <name>Loop_Previously_Selected_Fields</name>
         <label>Loop Previously Selected Fields</label>
-        <locationX>690</locationX>
-        <locationY>429</locationY>
+        <locationX>1263</locationX>
+        <locationY>433</locationY>
         <collectionReference>colFieldList</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -412,11 +986,61 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <recordCreates>
+        <name>Create_New_Config_Record</name>
+        <label>Create New Config Record</label>
+        <locationX>2996</locationX>
+        <locationY>485</locationY>
+        <connector>
+            <targetReference>Wizard_Finish</targetReference>
+        </connector>
+        <inputReference>objConfig</inputReference>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Available_Config_Records</name>
+        <label>Get Available Config Records</label>
+        <locationX>213</locationX>
+        <locationY>635</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Found_Config_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Active__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Object_API_Name__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>vSObject</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>ers_datatableConfig__c</object>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Save_Config_Record</name>
+        <label>Save Config Record</label>
+        <locationX>2614</locationX>
+        <locationY>485</locationY>
+        <connector>
+            <targetReference>Wizard_Finish</targetReference>
+        </connector>
+        <inputReference>objConfig</inputReference>
+    </recordUpdates>
     <screens>
         <name>Field_Selection_Method_Screen</name>
         <label>Field Selection Method Screen</label>
-        <locationX>333</locationX>
-        <locationY>483</locationY>
+        <locationX>465</locationX>
+        <locationY>427</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -512,9 +1136,137 @@
         <showHeader>false</showHeader>
     </screens>
     <screens>
+        <name>Select_Config_Record</name>
+        <label>Select Config Record</label>
+        <locationX>819</locationX>
+        <locationY>609</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Assign_Config_Fields</targetReference>
+        </connector>
+        <fields>
+            <name>ConfigTable</name>
+            <dataTypeMappings>
+                <typeName>T</typeName>
+                <typeValue>ers_datatableConfig__c</typeValue>
+            </dataTypeMappings>
+            <extensionName>c:datatable</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>ers_datatableConfig__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>isDisplayHeader</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_isDisplayHeader</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableLabel</name>
+                <value>
+                    <stringValue>Select a Datatable Configuration</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableIcon</name>
+                <value>
+                    <stringValue>utility:component_customization</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFields</name>
+                <value>
+                    <stringValue>Name,Object_API_Name__c,Field_API_Names__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_matchCaseOnFilters</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnLabels</name>
+                <value>
+                    <stringValue>Name:Configuration Name, Object_API_Name__c:Object, Field_API_Names__c:Columns</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWidths</name>
+                <value>
+                    <stringValue>Name:225, Object_API_Name__c:140, Field_API_Names__c:480</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnWraps</name>
+                <value>
+                    <stringValue>MasterLabel:true, vSObject__c:true, vFieldList__c:true</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>hideClearSelectionButton</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_hideClearSelectionButton</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>singleRowSelection</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_singleRowSelection</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableData</name>
+                <value>
+                    <elementReference>Get_Available_Config_Records</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>preSelectedRows</name>
+                <value>
+                    <elementReference>colPreSelectedConfigs</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnFilters</name>
+                <value>
+                    <stringValue>All</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Select_Fields</name>
         <label>Select Fields</label>
-        <locationX>855</locationX>
+        <locationX>1428</locationX>
         <locationY>210</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -608,12 +1360,19 @@
                 <name>selectedOptionsFieldDescriptorList</name>
             </outputParameters>
             <visibilityRule>
-                <conditionLogic>and</conditionLogic>
+                <conditionLogic>or</conditionLogic>
                 <conditions>
                     <leftValueReference>vSelectionMethod</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <elementReference>cPick</elementReference>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>vSelectionMethod</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <elementReference>cConfig</elementReference>
                     </rightValue>
                 </conditions>
             </visibilityRule>
@@ -644,7 +1403,7 @@
     <screens>
         <name>Wizard_Exit</name>
         <label>Wizard Exit</label>
-        <locationX>1709</locationX>
+        <locationX>2282</locationX>
         <locationY>578</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -660,8 +1419,8 @@
     <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
-        <locationX>1975</locationX>
-        <locationY>207</locationY>
+        <locationX>2808</locationX>
+        <locationY>485</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -676,7 +1435,7 @@
     <screens>
         <name>Wizard_Screen</name>
         <label>Wizard Screen</label>
-        <locationX>1707</locationX>
+        <locationX>2280</locationX>
         <locationY>207</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
@@ -785,6 +1544,24 @@
                     <stringValue>CB_TRUE</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>columnCellAttribs</name>
+                <value>
+                    <elementReference>wiz_columnCellAttribs</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnTypeAttribs</name>
+                <value>
+                    <elementReference>wiz_columnTypeAttribs</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>columnOtherAttribs</name>
+                <value>
+                    <elementReference>wiz_columnOtherAttribs</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
@@ -824,12 +1601,205 @@
                 <name>wizSObject</name>
             </outputParameters>
         </fields>
-        <showFooter>true</showFooter>
+        <fields>
+            <name>NoLoadConfig</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>left</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>both</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>navigation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;Finished Configuring Table&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;success&quot;,&quot;iconName&quot;:&quot;utility:success&quot;,&quot;index&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Wizard_Screen_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Wizard_Screen_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Configuration_Record_Name</name>
+                    <dataType>String</dataType>
+                    <fieldText>Configuration Record Name (Enter a name here if you want to save this configuration)</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>CreateConfig</name>
+                    <extensionName>c:fsc_flowButtonBar</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>alignment</name>
+                        <value>
+                            <stringValue>left</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>orientation</name>
+                        <value>
+                            <stringValue>horizontal</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>showLines</name>
+                        <value>
+                            <stringValue>neither</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>actionMode</name>
+                        <value>
+                            <stringValue>navigation</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>buttons</name>
+                        <value>
+                            <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Configuration_Record_Name</leftValueReference>
+                            <operator>IsNull</operator>
+                            <rightValue>
+                                <booleanValue>false</booleanValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vLoadedConfig</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Wizard_Screen_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Wizard_Screen_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>Configuration_Record_Name_Change</name>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>objConfig.Name</elementReference>
+                    </defaultValue>
+                    <fieldText>Configuration Record Name (Change this name if you want to Save As a new configuration)</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>SaveConfig</name>
+                    <extensionName>c:fsc_flowButtonBar</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>alignment</name>
+                        <value>
+                            <stringValue>left</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>orientation</name>
+                        <value>
+                            <stringValue>horizontal</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>showLines</name>
+                        <value>
+                            <stringValue>neither</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>actionMode</name>
+                        <value>
+                            <stringValue>navigation</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>buttons</name>
+                        <value>
+                            <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vLoadedConfig</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <showFooter>false</showFooter>
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>290</locationX>
-        <locationY>203</locationY>
+        <locationX>299</locationX>
+        <locationY>217</locationY>
         <connector>
             <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>
@@ -881,9 +1851,40 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>colPreSelectedConfigs</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ers_datatableConfig__c</objectType>
+    </variables>
+    <variables>
         <name>colTitles</name>
         <dataType>String</dataType>
         <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>objConfig</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>ers_datatableConfig__c</objectType>
+    </variables>
+    <variables>
+        <name>vConfigCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+    <variables>
+        <name>vConfigFields</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
     </variables>
@@ -912,6 +1913,16 @@
         <isOutput>true</isOutput>
     </variables>
     <variables>
+        <name>vLoadedConfig</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
         <name>vRecordList</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -933,7 +1944,25 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
+        <name>vWizRecordCount</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>10.0</numberValue>
+        </value>
+    </variables>
+    <variables>
         <name>wiz_columnAlignments</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>wiz_columnCellAttribs</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
@@ -969,6 +1998,20 @@
     </variables>
     <variables>
         <name>wiz_columnLabels</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>wiz_columnOtherAttribs</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>wiz_columnTypeAttribs</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

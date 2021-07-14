@@ -9,7 +9,7 @@ public with sharing class RunFlowOnAnotherOrg {
     'password={3}';
     static final String POST_METHOD = 'POST';
 
-    @InvocableMethod(label='Run Flow on Another Org' description='Run Flow on Another Org' callout=true)
+    @InvocableMethod(label='Run Flow on Another Org' description='Run Flow on Another Org' callout=true configurationEditor='c:runFlowOnAnotherOrgCPE')
     static public List<Response> execute(List<Request> requestList) {
         List<response> responseList = new List<response>();
         for(Request request: requestList) {
@@ -24,7 +24,7 @@ public with sharing class RunFlowOnAnotherOrg {
                 } else {
                     resp.result = 'error';
                 }
-                //resp.result = res.getBody() + ' Status ' + res.getStatus() + ' code ' + res.getStatusCode()  + '\n' + String.format(RUN_FLOW_URL, new List<String> {request.baseOrgURL, request.flowName}); 
+                resp.result = res.getBody() + ' Status ' + res.getStatus() + ' code ' + res.getStatusCode()  + '\n' + request.inputsJSON; 
                 responseList.add(resp);
             }
             
@@ -41,8 +41,21 @@ public with sharing class RunFlowOnAnotherOrg {
         req.setHeader('Authorization', 'Bearer ' + accessToken);
         req.setHeader('Content-Type', 'application/json');
         req.setHeader('Accept','application/json');
+        String postBody = '';
+        if(String.isNotEmpty(request.inputsJSON)) {
+            List<InputParam> inputList = (List<InputParam>) JSON.deserialize(request.inputsJSON, List<InputParam>.class);
+            Map<String, String> inputMap = new Map<String,String>();
 
-        req.setBody(request.inputsJSON);
+            for (InputParam param : inputList){
+                if(String.isNotBlank( param.key)) {
+                    inputMap.put(param.key, param.value);
+                }                 
+            }
+            if(inputMap.size() > 0) {
+                postBody += '{ "inputs" :  ' + JSON.serialize(new List<Object> {inputMap}) + ' }';
+            }
+        }
+        req.setBody(postBody);
         Http http = new Http();
         HTTPResponse res = http.send(req);
         return res;
@@ -101,7 +114,7 @@ public with sharing class RunFlowOnAnotherOrg {
         public String result;
     }
 
-    private class QueryParams{
+    private class InputParam{
         private String key;
         private String value;
     }

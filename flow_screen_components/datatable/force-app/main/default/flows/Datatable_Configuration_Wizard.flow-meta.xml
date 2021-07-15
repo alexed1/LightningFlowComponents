@@ -1,6 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Decode_Cell_Attribute</name>
+        <label>Decode Cell Attribute</label>
+        <locationX>548</locationX>
+        <locationY>292</locationY>
+        <actionName>ers_EncodeDecodeURL</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Decode_Type_Attribute</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>inputStr</name>
+            <value>
+                <elementReference>wiz_columnCellAttribs</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Decode_Other_Attribute</name>
+        <label>Decode Other Attribute</label>
+        <locationX>213</locationX>
+        <locationY>292</locationY>
+        <actionName>ers_EncodeDecodeURL</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Set_Quick_Choice_Options</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>inputStr</name>
+            <value>
+                <elementReference>wiz_columnOtherAttribs</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Decode_Type_Attribute</name>
+        <label>Decode Type Attribute</label>
+        <locationX>390</locationX>
+        <locationY>292</locationY>
+        <actionName>ers_EncodeDecodeURL</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Decode_Other_Attribute</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>inputStr</name>
+            <value>
+                <elementReference>wiz_columnTypeAttribs</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Get_Field_Information_usf</name>
         <label>Get Field Information usf</label>
         <locationX>1263</locationX>
@@ -247,8 +304,8 @@
     <assignments>
         <name>Clear_Early_Exit_Flag</name>
         <label>Clear Early Exit Flag</label>
-        <locationX>2421</locationX>
-        <locationY>207</locationY>
+        <locationX>2796</locationX>
+        <locationY>206</locationY>
         <assignmentItems>
             <assignToReference>vEarlyExit</assignToReference>
             <operator>Assign</operator>
@@ -263,8 +320,8 @@
     <assignments>
         <name>Clear_Record_Id</name>
         <label>Clear Record Id</label>
-        <locationX>3061</locationX>
-        <locationY>283</locationY>
+        <locationX>3436</locationX>
+        <locationY>282</locationY>
         <assignmentItems>
             <assignToReference>objConfig.Id</assignToReference>
             <operator>Assign</operator>
@@ -315,8 +372,8 @@
     <assignments>
         <name>Save_Configuration_Data</name>
         <label>Save Configuration Data</label>
-        <locationX>2561</locationX>
-        <locationY>207</locationY>
+        <locationX>2936</locationX>
+        <locationY>206</locationY>
         <assignmentItems>
             <assignToReference>objConfig.Selection_Method__c</assignToReference>
             <operator>Assign</operator>
@@ -391,42 +448,21 @@
             <assignToReference>objConfig.Cell_Attributes__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Special_Cell_Attributes</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>wiz_columnCellAttribs</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Special_Cell_Attributes</elementReference>
+                <elementReference>wiz_columnCellAttribs</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>objConfig.Type_Attributes__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Special_Type_Attributes</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>wiz_columnTypeAttribs</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Special_Type_Attributes</elementReference>
+                <elementReference>wiz_columnTypeAttribs</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>objConfig.Other_Attributes__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Special_Other_Attributes</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>wiz_columnOtherAttribs</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>Special_Other_Attributes</elementReference>
+                <elementReference>wiz_columnOtherAttribs</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -507,8 +543,8 @@
     <assignments>
         <name>Set_Metadata_Name</name>
         <label>Set Metadata Name</label>
-        <locationX>2908</locationX>
-        <locationY>124</locationY>
+        <locationX>3283</locationX>
+        <locationY>123</locationY>
         <assignmentItems>
             <assignToReference>objConfig.Name</assignToReference>
             <operator>Assign</operator>
@@ -523,8 +559,8 @@
     <assignments>
         <name>Set_Metadata_Name_0</name>
         <label>Set Metadata Name</label>
-        <locationX>2924</locationX>
-        <locationY>283</locationY>
+        <locationX>3299</locationX>
+        <locationY>282</locationY>
         <assignmentItems>
             <assignToReference>objConfig.Name</assignToReference>
             <operator>Assign</operator>
@@ -631,6 +667,36 @@
             <targetReference>Loop_Previously_Selected_Fields</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Update_Special_Attributes</name>
+        <label>Update Special Attributes</label>
+        <locationX>2639</locationX>
+        <locationY>300</locationY>
+        <assignmentItems>
+            <assignToReference>wiz_columnCellAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Cell_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnTypeAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Type_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnOtherAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Other_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Clear_Early_Exit_Flag</targetReference>
+        </connector>
+    </assignments>
     <constants>
         <name>cConfig</name>
         <dataType>String</dataType>
@@ -717,8 +783,8 @@
     <decisions>
         <name>Config_Record</name>
         <label>Config Record?</label>
-        <locationX>2692</locationX>
-        <locationY>209</locationY>
+        <locationX>3067</locationX>
+        <locationY>208</locationY>
         <defaultConnector>
             <targetReference>Wizard_Finish</targetReference>
         </defaultConnector>
@@ -945,6 +1011,31 @@
             <label>Config</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Special_Attribute_Changes</name>
+        <label>Special Attribute Changes?</label>
+        <locationX>2460</locationX>
+        <locationY>209</locationY>
+        <defaultConnector>
+            <targetReference>Clear_Early_Exit_Flag</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>IGNORE</defaultConnectorLabel>
+        <rules>
+            <name>SAVE_atrib</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SaveAttributes.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Save</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_Special_Attributes</targetReference>
+            </connector>
+            <label>SAVE</label>
+        </rules>
+    </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
     <formulas>
         <name>fFirstField</name>
@@ -1010,8 +1101,8 @@
     <recordCreates>
         <name>Create_New_Config_Record</name>
         <label>Create New Config Record</label>
-        <locationX>2996</locationX>
-        <locationY>485</locationY>
+        <locationX>3371</locationX>
+        <locationY>484</locationY>
         <connector>
             <targetReference>Wizard_Finish</targetReference>
         </connector>
@@ -1050,8 +1141,8 @@
     <recordUpdates>
         <name>Save_Config_Record</name>
         <label>Save Config Record</label>
-        <locationX>2614</locationX>
-        <locationY>485</locationY>
+        <locationX>2989</locationX>
+        <locationY>484</locationY>
         <connector>
             <targetReference>Wizard_Finish</targetReference>
         </connector>
@@ -1440,8 +1531,8 @@
     <screens>
         <name>Wizard_Finish</name>
         <label>Wizard Finish</label>
-        <locationX>2808</locationX>
-        <locationY>485</locationY>
+        <locationX>3183</locationX>
+        <locationY>484</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -1462,7 +1553,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Clear_Early_Exit_Flag</targetReference>
+            <targetReference>Special_Attribute_Changes</targetReference>
         </connector>
         <fields>
             <name>debug</name>
@@ -1623,64 +1714,50 @@
             </outputParameters>
         </fields>
         <fields>
-            <name>Show_Edit_Special_Cell_Type_Other_Attributes</name>
-            <dataType>Boolean</dataType>
-            <defaultValue>
-                <booleanValue>false</booleanValue>
-            </defaultValue>
-            <fieldText>Show/Edit Special Cell, Type, Other Attributes</fieldText>
-            <fieldType>InputField</fieldType>
+            <name>AttributeToggle</name>
+            <extensionName>flowruntime:toggle</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Edit Special Attributes</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleActive</name>
+                <value>
+                    <stringValue>Edit</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleInactive</name>
+                <value>
+                    <stringValue>Hide</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
-            <name>Wizard_Screen_Section1</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Wizard_Screen_Section1_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>Special_Cell_Attributes</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>wiz_columnCellAttribs</elementReference>
-                    </defaultValue>
-                    <fieldText>Special Cell Attributes</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <fields>
-                    <name>Special_Type_Attributes</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>wiz_columnTypeAttribs</elementReference>
-                    </defaultValue>
-                    <fieldText>Special Type Attributes</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <fields>
-                    <name>Special_Other_Attributes</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>wiz_columnOtherAttribs</elementReference>
-                    </defaultValue>
-                    <fieldText>Special Other Attributes</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
+            <name>Special_Cell_Attributes</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Decode_Cell_Attribute.outputStr</elementReference>
+            </defaultValue>
+            <fieldText>Special Cell Attributes</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
             <visibilityRule>
-                <conditionLogic>and</conditionLogic>
+                <conditionLogic>or</conditionLogic>
                 <conditions>
-                    <leftValueReference>Show_Edit_Special_Cell_Type_Other_Attributes</leftValueReference>
+                    <leftValueReference>AttributeToggle.value</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <booleanValue>true</booleanValue>
@@ -1689,74 +1766,130 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>Wizard_Screen_Section2</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Wizard_Screen_Section2_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>Configuration_Record_Name</name>
-                    <dataType>String</dataType>
-                    <fieldText>Configuration Record Name (Enter a name here if you want to save a record of this configuration for reuse later)</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <fields>
-                    <name>CreateConfig</name>
-                    <extensionName>c:fsc_flowButtonBar</extensionName>
-                    <fieldType>ComponentInstance</fieldType>
-                    <inputParameters>
-                        <name>alignment</name>
-                        <value>
-                            <stringValue>right</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>orientation</name>
-                        <value>
-                            <stringValue>horizontal</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>showLines</name>
-                        <value>
-                            <stringValue>neither</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>actionMode</name>
-                        <value>
-                            <stringValue>navigation</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>buttons</name>
-                        <value>
-                            <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                    <storeOutputAutomatically>true</storeOutputAutomatically>
-                    <visibilityRule>
-                        <conditionLogic>and</conditionLogic>
-                        <conditions>
-                            <leftValueReference>Configuration_Record_Name</leftValueReference>
-                            <operator>IsNull</operator>
-                            <rightValue>
-                                <booleanValue>false</booleanValue>
-                            </rightValue>
-                        </conditions>
-                    </visibilityRule>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
+            <name>Special_Type_Attributes</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Decode_Type_Attribute.outputStr</elementReference>
+            </defaultValue>
+            <fieldText>Special Type Attributes</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>or</conditionLogic>
+                <conditions>
+                    <leftValueReference>AttributeToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Special_Other_Attributes</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Decode_Other_Attribute.outputStr</elementReference>
+            </defaultValue>
+            <fieldText>Special Other Attributes</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>or</conditionLogic>
+                <conditions>
+                    <leftValueReference>AttributeToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>SaveAttributes</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>left</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>below</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>selection</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;Ignore Changes&quot;,&quot;value&quot;:&quot;Ignore&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:0},{&quot;label&quot;:&quot;Save Changes&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:1}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>AttributeToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>ConfigToggle</name>
+            <extensionName>flowruntime:toggle</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>label</name>
+                <value>
+                    <stringValue>Show Configuration Record Options</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleActive</name>
+                <value>
+                    <stringValue>Show</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>messageToggleInactive</name>
+                <value>
+                    <stringValue>Hide</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <booleanValue>false</booleanValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>Configuration_Record_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Configuration Record Name (Enter a name here if you want to save a record of this configuration for reuse later)</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
@@ -1767,75 +1900,152 @@
                         <booleanValue>false</booleanValue>
                     </rightValue>
                 </conditions>
+                <conditions>
+                    <leftValueReference>ConfigToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
             </visibilityRule>
         </fields>
         <fields>
-            <name>Wizard_Screen_Section3</name>
-            <fieldType>RegionContainer</fieldType>
-            <fields>
-                <name>Wizard_Screen_Section3_Column1</name>
-                <fieldType>Region</fieldType>
-                <fields>
-                    <name>Configuration_Record_Name_Change</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>objConfig.Name</elementReference>
-                    </defaultValue>
-                    <fieldText>Configuration Record Name (Change this name if you want to Save As a new configuration)</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <fields>
-                    <name>SaveConfig</name>
-                    <extensionName>c:fsc_flowButtonBar</extensionName>
-                    <fieldType>ComponentInstance</fieldType>
-                    <inputParameters>
-                        <name>alignment</name>
-                        <value>
-                            <stringValue>right</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>orientation</name>
-                        <value>
-                            <stringValue>horizontal</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>showLines</name>
-                        <value>
-                            <stringValue>neither</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>actionMode</name>
-                        <value>
-                            <stringValue>navigation</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputParameters>
-                        <name>buttons</name>
-                        <value>
-                            <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
-                        </value>
-                    </inputParameters>
-                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-                    <isRequired>true</isRequired>
-                    <storeOutputAutomatically>true</storeOutputAutomatically>
-                </fields>
-                <inputParameters>
-                    <name>width</name>
-                    <value>
-                        <stringValue>12</stringValue>
-                    </value>
-                </inputParameters>
-                <isRequired>false</isRequired>
-            </fields>
+            <name>CreateConfig</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>right</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>neither</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>navigation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Configuration_Record_Name</leftValueReference>
+                    <operator>IsNull</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>vLoadedConfig</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>false</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>ConfigToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Configuration_Record_Name_Change</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>objConfig.Name</elementReference>
+            </defaultValue>
+            <fieldText>Configuration Record Name (Change this name if you want to Save As a new configuration)</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
             <visibilityRule>
                 <conditionLogic>and</conditionLogic>
                 <conditions>
                     <leftValueReference>vLoadedConfig</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>ConfigToggle.value</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>SaveConfig</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>right</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>neither</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>navigation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>vLoadedConfig</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+                <conditions>
+                    <leftValueReference>ConfigToggle.value</leftValueReference>
                     <operator>EqualTo</operator>
                     <rightValue>
                         <booleanValue>true</booleanValue>
@@ -1874,7 +2084,7 @@
             <inputParameters>
                 <name>buttons</name>
                 <value>
-                    <stringValue>[{&quot;label&quot;:&quot;Finished Configuring Table&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:&quot;utility:success&quot;,&quot;index&quot;:0}]</stringValue>
+                    <stringValue>[{&quot;label&quot;:&quot;Done&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:null,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1885,10 +2095,10 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>299</locationX>
-        <locationY>217</locationY>
+        <locationX>237</locationX>
+        <locationY>135</locationY>
         <connector>
-            <targetReference>Set_Quick_Choice_Options</targetReference>
+            <targetReference>Decode_Cell_Attribute</targetReference>
         </connector>
     </start>
     <status>Draft</status>

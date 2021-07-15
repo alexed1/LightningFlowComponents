@@ -292,8 +292,7 @@ export default class ers_datatableCPE extends LightningElement {
         this._wiz_columnCellAttribs = value;
         this.dispatchValue = (value) ? decodeURIComponent(value) : '';
         this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
-        // this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
-this.updateFlowParam(defaults.wizardAttributePrefix + name, value, null, defaults.NOENCODE);
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
     @api

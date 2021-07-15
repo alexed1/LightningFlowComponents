@@ -10,12 +10,18 @@ Additional components packaged with this LWC:
                                     ers_QueryNRecordsTest
                                     ers_DatatableController 
                                     ers_DatatableControllerTest
+                                    ers_EncodeDecodeURL
+                                    ers_EncodeDecodeURLTest
 
                 LWCs:               ers_comboboxColumnType
                                     ers_customLightningDatatable
                                     ers_datatableUtils
                                     ers_datatableCPE
                                     ers_richTextColumnType
+
+                Custom Objects:     ers_datatableConfig
+
+                Tabs:               ers_datatableConfig
 
                 StaticResources:    ers_customLightningDatatableStyles
 
@@ -63,9 +69,9 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## xx/xx/21 -  Eric Smith -    Version 3.2.5 
+## xx/xx/21 -  Eric Smith -    Version 3.3.0 
 **Updates:** 
--   
+-   Added a custom object (ers_datatableConfig) to provide the ability to Save and Retrieve column configuration attributes
  
 **Bug Fixes:** 
 -   Fixed an error that ocurred when trying to save an edited row from a datatable that contained a time field 

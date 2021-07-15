@@ -263,8 +263,8 @@
     <assignments>
         <name>Clear_Record_Id</name>
         <label>Clear Record Id</label>
-        <locationX>3060</locationX>
-        <locationY>281</locationY>
+        <locationX>3061</locationX>
+        <locationY>283</locationY>
         <assignmentItems>
             <assignToReference>objConfig.Id</assignToReference>
             <operator>Assign</operator>
@@ -332,13 +332,6 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>objConfig.Cell_Attributes__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>wiz_columnCellAttribs</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
             <assignToReference>objConfig.Alignments__c</assignToReference>
             <operator>Assign</operator>
             <value>
@@ -395,17 +388,45 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>objConfig.Other_Attributes__c</assignToReference>
+            <assignToReference>objConfig.Cell_Attributes__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>wiz_columnOtherAttribs</elementReference>
+                <elementReference>Special_Cell_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnCellAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Cell_Attributes</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>objConfig.Type_Attributes__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>wiz_columnTypeAttribs</elementReference>
+                <elementReference>Special_Type_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnTypeAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Type_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.Other_Attributes__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Other_Attributes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>wiz_columnOtherAttribs</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Special_Other_Attributes</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -1602,42 +1623,14 @@
             </outputParameters>
         </fields>
         <fields>
-            <name>NoLoadConfig</name>
-            <extensionName>c:fsc_flowButtonBar</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>alignment</name>
-                <value>
-                    <stringValue>left</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>orientation</name>
-                <value>
-                    <stringValue>horizontal</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>showLines</name>
-                <value>
-                    <stringValue>both</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>actionMode</name>
-                <value>
-                    <stringValue>navigation</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>buttons</name>
-                <value>
-                    <stringValue>[{&quot;label&quot;:&quot;Finished Configuring Table&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;success&quot;,&quot;iconName&quot;:&quot;utility:success&quot;,&quot;index&quot;:0}]</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <name>Show_Edit_Special_Cell_Type_Other_Attributes</name>
+            <dataType>Boolean</dataType>
+            <defaultValue>
+                <booleanValue>false</booleanValue>
+            </defaultValue>
+            <fieldText>Show/Edit Special Cell, Type, Other Attributes</fieldText>
+            <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <fields>
             <name>Wizard_Screen_Section1</name>
@@ -1646,9 +1639,65 @@
                 <name>Wizard_Screen_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
+                    <name>Special_Cell_Attributes</name>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>wiz_columnCellAttribs</elementReference>
+                    </defaultValue>
+                    <fieldText>Special Cell Attributes</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>Special_Type_Attributes</name>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>wiz_columnTypeAttribs</elementReference>
+                    </defaultValue>
+                    <fieldText>Special Type Attributes</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <fields>
+                    <name>Special_Other_Attributes</name>
+                    <dataType>String</dataType>
+                    <defaultValue>
+                        <elementReference>wiz_columnOtherAttribs</elementReference>
+                    </defaultValue>
+                    <fieldText>Special Other Attributes</fieldText>
+                    <fieldType>InputField</fieldType>
+                    <isRequired>false</isRequired>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>12</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>Show_Edit_Special_Cell_Type_Other_Attributes</leftValueReference>
+                    <operator>EqualTo</operator>
+                    <rightValue>
+                        <booleanValue>true</booleanValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
+        <fields>
+            <name>Wizard_Screen_Section2</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Wizard_Screen_Section2_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
                     <name>Configuration_Record_Name</name>
                     <dataType>String</dataType>
-                    <fieldText>Configuration Record Name (Enter a name here if you want to save this configuration)</fieldText>
+                    <fieldText>Configuration Record Name (Enter a name here if you want to save a record of this configuration for reuse later)</fieldText>
                     <fieldType>InputField</fieldType>
                     <isRequired>false</isRequired>
                 </fields>
@@ -1659,7 +1708,7 @@
                     <inputParameters>
                         <name>alignment</name>
                         <value>
-                            <stringValue>left</stringValue>
+                            <stringValue>right</stringValue>
                         </value>
                     </inputParameters>
                     <inputParameters>
@@ -1683,7 +1732,7 @@
                     <inputParameters>
                         <name>buttons</name>
                         <value>
-                            <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
+                            <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1721,10 +1770,10 @@
             </visibilityRule>
         </fields>
         <fields>
-            <name>Wizard_Screen_Section2</name>
+            <name>Wizard_Screen_Section3</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Wizard_Screen_Section2_Column1</name>
+                <name>Wizard_Screen_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>Configuration_Record_Name_Change</name>
@@ -1743,7 +1792,7 @@
                     <inputParameters>
                         <name>alignment</name>
                         <value>
-                            <stringValue>left</stringValue>
+                            <stringValue>right</stringValue>
                         </value>
                     </inputParameters>
                     <inputParameters>
@@ -1767,7 +1816,7 @@
                     <inputParameters>
                         <name>buttons</name>
                         <value>
-                            <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
+                            <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -1793,6 +1842,44 @@
                     </rightValue>
                 </conditions>
             </visibilityRule>
+        </fields>
+        <fields>
+            <name>NoLoadConfig</name>
+            <extensionName>c:fsc_flowButtonBar</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>alignment</name>
+                <value>
+                    <stringValue>right</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>orientation</name>
+                <value>
+                    <stringValue>horizontal</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>showLines</name>
+                <value>
+                    <stringValue>above</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>actionMode</name>
+                <value>
+                    <stringValue>navigation</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>buttons</name>
+                <value>
+                    <stringValue>[{&quot;label&quot;:&quot;Finished Configuring Table&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:&quot;utility:success&quot;,&quot;index&quot;:0}]</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>false</showFooter>
         <showHeader>false</showHeader>

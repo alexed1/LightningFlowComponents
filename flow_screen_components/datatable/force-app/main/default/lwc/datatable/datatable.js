@@ -172,6 +172,9 @@ export default class Datatable extends LightningElement {
     // Configuration Wizard Only - working variables
     @api selectedIcon;
 
+    // Obsolete - No longer used but can't be removed
+    @api attribCell;
+
     // JSON Version Variables
     @api scales = [];
     @api types = [];

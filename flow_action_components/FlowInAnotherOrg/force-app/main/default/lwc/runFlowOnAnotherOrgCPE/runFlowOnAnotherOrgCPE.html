@@ -6,10 +6,10 @@
         </div>
     </template>
 
-    <div>Run flow in another Org</div>
+    <div>{labels.Run_flow_in_another_Org}</div>
 
     <c-fsc_flow-combobox 
-        label='Base URL of the org' 
+        label={labels.Base_URL_of_the_org}
         builder-context={_builderContext} 
         name="baseOrgURL"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -22,7 +22,7 @@
     </c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox 
-        label='Consumer Key' 
+        label={labels.Consumer_Key}
         builder-context={_builderContext} 
         name="consumerKey"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -35,7 +35,7 @@
     </c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox 
-        label='Consumer Secret' 
+        label={labels.Consumer_Secret} 
         builder-context={_builderContext} 
         name="consumerSecret"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -47,7 +47,7 @@
         
     </c-fsc_flow-combobox>
     <c-fsc_flow-combobox 
-        label='Username' 
+        label={labels.Username} 
         builder-context={_builderContext} 
         name="username"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -60,7 +60,7 @@
     </c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox 
-        label='Password' 
+        label={labels.Password} 
         builder-context={_builderContext} 
         name="password"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -73,7 +73,7 @@
     </c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox 
-        label='Name of the flow' 
+        label={labels.Name_of_the_flow}
         builder-context={_builderContext} 
         name="flowName"  
         onvaluechanged={handleFlowComboboxValueChange} 
@@ -89,14 +89,14 @@
 
 
     <c-list-builder 
-        master-label='Flow Inputs'
-        add-button-label='Add Input' 
+        master-label={labels.Flow_Inputs}
+        add-button-label={labels.Add_Input} 
         list-data={inputsJSON} 
         onchangelist={changeInputsJSON}
         builder-context={builderContext}
         automatic-output-variables={automaticOutputVariables}>
     </c-list-builder>
 
-    <lightning-input type="checkbox" checked={useFutureMethod} label='useFutureMethod' class="slds-m-around_medium" onchange={changeUseFutureMethod}></lightning-input>
+    <lightning-input type="checkbox" checked={useFutureMethod} label={labels.Use_future_Method} class="slds-m-around_medium" onchange={changeUseFutureMethod}></lightning-input>
     
 </template>

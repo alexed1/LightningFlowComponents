@@ -1,6 +1,30 @@
 import { LightningElement, track, api } from 'lwc';
-
+import Run_flow_in_another_Org from '@salesforce/label/c.Run_flow_in_another_Org';
+import Base_URL_of_the_org from '@salesforce/label/c.Base_URL_of_the_org';
+import Consumer_Key from '@salesforce/label/c.Consumer_Key';
+import Consumer_Secret from '@salesforce/label/c.Consumer_Secret';
+import Username from '@salesforce/label/c.Username';
+import Password from '@salesforce/label/c.Password';
+import Name_of_the_flow from '@salesforce/label/c.Name_of_the_flow';
+import Flow_Inputs from '@salesforce/label/c.Flow_Inputs';
+import Add_Input from '@salesforce/label/c.Add_Input';
+import Use_future_Method from '@salesforce/label/c.Use_future_Method';
+Base_URL_of_the_org
 export default class RunFlowOnAnotherOrgCPE extends LightningElement {
+    
+    labels = {
+        Run_flow_in_another_Org,
+        Base_URL_of_the_org,
+        Consumer_Key,
+        Consumer_Secret,
+        Username,
+        Password,
+        Name_of_the_flow,
+        Flow_Inputs,
+        Add_Input,
+        Use_future_Method
+    }
+    
     @track inputValues = {};
 
     @api inputVariables;

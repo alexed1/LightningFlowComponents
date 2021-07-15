@@ -7,6 +7,8 @@ public with sharing class RunFlowOnAnotherOrg {
     'client_secret={1}&' +
     'username={2}&' +
     'password={3}';
+    static final String ERROR_MESSAGE = 'error';
+    static final String SUCCESS_MESSAGE = 'success';
     static final String POST_METHOD = 'POST';
 
     @InvocableMethod(label='Run Flow on Another Org' description='Run Flow on Another Org' callout=true configurationEditor='c:runFlowOnAnotherOrgCPE')
@@ -20,11 +22,10 @@ public with sharing class RunFlowOnAnotherOrg {
                 HTTPResponse res = sendRequest(request);
             
                 if(res.getStatusCode() == 200) {
-                    resp.result = 'success';
+                    resp.result = SUCCESS_MESSAGE;
                 } else {
-                    resp.result = 'error';
+                    resp.result = ERROR_MESSAGE;
                 }
-                resp.result = res.getBody() + ' Status ' + res.getStatus() + ' code ' + res.getStatusCode()  + '\n' + request.inputsJSON; 
                 responseList.add(resp);
             }
             

@@ -69,9 +69,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## xx/xx/21 -  Eric Smith -    Version 3.3.0 
+## 07/15/21 -  Eric Smith -    Version 3.2.5 
 **Updates:** 
 -   Added a custom object (ers_datatableConfig) to provide the ability to Save and Retrieve column configuration attributes
+-   Changed the number of rows in the Configuration Wizard datatable from 10 to 6
  
 **Bug Fixes:** 
 -   Fixed an error that ocurred when trying to save an edited row from a datatable that contained a time field 

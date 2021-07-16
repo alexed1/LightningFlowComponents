@@ -13,18 +13,18 @@ export default class FlexcardFlow extends LightningElement {
     @api cardSize = 300;
     @api avatarField;
     @api objectAPIName;
-    @api isClickable;
-    @api Cardcss;
+    @api isClickable;    
     @api headerStyle;
     @api allowMultiSelect;
     @api recordValue;
     @api selectedRecordIds = [];
+    @api label;
+    @track Cardcss;
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;
     @track recs = [];
     curRecord;
-
      @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
     recordInfo({ data, error }) {
         if (data) {
@@ -32,8 +32,6 @@ export default class FlexcardFlow extends LightningElement {
             //console.log('AssignedResource Label => ', data.fields.AssignedResource.label);
         }
     } 
-
-
     connectedCallback() {
         console.log('entering connectedCallback');
         if(!this.records) {
@@ -45,7 +43,6 @@ export default class FlexcardFlow extends LightningElement {
             record.Cardcss = 'card';
            })
            }
-
     //for each record:
     // for each fieldname, create a data structure called fieldData with that fieldname, the label of that field, and the value
     // add the fieldData to recordLayoutData 

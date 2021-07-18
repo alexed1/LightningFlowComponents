@@ -21,6 +21,8 @@ Additional components packaged with this LWC:
 
                 Custom Objects:     ers_datatableConfig
 
+                Page Layouts:       ers_datatableConfig Layout
+
                 Tabs:               ers_datatableConfig
 
                 StaticResources:    ers_customLightningDatatableStyles
@@ -41,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.24 or later  
-FlowScreenComponentsBasePack Version 2.3.10 or later  
+FlowActionsBasePack Version 2.26 or later  
+FlowScreenComponentsBasePack Version 2.5.0 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.2.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xLeQAI)   
-[Version 3.2.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xLeQAI)
+[Version 3.2.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMmQAI)   
+[Version 3.2.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMmQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  

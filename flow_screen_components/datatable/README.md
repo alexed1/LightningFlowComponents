@@ -64,7 +64,8 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
 In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
     ers_QueryNRecords   
-    ers_DatatableController  
+    ers_DatatableController
+    ers_EncodeDecodeURL  
 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     

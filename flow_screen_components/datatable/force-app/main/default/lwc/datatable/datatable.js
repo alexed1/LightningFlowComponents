@@ -143,6 +143,12 @@ export default class Datatable extends LightningElement {
     }
     @api cb_allowNoneToBeChosen = CB_TRUE;
 
+    @api 
+    get allowOverflow() {
+        return (this.cb_allowOverflow == CB_TRUE) ? true : false;
+    }
+    @api cb_allowOverflow;
+
     @api tableDataString = [];
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
@@ -576,14 +582,16 @@ export default class Datatable extends LightningElement {
         });
 
         // Set table height
-        this.tableHeightAttribute = 'height:' + this.tableHeight;
+        if (!this.allowOverflow) {
+            this.tableHeightAttribute = 'height:' + this.tableHeight;
+        }
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
 
         // Add overflow if max height is not set so the combobox will spill outside the table
-        this.borderClass += (this.tableHeight == null) ? ' overflowEnabled' : '';
+        this.borderClass += (this.allowOverflow) ? ' overflowEnabled' : '';
         
         // Generate datatable
         if (this.tableData) {

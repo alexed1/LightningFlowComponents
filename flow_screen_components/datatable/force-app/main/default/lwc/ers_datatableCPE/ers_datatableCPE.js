@@ -112,6 +112,14 @@ export default class ers_datatableCPE extends LightningElement {
         this.inputValues.displayAll.value = value;
     }
 
+    @api
+    get isAllowOverflow() {
+        return this.inputValues.allowOverflow.value;
+    }
+    set isAllowOverflow(value) {
+        this.inputValues.allowOverflow.value = value;
+    }
+
     @api 
     get isSObjectInput() {
         return !this.inputValues.isUserDefinedObject.value;
@@ -339,33 +347,33 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: "REQUIRED: Comma separated list of field API Names to display in the datatable.",
             isError: false, errorMessage: null},  
         columnAlignments: {value: null, valueDataType: null, isCollection: false, label: 'Column Alignments (Col#:alignment,...)', 
-            helpText: "Comma separated list of ColID:Alignment Value (left,center,right)\n" +   
+            helpText: "Comma separated list of ColID:Alignment Value (left,center,right)  \n" +   
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnEdits: {value: null, valueDataType: null, isCollection: false, label: 'Column Edits (Col#:true,...) or All', 
-            helpText: "'All' or a Comma separated list of ColID:true or false\n" +   
+            helpText: "'All' or a Comma separated list of ColID:true or false  \n" +   
             "NOTE: Some data types cannot be edited in a datable (lookup, picklist, location, encrypted, rich text, long text area)\n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnFilters: {value: null, valueDataType: null, isCollection: false, label: 'Column Filters (Col#:true,...) or All', 
-            helpText: "'All' or a Comma separated list of ColID:true or false\n" +   
-            "NOTE: Some data types cannot be filtered in a datable (location, encrypted)\n" + 
+            helpText: "'All' or a Comma separated list of ColID:true or false  \n" +   
+            "NOTE: Some data types cannot be filtered in a datable (location, encrypted)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},              
         columnIcons: {value: null, valueDataType: null, isCollection: false, label: 'Column Icons (Col#:icon,...)', 
-            helpText: "Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)\n" + 
+            helpText: "Comma separated list of ColID:Icon Identifier  --  EXAMPLE: 1:standard:account (Display the first column with the Account icon)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnLabels: {value: null, valueDataType: null, isCollection: false, label: 'Column Labels (Col#:label,...)', 
-            helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)\n" + 
+            helpText: "Comma separated list of ColID:Label (These are only needed if you want a label that is different from the field's defined label)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnScales: {value: null, valueDataType: null, isCollection: false, label: 'Column Scales (Col#:scale,...)', 
-            helpText: "(Apex Defined Only) Comma separated list of ColID:Scale (The number of digits to display to the right of the decimal point in currency, number and percent fields (default = 0))\n" + 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:Scale (The number of digits to display to the right of the decimal point in currency, number and percent fields (default = 0))  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnTypes: {value: null, valueDataType: null, isCollection: false, label: 'Column Types (Col#:type,...)', 
-            helpText: "(Apex Defined Only) Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))\n" + 
+            helpText: "(Apex Defined Only) Comma separated list of ColID:FieldType (boolean, currency, date, datetime, number, email, id, location, percent, phone, time, url, text(default))  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWidths: {value: null, valueDataType: null, isCollection: false, label: 'Column Widths (Col#:width,...)', 
-            helpText: "Comma separated list of ColID:Width (in pixels).\n" + 
+            helpText: "Comma separated list of ColID:Width (in pixels).  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
-            helpText: "Comma separated list of ColID:true or false (Default:false)\n" + 
+            helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Cell Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
@@ -387,7 +395,8 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: 'When selected, a thin border will be displayed around the entire datatable.'},
         cb_tableBorder: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
-            helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)'},
+            helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)  \n' +
+            'NOTE: This value will be ignored if the Allow Overflow attribute is set to True.'},
         maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
             helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field",                     // OBSOLETE as of v3.0.10
@@ -438,6 +447,9 @@ export default class ers_datatableCPE extends LightningElement {
         allowNoneToBeChosen: {value: null, valueDataType: null, isCollection: false, label: 'Include a --None-- Picklist Option', 
             helpText: 'Select if you want editable picklist fields to include a --None-- (null) option. (default=true)'},
         cb_allowNoneToBeChosen: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},
+        allowOverflow: {value: null, valueDataType: null, isCollection: false, label: 'Allow table to overflow its container', 
+            helpText: 'Select if you want the datatable to be able to overflow its container.  Useful when editing picklists on a table with only a few records.  Not recommended for wide tables in narrow containers'},
+        cb_allowOverflow: {value: null, valueDataType: null, isCollection: false, label: ''},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -528,6 +540,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnOtherAttribs'},
                 {name: 'recordTypeId'},
                 {name: 'allowNoneToBeChosen'},
+                {name: 'allowOverflow'},
                 {name: 'tableHeight'},
                 {name: 'keyField'},
             ]

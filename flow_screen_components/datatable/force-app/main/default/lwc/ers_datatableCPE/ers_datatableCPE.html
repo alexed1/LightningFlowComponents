@@ -558,9 +558,21 @@
             oncheckboxchanged={handleCheckboxChange}
         ></c-fsc_flow-checkbox> 
     </div>
+
+    <!-- Allow Container Overflow -->
+    <div class="slds-m-top_xx-small">
+        <c-fsc_flow-checkbox
+            name="select_allowOverflow"
+            label={inputValues.allowOverflow.label} 
+            field-level-help={inputValues.allowOverflow.helpText}
+            checked={inputValues.cb_allowOverflow.value} 
+            oncheckboxchanged={handleCheckboxChange}
+        ></c-fsc_flow-checkbox> 
+    </div>
     
     <!-- Set Table Height -->
     <c-fsc_flow-combobox 
+        disabled={isAllowOverflow}
         name="select_tableHeight" 
         label={inputValues.tableHeight.label}
         value={inputValues.tableHeight.value} 

@@ -116,6 +116,8 @@
             <property name="recordTypeId" type="String" role="inputOnly"/>
             <property name="allowNoneToBeChosen" type="Boolean" role="inputOnly"/>
             <property name="cb_allowNoneToBeChosen" type="String" role="inputOnly"/>
+            <property name="allowOverflow" type="Boolean" role="inputOnly"/>
+            <property name="cb_allowOverflow" type="String" role="inputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

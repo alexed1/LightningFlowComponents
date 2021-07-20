@@ -1,17 +1,14 @@
 global with sharing class DeserializeJSONtoSObjectList {
     @InvocableMethod
     global static List <Results> parse (List<Requests> requestList) {
-        System.debug('entering object json parse');
 
         //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
         List<Results> responseWrapper= new List<Results>();
 
         for (Requests curRequest : requestList) {
             String serializedSObjectListString = curRequest.serializedSObjectListString.replace('null', '""');
-            System.debug(serializedSObjectListString);
             String curType = curRequest.objectTypeName;
             Type systemType = Type.forName(curType);
-            System.debug(systemType);
             //Create a Results object to hold the return values
             Results response = new Results();
             //make the magic happen

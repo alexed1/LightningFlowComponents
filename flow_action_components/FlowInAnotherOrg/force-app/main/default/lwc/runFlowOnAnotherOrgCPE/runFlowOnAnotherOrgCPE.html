@@ -1,0 +1,102 @@
+<template>
+
+    <template if:true={isError}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+            <h2> {errorMessage} </h2>
+        </div>
+    </template>
+
+    <div>{labels.Run_flow_in_another_Org}</div>
+
+    <c-fsc_flow-combobox 
+        label={labels.Base_URL_of_the_org}
+        builder-context={_builderContext} 
+        name="baseOrgURL"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={baseOrgURL} 
+        value-type={baseOrgURLType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox 
+        label={labels.Consumer_Key}
+        builder-context={_builderContext} 
+        name="consumerKey"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={consumerKey} 
+        value-type={consumerKeyType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox 
+        label={labels.Consumer_Secret} 
+        builder-context={_builderContext} 
+        name="consumerSecret"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={consumerSecret} 
+        value-type={consumerSecretType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+    <c-fsc_flow-combobox 
+        label={labels.Username} 
+        builder-context={_builderContext} 
+        name="username"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={username} 
+        value-type={usernameType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox 
+        label={labels.Password} 
+        builder-context={_builderContext} 
+        name="password"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={password} 
+        value-type={passwordType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox 
+        label={labels.Name_of_the_flow}
+        builder-context={_builderContext} 
+        name="flowName"  
+        onvaluechanged={handleFlowComboboxValueChange} 
+        value={flowName} 
+        value-type={flowNameType} 
+        class="slds-m-around_medium"
+        required="true"
+        automatic-output-variables={automaticOutputVariables}>
+        
+    </c-fsc_flow-combobox>
+
+
+
+
+    <c-list-builder 
+        master-label={labels.Flow_Inputs}
+        add-button-label={labels.Add_Input} 
+        list-data={inputsJSON} 
+        onchangelist={changeInputsJSON}
+        builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-list-builder>
+
+    <lightning-input type="checkbox" checked={useFutureMethod} label={labels.Use_future_Method} class="slds-m-around_medium" onchange={changeUseFutureMethod}></lightning-input>
+    
+</template>

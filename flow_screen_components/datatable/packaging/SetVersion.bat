@@ -5,5 +5,5 @@ goto exit
 :skipprompt
 set version=%1
 :exit
-ShowVersion
+echo Version: %version%
 @echo on

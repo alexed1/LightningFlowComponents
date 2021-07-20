@@ -21,6 +21,7 @@
             <property name="selectedRecordIds" label="Selected Record Ids" type="String[]" role="outputOnly" description="String Collection of selected Record ID's"/>
             <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly" required="true" description="The SObject API Name used to query fields and values must be the same object selected in Flexcard Object API Name"/>
             <property name="label" label="Label" type="String" role="inputOnly" description="Enter a label for you component"/>
+            <property name="transitionOnClick" label="Transition on Click" type="Boolean" role="inputOnly" default="false" description="If marked as true will transition flow to next screen on card click"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

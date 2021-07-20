@@ -1,5 +1,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
+
 
 export default class FlexcardFlow extends LightningElement {
 
@@ -19,6 +21,8 @@ export default class FlexcardFlow extends LightningElement {
     @api recordValue;
     @api selectedRecordIds = [];
     @api label;
+    @api transitionOnClick;
+    @api availableActions = [];
     @track Cardcss;
     @track fieldHTML='';
     @track recordLayoutData={};
@@ -104,11 +108,13 @@ export default class FlexcardFlow extends LightningElement {
            }
         });
 
+        if(this.transitionOnClick=true && this.availableActions.find(action => action ==='NEXT')){
+            // navigate to the next screen
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+        }
+    }
+
         
         
-     }    
-             
-
-
-   
-}
+     }

@@ -4,9 +4,12 @@
     <decisions>
         <name>Is_New_Workflow</name>
         <label>Is New Workflow</label>
-        <locationX>182</locationX>
-        <locationY>518</locationY>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <locationX>535</locationX>
+        <locationY>562</locationY>
+        <defaultConnector>
+            <targetReference>Edit_Workflow</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Modify Existing</defaultConnectorLabel>
         <rules>
             <name>New_Workflow</name>
             <conditionLogic>and</conditionLogic>
@@ -18,7 +21,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Workflow</targetReference>
+                <targetReference>Create_New_Personal_Workflow</targetReference>
             </connector>
             <label>New Workflow</label>
         </rules>
@@ -34,7 +37,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -44,37 +47,133 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <recordLookups>
-        <name>Get_Accounts</name>
-        <label>Get Accounts</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+    <recordCreates>
+        <name>Create_Personal_Workflow_Action</name>
+        <label>Create Personal Workflow Action</label>
+        <locationX>710</locationX>
+        <locationY>862</locationY>
         <connector>
-            <targetReference>Get_Personal_Workflows</targetReference>
+            <targetReference>Edit_Workflow</targetReference>
         </connector>
-        <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Account</object>
+        <inputAssignments>
+            <field>Parent_Workflow_Id__c</field>
+            <value>
+                <elementReference>selectedPersonalWorkflowId</elementReference>
+            </value>
+        </inputAssignments>
+        <object>PersonalWorkflowAction__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Personal_Workflow_Record</name>
+        <label>Create Personal Workflow Record</label>
+        <locationX>410</locationX>
+        <locationY>863</locationY>
+        <assignRecordIdToReference>selectedPersonalWorkflowId</assignRecordIdToReference>
+        <connector>
+            <targetReference>Create_Personal_Workflow_Trigger</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Action_Description__c</field>
+            <value>
+                <stringValue>No Activity Yet!</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Label</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Trigger_Description__c</field>
+            <value>
+                <stringValue>No Trigger Yet!</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Unique_Name__c</field>
+            <value>
+                <elementReference>Unique_Name</elementReference>
+            </value>
+        </inputAssignments>
+        <object>PersonalWorkflow__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Personal_Workflow_Trigger</name>
+        <label>Create Personal Workflow Trigger</label>
+        <locationX>576</locationX>
+        <locationY>862</locationY>
+        <connector>
+            <targetReference>Create_Personal_Workflow_Action</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Personal_Workflow__c</field>
+            <value>
+                <elementReference>selectedPersonalWorkflowId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TriggerFilterType__c</field>
+            <value>
+                <stringValue>None</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>TriggeringEvents__c</field>
+            <value>
+                <stringValue>Create</stringValue>
+            </value>
+        </inputAssignments>
+        <object>PersonalWorkflowTrigger__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
     <recordLookups>
         <name>Get_Personal_Workflows</name>
         <label>Get Personal Workflows</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>542</locationX>
+        <locationY>221</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Screen1</targetReference>
         </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>PersonalFlow__c</object>
+        <object>PersonalWorkflow__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
+        <name>Create_New_Personal_Workflow</name>
+        <label>Create New Personal Workflow</label>
+        <locationX>409</locationX>
+        <locationY>686</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Create_Personal_Workflow_Record</targetReference>
+        </connector>
+        <fields>
+            <name>Label</name>
+            <dataType>String</dataType>
+            <fieldText>Label</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Unique_Name</name>
+            <dataType>String</dataType>
+            <fieldText>Unique Name</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Screen1</name>
         <label>Screen1</label>
-        <locationX>182</locationX>
-        <locationY>398</locationY>
+        <locationX>542</locationX>
+        <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -125,23 +224,23 @@
             <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
-            <name>personalFlowFlexcards</name>
+            <name>flexcardsPersonalWorkflows</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
-                <typeValue>PersonalFlow__c</typeValue>
+                <typeValue>PersonalWorkflow__c</typeValue>
             </dataTypeMappings>
             <extensionName>c:fsc_flexcardFlow</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>visibleFieldNames</name>
                 <value>
-                    <stringValue>Triggering_Event__c,Activity__c</stringValue>
+                    <stringValue>Action_Description__c,Trigger_Description__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>icon</name>
+                <name>records</name>
                 <value>
-                    <stringValue>standard:flow</stringValue>
+                    <elementReference>Get_Personal_Workflows</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -153,55 +252,41 @@
             <inputParameters>
                 <name>objectAPIName</name>
                 <value>
-                    <stringValue>PersonalFlow__c</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>visibleFlowNames</name>
-                <value>
-                    <stringValue>PersonalWorkflowService_Edit,PersonalWorkflowService_Delete</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>records</name>
-                <value>
-                    <elementReference>Get_Personal_Workflows</elementReference>
+                    <stringValue>PersonalWorkflow__c</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <fields>
-            <name>text_field</name>
-            <dataType>String</dataType>
-            <fieldText>text field</fieldText>
-            <fieldType>InputField</fieldType>
-            <helpText>&lt;p&gt;dfsdfsdf&lt;/p&gt;</helpText>
-            <isRequired>false</isRequired>
+            <outputParameters>
+                <assignToReference>selectedPersonalWorkflowId</assignToReference>
+                <name>value</name>
+            </outputParameters>
         </fields>
         <helpText>&lt;p&gt;screen helptext&lt;/p&gt;</helpText>
-        <showFooter>false</showFooter>
+        <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
-        <locationY>0</locationY>
+        <locationX>415</locationX>
+        <locationY>48</locationY>
         <connector>
-            <targetReference>Get_Accounts</targetReference>
+            <targetReference>Get_Personal_Workflows</targetReference>
         </connector>
     </start>
     <status>Active</status>
     <subflows>
-        <name>Create_Workflow</name>
-        <label>Create Workflow</label>
-        <locationX>50</locationX>
-        <locationY>638</locationY>
+        <name>Edit_Workflow</name>
+        <label>Edit Workflow</label>
+        <locationX>1102</locationX>
+        <locationY>561</locationY>
+        <connector>
+            <targetReference>Get_Personal_Workflows</targetReference>
+        </connector>
         <flowName>PersonalWorkflowService_Edit</flowName>
         <inputAssignments>
-            <name>Mode</name>
+            <name>recordId</name>
             <value>
-                <stringValue>Create</stringValue>
+                <elementReference>selectedPersonalWorkflowId</elementReference>
             </value>
         </inputAssignments>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -212,6 +297,13 @@
         <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>PersonalFlow__c</objectType>
+        <objectType>PersonalWorkflow__c</objectType>
+    </variables>
+    <variables>
+        <name>selectedPersonalWorkflowId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
     </variables>
 </Flow>

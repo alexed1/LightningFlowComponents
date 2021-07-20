@@ -153,12 +153,12 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>Private</externalSharingModel>
-    <label>PersonalAction</label>
+    <label>Personal Workflow</label>
     <nameField>
-        <label>PersonalAction Name</label>
+        <label>Label</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>PersonalActions</pluralLabel>
+    <pluralLabel>PersonalWorkflows</pluralLabel>
     <searchLayouts/>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

@@ -152,14 +152,14 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
-    <label>Personal Workflow</label>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <label>Personal Workflow Trigger</label>
     <nameField>
-        <label>Personal Flow Name</label>
+        <label>Personal Workflow Trigger Name</label>
         <type>Text</type>
     </nameField>
-    <pluralLabel>PersonalWorkflows</pluralLabel>
+    <pluralLabel>Personal Workflow Triggers</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

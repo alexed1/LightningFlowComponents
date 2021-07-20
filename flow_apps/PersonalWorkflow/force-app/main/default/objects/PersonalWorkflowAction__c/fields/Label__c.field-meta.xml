@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Triggering_Event__c</fullName>
+    <fullName>Label__c</fullName>
     <externalId>false</externalId>
-    <label>Trigger</label>
-    <length>40</length>
+    <label>Label</label>
+    <length>50</length>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Text</type>

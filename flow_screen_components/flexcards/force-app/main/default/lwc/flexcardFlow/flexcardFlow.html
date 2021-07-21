@@ -1,4 +1,7 @@
 <template>
+    <lightning-formatted-rich-text
+    value={label}
+    ></lightning-formatted-rich-text>
     <lightning-layout multiple-rows="true">
         <template if:true={isDataLoaded}>
             <template for:each={recs} for:item="record">
@@ -11,7 +14,7 @@
                         <c-action-list flow-names={visibleFlowNames} record-id={record.Id}></c-action-list>
                         <br/>
                         <p>
-                        <template if:true={allowMultiSelect}>
+                            <template if:true={allowMultiSelect}>
                             <lightning-input class="slds-float_right" type="checkbox-button" label="Save" name="SavedRecord" value={record.Id} onchange={handleChange}></lightning-input>                        
                         </template>
                         </p>                         

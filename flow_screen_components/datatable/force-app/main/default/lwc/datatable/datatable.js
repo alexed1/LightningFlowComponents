@@ -143,6 +143,12 @@ export default class Datatable extends LightningElement {
     }
     @api cb_allowNoneToBeChosen = CB_TRUE;
 
+    @api 
+    get allowOverflow() {
+        return (this.cb_allowOverflow == CB_TRUE) ? true : false;
+    }
+    @api cb_allowOverflow;
+
     @api tableDataString = [];
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
@@ -165,9 +171,15 @@ export default class Datatable extends LightningElement {
     @api wizColumnIcons;
     @api wizColumnWidths;
     @api wizColumnWraps;
+    @api wizColumnCellAttribs;
+    @api wizColumnTypeAttributes;
+    @api wizColumnOtherAttributes;
 
     // Configuration Wizard Only - working variables
     @api selectedIcon;
+
+    // Obsolete - No longer used but can't be removed
+    @api attribCell;
 
     // JSON Version Variables
     @api scales = [];
@@ -364,6 +376,9 @@ export default class Datatable extends LightningElement {
             this.columnWidths = decodeURIComponent(this.columnWidths);
             this.columnWraps = decodeURIComponent(this.columnWraps);
             this.columnFields = decodeURIComponent(this.columnFields);
+            this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
+            this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
+            this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
             console.log("Config Mode Input columnAlignments:", this.columnAlignments);
             console.log("Config Mode Input columnEdits:", this.columnEdits);
             console.log("Config Mode Input columnFilters:", this.columnFilters);
@@ -372,6 +387,9 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnWidths:", this.columnWidths);
             console.log("Config Mode Input columnWraps:", this.columnWraps);
             console.log("Config Mode Input columnFields:", this.columnFields);
+            console.log("Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            console.log("Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            console.log("Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
 
@@ -564,14 +582,16 @@ export default class Datatable extends LightningElement {
         });
 
         // Set table height
-        this.tableHeightAttribute = 'height:' + this.tableHeight;
+        if (!this.allowOverflow) {
+            this.tableHeightAttribute = 'height:' + this.tableHeight;
+        }
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
 
         // Add overflow if max height is not set so the combobox will spill outside the table
-        this.borderClass += (this.tableHeight == null) ? ' overflowEnabled' : '';
+        this.borderClass += (this.allowOverflow) ? ' overflowEnabled' : '';
         
         // Generate datatable
         if (this.tableData) {
@@ -709,7 +729,8 @@ export default class Datatable extends LightningElement {
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
-                this.timezoneOffset = returnResults.timezoneOffset.replace(/,/g, '');
+                this.timezoneOffset = returnResults.timezoneOffset.replace(/[^\d-]/g, '');  // Numeric characters and - only
+                console.log("Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
 
                 // Check for differences in picklist API Values vs Labels
                 if (this.picklistReplaceValues) {
@@ -1313,6 +1334,14 @@ export default class Datatable extends LightningElement {
                     field[pct] = parseFloat(field[pct]);
                 });
 
+                // Revert formatting for time fields
+                let timefield = this.timeFieldArray;
+                timefield.forEach(time => {
+                    if (field[time]) {
+                        field[time] = this.convertTime(field[time]);
+                    }
+                });                
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
@@ -1331,6 +1360,18 @@ export default class Datatable extends LightningElement {
     cancelChanges(event) {
         // Only used with inline editing
         this.mydata = [...this.savePreEditData];
+    }
+
+    convertTime(dtValue) {
+        // Return a Salesforce formatted time value based a datetime value
+        const dtv = new Date(dtValue);
+        const hours = dtv.getHours() - (this.timezoneOffset / 2880000);
+        let timeString = ("00"+hours).slice(-2)+":";
+        timeString += ("00"+dtv.getMinutes()).slice(-2)+":";
+        timeString += ("00"+dtv.getSeconds()).slice(-2)+".";
+        timeString += ("000"+dtv.getMilliseconds()).slice(-3);
+        timeString += "Z";
+        return timeString;
     }
 
     handleRowSelection(event) {
@@ -1701,6 +1742,11 @@ export default class Datatable extends LightningElement {
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         // Force a redisplay of the datatable with the filter value shown in the column header
         this.columns = [...this.filterColumns]; 
+    }
+
+    // TODO: Add ability to update special attributes in the Configuration Wizard 
+    handleAttributeChange(event) {
+
     }
 
     handleCloseModal() {

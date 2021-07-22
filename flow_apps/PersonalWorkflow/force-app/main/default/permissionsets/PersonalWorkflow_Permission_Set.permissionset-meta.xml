@@ -5,11 +5,7 @@
         <field>PersonalWorkflowAction__c.Label__c</field>
         <readable>false</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
-        <field>PersonalWorkflowTrigger__c.Personal_Workflow__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
+    
     <fieldPermissions>
         <editable>true</editable>
         <field>PersonalWorkflowTrigger__c.TriggerCriteriaFormula__c</field>

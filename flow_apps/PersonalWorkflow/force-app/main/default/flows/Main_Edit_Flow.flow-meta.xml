@@ -32,7 +32,7 @@
             <targetReference>Core_Edit_Flow</targetReference>
         </connector>
         <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>PersonalFlow__c</object>
+        <object>PersonalWorkflow__c</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <start>

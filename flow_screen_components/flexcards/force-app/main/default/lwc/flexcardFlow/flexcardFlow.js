@@ -108,7 +108,7 @@ export default class FlexcardFlow extends LightningElement {
            }
         });
 
-        if(this.transitionOnClick=true && this.availableActions.find(action => action ==='NEXT')){
+        if(this.transitionOnClick === true && this.availableActions.find(action => action ==='NEXT')){
             // navigate to the next screen
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);

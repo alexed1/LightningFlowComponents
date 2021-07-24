@@ -66,6 +66,7 @@ export default class fsc_ActionList extends LightningElement {
 
     get flowParams() {
         let params = [{name: 'recordId', type: 'String', value: this.recordId || ''}];
+        console.log('params is: ' + params);
         return JSON.stringify(params);
     }
 }

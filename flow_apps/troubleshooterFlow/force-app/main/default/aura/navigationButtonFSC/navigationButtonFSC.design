@@ -1,0 +1,8 @@
+<design:component >
+    <design:attribute name="label" label="Button Label"/>
+    <design:attribute name="destinationURL" label="Target Destination"/>
+	<design:attribute name="destinationType" label="Target Type"/>
+    <design:attribute name="targetRecordId" label="Target RecordId"/>
+    <design:attribute name="navigationType" label="Navigation Type"/>
+    <design:attribute name="fire" label="Button Clicked?"/>
+</design:component>

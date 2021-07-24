@@ -141,6 +141,16 @@ export default class SendBetterEmailCPE extends LightningElement {
 		this.initializeValues();
 	}
 
+	@api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
+	_automaticOutputVariables;
+
 	@track availableRecipients = [{
 		baseLabel: 'TO',
 		label: 'TO',

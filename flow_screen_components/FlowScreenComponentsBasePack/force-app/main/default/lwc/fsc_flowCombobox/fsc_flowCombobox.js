@@ -386,7 +386,7 @@ export default class FlowCombobox extends LightningElement {
             typeOptions.push(this.generateOptionLine(
                 curDataType,
                 label,//curObject[labelField] ? curObject[labelField] : curObject[valueField],
-                curObject[valueField],
+                typeDescriptor.dataType === flowComboboxDefaults.screenComponentType ? curObject[valueField].split('.')[1] : curObject[valueField],
                 typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType ? !curIsCollection : !!curIsCollection,
                 curObject[objectTypeField],
                 this.getIconNameByType(curDataType),
@@ -585,7 +585,7 @@ export default class FlowCombobox extends LightningElement {
                 let localOptions = curOption.options;
 
                 if (this.builderContextFilterType) {
-                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType === this.builderContextFilterType || opToFilter.storeOutputAutomatically === true || (  opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
+                    localOptions = localOptions.filter(opToFilter => opToFilter.displayType.toLowerCase() === this.builderContextFilterType.toLowerCase() || opToFilter.storeOutputAutomatically === true || (  opToFilter.type === 'SObject' && !this.builderContextFilterCollectionBoolean));
                 }
 
                 if (typeof this.builderContextFilterCollectionBoolean !== "undefined") {

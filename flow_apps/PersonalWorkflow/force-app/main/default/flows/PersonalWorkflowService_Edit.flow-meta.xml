@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <actionCalls>
+        <name>Generate_Flow_From_Personal_Workflow_Record</name>
+        <label>Generate Flow From Personal Workflow Record</label>
+        <locationX>644</locationX>
+        <locationY>1790</locationY>
+        <actionName>GenerateFlowFromPersonalWorkflow</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_XML</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>personalWorkflowId</name>
+            <value>
+                <elementReference>Reload_Personal_Workflow.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
     <apiVersion>51.0</apiVersion>
+    <assignments>
+        <name>Assign_Action_Description</name>
+        <label>Assign Action Description</label>
+        <locationX>1106</locationX>
+        <locationY>1238</locationY>
+        <assignmentItems>
+            <assignToReference>Reload_Personal_Workflow.Action_Description__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Action_Label</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Descriptions_on_Personal_Workflow_Record</targetReference>
+        </connector>
+    </assignments>
     <assignments>
         <description>These are the values that are independent of the split</description>
         <name>Assign_More_Updated_Values</name>
@@ -16,6 +51,29 @@
         </assignmentItems>
         <connector>
             <targetReference>Update_Descriptions_on_Personal_Workflow_Record</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Updated_Action_Variables</name>
+        <label>Assign Updated Action Variables</label>
+        <locationX>1106</locationX>
+        <locationY>998</locationY>
+        <assignmentItems>
+            <assignToReference>Load_Related_Action_Data.PersonalWorkflowActionInputParam__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>hostCPE.inputVariablesJSON</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Load_Related_Action_Data.Label__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>Post To Slack</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Update_Action_Record</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -161,13 +219,21 @@
             <stringValue>specificFieldChanges</stringValue>
         </value>
     </choices>
+    <choices>
+        <name>PostToSlackAction</name>
+        <choiceText>Post To Slack</choiceText>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>PostToSlackAction</stringValue>
+        </value>
+    </choices>
     <decisions>
         <name>Edit_Which_Part</name>
         <label>Edit Which Part</label>
-        <locationX>578</locationX>
+        <locationX>644</locationX>
         <locationY>398</locationY>
         <defaultConnector>
-            <targetReference>Edit_Action</targetReference>
+            <targetReference>Load_Related_Action_Data</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Action</defaultConnectorLabel>
         <rules>
@@ -238,6 +304,28 @@
             <label>Change to Existing Record</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Which_Action</name>
+        <label>Which Action</label>
+        <locationX>1238</locationX>
+        <locationY>878</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Post_To_Slack</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Chose_Action</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>PostToSlackAction</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Updated_Action_Variables</targetReference>
+            </connector>
+            <label>Post To Slack</label>
+        </rules>
+    </decisions>
     <dynamicChoiceSets>
         <name>TriggerFilterTypeChoices</name>
         <dataType>Picklist</dataType>
@@ -275,6 +363,27 @@
         <inputReference>Reload_Personal_Workflow</inputReference>
     </recordDeletes>
     <recordLookups>
+        <name>Load_Related_Action_Data</name>
+        <label>Load Related Action Data</label>
+        <locationX>1238</locationX>
+        <locationY>518</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Select_Action</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Parent_Workflow_Id__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Reload_Personal_Workflow.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>PersonalWorkflowAction__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
         <name>Load_Related_Triggering_Data_0</name>
         <label>Load Related Triggering Data</label>
         <locationX>578</locationX>
@@ -298,7 +407,7 @@
     <recordLookups>
         <name>Reload_Personal_Workflow</name>
         <label>Reload Personal Workflow</label>
-        <locationX>578</locationX>
+        <locationX>644</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -317,11 +426,24 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
+        <name>Update_Action_Record</name>
+        <label>Update Action Record</label>
+        <locationX>1106</locationX>
+        <locationY>1118</locationY>
+        <connector>
+            <targetReference>Assign_Action_Description</targetReference>
+        </connector>
+        <inputReference>Load_Related_Action_Data</inputReference>
+    </recordUpdates>
+    <recordUpdates>
         <description>these descriptions enable information to be displayed on the flexcards</description>
         <name>Update_Descriptions_on_Personal_Workflow_Record</name>
         <label>Update Descriptions on Personal Workflow Record</label>
-        <locationX>578</locationX>
-        <locationY>1574</locationY>
+        <locationX>644</locationX>
+        <locationY>1670</locationY>
+        <connector>
+            <targetReference>Generate_Flow_From_Personal_Workflow_Record</targetReference>
+        </connector>
         <inputReference>Reload_Personal_Workflow</inputReference>
     </recordUpdates>
     <recordUpdates>
@@ -335,17 +457,72 @@
         <inputReference>updatedTriggerRecord</inputReference>
     </recordUpdates>
     <screens>
-        <name>Edit_Action</name>
-        <label>Edit Action</label>
-        <locationX>1106</locationX>
-        <locationY>518</locationY>
+        <name>Check_XML</name>
+        <label>Check XML</label>
+        <locationX>644</locationX>
+        <locationY>1910</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
-            <name>dispChooseTrigger_0</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Choose Your Action&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
+            <name>DeployMetadata</name>
+            <extensionName>c:fsc_transferMetadata</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>metadataName</name>
+                <value>
+                    <elementReference>Reload_Personal_Workflow.Unique_Name__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>metadataString</name>
+                <value>
+                    <elementReference>Generate_Flow_From_Personal_Workflow_Record.flowXML</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>transferMode</name>
+                <value>
+                    <stringValue>deploy</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>objectType</name>
+                <value>
+                    <stringValue>Flow</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Edit_Action</name>
+        <label>Edit Action</label>
+        <locationX>1238</locationX>
+        <locationY>758</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Which_Action</targetReference>
+        </connector>
+        <fields>
+            <name>hostCPE</name>
+            <extensionName>c:hostCPE</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>inputVariablesJSON</name>
+                <value>
+                    <elementReference>Load_Related_Action_Data.PersonalWorkflowActionInputParam__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -353,7 +530,7 @@
     <screens>
         <name>Edit_Personal_Workflow</name>
         <label>Edit Personal Workflow</label>
-        <locationX>578</locationX>
+        <locationX>644</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -809,7 +986,7 @@
             <name>Trigger_Label</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>Reload_Personal_Workflow.Trigger_Description__c</elementReference>
+                <elementReference>Trigger</elementReference>
             </defaultValue>
             <fieldText>Trigger Label</fieldText>
             <fieldType>InputField</fieldType>
@@ -972,8 +1149,45 @@
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
+    <screens>
+        <name>Select_Action</name>
+        <label>Select Action</label>
+        <locationX>1238</locationX>
+        <locationY>638</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Edit_Action</targetReference>
+        </connector>
+        <fields>
+            <name>Select_Action_Text</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px; background-color: rgb(255, 255, 255); color: rgb(62, 62, 60);&quot;&gt;Choose Your Action&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>Action_Label</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>Action</elementReference>
+            </defaultValue>
+            <fieldText>Action Label</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>true</isRequired>
+        </fields>
+        <fields>
+            <name>Chose_Action</name>
+            <choiceReferences>PostToSlackAction</choiceReferences>
+            <dataType>String</dataType>
+            <fieldText>Chose Action</fieldText>
+            <fieldType>DropdownBox</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
     <start>
-        <locationX>452</locationX>
+        <locationX>518</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Reload_Personal_Workflow</targetReference>

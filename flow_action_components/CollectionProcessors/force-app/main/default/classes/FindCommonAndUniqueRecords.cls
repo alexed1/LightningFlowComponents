@@ -18,92 +18,105 @@ global without sharing class FindCommonAndUniqueRecords {
         //make sure we check that both collections are not empty/null
         for (Request request: requestList) {
             if (request.sourceRecordCollection != null &&
-                !request.sourceRecordCollection.isEmpty() &&
-                request.targetRecordCollection != null &&
-                !request.targetRecordCollection.isEmpty()) {
+                request.targetRecordCollection != null) {
                     
                     List<SObject> sourceRecordCollection = request.sourceRecordCollection;
                     List<SObject> targetRecordCollection = request.targetRecordCollection;
-                    
+
                     Result result = new Result();
                     result.sourceCommonRecordCollection = new List<sObject>();
                     result.targetCommonRecordCollection = new List<sObject>();
                     result.sourceUniqueRecordCollection = new List<sObject>();
                     result.targetUniqueRecordCollection = new List<sObject>();
                     
-                    //puts the source collection into a map so we can compare with the target collection map
-                    Map<String, Sobject> sourceMap = new Map<String, Sobject>();
-                    string objectType = string.valueOf(sourceRecordCollection[0].Id.getSObjectType());
-                    string targetObjectType = string.valueOf(targetRecordCollection[0].Id.getSObjectType());
-                    
-                    if(!sobjectTypeMap.containsKey(objectType)){
-                        Schema.SObjectType s = sourceRecordCollection[0].Id.getSObjectType();
-                        Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
-                        sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
-                    }
-
-                    if(!sobjectTypeMap.containsKey(targetObjectType)){
-                        Schema.SObjectType s = targetRecordCollection[0].Id.getSObjectType();
-                        Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
-                        sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
-                    }
-
-                    if(sobjectTypeMap.containsKey(objectType)){
-                        Schema.SobjectField sourceCurField = sobjectTypeMap.get(objectType).get(request.sourceUniqueID);
+                    // if either collection is empty then we simply output directly to the unique collection outputs
+                    if (targetRecordCollection.isEmpty() || sourceRecordCollection.isEmpty() ) {
+                        if (targetRecordCollection.isEmpty()) {
+                            result.sourceUniqueRecordCollection.addAll(sourceRecordCollection); 
+                        }
                         
-                        // Loop over the source collection
-                        for(sObject sourceRecord : sourceRecordCollection){
+                        if (sourceRecordCollection.isEmpty()) {
+                            result.targetUniqueRecordCollection.addAll(targetRecordCollection);
+                        }
+                        
+                    }
+                    
+                    if(!targetRecordCollection.isEmpty() && !sourceRecordCollection.isEmpty()){
+                        //puts the source collection into a map so we can compare with the target collection map
+                        Map<String, Sobject> sourceMap = new Map<String, Sobject>();
+                        string objectType = string.valueOf(sourceRecordCollection[0].Id.getSObjectType());
+                        string targetObjectType = string.valueOf(targetRecordCollection[0].Id.getSObjectType());
+                        
+                        if(!sobjectTypeMap.containsKey(objectType)){
+                            Schema.SObjectType s = sourceRecordCollection[0].Id.getSObjectType();
+                            Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
+                            sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
+                        }
+                        
+                        if(!sobjectTypeMap.containsKey(targetObjectType)){
+                            Schema.SObjectType s = targetRecordCollection[0].Id.getSObjectType();
+                            Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
+                            sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
+                        }
+                        
+                        if(sobjectTypeMap.containsKey(objectType)){
+                            Schema.SobjectField sourceCurField = sobjectTypeMap.get(objectType).get(request.sourceUniqueID);
                             
-                            //grab the value of the Unique ID field
-                            String sourceCurrentFieldValue = (String)sourceRecord.get(sourceCurField);
+                            // Loop over the source collection
+                            for(sObject sourceRecord : sourceRecordCollection){
+                                
+                                //grab the value of the Unique ID field
+                                String sourceCurrentFieldValue = (String)sourceRecord.get(sourceCurField);
+                                
+                                //as long as the unique value isnt blank, put it in the sourceMap map to be used later
+                                if (sourceCurrentFieldValue != null && sourceCurrentFieldValue != '') {
+                                    sourceMap.put(sourceCurrentFieldValue, sourceRecord);
+                                }
+                            }
+                        }
+                        
+                        if(sobjectTypeMap.containsKey(targetObjectType)){
                             
-                            //as long as the unique value isnt blank, put it in the sourceMap map to be used later
-                            if (sourceCurrentFieldValue != null && sourceCurrentFieldValue != '') {
-                                sourceMap.put(sourceCurrentFieldValue, sourceRecord);
+                            //puts the target collection into a map so we can compare with the source collection
+                            Map<String, sObject> targetMap = new Map<String, sObject>();
+                            
+                            // The key to the map is the api name of the field
+                            Schema.SobjectField targetCurField = sobjectTypeMap.get(targetObjectType).get(request.targetUniqueID);
+                            
+                            for(sObject targetRecord : targetRecordCollection){
+                                String targetCurFieldValue = (String)targetRecord.get(targetCurField);
+
+                                //as long as the unique value isnt blank, put it in the targetMap map to be used later
+                                if (targetCurFieldValue != null && targetCurFieldValue != ''){
+                                    targetMap.put(targetCurFieldValue, targetRecord);
+                                }  
+                            }
+                            
+                            for(sObject sourceRecord : sourceRecordCollection){
+                                //if it is, we add it to the common record collection and remove it from the target map. We do this
+                                String sourceFieldValue = sourceRecord.get(request.sourceUniqueID).toString();
+                                
+                                if (targetMap.containsKey(sourceFieldValue)){
+                                    result.sourceCommonRecordCollection.add(sourceRecord);
+                                } else {
+                                    result.sourceUniqueRecordCollection.add(sourceRecord);
+                                }     
+                            }
+                            
+                            // we loop over the 'Target' collection to see if the record is in the 'Source' collection'.
+                            for(sObject targetRecord : targetRecordCollection){
+                                //if it is, we add it to the common record collection and remove it from the target map. We do this
+                                String targetFieldValue = targetRecord.get(request.targetUniqueID).toString();
+                                
+                                if (sourceMap.containsKey(targetFieldValue)){
+                                    result.targetCommonRecordCollection.add(targetRecord);
+                                } else {
+                                    result.targetUniqueRecordCollection.add(targetRecord);
+                                }
                             }
                         }
                     }
-                    
-                    if(sobjectTypeMap.containsKey(targetObjectType)){
-                        
-                        //puts the target collection into a map so we can compare with the source collection
-                        Map<String, sObject> targetMap = new Map<String, sObject>();
-                        
-                        // The key to the map is the api name of the field
-                        Schema.SobjectField targetCurField = sobjectTypeMap.get(targetObjectType).get(request.targetUniqueID);
-                        
-                        for(sObject targetRecord : targetRecordCollection){
-                            String targetCurFieldValue = (String)targetRecord.get(targetCurField);
-                            
-                            //as long as the unique value isnt blank, put it in the targetMap map to be used later
-                            if (targetCurFieldValue != null && targetCurFieldValue != ''){
-                                targetMap.put(targetCurFieldValue, targetRecord);
-                            }  
-                        }
-                        
-                        for(sObject sourceRecord : sourceRecordCollection){
-                            //if it is, we add it to the common record collection and remove it from the target map. We do this
-                            String sourceFieldValue = sourceRecord.get(request.sourceUniqueID).toString();
-                            
-                            if (targetMap.containsKey(sourceFieldValue)){
-                                result.sourceCommonRecordCollection.add(sourceRecord);
-                            } else {
-                                result.sourceUniqueRecordCollection.add(sourceRecord);
-                            }     
-                        }
-                        
-                        // we loop over the 'Target' collection to see if the record is in the 'Source' collection'.
-                        for(sObject targetRecord : targetRecordCollection){
-                            //if it is, we add it to the common record collection and remove it from the target map. We do this
-                            String targetFieldValue = targetRecord.get(request.targetUniqueID).toString();
-                            
-                            if (sourceMap.containsKey(targetFieldValue)){
-                                result.targetCommonRecordCollection.add(targetRecord);
-                            } else {
-                                result.targetUniqueRecordCollection.add(targetRecord);
-                            }
-                        }
-                    }
+
                     //add this result to the bulkified results (invocable specific)
                     outputResults.add(result);
                 }

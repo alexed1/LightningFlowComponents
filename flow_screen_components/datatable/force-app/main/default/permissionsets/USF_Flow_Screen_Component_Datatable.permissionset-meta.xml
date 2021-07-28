@@ -8,6 +8,10 @@
         <apexClass>ers_DatatableController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>ers_EncodeDecodeURL</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the Datatable Flow Screen LWC</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>USF Flow Screen Component - Datatable</label>

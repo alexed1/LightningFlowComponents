@@ -51,6 +51,7 @@
                         builder-context-filter-collection-boolean={inputValues.choiceIcons.isCollection}
                         builder-context={_builderContext}
                         onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
                 <lightning-combobox
                         name="select_iconSize"
@@ -89,6 +90,7 @@
                         builder-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
                         builder-context={_builderContext}
                         onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceDualCollection}>
@@ -101,6 +103,7 @@
                         builder-context-filter-collection-boolean={inputValues.choiceLabels.isCollection}
                         builder-context={_builderContext}
                         onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceSingleOrDualCollection}>
@@ -113,6 +116,7 @@
                         builder-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
                         builder-context={_builderContext}
                         onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
         </template>
         <lightning-input
@@ -155,6 +159,7 @@
                 builder-context-filter-collection-boolean={inputValues.value.isCollection}
                 builder-context={_builderContext}
                 onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}
         ></c-fsc_flow-combobox>
         <lightning-input
                 type="number"

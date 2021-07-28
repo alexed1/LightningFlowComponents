@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TargetDiagnosticNode__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>If this Diagnostic Outcome is selected, the Flow will seek to transition the user to this Diagnostic Node.</description>
+    <externalId>false</externalId>
+    <label>TargetDiagnosticNodeId</label>
+    <referenceTo>DiagnosticNode__c</referenceTo>
+    <relationshipLabel>DiagnosticOutcomes (TargetDiagnosticNode)</relationshipLabel>
+    <relationshipName>TargetDiagnosticNode</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

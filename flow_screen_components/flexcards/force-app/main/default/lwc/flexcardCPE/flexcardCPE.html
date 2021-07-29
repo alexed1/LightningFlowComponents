@@ -1,4 +1,11 @@
 <template>
+    <c-fsc_pick-object-and-field
+     object-label={inputValues.objectAPIName.label}
+     object-type='Account'
+     is-allow-all=true
+     hide-field-picklist=true>
+    </c-fsc_pick-object-and-field>
+    
     <c-fsc_flow-combobox
     name="select_Values"
     label={inputValues.value.label}

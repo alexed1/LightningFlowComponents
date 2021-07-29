@@ -1,3 +1,23 @@
 <template>
-    
+    <c-fsc_flow-combobox
+    name="select_Values"
+    label={inputValues.value.label}
+    value={inputValues.value.value}
+    value-type={inputValues.value.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.value.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox
+                    name="select_icon"
+                    label={inputValues.icon.label}
+                    value={inputValues.icon.value}
+                    value-type={inputValues.icon.valueDataType}
+                    builder-context-filter-type="String"
+                    builder-context-filter-collection-boolean={inputValues.icon.isCollection}
+                    builder-context={_builderContext}
+                    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
 </template>

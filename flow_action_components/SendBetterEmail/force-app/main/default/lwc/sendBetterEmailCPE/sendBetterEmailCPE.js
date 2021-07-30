@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 04-14-2021
+ * @Last Modified On	: 2021-07-30
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -64,16 +64,20 @@ export default class SendBetterEmailCPE extends LightningElement {
 		emailMessageType: {value: null, dataType: null, isCollection: false, default: null, label: 'Email Type'},
 		description: {value: null, dataType: null, isCollection: false, default: null, label: 'Description (sent in internal email with status after action completes)'},
 		bcc: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
+		cb_bcc: {value: 'CB_FALSE', dataType: null, isCollection: false, default: null, label: '!Sender receives BCC of first email sent?'},
 		senderDisplayName: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
 		replyEmailAddress: {value: null, dataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
 		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		cb_UseSalesforceSignature: {value: 'CB_FALSE', dataType: null, isCollection: false, default: null, label: '!Use Salesforce Signature if executing user has one?'},
 		InReplyTo: {value: null, dataType: null, isCollection: true, default: null, label: 'MessageId List of existing email if this is InReplyTo'},
 		templateName: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Name'},
 		templateLanguage: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Language'},
 		targetObjectIds: {value: null, dataType: null, isCollection: true, default: null, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
 		whatIds: {value: null, dataType: null, isCollection: true, default: null, default: null, label: 'Related Record Id Collection(for template merge fields and recording Email as a task)'},
 		saveAsActivity: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Activity on Recipient Record(s)?'},
+		cb_saveAsActivity: {value: 'CB_FALSE', dataType: null, isCollection: false, default: null, label: '!Save Email as Activity on Recipient Record(s)?'},
 		saveAsTask: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Task on recipient related record(s)?'},
+		cb_saveAsTask: {value: 'CB_FALSE', dataType: null, isCollection: false, default: null, label: '!Save Email as Task on recipient related record(s)?'},
 		setTreatTargetObjectAsRecipient: {value: null, dataType: null, isCollection: false, default: true, label: 'Treat the target as a recipient. Defaults to True'},
 		cb_setTreatTargetObjectAsRecipient: {value: 'CB_TRUE', dataType: null, isCollection: false, default: false, label: '!Treat the target as a recipient.'},
 		recordId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
@@ -140,16 +144,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 		this._values = value;
 		this.initializeValues();
 	}
-
-	@api get automaticOutputVariables () {
-        return this._automaticOutputVariables;
-    }
-
-    set automaticOutputVariables (value) {
-        this._automaticOutputVariables = value;
-    }
-
-	_automaticOutputVariables;
 
 	@track availableRecipients = [{
 		baseLabel: 'TO',

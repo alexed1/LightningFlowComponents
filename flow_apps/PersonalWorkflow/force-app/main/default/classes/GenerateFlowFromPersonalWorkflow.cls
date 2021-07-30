@@ -4,7 +4,7 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
     public static List<Response> Invoke (List<Request> requestList) {
         List<Response> responseList = new List<Response>();
 
-        for(Request req : requestList) {
+        //for(Request req : requestList) {
             PersonalWorkflow__c personalWorkflow = [
                 SELECT  Id,
                         Name,
@@ -13,7 +13,7 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
                         Trigger_Description__c,
                         Unique_Name__c
                 FROM    PersonalWorkflow__c
-                WHERE   Id = :req.personalWorkflowId
+                WHERE   Id = :requestList[0].personalWorkflowId
                 LIMIT   1
 
             ];
@@ -25,7 +25,7 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
                         Parent_Workflow_Id__c,
                         PersonalWorkflowActionInputParam__c
                 FROM    PersonalWorkflowAction__c
-                WHERE   Parent_Workflow_Id__c = :req.personalWorkflowId
+                WHERE   Parent_Workflow_Id__c = :requestList[0].personalWorkflowId
                 LIMIT   1
             ];
 
@@ -39,7 +39,7 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
                         TriggerObjectName__c,
                         TriggerType__c
                 FROM    PersonalWorkflowTrigger__c
-                WHERE   Personal_Workflow__c = :req.personalWorkflowId
+                WHERE   Personal_Workflow__c = :requestList[0].personalWorkflowId
                 LIMIT   1
             ];
         
@@ -105,7 +105,7 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
                 actionCallsXML
             });
             responseList.add(resp);
-        }
+        //}
 
         return responseList;
     }

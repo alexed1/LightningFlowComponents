@@ -16,7 +16,7 @@
  * 2.00.03  11-28-2020  Jack D. Pond		Updated for Flow Action BasePack and Flow Screen Component Base Pack.
  * 2.00.05  02-14-2020  Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
  * 2.00.06	2021-04-14	Jack D. Pond		Filter-type on attachments fixed (ContentDocumentLink) Fix: #570, #568
- * 2.01.06	2021-07-30	Jack D. Pond		Fix remainder of checkboxes default/save Fix: #702,#831 
+ * 2.01.06	2021-07-30	Jack D. Pond		Fix remainder of checkboxes default/save Fix: #702,#831,#785,#829
 						sahib-gadzhiev		Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
 
  **/

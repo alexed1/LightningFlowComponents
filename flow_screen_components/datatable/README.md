@@ -72,6 +72,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## xx/xx/21 -  Eric Smith -    Version 3.3.1 
+**Updates:** 
+-   
+ 
+**Bug Fixes:** 
+-   Added missing variable in the CPE for automaticOutputVariables
+
 ## 07/18/21 -  Eric Smith -    Version 3.3.0 
 **Updates:** 
 -   Added a custom object (ers_datatableConfig) to provide the ability to Save and Retrieve column configuration attributes

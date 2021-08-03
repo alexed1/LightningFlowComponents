@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2021-07-11
+ * @Last Modified On	: 2021-08-03
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -25,6 +25,8 @@
  * 2.00.05  02-15-2021  Jack Pond               ReplyEmail with SendBetterEmail #595
  * 2.01.02  2021-06-11  Jack Pond               Modified so that all checks for null also check for .length() > 0 #702
  * 2.01.05  2021-06-29  Jack Pond               Pasted Typo fix #797 for null pointer exception
+ * 2.01.06	2021-07-30	Jack D. Pond		    Fix remainder of checkboxes default/save Fix: #702,#831,#785,#829
+						sahib-gadzhiev		    Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
  *
  **/
 
@@ -168,10 +170,13 @@ public without sharing class SendBetterEmail {
 				and through association:
 	
 				SaveAsTask 
-	        */
+	*/
             //			Mass Email Segment
             if (emailMessageType == SendBetterEmailConstant.MASSEMAIL) {
-// if saveAsTask is null, it will default to whatever saveAsActivity is, but if recordId is null, will set it to false
+                curRequest.setSaveAsActivity = curRequest.setSaveAsActivity ==
+                    null
+                    ? false
+                    : curRequest.setSaveAsActivity;
                 curRequest.setSaveAsTask = curRequest.setSaveAsTask != null
                     ? curRequest.setSaveAsTask
                     : (curRequest.whatIds == null
@@ -179,12 +184,8 @@ public without sharing class SendBetterEmail {
                           : (curRequest.setSaveAsActivity == null
                                 ? false
                                 : curRequest.setSaveAsActivity));
-                curRequest.setSaveAsTask = curRequest.setSaveAsTask == null ? false : curRequest.setSaveAsTask;
-                curRequest.setSaveAsActivity = curRequest.setSaveAsActivity ==
-                    null
-                    ? false
-                    : curRequest.setSaveAsActivity;
 
+                // if saveAsTask is null, it will default to whatever saveAsActivity is, but if recordId is null, will set it to false
                 //	setBccSender(bcc)
                 //	setDescription(description)
                 //	setReplyTo(replyAddress)
@@ -211,9 +212,7 @@ public without sharing class SendBetterEmail {
                     mmail.setReplyTo(replyEmailAddress);
                 }
                 //	setSaveAsActivity(saveAsActivity)
-                if (curRequest.setSaveAsActivity != null) {
-                    mmail.setSaveAsActivity(curRequest.setSaveAsActivity);
-                }
+                mmail.setSaveAsActivity(curRequest.setSaveAsActivity);
                 //	setSenderDisplayName(displayName)
                 if (thisResponse.errors == null) {
                     mmail.setSenderDisplayName(senderDisplayName);
@@ -297,8 +296,6 @@ public without sharing class SendBetterEmail {
                 // Processes and actions involved in the SingleEmailMessage transaction occur next,
                 // which conclude with sending a single email.
 
-// if saveAsTask is null, it will default to whatever saveAsActivity is, but if whatId is null, will set it to false
-
                 curRequest.setSaveAsTask = curRequest.setSaveAsTask != null
                     ? curRequest.setSaveAsTask
                     : (curRequest.recordId == null
@@ -306,7 +303,6 @@ public without sharing class SendBetterEmail {
                           : (curRequest.setSaveAsActivity == null
                                 ? false
                                 : curRequest.setSaveAsActivity));
-                curRequest.setSaveAsTask = curRequest.setSaveAsTask == null ? false : curRequest.setSaveAsTask;
                 curRequest.setSaveAsActivity = curRequest.setSaveAsActivity ==
                     null
                     ? false
@@ -442,10 +438,8 @@ public without sharing class SendBetterEmail {
                 if (HTMLbody != null) {
                     mail.setHtmlBody(HTMLbody);
                 }
-
-                if (curRequest.setSaveAsActivity != null) {
-                    mail.setSaveAsActivity(curRequest.setSaveAsActivity);
-                }
+                system.debug('curRequest.setSaveAsActivity: '+ curRequest.setSaveAsActivity);
+                mail.setSaveAsActivity(curRequest.setSaveAsActivity);
 
                 if (templateID != null && templateID.length()>0) {
                     try {
@@ -558,7 +552,7 @@ public without sharing class SendBetterEmail {
                 if (
                     emailResult.isSuccess() != true &&
                     !(test.isRunningTest() &&
-                    request.setSaveAsTask == true &&
+                    request.setSaveAsTask &&
                     ((Id) request.recordId).getSObjectType() ==
                     Schema.User.sObjectType)
                 ) {

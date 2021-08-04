@@ -203,8 +203,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 				if (curInputParam.name && this.inputValues[curInputParam.name]) {
 					if (this.inputValues[curInputParam.name].valueDataType == cbConstants.flowDataTypeBoolean && 
 						( curInputParam.value == cbConstants.GlobalConstantTrue || curInputParam.value == cbConstants.GlobalConstantFalse)){
-//						alert('initializeValues: ' + curInputParam.name);
-						this.updateCheckboxValue(curInputParam.name,(curInputParam.value == cbConstants.GlobalConstantTrue));
+						this.updateCheckboxValue(curInputParam.name,(curInputParam.value == cbConstants.GlobalConstantTrue || curInputParam.value === true));
 					} else {
 						this.inputValues[curInputParam.name].value = curInputParam.value;
 						this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
@@ -262,8 +261,12 @@ export default class SendBetterEmailCPE extends LightningElement {
 		this.isMassEmail = this.inputValues.emailMessageType.value === constVal.massEmailOption;
 	}
 	initializeSaveAsTask(){
-		if (this.inputValues.cb_saveAsTask.value == null && this.inputValues.saveAsTask.value == null){
-			this.updateCheckboxValue('saveAsTask',this.inputValues.saveAsActivity.value);
+		if (this.inputValues.cb_saveAsTask.value == null){
+			if (this.inputValues.saveAsTask.value == null){
+				this.updateCheckboxValue('saveAsTask',this.inputValues.saveAsActivity.value);
+			} else {
+				this.updateCheckboxValue('saveAsTask',this.inputValues.cb_saveAsTask.value);
+			}
 		}
 	}
 
@@ -390,10 +393,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 		if ( typeof this.inputValues[cbConstants.cbNotPrefix+name] !== 'undefined'){
 			this.inputValues[cbConstants.cbNotPrefix+name].value = (value) ? cbConstants.cbTrue : cbConstants.cbFalse;
 			this.dispatchFlowValueChangeEvent(cbConstants.cbNotPrefix+name, this.inputValues[cbConstants.cbNotPrefix+name].value, constVal.flowDataTypeString);
-//			alert('updateCheckboxValue ' + name + ': ' + value +
-//				'\nDataType: ' + constVal.flowDataTypeBoolean +
-//				'\n' + cbConstants.cbNotPrefix+name + ': ' + this.inputValues[cbConstants.cbNotPrefix+name].value +
-//				'\nnewValueDataType: ' + constVal.flowDataTypeString);
 		}
 	}
 // This code is for setting up checkbox with defaults - should be forward compatible
@@ -402,11 +401,6 @@ export default class SendBetterEmailCPE extends LightningElement {
 			let changedAttribute = event.target.name.replace(cbConstants.checkbox_prefix, '');
 			this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
 			this.dispatchFlowValueChangeEvent(cbConstants.cbNotPrefix+changedAttribute, event.detail.newStringValue, 'String');
-//			alert('handleCheckboxChange for: ' + event.target.name + 
-//				'\n'+ changedAttribute +': ' + event.detail.newValue +
-//				'\nnewValueDataType: ' + event.detail.newValueDataType +
-//				'\n'+ cbConstants.cbNotPrefix+changedAttribute + ': ' + event.detail.newStringValue +
-//				'\nnewDataType: ' + 'String');
 		}
 	}
 //	end of checkbox with default code

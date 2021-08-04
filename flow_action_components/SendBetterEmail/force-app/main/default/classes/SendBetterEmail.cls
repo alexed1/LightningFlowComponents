@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2021-08-03
+ * @Last Modified On	: 2021-08-04
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -438,7 +438,6 @@ public without sharing class SendBetterEmail {
                 if (HTMLbody != null) {
                     mail.setHtmlBody(HTMLbody);
                 }
-                system.debug('curRequest.setSaveAsActivity: '+ curRequest.setSaveAsActivity);
                 mail.setSaveAsActivity(curRequest.setSaveAsActivity);
 
                 if (templateID != null && templateID.length()>0) {

@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2021-07-31
+ * @Last Modified On	: 2021-08-04
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -45,7 +45,9 @@ const cbConstants = {
 	GlobalConstantTrue: '$GlobalConstant.True',
 	GlobalConstantFalse: '$GlobalConstant.False',
 	flowDataTypeBoolean: 'Boolean',
-	cbNotPrefix: 'cb_'
+	cbNotPrefix: 'cb_',
+	cbFalse: 'CB_FALSE',
+	cbTrue: 'CB_TRUE'
 }
 // end of checkbox with default code
 
@@ -62,26 +64,26 @@ export default class SendBetterEmailCPE extends LightningElement {
 		plainTextBody: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Plain Text'},
 		templateID: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Email Template Id'},
 		templateTargetObjectId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Recipient Record Id (also for template merge fields and recording related Email as an activity)'},
-		bodyOption: {value: constVal.specifyBodyOption, dataType: constVal.flowDataTypeString, isCollection: false, default: null, label: 'Body'},
-		emailMessageType: {value: null, dataType: null, isCollection: false, default: null, label: 'Email Type'},
-		description: {value: null, dataType: null, isCollection: false, default: null, label: 'Description (sent in internal email with status after action completes)'},
-		bcc: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
-		cb_bcc: {value: null, dataType: null, isCollection: false, default: null, label: '!Sender receives BCC of first email sent?'},
-		senderDisplayName: {value: null, dataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
-		replyEmailAddress: {value: null, dataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
-		UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
-		cb_UseSalesforceSignature: {value: null, dataType: null, isCollection: false, default: null, label: '!Use Salesforce Signature if executing user has one?'},
-		InReplyTo: {value: null, dataType: null, isCollection: true, default: null, label: 'MessageId List of existing email if this is InReplyTo'},
-		templateName: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Name'},
-		templateLanguage: {value: null, dataType: null, isCollection: false, default: null, label: 'Template Language'},
-		targetObjectIds: {value: null, dataType: null, isCollection: true, default: null, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
-		whatIds: {value: null, dataType: null, isCollection: true, default: null, default: null, label: 'Related Record Id Collection(for template merge fields and recording Email as a task)'},
-		saveAsActivity: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Activity on Recipient Record(s)?'},
-		cb_saveAsActivity: {value: null, dataType: null, isCollection: false, default: null, label: '!Save Email as Activity on Recipient Record(s)?'},
-		saveAsTask: {value: null, dataType: null, isCollection: false, default: null, label: 'Save Email as Task on recipient related record(s)?'},
-		cb_saveAsTask: {value: null, dataType: null, isCollection: false, default: null, label: '!Save Email as Task on recipient related record(s)?'},
-		setTreatTargetObjectAsRecipient: {value: null, dataType: null, isCollection: false, default: true, label: 'Treat the target as a recipient. Defaults to True'},
-		cb_setTreatTargetObjectAsRecipient: {value: 'CB_TRUE', dataType: null, isCollection: false, default: false, label: '!Treat the target as a recipient.'},
+		bodyOption: {value: constVal.specifyBodyOption, valueDataType: constVal.flowDataTypeString, isCollection: false, default: null, label: 'Body'},
+		emailMessageType: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Email Type'},
+		description: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Description (sent in internal email with status after action completes)'},
+		bcc: {value: null, valueDataType: cbConstants.flowDataTypeBoolean, isCollection: false, default: null, label: 'Sender receives BCC of first email sent?'},
+		cb_bcc: {value: null, valueDataType: null, isCollection: false, default: null, label: '!Sender receives BCC of first email sent?'},
+		senderDisplayName: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Sender Display Name'},
+		replyEmailAddress: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Reply Email Address'},
+		UseSalesforceSignature: {value: null, valueDataType: cbConstants.flowDataTypeBoolean, isCollection: false, default: null, label: 'Use Salesforce Signature if executing user has one?'},
+		cb_UseSalesforceSignature: {value: null, valueDataType: null, isCollection: false, default: null, label: '!Use Salesforce Signature if executing user has one?'},
+		InReplyTo: {value: null, valueDataType: null, isCollection: true, default: null, label: 'MessageId List of existing email if this is InReplyTo'},
+		templateName: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Template Name'},
+		templateLanguage: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Template Language'},
+		targetObjectIds: {value: null, valueDataType: null, isCollection: true, default: null, label: 'Recipient Record Id Collection (also for template merge fields and recording Email as an activity)'},
+		whatIds: {value: null, valueDataType: null, isCollection: true, default: null, default: null, label: 'Related Record Id Collection(for template merge fields and recording Email as a task)'},
+		saveAsActivity: {value: null, valueDataType: cbConstants.flowDataTypeBoolean, isCollection: false, default: null, label: 'Save Email as Activity on Recipient Record(s)?'},
+		cb_saveAsActivity: {value: null, valueDataType: null, isCollection: false, default: null, label: '!Save Email as Activity on Recipient Record(s)?'},
+		saveAsTask: {value: null, valueDataType: cbConstants.flowDataTypeBoolean, isCollection: false, default: null, label: 'Save Email as Task on recipient related record(s)?'},
+		cb_saveAsTask: {value: null, valueDataType: null, isCollection: false, default: null, label: '!Save Email as Task on recipient related record(s)?'},
+		setTreatTargetObjectAsRecipient: {value: null, valueDataType: cbConstants.flowDataTypeBoolean, isCollection: false, default: true, label: 'Treat the target as a recipient. Defaults to True'},
+		cb_setTreatTargetObjectAsRecipient: {value: 'CB_TRUE', valueDataType: null, isCollection: false, default: false, label: '!Treat the target as a recipient.'},
 		recordId: {value: null, valueDataType: null, isCollection: false, default: null, label: 'Related Record Id (for template merge fields and/or recording Email as a task)'},
 		SendTOthisOneEmailAddress: {value: null, valueDataType: 'String', isCollection: false, default: null, label: 'SendTOthisOneEmailAddress'},
 		SendTOthisStringCollectionOfEmailAddresses: {value: null, valueDataType: null, isCollection: true, default: null, label: 'SendTOthisStringCollectionOfEmailAddresses'},
@@ -199,8 +201,14 @@ export default class SendBetterEmailCPE extends LightningElement {
 		if (this._values && this._values.length) {
 			this._values.forEach(curInputParam => {
 				if (curInputParam.name && this.inputValues[curInputParam.name]) {
-					this.inputValues[curInputParam.name].value = curInputParam.value;
-					this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+					if (this.inputValues[curInputParam.name].valueDataType == cbConstants.flowDataTypeBoolean && 
+						( curInputParam.value == cbConstants.GlobalConstantTrue || curInputParam.value == cbConstants.GlobalConstantFalse)){
+//						alert('initializeValues: ' + curInputParam.name);
+						this.updateCheckboxValue(curInputParam.name,(curInputParam.value == cbConstants.GlobalConstantTrue));
+					} else {
+						this.inputValues[curInputParam.name].value = curInputParam.value;
+						this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
+					}
 				}
 				this.initializeAvailableRecipientsValues(curInputParam, roleManagerValues);
 			});
@@ -218,6 +226,7 @@ export default class SendBetterEmailCPE extends LightningElement {
 		});
 		this.initializeEmailOptions();
 		this.initializeBodyOptions();
+		this.initializeSaveAsTask();
 		this.isInitialized = true;
 	}
 
@@ -248,9 +257,14 @@ export default class SendBetterEmailCPE extends LightningElement {
 		});
 	}
 
-initializeEmailOptions() {
+	initializeEmailOptions() {
 		this.inputValues.emailMessageType.value = this.inputValues.emailMessageType.value ? this.inputValues.emailMessageType.value : constVal.singleEmailOption;
 		this.isMassEmail = this.inputValues.emailMessageType.value === constVal.massEmailOption;
+	}
+	initializeSaveAsTask(){
+		if (this.inputValues.cb_saveAsTask.value == null && this.inputValues.saveAsTask.value == null){
+			this.updateCheckboxValue('saveAsTask',this.inputValues.saveAsActivity.value);
+		}
 	}
 
 	convertContextIntoRoleManagerParams(flowContext) {
@@ -369,13 +383,30 @@ initializeEmailOptions() {
 		this.selectedBodyOption = event.detail.value;
 		this.doClearBodyOptions();
 	}
-
+// 
+	updateCheckboxValue(name, value) {
+		this.inputValues[name].value = value;
+		this.dispatchFlowValueChangeEvent(name, value, constVal.flowDataTypeBoolean);
+		if ( typeof this.inputValues[cbConstants.cbNotPrefix+name] !== 'undefined'){
+			this.inputValues[cbConstants.cbNotPrefix+name].value = (value) ? cbConstants.cbTrue : cbConstants.cbFalse;
+			this.dispatchFlowValueChangeEvent(cbConstants.cbNotPrefix+name, this.inputValues[cbConstants.cbNotPrefix+name].value, constVal.flowDataTypeString);
+//			alert('updateCheckboxValue ' + name + ': ' + value +
+//				'\nDataType: ' + constVal.flowDataTypeBoolean +
+//				'\n' + cbConstants.cbNotPrefix+name + ': ' + this.inputValues[cbConstants.cbNotPrefix+name].value +
+//				'\nnewValueDataType: ' + constVal.flowDataTypeString);
+		}
+	}
 // This code is for setting up checkbox with defaults - should be forward compatible
 	handleCheckboxChange(event) {   // Handle a change of event for a Checkbox to store as boolean value
 		if (event.target && event.detail) {
 			let changedAttribute = event.target.name.replace(cbConstants.checkbox_prefix, '');
 			this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
 			this.dispatchFlowValueChangeEvent(cbConstants.cbNotPrefix+changedAttribute, event.detail.newStringValue, 'String');
+//			alert('handleCheckboxChange for: ' + event.target.name + 
+//				'\n'+ changedAttribute +': ' + event.detail.newValue +
+//				'\nnewValueDataType: ' + event.detail.newValueDataType +
+//				'\n'+ cbConstants.cbNotPrefix+changedAttribute + ': ' + event.detail.newStringValue +
+//				'\nnewDataType: ' + 'String');
 		}
 	}
 //	end of checkbox with default code

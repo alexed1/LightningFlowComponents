@@ -5,7 +5,7 @@
   @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
   @Group				: 
   @Last Modified By		: Jack D. Pond
-  @Last Modified On		: 2021-07-31
+  @Last Modified On		: 2021-08-03
   @Modification Log		: 
   @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
   Ver       Date            Author      		    Modification
@@ -38,7 +38,7 @@
 				<c-fsc_flow-combobox name="description"
 					label={inputValues.description.label}
 					value={inputValues.description.value}
-					value-type={inputValues.description.dataType}
+					value-type={inputValues.description.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.description.isCollection}
 					builder-context={_builderContext}
@@ -49,7 +49,7 @@
 			<c-fsc_flow-combobox name="senderDisplayName"
 				label={inputValues.senderDisplayName.label}
 				value={inputValues.senderDisplayName.value}
-				value-type={inputValues.senderDisplayName.dataType}
+				value-type={inputValues.senderDisplayName.valueDataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
 				automatic-output-variables={automaticOutputVariables}
@@ -72,7 +72,7 @@
 			<c-fsc_flow-combobox name="replyEmailAddress"
 				label={inputValues.replyEmailAddress.label}
 				value={inputValues.replyEmailAddress.value}
-				value-type={inputValues.replyEmailAddress.dataType}
+				value-type={inputValues.replyEmailAddress.valueDataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.replyEmailAddress.isCollection}
 				automatic-output-variables={automaticOutputVariables}
@@ -99,7 +99,7 @@
 			<c-fsc_flow-combobox name="templateID"
 				label={inputValues.templateID.label}
 				value={inputValues.templateID.value}
-				value-type={inputValues.templateID.dataType}
+				value-type={inputValues.templateID.valueDataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
 				automatic-output-variables={automaticOutputVariables}
@@ -110,7 +110,7 @@
 				<c-fsc_flow-combobox name="templateName"
 					label={inputValues.templateName.label}
 					value={inputValues.templateName.value}
-					value-type={inputValues.templateName.dataType}
+					value-type={inputValues.templateName.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateName.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -122,7 +122,7 @@
 				<c-fsc_flow-combobox name="templateLanguage"
 					label={inputValues.templateLanguage.label}
 					value={inputValues.templateLanguage.value}
-					value-type={inputValues.templateLanguage.dataType}
+					value-type={inputValues.templateLanguage.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -137,7 +137,7 @@
 			<c-fsc_flow-combobox name="targetObjectIds"
 				label={inputValues.targetObjectIds.label}
 				value={inputValues.targetObjectIds.value}
-				value-type={inputValues.targetObjectIds.dataType}
+				value-type={inputValues.targetObjectIds.valueDataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.targetObjectIds.isCollection}
 				automatic-output-variables={automaticOutputVariables}
@@ -148,7 +148,7 @@
 				<c-fsc_flow-combobox name="whatIds"
 					label={inputValues.whatIds.label}
 					value={inputValues.whatIds.value}
-					value-type={inputValues.whatIds.dataType}
+					value-type={inputValues.whatIds.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.whatIds.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -198,7 +198,7 @@
 				<c-fsc_flow-combobox name="senderDisplayName"
 					label={inputValues.senderDisplayName.label}
 					value={inputValues.senderDisplayName.value}
-					value-type={inputValues.senderDisplayName.dataType}
+					value-type={inputValues.senderDisplayName.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -209,7 +209,7 @@
 					<c-fsc_flow-combobox name="orgWideEmailAddressId"
 						label={inputValues.orgWideEmailAddressId.label}
 						value={inputValues.orgWideEmailAddressId.value}
-						value-type={inputValues.orgWideEmailAddressId.dataType}
+						value-type={inputValues.orgWideEmailAddressId.valueDataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.orgWideEmailAddressId.isCollection}
 						automatic-output-variables={automaticOutputVariables}
@@ -235,7 +235,7 @@
 					name="replyEmailAddress"
 					label={inputValues.replyEmailAddress.label}
 					value={inputValues.replyEmailAddress.value}
-					value-type={inputValues.replyEmailAddress.dataType}
+					value-type={inputValues.replyEmailAddress.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.replyEmailAddress.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -259,7 +259,7 @@
 					<c-fsc_flow-combobox name="InReplyTo"
 						label={inputValues.InReplyTo.label}
 						value={inputValues.InReplyTo.value}
-						value-type={inputValues.InReplyTo.dataType}
+						value-type={inputValues.InReplyTo.valueDataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.InReplyTo.isCollection}
 						automatic-output-variables={automaticOutputVariables}
@@ -297,7 +297,7 @@
 				<c-fsc_flow-combobox name="subject"
 					label={inputValues.subject.label}
 					value={inputValues.subject.value}
-					value-type={inputValues.subject.dataType}
+					value-type={inputValues.subject.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.subject.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -315,7 +315,7 @@
 					<c-fsc_flow-combobox name="HTMLbody"
 						label={inputValues.HTMLbody.label}
 						value={inputValues.HTMLbody.value}
-						value-type={inputValues.HTMLbody.dataType}
+						value-type={inputValues.HTMLbody.valueDataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.HTMLbody.isCollection}
 						automatic-output-variables={automaticOutputVariables}
@@ -326,7 +326,7 @@
 						<c-fsc_flow-combobox name="plainTextBody"
 							label={inputValues.plainTextBody.label}
 							value={inputValues.plainTextBody.value}
-							value-type={inputValues.plainTextBody.dataType}
+							value-type={inputValues.plainTextBody.valueDataType}
 							builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.plainTextBody.isCollection}
 							automatic-output-variables={automaticOutputVariables}
@@ -343,7 +343,7 @@
 					<c-fsc_flow-combobox name="templateID"
 						label={inputValues.templateID.label}
 						value={inputValues.templateID.value}
-						value-type={inputValues.templateID.dataType}
+						value-type={inputValues.templateID.valueDataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
 						automatic-output-variables={automaticOutputVariables}
@@ -354,7 +354,7 @@
 						<c-fsc_flow-combobox name="templateName"
 							label={inputValues.templateName.label}
 							value={inputValues.templateName.value}
-							value-type={inputValues.templateName.dataType}
+							value-type={inputValues.templateName.valueDataType}
 							builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.templateName.isCollection}
 							automatic-output-variables={automaticOutputVariables}
@@ -382,7 +382,7 @@
 						<c-fsc_flow-combobox name="templateLanguage"
 							label={inputValues.templateLanguage.label}
 							value={inputValues.templateLanguage.value}
-							value-type={inputValues.templateLanguage.dataType}
+							value-type={inputValues.templateLanguage.valueDataType}
 							builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
 							automatic-output-variables={automaticOutputVariables}
@@ -398,7 +398,7 @@
 				<c-fsc_flow-combobox name="templateTargetObjectId"
 					label={inputValues.templateTargetObjectId.label}
 					value={inputValues.templateTargetObjectId.value}
-					value-type={inputValues.templateTargetObjectId.dataType}
+					value-type={inputValues.templateTargetObjectId.valueDataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateTargetObjectId.isCollection}
 					automatic-output-variables={automaticOutputVariables}
@@ -409,7 +409,7 @@
 					<c-fsc_flow-combobox name="recordId"
 						label={inputValues.recordId.label}
 						value={inputValues.recordId.value}
-						value-type={inputValues.recordId.dataType}
+						value-type={inputValues.recordId.valueDataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.recordId.isCollection}
 						automatic-output-variables={automaticOutputVariables}
@@ -424,7 +424,7 @@
 					<c-fsc_flow-combobox name="contentDocumentAttachments"
 						label={inputValues.contentDocumentAttachments.label}
 						value={inputValues.contentDocumentAttachments.value}
-						value-type={inputValues.contentDocumentAttachments.dataType}
+						value-type={inputValues.contentDocumentAttachments.valueDataType}
 						builder-context-filter-type="ContentDocumentLink"
 						builder-context-filter-collection-boolean={inputValues.contentDocumentAttachments.isCollection}
 						automatic-output-variables={automaticOutputVariables}

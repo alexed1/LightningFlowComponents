@@ -238,7 +238,7 @@ export default class DatatableLwcFsc extends LightningElement {
         if (this.tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.maxRowSelection = (this.singleRowSelection) ? 1 : Number.MAX_SAFE_INTEGER;;
 
             console.log('Processing Datatable');
             this.processDatatable();

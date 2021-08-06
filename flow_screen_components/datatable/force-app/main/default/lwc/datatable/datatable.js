@@ -597,7 +597,7 @@ export default class Datatable extends LightningElement {
         if (this.tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.maxRowSelection = (this.singleRowSelection) ? 1 : Number.MAX_SAFE_INTEGER;;
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');

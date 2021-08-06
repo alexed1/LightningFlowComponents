@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
-        <target>lightning__Tab</target>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="scannedBarcode" type="String" role="outputOnly"/>
+            <property name="label" label="Label" type="String" role="inputOnly"/>
+            <property name="autoNavigate" label="Auto Navigate" type="Boolean" role="inputOnly" description="When marked as true flow will automatically navigate to next screen/element after successful scan"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

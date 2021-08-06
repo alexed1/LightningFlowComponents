@@ -282,6 +282,8 @@ export default class QuickChoiceFSC extends LightningElement {
             }
             this.options = options;
             this.items = items;
+            this.setSelectedLabel();  
+                      
         } else {
             console.log("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
             throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");

@@ -100,6 +100,10 @@ export default class QuickChoiceFSC extends LightningElement {
         this.radioGroup = value;
     }
     
+    get requiredSymbol() {
+        return this.required ? '*' : '';
+    }
+
     //possibility master record type only works if there aren't other record types?
     @wire(getPicklistValues, {
         recordTypeId: "$recordTypeId",

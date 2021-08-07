@@ -79,7 +79,7 @@ global with sharing class DeployMetadata {
         curDeployOption.rollbackOnError = true;
         curDeployOption.runTests = new String[]{};
         curDeployOption.singlePackage = true;
-        curDeployOption.testLevel = 'NoTestRun';
+        curDeployOption.testLevel = 'RunLocalTests'; //setting this to NoTestRun causes install to fail in production orgs. must be a valid value though!
            
         return curDeployOption;
         }

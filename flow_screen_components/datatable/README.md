@@ -10,12 +10,20 @@ Additional components packaged with this LWC:
                                     ers_QueryNRecordsTest
                                     ers_DatatableController 
                                     ers_DatatableControllerTest
+                                    ers_EncodeDecodeURL
+                                    ers_EncodeDecodeURLTest
 
                 LWCs:               ers_comboboxColumnType
                                     ers_customLightningDatatable
                                     ers_datatableUtils
                                     ers_datatableCPE
                                     ers_richTextColumnType
+
+                Custom Objects:     ers_datatableConfig
+
+                Page Layouts:       ers_datatableConfig Layout
+
+                Tabs:               ers_datatableConfig
 
                 StaticResources:    ers_customLightningDatatableStyles
 
@@ -35,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.20 or later  
-FlowScreenComponentsBasePack Version 2.3.5 or later  
+FlowActionsBasePack Version 2.26 or later  
+FlowScreenComponentsBasePack Version 2.5.0 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.2.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)   
-[Version 3.2.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xJnQAI)
+[Version 3.3.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)   
+[Version 3.3.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -56,12 +64,34 @@ This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex
 In order to use **datatable**, permission must be given to access the following Apex Classes:  
 
     ers_QueryNRecords   
-    ers_DatatableController  
+    ers_DatatableController
+    ers_EncodeDecodeURL  
 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
 # Release Notes
+ 
+## 07/18/21 -  Eric Smith -    Version 3.3.0 
+**Updates:** 
+-   Added a custom object (ers_datatableConfig) to provide the ability to Save and Retrieve column configuration attributes
+-   Added an attribute to allow the datatable to overflow its container (helpful when editing picklists on a table with only a few records)
+-   Changed the number of rows in the Configuration Wizard datatable from 10 to 6
+ 
+**Bug Fixes:** 
+-   Fixed an error that ocurred when trying to save an edited row from a datatable that contained a time field 
+-   Fixed a bug that kept Date and Time fields from displaying in datatables when the User's locale displays numbers with a . separator
+-   Rows with editable picklist fields will not default to a taller height (Even without picklist fields, all rows will still be slightly taller if any fields are editable)
+
+## 06/26/21 -  Eric Smith -    Version 3.2.4 
+**Updates:** 
+-   New Output Attribute for the Number of Rows Edited (Because even when no rows are edited, the OutputEditedRows attribute is not null)
+-   The Datatable CPE now supports Automatic Output Variables in the Flow Builder
+ 
+**Bug Fixes:** 
+-   Orgs with multi-currency enabled can now add currency rollup and currency formula fields to the datatable 
+-   The edit picklist dropdown will overflow the displayed table if necessary (Only if the Table Height attribute is not set)
+-   The dropdown picklist values when editing will show the picklist labels instead of the picklist API names (The selected edit prior to selecting Save will show as the API name)
  
 ## 06/13/21 -  Eric Smith -    Version 3.2.3 
 **Updates:** 

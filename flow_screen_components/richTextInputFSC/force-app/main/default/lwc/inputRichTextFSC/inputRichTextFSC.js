@@ -1,4 +1,5 @@
 // 06/25/21    Eric Smith       Added a Required attribute and increased the bottom margin to better match standard components
+// 07/02/21    Eric Smith       Added a Required * to the Input Label if Required is True
 
 import { LightningElement, api, track } from 'lwc';
 

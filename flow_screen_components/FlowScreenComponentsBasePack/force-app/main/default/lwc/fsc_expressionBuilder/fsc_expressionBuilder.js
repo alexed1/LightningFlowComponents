@@ -51,6 +51,11 @@ export default class fsc_ExpressionBuilder extends LightningElement {
         this.contextTypes = [...[this._objectName], ...this.splitValues(value)];
     }
 
+    connectedCallback() {
+        if(this.expressionLines.length < 1) {
+            this.expressionLines.push(this.generateNewExpression());
+        }
+    }
     settings = {
         valueTypeString: 'string',
         invalidCharactersRegex: /['"\\\/|&^]/g
@@ -129,6 +134,8 @@ export default class fsc_ExpressionBuilder extends LightningElement {
                 this.expressionLines = expressionLines;
             }
 
+        }).catch( error => {
+            console.error(error);
         }).finally(() => {
             this.isLoading = false;
         });
@@ -226,6 +233,10 @@ export default class fsc_ExpressionBuilder extends LightningElement {
         return this.expressionLines.length > 9;
     }
 
+    get disabledRemoveExpression() {
+        return this.expressionLines.length < 2;
+    }
+
     splitValues(originalString) {
         return originalString ? originalString.replace(/ /g, '').split(',') : [];
     }
@@ -252,4 +263,6 @@ export default class fsc_ExpressionBuilder extends LightningElement {
         }
         return validity;
     }
+
+    
 }

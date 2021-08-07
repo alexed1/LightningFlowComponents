@@ -47,7 +47,7 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
-        <objectType>Personal_Flow__c</objectType>
+        <objectType>PersonalWorkflow__c</objectType>
     </variables>
     <variables>
         <name>recordId</name>

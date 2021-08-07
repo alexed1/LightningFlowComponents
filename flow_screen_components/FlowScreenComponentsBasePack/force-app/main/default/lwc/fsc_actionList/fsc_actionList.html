@@ -1,0 +1,33 @@
+<template>
+    <template if:true={openModal}>
+            <div class="slds-modal slds-modal_large slds-fade-in-open slds-backdrop">
+                <div class="slds-modal__container">
+
+                    <div class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close"
+                            alternative-text="Close this window" size="large" variant="bare-inverse"
+                            onclick={closeModal} class="slds-modal__close">
+                        </lightning-button-icon>
+                    </div>
+
+
+                    <!-- Body Section -->
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <c-fsc_screen-flow width="100%" height="560"
+                            flow-name={flowNameToInvoke} name="uniqueName"
+                            flow-params={flowParams}
+                            onflowstatuschange={handleFlowStatusChange}>
+                        </c-fsc_screen-flow>
+                    </div>
+
+                </div>
+            </div>
+        </template>
+        <template for:each={flowData} for:item="flow">
+            <div key={flow.apiName} class="slds-m-top_medium slds-card__body slds-card__body_inner">
+                <div class="slds-m-top_xx-small">
+                        <a data-value={flow.apiName} onclick={launchFlow}>{flow.label}</a>
+                </div>
+            </div>
+        </template>
+</template>

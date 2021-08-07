@@ -38,14 +38,16 @@
 					value={inputValues.description.value} value-type={inputValues.description.dataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.description.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 			</div>
 			<c-fsc_flow-combobox name="senderDisplayName" label={inputValues.senderDisplayName.label}
 				value={inputValues.senderDisplayName.value} value-type={inputValues.senderDisplayName.dataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
-				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+				automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 			<div style="padding:5px 0 5px;">
 				<lightning-input name="bcc" label={inputValues.bcc.label} type="checkbox"
 					checked={inputValues.bcc.value} onchange={handleValueChange}></lightning-input>
@@ -54,7 +56,8 @@
 				value={inputValues.replyEmailAddress.value} value-type={inputValues.replyEmailAddress.dataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.replyEmailAddress.isCollection}
-				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+				automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 			<div style="padding:5px 0 5px;">
 				<lightning-input name="UseSalesforceSignature" label={inputValues.UseSalesforceSignature.label}
 					type="checkbox" checked={inputValues.UseSalesforceSignature.value} onchange={handleValueChange}>
@@ -68,13 +71,15 @@
 				value={inputValues.templateID.value} value-type={inputValues.templateID.dataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
-				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+				automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 			<div style="padding:5px 0 0;">
 				<c-fsc_flow-combobox name="templateName" label={inputValues.templateName.label}
 					value={inputValues.templateName.value} value-type={inputValues.templateName.dataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateName.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 			</div>
 			<div style="padding:5px 0 5px 0;margin-left:12px;">
@@ -82,7 +87,8 @@
 					value={inputValues.templateLanguage.value} value-type={inputValues.templateLanguage.dataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 			</div>
 			<div style="padding:0.5rem;background:#16325c;">
@@ -93,12 +99,14 @@
 				value={inputValues.targetObjectIds.value} value-type={inputValues.targetObjectIds.dataType}
 				builder-context-filter-type="String"
 				builder-context-filter-collection-boolean={inputValues.targetObjectIds.isCollection}
-				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+				builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+				automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 			<div style="padding:5px 0 5px;">
 				<c-fsc_flow-combobox name="whatIds" label={inputValues.whatIds.label} value={inputValues.whatIds.value}
 					value-type={inputValues.whatIds.dataType} builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.whatIds.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 			</div>
 			<div style="padding:0.5rem;background:#16325c;">
@@ -126,14 +134,16 @@
 					value={inputValues.senderDisplayName.value} value-type={inputValues.senderDisplayName.dataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.senderDisplayName.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 				<div style="padding:5px 0;">
 					<c-fsc_flow-combobox name="orgWideEmailAddressId" label={inputValues.orgWideEmailAddressId.label}
 						value={inputValues.orgWideEmailAddressId.value}
 						value-type={inputValues.orgWideEmailAddressId.dataType} builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.orgWideEmailAddressId.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 				</div>
 				<div style="padding:5px 0 5px;">
@@ -144,7 +154,8 @@
 					value={inputValues.replyEmailAddress.value} value-type={inputValues.replyEmailAddress.dataType}
 					builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.replyEmailAddress.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 				<div style="padding:5px 0 5px;">
 					<lightning-input name="UseSalesforceSignature" label={inputValues.UseSalesforceSignature.label}
@@ -156,7 +167,8 @@
 						value={inputValues.InReplyTo.value} value-type={inputValues.InReplyTo.dataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.InReplyTo.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 				</div>
 			</div>
@@ -189,7 +201,8 @@
 				<c-fsc_flow-combobox name="subject" label={inputValues.subject.label} value={inputValues.subject.value}
 					value-type={inputValues.subject.dataType} builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.subject.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 				<lightning-radio-group name="bodyOption" label="Body" options={bodyOptions} value={selectedBodyOption}
 					onchange={handleBodyOptionChange} type="radio">
@@ -199,14 +212,16 @@
 						value={inputValues.HTMLbody.value} value-type={inputValues.HTMLbody.dataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.HTMLbody.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 					<div style="padding:5px 0 5px;">
 						<c-fsc_flow-combobox name="plainTextBody" label={inputValues.plainTextBody.label}
 							value={inputValues.plainTextBody.value} value-type={inputValues.plainTextBody.dataType}
 							builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.plainTextBody.isCollection}
-							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+							automatic-output-variables={automaticOutputVariables}>
 						</c-fsc_flow-combobox>
 					</div>
 				</template>
@@ -219,14 +234,16 @@
 						value={inputValues.templateID.value} value-type={inputValues.templateID.dataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.templateID.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 					<div style="padding:5px 12px 0 0;">
 						<c-fsc_flow-combobox name="templateName" label={inputValues.templateName.label}
 							value={inputValues.templateName.value} value-type={inputValues.templateName.dataType}
 							builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.templateName.isCollection}
-							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+							automatic-output-variables={automaticOutputVariables}>
 						</c-fsc_flow-combobox>
 					</div>
 					<div style="padding:5px 12px 0 0;">
@@ -250,7 +267,8 @@
 							value={inputValues.templateLanguage.value}
 							value-type={inputValues.templateLanguage.dataType} builder-context-filter-type="String"
 							builder-context-filter-collection-boolean={inputValues.templateLanguage.isCollection}
-							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+							builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+							automatic-output-variables={automaticOutputVariables}>
 						</c-fsc_flow-combobox>
 					</div>
 				</template>
@@ -262,14 +280,16 @@
 					value={inputValues.templateTargetObjectId.value}
 					value-type={inputValues.templateTargetObjectId.dataType} builder-context-filter-type="String"
 					builder-context-filter-collection-boolean={inputValues.templateTargetObjectId.isCollection}
-					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+					builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+					automatic-output-variables={automaticOutputVariables}>
 				</c-fsc_flow-combobox>
 				<div style="padding:5px 0 5px 0;">
 					<c-fsc_flow-combobox name="recordId" label={inputValues.recordId.label}
 						value={inputValues.recordId.value} value-type={inputValues.recordId.dataType}
 						builder-context-filter-type="String"
 						builder-context-filter-collection-boolean={inputValues.recordId.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 				</div>
 				<div style="padding:0.5rem;background:#16325c;">
@@ -282,7 +302,8 @@
 						value-type={inputValues.contentDocumentAttachments.dataType}
 						builder-context-filter-type="ContentDocumentLink"
 						builder-context-filter-collection-boolean={inputValues.contentDocumentAttachments.isCollection}
-						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
+						builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+						automatic-output-variables={automaticOutputVariables}>
 					</c-fsc_flow-combobox>
 				</div>
 				<div style="padding:0.5rem;background:#16325c;">

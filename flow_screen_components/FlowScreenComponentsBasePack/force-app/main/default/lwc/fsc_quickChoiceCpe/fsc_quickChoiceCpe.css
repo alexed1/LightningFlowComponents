@@ -4,15 +4,13 @@
 
 .actionColumn lightning-button-icon {
     opacity: 0.15;
-    /* visibility: hidden; */
     transition: opacity 0.5s;
 }
 
 .staticChoiceRow:hover lightning-button-icon {
     opacity: .75;
-    /* visibility: visible; */
 }
 
 .staticChoiceRow:hover lightning-button-icon:hover, .actionColumn lightning-button-icon:focus-within {
-    opacity: 1 !important;
+    opacity: 1;
 }

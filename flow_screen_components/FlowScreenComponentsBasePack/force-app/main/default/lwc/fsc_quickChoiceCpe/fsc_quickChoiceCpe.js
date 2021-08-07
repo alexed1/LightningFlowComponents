@@ -3,6 +3,9 @@ import { api, track, LightningElement } from 'lwc';
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
 
+
+    @api automaticOutputVariables;  // this seems to be required
+
     _builderContext;
     _values;
 
@@ -100,13 +103,14 @@ export default class QuickChoiceCpe extends LightningElement {
         return this._values;
     }
 
-    @track staticChoices = [this.newChoice()];
-    @track tempStaticChoices = [];
-
     set inputVariables(value) {
         this._values = value;
         this.initializeValues();
     }
+
+
+    @track staticChoices = [this.newChoice()];
+    @track tempStaticChoices = [];
 
     get isVisualCards() {
         return this.inputValues.displayMode.value === this.settings.displayModeVisualCards;
@@ -160,6 +164,7 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     setChoiceLabels() {
+        console.log('in setchoicelabels');
         if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards &&
             this.inputValues.choiceLabels.label !== this.settings.choiceLabelsCardLabelsLabel) {
             this.inputValues.choiceLabels.label = this.settings.choiceLabelsCardLabelsLabel;
@@ -173,20 +178,15 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     setInputMode() {
-        if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards && this.inputValues.inputMode.value !== this.settings.inputModeDualCollection) {
-            this.dispatchFlowValueChangeEvent(this.settings.attributeInputMode, this.settings.inputModeDualCollection, this.settings.flowDataTypeString);
-        }
+        // if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards && this.inputValues.inputMode.value !== this.settings.inputModeDualCollection) {
+        //     this.dispatchFlowValueChangeEvent(this.settings.attributeInputMode, this.settings.inputModeDualCollection, this.settings.flowDataTypeString);
+        // }
     }
 
     newChoice(label, value) {
         return {
             label: label,
             value: value,
-            // I don't know why, but I kept getting an error when I used the variable name 'value', so I'm reflecting it like Medusa's gaze
-            // get safeValue() { return this.value; },
-            // set safeValue(value) { this.value = value; },
-
-            // valuex: null
         }
     }
 
@@ -283,15 +283,17 @@ export default class QuickChoiceCpe extends LightningElement {
         let index = event.currentTarget.dataset.index;
         if (index && this.index != this.tempStaticChoices.length - 1) { // this includes the final index, which can't be moved down
             const movingChoice = this.tempStaticChoices.splice(index, 1);
-            // index++;
             this.tempStaticChoices.splice(Number(index) + 1, 0, ...movingChoice);
         }
     }
 
 
     handleStaticChoicesSave() {
+        console.log('in handleStaticChoicesSave');
         let isValid = true;
-        let inputs = this.template.querySelectorAll('c-lwc-modal lightning-input');
+        let inputs = this.template.querySelectorAll('c-lwc-modal lightning-input');        
+        console.log('inputs.length = '+ inputs.length);
+        console.log('this.tempStaticChoices.length = '+ this.tempStaticChoices.length);
         if (!inputs.length || !this.tempStaticChoices.length) {
             console.log('Error: Cannot save an empty set of choices');
             return;
@@ -310,6 +312,11 @@ export default class QuickChoiceCpe extends LightningElement {
             this.staticChoicesModal.close();
             // Stringify the new saved list of choices, and dispatch that value. This will be parsed in initializeValues() when the component is next loaded 
             this.inputValues.staticChoicesString.value = JSON.stringify(this.staticChoices);
+            let labels = this.staticChoices.map(choice => { return choice.label });
+            let values = this.staticChoices.map(choice => { return choice.value });
+            console.log('labels = '+ labels, 'values = '+ values);
+            this.dispatchFlowValueChangeEvent('choiceLabels', labels, this.settings.flowDataTypeString);
+            this.dispatchFlowValueChangeEvent('choiceValues', values, this.settings.flowDataTypeString);
             this.dispatchFlowValueChangeEvent('staticChoicesString', this.inputValues.staticChoicesString.value, this.settings.flowDataTypeString);
         }
     }
@@ -319,7 +326,6 @@ export default class QuickChoiceCpe extends LightningElement {
         this.tempStaticChoices.splice(index, 1);
         if (this.tempStaticChoices.length === 0) {
             this.tempStaticChoices.push(this.newChoice());
-            // this.setFocus(0);
         }
     }
 

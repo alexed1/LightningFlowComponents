@@ -164,7 +164,6 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     setChoiceLabels() {
-        console.log('in setchoicelabels');
         if (this.inputValues.displayMode.value === this.settings.displayModeVisualCards &&
             this.inputValues.choiceLabels.label !== this.settings.choiceLabelsCardLabelsLabel) {
             this.inputValues.choiceLabels.label = this.settings.choiceLabelsCardLabelsLabel;
@@ -273,7 +272,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
     handleStaticChoiceMoveUp(event) {
         let index = event.currentTarget.dataset.index;
-        if (index) {// this includes index of 0, which can't be moved up
+        if (index) {// this excludes index of 0, which can't be moved up
             const movingChoice = this.tempStaticChoices.splice(index, 1);
             this.tempStaticChoices.splice(index - 1, 0, ...movingChoice);
         }
@@ -290,19 +289,8 @@ export default class QuickChoiceCpe extends LightningElement {
 
     handleStaticChoicesSave() {
         console.log('in handleStaticChoicesSave');
-        let isValid = true;
-        let inputs = this.template.querySelectorAll('c-lwc-modal lightning-input');        
-        console.log('inputs.length = '+ inputs.length);
-        console.log('this.tempStaticChoices.length = '+ this.tempStaticChoices.length);
-        if (!inputs.length || !this.tempStaticChoices.length) {
-            console.log('Error: Cannot save an empty set of choices');
-            return;
-        }
-        // console.log('Checking each input field to see if it\'s valid (i.e. not blank), and communicating to the user any blank fields.');
-        for (let input of inputs) {
-            isValid = input.reportValidity() && isValid;
-        }
-        if (isValid) {
+        // We used to handle validation here, but now that's been offloaded to the modal
+        
             // Clone the updated tempStaticChoices into staticChoices, then delete the temps
             this.staticChoices = this.tempStaticChoices.map(choice => {
                 return { label: choice.label, value: choice.value }
@@ -312,13 +300,10 @@ export default class QuickChoiceCpe extends LightningElement {
             this.staticChoicesModal.close();
             // Stringify the new saved list of choices, and dispatch that value. This will be parsed in initializeValues() when the component is next loaded 
             this.inputValues.staticChoicesString.value = JSON.stringify(this.staticChoices);
-            let labels = this.staticChoices.map(choice => { return choice.label });
-            let values = this.staticChoices.map(choice => { return choice.value });
-            console.log('labels = '+ labels, 'values = '+ values);
-            this.dispatchFlowValueChangeEvent('choiceLabels', labels, this.settings.flowDataTypeString);
-            this.dispatchFlowValueChangeEvent('choiceValues', values, this.settings.flowDataTypeString);
+            // let labels = this.staticChoices.map(choice => { return choice.label });
+            // let values = this.staticChoices.map(choice => { return choice.value });
             this.dispatchFlowValueChangeEvent('staticChoicesString', this.inputValues.staticChoicesString.value, this.settings.flowDataTypeString);
-        }
+        
     }
 
     handleStaticChoiceDelete(event) {
@@ -329,11 +314,6 @@ export default class QuickChoiceCpe extends LightningElement {
         }
     }
 
-    handleDropzoneDrop(event) {
-        console.log('initial list = ' + JSON.stringify(this.tempStaticChoices))
-        this.tempStaticChoices = event.detail.reorderedList;
-        console.log('reorderedList = ' + JSON.stringify(this.tempStaticChoices));
-    }
 
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
@@ -348,4 +328,15 @@ export default class QuickChoiceCpe extends LightningElement {
         });
         this.dispatchEvent(valueChangedEvent);
     }
+
+    /* CODE NOT CURRENTLY IN USE 
+    
+    // handleDropzoneDrop(event) {
+    //     console.log('initial list = ' + JSON.stringify(this.tempStaticChoices))
+    //     this.tempStaticChoices = event.detail.reorderedList;
+    //     console.log('reorderedList = ' + JSON.stringify(this.tempStaticChoices));
+    // }
+
+
+    */
 }

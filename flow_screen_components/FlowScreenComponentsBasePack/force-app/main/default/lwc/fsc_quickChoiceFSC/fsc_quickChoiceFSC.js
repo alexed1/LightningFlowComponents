@@ -56,8 +56,8 @@ export default class QuickChoiceFSC extends LightningElement {
         this.choiceValues = [];
         this.choiceLabels = [];
          for (let choice of choices) {
-             this.choiceValues.push(choice.value);
-             this.choiceLabels.push(choice.label);
+            this.choiceValues.push(choice.value);
+            this.choiceLabels.push(choice.label);        
          }
     }
     @track _staticChoices = [];
@@ -269,8 +269,6 @@ export default class QuickChoiceFSC extends LightningElement {
 
         //console.log("initializing smartChoice. inputMode is: " + this.inputMode);
         let options = [];
-        console.log('inputMode = '+ this.inputMode);
-        console.log('legit input modes: '+ JSON.stringify(this.legitInputModes));
         if (this.legitInputModes.includes(this.inputMode)) {
             switch (this.inputMode) {
                 //User can simply pass in a collection of strings as choiceValues. The same text is used for both label and value
@@ -292,16 +290,9 @@ export default class QuickChoiceFSC extends LightningElement {
                 case "Static Choices":
                     console.log("entering input mode Dual String Collections");
                     console.log("choiceValues is: " + this.choiceValues);
-                    //console.log ('splitting choice values would be: ' + this.choiceValues.split(','));
-                    //let values = this.choiceValues.split(';');
-
-                    this.choiceLabels.forEach(label => {
-                        console.log("label is: " + label);
-                        console.log("value is: " + this.choiceValues[index]);
-                        options.push({label: label, value: this.choiceValues[index]});
-                        console.log("options is: " + options);
-                        index += 1;
-                    });
+                    for (let i=0; i<this.choiceLabels.length; i++) {
+                        options.push({label: this.choiceLabels[i], value: this.choiceValues[i]});
+                    }
                     break;
 
                 default:

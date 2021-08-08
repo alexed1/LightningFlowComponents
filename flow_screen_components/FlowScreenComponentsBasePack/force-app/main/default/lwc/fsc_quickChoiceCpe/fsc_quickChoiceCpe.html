@@ -1,3 +1,4 @@
+<!-- sldsValidatorIgnore -->
 <template>
 
         <lightning-radio-group name="select_displayMode" label={inputValues.displayMode.label}
@@ -96,7 +97,7 @@
         <lightning-input type="number" label={inputValues.style_width.label} name="select_style_width"
                 value={inputValues.style_width.value} onchange={handleValueChange}></lightning-input>
 
-        <c-lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave}>
+        <c-lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave} validate-on-confirm=true>
                 <div class="slds-grid slds-wrap">
                         <div
                                 class="columnHeaders slds-col slds-size_1-of-1 slds-p-bottom_xxx-small slds-grid slds-text-title_bold">
@@ -110,7 +111,7 @@
                                         <c-dragndrop-row index={index} key={choice}> -->
 
                                 <div class="staticChoiceRow slds-col slds-size_1-of-1 slds-grid slds-p-vertical_xx-small"
-                                        key={choice.value}>
+                                        key={choice.value.value}>
                                         <div class="slds-col">
                                                 <lightning-input variant="label-hidden" label="Label"
                                                         placeholder="Label" value={choice.value.label}

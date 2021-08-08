@@ -3,9 +3,6 @@ import { api, track, LightningElement } from 'lwc';
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
 
-
-    @api automaticOutputVariables;  // this seems to be required
-
     _builderContext;
     _values;
 
@@ -107,6 +104,16 @@ export default class QuickChoiceCpe extends LightningElement {
         this._values = value;
         this.initializeValues();
     }
+    
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
+	_automaticOutputVariables;
 
 
     @track staticChoices = [this.newChoice()];

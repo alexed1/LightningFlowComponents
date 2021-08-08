@@ -23,8 +23,8 @@
                         value={inputValues.choiceIcons.value} value-type={inputValues.choiceIcons.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceIcons.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
-                </c-fsc_flow-combobox>
+                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
                 <lightning-combobox name="select_iconSize" label={inputValues.iconSize.label}
                         value={inputValues.iconSize.value} required={isVisualCards} options={iconSizeOptions}
                         onchange={handleValueChange}></lightning-combobox>
@@ -32,7 +32,7 @@
         <lightning-radio-group name="select_inputMode" label={inputValues.inputMode.label}
                 options={selectDataSourceOptions} value={inputValues.inputMode.value} type="radio"
                 onchange={handleValueChange}></lightning-radio-group>
-                <!-- disabled={isVisualCards} onchange={handleValueChange}></lightning-radio-group> -->
+        <!-- disabled={isVisualCards} onchange={handleValueChange}></lightning-radio-group> -->
         <template if:true={isDatasourcePicklist}>
                 <c-fsc_pick-object-and-field field-label={inputValues.fieldName.label}
                         object-label={inputValues.objectName.label} object-type={inputValues.objectName.value}
@@ -43,40 +43,27 @@
                         value={inputValues.recordTypeId.value} value-type={inputValues.recordTypeId.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
-                </c-fsc_flow-combobox>
+                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceDualCollection}>
                 <c-fsc_flow-combobox name="select_choiceLabels" label={inputValues.choiceLabels.label}
                         value={inputValues.choiceLabels.value} value-type={inputValues.choiceLabels.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceLabels.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
-                </c-fsc_flow-combobox>
+                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceSingleOrDualCollection}>
                 <c-fsc_flow-combobox name="select_choiceValues" label={inputValues.choiceValues.label}
                         value={inputValues.choiceValues.value} value-type={inputValues.choiceValues.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}>
-                </c-fsc_flow-combobox>
+                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceStaticChoices}>
                 <div class="slds-text-link pointer" onclick={handleStaticChoicesOpen}>View/edit choices</div>
-                <!-- 
-                Option to display the items on the main CPE pane        
-                <ol class="slds-list_ordered">
-                        <template for:each={staticChoices} for:item="choice">
-                                <dl class="slds-list_horizontal slds-wrap" key={choice.value}>
-                                        <dt class="slds-item_label slds-truncate" title={choice.label}>
-                                                {choice.label}</dt>
-                                        <dd class="slds-item_detail slds-truncate" title={choice.value}>
-                                                {choice.value}</dd>
-                                </dl>
-
-                        </template>
-                </ol> -->
         </template>
 
         <lightning-input class="slds-p-top_x-small" type="checkbox" label={inputValues.allowNoneToBeChosen.label}
@@ -93,11 +80,13 @@
         <c-fsc_flow-combobox name="select_value" label={inputValues.value.label} value={inputValues.value.value}
                 value-type={inputValues.value.valueDataType} builder-context-filter-type="String"
                 builder-context-filter-collection-boolean={inputValues.value.isCollection}
-                builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+                builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
         <lightning-input type="number" label={inputValues.style_width.label} name="select_style_width"
                 value={inputValues.style_width.value} onchange={handleValueChange}></lightning-input>
 
-        <c-lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave} validate-on-confirm=true>
+        <c-lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave}
+                validate-on-confirm=true>
                 <div class="slds-grid slds-wrap">
                         <div
                                 class="columnHeaders slds-col slds-size_1-of-1 slds-p-bottom_xxx-small slds-grid slds-text-title_bold">
@@ -126,8 +115,7 @@
                                                         placeholder="Value" value={choice.value.value}
                                                         data-index={choice.index} data-property="value"
                                                         oncommit={handleStaticChoiceChange}
-                                                        onfocus={handleStaticChoiceFocus} 
-                                                        class="slds-p-left_small"
+                                                        onfocus={handleStaticChoiceFocus} class="slds-p-left_small"
                                                         required>
                                                 </lightning-input>
                                         </div>
@@ -143,37 +131,34 @@
                                                                 variant="bare">
                                                         </lightning-button-icon>
                                                 </div>
-                                                <div
-                                                                class="slds-col slds-size_1-of-2 slds-p-horizontal_xxx-small">
-                                                                <ul>
-                                                                        <template if:false={choice.first}>
-                                                                                <li>
-                                                                                        <lightning-button-icon
-                                                                                                icon-name="utility:up"
-                                                                                                data-index={choice.index}
-                                                                                                onclick={handleStaticChoiceMoveUp}
-                                                                                                title="Move up in list"
-                                                                                                variant="bare"
-                                                                                                size="small"
-                                                                                                class="slds-p-around_none slds-m-around_none">
-                                                                                        </lightning-button-icon>
-                                                                                </li>
-                                                                        </template>
-                                                                        <template if:false={choice.last}>
-                                                                                <li>
-                                                                                        <lightning-button-icon
-                                                                                                icon-name="utility:down"
-                                                                                                data-index={choice.index}
-                                                                                                onclick={handleStaticChoiceMoveDown}
-                                                                                                title="Move down in list"
-                                                                                                variant="bare"
-                                                                                                size="small"
-                                                                                                class="slds-p-around_none slds-m-around_none">
-                                                                                        </lightning-button-icon>
-                                                                                </li>
-                                                                        </template>
-                                                                </ul>
-                                                        </div>
+                                                <div class="slds-col slds-size_1-of-2 slds-p-horizontal_xxx-small">
+                                                        <ul>
+                                                                <template if:false={choice.first}>
+                                                                        <li>
+                                                                                <lightning-button-icon
+                                                                                        icon-name="utility:up"
+                                                                                        data-index={choice.index}
+                                                                                        onclick={handleStaticChoiceMoveUp}
+                                                                                        title="Move up in list"
+                                                                                        variant="bare" size="small"
+                                                                                        class="slds-p-around_none slds-m-around_none">
+                                                                                </lightning-button-icon>
+                                                                        </li>
+                                                                </template>
+                                                                <template if:false={choice.last}>
+                                                                        <li>
+                                                                                <lightning-button-icon
+                                                                                        icon-name="utility:down"
+                                                                                        data-index={choice.index}
+                                                                                        onclick={handleStaticChoiceMoveDown}
+                                                                                        title="Move down in list"
+                                                                                        variant="bare" size="small"
+                                                                                        class="slds-p-around_none slds-m-around_none">
+                                                                                </lightning-button-icon>
+                                                                        </li>
+                                                                </template>
+                                                        </ul>
+                                                </div>
                                         </div>
                                 </div>
                                 <!-- </c-dragndrop-row> -->

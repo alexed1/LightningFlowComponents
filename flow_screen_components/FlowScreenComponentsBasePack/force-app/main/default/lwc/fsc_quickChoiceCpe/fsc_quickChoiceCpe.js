@@ -1,6 +1,9 @@
 import {api, track, LightningElement} from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
+
+    versionNumber = '2.34';
+    
     _builderContext;
     _values;
 

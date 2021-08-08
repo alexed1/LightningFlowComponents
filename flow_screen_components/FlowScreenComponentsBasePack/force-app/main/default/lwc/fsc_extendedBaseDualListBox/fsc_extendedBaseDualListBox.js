@@ -134,7 +134,7 @@ export default class dualListBox extends LightningElement {
             return selectedValues;
         } else if (optionType === defaults.originalObject) {
             return items.map(curItemId => {
-                return this._optionsOriginalMap[curItemId];
+                return this._optionsOriginalMap ? this._optionsOriginalMap[curItemId] : {};
             });
         }
     }
@@ -169,7 +169,7 @@ export default class dualListBox extends LightningElement {
             return items.map(curItem => this.useObjectValueAsOutput ? curItem.value : curItem.label);
         } else if (optionType === defaults.originalObject || optionType === defaults.twoLists) {
             return items.map(curItem => {
-                return this._optionsOriginalMap[curItem.value];
+                return this._optionsOriginalMap ? this._optionsOriginalMap[curItem.value] : {};
             });
         }
     }

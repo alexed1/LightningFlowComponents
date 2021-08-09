@@ -1,6 +1,9 @@
 import {api, track, LightningElement} from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
+
+    versionNumber = '2.34';
+    
     _builderContext;
     _values;
 
@@ -87,6 +90,16 @@ export default class QuickChoiceCpe extends LightningElement {
         this._values = value;
         this.initializeValues();
     }
+    
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
+	_automaticOutputVariables;
 
     get isVisualCards() {
         return this.inputValues.displayMode.value === this.settings.displayModeVisualCards;

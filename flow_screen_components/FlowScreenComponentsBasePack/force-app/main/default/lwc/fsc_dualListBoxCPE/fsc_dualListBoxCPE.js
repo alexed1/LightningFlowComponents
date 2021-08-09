@@ -105,6 +105,16 @@ export default class DualListBoxCpe extends LightningElement {
         this.initializeValues();
     }
 
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
+	_automaticOutputVariables;
+
     initializeValues(value) {
         if (this._values && this._values.length) {
             this._values.forEach(curInputParam => {

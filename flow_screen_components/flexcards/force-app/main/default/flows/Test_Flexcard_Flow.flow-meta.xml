@@ -57,6 +57,12 @@
                 </value>
             </inputParameters>
             <inputParameters>
+                <name>objectAPIName</name>
+                <value>
+                    <elementReference>Account</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
                 <name>visibleFieldNames</name>
                 <value>
                     <stringValue>Id, Name, Rating</stringValue>

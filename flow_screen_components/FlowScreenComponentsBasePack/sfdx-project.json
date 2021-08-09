@@ -5,7 +5,7 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.24.0-0"
+                    "package": "FlowActionsBasePack@2.26.0-0"
                 }
             ],
             "package": "FlowScreenComponentsBasePack",
@@ -26,6 +26,7 @@
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNKQAY",
         "FlowActionsBasePack@2.20.0-0": "04t4W00000308ACQAY",
         "FlowActionsBasePack@2.24.0-0": "04t4W00000308DpQAI",
+        "FlowActionsBasePack@2.26.0-0": "04t4W00000308RmQAI",
         "FlowScreenComponentsBasePack@2.1.1-0": "04t5G000004PuV3QAK",
         "FlowScreenComponentsBasePack@3.0.4-0": "04t5G000004PuV8QAK",
         "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
@@ -42,6 +43,9 @@
         "FlowScreenComponentsBasePack@2.3.7-0": "04t5G0000047xJiQAI",
         "FlowScreenComponentsBasePack@2.3.8-0": "04t5G0000047xKWQAY",
         "FlowScreenComponentsBasePack@2.3.9-0": "04t5G0000047xKqQAI",
-        "FlowScreenComponentsBasePack@2.3.10-0": "04t5G0000047xKvQAI"
+        "FlowScreenComponentsBasePack@2.3.10-0": "04t5G0000047xKvQAI",
+        "FlowScreenComponentsBasePack@2.4.0-0": "04t5G0000047xM3QAI",
+        "FlowScreenComponentsBasePack@2.5.0-0": "04t5G0000047xMDQAY",
+        "FlowScreenComponentsBasePack@2.5.1-0": "04t5G0000047xO4QAI"
     }
 }

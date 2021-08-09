@@ -54,7 +54,7 @@ c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon lightnin
 /******** custom classes ********/
 /********************************/
 .combobox-view__min-height {
-    min-height: 36px;
+    /* min-height: 36px; */     /* Commented out so rows with editable picklist fields will not default to a taller height */
 }
 .cell-icon__edit {
     opacity: 0.5;

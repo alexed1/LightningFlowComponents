@@ -49,6 +49,6 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>PersonalFlow__c</objectType>
+        <objectType>PersonalWorkflow__c</objectType>
     </variables>
 </Flow>

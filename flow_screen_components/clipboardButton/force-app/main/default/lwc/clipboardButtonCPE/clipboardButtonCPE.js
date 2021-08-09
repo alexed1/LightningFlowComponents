@@ -106,6 +106,15 @@ export default class ClipboardButtonCPE extends LightningElement {
     return defaults.attributeSpacing;
   }
 
+  @api get automaticOutputVariables () {
+    return this._automaticOutputVariables;
+ }
+
+  set automaticOutputVariables (value) {
+    this._automaticOutputVariables = value;
+ }
+
+ _automaticOutputVariables;
   // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
   @track inputValues = {
     clipboardLabel: {

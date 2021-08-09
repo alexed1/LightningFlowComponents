@@ -3,7 +3,7 @@
  * @author            : Alex Edelstein - etal
  * @license           
  * @group             : 
- * @last modified on  : 02-16-2021
+ * @last modified on  : 2021-07-30
  * @last modified by  : Jack D. Pond
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Modifications Log 
@@ -11,6 +11,7 @@
  * 2.00.02	10-12-2020	Mohith Shrivastava	Separated from sendBetterEmail (code refactoring)
  * 2.00.02	10-12-2020	Jack D. Pond		Reverted names for backward compatibility
  * 2.00.05	02-12-2021	Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
+ * 2.01.06	02-12-2021	Jack D. Pond		Fix remainder of checkboxes default/save Fix: #702,#831
 **/
 public inherited sharing class SendBetterEmailRequest {
 
@@ -24,6 +25,11 @@ public inherited sharing class SendBetterEmailRequest {
 	@invocableVariable(label='bcc' description='Indicates whether the email sender receives a copy of the email that is sent. For a mass mail, the sender is only copied on the first email sent.')
 	@AuraEnabled
 	public Boolean bcc;
+
+	@invocableVariable(description='!(Indicates whether the email sender receives a copy of the email that is sent. For a mass mail, the sender is only copied on the first email sent.)')
+	@AuraEnabled
+	public String cb_bcc;
+
 
 	@invocableVariable
 	@AuraEnabled
@@ -139,9 +145,17 @@ public inherited sharing class SendBetterEmailRequest {
 	@AuraEnabled
 	public Boolean saveAsActivity;
 
+	@invocableVariable(description='!(Defaults to True)')
+	@AuraEnabled
+	public String cb_saveAsActivity;
+
 	@invocableVariable(description='Defaults to True unless recordId/whatId is null')
 	@AuraEnabled
 	public Boolean saveAsTask;
+
+	@invocableVariable(description='!(Defaults to True unless recordId/whatId is null)')
+	@AuraEnabled
+	public String cb_saveAsTask;
 
 	@invocableVariable(description='Treat the target as a recipient. Defaults to True')
 	@AuraEnabled
@@ -178,6 +192,10 @@ public inherited sharing class SendBetterEmailRequest {
 	@invocableVariable(label='UseSalesforceSignature' description='True unless otherwise specified')
 	@AuraEnabled
 	public Boolean UseSalesforceSignature;
+
+	@invocableVariable(description='!(True unless otherwise specified)')
+	@AuraEnabled
+	public String cb_UseSalesforceSignature;
 
 	@invocableVariable(label='whatIds' description='For MassEmail, if you specify a list of contacts for the targetObjectIds field, you can specify a list of whatIds as well. This helps to further ensure that merge fields in the template contain the correct data.')
 	@AuraEnabled

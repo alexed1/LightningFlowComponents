@@ -231,6 +231,16 @@ export default class DatatableCPE extends LightningElement {
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
 
+    @api get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables (value) {
+        this._automaticOutputVariables = value;
+    }
+
+	_automaticOutputVariables;
+
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
     @track inputValues = { 
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Select Object', 

@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Add_Header</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Header</shortDescription>
+        <value>Add Header</value>
+    </labels>
+    <labels>
+        <fullName>Add_Input</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Input</shortDescription>
+        <value>Add Input</value>
+    </labels>
+    <labels>
+        <fullName>Add_Param</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Param</shortDescription>
+        <value>Add Param</value>
+    </labels>
+    <labels>
+        <fullName>Add_Target_Key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Target Key</shortDescription>
+        <value>Add Target Key</value>
+    </labels>
+    <labels>
+        <fullName>Attachments</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Attachments</shortDescription>
+        <value>Attachments</value>
+    </labels>
+    <labels>
+        <fullName>Base_URL_of_the_org</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Base URL of the org</shortDescription>
+        <value>Base URL of the org</value>
+    </labels>
+    <labels>
+        <fullName>Blocks</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Blocks</shortDescription>
+        <value>Blocks</value>
+    </labels>
+    <labels>
+        <fullName>Body_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Body Label</shortDescription>
+        <value>Body</value>
+    </labels>
+    <labels>
+        <fullName>Channel_Id</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Channel Id</shortDescription>
+        <value>Channel Id</value>
+    </labels>
+    <labels>
+        <fullName>Compress_Request_body_to_gzip</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Compress Request body to gzip?</shortDescription>
+        <value>Compress Request body to gzip?</value>
+    </labels>
+    <labels>
+        <fullName>Confirm_Object_Type</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Confirm Object Type</shortDescription>
+        <value>Confirm Object Type</value>
+    </labels>
+    <labels>
+        <fullName>Consumer_Key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Consumer Key</shortDescription>
+        <value>Consumer Key</value>
+    </labels>
+    <labels>
+        <fullName>Consumer_Secret</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Consumer Secret</shortDescription>
+        <value>Consumer Secret</value>
+    </labels>
+    <labels>
+        <fullName>Error_Message</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Error Message :</shortDescription>
+        <value>Error Message :</value>
+    </labels>
+    <labels>
+        <fullName>Extract_JSON_Values</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Extract JSON Values</shortDescription>
+        <value>Extract JSON Values</value>
+    </labels>
+    <labels>
+        <fullName>Flow_Inputs</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Flow Inputs</shortDescription>
+        <value>Flow Inputs</value>
+    </labels>
+    <labels>
+        <fullName>HTTP_Method</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>HTTP Method</shortDescription>
+        <value>HTTP Method</value>
+    </labels>
+    <labels>
+        <fullName>Input_JSON_String</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Input JSON String</shortDescription>
+        <value>Input JSON String</value>
+    </labels>
+    <labels>
+        <fullName>JSON_ARRAY_EXCEPTION</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>JSON_ARRAY_EXCEPTION</shortDescription>
+        <value>Map JSON Array didn’t recognize the input string as a properly formed JSON array. Check to make sure that it starts with ’[‘ and ends with ’]‘ and that it contains one or more objects enclosed by { and }</value>
+    </labels>
+    <labels>
+        <fullName>Key_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Key Label</shortDescription>
+        <value>Key</value>
+    </labels>
+    <labels>
+        <fullName>Make_HTTP_Call</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Make HTTP Call</shortDescription>
+        <value>Make HTTP Call</value>
+    </labels>
+    <labels>
+        <fullName>Map_JSON_Array</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Map JSON Array</shortDescription>
+        <value>Map JSON Array</value>
+    </labels>
+    <labels>
+        <fullName>Method_is_invalid</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Method is invalid</shortDescription>
+        <value>Method is invalid (Available methods : GET, POST, PATCH, PUT, DELETE, TRACE, CONNECT, HEAD, OPTIONS).</value>
+    </labels>
+    <labels>
+        <fullName>Name_of_the_flow</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Name of the flow</shortDescription>
+        <value>Name of the flow</value>
+    </labels>
+    <labels>
+        <fullName>Password</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Password</shortDescription>
+        <value>Password</value>
+    </labels>
+    <labels>
+        <fullName>Request_Body_as_Blob</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Request Body as Blob?</shortDescription>
+        <value>Request Body as Blob?</value>
+    </labels>
+    <labels>
+        <fullName>Response_Result</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Response Result</shortDescription>
+        <value>Response Result</value>
+    </labels>
+    <labels>
+        <fullName>Run_flow_in_another_Org</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Run flow in another Org</shortDescription>
+        <value>Run flow in another Org</value>
+    </labels>
+    <labels>
+        <fullName>Set_this_Output</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Set this Output</shortDescription>
+        <value>Set this Output</value>
+    </labels>
+    <labels>
+        <fullName>Set_this_output_field</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Set this output field:</shortDescription>
+        <value>Set this output field:</value>
+    </labels>
+    <labels>
+        <fullName>Specific_Slack_channels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specific Slack channels</shortDescription>
+        <value>Specific Slack channels</value>
+    </labels>
+    <labels>
+        <fullName>Specify_Headers</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify Headers</shortDescription>
+        <value>Specify Headers:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_Params</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify Params</shortDescription>
+        <value>Specify Params:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_the_keys_that_you_want_to_extract</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify the keys that you want to extract:</shortDescription>
+        <value>Specify the keys that you want to extract:</value>
+    </labels>
+    <labels>
+        <fullName>Specify_the_keys_that_you_want_to_extract_from_the_objects_in_the_array</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specify the keys that you want to extract from the objects in the array:</shortDescription>
+        <value>Specify the keys that you want to extract from the objects in the array:</value>
+    </labels>
+    <labels>
+        <fullName>Status</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status :</shortDescription>
+        <value>Status :</value>
+    </labels>
+    <labels>
+        <fullName>Status_code</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Status code :</shortDescription>
+        <value>Status code :</value>
+    </labels>
+    <labels>
+        <fullName>Target_Object_Type</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Target Object Type</shortDescription>
+        <value>Target Object Type</value>
+    </labels>
+    <labels>
+        <fullName>Test_Callout</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Test Callout</shortDescription>
+        <value>Test Callout</value>
+    </labels>
+    <labels>
+        <fullName>Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Text</shortDescription>
+        <value>Text</value>
+    </labels>
+    <labels>
+        <fullName>Thread_ts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Thread ts</shortDescription>
+        <value>Thread ts</value>
+    </labels>
+    <labels>
+        <fullName>Timeout_in_ms</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Timeout in ms</shortDescription>
+        <value>Timeout in ms</value>
+    </labels>
+    <labels>
+        <fullName>To_the_value_of_this_key</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>To the value of this key</shortDescription>
+        <value>To the value of this key</value>
+    </labels>
+    <labels>
+        <fullName>Token</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Token</shortDescription>
+        <value>Token</value>
+    </labels>
+    <labels>
+        <fullName>URL_is_invalid</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>URL is invalid</shortDescription>
+        <value>URL is invalid</value>
+    </labels>
+    <labels>
+        <fullName>Unfurl_Links</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Unfurl Links</shortDescription>
+        <value>Unfurl Links</value>
+    </labels>
+    <labels>
+        <fullName>Use_data_from_the_Flow_to_determine_the_destination</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Use data from the Flow to determine the destination</shortDescription>
+        <value>use data from the Flow to determine the destination</value>
+    </labels>
+    <labels>
+        <fullName>Use_future_Method</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Use future Method</shortDescription>
+        <value>Use future Method</value>
+    </labels>
+    <labels>
+        <fullName>Use_these_values_for</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Use these values for:</shortDescription>
+        <value>Use these values for:</value>
+    </labels>
+    <labels>
+        <fullName>Username</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Username</shortDescription>
+        <value>Username</value>
+    </labels>
+    <labels>
+        <fullName>Value_Label</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Value Label</shortDescription>
+        <value>Value</value>
+    </labels>
+    <labels>
+        <fullName>noDataAvailable</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>noDataAvailable</shortDescription>
+        <value>No Data Available</value>
+    </labels>
+    <labels>
+        <fullName>url</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>url</shortDescription>
+        <value>URL</value>
+    </labels>
+</CustomLabels>

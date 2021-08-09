@@ -1,0 +1,15 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:availableForFlowScreens" access="global">
+    <aura:attribute name="label" type="String"/>
+    <aura:attribute name="destinationURL" type="String" default="https://salesforce.com/" />
+    <aura:attribute name="destinationType" type="String" default="url"/>
+    <aura:attribute name="targetRecordId" type="String" />
+    <aura:attribute name="navigationType" type="String" />
+    <aura:attribute name="fire" type="Boolean" default="false" />
+	
+    <div class="slds-form-element">
+            <div class="container">
+                <ui:button label="{!v.label}" press="{!c.handleClick}" />
+            </div>
+            
+    </div>
+</aura:component>

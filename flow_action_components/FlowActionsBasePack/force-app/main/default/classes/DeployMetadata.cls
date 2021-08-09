@@ -61,10 +61,18 @@ global with sharing class DeployMetadata {
            // fileData = Blob.valueOf(getObjectMetadata(objectType));
            // System.debug('preparing to deploy meta file: ' + fileData.toString());
            // sampleZip.addFile(  'flows/' + objectName + '.flow-meta.xml', fileData, null);
-            fileData = Blob.valueOf(classText);
-            System.debug('preparing to deploy object file: ' + fileData.toString());
-            sampleZip.addFile( 'flows/' + objectName +'.flow', fileData, null);
-            return EncodingUtil.base64Encode(sampleZip.getZipArchive());
+           if(objectType == 'ApexClass' ) {
+                fileData = Blob.valueOf(getStandardApexClassMetadata());
+                sampleZip.addFile('classes/' + objectName + '.cls-meta.xml', fileData, null);
+                fileData = Blob.valueOf(classText);
+                sampleZip.addFile('classes/' + objectName + '.cls', fileData, null);
+           } else {
+                fileData = Blob.valueOf(classText);
+                System.debug('preparing to deploy object file: ' + fileData.toString());
+                sampleZip.addFile( 'flows/' + objectName +'.flow', fileData, null);
+               
+           }
+           return EncodingUtil.base64Encode(sampleZip.getZipArchive());
 
         }
     global static MetadataService.DeployOptions getDeployOptions(){
@@ -79,7 +87,9 @@ global with sharing class DeployMetadata {
         curDeployOption.rollbackOnError = true;
         curDeployOption.runTests = new String[]{};
         curDeployOption.singlePackage = true;
-        curDeployOption.testLevel = 'NoTestRun';
+
+        curDeployOption.testLevel = 'RunLocalTests'; //setting this to NoTestRun causes install to fail in production orgs. must be a valid value though!
+
            
         return curDeployOption;
         }
@@ -104,6 +114,14 @@ global with sharing class DeployMetadata {
                 '</Package>';		
         }
     
+         public static String getStandardApexClassMetadata(){
+            return '<?xml version="1.0" encoding="UTF-8"?>' +
+                '<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">' +
+                    '<apiVersion>48.0</apiVersion>' + 
+                    '<status>Active</status>' +
+                '</ApexClass>';		
+        }
+
         global static String getObjectMetadata(String objectName)
         {
             String boilerplate =  '<?xml version="1.0" encoding="UTF-8"?>' +

@@ -23,11 +23,18 @@
                         value={inputValues.choiceIcons.value} value-type={inputValues.choiceIcons.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceIcons.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
-                <lightning-combobox name="select_iconSize" label={inputValues.iconSize.label}
-                        value={inputValues.iconSize.value} required={isVisualCards} options={iconSizeOptions}
-                        onchange={handleValueChange}></lightning-combobox>
+                        builder-context={_builderContext}
+                        onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
+                ></c-fsc_flow-combobox>
+                <lightning-combobox
+                        name="select_iconSize"
+                        label={inputValues.iconSize.label}
+                        value={inputValues.iconSize.value}
+                        required={isVisualCards}
+                        options={iconSizeOptions}
+                        onchange={handleValueChange}
+                ></lightning-combobox>
         </template>
         <lightning-radio-group name="select_inputMode" label={inputValues.inputMode.label}
                 options={selectDataSourceOptions} value={inputValues.inputMode.value} type="radio"
@@ -43,16 +50,20 @@
                         value={inputValues.recordTypeId.value} value-type={inputValues.recordTypeId.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.recordTypeId.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
+                        builder-context={_builderContext}
+                        onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
+                ></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceDualCollection}>
                 <c-fsc_flow-combobox name="select_choiceLabels" label={inputValues.choiceLabels.label}
                         value={inputValues.choiceLabels.value} value-type={inputValues.choiceLabels.valueDataType}
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceLabels.isCollection}
-                        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
+                        builder-context={_builderContext}
+                        onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
+                ></c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceSingleOrDualCollection}>
                 <c-fsc_flow-combobox name="select_choiceValues" label={inputValues.choiceValues.label}
@@ -60,7 +71,8 @@
                         builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
                         builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
+                        automatic-output-variables={automaticOutputVariables}>  
+                  </c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceStaticChoices}>
                 <div class="slds-text-link pointer" onclick={handleStaticChoicesOpen}>View/edit choices</div>
@@ -80,8 +92,10 @@
         <c-fsc_flow-combobox name="select_value" label={inputValues.value.label} value={inputValues.value.value}
                 value-type={inputValues.value.valueDataType} builder-context-filter-type="String"
                 builder-context-filter-collection-boolean={inputValues.value.isCollection}
-                builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
+                builder-context={_builderContext}
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}
+        ></c-fsc_flow-combobox>
         <lightning-input type="number" label={inputValues.style_width.label} name="select_style_width"
                 value={inputValues.style_width.value} onchange={handleValueChange}></lightning-input>
 
@@ -176,4 +190,9 @@
                         </div>
                 </div>
         </c-lwc-modal>
+</template>
+
+        <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">
+                QuickChoice Version #: {versionNumber}
+        </div>
 </template>

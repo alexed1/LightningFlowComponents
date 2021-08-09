@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>50.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Nav Button Set</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+      
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <!-- Input --><property name="buttonLabelString" label="Button labels" type="String" required="true" role="inputOnly" description="Enter a comma-separated list of labels for the buttons. They will appear in the same order on screen." default="Previous, Next"/>
+            <property name="buttonColourString" label="Button colours" type="String" role="inputOnly" description="Enter a comma-separated list of colours for the buttons from the following list: 'grey' (default), 'red', 'blue', 'green'. They must match the order of the labels above. E.g. 'red, blue'"/>
+            <property name="alignment" label="Button position" type="string" description="Enter 'left', 'center', or 'right'. Defaults to right." default="right" role="inputOnly"/>
+            <property name="includeLine" label="Include horizontal line above buttons" type="boolean" description="Check the box to include a horizontal line above the buttons, giving separation between the buttons and the element above them" default="false" role="inputOnly"/>
+            <!-- Output --><property name="selectedValue" label="Selected Value" type="string" role="outputOnly" description="Value that holds the label of the button that's clicked, pass this to a Decision block to route the Flow"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -82,14 +82,6 @@ export default class FlowButtonBarCPE extends LightningElement {
     }
 
     @track inputValues = {
-        // alignment: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Alignment' },
-        // orientation: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Orientation' },
-        // buttons: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Buttons' },
-        // showLines: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Display horizontal line(s)' },
-        // actionMode: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Action mode' },
-        // required: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Required' },
-        // multiselect: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Multi-select' },
-        // label: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Label' },
         buttons: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Buttons' },
         label: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Label' },
 
@@ -99,12 +91,7 @@ export default class FlowButtonBarCPE extends LightningElement {
         actionMode: { value: this.actionModes.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Action mode' },
         required: { value: this.yesNo.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Required' },
         multiselect: { value: this.yesNo.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Multi-select' },
-
-
-
-        // groupAsToggle: { value: null, valueDataType: null, isCollection: false, label: 'Group as toggle' },
-        // includeLine: { value: null, valueDataType: null, isCollection: false, label: 'Display horizontal line above buttons' },
-        // doNotTransitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Do not transition on click' },
+        defaultValue: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Default value' }
     };
 
     newInputValue(label, value, defaultValue, valueDataType, isCollection) {
@@ -249,6 +236,12 @@ export default class FlowButtonBarCPE extends LightningElement {
     get selectedButtonVariantLabel() {
         return this.variants.findFromValue(this.selectedButton.variant).label;
     }
+
+    get defaultValueOptions() {
+        let noDefault = { label: '--No default option--', value: null };
+        return [noDefault, ...this.buttons];
+    }
+
 
     /* LIFECYCLE HOOKS */
     connectedCallback() {

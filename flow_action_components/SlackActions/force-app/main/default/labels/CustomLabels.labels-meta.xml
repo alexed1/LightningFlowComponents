@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Attachments</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Attachments</shortDescription>
+        <value>Attachments</value>
+    </labels>
+    <labels>
+        <fullName>Blocks</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Blocks</shortDescription>
+        <value>Blocks</value>
+    </labels>
+    <labels>
+        <fullName>Channel_Id</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Channel Id</shortDescription>
+        <value>Channel Id</value>
+    </labels>
+    <labels>
+        <fullName>Specific_Slack_channels</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Specific Slack channels</shortDescription>
+        <value>Specific Slack channels</value>
+    </labels>
+    <labels>
+        <fullName>Text</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Text</shortDescription>
+        <value>Text</value>
+    </labels>
+    <labels>
+        <fullName>Thread_ts</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Thread ts</shortDescription>
+        <value>Thread ts</value>
+    </labels>
+    <labels>
+        <fullName>Token</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Token</shortDescription>
+        <value>Token</value>
+    </labels>
+    <labels>
+        <fullName>Unfurl_Links</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Unfurl Links</shortDescription>
+        <value>Unfurl Links</value>
+    </labels>
+    <labels>
+        <fullName>Use_data_from_the_Flow_to_determine_the_destination</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Use data from the Flow to determine the destination</shortDescription>
+        <value>use data from the Flow to determine the destination</value>
+    </labels>
+    <labels>
+        <fullName>Username</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Username</shortDescription>
+        <value>Username</value>
+    </labels>
+    <labels>
+        <fullName>noDataAvailable</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>noDataAvailable</shortDescription>
+        <value>No Data Available</value>
+    </labels>
+</CustomLabels>

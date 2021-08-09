@@ -9,6 +9,7 @@ export default class expressionLine extends LightningElement {
     @api expressionId;
     @api expressionIndex;
     @api availableMergeFields = [];
+    @api disableRemoveExpression = false;
     @track _fields = [];
 
     @track currentField;

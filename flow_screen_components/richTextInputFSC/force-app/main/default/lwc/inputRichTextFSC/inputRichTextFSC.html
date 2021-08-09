@@ -3,7 +3,7 @@
     <!-- Start Rich Text Input Section -   -->
     <template if:true={disableAdvancedTools}>
         <div>
-            <lightning-input-rich-text value={value} onchange={handleValueChange} formats={formats} label={label} label-visible=true></lightning-input-rich-text>
+            <lightning-input-rich-text value={value} onchange={handleValueChange} formats={formats} label={label} required={required} label-visible=true></lightning-input-rich-text>
         </div>
     </template>
     <!-- End Rich Text Input Section-->
@@ -12,10 +12,10 @@
     <template if:false={disableAdvancedTools}>
         <div>
             <lightning-input-rich-text value={richText} formats={formats} label={label} onchange={handleTextChange} 
-                label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage}>
+                label-visible=true valid={isValidCheck} message-when-bad-input={errorMessage} required={required}>
             </lightning-input-rich-text>
         </div>
-        <div class="slds-grid slds-wrap slds-p-around_xx-small lgc-bg">
+        <div class="slds-grid slds-wrap slds-p-around_xx-small slds-m-bottom_x-small lgc-bg">
             <lightning-button-group>
                 <div class="slds-p-around_xxx-small">
                     <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:search"

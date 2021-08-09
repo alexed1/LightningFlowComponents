@@ -18,6 +18,9 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
 
+7/2/21 -    Eric Smith -    Version 2.33  
+                            Added * to Visual Card label when Required = True
+
 1/19/21 -   clifford-fra -  Version 2.32
                             Made the visual text boxes in single column view responsive
 
@@ -59,7 +62,8 @@ Additional components packaged with this LWC:
     <!-- Display Visual Card Pickers -->
     <template if:true={showVisual}>
         <fieldset class="slds-form-element">
-            <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
+            <label class="slds-form-element__legend slds-form-element__label">
+                <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
             <div class={gridClass} style={gridStyle}>
                 <template for:each={items} for:item="item">
                     <div key={item.name} class={columnClass} style={responsiveSize}>

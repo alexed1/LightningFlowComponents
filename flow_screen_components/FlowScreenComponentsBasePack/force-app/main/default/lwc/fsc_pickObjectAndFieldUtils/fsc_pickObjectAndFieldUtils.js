@@ -56,6 +56,8 @@ const standardObjectOptions = [
     {value: "User", label: "User"},
     {value: "WorkOrder", label: "Work Order"},
     {value: "WorkOrderLineItem", label: "Work Order Line Item"},
-    {value: "WorkType", label: "Work Type"}
+    {value: "WorkType", label: "Work Type"},
+    {value: "Quote", label: "Quote"},
+    {value: "QuoteLineItem", label: "Quote Line Item"}
 ];
 

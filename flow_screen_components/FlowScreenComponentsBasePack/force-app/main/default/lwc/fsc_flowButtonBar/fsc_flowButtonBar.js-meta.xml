@@ -22,6 +22,7 @@
 
                 <property name="required" label="Required" type="String" role="inputOnly"></property>
                 <property name="multiselect" label="Multi-Select" type="String" role="inputOnly"></property>
+                <property name="defaultValue" label="Default Value" type="String" role="inputOnly"></property>
 
                 <property name="value" label="Value" type="String"></property>
                 <property name="values" label="Values" type="String[]"></property>                

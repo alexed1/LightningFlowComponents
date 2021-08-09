@@ -14,8 +14,10 @@ export default class ers_comboboxColumnType extends LightningElement {
         let _options = [];
         for(const key in this.picklistValues) {
             let option = {};
-            option.label = this.picklistValues[key];
-            option.value = key;
+            // option.label = this.picklistValues[key];
+            // option.value = key;
+            option.label = key;
+            option.value = this.picklistValues[key];
             _options.unshift(option);
         }
         return _options
@@ -43,7 +45,6 @@ export default class ers_comboboxColumnType extends LightningElement {
 
     handleChange(event) {
         this.value = event.detail.value;
-        //Fire event so that main component can handle the value change
         //We will mimic the standard oncellchange event from lightning datatable
         let draftValue = {};
         let draftValues = [];

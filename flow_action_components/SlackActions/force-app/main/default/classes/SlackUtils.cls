@@ -52,7 +52,7 @@ global inherited sharing class SlackUtils {
             }
             
         } catch (Exception e) {
-           // responseMap.put('error', e.getMessage());
+            responseMap.put('error', e.getMessage());
             throw new InvocableActionException('Error from Slack: '+ (String)responseMap.get('error'));
         }
     }

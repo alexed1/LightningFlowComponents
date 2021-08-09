@@ -2,7 +2,7 @@ import { api, track, LightningElement } from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-
+    versionNumber = '2.34';
     _builderContext;
     _values;
 
@@ -115,8 +115,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
 	_automaticOutputVariables;
 
-
-    @track staticChoices = [this.newChoice()];
+  @track staticChoices = [this.newChoice()];
     @track tempStaticChoices = [];
 
     get isVisualCards() {

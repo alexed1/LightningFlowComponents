@@ -6,7 +6,7 @@
             "package": "FlowActionsBasePack",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT",
-            "ancestorVersion": "2.22.0.0"
+            "ancestorVersion": "2.28.0.0"
         }
     ],
     "namespace": "usf",
@@ -26,7 +26,8 @@
         "FlowActionsBasePack@2.14.0-0": "04t4W00000307e2QAA",
         "FlowActionsBasePack@2.15.0-0": "04t4W00000307gXQAQ",
         "FlowActionsBasePack@2.16.0-0": "04t4W00000307grQAA",
-        "FlowActionsBasePack@2.17.0-0": "04t4W00000307ppQAA"
-
+        "FlowActionsBasePack@2.17.0-0": "04t4W00000307ppQAA",
+        "FlowActionsBasePack@2.28.0-0": "04t4W0000034KckQAE",
+        "FlowActionsBasePack@2.29.0-0": "04t4W0000034KcuQAE"
     }
 }

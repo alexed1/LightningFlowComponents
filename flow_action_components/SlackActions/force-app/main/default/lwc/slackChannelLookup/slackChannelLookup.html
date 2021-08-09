@@ -1,0 +1,86 @@
+<template>
+    <div>
+        <div>
+            <div class={formElementClass}>
+                <div class="slds-form-element__control">
+                    <label class="slds-form-element__label custom-width-full">
+                        {label}
+                    </label>
+                    <div class="slds-combobox_container">
+                        <div class={dropdownClass} data-id="resultBox" aria-expanded="false" aria-haspopup="listbox"
+                             role="combobox">
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon slds-input-has-icon--right"
+                                 role="none" style="height: 55px;">
+                                    <div onkeyup={handleSearchKeyUp}>
+                                       
+                                        <lightning-input
+                                                class="value-input"
+                                                name="searchText"
+                                                type="search"
+                                                required={required}
+                                                data-id="userinput"
+                                                label={labels.Specific_Slack_channels}
+                                                value={_value}
+                                                disabled={disabled}
+                                                onkeydown={handleKeyDown}
+                                                onchange={handleSearchField}
+                                                onclick={handleOpenOptions}
+                                                
+                                        ></lightning-input>
+                                    </div>
+                                    <template for:each={_selectedValues} for:item="value">
+                                        <lightning-pill
+                                                key={value.value}
+                                                class="slds-pill_bare custom-width-full"
+                                                data-value={value.value}
+                                                label={value.label}
+                                                onremove={resetData}
+                                                has-error={hasError}
+                                        >
+                                        </lightning-pill>
+                                    </template>
+                            </div>
+
+                            <div id="listbox-id-1"
+                                 class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                                 role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template if:false={_optionsToDisplay.length}>
+                                        <div class="slds-p-around--small">
+                                            {labels.noDataAvailable}
+                                        </div>
+                                    </template>
+                                    <template for:each={_optionsToDisplay} for:item="option">
+                                        <li role="presentation" class="slds-listbox__item" key={option.value}>
+                                                <div
+                                                     class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                     role="option">
+                                                    <span data-value={option.value}
+                                                          onclick={handleSetSelectedRecord}
+                                                          class="slds-media__body">
+                                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{option.label}</span>
+                                                </span>
+                                                </div>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="slds-m-top_large">
+        <c-fsc_flow-combobox 
+            label={labels.Use_data_from_the_Flow_to_determine_the_destination}
+            builder-context={_builderContext} 
+            name="inputSlackChannelFromFlow"  
+            onvaluechanged={handleFlowComboboxValueChange} 
+            value={flowVariable} 
+            value-type={flowVariable}
+            automatic-output-variables={automaticOutputVariables}>
+
+        </c-fsc_flow-combobox>
+    </div>
+</template>

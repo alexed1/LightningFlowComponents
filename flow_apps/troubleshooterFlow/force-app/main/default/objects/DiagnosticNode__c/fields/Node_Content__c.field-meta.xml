@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Node_Content__c</fullName>
+    <description>The information used to figure out the next step to transition towards. This is typically a question for the customer.</description>
+    <externalId>false</externalId>
+    <label>Node Content</label>
+    <length>32768</length>
+    <trackTrending>false</trackTrending>
+    <type>Html</type>
+    <visibleLines>25</visibleLines>
+</CustomField>

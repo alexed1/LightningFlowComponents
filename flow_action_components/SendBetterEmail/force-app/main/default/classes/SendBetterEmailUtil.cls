@@ -2,13 +2,15 @@
  * @description       : SendBetterEmailUtil - helper utilities for SendBetterEmail
  * @author            : Refactored from Alex Edelstein
  * @group             : 
- * @last modified on  : 02-17-2021
+ * @last modified on  : 2021-07-28
  * @last modified by  : Jack D. Pond
  * Modifications Log 
  * Ver		Date		Author				Modification
  * 2.00.02	10-06-2020	Mohith Shrivastava  Refactored from SendBetterEmail
  * 2.00.05	02-17-2021	Jack Pond			Use Title.FileExtension instead of PathOnClient for attachment name
  * 2.00.05	02-17-2021	Jack Pond			Template Description empty causes error Fixes: #602
+ * 2.03.11	06-22-2021	Jack Pond			Temporary fix for #786 - cached TemplateName Overflows
+ * 2.03.11	2021-07-28	Jack Pond			Temporary fix for #829 - Sends all versions as attachment - should only send latest Version
  * 
 **/
 public inherited sharing class SendBetterEmailUtil {
@@ -118,7 +120,7 @@ public inherited sharing class SendBetterEmailUtil {
 	) {
 		Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion = new Map<Id, List<ContentVersion>>();
 		for (ContentVersion cv : [
-			SELECT Id, PathOnClient, Title, VersionData, FileType, ContentDocumentId, FileExtension
+			SELECT Id, PathOnClient, Title, VersionData, VersionNumber, FileType, ContentDocumentId, FileExtension
 			FROM ContentVersion
 			WHERE ContentDocumentId IN :contentDocumentIds
 		]) {
@@ -132,8 +134,10 @@ public inherited sharing class SendBetterEmailUtil {
 					new List<ContentVersion>{ cv }
 				);
 			} else {
-				mapContentDocumentIdByContentVersion.get(cv.ContentDocumentId)
-					.add(cv);
+				ContentVersion lastFound = mapContentDocumentIdByContentVersion.get(cv.ContentDocumentId)[0];
+				if (lastFound.VersionNumber < cv.VersionNumber){
+					mapContentDocumentIdByContentVersion.get(cv.ContentDocumentId)[0] = cv;
+				}
 			}
 		}
 		return mapContentDocumentIdByContentVersion;
@@ -145,20 +149,22 @@ public inherited sharing class SendBetterEmailUtil {
 		Map<Id, EmailTemplate> mapIdByEmailTemplate
 	) {
 		Map<String, List<EmailTemplate>> mapTemplateNameByEmailTemplates = new Map<String, List<EmailTemplate>>();
-		for (EmailTemplate et : [
-			SELECT Id, Description, Name
-			FROM EmailTemplate
-			WHERE Name IN :templateNames AND isActive = TRUE
-		]) {
-			if (!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
-				mapTemplateNameByEmailTemplates.put(
-					et.Name,
-					new List<EmailTemplate>{ et }
-				);
-			} else {
-				mapTemplateNameByEmailTemplates.get(et.Name).add(et);
+		if (templateNames != null && templateNames.size() != 0){
+			for (EmailTemplate et : [
+				SELECT Id, Description, Name
+				FROM EmailTemplate
+				WHERE Name IN :templateNames AND isActive = TRUE
+			]) {
+				if (!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
+					mapTemplateNameByEmailTemplates.put(
+						et.Name,
+						new List<EmailTemplate>{ et }
+					);
+				} else {
+					mapTemplateNameByEmailTemplates.get(et.Name).add(et);
+				}
+				mapIdByEmailTemplate.put(et.Id, et);
 			}
-			mapIdByEmailTemplate.put(et.Id, et);
 		}
 		return mapTemplateNameByEmailTemplates;
 	}

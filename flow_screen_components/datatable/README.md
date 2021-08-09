@@ -74,7 +74,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## xx/xx/21 -  Eric Smith -    Version 3.3.1 
 **Updates:** 
--   
+-   Updated all component API versions to 52.0
  
 **Bug Fixes:** 
 -   Added missing variable in the CPE for automaticOutputVariables

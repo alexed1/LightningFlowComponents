@@ -113,7 +113,7 @@
             <name>recordString</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <assignments>
         <name>Add_Config_Quick_Choice_Option</name>
         <label>Add Config Quick Choice Option</label>

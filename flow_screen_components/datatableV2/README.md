@@ -1,4 +1,6 @@
-# DatatableV2
+# DatatableV2 (Obsolete) 
+
+See unofficialsf.com for the latest Datatable [information](https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/)
 
 Lightning Web Component for Flow Screens:       **datatableV2**
 

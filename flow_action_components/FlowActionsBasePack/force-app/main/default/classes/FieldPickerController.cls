@@ -153,6 +153,8 @@ global with sharing class FieldPickerController {
             'User' => 'User',
             'WorkOrder' => 'Work Order',
             'WorkOrderLineItem' => 'Work Order Line Item',
-            'WorkType' => 'Work Type'
+            'WorkType' => 'Work Type',
+            'Quote' => 'Quote',
+            'QuoteLineItem' => 'Quote Line Item'
     };
 }

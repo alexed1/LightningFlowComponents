@@ -5,7 +5,7 @@
  * @Author				: Jack D. Pond
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 02-16-2021
+ * @Last Modified On	: 2021-08-03
  * @Modification Log	: 
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * Ver		Date		Author					Modification
@@ -856,6 +856,8 @@ public with sharing class SendBetterEmailTest {
 		testReq.Description = 'MassEmail Test - no Language';
 		testReq.templateName = TEMPLATE_NAME_NO_LANG;
 		testReq.targetObjectIds = new List<String> {UserInfo.getUserId()};
+// if templateTargetObjectId type = user, saveAsActivity must be false
+		testReq.saveAsActivity = false;
 //        testReq.whatIds = new List<String> {UserInfo.getUserId()};
 
 		reqList.add(testReq);

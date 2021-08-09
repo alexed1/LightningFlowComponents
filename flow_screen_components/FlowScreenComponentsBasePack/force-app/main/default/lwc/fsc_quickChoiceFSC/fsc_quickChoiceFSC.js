@@ -36,6 +36,32 @@ export default class QuickChoiceFSC extends LightningElement {
     //-------------For displayMode = Picklist or Radio
     @api style_width = 320;
 
+    @api
+    get staticChoicesString() {
+        return this._staticChoicesString;
+    }
+    set staticChoicesString(jsonString) {
+        this._staticChoicesString = jsonString;
+        this.staticChoices = JSON.parse(jsonString);
+    }
+    _staticChoicesString;
+
+    @api
+    get staticChoices() {
+        return this._staticChoices || [];
+    }
+    set staticChoices(choices) {
+        console.log('setting staticChoices to '+ JSON.stringify(choices));
+        this._staticChoices = choices;
+        this.choiceValues = [];
+        this.choiceLabels = [];
+         for (let choice of choices) {
+            this.choiceValues.push(choice.value);
+            this.choiceLabels.push(choice.label);        
+         }
+    }
+    @track _staticChoices = [];
+
 
     masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
     @api inputMode;
@@ -52,7 +78,8 @@ export default class QuickChoiceFSC extends LightningElement {
         "Picklist Field",
         "Single String Collection",
         "Dual String Collections",
-        "Visual Text Box"
+        "Visual Text Box",
+        "Static Choices"
     ];
     @track options = [];
     @track items = [];
@@ -264,18 +291,12 @@ export default class QuickChoiceFSC extends LightningElement {
 
                 //User can  pass in one collection of strings for visible labels and another for the underlying values (such as recordIds)
                 case "Dual String Collections":
+                case "Static Choices":
                     console.log("entering input mode Dual String Collections");
                     console.log("choiceValues is: " + this.choiceValues);
-                    //console.log ('splitting choice values would be: ' + this.choiceValues.split(','));
-                    //let values = this.choiceValues.split(';');
-
-                    this.choiceLabels.forEach(label => {
-                        console.log("label is: " + label);
-                        console.log("value is: " + this.choiceValues[index]);
-                        options.push({label: label, value: this.choiceValues[index]});
-                        console.log("options is: " + options);
-                        index += 1;
-                    });
+                    for (let i=0; i<this.choiceLabels.length; i++) {
+                        options.push({label: this.choiceLabels[i], value: this.choiceValues[i]});
+                    }
                     break;
 
                 default:

@@ -43,6 +43,7 @@ export default class FlowButtonBar extends LightningElement {
     @api multiselect = '';
     @api required = '';
     @api errorMessage;
+    @api defaultValue;
 
     @api previewMode;   // Reserved for future use
 
@@ -61,6 +62,9 @@ export default class FlowButtonBar extends LightningElement {
             this._buttons = buttons;
         } else {
             this._buttons = JSON.parse(buttons);
+        }
+        if (!this.value && this.defaultValue) {
+            this.value = this.defaultValue;
         }
         this.updateSelected();
     }

@@ -82,12 +82,14 @@
 
                     <!-- Selection mode settings -->
                     <template if:true={isSelectionMode}>
-                        <c-fsc_flow-button-bar label={inputValues.required.label} name="required" helptext="Display a red 'required' asterisk in front of the label."
+                        <lightning-combobox name="defaultValue" label={inputValues.defaultValue.label} options={defaultValueOptions} value={inputValues.defaultValue.value} onchange={handleComboboxChange}></lightning-combobox>
+
+                        <c-fsc_flow-button-bar label={inputValues.required.label} name="required" help-text="Display a red 'required' asterisk in front of the label."
                             options={yesNo.options} value={inputValues.required.value} onbuttonclick={handleButtonClick}
                             required>
                         </c-fsc_flow-button-bar>
 
-                        <c-fsc_flow-button-bar label={inputValues.multiselect.label} name="multiselect" helptext="If multi-select is not enabled, clicking any button unselects any selected buttons."
+                        <c-fsc_flow-button-bar label={inputValues.multiselect.label} name="multiselect" help-text="If multi-select is not enabled, clicking any button unselects any selected buttons."
                             options={yesNo.options} value={inputValues.multiselect.value}
                             onbuttonclick={handleButtonClick} required>
                         </c-fsc_flow-button-bar>

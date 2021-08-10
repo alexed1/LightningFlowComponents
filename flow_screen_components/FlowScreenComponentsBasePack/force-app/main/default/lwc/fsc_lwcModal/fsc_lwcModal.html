@@ -1,0 +1,41 @@
+<template>
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="0" class="slds-modal slds-fade-in-open" onkeydown={handleKeyDown}>
+            <div class="slds-modal__container">
+                <template if:true={header}>
+                    <header class="slds-modal__header">
+                        <h2 class="slds-modal__title slds-hyphenate">{header}</h2>
+                    </header>
+                </template>
+                <template if:false={header}>
+                    <header class="slds-modal__header slds-modal__header_empty"></header>
+                </template>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <slot onslotchange={handleSlotChange}></slot>
+                    {bodyText}
+                </div>
+                <footer class="slds-modal__footer slds-is-relative">
+                    <lightning-button label={cancelButtonLabel} value={cancelValue} class="slds-p-horizontal_xxx-small cancelButton">
+                    </lightning-button>
+                    <template if:true={confirmButtonLabel}>
+                        <lightning-button label={confirmButtonLabel} variant={confirmButtonVariant} value={confirmValue}
+                            class="slds-p-horizontal_xxx-small confirmButton"></lightning-button>
+                    </template>
+                    <slot name="customButtons" onfocus={handleModalFocus}>
+                        <!--
+                        User to pass in list of lightning-button elements via slot
+                        Example:
+                        <lightning-button label="My Custom Button Label" variant="brand" onclick={myCustomButtonHandler}
+                        class="slds-p-horizontal_xxx-small"></lightning-button>
+                        -->
+                    </slot>
+                </footer>
+            </div>
+        </section>
+        <template if:false={confirmation.hideBackdrop}>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </template>
+
+</template>

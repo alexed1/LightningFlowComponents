@@ -172,7 +172,7 @@
     <screens>
         <name>Screen1</name>
         <label>Screen1</label>
-        <locationX>542</locationX>
+        <locationX>543</locationX>
         <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -253,6 +253,12 @@
                 <name>objectAPIName</name>
                 <value>
                     <stringValue>PersonalWorkflow__c</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>icon</name>
+                <value>
+                    <stringValue>standard:flow</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>

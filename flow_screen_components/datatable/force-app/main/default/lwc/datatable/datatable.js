@@ -13,6 +13,14 @@ import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturn
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
+import CancelButton from '@salesforce/label/c.ers_CancelButton';
+import SaveButton from '@salesforce/label/c.ers_SaveButton';
+import ClearSelectionButton from '@salesforce/label/c.ers_ClearSelectionButton';
+import SetFilterAction from '@salesforce/label/c.ers_SetFilterAction';
+import ClearFilterAction from '@salesforce/label/c.ers_ClearFilterAction';
+import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
+import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
+import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
@@ -21,6 +29,18 @@ const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
+
+    // Translatable Labels
+    label = {
+        CancelButton,
+        SaveButton,
+        ClearSelectionButton,
+        SetFilterAction,
+        ClearFilterAction,
+        ColumnHeader,
+        FilterHeader,
+        LabelHeader
+    };
 
     // Component Input & Output Attributes
     @api tableData = [];
@@ -475,8 +495,8 @@ export default class Datatable extends LightningElement {
                     column: col,
                     filter: colFilter,
                     actions: [
-                        {label: 'Set Filter', disabled: false, name: 'filter_' + col, iconName: 'utility:filter'},
-                        {label: 'Clear Filter', disabled: true, name: 'clear_' + col, iconName: 'utility:clear'}
+                        {label: this.label.SetFilterAction, disabled: false, name: 'filter_' + col, iconName: 'utility:filter'},
+                        {label: this.label.ClearFilterAction, disabled: true, name: 'clear_' + col, iconName: 'utility:clear'}
                     ]
                 });
                 this.filterAttribType = 'cols';
@@ -975,8 +995,8 @@ export default class Datatable extends LightningElement {
                     filterAttrib.column = columnNumber; 
                     filterAttrib.filter = true;
                     filterAttrib.actions = [
-                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
-                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                        {label: this.label.SetFilterAction, disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: this.label.ClearFilterAction, disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
                     ]; 
                     break;
                 default:
@@ -1448,8 +1468,8 @@ export default class Datatable extends LightningElement {
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         this.columnNumber = Number(colDef.actions[0].name.split("_")[1]);
         this.baseLabel = this.filterColumns[this.columnNumber].label.split(' [')[0];
-        const prompt = (this.isConfigMode) ? 'Label' : 'Filter';
-        this.inputLabel = 'Column ' + prompt + ': ' + this.baseLabel;
+        const prompt = (this.isConfigMode) ? this.label.LabelHeader : this.label.FilterHeader;
+        this.inputLabel = this.label.ColumnHeader + ' ' + prompt + ': ' + this.baseLabel;
         switch(actionName.split('_')[0]) {
 
             case 'alignl':   // Config Mode Only

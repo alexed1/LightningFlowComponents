@@ -1797,16 +1797,39 @@ export default class Datatable extends LightningElement {
                                     match = false;
                                     break; 
                                 }                   
-
+                                
                                 switch(this.filterColumns[col].type) {
                                     case 'number':
                                     case 'currency':
                                     case 'percent':
-                                    case 'date':
+                                        if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
+                                            match = false;
+                                            break;                                
+                                        }
+                                        break;
                                     case 'date-local':
+                                        let dl = row[fieldName];
+                                        let dtf = new Intl.DateTimeFormat('en', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit'
+                                        });
+                                        const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                        let formatedDate = `${ye}-${mo}-${da}`;
+                                        if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
+                                            match = false;
+                                            break;                                
+                                        }
+                                        break;
+                                    case 'date':
                                     case 'datetime':
                                     case 'time':
-                                        if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric and date fields
+                                        if (typeof(row[fieldName]) === typeof(+1)) { 
+                                            match = false;
+                                            break;  //TODO - Figure out a way to filter on Time fields
+                                        }
+                                        let dt = row[fieldName].slice(0,10);
+                                        if (dt != this.columnFilterValues[col]) {    // Check for date match on date & time fields
                                             match = false;
                                             break;                                
                                         }

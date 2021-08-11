@@ -80,6 +80,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:** 
 -   Added missing variable in the CPE for automaticOutputVariables
 -   Check for CurrencyConversion returning null values before committing any changes
+-   Fix filtering on Date and Datetime column types
  
 ## 07/18/21 -  Eric Smith -    Version 3.3.0 
 **Updates:** 

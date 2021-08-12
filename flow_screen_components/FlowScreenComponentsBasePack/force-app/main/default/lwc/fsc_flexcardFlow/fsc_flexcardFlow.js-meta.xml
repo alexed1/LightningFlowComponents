@@ -37,6 +37,7 @@
             <property name="isClickable" role="inputOnly" label="isClickable" type="Boolean" default="false" description="Set as true if you wish to select individual cards for action further downstream in flow default is false"/>
             
             <property name="Cardcss" label="Card CSS" default="card" type="String"/>
+            <property name="subheadCSS" label="Subhead CSS" default="" type="String"/>
             
             <property name="headerStyle" label="Header Style" type="String" description="Add your own style attribute to the card headers ie. background-color:red;"/>
             

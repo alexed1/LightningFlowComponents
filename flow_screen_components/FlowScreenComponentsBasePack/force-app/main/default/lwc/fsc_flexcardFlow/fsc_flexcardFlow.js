@@ -19,6 +19,7 @@ export default class fsc_FlexcardFlow extends LightningElement {
     @api allowMultiSelect;
     @api recordValue;
     @api selectedRecordIds = [];
+    @api subheadCSS;
     @track fieldHTML='';
     @track recordLayoutData={};
     @track objectInfo;

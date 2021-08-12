@@ -81,6 +81,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Added missing variable in the CPE for automaticOutputVariables
 -   Check for CurrencyConversion returning null values before committing any changes
 -   Fix filtering on Date and Datetime column types
+-   Keep Checkbox selection instead of Radio Button when table size is 1 and Single Row Selection is not activated
  
 ## 07/18/21 -  Eric Smith -    Version 3.3.0 
 **Updates:** 

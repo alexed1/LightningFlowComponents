@@ -617,7 +617,7 @@ export default class Datatable extends LightningElement {
         if (this.tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
@@ -1414,7 +1414,7 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 && this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
     }
 
     handleClearSelection() {

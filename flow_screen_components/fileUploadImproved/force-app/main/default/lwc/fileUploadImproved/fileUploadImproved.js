@@ -38,7 +38,7 @@ export default class FileUpload extends LightningElement {
         files.forEach(file => {
             var filetype;
             if(this.icon == null){
-                filetype = getIconSpecs(file.name.split('.')[1]);
+                filetype = getIconSpecs(file.name.split('.').pop());
             }
             else{
                 filetype = this.icon;

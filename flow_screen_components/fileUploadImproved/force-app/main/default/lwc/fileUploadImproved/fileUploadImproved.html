@@ -1,9 +1,9 @@
 <template>
     <lightning-card>
-        <div class="slds-p-horizontal_x-small" >
+        <div class="slds-var-p-horizontal_x-small" >
             <lightning-layout>
                 <lightning-layout-item size="6">
-                    <div class="slds-p-left_medium">
+                    <div class="slds-var-p-left_small">
                         <lightning-file-upload
                             label={label}
                             name="uploadFile"
@@ -15,12 +15,38 @@
                     </div> 
                 </lightning-layout-item>
                 <lightning-layout-item size="6">
-                    <div class="slds-p-left_medium">
-                        Uploaded Files: <br/>
-                        <template for:each={lstAllFiles} for:item="fileIterator">
-                            <div key={fileIterator} style="margin-top:10px;">
-                                <lightning-icon icon-name={icon} size="small" title="Image"></lightning-icon>
-                                &nbsp; {fileIterator}
+                    <div class="slds-var-p-left_small">
+                        <div class="slds-form-element__label">
+                            {uploadedLabelToUse}
+                        </div>
+                        <template for:each={objFiles} for:item="objFile">
+                            <div key={objFile} class="slds-var-m-bottom_small">
+                                <div class="slds-grid slds-gutters slds-grid_vertical-align-center">
+                                    <div class="slds-col slds-size_1-of-6 slds-clearfix">
+                                        <span>
+                                            <lightning-icon 
+                                                icon-name={objFile.filetype}
+                                                size="medium"
+                                                title="Doctype Icon">
+                                            </lightning-icon>
+                                        </span>
+                                    </div>
+                                    <div class="slds-col slds-size_4-of-6 slds-float_left" style='word-wrap: break-word;'>
+                                        <span>{objFile.name}</span>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-6">
+                                        <span>
+                                            <!-- sldsValidatorIgnoreNextLine -->
+                                            <lightning-button-icon
+                                                icon-name="utility:delete"
+                                                title="Delete Document"
+                                                aria-hidden="true"
+                                                onclick={deleteDocument}
+                                                data-recordid={objFile.id}>
+                                            </lightning-button-icon>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
                         </template>
                     </div>

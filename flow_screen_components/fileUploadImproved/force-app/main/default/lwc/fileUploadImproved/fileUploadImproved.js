@@ -29,14 +29,6 @@ export default class FileUpload extends LightningElement {
         }
         return this.uploadedLabelToUse;
     }
-    // set uploadedLabel(){
-    //     if(this.uploadedlabel == null){
-    //         this.uploadedLabelToUse = 'Uploaded Files:';
-    //     }
-    //     else{
-    //         this.uploadedLabelToUse = uploadedlabel;
-    //     }
-    // }
     
     handleUploadFinished(event) {
         // Get the list of uploaded files

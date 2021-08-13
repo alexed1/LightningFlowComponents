@@ -43,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.26 or later  
-FlowScreenComponentsBasePack Version 2.5.0 or later  
+FlowActionsBasePack Version 2.32 or later  
+FlowScreenComponentsBasePack Version 2.5.4 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.3.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)   
-[Version 3.3.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)
+[Version 3.3.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaRQAU)   
+[Version 3.3.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaRQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,14 +72,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## xx/xx/21 -  Eric Smith -    Version 3.3.1 
+## 08/13/21 -  Eric Smith -    Version 3.3.1 
 **Updates:** 
 -   Converted interface elements to Custom Labels so they can be Translated 
 -   Added support for Screen Readers for the visually impaired
 -   Updated all component API versions to 52.0
  
 **Bug Fixes:** 
--   Added missing variable in the CPE for automaticOutputVariables
+-   Added missing variable in the CPE to support automaticOutputVariables
 -   Check for CurrencyConversion returning null values before committing any changes
 -   Fix filtering on Date and Datetime column types
 -   Keep Checkbox selection instead of Radio Button when table size is 1 and Single Row Selection is not activated

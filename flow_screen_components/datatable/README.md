@@ -75,6 +75,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ## xx/xx/21 -  Eric Smith -    Version 3.3.1 
 **Updates:** 
 -   Converted interface elements to Custom Labels so they can be Translated 
+-   Added support for Screen Readers for the visually impaired
 -   Updated all component API versions to 52.0
  
 **Bug Fixes:** 

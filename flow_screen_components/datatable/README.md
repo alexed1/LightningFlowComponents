@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.3.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaRQAU)   
-[Version 3.3.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaRQAU)
+[Version 3.3.2 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaWQAU)   
+[Version 3.3.2 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaWQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,7 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## 08/13/21 -  Eric Smith -    Version 3.3.1 
+## 08/13/21 -  Eric Smith -    Version 3.3.2 
 **Updates:** 
 -   Converted interface elements to Custom Labels so they can be Translated 
 -   Added support for Screen Readers for the visually impaired

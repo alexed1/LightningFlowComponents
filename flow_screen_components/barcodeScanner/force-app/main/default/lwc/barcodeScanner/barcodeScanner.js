@@ -1,5 +1,6 @@
 // barcodeScanner.js
 import { LightningElement,api } from 'lwc';
+import { FlowNavigationNextEvent } from 'lightning/flowSupport';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getBarcodeScanner } from 'lightning/mobileCapabilities';
 
@@ -8,6 +9,9 @@ export default class BarcodeScanner extends LightningElement {
     myScanner;
     scanButtonDisabled = false;
     @api scannedBarcode = '';
+    @api label;
+    @api autoNavigate;
+    @api availableActions = [];
 
     // When component is initialized, detect whether to enable Scan button
     connectedCallback() {
@@ -46,7 +50,14 @@ export default class BarcodeScanner extends LightningElement {
                             variant: 'success'
                         })
                     );
+                    // Instead of making the user click next why not just keep the flow going?
+                    if(this.autoNavigate === true && this.availableActions.find(action => action ==='NEXT')){
+                        // navigate to the next screen
+                        const navigateNextEvent = new FlowNavigationNextEvent();
+                        this.dispatchEvent(navigateNextEvent);
+                    }; 
                 })
+               
                 .catch((error) => {
                     console.error(error);
 
@@ -71,6 +82,8 @@ export default class BarcodeScanner extends LightningElement {
                     // whether we completed successfully or had an error
                     this.myScanner.endCapture();
                 });
+
+                                               
         } else {
             // BarcodeScanner is not available
             // Not running on hardware with a camera, or some other context issue
@@ -89,6 +102,7 @@ export default class BarcodeScanner extends LightningElement {
                     variant: 'error'
                 })
             );
-        }
-    }
+           
+        }       
+    }      
 }

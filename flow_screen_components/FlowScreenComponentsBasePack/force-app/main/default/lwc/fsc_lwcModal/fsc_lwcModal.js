@@ -11,9 +11,6 @@ const CLASSES = {
     MODAL_HEADER: 'slds-modal__header',
     MODAL_HEADER_EMPTY: 'slds-modal__header_empty',
     MODAL_SIZE_PREFIX: 'slds-modal_',
-    MODAL_SMALL: 'slds-modal_small',
-    MODAL_MEDIUM: 'slds-modal_medium',
-    MODAL_LARGE: 'slds-modal_large',
 }
 const DEFAULTS = {
     CANCEL_BUTTON_LABEL: 'Cancel',

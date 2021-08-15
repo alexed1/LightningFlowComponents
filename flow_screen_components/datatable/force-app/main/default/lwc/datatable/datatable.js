@@ -13,6 +13,14 @@ import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturn
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
+import CancelButton from '@salesforce/label/c.ers_CancelButton';
+import SaveButton from '@salesforce/label/c.ers_SaveButton';
+import ClearSelectionButton from '@salesforce/label/c.ers_ClearSelectionButton';
+import SetFilterAction from '@salesforce/label/c.ers_SetFilterAction';
+import ClearFilterAction from '@salesforce/label/c.ers_ClearFilterAction';
+import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
+import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
+import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
@@ -21,6 +29,18 @@ const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
+
+    // Translatable Labels
+    label = {
+        CancelButton,
+        SaveButton,
+        ClearSelectionButton,
+        SetFilterAction,
+        ClearFilterAction,
+        ColumnHeader,
+        FilterHeader,
+        LabelHeader
+    };
 
     // Component Input & Output Attributes
     @api tableData = [];
@@ -475,8 +495,8 @@ export default class Datatable extends LightningElement {
                     column: col,
                     filter: colFilter,
                     actions: [
-                        {label: 'Set Filter', disabled: false, name: 'filter_' + col, iconName: 'utility:filter'},
-                        {label: 'Clear Filter', disabled: true, name: 'clear_' + col, iconName: 'utility:clear'}
+                        {label: this.label.SetFilterAction, disabled: false, name: 'filter_' + col, iconName: 'utility:filter'},
+                        {label: this.label.ClearFilterAction, disabled: true, name: 'clear_' + col, iconName: 'utility:clear'}
                     ]
                 });
                 this.filterAttribType = 'cols';
@@ -597,7 +617,7 @@ export default class Datatable extends LightningElement {
         if (this.tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length;
+            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
@@ -975,8 +995,8 @@ export default class Datatable extends LightningElement {
                     filterAttrib.column = columnNumber; 
                     filterAttrib.filter = true;
                     filterAttrib.actions = [
-                        {label: 'Set Filter', disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
-                        {label: 'Clear Filter', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
+                        {label: this.label.SetFilterAction, disabled: false, name: 'filter_' + columnNumber, iconName: 'utility:filter'},
+                        {label: this.label.ClearFilterAction, disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'}
                     ]; 
                     break;
                 default:
@@ -1394,7 +1414,7 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 || this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 && this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
     }
 
     handleClearSelection() {
@@ -1448,8 +1468,8 @@ export default class Datatable extends LightningElement {
         this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
         this.columnNumber = Number(colDef.actions[0].name.split("_")[1]);
         this.baseLabel = this.filterColumns[this.columnNumber].label.split(' [')[0];
-        const prompt = (this.isConfigMode) ? 'Label' : 'Filter';
-        this.inputLabel = 'Column ' + prompt + ': ' + this.baseLabel;
+        const prompt = (this.isConfigMode) ? this.label.LabelHeader : this.label.FilterHeader;
+        this.inputLabel = this.label.ColumnHeader + ' ' + prompt + ': ' + this.baseLabel;
         switch(actionName.split('_')[0]) {
 
             case 'alignl':   // Config Mode Only
@@ -1777,16 +1797,39 @@ export default class Datatable extends LightningElement {
                                     match = false;
                                     break; 
                                 }                   
-
+                                
                                 switch(this.filterColumns[col].type) {
                                     case 'number':
                                     case 'currency':
                                     case 'percent':
-                                    case 'date':
+                                        if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
+                                            match = false;
+                                            break;                                
+                                        }
+                                        break;
                                     case 'date-local':
+                                        let dl = row[fieldName];
+                                        let dtf = new Intl.DateTimeFormat('en', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit'
+                                        });
+                                        const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                        let formatedDate = `${ye}-${mo}-${da}`;
+                                        if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
+                                            match = false;
+                                            break;                                
+                                        }
+                                        break;
+                                    case 'date':
                                     case 'datetime':
                                     case 'time':
-                                        if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric and date fields
+                                        if (typeof(row[fieldName]) === typeof(+1)) { 
+                                            match = false;
+                                            break;  //TODO - Figure out a way to filter on Time fields
+                                        }
+                                        let dt = row[fieldName].slice(0,10);
+                                        if (dt != this.columnFilterValues[col]) {    // Check for date match on date & time fields
                                             match = false;
                                             break;                                
                                         }

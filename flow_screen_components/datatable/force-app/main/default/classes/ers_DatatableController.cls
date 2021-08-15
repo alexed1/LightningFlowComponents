@@ -15,6 +15,8 @@
  *              use the recordId values in the lookup fields get the values
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
+ * 
+ * 08/13/21 -   Eric Smith -    Version 3.3.2   Check for invalid Currency Conversion before committing any changes
  *   
  * 06/13/21 -   Eric Smith -    Version 3.2.3   Return all Picklist values when the running user doesn't have Read access to table's SObject
  * 
@@ -316,7 +318,9 @@ public with sharing class ers_DatatableController {
             for (SObject so : records) {
                 SObject converted = sobjCurrencyFields.get(so.Id);
                 for (String currField : currencyFields) {
-                    so.put(currField, converted.get(currField));
+                    if (converted.get(currField) != null) {
+                        so.put(currField, converted.get(currField));
+                    }
                 }
             }
         }

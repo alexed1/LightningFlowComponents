@@ -63,6 +63,7 @@ export default class ers_datatableCPE extends LightningElement {
     _flowVariables;
     _elementType;
     _elementName;
+    _automaticOutputVariables;
 
     // These are the parameter values being seeded to & coming back from the Wizard Flow
     _wiz_columnFields;

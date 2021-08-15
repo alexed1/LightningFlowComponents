@@ -56,8 +56,8 @@ Features:   The only required paramters are the SObject collection of records an
                             </c-fsc_pick-icon>
                         </div>
                         <footer class="slds-modal__footer">
-                            <button class="slds-button slds-button_neutral" onclick={handleCloseIconModal}>Cancel</button>
-                            <button class="slds-button slds-button_brand" onclick={handleCommitIconSelection}>Save</button>
+                            <button class="slds-button slds-button_neutral" onclick={handleCloseIconModal}>{label.CancelButton}</button>
+                            <button class="slds-button slds-button_brand" onclick={handleCommitIconSelection}>{label.SaveButton}</button>
                         </footer>
                     </div>
                 </section>
@@ -86,8 +86,8 @@ Features:   The only required paramters are the SObject collection of records an
                             ></lightning-input>
                         </div>
                         <footer class="slds-modal__footer">
-                            <button class="slds-button slds-button_neutral" onclick={handleCloseModal}>Cancel</button>
-                            <button class="slds-button slds-button_brand" onclick={handleCommit}>Save</button>
+                            <button class="slds-button slds-button_neutral" onclick={handleCloseModal}>{label.CancelButton}</button>
+                            <button class="slds-button slds-button_brand" onclick={handleCommit}>{label.SaveButton}</button>
                         </footer>
                     </div>
                 </section>
@@ -128,6 +128,7 @@ Features:   The only required paramters are the SObject collection of records an
 
             <div style={tableHeightAttribute} class={borderClass} id="datatable">
                 <c-ers_custom-lightning-datatable
+                    aria-label={tableLabel}
                     data={mydata}
                     columns={columns}
                     key-field={keyField}
@@ -150,7 +151,7 @@ Features:   The only required paramters are the SObject collection of records an
                 >
                 </c-ers_custom-lightning-datatable>
                 <div if:true={showClearButton} class="slds-m-top_x-small">
-                    <lightning-button variant="brand-outline" label="Clear Selection" icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
+                    <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
                 </div>
             </div>
             <div if:true={isWorking}>

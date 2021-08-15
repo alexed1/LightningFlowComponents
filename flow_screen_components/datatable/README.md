@@ -43,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.26 or later  
-FlowScreenComponentsBasePack Version 2.5.0 or later  
+FlowActionsBasePack Version 2.32 or later  
+FlowScreenComponentsBasePack Version 2.5.4 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.3.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)   
-[Version 3.3.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xMwQAI)
+[Version 3.3.2 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaWQAU)   
+[Version 3.3.2 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUaWQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,6 +72,18 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 08/13/21 -  Eric Smith -    Version 3.3.2 
+**Updates:** 
+-   Converted interface elements to Custom Labels so they can be Translated 
+-   Added support for Screen Readers for the visually impaired
+-   Updated all component API versions to 52.0
+ 
+**Bug Fixes:** 
+-   Added missing variable in the CPE to support automaticOutputVariables
+-   Check for CurrencyConversion returning null values before committing any changes
+-   Fix filtering on Date and Datetime column types
+-   Keep Checkbox selection instead of Radio Button when table size is 1 and Single Row Selection is not activated
+ 
 ## 07/18/21 -  Eric Smith -    Version 3.3.0 
 **Updates:** 
 -   Added a custom object (ers_datatableConfig) to provide the ability to Save and Retrieve column configuration attributes
@@ -82,7 +94,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fixed an error that ocurred when trying to save an edited row from a datatable that contained a time field 
 -   Fixed a bug that kept Date and Time fields from displaying in datatables when the User's locale displays numbers with a . separator
 -   Rows with editable picklist fields will not default to a taller height (Even without picklist fields, all rows will still be slightly taller if any fields are editable)
-
+ 
 ## 06/26/21 -  Eric Smith -    Version 3.2.4 
 **Updates:** 
 -   New Output Attribute for the Number of Rows Edited (Because even when no rows are edited, the OutputEditedRows attribute is not null)
@@ -126,7 +138,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     (Does not yet support Dependent picklists nor filtering by Record Type)
 -   Changed Table Header font from 1.5em to 1.2em to match the format of List Views
 -   Renamed components used by Datatable to reduce conflicts and allow easier upgrading from older versions
-
+ 
 **Bug Fixes:**
 -   Do not display a header if there is a Header Label value but the Display Table Header attribute is not checked
 -   Make output attributes available to visibility filters (this was inadvertantly removed from some prior releases)
@@ -134,13 +146,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     (Edited percent fields must be the actual number ie: .25 = 25%)
     (Edited percent fields lose 2 decimal places during the edit from what is defined for the field)
 -   Edited date fields will stay in the User's local time-zone rather than switching to UTC
-
+ 
 ## 04/15/21 -  Eric Smith -    Version 3.1.1 
 **Updates:** 
 -   Moved the "Display ALL Objects for Selection" choice in the CPE from Advanced to Data Source
 -   Added an attribute to hide all column header actions such as Sort, Clip/Wrap Text and Filters
 -   If Multi-Currency is enabled, convert currency field values to the User's currency (Thanks to Novarg1)
-
+ 
 **Bug Fixes:**
 -   Text formula fields will now wrap correctly
 -   Display ALL Objects for Selection attribute is now persistent
@@ -363,7 +375,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Unlike the original datatable component, only the edited records will be passed back to the flow  
 -   The maximum number of rows to display can be set by the user  
 -   Optional attribute overrides are supported and can be specified by list, column # or by field name, including:  
-
+ 
                 - Alignment               
                 - Editable
                 - Header Icon

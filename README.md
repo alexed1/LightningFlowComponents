@@ -1,5 +1,5 @@
 
-A collection of installable extensions for Salesforce Flow. Note that you do not need to write code, read code, or use developer console to install these into your Flow Builder! You can install many of these components as packages over at [UnofficialSF site](http://unofficialsf.com). 
+A collection of installable extensions for Salesforce Flow. Note that you do not need to write code, read code, or use developer console to install these into your Flow Builder! You can install many of these components as packages over at [UnofficialSF](http://unofficialsf.com). 
 
 
 # Flow Screen Components
@@ -25,6 +25,8 @@ This mainly means that they:
 
 Local Actions generally do not have a visual focus, although they have to run inside of Screen Flows to ensure the presence of a client-side javascript runtime.
 
+# Flow Apps
+This directory contains utilities and tools that don't fall neatly into one of the above two main categories of extensions.
 
 # Setup Notes
 Before adding any lightning component to your flow, your org must be enabled for lightning components. This means:
@@ -34,7 +36,8 @@ Before adding any lightning component to your flow, your org must be enabled for
 You do not need to be using the lightning experience to use these flow extensions.
 
 # Submissions Encouraged!
-Have you built a useful or interesting Flow Component? We encourage you to make a pull request and add it to this repo. Also feel free to enhance or fix any existing component. General conversations about the components is carried out in the Issues section above or at these communities:
-[UnofficialSF Trailblazer Community](https://unofficialsf.com/understanding-flow-local-actions/)
+Have you built a useful or interesting Flow Component? We encourage you to make a pull request and add it to this repo. Also feel free to enhance or fix any existing component. General conversations about these components are carried out in the Issues section above and at these communities:
+[UnofficialSF Trailblazer Community](https://trailhead.salesforce.com/trailblazer-community/groups/0F93A000000DPr6SAG?tab=discussion)
 [Salesforce Automation Trailblazer Community](https://success.salesforce.com/_ui/core/chatter/groups/GroupProfilePage?g=0F9300000001rzcCAA).
+
 

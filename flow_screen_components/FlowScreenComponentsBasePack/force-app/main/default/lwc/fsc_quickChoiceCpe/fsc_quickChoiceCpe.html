@@ -99,8 +99,8 @@
         <lightning-input type="number" label={inputValues.style_width.label} name="select_style_width"
                 value={inputValues.style_width.value} onchange={handleValueChange}></lightning-input>
 
-        <c-lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave}
-                validate-on-confirm=true>
+        <c-fsc_lwc-modal header="Edit Static Choices" confirm-button-label="Done" onconfirm={handleStaticChoicesSave}
+                validate-on-confirm=true class={staticChoicesModalClass}>
                 <div class="slds-grid slds-wrap">
                         <div
                                 class="columnHeaders slds-col slds-size_1-of-1 slds-p-bottom_xxx-small slds-grid slds-text-title_bold">
@@ -189,7 +189,7 @@
 
                         </div>
                 </div>
-        </c-lwc-modal>
+        </c-fsc_lwc-modal>
         <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">
                 QuickChoice Version #: {versionNumber}
         </div>

@@ -20,7 +20,7 @@ if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '3.3.0',   // Current Source Code Version #
+        VERSION_NUMBER : '3.3.2',   // Current Source Code Version #
         MAXROWCOUNT : 1000,         // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,             // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,            // Number of records to display in the Column Wizard datatable

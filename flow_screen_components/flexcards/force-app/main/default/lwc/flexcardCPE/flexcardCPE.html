@@ -1,11 +1,38 @@
 <template>
+    <c-fsc_flow-banner
+        banner-color="#4C6E96" 
+        banner-label="Record and Object Information"
+    ></c-fsc_flow-banner>
+
     <c-fsc_pick-object-and-field
      object-label={inputValues.objectAPIName.label}
-     object-type='Account'
+     object-type={inputValues.objectAPIName.value}
      is-allow-all=true
      hide-field-picklist=true>
     </c-fsc_pick-object-and-field>
-    
+
+    <c-fsc_flow-combobox
+    name="select_Fields"
+    label={inputValues.visibleFieldNames.label}
+    value={inputValues.visibleFieldNames.value}
+    value-type={inputValues.visibleFieldNames.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.visibleFieldNames.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox
+    name="select_Records"
+    label={inputValues.records.label}
+    value={inputValues.records.value}
+    value-type={inputValues.records.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.records.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+
     <c-fsc_flow-combobox
     name="select_Values"
     label={inputValues.value.label}
@@ -17,14 +44,90 @@
     onvaluechanged={handleFlowComboboxValueChange}
     ></c-fsc_flow-combobox>
 
+    <c-fsc_flow-banner
+        banner-color="#4C6E96" 
+        banner-label="Component Styling"
+    ></c-fsc_flow-banner>
+
     <c-fsc_flow-combobox
-                    name="select_icon"
-                    label={inputValues.icon.label}
-                    value={inputValues.icon.value}
-                    value-type={inputValues.icon.valueDataType}
-                    builder-context-filter-type="String"
-                    builder-context-filter-collection-boolean={inputValues.icon.isCollection}
-                    builder-context={_builderContext}
-                    onvaluechanged={handleFlowComboboxValueChange}
+    name="select_CardSize"
+    label={inputValues.cardSize.label}
+    value={inputValues.cardSize.value}
+    value-type={inputValues.cardSize.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.cardSize.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
     ></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox
+    name="select_HeaderStyle"
+    label={inputValues.headerStyle.label}
+    value={inputValues.headerStyle.value}
+    value-type={inputValues.headerStyle.valueDataType}
+    field-level-help={inputValues.headerStyle.helpText}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.headerStyle.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+    
+    <c-fsc_flow-combobox
+    name="select_Labels"
+    label={inputValues.label.label}
+    value={inputValues.label.value}
+    value-type={inputValues.label.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.label.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+
+    <c-fsc_pick-icon
+    name="select_Icons"
+    mode="tab"
+    oniconselection={handlePickIcon}
+    icon-name={inputValues.icon.value}>
+    </c-fsc_pick-icon>
+    
+    <c-fsc_flow-banner
+        banner-color="#4C6E96" 
+        banner-label="Flex Card Actions"
+    ></c-fsc_flow-banner>
+
+    <c-fsc_flow-combobox
+    name="select_VisibleFlowNames"
+    label={inputValues.visibleFlowNames.label}
+    value={inputValues.visibleFlowNames.value}
+    value-type={inputValues.visibleFlowNames.valueDataType}
+    builder-context-filter-type="String"
+    builder-context-filter-collection-boolean={inputValues.visibleFlowNames.isCollection}
+    builder-context={_builderContext}
+    onvaluechanged={handleFlowComboboxValueChange}
+    ></c-fsc_flow-combobox>
+
+    <c-fsc_flow-checkbox
+    name="select_IsClickable"
+    label={inputValues.isClickable.label}
+    checked={inputValues.isClickable.value}
+    field-level-help={inputValues.isClickable.helpText}
+    oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
+    name="select_AllowMultiSelect"
+    label={inputValues.allowMultiSelect.label}
+    checked={inputValues.allowMultiSelect.value}
+    field-level-help={inputValues.allowMultiSelect.helpText}
+    oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
+    name="select_TransitionOnClick"
+    label={inputValues.transitionOnClick.label}
+    checked={inputValues.transitionOnClick.value}
+    field-level-help={inputValues.transitionOnClick.helpText}
+    oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
 </template>

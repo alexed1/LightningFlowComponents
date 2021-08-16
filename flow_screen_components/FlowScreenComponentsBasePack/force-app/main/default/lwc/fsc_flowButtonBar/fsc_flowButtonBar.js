@@ -47,6 +47,8 @@ export default class FlowButtonBar extends LightningElement {
 
     @api previewMode;   // Reserved for future use
 
+    @api cssString; // add style for buttons
+
     // @api includeLine; replaced by showLines    
     // @api groupAsToggle;  replaced by actionMode
     // @api doNotTransitionOnClick;   replaced by actionMode

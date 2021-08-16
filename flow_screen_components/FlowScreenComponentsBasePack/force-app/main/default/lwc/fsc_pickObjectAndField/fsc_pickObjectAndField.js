@@ -1,7 +1,7 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
-import getObjects from '@salesforce/apex/usf.FieldPickerController.getObjects'; // Requires Greater Than v2.6
+import getObjects from '@salesforce/apex/FieldPickerController.getObjects'; // Requires Greater Than v2.6
 import {standardObjectOptions} from 'c/fsc_pickObjectAndFieldUtils';
 import NonePicklistValueLabel from '@salesforce/label/c.fsc_NonePicklistValueLabel';
 import FieldIsNotSupportedMessage from '@salesforce/label/c.fsc_FieldIsNotSupportedMessage';

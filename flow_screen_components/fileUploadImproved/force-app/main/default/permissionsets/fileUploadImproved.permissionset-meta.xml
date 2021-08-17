@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>FileUploadImprovedHelper</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Assign this permission set to any community users who will be accessing the fileUploadImproved component via flow. This permission set grants them access to FileUplodImprovedHelper.cls.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>fileUploadImproved</label>
+</PermissionSet>

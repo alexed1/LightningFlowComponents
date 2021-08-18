@@ -9,7 +9,8 @@ const CLASSES = {
     CANCEL_BUTTON: 'cancelButton',
     CONFIRM_BUTTON: 'confirmButton',
     MODAL_HEADER: 'slds-modal__header',
-    MODAL_HEADER_EMPTY: 'slds-modal__header_empty'
+    MODAL_HEADER_EMPTY: 'slds-modal__header_empty',
+    MODAL_SIZE_PREFIX: 'slds-modal_',
 }
 const DEFAULTS = {
     CANCEL_BUTTON_LABEL: 'Cancel',
@@ -36,9 +37,11 @@ export default class LwcModal extends LightningElement {
     @api confirmButtonLabel;    // Label of the Confirm button
     @api confirmButtonVariant = DEFAULTS.CONFIRM_BUTTON_VARIANT;  // Label of the Confirm button
     @api validateOnConfirm; // Boolean that controls whether the modal runs validation on slotted input components before dispatching the Confirm action
+    @api size;  // Controls modal size. Valid values are small, medium and large
     @api customButtons; // Reserved for future use
     @api isDefault; // Reserved for future use
     @api focusSelectorString; // Reserved for future use
+    
     // @api isConfirmationModal; // No longer used
 
     /* PUBLIC GETTERS/SETTERS */
@@ -113,6 +116,7 @@ export default class LwcModal extends LightningElement {
 
     /* PRIVATE PROPERTIES */
     _confirmation = {};
+    _size;
     @track focusableElements = [];
     @track buttons = [];
     cancelValue = CANCEL;
@@ -143,6 +147,9 @@ export default class LwcModal extends LightningElement {
         this.focusIndex = 0;
         this.updateFocusableElements();
         this.setFocus();
+        if (this.size) {
+            this.template.querySelector('section').classList.add(CLASSES.MODAL_SIZE_PREFIX + this.size);
+        }
     }
 
     isFocusable(el) {

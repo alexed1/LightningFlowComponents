@@ -5,10 +5,10 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.26.0-0"
+                    "package": "FlowActionsBasePack@2.32.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@2.5.0-0"
+                    "package": "FlowScreenComponentsBasePack@2.5.4-0"
                 }
             ],
             "package": "datatable",
@@ -55,6 +55,10 @@
         "FlowActionsBasePack@2.26.0-0": "04t4W00000308RmQAI",
         "FlowScreenComponentsBasePack@2.5.0-0": "04t5G0000047xMDQAY",
         "datatable@3.2.5-0": "04t5G0000047xMmQAI",
-        "datatable@3.3.0-0": "04t5G0000047xMwQAI"
+        "datatable@3.3.0-0": "04t5G0000047xMwQAI",
+        "FlowActionsBasePack@2.32.0-0": "04t4W0000034KebQAE",
+        "FlowScreenComponentsBasePack@2.5.4-0": "04t5G000003rUaHQAU",
+        "datatable@3.3.1-0": "04t5G000003rUaRQAU",
+        "datatable@3.3.2-0": "04t5G000003rUaWQAU"
     }
 }

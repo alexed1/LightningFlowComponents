@@ -1,6 +1,6 @@
 import { LightningElement, api, track } from 'lwc';
 
-export default class ListBuilder extends LightningElement {
+export default class fsc_KeyValuePairBuilderContainer extends LightningElement {
 
 
     @api masterLabel;

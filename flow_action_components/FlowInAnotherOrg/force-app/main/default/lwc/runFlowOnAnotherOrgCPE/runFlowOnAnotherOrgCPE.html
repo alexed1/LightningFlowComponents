@@ -88,14 +88,14 @@
 
 
 
-    <c-list-builder 
+    <c-fsc_key-value-pair-builder-container 
         master-label={labels.Flow_Inputs}
         add-button-label={labels.Add_Input} 
         list-data={inputsJSON} 
         onchangelist={changeInputsJSON}
         builder-context={builderContext}
         automatic-output-variables={automaticOutputVariables}>
-    </c-list-builder>
+    </c-fsc_key-value-pair-builder-container>
 
     <lightning-input type="checkbox" checked={useFutureMethod} label={labels.Use_future_Method} class="slds-m-around_medium" onchange={changeUseFutureMethod}></lightning-input>
     

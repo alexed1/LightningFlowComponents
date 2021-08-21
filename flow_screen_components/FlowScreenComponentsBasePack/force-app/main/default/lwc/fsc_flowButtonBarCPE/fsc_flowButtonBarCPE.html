@@ -58,6 +58,8 @@
                 <article>
                     <lightning-input label={inputValues.label.label} name="label" value={inputValues.label.value}
                         onchange={handleInputValueChange}></lightning-input>
+                        <lightning-input label={inputValues.cssString.label} name="cssString" value={inputValues.cssString.value}
+                        onchange={handleInputValueChange}></lightning-input>
 
                     <c-fsc_flow-button-bar label={inputValues.actionMode.label} name="actionMode"
                         options={actionModes.options} value={inputValues.actionMode.value}

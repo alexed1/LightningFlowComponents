@@ -7,13 +7,13 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property description="The text on the file upload button." type="String" name="label" role="inputOnly" label='File Upload Label'/>
+            <property description="The text on the file upload button." type="String" name="label" label='File Upload Label'/>
             <property description="The text on the list of files uploaded. The default label is 'Uploaded Files:'." type="String" name="uploadedlabel" role="inputOnly" label='Uploaded File List Label'/>
             <property description="The accepted file types. Enter a comma-separated list of the file extensions (such as .jpg) that the user can upload." type="String" name="acceptedFormats" role="inputOnly" label="Accepted Formats"/>
             <property description="Lets the user upload multiple files" type="Boolean" name="allowMultiple"  role="inputOnly" label="Allow Multiple Files"/>
             <property description="The Ids of the uploaded files. Store this value in a text collection variable." type="String[]" name="contentDocumentIds" role="outputOnly" label='Content Document Ids'/>
             <property description="The Version Ids of the uploaded files. Store this value in a text collection variable." type="String[]" name="contentVersionIds" role="outputOnly" label='Content Version Ids'/>
-            <property description="The Id of the record to associate the files with." type="String" name="recordId" role="inputOnly" label='Related Record Id'/>
+            <property description="The Id of the record to associate the files with." type="String" name="recordId" label='Related Record Id'/>
             <property description="The names of the uploaded files. Store this value in a text collection variable." type="String[]" name="uploadedFileNames" role="outputOnly" label='Uploaded File Names'/>
             <property description="Require the user to upload at least one file." type="Boolean" name="required" role="inputOnly" label='Required'/>
             <property description="The validation message displayed if the user has not uploaded at least one file. The default message is 'Upload at least one file.'" type="String" name="requiredMessage" role="inputOnly" label='Required Validation Message'/>

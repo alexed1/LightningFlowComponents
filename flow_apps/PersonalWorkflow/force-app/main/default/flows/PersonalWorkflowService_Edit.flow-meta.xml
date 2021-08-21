@@ -627,14 +627,9 @@
                 <name>Edit_Personal_Workflow_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Trigger</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>Reload_Personal_Workflow.Trigger_Description__c</elementReference>
-                    </defaultValue>
-                    <fieldText>Trigger</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
+                    <name>TriggerDescription</name>
+                    <fieldText>&lt;p&gt;Trigger&lt;/p&gt;&lt;p&gt;{!Reload_Personal_Workflow.Trigger_Description__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -708,14 +703,9 @@
                 <name>Edit_Personal_Workflow_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Action</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>Reload_Personal_Workflow.Action_Description__c</elementReference>
-                    </defaultValue>
-                    <fieldText>Action</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
+                    <name>ActionDescription</name>
+                    <fieldText>&lt;p&gt;Activity &lt;/p&gt;&lt;p&gt;{!Reload_Personal_Workflow.Action_Description__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -986,7 +976,7 @@
             <name>Trigger_Label</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>Trigger</elementReference>
+                <elementReference>Reload_Personal_Workflow.Trigger_Description__c</elementReference>
             </defaultValue>
             <fieldText>Trigger Label</fieldText>
             <fieldType>InputField</fieldType>
@@ -1169,7 +1159,7 @@
             <name>Action_Label</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>Action</elementReference>
+                <elementReference>Reload_Personal_Workflow.Action_Description__c</elementReference>
             </defaultValue>
             <fieldText>Action Label</fieldText>
             <fieldType>InputField</fieldType>
@@ -1194,77 +1184,6 @@
         </connector>
     </start>
     <status>Active</status>
-    <textTemplates>
-        <name>TriggerFlowTemplate</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;Flow xmlns=&quot;http://soap.sforce.com/2006/04/metadata&quot;&gt;
-    &lt;actionCalls&gt;
-        &lt;name&gt;Post_to_Slack&lt;/name&gt;
-        &lt;label&gt;Post to Slack&lt;/label&gt;
-        &lt;locationX&gt;176&lt;/locationX&gt;
-        &lt;locationY&gt;335&lt;/locationY&gt;
-        &lt;actionName&gt;PostToSlack&lt;/actionName&gt;
-        &lt;actionType&gt;apex&lt;/actionType&gt;
-        &lt;flowTransactionModel&gt;CurrentTransaction&lt;/flowTransactionModel&gt;
-        &lt;inputParameters&gt;
-            &lt;name&gt;channelId&lt;/name&gt;
-            &lt;value&gt;
-                &lt;stringValue&gt;qwerty&lt;/stringValue&gt;
-            &lt;/value&gt;
-        &lt;/inputParameters&gt;
-        &lt;storeOutputAutomatically&gt;true&lt;/storeOutputAutomatically&gt;
-    &lt;/actionCalls&gt;
-    &lt;apiVersion&gt;52.0&lt;/apiVersion&gt;
-    &lt;interviewLabel&gt;test workflow trigger {!$Flow.CurrentDateTime}&lt;/interviewLabel&gt;
-    &lt;label&gt;{!Trigger}&lt;/label&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;BuilderType&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;CanvasMode&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;AUTO_LAYOUT_CANVAS&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;OriginBuilderType&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processType&gt;AutoLaunchedFlow&lt;/processType&gt;
-    &lt;start&gt;
-        &lt;locationX&gt;50&lt;/locationX&gt;
-        &lt;locationY&gt;0&lt;/locationY&gt;
-        &lt;connector&gt;
-            &lt;targetReference&gt;Post_to_Slack&lt;/targetReference&gt;
-        &lt;/connector&gt;
-        &lt;filterLogic&gt;and&lt;/filterLogic&gt;
-        &lt;filters&gt;
-            &lt;field&gt;Name&lt;/field&gt;
-            &lt;operator&gt;IsNull&lt;/operator&gt;
-            &lt;value&gt;
-                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
-            &lt;/value&gt;
-        &lt;/filters&gt;
-        &lt;filters&gt;
-            &lt;field&gt;BillingCity&lt;/field&gt;
-            &lt;operator&gt;IsNull&lt;/operator&gt;
-            &lt;value&gt;
-                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
-            &lt;/value&gt;
-        &lt;/filters&gt;
-        &lt;object&gt;{!contextObjectType.objectType}&lt;/object&gt;
-        &lt;recordTriggerType&gt;Create&lt;/recordTriggerType&gt;
-        &lt;triggerType&gt;RecordAfterSave&lt;/triggerType&gt;
-    &lt;/start&gt;
-    &lt;status&gt;InvalidDraft&lt;/status&gt;
-&lt;/Flow&gt;</text>
-    </textTemplates>
     <variables>
         <name>choicesEventValues</name>
         <dataType>String</dataType>

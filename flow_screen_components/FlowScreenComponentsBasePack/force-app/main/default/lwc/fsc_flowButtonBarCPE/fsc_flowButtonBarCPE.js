@@ -84,7 +84,7 @@ export default class FlowButtonBarCPE extends LightningElement {
     @track inputValues = {
         buttons: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Buttons' },
         label: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Label' },
-
+        cssString: { value: null, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'CSS String' },
         alignment: { value: this.alignments.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Alignment' },
         orientation: { value: this.orientations.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Orientation' },
         showLines: { value: this.showLines.default.value, valueDataType: DATA_TYPE.STRING, isCollection: false, label: 'Display horizontal line(s)' },

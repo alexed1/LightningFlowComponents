@@ -1,6 +1,9 @@
-import { LightningElement, track, api } from 'lwc';
+import { LightningElement, track, api, wire } from 'lwc';
 import { deleteRecord } from 'lightning/uiRecordApi';
- 
+import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
+import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
+import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
+
 export default class FileUpload extends LightningElement {
     @api recordId;
     @api label;
@@ -13,6 +16,7 @@ export default class FileUpload extends LightningElement {
     @api acceptedFormats;
     @api required;
     @api requiredMessage;
+    @api community;
     @track objFiles = [];
     @track docIds =[];
     @track versIds = [];
@@ -28,6 +32,26 @@ export default class FileUpload extends LightningElement {
             this.uploadedLabelToUse = this.uploadedlabel;
         }
         return this.uploadedLabelToUse;
+    }
+
+    key;
+    @wire(getKey) key;
+
+    value = '';
+    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'})
+    wiredEncryption({ data }) {
+        if(this.community === true){
+            this.value = data;
+        }
+    }
+
+    recordIdToUse = '';
+    @api
+    get communityDetails(){
+        if(this.community != true){
+            this.recordIdToUse = this.recordId;
+        }
+        return this.recordIdToUse;
     }
     
     handleUploadFinished(event) {
@@ -57,6 +81,10 @@ export default class FileUpload extends LightningElement {
         this.contentDocumentIds=this.docIds;
         this.contentVersionIds=this.versIds;
         this.uploadedFileNames=this.fileNames;
+
+        if(this.community === true){
+            createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
+        }
         
         function getIconSpecs(docType){
             switch(docType){

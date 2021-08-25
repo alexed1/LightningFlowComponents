@@ -21,7 +21,7 @@ import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from 'lightning/flowS
 export default class TransferMetadata extends LightningElement {
  
     contacts;
-    error;
+    @api error;
 
     @track jobId;
 
@@ -71,7 +71,7 @@ export default class TransferMetadata extends LightningElement {
         .catch(error => {
             console.log('An error occurred on the initial retrieve call:');    
             this.activity = 'Error: ' + JSON.stringify(error.body.message);
-            this.error = error;
+            this.error = 'Error: ' + JSON.stringify(error.body.message);
         });
     }
 
@@ -110,7 +110,7 @@ export default class TransferMetadata extends LightningElement {
         .catch(error => {
             console.log('error calling fsc_deployMetadata from transfer');
             this.activity = 'Error: ' + JSON.stringify(error.body.message);
-            this.error = error;
+            this.error = 'Error: ' + JSON.stringify(error.body.message);
         });
     }
     
@@ -162,7 +162,8 @@ export default class TransferMetadata extends LightningElement {
                 //console.log('not done yet. jobid is: ' + this.jobId);
                 console.log ('deployment failed');
                 console.log ( result);
-                self.activity = result;   
+                self.activity = result;
+                self.error = result;  
             }
         });
  

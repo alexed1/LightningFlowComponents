@@ -8,7 +8,9 @@
                             label={label}
                             name="uploadFile"
                             accept={acceptedFormats}
-                            record-id={recordId}    
+                            record-id={recordIdToUse}
+                            file-field-name='Guest_Record_fileupload__c'
+                            file-field-value={value}
                             onuploadfinished={handleUploadFinished}
                             multiple={allowMultiple}>
                         </lightning-file-upload>

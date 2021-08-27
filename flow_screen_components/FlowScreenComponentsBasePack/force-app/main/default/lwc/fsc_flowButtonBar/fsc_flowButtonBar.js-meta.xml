@@ -25,7 +25,9 @@
                 <property name="defaultValue" label="Default Value" type="String" role="inputOnly"></property>
 
                 <property name="value" label="Value" type="String"></property>
-                <property name="values" label="Values" type="String[]"></property>                
+                <property name="values" label="Values" type="String[]"></property>    
+                
+                <property name="cssString" label="CSS String" type="String"></property>
 
                 <!-- Output -->
                 <!-- <property name="selectedValue" label="Selected Value" type="string" description="Value that holds the label of the button that's clicked, pass this to a Decision block to route the Flow"></property> -->

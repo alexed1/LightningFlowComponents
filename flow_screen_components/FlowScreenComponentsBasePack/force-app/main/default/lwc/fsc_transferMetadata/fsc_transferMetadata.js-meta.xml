@@ -10,6 +10,7 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="zipFileString" type="String" role="outputOnly" description="Contents of the Zip File returned by the Retrieve operation."/>
             <property name="extractedMetadataString" type="String" role="outputOnly" description="Contents of the retrieved metadata file extracted from the Zip File."/>
+            <property name="error" type="String" role="outputOnly" description="Error"/>
             <property name="escapedMetadataString" type="String" role="outputOnly" description="Escaped version of the extracted file.  Useful if you want to display the file in the Flow."/>
             <property name="metadataName" type="String" role="inputOnly" description="API Name of the metadata"/>
             <property name="transferMode" type="String" role="inputOnly"  description="Options are: retrieve or deploy"/>

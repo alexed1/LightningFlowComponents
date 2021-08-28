@@ -1,7 +1,7 @@
 import { LightningElement, api } from 'lwc';
-import Key_Label from '@salesforce/label/c.Key_Label';
-import Value_Label from '@salesforce/label/c.Value_Label';
-export default class ParamsInput extends LightningElement {
+import Key_Label from '@salesforce/label/c.fsc_Key_Label';
+import Value_Label from '@salesforce/label/c.fsc_Value_Label';
+export default class fsc_keyValuePairBuilderRow extends LightningElement {
     @api entity = {};
 
     labels = {

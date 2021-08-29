@@ -104,21 +104,9 @@
             <targetReference>Create_Personal_Workflow_Trigger</targetReference>
         </connector>
         <inputAssignments>
-            <field>Action_Description__c</field>
-            <value>
-                <stringValue>No Activity Yet!</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>Name</field>
             <value>
                 <elementReference>Name</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>Trigger_Description__c</field>
-            <value>
-                <stringValue>No Trigger Yet!</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -144,7 +132,7 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <field>TriggerFilterType__c</field>
+            <field>TriggerType__c</field>
             <value>
                 <stringValue>None</stringValue>
             </value>
@@ -199,19 +187,19 @@
         <locationY>567</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
+        <allowPause>false</allowPause>
         <connector>
             <targetReference>Get_Personal_Workflow</targetReference>
         </connector>
         <fields>
             <name>Name</name>
             <dataType>String</dataType>
-            <fieldText>Name</fieldText>
+            <fieldText>Name your New Workflow</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Message_Screen</name>
@@ -235,7 +223,7 @@
     <screens>
         <name>Screen1</name>
         <label>Screen1</label>
-        <locationX>601</locationX>
+        <locationX>600</locationX>
         <locationY>412</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -243,6 +231,11 @@
         <connector>
             <targetReference>Is_New_Workflow</targetReference>
         </connector>
+        <fields>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;My Personal Workflows&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>NewWorkflow</name>
             <extensionName>c:fsc_flowButtonBar</extensionName>
@@ -280,11 +273,6 @@
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <fields>
-            <name>disp1</name>
-            <fieldText>&lt;p&gt;Your Personal Workflows&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
         </fields>
         <fields>
             <name>flexcardsPersonalWorkflows</name>
@@ -337,9 +325,8 @@
                 <name>value</name>
             </outputParameters>
         </fields>
-        <helpText>&lt;p&gt;screen helptext&lt;/p&gt;</helpText>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>473</locationX>

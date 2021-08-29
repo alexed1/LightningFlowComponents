@@ -10,6 +10,7 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Personal Workflows</label>
     <navType>Standard</navType>
+    <tabs>Personal_Workflow_Home</tabs>
     <tabs>PersonalWorkflowTrigger__c</tabs>
     <tabs>PersonalWorkflowAction__c</tabs>
     <tabs>PersonalWorkflow__c</tabs>

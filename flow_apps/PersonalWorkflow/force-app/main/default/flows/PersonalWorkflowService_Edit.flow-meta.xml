@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Generate_Flow_From_Personal_Workflow_Record</name>
         <label>Generate Flow From Personal Workflow Record</label>
-        <locationX>644</locationX>
-        <locationY>1790</locationY>
+        <locationX>1634</locationX>
+        <locationY>638</locationY>
         <actionName>GenerateFlowFromPersonalWorkflow</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -33,7 +33,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Descriptions_on_Personal_Workflow_Record</targetReference>
+            <targetReference>Edit_Personal_Workflow</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -50,7 +50,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Update_Descriptions_on_Personal_Workflow_Record</targetReference>
+            <targetReference>Edit_Personal_Workflow</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -230,12 +230,12 @@
     <decisions>
         <name>Edit_Which_Part</name>
         <label>Edit Which Part</label>
-        <locationX>644</locationX>
+        <locationX>842</locationX>
         <locationY>398</locationY>
         <defaultConnector>
-            <targetReference>Load_Related_Action_Data</targetReference>
+            <targetReference>Update_Descriptions_on_Personal_Workflow_Record</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Action</defaultConnectorLabel>
+        <defaultConnectorLabel>Generate</defaultConnectorLabel>
         <rules>
             <name>Delete</name>
             <conditionLogic>and</conditionLogic>
@@ -265,6 +265,21 @@
                 <targetReference>Load_Related_Triggering_Data_0</targetReference>
             </connector>
             <label>Trigger</label>
+        </rules>
+        <rules>
+            <name>Action</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>buttonEditAction.value</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>editAction</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Load_Related_Action_Data</targetReference>
+            </connector>
+            <label>Action</label>
         </rules>
     </decisions>
     <decisions>
@@ -407,7 +422,7 @@
     <recordLookups>
         <name>Reload_Personal_Workflow</name>
         <label>Reload Personal Workflow</label>
-        <locationX>644</locationX>
+        <locationX>842</locationX>
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
@@ -439,8 +454,8 @@
         <description>these descriptions enable information to be displayed on the flexcards</description>
         <name>Update_Descriptions_on_Personal_Workflow_Record</name>
         <label>Update Descriptions on Personal Workflow Record</label>
-        <locationX>644</locationX>
-        <locationY>1670</locationY>
+        <locationX>1634</locationX>
+        <locationY>518</locationY>
         <connector>
             <targetReference>Generate_Flow_From_Personal_Workflow_Record</targetReference>
         </connector>
@@ -459,8 +474,8 @@
     <screens>
         <name>Check_XML</name>
         <label>Check XML</label>
-        <locationX>644</locationX>
-        <locationY>1910</locationY>
+        <locationX>1634</locationX>
+        <locationY>758</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -530,7 +545,7 @@
     <screens>
         <name>Edit_Personal_Workflow</name>
         <label>Edit Personal Workflow</label>
-        <locationX>644</locationX>
+        <locationX>842</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -538,6 +553,11 @@
         <connector>
             <targetReference>Edit_Which_Part</targetReference>
         </connector>
+        <fields>
+            <name>dispTitle</name>
+            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 18px;&quot;&gt;Edit Personal Workflow&lt;/b&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
         <fields>
             <name>Edit_Personal_Workflow_Section1</name>
             <fieldType>RegionContainer</fieldType>
@@ -555,6 +575,21 @@
                         <conditions>
                             <leftValueReference>Mode</leftValueReference>
                             <operator>EqualTo</operator>
+                            <rightValue>
+                                <stringValue>Create</stringValue>
+                            </rightValue>
+                        </conditions>
+                    </visibilityRule>
+                </fields>
+                <fields>
+                    <name>showName</name>
+                    <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;{!Reload_Personal_Workflow.Name}&lt;/b&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                    <visibilityRule>
+                        <conditionLogic>and</conditionLogic>
+                        <conditions>
+                            <leftValueReference>Mode</leftValueReference>
+                            <operator>NotEqualTo</operator>
                             <rightValue>
                                 <stringValue>Create</stringValue>
                             </rightValue>
@@ -627,14 +662,9 @@
                 <name>Edit_Personal_Workflow_Section2_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Trigger</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>Reload_Personal_Workflow.Trigger_Description__c</elementReference>
-                    </defaultValue>
-                    <fieldText>Trigger</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
+                    <name>TriggerDescription</name>
+                    <fieldText>&lt;p&gt;Trigger&lt;/p&gt;&lt;p&gt;{!Reload_Personal_Workflow.Trigger_Description__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -708,14 +738,9 @@
                 <name>Edit_Personal_Workflow_Section3_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
-                    <name>Action</name>
-                    <dataType>String</dataType>
-                    <defaultValue>
-                        <elementReference>Reload_Personal_Workflow.Action_Description__c</elementReference>
-                    </defaultValue>
-                    <fieldText>Action</fieldText>
-                    <fieldType>InputField</fieldType>
-                    <isRequired>false</isRequired>
+                    <name>ActionDescription</name>
+                    <fieldText>&lt;p&gt;Activity &lt;/p&gt;&lt;p&gt;{!Reload_Personal_Workflow.Action_Description__c}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
                 </fields>
                 <inputParameters>
                     <name>width</name>
@@ -765,7 +790,7 @@
                     <inputParameters>
                         <name>buttons</name>
                         <value>
-                            <stringValue>[{&quot;label&quot;:&quot;Edit Actions&quot;,&quot;value&quot;:&quot;Actions&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:0}]</stringValue>
+                            <stringValue>[{&quot;label&quot;:&quot;Edit Actions&quot;,&quot;value&quot;:&quot;editAction&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:0}]</stringValue>
                         </value>
                     </inputParameters>
                     <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -783,7 +808,7 @@
             <isRequired>false</isRequired>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <screens>
         <name>Edit_Record_Change_Configuration</name>
@@ -986,7 +1011,7 @@
             <name>Trigger_Label</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>Trigger</elementReference>
+                <elementReference>Reload_Personal_Workflow.Trigger_Description__c</elementReference>
             </defaultValue>
             <fieldText>Trigger Label</fieldText>
             <fieldType>InputField</fieldType>
@@ -1112,7 +1137,7 @@
             <defaultValue>
                 <elementReference>Load_Related_Triggering_Data_0.TriggerFilterType__c</elementReference>
             </defaultValue>
-            <fieldText>Which record creates?</fieldText>
+            <fieldText>Set Entry Conditions</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>false</isRequired>
         </fields>
@@ -1169,7 +1194,7 @@
             <name>Action_Label</name>
             <dataType>String</dataType>
             <defaultValue>
-                <elementReference>Action</elementReference>
+                <elementReference>Reload_Personal_Workflow.Action_Description__c</elementReference>
             </defaultValue>
             <fieldText>Action Label</fieldText>
             <fieldType>InputField</fieldType>
@@ -1187,84 +1212,13 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>518</locationX>
+        <locationX>716</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Reload_Personal_Workflow</targetReference>
         </connector>
     </start>
     <status>Active</status>
-    <textTemplates>
-        <name>TriggerFlowTemplate</name>
-        <isViewedAsPlainText>true</isViewedAsPlainText>
-        <text>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;Flow xmlns=&quot;http://soap.sforce.com/2006/04/metadata&quot;&gt;
-    &lt;actionCalls&gt;
-        &lt;name&gt;Post_to_Slack&lt;/name&gt;
-        &lt;label&gt;Post to Slack&lt;/label&gt;
-        &lt;locationX&gt;176&lt;/locationX&gt;
-        &lt;locationY&gt;335&lt;/locationY&gt;
-        &lt;actionName&gt;PostToSlack&lt;/actionName&gt;
-        &lt;actionType&gt;apex&lt;/actionType&gt;
-        &lt;flowTransactionModel&gt;CurrentTransaction&lt;/flowTransactionModel&gt;
-        &lt;inputParameters&gt;
-            &lt;name&gt;channelId&lt;/name&gt;
-            &lt;value&gt;
-                &lt;stringValue&gt;qwerty&lt;/stringValue&gt;
-            &lt;/value&gt;
-        &lt;/inputParameters&gt;
-        &lt;storeOutputAutomatically&gt;true&lt;/storeOutputAutomatically&gt;
-    &lt;/actionCalls&gt;
-    &lt;apiVersion&gt;52.0&lt;/apiVersion&gt;
-    &lt;interviewLabel&gt;test workflow trigger {!$Flow.CurrentDateTime}&lt;/interviewLabel&gt;
-    &lt;label&gt;{!Trigger}&lt;/label&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;BuilderType&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;CanvasMode&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;AUTO_LAYOUT_CANVAS&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processMetadataValues&gt;
-        &lt;name&gt;OriginBuilderType&lt;/name&gt;
-        &lt;value&gt;
-            &lt;stringValue&gt;LightningFlowBuilder&lt;/stringValue&gt;
-        &lt;/value&gt;
-    &lt;/processMetadataValues&gt;
-    &lt;processType&gt;AutoLaunchedFlow&lt;/processType&gt;
-    &lt;start&gt;
-        &lt;locationX&gt;50&lt;/locationX&gt;
-        &lt;locationY&gt;0&lt;/locationY&gt;
-        &lt;connector&gt;
-            &lt;targetReference&gt;Post_to_Slack&lt;/targetReference&gt;
-        &lt;/connector&gt;
-        &lt;filterLogic&gt;and&lt;/filterLogic&gt;
-        &lt;filters&gt;
-            &lt;field&gt;Name&lt;/field&gt;
-            &lt;operator&gt;IsNull&lt;/operator&gt;
-            &lt;value&gt;
-                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
-            &lt;/value&gt;
-        &lt;/filters&gt;
-        &lt;filters&gt;
-            &lt;field&gt;BillingCity&lt;/field&gt;
-            &lt;operator&gt;IsNull&lt;/operator&gt;
-            &lt;value&gt;
-                &lt;booleanValue&gt;false&lt;/booleanValue&gt;
-            &lt;/value&gt;
-        &lt;/filters&gt;
-        &lt;object&gt;{!contextObjectType.objectType}&lt;/object&gt;
-        &lt;recordTriggerType&gt;Create&lt;/recordTriggerType&gt;
-        &lt;triggerType&gt;RecordAfterSave&lt;/triggerType&gt;
-    &lt;/start&gt;
-    &lt;status&gt;InvalidDraft&lt;/status&gt;
-&lt;/Flow&gt;</text>
-    </textTemplates>
     <variables>
         <name>choicesEventValues</name>
         <dataType>String</dataType>

@@ -34,22 +34,22 @@
         
     </c-fsc_flow-combobox>
     <lightning-input label={labels.Timeout_in_ms} onchange={changeTimeout} value={timeout} type="number"></lightning-input>
-    <c-list-builder 
+    <c-fsc_key-value-pair-builder-container 
         master-label={labels.Specify_Params} 
         add-button-label={labels.Add_Param} 
         list-data={paramList} 
         onchangelist={changeParams}
         builder-context={builderContext}
         automatic-output-variables={automaticOutputVariables}>
-    </c-list-builder>
-    <c-list-builder 
+    </c-fsc_key-value-pair-builder-container>
+    <c-fsc_key-value-pair-builder-container 
         master-label={labels.Specify_Headers} 
         add-button-label={labels.Add_Header} 
         list-data={headerList} 
         onchangelist={changeHeaders}
         builder-context={builderContext}
         automatic-output-variables={automaticOutputVariables}>
-    </c-list-builder>
+    </c-fsc_key-value-pair-builder-container>
 
     <c-fsc_flow-combobox 
         label={labels.Body_Label} 

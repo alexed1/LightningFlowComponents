@@ -49,6 +49,12 @@ c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon lightnin
     position: static;
     padding-right: 1.3rem;
 }
+/* This removes mouse interaction with the dropdown icon, so that the dropdown doesn't lose focus */
+.slds-scope c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-input__icon-group_right,
+c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-input__icon-group_right {
+    pointer-events: none;
+    margin-top:-10px /* this fixes icon alignment caused by position static */
+}
 
 /********************************/
 /******** custom classes ********/

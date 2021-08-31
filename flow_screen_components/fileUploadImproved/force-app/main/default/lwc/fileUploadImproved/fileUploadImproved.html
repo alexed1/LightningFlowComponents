@@ -1,59 +1,59 @@
 <template>
-    <lightning-card>
-        <div class="slds-var-p-horizontal_x-small" >
-            <lightning-layout>
-                <lightning-layout-item size="6">
-                    <div class="slds-var-p-left_small">
-                        <lightning-file-upload
-                            label={label}
-                            name="uploadFile"
-                            accept={acceptedFormats}
-                            record-id={recordIdToUse}
-                            file-field-name='Guest_Record_fileupload__c'
-                            file-field-value={value}
-                            onuploadfinished={handleUploadFinished}
-                            multiple={allowMultiple}>
-                        </lightning-file-upload>
-                    </div> 
-                </lightning-layout-item>
-                <lightning-layout-item size="6">
-                    <div class="slds-var-p-left_small">
-                        <div class="slds-form-element__label">
-                            {uploadedLabelToUse}
-                        </div>
-                        <template for:each={objFiles} for:item="objFile">
-                            <div key={objFile} class="slds-var-m-bottom_small">
-                                <div class="slds-grid slds-gutters slds-grid_vertical-align-center">
-                                    <div class="slds-col slds-size_1-of-6 slds-clearfix">
-                                        <span>
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item class="slds-form-element__label" size="12">
+            {uploadedLabel}
+        </lightning-layout-item>
+        <lightning-layout-item size="12">
+            <lightning-layout multiple-rows="true">
+                <template for:each={objFiles} for:item="objFile">
+                    <div key={objFile} class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_6-of-12 slds-var-p-around_xx-small">
+                        <lightning-layout class="slds-grid_vertical-align-center slds-var-p-around_xx-small" style="border: 1px solid #d8dde6; border-radius:4px; background-color:#FAFAFA;">
+                            <lightning-layout-item size="11">
+                                <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                                    <div class="slds-media__figure">
+                                        <span class="slds-avatar slds-avatar_medium">
                                             <lightning-icon 
                                                 icon-name={objFile.filetype}
                                                 size="medium"
-                                                title="Doctype Icon">
+                                                title="Icon">
                                             </lightning-icon>
                                         </span>
                                     </div>
-                                    <div class="slds-col slds-size_4-of-6 slds-float_left" style='word-wrap: break-word;'>
-                                        <span>{objFile.name}</span>
-                                    </div>
-                                    <div class="slds-col slds-size_1-of-6">
-                                        <span>
-                                            <!-- sldsValidatorIgnoreNextLine -->
-                                            <lightning-button-icon
-                                                icon-name="utility:delete"
-                                                title="Delete Document"
-                                                aria-hidden="true"
-                                                onclick={deleteDocument}
-                                                data-recordid={objFile.id}>
-                                            </lightning-button-icon>
-                                        </span>
-                                    </div>
+                                    <lightning-tile
+                                        label={objFile.name}
+                                        onclick={openFile}
+                                        data-recordid={objFile.id}
+                                        class="slds-media__body">
+                                    </lightning-tile>
                                 </div>
-                            </div>
-                        </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="1" class="slds-text-align_center">
+                                <!-- sldsValidatorIgnoreNextLine -->
+                                <lightning-button-icon
+                                    icon-name="utility:close"
+                                    title="Delete File"
+                                    aria-hidden="true"
+                                    onclick={deleteDocument}
+                                    data-recordid={objFile.id}
+                                    variant="bare">
+                                </lightning-button-icon>
+                            </lightning-layout-item>
+                        </lightning-layout>
                     </div>
-                </lightning-layout-item>
+                </template>
             </lightning-layout>
-        </div>
-    </lightning-card>
+        </lightning-layout-item>
+        <lightning-layout-item size="12">
+                <lightning-file-upload
+                    label={label}
+                    name="uploadFile"
+                    accept={acceptedFormats}
+                    record-id={recordIdToUse}
+                    file-field-name='Guest_Record_fileupload__c'
+                    file-field-value={value}
+                    onuploadfinished={handleUploadFinished}
+                    multiple={allowMultiple}>
+                </lightning-file-upload>
+        </lightning-layout-item>
+    </lightning-layout>
 </template>

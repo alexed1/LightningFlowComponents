@@ -1,10 +1,11 @@
 import { LightningElement, track, api, wire } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
 
-export default class FileUpload extends LightningElement {
+export default class FileUpload extends NavigationMixin(LightningElement) {
     @api recordId;
     @api label;
     @api icon;
@@ -22,16 +23,9 @@ export default class FileUpload extends LightningElement {
     @track versIds = [];
     @track fileNames = [];
 
-    uploadedLabelToUse;
     @api
     get uploadedLabel(){
-        if(this.uploadedlabel == null){
-            this.uploadedLabelToUse = 'Uploaded Files:';
-        }
-        else{
-            this.uploadedLabelToUse = this.uploadedlabel;
-        }
-        return this.uploadedLabelToUse;
+        return this.uploadedlabel;
     }
 
     key;
@@ -137,6 +131,21 @@ export default class FileUpload extends LightningElement {
         this.contentVersionIds=this.versIds;
         this.uploadedFileNames=this.fileNames;
 
+    }
+
+    openFile(event) {
+
+        const recordId = event.target.dataset.recordid;
+        event.preventDefault();
+        this[NavigationMixin.Navigate]({
+            type: 'standard__namedPage',
+            attributes: {
+                pageName: 'filePreview'
+            },
+            state: {
+                recordIds: recordId
+            }
+        });
     }
 
     @api

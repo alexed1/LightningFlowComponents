@@ -8,7 +8,7 @@
             "versionDescription": "SendBetterEmail Action Component for Flow",
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.32.0-0"
+                    "package": "FlowActionsBasePack@2.32.0-0",
                 },
                 {
                     "package": "FlowScreenComponentsBasePack@2.5.5-0"
@@ -21,8 +21,6 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "52.0",
     "packageAliases": {
-        "FlowActionsBasePack": "0334W000000hBcGQAU",
-        "FlowScreenComponentsBasePack": "033f4000000mjNrAAI",
         "sendBetterEmail": "0Hof4000000XZM3CAO",
         "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2",
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",

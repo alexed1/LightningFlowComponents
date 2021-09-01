@@ -21,6 +21,7 @@ export default class FlexcardFlow extends LightningElement {
     @api recordValue;
     @api selectedRecordIds = [];
     @api label;
+    @api subheadCSS;
     @api transitionOnClick;
     @api availableActions = [];
     @track Cardcss;

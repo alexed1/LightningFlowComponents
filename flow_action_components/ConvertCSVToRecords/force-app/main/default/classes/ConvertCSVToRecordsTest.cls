@@ -76,6 +76,36 @@ public with sharing class ConvertCSVToRecordsTest {
         }
     }
 
+    @isTest
+    static void testGetConvertedFieldValue() {
+        /**
+         * Check DOUBLE field
+         */
+        Object result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234.56', ',', ',', '');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', '.', ',', '');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', ',', '.', '');
+        System.assertEquals('123456', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1,234.56', ',', '.', '');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        /**
+         * Check currency field
+         */
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234.56', ',', ',', '$');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', '.', ',', '$');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', ',', '.', '$');
+        System.assertEquals('123456', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1,234.56', ',', '.', '$');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1.234,56', '.', ',', '$');
+        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+    }
+
     static Blob createCSVBlob() {
         String csvStringContent;
         Blob csvBlobContent;

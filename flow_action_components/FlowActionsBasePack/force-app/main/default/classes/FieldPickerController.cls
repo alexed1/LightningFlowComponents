@@ -21,12 +21,10 @@ global with sharing class FieldPickerController {
         }
 
         for (String objType : availableObjectTypes) {
-
             Schema.DescribeSObjectResult describeObject = allTypes.get(objType).getDescribe();
             String objectType = describeObject.getName();
             String objectLabel = describeObject.getLabel();
             Boolean isCustom = describeObject.isCustom();
-
             if (isCustom || allowedStandardObjects.containsKey(objectType) || isDisplayAll) {     // Eric Smith 12/18/20 - Handle a Display All Objects override
                 if (objectLabel.substring(0,2) != '__') {
                     result.add(new Member(objectType, objectLabel));
@@ -34,7 +32,6 @@ global with sharing class FieldPickerController {
             }
 
         }
-
         result.sort();      // Eric Smith 12/31/20 - Moved sort outside of for loop
         
         return result;
@@ -155,6 +152,9 @@ global with sharing class FieldPickerController {
             'WorkOrderLineItem' => 'Work Order Line Item',
             'WorkType' => 'Work Type',
             'Quote' => 'Quote',
-            'QuoteLineItem' => 'Quote Line Item'
+            'QuoteLineItem' => 'Quote Line Item',
+            'FlowOrchestrationInstance' => 'Flow Orchestration Instance',
+            'FlowOrchestrationStageInstance' => 'Flow Orchestration Stage Instance',
+            'FlowOrchestrationStepInstance' => 'Flow Orchestration Step Instance'
     };
 }

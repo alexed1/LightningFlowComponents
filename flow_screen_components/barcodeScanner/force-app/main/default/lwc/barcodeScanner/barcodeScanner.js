@@ -11,8 +11,10 @@ export default class BarcodeScanner extends LightningElement {
     @api scannedBarcode = '';
     @api label;
     @api autoNavigate;
+    @api buttonLabel;
+    @api buttonIcon;
+    @api scannerInstructions;
     @api availableActions = [];
-
     // When component is initialized, detect whether to enable Scan button
     connectedCallback() {
         this.myScanner = getBarcodeScanner();
@@ -20,7 +22,6 @@ export default class BarcodeScanner extends LightningElement {
             this.scanButtonDisabled = true;
         }
     }
-
     handleBeginScanClick(event) {
         // Reset scannedBarcode to empty string before starting new scan
         this.scannedBarcode = '';

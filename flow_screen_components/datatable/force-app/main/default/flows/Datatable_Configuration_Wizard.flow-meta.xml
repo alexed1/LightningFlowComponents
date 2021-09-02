@@ -62,7 +62,7 @@
         <label>Get Field Information usf</label>
         <locationX>1263</locationX>
         <locationY>210</locationY>
-        <actionName>GetFieldInformation</actionName>
+        <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Select_Fields</targetReference>
@@ -113,7 +113,7 @@
             <name>recordString</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>49.0</apiVersion>
+    <apiVersion>52.0</apiVersion>
     <assignments>
         <name>Add_Config_Quick_Choice_Option</name>
         <label>Add Config Quick Choice Option</label>

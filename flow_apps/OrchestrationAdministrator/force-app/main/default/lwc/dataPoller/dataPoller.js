@@ -8,18 +8,12 @@ export default class DataPoller extends LightningElement {
     @api error;
 
     connectedCallback() {
-        console.log('queryString', this.queryString);
-        console.log('pollingFrequency', this.pollingFrequency);
         setInterval(function() {
-            console.log('queryString', this.queryString);
-            console.log('pollingFrequency', this.pollingFrequency,JSON.parse(JSON.stringify(this.retrievedRecords)));
             getSobjects({queryString : this.queryString}).then(
                 result => {
-                    console.log('result ', result);
                     
                     this.retrievedRecords = result;
-                    this.dispatchEvent(new FlowAttributeChangeEvent('retrievedRecords', this.retrievedRecords));    //JSON Version
-                    console.log('result2 ', JSON.parse(JSON.stringify(this.retrievedRecords)));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('retrievedRecords', this.retrievedRecords));             
                 }
             ).catch(
                 error => {
@@ -32,11 +26,4 @@ export default class DataPoller extends LightningElement {
         
     }
 
-    refresh(){
-        console.log('queryString', this.queryString);
-        console.log('pollingFrequency', this.pollingFrequency);
-        console.log('retrievedRecords', JSON.parse(JSON.stringify(this.retrievedRecords)));
-        
-        
-    }
 }

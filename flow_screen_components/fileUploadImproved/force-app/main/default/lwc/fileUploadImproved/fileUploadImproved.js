@@ -47,6 +47,24 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         }
         return this.recordIdToUse;
     }
+
+    connectedCallback(){
+        let cachedSelection = sessionStorage.getItem(this.sessionStorageKey);
+        if(cachedSelection){
+            this.objFiles = JSON.parse(cachedSelection);
+
+            console.log(cachedSelection);
+            this.objFiles.forEach((element, index, array) => {
+                this.docIds.push(element.id);
+                this.versIds.push(element.versid);
+                this.fileNames.push(element.name);
+
+                this.contentDocumentIds=this.docIds;
+                this.contentVersionIds=this.versIds;
+                this.uploadedFileNames=this.fileNames;
+            });
+        }
+    }
     
     handleUploadFinished(event) {
         // Get the list of uploaded files
@@ -64,13 +82,16 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             objFile = {
                 name: file.name,
                 filetype: filetype,
-                id: file.documentId
+                id: file.documentId,
+                versid: file.contentVersionId
             };
             this.objFiles.push(objFile);
             this.docIds.push(file.documentId);
             this.versIds.push(file.contentVersionId);
             this.fileNames.push(file.name);
         });
+
+        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
 
         this.contentDocumentIds=this.docIds;
         this.contentVersionIds=this.versIds;
@@ -108,9 +129,12 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             }
         }
     }
+
+    get sessionStorageKey() {
+        return 'TEST';
+    }
     
     deleteDocument(event){
-
         const recordId = event.target.dataset.recordid;
         deleteRecord(recordId);
         
@@ -131,10 +155,11 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         this.contentVersionIds=this.versIds;
         this.uploadedFileNames=this.fileNames;
 
+        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
+
     }
 
     openFile(event) {
-
         const recordId = event.target.dataset.recordid;
         event.preventDefault();
         this[NavigationMixin.Navigate]({

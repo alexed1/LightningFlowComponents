@@ -3,17 +3,16 @@
         {
             "path": "force-app",
             "default": true,
-            "package": "ConvertCSVToRecords",
+            "package": "multicurrencyActions",
             "versionName": "ver 0.1",
             "versionNumber": "0.1.0.NEXT"
         }
     ],
+    "name": "MulticurrencyActions",
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0",
+    "sourceApiVersion": "52.0",
     "packageAliases": {
-        "ConvertCSVToRecords": "0Hof4000000XZKMCA4",
-        "ConvertCSVToRecords@1.0.0-0": "04tf4000004PtcnAAC",
-        "ConvertCSVToRecords@1.2.0-0": "04t5G000003rUbFQAU"
+        "multicurrencyActions": "0Ho5G000000k9tlSAA"
     }
 }

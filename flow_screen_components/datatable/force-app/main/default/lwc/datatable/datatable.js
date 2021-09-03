@@ -416,7 +416,7 @@ export default class Datatable extends LightningElement {
         // JSON input attributes
         if (this.isUserDefinedObject) {
             console.log('tableDataString - ',this.tableDataString);
-            if (this.tableDataString.length == 0) {
+            if (!this.tableDataString || this.tableDataString.length == 0) {
                 this.tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
                 this.columnFields = this.keyField;
                 this.columnTypes = [];
@@ -430,6 +430,10 @@ export default class Datatable extends LightningElement {
         // Restrict the number of records handled by this component
         if (this.maxNumberOfRows == 0) {
             this.maxNumberOfRows = CONSTANTS.MAXROWCOUNT;
+        }
+        console.log('this.tableData',this.tableData);
+        if(!this.tableData) {
+            this.tableData = [];
         }
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
         let cnt = Math.min(this.tableData.length, max);

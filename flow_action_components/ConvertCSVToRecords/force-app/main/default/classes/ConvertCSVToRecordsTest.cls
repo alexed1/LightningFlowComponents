@@ -91,7 +91,7 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals('1234.56', String.valueOf((Decimal)result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '');
         System.assertEquals('1234.56', String.valueOf((Decimal)result));
-        /**
+        /*
          * Check currency field
          */
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234.56', ',', ',', '$');

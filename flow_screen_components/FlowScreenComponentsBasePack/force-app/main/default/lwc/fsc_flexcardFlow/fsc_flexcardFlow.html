@@ -1,4 +1,7 @@
 <template>
+     <lightning-formatted-rich-text
+    value={label}
+    ></lightning-formatted-rich-text>
     <lightning-layout multiple-rows="true">
         <template if:true={isDataLoaded}>
             <template for:each={recs} for:item="record">

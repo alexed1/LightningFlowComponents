@@ -55,7 +55,11 @@ c-ers_combobox-column-type lightning-base-combobox .slds-input-has-icon .slds-in
     pointer-events: none;
     margin-top:-10px /* this fixes icon alignment caused by position static */
 }
-
+/* This corrects default lightning datatable behaviour, where the save/cancel footer will cover the horizontal scrollbar */
+.slds-scope c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primitive-datatable-status-bar .slds-docked-form-footer.slds-is-absolute,
+c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primitive-datatable-status-bar .slds-docked-form-footer.slds-is-absolute {
+    position: relative; /* changes position absolute to relative */
+}
 /********************************/
 /******** custom classes ********/
 /********************************/

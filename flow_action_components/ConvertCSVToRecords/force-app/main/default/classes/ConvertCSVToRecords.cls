@@ -88,6 +88,7 @@ public with sharing class ConvertCSVToRecords {
         return EncodingUtil.urlDecode('%' + String.join(bytes, '%'), inCharset);
     }
 
+    @TestVisible
     static Object getConvertedFieldValue(Schema.DisplayType fieldType, String fieldValue, String Tsep, String Dsep, String vCur){
         Object convertedFieldValue;
 

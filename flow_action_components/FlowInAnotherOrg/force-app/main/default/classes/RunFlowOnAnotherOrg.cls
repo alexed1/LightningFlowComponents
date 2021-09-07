@@ -26,8 +26,9 @@ public with sharing class RunFlowOnAnotherOrg {
                 } else {
                     resp.result = ERROR_MESSAGE;
                 }
-                responseList.add(resp);
+                
             }
+            responseList.add(resp);
             
         }
         return responseList;

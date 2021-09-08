@@ -14,31 +14,31 @@ global with sharing class DeserializeJSONtoSObjectList {
             //make the magic happen
             List<SObject> curSObjectList = (List<SObject>)JSON.deserialize(serializedSObjectListString, List<Sobject>.class);
 
-            //add the return values to the Results object
-            response.outputSObjectList = curSObjectList;
+            if (curSObjectList.size() > 1) {
+              //add the return values to the Results object
+              response.outputSObjectList = curSObjectList;
+            }
+            else {
+              response.outputSObject = curSObjectList[0];
+            }
             
             responseWrapper.add(response);
         }
        
         return responseWrapper;
-    
+    }
+
+    global class Results {
+      @InvocableVariable
+      global SObject outputSObject;
+      @InvocableVariable
+      global List<SObject> outputSObjectList;
     }
 
     global class Requests {
       @InvocableVariable(required=true)
       global String serializedSObjectListString;
-
       @InvocableVariable(required=true)
       global String objectTypeName;
-
-    
-    }
-    
-    global class Results {
-
-      
-      @InvocableVariable
-      global List<SObject> outputSObjectList;
-
     }
 }

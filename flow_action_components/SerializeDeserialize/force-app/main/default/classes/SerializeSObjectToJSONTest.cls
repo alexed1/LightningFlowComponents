@@ -1,5 +1,5 @@
 @isTest
-public with sharing class SerializeSObjectListToJSONTest {
+public with sharing class SerializeSObjectToJSONTest {
     @isTest
     static void testSerialize() {
         List<Account> accounts = new List<Account>();
@@ -8,20 +8,20 @@ public with sharing class SerializeSObjectListToJSONTest {
         }
         insert accounts;
 
-        List<SerializeSObjectListToJSON.Requests> requests = new List<SerializeSObjectListToJSON.Requests>();
+        List<SerializeSObjectToJSON.Requests> requests = new List<SerializeSObjectToJSON.Requests>();
         for (Integer i = 0; i < 201; i += 3) {
-            SerializeSObjectListToJSON.Requests requestList = new SerializeSObjectListToJSON.Requests();
+            SerializeSObjectToJSON.Requests requestList = new SerializeSObjectToJSON.Requests();
             requestList.inputSObjectList = accounts;
             requests.add(requestList);
-            SerializeSObjectListToJSON.Requests requestSingleton = new SerializeSObjectListToJSON.Requests();
+            SerializeSObjectToJSON.Requests requestSingleton = new SerializeSObjectToJSON.Requests();
             requestSingleton.inputSObject = accounts[i];
             requests.add(requestSingleton);
-            SerializeSObjectListToJSON.Requests requestBoth = new SerializeSObjectListToJSON.Requests();
+            SerializeSObjectToJSON.Requests requestBoth = new SerializeSObjectToJSON.Requests();
             requestBoth.inputSObjectList = accounts;
             requestBoth.inputSObject = accounts[i];
             requests.add(requestBoth);
         }
-        List<SerializeSObjectListToJSON.Results> results = SerializeSObjectListToJSON.serialize(requests);
+        List<SerializeSObjectToJSON.Results> results = SerializeSObjectToJSON.serialize(requests);
         System.assertEquals(201, results.size());
     }
 }

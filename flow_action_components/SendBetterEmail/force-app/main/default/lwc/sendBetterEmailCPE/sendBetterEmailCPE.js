@@ -5,7 +5,7 @@
  * @Credits				: From quickChoiceCPE,Andrii Kraiev and sentRichEmailCPE,Alex Edelstein etal.
  * @Group				: 
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2021-08-05
+ * @Last Modified On	: 2021-09-10
  * @Modification Log	: 
  * Ver		Date		Author				Modification
  * 1.33.2	6/29/2020	Jack D. Pond		Initial Version
@@ -17,7 +17,10 @@
  * 2.00.05  02-14-2020  Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
  * 2.00.06	2021-04-14	Jack D. Pond		Filter-type on attachments fixed (ContentDocumentLink) Fix: #570, #568
  * 2.01.06	2021-07-30	Jack D. Pond		Fix remainder of checkboxes default/save Fix: #702,#831,#785,#829
-						sahib-gadzhiev		Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
+						                            sahib-gadzhiev		Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
+  * 2.01.06	2021-09-10	Jack D. Pond		Duplicate Accessor convertedFlowContext Fix: #900
+                                       
+  
 
  **/
 import { api, track, LightningElement } from "lwc";
@@ -54,7 +57,6 @@ const cbConstants = {
 export default class SendBetterEmailCPE extends LightningElement {
   _builderContext;
   _values;
-  convertedFlowContext;
 
   @track inputValues = {
     orgWideEmailAddressId: {

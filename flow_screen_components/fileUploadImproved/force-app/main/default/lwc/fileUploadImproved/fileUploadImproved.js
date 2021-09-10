@@ -1,4 +1,5 @@
 import { LightningElement, track, api, wire } from 'lwc';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
@@ -6,26 +7,41 @@ import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
 
 export default class FileUpload extends NavigationMixin(LightningElement) {
-    @api recordId;
-    @api label;
-    @api icon;
-    @api uploadedlabel;
+    @api acceptedFormats;
+    @api allowMultiple;
+    @api community;
     @api contentDocumentIds;
     @api contentVersionIds;
-    @api uploadedFileNames;
-    @api allowMultiple;
-    @api acceptedFormats;
+    @api icon;
+    @api label;
+    @api recordId;
     @api required;
     @api requiredMessage;
-    @api community;
-    @track objFiles = [];
+    @api sessionKey;
+    @api uploadedFileNames;
+    @api uploadedlabel;
+    
     @track docIds =[];
-    @track versIds = [];
     @track fileNames = [];
+    @track objFiles = [];
+    @track versIds = [];
+
+    recordIdToUse = '';
+    @api
+    get communityDetails(){
+        if(this.community != true){
+            this.recordIdToUse = this.recordId;
+        }
+        return this.recordIdToUse;
+    }
 
     @api
     get uploadedLabel(){
         return this.uploadedlabel;
+    }
+
+    get sessionStorageKey() {
+        return this.sessionKey;
     }
 
     key;
@@ -39,35 +55,22 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         }
     }
 
-    recordIdToUse = '';
-    @api
-    get communityDetails(){
-        if(this.community != true){
-            this.recordIdToUse = this.recordId;
-        }
-        return this.recordIdToUse;
-    }
-
     connectedCallback(){
         let cachedSelection = sessionStorage.getItem(this.sessionStorageKey);
         if(cachedSelection){
             this.objFiles = JSON.parse(cachedSelection);
 
-            console.log(cachedSelection);
-            this.objFiles.forEach((element, index, array) => {
-                this.docIds.push(element.id);
-                this.versIds.push(element.versid);
-                this.fileNames.push(element.name);
-
-                this.contentDocumentIds=this.docIds;
-                this.contentVersionIds=this.versIds;
-                this.uploadedFileNames=this.fileNames;
+            this.objFiles.forEach((file) => {
+                this.docIds.push(file.id);
+                this.versIds.push(file.versid);
+                this.fileNames.push(file.name);
             });
+            
+            this.communicateEvent(this.docIds,this.versIds,this.fileNames);
         }
     }
     
     handleUploadFinished(event) {
-        // Get the list of uploaded files
         const files = event.detail.files;
 
         var objFile;
@@ -91,11 +94,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.fileNames.push(file.name);
         });
 
-        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames);
 
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
+        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
 
         if(this.community === true){
             createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
@@ -129,10 +130,6 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             }
         }
     }
-
-    get sessionStorageKey() {
-        return 'TEST';
-    }
     
     deleteDocument(event){
         const recordId = event.target.dataset.recordid;
@@ -151,12 +148,16 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         this.versIds.splice(removeIndex,1);
         this.fileNames.splice(removeIndex,1);
 
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames);
 
         sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
 
+    }
+
+    communicateEvent(docIds, versIds, fileNames){
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
+        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));
     }
 
     openFile(event) {

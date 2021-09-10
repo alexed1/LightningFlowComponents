@@ -10,6 +10,9 @@
             <property name="scannedBarcode" type="String" role="outputOnly"/>
             <property name="label" label="Label" type="String" role="inputOnly"/>
             <property name="autoNavigate" label="Auto Navigate" type="Boolean" role="inputOnly" description="When marked as true flow will automatically navigate to next screen/element after successful scan"/>
+            <property name="buttonLabel" label="Button Label" type="String" role="inputOnly" default="Scan Barcode" description="Label for button that launches scanner"/>
+            <property name="buttonIcon" label="Button Icon" type="String" role="inputOnly" description="Icon for the scanner button i.e. utility:cases"/>
+            <property name="scannerInstructions" label="Scanner Instructions" type="String" role="inputOnly" default="Click Scan Barcode to open a barcode scanner camera view. Position a barcode in the scanner view to scan it." description="Instructions for user on how to use barcode scanner displayed on the component"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -12,7 +12,7 @@ public with sharing class EvaluateFormula {
         if (contextDataString == null)
             contextDataString = '[]';
 
-        String result = FormulaEvaluator.parseFormula(formulaString, contextDataString);
+        String result = usf.FormulaEvaluator.parseFormula(formulaString, contextDataString);
        
 	 
         //Create a Results object to hold the return values

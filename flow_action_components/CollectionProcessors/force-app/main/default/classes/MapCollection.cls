@@ -60,7 +60,7 @@ global with sharing class MapCollection {
     }
 
     private static void putType(SObject obj, String fieldName, String fieldType, String fieldValue) {
-
+        System.debug('fieldName, fieldType, fieldValue: '+fieldName+', '+fieldType+', '+fieldValue);
         if (fieldType != 'Boolean' && (fieldValue == null || fieldValue == '')) {
             obj.put(fieldName, null);
         } else if (fieldType == 'Date') {
@@ -69,7 +69,7 @@ global with sharing class MapCollection {
             obj.put(fieldName, Datetime.valueOf(CollectionProcessorsUtils.getFormattedValue(fieldValue.toLowerCase(), fieldType.toLowerCase())));
         } else if (fieldType == 'Boolean') {
             obj.put(fieldName, fieldValue == null ? false : Boolean.valueOf(fieldValue));
-        } else if (fieldType == 'Currency') {
+        } else if (fieldType == 'Currency' || fieldType == 'Double') {
             if (fieldValue != null && fieldValue != '') {
                 obj.put(fieldName, Decimal.valueOf(fieldValue));
             }

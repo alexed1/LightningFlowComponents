@@ -13,6 +13,8 @@
     "sourceApiVersion": "49.0",
     "packageAliases": {
         "barcodeScanner": "0Hof4000000XZNQCA4",
-        "barcodeScanner@1.0.0-0": "04tf4000004PuTMAA0"
+        "barcodeScanner@1.0.0-0": "04tf4000004PuTMAA0",
+        "barcodeScanner@1.0.1-0": "04t5G000003rUaMQAU",
+        "barcodeScanner@1.0.2-0": "04t5G000003rUd1QAE"
     }
 }

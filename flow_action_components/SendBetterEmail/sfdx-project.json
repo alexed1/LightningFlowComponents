@@ -8,7 +8,7 @@
             "versionDescription": "SendBetterEmail Action Component for Flow",
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.32.0-0",
+                    "package": "FlowActionsBasePack@2.32.0-0"
                 },
                 {
                     "package": "FlowScreenComponentsBasePack@2.5.5-0"
@@ -24,7 +24,7 @@
         "sendBetterEmail": "0Hof4000000XZM3CAO",
         "FlowActionsBasePack@2.1.0-0": "04t4W000002vXUCQA2",
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
-        "FlowActionsBasePack@2.32.0-0": "04t5G000003rUabQAE",
+        "FlowActionsBasePack@2.32.0-0": "04t4W0000034KebQAE",
         "FlowScreenComponentsBasePack@2.1.0-0": "04t5G000004PuTgQAK",
         "FlowScreenComponentsBasePack@2.2.0-0": "04t5G0000047xEdQAI",
         "FlowScreenComponentsBasePack@2.5.5-0": "04t5G000003rUabQAE",
@@ -33,6 +33,7 @@
         "sendBetterEmail@2.1.1-0": "04t5G0000047xEiQAI",
         "sendBetterEmail@2.1.4-0": "04t5G0000047xLUQAY",
         "sendBetterEmail@2.1.5-0": "04t5G0000047xLtQAI",
-        "sendBetterEmail@2.1.6-0": "04t5G000003rUZTQA2"
+        "sendBetterEmail@2.1.6-0": "04t5G000003rUZTQA2",
+        "sendBetterEmail@2.2.0-0": "04t5G000003rUcSQAU"
     }
 }

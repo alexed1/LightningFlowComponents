@@ -4,7 +4,7 @@
  * @OriginalAuthor		: Alex Edelstein, etal
  * @Group				: unofficialSF
  * @Last Modified By	: Jack D. Pond
- * @Last Modified On	: 2021-08-04
+ * @Last Modified On	: 2021-08-19
  * @License				: LICENSE found in https://github.com/alexed1/LightningFlowComponents
  * @Modification Log	:
  *
@@ -27,6 +27,7 @@
  * 2.01.05  2021-06-29  Jack Pond               Pasted Typo fix #797 for null pointer exception
  * 2.01.06	2021-07-30	Jack D. Pond		    Fix remainder of checkboxes default/save Fix: #702,#831,#785,#829
 						sahib-gadzhiev		    Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
+ * 2.01.07  2021-06-29  Jack Pond               Added to Email Category for flow builder New Action
  *
  **/
 
@@ -34,6 +35,7 @@ public without sharing class SendBetterEmail {
     @invocableMethod(
         label='Send Better Email'
         configurationEditor='c:sendBetterEmailCPE'
+        category='Email'
     )
     public static List<SendBetterEmailResponse> SendEmail(
         List<SendBetterEmailRequest> requests

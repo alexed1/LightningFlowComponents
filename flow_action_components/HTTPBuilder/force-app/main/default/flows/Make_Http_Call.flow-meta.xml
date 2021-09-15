@@ -23,7 +23,7 @@
         <inputParameters>
             <name>Headers</name>
             <value>
-                <stringValue>[{&quot;key&quot;:&quot;&quot;,&quot;value&quot;:&quot;&quot;,&quot;order&quot;:0}]</stringValue>
+                <stringValue>[{&quot;key&quot;:&quot;test&quot;,&quot;value&quot;:&quot;test&quot;,&quot;order&quot;:0}]</stringValue>
             </value>
         </inputParameters>
         <inputParameters>

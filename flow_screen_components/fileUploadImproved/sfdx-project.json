@@ -14,6 +14,9 @@
     "packageAliases": {
         "fileUploadImproved": "0Ho5G000000CahPSAS",
         "fileUploadImproved@1.0.0-0": "04t5G0000047xEsQAI",
-        "fileUploadImproved@1.1.0-0": "04t5G0000047xGKQAY"
+        "fileUploadImproved@1.1.0-0": "04t5G0000047xGKQAY",
+        "fileUploadImproved@1.2.0-0": "04t5G000003rUb0QAE",
+        "fileUploadImproved@1.3.0-0": "04t5G000003rUb5QAE",
+        "fileUploadImproved@1.3.1-0": "04t5G000003rUbAQAU"
     }
 }

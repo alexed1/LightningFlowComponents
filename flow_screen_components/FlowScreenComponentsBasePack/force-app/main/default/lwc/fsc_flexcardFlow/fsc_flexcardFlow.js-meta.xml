@@ -1,52 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    
-    <apiVersion>50.0</apiVersion>
-    
+    <apiVersion>52.0</apiVersion>
     <isExposed>true</isExposed>
-    
     <targets>
-        
         <target>lightning__FlowScreen</target>
-        
     </targets>
-    
     <targetConfigs>
-        
         <targetConfig targets="lightning__FlowScreen" category="Input">
-            
-            <property name="value" label="Value" type="String" description="The selected value(Output). This can be passed into QuickChoice, allowing you to set the default value dynamically(Input)."/>
-            
+            <property name="value" label="Value" type="String" description="The selected cards recordId if Allow Multi-Select is set to false"/>
             <property name="selectedLabel" label="Selected Label" type="String" role="outputOnly" description="The selected Label (V1.3+)"/>
-            
             <property name="icon" label="Icon" type="String" description="Icon name for example standard:account"/>
-            
             <propertyType name="T" extends="SObject" label="Flexcard Object API Name" description="Specify the API Name of the SObject to use in the Flexcard"/>
-            
-            <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly" description="The SObject API Name used to query fields and values"/>
-            
             <property name="records" label="Card Data Record Collection" type="{T[]}" role="inputOnly" description="Record Collection variable containing the records to display in the flexcard."/>
-            
             <property name="visibleFieldNames" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
-            
             <property name="visibleFlowNames" label="Visible Flow Names" type="String" description="Show which flow?"/>
-            
-            <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" required="true" default="300" description="The size of the box in pixels. The box is a square."/>
-            
+            <property name="cardSize" role="inputOnly" label="Box Size" type="Integer" default="300" description="The size of the box in pixels. The box is a square."/>
             <property name="isClickable" role="inputOnly" label="isClickable" type="Boolean" default="false" description="Set as true if you wish to select individual cards for action further downstream in flow default is false"/>
-            
-            <property name="Cardcss" label="Card CSS" default="card" type="String"/>
-            <property name="subheadCSS" label="Subhead CSS" default="" type="String"/>
-            
             <property name="headerStyle" label="Header Style" type="String" description="Add your own style attribute to the card headers ie. background-color:red;"/>
-            
+            <property name="subheadCSS" label="Subhead CSS" default="" type="String"/>
             <property name="allowMultiSelect" label="Allow Multi-Select" type="Boolean" default="false" description="Allow for multiselect of cards when enabled checkboxes appear on cards and adds selected cards to collection"/>
-            
             <property name="selectedRecordIds" label="Selected Record Ids" type="String[]" role="outputOnly" description="String Collection of selected Record ID's"/>
-            
+            <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly" required="true" description="The SObject API Name used to query fields and values must be the same object selected in Flexcard Object API Name"/>
+            <property name="label" label="Label" type="String" role="inputOnly" description="Enter a label for you component"/>
+            <property name="transitionOnClick" label="Transition on Click" type="Boolean" role="inputOnly" default="false" description="If marked as true will transition flow to next screen on card click"/>
         </targetConfig>
-        
     </targetConfigs>
-    
 </LightningComponentBundle>

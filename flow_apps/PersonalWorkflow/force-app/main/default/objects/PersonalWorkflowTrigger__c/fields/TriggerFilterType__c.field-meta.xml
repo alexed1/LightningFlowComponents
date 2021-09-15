@@ -19,7 +19,7 @@
             <value>
                 <fullName>Expression</fullName>
                 <default>false</default>
-                <label>Expression</label>
+                <label>Records Meeting Specified Conditions:</label>
             </value>
         </valueSetDefinition>
     </valueSet>

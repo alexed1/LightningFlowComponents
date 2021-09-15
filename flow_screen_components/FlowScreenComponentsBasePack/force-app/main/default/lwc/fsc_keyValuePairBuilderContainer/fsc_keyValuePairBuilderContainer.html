@@ -1,0 +1,9 @@
+<template>
+    <div class="slds-m-top_medium"><b>{masterLabel}</b></div>
+    <template for:each={listData} for:item="item">
+        <c-fsc_key-value-pair-builder-row key={item.order} entity={item} onchangeinput={changeItem} onremoveitem={removeItem} builder-context={builderContext} automatic-output-variables={automaticOutputVariables}></c-fsc_key-value-pair-builder-row>
+    </template>
+    <div class="slds-m-top_small">
+        <lightning-button label={addButtonLabel} onclick={addItem} ></lightning-button>
+    </div>
+</template>

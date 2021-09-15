@@ -1,57 +1,44 @@
 global with sharing class DeserializeJSONtoSObject {
+  @InvocableMethod
+  global static List <Results> parse (List<Requests> requestList) {
 
-  
-    @InvocableMethod
-    global static List <Results> parse (List<Requests> requestList) {
-        System.debug('entering object json parse');
+      //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
+      List<Results> responseWrapper= new List<Results>();
 
-        //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
-        List<Results> responseWrapper= new List<Results>();
+      for (Requests curRequest : requestList) {
+          String serializedSObjectListString = curRequest.serializedSObjectListString.replace('null', '""');
+          String curType = curRequest.objectTypeName;
+          Type systemType = Type.forName(curType);
+          //Create a Results object to hold the return values
+          Results response = new Results();
+          //make the magic happen
+          List<SObject> curSObjectList = (List<SObject>)JSON.deserialize(serializedSObjectListString, List<Sobject>.class);
 
-        for (Requests curRequest : requestList) {
-            String serializedSObjectString = curRequest.serializedSObjectString;
-            String curType = curRequest.objectTypeName;
-            //Create a Results object to hold the return values
-            Results response = new Results();
-
-            /* //extract the object type that the user specfied when defining the instance in Flow Builder
-            Schema.SObjectType curType = response.outputSObject.getSObjectType();
-            System.debug ('curtype: ' + curType);
-            String sObjectTypeName = curType.getDescribe().getName();
-            System.debug ('sObjectTypeName: ' + sObjectTypeName);
-            Type systemType = Type.forName(sObjectTypeName);
-            System.debug ('systemType: ' + systemType); */
-            Type systemType = Type.forName(curType);
-            //make the magic happen
-            SObject curSObject = (SObject)JSON.deserialize(serializedSObjectString, systemType);
-            System.debug ('curSObject: ' + curSObject);
-
+          if (curSObjectList.size() > 1) {
             //add the return values to the Results object
-            response.outputSObject = curSObject;
+            response.outputSObjectList = curSObjectList;
+          }
+          else if (curSObjectList.size() == 1) {
+            response.outputSObject = curSObjectList[0];
+          }
+          
+          responseWrapper.add(response);
+      }
+     
+      return responseWrapper;
+  }
 
-            responseWrapper.add(response);
-        }
-       
-        return responseWrapper;
-    
-    }
+  global class Results {
+    @InvocableVariable
+    global SObject outputSObject;
+    @InvocableVariable
+    global List<SObject> outputSObjectList;
+  }
 
-    global class Requests {
-      @InvocableVariable(required=true)
-      global String serializedSObjectString;
-
-      @InvocableVariable(required=true)
-      global String objectTypeName;
-
-    
-    }
-    
-    global class Results {
-
-      
-      @InvocableVariable
-      global SObject outputSObject;
-
-    }
-
+  global class Requests {
+    @InvocableVariable(required=true)
+    global String serializedSObjectListString;
+    @InvocableVariable(required=true)
+    global String objectTypeName;
+  }
 }

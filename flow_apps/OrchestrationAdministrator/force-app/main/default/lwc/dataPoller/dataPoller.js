@@ -1,5 +1,6 @@
 import { api, LightningElement } from 'lwc';
 import getSobjects from '@salesforce/apex/DataPollerController.getSobjects';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 export default class DataPoller extends LightningElement {
     @api pollingFrequency = 3;
     @api queryString;
@@ -8,12 +9,11 @@ export default class DataPoller extends LightningElement {
 
     connectedCallback() {
         setInterval(function() {
-            console.log('queryString', this.queryString);
-            console.log('pollingFrequency', this.pollingFrequency);
             getSobjects({queryString : this.queryString}).then(
                 result => {
-                    console.log('result ', result);
+                    
                     this.retrievedRecords = result;
+                    this.dispatchEvent(new FlowAttributeChangeEvent('retrievedRecords', this.retrievedRecords));             
                 }
             ).catch(
                 error => {
@@ -21,6 +21,9 @@ export default class DataPoller extends LightningElement {
                     console.error('error', error);
                 }
             );
-        }, this.pollingFrequency * 1000)
+        }.bind(this), this.pollingFrequency * 1000
+        )
+        
     }
+
 }

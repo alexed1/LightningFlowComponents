@@ -6,11 +6,11 @@ global with sharing class SerializeSObjectToJSON {
           List<Results> responseWrapper= new List<Results>();
           
           for (Requests curRequest : requestList) {
-            String serializedSObjectListString;
+            
             String serializedSObjectString;
             if (curRequest.inputSObjectList != null) {
               List<SObject> inputSObjectList = curRequest.inputSObjectList;
-              serializedSObjectListString = JSON.serialize(inputSObjectList, true);
+              serializedSObjectString = JSON.serialize(inputSObjectList, true);
             }
             if (curRequest.inputSObject != null) {
               SObject inputSObject = curRequest.inputSObject;
@@ -19,14 +19,14 @@ global with sharing class SerializeSObjectToJSON {
 
             Results response = new Results();
 
-            if (!String.isEmpty(serializedSObjectListString) && !String.isEmpty(serializedSObjectString)) {
-              response.serializedSObjectListString = serializedSObjectListString.substring(0, serializedSObjectListString.length() - 1) + ',' + serializedSObjectString + ']';
-            }
-            else if (!String.isEmpty(serializedSObjectListString)) {
-              response.serializedSObjectListString = serializedSObjectListString;
+            if (!String.isEmpty(serializedSObjectString) && !String.isEmpty(serializedSObjectString)) {
+              response.serializedSObjectString = serializedSObjectString.substring(0, serializedSObjectString.length() - 1) + ',' + serializedSObjectString + ']';
             }
             else if (!String.isEmpty(serializedSObjectString)) {
-              response.serializedSObjectListString = '[' + serializedSObjectString + ']';
+              response.serializedSObjectString = serializedSObjectString;
+            }
+            else if (!String.isEmpty(serializedSObjectString)) {
+              response.serializedSObjectString = '[' + serializedSObjectString + ']';
             }
             
             responseWrapper.add(response);
@@ -37,7 +37,7 @@ global with sharing class SerializeSObjectToJSON {
   
       global class Results {
         @InvocableVariable
-        global String serializedSObjectListString;
+        global String serializedSObjectString;
       }
       
       global class Requests {       

@@ -11,6 +11,10 @@
             <typeName>U__outputSObject</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__outputSObjectList</typeName>
+            <typeValue>Account</typeValue>
+        </dataTypeMappings>
         <inputParameters>
             <name>objectTypeName</name>
             <value>
@@ -37,6 +41,10 @@
         </connector>
         <dataTypeMappings>
             <typeName>T__inputSObject</typeName>
+            <typeValue>Account</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>T__inputSObjectList</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
         <inputParameters>

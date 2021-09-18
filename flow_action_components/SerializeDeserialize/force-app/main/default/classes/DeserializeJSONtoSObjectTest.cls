@@ -21,7 +21,7 @@ public with sharing class DeserializeJSONtoSObjectTest {
         List<DeserializeJSONtoSObject.Requests> deserializeRequests = new List<DeserializeJSONtoSObject.Requests>();
         for (SerializeSObjectToJSON.Results result : serializeResults) {
             DeserializeJSONtoSObject.Requests request = new DeserializeJSONtoSObject.Requests();
-            request.serializedSObjectListString = result.serializedSObjectListString;
+            request.serializedSObjectString = result.serializedSObjectString;
             request.objectTypeName = 'Account';
             deserializeRequests.add(request);
         }

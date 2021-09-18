@@ -6,13 +6,13 @@ global with sharing class DeserializeJSONtoSObject {
       List<Results> responseWrapper= new List<Results>();
 
       for (Requests curRequest : requestList) {
-          String serializedSObjectListString = curRequest.serializedSObjectListString.replace('null', '""');
+          String serializedSObjectString = curRequest.serializedSObjectString.replace('null', '""');
           String curType = curRequest.objectTypeName;
           Type systemType = Type.forName(curType);
           //Create a Results object to hold the return values
           Results response = new Results();
           //make the magic happen
-          List<SObject> curSObjectList = (List<SObject>)JSON.deserialize(serializedSObjectListString, List<Sobject>.class);
+          List<SObject> curSObjectList = (List<SObject>)JSON.deserialize(serializedSObjectString, List<Sobject>.class);
 
           if (curSObjectList.size() > 1) {
             //add the return values to the Results object
@@ -37,7 +37,7 @@ global with sharing class DeserializeJSONtoSObject {
 
   global class Requests {
     @InvocableVariable(required=true)
-    global String serializedSObjectListString;
+    global String serializedSObjectString;
     @InvocableVariable(required=true)
     global String objectTypeName;
   }

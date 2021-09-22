@@ -1,12 +1,30 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "RunFlowInAnotherOrg",
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@2.32.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@2.5.7-0"
+                }
+            ],
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "FlowInAnotherOrg",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "RunFlowInAnotherOrg": "0Ho5G000000k9tqSAA",
+        "FlowActionsBasePack@2.24.0-0": "04t4W00000308DpQAI",
+        "FlowScreenComponentsBasePack@2.3.10-0": "04t5G0000047xKvQAI",
+        "FlowActionsBasePack@2.32.0-0": "04t4W0000034KebQAE",
+        "FlowScreenComponentsBasePack@2.5.7-0": "04t5G000003rUccQAE"
     }
-  ],
-  "name": "FlowInAnotherOrg",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "52.0"
 }

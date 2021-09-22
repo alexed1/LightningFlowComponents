@@ -13,6 +13,7 @@
     "sourceApiVersion": "48.0",
     "packageAliases": {
         "ConvertCSVToRecords": "0Hof4000000XZKMCA4",
-        "ConvertCSVToRecords@1.0.0-0": "04tf4000004PtcnAAC"
+        "ConvertCSVToRecords@1.0.0-0": "04tf4000004PtcnAAC",
+        "ConvertCSVToRecords@1.2.0-0": "04t5G000003rUbFQAU"
     }
 }

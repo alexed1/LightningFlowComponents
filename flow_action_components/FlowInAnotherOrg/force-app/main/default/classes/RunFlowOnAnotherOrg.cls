@@ -26,14 +26,16 @@ public with sharing class RunFlowOnAnotherOrg {
                 } else {
                     resp.result = ERROR_MESSAGE;
                 }
-                responseList.add(resp);
+                
             }
+            responseList.add(resp);
             
         }
         return responseList;
     }
 
     static HttpResponse sendRequest(Request request) {
+        System.debug('sending request: ' + JSON.serialize(request));
         HttpRequest req = new HttpRequest();
         req.setEndpoint(String.format(RUN_FLOW_URL, new List<String> {request.baseOrgURL, request.flowName}));
         req.setMethod(POST_METHOD);
@@ -59,6 +61,7 @@ public with sharing class RunFlowOnAnotherOrg {
         req.setBody(postBody);
         Http http = new Http();
         HTTPResponse res = http.send(req);
+        System.debug ('response is: ' + res.getBody());
         return res;
     }
 

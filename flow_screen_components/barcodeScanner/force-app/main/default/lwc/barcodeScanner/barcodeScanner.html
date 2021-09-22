@@ -12,8 +12,7 @@
     <!-- This is static help text -->
     <div class="slds-align_absolute-center slds-text-align_center 
             slds-text-color_weak">
-        Click Scan Barcode to open a barcode scanner camera view. Position a
-        barcode in the scanner view to scan it.
+        {scannerInstructions}
     </div>
 
     <!-- The click-to-scan button;
@@ -23,8 +22,8 @@
             variant="brand"
             class="slds-var-m-left_x-small"
             disabled={scanButtonDisabled}
-            icon-name="utility:cases"
-            label="Scan Barcode"
+            icon-name={buttonIcon}
+            label={buttonLabel}
             title="Open a camera view and look for a barcode to scan"
             onclick={handleBeginScanClick}>
         </lightning-button>

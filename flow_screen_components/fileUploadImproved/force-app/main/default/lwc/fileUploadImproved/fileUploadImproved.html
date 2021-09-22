@@ -1,13 +1,13 @@
 <template>
     <lightning-layout multiple-rows="true">
         <lightning-layout-item class="slds-form-element__label" size="12">
-            {uploadedLabel}
+            {uploadedlabel}
         </lightning-layout-item>
         <lightning-layout-item size="12">
             <lightning-layout multiple-rows="true">
                 <template for:each={objFiles} for:item="objFile">
                     <div key={objFile} class="slds-size_12-of-12 slds-small-size_12-of-12 slds-medium-size_12-of-12 slds-large-size_6-of-12 slds-var-p-around_xx-small">
-                        <lightning-layout class="slds-grid_vertical-align-center slds-var-p-around_xx-small" style="border: 1px solid #d8dde6; border-radius:4px; background-color:#FAFAFA;">
+                        <lightning-layout class="slds-grid_vertical-align-center slds-var-p-top_xx-small slds-var-p-bottom_xx-small slds-var-p-left_xx-small slds-var-p-right_small" style="border: 1px solid #d8dde6; border-radius:4px; background-color:#FAFAFA;">
                             <lightning-layout-item size="11">
                                 <div class="slds-media slds-media_center slds-has-flexi-truncate">
                                     <div class="slds-media__figure">
@@ -22,19 +22,20 @@
                                     <lightning-tile
                                         label={objFile.name}
                                         onclick={openFile}
-                                        data-recordid={objFile.id}
+                                        data-docid={objFile.id}
                                         class="slds-media__body">
                                     </lightning-tile>
                                 </div>
                             </lightning-layout-item>
-                            <lightning-layout-item size="1" class="slds-text-align_center">
+                            <lightning-layout-item size="1" class="slds-text-align_right">
                                 <!-- sldsValidatorIgnoreNextLine -->
                                 <lightning-button-icon
                                     icon-name="utility:close"
                                     title="Delete File"
                                     aria-hidden="true"
                                     onclick={deleteDocument}
-                                    data-recordid={objFile.id}
+                                    data-docid={objFile.id}
+                                    data-versid={objFile.versid}
                                     variant="bare">
                                 </lightning-button-icon>
                             </lightning-layout-item>
@@ -50,7 +51,7 @@
                     accept={acceptedFormats}
                     record-id={recordIdToUse}
                     file-field-name='Guest_Record_fileupload__c'
-                    file-field-value={value}
+                    file-field-value={value.data}
                     onuploadfinished={handleUploadFinished}
                     multiple={allowMultiple}>
                 </lightning-file-upload>

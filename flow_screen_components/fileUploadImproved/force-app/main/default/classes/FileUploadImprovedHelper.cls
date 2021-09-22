@@ -9,7 +9,6 @@ public without sharing class FileUploadImprovedHelper{
     
     @AuraEnabled(cacheable = true)
     public static String encrypt(String recordId, String encodedKey){
-        system.debug(encodedKey);
         Blob key = EncodingUtil.base64Decode(encodedKey);
         Blob value = Crypto.encryptWithManagedIV('AES256', key, Blob.valueOf(recordId));
         String encodedValue = EncodingUtil.base64Encode(value);
@@ -30,6 +29,13 @@ public without sharing class FileUploadImprovedHelper{
             links.add(link);
         }
         database.insert(links, false);
+    }
+
+    @AuraEnabled
+    public static void deleteContentDoc(String versId){
+        ContentVersion cv = [SELECT ContentDocumentId FROM ContentVersion WHERE Id = :versId LIMIT 1];
+        ContentDocument cd = new ContentDocument(Id=cv.ContentDocumentId);
+        delete cd;
     }
     
     private static String decrypt(String encodedValue, String encodedKey){

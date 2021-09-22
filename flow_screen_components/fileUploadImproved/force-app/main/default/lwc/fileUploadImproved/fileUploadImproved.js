@@ -5,6 +5,7 @@ import { deleteRecord } from 'lightning/uiRecordApi';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
+import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteContentDoc';
 
 export default class FileUpload extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
@@ -20,13 +21,14 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     @api sessionKey;
     @api uploadedFileNames;
     @api uploadedlabel;
+    @api uploadedLabel; // deprecated
     
     @track docIds =[];
     @track fileNames = [];
     @track objFiles = [];
     @track versIds = [];
 
-    recordIdToUse = '';
+    recordIdToUse;
     @api
     get communityDetails(){
         if(this.community != true){
@@ -35,28 +37,14 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         return this.recordIdToUse;
     }
 
-    @api
-    get uploadedLabel(){
-        return this.uploadedlabel;
-    }
-
-    get sessionStorageKey() {
-        return this.sessionKey;
-    }
-
     key;
     @wire(getKey) key;
 
-    value = '';
-    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'})
-    wiredEncryption({ data }) {
-        if(this.community === true){
-            this.value = data;
-        }
-    }
+    value;
+    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'}) value;
 
     connectedCallback(){
-        let cachedSelection = sessionStorage.getItem(this.sessionStorageKey);
+        let cachedSelection = sessionStorage.getItem(this.sessionKey);
         if(cachedSelection){
             this.objFiles = JSON.parse(cachedSelection);
 
@@ -66,7 +54,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 this.fileNames.push(file.name);
             });
             
-            this.communicateEvent(this.docIds,this.versIds,this.fileNames);
+            this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
         }
     }
     
@@ -94,11 +82,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.fileNames.push(file.name);
         });
 
-        this.communicateEvent(this.docIds,this.versIds,this.fileNames);
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
 
-        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
-
-        if(this.community === true){
+        if(this.community === true && this.value.data){
             createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
         }
         
@@ -132,13 +118,19 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
     
     deleteDocument(event){
-        const recordId = event.target.dataset.recordid;
-        deleteRecord(recordId);
+        const docId = event.target.dataset.docid;
+        const versId = event.target.dataset.versid;
         
+        if(docId){
+            deleteRecord(docId);
+        } else {
+            deleteContentDoc({versId: versId});
+        }
+
         let objFiles = this.objFiles;
         let removeIndex;
         for(let i=0; i<objFiles.length; i++){
-            if(recordId === objFiles[i].id){
+            if(versId === objFiles[i].versid){
                 removeIndex = i;
             }
         }
@@ -148,20 +140,19 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         this.versIds.splice(removeIndex,1);
         this.fileNames.splice(removeIndex,1);
 
-        this.communicateEvent(this.docIds,this.versIds,this.fileNames);
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+    }    
 
-        sessionStorage.setItem(this.sessionStorageKey, JSON.stringify(this.objFiles));
-
-    }
-
-    communicateEvent(docIds, versIds, fileNames){
+    communicateEvent(docIds, versIds, fileNames, objFiles){
         this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));
+
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(objFiles));
     }
 
     openFile(event) {
-        const recordId = event.target.dataset.recordid;
+        const docId = event.target.dataset.docid;
         event.preventDefault();
         this[NavigationMixin.Navigate]({
             type: 'standard__namedPage',
@@ -169,7 +160,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 pageName: 'filePreview'
             },
             state: {
-                recordIds: recordId
+                recordIds: docId
             }
         });
     }
@@ -190,9 +181,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
              }; 
         } 
         else {
-            return { 
-                isValid: true
-            };
+            return { isValid: true };
         }
     }
 }

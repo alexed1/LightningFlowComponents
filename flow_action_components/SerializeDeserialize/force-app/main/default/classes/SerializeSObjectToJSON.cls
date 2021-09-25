@@ -6,7 +6,6 @@ global with sharing class SerializeSObjectToJSON {
           List<Results> responseWrapper= new List<Results>();
           
           for (Requests curRequest : requestList) {
-            
             String serializedSObjectString;
             if (curRequest.inputSObjectList != null) {
               List<SObject> inputSObjectList = curRequest.inputSObjectList;
@@ -14,21 +13,17 @@ global with sharing class SerializeSObjectToJSON {
             }
             if (curRequest.inputSObject != null) {
               SObject inputSObject = curRequest.inputSObject;
-              serializedSObjectString = JSON.serialize(inputSObject, true);
+              if (!String.isEmpty(serializedSObjectString)) {
+                String serializedSingleton = JSON.serialize(inputSObject, true);
+                serializedSObjectString = serializedSObjectString.substring(0, serializedSObjectString.length() - 1) + ',' + serializedSingleton + ']';
+              }
+              else {
+                serializedSObjectString = '[' + JSON.serialize(inputSObject, true) + ']';
+              }
             }
 
             Results response = new Results();
-
-            if (!String.isEmpty(serializedSObjectString) && !String.isEmpty(serializedSObjectString)) {
-              response.serializedSObjectString = serializedSObjectString.substring(0, serializedSObjectString.length() - 1) + ',' + serializedSObjectString + ']';
-            }
-            else if (!String.isEmpty(serializedSObjectString)) {
-              response.serializedSObjectString = serializedSObjectString;
-            }
-            else if (!String.isEmpty(serializedSObjectString)) {
-              response.serializedSObjectString = '[' + serializedSObjectString + ']';
-            }
-            
+            response.serializedSObjectString = serializedSObjectString;
             responseWrapper.add(response);
           }
          

@@ -21,9 +21,9 @@ public with sharing class ConvertCSVToRecords {
 
                 Blob csvBlobContent = getCsvContent(curContentDocumentId);
                 String csvStringContent = blobToString(csvBlobContent, 'ISO-8859-1');
-                String commaRepl = '~`~', newlineRepl = '-`-';
+                String fSepRepl = '~`~', newlineRepl = '-`-';
                 csvStringContent = csvStringContent.replaceAll('(\r\n|\r)', '\n');
-                csvStringContent = removeCommas(csvStringContent, 0,curInput.FSep,commaRepl, newlineRepl);
+                csvStringContent = removeCommas(csvStringContent, 0,curInput.FSep,fSepRepl, newlineRepl);
                 String[] csvRows = csvStringContent.split('\n');
                 String[] fields = csvRows[0].split(curInput.FSep); //Gives all the API names of the fields from the 1st CSV row 
                 csvRows.remove(0);
@@ -49,7 +49,7 @@ public with sharing class ConvertCSVToRecords {
                     String[] fieldInputValues = row.split(curInput.FSep,-1);
                     for (Integer i = 0; i < fields.size(); i++) {
                         String fieldValue = fieldInputValues[i].replace(curInput.Fsep + '"',curInput.Fsep).replace('"' + curInput.Fsep,curInput.Fsep);
-                        fieldValue = replaceComma(fieldValue, curInput.Fsep, commaRepl);
+                        fieldValue = replaceComma(fieldValue, curInput.Fsep, fSepRepl);
                         fieldValue = removeQuotes(fieldValue); // Remove " characters if they bracket the field value
                         String Tsep = curInput.Tsep;
                         String Dsep = curInput.Dsep;
@@ -176,7 +176,7 @@ public with sharing class ConvertCSVToRecords {
         return convertedFieldValue;
     }
 
-    static String removeCommas(String text, Integer eloc, String fSep, String commaRepl, String newlineRepl) {
+    static String removeCommas(String text, Integer eloc, String fSep, String fSepRepl, String newlineRepl) {
         Integer sloc = -1;
         if (eloc == 0 && text.substring(eloc, 1) == '"') {
             sloc = 0;
@@ -194,9 +194,9 @@ public with sharing class ConvertCSVToRecords {
                 return text;
             }
         }
-        String subText = text.substring(sloc + 1, eloc).replace(fSep, commaRepl).replace('\n', newlineRepl);
+        String subText = text.substring(sloc + 1, eloc).replace(fSep, fSepRepl).replace('\n', newlineRepl);
         String replText = text.substring(0, sloc + 1) + subText + text.substring(eloc);
-        return removeCommas(replText, eloc,fSep, commaRepl, newlineRepl);
+        return removeCommas(replText, eloc,fSep, fSepRepl, newlineRepl);
     }
 
     static Integer getNextQuoteIndex(String text, Integer startingFrom, Boolean isClosing) {
@@ -214,8 +214,8 @@ public with sharing class ConvertCSVToRecords {
         return -1;
     }
 
-    static String replaceComma(String text, String fSep, String commaRepl) {
-        return text.replace(commaRepl,fSep);
+    static String replaceComma(String text, String fSep, String fSepRepl) {
+        return text.replace(fSepRepl,fSep);
     }
 
     static String replaceNewline(String text, String newlineRepl) {

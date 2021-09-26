@@ -49,6 +49,8 @@ public with sharing class ConvertCSVToRecords {
                     String[] fieldInputValues = row.split(curInput.FSep);
                     for (Integer i = 0; i < fields.size(); i++) {
                         String fieldValue = fieldInputValues[i].replace(curInput.Fsep + '"',curInput.Fsep).replace('"' + curInput.Fsep,curInput.Fsep);
+                        fieldValue = replaceComma(fieldValue, commaRepl);
+                        fieldValue = removeQuotes(fieldValue); // Remove " characters if they bracket the field value
                         String Tsep = curInput.Tsep;
                         String Dsep = curInput.Dsep;
                         String vCur = curInput.vCur;

@@ -6,4 +6,5 @@
     <design:attribute name="destinationActionFilter" label="Destination Action Filter"  />
     <design:attribute name="relationshipName" label="Relationship Name"  />
     <design:attribute name="destinationUrl" label="Destination URL" default="www.salesforce.com" />
+    <design:attribute name="defaultVals" label="Default Field Values in JSON" />
 </design:component>

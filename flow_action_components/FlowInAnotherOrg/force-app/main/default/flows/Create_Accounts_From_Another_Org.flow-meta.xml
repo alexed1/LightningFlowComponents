@@ -5,13 +5,17 @@
         <label>Deserialize</label>
         <locationX>176</locationX>
         <locationY>158</locationY>
-        <actionName>DeserializeJSONtoSObjectList</actionName>
+        <actionName>DeserializeJSONtoSObject</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Create_Account</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>U__outputSObjectList</typeName>
+            <typeValue>Account</typeValue>
+        </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>U__outputSObject</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -22,7 +26,7 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>serializedSObjectListString</name>
+            <name>serializedSObjectString</name>
             <value>
                 <elementReference>Test</elementReference>
             </value>

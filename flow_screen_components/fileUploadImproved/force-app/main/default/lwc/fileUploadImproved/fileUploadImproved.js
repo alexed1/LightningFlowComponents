@@ -1,51 +1,34 @@
 import { LightningElement, track, api, wire } from 'lwc';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { NavigationMixin } from 'lightning/navigation';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
+import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteContentDoc';
 
-export default class FileUpload extends LightningElement {
-    @api recordId;
-    @api label;
-    @api icon;
-    @api uploadedlabel;
+export default class FileUpload extends NavigationMixin(LightningElement) {
+    @api acceptedFormats;
+    @api allowMultiple;
+    @api community;
     @api contentDocumentIds;
     @api contentVersionIds;
-    @api uploadedFileNames;
-    @api allowMultiple;
-    @api acceptedFormats;
+    @api icon;
+    @api label;
+    @api recordId;
     @api required;
     @api requiredMessage;
-    @api community;
-    @track objFiles = [];
+    @api sessionKey;
+    @api uploadedFileNames;
+    @api uploadedlabel;
+    @api uploadedLabel; // deprecated
+    
     @track docIds =[];
-    @track versIds = [];
     @track fileNames = [];
+    @track objFiles = [];
+    @track versIds = [];
 
-    uploadedLabelToUse;
-    @api
-    get uploadedLabel(){
-        if(this.uploadedlabel == null){
-            this.uploadedLabelToUse = 'Uploaded Files:';
-        }
-        else{
-            this.uploadedLabelToUse = this.uploadedlabel;
-        }
-        return this.uploadedLabelToUse;
-    }
-
-    key;
-    @wire(getKey) key;
-
-    value = '';
-    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'})
-    wiredEncryption({ data }) {
-        if(this.community === true){
-            this.value = data;
-        }
-    }
-
-    recordIdToUse = '';
+    recordIdToUse;
     @api
     get communityDetails(){
         if(this.community != true){
@@ -53,9 +36,29 @@ export default class FileUpload extends LightningElement {
         }
         return this.recordIdToUse;
     }
+
+    key;
+    @wire(getKey) key;
+
+    value;
+    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'}) value;
+
+    connectedCallback(){
+        let cachedSelection = sessionStorage.getItem(this.sessionKey);
+        if(cachedSelection){
+            this.objFiles = JSON.parse(cachedSelection);
+
+            this.objFiles.forEach((file) => {
+                this.docIds.push(file.id);
+                this.versIds.push(file.versid);
+                this.fileNames.push(file.name);
+            });
+            
+            this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+        }
+    }
     
     handleUploadFinished(event) {
-        // Get the list of uploaded files
         const files = event.detail.files;
 
         var objFile;
@@ -70,7 +73,8 @@ export default class FileUpload extends LightningElement {
             objFile = {
                 name: file.name,
                 filetype: filetype,
-                id: file.documentId
+                id: file.documentId,
+                versid: file.contentVersionId
             };
             this.objFiles.push(objFile);
             this.docIds.push(file.documentId);
@@ -78,11 +82,9 @@ export default class FileUpload extends LightningElement {
             this.fileNames.push(file.name);
         });
 
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
 
-        if(this.community === true){
+        if(this.community === true && this.value.data){
             createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
         }
         
@@ -116,14 +118,19 @@ export default class FileUpload extends LightningElement {
     }
     
     deleteDocument(event){
-
-        const recordId = event.target.dataset.recordid;
-        deleteRecord(recordId);
+        const docId = event.target.dataset.docid;
+        const versId = event.target.dataset.versid;
         
+        if(docId){
+            deleteRecord(docId);
+        } else {
+            deleteContentDoc({versId: versId});
+        }
+
         let objFiles = this.objFiles;
         let removeIndex;
         for(let i=0; i<objFiles.length; i++){
-            if(recordId === objFiles[i].id){
+            if(versId === objFiles[i].versid){
                 removeIndex = i;
             }
         }
@@ -133,10 +140,29 @@ export default class FileUpload extends LightningElement {
         this.versIds.splice(removeIndex,1);
         this.fileNames.splice(removeIndex,1);
 
-        this.contentDocumentIds=this.docIds;
-        this.contentVersionIds=this.versIds;
-        this.uploadedFileNames=this.fileNames;
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+    }    
 
+    communicateEvent(docIds, versIds, fileNames, objFiles){
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
+        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));
+
+        sessionStorage.setItem(this.sessionKey, JSON.stringify(objFiles));
+    }
+
+    openFile(event) {
+        const docId = event.target.dataset.docid;
+        event.preventDefault();
+        this[NavigationMixin.Navigate]({
+            type: 'standard__namedPage',
+            attributes: {
+                pageName: 'filePreview'
+            },
+            state: {
+                recordIds: docId
+            }
+        });
     }
 
     @api
@@ -155,9 +181,7 @@ export default class FileUpload extends LightningElement {
              }; 
         } 
         else {
-            return { 
-                isValid: true
-            };
+            return { isValid: true };
         }
     }
 }

@@ -2,6 +2,8 @@
 public with sharing class ConvertCSVToRecordsTest {
     private static final String SPACE = ' ';
     private static final String SAMPLE_DESCRIPTION = 'Sample Description';
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; ""Escrow Officer""; Landlord; Property Manager';
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; "Escrow Officer"; Landlord; Property Manager'; // '""' is replaced indicates a single '"' within a column. The value after parsing should indicate that.
     private static final String NEW_YORK = 'New York';
     private static final String HOT = 'Hot';
 
@@ -35,6 +37,9 @@ public with sharing class ConvertCSVToRecordsTest {
         ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
         Test.stopTest();
         System.assert(flowOutputs[0].convertedCSVRows.size() == 3);
+        List<Account> accList = flowOutputs[0].convertedCSVRows;
+        System.assertEquals(3,accList.size(),'Expected 2 accounts to be parsed from csv input');
+        System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,accList[1].Description,'The description field with commas, newline and quotes was not parsed correctly');
     }
 
     @isTest
@@ -115,7 +120,7 @@ public with sharing class ConvertCSVToRecordsTest {
         csvStringContent = csvHeader;
         csvStringContent += SPACE + SAMPLE_DESCRIPTION + ',500000,300,' + SPACE + HOT + ',"Acme, Inc",' + NEW_YORK + SPACE;
         csvStringContent += '\n';
-        csvStringContent += '"Sample Description,with new line",40000,30,Hot,"Universal Containers","Washington, DC"';
+        csvStringContent += '"'+DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES+'",40000,30,Hot,"Universal Containers","Washington, DC"';
         csvStringContent += '\n';
         csvStringContent += ',40000,20,Hot,"Universal Containers", ';
         return Blob.valueOf(csvStringContent);

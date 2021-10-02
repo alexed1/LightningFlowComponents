@@ -15,13 +15,14 @@ public with sharing class ConvertCSVToRecords {
                     curInput.contentDocumentIdList.add(curInput.contentDocumentId);
                 }
             }
+            SObjectType sObjType = ((SObject) Type.forName(curInput.objectApiName).newInstance()).getSObjectType();
+            Map<String, SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
             for (String curContentDocumentId : curInput.contentDocumentIdList) {
-                SObjectType sObjType = ((SObject) Type.forName(curInput.objectApiName).newInstance()).getSObjectType();
-                Map<String, SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
 
                 Blob csvBlobContent = getCsvContent(curContentDocumentId);
                 String csvStringContent = blobToString(csvBlobContent, 'ISO-8859-1');
-                String fSepRepl = '~`~', newlineRepl = '-`-';
+                String fSepRepl = '~`~';
+                String newlineRepl = '-`-';
                 csvStringContent = csvStringContent.replaceAll('(\r\n|\r)', '\n');
                 csvStringContent = removeFSeps(csvStringContent, 0,curInput.FSep,fSepRepl, newlineRepl);
                 String[] csvRows = csvStringContent.split('\n');

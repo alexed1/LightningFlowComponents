@@ -22,6 +22,7 @@
     <aura:attribute name="destinationActionFilter" type="String"/>
     <aura:attribute name="destinationUrl" type="String" />
     <aura:attribute name="relationshipName" type="String" />
+    <aura:attribute name="defaultVals" type="String" />
     <lightning:navigation aura:id="navService"/>
 </aura:component>
 

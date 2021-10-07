@@ -25,9 +25,9 @@ public class FileUploadImproved_Test {
         cv.Guest_Record_fileupload__c = FileUploadImprovedHelper.encrypt(con.Id,key);
         update cv;
         
-        test.startTest();
+        system.test.startTest();
             FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key);
-        test.stopTest();
+        system.test.stopTest();
 
 
         List<ContentDocumentLink> cdl = [SELECT Id FROM ContentDocumentLink WHERE LinkedEntityId = :con.Id];
@@ -38,9 +38,9 @@ public class FileUploadImproved_Test {
     public static void delete_test(){
         ContentVersion cv = getCV();
 
-        test.startTest();
+        system.test.startTest();
             FileUploadImprovedHelper.deleteContentDoc(cv.Id);
-        test.stopTest();
+        system.test.stopTest();
         
     }
 

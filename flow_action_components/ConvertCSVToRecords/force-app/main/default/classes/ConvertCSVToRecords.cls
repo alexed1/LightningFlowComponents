@@ -152,8 +152,8 @@ public with sharing class ConvertCSVToRecords {
             }
             when DATE {
                 /* replace / and : and . in fieldvalue by -  like in 2021.12.31 or 2021/12/31 or 2021:12:31 or 1.1.2021 or 31/12/2021 or 31:12:2021 */
-                String fValue = fieldValue.replaceAll('^0-9','-');
-                list<String> lstSplit = fValue.split('-');
+                String fValue = fieldValue.replaceAll('[^0-9]','-');
+                List<String> lstSplit = fValue.split('-');
                 If (fValue.indexOf('-') > 2){
                    /* Format found like YYYY-MM-DD */
                    Integer Year = Integer.valueOf(lstSplit[0]);           

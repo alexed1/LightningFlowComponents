@@ -226,7 +226,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
 	{ 
 		MetadataService.MetadataPort service = new MetadataService.MetadataPort();
 		service.SessionHeader = new MetadataService.SessionHeader_element();
-		service.SessionHeader.sessionId = UserInfo.getSessionId();
+		service.SessionHeader.sessionId = Page.GenerateSessionIdForLWC.getContent().toString();
 		return service;		
     }	
     

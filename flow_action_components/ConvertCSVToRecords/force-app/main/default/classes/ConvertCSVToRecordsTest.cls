@@ -2,17 +2,19 @@
 public with sharing class ConvertCSVToRecordsTest {
     private static final String SPACE = ' ';
     private static final String SAMPLE_DESCRIPTION = 'Sample Description';
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; ""Escrow Officer""; Landlord; Property Manager';
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; "Escrow Officer"; Landlord; Property Manager'; // '""' is replaced indicates a single '"' within a column. The value after parsing should indicate that.
     private static final String NEW_YORK = 'New York';
     private static final String HOT = 'Hot';
 
     @TestSetup
-    static void createData() {
+    private static void createData() {
         ContentVersion cv = new ContentVersion(Title = 'Demo Accounts CSV', VersionData = createCSVBlob(), PathOnClient = 'DemoAccounts.csv');
         insert cv;
     }
 
     @isTest
-    static void testconvertMethodExceptions() {
+    private static void testconvertMethodExceptions() {
         ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
 
         /* 1. FlowInput list size more than 1 exception
@@ -29,16 +31,19 @@ public with sharing class ConvertCSVToRecordsTest {
     }
 
     @isTest
-    static void testconvertMethod() {
+    private static void testconvertMethod() {
         ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
         Test.startTest();
         ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
         Test.stopTest();
         System.assert(flowOutputs[0].convertedCSVRows.size() == 3);
+        List<Account> accList = flowOutputs[0].convertedCSVRows;
+        System.assertEquals(3,accList.size(),'Expected 2 accounts to be parsed from csv input');
+        System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,accList[1].Description,'The description field with commas, newline and quotes was not parsed correctly');
     }
 
     @isTest
-    static void testIsTrimFlagPositive() {
+    private static void testIsTrimFlagPositive() {
         ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
         flowInputs[0].isTrim = true;
         Test.startTest();
@@ -54,7 +59,7 @@ public with sharing class ConvertCSVToRecordsTest {
     }
 
     @isTest
-    static void testIsTrimFlagNegative() {
+    private static void testIsTrimFlagNegative() {
         ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
         flowInputs[0].isTrim = false;
         Test.startTest();
@@ -68,7 +73,7 @@ public with sharing class ConvertCSVToRecordsTest {
     }
 
     @isTest
-    static void testGetFieldTypeMethodException() {
+    private static void testGetFieldTypeMethodException() {
         try {
             ConvertCSVToRecords.getFieldType(Schema.SObjectType.Account.fields.getMap(), 'TestField');
         } catch (Exception e) {
@@ -77,7 +82,7 @@ public with sharing class ConvertCSVToRecordsTest {
     }
 
     @isTest
-    static void testGetConvertedFieldValue() {
+    private static void testGetConvertedFieldValue() {
         /**
          * Check DOUBLE field
          */
@@ -106,7 +111,25 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals('1234.56', String.valueOf((Decimal)result));
     }
 
-    static Blob createCSVBlob() {
+    @isTest
+    private static void testConvertMultipleContentDocs() {
+        createData(); //Create the document once more so we have a list of contentdocument ids
+        //System.assert(false,[Select Id from ContentVersion].size());
+        ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
+        Test.startTest();
+        ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
+        Test.stopTest();
+        //We should get 2 responses in the output array, one for each ContentDocument Id
+        System.assertEquals(2,flowOutputs.size(),'Expected 2 outputs from action, one for each Content Document Id');
+        for(ConvertCSVToRecords.Response flowOutput: flowOutputs){
+          System.assert(flowOutput.convertedCSVRows.size() == 3,'Expected 6 records but got '+flowOutput.convertedCSVRows.size());
+          List<Account> accList = flowOutput.convertedCSVRows;
+          System.assertEquals(3,accList.size(),'Expected 2 accounts to be parsed from csv input');
+          System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,accList[1].Description,'The description field with commas, newline and quotes was not parsed correctly');
+        }
+    }
+
+    private static Blob createCSVBlob() {
         String csvStringContent;
         Blob csvBlobContent;
         string[] fields = new List<String>{ 'Description', 'AnnualRevenue', 'NumberOfEmployees', 'Rating', 'Name', 'Site' };
@@ -115,18 +138,27 @@ public with sharing class ConvertCSVToRecordsTest {
         csvStringContent = csvHeader;
         csvStringContent += SPACE + SAMPLE_DESCRIPTION + ',500000,300,' + SPACE + HOT + ',"Acme, Inc",' + NEW_YORK + SPACE;
         csvStringContent += '\n';
-        csvStringContent += '"Sample Description,with new line",40000,30,Hot,"Universal Containers","Washington, DC"';
+        csvStringContent += '"'+DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES+'",40000,30,Hot,"Universal Containers","Washington, DC"';
         csvStringContent += '\n';
         csvStringContent += ',40000,20,Hot,"Universal Containers", ';
         return Blob.valueOf(csvStringContent);
     }
-    static ConvertCSVToRecords.Request[] createFlowInputsList() {
+
+    private static ConvertCSVToRecords.Request[] createFlowInputsList() {
         String contentDocumentId;
-        ContentVersion cv = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Accounts CSV'];
+        List<ContentVersion> cvList = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Accounts CSV'];
         ConvertCSVToRecords.Request[] flowInputs = new List<ConvertCSVToRecords.Request>{};
         ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
         input.objectApiName = 'Account';
-        input.contentDocumentId = cv.ContentDocumentId;
+        if(cvList.size()==1){
+          input.contentDocumentId = cvList[0].ContentDocumentId;
+        }
+        else if(cvList.size()>1){
+          input.contentDocumentIdList = new List<Id>();
+          for(ContentVersion cv: cvList){
+            input.contentDocumentIdList.add(cv.ContentDocumentId);
+          }
+        }
         input.FSep =',';
         flowInputs.add(input);
 

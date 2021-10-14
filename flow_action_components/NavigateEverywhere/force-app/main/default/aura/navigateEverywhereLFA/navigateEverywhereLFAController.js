@@ -9,6 +9,7 @@
         var destinationActionFilter = component.get('v.destinationActionFilter');
         var relationshipName = component.get('v.relationshipName');
         var destinationUrl = component.get('v.destinationUrl');
+        var defaultVals = component.get('v.defaultVals');
 
         //error cases:
         //destination type not present or unsupported
@@ -62,6 +63,10 @@
                             pageReference.attributes.actionName = destinationAction.toLowerCase();
                             if(destinationActionFilter) {
                                 pageReference.state.filterName = destinationActionFilter;
+                            }
+                            if(defaultVals) {
+                                
+                                pageReference.state.defaultFieldValues = component.find("pageRefUtils").encodeDefaultFieldValues(JSON.parse(defaultVals));
                             }
                         } else {
                             throw new Error('Missing Destination Name. Since you have Destination Type set to Object, the Destination Name should be something like Account or MyObj__c');

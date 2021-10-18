@@ -433,14 +433,14 @@ export default class Datatable extends LightningElement {
 
         // JSON input attributes
         if (this.isUserDefinedObject) {
-            console.log('tableDataString - ',this._tableDataString);
-            if (!this._tableDataString || this._tableDataString.length == 0) {
-                this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
+            console.log('tableDataString - ',this.tableDataString);
+            if (!this.tableDataString || this.tableDataString.length == 0) {
+                this.tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
                 this.columnFields = this.keyField;
                 this.columnTypes = [];
                 this.columnScales = [];
             }
-            this._tableData = JSON.parse(this._tableDataString);
+            this._tableData = JSON.parse(this.tableDataString);
             console.log('tableData - ',this._tableData);    
             this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
         }
@@ -745,7 +745,7 @@ export default class Datatable extends LightningElement {
             if (!this.isUserDefinedObject) {
                 data = (this._tableData) ? JSON.parse(JSON.stringify([...this._tableData])) : [];
             } else { 
-                data = (this._tableData) ? JSON.parse(this._tableDataString) : [];
+                data = (this._tableData) ? JSON.parse(this.tableDataString) : [];
                 data.forEach(record => { 
                     delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
                 });

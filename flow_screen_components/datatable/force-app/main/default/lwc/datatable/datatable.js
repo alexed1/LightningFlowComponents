@@ -43,7 +43,7 @@ export default class Datatable extends LightningElement {
     };
 
     // Component Input & Output Attributes
-    @api tableData = [];
+    //@api tableData = []; see new version below
     @api columnFields = [];
     @api columnAlignments = [];
     @api columnCellAttribs = [];
@@ -68,6 +68,23 @@ export default class Datatable extends LightningElement {
     @api tableIcon;
     @api tableLabel;
     @api recordTypeId;
+
+
+    _tableData;
+   
+    @api
+    get tableData() {
+        return this._tableData || [];
+    }
+    
+    set tableData(data = []) {
+        if (Array.isArray(data)) {
+            this._tableData = data;
+            this.processDatatable();
+        } else {
+            this._tableData = [];
+        }
+    }
     
     @api 
     get isRequired() {
@@ -670,7 +687,7 @@ export default class Datatable extends LightningElement {
         if (this.isUserDefinedObject && !this.isConfigMode) {
 
             // JSON Version set recordData
-            this.recordData = [...this.tableData];
+            this.recordData = [...this._tableData];
 
             // JSON Version Special Field Types
             this.types.forEach(t => {
@@ -735,6 +752,7 @@ export default class Datatable extends LightningElement {
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
             console.log('Passing data to Apex Controller', data);
+            console.log('passing fieldlist: ' + fieldList);
             getReturnResults({ records: data, fieldNames: fieldList })
             .then(result => {
                 let returnResults = JSON.parse(result);

@@ -1,0 +1,30 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true
+    }
+  ],
+  "dependencies": [
+    {
+        "package": "FlowActionsBasePack@2.32.0-0"
+    },
+    {
+        "package": "FlowScreenComponentsBasePack@2.5.7-0"
+    },
+    {
+        "package": "datatable@3.3.2-0"
+    }
+  ],
+  "name": "dataPoller",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "52.0",
+  "packageAliases": {
+
+    "FlowActionsBasePack@2.32.0-0": "04t4W00000308DpQAI",
+    "FlowScreenComponentsBasePack@2.5.7-0": "04t5G0000047xKvQAI",
+    "datatable@3.3.2-0":"04t5G000003rUaWQAU"
+
+  }
+}

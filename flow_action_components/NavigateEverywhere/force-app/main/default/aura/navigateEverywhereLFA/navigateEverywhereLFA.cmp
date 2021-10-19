@@ -15,6 +15,7 @@
 	Parameters include defining the Object Name, Record Id and Mode (View or Edit)
 -->
 <aura:component implements="lightning:availableForFlowActions">
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
     <aura:attribute name="destinationRecordId" type="String"/>
     <aura:attribute name="destinationName" type="String"/>
     <aura:attribute name="destinationAction" type="String"/>

@@ -129,6 +129,21 @@ public with sharing class ConvertCSVToRecordsTest {
         }
     }
 
+    @isTest
+    private static void testMultipleDateFormats(){
+        ContentVersion cv = new ContentVersion(Title = 'Demo Contacts CSV', VersionData = createContactCSVBlob(), PathOnClient = 'DemoContacts.csv');
+        insert cv;
+        ConvertCSVToRecords.Request[] flowInputs = createContactsFlowInputList();
+        Test.startTest();
+        ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
+        Test.stopTest();
+        System.assert(flowOutputs[0].convertedCSVRows.size() == 2);
+        List<Contact> contactsList = flowOutputs[0].convertedCSVRows;
+        System.assertEquals(2,contactsList.size(),'Expected 2 contacts to be parsed from csv input');
+        System.assertEquals('1981-01-01',String.valueOf(contactsList[0].BirthDate));
+        System.assertEquals('1981-01-21',String.valueOf(contactsList[1].BirthDate));
+    }
+
     private static Blob createCSVBlob() {
         String csvStringContent;
         Blob csvBlobContent;
@@ -144,12 +159,47 @@ public with sharing class ConvertCSVToRecordsTest {
         return Blob.valueOf(csvStringContent);
     }
 
+    private static Blob createContactCSVBlob(){
+        String csvStringContent;
+        Blob csvBlobContent;
+        string[] fields = new List<String>{ 'LastName', 'FirstName', 'Email', 'BirthDate'};
+
+        String csvHeader = String.join(fields, ',') + '\n';
+        csvStringContent = csvHeader;
+        csvStringContent += 'Smith,John,js@example.com,1981-01-01';
+        csvStringContent += '\n';
+        csvStringContent += 'Smith,Jane,jane@example.com,21/01/1981';
+        csvStringContent += '\n';
+        return Blob.valueOf(csvStringContent);
+    }
+
     private static ConvertCSVToRecords.Request[] createFlowInputsList() {
         String contentDocumentId;
         List<ContentVersion> cvList = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Accounts CSV'];
         ConvertCSVToRecords.Request[] flowInputs = new List<ConvertCSVToRecords.Request>{};
         ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
         input.objectApiName = 'Account';
+        if(cvList.size()==1){
+          input.contentDocumentId = cvList[0].ContentDocumentId;
+        }
+        else if(cvList.size()>1){
+          input.contentDocumentIdList = new List<Id>();
+          for(ContentVersion cv: cvList){
+            input.contentDocumentIdList.add(cv.ContentDocumentId);
+          }
+        }
+        input.FSep =',';
+        flowInputs.add(input);
+
+        return flowInputs;
+    }
+
+    private static ConvertCSVToRecords.Request[] createContactsFlowInputList() {
+        String contentDocumentId;
+        List<ContentVersion> cvList = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Contacts CSV'];
+        ConvertCSVToRecords.Request[] flowInputs = new List<ConvertCSVToRecords.Request>{};
+        ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
+        input.objectApiName = 'Contact';
         if(cvList.size()==1){
           input.contentDocumentId = cvList[0].ContentDocumentId;
         }

@@ -6,6 +6,7 @@ import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
 import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteContentDoc';
+import getExistingFiles from '@salesforce/apex/FileUploadImprovedHelper.getExistingFiles';
 
 export default class FileUpload extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
@@ -46,21 +47,45 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     connectedCallback(){
         let cachedSelection = sessionStorage.getItem(this.sessionKey);
         if(cachedSelection){
-            this.objFiles = JSON.parse(cachedSelection);
+            console.log('in cached selection');
+            this.processFiles(JSON.parse(cachedSelection));
+            // this.objFiles = JSON.parse(cachedSelection);
 
-            this.objFiles.forEach((file) => {
-                this.docIds.push(file.id);
-                this.versIds.push(file.versid);
-                this.fileNames.push(file.name);
-            });
+            // this.objFiles.forEach((file) => {
+            //     this.docIds.push(file.id);
+            //     this.versIds.push(file.versid);
+            //     this.fileNames.push(file.name);
+            // });
             
-            this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+            // this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+        }
+        else {
+            getExistingFiles({recordId: this.recordId})
+                .then((files) => {
+                    if(files != undefined && files.length > 0){
+                        console.log('existing files processing')
+                        this.processFiles(files);
+                    }
+                })
         }
     }
     
     handleUploadFinished(event) {
         const files = event.detail.files;
 
+        this.processFiles(files);
+
+        if(this.community === true && this.value.data){
+            console.log('inside community create link');
+            console.log(this.versIds);
+            console.log(this.key.data);
+            createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
+        }
+        
+        
+    }
+
+    processFiles(files){
         var objFile;
         files.forEach(file => {
             var filetype;
@@ -73,8 +98,8 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             objFile = {
                 name: file.name,
                 filetype: filetype,
-                id: file.documentId,
-                versid: file.contentVersionId
+                documentId: file.documentId,
+                contentVersionId: file.contentVersionId
             };
             this.objFiles.push(objFile);
             this.docIds.push(file.documentId);
@@ -84,10 +109,6 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
 
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
 
-        if(this.community === true && this.value.data){
-            createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
-        }
-        
         function getIconSpecs(docType){
             switch(docType){
                 case 'csv':
@@ -118,32 +139,57 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
     
     deleteDocument(event){
-        const docId = event.target.dataset.docid;
-        const versId = event.target.dataset.versid;
+        console.log('documentId - '+event.target.dataset.documentid);
+        console.log('contentVersionId - '+event.target.dataset.contentversionid);
+
+        const documentId = event.target.dataset.documentid;
+        const contentVersionId = event.target.dataset.contentversionid;
         
-        if(docId){
-            deleteRecord(docId);
+        console.log(documentId);
+        if(documentId){
+            console.log('in delete docid');
+            deleteRecord(documentId);
         } else {
-            deleteContentDoc({versId: versId});
+            deleteContentDoc({versId: contentVersionId});
         }
 
         let objFiles = this.objFiles;
         let removeIndex;
         for(let i=0; i<objFiles.length; i++){
-            if(versId === objFiles[i].versid){
+            if(contentVersionId === objFiles[i].contentVersionId){
                 removeIndex = i;
             }
         }
 
-        this.objFiles.splice(removeIndex,1);
+        console.log(removeIndex);
+
+        console.log(this.objFiles);
+        console.log(this.docIds);
+        console.log(this.versIds);
+        console.log(this.fileNames);
+        console.log('remove from objfiles')
+
+        try {
+            this.objFiles.splice(removeIndex,1);
+        } catch (error) {
+            console.log(error);
+        }
+        
+        
+        console.log('remove from docids')
         this.docIds.splice(removeIndex,1);
+
+        console.log('remove from versids')
         this.versIds.splice(removeIndex,1);
+
+        console.log('remove from filenames')
         this.fileNames.splice(removeIndex,1);
 
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
     }    
 
     communicateEvent(docIds, versIds, fileNames, objFiles){
+        console.log('in communicate event')
         this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));

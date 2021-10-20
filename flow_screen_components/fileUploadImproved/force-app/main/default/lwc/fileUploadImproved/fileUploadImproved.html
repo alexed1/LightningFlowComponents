@@ -22,7 +22,7 @@
                                     <lightning-tile
                                         label={objFile.name}
                                         onclick={openFile}
-                                        data-docid={objFile.id}
+                                        data-docid={objFile.documentId}
                                         class="slds-media__body">
                                     </lightning-tile>
                                 </div>
@@ -34,8 +34,8 @@
                                     title="Delete File"
                                     aria-hidden="true"
                                     onclick={deleteDocument}
-                                    data-docid={objFile.id}
-                                    data-versid={objFile.versid}
+                                    data-documentid={objFile.documentId}
+                                    data-contentversionid={objFile.contentVersionId}
                                     variant="bare">
                                 </lightning-button-icon>
                             </lightning-layout-item>

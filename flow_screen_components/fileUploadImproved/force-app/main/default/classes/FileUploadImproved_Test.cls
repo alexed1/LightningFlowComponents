@@ -35,6 +35,23 @@ public class FileUploadImproved_Test {
     }
 
     @isTest
+    public static void get_existing_files(){
+        String key = FileUploadImprovedHelper.getKey();
+
+        Contact con = getCon();
+        ContentVersion cv = getCV();
+        cv.Guest_Record_fileupload__c = FileUploadImprovedHelper.encrypt(con.Id,key);
+        update cv;
+        
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key);
+            List<FileUploadImprovedHelper.objFiles> objFiles = FileUploadImprovedHelper.getExistingFiles(con.Id); 
+        system.test.stopTest();
+
+        system.assertEquals(1, objFiles.size());
+    }
+
+    @isTest
     public static void delete_test(){
         ContentVersion cv = getCV();
 

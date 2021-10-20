@@ -23,10 +23,14 @@ public without sharing class FileUploadImprovedHelper{
         List<ContentDocumentLink> links = new List<ContentDocumentLink>();
         for(ContentVersion vers : versions){
             ContentDocumentLink link = new ContentDocumentLink(
-            	ContentDocumentId = vers.ContentDocumentId,
-            	LinkedEntityId = decrypt(vers.Guest_Record_fileupload__c, encodedKey)
+            	ContentDocumentId = vers.ContentDocumentId
         	);
-            links.add(link);
+            try{
+                link.LinkedEntityId = decrypt(vers.Guest_Record_fileupload__c, encodedKey);
+                links.add(link);
+            }catch(Exception e){
+                system.debug(e);
+            }
         }
         database.insert(links, false);
     }
@@ -44,5 +48,35 @@ public without sharing class FileUploadImprovedHelper{
     	Blob decryptedBlob = Crypto.decryptWithManagedIV('AES256', key, value);
     	String recordId = decryptedBlob.toString();
         return recordId;
+    }
+
+   @AuraEnabled(cacheable = true)
+    public static List<objFiles> getExistingFiles(String recordId){
+        system.debug(recordId);
+        Map<Id,objFiles> objFiles = new Map<Id,objFiles>();
+        for(ContentDocumentLink link : [SELECT ContentDocumentId, ContentDocument.Title, ContentDocument.FileExtension FROM ContentDocumentLink WHERE LinkedEntityId = :recordId]){
+            objFiles files = new objFiles();
+            files.name = link.ContentDocument.Title +'.'+ link.ContentDocument.FileExtension;
+            files.documentId = link.ContentDocumentId;
+            system.debug(files);
+            objFiles.put(files.documentId,files);
+        }
+        for(ContentDocument doc : [SELECT Id, (SELECT Id FROM ContentVersions WHERE IsLatest = TRUE) FROM ContentDocument WHERE Id IN :objFiles.keyset()]){
+            objFiles.get(doc.Id).contentVersionId = doc.ContentVersions[0].Id;
+        }
+        system.debug(objFiles);
+        system.debug(objFiles.values());
+        return objFiles.values();
+    }
+
+    public class objFiles{
+        @AuraEnabled
+        public string name;
+
+        @AuraEnabled
+        public string documentId;
+
+        @AuraEnabled
+        public string contentVersionId;
     }
 }

@@ -53,6 +53,7 @@ global with sharing class SearchUtils {
     }
     @AuraEnabled(cacheable=true)
     global static Map<String, SObject> getSingleMembersByTypeAndId(String type, String id) {
+        id =  (id != null) ? String.escapeSingleQuotes(id) : null;
         return getMembersByTypeAndId(new Map<String, Set<String>>{
                 type => new Set<String>{
                         id
@@ -63,6 +64,7 @@ global with sharing class SearchUtils {
 
         Map<String, SObject> results = new Map<String, SObject>();
         for (String sObjectTypeName : typeToIds.keySet()) {
+            sObjectTypeName =  (sObjectTypeName != null) ? String.escapeSingleQuotes(sObjectTypeName) : null;
             if (OTHER_TYPES.contains(sObjectTypeName)) {
                 for (String curMember : typeToIds.get(sObjectTypeName)) {
                     results.put(curMember, new Account(Name = curMember));

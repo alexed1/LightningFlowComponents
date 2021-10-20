@@ -69,6 +69,10 @@
             <typeName>T__inputSObjectList</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
+        <dataTypeMappings>
+            <typeName>T__inputSObject</typeName>
+            <typeValue>Account</typeValue>
+        </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>inputSObjectList</name>
@@ -82,7 +86,7 @@
     <formulas>
         <name>InputJSON</name>
         <dataType>String</dataType>
-        <expression>SUBSTITUTE({!Serialize.serializedSObjectListString},&quot;\&quot;&quot;, &quot;\\\&quot;&quot;)</expression>
+        <expression>SUBSTITUTE({!Serialize.serializedSObjectString},&quot;\&quot;&quot;, &quot;\\\&quot;&quot;)</expression>
     </formulas>
     <interviewLabel>Run flow in Another org {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Run flow in Another org test</label>
@@ -130,7 +134,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>Result</name>
-            <fieldText>&lt;p&gt;{!Run_Flow_in_Another_Org.result}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Serialize.serializedSObjectListString}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;RESULT IS {!Run_Flow_in_Another_Org.result}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!Run_Flow_in_Another_Org.result}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Serialize.serializedSObjectString}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;RESULT IS {!Run_Flow_in_Another_Org.result}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

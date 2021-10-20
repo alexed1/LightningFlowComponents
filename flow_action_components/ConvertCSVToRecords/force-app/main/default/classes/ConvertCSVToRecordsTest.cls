@@ -2,10 +2,12 @@
 public with sharing class ConvertCSVToRecordsTest {
     private static final String SPACE = ' ';
     private static final String SAMPLE_DESCRIPTION = 'Sample Description';
-    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; ""Escrow Officer""; Landlord; Property Manager';
-    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE='Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; "Escrow Officer"; Landlord; Property Manager'; // '""' is replaced indicates a single '"' within a column. The value after parsing should indicate that.
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES = 'Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; ""Escrow Officer""; Landlord; Property Manager';
+    private static final String DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE = 'Agent, Commercial; Agent, Residential; Appraiser; Broker \n Business; "Escrow Officer"; Landlord; Property Manager'; // '""' is replaced indicates a single '"' within a column. The value after parsing should indicate that.
     private static final String NEW_YORK = 'New York';
     private static final String HOT = 'Hot';
+    private static final String PERCENT_VAL_ONE = '23.2';
+    private static final String PERCENT_VAL_TWO = '4.33';
 
     @TestSetup
     private static void createData() {
@@ -21,7 +23,7 @@ public with sharing class ConvertCSVToRecordsTest {
          */
         try {
             ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
-            input.FSep =',';
+            input.FSep = ',';
             flowInputs.add(input);
             ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
         } catch (Exception e) {
@@ -38,8 +40,8 @@ public with sharing class ConvertCSVToRecordsTest {
         Test.stopTest();
         System.assert(flowOutputs[0].convertedCSVRows.size() == 3);
         List<Account> accList = flowOutputs[0].convertedCSVRows;
-        System.assertEquals(3,accList.size(),'Expected 2 accounts to be parsed from csv input');
-        System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,accList[1].Description,'The description field with commas, newline and quotes was not parsed correctly');
+        System.assertEquals(3, accList.size(), 'Expected 2 accounts to be parsed from csv input');
+        System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE, accList[1].Description, 'The description field with commas, newline and quotes was not parsed correctly');
     }
 
     @isTest
@@ -87,28 +89,28 @@ public with sharing class ConvertCSVToRecordsTest {
          * Check DOUBLE field
          */
         Object result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234.56', ',', ',', '');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', '.', ',', '');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', ',', '.', '');
-        System.assertEquals('123456', String.valueOf((Decimal)result));
+        System.assertEquals('123456', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1,234.56', ',', '.', '');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         /*
          * Check currency field
          */
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234.56', ',', ',', '$');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', '.', ',', '$');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', ',', '.', '$');
-        System.assertEquals('123456', String.valueOf((Decimal)result));
+        System.assertEquals('123456', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1,234.56', ',', '.', '$');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1.234,56', '.', ',', '$');
-        System.assertEquals('1234.56', String.valueOf((Decimal)result));
+        System.assertEquals('1234.56', String.valueOf((Decimal) result));
     }
 
     @isTest
@@ -120,28 +122,30 @@ public with sharing class ConvertCSVToRecordsTest {
         ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
         Test.stopTest();
         //We should get 2 responses in the output array, one for each ContentDocument Id
-        System.assertEquals(2,flowOutputs.size(),'Expected 2 outputs from action, one for each Content Document Id');
-        for(ConvertCSVToRecords.Response flowOutput: flowOutputs){
-          System.assert(flowOutput.convertedCSVRows.size() == 3,'Expected 6 records but got '+flowOutput.convertedCSVRows.size());
-          List<Account> accList = flowOutput.convertedCSVRows;
-          System.assertEquals(3,accList.size(),'Expected 2 accounts to be parsed from csv input');
-          System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,accList[1].Description,'The description field with commas, newline and quotes was not parsed correctly');
+        System.assertEquals(2, flowOutputs.size(), 'Expected 2 outputs from action, one for each Content Document Id');
+        for (ConvertCSVToRecords.Response flowOutput : flowOutputs) {
+            System.assert(flowOutput.convertedCSVRows.size() == 3, 'Expected 6 records but got ' + flowOutput.convertedCSVRows.size());
+            List<Account> accList = flowOutput.convertedCSVRows;
+            System.assertEquals(3, accList.size(), 'Expected 2 accounts to be parsed from csv input');
+            System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE, accList[1].Description, 'The description field with commas, newline and quotes was not parsed correctly');
         }
     }
 
     @isTest
-    private static void testMultipleDateFormats(){
-        ContentVersion cv = new ContentVersion(Title = 'Demo Contacts CSV', VersionData = createContactCSVBlob(), PathOnClient = 'DemoContacts.csv');
+    private static void testDateAndPercentFieldType() {
+        ContentVersion cv = new ContentVersion(Title = 'Demo Opp CSV', VersionData = createOpportunityCSVBlob(), PathOnClient = 'DemoOpps.csv');
         insert cv;
-        ConvertCSVToRecords.Request[] flowInputs = createContactsFlowInputList();
+        ConvertCSVToRecords.Request[] flowInputs = createOppFlowInputList();
         Test.startTest();
         ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
         Test.stopTest();
         System.assert(flowOutputs[0].convertedCSVRows.size() == 2);
-        List<Contact> contactsList = flowOutputs[0].convertedCSVRows;
-        System.assertEquals(2,contactsList.size(),'Expected 2 contacts to be parsed from csv input');
-        System.assertEquals('1981-01-01',String.valueOf(contactsList[0].BirthDate));
-        System.assertEquals('1981-01-21',String.valueOf(contactsList[1].BirthDate));
+        List<Opportunity> oppsList = flowOutputs[0].convertedCSVRows;
+        System.assertEquals(2, oppsList.size(), 'Expected 2 opportunities to be parsed from csv input');
+        System.assertEquals(PERCENT_VAL_ONE, String.valueOf(oppsList[0].Probability));
+        System.assertEquals(PERCENT_VAL_TWO, String.valueOf(oppsList[1].Probability));
+        System.assertEquals('2021-01-01', String.valueOf(oppsList[0].CloseDate));
+        System.assertEquals('2022-12-08', String.valueOf(oppsList[1].CloseDate));
     }
 
     private static Blob createCSVBlob() {
@@ -153,22 +157,22 @@ public with sharing class ConvertCSVToRecordsTest {
         csvStringContent = csvHeader;
         csvStringContent += SPACE + SAMPLE_DESCRIPTION + ',500000,300,' + SPACE + HOT + ',"Acme, Inc",' + NEW_YORK + SPACE;
         csvStringContent += '\n';
-        csvStringContent += '"'+DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES+'",40000,30,Hot,"Universal Containers","Washington, DC"';
+        csvStringContent += '"' + DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES + '",40000,30,Hot,"Universal Containers","Washington, DC"';
         csvStringContent += '\n';
         csvStringContent += ',40000,20,Hot,"Universal Containers", ';
         return Blob.valueOf(csvStringContent);
     }
 
-    private static Blob createContactCSVBlob(){
+    private static Blob createOpportunityCSVBlob() {
         String csvStringContent;
         Blob csvBlobContent;
-        string[] fields = new List<String>{ 'LastName', 'FirstName', 'Email', 'BirthDate'};
+        string[] fields = new List<String>{ 'Name', 'Probability', 'CloseDate' };
 
         String csvHeader = String.join(fields, ',') + '\n';
         csvStringContent = csvHeader;
-        csvStringContent += 'Smith,John,js@example.com,1981-01-01';
+        csvStringContent += 'Opp One,' + PERCENT_VAL_ONE + ',2021-01-01';
         csvStringContent += '\n';
-        csvStringContent += 'Smith,Jane,jane@example.com,21/01/1981';
+        csvStringContent += 'Opp Two,' + PERCENT_VAL_TWO + ',8/12/2022';
         csvStringContent += '\n';
         return Blob.valueOf(csvStringContent);
     }
@@ -179,37 +183,41 @@ public with sharing class ConvertCSVToRecordsTest {
         ConvertCSVToRecords.Request[] flowInputs = new List<ConvertCSVToRecords.Request>{};
         ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
         input.objectApiName = 'Account';
-        if(cvList.size()==1){
-          input.contentDocumentId = cvList[0].ContentDocumentId;
+        if (cvList.size() == 1) {
+            input.contentDocumentId = cvList[0].ContentDocumentId;
+        } else if (cvList.size() > 1) {
+            input.contentDocumentIdList = new List<Id>();
+            for (ContentVersion cv : cvList) {
+                input.contentDocumentIdList.add(cv.ContentDocumentId);
+            }
         }
-        else if(cvList.size()>1){
-          input.contentDocumentIdList = new List<Id>();
-          for(ContentVersion cv: cvList){
-            input.contentDocumentIdList.add(cv.ContentDocumentId);
-          }
-        }
-        input.FSep =',';
+        input.FSep = ',';
+        input.TSep = ',';
+        input.DSep = '.';
+        input.vCur = '$';
         flowInputs.add(input);
 
         return flowInputs;
     }
 
-    private static ConvertCSVToRecords.Request[] createContactsFlowInputList() {
+    private static ConvertCSVToRecords.Request[] createOppFlowInputList() {
         String contentDocumentId;
-        List<ContentVersion> cvList = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Contacts CSV'];
+        List<ContentVersion> cvList = [SELECT ContentDocumentId, FileType FROM ContentVersion WHERE Title = 'Demo Opp CSV'];
         ConvertCSVToRecords.Request[] flowInputs = new List<ConvertCSVToRecords.Request>{};
         ConvertCSVToRecords.Request input = new ConvertCSVToRecords.Request();
-        input.objectApiName = 'Contact';
-        if(cvList.size()==1){
-          input.contentDocumentId = cvList[0].ContentDocumentId;
+        input.objectApiName = 'Opportunity';
+        if (cvList.size() == 1) {
+            input.contentDocumentId = cvList[0].ContentDocumentId;
+        } else if (cvList.size() > 1) {
+            input.contentDocumentIdList = new List<Id>();
+            for (ContentVersion cv : cvList) {
+                input.contentDocumentIdList.add(cv.ContentDocumentId);
+            }
         }
-        else if(cvList.size()>1){
-          input.contentDocumentIdList = new List<Id>();
-          for(ContentVersion cv: cvList){
-            input.contentDocumentIdList.add(cv.ContentDocumentId);
-          }
-        }
-        input.FSep =',';
+        input.FSep = ',';
+        input.TSep = ',';
+        input.DSep = '.';
+        input.vCur = '$';
         flowInputs.add(input);
 
         return flowInputs;

@@ -127,8 +127,8 @@ public with sharing class ConvertCSVToRecords {
                     convertedfieldValue = String.isEmpty(fieldValue) ? null : Decimal.valueOf(fValue = fValue.replace('.', '').replace(',', '.'));
                 }
             }
-            when CURRENCY {
-                String fValue = fieldValue.replaceAll('^0-9,.', '').replace(vCur, '').replace(' ', '');
+            when CURRENCY, PERCENT {
+                String fValue = fieldValue.replaceAll('[^0-9,.]', '').replace(vCur, '').replace(' ', '');
                 if (fValue.indexOf(Tsep) < 0 && fValue.indexOf(Dsep) < 0) {
                     /* both WITHOUT Thousands separator and WITHOUT decimal separator */
                     /* No conversion needed */
@@ -158,10 +158,6 @@ public with sharing class ConvertCSVToRecords {
             when INTEGER {
                 /*Remove thousands separator ( , and . like in 1,234 and 1.234 ) */
                 convertedfieldValue = String.isEmpty(fieldValue) ? null : Integer.valueOf(fieldValue.replaceAll('^0-9', ''));
-            }
-            when PERCENT {
-                /*Remove thousands separator ( , and . like in 1,234 and 1.234 ) */
-                convertedfieldValue = String.isEmpty(fieldValue) ? null : Decimal.valueOf(fieldValue.replaceAll('[^0-9.]', ''));
             }
             when DATE {
                 /* replace / and : and . in fieldvalue by -  like in 2021.12.31 or 2021/12/31 or 2021:12:31 or 1.1.2021 or 31/12/2021 or 31:12:2021 */

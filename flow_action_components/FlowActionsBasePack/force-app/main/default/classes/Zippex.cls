@@ -1,7 +1,7 @@
 //
 //Copyright (c) 2015 Pedro Dal Col, Pliny Smith
 //
-global class Zippex 
+global with sharing class Zippex 
 {    
     private Map<String, FileObject> zipFileMap = new Map<String, FileObject>{};
     protected String zipFileString = '';  // stores the Hex version of the file blob
@@ -84,7 +84,12 @@ global class Zippex
             //    Atts.clear();
             //}
         }
-        insert Atts;
+        if(Schema.sObjectType.Attachment.fields.Name.isCreateable()
+            && Schema.sObjectType.Attachment.fields.Body.isCreateable()
+            && Schema.sObjectType.Attachment.fields.ParentId.isCreateable()
+        ) {
+            insert Atts;
+        }
     }
     @future
     private static void unzipAttachmentAsync(Id srcAttId, Id destObjId, String[] fileNames){

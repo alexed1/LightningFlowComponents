@@ -24,5 +24,7 @@
     <aura:attribute name="relationshipName" type="String" />
     <aura:attribute name="defaultVals" type="String" />
     <lightning:navigation aura:id="navService"/>
+    <!-- pageReferenceUtil component -->
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
 </aura:component>
 

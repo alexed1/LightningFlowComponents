@@ -88,29 +88,53 @@ public with sharing class ConvertCSVToRecordsTest {
         /**
          * Check DOUBLE field
          */
-        Object result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234.56', ',', ',', '');
+        Object result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234.56', ',', ',', '', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', '.', ',', '');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', '.', ',', '', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', ',', '.', '');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1234,56', ',', '.', '', '');
         System.assertEquals('123456', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1,234.56', ',', '.', '');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1,234.56', ',', '.', '', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
+
         /*
          * Check currency field
          */
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234.56', ',', ',', '$');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '$1234.56', ',', ',', '$', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', '.', ',', '$');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '$1234,56', '.', ',', '$', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1234,56', ',', '.', '$');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '€1234,56', ',', '.', '€', '');
         System.assertEquals('123456', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1,234.56', ',', '.', '$');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '$1,234.56', ',', '.', '$', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
-        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1.234,56', '.', ',', '$');
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1.234,56', '.', ',', '$', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
+
+        /*
+         * Check percent field
+         */
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.PERCENT, '0.55', ',', ',', '', '');
+        System.assertEquals(0.55, (Decimal) result);
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.PERCENT, '125', '.', ',', '$', '');
+        System.assertEquals(125, (Decimal) result);
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.PERCENT, '12.5', ',', '.', '€', '');
+        System.assertEquals(12.5, (Decimal) result);
+
+        /*
+         * Check date field
+         */
+
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DATE, '1/12/2021', ',', ',', '', '');
+        System.assertEquals(Date.parse('01/12/2021'), result);
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DATE, '1/12/2021', '.', ',', '', 'MM-dd-yyyy');
+        System.assertEquals('2021-01-12', String.valueOf((Date) result), 'Result is ' + result);
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DATE, '1/12/2021', ',', '.', '', 'dd/MM/yyyy');
+        System.assertEquals('2021-12-01', String.valueOf((Date) result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DATE, '2021-1-12', ',', '.', '', '');
+        System.assertEquals('2021-01-12', String.valueOf((Date) result));
     }
 
     @isTest
@@ -145,7 +169,7 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals(PERCENT_VAL_ONE, String.valueOf(oppsList[0].Probability));
         System.assertEquals(PERCENT_VAL_TWO, String.valueOf(oppsList[1].Probability));
         System.assertEquals('2021-01-01', String.valueOf(oppsList[0].CloseDate));
-        System.assertEquals('2022-12-08', String.valueOf(oppsList[1].CloseDate));
+        System.assertEquals(Date.parse('08/12/2022'), oppsList[1].CloseDate); //By default, the date is parsed based on the user's locale
     }
 
     private static Blob createCSVBlob() {

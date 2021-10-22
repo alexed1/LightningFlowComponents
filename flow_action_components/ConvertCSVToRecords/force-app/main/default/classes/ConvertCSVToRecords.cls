@@ -1,3 +1,8 @@
+/************************************************************
+
+*** @description Invocable Action to convert CSV Records in a ContentDocument to SObject records. The CSV column names should match the SObject field api names. The records are returned to the Flow, they are not actually inserted.
+*** 
+**/
 public with sharing class ConvertCSVToRecords {
     @InvocableMethod(label='Convert CSV File to Records from single or multiple ContentDocumentIds')
     public static Response[] convert(Request[] inputs) {
@@ -54,12 +59,13 @@ public with sharing class ConvertCSVToRecords {
                         String Tsep = curInput.Tsep;
                         String Dsep = curInput.Dsep;
                         String vCur = curInput.vCur;
+                        String dateFormat = curInput.dateFormat;
                         if (curInput.isTrim) {
                             fieldValue = fieldValue.trim();
                         }
                         Schema.DisplayType fieldType = fieldToFieldTypeMap.get(fields[i]);
                         try {
-                            obj.put(fieldName.get(fields[i]), getConvertedFieldValue(fieldType, fieldValue, Tsep, Dsep, vCur));
+                            obj.put(fieldName.get(fields[i]), getConvertedFieldValue(fieldType, fieldValue, Tsep, Dsep, vCur, dateFormat));
                         } catch (exception e) {
                             obj.put(fieldName.get(fields[i]), null);
                         }
@@ -91,7 +97,7 @@ public with sharing class ConvertCSVToRecords {
     }
 
     @TestVisible
-    private static Object getConvertedFieldValue(Schema.DisplayType fieldType, String fieldValue, String Tsep, String Dsep, String vCur) {
+    private static Object getConvertedFieldValue(Schema.DisplayType fieldType, String fieldValue, String Tsep, String Dsep, String vCur, String dateFormat) {
         Object convertedFieldValue;
 
         switch on
@@ -170,11 +176,23 @@ public with sharing class ConvertCSVToRecords {
                     Integer Day = Integer.valueOf(lstSplit[2]);
                     convertedfieldValue = String.isEmpty(fieldValue) ? null : date.valueOf(Year + '-' + ('0' + Month).Right(2) + '-' + ('0' + Day).Right(2));
                 } else {
-                    /* Format found like DD-MM-YYYY, convert to YYYY-MM-DD */
-                    Integer Day = Integer.valueOf(lstSplit[0]);
-                    Integer Month = Integer.valueOf(lstSplit[1]);
-                    Integer Year = Integer.valueOf(lstSplit[2]);
-                    convertedfieldValue = String.isEmpty(fieldValue) ? null : date.valueOf(Year + '-' + ('0' + Month).Right(2) + '-' + ('0' + Day).Right(2));
+                    /* Format found like dd-MM-yyyy, convert to yyyy-MM-dd */
+                    if (String.isBlank(dateFormat)) {
+                        lstSplit[0] = ('0' + lstSplit[0]).right(2);
+                        lstSplit[1] = ('0' + lstSplit[1]).right(2);
+                        fValue = String.join(lstSplit, '/');
+                        convertedFieldValue = Date.parse(fValue); // use local date format if date format is not specified
+                    } else if (dateFormat.toLowerCase().startsWith('dd')) {
+                        Integer Day = Integer.valueOf(lstSplit[0]);
+                        Integer Month = Integer.valueOf(lstSplit[1]);
+                        Integer Year = Integer.valueOf(lstSplit[2]);
+                        convertedfieldValue = String.isEmpty(fieldValue) ? null : date.valueOf(Year + '-' + ('0' + Month).Right(2) + '-' + ('0' + Day).Right(2));
+                    } else if (dateFormat.toLowerCase().startsWith('mm')) {
+                        Integer Month = Integer.valueOf(lstSplit[0]);
+                        Integer Day = Integer.valueOf(lstSplit[1]);
+                        Integer Year = Integer.valueOf(lstSplit[2]);
+                        convertedfieldValue = String.isEmpty(fieldValue) ? null : date.valueOf(Year + '-' + ('0' + Month).Right(2) + '-' + ('0' + Day).Right(2));
+                    }
                 }
             }
             when else {
@@ -264,6 +282,9 @@ public with sharing class ConvertCSVToRecords {
 
         @InvocableVariable(label='Symbol of Currency' description='Like $, €, £' required=true)
         public string vCur;
+
+        @InvocableVariable(label='Date format' description='Date format used in the file. Default is yyyy-MM-dd or the local date format. Other supported formats are dd-MM-yyyy and MM-dd-yyyy')
+        public String dateFormat;
 
         @InvocableVariable(label='CSV (single) File ID')
         public string contentDocumentId;

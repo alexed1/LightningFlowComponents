@@ -26,7 +26,7 @@ public class FileUploadImproved_Test {
         update cv;
         
         system.test.startTest();
-            FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key);
+            FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key,true);
         system.test.stopTest();
 
 
@@ -44,11 +44,24 @@ public class FileUploadImproved_Test {
         update cv;
         
         system.test.startTest();
-            FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key);
+            FileUploadImprovedHelper.createContentDocLink(new List<String>{cv.Id},key,false);
             List<FileUploadImprovedHelper.objFiles> objFiles = FileUploadImprovedHelper.getExistingFiles(con.Id); 
         system.test.stopTest();
 
         system.assertEquals(1, objFiles.size());
+    }
+
+    @isTest
+    public static void change_file_name(){
+        ContentVersion cv = getCV();
+        String fileName = 'https://www.linkedin.com/in/rygramer/';
+
+        system.test.startTest();
+        FileUploadImprovedHelper.updateFileName(new List<String>{cv.Id}, fileName);
+        system.test.stopTest();
+
+        cv = getCV();
+        system.assertEquals(fileName, cv.ContentDocument.Title);
     }
 
     @isTest
@@ -62,7 +75,7 @@ public class FileUploadImproved_Test {
     }
 
     private static ContentVersion getCV(){
-        return [SELECT Id, Guest_Record_fileupload__c FROM ContentVersion LIMIT 1];
+        return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title FROM ContentVersion LIMIT 1];
     }
 
     private static Contact getCon(){

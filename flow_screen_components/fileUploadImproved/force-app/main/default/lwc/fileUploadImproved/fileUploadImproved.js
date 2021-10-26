@@ -1,42 +1,38 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
-import { deleteRecord } from 'lightning/uiRecordApi';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
 import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteContentDoc';
 import getExistingFiles from '@salesforce/apex/FileUploadImprovedHelper.getExistingFiles';
+import updateFileName from '@salesforce/apex/FileUploadImprovedHelper.updateFileName';
 
 export default class FileUpload extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
     @api allowMultiple;
-    @api community;
+    @api community; // deprecated
+    @api communityDetails; // deprecated
     @api contentDocumentIds;
     @api contentVersionIds;
     @api icon;
     @api label;
+    @api overriddenFileName;
     @api recordId;
+    @api renderExistingFiles;
+    @api renderFilesBelow;
     @api required;
     @api requiredMessage;
     @api sessionKey;
     @api uploadedFileNames;
     @api uploadedlabel;
     @api uploadedLabel; // deprecated
+    @api visibleToAllUsers;
     
     @track docIds =[];
     @track fileNames = [];
     @track objFiles = [];
     @track versIds = [];
-
-    recordIdToUse;
-    @api
-    get communityDetails(){
-        if(this.community != true){
-            this.recordIdToUse = this.recordId;
-        }
-        return this.recordIdToUse;
-    }
 
     key;
     @wire(getKey) key;
@@ -44,45 +40,65 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     value;
     @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'}) value;
 
+    get bottom(){
+        if(this.renderFilesBelow){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     connectedCallback(){
         let cachedSelection = sessionStorage.getItem(this.sessionKey);
         if(cachedSelection){
-            console.log('in cached selection');
             this.processFiles(JSON.parse(cachedSelection));
-            // this.objFiles = JSON.parse(cachedSelection);
-
-            // this.objFiles.forEach((file) => {
-            //     this.docIds.push(file.id);
-            //     this.versIds.push(file.versid);
-            //     this.fileNames.push(file.name);
-            // });
-            
-            // this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
         }
         else {
-            getExistingFiles({recordId: this.recordId})
+            if(this.recordId && this.renderExistingFiles){
+                getExistingFiles({recordId: this.recordId})
                 .then((files) => {
                     if(files != undefined && files.length > 0){
-                        console.log('existing files processing')
                         this.processFiles(files);
                     }
                 })
+            }
         }
     }
     
     handleUploadFinished(event) {
         const files = event.detail.files;
 
-        this.processFiles(files);
+        var objFile;
+        var objFiles = [];
+        var versIds = [];
+        files.forEach(file => {
+            var name;
+            if(this.overriddenFileName){
+                name = this.overriddenFileName.substring(0,255) +'.'+ file.name.split('.').pop();
+            } else {
+                name = file.name;
+            }
+            
+            objFile = {
+                name: name,
+                documentId: file.documentId,
+                contentVersionId: file.contentVersionId
+            }
+            objFiles.push(objFile);
 
-        if(this.community === true && this.value.data){
-            console.log('inside community create link');
-            console.log(this.versIds);
-            console.log(this.key.data);
-            createContentDocLink({versIds: this.versIds, encodedKey: this.key.data});
+            versIds.push(file.contentVersionId);
+        })
+
+        if(this.overriddenFileName){
+            updateFileName({versIds: versIds, fileName: this.overriddenFileName.substring(0,255)});
         }
-        
-        
+
+        if(this.value.data){
+            createContentDocLink({versIds: versIds, encodedKey: this.key.data, visibleToAllUsers: this.visibleToAllUsers});
+        }
+
+        this.processFiles(objFiles);   
     }
 
     processFiles(files){
@@ -106,6 +122,8 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.versIds.push(file.contentVersionId);
             this.fileNames.push(file.name);
         });
+
+        this.checkDisabled();
 
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
 
@@ -139,19 +157,13 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
     
     deleteDocument(event){
-        console.log('documentId - '+event.target.dataset.documentid);
-        console.log('contentVersionId - '+event.target.dataset.contentversionid);
+        event.target.blur();
 
-        const documentId = event.target.dataset.documentid;
         const contentVersionId = event.target.dataset.contentversionid;
-        
-        console.log(documentId);
-        if(documentId){
-            console.log('in delete docid');
-            deleteRecord(documentId);
-        } else {
-            deleteContentDoc({versId: contentVersionId});
-        }
+        deleteContentDoc({versId: contentVersionId})
+            .catch((error) => {
+                console.log(error);
+            })
 
         let objFiles = this.objFiles;
         let removeIndex;
@@ -161,35 +173,26 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             }
         }
 
-        console.log(removeIndex);
-
-        console.log(this.objFiles);
-        console.log(this.docIds);
-        console.log(this.versIds);
-        console.log(this.fileNames);
-        console.log('remove from objfiles')
-
-        try {
-            this.objFiles.splice(removeIndex,1);
-        } catch (error) {
-            console.log(error);
-        }
-        
-        
-        console.log('remove from docids')
+        this.objFiles.splice(removeIndex,1);
         this.docIds.splice(removeIndex,1);
-
-        console.log('remove from versids')
         this.versIds.splice(removeIndex,1);
-
-        console.log('remove from filenames')
         this.fileNames.splice(removeIndex,1);
 
+        this.checkDisabled();
+
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
-    }    
+    }
+
+    disabled = false;
+    checkDisabled(){
+        if(!this.allowMultiple && this.objFiles.length >= 1){
+            this.disabled = true;
+        } else {
+            this.disabled = false;
+        }
+    }
 
     communicateEvent(docIds, versIds, fileNames, objFiles){
-        console.log('in communicate event')
         this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
         this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));

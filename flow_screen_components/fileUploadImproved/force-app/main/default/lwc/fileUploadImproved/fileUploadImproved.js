@@ -1,6 +1,7 @@
 import { LightningElement, track, api, wire } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
@@ -35,10 +36,26 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     @track versIds = [];
 
     key;
-    @wire(getKey) key;
+    @wire(getKey)
+    wiredKey({error,data}){
+        if(data){
+            this.key = data;
+        }
+        else if (error){
+            this.showErrors(this.reduceErrors(error));
+        }
+    }
 
     value;
-    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key.data'}) value;
+    @wire(encrypt,{recordId: '$recordId', encodedKey: '$key'})
+    wiredValue({error,data}){
+        if(data){
+            this.value = data;
+        }
+        else if (error){
+            this.showErrors(this.reduceErrors(error));
+        }
+    }
 
     get bottom(){
         if(this.renderFilesBelow){
@@ -57,11 +74,14 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         else {
             if(this.recordId && this.renderExistingFiles){
                 getExistingFiles({recordId: this.recordId})
-                .then((files) => {
-                    if(files != undefined && files.length > 0){
-                        this.processFiles(files);
-                    }
-                })
+                    .then((files) => {
+                        if(files != undefined && files.length > 0){
+                            this.processFiles(files);
+                        }
+                    })
+                    .catch((error) => {
+                        this.showErrors(this.reduceErrors(error));
+                    })
             }
         }
     }
@@ -91,14 +111,20 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         })
 
         if(this.overriddenFileName){
-            updateFileName({versIds: versIds, fileName: this.overriddenFileName.substring(0,255)});
+            updateFileName({versIds: versIds, fileName: this.overriddenFileName.substring(0,255)})
+                .catch(error => {
+                    this.showErrors(this.reduceErrors(error));
+                });
         }
 
-        if(this.value.data){
-            createContentDocLink({versIds: versIds, encodedKey: this.key.data, visibleToAllUsers: this.visibleToAllUsers});
+        if(this.recordId){
+            createContentDocLink({versIds: versIds, encodedKey: this.key, visibleToAllUsers: this.visibleToAllUsers})
+                .catch(error => {
+                    this.showErrors(this.reduceErrors(error));
+                });
         }
 
-        this.processFiles(objFiles);   
+        this.processFiles(objFiles);
     }
 
     processFiles(files){
@@ -159,28 +185,30 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     deleteDocument(event){
         event.target.blur();
 
-        const contentVersionId = event.target.dataset.contentversionid;
+        const contentVersionId = event.target.dataset.contentversionid;    
+
         deleteContentDoc({versId: contentVersionId})
-            .catch((error) => {
-                console.log(error);
+            .then(() => {
+                let objFiles = this.objFiles;
+                let removeIndex;
+                for(let i=0; i<objFiles.length; i++){
+                    if(contentVersionId === objFiles[i].contentVersionId){
+                        removeIndex = i;
+                    }
+                }
+
+                this.objFiles.splice(removeIndex,1);
+                this.docIds.splice(removeIndex,1);
+                this.versIds.splice(removeIndex,1);
+                this.fileNames.splice(removeIndex,1);
+
+                this.checkDisabled();
+
+                this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
             })
-
-        let objFiles = this.objFiles;
-        let removeIndex;
-        for(let i=0; i<objFiles.length; i++){
-            if(contentVersionId === objFiles[i].contentVersionId){
-                removeIndex = i;
-            }
-        }
-
-        this.objFiles.splice(removeIndex,1);
-        this.docIds.splice(removeIndex,1);
-        this.versIds.splice(removeIndex,1);
-        this.fileNames.splice(removeIndex,1);
-
-        this.checkDisabled();
-
-        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+            .catch((error) => {
+                this.showErrors(this.reduceErrors(error));
+            })
     }
 
     disabled = false;
@@ -232,5 +260,91 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         else {
             return { isValid: true };
         }
+    }
+
+    showErrors(errors){
+        const message = new ShowToastEvent({
+            title: 'We hit a snag.',
+            message: errors.toString(),
+            variant: 'error',
+        });
+        this.dispatchEvent(message);
+    }
+
+    reduceErrors(errors) {
+        if (!Array.isArray(errors)) {
+            errors = [errors];
+        }
+    
+        return (
+            errors
+                // Remove null/undefined items
+                .filter((error) => !!error)
+                // Extract an error message
+                .map((error) => {
+                    // UI API read errors
+                    if (Array.isArray(error.body)) {
+                        return error.body.map((e) => e.message);
+                    }
+                    // Page level errors
+                    else if (
+                        error?.body?.pageErrors &&
+                        error.body.pageErrors.length > 0
+                    ) {
+                        return error.body.pageErrors.map((e) => e.message);
+                    }
+                    // Field level errors
+                    else if (
+                        error?.body?.fieldErrors &&
+                        Object.keys(error.body.fieldErrors).length > 0
+                    ) {
+                        const fieldErrors = [];
+                        Object.values(error.body.fieldErrors).forEach(
+                            (errorArray) => {
+                                fieldErrors.push(
+                                    ...errorArray.map((e) => e.message)
+                                );
+                            }
+                        );
+                        return fieldErrors;
+                    }
+                    // UI API DML page level errors
+                    else if (
+                        error?.body?.output?.errors &&
+                        error.body.output.errors.length > 0
+                    ) {
+                        return error.body.output.errors.map((e) => e.message);
+                    }
+                    // UI API DML field level errors
+                    else if (
+                        error?.body?.output?.fieldErrors &&
+                        Object.keys(error.body.output.fieldErrors).length > 0
+                    ) {
+                        const fieldErrors = [];
+                        Object.values(error.body.output.fieldErrors).forEach(
+                            (errorArray) => {
+                                fieldErrors.push(
+                                    ...errorArray.map((e) => e.message)
+                                );
+                            }
+                        );
+                        return fieldErrors;
+                    }
+                    // UI API DML, Apex and network errors
+                    else if (error.body && typeof error.body.message === 'string') {
+                        return error.body.message;
+                    }
+                    // JS errors
+                    else if (typeof error.message === 'string') {
+                        return error.message;
+                    }
+                    // Unknown error shape so try HTTP status text
+                    return error.statusText;
+                })
+                // Flatten
+                .reduce((prev, curr) => prev.concat(curr), [])
+                // Remove empty strings
+                .filter((message) => !!message)
+        );
     }
 }

@@ -59,7 +59,7 @@ public without sharing class FileUploadImprovedHelper{
         delete cd;
     }
 
-   @AuraEnabled(cacheable = true)
+   @AuraEnabled
     public static List<objFiles> getExistingFiles(String recordId){
         Boolean isStandardUser = UserInfo.getUserType() == 'Standard';
         Map<Id,objFiles> objFiles = new Map<Id,objFiles>();

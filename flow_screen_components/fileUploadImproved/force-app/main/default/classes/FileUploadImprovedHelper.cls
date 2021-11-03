@@ -71,7 +71,7 @@ public without sharing class FileUploadImprovedHelper{
             }
             objFiles.put(link.ContentDocumentId,files);
         }
-        for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE ContentDocumentId IN :objFiles.keyset()]){
+        for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE ContentDocumentId IN :objFiles.keyset() AND IsLatest = TRUE]){
             objFiles.get(vers.ContentDocumentId).contentVersionId = vers.Id;
         }
         return objFiles.values();

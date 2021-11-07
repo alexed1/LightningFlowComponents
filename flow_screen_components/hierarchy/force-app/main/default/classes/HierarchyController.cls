@@ -1,4 +1,12 @@
-public with sharing class HierarchyController {
+/**
+ * Class Name : HierarchyController
+ * About : Controler of Hierarchy LWC
+ */
+public class HierarchyController {
+  /**
+   * Class Name : WrapperData
+   * About : Structure wrapper data
+   */
   public class WrapperData {
     @AuraEnabled
     public Object record;
@@ -10,6 +18,10 @@ public with sharing class HierarchyController {
     }
   }
 
+  /**
+   * Method Name : getRecordData()
+   * About : this method return wrapper of Hierarchy Data
+   */
   @AuraEnabled
   public static List<WrapperData> getRecordData(
     String soql,

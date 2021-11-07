@@ -1,4 +1,4 @@
-# Salesforce Lightning Data table (LWC Version) 
+# Salesforce Lightning Hierarchy (LWC Version) 
 
 ![Image description](https://github.com/Sarveshgithub/LightningFlowComponents/blob/master/flow_screen_components/hierarchy/hierarchy.PNG?raw=true)
 

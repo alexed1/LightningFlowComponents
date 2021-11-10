@@ -98,42 +98,47 @@ public without sharing class FileUploadImprovedHelper{
         for(Input input : inputs){
             setContentVersIds.addAll(input.versIds);
         }
-        Map<Id,Id> mapVersIdToDocId = new Map<Id,Id>();
-        for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :setContentVersIds]){
-            mapVersIdToDocId.put(vers.Id,vers.ContentDocumentId);
-        }
-        Map<Id,List<Id>> mapDocIdToRecordIds = new Map<Id,List<Id>>();
-        for(ContentDocumentLink doc : [SELECT ContentDocumentId, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :mapVersIdToDocId.values()]){
-            Id docId = doc.ContentDocumentId;
-            Id recordId = doc.LinkedEntityId;
-            if(mapDocIdToRecordIds.get(docId) == null){
-                mapDocIdToRecordIds.put(docId,new List<Id>());
+        if(!setContentVersIds.isEmpty()){
+            Map<Id,Id> mapVersIdToDocId = new Map<Id,Id>();
+            for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :setContentVersIds]){
+                mapVersIdToDocId.put(vers.Id,vers.ContentDocumentId);
             }
-            mapDocIdToRecordIds.get(docId).add(recordId);
-        }
-        List<ContentDocumentLink> links = new List<ContentDocumentLink>();
-        for(Input input : inputs){
-            Id recordId = input.recordId;
-            Boolean visibleToAllUsers = input.visibleToAllUsers == null ? FALSE : input.visibleToAllUsers;
-            for(Id versId : input.versIds){
-                Id docId = mapVersIdToDocId.get(versId);
-                if(mapDocIdToRecordIds.get(docId).contains(recordId)){
-                    continue;
-                } else {
-                    ContentDocumentLink link = new ContentDocumentLink(
-                        ContentDocumentId = docId,
-                        LinkedEntityId = recordId
-                    );
-                    if(visibleToAllUsers){
-                        link.Visibility = 'AllUsers';
+            Map<Id,List<Id>> mapDocIdToRecordIds = new Map<Id,List<Id>>();
+            for(ContentDocumentLink doc : [SELECT ContentDocumentId, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :mapVersIdToDocId.values()]){
+                Id docId = doc.ContentDocumentId;
+                Id recordId = doc.LinkedEntityId;
+                if(mapDocIdToRecordIds.get(docId) == null){
+                    mapDocIdToRecordIds.put(docId,new List<Id>());
+                }
+                mapDocIdToRecordIds.get(docId).add(recordId);
+            }
+            List<ContentDocumentLink> links = new List<ContentDocumentLink>();
+            for(Input input : inputs){
+                Id recordId = input.recordId;
+                Boolean visibleToAllUsers = input.visibleToAllUsers == null ? FALSE : input.visibleToAllUsers;
+                for(Id versId : input.versIds){
+                    Id docId = mapVersIdToDocId.get(versId);
+                    if(mapDocIdToRecordIds.get(docId).contains(recordId)){
+                        continue;
+                    } else {
+                        ContentDocumentLink link = new ContentDocumentLink(
+                            ContentDocumentId = docId,
+                            LinkedEntityId = recordId
+                        );
+                        if(visibleToAllUsers){
+                            link.Visibility = 'AllUsers';
+                        }
+                        links.add(link);
                     }
-                    links.add(link);
                 }
             }
+            if(!links.isEmpty()){
+                insert links;
+            }
+        } else {
+            return;
         }
-        if(!links.isEmpty()){
-            insert links;
-        }
+        
     }
 
     public class Input{

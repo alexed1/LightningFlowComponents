@@ -119,6 +119,18 @@ public class FileUploadImproved_Test {
         system.assert(link.Visibility == 'AllUsers');
     }
 
+    @isTest
+    public static void invocable_test_with_empty_list(){
+
+        FileUploadImprovedHelper.Input input = new FileUploadImprovedHelper.Input();
+        input.versIds = new List<Id>();
+
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocumentLinkDownstream(new List<FileUploadImprovedHelper.Input>{input});
+        system.test.stopTest();
+
+    }
+
     private static ContentVersion getCV(){
         return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title, ContentDocumentId FROM ContentVersion LIMIT 1];
     }

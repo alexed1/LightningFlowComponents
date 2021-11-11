@@ -4,27 +4,41 @@
 
 ## About
 
-This is generic lighting hierarchy , which is build in lwc.
-The customization are done by design attributes. At onload of page the component shows only first level of record, next level of record in hierarchy are shown on click of expandable button action, and make the call to server via async, There is no limit of any level in hierarchy. If record has no children then expendable option not visiable.
+This is generic lighting hierarchy , which is build in lwc ( tree grid ).
+The customization are done by design attributes. At onload of page the component shows only first level of record, next level of record in hierarchy are shown on click of expandable button action, and make the call to server via async, There is no limit of any level in hierarchy. If record has no children then expendable option not visiable. For Usage, Drag `hierarchy` component in Screen element flow and details, Check `Follow Steps` Section.
 
 Features
 The data table has following features.
 - Show records for both custom and standard object.
 - Add cols as per the fields exist in object in JSON format.
+- No limit for level of hierarchy
+
+# Follow Steps
+1) Open Flow drag screen element 
+    ![Image description](./Flow.Png)
+
+2) Select `hierarchy` component from left side components drag to Screen
+    ![Image description](./Flow_LWC.Png)
+    ![Image description](./Flow_LWC2.Png)
+
+3) Now add values in design attribute at left side, Check below `Steps to Customization through Design Attribute`
+    ![Image description](./Flow_Builder_ScreenCast.gif)
+
 
 ## Steps to Customization through Design Attribute
 Design Attribute
 
 | Label           | Type       | Value                        | Example             |
 |-----------------|------------|------------------------------|---------------------|
-| Enter Icon Name  | String     | provide slds icon name  |  `standard:hierarchy` |
-| Enter Title      | String     | provide table title |  Hierarchy               |
+| Enter Icon Name  | String     | provide slds icon name  |  `standard:hierarchy` For diffrent icons options visit [slds-icons](https://www.lightningdesignsystem.com/icons/)|
+| Enter Title      | String     | provide table title |  Hierarchy ( Any heading value can be enter)           |
 | Enter Object API Name | String| provide object custom or standard API name|  Case |
 | Enter Columns JSON | String | { `fieldName`:api name,`label`:col label,`type`:text,number,date }| See below **Column JSON Example**
 Enter Parent field API Name | String | Enter Parent field API Name | Example: ParentId field is determine parent of Case record.
 Enter Top most Parent Id ( Only for Screen Flow ) | String | provide record id for screen flow i.e for home page | Example `recordId`
 
 ## Columns JSON Example
+This example taking from Tree Grid, For more detail check [Working with Column Properties](https://developer.salesforce.com/docs/component-library/bundle/lightning-tree-grid/documentation) section.
 ``` yaml 
     [{
         "type": "text",
@@ -38,6 +52,7 @@ Enter Top most Parent Id ( Only for Screen Flow ) | String | provide record id f
         "type": "text",
         "fieldName": "Origin",
         "label": "Origin"
-    }
-]
+    }]
+```
+
 

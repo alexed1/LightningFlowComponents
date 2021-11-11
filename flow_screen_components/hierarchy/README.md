@@ -15,11 +15,11 @@ The data table has following features.
 
 # Follow Steps
 1) Open Flow drag screen element 
-    ![Image description](./Flow.Png)
+    ![Image description](https://github.com/Sarveshgithub/LightningFlowComponents/blob/master/flow_screen_components/hierarchy/Flow.PNG?raw=true)
 
 2) Select `hierarchy` component from left side components drag to Screen
-    ![Image description](./Flow_LWC.Png)
-    ![Image description](./Flow_LWC2.Png)
+    ![Image description](https://github.com/Sarveshgithub/LightningFlowComponents/blob/master/flow_screen_components/hierarchy/Flow_LWC.PNG?raw=true)
+    ![Image description](https://github.com/Sarveshgithub/LightningFlowComponents/blob/master/flow_screen_components/hierarchy/Flow_LWC2.PNG?raw=true)
 
 3) Now add values in design attribute at left side, Check below `Steps to Customization through Design Attribute`
     ![Image description](./Flow_Builder_ScreenCast.gif)

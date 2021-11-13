@@ -70,19 +70,18 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         let cachedSelection = sessionStorage.getItem(this.sessionKey);
         if(cachedSelection){
             this.processFiles(JSON.parse(cachedSelection));
-        }
-        else {
-            if(this.recordId && this.renderExistingFiles){
-                getExistingFiles({recordId: this.recordId})
-                    .then((files) => {
-                        if(files != undefined && files.length > 0){
-                            this.processFiles(files);
-                        }
-                    })
-                    .catch((error) => {
-                        this.showErrors(this.reduceErrors(error));
-                    })
-            }
+        } else if(this.recordId && this.renderExistingFiles) {
+            getExistingFiles({recordId: this.recordId})
+                .then((files) => {
+                    if(files != undefined && files.length > 0){
+                        this.processFiles(files);
+                    }
+                })
+                .catch((error) => {
+                    this.showErrors(this.reduceErrors(error));
+                })
+        } else {
+            this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
         }
     }
     

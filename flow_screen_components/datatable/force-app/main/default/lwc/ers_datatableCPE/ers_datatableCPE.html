@@ -299,6 +299,15 @@
         checked={inputValues.cb_suppressBottomBar.value} 
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
+    <lightning-input class="slds-m-vertical_xx-small"
+        disabled={isNoEdits}
+        type="checkbox" 
+        name="select_navOnSave"
+        label={inputValues.navOnSave.label} 
+        field-level-help={inputValues.navOnSave.helpText}
+        checked={inputValues.navOnSave.value} 
+        onchange={handleValueChange}>
+    </lightning-input>
     <c-fsc_flow-checkbox
         name="select_hideHeaderActions"
         label={inputValues.hideHeaderActions.label} 

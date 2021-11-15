@@ -10,7 +10,7 @@
 
 import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
@@ -61,7 +61,8 @@ export default class Datatable extends LightningElement {
     @api numberOfRowsSelected = 0;
     @api numberOfRowsEdited = 0;
     @api isConfigMode = false;
-    @api tableHeight;
+    @api tableHeight;    
+    @api navOnSave = false;
     @api outputSelectedRows = [];
     @api outputSelectedRow;
     @api outputEditedRows = [];
@@ -1397,6 +1398,11 @@ export default class Datatable extends LightningElement {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
             //clear draftValues. this is required for custom column types that need to specifically write into draftValues
             this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
+        }
+
+        if(this.navOnSave) {
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
         }
     }
 

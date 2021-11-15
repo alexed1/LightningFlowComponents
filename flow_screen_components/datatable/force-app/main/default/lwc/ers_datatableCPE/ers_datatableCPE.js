@@ -427,6 +427,8 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
             "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
         cb_suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: ''},
+        navOnSave: {value: null, valueDataType: null, isCollection: false, label: 'InstantNavigation Mode on Save', 
+            helpText: "Navigate to Next Flow Element on Save. To be used with Save Buttons during Edit Mode."},
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Apex-Defined', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         cb_isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: ''},
@@ -507,7 +509,8 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'hideCheckboxColumn'},
                 {name: 'singleRowSelection'},
                 {name: 'matchCaseOnFilters'},
-                {name: 'suppressBottomBar'},
+                {name: 'suppressBottomBar'},                
+                {name: 'navOnSave'},
                 {name: 'hideHeaderActions'},
                 {name: 'hideClearSelectionButton'},
                 {name: 'not_suppressNameFieldLink'},
@@ -1003,6 +1006,7 @@ export default class ers_datatableCPE extends LightningElement {
                                 this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
                                 if (this.isNoEdits) {
                                     this.inputValues.suppressBottomBar.value = false;
+                                    this.inputValues.navOnSave.value = false;
                                     this.dispatchFlowValueChangeEvent('suppressBottomBar', false, 'boolean');
                                 }
                                 break;

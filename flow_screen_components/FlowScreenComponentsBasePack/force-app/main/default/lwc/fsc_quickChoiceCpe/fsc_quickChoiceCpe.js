@@ -28,6 +28,8 @@ export default class QuickChoiceCpe extends LightningElement {
         fieldName: { value: null, valueDataType: null, isCollection: false, label: 'Select Field' },
         recordTypeId: { value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:' },
         isControllingCheckbox: { value: null, valueDataType: null, isCollection: false, label: 'Controlling field is a Checkbox field' },
+        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist Field):' },
+        controllingCheckboxValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Checkbox Field):' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' }
@@ -52,7 +54,8 @@ export default class QuickChoiceCpe extends LightningElement {
         flowDataTypeString: 'String',
         availableFieldTypesPicklist: 'Picklist',
         inputAttributePrefix: 'select_',
-        singleColumn: '1'
+        singleColumn: '1',
+        isControllingCheckbox: true
     }
 
     displayChoicesAsOptions = [
@@ -117,7 +120,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
 	_automaticOutputVariables;
 
-  @track staticChoices = [this.newChoice()];
+    @track staticChoices = [this.newChoice()];
     @track tempStaticChoices = [];
 
     get isVisualCards() {
@@ -129,12 +132,14 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     get isDatasourcePicklist() {
-        return this.inputValues.controllingFieldIsCheckbox.value === this.settings.controllingFieldIsCheckbox;
+        return this.inputValues.inputMode.value === this.settings.inputModePicklist;
     }
 
-    get isControllingFieldCheckbox() {
-        return this.inputValues.isControllingCheckbox.value === this.settings.isControllingCheckbox;
-    }
+//     get isControllingFieldCheckbox() {
+// console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 140 ~ QuickChoiceCpe ~ getisControllingFieldCheckbox ~ this.settings.isControllingCheckbox", this.settings.isControllingCheckbox);
+// console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 140 ~ QuickChoiceCpe ~ getisControllingFieldCheckbox ~ this.inputValues.isControllingCheckbox.value", this.inputValues.isControllingCheckbox.value);
+//         return this.inputValues.isControllingCheckbox.value === this.settings.isControllingCheckbox;
+//     }
 
     get isDatasourceDualCollection() {
         return this.inputValues.inputMode.value === this.settings.inputModeDualCollection;
@@ -215,9 +220,11 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     handleValueChange(event) {
+console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 221 ~ QuickChoiceCpe ~ handleValueChange ~ event", event);
         if (event.target) {
             let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
             let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
+console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 225 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeValue", curAttributeValue);
             let curAttributeType;
             switch (event.target.type) {
                 case "checkbox":
@@ -229,7 +236,9 @@ export default class QuickChoiceCpe extends LightningElement {
                 default:
                     curAttributeType = 'String';
             }
+console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 227 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeType", curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
+console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 239 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeName", curAttributeName);
         }
     }
 

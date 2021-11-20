@@ -26,24 +26,25 @@ export default class QuickChoiceFSC extends LightningElement {
     @api fieldName; //used for picklist fields
     @api sortList; //used for picklist fields
 
-    _controllingValue;
+    _controllingPicklistValue;
+    _controllingCheckboxValue;
 
     @api
-    get controllingValue() {
-        return this._controllingValue;
+    get controllingPicklistValue() {
+        return this._controllingPicklistValue;
     }
 
-    set controllingValue(data = null) {
-        this._controllingValue = data;
+    set controllingPicklistValue(data) {
+        this._controllingPicklistValue = data;
     }
 
     @api
     get controllingCheckboxValue() {
-        return this._controllingValue;
+        return this._controllingCheckboxValue;
     }
 
-    set controllingCheckboxValue(data = null) {
-        this._controllingValue = data;
+    set controllingCheckboxValue(data) {
+        this._controllingCheckboxValue = data;
     }
 
     //-------------For inputMode = Visual Text Box (Card)
@@ -75,10 +76,10 @@ export default class QuickChoiceFSC extends LightningElement {
         this._staticChoices = choices;
         this.choiceValues = [];
         this.choiceLabels = [];
-         for (let choice of choices) {
+        for (let choice of choices) {
             this.choiceValues.push(choice.value);
             this.choiceLabels.push(choice.label);        
-         }
+        }
     }
     @track _staticChoices = [];
 
@@ -170,7 +171,7 @@ export default class QuickChoiceFSC extends LightningElement {
             let controllingIndex;
             if (Object.keys(data.controllerValues).length > 0) {
                 isControlled = true;
-                controllingIndex = data.controllerValues[this._controllingValue];
+                controllingIndex = data.controllerValues[this._controllingPicklistValue];
             }
 
             // Picklist values
@@ -333,7 +334,7 @@ export default class QuickChoiceFSC extends LightningElement {
             this.options = options;
             this.items = items;
             this.setSelectedLabel();  
-                      
+
         } else {
             console.log("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
             throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
@@ -352,17 +353,17 @@ export default class QuickChoiceFSC extends LightningElement {
     @api
     validate() {
     	//If the component is invalid, return the isValid parameter as false and return an error message.
-    	console.log("entering validate: required=" + this.required + " value=" + this.value);
-    	let errorMessage = "You must make a selection in: " + this.masterLabel + " to continue";
+        console.log("entering validate: required=" + this.required + " value=" + this.value);
+        let errorMessage = "You must make a selection in: " + this.masterLabel + " to continue";
 
-    	if (this.required === true && !this.value) {
-    		return {
-    			isValid: false,
-    			errorMessage: errorMessage
-    		};
-    	}
+        if (this.required === true && !this.value) {
+            return {
+                isValid: false,
+                errorMessage: errorMessage
+            };
+        }
 
-    	return { isValid: true };
+        return { isValid: true };
     }
 
     handleChange(event) {

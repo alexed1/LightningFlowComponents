@@ -27,6 +27,7 @@ export default class QuickChoiceCpe extends LightningElement {
         objectName: { value: null, valueDataType: null, isCollection: false, label: 'Select Object' },
         fieldName: { value: null, valueDataType: null, isCollection: false, label: 'Select Field' },
         recordTypeId: { value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:' },
+        isControllingCheckbox: { value: null, valueDataType: null, isCollection: false, label: 'Controlling field is a Checkbox field' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' }
@@ -128,7 +129,11 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     get isDatasourcePicklist() {
-        return this.inputValues.inputMode.value === this.settings.inputModePicklist;
+        return this.inputValues.controllingFieldIsCheckbox.value === this.settings.controllingFieldIsCheckbox;
+    }
+
+    get isControllingFieldCheckbox() {
+        return this.inputValues.isControllingCheckbox.value === this.settings.isControllingCheckbox;
     }
 
     get isDatasourceDualCollection() {

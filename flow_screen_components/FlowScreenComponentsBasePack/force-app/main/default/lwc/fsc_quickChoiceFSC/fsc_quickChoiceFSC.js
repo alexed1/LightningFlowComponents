@@ -26,6 +26,26 @@ export default class QuickChoiceFSC extends LightningElement {
     @api fieldName; //used for picklist fields
     @api sortList; //used for picklist fields
 
+    _controllingValue;
+
+    @api
+    get controllingValue() {
+        return this._controllingValue;
+    }
+
+    set controllingValue(data = null) {
+        this._controllingValue = data;
+    }
+
+    @api
+    get controllingCheckboxValue() {
+        return this._controllingValue;
+    }
+
+    set controllingCheckboxValue(data = null) {
+        this._controllingValue = data;
+    }
+
     //-------------For inputMode = Visual Text Box (Card)
     @api choiceIcons;
     @api includeIcons;
@@ -146,12 +166,11 @@ export default class QuickChoiceFSC extends LightningElement {
             if (this.allowNoneToBeChosen)
                 picklistOptions.push({label: "--None--", value: "None"});
 
-let controllingValue = false;
             let isControlled = false;
             let controllingIndex;
             if (Object.keys(data.controllerValues).length > 0) {
                 isControlled = true;
-                controllingIndex = data.controllerValues[controllingValue];
+                controllingIndex = data.controllerValues[this._controllingValue];
             }
 
             // Picklist values

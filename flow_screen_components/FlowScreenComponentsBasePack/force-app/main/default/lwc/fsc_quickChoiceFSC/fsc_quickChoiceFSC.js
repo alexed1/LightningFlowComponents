@@ -138,7 +138,7 @@ export default class QuickChoiceFSC extends LightningElement {
     })
     picklistValues({error, data}) {
         if (data) {
-            console.log("gtPicklistValues returned data");
+            console.log("gtPicklistValues returned data", data);
 
             let picklistOptions = [];
             this._allValues = [];
@@ -146,14 +146,24 @@ export default class QuickChoiceFSC extends LightningElement {
             if (this.allowNoneToBeChosen)
                 picklistOptions.push({label: "--None--", value: "None"});
 
+let controllingValue = false;
+            let isControlled = false;
+            let controllingIndex;
+            if (Object.keys(data.controllerValues).length > 0) {
+                isControlled = true;
+                controllingIndex = data.controllerValues[controllingValue];
+            }
+
             // Picklist values
             data.values.forEach(key => {
-                picklistOptions.push({
-                    label: key.label,
-                    value: key.value
-                });
-                this._allLabels.push(key.label);
-                this._allValues.push(key.value);
+                if (!isControlled || key.validFor.includes(controllingIndex)) {
+                    picklistOptions.push({
+                        label: key.label,
+                        value: key.value
+                    });
+                    this._allLabels.push(key.label);
+                    this._allValues.push(key.value);
+                }
             });
 
             // Sort Picklist Values

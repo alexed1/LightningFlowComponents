@@ -27,7 +27,7 @@ export default class QuickChoiceFSC extends LightningElement {
     @api sortList; //used for picklist fields
 
     _controllingPicklistValue;
-    _controllingCheckboxValue;
+    // _controllingCheckboxValue;
 
     @api
     get controllingPicklistValue() {
@@ -40,11 +40,11 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api
     get controllingCheckboxValue() {
-        return this._controllingCheckboxValue;
+        return this._controllingPicklistValue;
     }
 
     set controllingCheckboxValue(data) {
-        this._controllingCheckboxValue = data;
+        this._controllingPicklistValue = data;
     }
 
     //-------------For inputMode = Visual Text Box (Card)
@@ -105,7 +105,38 @@ export default class QuickChoiceFSC extends LightningElement {
     @track options = [];
     @track items = [];
     @track dualColumns = false;
+    _picklistOptions = [];
+    _showPicklist = true;
+    _isControlled = false;
 
+    @api
+    get picklistOptions() {
+        return this._picklistOptions;
+    }
+
+    set picklistOptions(data) {
+        this._picklistOptions = data;
+    }
+
+    @api 
+    get showPicklist() {
+// show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @apigetshowPicklist ~ this._controllingPicklistValue", this._controllingPicklistValue);
+        return (!this.isControlled || (this.controllingPicklistValue != null && this.picklistOptions.length > 0));
+    }
+
+    set showPicklist(value) {
+        this._showPicklist = value;
+    }
+
+    @api
+    get isControlled() {
+        return this._isControlled;
+    }
+
+    set isControlled(value) {
+        this_isControlled = value;
+    }
 
     @api get value() {
         return this.selectedValue;
@@ -161,23 +192,23 @@ export default class QuickChoiceFSC extends LightningElement {
         if (data) {
             console.log("gtPicklistValues returned data", data);
 
-            let picklistOptions = [];
+            this._picklistOptions = [];
             this._allValues = [];
             this._allLabels = [];
             if (this.allowNoneToBeChosen)
-                picklistOptions.push({label: "--None--", value: "None"});
+                this._picklistOptions.push({label: "--None--", value: "None"});
 
-            let isControlled = false;
+            this._isControlled = false;
             let controllingIndex;
             if (Object.keys(data.controllerValues).length > 0) {
-                isControlled = true;
+                this._isControlled = true;
                 controllingIndex = data.controllerValues[this._controllingPicklistValue];
             }
 
             // Picklist values
             data.values.forEach(key => {
-                if (!isControlled || key.validFor.includes(controllingIndex)) {
-                    picklistOptions.push({
+                if (!this._isControlled || key.validFor.includes(controllingIndex)) {
+                    this._picklistOptions.push({
                         label: key.label,
                         value: key.value
                     });
@@ -187,7 +218,7 @@ export default class QuickChoiceFSC extends LightningElement {
             });
 
             // Sort Picklist Values
-            this.picklistOptionsStorage = this.doSort(picklistOptions, this.sortList);
+            this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
 
             console.log("displayMode is" + this.displayMode);
 

@@ -36,6 +36,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     set controllingPicklistValue(data) {
         this._controllingPicklistValue = data;
+        this.selectValue = null;
     }
 
     @api
@@ -89,7 +90,16 @@ export default class QuickChoiceFSC extends LightningElement {
     @api required;
     picklistOptionsStorage;
 
-    @track selectedValue;
+    // @track selectedValue;
+    _selectedValue = null;
+    @api 
+    get selectedValue() {
+        return this._selectedValue;
+    }
+    set selectedValue(value) {
+        this._selectedValue = value;
+    }
+
     @track _selectedLabel;
     @track _allValues = [];
     @track _allLabels = [];
@@ -139,11 +149,11 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
     }
 
     @api get value() {
-        return this.selectedValue;
+        return this._selectedValue;
     }
 
     set value(value) {
-        this.selectedValue = value;
+        this._selectedValue = value;
         this.setSelectedLabel();
     }
 
@@ -269,7 +279,7 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
 
     setPicklistOptions() {
         this.options = this.picklistOptionsStorage;
-        if (this.selectedValue) {
+        if (this._selectedValue) {
             this.setSelectedLabel();
         }
     }
@@ -399,9 +409,9 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
 
     handleChange(event) {
         console.log('EVENT', event);
-        this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-        console.log("selected value is: " + this.selectedValue);
-        this.dispatchFlowAttributeChangedEvent('value', this.selectedValue);
+        this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
+        console.log("selected value is: " + this._selectedValue);
+        this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);
@@ -410,7 +420,7 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
 
     setSelectedLabel() {
         if (this.options && this.options.length) {
-            let selectedOption = this.options.find(curOption => curOption.value === this.selectedValue);
+            let selectedOption = this.options.find(curOption => curOption.value === this._selectedValue);
             if (selectedOption && selectedOption.label) {
                 this._selectedLabel = selectedOption.label;
                 this.dispatchFlowAttributeChangedEvent('selectedLabel', this._selectedLabel)

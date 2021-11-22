@@ -36,7 +36,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     set controllingPicklistValue(data) {
         this._controllingPicklistValue = data;
-        this.selectValue = null;
+        this._selectValue = null;
     }
 
     @api

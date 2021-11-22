@@ -97,8 +97,10 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._selectedValue;
     }
     set selectedValue(value) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 100 ~ QuickChoiceFSC ~ setselectedValue ~ value", value);
         this._selectedValue = value;
     }
+// clearOnce = false;
 
     @track _selectedLabel;
     @track _allValues = [];
@@ -125,17 +127,19 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     set picklistOptions(data) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 128 ~ QuickChoiceFSC ~ setpicklistOptions ~ data", data);
         this._picklistOptions = data;
     }
 
     @api 
     get showPicklist() {
 // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @apigetshowPicklist ~ this._controllingPicklistValue", this._controllingPicklistValue);
+// console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @apigetshowPicklist ~ this._controllingPicklistValue", this._controllingPicklistValue);
         return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
     }
 
     set showPicklist(value) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 139 ~ QuickChoiceFSC ~ setshowPicklist ~ value", value);
         this._showPicklist = value;
     }
 
@@ -153,6 +157,7 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
     }
 
     set value(value) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 156 ~ QuickChoiceFSC ~ setvalue ~ value", value);
         this._selectedValue = value;
         this.setSelectedLabel();
     }
@@ -170,6 +175,7 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
     }
 
     set allValues(value) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 174 ~ QuickChoiceFSC ~ setallValues ~ value", value);
         this._allValues = value;
     }
 
@@ -239,6 +245,11 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @a
                 this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
                 this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
             }
+// if (!this.clearOnce) {
+// this._selectedValue = '';
+// this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+// this.clearOnce = true;
+// }
         } else if (error) {
             this.error = JSON.stringify(error);
             console.log("getPicklistValues wire service returned error: " + this.error);

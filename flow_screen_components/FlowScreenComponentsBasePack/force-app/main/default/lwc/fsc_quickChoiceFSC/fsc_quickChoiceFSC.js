@@ -132,7 +132,7 @@ export default class QuickChoiceFSC extends LightningElement {
     get showPicklist() {
 // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
 console.log("🚀 ~ file: fsc_quickChoiceFSC.js ~ line 123 ~ QuickChoiceFSC ~ @apigetshowPicklist ~ this._controllingPicklistValue", this._controllingPicklistValue);
-        return (!this.isControlled || (this.controllingPicklistValue != null && this.picklistOptions.length > 0));
+        return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
     }
 
     set showPicklist(value) {

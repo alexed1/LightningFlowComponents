@@ -129,7 +129,7 @@ public without sharing class ExecuteSOQL {
             if (isDate) {
                 fieldValue = fieldValue.replaceAll(', ', '/');
                 fieldValue = fieldValue.replaceAll('/ ', '/');
-                fieldValue += ', 12:00 am';
+                fieldValue += ' 12:00 am'; //https://developer.salesforce.com/forums/?id=906F00000008zoyIAA
             }
             return Datetime.parse(fieldValue).format('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
         }

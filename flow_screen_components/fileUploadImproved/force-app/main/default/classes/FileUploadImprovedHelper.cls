@@ -103,12 +103,12 @@ public without sharing class FileUploadImprovedHelper{
             for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :setContentVersIds]){
                 mapVersIdToDocId.put(vers.Id,vers.ContentDocumentId);
             }
-            Map<Id,List<Id>> mapDocIdToRecordIds = new Map<Id,List<Id>>();
+            Map<Id,Set<Id>> mapDocIdToRecordIds = new Map<Id,Set<Id>>();
             for(ContentDocumentLink doc : [SELECT ContentDocumentId, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :mapVersIdToDocId.values()]){
                 Id docId = doc.ContentDocumentId;
                 Id recordId = doc.LinkedEntityId;
                 if(mapDocIdToRecordIds.get(docId) == null){
-                    mapDocIdToRecordIds.put(docId,new List<Id>());
+                    mapDocIdToRecordIds.put(docId,new Set<Id>());
                 }
                 mapDocIdToRecordIds.get(docId).add(recordId);
             }

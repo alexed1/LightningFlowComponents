@@ -128,7 +128,7 @@ public with sharing class ConvertCSVToRecords {
           convertedfieldValue = strFieldValue == '1' || strFieldValue == 'true';
         }
       }
-      when DOUBLE, CURRENCY, PERCENT {
+      when DOUBLE, CURRENCY, PERCENT,INTEGER {
         String fValue = fieldValue.replaceAll('[^0-9,;.\\-]', ''); //'-' added for handling negative numbers
         if (fValue.indexOf(Tsep) > -1) {
           String regexSep = Tsep;
@@ -140,11 +140,12 @@ public with sharing class ConvertCSVToRecords {
         if (fValue.indexOf(Dsep) > -1) {
           fValue = fValue.replace(Dsep, '.');
         }
-        convertedfieldValue = String.isEmpty(fValue) ? null : Decimal.valueOf(fValue);
-      }
-      when INTEGER {
-        /*Remove thousands separator ( , and . like in 1,234 and 1.234 ) */
-        convertedfieldValue = String.isEmpty(fieldValue) ? null : Integer.valueOf(fieldValue.replaceAll('[^0-9]', ''));
+        if(fieldType == DisplayType.INTEGER){
+          convertedfieldValue = String.isEmpty(fValue) ? null : Integer.valueOf(fValue);
+        }
+        else {
+          convertedfieldValue = String.isEmpty(fValue) ? null : Decimal.valueOf(fValue);
+        }
       }
       when DATE {
         /* replace / and : and . in fieldvalue by -  like in 2021.12.31 or 2021/12/31 or 2021:12:31 or 1.1.2021 or 31/12/2021 or 31:12:2021 */
@@ -271,7 +272,7 @@ public with sharing class ConvertCSVToRecords {
 
     @InvocableVariable(
       label='Separator 2: Decimals'
-      description='Choose comma (input: , ) or semicolon (input: ; )'
+      description='Choose decimal (input: .) or comma (input: , ) or semicolon (input: ; )'
       required=true
     )
     public String DSep;

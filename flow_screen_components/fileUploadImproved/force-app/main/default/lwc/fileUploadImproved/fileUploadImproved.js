@@ -75,6 +75,8 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 .then((files) => {
                     if(files != undefined && files.length > 0){
                         this.processFiles(files);
+                    } else {
+                        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
                     }
                 })
                 .catch((error) => {

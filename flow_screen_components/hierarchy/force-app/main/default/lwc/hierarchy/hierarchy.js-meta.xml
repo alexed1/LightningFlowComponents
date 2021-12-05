@@ -9,13 +9,13 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__RecordPage, lightning__HomePage, lightning__AppPage,lightning__FlowScreen">
-            <property name="iconName" type="String" required="true" label="Enter Icon Name" default="standard:hierarchy" />
-            <property name="title" type="String" required="true" label="Enter Title" default="Hierarchy" />
-            <property name="objectName" type="String" required="true" label="Enter Object API Name" />
-            <property name="gridColumns" type="String" required="true" label="Enter Columns JSON" />
-            <property name="parentField" type="String" default="" label="Enter Parent field API Name" />
-            <property name="recordId" type="String" default="" label="Enter Top most Parent Id ( Only for Screen Flow )" />
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="iconName" type="String" required="true" label="Enter Icon Name" role="inputOnly" default="standard:hierarchy" />
+            <property name="title" type="String" required="true" label="Enter Title" role="inputOnly" default="Hierarchy" />
+            <property name="objectName" type="String" required="true" role="inputOnly" label="Enter Object API Name" />
+            <property name="colNameApi" type="String" required="true" role="inputOnly" label="Enter Columns API Name (comma seprated)" />
+            <property name="parentField" type="String" required="true" role="inputOnly" label="Enter Parent field API Name" />
+            <property name="recordId" type="String"  default="" role="inputOnly" label="Enter recordId" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -5,21 +5,38 @@
  */
 import { LightningElement, api, wire, track } from "lwc";
 import getRecordData from "@salesforce/apex/HierarchyController.getRecordData";
+import { getObjectInfo } from "lightning/uiObjectInfoApi";
 
 export default class Hierarchy extends LightningElement {
   //Public Property
-
-  @api gridColumns;
   @api recordId;
   @api parentField;
   @api objectName;
   @api iconName;
   @api title;
+  @api colNameApi;
+  @api preselectedRow = [];
 
   //Private Property
   @track error;
   @track gridData;
   @track soql;
+  @track gridColumns = [];
+  
+
+  @wire(getObjectInfo, { objectApiName: "$objectName" })
+  objectInformation({ data, error }) {
+    if (data) {
+      this.colNameApi.split(",").map((item) => {
+        item.trim();
+        this.gridColumns.push({
+          label: data.fields[item].label,
+          fieldName: item,
+          type: "text",
+        });
+      });
+    }
+  }
 
   /**
    * Method : connectedCallback
@@ -31,14 +48,11 @@ export default class Hierarchy extends LightningElement {
   }
 
   buildSOQL() {
-    this.gridColumns = JSON.parse(this.gridColumns);
-    let soql = `SELECT Id,${this.parentField},`,
-      col = [];
-    this.gridColumns.map((e) => {
-      col.push(e.fieldName);
-    });
-    soql += col.join(",");
-    soql += " FROM " + this.objectName;
+    let cols = this.colNameApi.split(",").map((item) => item.trim());
+    cols.push("Id");
+    cols.push(this.parentField);
+    cols = [...new Set(cols)];
+    let soql = `SELECT ${cols.join(",")} FROM ${this.objectName}`;
     this.soql = soql;
   }
   /**
@@ -52,6 +66,12 @@ export default class Hierarchy extends LightningElement {
     }
   }
 
+  getSelectedName(event) {
+    const selectedRows = event.detail.selectedRows;
+    for (let i = 0; i < selectedRows.length; i++) {
+      this.preselectedRow.push(selectedRows[i].Id);
+    }
+  }
   /**
    * Method : fetchRecords
    * Discription : get case data from apex
@@ -60,7 +80,7 @@ export default class Hierarchy extends LightningElement {
     getRecordData({
       soql: this.soql,
       parentField: this.parentField,
-      recordId: parentId
+      recordId: parentId,
     })
       .then((data) => {
         if (data) {

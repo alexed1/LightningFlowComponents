@@ -9,7 +9,9 @@
                     data={gridData} 
                     key-field="Id" 
                     ontoggle={handleRowToggle}
-                    hide-checkbox-column=true>
+                    onrowselection={getSelectedName}
+                    selected-rows={preselectedRow}
+                >
                 </lightning-tree-grid>
             </template>
         </lightning-card>

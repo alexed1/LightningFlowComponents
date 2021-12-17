@@ -1,5 +1,8 @@
 public without sharing class ExecuteSOQL {
     private static Set<String> DATE_LITERAL_FORMATS = new Set<String>{'YESTERDAY','TODAY','TOMORROW','LAST_WEEK','THIS_WEEK','NEXT_WEEK','LAST_MONTH','THIS_MONTH','NEXT_MONTH','LAST_90_DAYS','NEXT_90_DAYS','LAST_N_DAYS','NEXT_N_DAYS','NEXT_N_WEEKS','LAST_N_WEEKS','NEXT_N_MONTHS','LAST_N_MONTHS','THIS_QUARTER','LAST_QUARTER','NEXT_QUARTER','NEXT_N_QUARTERS','LAST_N_QUARTERS','THIS_YEAR','LAST_YEAR','NEXT_YEAR','NEXT_N_YEARS','LAST_N_YEARS','THIS_FISCAL_QUARTER','LAST_FISCAL_QUARTER','NEXT_FISCAL_QUARTER','NEXT_N_FISCAL_QUARTERS','LAST_N_FISCAL_QUARTERS','THIS_FISCAL_YEAR','LAST_FISCAL_YEAR','NEXT_FISCAL_YEAR','NEXT_N_FISCAL_YEARS','LAST_N_FISCAL_YEARS'};
+    private static final Pattern EN_US_DATETIME_PATTERN = Pattern.compile('^(?i)(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})[,\\s]*(\\d{1,2}):(\\d{2}):?(\\d{2})?\\s*(am|pm)$');
+    private static final Pattern MONTH_DAY_YEAR_DATETIME_PATTERN = Pattern.compile('^(\\w+)\\s+(\\d{1,2}),\\s+(\\d{4})$');
+
     public class ExecuteSOQLException extends Exception {}
     // Legacy entry point
     public static List <Results> getEligibleProducts(List<Requests> requestList) {
@@ -109,42 +112,63 @@ public without sharing class ExecuteSOQL {
     @TestVisible
     private static String getFormattedValue(String fieldValue, String fieldType) {		
         if (fieldType == 'DATETIME' || fieldType == 'DATE') {
-            //Datetime is already formatted
+            // Datetime uses DATE_LITERAL
             for (String literal: DATE_LITERAL_FORMATS) {
                 if (fieldValue.containsIgnoreCase(literal)) {
                     return fieldValue;
                 }
             }
+            // Datetime uses ISO format
             if (fieldValue.containsIgnoreCase('t') && fieldValue.containsIgnoreCase('z') && fieldValue.indexOfIgnoreCase('t') == 11) {
                 return fieldValue;
             }
-            Map<String, String> localMonthNumbers = getLocalMonthNumbers();
-            Boolean isDate = false;
-            for (String monthName : localMonthNumbers.keySet()) {
-                if (fieldValue.containsIgnoreCase(monthName)) {
-                    fieldValue = fieldValue.replaceAll('(?i)' + monthName, localMonthNumbers.get(monthName) + ',');
-                    isDate = true;
+
+            Datetime fieldDateTimeValue;
+            // Datetime uses MMMM DD, YYYY format (example: April 12, 2020)
+            Matcher monthDayCommaYearMatcher = MONTH_DAY_YEAR_DATETIME_PATTERN.matcher(fieldValue.trim());
+            if (monthDayCommaYearMatcher.matches() && monthDayCommaYearMatcher.hitEnd()) {
+                Integer day = Integer.valueOf(monthDayCommaYearMatcher.group(2));
+                Integer year = Integer.valueOf(monthDayCommaYearMatcher.group(3));
+                String literalMonth = monthDayCommaYearMatcher.group(1).toLowerCase();
+                Map<String, Integer> localMonthNumbers = getLocalMonthNumbers();
+                Integer month = localMonthNumbers.containsKey(literalMonth) ? localMonthNumbers.get(literalMonth) : null;
+
+                if (month != null) {
+                    fieldDateTimeValue = Datetime.newInstance(year, month, day);
                 }
             }
-            if (isDate) {
-                fieldValue = fieldValue.replaceAll(', ', '/');
-                fieldValue = fieldValue.replaceAll('/ ', '/');
-                fieldValue += ' 12:00 am'; //https://developer.salesforce.com/forums/?id=906F00000008zoyIAA
+
+            // Datetime uses en_US format with or without comma (example: 04/12/2020 03:24 PM)
+            Matcher enUSMatcher = EN_US_DATETIME_PATTERN.matcher(fieldValue.trim());
+            if (enUSMatcher.matches() && enUSMatcher.hitEnd()) {
+                Integer month = Integer.valueOf(enUSMatcher.group(1));
+                Integer day = Integer.valueOf(enUSMatcher.group(2));
+                Integer year = Integer.valueOf(enUSMatcher.group(3));
+                Integer hours = Integer.valueOf(enUSMatcher.group(4));
+                Integer minutes = Integer.valueOf(enUSMatcher.group(5));
+                Integer seconds = String.isBlank(enUSMatcher.group(6)) ? 0 : Integer.valueOf(enUSMatcher.group(6));
+                String amPm = enUSMatcher.group(7);
+                Boolean isAm = amPm.equalsIgnoreCase('am');
+                hours = isAm && hours == 12 ? 0 : hours;
+                hours = !isAm && hours != 12 ? hours + 12 : hours;
+
+                fieldDateTimeValue = Datetime.newInstance(year, month, day, hours, minutes, seconds);
             }
-            return Datetime.parse(fieldValue).format('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
+
+            // Datetime uses locale format
+            fieldDateTimeValue = fieldDateTimeValue != null ? fieldDateTimeValue : Datetime.parse(fieldValue);
+
+            // return in ISO format
+            return fieldDateTimeValue.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
         }
         return fieldValue;
     }
     //Workaround to get local month name to month number map
-    private static Map<String, String> getLocalMonthNumbers() {
+    private static Map<String, Integer> getLocalMonthNumbers() {
         Datetime dt = Datetime.newInstance(2020, 1, 1);
-        Map<String, String> resultMap = new Map<String, String>();
-        for (Integer i = 1; i < 12; i++) {
-            String month = String.valueOf(i);
-            if (month.length() == 1) {
-                month = '0' + month;
-            }
-            resultMap.put(dt.format('MMMM'), month);
+        Map<String, Integer> resultMap = new Map<String, Integer>();
+        for (Integer i = 1; i <= 12; i++) {
+            resultMap.put(dt.format('MMMM').toLowerCase(), i);
             dt = dt.addMonths(1);
         }
         return resultMap;

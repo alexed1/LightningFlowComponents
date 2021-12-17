@@ -114,6 +114,10 @@ export default class FlexcardFlow extends LightningElement {
     get isDataLoaded() {
         return this.objectInfo && this.records.length > 0;
     }
+    
+     get isFlowsLoaded() {        
+            return this.flows && this.flows.length > 0;        
+    }
 
     //set card width and height
 

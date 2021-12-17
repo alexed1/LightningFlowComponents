@@ -8,6 +8,11 @@ public with sharing class UpsertRecords {
             for (Request curRequest : requestList) {
                 List<SObject> inputCollection = curRequest.inputCollection != null ? curRequest.inputCollection : new List<SObject>();
                 SObject inputRecord = curRequest.inputRecord;
+                
+                if (curRequest.serializedRecordData != null && curRequest.objectName != null){
+                    inputCollection = (List<SObject>)JSON.deserialize(curRequest.serializedRecordData,  List<SObject>.class);
+                    inputRecord = null;
+                }
                 Boolean allOrNone = curRequest.allOrNone != null ? curRequest.allOrNone : true;
                
                 Schema.SObjectField externalIdField;
@@ -49,6 +54,12 @@ public with sharing class UpsertRecords {
 
           @InvocableVariable
           public SObject inputRecord;
+
+          @InvocableVariable
+          public String serializedRecordData;
+
+          @InvocableVariable
+          public String objectName;
 
           @InvocableVariable
           public String externalIdFieldName;

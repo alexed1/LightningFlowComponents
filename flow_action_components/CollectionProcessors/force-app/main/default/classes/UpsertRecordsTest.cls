@@ -30,4 +30,16 @@ public with sharing class UpsertRecordsTest {
         System.assertEquals(1, retrievedAccounts.size());
 
     }
+
+    @isTest
+    public static void canUpsertRecords() {
+        List<UpsertRecords.Request> testUpsert = new List<UpsertRecords.Request>();
+        UpsertRecords.Request recordToTest = new UpsertRecords.Request();
+        recordToTest.objectName = 'Case';
+        recordToTest.serializedRecordData = '[{"attributes":{"type":"Case","url":"/services/data/v53.0/sobjects/Case/5000U00000CNmCRQA1"},"CaseNumber":"00001026","Status":"Working","Id":"5000U00000CNmCRQA1"}]';
+        testUpsert.add(recordToTest);
+        System.debug(UpsertRecords.execute(testUpsert));
+        System.assertEquals(1, new List<Case>([SELECT Id FROM Case LIMIT 1]).size());
+    }
+
 }

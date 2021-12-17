@@ -1,0 +1,7 @@
+.close-btn{
+    right: 0;
+    top: -20px;
+}
+.slds-modal__content{
+    overflow: initial;
+}

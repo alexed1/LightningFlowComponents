@@ -1,0 +1,198 @@
+<template>
+    <div class={getFormElementClass}>
+        <label if:true={label} class={getLabelClass} for="combobox">
+            <abbr if:true={required} title="required" class="slds-required">*</abbr>
+            {label}
+        </label>
+        <div class="slds-form-element__control">
+            <div class={getContainerClass}>
+                <div class={getDropdownClass} aria-expanded={hasResults} aria-haspopup="listbox" role="combobox">
+                    <!-- Search input start -->
+                    <div class={getComboboxClass} role="none">
+                        <template if:false={isMultiEntry}>
+                            <lightning-icon
+                                icon-name={getSelectIconName}
+                                size="small"
+                                alternative-text="Selected item icon"
+                                class={getSelectIconClass}
+                            >
+                            </lightning-icon>
+                        </template>
+
+                        <!-- Text input -->
+                        <input
+                            type="text"
+                            class={getInputClass}
+                            aria-autocomplete="list"
+                            aria-controls="listbox"
+                            autocomplete="off"
+                            role="textbox"
+                            id="combobox"
+                            placeholder={placeholder}
+                            value={getInputValue}
+                            title={getInputTitle}
+                            readonly={isInputReadonly}
+                            disabled={disabled}
+                            onfocus={handleFocus}
+                            onblur={handleBlur}
+                            oninput={handleInput}
+                            onkeydown={handleKeyDown}
+                        />
+
+                        <!-- Search icon -->
+                        <lightning-icon
+                            icon-name="utility:search"
+                            size="x-small"
+                            alternative-text="Search icon"
+                            class={getSearchIconClass}
+                        ></lightning-icon>
+
+                        <!-- Clear selection button icon for single entry lookups -->
+                        <template if:false={isMultiEntry}>
+                            <button
+                                title="Remove selected option"
+                                type="button"
+                                onclick={handleClearSelection}
+                                class={getClearSelectionButtonClass}
+                                disabled={disabled}
+                            >
+                                <lightning-icon
+                                    icon-name="utility:close"
+                                    size="x-small"
+                                    alternative-text="Remove selected option"
+                                    class="slds-button__icon"
+                                ></lightning-icon>
+                            </button>
+                        </template>
+                    </div>
+                    <!-- Search input end -->
+
+                    <!-- Result list box start -->
+                    <div
+                        id="listbox"
+                        role="listbox"
+                        onmousedown={handleComboboxMouseDown}
+                        onmouseup={handleComboboxMouseUp}
+                        class={getListboxClass}
+                    >
+                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                            <!-- Spinner to display when waiting for results of search -->
+                            <div if:true={loading}>
+                                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+                            </div>
+
+                            <!-- Result list start -->
+                            <template for:each={searchResultsLocalState} for:item="item" if:true={hasResults}>
+                                <li key={item.result.id} role="presentation" class="slds-listbox__item">
+                                    <div
+                                        class={item.classes}
+                                        role="option"
+                                        onclick={handleResultClick}
+                                        data-recordid={item.result.id}
+                                    >
+                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                            <lightning-icon
+                                                icon-name={item.result.icon}
+                                                size="small"
+                                                alternative-text="Result item icon"
+                                            ></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                                <lightning-formatted-rich-text
+                                                    value={item.result.titleFormatted}
+                                                    disable-linkify
+                                                >
+                                                </lightning-formatted-rich-text>
+                                            </span>
+                                            <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                <lightning-formatted-rich-text
+                                                    value={item.result.subtitleFormatted}
+                                                    disable-linkify
+                                                >
+                                                </lightning-formatted-rich-text>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                            <!-- Result list end -->
+
+                            <!-- No results start -->
+                            <template if:false={hasResults}>
+                                <li role="presentation">
+                                    <span class="slds-media slds-listbox__option_entity" role="option">
+                                        <span if:false={loading} class="slds-media__body">No results.</span>
+                                        <span if:true={loading} class="slds-media__body">Loading...</span>
+                                    </span>
+                                </li>
+                            </template>
+                            <!-- No results end -->
+
+                            <!-- Create new records -->
+                            <template for:each={newRecordOptions} for:item="newRecord">
+                                <li key={newRecord.value} role="presentation" class="slds-listbox__item">
+                                    <div
+                                        class="
+                                            slds-media slds-media_center
+                                            slds-listbox__option slds-listbox__option_entity
+                                        "
+                                        onclick={handleNewRecordClick}
+                                        data-sobject={newRecord.value}
+                                        role="option"
+                                    >
+                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                            <lightning-icon
+                                                icon-name="utility:add"
+                                                size="small"
+                                                alternative-text={newRecord.label}
+                                            ></lightning-icon>
+                                        </span>
+                                        <span class="slds-media__body">
+                                            <span class="slds-listbox__option-text">{newRecord.label}</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </template>
+                            <!-- Create new records end -->
+                        </ul>
+                    </div>
+                    <!-- Result list box end -->
+                </div>
+            </div>
+
+            <!-- Multi-selection start -->
+            <template if:true={isMultiEntry}>
+                <div id="selection" role="listbox" aria-orientation="horizontal">
+                    <ul
+                        class="slds-listbox slds-listbox_inline slds-var-p-top_xxx-small"
+                        role="group"
+                        aria-label="Selected Options:"
+                    >
+                        <template for:each={selection} for:item="item">
+                            <li key={item.id} role="presentation">
+                                <lightning-pill
+                                    label={item.title}
+                                    title={item.title}
+                                    onremove={handleRemoveSelectedItem}
+                                    name={item.id}
+                                >
+                                    <lightning-icon icon-name={item.icon}></lightning-icon>
+                                </lightning-pill>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <!-- Multi-selection end -->
+
+            <!-- Errors start -->
+            <template for:each={errors} for:item="error">
+                <label key={error.id} role="alert" class="slds-form-element__label slds-var-m-top_xx-small form-error"
+                    >{error.message}</label
+                >
+            </template>
+            <!-- Errors end -->
+        </div>
+    </div>
+</template>

@@ -16,7 +16,24 @@ public class ExecuteSOQLTest {
         Test.stopTest();
         System.assertEquals(acc.Id, results[0].sObjects[0].Id);
     }
-    
+
+    @isTest
+    public static void testExecuteEnglishWithComma() {
+        Account acc = new Account(Name = 'Test Account');
+        insert acc;
+        Test.setCreatedDate(acc.id, Datetime.newInstance(2020, 4, 12, 1, 0, 0));
+
+        ExecuteSOQL.Requests requests = new ExecuteSOQL.Requests();
+        requests.soqlQuery = 'Select Id From Account Where CreatedDate <= 04/12/2020, 12:00 pm';
+
+        Test.startTest();
+        List<ExecuteSOQL.Results> results = ExecuteSOQL.execute(new List<ExecuteSOQL.Requests>{
+            requests
+        });
+        Test.stopTest();
+        System.assertEquals(acc.Id, results[0].sObjects[0].Id);
+    }
+
     @isTest
     private static void testExecuteSOQLMonthDayCommaYear() {
         Account acc = new Account(Name = 'Test Account');

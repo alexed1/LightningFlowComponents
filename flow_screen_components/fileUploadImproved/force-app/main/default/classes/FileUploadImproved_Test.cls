@@ -74,8 +74,65 @@ public class FileUploadImproved_Test {
         
     }
 
+    @isTest
+    public static void invocable_test_create_link(){
+        ContentVersion cv = getCV();
+        Contact con = getCon();
+
+        FileUploadImprovedHelper.Input input = new FileUploadImprovedHelper.Input();
+        input.versIds = new List<Id>{cv.Id};
+        input.recordId = con.Id;
+        input.visibleToAllUsers = TRUE;
+
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocumentLinkDownstream(new List<FileUploadImprovedHelper.Input>{input});
+        system.test.stopTest();
+
+        ContentDocumentLink link = [SELECT Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :con.Id];
+
+        system.assert(link.Visibility == 'AllUsers');
+    }
+
+    @isTest
+    public static void invocable_test_link_already_exists(){
+        ContentVersion cv = getCV();
+        Contact con = getCon();
+
+        ContentDocumentLink link = new ContentDocumentLink(
+            ContentDocumentId = cv.ContentDocumentId,
+            LinkedEntityId = con.Id,
+            Visibility = 'AllUsers'
+        );
+        insert link;
+
+        FileUploadImprovedHelper.Input input = new FileUploadImprovedHelper.Input();
+        input.versIds = new List<Id>{cv.Id};
+        input.recordId = con.Id;
+        input.visibleToAllUsers = TRUE;
+
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocumentLinkDownstream(new List<FileUploadImprovedHelper.Input>{input});
+        system.test.stopTest();
+
+        link = [SELECT Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :con.Id];
+
+        system.assert(link.Visibility == 'AllUsers');
+    }
+
+    @isTest
+    public static void invocable_test_with_empty_list(){
+
+        FileUploadImprovedHelper.Input input = new FileUploadImprovedHelper.Input();
+        input.versIds = new List<Id>();
+
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocumentLinkDownstream(new List<FileUploadImprovedHelper.Input>{input});
+        system.test.stopTest();
+
+    }
+
     private static ContentVersion getCV(){
-        return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title FROM ContentVersion LIMIT 1];
+        return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title, ContentDocumentId FROM ContentVersion LIMIT 1];
     }
 
     private static Contact getCon(){

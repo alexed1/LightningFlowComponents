@@ -88,6 +88,78 @@ public without sharing class FileUploadImprovedHelper{
         public string contentVersionId;
     }
 
+    @InvocableMethod(
+        label='Create Content Document Links Downstream'
+        description='Sometimes when using File Upload Improved you don\'t know the Related Record Id until after your user has already uploaded files. Use this Invocable Method to create the Content Document Links downstream in your flow.'
+        category='File Upload Improved'
+    )
+    public static void createContentDocumentLinkDownstream(List<Input> inputs){
+        Set<Id> setContentVersIds = new Set<Id>();
+        for(Input input : inputs){
+            setContentVersIds.addAll(input.versIds);
+        }
+        if(!setContentVersIds.isEmpty()){
+            Map<Id,Id> mapVersIdToDocId = new Map<Id,Id>();
+            for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :setContentVersIds]){
+                mapVersIdToDocId.put(vers.Id,vers.ContentDocumentId);
+            }
+            Map<Id,Set<Id>> mapDocIdToRecordIds = new Map<Id,Set<Id>>();
+            for(ContentDocumentLink doc : [SELECT ContentDocumentId, LinkedEntityId FROM ContentDocumentLink WHERE ContentDocumentId IN :mapVersIdToDocId.values()]){
+                Id docId = doc.ContentDocumentId;
+                Id recordId = doc.LinkedEntityId;
+                if(mapDocIdToRecordIds.get(docId) == null){
+                    mapDocIdToRecordIds.put(docId,new Set<Id>());
+                }
+                mapDocIdToRecordIds.get(docId).add(recordId);
+            }
+            List<ContentDocumentLink> links = new List<ContentDocumentLink>();
+            for(Input input : inputs){
+                Id recordId = input.recordId;
+                Boolean visibleToAllUsers = input.visibleToAllUsers == null ? FALSE : input.visibleToAllUsers;
+                for(Id versId : input.versIds){
+                    Id docId = mapVersIdToDocId.get(versId);
+                    if(mapDocIdToRecordIds.get(docId).contains(recordId)){
+                        continue;
+                    } else {
+                        ContentDocumentLink link = new ContentDocumentLink(
+                            ContentDocumentId = docId,
+                            LinkedEntityId = recordId
+                        );
+                        if(visibleToAllUsers){
+                            link.Visibility = 'AllUsers';
+                        }
+                        links.add(link);
+                    }
+                }
+            }
+            if(!links.isEmpty()){
+                insert links;
+            }
+        } else {
+            return;
+        }
+        
+    }
+
+    public class Input{
+        @InvocableVariable(
+            label='Collection of Content Version Ids'
+            required=true
+        )
+        public List<Id> versIds;
+
+        @InvocableVariable(
+            label='Related Record Id'
+            required=true
+        )
+        public Id recordId;
+
+        @InvocableVariable(
+            label='Visible to All Users?'
+        )
+        public Boolean visibleToAllUsers;
+    }
+
     private static String decrypt(String encodedValue, String encodedKey){
         Blob key = EncodingUtil.base64Decode(encodedKey);
         Blob value = EncodingUtil.base64Decode(encodedValue);

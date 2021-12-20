@@ -7,6 +7,7 @@ export default class FlexcardFlow extends LightningElement {
 
     @api cardSize = 300;
     @api value;
+    @api buttonLabel;
     @api selectedLabel;
     @api records;
     @api visibleFieldNames;
@@ -36,6 +37,8 @@ export default class FlexcardFlow extends LightningElement {
     }
     @api cb_transitionOnClick;
     @api availableActions = [];
+    @api actionDisplayType;
+    @track actionDisplayType;
     @api Cardcss;
     @track Cardcss;
     @track fieldHTML = '';
@@ -114,8 +117,8 @@ export default class FlexcardFlow extends LightningElement {
     get isDataLoaded() {
         return this.objectInfo && this.records.length > 0;
     }
-    
-     get isFlowsLoaded() {        
+
+    get isFlowsLoaded() {        
             return this.flows && this.flows.length > 0;        
     }
 

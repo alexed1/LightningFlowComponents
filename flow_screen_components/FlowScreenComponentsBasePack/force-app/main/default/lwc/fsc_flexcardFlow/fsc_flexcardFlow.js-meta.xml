@@ -30,6 +30,8 @@
             <property name="cb_transitionOnClick" type="String" role="inputOnly"/>
             <property name="fields" label="Visible Field Names" type="String" default="Id" required="true" description="Show which fields?"/>
             <property name="flows" label="Visible Flow Names" type="String" description="Show which fields?"/>
+            <property name="actionDisplayType" label="Action List Display Type" type="String" description="Display actions as hyperlinks in a list or a Menu List"/>
+            <property name="buttonLabel" label="Action Menu Label" type="String" description="Action Menu Button Label"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -9,23 +9,7 @@
 
     <c-fsc_field-selector name="fields" object-name={inputValues.objectAPIName.value} public-style="width:100%"
         onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} required></c-fsc_field-selector>
-
-    <!-- <c-fsc_flow-combobox
-    name="select_Fields"
-    label={inputValues.visibleFieldNames.label}
-    value={inputValues.visibleFieldNames.value}
-    value-type={inputValues.visibleFieldNames.valueDataType}
-    builder-context-filter-type="String"
-    builder-context-filter-collection-boolean={inputValues.visibleFieldNames.isCollection}
-    builder-context={_builderContext}
-    onvaluechanged={handleFlowComboboxValueChange}
-    ></c-fsc_flow-combobox> -->
-
-    <!-- <c-fsc_flow-combobox name="select_Records" label={inputValues.records.label} value={inputValues.records.value}
-        value-type={inputValues.records.valueDataType} builder-context-filter-type="String"
-        builder-context-filter-collection-boolean={inputValues.records.isCollection} builder-context={_builderContext}
-        onvaluechanged={handleFlowComboboxValueChange} required></c-fsc_flow-combobox> -->
-
+    
     <c-fsc_flow-combobox name="records" value={inputValues.records.value} label={inputValues.records.label}
         builder-context-filter-type={inputValues.objectAPIName.value}
         builder-context-filter-collection-boolean={inputValues.records.isCollection} builder-context={_builderContext}
@@ -37,8 +21,6 @@
 
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Component Styling"></c-fsc_flow-banner>
 
-    <!-- <c-fsc_slider name="cardSizeString" value={inputValues.cardSizeString.value} max="500" label={inputValues.cardSizeString.label} builder-context-filter-type="Integer"
-        onvaluechanged={handlesliderChange}></c-fsc_slider> -->
     <lightning-slider data-name="cardSizeString" value={inputValues.cardSizeString.value} max="500"
         label={inputValues.cardSizeString.label} onchange={handlesliderChange}></lightning-slider>
 
@@ -52,12 +34,13 @@
     </c-fsc_pick-icon>
 
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Flex Card Actions"></c-fsc_flow-banner>
+    <lightning-combobox label="Display actions as list or menu?" value={inputValues.actionDisplayType.value} options={displayOptions} onchange={handleDisplayTypeChange} required
+    ></lightning-combobox>
 
-    <!--c-fsc_flow-combobox name="select_VisibleFlowNames" label={inputValues.visibleFlowNames.label}
-        value={inputValues.visibleFlowNames.value} value-type={inputValues.visibleFlowNames.valueDataType}
-        builder-context-filter-type="String"
-        builder-context-filter-collection-boolean={inputValues.visibleFlowNames.isCollection}
-        builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox> -->
+    <template if:true={isMenu}>
+    <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value} label={inputValues.buttonLabel.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    </template>
 
     <c-flow-picker-f-s-c label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
     </c-flow-picker-f-s-c>
@@ -69,13 +52,4 @@
 
     <lightning-combobox label="Are Cards Clickable?" options={clickActions.options} onchange={handleClickActionChange} value={clickAction}></lightning-combobox>
 
-    <!-- <c-fsc_flow-checkbox name="select_isClickable" label={inputValues.isClickable.label}
-        checked={inputValues.cb_isClickable.value} field-level-help={inputValues.isClickable.helpText}
-        oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
-    <c-fsc_flow-checkbox name="select_allowMultiSelect" label={inputValues.allowMultiSelect.label}
-        checked={inputValues.cb_allowMultiSelect.value} field-level-help={inputValues.allowMultiSelect.helpText}
-        oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
-    <c-fsc_flow-checkbox name="select_transitionOnClick" label={inputValues.transitionOnClick.label}
-        checked={inputValues.cb_transitionOnClick.value} field-level-help={inputValues.transitionOnClick.helpText}
-        oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox> -->
 </template>

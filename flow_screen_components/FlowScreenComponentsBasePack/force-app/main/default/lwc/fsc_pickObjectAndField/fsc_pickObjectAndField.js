@@ -28,6 +28,8 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api displayFieldType = false;
     @api testproperty;
 
+    @api allowFieldMultiselect = false;
+
     @api required = false;
 
     @track _objectType;
@@ -208,6 +210,11 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
         this.dispatchDataChangedEvent(this.fields.find(curField => curField.value == this._field));
         const attributeChangeEvent = new FlowAttributeChangeEvent('field', this._field);
         this.dispatchEvent(attributeChangeEvent);
+    }
+
+    handleFieldUpdate(event) {
+        console.log('in handleFieldUpdate');
+        console.log(JSON.stringify(event.detail.value));
     }
 
     dispatchDataChangedEvent(detail) {

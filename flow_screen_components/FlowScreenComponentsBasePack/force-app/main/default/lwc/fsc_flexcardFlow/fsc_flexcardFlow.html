@@ -12,7 +12,7 @@
                     <div class ="fc-body">
                         <c-fsc_field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames} field-title-style={subheadCSS}></c-fsc_field-viewer>
                         <template if:true={isFlowsLoaded}>
-                        <c-fsc_action-list flow-names={flows} record-id={record.Id}></c-fsc_action-list>
+                        <c-fsc_action-list flow-names={flows} record-id={record.Id} choice-type={actionDisplayType} button-label={buttonLabel}></c-fsc_action-list>
                         </template>
                         <br/>
                         <p>

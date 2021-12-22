@@ -23,6 +23,11 @@ const CLICK_ACTIONS = {
     TRANSITION: { value: 'transition', label: 'Single-select and autonavigate' }
 }
 
+const DISPLAY_OPTIONS = {
+    LIST: {value: 'list', label: 'List'},
+    MENU: {value: 'menu', label: 'Menu'}
+}
+
 const VALIDATEABLE_INPUTS = ['c-fsc_flow-combobox', 'c-fsc_pick-object-and-field', 'c-field-selector'];
 
 export default class fsc_flexcardCPE extends LightningElement {
@@ -52,6 +57,8 @@ export default class fsc_flexcardCPE extends LightningElement {
         label: { value: null, valueDataType: null, isCollection: false, label: 'Component Label' },
         transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Transition to next when card clicked?' },
         cb_transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: '' },
+        actionDisplayType: { value: null, valueDataType: null, isCollection: false, label:'Display actions as hyperlinks in a list or a Menu List' },
+        buttonLabel: { value: null, valueDataType: null, isCollection: false, label:'Actions Menu Button Label' },
     };
 
     @api get builderContext() {
@@ -112,6 +119,13 @@ export default class fsc_flexcardCPE extends LightningElement {
         }
 
         
+    }
+
+    get displayOptions() {
+        return [
+            { label: 'List', value: 'list' },
+            { label: 'Menu', value: 'menu' },
+        ];
     }
 
     set clickAction(value) {
@@ -277,6 +291,17 @@ export default class fsc_flexcardCPE extends LightningElement {
     handlePickIcon(event) {
         // this.inputValues[changedAttribute].value = event.detail;
         this.dispatchFlowValueChangeEvent('icon', event.detail);
+    }
+
+    handleDisplayTypeChange(event) {
+        this.dispatchFlowValueChangeEvent('actionDisplayType', event.detail.value, 'String');
+    }
+
+    get isMenu() {
+        let displayType = this.inputValues.actionDisplayType.value
+        if(displayType == 'menu')
+            return true;
+            return false;
     }
 
     handleFlowSelect(event) {

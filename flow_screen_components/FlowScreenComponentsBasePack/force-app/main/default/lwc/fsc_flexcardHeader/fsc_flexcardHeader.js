@@ -11,5 +11,8 @@ export default class fsc_FlexcardHeader extends LightningElement {
 @api hoverText;
 @api headerStyle;
 
+get showIcon() {
+    return this.icon && this.icon.length > 0;
+}
 
 }

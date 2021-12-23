@@ -5,6 +5,5 @@
     "**/bower_components": true,
     "**/.sfdx": true
   },
-  "eslint.nodePath": "/Users/aedelstein/.vscode/extensions/salesforce.salesforcedx-vscode-lwc-47.4.0/node_modules",
   "salesforcedx-vscode-core.retrieve-test-code-coverage": true
 }

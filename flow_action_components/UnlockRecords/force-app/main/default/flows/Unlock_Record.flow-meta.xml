@@ -4,8 +4,8 @@
         <description>Unlocks a record that is locked by an Approval Process. You need to either be an admin or have been given specific rights to unlock by the specific approval process definition.</description>
         <name>Unlock_Record</name>
         <label>Unlock Record</label>
-        <locationX>217</locationX>
-        <locationY>50</locationY>
+        <locationX>611</locationX>
+        <locationY>69</locationY>
         <actionName>UnlockRecord</actionName>
         <actionType>apex</actionType>
         <inputParameters>
@@ -24,6 +24,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -37,7 +43,7 @@
             <targetReference>Unlock_Record</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>recordId</name>
         <dataType>String</dataType>

@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Get_Record_Lock_Status</name>
         <label>Get Record Lock Status</label>
-        <locationX>90</locationX>
-        <locationY>209</locationY>
+        <locationX>374</locationX>
+        <locationY>238</locationY>
         <actionName>GetRecordLockStatus</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -21,12 +21,11 @@
             <name>locked</name>
         </outputParameters>
     </actionCalls>
-    
     <actionCalls>
         <description>Unlocks a record that is locked by an Approval Process. You need to either be an admin or have been given specific rights to unlock by the specific approval process definition.</description>
         <name>Unlock_Record</name>
         <label>Unlock Record</label>
-        <locationX>217</locationX>
+        <locationX>459</locationX>
         <locationY>50</locationY>
         <actionName>UnlockRecord</actionName>
         <actionType>apex</actionType>
@@ -51,7 +50,7 @@
     <decisions>
         <name>Check_Result</name>
         <label>Check Result</label>
-        <locationX>402</locationX>
+        <locationX>644</locationX>
         <locationY>51</locationY>
         <defaultConnector>
             <targetReference>Show_Errors</targetReference>
@@ -76,8 +75,8 @@
     <decisions>
         <name>Is_Record_Locked</name>
         <label>Is Record Locked?</label>
-        <locationX>214</locationX>
-        <locationY>211</locationY>
+        <locationX>494</locationX>
+        <locationY>218</locationY>
         <defaultConnector>
             <targetReference>Not_Locked</targetReference>
         </defaultConnector>
@@ -107,6 +106,12 @@
         </value>
     </processMetadataValues>
     <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
         <name>OriginBuilderType</name>
         <value>
             <stringValue>LightningFlowBuilder</stringValue>
@@ -116,8 +121,8 @@
     <screens>
         <name>Not_Locked</name>
         <label>Not Locked!</label>
-        <locationX>215</locationX>
-        <locationY>366</locationY>
+        <locationX>500</locationX>
+        <locationY>405</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -132,7 +137,7 @@
     <screens>
         <name>Show_Errors</name>
         <label>Show Errors</label>
-        <locationX>413</locationX>
+        <locationX>655</locationX>
         <locationY>264</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -147,7 +152,7 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>38</locationY>
         <connector>
             <targetReference>Get_Record_Lock_Status</targetReference>
         </connector>

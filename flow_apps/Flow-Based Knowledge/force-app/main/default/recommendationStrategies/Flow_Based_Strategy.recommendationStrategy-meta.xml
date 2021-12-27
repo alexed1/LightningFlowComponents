@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextRecordType>Account</contextRecordType>
+    <description>Dummy strategy used to enable flow-based reactions to be submitted by api</description>
+    <label>Flow-Based Strategy</label>
+    <union>
+        <label>Output</label>
+        <name>Output_652c13a3251e44df893b25b4d768029d</name>
+    </union>
+</RecommendationStrategy>

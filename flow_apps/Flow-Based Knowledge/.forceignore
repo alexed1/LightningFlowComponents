@@ -3,6 +3,7 @@
 #
 
 package.xml
+profiles
 
 # LWC configuration files
 **/jsconfig.json

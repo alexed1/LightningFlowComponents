@@ -130,4 +130,30 @@ public with sharing class ExecuteNBAStrategy {
 
     }
 
+    @AuraEnabled
+    public static List<Recommendation> executeNBAFlow(String strategyName, String contextRecordId, Integer maxResults) {
+        Flow.Interview curInterview = Flow.Interview.createInterview(strategyName, new Map<String,Object>{'recordId' =>contextRecordId });
+        curInterview.start();
+        System.debug(curInterview.getVariableValue('outputRecommendations'));
+        return (List<Recommendation>)curInterview.getVariableValue('outputRecommendations');
+    }
+
+
+
+    @AuraEnabled
+    public static string launchFLow(Recommendation rec, String strategyName){
+        FlowDefinitionView flowDef = [SELECT Id, ProcessType, TriggerType, ApiName FROM FlowDefinitionView WHERE apiName = :rec.ActionReference];
+        if(flowDef.ProcessType == 'AutoLaunchedFlow') {
+            Flow.Interview curInterview = Flow.Interview.createInterview(rec.ActionReference, new Map<String, Object>{
+                'recordId' => rec.ExternalId,
+                'strategyName' => strategyName,
+                'userId' => UserInfo.getUserId(),
+                'recommendationName' => rec.Name
+            });
+            curInterview.start();
+        }
+
+        return flowDef.ProcessType;
+    }
+
 }

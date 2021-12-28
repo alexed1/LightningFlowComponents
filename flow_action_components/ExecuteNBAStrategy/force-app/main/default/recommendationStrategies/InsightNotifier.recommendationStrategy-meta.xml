@@ -37,6 +37,7 @@
         </mapExpression>
     </map>
     <recommendationLoad>
+        <object>Account</object>
         <label>Load Accounts With Active Insights</label>
         <name>Load_Accounts_With_Active_Insights</name>
         <condition>

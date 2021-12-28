@@ -98,6 +98,8 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '1.234,56', '.', ',', '', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.DOUBLE, '-1.234,56', '.', ',', '', '');
+        System.assertEquals('-1234.56', String.valueOf((Decimal) result));
 
         /*
          * Check currency field
@@ -112,6 +114,8 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '1.234,56', '.', ',', '$', '');
         System.assertEquals('1234.56', String.valueOf((Decimal) result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.CURRENCY, '-1.234,56', '.', ',', '$', '');
+        System.assertEquals('-1234.56', String.valueOf((Decimal) result));
 
         /*
          * Check percent field
@@ -122,6 +126,22 @@ public with sharing class ConvertCSVToRecordsTest {
         System.assertEquals(125, (Decimal) result);
         result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.PERCENT, '12.5', ',', '.', '€', '');
         System.assertEquals(12.5, (Decimal) result);
+
+        /*
+         * Check Integer fields
+         */
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '55', ',', '.', '', '');
+        System.assertEquals(55, Integer.valueOf(result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '1,125', ',', '.', '', '');
+        System.assertEquals(1125, Integer.valueOf(result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '1.234', '.', ',', '', '');
+        System.assertEquals(1234, Integer.valueOf(result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '-1.234', '.', ',', '', '');
+        System.assertEquals(-1234, Integer.valueOf(result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '-1.234,00', '.', ',', '', '');
+        System.assertEquals(-1234, Integer.valueOf(result));
+        result = ConvertCSVToRecords.getConvertedFieldValue(Schema.DisplayType.INTEGER, '', '.', ',', '', '');
+        System.assertEquals(null, result);
 
         /*
          * Check date field

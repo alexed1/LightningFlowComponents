@@ -1,6 +1,3 @@
-export {
-    standardObjectOptions
-};
 const standardObjectOptions = [
     {value: "Account", label: "Account"},
     {value: "AccountPartner", label: "Account Partner"},
@@ -61,3 +58,6 @@ const standardObjectOptions = [
     {value: "QuoteLineItem", label: "Quote Line Item"}
 ];
 
+export {
+    standardObjectOptions
+};

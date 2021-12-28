@@ -1,0 +1,93 @@
+<template>
+
+    <div style={publicStyle}>
+        <!-- <template if:true={fields.length}> -->
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <template if:true={showSelectedValue}>
+                    <label class="slds-form-element__label">{searchLabelCounter}</label>
+                    <div class="slds-combobox_container slds-has-selection">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                role="none">
+                                <button type="button"
+                                    class="slds-input_faux slds-combobox__input slds-combobox__input-value"                                
+                                    aria-expanded="false" aria-haspopup="listbox">
+                                    <span class="slds-truncate">{selectedField.label}</span>
+                                </button>
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                                    title="Clear the text input" onclick={handleClearClick}>
+                                    <lightning-icon icon-name="utility:clear" size="x-small" class="slds-button__icon"></lightning-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:false={showSelectedValue}>
+                    <div class="slds-combobox_container">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+                            aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right slds-m-bottom_none"
+                                role="none">
+                                <lightning-input type="search" label={searchLabelCounter} onfocus={handleSearchFocus}
+                                    onblur={handleSearchBlur} onchange={handleSearchChange} class={publicStyle}
+                                    disabled={isInputDisabled} is-loading={isLoading} placeholder={placeholder}
+                                    required={required}>
+                                </lightning-input>
+
+                            </div>
+                            <div id="itemlist"
+                                class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid slds-m-top_none"
+                                role="listbox">
+                                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                    <template for:each={fields} for:item="field" for:index="index">
+                                        <template if:false={field.hidden}>
+                                            <li role="presentation" class="slds-listbox__item" key={field.name}
+                                                data-index={index} onmousedown={handleFieldSelect}>
+                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                    role="option">
+                                                    <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                                    <span class="slds-media__body">
+                                                        <span class="slds-truncate"
+                                                            title={field.label}>{field.label}</span>
+                                                        <span class="slds-listbox__option-meta">{field.name}</span>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        </template>
+                                    </template>
+                                    <template if:true={noMatchFound}>
+                                        <li role="presentation" class="slds-listbox__item">
+                                            <span
+                                                class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                role="option">
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate">
+                                                        {noMatchString}
+                                                    </span>
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <template if:true={showPills}>
+                <div class="slds-scrollable">
+                    <template for:each={selectedFields} for:item="field" for:index="index">
+                        <lightning-pill label={field.label} data-index={index} onremove={handleFieldUnselect}
+                            title={field.name} key={field.name} class="slds-p-top_xx-small">
+                        </lightning-pill>
+                    </template>
+                </div>
+            </template>
+        </div>
+        <!-- </template> -->
+        <template if:true={errorMessage}>
+            There was an error fetching the fields for object '{objectName}': {errorMessage}
+        </template>
+    </div>
+</template>

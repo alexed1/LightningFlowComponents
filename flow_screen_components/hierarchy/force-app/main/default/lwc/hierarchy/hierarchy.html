@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-p-around_medium">
+        <!-- Main Card -->
+        <lightning-card variant="Narrow" title={title} icon-name={iconName}>
+            <!-- Grid Card -->
+            <template if:true={gridData}>
+                <lightning-tree-grid 
+                    columns={gridColumns} 
+                    data={gridData} 
+                    key-field="Id" 
+                    ontoggle={handleRowToggle}
+                    onrowselection={getSelectedName}
+                    selected-rows={preselectedRow}
+                >
+                </lightning-tree-grid>
+            </template>
+        </lightning-card>
+    </div>
+</template>

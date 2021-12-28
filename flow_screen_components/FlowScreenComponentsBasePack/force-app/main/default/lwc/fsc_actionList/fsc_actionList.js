@@ -16,6 +16,21 @@ export default class fsc_ActionList extends LightningElement {
     @api
     flowData = [];
 
+    @api
+    displayMenu;
+
+    @api
+    choiceType;
+
+    @api
+    displayList;
+
+    @api
+    buttonLabel = 'Actions';
+
+    //@track
+   // flowData = [];
+
     connectedCallback() {
         this.removeDuplicateFlows();
     }
@@ -53,7 +68,7 @@ export default class fsc_ActionList extends LightningElement {
     }
 
     launchFlow(event) {
-        let flowName = event.currentTarget.dataset.value;
+        let flowName = event.detail.value;
         this.flowNameToInvoke = flowName;
         this.showModal();
     }
@@ -64,6 +79,18 @@ export default class fsc_ActionList extends LightningElement {
         
     }
 
+    get displayMenu() {                
+            if(this.choiceType == 'menu')
+            return true;
+            return false;        
+    }
+
+    get displayList() {                
+        if(this.choiceType == 'list')
+        return true;
+        return false;        
+}
+              
     get flowParams() {
         let params = [{name: 'recordId', type: 'String', value: this.recordId || ''}];
         console.log('params is: ' + params);

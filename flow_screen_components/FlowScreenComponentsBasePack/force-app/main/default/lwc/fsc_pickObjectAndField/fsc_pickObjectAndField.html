@@ -17,7 +17,7 @@
                     required={required}></lightning-combobox>
         </template>
         <template if:false={hideFieldPicklist}>
-            <lightning-combobox
+            <!-- <lightning-combobox
                     if:false={renderFlowCombobox}
                     name="fieldField"
                     label={fieldLabel}
@@ -26,7 +26,17 @@
                     options={fields}
                     disabled={isFieldDisabled}
                     onchange={handleFieldChange}
-                    required={required}></lightning-combobox>
+                    required={required}></lightning-combobox> -->
+            <c-fsc_field-selector
+                    if:false={renderFlowCombobox}
+                    name="fieldField"
+                    label={fieldLabel}
+                    placeholder={labels.none}
+                    preselected-values-string={_field}
+                    object-name={_objectType}
+                    onfieldupdate={handleFieldUpdate}
+                    allow-multiselect={allowFieldMultiselect}
+                    required={required}></c-fsc_field-selector>
             <c-fsc_flow-combobox
                     if:true={renderFlowCombobox}
                     name="select_field"

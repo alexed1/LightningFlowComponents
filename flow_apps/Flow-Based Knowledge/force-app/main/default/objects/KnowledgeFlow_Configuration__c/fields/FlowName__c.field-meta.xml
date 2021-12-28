@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FlowName__c</fullName>
+    <description>This is the name of a flow that has been designed to work in Knowledge use cases and be launched by the Flow-based Knowledge component. We need to store metadata about this flow externally in this custom record because we can&apos;t decorate the flow itself with category information.</description>
+    <externalId>false</externalId>
+    <label>FlowName</label>
+    <length>40</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

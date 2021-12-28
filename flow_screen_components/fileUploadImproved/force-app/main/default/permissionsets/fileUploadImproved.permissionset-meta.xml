@@ -4,7 +4,7 @@
         <apexClass>FileUploadImprovedHelper</apexClass>
         <enabled>true</enabled>
     </classAccesses>
-    <description>Assign this permission set to any community users who will be accessing the 'File Upload Improved' component via flow. This permission set grants them access to FileUplodImprovedHelper.cls.</description>
+    <description>Assign this permission set to all users who will be accessing the 'File Upload Improved' component via flow. This permission set grants them access to FileUplodImprovedHelper.cls.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>File Upload Improved</label>
 </PermissionSet>

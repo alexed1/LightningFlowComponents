@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>published_articles</fullName>
+    <columns>TITLE</columns>
+    <columns>ABSTRACT</columns>
+    <columns>ARTICLE_NUMBER</columns>
+    <columns>LANGUAGE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>PUBLISH_STATUS</field>
+        <operation>equals</operation>
+        <value>2</value>
+    </filters>
+    <filters>
+        <field>LANGUAGE</field>
+        <operation>equals</operation>
+        <value>en_US</value>
+    </filters>
+    <label>Published Articles</label>
+</ListView>

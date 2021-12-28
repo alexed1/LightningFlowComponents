@@ -11,7 +11,9 @@
                     <c-fsc_flexcard-header title-field-name={record.Name} icon={icon} src={record.src_URL__c} variant="circle" header-style={headerStyle}></c-fsc_flexcard-header>
                     <div class ="fc-body">
                         <c-fsc_field-viewer record={record} object-info={objectInfo} field-names={visibleFieldNames} field-title-style={subheadCSS}></c-fsc_field-viewer>
-                        <c-fsc_action-list flow-names={visibleFlowNames} record-id={record.Id}></c-fsc_action-list>
+                        <template if:true={isFlowsLoaded}>
+                        <c-fsc_action-list flow-names={flows} record-id={record.Id} choice-type={actionDisplayType} button-label={buttonLabel}></c-fsc_action-list>
+                        </template>
                         <br/>
                         <p>
                         <template if:true={allowMultiSelect}>

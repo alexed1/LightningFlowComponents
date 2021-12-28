@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="iconName" type="String" required="true" label="Enter Icon Name" role="inputOnly" default="standard:hierarchy" />
+            <property name="title" type="String" required="true" label="Enter Title" role="inputOnly" default="Hierarchy" />
+            <property name="objectName" type="String" required="true" role="inputOnly" label="Enter Object API Name" />
+            <property name="colNameApi" type="String" required="true" role="inputOnly" label="Enter Columns API Name (comma seprated)" />
+            <property name="parentField" type="String" required="true" role="inputOnly" label="Enter Parent field API Name" />
+            <property name="recordId" type="String"  default="" role="inputOnly" label="Enter recordId" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

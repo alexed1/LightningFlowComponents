@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Knowledge</fullName>
+    <columns>ARTICLE_NUMBER</columns>
+    <columns>TITLE</columns>
+    <columns>PUBLISH_STATUS</columns>
+    <columns>LAST_UPDATE</columns>
+    <columns>LANGUAGE</columns>
+    <columns>LAST_PUBLISHED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <label>All Knowledge</label>
+</ListView>

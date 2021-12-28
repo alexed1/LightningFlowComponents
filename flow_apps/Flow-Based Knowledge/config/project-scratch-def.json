@@ -1,0 +1,15 @@
+{
+  "orgName": "aedelstein company",
+  "edition": "Developer",
+  "features": [ "LightningServiceConsole",
+    "ServiceCloud",
+    "ServiceUser",
+    "Knowledge",
+    "Entitlements"],
+  "settings": {
+    "knowledgeSettings": {
+      "enableKnowledge": true,
+      "enableLightningKnowledge": true
+      }
+  }
+}

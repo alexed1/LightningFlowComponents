@@ -1,11 +1,3 @@
-export {
-    flowComboboxDefaults,
-    isReference,
-    formattedValue,
-    getDataType,
-    removeFormatting
-};
-
 const flowComboboxDefaults = {
     stringDataType: 'String',
     referenceDataType: 'reference',
@@ -52,3 +44,11 @@ const removeFormatting = (value) => {
     let clearValue = isRef ? value.substring(0, value.lastIndexOf('}')).replace('{!', '') : value;
     return clearValue;
 }
+
+export {
+    flowComboboxDefaults,
+    isReference,
+    formattedValue,
+    getDataType,
+    removeFormatting
+};

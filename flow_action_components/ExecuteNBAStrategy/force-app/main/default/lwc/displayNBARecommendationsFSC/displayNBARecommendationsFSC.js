@@ -102,7 +102,8 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
             if (curRecommendation && reaction === 'Accepted') {
                 launchFLow({
                     rec : curRecommendation,
-                    strategyName : this.strategyName
+                    strategyName : this.strategyName,
+                    contextRecordId : this.recordId
                 }).then(
                     result => {
                         this.removeRecommendation(removedId);

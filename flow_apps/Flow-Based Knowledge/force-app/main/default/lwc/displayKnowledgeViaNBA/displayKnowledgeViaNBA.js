@@ -1,7 +1,7 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import setRecommendationReaction from '@salesforce/apex/ExecuteNBAStrategy.setRecommendationReaction';
 import executeNBAFlow from '@salesforce/apex/KnowledgeRecommendationsGenerator.executeNBAFlow';
-import launchFLow from '@salesforce/apex/ExecuteNBAStrategy.launchFLow';
+import launchFLow from '@salesforce/apex/KnowledgeRecommendationsGenerator.launchFLow';
 import userId from '@salesforce/user/Id';
 const FLOW_LABEL = 'flow';
 const LEGACY_LABEL = 'legacy'
@@ -83,7 +83,8 @@ export default class DisplayKnowledgeViaNBA extends LightningElement {
             if (curRecommendation && reaction === 'Accepted') {
                 launchFLow({
                     rec : curRecommendation,
-                    strategyName : this.strategyName
+                    strategyName : this.strategyName,
+                    contextRecordId : this.recordId
                 }).then(
                     result => {
                         this.showToast({
@@ -263,6 +264,10 @@ export default class DisplayKnowledgeViaNBA extends LightningElement {
             console.log('no changeSearchString');
             this.recommendations = null;
         }
+    }
+
+    launchNewArticleFlow() {
+        window.open(this.buildFlowURL('Knowledge_Article_Creation_Flow', this.recordId), '_blank');
     }
     
 }

@@ -31,3 +31,6 @@
     position: absolute;
     z-index: 10;
 }
+.right-align {
+    text-align: right;
+}

@@ -1206,20 +1206,23 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
-        this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
-        this.updateNumberOfRowsSelected(this.outputSelectedRows);
-        if (this.isUserDefinedObject) {
-            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
-        } else {
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-        }    
-        const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
-        let selectedKeys = [];
-        selected.forEach(record => {
-            selectedKeys.push(record[this.keyField]);            
-        });
-        this.selectedRows = selectedKeys;
+        if(!this.outputSelectedRows && this.outputSelectedRows.length === 0) {
+            this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
+        
+            this.updateNumberOfRowsSelected(this.outputSelectedRows);
+            if (this.isUserDefinedObject) {
+                this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
+                this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));    //JSON Version
+            } else {
+                this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+            }    
+            const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
+            let selectedKeys = [];
+            selected.forEach(record => {
+                selectedKeys.push(record[this.keyField]);            
+            });
+            this.selectedRows = selectedKeys;
+        }
     }
 
     parseAttributes(propertyType,inputAttributes,columnNumber) {

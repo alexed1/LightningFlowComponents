@@ -42,8 +42,8 @@
         builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
     </template>
 
-    <c-flow-picker-f-s-c label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
-    </c-flow-picker-f-s-c>
+    <c-fsc_flow-picker label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
+    </c-fsc_flow-picker>
     <template for:each={inputValues.flows.value} for:item="flow" for:index="index">
         <lightning-pill label={flow.label} data-index={index} onremove={handleFlowRemove} key={flow.value}
             class="slds-p-top_xx-small">

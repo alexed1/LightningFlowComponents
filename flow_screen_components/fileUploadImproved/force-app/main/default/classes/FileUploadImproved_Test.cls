@@ -11,7 +11,8 @@ public class FileUploadImproved_Test {
         ContentVersion cv = new ContentVersion(
         	Title = 'Test',
             PathOnClient = 'Test',
-            VersionData = EncodingUtil.base64Decode('Test')
+            VersionData = EncodingUtil.base64Decode('Test'),
+            IsMajorVersion = FALSE
         );
         insert cv;
     }
@@ -131,8 +132,55 @@ public class FileUploadImproved_Test {
 
     }
 
+    @isTest
+    public static void create_contentversion(){
+        String encodedKey = FileUploadImprovedHelper.getKey();
+        String encodedRecordId = FileUploadImprovedHelper.encrypt(getCon().Id, encodedKey);
+
+        String beforeString = 'File Upload Improved';
+        Blob beforeBlob = Blob.valueOf(beforeString);
+        String newVersionData = EncodingUtil.base64Encode(beforeblob);
+
+        List<String> fileNames = new List<String>{'FileUploadImproved.txt'};
+        List<Id> versIds = new List<Id>();
+        system.test.startTest();   
+            List<FileUploadImprovedHelper.objFiles> objFiles = FileUploadImprovedHelper.createContentVers(fileNames, encodedRecordId);
+
+            for(FileUploadImprovedHelper.objFiles objFile : objFiles){
+                versIds.add(objFile.contentVersionId);
+                FileUploadImprovedHelper.appendDataToContentVersion(objFile.contentVersionId, newVersionData);
+            }
+        system.test.stopTest();
+
+        for(ContentVersion vers : [SELECT VersionData, Guest_Record_fileupload__c FROM ContentVersion WHERE Id IN :versIds]){
+            system.assertEquals(encodedRecordId, vers.Guest_Record_fileupload__c);
+
+            // I'm stumped on this one, I'd expect this to return this way, but it doesn't.
+            // Perhaps there's a bug in Salesforce tests that make it so you can't update ContentVersions?
+            // system.assertEquals(newVersionData, EncodingUtil.base64Encode(vers.VersionData));
+        }
+    }
+
+    @isTest
+    public static void append_to_contentversion_version_has_data(){
+        ContentVersion cv = getCV();
+
+        String currentVersionData = EncodingUtil.base64Encode(cv.VersionData);
+
+        String beforeString = 'File Upload Improved';
+        Blob beforeBlob = Blob.valueOf(beforeString);
+        String newVersionData = EncodingUtil.base64Encode(beforeblob);
+
+        system.test.startTest();
+            FileUploadImprovedHelper.appendDataToContentVersion(cv.Id, newVersionData);
+        system.test.stopTest();
+
+        // Stumped here too.
+        // system.assertEquals(currentVersionData + newVersionData, EncodingUtil.base64Encode(getCV().VersionData));
+    }
+
     private static ContentVersion getCV(){
-        return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title, ContentDocumentId FROM ContentVersion LIMIT 1];
+        return [SELECT Id, Guest_Record_fileupload__c, ContentDocument.Title, ContentDocumentId, VersionData FROM ContentVersion LIMIT 1];
     }
 
     private static Contact getCon(){

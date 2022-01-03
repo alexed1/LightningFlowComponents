@@ -14,6 +14,57 @@ public without sharing class FileUploadImprovedHelper{
         String encodedValue = EncodingUtil.base64Encode(value);
         return encodedValue;
     }
+
+    @AuraEnabled 
+    public static List<objFiles> createContentVers(List<String> fileNames, String encodedRecordId){
+        List<ContentVersion> versions = new List<ContentVersion>();
+        for(String fileName : fileNames){
+            Integer startOfExtension = fileName.lastIndexOf('.');
+            ContentVersion version = new ContentVersion(
+                Title = fileName.Substring(0,startOfExtension),
+                PathOnClient = '/'+fileName,
+                VersionData = Blob.valueOf(' '),
+                IsMajorVersion = FALSE,
+                Guest_Record_fileupload__c = encodedRecordId
+            );
+            versions.add(version);
+        }
+
+        List<Database.SaveResult> results = Database.insert(versions);
+
+        List<Id> versionIds = new List<Id>();
+        for(Database.SaveResult result : results){
+            versionIds.add(result.getId());
+        }
+
+        Boolean isStandardUser = UserInfo.getUserType() == 'Standard';
+        List<objFiles> objFiles = new List<objFiles>();
+        for(ContentVersion version : [SELECT Id, ContentDocumentId, ContentDocument.Title, ContentDocument.FileExtension FROM ContentVersion WHERE Id IN :versionIds ORDER BY Id]){
+            objFiles objFile = new objFiles();
+            objFile.name = version.ContentDocument.Title +'.'+ version.ContentDocument.FileExtension;
+            objFile.contentVersionId = version.Id;
+
+            if(isStandardUser){
+                objFile.documentId = version.ContentDocumentId;
+            }
+            
+            objFiles.add(objFile);
+        }
+
+        return objFiles;
+    }
+
+    @AuraEnabled 
+    public static void appendDataToContentVersion(String versionId, String base64Data){
+        ContentVersion vers = [SELECT Id, VersionData FROM ContentVersion WHERE Id = :versionId];
+        String existingVersionData = EncodingUtil.base64Encode(vers.VersionData);
+        if(existingVersionData == 'IA=='){
+            vers.VersionData = EncodingUtil.base64Decode(base64Data);
+        } else {
+            vers.VersionData = EncodingUtil.base64Decode(existingVersionData + base64Data);
+        }
+        update vers;
+    }
     
     @AuraEnabled
     public static void createContentDocLink(List<String> versIds, String encodedKey, Boolean visibleToAllUsers){

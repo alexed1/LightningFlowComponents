@@ -1,16 +1,27 @@
 <template>
+    <lightning-spinner if:true={loading} alternative-text="Uploading..." size="small"></lightning-spinner>
     <lightning-layout multiple-rows="true">
         <lightning-layout-item size="12" if:true={bottom}>
             <lightning-file-upload
+                if:false={external}
                 label={label}
                 name="uploadFile"
                 accept={acceptedFormats}
                 file-field-name='Guest_Record_fileupload__c'
                 file-field-value={value}
-                onuploadfinished={handleUploadFinished}
+                onuploadfinished={handleUpload_lightningFile}
                 multiple={allowMultiple}
                 disabled={disabled}>
             </lightning-file-upload>
+            <lightning-input
+                if:true={external}
+                type="file"
+                label={label}
+                accept={acceptedFormats}
+                onchange={handleUpload_lightningInput}
+                multiple={allowMultiple}
+                disabled={disabled}>
+            </lightning-input>
         </lightning-layout-item>
         <lightning-layout-item class="slds-form-element__label" size="12">
             {uploadedlabel}
@@ -58,15 +69,25 @@
         </lightning-layout-item>
         <lightning-layout-item size="12" if:false={bottom}>
             <lightning-file-upload
+                if:false={external}
                 label={label}
                 name="uploadFile"
                 accept={acceptedFormats}
                 file-field-name='Guest_Record_fileupload__c'
                 file-field-value={value}
-                onuploadfinished={handleUploadFinished}
+                onuploadfinished={handleUpload_lightningFile}
                 multiple={allowMultiple}
                 disabled={disabled}>
             </lightning-file-upload>
+            <lightning-input
+                if:true={external}
+                type="file"
+                label={label}
+                accept={acceptedFormats}
+                onchange={handleUpload_lightningInput}
+                multiple={allowMultiple}
+                disabled={disabled}>
+            </lightning-input>
         </lightning-layout-item>
     </lightning-layout>
 </template>

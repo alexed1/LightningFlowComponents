@@ -1,0 +1,4 @@
+<aura:component  implements="flexipage:availableForAllPageTypes,lightning:availableForFlowActions" access="GLOBAL">
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <lightning:flow aura:id="flowData" onstatuschange="{!c.handleStatusChange}"/>
+</aura:component>

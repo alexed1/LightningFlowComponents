@@ -4,10 +4,15 @@ import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
+import createContentVers from '@salesforce/apex/FileUploadImprovedHelper.createContentVers';
+import appendDataToContentVersion from '@salesforce/apex/FileUploadImprovedHelper.appendDataToContentVersion';
 import createContentDocLink from '@salesforce/apex/FileUploadImprovedHelper.createContentDocLink';
 import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteContentDoc';
 import getExistingFiles from '@salesforce/apex/FileUploadImprovedHelper.getExistingFiles';
 import updateFileName from '@salesforce/apex/FileUploadImprovedHelper.updateFileName';
+
+const MAX_FILE_SIZE = 4500000;
+const CHUNK_SIZE = 750000;
 
 export default class FileUpload extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
@@ -16,6 +21,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     @api communityDetails; // deprecated
     @api contentDocumentIds;
     @api contentVersionIds;
+    @api embedExternally;
     @api icon;
     @api label;
     @api overriddenFileName;
@@ -42,7 +48,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.key = data;
         }
         else if (error){
-            this.showErrors(this.reduceErrors(error));
+            this.showErrors(this.reduceErrors(error).toString());
         }
     }
 
@@ -53,12 +59,21 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.value = data;
         }
         else if (error){
-            this.showErrors(this.reduceErrors(error));
+            this.showErrors(this.reduceErrors(error).toString());
         }
     }
 
     get bottom(){
         if(this.renderFilesBelow){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    get external(){
+        if(this.embedExternally){
             return true;
         }
         else{
@@ -80,21 +95,104 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                     }
                 })
                 .catch((error) => {
-                    this.showErrors(this.reduceErrors(error));
+                    this.showErrors(this.reduceErrors(error).toString());
                 })
         } else {
             this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
         }
     }
-    
-    handleUploadFinished(event) {
-        const files = event.detail.files;
 
-        var objFile;
-        var objFiles = [];
-        var versIds = [];
+    loading = false;
+    handleUpload_lightningInput(event){
+        this.loading = true;
+
+        let files = event.target.files;
+
+        let fileNames = [];
+        let filesToProcess = [];
+        for(let i = 0; i < files.length; i++){
+            let file = files[i];
+
+            if (file.size > MAX_FILE_SIZE) {
+                let maxFileSize = this.formatBytes(MAX_FILE_SIZE,2);
+                let fileSize = this.formatBytes(file.size, 2);
+                this.showErrors('File size cannot exceed ' + maxFileSize + '. ' + file.name + ' is ' + fileSize + '.');
+                continue;
+            }
+
+            fileNames.push(file.name);
+            filesToProcess.push(file);
+        }
+
+        if(fileNames.length != 0){
+            createContentVers({fileNames: fileNames, encodedRecordId: this.value})
+                .then(objFiles => {
+
+                    this.handleUploadFinished(objFiles);
+
+                    for (let i = 0; i < filesToProcess.length; i++) {
+                        let file = filesToProcess[i];
+                        let versId = objFiles[i].contentVersionId;
+
+                        let reader = new FileReader();
+                        let self = this;
+                        reader.readAsDataURL(file);
+                        
+                        reader.onload = function() {
+                            let fileContents = reader.result.split(',').pop();
+                            self.upload(fileContents, versId);
+                        };
+                    }
+                })
+                .catch(error => {
+                    this.showErrors(this.reduceErrors(error).toString());
+                })
+        } 
+    }
+
+    formatBytes(bytes,decimals) {
+        if(bytes == 0) return '0 Bytes';
+        let k = 1024,
+            dm = decimals || 2,
+            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+
+    upload(fileContents, versId){
+        let fromPosition = 0;
+        let toPosition = Math.min(fileContents.length, fromPosition + CHUNK_SIZE);
+
+        this.uploadChunk(fileContents, versId, fromPosition, toPosition);
+    }
+
+    uploadChunk(fileContents, versId, fromPosition, toPosition){
+        let chunk = fileContents.substring(fromPosition,toPosition);
+
+        appendDataToContentVersion({ versionId: versId, base64Data: chunk})
+            .then(() => {
+                fromPosition = toPosition;
+                toPosition = Math.min(fileContents.length, fromPosition + CHUNK_SIZE);
+                if(fromPosition < toPosition){
+                    this.uploadChunk(fileContents, versId, fromPosition, toPosition);
+                }
+            })
+            .catch(error => {
+                this.showErrors(this.reduceErrors(error).toString());
+            })
+    }
+
+    handleUpload_lightningFile(event){
+        let files = event.detail.files;
+        this.handleUploadFinished(files);
+    }
+    
+    handleUploadFinished(files) {
+        let objFile;
+        let objFiles = [];
+        let versIds = [];
         files.forEach(file => {
-            var name;
+            let name;
             if(this.overriddenFileName){
                 name = this.overriddenFileName.substring(0,255) +'.'+ file.name.split('.').pop();
             } else {
@@ -114,14 +212,14 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         if(this.overriddenFileName){
             updateFileName({versIds: versIds, fileName: this.overriddenFileName.substring(0,255)})
                 .catch(error => {
-                    this.showErrors(this.reduceErrors(error));
+                    this.showErrors(this.reduceErrors(error).toString());
                 });
         }
 
         if(this.recordId){
             createContentDocLink({versIds: versIds, encodedKey: this.key, visibleToAllUsers: this.visibleToAllUsers})
                 .catch(error => {
-                    this.showErrors(this.reduceErrors(error));
+                    this.showErrors(this.reduceErrors(error).toString());
                 });
         }
 
@@ -129,9 +227,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     processFiles(files){
-        var objFile;
+        let objFile;
         files.forEach(file => {
-            var filetype;
+            let filetype;
             if(this.icon == null){
                 filetype = getIconSpecs(file.name.split('.').pop());
             }
@@ -153,6 +251,8 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         this.checkDisabled();
 
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+
+        this.loading = false;
 
         function getIconSpecs(docType){
             switch(docType){
@@ -186,7 +286,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     deleteDocument(event){
         event.target.blur();
 
-        const contentVersionId = event.target.dataset.contentversionid;    
+        let contentVersionId = event.target.dataset.contentversionid;    
 
         deleteContentDoc({versId: contentVersionId})
             .then(() => {
@@ -208,7 +308,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
             })
             .catch((error) => {
-                this.showErrors(this.reduceErrors(error));
+                this.showErrors(this.reduceErrors(error).toString());
             })
     }
 
@@ -230,7 +330,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     openFile(event) {
-        const docId = event.target.dataset.docid;
+        let docId = event.target.dataset.docid;
         event.preventDefault();
         this[NavigationMixin.Navigate]({
             type: 'standard__namedPage',
@@ -246,7 +346,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     @api
     validate(){
         if(this.docIds.length === 0 && this.required === true){ 
-            var errorMessage;
+            let errorMessage;
             if(this.requiredMessage == null){
                 errorMessage = 'Upload at least one file.';
             }
@@ -264,9 +364,21 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     showErrors(errors){
-        const message = new ShowToastEvent({
+        if(this.embedExternally){
+            this.showAlert(errors);
+        } else {
+            this.showToast(errors);
+        }
+    }
+
+    showAlert(errors){
+        window.alert(errors);
+    }
+
+    showToast(errors){
+        let message = new ShowToastEvent({
             title: 'We hit a snag.',
-            message: errors.toString(),
+            message: errors,
             variant: 'error',
         });
         this.dispatchEvent(message);

@@ -23,23 +23,25 @@
                 </div>
             </div>
         </template>
+
         <template if:true={displayMenu}>
-         <lightning-button-menu label={buttonLabel}
-         alternative-text="Actions"
-         tooltip="List of available actions for this specific record click on the name of the action to launch"
-         onselect={launchFlow}>
-    
-            <template for:each={flowData} for:item="flow">
-                <lightning-menu-item
-                    id={flow.apiName}
-                    label={flow.label}
-                    value={flow.apiName}
-                    key={flow.label}>
-                </lightning-menu-item>
-            </template>
-    
-            </lightning-button-menu>
-        </template>
+            <lightning-button-menu label={buttonLabel}
+            alternative-text="Actions"
+            tooltip="List of available actions for this specific record click on the name of the action to launch"
+            onselect={launchFlowMenu}>
+       
+               <template for:each={flowData} for:item="flow">
+                   <lightning-menu-item
+                       id={flow.apiName}
+                       label={flow.label}
+                       value={flow.apiName}
+                       key={flow.label}>
+                   </lightning-menu-item>
+               </template>
+       
+               </lightning-button-menu>
+           </template>
+        
     <template if:true={displayList}>
         <template for:each={flowData} for:item="flow">
             <div key={flow.apiName} class="slds-m-top_medium slds-card__body slds-card__body_inner">

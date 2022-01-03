@@ -8,7 +8,7 @@
 
 
     <c-fsc_field-selector name="fields" object-name={inputValues.objectAPIName.value} public-style="width:100%"
-        onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} required></c-fsc_field-selector>
+        onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} allow-multiselect=true required></c-fsc_field-selector>
     
     <c-fsc_flow-combobox name="records" value={inputValues.records.value} label={inputValues.records.label}
         builder-context-filter-type={inputValues.objectAPIName.value}

@@ -188,7 +188,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
     
     handleUploadFinished(files) {
-        let objFile;
+        
         let objFiles = [];
         let versIds = [];
         files.forEach(file => {
@@ -199,7 +199,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 name = file.name;
             }
             
-            objFile = {
+            let objFile = {
                 name: name,
                 documentId: file.documentId,
                 contentVersionId: file.contentVersionId
@@ -227,7 +227,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     processFiles(files){
-        let objFile;
+        
         files.forEach(file => {
             let filetype;
             if(this.icon == null){
@@ -236,7 +236,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             else{
                 filetype = this.icon;
             }
-            objFile = {
+            let objFile = {
                 name: file.name,
                 filetype: filetype,
                 documentId: file.documentId,

@@ -15,9 +15,9 @@
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>recordId</leftValueReference>
-                <operator>IsNull</operator>
+                <operator>EqualTo</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -106,7 +106,7 @@
             <targetReference>Create_or_Edit_Knowledge_0</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>curKnowledge</name>
         <dataType>SObject</dataType>

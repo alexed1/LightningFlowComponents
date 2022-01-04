@@ -51,8 +51,6 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
                     console.error(error);
                 }
             );
-        } else {
-            console.log('legacy executeNBAFlow', JSON.parse(JSON.stringify(this.recommendations)), this.maxRecommendations, this.strategyName, this.strategySource, this.displayTitle, this.displayDescription);
         }
     }
 

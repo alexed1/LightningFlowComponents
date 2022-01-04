@@ -155,7 +155,7 @@ export default class DisplayKnowledgeViaNBA extends LightningElement {
     }
 
     get errorMessage() {
-        if (!this.filteredRecs || this.filteredRecs.length === 0) {
+        if ((!this.filteredRecs || this.filteredRecs.length === 0) && this.searchString && this.searchString.length > 2) {
             return this.reactedOnce ? this.labels.reactedToAll : this.labels.noRecommendationsFound;
         } else if (!this.displayDescription && !this.displayTitle) {
             return this.labels.noTitleDescription;

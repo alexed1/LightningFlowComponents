@@ -11,7 +11,7 @@
                             {rec.displayText}
                         </div>
                         <div if:true={displayDescription} class="slds-text-body_small">
-                            {rec.description}
+                            <lightning-formatted-rich-text value={rec.description}></lightning-formatted-rich-text>
                         </div>
                         <div if:true={rec.errorMessage} class="slds-text-color_destructive">
                             {rec.errorMessage}

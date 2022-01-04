@@ -12,7 +12,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -25,12 +25,15 @@
     <recordLookups>
         <name>Get_Knowledge_article</name>
         <label>Get Knowledge article</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationX>584</locationX>
+        <locationY>206</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Knowledge_artice</targetReference>
         </connector>
+        <faultConnector>
+            <targetReference>Error_Screen</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -44,24 +47,40 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
+        <name>Error_Screen</name>
+        <label>Error Screen</label>
+        <locationX>788</locationX>
+        <locationY>214</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>DisplayError</name>
+            <fieldText>&lt;p&gt;{!$Flow.FaultMessage}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Knowledge_artice</name>
         <label>Knowledge artice</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>584</locationX>
+        <locationY>326</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Knowledge_content</name>
-            <fieldText>&lt;p&gt;Title: {!Get_Knowledge_article.Title}&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;Summary&lt;/span&gt;: {!Get_Knowledge_article.Summary}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;Title: {!Get_Knowledge_article.Title}&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(68, 68, 68); background-color: rgb(255, 255, 255);&quot;&gt;Summary&lt;/span&gt;: {!Get_Knowledge_article.Summary}&lt;/p&gt;&lt;p&gt;Body Content: {!Get_Knowledge_article.Body_Content_Rich_Text__c}&lt;/p&gt;&lt;p&gt;Knowledge Rich Content: {!Get_Knowledge_article.Knowledge_Rich_Content__c}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
+        <locationX>458</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Get_Knowledge_article</targetReference>
         </connector>

@@ -55,7 +55,7 @@
             <inputParameters>
                 <name>strategySource</name>
                 <value>
-                    <stringValue>flow</stringValue>
+                    <elementReference>strategySource</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -117,6 +117,16 @@
         <isOutput>false</isOutput>
         <value>
             <stringValue>Get_Account_Recommendation</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>strategySource</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>flow</stringValue>
         </value>
     </variables>
 </Flow>

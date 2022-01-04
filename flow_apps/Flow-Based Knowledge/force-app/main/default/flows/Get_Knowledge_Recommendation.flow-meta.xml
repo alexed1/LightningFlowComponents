@@ -35,7 +35,7 @@
             <assignToReference>outputRecommendations</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Knowledge</elementReference>
+                <elementReference>Get_Knowledge.outputRecommendations</elementReference>
             </value>
         </assignmentItems>
     </assignments>

@@ -6,6 +6,7 @@ private class KnowledgeRecommendationsGeneratorTest
     static final String TEST_LANGUAGE = 'en_US';
     static final String TEST_PUBLISHSTATUS = 'Online';
     static final String TEST_URL = 'test-url';
+    static final String STRATEGY_NAME = 'Get_Knowledge_Recommendation';
 
     @TestSetup
     static void makeData()
@@ -44,10 +45,10 @@ private class KnowledgeRecommendationsGeneratorTest
         request.publicationStatus = TEST_PUBLISHSTATUS;
         requests.add(request);
 
-        List<List<Recommendation>> recommendations = KnowledgeRecommendationsGenerator.generateKnowledgeRecommendations(requests);
+        List<Recommendation> recommendations = KnowledgeRecommendationsGenerator.generateKnowledgeRecommendations(requests)[0].outputRecommendations;
         
-        System.assertEquals(TEST_TITLE, recommendations[0][0].Name, 'Wrong search results');
-        System.assertEquals(knowledge.Id, recommendations[0][0].ExternalId, 'Wrong search results');
+        System.assertEquals(TEST_TITLE, recommendations[0].Name, 'Wrong search results');
+        System.assertEquals(knowledge.Id, recommendations[0].ExternalId, 'Wrong search results');
     }
 
     @IsTest
@@ -56,7 +57,27 @@ private class KnowledgeRecommendationsGeneratorTest
         Id[] fixedSearchResults= new Id[1];
         fixedSearchResults[0] = knowledge.Id;
         Test.setFixedSearchResults(fixedSearchResults);
-        List<Recommendation> recommendations = KnowledgeRecommendationsGenerator.ExecuteNBAFlow('Get_Knowledge_Recommendation', 'id', 'test');
+        List<Recommendation> recommendations = KnowledgeRecommendationsGenerator.ExecuteNBAFlow(STRATEGY_NAME, 'id', 'test');
         System.assert(recommendations.size() == 1);
+    }
+
+    @isTest
+    static void testLaunchFLow() {
+        Knowledge__kav knowledge = [SELECT Id,Title, KnowledgeArticleId FROM Knowledge__kav LIMIT 1];
+        Recommendation recommendation = new Recommendation();
+        recommendation.ExternalId = knowledge.Id;
+        recommendation.Name = knowledge.Title;
+        recommendation.Description = 'Test Description';
+        recommendation.ActionReference = 'Display_Knowledge_Article';
+        Account acc = new Account();
+        acc.Name = 'Test Acc';
+        insert acc;
+        String flowType = KnowledgeRecommendationsGenerator.launchFLow(recommendation, STRATEGY_NAME, acc.Id);
+        System.assert(flowType == 'Flow');
+        recommendation.ActionReference = 'Test_Flow';
+        
+        flowType = KnowledgeRecommendationsGenerator.launchFLow(recommendation, STRATEGY_NAME, acc.Id);
+        System.assert(flowType == 'AutoLaunchedFlow');
+
     }
 }

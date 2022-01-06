@@ -14,15 +14,15 @@ export default class expressionLine extends LightningElement {
     @api disableRemoveExpression = false;
 
     @track allOperators = [
-        {value: 'equals', label: 'Equals', types: 'ID,BOOLEAN,REFERENCE,STRING,EMAIL,PICKLIST,TEXTAREA,DATETIME,PHONE,DOUBLE,ADDRESS,INTEGER,URL'},
-        {value: 'not_equal_to', label: 'Not Equal To', types: 'ID,BOOLEAN,REFERENCE,STRING,EMAIL,PICKLIST,TEXTAREA,DATETIME,PHONE,DOUBLE,ADDRESS,INTEGER,URL'},
-        {value: 'greater_then', label: 'Greater than', types: 'DOUBLE,INTEGER,DATETIME'},
-        {value: 'greater_or_equal', label: 'Greater Or Equal', types: 'DOUBLE,INTEGER,DATETIME'},
-        {value: 'less_then', label: 'Less Than', types: 'DOUBLE,INTEGER,DATETIME'},
-        {value: 'less_or_equal', label: 'Less Or Equal', types: 'DOUBLE,INTEGER,DATETIME'},
-        {value: 'contains', label: 'Contains', types: 'ID,STRING,EMAIL,PICKLIST,TEXTAREA,PHONE,ADDRESS,URL'},
-        {value: 'starts_with', label: 'Starts with', types: 'ID,STRING,EMAIL,PICKLIST,TEXTAREA,PHONE,ADDRESS,URL'},
-        {value: 'end_with', label: 'End with', types: 'ID,STRING,EMAIL,PICKLIST,TEXTAREA,PHONE,ADDRESS,URL'}
+        {value: 'equals', label: 'Equals', types: 'text,number,datetime,date'},
+        {value: 'not_equal_to', label: 'Not Equal To', types: 'text,number,datetime,date'},
+        {value: 'greater_then', label: 'Greater than', types: 'number,datetime,date'},
+        {value: 'greater_or_equal', label: 'Greater Or Equal', types: 'number,datetime,date'},
+        {value: 'less_then', label: 'Less Than', types: 'number,datetime,date'},
+        {value: 'less_or_equal', label: 'Less Or Equal', types: 'number,datetime,date'},
+        {value: 'contains', label: 'Contains', types: 'text'},
+        {value: 'starts_with', label: 'Starts with', types: 'text'},
+        {value: 'end_with', label: 'End with', types: 'text'}
     ];
     labels = {
         supportedCharactersRegex: '^[a-zA-Z0-9_,.\\- !]*$',
@@ -32,7 +32,7 @@ export default class expressionLine extends LightningElement {
 
     get availableOperators() {
         if (this.field) {
-            return (this.allOperators.filter(curOperator => curOperator.types.includes("STRING")));
+            return (this.allOperators.filter(curOperator => curOperator.types.includes(this.renderType)));
         } else {
             return [];
         }
@@ -43,7 +43,7 @@ export default class expressionLine extends LightningElement {
     }
     
     handleOperatorChange(event) {
-        this.operator = event.detail.value
+        this.operator = event.detail.value;
         let customEvent = new CustomEvent('change', { detail: {operator: this.operator, value : this.value}});
         this.dispatchEvent(customEvent);
     }

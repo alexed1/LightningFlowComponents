@@ -2,42 +2,35 @@ public with sharing class QuickRecordViewController {
     public virtual class BaseException extends Exception {}
 
     @AuraEnabled
-    public static List<SObject> getRecordDataString(String objectName, String whereCondition) {
-        if (objectName != null){
-            List<QuickRecordView__c>  quickRecordViewRecordList = [
-                                                                SELECT 
-                                                                        Columns__c,
-                                                                        Filter__c,
-                                                                        Label__c,
-                                                                        ObjectName__c,
-                                                                        Query__c
-                                                                FROM    QuickRecordView__c
-                                                                WHERE   ObjectName__c =: objectName
+    public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
+        List<FlowTableViewDefinition__c>  quickRecordViewRecordList = [
+                                                                SELECT  Object_API_Name__c,
+                                                                        Field_API_Names__c
+                                                                FROM    FlowTableViewDefinition__c
+                                                                WHERE   Id =: viewId
                                                                 LIMIT   1];
-            String request;
-            if (quickRecordViewRecordList.size() > 0){
-                request =   'SELECT ' + 
-                                        quickRecordViewRecordList[0].Columns__c +
-                            ' FROM '  + quickRecordViewRecordList[0].ObjectName__c;
+        String request;
+        if (quickRecordViewRecordList.size() > 0){
+            request =   'SELECT ' + 
+                                    quickRecordViewRecordList[0].Field_API_Names__c +
+                        ' FROM '  + quickRecordViewRecordList[0].Object_API_Name__c;
 
-                if (String.isNotEmpty(whereCondition)){
-                    request += ' ' + whereCondition;
-                }
-                   
-            } else {
-
-                request =   'SELECT Id, Name, OwnerId, CreatedDate' +
-                            ' FROM '  + objectName;
-
-                            if (String.isNotEmpty(whereCondition)){
-                                request += ' ' + whereCondition;
-                            }
+            if (String.isNotEmpty(whereCondition)){
+                request += ' ' + whereCondition;
             }
-            List<sObject> recordDataString = Database.query(request);
+                   
+        } else {
+
+            request =   'SELECT Id, Name, OwnerId, CreatedDate' +
+                        ' FROM '  + objectName;
+
+                    if (String.isNotEmpty(whereCondition)){
+                            request += ' ' + whereCondition;
+                        }
+        }
+        List<sObject> recordDataString = Database.query(request);
                 
-            return recordDataString;
-        }                                                
-        return null;
+        return recordDataString;                                               
     }
     
     @AuraEnabled(cacheable=false)
@@ -84,39 +77,69 @@ public with sharing class QuickRecordViewController {
     }
 
     @AuraEnabled
-    public static List<FilterObjectRepresentation> searchFilterFileds(String searchTerm) {
+    public static List<Map<String, String>> getFlowTableViewDefinition(String objectName){
+        List<FlowTableViewDefinition__c> viewList = [ 
+            SELECT  Id,
+                    Object_API_Name__c,
+                    Field_API_Names__c,
+                    View_Name__c
+            FROM    FlowTableViewDefinition__c
+            WHERE   Object_API_Name__c =: objectName
+            LIMIT   50000
+        ];
+        
+        List<Map<String, String>> viewOptionMapList = new List<Map<String, String>>();
+       
+        for(FlowTableViewDefinition__c view : viewList) {
+            Map<String, String> viewOptionMap = new Map<String, String>();
+            viewOptionMap.put('label', view.View_Name__c);
+            viewOptionMap.put('value', view.Id);
+            viewOptionMapList.add(viewOptionMap);
+        }
+
+        if(viewOptionMapList.isEmpty()) {
+            Map<String, String> viewOptionMap = new Map<String, String>();
+            viewOptionMap.put('label','New View');
+            viewOptionMap.put('value', '');
+            viewOptionMapList.add(viewOptionMap);
+        }
+        return viewOptionMapList;
+    }
+    @AuraEnabled
+    public static List<FilterObjectRepresentation> searchFilterFileds(String viewId) {
 
         List<FilterObjectRepresentation> filterFields = new List<FilterObjectRepresentation>();             //  Create List of filter fields for return
         
-        if (searchTerm != null){                                                                            //  Check that api object name for search is present 
-                List<QuickRecordView__c> quickRecordViewRecord = [
-                                                                    SELECT 
-                                                                            Columns__c,
-                                                                            Filter__c,
-                                                                            Label__c,
-                                                                            ObjectName__c,
-                                                                            Query__c
-                                                                    FROM    QuickRecordView__c
-                                                                    WHERE   ObjectName__c =: searchTerm
-                                                                ]; 
-                switch on quickRecordViewRecord.size() {
-                    when 0 {
-                        return ParseFilterJSONToApexObject.parseStringToApexObj('[' +
+        if (String.isNotEmpty(viewId)){                                                                            //  Check that api object name for search is present 
+            List<FlowTableViewDefinition__c> viewList = [ 
+                SELECT  Id,
+                        Object_API_Name__c,
+                        Field_API_Names__c,
+                        View_Name__c
+                FROM    FlowTableViewDefinition__c
+                WHERE   Id =: viewId
+                LIMIT   1
+            ];
+            SObjectType r = ((SObject)(Type.forName('Schema.'+viewList[0].Object_API_Name__c).newInstance())).getSObjectType();
+            DescribeSObjectResult d = r.getDescribe();
+            List<String> fieldList = viewList[0].Field_API_Names__c.split(',');
+            for(String fieldName : fieldList) {
+                filterFields.add(
+                    new FilterObjectRepresentation(
+                        'text', 
+                        fieldName, 
+                        d.fields.getMap().get(fieldName).getDescribe().getLabel()
+                    )
+                );
+            }
+            return filterFields;
+        } else {
+            return ParseFilterJSONToApexObject.parseStringToApexObj('[' +
                                                                                     '{"type": "text","fieldName": "Name","label": "Name"}, ' + 
                                                                                     '{"type": "datetime","fieldName": "CreatedDate","label": "Created Date"}, ' + 
                                                                                     '{"type": "text","fieldName": "OwnerId","label": "Owner"} ' + 
                                                                                 ']');
-                    }	
-                    when 1 {
-                        return ParseFilterJSONToApexObject.parseStringToApexObj(quickRecordViewRecord[0].Filter__c);
-                    }
-                    when else {
-                        throw new BaseException('More than 1 QuickRecordView returned!');
-                    }
-                }
-                
         }
-        return null;
     }
 
     public static String operatorConverter(String operatorFromLWC){

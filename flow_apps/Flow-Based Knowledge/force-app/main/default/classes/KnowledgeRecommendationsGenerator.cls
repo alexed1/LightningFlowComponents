@@ -47,7 +47,7 @@ public with sharing class KnowledgeRecommendationsGenerator
                 recommendation.ExternalId = article.Id;
                 recommendation.Name = article.Title;
                 recommendation.Description = searchResult.getSnippet();
-                recommendation.ActionReference = 'Display_Knowledge_Article';
+                recommendation.ActionReference = 'Run_Knowledge_Flow_Basically';
 
                 recommendations.add(recommendation);
             }

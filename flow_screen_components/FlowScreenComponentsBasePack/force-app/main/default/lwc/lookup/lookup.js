@@ -26,6 +26,7 @@ export default class Lookup extends NavigationMixin(LightningElement) {
     @api scrollAfterNItems = null;
     @api newRecordOptions = [];
     @api minSearchTermLength = 2;
+    @api objname;
 
     // Template properties
     searchResultsLocalState = [];
@@ -396,6 +397,10 @@ export default class Lookup extends NavigationMixin(LightningElement) {
     get getInputValue() {
         if (this.isMultiEntry) {
             return this._searchTerm;
+        }
+        if(this.objname){
+            this._searchTerm = this.objname;
+            this.objname = null;
         }
         return this.hasSelection() ? this._curSelection[0].title : this._searchTerm;
     }

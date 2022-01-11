@@ -90,24 +90,10 @@
                                         onclick={handleResultClick}
                                         data-recordid={item.result.id}
                                     >
-                                        <span class="slds-media__figure slds-listbox__option-icon">
-                                            <lightning-icon
-                                                icon-name={item.result.icon}
-                                                size="small"
-                                                alternative-text="Result item icon"
-                                            ></lightning-icon>
-                                        </span>
                                         <span class="slds-media__body">
                                             <span class="slds-listbox__option-text slds-listbox__option-text_entity">
                                                 <lightning-formatted-rich-text
                                                     value={item.result.titleFormatted}
-                                                    disable-linkify
-                                                >
-                                                </lightning-formatted-rich-text>
-                                            </span>
-                                            <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">
-                                                <lightning-formatted-rich-text
-                                                    value={item.result.subtitleFormatted}
                                                     disable-linkify
                                                 >
                                                 </lightning-formatted-rich-text>

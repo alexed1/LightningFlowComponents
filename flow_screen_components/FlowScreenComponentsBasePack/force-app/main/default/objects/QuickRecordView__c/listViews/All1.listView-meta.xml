@@ -4,7 +4,6 @@
     <columns>NAME</columns>
     <columns>ObjectName__c</columns>
     <columns>Filter__c</columns>
-    <columns>Columns__c</columns>
     <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

@@ -5,11 +5,11 @@ public with sharing class FilterObjectRepresentationTest {
     static void testConst() {
         FilterObjectRepresentation emptyConstructor = new FilterObjectRepresentation();
         FilterObjectRepresentation constructorWithValues = new FilterObjectRepresentation('type', 'fieldName', 'label');
-        System.assertEquals(emptyConstructor.getType(),null);
-        System.assertEquals(emptyConstructor.getFieldName(), null);
-        System.assertEquals(emptyConstructor.getLabel(), null);
-        System.assertEquals(constructorWithValues.getType(),'type');
-        System.assertEquals(constructorWithValues.getFieldName(), 'fieldName');
-        System.assertEquals(constructorWithValues.getLabel(), 'label');
+        System.assertEquals(emptyConstructor.type,null);
+        System.assertEquals(emptyConstructor.fieldName, null);
+        System.assertEquals(emptyConstructor.label, null);
+        System.assertEquals(constructorWithValues.type,'type');
+        System.assertEquals(constructorWithValues.fieldName, 'fieldName');
+        System.assertEquals(constructorWithValues.label, 'label');
     }
 }

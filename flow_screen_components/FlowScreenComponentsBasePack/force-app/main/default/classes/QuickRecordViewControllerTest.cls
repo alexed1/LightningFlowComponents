@@ -3,62 +3,31 @@ public with sharing class QuickRecordViewControllerTest {
     @testSetup
     static void setup(){
         insert new Case(Origin = 'Web', Status = 'New');
-        insert new List<QuickRecordView__c>{
-                                            new QuickRecordView__c(   ObjectName__c = 'Contact',
-                                                                                                    Columns__c = 'FirstName, LastName, Email',
-                                                                                                    Filter__c = '[' + 
-                                                                                                                    '{"type": "text","fieldName": "FirstName", "label": "First Name"},' + 
-                                                                                                                    '{"type": "text","fieldName": "LastName","label": "Last Name"}, ' +
-                                                                                                                    '{"type": "text","fieldName": "Email", "label": "Email"} ' + 
-                                                                                                                ']',
-                                                                                                    Label__c = 'Contact',
-                                                                                                    Query__c = ''),
-                                            new QuickRecordView__c( ObjectName__c = 'Case',
-                                                                                                    Columns__c = 'CaseNumber, Status',
-                                                                                                    Filter__c = '[' + 
-                                                                                                                    '{"type": "text","fieldName": "CaseNumber","label": "CaseNumber"},' + 
-                                                                                                                    '{"type": "text","fieldName": "Site","label": "Account Site"}, ' +
-                                                                                                                    '{"type": "text","fieldName": "Status","label": "Status"} ' + 
-                                                                                                                ']',
-                                                                                                    Label__c = 'Case',
-                                                                                                    Query__c = 'WHERE Status = \'New\''),
-                                            new QuickRecordView__c(  ObjectName__c = 'Opportunity',
-                                                                                                    Columns__c = 'Owner, LastActivity, Amout, Stage',
-                                                                                                    Filter__c = '['+
-                                                                                                                    '{"type": "text","fieldName": "Owner", "label": "Owner"}, ' + 
-                                                                                                                    '{"type": "text","fieldName": "LastActivity","label": "Last Activity"},' + 
-                                                                                                                    '{"type": "text","fieldName": "Amount", "label": "Amount"}, ' +
-                                                                                                                    '{"type": "text","fieldName": "Stage", "label": "Stage"}' +
-                                                                                                                ']',
-                                                                                                    Label__c = 'Opportunity',
-                                                                                                    Query__c = ''),
-                                            new QuickRecordView__c(  ObjectName__c = 'Account',
-                                                                                                    Columns__c = 'Name, Site, Rating',
-                                                                                                    Filter__c = '['+
-                                                                                                                    '{"type": "text","fieldName": "Name","label": "Name"}, ' + 
-                                                                                                                    '{"type": "text","fieldName": "Site","label": "Account Site"},' + 
-                                                                                                                    '{"type": "text","fieldName": "Rating","label": "Rating"}, ' +
-                                                                                                                ']',
-                                                                                                    Label__c = 'Account',
-                                                                                                    Query__c = ''),
-                                            new QuickRecordView__c(  ObjectName__c = 'Account',
-                                                                                                    Columns__c = 'Name, Site, Rating',
-                                                                                                    Filter__c = '['+
-                                                                                                                    '{"type": "text","fieldName": "Name","label": "Name"}, ' + 
-                                                                                                                    '{"type": "text","fieldName": "Site","label": "Account Site"},' + 
-                                                                                                                    '{"type": "text","fieldName": "Rating","label": "Rating"}, ' +
-                                                                                                                ']',
-                                                                                                    Label__c = 'Account',
-                                                                                                    Query__c = ''),
-                                            new QuickRecordView__c(   ObjectName__c = 'OrderItem',
-                                                                                                    Columns__c = 'FirstName, LastName, Email',
-                                                                                                    Filter__c = '[' + 
-                                                                                                                    '{"type": "text","fieldName": "FirstName", "label": "First Name"},' + 
-                                                                                                                    '{"type": "text","fieldName": "LastName","label": "Last Name"}, ' +
-                                                                                                                    '{"type": "text","fieldName": "Email", "label": "Email"} ' + 
-                                                                                                                ']',
-                                                                                                    Label__c = 'OrderItem',
-                                                                                                    Query__c = '')
+        insert new List<FlowTableViewDefinition__c>{
+                                            new FlowTableViewDefinition__c(
+                                                Field_API_Names__c = 'FirstName,LastName,Email',
+                                                Object_API_Name__c = 'Contact',
+                                                View_Name__c = 'Contact'),
+                                            new FlowTableViewDefinition__c(
+                                                Field_API_Names__c = 'CaseNumber,Status',
+                                                Object_API_Name__c = 'Case',
+                                                View_Name__c = 'Case'),
+                                            new FlowTableViewDefinition__c( 
+                                                Field_API_Names__c = 'Owner, LastActivity,Amout,Stage',
+                                                Object_API_Name__c = 'Opportunity',
+                                                View_Name__c = 'Opportunity'),
+                                            new FlowTableViewDefinition__c(
+                                                Field_API_Names__c = 'Name,Site,Rating',
+                                                Object_API_Name__c = 'Account',
+                                                View_Name__c = 'Account1'),
+                                            new FlowTableViewDefinition__c(
+                                                Field_API_Names__c = 'Name,Site,Rating',
+                                                Object_API_Name__c = 'Account',
+                                                View_Name__c = 'Account2'),
+                                            new FlowTableViewDefinition__c(  
+                                                Field_API_Names__c = 'FirstName,LastName,Email',
+                                                Object_API_Name__c = 'OrderItem',
+                                                View_Name__c = 'OrderItem')
         };
     }
 
@@ -77,8 +46,16 @@ public with sharing class QuickRecordViewControllerTest {
         List<String> type = new List<String>{'text','text','text'};
         List<String> fieldName = new List<String>{'FirstName','LastName','Email'};
         List<String> label = new List<String>{'First Name','Last Name','Email'};
+        FlowTableViewDefinition__c  flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c 
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Object_API_Name__c = 'Contact'
+            LIMIT   1
+        ];
 
-        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('Contact');
+        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(flowDef.Id);
         for (FilterObjectRepresentation contactFilterIterator : contactFilter){
             System.assert(fieldName.contains(contactFilterIterator.fieldName));
             System.assert(label.contains(contactFilterIterator.label));
@@ -86,22 +63,12 @@ public with sharing class QuickRecordViewControllerTest {
         }
     }
 
-    // Retrieve any QuickRecordView that have a matching object name. If more than 1 result comes back, 
-    // thrown an error.
-     @isTest
-     static void testMatchingObjectNameMoreThanOneResult() {
-         try {
-            QuickRecordViewController.searchFilterFileds('Account');
-         } catch (Exception e){
-            System.assertEquals('More than 1 QuickRecordView returned!', e.getMessage()); 
-         }
-     }
-
     // If input is null. 
     @isTest
     static void testNoObjectName() {
+
         List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(null);
-        System.assertEquals(null, contactFilter);
+        System.assert(contactFilter.size() > 0);
     }
 
     // If zero results come back, define a virtual QuickRecordView that uses as its columns Name, Owner, Create Date. 
@@ -115,7 +82,7 @@ public with sharing class QuickRecordViewControllerTest {
         List<String> fieldName = new List<String>{'OwnerId','CreatedDate','Name'};
         List<String> label = new List<String>{'Owner','Created Date','Name'};
 
-        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('QuickRecordView');
+        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('');
 
         for (FilterObjectRepresentation contactFilterIterator : contactFilter){
             System.assert(fieldName.contains(contactFilterIterator.fieldName));
@@ -150,8 +117,13 @@ public with sharing class QuickRecordViewControllerTest {
      // Convert operator testing. LWC component use text representation of operators like = - 'equal'
      @isTest
      static void testGetRecordDataString() {
-         String serializedString = JSON.serialize(QuickRecordViewController.getRecordDataString('Case', ''));
-         System.assertEquals(null, QuickRecordViewController.getRecordDataString(null, null));
+         Account accnt = new Account(Name = 'TestAccount');
+         insert accnt;
+         String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
+         String serializedString = JSON.serialize(QuickRecordViewController.getRecordDataString(viewId, '', 'Account'));
+         System.debug('serializedString' + serializedString);
+
+         System.assert(String.isNotEmpty(serializedString));
      }
 
     @isTest
@@ -190,4 +162,45 @@ public with sharing class QuickRecordViewControllerTest {
         System.assertEquals('WHERE Status  LIKE \'%w\'', response); 
     }
 
+    @isTest
+    static void testUsertView() {
+        Account accnt = new Account(Name = 'TestAccount');
+        insert accnt;
+        String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
+        FlowTableViewDefinition__c  flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c 
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Id = :viewId
+            LIMIT   1
+        ];
+
+        System.assertEquals(flowDef.View_Name__c, 'Test View Name');
+        viewId = QuickRecordViewController.upsertView(viewId, 'Test View Name2', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
+
+        System.assertEquals(viewId, flowDef.Id);
+
+        flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c 
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Id = :viewId
+            LIMIT   1
+        ];
+
+        System.assertEquals(flowDef.View_Name__c, 'Test View Name2');
+    }
+
+    @isTest
+    static void tesGetFlowTableViewDefinition() {
+        List<Map<String, String>> flowDefMap =  QuickRecordViewController.getFlowTableViewDefinition('Account');
+
+        System.assert(flowDefMap.size() == 2);
+
+        //for object that Flow Table View Definition record isn't existing
+        flowDefMap =  QuickRecordViewController.getFlowTableViewDefinition('Lead');
+        System.assert(flowDefMap.size() == 1);
+    }
 }

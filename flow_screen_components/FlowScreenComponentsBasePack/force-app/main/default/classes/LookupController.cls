@@ -35,6 +35,7 @@ public with sharing class LookupController {
                 }
             }
         } catch (Exception e){
+            System.debug(e);
             return null;
         }
         results.sort();

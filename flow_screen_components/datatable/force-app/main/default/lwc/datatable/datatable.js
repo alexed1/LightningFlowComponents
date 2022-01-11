@@ -43,7 +43,7 @@ export default class Datatable extends LightningElement {
     };
 
     // Component Input & Output Attributes
-    @api tableData = [];
+    //@api tableData = []; see new version below
     @api columnFields = [];
     @api columnAlignments = [];
     @api columnCellAttribs = [];
@@ -68,6 +68,23 @@ export default class Datatable extends LightningElement {
     @api tableIcon;
     @api tableLabel;
     @api recordTypeId;
+
+
+    _tableData;
+   
+    @api
+    get tableData() {
+        return this._tableData || [];
+    }
+    
+    set tableData(data = []) {
+        if (Array.isArray(data)) {
+            this._tableData = data;
+            this.processDatatable();
+        } else {
+            this._tableData = [];
+        }
+    }
     
     @api 
     get isRequired() {
@@ -165,9 +182,9 @@ export default class Datatable extends LightningElement {
     set serializedRecordData(value) {
         if(this.isSerializedRecordData) {
             if(value) {
-                this.tableData = JSON.parse(value);
+                this._tableData = JSON.parse(value);
             } else {
-                this.tableData = [];
+                this._tableData = [];
             }
 
             setTimeout(function() {
@@ -457,9 +474,15 @@ export default class Datatable extends LightningElement {
         if (this.maxNumberOfRows == 0) {
             this.maxNumberOfRows = CONSTANTS.MAXROWCOUNT;
         }
+
+        console.log('this._tableData',this._tableData);
+        if(!this._tableData) {
+            this._tableData = [];
+        }
+
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-        let cnt = Math.min(this.tableData.length, max);
-        this.tableData = [...this.tableData].slice(0,cnt);
+        let cnt = Math.min(this._tableData.length, max);
+        this._tableData = [...this._tableData].slice(0,cnt);
 
         // Set roundValue for setting Column Widths in Config Mode
         this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
@@ -640,10 +663,10 @@ export default class Datatable extends LightningElement {
         this.borderClass += (this.allowOverflow) ? ' overflowEnabled' : '';
         
         // Generate datatable
-        if (this.tableData) {
+        if (this._tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this.tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
+            this.maxRowSelection = (this.singleRowSelection) ? 1 : this._tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');
@@ -692,7 +715,7 @@ export default class Datatable extends LightningElement {
         if (this.isUserDefinedObject && !this.isConfigMode) {
 
             // JSON Version set recordData
-            this.recordData = [...this.tableData];
+            this.recordData = [...this._tableData];
 
             // JSON Version Special Field Types
             this.types.forEach(t => {
@@ -747,7 +770,7 @@ export default class Datatable extends LightningElement {
             // Call Apex Controller and get Column Definitions and update Row Data
             let data;
             if (!this.isUserDefinedObject) {
-                data = (this.tableData) ? JSON.parse(JSON.stringify([...this.tableData])) : [];
+                data = (this._tableData) ? JSON.parse(JSON.stringify([...this._tableData])) : [];
                 data.forEach(record => { 
                     delete record['attributes'];   
                 });
@@ -924,10 +947,10 @@ export default class Datatable extends LightningElement {
         // Set table data attributes
         this.mydata = [...data];
         this.savePreEditData = [...this.mydata];
-        this.editedData = JSON.parse(JSON.stringify([...this.tableData]));  // Must clone because cached items are read-only
+        this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
         console.log('selectedRows',this.selectedRows);
         console.log('keyField:',this.keyField);
-        console.log('tableData',this.tableData);
+        console.log('tableData',this._tableData);
         console.log('mydata:',this.mydata);
     }
 
@@ -1441,7 +1464,7 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this.tableData.length == 1 && this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        this.showClearButton = this.numberOfRowsSelected == 1 && (this._tableData.length == 1 && this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
     }
 
     handleClearSelection() {
@@ -1991,7 +2014,7 @@ export default class Datatable extends LightningElement {
         // Finalize Selected Records for Output
         let sdata = [];
         this.outputSelectedRows.forEach(srow => {
-            const selData = this.tableData.find(d => d[this.keyField] == srow[this.keyField]);
+            const selData = this._tableData.find(d => d[this.keyField] == srow[this.keyField]);
             sdata.push(selData);
         });
         this.outputSelectedRows = [...sdata]; // Set output attribute values

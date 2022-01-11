@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <name>Set_DefaultView</name>
+        <label>Set DefaultView</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <assignmentItems>
+            <assignToReference>curKnowledge.Default_View__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>defaultView</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_or_Update_Knowledge_Record</targetReference>
+        </connector>
+    </assignments>
     <interviewLabel>KnowledgeFlowBaseTemplate {!$Flow.CurrentDateTime}</interviewLabel>
     <isTemplate>true</isTemplate>
     <label>KnowledgeFlow Base Template</label>
@@ -32,7 +48,7 @@
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Create_or_Update_Knowledge_Record</targetReference>
+            <targetReference>Set_DefaultView</targetReference>
         </connector>
         <fields>
             <fieldType>ObjectProvided</fieldType>
@@ -79,7 +95,7 @@
         <name>Create_or_Update_Knowledge_Record</name>
         <label>Create or Update Knowledge Record</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <flowName>KnowledgeFlow_Post_Steps</flowName>
         <inputAssignments>
             <name>curKnowledge</name>
@@ -129,6 +145,13 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>KnowledgeArticle</objectType>
+    </variables>
+    <variables>
+        <name>defaultView</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>recordId</name>

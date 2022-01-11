@@ -1,6 +1,16 @@
 <template>
     <div>
         <div class="container">
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="right-align">
+                    <lightning-button label="New Article" onclick={launchNewArticleFlow}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div class="slds-m-bottom_large">
+                <lightning-input label="Knowledge" value={searchString} onchange={changeSearchString} type="search" placeholder="Search Knowledge..."></lightning-input>
+            </div>
             <div if:true={errorMessage} class="slds-p-around--small slds-text-color_destructive">
                 {errorMessage}
             </div>
@@ -8,10 +18,11 @@
                 <div class="slds-box--border slds-m-top--xxx-small slds-grid" key={rec.Id}>
                     <div class="slds-col slds-p-around--xx-small">
                         <div if:true={displayTitle} title={rec.title}>
-                            {rec.displayText}
+                            <a>{rec.displayText}</a>
                         </div>
                         <div if:true={displayDescription} class="slds-text-body_small">
                             <lightning-formatted-rich-text value={rec.description}></lightning-formatted-rich-text>
+                            
                         </div>
                         <div if:true={rec.errorMessage} class="slds-text-color_destructive">
                             {rec.errorMessage}
@@ -19,23 +30,17 @@
                     </div>
                     <div class="slds-col_bump-right slds-align-middle">
                         <div class="slds-align_absolute-center">
-                            <lightning-icon class="action-item approve" variant="success"
+                            <!-- <lightning-icon class="action-item approve" variant="success"
                                             icon-name="utility:like"
                                             size="small"
                                             alternative-text="Approve"
                                             onclick={handleAction}
                                             data-action-name={labels.actionApprove}
                                             data-record-id={rec.Id}
-                            ></lightning-icon>
-
-                            <lightning-icon class="action-item reject" variant="error"
-                                            icon-name="utility:dislike"
-                                            size="small"
-                                            alternative-text="Reject"
-                                            onclick={handleAction}
-                                            data-action-name={labels.actionReject}
-                                            data-record-id={rec.Id}
-                            ></lightning-icon>
+                            ></lightning-icon> -->
+                            <lightning-button label="View" variant="neutral" data-navigation-direction="-1"
+                            onclick={handleAction} data-action-name={labels.actionApprove}
+                            data-record-id={rec.Id}></lightning-button>
                         </div>
                     </div>
                 </div>

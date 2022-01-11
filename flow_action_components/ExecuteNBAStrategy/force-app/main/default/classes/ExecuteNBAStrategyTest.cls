@@ -35,4 +35,27 @@ private class ExecuteNBAStrategyTest {
         AutolaunchFlow.autolaunchFlow(requests);
         Test.stopTest();
     }
+    @IsTest
+    static void executeNBAFlowTest() {
+        Account acc = new Account();
+        acc.Name = 'Test Acc';
+        insert acc;
+        List<Recommendation> recommendationList = ExecuteNBAStrategy.executeNBAFlow('Get_Account_Recommendation',acc.Id,  10);
+        System.assert(recommendationList.size() > 0);
+    }
+
+    @isTest
+    static void testLaunchFLow() {
+        Account acc = new Account();
+        acc.Name = 'Test Acc';
+        insert acc;
+        Recommendation recommendation = new Recommendation();
+        recommendation.ExternalId = acc.Id;
+        recommendation.Name = acc.Name;
+        recommendation.ActionReference = 'Test_Flow';
+        
+        String flowType = ExecuteNBAStrategy.launchFLow(recommendation, 'Get_Account_Recommendation', acc.Id);
+        System.assert(flowType == 'AutoLaunchedFlow');
+
+    }
 }

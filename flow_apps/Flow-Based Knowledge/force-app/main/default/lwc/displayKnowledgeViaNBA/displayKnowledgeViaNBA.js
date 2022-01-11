@@ -1,12 +1,12 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import setRecommendationReaction from '@salesforce/apex/ExecuteNBAStrategy.setRecommendationReaction';
-import executeNBAFlow from '@salesforce/apex/ExecuteNBAStrategy.executeNBAFlow';
-import launchFLow from '@salesforce/apex/ExecuteNBAStrategy.launchFLow';
+import executeNBAFlow from '@salesforce/apex/KnowledgeRecommendationsGenerator.executeNBAFlow';
+import launchFLow from '@salesforce/apex/KnowledgeRecommendationsGenerator.launchFLow';
 import userId from '@salesforce/user/Id';
 const FLOW_LABEL = 'flow';
 const LEGACY_LABEL = 'legacy'
 
-export default class DisplayNBARecommendationsFSC extends LightningElement {
+export default class DisplayKnowledgeViaNBA extends LightningElement {
     @api displayDescription;
     @api displayTitle;
     @api recordId;
@@ -17,11 +17,13 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
     @api itemsPerPage = 3;
     @api strategySource = LEGACY_LABEL;
 
+    isShowError = false;
 
     @track removedRecords = [];
     @track pageIndex = 0;
     @track reactedOnce = false;
     @track filteredRecs = [];
+    searchString = '';
 
     labels = {
         noTitleDescription: 'Neither "title" nor "description" field is selected',
@@ -34,25 +36,6 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
         actionApprove: 'Accepted',
         actionReject: 'Rejected'
     };
-
-    connectedCallback() {
-        if(this.strategySource === FLOW_LABEL) {
-            executeNBAFlow({
-                strategyName : this.strategyName,
-                contextRecordId : this.recordId,
-                maxResults : this.maxRecommendations
-            }).then(
-                result => {
-                    console.log('flow executeNBAFlow', result, this.maxRecommendations, this.strategyName, this.strategySource, this.displayTitle, this.displayDescription);
-                    this.recommendations = {recommendations : result};
-                }
-            ).catch(
-                error => {
-                    console.error(error);
-                }
-            );
-        }
-    }
 
     navigate(event) {
         let direction = parseInt(event.currentTarget.dataset.navigationDirection);
@@ -104,7 +87,6 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
                     contextRecordId : this.recordId
                 }).then(
                     result => {
-                        this.removeRecommendation(removedId);
                         this.showToast({
                             detail: {
                                 title: 'Success',
@@ -114,7 +96,7 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
                             }
                         });
                         if(result === 'Flow') {
-                            window.open(this.buildFlowURL(curRecommendation.ActionReference), '_blank');
+                            window.open(this.buildFlowURL(curRecommendation.ActionReference, curRecommendation.ExternalId), '_blank');
                         }
                     }
                 ).catch(
@@ -145,8 +127,8 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
         }
     }
 
-    buildFlowURL(flowApiName) {
-        return window.location.origin + '/flow/' + flowApiName + '?recordId=' + this.recordId + '&strategyName=' + this.strategyName+'&userId='+userId;
+    buildFlowURL(flowApiName, recordId) {
+        return window.location.origin + '/flow/' + flowApiName + '?recordId=' + recordId + '&strategyName=' + this.strategyName+'&userId='+userId;
     }
 
     removeRecommendation(removedId) {
@@ -173,7 +155,7 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
     }
 
     get errorMessage() {
-        if (!this.filteredRecs || this.filteredRecs.length === 0) {
+        if ((!this.filteredRecs || this.filteredRecs.length === 0) && this.isShowError) {
             return this.reactedOnce ? this.labels.reactedToAll : this.labels.noRecommendationsFound;
         } else if (!this.displayDescription && !this.displayTitle) {
             return this.labels.noTitleDescription;
@@ -214,9 +196,8 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
             } else {
                 this.filteredRecs = this._recommendations.recommendations.filter(curRec => !this.removedRecords.includes(curRec.ExternalId));
             }
-            console.log(this.filteredRecs);
         } else {
-            this.filteredRecs;
+            this.filteredRecs = [];
         }
     }
 
@@ -227,9 +208,7 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
         }
         if (filteredRecs) {
             if(this.strategySource === LEGACY_LABEL) {
-                console.log(LEGACY_LABEL);
                 return filteredRecs.map(cuRec => {
-                    console.log('curRec', cuRec, this.displayTitle);
                     return {
                         ...cuRec, ...{
                             displayText: this.displayTitle ? cuRec.name : cuRec.description,
@@ -238,7 +217,6 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
                     };
                 })
             } else {
-                console.log(FLOW_LABEL);
                 return filteredRecs.map(cuRec => {
                     return {
                         ...cuRec, ...{
@@ -259,4 +237,36 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
     showToast(event) {
         this.template.querySelector('c-toast-message').showCustomNotice(event);
     }
+
+    changeSearchString(event) {
+        this.isShowError = false;
+        this.searchString = event.detail.value;
+        setTimeout(() => {
+                if(this.searchString && this.searchString.length > 2) {
+                    executeNBAFlow({
+                        strategyName : this.strategyName,
+                        contextRecordId : this.recordId,
+                        searchString : this.searchString
+                    }).then(
+                        result => {
+                            console.log('knowledge flow executeNBAFlow', result, this.maxRecommendations, this.strategyName, this.strategySource, this.displayTitle, this.displayDescription);
+                            this.recommendations = {recommendations : result};
+                        }
+                    ).catch(
+                        error => {
+                            console.error(error);
+                        }
+                    ).finally(() => {
+                        this.isShowError = true;
+                    });
+                } else {
+                    this.recommendations = null;
+                }
+        }, 500);
+    }
+
+    launchNewArticleFlow() {
+        window.open(this.buildFlowURL('Run_Knowledge_Flow_Basically', ''), '_blank');
+    }
+    
 }

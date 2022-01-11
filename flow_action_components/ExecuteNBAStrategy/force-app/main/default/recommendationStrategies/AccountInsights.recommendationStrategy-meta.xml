@@ -13,6 +13,7 @@
     </if>
     <label>AccountInsights</label>
     <recommendationLoad>
+        <object>Account</object>
         <label>Load Account Recommendations</label>
         <name>Load_Account_Recommendations</name>
         <condition>

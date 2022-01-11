@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>53.0</apiVersion>
-    <description>Display NBA Recommendations FSC</description>
+    <description>Display Knowledge NBA Recommendations</description>
     <isExposed>true</isExposed>
-    <masterLabel>Display NBA Recommendations FSC</masterLabel>
+    <masterLabel>Display Knowledge NBA Recommendations</masterLabel>
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>

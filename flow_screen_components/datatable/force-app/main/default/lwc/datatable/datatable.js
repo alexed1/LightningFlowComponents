@@ -44,7 +44,7 @@ export default class Datatable extends LightningElement {
 
     // Component Input & Output Attributes
     //@api tableData = []; see new version below
-    @api columnFields = [];
+    @api columnFields = '';
     @api columnAlignments = [];
     @api columnCellAttribs = [];
     @api columnEdits = '';

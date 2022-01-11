@@ -5,7 +5,7 @@
 .slds-modal__content{
     overflow: initial;
 }
-.slds-modal__container{
+.custom_modal{
     position: inherit;
     width: 40%;
     height: 80%;

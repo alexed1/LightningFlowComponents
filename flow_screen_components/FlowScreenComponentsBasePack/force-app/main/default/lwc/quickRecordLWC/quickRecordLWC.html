@@ -44,10 +44,10 @@
       <!-- error -->
       </div>
       <div  class="slds-col">
-        <lightning-combobox placeholder="Select View" options={viewOptionList} value={selectedViewOption} onchange={changeView}></lightning-combobox>
+        <lightning-combobox placeholder="Select View" options={viewOptionList} value={selectedViewOption.value} onchange={changeView}></lightning-combobox>
       </div>
       <div class="slds-col">
-        <lightning-button variant="base" label="Save view"></lightning-button>
+        <lightning-button variant="base" label="Save view" onclick={showViewEditer}></lightning-button>
       </div>
     </div>
     <div class="slds-grid slds-var-m-top_medium slds-wrap">
@@ -64,7 +64,7 @@
       </template>
       <template if:true={displayModal}>
         <section onkeydown={handleKeyDown} role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-          <div class="slds-modal__container">
+          <div class="slds-modal__container custom_modal">
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
               <c-quick-record-expression object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-quick-record-expression>
             </div>
@@ -74,6 +74,23 @@
             </footer>
           </div>
         </section>
+      </template>
+
+      <template if:true={displayViewEditer}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container">
+            <header class="slds-modal__header slds-modal__header_empty">
+              <lightning-button-icon icon-name="utility:close" onclick={closeViewEditer} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+              <lightning-input data-target-id="viewName" label="View Name" value={selectedViewOption.label}></lightning-input>
+            </div>
+            <footer class="slds-modal__footer">
+              <button class="slds-button slds-button_neutral" onclick={updateViewName}>Update</button>
+            </footer>
+          </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
       </template>
     </div>
   </div>

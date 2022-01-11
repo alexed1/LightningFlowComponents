@@ -58,9 +58,11 @@ export default class expressionLine extends LightningElement {
 
     @api
     validate() {
+        console.log('expressionLine 1');
         let validity = {
             isValid: true
         };
+        console.log('expressionLine 2');
         let inputsToVerify = this.template.querySelectorAll('lightning-input');
         if (inputsToVerify && inputsToVerify.length) {
             inputsToVerify.forEach(curInput => {
@@ -72,6 +74,7 @@ export default class expressionLine extends LightningElement {
                 }
             })
         }
+        console.log('expressionLine 3');
         return validity;
     }
 }

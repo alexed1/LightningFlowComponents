@@ -1,6 +1,17 @@
 public with sharing class QuickRecordViewController {
     public virtual class BaseException extends Exception {}
 
+    final static Map<String, string> FORMULA_TYPE_MAP = new Map<String, String>{
+        'BOOLEAN'  => 'boolean',
+        'CURRENCY' =>'number',
+        'DATE' =>'date',
+        'DATETIME' =>'datetime',
+        'DOUBLE' =>'number',
+        'INTEGER' =>'number',
+        'LONG' =>'number',
+        'PERCENT' =>'number'
+    };
+
     @AuraEnabled
     public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
         List<FlowTableViewDefinition__c>  quickRecordViewRecordList = [
@@ -124,9 +135,10 @@ public with sharing class QuickRecordViewController {
             DescribeSObjectResult d = r.getDescribe();
             List<String> fieldList = viewList[0].Field_API_Names__c.split(',');
             for(String fieldName : fieldList) {
+                String fieldType = FORMULA_TYPE_MAP.get(String.valueOf(d.fields.getMap().get(fieldName).getDescribe().getType()));
                 filterFields.add(
                     new FilterObjectRepresentation(
-                        'text', 
+                        fieldType != null ? fieldType : 'text', 
                         fieldName, 
                         d.fields.getMap().get(fieldName).getDescribe().getLabel()
                     )
@@ -175,5 +187,21 @@ public with sharing class QuickRecordViewController {
                 return null;
             }
         }
+    }
+
+    @AuraEnabled
+    public static String upsertView(String viewId, String viewName, String objectName, List<String> fieldList){
+        FlowTableViewDefinition__c viewDef = new FlowTableViewDefinition__c();
+        viewDef.Name = viewName;
+        viewDef.Object_API_Name__c = objectName;
+        viewDef.Field_API_Names__c = String.join(fieldList, ',');
+        viewDef.View_Name__c = viewName;
+        if(String.isNotEmpty(viewId)) {
+            viewDef.Id = viewId;
+        }
+
+        upsert viewDef;
+
+        return viewDef.Id;
     }
 }

@@ -8,26 +8,32 @@ import searcObjectFilterApiFiledsName from '@salesforce/apex/QuickRecordViewCont
 import addQueryToObj from '@salesforce/apex/QuickRecordViewController.placeQuery';
 import getRecordDataStr from '@salesforce/apex/QuickRecordViewController.getRecordDataString';
 import getFlowTableViewDefinition from '@salesforce/apex/QuickRecordViewController.getFlowTableViewDefinition';
-
+import upsertView from '@salesforce/apex/QuickRecordViewController.upsertView';
 export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api quickRecordViewId;
-  @api recordDataString;
-  @api objectName;
+  @api recordDataString = '';
+  @api objectName = 'Account';
   @api displayColumns;
   @api error = false;
   @api objectInput;
   selectedObject;
-  selectedViewOption = '';
+  @track selectedViewOption = {};
   displayLookup = true;
   displayModal = false;
-  viewOptionList = [];
+  displayViewEditer = false;
+  @track viewOptionList = [];
   @track filterFields = [];
   chosenField = '';
   query = {operator:'equals'}
-
   get getIcon(){
     return 'standard:'+this.objectName.toLowerCase()
+  }
+  
+  connectedCallback() {
+    //this.objectName = "Account";
+    this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
+    this.dispatchEvent(new FlowAttributeChangeEvent('recordDataString', this.recordDataString));
   }
 
   displayLookupHandler(){
@@ -46,7 +52,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       result => {
         console.log('handleSelectionChange', result);
         this.viewOptionList = result;
-        this.selectedViewOption = this.viewOptionList[0].value;
+        this.selectedViewOption = this.viewOptionList[0];
         this.searcObjectFilterApiFiledsName();
         this.getRecordDataStr();
       }
@@ -58,7 +64,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     );
   }
   searcObjectFilterApiFiledsName() {
-    searcObjectFilterApiFiledsName({"viewId" : this.selectedViewOption})
+    searcObjectFilterApiFiledsName({"viewId" : this.selectedViewOption.value})
           .then(result => {
             this.filterFields = JSON.parse(JSON.stringify(result));
             let valueList = [];
@@ -170,14 +176,14 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   changeView(event) {
     console.log('changeView',event.detail.value);
-    this.selectedViewOption = event.detail.value;
+    this.selectedViewOption = this.viewOptionList.find(item => item.value === event.detail.value) ;
     this.searcObjectFilterApiFiledsName();
     this.getRecordDataStr();
   }
 
   
   getRecordDataStr(whereCondition) {
-    getRecordDataStr({"objectName" : this.objectName, viewId : this.selectedViewOption, whereCondition : whereCondition})
+    getRecordDataStr({"objectName" : this.objectName, viewId : this.selectedViewOption.value, whereCondition : whereCondition})
         .then(result => {
           console.log('result', result);
           result.forEach(
@@ -193,6 +199,50 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
         .catch(error => {
           console.log(error);
     });
+  }
+
+  showViewEditer() {
+    this.displayViewEditer = true;
+  }
+  closeViewEditer() {
+    this.displayViewEditer = false;
+  }
+
+  updateViewName() {
+    let viewName = this.template.querySelector(`[data-target-id="viewName"]`).value;
+    console.log('viewName', viewName);
+    let fieldList = [];
+    this.filterFields.forEach(
+      item => {
+        fieldList.push(item.fieldName);
+      }
+    );
+
+    upsertView({
+      viewId : this.selectedViewOption.value,
+      viewName :viewName,
+      objectName : this.objectName,
+      fieldList :fieldList
+    }).then(
+      result => {
+        console.log('result', result);
+        this.selectedViewOption.value = result;
+        this.selectedViewOption.label = viewName;
+        this.viewOptionList = [...this.viewOptionList];
+        this.displayViewEditer = false;
+        const showToast = new ShowToastEvent({
+          title: 'View Name was updated',
+          message: 'View Name was updated successfully',
+          variant: 'success',
+        });
+        this.dispatchEvent(showToast);      
+      }
+    ).catch(
+      error => {
+        console.error(error);
+      }
+    );
+    //
   }
 
 }

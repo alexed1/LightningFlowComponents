@@ -1,0 +1,12 @@
+.close-btn{
+    right: 0;
+    top: -20px;
+}
+.slds-modal__content{
+    overflow: initial;
+}
+.custom_modal{
+    position: inherit;
+    width: 40%;
+    height: 80%;
+}

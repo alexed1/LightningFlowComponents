@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>53.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property label="quickRecordViewId" name="quickRecordViewId" type="String" role="inputOnly"/>
+            <property label="recordDataString" name="recordDataString" type="String" role="outputOnly"/>
+            <property label="objectName" name="objectName" type="String" />
+            <property label="displayColumns" name="displayColumns" type="String" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

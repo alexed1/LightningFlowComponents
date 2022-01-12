@@ -94,7 +94,7 @@ export default class ers_datatableCPE extends LightningElement {
     isFlowLoaded = false;
     myBanner = 'My Banner';
     wizardHeight = defaults.dualListboxHeight;
-    showColumnAttributesToggle = false;
+    @api showColumnAttributesToggle = false; // TODO remove api
     disallowHeaderChange = false;
     firstPass = true;
     isNextDisabled = true;
@@ -104,6 +104,24 @@ export default class ers_datatableCPE extends LightningElement {
     objectPluralLabel;
     objectIconName;
     dispatchValue;
+
+    @api 
+    get isSerializedRecordDataInput() {                                                 
+        return this.inputValues.isSerializedRecordData.value;                           
+    }
+    
+    @api
+    get serializedRecordData() {
+        return this.inputValues.serializedRecordData.value;
+    }
+    set serializedRecordData(value) {
+        this.inputValues.serializedRecordData.value = value;
+    }
+
+    @api 
+    get isSerializedRecordDataSelected() {                                              //DELETE
+        return false;                                                                   //DELETE
+    }                                                                                   //DELETE
 
     @api
     get isDisplayAll() {
@@ -178,7 +196,11 @@ export default class ers_datatableCPE extends LightningElement {
 
     @api
     get showColumnAttributes() { 
-        return (this.showColumnAttributesToggle || !this.isSObjectInput);
+        return (this.showColumnAttributesToggle || !this.isSObjectInput || this.inputValues.isSerializedRecordData.value);
+    }
+    @api
+    get isShowColumnAttributesToggle() { 
+        return (this.isObjectSelected && !this.inputValues.isSerializedRecordData.value);
     }
 
     @api
@@ -451,6 +473,11 @@ export default class ers_datatableCPE extends LightningElement {
         allowOverflow: {value: null, valueDataType: null, isCollection: false, label: 'Allow table to overflow its container', 
             helpText: 'Select if you want the datatable to be able to overflow its container.  Useful when editing picklists on a table with only a few records.  Not recommended for wide tables in narrow containers'},
         cb_allowOverflow: {value: null, valueDataType: null, isCollection: false, label: ''},
+        serializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input serialized data', 
+            helpText: 'Select if you want the datatable to be able to accept serialized data.'},
+        isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
+            helpText: 'Select if you want the datatable to be able to accept serialized data.'},
+        cb_isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: ''},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -517,6 +544,7 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'advancedAttributes',
             attributes: [
                 {name: 'isUserDefinedObject'},
+                {name: 'isSerializedRecordData'},                                                                     // LY
                 {name: defaults.customHelpDefinition, 
                     label: 'Apex Defined Object Attributes', 
                     helpText: 'The Datatable component expects a serialized string of the object’s records and fields like the text seen here:\n' + 
@@ -583,7 +611,6 @@ export default class ers_datatableCPE extends LightningElement {
     get builderContext() {
         return this._builderContext;
     }
-
     set builderContext(context) {
         this._builderContext = context || {};
         if (this._builderContext) {
@@ -718,6 +745,7 @@ export default class ers_datatableCPE extends LightningElement {
             this.inputValues.preSelectedRows.value = null;
             this.dispatchFlowValueChangeEvent('tableData', null, 'String');
             this.dispatchFlowValueChangeEvent('preSelectedRows', null, 'String');
+            this.dispatchFlowValueChangeEvent('serializedRecordData', null, 'String');
             this.selectedSObject = typeValue;
             this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
         }
@@ -1116,13 +1144,13 @@ export default class ers_datatableCPE extends LightningElement {
     @api
     validate() {
         this.validateErrors.length = 0;
-
         // Not Apex-Defined -- Check for Object, Record Collection, Columns
         if (this.isSObjectInput) {
             this.checkError((!this.isObjectSelected), 'objectName', 'You must select an Object');
-            this.checkError((!this.isRecordCollectionSelected), 'tableData', 'You must provide a Collection of Records to display');
+            this.checkError((!this.isRecordCollectionSelected && !this.inputValues.isSerializedRecordData.value), 'tableData', 'You must provide a Collection of Records to display');
             this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
         }
+        this.checkError(this.inputValues.isSerializedRecordData.value && this.inputValues.isUserDefinedObject.value, 'isSerializedRecordData', 'need to select only one option (Input data is Apex-Defined or Input data is Serialized)');
 
         let allComboboxes = this.template.querySelectorAll('c-fsc_flow-combobox');
         if (allComboboxes) {

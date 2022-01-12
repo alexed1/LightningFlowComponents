@@ -1,0 +1,97 @@
+<template>
+  <div class="slds-p-bottom_medium">
+    <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread " onclick={closeModalHandler}>
+      <div class="slds-col">
+        <template if:false={displayLookup}>
+          <lightning-icon icon-name={getIcon} class="slds-var-m-right_small"></lightning-icon>
+        </template>
+        <div class="slds-grid slds-grid_vertical-align-end">
+          <template if:false={displayLookup}>
+            <h2 class="slds-var-m-right_x-small" onclick={displayLookupHandler}>{objectName}</h2>
+            <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
+          </template>
+          <template if:true={displayLookup}>
+            <c-lookup onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-lookup>
+          </template>
+        </div>
+        <!-- Error -->
+        <template if:true={error}>
+          <div class="slds-grid slds-grid_vertical-align-center slds-p-vertical_x-small slds-p-left_medium">
+            <section aria-describedby="dialog-body-id-2" aria-label="Dialog Title" class="slds-popover slds-nubbin_left" role="dialog">
+              <header class="slds-popover__header slds-theme_error">
+                <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+                  <div class="slds-media__figure">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Error!" title="default style" size="small"></lightning-icon>
+                  </div>
+                  <div class="slds-media__body">
+                    <h2 class="slds-truncate slds-text-heading_medium" id="dialog-heading-id-1" title="Resolve error">Resolve error</h2>
+                  </div>
+                  <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onclick={clearError}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Error!" title="default style" size="small"></lightning-icon>
+                  </button>
+              </div>
+            </header>    
+            <div class="slds-popover__body" id="dialog-body-id-2">
+            <div class="slds-media">
+            <div class="slds-media__body">
+            <p>{error.body.message}</p>
+            </div>
+            </div>
+            </div>
+            </section>
+          </div>
+        </template>
+      <!-- error -->
+      </div>
+      <div  class="slds-col">
+        <lightning-combobox placeholder="Select View" options={viewOptionList} value={selectedViewOption.value} onchange={changeView}></lightning-combobox>
+      </div>
+      <div class="slds-col">
+        <lightning-button variant="base" label="Save view" onclick={showViewEditer}></lightning-button>
+      </div>
+    </div>
+    <div class="slds-grid slds-var-m-top_medium slds-wrap">
+      <template for:each={filterFields} for:item="field" for:index="index">
+        <span class="slds-pill slds-var-m-right_xxx-small slds-var-m-top_small" key={field.fieldName}>
+          <span class="slds-pill__label">{field.label} <b>{field.operator} {field.value} </b></span>
+          <span class="slds-icon_container slds-pill__remove" title="Open modal">
+            <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayModalHandler} data-index={index}></lightning-button-icon>
+          </span>
+          <span class="slds-icon_container slds-pill__remove" title="Remove">
+            <lightning-button-icon icon-name="utility:close" variant="bare" onclick={handleClearPillData} data-index={index}></lightning-button-icon>
+          </span>
+        </span>
+      </template>
+      <template if:true={displayModal}>
+        <section onkeydown={handleKeyDown} role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container custom_modal">
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+              <c-quick-record-expression object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-quick-record-expression>
+            </div>
+            <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+              <div class="slds-text-color_inverse-weak slds-text-align_left">Press Enter to save or Esc to cancel</div>
+              <button class="slds-button slds-button_neutral" onclick={updateQueryHandler}>Update</button>
+            </footer>
+          </div>
+        </section>
+      </template>
+
+      <template if:true={displayViewEditer}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+          <div class="slds-modal__container">
+            <header class="slds-modal__header slds-modal__header_empty">
+              <lightning-button-icon icon-name="utility:close" onclick={closeViewEditer} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+              <lightning-input data-target-id="viewName" label="View Name" value={selectedViewOption.label}></lightning-input>
+            </div>
+            <footer class="slds-modal__footer">
+              <button class="slds-button slds-button_neutral" onclick={updateViewName}>Update</button>
+            </footer>
+          </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+    </div>
+  </div>
+</template>

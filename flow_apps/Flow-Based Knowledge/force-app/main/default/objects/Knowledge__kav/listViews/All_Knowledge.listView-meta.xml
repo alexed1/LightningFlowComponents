@@ -8,6 +8,7 @@
     <columns>LANGUAGE</columns>
     <columns>LAST_PUBLISHED_DATE</columns>
     <columns>URL_NAME</columns>
+    <columns>VERSION_NUMBER</columns>
     <filterScope>Everything</filterScope>
     <label>All Knowledge</label>
 </ListView>

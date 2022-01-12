@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
+    <assignments>
+        <description>This is currently derived from the Name that the user provided, simply by replacing spaces with hyphens</description>
+        <name>Assign_an_URL_Name</name>
+        <label>Assign an URL Name</label>
+        <locationX>50</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>curKnowledge.UrlName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>urlNameCandidate</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>curKnowledge.Default_View__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>foo</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_Knowledge_Article</targetReference>
+        </connector>
+    </assignments>
     <decisions>
         <name>Create_or_Edit_Knowledge_0</name>
         <label>Create or Edit Knowledge?</label>
@@ -17,15 +41,20 @@
                 <leftValueReference>recordId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <stringValue/>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Create_Knowledge_Article</targetReference>
+                <targetReference>Assign_an_URL_Name</targetReference>
             </connector>
             <label>Create</label>
         </rules>
     </decisions>
+    <formulas>
+        <name>urlNameCandidate</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!curKnowledge.Title}, &quot; &quot;, &quot;-&quot;)</expression>
+    </formulas>
     <interviewLabel>KnowledgeFlow Post-Steps {!$Flow.CurrentDateTime}</interviewLabel>
     <label>KnowledgeFlow Post-Steps</label>
     <processMetadataValues>
@@ -51,7 +80,7 @@
         <name>Create_Knowledge_Article</name>
         <label>Create Knowledge Article</label>
         <locationX>50</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <connector>
             <targetReference>screenSuccessCreate</targetReference>
         </connector>
@@ -71,7 +100,7 @@
         <name>screenSuccessCreate</name>
         <label>screenSuccessCreate</label>
         <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

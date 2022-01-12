@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecommendationStrategy xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contextRecordType>Account</contextRecordType>
+    <if>
+        <childNode>Load_Account_Recommendations</childNode>
+        <label>Is Renewal Imminent?</label>
+        <name>Is_Renewal_Imminent</name>
+        <childNodeExpression>
+            <childName>Load_Account_Recommendations</childName>
+            <expression>$Record.Renewal_Date__c - TODAY()   &gt; 30</expression>
+        </childNodeExpression>
+        <onlyFirstMatch>false</onlyFirstMatch>
+    </if>
+    <label>AccountInsights</label>
+    <recommendationLoad>
+        <label>Load Account Recommendations</label>
+        <name>Load_Account_Recommendations</name>
+        <condition>
+            <field>Name</field>
+            <operator>EQUALS</operator>
+            <value>
+                <type>TEXT</type>
+                <value>Renewal Opportunity</value>
+            </value>
+        </condition>
+        <conditionLogic>and</conditionLogic>
+        <object>Account</object>
+    </recommendationLoad>
+    <union>
+        <childNode>Is_Renewal_Imminent</childNode>
+        <label>Output</label>
+        <name>Output_ed1582d8fc7c4e3aabd32aee6c516a85</name>
+    </union>
+</RecommendationStrategy>

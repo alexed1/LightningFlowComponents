@@ -5,7 +5,7 @@
         <label>Launch Knowledge Form</label>
         <locationX>176</locationX>
         <locationY>398</locationY>
-        <actionName>c:Open_URL</actionName>
+        <actionName>c:OpenURL</actionName>
         <actionType>component</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
-    <interviewLabel>KnowledgeFlowBaseTemplate {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Knowledge - Standard Simple Layout</label>
+    <interviewLabel>Knowledge - Standard Rich Layout {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Knowledge - Standard Rich Layout</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -43,6 +43,51 @@
             <isRequired>false</isRequired>
             <objectFieldReference>curKnowledge.Summary</objectFieldReference>
         </fields>
+        <fields>
+            <name>label1</name>
+            <fieldText>&lt;p&gt;Body Content&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>inputRichText</name>
+            <extensionName>c:inputRichTextFSC</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>value</name>
+                <value>
+                    <elementReference>curKnowledge.Knowledge_Rich_Content__c</elementReference>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <fields>
+            <name>impactRating</name>
+            <dataType>Number</dataType>
+            <defaultValue>
+                <elementReference>curKnowledge.ImpactRating__c</elementReference>
+            </defaultValue>
+            <fieldText>Impact Rating</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+            <scale>0</scale>
+        </fields>
+        <fields>
+            <fieldType>ObjectProvided</fieldType>
+            <isRequired>false</isRequired>
+            <objectFieldReference>curKnowledge.High_Impact_Justification__c</objectFieldReference>
+            <visibilityRule>
+                <conditionLogic>and</conditionLogic>
+                <conditions>
+                    <leftValueReference>impactRating</leftValueReference>
+                    <operator>GreaterThanOrEqualTo</operator>
+                    <rightValue>
+                        <numberValue>8.0</numberValue>
+                    </rightValue>
+                </conditions>
+            </visibilityRule>
+        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -53,13 +98,19 @@
             <targetReference>Load_Existing_Knowledge_If_Applicable</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <name>Create_or_Update_Knowledge_Record</name>
         <label>Create or Update Knowledge Record</label>
         <locationX>176</locationX>
         <locationY>398</locationY>
         <flowName>KnowledgeFlow_Post_Steps</flowName>
+        <inputAssignments>
+            <name>curKnowledge</name>
+            <value>
+                <elementReference>curKnowledge</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <name>recordId</name>
             <value>

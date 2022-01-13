@@ -18,7 +18,7 @@
             <assignToReference>curKnowledge.Default_View__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>foo</stringValue>
+                <elementReference>defaultView</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -41,7 +41,7 @@
                 <leftValueReference>recordId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -135,7 +135,7 @@
             <targetReference>Create_or_Edit_Knowledge_0</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>curKnowledge</name>
         <dataType>SObject</dataType>
@@ -143,6 +143,13 @@
         <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Knowledge__kav</objectType>
+    </variables>
+    <variables>
+        <name>defaultView</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>recordId</name>

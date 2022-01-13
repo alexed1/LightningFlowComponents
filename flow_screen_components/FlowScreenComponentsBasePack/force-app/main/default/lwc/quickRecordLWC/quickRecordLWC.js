@@ -13,6 +13,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api quickRecordViewId;
   @api recordDataString = '';
+  @api recordDataStringAll = '';
+  @api recordDataStringSelected = '';
   @api objectName = 'Account';
   @api displayColumns;
   @api error = false;
@@ -33,7 +35,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   connectedCallback() {
     //this.objectName = "Account";
     this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
-    this.dispatchEvent(new FlowAttributeChangeEvent('recordDataString', this.recordDataString));
+    this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
   }
 
   displayLookupHandler(){
@@ -193,8 +195,9 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
               }
             }
           );
-          this.recordDataString = JSON.stringify(result);
-          this.dispatchEvent(new FlowAttributeChangeEvent('recordDataString', this.recordDataString));
+          this.recordDataStringAll = JSON.stringify(result);
+          console.log('recordDataStringAll', JSON.stringify(result));
+          this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
         })
         .catch(error => {
           console.log(error);

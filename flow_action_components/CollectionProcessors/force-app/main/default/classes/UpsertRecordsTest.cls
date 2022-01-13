@@ -36,10 +36,17 @@ public with sharing class UpsertRecordsTest {
         List<UpsertRecords.Request> testUpsert = new List<UpsertRecords.Request>();
         UpsertRecords.Request recordToTest = new UpsertRecords.Request();
         recordToTest.objectName = 'Case';
-        recordToTest.serializedRecordData = '[{"attributes":{"type":"Case","url":"/services/data/v53.0/sobjects/Case/5000U00000CNmCRQA1"},"CaseNumber":"00001026","Status":"Working","Id":"5000U00000CNmCRQA1"}]';
+        recordToTest.serializedRecordData = '[{"attributes":{"type":"Case"},"CaseNumber":"00001026","Status":"Working"}]';
         testUpsert.add(recordToTest);
         System.debug(UpsertRecords.execute(testUpsert));
-        System.assertEquals(1, new List<Case>([SELECT Id FROM Case LIMIT 1]).size());
+        List<Case> caseList = [SELECT Id, CaseNumber, Status FROM Case];
+        System.assertEquals(1, caseList.size());
+
+        recordToTest.serializedRecordData = JSON.serialize(caseList);
+        testUpsert.add(recordToTest);
+        System.debug(UpsertRecords.execute(testUpsert));
+        caseList = [SELECT Id, CaseNumber, Status FROM Case];
+        System.assertEquals(1, caseList.size());
     }
 
 }

@@ -4,9 +4,12 @@
         <name>Launch_Knowledge_Form</name>
         <label>Launch Knowledge Form</label>
         <locationX>182</locationX>
-        <locationY>734</locationY>
-        <actionName>c:OpenURL</actionName>
+        <locationY>1070</locationY>
+        <actionName>c:Open_URL</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>Wait_Screen</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>mode</name>
@@ -26,7 +29,7 @@
         <name>Prepare_Knowledge_Form</name>
         <label>Prepare Knowledge Form</label>
         <locationX>182</locationX>
-        <locationY>614</locationY>
+        <locationY>950</locationY>
         <actionName>GenerateFlowLink</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -67,6 +70,22 @@
     </actionCalls>
     <apiVersion>54.0</apiVersion>
     <assignments>
+        <name>Assign_Default_Flow</name>
+        <label>Assign Default Flow</label>
+        <locationX>50</locationX>
+        <locationY>734</locationY>
+        <assignmentItems>
+            <assignToReference>flowName</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>StandardSimpleKnowledgeLayout</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Prepare_Knowledge_Form</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Flow_Name_For_Existing</name>
         <label>Flow Name For Existing</label>
         <locationX>314</locationX>
@@ -79,7 +98,7 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Prepare_Knowledge_Form</targetReference>
+            <targetReference>If_Flow_Name_is_Empty</targetReference>
         </connector>
     </assignments>
     <assignments>
@@ -95,9 +114,41 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Prepare_Knowledge_Form</targetReference>
+            <targetReference>If_Flow_Name_is_Empty</targetReference>
         </connector>
     </assignments>
+    <decisions>
+        <name>If_Flow_Name_is_Empty</name>
+        <label>If Flow Name is Empty</label>
+        <locationX>182</locationX>
+        <locationY>614</locationY>
+        <defaultConnector>
+            <targetReference>Prepare_Knowledge_Form</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Is_Empty</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>flowName</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>flowName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue></stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Default_Flow</targetReference>
+            </connector>
+            <label>Is Empty</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>New_Or_Existing</name>
         <label>New Or Existing?</label>
@@ -190,6 +241,22 @@
             <fieldText>Select Knowledge Type</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>true</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Wait_Screen</name>
+        <label>Wait Screen</label>
+        <locationX>182</locationX>
+        <locationY>1190</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>WaitMessage</name>
+            <fieldText>&lt;p&gt;Open {!flowName} flow&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>

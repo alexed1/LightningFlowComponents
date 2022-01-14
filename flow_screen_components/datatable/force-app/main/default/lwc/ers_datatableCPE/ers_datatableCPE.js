@@ -845,6 +845,26 @@ export default class ers_datatableCPE extends LightningElement {
                 this.disableAllowAll = event.detail.newValue;
             }
 
+            if (changedAttribute == 'isSerializedRecordData') {
+                if (event.detail.newValue) {
+                    this.isDisplayAll = false;                          
+                    if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
+                        let typeValue = 'Account';                         // Aribtrary Object just so we can dispatch the event
+                        const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
+                        const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
+                            composed: true,
+                            cancelable: false,
+                            bubbles: true,
+                            detail: {
+                                typeName, 
+                                typeValue,  
+                            }
+                        });
+                        this.dispatchEvent(dynamicTypeMapping);
+                    }
+                }
+            }
+
             // Don't allow hide the checkbox column if a selection is required
             if (changedAttribute == 'isRequired') {
                 this.isShowCheckboxColumn = event.detail.newValue;

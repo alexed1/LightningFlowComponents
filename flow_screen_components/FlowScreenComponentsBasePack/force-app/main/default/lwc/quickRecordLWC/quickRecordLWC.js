@@ -23,6 +23,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @track selectedViewOption = {};
   displayLookup = true;
   displayModal = false;
+  displayCSVConvertor = false;
   displayViewEditer = false;
   @track viewOptionList = [];
   @track filterFields = [];
@@ -30,6 +31,28 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   query = {operator:'equals'}
   get getIcon(){
     return 'standard:'+this.objectName.toLowerCase()
+  }
+
+  get flowParamsJSON () {
+    console.log('flowParams',this.recordDataStringSelected);
+    return JSON.stringify([
+      {
+        name : 'recordDataStringAll',
+        type : 'String',
+        value : this.recordDataStringAll
+      },
+      {
+        name : 'recordDataStringSelected',
+        type : 'String',
+        value : this.recordDataStringSelected
+      }
+      ,
+      {
+        name : 'objectName',
+        type : 'String',
+        value : this.objectName
+      }
+    ]);
   }
   
   connectedCallback() {
@@ -247,5 +270,15 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     );
     //
   }
+
+  showCSVConvertor() {
+    this.displayCSVConvertor = true;
+  }
+
+  closeCSVConvertor() {
+    this.displayCSVConvertor = false;
+  }
+
+
 
 }

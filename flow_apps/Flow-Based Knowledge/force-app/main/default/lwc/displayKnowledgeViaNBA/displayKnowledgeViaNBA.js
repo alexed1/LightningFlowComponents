@@ -54,7 +54,7 @@ export default class DisplayKnowledgeViaNBA extends LightningElement {
             setRecommendationReaction({
                 recordId: this.recordId,
                 reaction: reaction,
-                strategyName: this.strategyName,
+                strategyName: 'foo',//this.strategyName,
                 recommendation: JSON.stringify(curRecommendation)
             }).then(result => {
                 this.showToast({

@@ -5,7 +5,7 @@
         <label>Launch Knowledge Form</label>
         <locationX>182</locationX>
         <locationY>1070</locationY>
-        <actionName>c:Open_URL</actionName>
+        <actionName>c:OpenURL</actionName>
         <actionType>component</actionType>
         <connector>
             <targetReference>Wait_Screen</targetReference>
@@ -94,7 +94,7 @@
             <assignToReference>flowName</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Get_Knowledge.Default_View__c</elementReference>
+                <elementReference>Get_Knowledge.ViewFlowName__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -140,7 +140,7 @@
                 <leftValueReference>flowName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <stringValue/>
                 </rightValue>
             </conditions>
             <connector>

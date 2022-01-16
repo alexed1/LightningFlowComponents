@@ -15,10 +15,10 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>curKnowledge.Default_View__c</assignToReference>
+            <assignToReference>curKnowledge.ViewFlowName__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>defaultView</elementReference>
+                <elementReference>viewFlowName</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -41,7 +41,7 @@
                 <leftValueReference>recordId</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue></stringValue>
+                    <stringValue/>
                 </rightValue>
             </conditions>
             <connector>
@@ -145,14 +145,14 @@
         <objectType>Knowledge__kav</objectType>
     </variables>
     <variables>
-        <name>defaultView</name>
+        <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>recordId</name>
+        <name>viewFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

@@ -76,7 +76,8 @@ public with sharing class ExecuteNBAStrategy {
     }
 
     @AuraEnabled
-    public static void setRecommendationReaction(Id recordId, String reaction, String strategyName, String recommendation) {
+    public static void setRecommendationReaction(Id recordId, String reaction, String strategyName,String recommendation) {
+        System.debug('strategyName is: ' + strategyName);
         NBARecommendation curRecommendation = (NBARecommendation) JSON.deserialize(recommendation, NBARecommendation.class);
 
         ConnectApi.RecommendationReactionInput reactionInput = new ConnectApi.RecommendationReactionInput();

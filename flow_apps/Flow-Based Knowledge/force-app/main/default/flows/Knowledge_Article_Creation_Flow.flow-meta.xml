@@ -7,13 +7,10 @@
         <locationY>398</locationY>
         <actionName>c:OpenURL</actionName>
         <actionType>component</actionType>
+        <connector>
+            <targetReference>screen</targetReference>
+        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
-        <inputParameters>
-            <name>mode</name>
-            <value>
-                <stringValue>replace</stringValue>
-            </value>
-        </inputParameters>
         <inputParameters>
             <name>url</name>
             <value>
@@ -35,6 +32,18 @@
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>flowName</name>
+            <value>
+                <elementReference>Select_Knowledge_Type2</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>param1Name</name>
+            <value>
+                <stringValue>flowViewName</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>param1Value</name>
             <value>
                 <elementReference>Select_Knowledge_Type2</elementReference>
             </value>
@@ -71,6 +80,22 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
+        <name>screen</name>
+        <label>screen</label>
+        <locationX>176</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>test</name>
+            <fieldText>&lt;p&gt;test&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Select_Knowledge_Type</name>
         <label>Select Knowledge Type</label>
         <locationX>176</locationX>
@@ -99,5 +124,5 @@
             <targetReference>Select_Knowledge_Type</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

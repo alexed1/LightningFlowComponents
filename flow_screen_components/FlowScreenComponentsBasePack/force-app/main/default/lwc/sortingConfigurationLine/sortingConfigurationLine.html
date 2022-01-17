@@ -1,0 +1,20 @@
+<template>
+    <lightning-layout>
+        <lightning-layout-item size="6" padding="around-small">
+            <c-fsc_pick-object-and-field
+                object-type={objectName} 
+                hide-object-picklist="true"
+                field={field} 
+                onfieldselected={changeField}>
+            </c-fsc_pick-object-and-field>
+        </lightning-layout-item>
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-combobox 
+                label="Sorting"
+                options={sortingDeriectionOptions} 
+                onchange={changeOrderDirection} 
+                value={sortingDirection}>
+            </lightning-combobox>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

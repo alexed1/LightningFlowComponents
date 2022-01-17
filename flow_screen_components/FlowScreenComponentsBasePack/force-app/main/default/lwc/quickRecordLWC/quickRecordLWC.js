@@ -89,7 +89,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     );
   }
   searcObjectFilterApiFiledsName() {
-    searcObjectFilterApiFiledsName({"viewId" : this.selectedViewOption.value})
+    searcObjectFilterApiFiledsName({"viewId" : this.selectedViewOption.value, "objectName" : this.objectName})
           .then(result => {
             this.filterFields = JSON.parse(JSON.stringify(result));
             let valueList = [];
@@ -133,10 +133,14 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
         this.dispatchEvent(new FlowAttributeChangeEvent('displayColumns', valueList.join(',')));
     
   }
+
   chosenFieldIndex;
+
   displayModalHandler(event){
+    this.closeModalHandler();
     let index = event.target.dataset.index;
     this.chosenFieldIndex = index;
+    this.filterFields[index].isSelected = true;
     this.chosenField = JSON.parse(JSON.stringify(this.filterFields[index]));
     this.query['filterName'] = this.filterFields[index].fieldName;
     this.query['objectName'] = this.objectName;
@@ -145,6 +149,13 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   closeModalHandler(){
     this.displayModal = false;
+    if(this.filterFields) {
+      this.filterFields.forEach(
+        item => {
+          item.isSelected = false;
+        }
+      );
+    }
   }
 
   setFieldsHandler(event){

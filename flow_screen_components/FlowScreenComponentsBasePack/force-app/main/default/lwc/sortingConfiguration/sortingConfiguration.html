@@ -1,0 +1,11 @@
+<template>
+    <template for:each={_fieldList} for:item="field">
+        <c-sorting-configuration-line   
+            key={field.name}
+            field={field.name}
+            object-name={objectName}
+            onchangesorting={changeSorting} 
+            index={field.index}>
+        </c-sorting-configuration-line>
+    </template>
+</template>

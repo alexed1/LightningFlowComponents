@@ -162,6 +162,7 @@ export default class dualListBoxFSC extends LightningElement {
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
+        console.log(attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

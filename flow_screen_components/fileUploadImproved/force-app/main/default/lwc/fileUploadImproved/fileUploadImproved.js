@@ -102,10 +102,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         }
     }
 
+    numberOfFilesToUpload = 0;
     loading = false;
     handleUpload_lightningInput(event){
-        this.loading = true;
-
         let files = event.target.files;
 
         let fileNames = [];
@@ -114,8 +113,8 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             let file = files[i];
 
             if (file.size > MAX_FILE_SIZE) {
-                let maxFileSize = this.formatBytes(MAX_FILE_SIZE,2);
-                let fileSize = this.formatBytes(file.size, 2);
+                let maxFileSize = formatBytes(MAX_FILE_SIZE,2);
+                let fileSize = formatBytes(file.size, 2);
                 this.showErrors('File size cannot exceed ' + maxFileSize + '. ' + file.name + ' is ' + fileSize + '.');
                 continue;
             }
@@ -124,39 +123,61 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             filesToProcess.push(file);
         }
 
-        if(fileNames.length != 0){
+        this.numberOfFilesToUpload = fileNames.length;
+
+        if(this.numberOfFilesToUpload != 0){
+            this.loading = true;
+
             createContentVers({fileNames: fileNames, encodedRecordId: this.value})
                 .then(objFiles => {
-
                     this.handleUploadFinished(objFiles);
 
                     for (let i = 0; i < filesToProcess.length; i++) {
                         let file = filesToProcess[i];
                         let versId = objFiles[i].contentVersionId;
 
-                        let reader = new FileReader();
-                        let self = this;
-                        reader.readAsDataURL(file);
-                        
-                        reader.onload = function() {
-                            let fileContents = reader.result.split(',').pop();
-                            self.upload(fileContents, versId);
-                        };
+                        processFile(file,versId);
                     }
+
                 })
                 .catch(error => {
                     this.showErrors(this.reduceErrors(error).toString());
+                    this.loading = false;
                 })
-        } 
-    }
+        }
 
-    formatBytes(bytes,decimals) {
-        if(bytes == 0) return '0 Bytes';
-        let k = 1024,
-            dm = decimals || 2,
-            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
-            i = Math.floor(Math.log(bytes) / Math.log(k));
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        let self = this;
+        async function processFile(file,versId) {
+            try {
+                let fileContents = await readFileAsync(file);
+                self.upload(fileContents, versId);
+            } catch(error) {
+                self.showErrors(error.toString());
+            }
+        }
+
+        function readFileAsync(file) {
+            return new Promise((resolve, reject) => {
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+            
+                reader.onload = () => {
+                    resolve(reader.result.split(',').pop());
+                };
+            
+                reader.onerror = reject;
+            
+            })
+        }
+
+        function formatBytes(bytes,decimals) {
+            if(bytes == 0) return '0 Bytes';
+            let k = 1024,
+                dm = decimals || 2,
+                sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+                i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
     }
 
     upload(fileContents, versId){
@@ -166,6 +187,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         this.uploadChunk(fileContents, versId, fromPosition, toPosition);
     }
 
+    numberOfFilesUploaded = 0;
     uploadChunk(fileContents, versId, fromPosition, toPosition){
         let chunk = fileContents.substring(fromPosition,toPosition);
 
@@ -175,10 +197,19 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 toPosition = Math.min(fileContents.length, fromPosition + CHUNK_SIZE);
                 if(fromPosition < toPosition){
                     this.uploadChunk(fileContents, versId, fromPosition, toPosition);
+                } else {
+                    this.numberOfFilesUploaded += 1;
+
+                    if(this.numberOfFilesUploaded == this.numberOfFilesToUpload){
+                        this.numberOfFilesUploaded = 0;
+                        this.loading = false;
+                    }
                 }
             })
             .catch(error => {
                 this.showErrors(this.reduceErrors(error).toString());
+                this.numberOfFilesUploaded = 0;
+                this.loading = false;
             })
     }
 
@@ -252,8 +283,6 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
 
         this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
 
-        this.loading = false;
-
         function getIconSpecs(docType){
             switch(docType){
                 case 'csv':
@@ -284,6 +313,7 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
     
     deleteDocument(event){
+        this.loading = true;
         event.target.blur();
 
         let contentVersionId = event.target.dataset.contentversionid;    
@@ -306,9 +336,12 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 this.checkDisabled();
 
                 this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+
+                this.loading = false;
             })
             .catch((error) => {
                 this.showErrors(this.reduceErrors(error).toString());
+                this.loading = false;
             })
     }
 

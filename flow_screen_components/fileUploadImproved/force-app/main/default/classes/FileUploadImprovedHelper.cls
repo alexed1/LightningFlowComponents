@@ -166,7 +166,14 @@ public without sharing class FileUploadImprovedHelper{
             List<ContentDocumentLink> links = new List<ContentDocumentLink>();
             for(Input input : inputs){
                 Id recordId = input.recordId;
-                Boolean visibleToAllUsers = input.visibleToAllUsers == null ? FALSE : input.visibleToAllUsers;
+                
+                Boolean visibleToAllUsers;
+                if(input.visibleToAllUsers == null){
+                    visibleToAllUsers = FALSE;
+                } else {
+                    visibleToAllUsers = input.visibleToAllUsers;
+                }
+
                 for(Id versId : input.versIds){
                     Id docId = mapVersIdToDocId.get(versId);
                     if(mapDocIdToRecordIds.get(docId).contains(recordId)){

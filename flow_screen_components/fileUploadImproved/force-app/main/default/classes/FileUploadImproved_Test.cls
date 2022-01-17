@@ -76,7 +76,7 @@ public class FileUploadImproved_Test {
     }
 
     @isTest
-    public static void invocable_test_create_link(){
+    public static void invocable_test_create_link_visibility_specified(){
         ContentVersion cv = getCV();
         Contact con = getCon();
 
@@ -92,6 +92,24 @@ public class FileUploadImproved_Test {
         ContentDocumentLink link = [SELECT Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :con.Id];
 
         system.assert(link.Visibility == 'AllUsers');
+    }
+
+    @isTest
+    public static void invocable_test_create_link_visibility_not_specified(){
+        ContentVersion cv = getCV();
+        Contact con = getCon();
+
+        FileUploadImprovedHelper.Input input = new FileUploadImprovedHelper.Input();
+        input.versIds = new List<Id>{cv.Id};
+        input.recordId = con.Id;
+
+        system.test.startTest();
+            FileUploadImprovedHelper.createContentDocumentLinkDownstream(new List<FileUploadImprovedHelper.Input>{input});
+        system.test.stopTest();
+
+        ContentDocumentLink link = [SELECT Visibility FROM ContentDocumentLink WHERE LinkedEntityId = :con.Id];
+
+        system.assert(link.Visibility == 'InternalUsers');
     }
 
     @isTest

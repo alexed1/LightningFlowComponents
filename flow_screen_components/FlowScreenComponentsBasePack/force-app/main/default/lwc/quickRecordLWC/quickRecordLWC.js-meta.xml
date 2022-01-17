@@ -4,6 +4,7 @@
     <description>Quick Record</description>
     <isExposed>true</isExposed>
     <masterLabel>Quick Record</masterLabel>
+
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__FlowScreen</target>

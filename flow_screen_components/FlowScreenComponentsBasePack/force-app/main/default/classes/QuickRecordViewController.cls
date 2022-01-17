@@ -11,6 +11,26 @@ public with sharing class QuickRecordViewController {
         'LONG' =>'number',
         'PERCENT' =>'number'
     };
+    final static String STANDARD_FIELD_LIST = 'Id, Name, OwnerId, CreatedDate';
+    final static String CASE_FIELD_LIST = 'Id, Subject, OwnerId, Description, Status';
+    final static String KNOWLEDGE_FIELD_LIST = 'Id, Title, Summary, PublishStatus ';
+
+    final static String STANDARD_FILTER_OBJECT_LIST ='[' +
+            '{"type": "text","fieldName": "Name","label": "Name"}, ' + 
+            '{"type": "datetime","fieldName": "CreatedDate","label": "Created Date"}, ' + 
+            '{"type": "text","fieldName": "OwnerId","label": "Owner"} ' + 
+        ']';
+    final static String CASE_FILTER_OBJECT_LIST ='[' +
+            '{"type": "text","fieldName": "Subject","label": "Subject"}, ' + 
+            '{"type": "text","fieldName": "Description","label": "Description"}, ' + 
+            '{"type": "text","fieldName": "OwnerId","label": "Owner"}, ' +
+            '{"type": "text","fieldName": "Status","label": "Status"} ' + 
+        ']';
+    final static String KNOWLEDGE_FILTER_OBJECT_LIST ='[' +
+            '{"type": "text","fieldName": "Title","label": "Title"}, ' + 
+            '{"type": "text","fieldName": "Summary","label": "Summary"}, ' + 
+            '{"type": "text","fieldName": "PublishStatus","label": "Status"} ' + 
+        ']';
 
     @AuraEnabled
     public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
@@ -32,12 +52,23 @@ public with sharing class QuickRecordViewController {
                    
         } else {
 
-            request =   'SELECT Id, Name, OwnerId, CreatedDate' +
-                        ' FROM '  + objectName;
+            if(objectName == 'Case') {
+                request =   'SELECT ' + CASE_FIELD_LIST +
+                ' FROM '  + objectName;
 
-                    if (String.isNotEmpty(whereCondition)){
-                            request += ' ' + whereCondition;
-                        }
+            } else if(objectName == 'Knowledge__kav' || objectName == 'KnowledgeArticleVersion'){
+                request =   'SELECT ' + KNOWLEDGE_FIELD_LIST +
+                ' FROM '  + objectName;
+            } else {
+                request =   'SELECT ' + STANDARD_FIELD_LIST +
+                        ' FROM '  + objectName;
+            }
+
+            if (String.isNotEmpty(whereCondition)){
+                request += ' ' + whereCondition;
+            }
+
+            request += ' LIMIT 100';
         }
         List<sObject> recordDataString = Database.query(request);
                 
@@ -117,7 +148,7 @@ public with sharing class QuickRecordViewController {
         return viewOptionMapList;
     }
     @AuraEnabled
-    public static List<FilterObjectRepresentation> searchFilterFileds(String viewId) {
+    public static List<FilterObjectRepresentation> searchFilterFileds(String viewId, String objectName) {
 
         List<FilterObjectRepresentation> filterFields = new List<FilterObjectRepresentation>();             //  Create List of filter fields for return
         
@@ -146,11 +177,13 @@ public with sharing class QuickRecordViewController {
             }
             return filterFields;
         } else {
-            return ParseFilterJSONToApexObject.parseStringToApexObj('[' +
-                                                                                    '{"type": "text","fieldName": "Name","label": "Name"}, ' + 
-                                                                                    '{"type": "datetime","fieldName": "CreatedDate","label": "Created Date"}, ' + 
-                                                                                    '{"type": "text","fieldName": "OwnerId","label": "Owner"} ' + 
-                                                                                ']');
+            if(objectName == 'Case') {
+                return ParseFilterJSONToApexObject.parseStringToApexObj(CASE_FILTER_OBJECT_LIST);
+            } else if(objectName == 'Knowledge__kav' || objectName == 'KnowledgeArticleVersion'){
+                return ParseFilterJSONToApexObject.parseStringToApexObj(KNOWLEDGE_FILTER_OBJECT_LIST);
+            } else {
+                return ParseFilterJSONToApexObject.parseStringToApexObj(STANDARD_FILTER_OBJECT_LIST);
+            } 
         }
     }
 

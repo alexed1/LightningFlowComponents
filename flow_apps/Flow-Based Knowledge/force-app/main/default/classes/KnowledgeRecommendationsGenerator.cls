@@ -87,7 +87,7 @@ public with sharing class KnowledgeRecommendationsGenerator
         reactionInput.strategyName = DUMMY_FLOW_API_NAME;
         reactionInput.targetActionName = rec.ActionReference;
         reactionInput.targetId =  contextRecordId;
-        reactionInput.ExternalId = rec.ExternalId;
+        reactionInput.ExternalId = (rec.Name.length() < 18) ? rec.Name :rec.Name.substring(0,18);
         reactionInput.reactionType = ConnectApi.RecommendationReactionType.Accepted;
         if(!Test.isRunningTest()) {
             ConnectApi.RecommendationReaction reactionResult = ConnectApi.NextBestAction.setRecommendationReaction(reactionInput);

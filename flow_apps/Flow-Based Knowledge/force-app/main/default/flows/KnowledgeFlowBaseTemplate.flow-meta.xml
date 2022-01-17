@@ -88,15 +88,15 @@
             </value>
         </inputAssignments>
         <inputAssignments>
-            <name>defaultView</name>
-            <value>
-                <elementReference>defaultView</elementReference>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <name>recordId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>viewFlowName</name>
+            <value>
+                <elementReference>viewFlowName</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -137,14 +137,14 @@
         <objectType>KnowledgeArticle</objectType>
     </variables>
     <variables>
-        <name>defaultView</name>
+        <name>recordId</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>recordId</name>
+        <name>viewFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

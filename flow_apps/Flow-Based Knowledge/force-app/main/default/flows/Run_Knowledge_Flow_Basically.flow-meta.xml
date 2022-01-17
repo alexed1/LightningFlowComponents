@@ -57,7 +57,7 @@
         <inputParameters>
             <name>param2Name</name>
             <value>
-                <stringValue>defaultView</stringValue>
+                <stringValue>viewFlowName</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -140,7 +140,7 @@
                 <leftValueReference>flowName</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>

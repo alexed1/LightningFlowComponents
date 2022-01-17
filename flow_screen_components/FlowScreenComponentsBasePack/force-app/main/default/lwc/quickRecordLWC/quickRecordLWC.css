@@ -10,3 +10,49 @@
     width: 40%;
     height: 80%;
 }
+
+.slds-combobox_container {
+    border-color: blue;
+  }
+
+  .dropbtn {
+    background-color: #3498DB;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #2980B9;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ffffff;
+    min-width: 40rem;
+    overflow: auto;
+    box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.746);
+    z-index: 10;
+    display: block;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.slds-combobox__input {
+    border: 1px solid blue;
+}

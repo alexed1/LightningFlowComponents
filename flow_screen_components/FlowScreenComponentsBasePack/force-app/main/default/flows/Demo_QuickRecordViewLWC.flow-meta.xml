@@ -106,6 +106,12 @@
             <name>quickRecordLWC2</name>
             <extensionName>c:quickRecordLWC</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordDataStringSelected</name>
+                <value>
+                    <elementReference>Datatable.outputSelectedRowsString</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -168,7 +174,7 @@
             <inputParameters>
                 <name>serializedRecordData</name>
                 <value>
-                    <elementReference>quickRecordLWC2.recordDataString</elementReference>
+                    <elementReference>quickRecordLWC2.recordDataStringAll</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -184,5 +190,5 @@
             <targetReference>Test_datatable</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

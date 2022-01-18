@@ -14,20 +14,20 @@ public with sharing class LookupController {
             Map<String, Schema.SObjectType> schemaMap = Schema.getGlobalDescribe();
             
             for(String key : schemaMap.keySet()){
-                labelMap.put(schemaMap.get(key).getDescribe().getLabel().toLowerCase(), String.valueOf(schemaMap.get(key)));
+                labelMap.put(schemaMap.get(key).getDescribe().getLabel(), String.valueOf(schemaMap.get(key)));
             }
 
             for(String key : labelMap.keySet()){
-                if (key.contains(searchTerm.toLowerCase())) {
+                if (key.toLowerCase().contains(searchTerm.toLowerCase())) {
                     apiSObjectName = labelMap.get(key);
                     Schema.SObjectType objectSchema = schemaMap.get(apiSObjectName);
-                    if (key.startsWith(searchTerm.toLowerCase())){
+                    if (key.toLowerCase().startsWith(searchTerm.toLowerCase())){
                         results.add(
                                     new LookupSearchResult(
                                         apiSObjectName,
                                         apiSObjectName,
                                         defaulticon,
-                                        apiSObjectName,
+                                        key,
                                         apiSObjectName
                                     )
                         );

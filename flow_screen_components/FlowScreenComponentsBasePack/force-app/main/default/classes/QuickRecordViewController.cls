@@ -87,16 +87,16 @@ public with sharing class QuickRecordViewController {
                 operatorBackend = operatorConverter(filter.operator);                                              
                 switch on filter.operator {
                         when  'contains' {
-                            List<String> valuesToCheck = filter.value.split(',');
-                            String formattedValue = '';
-                            Integer numberOfValues = valuesToCheck.size();
+                            // List<String> valuesToCheck = filter.value.split(',');
+                            // String formattedValue = '';
+                            // Integer numberOfValues = valuesToCheck.size();
                                 
-                            for (Integer i = 0; i < valuesToCheck.size(); i++){
-                                formattedValue += '\'' + valuesToCheck[i] + '\'';
-                                if (i < numberOfValues - 1)
-                                    formattedValue += ',';
-                            }
-                            wherecond += filter.fieldName + ' ' + ' IN (' + formattedValue + ')';
+                            // for (Integer i = 0; i < valuesToCheck.size(); i++){
+                            //     formattedValue += '\'' + valuesToCheck[i] + '\'';
+                            //     if (i < numberOfValues - 1)
+                            //         formattedValue += ',';
+                            // }
+                            wherecond += filter.fieldName + ' ' + ' LIKE  ' + '\'' + '%' + filter.value  + '%\'';
                         }
                         when  'end_with' {
                             wherecond += filter.fieldName + ' ' + ' LIKE ' + '\'' + '%' + filter.value  + '\'';

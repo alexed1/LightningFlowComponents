@@ -25,12 +25,13 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   displayModal = false;
   displayCSVConvertor = false;
   displayViewEditer = false;
+  displayConfigureView = false;
   @track viewOptionList = [];
   @track filterFields = [];
   chosenField = '';
   query = {operator:'equals'}
   get getIcon(){
-    return 'standard:'+this.objectName.toLowerCase()
+    return 'standard:'+this.objectName.toLowerCase().replace('__kav', '');
   }
 
   get flowParamsJSON () {
@@ -54,9 +55,23 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       }
     ]);
   }
+
+  // get сonfigureViewFlowParamsJSON () {
+  //   console.log('flowParams',this.recordDataStringSelected);
+    
+  //   return JSON.stringify([
+  //     {
+  //       name : 'flowDifId',
+  //       type : 'String',
+  //       value : this.selectedViewOption.value
+  //     }
+  //   ]);
+  // }
+
+
   
   connectedCallback() {
-    //this.objectName = "Account";
+    this.objectName = "Account";
     this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
     this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
   }
@@ -145,6 +160,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     this.query['filterName'] = this.filterFields[index].fieldName;
     this.query['objectName'] = this.objectName;
     this.displayModal = true;
+    console.log('displayModalHandler', this.template.querySelector('[data-id="' + this.chosenField.fieldName +'"]'));
+    setTimeout(() => this.template.querySelector('[data-id="' + this.chosenField.fieldName +'"]').focus());
   }
 
   closeModalHandler(){
@@ -284,10 +301,20 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   showCSVConvertor() {
     this.displayCSVConvertor = true;
+    console.log('showCSVConvertor', this.recordDataStringAll, this.recordDataStringSelected);
   }
 
   closeCSVConvertor() {
     this.displayCSVConvertor = false;
+  }
+
+  showConfigureView() {
+    this.displayConfigureView = true;
+    console.log('showConfigureView', this.recordDataStringAll, this.recordDataStringSelected);
+  }
+
+  closeConfigureView() {
+    this.displayConfigureView = false;
   }
 
 

@@ -1,14 +1,16 @@
 <template>
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Record and Object Information"></c-fsc_flow-banner>
 
+    <lightning-combobox label="Show Standard and Custom or All Object Types?" value={inputValues.allowAllObjects.value} placeholder="Standard and Custom" options={objectTypes} onchange={handleAllowAllObjects} field-level-help= 'Select "All" if you want the Object picklist to display all Objects in Salesforce note: not all objects are supported full list can be found here https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_all_supported_objects.htm.'
+    ></lightning-combobox>    
+    
     <c-fsc_pick-object-and-field object-label={inputValues.objectAPIName.label} name="objectAPIName"
-        object-type={inputValues.objectAPIName.value} is-allow-all=true hide-field-picklist=true
+        object-type={inputValues.objectAPIName.value} available-object-types={inputValues.allowAllObjects.value} hide-field-picklist=true
         onfieldselected={handleObjectChange} required>
     </c-fsc_pick-object-and-field>
 
-
     <c-fsc_field-selector name="fields" object-name={inputValues.objectAPIName.value} public-style="width:100%"
-        onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} allow-multiselect=true required></c-fsc_field-selector>
+    onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} allow-multiselect=true required></c-fsc_field-selector>
     
     <c-fsc_flow-combobox name="records" value={inputValues.records.value} label={inputValues.records.label}
         builder-context-filter-type={inputValues.objectAPIName.value}

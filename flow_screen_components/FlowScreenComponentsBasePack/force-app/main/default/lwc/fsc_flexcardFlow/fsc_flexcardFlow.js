@@ -21,7 +21,7 @@ export default class FlexcardFlow extends LightningElement {
         return (this.cb_isClickable == 'CB_TRUE') ? true : false;
     }
     @api cb_isClickable;
-    @api headerStyle;
+    @api headerStyle = 'font-weight: bold;';
     @api
     get allowMultiSelect() {
         return (this.cb_allowMultiSelect == 'CB_TRUE') ? true : false;
@@ -36,6 +36,7 @@ export default class FlexcardFlow extends LightningElement {
         return (this.cb_transitionOnClick == 'CB_TRUE') ? true : false;
     }
     @api cb_transitionOnClick;
+    @api allowAllObjects;
     @track fieldCollection = [];
     @api availableActions = [];
     @api actionDisplayType;
@@ -122,7 +123,6 @@ export default class FlexcardFlow extends LightningElement {
         return this.icon && this.icon.length > 0;
     }
 
-
     handleChange(event) {
         console.log(event.target.checked);
         if (event.target.checked == true) {
@@ -156,7 +156,5 @@ export default class FlexcardFlow extends LightningElement {
             }
         }
     }
-
-
 
 }

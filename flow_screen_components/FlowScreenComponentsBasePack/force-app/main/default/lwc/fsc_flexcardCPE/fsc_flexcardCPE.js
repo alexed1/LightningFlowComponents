@@ -59,6 +59,7 @@ export default class fsc_flexcardCPE extends LightningElement {
         cb_transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: '' },
         actionDisplayType: { value: null, valueDataType: null, isCollection: false, label:'Display actions as hyperlinks in a list or a Menu List' },
         buttonLabel: { value: null, valueDataType: null, isCollection: false, label:'Actions Menu Button Label' },
+        allowAllObjects: { value: null, valueDataType: null, isCollection: false, label: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.' },
     };
 
     @api get builderContext() {
@@ -119,6 +120,13 @@ export default class fsc_flexcardCPE extends LightningElement {
         }
 
         
+    }
+
+    get objectTypes() {
+        return [
+            {label: 'Standard and Custom', value: ''},
+            {label: 'All', value: 'All'},
+        ];
     }
 
     get displayOptions() {
@@ -264,12 +272,20 @@ export default class fsc_flexcardCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent(name, newValue);
     }
 
+   // handleCheckboxChange(event) {
+     //   if (event.target && event.detail) {
+        //    let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
+         //   console.log('changedAttribute = ' + changedAttribute, 'newValue = ' + event.detail.newValue);
+         //   this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, 'boolean');
+         //   this.dispatchFlowValueChangeEvent('cb_' + changedAttribute, event.detail.newStringValue, event.detail.newValueDataType);
+       // }
+   // }
+
     handleCheckboxChange(event) {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
-            console.log('changedAttribute = ' + changedAttribute, 'newValue = ' + event.detail.newValue);
-            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, 'boolean');
-            this.dispatchFlowValueChangeEvent('cb_' + changedAttribute, event.detail.newStringValue, event.detail.newValueDataType);
+            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            this.dispatchFlowValueChangeEvent('cb_'+changedAttribute, event.detail.newStringValue, 'String');
         }
     }
     handleCheckboxChange2(event) {
@@ -295,6 +311,10 @@ export default class fsc_flexcardCPE extends LightningElement {
 
     handleDisplayTypeChange(event) {
         this.dispatchFlowValueChangeEvent('actionDisplayType', event.detail.value, 'String');
+    }
+
+    handleAllowAllObjects(event) {
+        this.dispatchFlowValueChangeEvent('allowAllObjects', event.detail.value, 'String');
     }
 
     get isMenu() {

@@ -36,7 +36,8 @@ public with sharing class QuickRecordViewController {
     public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
         List<FlowTableViewDefinition__c>  quickRecordViewRecordList = [
                                                                 SELECT  Object_API_Name__c,
-                                                                        Field_API_Names__c
+                                                                        Field_API_Names__c,
+                                                                        Field_Sorting__c
                                                                 FROM    FlowTableViewDefinition__c
                                                                 WHERE   Id =: viewId
                                                                 LIMIT   1];
@@ -49,7 +50,25 @@ public with sharing class QuickRecordViewController {
             if (String.isNotEmpty(whereCondition)){
                 request += ' ' + whereCondition;
             }
-                   
+
+            List<FieldOrderSetting> fieldOrderList = new List<FieldOrderSetting>();
+            if(String.isNotEmpty(quickRecordViewRecordList[0].Field_Sorting__c)) {
+                fieldOrderList = (List<FieldOrderSetting>)JSON.deserialize(quickRecordViewRecordList[0].Field_Sorting__c, List<FieldOrderSetting>.class);
+            }
+
+            String fieldOrdersString = '';
+
+            for(FieldOrderSetting fieldOrder : fieldOrderList) {
+                if(String.isEmpty(fieldOrdersString)) {
+                    fieldOrdersString += fieldOrder.field + ' ' + fieldOrder.sortingDirection; 
+                } else {
+                    fieldOrdersString += ',' + fieldOrder.field + ' ' + fieldOrder.sortingDirection; 
+                }
+            }
+
+            if(String.isNotEmpty(fieldOrdersString)) {
+                request += ' ORDER BY ' + fieldOrdersString;
+            }
         } else {
 
             if(objectName == 'Case') {
@@ -68,8 +87,9 @@ public with sharing class QuickRecordViewController {
                 request += ' ' + whereCondition;
             }
 
-            request += ' LIMIT 100';
         }
+
+        request += ' LIMIT 100';
         List<sObject> recordDataString = Database.query(request);
                 
         return recordDataString;                                               
@@ -87,16 +107,16 @@ public with sharing class QuickRecordViewController {
                 operatorBackend = operatorConverter(filter.operator);                                              
                 switch on filter.operator {
                         when  'contains' {
-                            List<String> valuesToCheck = filter.value.split(',');
-                            String formattedValue = '';
-                            Integer numberOfValues = valuesToCheck.size();
+                            // List<String> valuesToCheck = filter.value.split(',');
+                            // String formattedValue = '';
+                            // Integer numberOfValues = valuesToCheck.size();
                                 
-                            for (Integer i = 0; i < valuesToCheck.size(); i++){
-                                formattedValue += '\'' + valuesToCheck[i] + '\'';
-                                if (i < numberOfValues - 1)
-                                    formattedValue += ',';
-                            }
-                            wherecond += filter.fieldName + ' ' + ' IN (' + formattedValue + ')';
+                            // for (Integer i = 0; i < valuesToCheck.size(); i++){
+                            //     formattedValue += '\'' + valuesToCheck[i] + '\'';
+                            //     if (i < numberOfValues - 1)
+                            //         formattedValue += ',';
+                            // }
+                            wherecond += filter.fieldName + ' ' + ' LIKE  ' + '\'' + '%' + filter.value  + '%\'';
                         }
                         when  'end_with' {
                             wherecond += filter.fieldName + ' ' + ' LIKE ' + '\'' + '%' + filter.value  + '\'';
@@ -236,5 +256,12 @@ public with sharing class QuickRecordViewController {
         upsert viewDef;
 
         return viewDef.Id;
+    }
+    
+    public class FieldOrderSetting {
+        @AuraEnabled
+        public String field;
+        @AuraEnabled
+        public String sortingDirection;
     }
 }

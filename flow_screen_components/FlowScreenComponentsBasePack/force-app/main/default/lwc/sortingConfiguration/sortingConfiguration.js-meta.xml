@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>53.0</apiVersion>
+    <description>Sorting Configuration</description>
+    <isExposed>true</isExposed>
+    <masterLabel>Sorting Configuration</masterLabel>
+
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="fieldList" type="apex://usf.FieldDescriptor[]" />
+            <property name="objectName" type="String"/>
+            <property name="selectedFieldListString" type="String"/>
+            <property name="fieldSortingListString" type="String"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -34,11 +34,12 @@
 }
 
 .dropdown-content {
-    display: none;
     position: absolute;
     background-color: #ffffff;
     min-width: 40rem;
-    overflow: auto;
+    max-height: 10rem;
+    overflow: visible;
+
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.746);
     z-index: 10;
     display: block;

@@ -75,7 +75,7 @@
                         onmouseup={handleComboboxMouseUp}
                         class={getListboxClass}
                     >
-                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <ul class="slds-listbox slds-listbox_vertical slds-scrollable" role="presentation">
                             <!-- Spinner to display when waiting for results of search -->
                             <div if:true={loading}>
                                 <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>

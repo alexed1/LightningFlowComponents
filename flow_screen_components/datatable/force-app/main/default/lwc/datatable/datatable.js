@@ -358,6 +358,9 @@ export default class Datatable extends LightningElement {
         return this.tableLabel;
     }
 
+    get isShowTable() {
+        return this.mydata.length > 0;
+    }
     get linkTarget() {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }
@@ -1454,7 +1457,10 @@ export default class Datatable extends LightningElement {
             this.setIsInvalidFlag(true);
         }
         this.outputSelectedRows = [...currentSelectedRows]; 
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));      
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
+        console.log('outputSelectedRowsString', this.outputSelectedRowsString);
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       
     }
 
     updateNumberOfRowsSelected(currentSelectedRows) {

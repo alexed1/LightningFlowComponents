@@ -14,6 +14,8 @@
         <targetConfig targets="lightning__FlowScreen">
             <property label="quickRecordViewId" name="quickRecordViewId" type="String" role="inputOnly"/>
             <property label="recordDataString" name="recordDataString" type="String" role="outputOnly"/>
+            <property label="recordDataStringAll" name="recordDataStringAll" type="String" />
+            <property label="recordDataStringSelected" name="recordDataStringSelected" type="String"/>
             <property label="objectName" name="objectName" type="String" />
             <property label="displayColumns" name="displayColumns" type="String" role="outputOnly"/>
         </targetConfig>

@@ -95,7 +95,7 @@
         <name>Test_datatable</name>
         <label>Test datatable</label>
         <locationX>178</locationX>
-        <locationY>236</locationY>
+        <locationY>235</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -106,6 +106,12 @@
             <name>quickRecordLWC2</name>
             <extensionName>c:quickRecordLWC</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>recordDataStringSelected</name>
+                <value>
+                    <elementReference>Datatable.outputSelectedRowsString</elementReference>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -142,12 +148,6 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>columnWidths</name>
-                <value>
-                    <stringValue>Id:314, Description:314, Name:314</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>columnEdits</name>
                 <value>
                     <stringValue>All</stringValue>
@@ -168,7 +168,7 @@
             <inputParameters>
                 <name>serializedRecordData</name>
                 <value>
-                    <elementReference>quickRecordLWC2.recordDataString</elementReference>
+                    <elementReference>quickRecordLWC2.recordDataStringAll</elementReference>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>
@@ -184,5 +184,5 @@
             <targetReference>Test_datatable</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

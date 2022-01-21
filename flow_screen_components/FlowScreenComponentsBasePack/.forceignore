@@ -3,6 +3,7 @@
 #
 
 package.xml
+**/flows
 
 # LWC configuration files
 **/jsconfig.json

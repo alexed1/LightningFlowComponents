@@ -36,7 +36,8 @@ public with sharing class QuickRecordViewController {
     public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
         List<FlowTableViewDefinition__c>  quickRecordViewRecordList = [
                                                                 SELECT  Object_API_Name__c,
-                                                                        Field_API_Names__c
+                                                                        Field_API_Names__c,
+                                                                        Field_Sorting__c
                                                                 FROM    FlowTableViewDefinition__c
                                                                 WHERE   Id =: viewId
                                                                 LIMIT   1];
@@ -49,7 +50,25 @@ public with sharing class QuickRecordViewController {
             if (String.isNotEmpty(whereCondition)){
                 request += ' ' + whereCondition;
             }
-                   
+
+            List<FieldOrderSetting> fieldOrderList = new List<FieldOrderSetting>();
+            if(String.isNotEmpty(quickRecordViewRecordList[0].Field_Sorting__c)) {
+                fieldOrderList = (List<FieldOrderSetting>)JSON.deserialize(quickRecordViewRecordList[0].Field_Sorting__c, List<FieldOrderSetting>.class);
+            }
+
+            String fieldOrdersString = '';
+
+            for(FieldOrderSetting fieldOrder : fieldOrderList) {
+                if(String.isEmpty(fieldOrdersString)) {
+                    fieldOrdersString += fieldOrder.field + ' ' + fieldOrder.sortingDirection; 
+                } else {
+                    fieldOrdersString += ',' + fieldOrder.field + ' ' + fieldOrder.sortingDirection; 
+                }
+            }
+
+            if(String.isNotEmpty(fieldOrdersString)) {
+                request += ' ORDER BY ' + fieldOrdersString;
+            }
         } else {
 
             if(objectName == 'Case') {
@@ -68,8 +87,9 @@ public with sharing class QuickRecordViewController {
                 request += ' ' + whereCondition;
             }
 
-            request += ' LIMIT 100';
         }
+
+        request += ' LIMIT 100';
         List<sObject> recordDataString = Database.query(request);
                 
         return recordDataString;                                               
@@ -236,5 +256,12 @@ public with sharing class QuickRecordViewController {
         upsert viewDef;
 
         return viewDef.Id;
+    }
+    
+    public class FieldOrderSetting {
+        @AuraEnabled
+        public String field;
+        @AuraEnabled
+        public String sortingDirection;
     }
 }

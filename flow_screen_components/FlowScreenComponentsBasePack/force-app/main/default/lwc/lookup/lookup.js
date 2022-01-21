@@ -6,6 +6,7 @@ const SEARCH_DELAY = 300; // Wait 300 ms after user stops typing then, peform se
 const KEY_ARROW_UP = 38;
 const KEY_ARROW_DOWN = 40;
 const KEY_ENTER = 13;
+const KEY_ESCAPE = 27;
 
 const VARIANT_LABEL_STACKED = 'label-stacked';
 const VARIANT_LABEL_INLINE = 'label-inline';
@@ -36,6 +37,7 @@ export default class Lookup extends NavigationMixin(LightningElement) {
     _hasFocus = false;
     _isDirty = false;
     _searchTerm = '';
+    _tempSearchTerm = '';
     _cleanSearchTerm;
     _cancelBlur = false;
     _searchThrottlingTimeout;
@@ -206,10 +208,17 @@ export default class Lookup extends NavigationMixin(LightningElement) {
             this._focusedResultIndex = -1;
         }
         if (event.keyCode === KEY_ARROW_DOWN) {
+            
             // If we hit 'down', select the next item, or cycle over.
             this._focusedResultIndex++;
             if (this._focusedResultIndex >= this._searchResults.length) {
                 this._focusedResultIndex = 0;
+            }
+            if(this._searchResults[this._focusedResultIndex]) {
+                if(!this._tempSearchTerm) {
+                    this._tempSearchTerm = this._searchTerm;
+                }
+                this._searchTerm = this._searchResults[this._focusedResultIndex].title;
             }
             event.preventDefault();
         } else if (event.keyCode === KEY_ARROW_UP) {
@@ -218,12 +227,30 @@ export default class Lookup extends NavigationMixin(LightningElement) {
             if (this._focusedResultIndex < 0) {
                 this._focusedResultIndex = this._searchResults.length - 1;
             }
+
+            if(!this._tempSearchTerm) {
+                this._tempSearchTerm = this._searchTerm;
+            }
+            this._searchTerm = this._searchResults[this._focusedResultIndex].title;
             event.preventDefault();
-        } else if (event.keyCode === KEY_ENTER && this._hasFocus && this._focusedResultIndex >= 0) {
+        } else if (event.keyCode === KEY_ENTER && this._hasFocus) {
             // If the user presses enter, and the box is open, and we have used arrows,
             // treat this just like a click on the listbox item
-            const selectedId = this._searchResults[this._focusedResultIndex].id;
-            this.template.querySelector(`[data-recordid="${selectedId}"]`).click();
+            if(this._searchTerm) { 
+                const selectedId = this._searchResults[this._focusedResultIndex].id;
+                this.template.querySelector(`[data-recordid="${selectedId}"]`).click();
+            } else {
+                this.dispatchEvent(new CustomEvent('selectionchange', { detail: '' }));
+            }
+            event.preventDefault();
+        }
+        else if (event.keyCode === KEY_ESCAPE) {
+            
+            if(this._tempSearchTerm) {
+                this._focusedResultIndex = null;
+                this._searchTerm = this._tempSearchTerm;
+                this._tempSearchTerm = '';
+            } 
             event.preventDefault();
         }
     }

@@ -15,7 +15,22 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @api recordDataString = '';
   @api recordDataStringAll = '';
   @api recordDataStringSelected = '';
-  @api objectName = 'Account';
+  @api objectName;
+  allOperators = [
+    {value: 'equals', label: 'Equals'},
+    {value: 'not_equal_to', label: 'is not'},
+    {value: 'greater_then', label: 'is greater than'},
+    {value: 'greater_or_equal', label: 'is greater than or equal to'},
+    {value: 'less_then', label: 'is less than'},
+    {value: 'less_or_equal', label: 'is less than or equal to'},
+    {value: 'contains', label: 'Contains'},
+    {value: 'starts_with', label: 'Starts with'},
+    {value: 'end_with', label: 'End with'}
+];
+
+  get getObjectName() {
+    return this.objectName.replace('__kav', '');
+  }
   @api displayColumns;
   @api error = false;
   @api objectInput;
@@ -30,12 +45,12 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @track filterFields = [];
   chosenField = '';
   query = {operator:'equals'}
+  _cancelBlur = false;
   get getIcon(){
     return 'standard:'+this.objectName.toLowerCase().replace('__kav', '');
   }
 
   get flowParamsJSON () {
-    console.log('flowParams',this.recordDataStringSelected);
     return JSON.stringify([
       {
         name : 'recordDataStringAll',
@@ -56,24 +71,23 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     ]);
   }
 
-  // get сonfigureViewFlowParamsJSON () {
-  //   console.log('flowParams',this.recordDataStringSelected);
+  get сonfigureViewFlowParamsJSON () {
     
-  //   return JSON.stringify([
-  //     {
-  //       name : 'flowDifId',
-  //       type : 'String',
-  //       value : this.selectedViewOption.value
-  //     }
-  //   ]);
-  // }
+    return JSON.stringify([
+      {
+        name : 'flowDifId',
+        type : 'String',
+        value : this.selectedViewOption.value
+      }
+    ]);
+  }
 
-
-  
-  connectedCallback() {
-    this.objectName = "Account";
-    this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
-    this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
+  get updateLabel() {
+    if(this.selectedViewOption && this.selectedViewOption.value) {
+      return 'Update';
+    } else {
+      return 'Create';
+    }
   }
 
   displayLookupHandler(){
@@ -82,26 +96,32 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   handleSelectionChange(event) {
     this.objectName = event.detail[0];
-    this.objectInput = this.objectName;
-    this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
-    this.displayLookup = false;
-    getFlowTableViewDefinition({
-        objectName : this.objectName
-      }
-    ).then(
-      result => {
-        console.log('handleSelectionChange', result);
-        this.viewOptionList = result;
-        this.selectedViewOption = this.viewOptionList[0];
-        this.searcObjectFilterApiFiledsName();
-        this.getRecordDataStr();
-      }
-    ).catch(
-      error => {
-        this.error = error;
-        console.error(error);
-      }
-    );
+    if(this.objectName) {
+      this.objectInput = this.objectName;
+      this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
+      this.displayLookup = false;
+      getFlowTableViewDefinition({
+          objectName : this.objectName
+        }
+      ).then(
+        result => {
+          this.viewOptionList = result;
+          this.selectedViewOption = this.viewOptionList[0];
+          this.searcObjectFilterApiFiledsName();
+          this.getRecordDataStr();
+        }
+      ).catch(
+        error => {
+          this.error = error;
+          console.error(error);
+        }
+      );
+    } else {
+      this.recordDataStringAll = '';
+      this.selectedViewOption = {};
+      this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
+      this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
+    }
   }
   searcObjectFilterApiFiledsName() {
     searcObjectFilterApiFiledsName({"viewId" : this.selectedViewOption.value, "objectName" : this.objectName})
@@ -160,18 +180,19 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     this.query['filterName'] = this.filterFields[index].fieldName;
     this.query['objectName'] = this.objectName;
     this.displayModal = true;
-    console.log('displayModalHandler', this.template.querySelector('[data-id="' + this.chosenField.fieldName +'"]'));
     setTimeout(() => this.template.querySelector('[data-id="' + this.chosenField.fieldName +'"]').focus());
   }
 
   closeModalHandler(){
-    this.displayModal = false;
-    if(this.filterFields) {
-      this.filterFields.forEach(
-        item => {
-          item.isSelected = false;
-        }
-      );
+    if(!this._cancelBlur) {
+      this.displayModal = false;
+      if(this.filterFields) {
+        this.filterFields.forEach(
+          item => {
+            item.isSelected = false;
+          }
+        );
+      }
     }
   }
 
@@ -183,6 +204,10 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       this.query.value = value;
       this.chosenField.operator = operator;
       this.chosenField.value = value;
+      this.chosenField.operatorLabel = this.allOperators.find(
+        item => item.value === operator
+      ).label;
+
     }
     if(!value){
       this.query.operator = null;
@@ -193,6 +218,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   }
 
   updateQueryHandler(){
+    this._cancelBlur = false;
     this.filterFields[this.chosenFieldIndex] = this.chosenField;
     this.updateTable();
     this.closeModalHandler();
@@ -228,7 +254,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   }
 
   changeView(event) {
-    console.log('changeView',event.detail.value);
     this.selectedViewOption = this.viewOptionList.find(item => item.value === event.detail.value) ;
     this.searcObjectFilterApiFiledsName();
     this.getRecordDataStr();
@@ -238,7 +263,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   getRecordDataStr(whereCondition) {
     getRecordDataStr({"objectName" : this.objectName, viewId : this.selectedViewOption.value, whereCondition : whereCondition})
         .then(result => {
-          console.log('result', result);
           result.forEach(
             item => {
               item.attributes = {
@@ -247,7 +271,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
             }
           );
           this.recordDataStringAll = JSON.stringify(result);
-          console.log('recordDataStringAll', JSON.stringify(result));
           this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
         })
         .catch(error => {
@@ -264,7 +287,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   updateViewName() {
     let viewName = this.template.querySelector(`[data-target-id="viewName"]`).value;
-    console.log('viewName', viewName);
     let fieldList = [];
     this.filterFields.forEach(
       item => {
@@ -279,7 +301,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       fieldList :fieldList
     }).then(
       result => {
-        console.log('result', result);
         this.selectedViewOption.value = result;
         this.selectedViewOption.label = viewName;
         this.viewOptionList = [...this.viewOptionList];
@@ -301,7 +322,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   showCSVConvertor() {
     this.displayCSVConvertor = true;
-    console.log('showCSVConvertor', this.recordDataStringAll, this.recordDataStringSelected);
   }
 
   closeCSVConvertor() {
@@ -310,13 +330,22 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   showConfigureView() {
     this.displayConfigureView = true;
-    console.log('showConfigureView', this.recordDataStringAll, this.recordDataStringSelected);
   }
 
   closeConfigureView() {
     this.displayConfigureView = false;
+    this.searcObjectFilterApiFiledsName();
+    this.updateTable();
   }
 
+  handleModalMouseDown(event) {
+    const mainButton = 0;
+    if (event.button === mainButton) {
+        this._cancelBlur = true;
+    }
+  }
 
-
+  handleModalMouseUp() {
+    setTimeout(() => this._cancelBlur = false);
+  }
 }

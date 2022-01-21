@@ -55,7 +55,7 @@ public with sharing class QuickRecordViewControllerTest {
             LIMIT   1
         ];
 
-        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(flowDef.Id);
+        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(flowDef.Id, 'Contact');
         for (FilterObjectRepresentation contactFilterIterator : contactFilter){
             System.assert(fieldName.contains(contactFilterIterator.fieldName));
             System.assert(label.contains(contactFilterIterator.label));
@@ -67,7 +67,7 @@ public with sharing class QuickRecordViewControllerTest {
     @isTest
     static void testNoObjectName() {
 
-        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(null);
+        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(null, 'Account');
         System.assert(contactFilter.size() > 0);
     }
 
@@ -82,7 +82,7 @@ public with sharing class QuickRecordViewControllerTest {
         List<String> fieldName = new List<String>{'OwnerId','CreatedDate','Name'};
         List<String> label = new List<String>{'Owner','Created Date','Name'};
 
-        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('');
+        List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('', 'Account');
 
         for (FilterObjectRepresentation contactFilterIterator : contactFilter){
             System.assert(fieldName.contains(contactFilterIterator.fieldName));
@@ -135,7 +135,7 @@ public with sharing class QuickRecordViewControllerTest {
         filter.type = 'text';
         filter.value = 'New, Working';
         String response = QuickRecordViewController.placeQuery(JSON.serialize(new List<FilterObjectRepresentation>{filter}), 'Case');
-        System.assertEquals('WHERE Status  IN (\'New\',\' Working\')', response); 
+        System.assertEquals('WHERE Status  LIKE  \'%New, Working%\'', response); 
     }
 
     @isTest

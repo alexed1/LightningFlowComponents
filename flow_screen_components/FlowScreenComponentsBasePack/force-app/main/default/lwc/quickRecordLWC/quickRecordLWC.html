@@ -1,6 +1,6 @@
 <template>
   <div class="slds-p-bottom_small">
-    <div class="slds-grid slds-grid_vertical-align-end slds-gutters">
+    <div class="slds-grid slds-grid_vertical-align-end slds-gutters " onclick={closeModalHandler}>
       <div class="slds-col slds-grow-none">
         
         <div class="slds-grid slds-grid_vertical-align-center">
@@ -8,7 +8,7 @@
             <lightning-icon icon-name={getIcon} class="slds-var-m-right_small"></lightning-icon>
           </template>
           <template if:false={displayLookup}>
-            <h1 class="slds-var-m-right_x-small slds-text-heading_medium" onclick={displayLookupHandler}>{objectName}</h1>
+            <h1 class="slds-var-m-right_x-small slds-text-heading_medium" onclick={displayLookupHandler}>{getObjectName}</h1>
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
@@ -44,36 +44,41 @@
         </template>
       <!-- error -->
       </div>
-      <div  class="slds-col slds-grow-none">
-        <lightning-layout vertical-align="end">
-          <lightning-layout-item class="slds-text-heading_small slds-p-bottom_x-small slds-p-right_x-small"> View:</lightning-layout-item>
-      
-          <lightning-layout-item>
-            <lightning-combobox class="slds-button_neutral" placeholder="Select View" options={viewOptionList} value={selectedViewOption.value} onchange={changeView}></lightning-combobox>
-          </lightning-layout-item>
-        </lightning-layout>
-      </div>
-      <div class="slds-col slds-grow-none">
-          <lightning-button variant="brand-outline" label="Save view" onclick={showViewEditer}></lightning-button>
-          
-      </div>
+      <template if:true={objectName}>
+        <div  class="slds-col slds-grow-none">
+          <lightning-layout vertical-align="end">
+            <lightning-layout-item class="slds-text-heading_small slds-p-bottom_x-small slds-p-right_x-small"> 
+              View:
+            </lightning-layout-item>
+        
+            <lightning-layout-item>
+              <lightning-combobox class="slds-button_neutral" placeholder="Select View" options={viewOptionList} value={selectedViewOption.value} onchange={changeView}></lightning-combobox>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+    </template>
+      <template if:true={objectName}>
+        <div class="slds-col slds-grow-none">
+            <lightning-button variant="brand-outline" label="Save view" onclick={showViewEditer}></lightning-button>     
+        </div>
+      </template>
       <template if:true={objectName}>
         <div class="slds-col slds-grow-none">
           <lightning-button variant="brand-outline" label="Export To CSV" onclick={showCSVConvertor}></lightning-button>
         </div>
       </template>
-      <!-- <template if:true={selectedViewOption.value}>
+      <template if:true={selectedViewOption.value}>
         <div class="slds-col slds-grow-none">
           <lightning-button-icon icon-name="utility:settings"  alternative-text="Settings" title="Settings" onclick={showConfigureView}></lightning-button-icon>
         </div>
-      </template> -->
+      </template>
       
     </div>
     <div class="slds-grid slds-wrap">
       <template for:each={filterFields} for:item="field" for:index="index">
         <div class="dropdown " key={field.fieldName}>
           <span class="slds-pill slds-var-m-right_xx-small slds-var-m-top_small" style="height: 2rem;" key={field.fieldName}>
-            <span class="slds-pill__label">{field.label} <b>{field.operator} {field.value} </b></span>
+            <span class="slds-pill__label">{field.label} <b>{field.operatorLabel} {field.value} </b></span>
             <span class="slds-icon_container slds-pill__remove" title="Open modal">
               <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayModalHandler} data-index={index}></lightning-button-icon>
             </span>
@@ -84,8 +89,8 @@
           </span>
           <div class="dropdown-content" >
             <template if:true={field.isSelected}>
-              <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1">
-                <div class=" ">
+              <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1" data-id={chosenField.fieldName} onmouseup={handleModalMouseUp} onmousedown={handleModalMouseDown} onblur={closeModalHandler}>
+                <div class=" " >
                   <div class=" slds-p-around_medium slds-clearfix" style="z-index: 100;" >
                     <c-quick-record-expression object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-quick-record-expression>
                   </div>
@@ -111,7 +116,7 @@
               <lightning-input data-target-id="viewName" label="View Name" value={selectedViewOption.label}></lightning-input>
             </div>
             <footer class="slds-modal__footer">
-              <button class="slds-button slds-button_neutral" onclick={updateViewName}>Update</button>
+              <button class="slds-button slds-button_neutral" onclick={updateViewName}>{updateLabel}</button>
             </footer>
           </div>
         </section>
@@ -135,7 +140,7 @@
         <div class="slds-backdrop slds-backdrop_open"></div>
       </template>
 
-      <!-- <template if:true={displayConfigureView}>
+      <template if:true={displayConfigureView}>
         <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
           <div class="slds-modal__container">
             <header class="slds-modal__header slds-modal__header_empty">
@@ -150,7 +155,7 @@
           </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
-      </template> -->
+      </template>
     </div>
   </div>
 </template>

@@ -15,15 +15,19 @@ export default class SortingConfigurationLine extends LightningElement {
     }
 
     @api field;
-    sortingDirection = 'ASC';
+    @api sortingDirection = 'ASC';
     @api objectName;
     @api index;
 
+    get isFirstItem() {
+        return this.index === 0;
+    }
 
     changeOrderDirection(event) {
         this.sortingDirection = event.detail.value;
         this.dispatchChangeEvent();
     }
+
 
     changeField(event) {
         console.log('changeField', JSON.stringify(event.detail));

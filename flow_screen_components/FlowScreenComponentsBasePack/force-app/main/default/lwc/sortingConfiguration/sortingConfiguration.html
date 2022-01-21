@@ -1,11 +1,15 @@
 <template>
-    <template for:each={_fieldList} for:item="field">
+    <div>Set Sort Order</div>
+    <br/>
+    <!-- <div>First, sort by:</div> -->
+    <template for:each={fieldSortingList} for:item="field" for:index="index">
         <c-sorting-configuration-line   
-            key={field.name}
-            field={field.name}
+            key={field.field}
+            field={field.field}
             object-name={objectName}
+            sorting-direction={field.sortingDirection}
             onchangesorting={changeSorting} 
-            index={field.index}>
+            index={index}>
         </c-sorting-configuration-line>
     </template>
 </template>

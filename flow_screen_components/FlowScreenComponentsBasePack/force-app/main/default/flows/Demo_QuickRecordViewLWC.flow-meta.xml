@@ -95,7 +95,7 @@
         <name>Test_datatable</name>
         <label>Test datatable</label>
         <locationX>178</locationX>
-        <locationY>236</locationY>
+        <locationY>235</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -145,12 +145,6 @@
                 <name>cb_matchCaseOnFilters</name>
                 <value>
                     <stringValue>CB_FALSE</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>columnWidths</name>
-                <value>
-                    <stringValue>Id:314, Description:314, Name:314</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>

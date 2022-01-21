@@ -1,6 +1,13 @@
 <template>
+    <template if:true={isFirstItem}>
+        <div>First, sort by:</div>
+    </template>
+    <template if:false={isFirstItem}>
+        <div>Then sort by:</div>
+    </template>
+    
     <lightning-layout>
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item size="6" padding="horizontal-small">
             <c-fsc_pick-object-and-field
                 object-type={objectName} 
                 hide-object-picklist="true"
@@ -8,7 +15,7 @@
                 onfieldselected={changeField}>
             </c-fsc_pick-object-and-field>
         </lightning-layout-item>
-        <lightning-layout-item size="6" padding="around-small">
+        <lightning-layout-item size="6" padding="horizontal-small">
             <lightning-combobox 
                 label="Sorting"
                 options={sortingDeriectionOptions} 

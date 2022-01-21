@@ -5,7 +5,7 @@ const SF_DEV_DOCS_BASE_URL =
 
 export default class InvocableStringWizardEditor extends LightningElement {
   @api inputVariables;
-  activeAccordionSections = ["sourceUrl", "description","output"];
+  activeAccordionSections = ["sourceUrl", "description", "output"];
 
   _builderContext;
   _automaticOutputVariables;
@@ -63,6 +63,15 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get mainStringMapping() {
+    if (
+      this.methodVisibilityController.mainString.required &&
+      !this.methodVisibilityController.mainString.helpText.includes(
+        "(mandatory)"
+      )
+    ) {
+      this.methodVisibilityController.mainString.helpText =
+        this.methodVisibilityController.mainString.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.mainString;
   }
 
@@ -72,6 +81,15 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get integer01Mapping() {
+    if (
+      this.methodVisibilityController.integer01.required &&
+      !this.methodVisibilityController.integer01.helpText.includes(
+        "(mandatory)"
+      )
+    ) {
+      this.methodVisibilityController.integer01.helpText =
+        this.methodVisibilityController.integer01.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.integer01;
   }
 
@@ -81,6 +99,15 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get integer02Mapping() {
+    if (
+      this.methodVisibilityController.integer02.required &&
+      !this.methodVisibilityController.integer02.helpText.includes(
+        "(mandatory)"
+      )
+    ) {
+      this.methodVisibilityController.integer02.helpText =
+        this.methodVisibilityController.integer02.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.integer02;
   }
 
@@ -90,6 +117,13 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get string01Mapping() {
+    if (
+      this.methodVisibilityController.string01.required &&
+      !this.methodVisibilityController.string01.helpText.includes("(mandatory)")
+    ) {
+      this.methodVisibilityController.string01.helpText =
+        this.methodVisibilityController.string01.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.string01;
   }
 
@@ -99,6 +133,13 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get string02Mapping() {
+    if (
+      this.methodVisibilityController.string02.required &&
+      !this.methodVisibilityController.string02.helpText.includes("(mandatory)")
+    ) {
+      this.methodVisibilityController.string02.helpText =
+        this.methodVisibilityController.string02.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.string02;
   }
 
@@ -110,6 +151,15 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get integerListMapping() {
+    if (
+      this.methodVisibilityController.integerList.required &&
+      !this.methodVisibilityController.integerList.helpText.includes(
+        "(mandatory)"
+      )
+    ) {
+      this.methodVisibilityController.integerList.helpText =
+        this.methodVisibilityController.integerList.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.integerList;
   }
 
@@ -119,6 +169,15 @@ export default class InvocableStringWizardEditor extends LightningElement {
   }
 
   get stringListMapping() {
+    if (
+      this.methodVisibilityController.stringList.required &&
+      !this.methodVisibilityController.stringList.helpText.includes(
+        "(mandatory)"
+      )
+    ) {
+      this.methodVisibilityController.stringList.helpText =
+        this.methodVisibilityController.stringList.helpText + " (mandatory)";
+    }
     return this.methodVisibilityController.stringList;
   }
 
@@ -196,13 +255,14 @@ export default class InvocableStringWizardEditor extends LightningElement {
       });
     }
     if (
-      (this.mainStringMapping.required && !this.mainString) ||
-      (this.integer01Mapping.required && !this.integer01) ||
-      (this.integer02Mapping.required && !this.integer02) ||
-      (this.string01Mapping.required && !this.string01) ||
-      (this.string02Mapping.required && !this.string02) ||
-      (this.integerListMapping.required && !this.integerList) ||
-      (this.stringListMapping.required && !this.stringList)
+      this.methodSelected &&
+      ((this.mainStringMapping.required && !this.mainString) ||
+        (this.integer01Mapping.required && !this.integer01) ||
+        (this.integer02Mapping.required && !this.integer02) ||
+        (this.string01Mapping.required && !this.string01) ||
+        (this.string02Mapping.required && !this.string02) ||
+        (this.integerListMapping.required && !this.integerList) ||
+        (this.stringListMapping.required && !this.stringList))
     ) {
       this.errors.push("Mandatory field(s) not completed");
       validity.push({

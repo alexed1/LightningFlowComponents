@@ -39,13 +39,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "Integer List",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "String List",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -87,13 +87,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "Integer List",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "String List",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -135,13 +135,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "Integer List",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "String List",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -183,13 +183,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "Integer List",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "String List",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -231,13 +231,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -279,13 +279,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -327,13 +327,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -375,13 +375,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -423,13 +423,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -471,13 +471,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -519,13 +519,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -567,13 +567,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -615,13 +615,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -663,13 +663,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -711,13 +711,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -759,13 +759,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -807,13 +807,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -855,13 +855,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -903,13 +903,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -951,13 +951,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -999,13 +999,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1047,13 +1047,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1095,13 +1095,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1143,13 +1143,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1191,13 +1191,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1239,13 +1239,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1287,13 +1287,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1335,13 +1335,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1382,13 +1382,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1429,13 +1429,13 @@ export function fieldMapping() {
         show: true,
         required: true,
         label: "character List/Array",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1477,13 +1477,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1525,13 +1525,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: true,
         required: true,
         label: "String to check",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1573,13 +1573,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1620,13 +1620,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1668,13 +1668,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1716,13 +1716,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1764,13 +1764,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1812,13 +1812,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1860,13 +1860,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1908,13 +1908,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -1956,13 +1956,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2004,13 +2004,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2052,13 +2052,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2100,13 +2100,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2148,13 +2148,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2196,13 +2196,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2244,13 +2244,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2292,13 +2292,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2340,13 +2340,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2388,13 +2388,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2436,13 +2436,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2484,13 +2484,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2532,13 +2532,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2580,13 +2580,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2628,13 +2628,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: true,
         required: true,
         label: "List string to join",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2676,13 +2676,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2724,13 +2724,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2772,13 +2772,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2820,13 +2820,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2868,13 +2868,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2916,13 +2916,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -2964,13 +2964,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3012,13 +3012,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3060,13 +3060,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3108,13 +3108,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3156,13 +3156,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3204,13 +3204,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3252,13 +3252,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3300,13 +3300,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3348,13 +3348,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3396,13 +3396,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3444,13 +3444,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3492,13 +3492,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3539,13 +3539,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3587,13 +3587,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3635,13 +3635,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3683,13 +3683,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3731,13 +3731,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3779,13 +3779,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3827,13 +3827,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3875,13 +3875,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3922,13 +3922,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -3970,13 +3970,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4018,13 +4018,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4066,13 +4066,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4114,13 +4114,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4162,13 +4162,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4210,13 +4210,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4258,13 +4258,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4306,13 +4306,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4354,13 +4354,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4402,13 +4402,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4450,13 +4450,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4497,13 +4497,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4544,13 +4544,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4592,13 +4592,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4640,13 +4640,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4688,13 +4688,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4736,13 +4736,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     },
     {
@@ -4783,13 +4783,13 @@ export function fieldMapping() {
         show: false,
         required: false,
         label: "",
-        helpText: "List Integer Type"
+        helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
         label: "",
-        helpText: "List String Type"
+        helpText: "String List Type"
       }
     }
   ];

@@ -1,6 +1,10 @@
 import {LightningElement, api, track, wire} from 'lwc';
 import setRecommendationReaction from '@salesforce/apex/ExecuteNBAStrategy.setRecommendationReaction';
+import executeNBAFlow from '@salesforce/apex/ExecuteNBAStrategy.executeNBAFlow';
+import launchFLow from '@salesforce/apex/ExecuteNBAStrategy.launchFLow';
 import userId from '@salesforce/user/Id';
+const FLOW_LABEL = 'flow';
+const LEGACY_LABEL = 'legacy'
 
 export default class DisplayNBARecommendationsFSC extends LightningElement {
     @api displayDescription;
@@ -11,6 +15,7 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
     @api displayMode;
     @api maxRecommendations = 25;
     @api itemsPerPage = 3;
+    @api strategySource = LEGACY_LABEL;
 
 
     @track removedRecords = [];
@@ -30,6 +35,25 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
         actionReject: 'Rejected'
     };
 
+    connectedCallback() {
+        if(this.strategySource === FLOW_LABEL) {
+            executeNBAFlow({
+                strategyName : this.strategyName,
+                contextRecordId : this.recordId,
+                maxResults : this.maxRecommendations
+            }).then(
+                result => {
+                    console.log('flow executeNBAFlow', result, this.maxRecommendations, this.strategyName, this.strategySource, this.displayTitle, this.displayDescription);
+                    this.recommendations = {recommendations : result};
+                }
+            ).catch(
+                error => {
+                    console.error(error);
+                }
+            );
+        }
+    }
+
     navigate(event) {
         let direction = parseInt(event.currentTarget.dataset.navigationDirection);
         let newIndex = this.pageIndex + direction;
@@ -37,37 +61,88 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
     }
 
     handleAction(event) {
-        let reaction = event.currentTarget.dataset.actionName;
-        let removedId = event.currentTarget.dataset.recordId;
-        let curRecommendation = this._recommendations.recommendations.find(curRec => curRec.Id === removedId);
-        if (curRecommendation && curRecommendation.acceptFlowType === 'Flow' && reaction === 'Accepted') {
-            window.open(this.buildFlowURL(curRecommendation.acceptFlowName), '_blank');
+        if(this.strategySource === LEGACY_LABEL) {
+            let reaction = event.currentTarget.dataset.actionName;
+            let removedId = event.currentTarget.dataset.recordId;
+            let curRecommendation = this._recommendations.recommendations.find(curRec => curRec.Id === removedId);
+            if (curRecommendation && curRecommendation.acceptFlowType === 'Flow' && reaction === 'Accepted') {
+                window.open(this.buildFlowURL(curRecommendation.acceptFlowName), '_blank');
+            }
+            setRecommendationReaction({
+                recordId: this.recordId,
+                reaction: reaction,
+                strategyName: this.strategyName,
+                recommendation: JSON.stringify(curRecommendation)
+            }).then(result => {
+                this.showToast({
+                    detail: {
+                        title: 'Success',
+                        message: 'Recommendation ' + curRecommendation.name + ' ' + reaction,
+                        variant: reaction === this.labels.actionApprove ? 'success' : 'warning',
+                        autoClose: true
+                    }
+                });
+                this.removeRecommendation(removedId);
+            }).catch(error => {
+                this.showToast({
+                    detail: {
+                        title: 'Error',
+                        message: error.body.message,
+                        variant: 'error',
+                        autoClose: true
+                    }
+                });
+            });
+        } else {
+            let reaction = event.currentTarget.dataset.actionName;
+            let removedId = event.currentTarget.dataset.recordId;
+            let curRecommendation = this._recommendations.recommendations.find(curRec => curRec.ExternalId === removedId);
+            if (curRecommendation && reaction === 'Accepted') {
+                launchFLow({
+                    rec : curRecommendation,
+                    strategyName : this.strategyName,
+                    contextRecordId : this.recordId
+                }).then(
+                    result => {
+                        this.removeRecommendation(removedId);
+                        this.showToast({
+                            detail: {
+                                title: 'Success',
+                                message: 'Recommendation ' + curRecommendation.Name + ' ' + reaction,
+                                variant: reaction === this.labels.actionApprove ? 'success' : 'warning',
+                                autoClose: true
+                            }
+                        });
+                        if(result === 'Flow') {
+                            window.open(this.buildFlowURL(curRecommendation.ActionReference), '_blank');
+                        }
+                    }
+                ).catch(
+                    error => {
+                        console.error(error);
+                        this.showToast({
+                            detail: {
+                                title: 'Error',
+                                message: error.body.message,
+                                variant: 'error',
+                                autoClose: true
+                            }
+                        });
+                        
+                    }
+                );
+            } else {
+                this.showToast({
+                    detail: {
+                        title: 'Success',
+                        message: 'Recommendation ' + curRecommendation.Name + ' ' + reaction,
+                        variant: reaction === this.labels.actionApprove ? 'success' : 'warning',
+                        autoClose: true
+                    }
+                });
+                this.removeRecommendation(removedId);
+            }
         }
-        setRecommendationReaction({
-            recordId: this.recordId,
-            reaction: reaction,
-            strategyName: this.strategyName,
-            recommendation: JSON.stringify(curRecommendation)
-        }).then(result => {
-            this.showToast({
-                detail: {
-                    title: 'Success',
-                    message: 'Recommendation ' + curRecommendation.name + ' ' + reaction,
-                    variant: reaction === this.labels.actionApprove ? 'success' : 'warning',
-                    autoClose: true
-                }
-            });
-            this.removeRecommendation(removedId);
-        }).catch(error => {
-            this.showToast({
-                detail: {
-                    title: 'Error',
-                    message: error.body.message,
-                    variant: 'error',
-                    autoClose: true
-                }
-            });
-        });
     }
 
     buildFlowURL(flowApiName) {
@@ -134,7 +209,12 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
 
     updateFilteredRecs() {
         if (this._recommendations) {
-            this.filteredRecs = this._recommendations.recommendations.filter(curRec => !this.removedRecords.includes(curRec.Id));
+            if(this.strategySource === LEGACY_LABEL) {
+                this.filteredRecs = this._recommendations.recommendations.filter(curRec => !this.removedRecords.includes(curRec.Id));
+            } else {
+                this.filteredRecs = this._recommendations.recommendations.filter(curRec => !this.removedRecords.includes(curRec.ExternalId));
+            }
+            console.log(this.filteredRecs);
         } else {
             this.filteredRecs;
         }
@@ -146,14 +226,30 @@ export default class DisplayNBARecommendationsFSC extends LightningElement {
             filteredRecs = filteredRecs.slice(this.pageIndex * this.itemsPerPage, this.curPage * this.itemsPerPage);
         }
         if (filteredRecs) {
-            return filteredRecs.map(cuRec => {
-                return {
-                    ...cuRec, ...{
-                        displayText: this.displayTitle ? cuRec.name : cuRec.description,
-                        title: this.displayTitle && this.displayDescription ? '' : this.displayTitle ? cuRec.description : cuRec.name
-                    }
-                };
-            })
+            if(this.strategySource === LEGACY_LABEL) {
+                console.log(LEGACY_LABEL);
+                return filteredRecs.map(cuRec => {
+                    console.log('curRec', cuRec, this.displayTitle);
+                    return {
+                        ...cuRec, ...{
+                            displayText: this.displayTitle ? cuRec.name : cuRec.description,
+                            title: this.displayTitle && this.displayDescription ? '' : this.displayTitle ? cuRec.description : cuRec.name
+                        }
+                    };
+                })
+            } else {
+                console.log(FLOW_LABEL);
+                return filteredRecs.map(cuRec => {
+                    return {
+                        ...cuRec, ...{
+                            Id : cuRec.ExternalId,
+                            description : cuRec.Description,
+                            displayText: this.displayTitle ? cuRec.Name : cuRec.Description,
+                            title: this.displayTitle && this.displayDescription ? '' : this.displayTitle ? cuRec.Description : cuRec.Name
+                        }
+                    };
+                })
+            }
         } else {
             return [];
         }

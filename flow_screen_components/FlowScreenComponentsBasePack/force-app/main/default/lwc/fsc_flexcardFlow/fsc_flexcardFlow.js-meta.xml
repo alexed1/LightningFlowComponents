@@ -32,6 +32,8 @@
             <property name="flows" label="Visible Flow Names" type="String" description="Show which fields?"/>
             <property name="actionDisplayType" label="Action List Display Type" type="String" description="Display actions as hyperlinks in a list or a Menu List"/>
             <property name="buttonLabel" label="Action Menu Label" type="String" description="Action Menu Button Label"/>
+            <property name="allowAllObjects" label="Show All Fields" type="String" description="When checked will display all sObject Types" role="inputOnly"/>
+            
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

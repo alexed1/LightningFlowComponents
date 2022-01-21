@@ -43,32 +43,6 @@
             <isRequired>false</isRequired>
             <objectFieldReference>curKnowledge.Summary</objectFieldReference>
         </fields>
-        <fields>
-            <name>impactRating</name>
-            <dataType>Number</dataType>
-            <defaultValue>
-                <elementReference>curKnowledge.ImpactRating__c</elementReference>
-            </defaultValue>
-            <fieldText>Impact Rating</fieldText>
-            <fieldType>InputField</fieldType>
-            <isRequired>false</isRequired>
-            <scale>0</scale>
-        </fields>
-        <fields>
-            <fieldType>ObjectProvided</fieldType>
-            <isRequired>false</isRequired>
-            <objectFieldReference>curKnowledge.High_Impact_Justification__c</objectFieldReference>
-            <visibilityRule>
-                <conditionLogic>and</conditionLogic>
-                <conditions>
-                    <leftValueReference>impactRating</leftValueReference>
-                    <operator>GreaterThanOrEqualTo</operator>
-                    <rightValue>
-                        <numberValue>8.0</numberValue>
-                    </rightValue>
-                </conditions>
-            </visibilityRule>
-        </fields>
         <showFooter>true</showFooter>
         <showHeader>false</showHeader>
     </screens>
@@ -79,7 +53,7 @@
             <targetReference>Load_Existing_Knowledge_If_Applicable</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <subflows>
         <name>Create_or_Update_Knowledge_Record</name>
         <label>Create or Update Knowledge Record</label>
@@ -87,9 +61,21 @@
         <locationY>398</locationY>
         <flowName>KnowledgeFlow_Post_Steps</flowName>
         <inputAssignments>
+            <name>curKnowledge</name>
+            <value>
+                <elementReference>curKnowledge</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <name>recordId</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <name>viewFlowName</name>
+            <value>
+                <elementReference>viewFlowName</elementReference>
             </value>
         </inputAssignments>
     </subflows>
@@ -131,6 +117,13 @@
     </variables>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>viewFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

@@ -93,6 +93,12 @@
                 <elementReference>recordId</elementReference>
             </value>
         </inputAssignments>
+        <inputAssignments>
+            <name>viewFlowName</name>
+            <value>
+                <elementReference>viewFlowName</elementReference>
+            </value>
+        </inputAssignments>
     </subflows>
     <subflows>
         <name>Load_Existing_Knowledge_If_Applicable</name>
@@ -132,6 +138,13 @@
     </variables>
     <variables>
         <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>viewFlowName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>

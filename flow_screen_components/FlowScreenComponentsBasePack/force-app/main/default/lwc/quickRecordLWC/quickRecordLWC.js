@@ -31,6 +31,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   get getObjectName() {
     return this.objectName.replace('__kav', '');
   }
+
   @api displayColumns;
   @api error = false;
   @api objectInput;
@@ -348,4 +349,5 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   handleModalMouseUp() {
     setTimeout(() => this._cancelBlur = false);
   }
+
 }

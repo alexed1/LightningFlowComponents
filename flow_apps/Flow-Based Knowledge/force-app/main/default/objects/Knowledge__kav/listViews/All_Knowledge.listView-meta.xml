@@ -7,6 +7,9 @@
     <columns>LAST_UPDATE</columns>
     <columns>LANGUAGE</columns>
     <columns>LAST_PUBLISHED_DATE</columns>
+    <columns>URL_NAME</columns>
+    <columns>VERSION_NUMBER</columns>
+    <columns>ViewFlowName__c</columns>
     <filterScope>Everything</filterScope>
     <label>All Knowledge</label>
 </ListView>

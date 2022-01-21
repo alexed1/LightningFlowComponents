@@ -1,6 +1,8 @@
 <template>
   <div class="slds-p-bottom_small">
+
     <div class="slds-grid slds-grid_vertical-align-end slds-gutters " onclick={closeModalHandler}>
+
       <div class="slds-col slds-grow-none">
         
         <div class="slds-grid slds-grid_vertical-align-center">
@@ -9,6 +11,7 @@
           </template>
           <template if:false={displayLookup}>
             <h1 class="slds-var-m-right_x-small slds-text-heading_medium" onclick={displayLookupHandler}>{getObjectName}</h1>
+
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
@@ -79,6 +82,7 @@
         <div class="dropdown " key={field.fieldName}>
           <span class="slds-pill slds-var-m-right_xx-small slds-var-m-top_small" style="height: 2rem;" key={field.fieldName}>
             <span class="slds-pill__label">{field.label} <b>{field.operatorLabel} {field.value} </b></span>
+
             <span class="slds-icon_container slds-pill__remove" title="Open modal">
               <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayModalHandler} data-index={index}></lightning-button-icon>
             </span>
@@ -87,6 +91,7 @@
             </span>
           
           </span>
+
           <div class="dropdown-content" >
             <template if:true={field.isSelected}>
               <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1" data-id={chosenField.fieldName} onmouseup={handleModalMouseUp} onmousedown={handleModalMouseDown} onblur={closeModalHandler}>

@@ -28,8 +28,8 @@ export default class fsc_ActionList extends LightningElement {
     @api
     buttonLabel = 'Actions';
 
-    //@track
-   // flowData = [];
+    @track
+    flowData = [];
 
     connectedCallback() {
         this.removeDuplicateFlows();
@@ -68,6 +68,12 @@ export default class fsc_ActionList extends LightningElement {
     }
 
     launchFlow(event) {
+        let flowName = event.currentTarget.dataset.value;
+        this.flowNameToInvoke = flowName;
+        this.showModal();
+    }
+
+    launchFlowMenu(event) {
         let flowName = event.detail.value;
         this.flowNameToInvoke = flowName;
         this.showModal();

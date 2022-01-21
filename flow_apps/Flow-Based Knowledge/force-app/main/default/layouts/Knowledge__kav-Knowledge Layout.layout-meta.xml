@@ -27,6 +27,9 @@
             <layoutItems>
                 <field>Body_Content_Rich_Text__c</field>
             </layoutItems>
+            <layoutItems>
+                <field>ViewFlowName__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>
     </layoutSections>
@@ -55,7 +58,7 @@
     <layoutSections>
         <customLabel>true</customLabel>
         <detailHeading>true</detailHeading>
-        <editHeading>false</editHeading>
+        <editHeading>true</editHeading>
         <label>Custom Links</label>
         <layoutColumns/>
         <layoutColumns/>

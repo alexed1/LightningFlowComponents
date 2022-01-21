@@ -21,7 +21,7 @@ export default class FlexcardFlow extends LightningElement {
         return (this.cb_isClickable == 'CB_TRUE') ? true : false;
     }
     @api cb_isClickable;
-    @api headerStyle;
+    @api headerStyle = 'font-weight: bold;';
     @api
     get allowMultiSelect() {
         return (this.cb_allowMultiSelect == 'CB_TRUE') ? true : false;
@@ -36,6 +36,8 @@ export default class FlexcardFlow extends LightningElement {
         return (this.cb_transitionOnClick == 'CB_TRUE') ? true : false;
     }
     @api cb_transitionOnClick;
+    @api allowAllObjects;
+    @track fieldCollection = [];
     @api availableActions = [];
     @api actionDisplayType;
     @track actionDisplayType;
@@ -52,6 +54,7 @@ export default class FlexcardFlow extends LightningElement {
     set fields(value) {
         this._fields = value;
         this.visibleFieldNames = JSON.parse(value).map(field => field.name).join();
+        this.fieldCollection = JSON.parse(value).map(field => field.name);
     }
     @track _fields;
     @api
@@ -78,6 +81,7 @@ export default class FlexcardFlow extends LightningElement {
             //console.log('AssignedResource Label => ', data.fields.AssignedResource.label);
         }
     }
+
     connectedCallback() {
         console.log('entering connectedCallback');
         if (!this.records) {
@@ -85,22 +89,9 @@ export default class FlexcardFlow extends LightningElement {
         }
         console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
-        this.recs.find(record => {
-            record.Cardcss = 'card';
-        })
-    }
-    //for each record:
-    // for each fieldname, create a data structure called fieldData with that fieldname, the label of that field, and the value
-    // add the fieldData to recordLayoutData 
-    //TODO: remove this because it's not used? 
-    assembleFieldLayout(item, index) {
-        this.curRecord = item;
-        console.log('visibleFieldNames is: ' + JSON.stringify(this.visibleFieldNames));
-        this.visibleFieldNames.split(",").forEach(this.appendFieldInfo, this);
-
-    }
-
-
+       
+    }  
+   
     retrieveFieldLabels(item, index) {
         console.log('retrieving field label for field named: ' + item);
         //call apex to get field labels for fields
@@ -128,6 +119,9 @@ export default class FlexcardFlow extends LightningElement {
         return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
     }
 
+    get showIcon() {
+        return this.icon && this.icon.length > 0;
+    }
 
     handleChange(event) {
         console.log(event.target.checked);
@@ -145,13 +139,10 @@ export default class FlexcardFlow extends LightningElement {
 
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
-                record.Cardcss = 'clickedCard';
                 this.selectedRecord = event.currentTarget.dataset.id;
                 console.log(this.value = this.selectedRecord);
             }
-            else {
-                record.Cardcss = 'card';
-            }
+            
         });
 
         // navigate to the next screen or (if last element) terminate the flow
@@ -165,7 +156,5 @@ export default class FlexcardFlow extends LightningElement {
             }
         }
     }
-
-
 
 }

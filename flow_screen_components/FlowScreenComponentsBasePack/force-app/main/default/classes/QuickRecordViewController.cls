@@ -13,7 +13,7 @@ public with sharing class QuickRecordViewController {
     };
     final static String STANDARD_FIELD_LIST = 'Id, Name, OwnerId, CreatedDate';
     final static String CASE_FIELD_LIST = 'Id, Subject, OwnerId, Description, Status';
-    final static String KNOWLEDGE_FIELD_LIST = 'Id, Title, Summary, Status ';
+    final static String KNOWLEDGE_FIELD_LIST = 'Id, Title, Summary, PublishStatus ';
 
     final static String STANDARD_FILTER_OBJECT_LIST ='[' +
             '{"type": "text","fieldName": "Name","label": "Name"}, ' + 

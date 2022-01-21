@@ -68,6 +68,7 @@ public with sharing class QuickRecordViewControllerTest {
     static void testNoObjectName() {
 
         List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds(null, 'Account');
+
         System.assert(contactFilter.size() > 0);
     }
 
@@ -83,6 +84,7 @@ public with sharing class QuickRecordViewControllerTest {
         List<String> label = new List<String>{'Owner','Created Date','Name'};
 
         List <FilterObjectRepresentation> contactFilter = QuickRecordViewController.searchFilterFileds('', 'Account');
+
 
         for (FilterObjectRepresentation contactFilterIterator : contactFilter){
             System.assert(fieldName.contains(contactFilterIterator.fieldName));

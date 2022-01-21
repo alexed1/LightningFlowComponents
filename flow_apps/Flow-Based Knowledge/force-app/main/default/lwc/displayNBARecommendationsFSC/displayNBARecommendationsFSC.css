@@ -1,0 +1,33 @@
+.action-item {
+    border-radius: 50%;
+    padding: var(--lwc-spacingXxSmall);
+    margin: var(--lwc-spacingXxSmall);
+}
+
+.action-name {
+    padding-top: var(--lwc-spacingXxSmall);
+}
+
+.approve {
+    border: 1px solid rgb(2, 126, 70);
+}
+
+.reject {
+    border: 1px solid rgb(194, 57, 52);
+}
+
+.container {
+    position: relative;
+}
+
+.main-component {
+    height: 100%;
+}
+
+.toast-message {
+    top: var(--lwc-spacingLarge);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    z-index: 10;
+}

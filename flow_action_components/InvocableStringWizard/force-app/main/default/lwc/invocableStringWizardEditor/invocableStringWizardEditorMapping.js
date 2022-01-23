@@ -26,25 +26,25 @@ export function fieldMapping() {
       string01: {
         show: false,
         required: false,
-        label: "String 01",
+        label: "",
         helpText: "String Type"
       },
       string02: {
         show: false,
         required: false,
-        label: "String 02",
+        label: "",
         helpText: "String Type"
       },
       integerList: {
         show: false,
         required: false,
-        label: "Integer List",
+        label: "",
         helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
-        label: "String List",
+        label: "",
         helpText: "String List Type"
       }
     },
@@ -61,38 +61,38 @@ export function fieldMapping() {
       },
       integer01: {
         show: false,
-        required: true,
-        label: "Integer 01",
+        required: false,
+        label: "",
         helpText: "Integer Type"
       },
       integer02: {
         show: false,
         required: false,
-        label: "Integer 02",
+        label: "",
         helpText: "Integer Type"
       },
       string01: {
         show: false,
         required: false,
-        label: "String 01",
+        label: "",
         helpText: "String Type"
       },
       string02: {
         show: false,
         required: false,
-        label: "String 02",
+        label: "",
         helpText: "String Type"
       },
       integerList: {
         show: false,
         required: false,
-        label: "Integer List",
+        label: "",
         helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
-        label: "String List",
+        label: "",
         helpText: "String List Type"
       }
     },
@@ -116,7 +116,7 @@ export function fieldMapping() {
       integer02: {
         show: false,
         required: false,
-        label: "Integer 02",
+        label: "",
         helpText: "Integer Type"
       },
       string01: {
@@ -128,19 +128,19 @@ export function fieldMapping() {
       string02: {
         show: false,
         required: false,
-        label: "String 02",
+        label: "",
         helpText: "String Type"
       },
       integerList: {
         show: false,
         required: false,
-        label: "Integer List",
+        label: "",
         helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
-        label: "String List",
+        label: "",
         helpText: "String List Type"
       }
     },
@@ -164,7 +164,7 @@ export function fieldMapping() {
       integer02: {
         show: false,
         required: false,
-        label: "Integer 02",
+        label: "",
         helpText: "Integer Type"
       },
       string01: {
@@ -176,19 +176,19 @@ export function fieldMapping() {
       string02: {
         show: false,
         required: false,
-        label: "String 02",
+        label: "",
         helpText: "String Type"
       },
       integerList: {
         show: false,
         required: false,
-        label: "Integer List",
+        label: "",
         helpText: "Integer List Type"
       },
       stringList: {
         show: false,
         required: false,
-        label: "String List",
+        label: "",
         helpText: "String List Type"
       }
     },

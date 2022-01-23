@@ -791,7 +791,7 @@ private class InvocableStringWizardTest {
     List<String> stringsInList = new List<String>{ 'a', 'b', 'c' };
     curRequest1.method = 'join';
     curRequest1.stringList = stringsInList;
-    curRequest1.string01 = ',';
+    curRequest1.mainString = ',';
     requestList.add(curRequest1);
     List<InvocableStringWizard.Response> response = InvocableStringWizard.Invoke(
       requestList

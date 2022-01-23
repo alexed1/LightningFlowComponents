@@ -232,7 +232,7 @@ public class InvocableStringWizard {
       } else if (curRequest.method == 'join') {
         response.stringResult = join(
           curRequest.stringList,
-          curRequest.string01
+          curRequest.mainString
         );
       } else if (curRequest.method == 'lastIndexOf') {
         response.integerResult = lastIndexOf(

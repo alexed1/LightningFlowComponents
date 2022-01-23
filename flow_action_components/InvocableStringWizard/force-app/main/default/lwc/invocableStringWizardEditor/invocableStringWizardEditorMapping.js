@@ -147,7 +147,7 @@ export function fieldMapping() {
     {
       method: "charAt",
       description:
-        "Returns a version of the current String of the specified size padded with spaces on the left and right, so that it appears in the center. If the specified size is smaller than the current String size, the entire String is returned without added spaces.",
+        "Returns the value of the character at the specified index.",
       output: "Integer",
       mainString: {
         show: true,

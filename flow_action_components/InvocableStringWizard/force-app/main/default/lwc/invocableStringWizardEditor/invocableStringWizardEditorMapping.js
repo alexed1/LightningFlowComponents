@@ -1442,7 +1442,7 @@ export function fieldMapping() {
       method: "getChars",
       description:
         "Returns an array of character values that represent the characters in this string.",
-      output: "List Integer",
+      output: "Integer List",
       mainString: {
         show: true,
         required: true,
@@ -3648,7 +3648,7 @@ export function fieldMapping() {
       method: "split",
       description:
         "Returns a list that contains each substring of the String that is terminated by either the regular expression regExp or the end of the String.",
-      output: "List String",
+      output: "String List",
       mainString: {
         show: true,
         required: true,
@@ -3696,7 +3696,7 @@ export function fieldMapping() {
       method: "splitByCharacterType",
       description:
         "Splits the current String by character type and returns a list of contiguous character groups of the same type as complete tokens.",
-      output: "List String",
+      output: "String List",
       mainString: {
         show: true,
         required: true,
@@ -3744,7 +3744,7 @@ export function fieldMapping() {
       method: "splitByCharacterTypeCamelCase",
       description:
         "Splits the current String by character type and returns a list of contiguous character groups of the same type as complete tokens, with the following exception: the uppercase character, if any, immediately preceding a lowercase character token belongs to the following character token rather than to the preceding.",
-      output: "List String",
+      output: "String List",
       mainString: {
         show: true,
         required: true,

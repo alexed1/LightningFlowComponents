@@ -104,7 +104,7 @@
         </connector>
         <fields>
             <name>quickRecordLWC2</name>
-            <extensionName>c:quickRecordLWC</extensionName>
+            <extensionName>c:fsc_QuickQuery</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>recordDataStringSelected</name>

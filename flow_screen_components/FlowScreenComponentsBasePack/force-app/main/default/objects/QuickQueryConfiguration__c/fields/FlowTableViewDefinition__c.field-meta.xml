@@ -5,8 +5,8 @@
     <externalId>false</externalId>
     <label>FlowTableViewDefinition</label>
     <referenceTo>FlowTableViewDefinition__c</referenceTo>
-    <relationshipLabel>QuickRecordViews</relationshipLabel>
-    <relationshipName>QuickRecordViews</relationshipName>
+    <relationshipLabel>QuickQueryConfigurations</relationshipLabel>
+    <relationshipName>QuickQueryConfigurations</relationshipName>
     <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Lookup</type>

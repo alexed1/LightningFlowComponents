@@ -15,7 +15,7 @@
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
-            <c-lookup onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-lookup>
+            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-fsc_lookup_quick-record>
           </template>
         </div>
         <!-- Error -->
@@ -97,7 +97,7 @@
               <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1" data-id={chosenField.fieldName} onmouseup={handleModalMouseUp} onmousedown={handleModalMouseDown} onblur={closeModalHandler}>
                 <div class=" " >
                   <div class=" slds-p-around_medium slds-clearfix" style="z-index: 100;" >
-                    <c-quick-record-expression object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-quick-record-expression>
+                    <c-fsc_quick-query-expressions object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-fsc_quick-query-expressions>
                   </div>
                   <footer class=" slds-modal__footer slds-grid slds-grid_align-spread slds-p-around_medium" >
                     <div class="slds-text-color_inverse-weak slds-text-align_left">Press Enter to save or Esc to cancel</div>

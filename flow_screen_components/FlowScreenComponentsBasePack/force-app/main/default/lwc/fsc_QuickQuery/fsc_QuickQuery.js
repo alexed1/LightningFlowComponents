@@ -237,6 +237,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   handleClearPillData(event){
     let index = event.target.dataset.index;
     this.filterFields[index].operator = null;
+    this.filterFields[index].operatorLabel = null;
     this.filterFields[index].value = null;
     this.updateTable();
   }

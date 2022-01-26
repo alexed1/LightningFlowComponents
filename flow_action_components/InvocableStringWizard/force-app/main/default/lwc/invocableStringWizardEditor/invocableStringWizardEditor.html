@@ -1,0 +1,155 @@
+<template>
+  <template if:true={isError}>
+    <div
+      class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error"
+      role="alert"
+    >
+      <h2>{errorMessage}</h2>
+    </div>
+  </template>
+
+  <div class="slds-p-around_xx-small lgc-bg">
+    <lightning-combobox
+      label="Method"
+      value={method}
+      placeholder="Select a Method"
+      options={methods}
+      onchange={handlechangeMethod}
+      required="true"
+    >
+    </lightning-combobox>
+    <lightning-accordion
+      if:true={methodSelected}
+      allow-multiple-sections-open
+      title="Method Information"
+      active-section-name={activeAccordionSections}
+    >
+      <lightning-accordion-section
+        name="description"
+        label="Method Description"
+      >
+        {description}
+      </lightning-accordion-section>
+      <lightning-accordion-section name="sourceUrl" label="Source URL">
+        <lightning-formatted-url
+          value={sourceUrl}
+          label="View Official Documentation"
+          tooltip="More Info about this method"
+          target="_blank"
+        ></lightning-formatted-url>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="output" label="Output">
+        {output} Result
+      </lightning-accordion-section>
+    </lightning-accordion>
+    <div if:true={methodSelected}>
+      <c-fsc_flow-combobox
+        if:true={mainStringMapping.show}
+        label={mainStringMapping.label}
+        builder-context={_builderContext}
+        name="mainString"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="String"
+        value={mainString}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={mainStringMapping.required}
+        field-level-help={mainStringMapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={integer01Mapping.show}
+        label={integer01Mapping.label}
+        builder-context={_builderContext}
+        name="integer01"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="Number"
+        value={integer01}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={integer01Mapping.required}
+        field-level-help={integer01Mapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={integer02Mapping.show}
+        label={integer02Mapping.label}
+        builder-context={_builderContext}
+        name="integer02"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="Number"
+        value={integer02}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={integer02Mapping.required}
+        field-level-help={integer02Mapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={string01Mapping.show}
+        label={string01Mapping.label}
+        builder-context={_builderContext}
+        name="string01"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="String"
+        value={string01}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={string01Mapping.required}
+        field-level-help={string01Mapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={string02Mapping.show}
+        label={string02Mapping.label}
+        builder-context={_builderContext}
+        name="string02"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="String"
+        value={string02}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={string02Mapping.required}
+        field-level-help={string02Mapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={integerListMapping.show}
+        label={integerListMapping.label}
+        builder-context={_builderContext}
+        name="integerList"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="Number"
+        builder-context-filter-collection-type="true"
+        value={integerList}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={integerListMapping.required}
+        field-level-help={integerListMapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+      <c-fsc_flow-combobox
+        if:true={stringListMapping.show}
+        label={stringListMapping.label}
+        builder-context={_builderContext}
+        name="stringList"
+        onvaluechanged={handleFlowComboboxValueChange}
+        builder-context-filter-type="String"
+        builder-context-filter-collection-type="true"
+        value={stringList}
+        value-type="reference"
+        class="slds-m-around_medium"
+        required={stringListMapping.required}
+        field-level-help={stringListMapping.helpText}
+        automatic-output-variables={automaticOutputVariables}
+      >
+      </c-fsc_flow-combobox>
+    </div>
+  </div>
+</template>

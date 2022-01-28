@@ -4,8 +4,8 @@
         <name>Convert_Records_to_CSV</name>
         <label>Convert Records to CSV</label>
         <locationX>176</locationX>
-        <locationY>614</locationY>
-        <actionName>usf.ConvertRecordsToCSVQueueable</actionName>
+        <locationY>734</locationY>
+        <actionName>ConvertRecordsToCSVQueueable</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>OpenURL</targetReference>
@@ -14,6 +14,7 @@
             <typeName>T__recordCollection</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
+        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>documentTitle</name>
             <value>
@@ -29,7 +30,42 @@
         <inputParameters>
             <name>recordCollectionString</name>
             <value>
-                <elementReference>recordDataStringAll</elementReference>
+                <elementReference>Get_Records.recordsString</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>Get_Records</name>
+        <label>Get Records</label>
+        <locationX>176</locationX>
+        <locationY>614</locationY>
+        <actionName>GetRecordsFromIds</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Convert_Records_to_CSV</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>U__records</typeName>
+            <typeValue>Account</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldNames</name>
+            <value>
+                <elementReference>fieldNames</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputIds</name>
+            <value>
+                <elementReference>allRecordDataIds</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>objectName</name>
+            <value>
+                <elementReference>objectName</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -38,12 +74,13 @@
         <name>OpenURL</name>
         <label>OpenURL</label>
         <locationX>176</locationX>
-        <locationY>734</locationY>
+        <locationY>854</locationY>
         <actionName>c:fsc_openUrl</actionName>
         <actionType>component</actionType>
         <connector>
             <targetReference>End_Screen</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>mode</name>
             <value>
@@ -58,20 +95,21 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>54.0</apiVersion>
     <assignments>
         <name>Selected_Records_Assignment</name>
         <label>Selected Records Assignment</label>
         <locationX>264</locationX>
         <locationY>398</locationY>
         <assignmentItems>
-            <assignToReference>recordDataStringAll</assignToReference>
+            <assignToReference>allRecordDataIds</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>recordDataStringSelected</elementReference>
+                <elementReference>selectedRecrodDataIds</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Convert_Records_to_CSV</targetReference>
+            <targetReference>Get_Records</targetReference>
         </connector>
     </assignments>
     <choices>
@@ -110,7 +148,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Convert_Records_to_CSV</targetReference>
+                <targetReference>Get_Records</targetReference>
             </connector>
             <label>All Records</label>
         </rules>
@@ -140,7 +178,7 @@
         <name>End_Screen</name>
         <label>End Screen</label>
         <locationX>176</locationX>
-        <locationY>854</locationY>
+        <locationY>974</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -185,6 +223,20 @@
     </start>
     <status>Active</status>
     <variables>
+        <name>allRecordDataIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>fieldNames</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
         <name>objectName</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
@@ -205,6 +257,13 @@
         <name>recordDataStringSelected</name>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>selectedRecrodDataIds</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
     </variables>

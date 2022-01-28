@@ -97,7 +97,7 @@
               <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1" data-id={chosenField.fieldName} onmouseup={handleModalMouseUp} onmousedown={handleModalMouseDown} onblur={closeModalHandler}>
                 <div class=" " >
                   <div class=" slds-p-around_medium slds-clearfix" style="z-index: 100;" >
-                    <c-fsc_quick-query-expressions 
+                    <c-quick-query-expressions 
                       object-type={objectName} 
                       field={chosenField.fieldName} 
                       render-type={chosenField.type} 
@@ -105,7 +105,7 @@
                       value={chosenField.value} 
                       onchangeexpression={setFieldsHandler}
                       onblur={expressionBlur}>
-                    </c-fsc_quick-query-expressions>
+                    </c-quick-query-expressions>
                   </div>
                   <footer class=" slds-modal__footer slds-grid slds-grid_align-spread slds-p-around_medium" >
                     <div class="slds-text-color_inverse-weak slds-text-align_left">Press Enter to save or Esc to cancel</div>

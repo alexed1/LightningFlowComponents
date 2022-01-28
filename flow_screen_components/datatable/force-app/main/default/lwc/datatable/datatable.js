@@ -263,6 +263,7 @@ export default class Datatable extends LightningElement {
     @track isAllFilter = false;
     @track showClearButton = false;
     @track tableHeightAttribute = 'height:';
+    @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229))';
 
     // Handle Lookup Field Variables   
     @api lookupId;

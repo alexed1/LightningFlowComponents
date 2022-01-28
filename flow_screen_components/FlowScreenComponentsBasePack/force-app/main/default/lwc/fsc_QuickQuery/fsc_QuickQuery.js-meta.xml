@@ -3,7 +3,7 @@
     <apiVersion>53.0</apiVersion>
     <description>Quick Record</description>
     <isExposed>true</isExposed>
-    <masterLabel>Quick Record1</masterLabel>
+    <masterLabel>Quick Record</masterLabel>
 
     <targets>
         <target>lightning__AppPage</target>

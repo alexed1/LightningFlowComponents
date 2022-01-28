@@ -125,13 +125,13 @@ public with sharing class QuickRecordViewController {
                             wherecond += filter.fieldName + ' ' + ' LIKE ' + '\'' + filter.value + '%' + '\'';
                         }
                         when else {
-                            wherecond += filter.fieldName + ' ' + operatorBackend + ' ' + '\'' + filter.value + '\'';
+                            wherecond += filter.fieldName + ' ' + operatorBackend + ' ' + ((filter.type == 'text') ? '\'' + filter.value + '\'' : filter.value);
                         }
                 }
-                whereConditionList.add(wherecond);
+                whereConditionList.add( wherecond);
             }
         }
-
+        System.debug(whereConditionList);
         if(whereConditionList.size() > 0) {
             return 'WHERE ' + String.join(whereConditionList, ' AND ');
         }

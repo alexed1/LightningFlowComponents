@@ -45,29 +45,53 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @track viewOptionList = [];
   @track filterFields = [];
   chosenField = '';
+  isShowFlow = false;
+  get isSaveViewDisabled() {
+
+    let isSaveViewDisabled = true;
+    this.filterFields.forEach(
+      item => {
+        if(item.operator) {
+          isSaveViewDisabled = false;
+        }
+      }
+    );
+    return !this.selectedViewOption.value && isSaveViewDisabled;
+  }
   query = {operator:'equals'}
   _cancelBlur = false;
   get getIcon(){
     return 'standard:'+this.objectName.toLowerCase().replace('__kav', '');
   }
 
+  get flowContentClass() {
+    return this.isShowFlow ? '' : 'slds-hide'
+  }
+
   get flowParamsJSON () {
+    let allRecordList = this.recordDataStringAll ? JSON.parse(this.recordDataStringAll) : [];
+    let selectedRecordList = this.recordDataStringSelected ? JSON.parse(this.recordDataStringSelected) : [];
+
     return JSON.stringify([
       {
-        name : 'recordDataStringAll',
+        name : 'allRecordDataIds',
         type : 'String',
-        value : this.recordDataStringAll
+        value : allRecordList.map(item => item.Id)
       },
       {
-        name : 'recordDataStringSelected',
+        name : 'selectedRecrodDataIds',
         type : 'String',
-        value : this.recordDataStringSelected
-      }
-      ,
+        value : selectedRecordList.map(item => item.Id)
+      },
       {
         name : 'objectName',
         type : 'String',
         value : this.objectName
+      },
+      {
+        name : 'fieldNames',
+        type : 'String',
+        value : this.filterFields.map(item => item.fieldName).join(',')
       }
     ]);
   }
@@ -88,6 +112,18 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       return 'Update';
     } else {
       return 'Create';
+    }
+  }
+  connectedCallback() {
+    window.addEventListener('message', function(event) {
+      if(event.data && event.data.flowStatus == 'FINISHED') {
+        this.closeCSVConvertor();
+        this.closeConfigureView();
+      }
+    }.bind(this), false);
+
+    if(this.objectName) {
+      this.handleSelectionChange({detail : [this.objectName]});
     }
   }
 
@@ -324,6 +360,10 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   showCSVConvertor() {
     this.displayCSVConvertor = true;
+    this.isShowFlow = false;
+    setTimeout(() => {
+      this.isShowFlow = true;
+    }, 3000);
   }
 
   closeCSVConvertor() {
@@ -332,6 +372,10 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   showConfigureView() {
     this.displayConfigureView = true;
+    this.isShowFlow = false;
+    setTimeout(() => {
+      this.isShowFlow = true;
+    }, 3000);
   }
 
   closeConfigureView() {
@@ -349,6 +393,10 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   handleModalMouseUp() {
     setTimeout(() => this._cancelBlur = false);
+  }
+
+  expressionBlur() {
+    this.closeModalHandler();
   }
 
 }

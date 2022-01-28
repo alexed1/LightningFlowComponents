@@ -9,6 +9,7 @@
                     options={availableOperators}
                     onchange={handleOperatorChange}
                     disabled={disabledFilter}
+                    onblur={onblurHandler}
             ></lightning-combobox>
         </lightning-layout-item>
         <lightning-layout-item size="6" class="slds-p-left--small slds-align-bottom">
@@ -26,6 +27,7 @@
                                 pattern={labels.supportedCharactersRegex}
                                 message-when-pattern-mismatch={labels.unsupportedCharactersMessage}
                                 onchange={handleValueChange}
+                                onblur={onblurHandler}
                         ></lightning-input>
                     </div>
                 </lightning-layout-item>

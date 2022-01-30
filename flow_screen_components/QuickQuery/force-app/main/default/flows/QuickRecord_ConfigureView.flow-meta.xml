@@ -19,7 +19,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>54.0</apiVersion>
+    <apiVersion>53.0</apiVersion>
     <assignments>
         <name>Add_Selected_Field</name>
         <label>Add Selected Field</label>

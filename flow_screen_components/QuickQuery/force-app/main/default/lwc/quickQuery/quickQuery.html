@@ -15,7 +15,7 @@
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
-            <c-lookup onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-lookup>
+            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-fsc_lookup_quick-record>
           </template>
         </div>
         <!-- Error -->
@@ -62,7 +62,7 @@
     </template>
       <template if:true={objectName}>
         <div class="slds-col slds-grow-none">
-            <lightning-button variant="brand-outline" label="Save view" onclick={showViewEditer}></lightning-button>     
+            <lightning-button variant="brand-outline" label="Save view" onclick={showViewEditer} disabled={isSaveViewDisabled}></lightning-button>     
         </div>
       </template>
       <template if:true={objectName}>
@@ -81,7 +81,7 @@
       <template for:each={filterFields} for:item="field" for:index="index">
         <div class="dropdown " key={field.fieldName}>
           <span class="slds-pill slds-var-m-right_xx-small slds-var-m-top_small" style="height: 2rem;" key={field.fieldName}>
-            <span class="slds-pill__label">{field.label} <b>{field.operatorLabel} {field.value} </b></span>
+            <span class="slds-pill__label" onclick={displayModalHandler} data-index={index}>{field.label} <b onclick={displayModalHandler} data-index={index}>{field.operatorLabel} {field.value} </b></span>
 
             <span class="slds-icon_container slds-pill__remove" title="Open modal">
               <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayModalHandler} data-index={index}></lightning-button-icon>
@@ -97,7 +97,15 @@
               <section  onkeydown={handleKeyDown} role="dialog" tabindex="-1" data-id={chosenField.fieldName} onmouseup={handleModalMouseUp} onmousedown={handleModalMouseDown} onblur={closeModalHandler}>
                 <div class=" " >
                   <div class=" slds-p-around_medium slds-clearfix" style="z-index: 100;" >
-                    <c-quick-record-expression object-type={objectName} field={chosenField.fieldName} render-type={chosenField.type} operator={chosenField.operator} value={chosenField.value} onchange={setFieldsHandler}></c-quick-record-expression>
+                    <c-quick-query-expressions 
+                      object-type={objectName} 
+                      field={chosenField.fieldName} 
+                      render-type={chosenField.type} 
+                      operator={chosenField.operator} 
+                      value={chosenField.value} 
+                      onchangeexpression={setFieldsHandler}
+                      onblur={expressionBlur}>
+                    </c-quick-query-expressions>
                   </div>
                   <footer class=" slds-modal__footer slds-grid slds-grid_align-spread slds-p-around_medium" >
                     <div class="slds-text-color_inverse-weak slds-text-align_left">Press Enter to save or Esc to cancel</div>
@@ -135,7 +143,13 @@
               <lightning-button-icon icon-name="utility:close" onclick={closeCSVConvertor} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
             </header>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
-              <c-fsc_screen-flow width='100%' height='300' flow-name='QuickRecord_ProcessCSVExportRequest' name="uniqueName" flow-params={flowParamsJSON}></c-fsc_screen-flow>
+              <template if:false={isShowFlow}>
+                <div>Loading...</div>
+              </template>
+              
+              <div class={flowContentClass}>
+                <c-fsc_screen-flow width='100%' height='300' flow-name='QuickRecord_ProcessCSVExportRequest' name="uniqueName" flow-params={flowParamsJSON}></c-fsc_screen-flow>
+              </div>
             </div>
             <footer class="slds-modal__footer">
               <button class="slds-button slds-button_neutral" onclick={closeCSVConvertor}>Close</button>
@@ -152,11 +166,15 @@
               <lightning-button-icon icon-name="utility:close" onclick={closeConfigureView} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
             </header>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
-              <c-fsc_screen-flow width='100%' height='300' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
+              <template if:false={isShowFlow}>
+                <div>Loading...</div>
+              </template>
+              
+              <div class={flowContentClass}>
+                <c-fsc_screen-flow width='100%' height='400rem' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
+              </div>
+              
             </div>
-            <footer class="slds-modal__footer">
-              <button class="slds-button slds-button_neutral" onclick={closeConfigureView}>Close</button>
-            </footer>
           </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>

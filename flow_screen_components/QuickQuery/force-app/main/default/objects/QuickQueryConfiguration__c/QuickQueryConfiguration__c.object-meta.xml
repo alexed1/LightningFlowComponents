@@ -152,13 +152,13 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <label>QuickRecordView</label>
+    <label>QuickQueryConfiguration</label>
     <nameField>
         <displayFormat>A-{000000}</displayFormat>
-        <label>QuickRecordView Name</label>
+        <label>QuickQueryConfiguration Name</label>
         <type>AutoNumber</type>
     </nameField>
-    <pluralLabel>QuickRecordViews</pluralLabel>
+    <pluralLabel>QuickQueryConfigurations</pluralLabel>
     <searchLayouts></searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>

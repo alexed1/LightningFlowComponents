@@ -3,13 +3,13 @@
     <br/>
     <!-- <div>First, sort by:</div> -->
     <template for:each={fieldSortingList} for:item="field" for:index="index">
-        <c-sorting-configuration-line   
+        <c-fsc_sorting-configuration-line   
             key={field.field}
             field={field.field}
             object-name={objectName}
             sorting-direction={field.sortingDirection}
             onchangesorting={changeSorting} 
             index={index}>
-        </c-sorting-configuration-line>
+        </c-fsc_sorting-configuration-line>
     </template>
 </template>

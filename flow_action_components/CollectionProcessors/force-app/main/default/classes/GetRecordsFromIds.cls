@@ -22,9 +22,11 @@
                 if(!Test.isRunningTest()) {
                     List<sObject> recordList = Database.query(queryString);
                     result.records = recordList;
+                    result.recordsString =JSON.serialize(recordList);
                     System.debug('hydrated records are: ' + recordList);
                 } else {
                     result.records = null;
+                    result.recordsString = null;
                 }
       
                   
@@ -50,6 +52,8 @@
         global class Result {
             @InvocableVariable(description='Full records')
             global List<SObject> records;
+            @InvocableVariable(description='Full records string')
+            global String recordsString;
     
      
         }

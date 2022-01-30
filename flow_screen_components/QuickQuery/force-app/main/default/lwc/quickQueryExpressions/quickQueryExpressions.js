@@ -14,12 +14,12 @@ export default class expressionLine extends LightningElement {
     @api disableRemoveExpression = false;
 
     @track allOperators = [
-        {value: 'equals', label: 'Equals', types: 'text,number,datetime,date'},
-        {value: 'not_equal_to', label: 'Not Equal To', types: 'text,number,datetime,date'},
-        {value: 'greater_then', label: 'Greater than', types: 'number,datetime,date'},
-        {value: 'greater_or_equal', label: 'Greater Or Equal', types: 'number,datetime,date'},
-        {value: 'less_then', label: 'Less Than', types: 'number,datetime,date'},
-        {value: 'less_or_equal', label: 'Less Or Equal', types: 'number,datetime,date'},
+        {value: 'equals', label: 'Equals', types: 'text,number,datetime,date,text'},
+        {value: 'not_equal_to', label: 'Not Equal To', types: 'text,number,datetime,date,text'},
+        {value: 'greater_then', label: 'Greater than', types: 'number,datetime,date,text'},
+        {value: 'greater_or_equal', label: 'Greater Or Equal', types: 'number,datetime,date,text'},
+        {value: 'less_then', label: 'Less Than', types: 'number,datetime,date,text'},
+        {value: 'less_or_equal', label: 'Less Or Equal', types: 'number,datetime,date,text'},
         {value: 'contains', label: 'Contains', types: 'text'},
         {value: 'starts_with', label: 'Starts with', types: 'text'},
         {value: 'end_with', label: 'End with', types: 'text'}
@@ -44,25 +44,28 @@ export default class expressionLine extends LightningElement {
     
     handleOperatorChange(event) {
         this.operator = event.detail.value;
-        let customEvent = new CustomEvent('change', { detail: {operator: this.operator, value : this.value}});
+        let customEvent = new CustomEvent('changeexpression', { detail: {operator: this.operator, value : this.value}});
         this.dispatchEvent(customEvent);
     }
 
     handleValueChange(event) {
         if(this.validate()){
             this.value = event.target.value;
-            let customEvent = new CustomEvent('change', { detail: {operator: this.operator, value : this.value}});
+            let customEvent = new CustomEvent('changeexpression', { detail: {operator: this.operator, value : this.value}});
             this.dispatchEvent(customEvent);
         }
     }
 
+    onblurHandler() {
+        let customEvent = new CustomEvent('blur');
+        this.dispatchEvent(customEvent);
+    }
+
     @api
     validate() {
-        console.log('expressionLine 1');
         let validity = {
             isValid: true
         };
-        console.log('expressionLine 2');
         let inputsToVerify = this.template.querySelectorAll('lightning-input');
         if (inputsToVerify && inputsToVerify.length) {
             inputsToVerify.forEach(curInput => {
@@ -74,7 +77,6 @@ export default class expressionLine extends LightningElement {
                 }
             })
         }
-        console.log('expressionLine 3');
         return validity;
     }
 }

@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Upsert</name>
         <label>Upsert</label>
-        <locationX>175</locationX>
-        <locationY>514</locationY>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
         <actionName>UpsertRecords</actionName>
         <actionType>apex</actionType>
         <dataTypeMappings>
@@ -15,6 +15,7 @@
             <typeName>T__inputRecord</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
+        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>objectName</name>
             <value>
@@ -29,6 +30,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
+    <apiVersion>54.0</apiVersion>
     <constants>
         <name>TestAccountRecordsJSON</name>
         <dataType>String</dataType>
@@ -47,7 +49,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -58,44 +60,10 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>lockup_lwc</name>
-        <label>lockup lwc</label>
-        <locationX>427</locationX>
-        <locationY>216</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>quickRecordLWC</name>
-            <extensionName>c:quickRecordLWC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <isRequired>true</isRequired>
-            <storeOutputAutomatically>true</storeOutputAutomatically>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>result</name>
-        <label>result</label>
-        <locationX>336</locationX>
-        <locationY>376</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <fields>
-            <name>resultshow</name>
-            <fieldText>&lt;p&gt;{!Datatable.outputSelectedRows}&lt;/p&gt;&lt;p&gt;{!Datatable.outputSelectedRowsString}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Datatable.outputEditedSerializedRows}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Test_datatable</name>
         <label>Test datatable</label>
-        <locationX>178</locationX>
-        <locationY>235</locationY>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -103,15 +71,22 @@
             <targetReference>Upsert</targetReference>
         </connector>
         <fields>
-            <name>quickRecordLWC2</name>
-            <extensionName>c:quickRecordLWC</extensionName>
+            <name>quickRecordLWC</name>
+            <extensionName>c:quickQuery</extensionName>
             <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>objectName</name>
+                <value>
+                    <stringValue>Case</stringValue>
+                </value>
+            </inputParameters>
             <inputParameters>
                 <name>recordDataStringSelected</name>
                 <value>
                     <elementReference>Datatable.outputSelectedRowsString</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -126,7 +101,7 @@
             <inputParameters>
                 <name>objectName</name>
                 <value>
-                    <elementReference>quickRecordLWC2.objectName</elementReference>
+                    <elementReference>quickRecordLWC.objectName</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -162,15 +137,16 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <elementReference>quickRecordLWC2.displayColumns</elementReference>
+                    <elementReference>quickRecordLWC.displayColumns</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>serializedRecordData</name>
                 <value>
-                    <elementReference>quickRecordLWC2.recordDataStringAll</elementReference>
+                    <elementReference>quickRecordLWC.recordDataStringAll</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -179,7 +155,7 @@
     </screens>
     <start>
         <locationX>50</locationX>
-        <locationY>50</locationY>
+        <locationY>0</locationY>
         <connector>
             <targetReference>Test_datatable</targetReference>
         </connector>

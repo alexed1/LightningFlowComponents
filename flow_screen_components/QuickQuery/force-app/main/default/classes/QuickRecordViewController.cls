@@ -1,6 +1,8 @@
 public with sharing class QuickRecordViewController {
     public virtual class BaseException extends Exception {}
 
+    final static String DEFAULT_QUICK_QUERY_CONFIGURATION = 'DefaultQuickQueryConfigurationName';
+
     final static Map<String, string> FORMULA_TYPE_MAP = new Map<String, String>{
         'BOOLEAN'  => 'boolean',
         'CURRENCY' =>'number',
@@ -33,7 +35,7 @@ public with sharing class QuickRecordViewController {
         ']';
 
     @AuraEnabled
-    public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName) {
+    public static List<SObject> getRecordDataString(String viewId, String whereCondition, String objectName, String recordId) {
         List<FlowTableViewDefinition__c>  quickRecordViewRecordList = [
                                                                 SELECT  Object_API_Name__c,
                                                                         Field_API_Names__c,
@@ -91,6 +93,10 @@ public with sharing class QuickRecordViewController {
 
         request += ' LIMIT 100';
         List<sObject> recordDataString = Database.query(request);
+
+        if(String.isNotEmpty(viewId)) {
+            upsertFlowPersonalConfugiration(viewId, recordId);
+        }
                 
         return recordDataString;                                               
     }
@@ -144,19 +150,27 @@ public with sharing class QuickRecordViewController {
             SELECT  Id,
                     Object_API_Name__c,
                     Field_API_Names__c,
-                    View_Name__c
+                    View_Name__c,
+                    (
+                        SELECT Id 
+                        FROM QuickQueryConfigurations__r
+                        WHERE ViewUserId__c = :UserInfo.getUserId()
+                    )
             FROM    FlowTableViewDefinition__c
             WHERE   Object_API_Name__c =: objectName
+            ORDER BY View_Name__c
             LIMIT   50000
         ];
         
         List<Map<String, String>> viewOptionMapList = new List<Map<String, String>>();
        
         for(FlowTableViewDefinition__c view : viewList) {
-            Map<String, String> viewOptionMap = new Map<String, String>();
-            viewOptionMap.put('label', view.View_Name__c);
-            viewOptionMap.put('value', view.Id);
-            viewOptionMapList.add(viewOptionMap);
+            if(!view.QuickQueryConfigurations__r.isEmpty()) {
+                Map<String, String> viewOptionMap = new Map<String, String>();
+                viewOptionMap.put('label', view.View_Name__c);
+                viewOptionMap.put('value', view.Id);
+                viewOptionMapList.add(viewOptionMap);
+            }
         }
 
         if(viewOptionMapList.isEmpty()) {
@@ -243,7 +257,7 @@ public with sharing class QuickRecordViewController {
     }
 
     @AuraEnabled
-    public static String upsertView(String viewId, String viewName, String objectName, List<String> fieldList){
+    public static String upsertView(String viewId, String viewName, String objectName, List<String> fieldList, String filtersJSON){
         FlowTableViewDefinition__c viewDef = new FlowTableViewDefinition__c();
         viewDef.Name = viewName;
         viewDef.Object_API_Name__c = objectName;
@@ -255,7 +269,153 @@ public with sharing class QuickRecordViewController {
 
         upsert viewDef;
 
+        List<QuickQueryConfiguration__c> quickQueryList = [
+            SELECT  Id,
+                    ViewUserId__c,
+                    FlowTableViewDefinition__c
+            FROM    QuickQueryConfiguration__c
+            WHERE   ViewUserId__c = :UserInfo.getUserId()
+            AND     FlowTableViewDefinition__c = : viewDef.Id
+            LIMIT   1
+        ];
+
+        if(quickQueryList.isEmpty()) {
+            QuickQueryConfiguration__c quickQuery = new QuickQueryConfiguration__c();
+            quickQuery.FlowTableViewDefinition__c = viewDef.Id;
+            quickQuery.ViewUserId__c = UserInfo.getUserId();
+            quickQuery.ObjectName__c = objectName;
+            quickQuery.Label__c = objectName;
+            quickQuery.Filter__c = filtersJSON;
+            insert quickQuery;
+        } else {
+            quickQueryList[0].Filter__c = filtersJSON;
+            update quickQueryList;
+        }
+
         return viewDef.Id;
+    }
+
+
+    @AuraEnabled
+    public static  Map<String, String> getDefaultView(String recordId){
+        List<FlowPersonalConfiguration__c> flowConfigurationList = [
+            SELECT  Id,
+                    ActorId__c,     LocationId__c,
+                    Config1Name__c, Config1Value__c,
+                    Config2Name__c, Config2Value__c,
+                    Config3Name__c, Config3Value__c,
+                    Config4Name__c, Config4Value__c,
+                    Config5Name__c, Config5Value__c,
+                    Config6Name__c, Config6Value__c,
+                    Config7Name__c, Config7Value__c,
+                    Config8Name__c, Config8Value__c,
+                    Config9Name__c, Config9Value__c   
+            FROM    FlowPersonalConfiguration__c
+            WHERE   ActorId__c = : UserInfo.getUserId()
+            AND     LocationId__c = :recordId
+            LIMIT   1      
+        ];
+
+        String viewId = '';
+
+        if(!flowConfigurationList.isEmpty()) {
+            if(flowConfigurationList[0].Config1Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION){
+                viewId = flowConfigurationList[0].Config1Value__c;
+            } else if(flowConfigurationList[0].Config2Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config2Value__c;
+            } else if(flowConfigurationList[0].Config3Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config3Value__c;
+            } else if(flowConfigurationList[0].Config4Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config4Value__c;
+            } else if(flowConfigurationList[0].Config5Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config5Value__c;
+            } else if(flowConfigurationList[0].Config6Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config6Value__c;
+            } else if(flowConfigurationList[0].Config7Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config7Value__c;
+            } else if(flowConfigurationList[0].Config8Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config8Value__c;
+            } else if(flowConfigurationList[0].Config9Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                viewId = flowConfigurationList[0].Config9Value__c;
+            }
+        }
+
+        List<FlowTableViewDefinition__c>  flowTableViewDefinitionList = [
+            SELECT  Object_API_Name__c,
+                    Field_API_Names__c,
+                    Field_Sorting__c
+            FROM    FlowTableViewDefinition__c
+            WHERE   Id =: viewId
+            LIMIT   1];
+
+            if(!flowTableViewDefinitionList.isEmpty()) {
+                Map<string,String> resultMap = new Map<String,String>();
+                resultMap.put('objectName', flowTableViewDefinitionList[0].Object_API_Name__c);
+                resultMap.put('viewId', viewId);
+                return resultMap;
+            }
+
+            return null;
+    }
+
+    static void upsertFlowPersonalConfugiration(String viewId, String recordId) {
+        List<FlowPersonalConfiguration__c> flowConfigurationList = [
+            SELECT  Id,
+                    ActorId__c,     LocationId__c,
+                    Config1Name__c, Config1Value__c,
+                    Config2Name__c, Config2Value__c,
+                    Config3Name__c, Config3Value__c,
+                    Config4Name__c, Config4Value__c,
+                    Config5Name__c, Config5Value__c,
+                    Config6Name__c, Config6Value__c,
+                    Config7Name__c, Config7Value__c,
+                    Config8Name__c, Config8Value__c,
+                    Config9Name__c, Config9Value__c   
+            FROM    FlowPersonalConfiguration__c
+            WHERE   ActorId__c = : UserInfo.getUserId()
+            AND     LocationId__c = :recordId
+            LIMIT   1      
+        ];
+
+        if(!flowConfigurationList.isEmpty()) {
+            if(String.isEmpty(flowConfigurationList[0].Config1Name__c) || flowConfigurationList[0].Config1Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION){
+                flowConfigurationList[0].Config1Value__c = viewId;
+                flowConfigurationList[0].Config1Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config2Name__c) ||  flowConfigurationList[0].Config2Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config2Value__c = viewId;
+                flowConfigurationList[0].Config2Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config3Name__c) || flowConfigurationList[0].Config3Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config3Value__c = viewId;
+                flowConfigurationList[0].Config3Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config4Name__c) || flowConfigurationList[0].Config4Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config4Value__c = viewId;
+                flowConfigurationList[0].Config4Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config5Name__c) || flowConfigurationList[0].Config5Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config5Value__c = viewId;
+                flowConfigurationList[0].Config5Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config6Name__c) || flowConfigurationList[0].Config6Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config6Value__c = viewId;
+                flowConfigurationList[0].Config6Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config7Name__c) || flowConfigurationList[0].Config7Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config7Value__c = viewId;
+                flowConfigurationList[0].Config7Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config8Name__c) || flowConfigurationList[0].Config8Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config8Value__c = viewId;
+                flowConfigurationList[0].Config8Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            } else if(String.isEmpty(flowConfigurationList[0].Config9Name__c) || flowConfigurationList[0].Config9Name__c == DEFAULT_QUICK_QUERY_CONFIGURATION) {
+                flowConfigurationList[0].Config9Value__c = viewId;
+                flowConfigurationList[0].Config9Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            }
+
+            update flowConfigurationList;
+        } else {
+            FlowPersonalConfiguration__c flowConfiguration = new FlowPersonalConfiguration__c();
+            flowConfiguration.ActorId__c = UserInfo.getUserId();
+            flowConfiguration.LocationId__c = recordId;
+            flowConfiguration.Config1Name__c = DEFAULT_QUICK_QUERY_CONFIGURATION;
+            flowConfiguration.Config1Value__c = viewId;
+            insert flowConfiguration;
+        }
     }
     
     public class FieldOrderSetting {

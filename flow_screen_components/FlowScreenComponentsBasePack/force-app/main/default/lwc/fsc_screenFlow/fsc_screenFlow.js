@@ -58,7 +58,7 @@ export default class ScreenFlow extends LightningElement {
     // }
 
     get fullUrl() {
-        let params = (this.flowParams ? '&params=' + encodeURI(this.flowParams) : '');
+        let params = (this.flowParams ? '&params=' + encodeURIComponent(this.flowParams) : '');
         let origin = (this.url ? '&origin=' + encodeURI(this.url) : '');
         return this.url + '/apex/fsc_screenFlow?flowname=' + this.flowName +  params+origin;
     }

@@ -9,6 +9,7 @@ import addQueryToObj from '@salesforce/apex/QuickRecordViewController.placeQuery
 import getRecordDataStr from '@salesforce/apex/QuickRecordViewController.getRecordDataString';
 import getFlowTableViewDefinition from '@salesforce/apex/QuickRecordViewController.getFlowTableViewDefinition';
 import upsertView from '@salesforce/apex/QuickRecordViewController.upsertView';
+import getDefaultView from '@salesforce/apex/QuickRecordViewController.getDefaultView';
 export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api quickRecordViewId;
@@ -34,6 +35,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api displayColumns;
   @api error = false;
+  @api recordId;
   @api objectInput;
   selectedObject;
   @track selectedViewOption = {};
@@ -46,6 +48,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @track filterFields = [];
   chosenField = '';
   isShowFlow = false;
+  defaultViewId = '';
   get isSaveViewDisabled() {
 
     let isSaveViewDisabled = true;
@@ -122,9 +125,25 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       }
     }.bind(this), false);
 
-    if(this.objectName) {
-      this.handleSelectionChange({detail : [this.objectName]});
-    }
+    getDefaultView({recordId : this.recordId})
+    .then(
+      result => {
+        if(result) {
+          this.objectName = result.objectName;
+          this.defaultViewId = result.viewId;
+        }
+        if(this.objectName) {
+          this.handleSelectionChange({detail : [this.objectName]});
+        }
+      }
+    ).catch(
+      error => {
+        console.error(error);
+      }
+    );
+    // if(this.objectName) {
+    //   this.handleSelectionChange({detail : [this.objectName]});
+    // }
   }
 
   displayLookupHandler(){
@@ -143,7 +162,13 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       ).then(
         result => {
           this.viewOptionList = result;
-          this.selectedViewOption = this.viewOptionList[0];
+          this.selectedViewOption = null;
+          if(this.defaultViewId) {
+            this.selectedViewOption = this.viewOptionList.find(item => item.value === this.defaultViewId);
+          }
+          if(!this.selectedViewOption) {
+            this.selectedViewOption = this.viewOptionList[0];
+          }
           this.searcObjectFilterApiFiledsName();
           this.getRecordDataStr();
         }
@@ -299,7 +324,11 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   
   getRecordDataStr(whereCondition) {
-    getRecordDataStr({"objectName" : this.objectName, viewId : this.selectedViewOption.value, whereCondition : whereCondition})
+    getRecordDataStr({
+      objectName : this.objectName,
+      viewId : this.selectedViewOption.value, 
+      whereCondition : whereCondition, 
+      recordId : this.recordId})
         .then(result => {
           result.forEach(
             item => {
@@ -329,14 +358,15 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     this.filterFields.forEach(
       item => {
         fieldList.push(item.fieldName);
+        delete item['isSelected'];
       }
     );
-
     upsertView({
       viewId : this.selectedViewOption.value,
-      viewName :viewName,
+      viewName : viewName,
       objectName : this.objectName,
-      fieldList :fieldList
+      fieldList : fieldList,
+      filtersJSON : JSON.stringify(this.filterFields)
     }).then(
       result => {
         this.selectedViewOption.value = result;
@@ -348,14 +378,14 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           message: 'View Name was updated successfully',
           variant: 'success',
         });
-        this.dispatchEvent(showToast);      
+        this.dispatchEvent(showToast);   
+        this.getRecordDataStr();   
       }
     ).catch(
       error => {
         console.error(error);
       }
     );
-    //
   }
 
   showCSVConvertor() {

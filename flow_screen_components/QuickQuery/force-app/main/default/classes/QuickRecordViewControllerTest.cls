@@ -3,32 +3,47 @@ public with sharing class QuickRecordViewControllerTest {
     @testSetup
     static void setup(){
         insert new Case(Origin = 'Web', Status = 'New');
-        insert new List<FlowTableViewDefinition__c>{
-                                            new FlowTableViewDefinition__c(
-                                                Field_API_Names__c = 'FirstName,LastName,Email',
-                                                Object_API_Name__c = 'Contact',
-                                                View_Name__c = 'Contact'),
-                                            new FlowTableViewDefinition__c(
-                                                Field_API_Names__c = 'CaseNumber,Status',
-                                                Object_API_Name__c = 'Case',
-                                                View_Name__c = 'Case'),
-                                            new FlowTableViewDefinition__c( 
-                                                Field_API_Names__c = 'Owner, LastActivity,Amout,Stage',
-                                                Object_API_Name__c = 'Opportunity',
-                                                View_Name__c = 'Opportunity'),
-                                            new FlowTableViewDefinition__c(
-                                                Field_API_Names__c = 'Name,Site,Rating',
-                                                Object_API_Name__c = 'Account',
-                                                View_Name__c = 'Account1'),
-                                            new FlowTableViewDefinition__c(
-                                                Field_API_Names__c = 'Name,Site,Rating',
-                                                Object_API_Name__c = 'Account',
-                                                View_Name__c = 'Account2'),
-                                            new FlowTableViewDefinition__c(  
-                                                Field_API_Names__c = 'FirstName,LastName,Email',
-                                                Object_API_Name__c = 'OrderItem',
-                                                View_Name__c = 'OrderItem')
+        List<FlowTableViewDefinition__c> flowTableDefinitionList = new List<FlowTableViewDefinition__c>{
+            new FlowTableViewDefinition__c(
+                Field_API_Names__c = 'FirstName,LastName,Email',
+                Object_API_Name__c = 'Contact',
+                View_Name__c = 'Contact'),
+            new FlowTableViewDefinition__c(
+                Field_API_Names__c = 'CaseNumber,Status',
+                Object_API_Name__c = 'Case',
+                View_Name__c = 'Case'),
+            new FlowTableViewDefinition__c( 
+                Field_API_Names__c = 'Owner, LastActivity,Amout,Stage',
+                Object_API_Name__c = 'Opportunity',
+                View_Name__c = 'Opportunity'),
+            new FlowTableViewDefinition__c(
+                Field_API_Names__c = 'Name,Site,Rating',
+                Object_API_Name__c = 'Account',
+                View_Name__c = 'Account1'),
+            new FlowTableViewDefinition__c(
+                Field_API_Names__c = 'Name,Site,Rating',
+                Object_API_Name__c = 'Account',
+                View_Name__c = 'Account2'),
+            new FlowTableViewDefinition__c(  
+                Field_API_Names__c = 'FirstName,LastName,Email',
+                Object_API_Name__c = 'OrderItem',
+                View_Name__c = 'OrderItem')
         };
+        insert flowTableDefinitionList;
+
+
+        List<QuickQueryConfiguration__c> quickQueryConfigurationList = new List<QuickQueryConfiguration__c>();
+
+        for(FlowTableViewDefinition__c flowDefinition : flowTableDefinitionList) {
+            quickQueryConfigurationList.add(new QuickQueryConfiguration__c(
+                Label__c = flowDefinition.Object_API_Name__c,
+                ObjectName__c = flowDefinition.Object_API_Name__c,
+                ViewUserId__c = UserInfo.getUserId(),
+                FlowTableViewDefinition__c = flowDefinition.Id
+            ));
+        }
+
+        insert quickQueryConfigurationList;
     }
 
     // Default behavior: when a change is made to the object name specified in the object lookup,
@@ -121,9 +136,8 @@ public with sharing class QuickRecordViewControllerTest {
      static void testGetRecordDataString() {
          Account accnt = new Account(Name = 'TestAccount');
          insert accnt;
-         String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
-         String serializedString = JSON.serialize(QuickRecordViewController.getRecordDataString(viewId, '', 'Account'));
-         System.debug('serializedString' + serializedString);
+         String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'}, accnt.Id);
+         String serializedString = JSON.serialize(QuickRecordViewController.getRecordDataString(viewId, '', 'Account', accnt.Id));
 
          System.assert(String.isNotEmpty(serializedString));
      }
@@ -168,7 +182,7 @@ public with sharing class QuickRecordViewControllerTest {
     static void testUsertView() {
         Account accnt = new Account(Name = 'TestAccount');
         insert accnt;
-        String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
+        String viewId = QuickRecordViewController.upsertView('', 'Test View Name', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'}, accnt.Id);
         FlowTableViewDefinition__c  flowDef = [
             SELECT  Id, 
                     Name, 
@@ -179,7 +193,7 @@ public with sharing class QuickRecordViewControllerTest {
         ];
 
         System.assertEquals(flowDef.View_Name__c, 'Test View Name');
-        viewId = QuickRecordViewController.upsertView(viewId, 'Test View Name2', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'});
+        viewId = QuickRecordViewController.upsertView(viewId, 'Test View Name2', 'Account', new List<String>{'Name', 'CreatedDate', 'OwnerId'}, accnt.Id);
 
         System.assertEquals(viewId, flowDef.Id);
 
@@ -205,4 +219,80 @@ public with sharing class QuickRecordViewControllerTest {
         flowDefMap =  QuickRecordViewController.getFlowTableViewDefinition('Lead');
         System.assert(flowDefMap.size() == 1);
     }
+
+    @isTest
+    static void testDefaultView() {
+        Account accnt = new Account(Name = 'TestAccount');
+        insert accnt;
+
+        List<FlowTableViewDefinition__c>  flowDefList = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c 
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Object_API_Name__c = 'Account'
+            LIMIT   2
+        ];
+
+        Map<String, String> defaultView = QuickRecordViewController.getDefaultView(accnt.Id);
+
+        System.assert(defaultView == null);
+
+        List<SObject> recordList = QuickRecordViewController.getRecordDataString(flowDefList[0].Id, '', 'Account', accnt.Id);
+        
+        defaultView = QuickRecordViewController.getDefaultView(accnt.Id);
+
+        System.assert(defaultView != null);
+        System.assert(defaultView.get('objectName') == 'Account');
+        System.assert(defaultView.get('viewId') == flowDefList[0].Id);
+
+
+
+        recordList = QuickRecordViewController.getRecordDataString(flowDefList[1].Id, '', 'Account', accnt.Id);
+        defaultView = QuickRecordViewController.getDefaultView(accnt.Id);
+
+        System.assert(defaultView != null);
+        System.assert(defaultView.get('objectName') == 'Account');
+        System.assert(defaultView.get('viewId') == flowDefList[1].Id);
+
+        List<FlowPersonalConfiguration__c> flowConfigurationList = [
+            SELECT  Id,
+                    ActorId__c,     LocationId__c,
+                    Config1Name__c, Config1Value__c,
+                    Config2Name__c, Config2Value__c,
+                    Config3Name__c, Config3Value__c,
+                    Config4Name__c, Config4Value__c,
+                    Config5Name__c, Config5Value__c,
+                    Config6Name__c, Config6Value__c,
+                    Config7Name__c, Config7Value__c,
+                    Config8Name__c, Config8Value__c,
+                    Config9Name__c, Config9Value__c   
+            FROM    FlowPersonalConfiguration__c
+            WHERE   ActorId__c = : UserInfo.getUserId()
+            AND     LocationId__c = :accnt.Id
+            LIMIT   1      
+        ];
+
+        System.assert(!flowConfigurationList.isEmpty());
+
+        flowConfigurationList[0].Config1Name__c = 'testName1';
+        flowConfigurationList[0].Config2Name__c = 'testName2';
+        flowConfigurationList[0].Config3Name__c = 'testName3';
+        flowConfigurationList[0].Config4Name__c = 'testName4';
+        flowConfigurationList[0].Config5Name__c = 'testName5';
+        flowConfigurationList[0].Config6Name__c = 'testName6';
+        flowConfigurationList[0].Config7Name__c = 'testName7';
+        flowConfigurationList[0].Config8Name__c = 'testName8';
+
+        update flowConfigurationList;
+
+
+        recordList = QuickRecordViewController.getRecordDataString(flowDefList[1].Id, '', 'Account', accnt.Id);
+        defaultView = QuickRecordViewController.getDefaultView(accnt.Id);
+
+        System.assert(defaultView != null);
+        System.assert(defaultView.get('objectName') == 'Account');
+        System.assert(defaultView.get('viewId') == flowDefList[1].Id);
+        
+    } 
 }

@@ -80,7 +80,9 @@ export default class Datatable extends LightningElement {
     set tableData(data = []) {
         if (Array.isArray(data)) {
             this._tableData = data;
-            this.processDatatable();
+            if(this.columnFields) {
+                this.processDatatable();
+            }
         } else {
             this._tableData = [];
         }
@@ -778,7 +780,12 @@ export default class Datatable extends LightningElement {
                 data.forEach(record => { 
                     delete record['attributes'];   
                 });
-            } 
+            } else {
+                data = (this._tableData) ? JSON.parse(this.tableDataString) : [];
+                data.forEach(record => { 
+                    delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
+                });
+            }
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
             console.log('Passing data to Apex Controller', data);

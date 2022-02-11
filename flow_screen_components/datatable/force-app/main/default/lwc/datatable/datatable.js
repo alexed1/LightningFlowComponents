@@ -1432,6 +1432,16 @@ export default class Datatable extends LightningElement {
                     }
                 });                
 
+                // Repeat offset for date fields (v3.4.5)
+                let datefield = this.dateFieldArray;
+                datefield.forEach(date => {
+                    if (field[date]) {
+                        let rdt = Date.parse(field[date]);
+                        let rd = new Date();
+                        field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                    }
+                });
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;

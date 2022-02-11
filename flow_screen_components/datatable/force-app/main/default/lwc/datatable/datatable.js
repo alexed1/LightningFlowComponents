@@ -188,7 +188,6 @@ export default class Datatable extends LightningElement {
             } else {
                 this._tableData = [];
             }
-            this.mydata = [];
             this.outputEditedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
             this.outputEditedSerializedRows = '';
@@ -1483,7 +1482,6 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = [...currentSelectedRows]; 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
-        console.log('outputSelectedRowsString', this.outputSelectedRowsString);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       
     }
 

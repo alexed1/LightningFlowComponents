@@ -417,6 +417,20 @@ public with sharing class QuickRecordViewController {
             insert flowConfiguration;
         }
     }
+
+    @AuraEnabled
+    public static void updateRecords(String recordListJSON){
+        List<SObject> recordList = (List<SObject>)JSON.deserialize(recordListJSON, List<SObject>.class);
+        update recordList;
+        
+    }
+
+    @AuraEnabled
+    public static void deleteRecords(String recordListJSON){
+        List<SObject> recordList = (List<SObject>)JSON.deserialize(recordListJSON, List<SObject>.class);
+        delete recordList;
+        
+    }
     
     public class FieldOrderSetting {
         @AuraEnabled

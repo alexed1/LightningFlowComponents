@@ -10,12 +10,16 @@ import getRecordDataStr from '@salesforce/apex/QuickRecordViewController.getReco
 import getFlowTableViewDefinition from '@salesforce/apex/QuickRecordViewController.getFlowTableViewDefinition';
 import upsertView from '@salesforce/apex/QuickRecordViewController.upsertView';
 import getDefaultView from '@salesforce/apex/QuickRecordViewController.getDefaultView';
+import updateRecords from '@salesforce/apex/QuickRecordViewController.updateRecords';
+import deleteRecords from '@salesforce/apex/QuickRecordViewController.deleteRecords';
+
 export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api quickRecordViewId;
   @api recordDataString = '';
   @api recordDataStringAll = '';
   @api recordDataStringSelected = '';
+  @api recordDataStringChanged = '';
   @api objectName;
   allOperators = [
     {value: 'equals', label: 'Equals'},
@@ -148,6 +152,11 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   displayLookupHandler(){
     this.displayLookup = true;
+  }
+  blurLookupHandler() {
+    if(this.objectName) {
+      this.displayLookup = false;
+    }
   }
 
   handleSelectionChange(event) {
@@ -339,6 +348,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           );
           this.recordDataStringAll = JSON.stringify(result);
           this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
+          this.recordDataStringChanged = '';
+          console.log('this.recordDataStringChanged', this.recordDataStringChanged );
         })
         .catch(error => {
           console.log(error);
@@ -427,6 +438,27 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   expressionBlur() {
     this.closeModalHandler();
+  }
+
+  saveRecords() {
+    updateRecords({
+      recordListJSON : this.recordDataStringChanged
+    }).then(result => {
+      this.updateTable();
+    }).catch(error => {
+      console.error(error);
+    })
+  }
+
+  deleteRecords() {
+    console.log('this.recordDataStringChanged', this.recordDataStringChanged);
+    deleteRecords({
+      recordListJSON : this.recordDataStringChanged
+    }).then(result => {
+      this.updateTable();
+    }).catch(error => {
+      console.error(error);
+    })
   }
 
 }

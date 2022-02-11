@@ -14,7 +14,7 @@ export default class SortingConfigurationLine extends LightningElement {
         return SORTING_DIRECTION_OPTIONS;
     }
 
-    @api field;
+    @api field = {};
     @api sortingDirection = 'ASC';
     @api objectName;
     @api index;
@@ -30,7 +30,6 @@ export default class SortingConfigurationLine extends LightningElement {
 
 
     changeField(event) {
-        console.log('changeField', JSON.stringify(event.detail));
         this.field = event.detail.value;
         this.dispatchChangeEvent();
     }

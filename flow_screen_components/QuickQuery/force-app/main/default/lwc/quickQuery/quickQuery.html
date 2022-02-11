@@ -15,7 +15,7 @@
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
-            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-fsc_lookup_quick-record>
+            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange} onblur={blurLookupHandler}></c-fsc_lookup_quick-record>
           </template>
         </div>
         <!-- Error -->
@@ -50,7 +50,7 @@
       <template if:true={objectName}>
         <div  class="slds-col slds-grow-none">
           <lightning-layout vertical-align="end">
-            <lightning-layout-item class="slds-text-heading_small slds-p-bottom_x-small slds-p-right_x-small"> 
+            <lightning-layout-item class="slds-text-heading_small slds-p-bottom_xx-small slds-p-right_xxx-small"> 
               View:
             </lightning-layout-item>
         
@@ -68,6 +68,12 @@
       <template if:true={objectName}>
         <div class="slds-col slds-grow-none">
           <lightning-button variant="brand-outline" label="Export To CSV" onclick={showCSVConvertor}></lightning-button>
+        </div>
+      </template>
+      <template if:true={recordDataStringChanged}>
+        <div class="slds-col slds-grow-none">
+          <lightning-button variant="brand-outline" label="Save Changes" onclick={saveRecords} class="slds-p-right_x-small"></lightning-button>
+          <lightning-button variant="brand-outline" label="Delete" onclick={deleteRecords}></lightning-button>
         </div>
       </template>
       <template if:true={selectedViewOption.value}>
@@ -120,13 +126,28 @@
       
 
       <template if:true={displayViewEditer}>
-        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <section role="dialog" tabindex="-1" aria-modal="true" onkeydown={handleViewNameKeyDown} aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
           <div class="slds-modal__container">
             <header class="slds-modal__header slds-modal__header_empty">
               <lightning-button-icon icon-name="utility:close" onclick={closeViewEditer} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
             </header>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-              <lightning-input data-target-id="viewName" label="View Name" value={selectedViewOption.label}></lightning-input>
+              <!-- <input data-target-id="viewName" label="View Name" value={selectedViewOption.label} onfocus={focusViewNameHandler}></lightning-input> -->
+              
+              <lightning-radio-group name="radioGroup"
+                label="Radio Group"
+                options={viewNameSaveOptions}
+                value={viewNameSaveOptionValue}
+                onchange={changeViewNameSaveOption}
+                type="radio">
+              </lightning-radio-group>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label" for="text-input-id-47">
+                  View Name</label>
+                <div class="slds-form-element__control">
+                  <input type="text" id="text-input-id-47" class="slds-input"  data-target-id="viewName" value={selectedViewOption.label} onfocus={focusViewNameHandler} />
+                </div>
+              </div>
             </div>
             <footer class="slds-modal__footer">
               <button class="slds-button slds-button_neutral" onclick={updateViewName}>{updateLabel}</button>
@@ -151,9 +172,6 @@
                 <c-fsc_screen-flow width='100%' height='300' flow-name='QuickRecord_ProcessCSVExportRequest' name="uniqueName" flow-params={flowParamsJSON}></c-fsc_screen-flow>
               </div>
             </div>
-            <footer class="slds-modal__footer">
-              <button class="slds-button slds-button_neutral" onclick={closeCSVConvertor}>Close</button>
-            </footer>
           </div>
         </section>
         <div class="slds-backdrop slds-backdrop_open"></div>
@@ -171,7 +189,7 @@
               </template>
               
               <div class={flowContentClass}>
-                <c-fsc_screen-flow width='100%' height='400rem' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
+                <c-fsc_screen-flow width='100%' height='600rem' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
               </div>
               
             </div>

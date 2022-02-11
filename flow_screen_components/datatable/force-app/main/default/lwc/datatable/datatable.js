@@ -182,18 +182,25 @@ export default class Datatable extends LightningElement {
         return JSON.stringify(this.tableData);
     }
     set serializedRecordData(value) {
-        if(this.isSerializedRecordData) {
+        if(this.isSerializedRecordData && this.isUpdateTable) {
             if(value) {
                 this._tableData = JSON.parse(value);
             } else {
                 this._tableData = [];
             }
-
+            this.outputEditedRows = [];
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+            this.outputEditedSerializedRows = '';
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             setTimeout(function() {
                 this.connectedCallback();
               }.bind(this), 1000);
         }
+        this.isUpdateTable = true;
     }                                             //NEW
+    
+    isUpdateTable = true;
+
     @api                                                                    //NEW
     get isSerializedRecordData(){
         return (this.cb_isSerializedRecordData == CB_TRUE) ? true : false;
@@ -265,7 +272,9 @@ export default class Datatable extends LightningElement {
     @track isAllFilter = false;
     @track showClearButton = false;
     @track tableHeightAttribute = 'height:';
-    @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229))';
+    @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
+        +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
+        + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229))';
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -1427,7 +1436,13 @@ export default class Datatable extends LightningElement {
             }
             return eitem;
         }); 
+        
+        this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+        if(this.isSerializedRecordData) {
+            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
+        }
 
         this.savePreEditData = [...data];   // Resave the current table values
         this.mydata = [...data];            // Reset the current table values
@@ -1467,7 +1482,6 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = [...currentSelectedRows]; 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
-        console.log('outputSelectedRowsString', this.outputSelectedRowsString);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       
     }
 

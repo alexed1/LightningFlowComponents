@@ -295,4 +295,36 @@ public with sharing class QuickRecordViewControllerTest {
         System.assert(defaultView.get('viewId') == flowDefList[1].Id);
         
     } 
+
+    @isTest
+    static void testUpdateRecords(){
+
+        Account accnt = new Account(Name = 'TestAccount');
+        insert accnt;
+
+        accnt.Name = 'New Test Name';
+       
+
+        QuickRecordViewController.updateRecords(JSON.serialize(new List<Account> {accnt}));
+
+        Account accnt2 = [SELECT Id, Name FROM Account WHERE Id =: accnt.Id LIMIT 1];
+
+        System.assert(accnt2.Name == 'New Test Name');
+        
+    }
+
+    @isTest
+    static void testDeleteRecords(){
+        Account accnt = new Account(Name = 'TestAccount');
+        insert accnt;
+
+        QuickRecordViewController.deleteRecords(JSON.serialize(new List<Account> {accnt}));
+
+        List<Account> accntList = [SELECT Id, Name FROM Account WHERE Id =: accnt.Id];
+
+        System.assert(accntList.isEmpty());
+        
+    }
+
+
 }

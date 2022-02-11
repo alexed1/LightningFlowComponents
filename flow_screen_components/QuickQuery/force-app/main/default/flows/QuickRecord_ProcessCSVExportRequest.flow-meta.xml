@@ -3,12 +3,12 @@
     <actionCalls>
         <name>Convert_Records_to_CSV</name>
         <label>Convert Records to CSV</label>
-        <locationX>176</locationX>
-        <locationY>734</locationY>
-        <actionName>usf__ConvertRecordsToCSVQueueable</actionName>
+        <locationX>584</locationX>
+        <locationY>782</locationY>
+        <actionName>ConvertRecordsToCSVQueueable</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>OpenURL</targetReference>
+            <targetReference>End_Screen</targetReference>
         </connector>
         <dataTypeMappings>
             <typeName>T__recordCollection</typeName>
@@ -38,8 +38,8 @@
     <actionCalls>
         <name>Get_Records</name>
         <label>Get Records</label>
-        <locationX>176</locationX>
-        <locationY>614</locationY>
+        <locationX>584</locationX>
+        <locationY>662</locationY>
         <actionName>GetRecordsFromIds</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -73,13 +73,10 @@
     <actionCalls>
         <name>OpenURL</name>
         <label>OpenURL</label>
-        <locationX>176</locationX>
-        <locationY>854</locationY>
+        <locationX>774</locationX>
+        <locationY>916</locationY>
         <actionName>c:fsc_openUrl</actionName>
         <actionType>component</actionType>
-        <connector>
-            <targetReference>End_Screen</targetReference>
-        </connector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>mode</name>
@@ -99,8 +96,8 @@
     <assignments>
         <name>Selected_Records_Assignment</name>
         <label>Selected Records Assignment</label>
-        <locationX>264</locationX>
-        <locationY>398</locationY>
+        <locationX>672</locationX>
+        <locationY>446</locationY>
         <assignmentItems>
             <assignToReference>allRecordDataIds</assignToReference>
             <operator>Assign</operator>
@@ -131,8 +128,8 @@
     <decisions>
         <name>ExportOption</name>
         <label>ExportOption</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationX>584</locationX>
+        <locationY>326</locationY>
         <defaultConnector>
             <targetReference>Selected_Records_Assignment</targetReference>
         </defaultConnector>
@@ -164,7 +161,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -177,9 +174,9 @@
     <screens>
         <name>End_Screen</name>
         <label>End Screen</label>
-        <locationX>176</locationX>
-        <locationY>974</locationY>
-        <allowBack>true</allowBack>
+        <locationX>584</locationX>
+        <locationY>1022</locationY>
+        <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
@@ -187,14 +184,28 @@
             <fieldText>&lt;p&gt;CSV is ready. You can close screen&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
-        <showFooter>false</showFooter>
+        <fields>
+            <name>downloadFile</name>
+            <extensionName>c:downloadFile</extensionName>
+            <fieldType>ComponentInstance</fieldType>
+            <inputParameters>
+                <name>url</name>
+                <value>
+                    <stringValue>/sfc/servlet.shepherd/document/download/{!Convert_Records_to_CSV.contentDocumentId}</stringValue>
+                </value>
+            </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <isRequired>true</isRequired>
+            <storeOutputAutomatically>true</storeOutputAutomatically>
+        </fields>
+        <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Export_Options_Screen</name>
         <label>Export Options</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationX>584</locationX>
+        <locationY>206</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -215,8 +226,8 @@
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
-        <locationY>0</locationY>
+        <locationX>458</locationX>
+        <locationY>48</locationY>
         <connector>
             <targetReference>Export_Options_Screen</targetReference>
         </connector>

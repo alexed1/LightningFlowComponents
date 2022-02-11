@@ -72,6 +72,34 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## xx/xx/22 -  Eric Smith -    Version 3.4.5 
+**Updates:** 
+-   Updated all component API versions to 53.0 (Winter '22)
+-   Changed tableData attribute to support Reactive Screens (pilot) see PR_944
+-   Replaced hardcoded text with Custom Labels to allow for translations
+ 
+**Bug Fixes:** 
+-   Fixed horizontal scroll bar disappearing after a field edit (This will increase the table's height while the footer is present) [Issue-890]
+-   Fix for clicking the dropdown arrow not expanding the selections when editing a picklist [Issue-883]
+-   Fix lookup links when the datatable is on a non-home Community(Experience) page
+-   Reapply timezone offset on date fields for edited records 
+
+## 02/11/22 -  Alex Edelstein -    Version 3.4.4 
+**Updates:**
+-   Updated default table border styling
+
+**Bug Fixes:** 
+-   Misc Fixes
+
+## 01/30/22 – Alex Edelstein – Version 3.4.2
+**Updates:** 
+-   Supports a JSON datastring as an input and output 
+-   Supports reactive screens pilot 
+-   Visible Left border where there wasn’t one previously 
+ 
+**Bug Fixes:** 
+-   Misc Fixes
+ 
 ## 08/13/21 -  Eric Smith -    Version 3.3.2 
 **Updates:** 
 -   Converted interface elements to Custom Labels so they can be Translated 

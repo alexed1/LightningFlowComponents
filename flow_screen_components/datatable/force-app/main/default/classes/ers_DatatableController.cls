@@ -318,7 +318,7 @@ public with sharing class ers_DatatableController {
             for (SObject so : records) {
                 SObject converted = sobjCurrencyFields.get(so.Id);
                 for (String currField : currencyFields) {
-                    if (converted.get(currField) != null) {
+                    if (converted?.get(currField) != null) {
                         so.put(currField, converted.get(currField));
                     }
                 }

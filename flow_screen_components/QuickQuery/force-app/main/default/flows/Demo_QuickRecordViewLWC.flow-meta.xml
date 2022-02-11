@@ -86,6 +86,12 @@
                     <elementReference>recordId</elementReference>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>recordDataStringChanged</name>
+                <value>
+                    <elementReference>Datatable.outputEditedSerializedRows</elementReference>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -144,6 +150,18 @@
                 <name>serializedRecordData</name>
                 <value>
                     <elementReference>quickRecordLWC.recordDataStringAll</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>suppressBottomBar</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_suppressBottomBar</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>

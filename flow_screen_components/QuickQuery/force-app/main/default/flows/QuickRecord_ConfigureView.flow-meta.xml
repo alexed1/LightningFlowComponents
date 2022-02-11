@@ -92,7 +92,7 @@
         </rules>
     </decisions>
     <interviewLabel>QuickRecord_ConfigureView {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>QuickRecord ConfigureView</label>
+    <label>Configure QuickQuery</label>
     <loops>
         <name>Selected_Field_Definition</name>
         <label>Selected Field Definition</label>
@@ -207,7 +207,7 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <screens>
         <name>Result_Screen</name>
@@ -219,7 +219,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>ResultMessage</name>
-            <fieldText>&lt;p&gt;Column Selection is Completed. You can Close Screen&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;span style=&quot;color: rgb(3, 45, 96);&quot;&gt;View Configuration complete. Click Finish to continue&lt;/span&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -263,7 +263,7 @@
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>false</showHeader>
+        <showHeader>true</showHeader>
     </screens>
     <start>
         <locationX>50</locationX>

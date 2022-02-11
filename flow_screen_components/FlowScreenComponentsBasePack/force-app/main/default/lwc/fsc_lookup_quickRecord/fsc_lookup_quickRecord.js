@@ -284,7 +284,11 @@ export default class Lookup extends NavigationMixin(LightningElement) {
         this.template.querySelector('input').focus();
     }
 
-    handleFocus() {
+    handleFocus(event) {
+        console.log('handleFocus', event);
+        if(event && event.target) {
+            event.target.select();
+        }
         // Prevent action if selection is not allowed
         if (!this.isSelectionAllowed()) {
             return;
@@ -299,6 +303,7 @@ export default class Lookup extends NavigationMixin(LightningElement) {
             return;
         }
         this._hasFocus = false;
+        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     handleRemoveSelectedItem(event) {

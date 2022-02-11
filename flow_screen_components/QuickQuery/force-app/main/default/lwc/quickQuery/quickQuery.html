@@ -15,7 +15,7 @@
             <lightning-button-icon icon-name="utility:chevrondown" variant="bare" onclick={displayLookupHandler}></lightning-button-icon>
           </template>
           <template if:true={displayLookup}>
-            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange}></c-fsc_lookup_quick-record>
+            <c-fsc_lookup_quick-record onsearch={handleSearch} placeholder="Select Object" objname={objectInput} onselectionchange={handleSelectionChange} onblur={blurLookupHandler}></c-fsc_lookup_quick-record>
           </template>
         </div>
         <!-- Error -->
@@ -68,6 +68,12 @@
       <template if:true={objectName}>
         <div class="slds-col slds-grow-none">
           <lightning-button variant="brand-outline" label="Export To CSV" onclick={showCSVConvertor}></lightning-button>
+        </div>
+      </template>
+      <template if:true={recordDataStringChanged}>
+        <div class="slds-col slds-grow-none">
+          <lightning-button variant="brand-outline" label="Save Changes" onclick={saveRecords} class="slds-p-right_x-small"></lightning-button>
+          <lightning-button variant="brand-outline" label="Delete" onclick={deleteRecords}></lightning-button>
         </div>
       </template>
       <template if:true={selectedViewOption.value}>
@@ -171,7 +177,7 @@
               </template>
               
               <div class={flowContentClass}>
-                <c-fsc_screen-flow width='100%' height='400rem' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
+                <c-fsc_screen-flow width='100%' height='600rem' flow-name='QuickRecord_ConfigureView' name="uniqueName" flow-params={сonfigureViewFlowParamsJSON}></c-fsc_screen-flow>
               </div>
               
             </div>

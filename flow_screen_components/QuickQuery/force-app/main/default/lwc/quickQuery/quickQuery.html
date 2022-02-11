@@ -126,13 +126,28 @@
       
 
       <template if:true={displayViewEditer}>
-        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <section role="dialog" tabindex="-1" aria-modal="true" onkeydown={handleViewNameKeyDown} aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
           <div class="slds-modal__container">
             <header class="slds-modal__header slds-modal__header_empty">
               <lightning-button-icon icon-name="utility:close" onclick={closeViewEditer} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>
             </header>
             <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
-              <lightning-input data-target-id="viewName" label="View Name" value={selectedViewOption.label}></lightning-input>
+              <!-- <input data-target-id="viewName" label="View Name" value={selectedViewOption.label} onfocus={focusViewNameHandler}></lightning-input> -->
+              
+              <lightning-radio-group name="radioGroup"
+                label="Radio Group"
+                options={viewNameSaveOptions}
+                value={viewNameSaveOptionValue}
+                onchange={changeViewNameSaveOption}
+                type="radio">
+              </lightning-radio-group>
+              <div class="slds-form-element">
+                <label class="slds-form-element__label" for="text-input-id-47">
+                  View Name</label>
+                <div class="slds-form-element__control">
+                  <input type="text" id="text-input-id-47" class="slds-input"  data-target-id="viewName" value={selectedViewOption.label} onfocus={focusViewNameHandler} />
+                </div>
+              </div>
             </div>
             <footer class="slds-modal__footer">
               <button class="slds-button slds-button_neutral" onclick={updateViewName}>{updateLabel}</button>

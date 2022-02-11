@@ -31,7 +31,23 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     {value: 'contains', label: 'Contains'},
     {value: 'starts_with', label: 'Starts with'},
     {value: 'end_with', label: 'End with'}
-];
+  ];
+
+  get viewNameSaveOptions() {
+    if(this.selectedViewOption.value) {
+      return [
+          { label: 'Update existing View', value: 'update' },
+          { label: 'Save as New View', value: 'create' },
+      ];
+    } else {
+      this.viewNameSaveOptionValue = 'create';
+      return [
+          { label: 'Save as New View', value: 'create' },
+      ];
+    }
+  }
+
+  viewNameSaveOptionValue = 'update';
 
   get getObjectName() {
     return this.objectName.replace('__kav', '');
@@ -349,7 +365,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           this.recordDataStringAll = JSON.stringify(result);
           this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
           this.recordDataStringChanged = '';
-          console.log('this.recordDataStringChanged', this.recordDataStringChanged );
         })
         .catch(error => {
           console.log(error);
@@ -357,7 +372,17 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   }
 
   showViewEditer() {
+    
     this.displayViewEditer = true;
+    setTimeout(() => {
+      let viewName = this.template.querySelector(`[data-target-id="viewName"]`);
+      viewName.focus();
+    });
+    
+  }
+
+  focusViewNameHandler(event) {
+    event.target.select();
   }
   closeViewEditer() {
     this.displayViewEditer = false;
@@ -373,7 +398,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       }
     );
     upsertView({
-      viewId : this.selectedViewOption.value,
+      viewId : (this.viewNameSaveOptionValue === 'create') ? '' : this.selectedViewOption.value,
       viewName : viewName,
       objectName : this.objectName,
       fieldList : fieldList,
@@ -389,14 +414,56 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           message: 'View Name was updated successfully',
           variant: 'success',
         });
+        this.viewNameSaveOptionValue = 'update';
         this.dispatchEvent(showToast);   
-        this.getRecordDataStr();   
+        getFlowTableViewDefinition({
+          objectName : this.objectName
+        }
+        ).then(
+          result => {
+            this.viewOptionList = result;
+            this.selectedViewOption = null;
+            if(this.defaultViewId) {
+              this.selectedViewOption = this.viewOptionList.find(item => item.value === this.defaultViewId);
+            }
+            if(!this.selectedViewOption) {
+              this.selectedViewOption = this.viewOptionList[0];
+            }
+            this.searcObjectFilterApiFiledsName();
+            this.updateTable();
+          }
+        ).catch(
+          error => {
+            this.error = error;
+            console.error(error);
+            const showToast = new ShowToastEvent({
+              title: 'Error',
+              message: 'View Name is duplicated',
+              variant: 'Error',
+            });
+            this.dispatchEvent(showToast);   
+          }
+        ); 
       }
     ).catch(
       error => {
         console.error(error);
       }
     );
+  }
+
+  handleViewNameKeyDown(event) {
+    if(event.code == 'Escape') {
+      this.closeViewEditer();
+    }
+    if(event.code == 'Enter') {
+      this.updateViewName();
+    }
+  }
+
+  changeViewNameSaveOption(event) {
+    let selectedOption = event.detail.value;
+    this.viewNameSaveOptionValue = selectedOption;
   }
 
   showCSVConvertor() {
@@ -447,17 +514,29 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       this.updateTable();
     }).catch(error => {
       console.error(error);
+      const showToast = new ShowToastEvent({
+        title: 'Error',
+        message: 'Records saving was not Successful',
+        variant: 'Error',
+      });
+      this.dispatchEvent(showToast);
     })
   }
 
   deleteRecords() {
-    console.log('this.recordDataStringChanged', this.recordDataStringChanged);
     deleteRecords({
       recordListJSON : this.recordDataStringChanged
     }).then(result => {
       this.updateTable();
     }).catch(error => {
       console.error(error);
+
+      const showToast = new ShowToastEvent({
+        title: 'Error',
+        message: 'Records deletion was not Successful',
+        variant: 'Error',
+      });
+      this.dispatchEvent(showToast);
     })
   }
 

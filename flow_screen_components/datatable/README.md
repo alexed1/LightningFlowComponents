@@ -83,6 +83,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fix for clicking the dropdown arrow not expanding the selections when editing a picklist [Issue-883]
 -   Fix lookup links when the datatable is on a non-home Community(Experience) page
 -   Reapply timezone offset on date fields for edited records 
+-   Fix for currency conversion on manually created records when the object has no records [Issue-1047]
+-   Fix conditional display of Clear Selection button
 
 ## 02/11/22 -  Alex Edelstein -    Version 3.4.4 
 **Updates:**

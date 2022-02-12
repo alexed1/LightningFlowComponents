@@ -1805,11 +1805,11 @@ export default class Datatable extends LightningElement {
     handleCommitIconSelection(event) { 
         // Update the column icon value
         let newValue = this.selectedIcon;
-        if (newValue) {
+        // if (newValue) {  //v3.4.5
             this.filterColumns[this.columnNumber].iconName = newValue;
             this.columns = [...this.filterColumns]; 
             this.updateIconParam();
-        }
+        // }
         this.isOpenIconInput = false;
     }
 

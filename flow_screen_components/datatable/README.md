@@ -85,6 +85,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Reapply timezone offset on date fields for edited records 
 -   Fix for currency conversion on manually created records when the object has no records [Issue-1047]
 -   Fix conditional display of Clear Selection button
+-   Allow the clearing of a header icon in the Column Wizard
 
 ## 02/11/22 -  Alex Edelstein -    Version 3.4.4 
 **Updates:**

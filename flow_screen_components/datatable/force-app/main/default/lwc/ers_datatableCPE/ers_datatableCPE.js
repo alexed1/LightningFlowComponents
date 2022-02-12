@@ -86,6 +86,8 @@ export default class ers_datatableCPE extends LightningElement {
 
     selectedSObject = '';
     isRecordCollectionSelected = false;
+    isSerializedSelected = false;
+    isApexSelected = false;
     disableAllowALl = false;
     isCheckboxColumnHidden = false;
     isShowCheckboxColumn = false;
@@ -826,6 +828,7 @@ export default class ers_datatableCPE extends LightningElement {
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (changedAttribute == 'isUserDefinedObject') {
+                this.isApexSelected = event.detail.newValue;
                 if (event.detail.newValue) {
                     this.isDisplayAll = false;                          // Clear & Disable Display All Selection when selecting User Defined Object
                     if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
@@ -847,6 +850,7 @@ export default class ers_datatableCPE extends LightningElement {
             }
 
             if (changedAttribute == 'isSerializedRecordData') {
+                this.isSerializedSelected = event.detail.newValue;
                 if (event.detail.newValue) {
                     this.isDisplayAll = false;                          
                     if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE

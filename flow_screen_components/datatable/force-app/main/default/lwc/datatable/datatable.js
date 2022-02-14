@@ -21,6 +21,7 @@ import ClearFilterAction from '@salesforce/label/c.ers_ClearFilterAction';
 import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
 import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
 import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
+import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
@@ -39,7 +40,8 @@ export default class Datatable extends LightningElement {
         ClearFilterAction,
         ColumnHeader,
         FilterHeader,
-        LabelHeader
+        LabelHeader,
+        RequiredMessage
     };
 
     // Component Input & Output Attributes
@@ -2108,7 +2110,7 @@ export default class Datatable extends LightningElement {
             this.setIsInvalidFlag(true);
             return { 
                 isValid: false, 
-                errorMessage: 'This is a required entry.  At least 1 row must be selected.' 
+                errorMessage: this.label.RequiredMessage
             }; 
         }
         

@@ -22,6 +22,7 @@ import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
 import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
 import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
+import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
@@ -41,7 +42,8 @@ export default class Datatable extends LightningElement {
         ColumnHeader,
         FilterHeader,
         LabelHeader,
-        RequiredMessage
+        RequiredMessage,
+        EmptyMessage
     };
 
     // Component Input & Output Attributes
@@ -220,6 +222,11 @@ export default class Datatable extends LightningElement {
         return (this.cb_allowOverflow == CB_TRUE) ? true : false;
     }
     @api cb_allowOverflow;
+
+    @api 
+    get emptyTableMessage() {
+        return this.label.EmptyMessage;
+    }
 
     @api tableDataString = [];
     @api preSelectedRowsString = [];

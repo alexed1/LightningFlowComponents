@@ -76,7 +76,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Updates:** 
 -   Updated all component API versions to 53.0 (Winter '22)
 -   Changed tableData attribute to support Reactive Screens (pilot) see PR_944
--   Replaced hardcoded text with Custom Labels to allow for translations
+-   Replaced hardcoded messages with Custom Labels to allow for translations
  
 **Bug Fixes:** 
 -   Fixed horizontal scroll bar disappearing after a field edit (This will increase the table's height while the footer is present) [Issue-890]

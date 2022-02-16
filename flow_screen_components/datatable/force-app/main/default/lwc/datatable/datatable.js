@@ -75,7 +75,7 @@ export default class Datatable extends LightningElement {
 
 
     _tableData;
-   
+
     @api
     get tableData() {
         return this._tableData || [];
@@ -198,7 +198,7 @@ export default class Datatable extends LightningElement {
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             setTimeout(function() {
                 this.connectedCallback();
-              }.bind(this), 1000);
+            }.bind(this), 1000);
         }
         this.isUpdateTable = true;
     }                                             //NEW
@@ -1258,7 +1258,7 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
-        if(!this.outputSelectedRows && this.outputSelectedRows.length === 0) {
+        if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         
             this.updateNumberOfRowsSelected(this.outputSelectedRows);
@@ -1274,6 +1274,8 @@ export default class Datatable extends LightningElement {
                 selectedKeys.push(record[this.keyField]);            
             });
             this.selectedRows = selectedKeys;
+            this.preSelectedRows = [];
+            this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
         }
     }
 

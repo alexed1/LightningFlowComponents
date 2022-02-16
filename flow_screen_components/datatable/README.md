@@ -86,6 +86,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fix for currency conversion on manually created records when the object has no records [Issue-1047]
 -   Fix conditional display of Clear Selection button
 -   Allow the clearing of a header icon in the Column Wizard
+-   Fix pre-selected records being highlighted and passed through to the output if no additional selections are made
 
 ## 02/11/22 -  Alex Edelstein -    Version 3.4.4 
 **Updates:**

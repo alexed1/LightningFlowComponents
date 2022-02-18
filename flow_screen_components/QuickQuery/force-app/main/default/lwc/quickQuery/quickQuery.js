@@ -13,6 +13,9 @@ import getDefaultView from '@salesforce/apex/QuickRecordViewController.getDefaul
 import updateRecords from '@salesforce/apex/QuickRecordViewController.updateRecords';
 import deleteRecords from '@salesforce/apex/QuickRecordViewController.deleteRecords';
 
+const CREATE_VALUE = 'Create';
+const UPDATE_VALUE = 'Update';
+
 export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   @api quickRecordViewId;
@@ -21,6 +24,14 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @api recordDataStringSelected = '';
   @api recordDataStringChanged = '';
   @api objectName;
+  @api displayColumns;
+  @api error = false;
+  @api recordId;
+  @api objectInput;
+  @track selectedViewOption = {};
+  @track viewOptionList = [];
+  @track filterFields = [];
+
   allOperators = [
     {value: 'equals', label: 'Equals'},
     {value: 'not_equal_to', label: 'is not'},
@@ -33,42 +44,45 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     {value: 'end_with', label: 'End with'}
   ];
 
-  get viewNameSaveOptions() {
-    if(this.selectedViewOption.value) {
-      return [
-          { label: 'Update existing View', value: 'update' },
-          { label: 'Save as New View', value: 'create' },
-      ];
-    } else {
-      this.viewNameSaveOptionValue = 'create';
-      return [
-          { label: 'Save as New View', value: 'create' },
-      ];
-    }
-  }
+  
 
-  viewNameSaveOptionValue = 'update';
-
-  get getObjectName() {
-    return this.objectName.replace('__kav', '');
-  }
-
-  @api displayColumns;
-  @api error = false;
-  @api recordId;
-  @api objectInput;
+  viewNameSaveOptionValue = UPDATE_VALUE;
+  viewName = '';
+  
   selectedObject;
-  @track selectedViewOption = {};
   displayLookup = true;
   displayModal = false;
   displayCSVConvertor = false;
   displayViewEditer = false;
   displayConfigureView = false;
-  @track viewOptionList = [];
-  @track filterFields = [];
+  isRecordsUpdate = false;
+  selectedViewId = '';
+  
   chosenField = '';
   isShowFlow = false;
   defaultViewId = '';
+
+  query = {operator:'equals'}
+  _cancelBlur = false;
+
+  get getObjectName() {
+    return this.objectName.replace('__kav', '');
+  }
+
+  get viewNameSaveOptions() {
+    if(this.selectedViewOption.value) {
+      return [
+          { label: 'Update existing View', value: UPDATE_VALUE },
+          { label: 'Save as New View', value: CREATE_VALUE },
+      ];
+    } else {
+      this.viewNameSaveOptionValue = CREATE_VALUE;
+      return [
+          { label: 'Save as New View', value: CREATE_VALUE },
+      ];
+    }
+  }
+
   get isSaveViewDisabled() {
 
     let isSaveViewDisabled = true;
@@ -132,9 +146,9 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   get updateLabel() {
     if(this.selectedViewOption && this.selectedViewOption.value) {
-      return 'Update';
+      return UPDATE_VALUE;
     } else {
-      return 'Create';
+      return CREATE_VALUE;
     }
   }
   connectedCallback() {
@@ -179,7 +193,9 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     this.objectName = event.detail[0];
     if(this.objectName) {
       this.objectInput = this.objectName;
+      this.recordDataStringAll = '';
       this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
+      this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
       this.displayLookup = false;
       getFlowTableViewDefinition({
           objectName : this.objectName
@@ -194,8 +210,10 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           if(!this.selectedViewOption) {
             this.selectedViewOption = this.viewOptionList[0];
           }
+
+          this.selectedViewId = this.selectedViewOption.value;
           this.searcObjectFilterApiFiledsName();
-          this.getRecordDataStr();
+          //this.getRecordDataStr();
         }
       ).catch(
         error => {
@@ -206,6 +224,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     } else {
       this.recordDataStringAll = '';
       this.selectedViewOption = {};
+      this.selectedViewId = this.selectedViewOption.value;
       this.dispatchEvent(new FlowAttributeChangeEvent('objectName', this.objectName));
       this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
     }
@@ -218,9 +237,15 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
             this.filterFields.forEach(
             item => {
               valueList.push(item.fieldName);
+              if(item.operator) { 
+                item.operatorLabel = this.allOperators.find(
+                  operator => operator.value === item.operator
+                ).label;
+              }
             }
           );
           this.dispatchEvent(new FlowAttributeChangeEvent('displayColumns', valueList.join(',')));
+          this.updateTable();
           })
           .catch(error => {
             this.error = error;
@@ -307,11 +332,17 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   updateQueryHandler(){
     this._cancelBlur = false;
     this.filterFields[this.chosenFieldIndex] = this.chosenField;
+    if(this.selectedViewOption && this.selectedViewOption.value) {
+      this.selectedViewId = '';
+    }
     this.updateTable();
     this.closeModalHandler();
   }
 
   handleKeyDown(event) {
+    if(event.code == 'Tab') {
+      event.preventDefault();
+    }
     if(event.code == 'Escape') {
       this.closeModalHandler();
     }
@@ -320,11 +351,18 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
     }
   }
 
+  handleConfigureViewKeyDown(event) {
+    if(event.code == 'Escape') {
+      this.closeConfigureView();
+    }
+  }
+
   handleClearPillData(event){
     let index = event.target.dataset.index;
     this.filterFields[index].operator = null;
     this.filterFields[index].operatorLabel = null;
     this.filterFields[index].value = null;
+    this.selectedViewId = '';
     this.updateTable();
   }
   
@@ -342,13 +380,21 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   }
 
   changeView(event) {
-    this.selectedViewOption = this.viewOptionList.find(item => item.value === event.detail.value) ;
+    this.selectedViewOption = this.viewOptionList.find(item => item.value === event.detail.value);
+    this.selectedViewId = this.selectedViewOption.value;
     this.searcObjectFilterApiFiledsName();
-    this.getRecordDataStr();
+    //this.getRecordDataStr();
   }
 
   
   getRecordDataStr(whereCondition) {
+    this.isRecordsUpdate = true;
+
+    setTimeout(
+      () => this.isRecordsUpdate = false, 
+      2000
+    );
+
     getRecordDataStr({
       objectName : this.objectName,
       viewId : this.selectedViewOption.value, 
@@ -372,11 +418,11 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   }
 
   showViewEditer() {
-    
     this.displayViewEditer = true;
+    this.viewName = this.selectedViewOption.label ? this.selectedViewOption.label : '';
     setTimeout(() => {
-      let viewName = this.template.querySelector(`[data-target-id="viewName"]`);
-      viewName.focus();
+      let viewNameInput = this.template.querySelector(`[data-target-id="viewName"]`);
+      viewNameInput.focus();
     });
     
   }
@@ -390,6 +436,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   updateViewName() {
     let viewName = this.template.querySelector(`[data-target-id="viewName"]`).value;
+    this.viewName = viewName;
     let fieldList = [];
     this.filterFields.forEach(
       item => {
@@ -398,7 +445,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       }
     );
     upsertView({
-      viewId : (this.viewNameSaveOptionValue === 'create') ? '' : this.selectedViewOption.value,
+      viewId : (this.viewNameSaveOptionValue === CREATE_VALUE) ? '' : this.selectedViewOption.value,
       viewName : viewName,
       objectName : this.objectName,
       fieldList : fieldList,
@@ -407,6 +454,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       result => {
         this.selectedViewOption.value = result;
         this.selectedViewOption.label = viewName;
+        this.selectedViewId = this.selectedViewOption.value;
         this.viewOptionList = [...this.viewOptionList];
         this.displayViewEditer = false;
         const showToast = new ShowToastEvent({
@@ -414,7 +462,7 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
           message: 'View Name was updated successfully',
           variant: 'success',
         });
-        this.viewNameSaveOptionValue = 'update';
+        this.viewNameSaveOptionValue = UPDATE_VALUE;
         this.dispatchEvent(showToast);   
         getFlowTableViewDefinition({
           objectName : this.objectName
@@ -422,14 +470,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
         ).then(
           result => {
             this.viewOptionList = result;
-            this.selectedViewOption = null;
-            if(this.defaultViewId) {
-              this.selectedViewOption = this.viewOptionList.find(item => item.value === this.defaultViewId);
-            }
-            if(!this.selectedViewOption) {
-              this.selectedViewOption = this.viewOptionList[0];
-            }
-            this.searcObjectFilterApiFiledsName();
             this.updateTable();
           }
         ).catch(
@@ -464,6 +504,12 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   changeViewNameSaveOption(event) {
     let selectedOption = event.detail.value;
     this.viewNameSaveOptionValue = selectedOption;
+    if(selectedOption === CREATE_VALUE) {
+      this.viewName ='';
+    } else {
+      this.viewName = this.selectedViewOption.label;
+    }
+
   }
 
   showCSVConvertor() {

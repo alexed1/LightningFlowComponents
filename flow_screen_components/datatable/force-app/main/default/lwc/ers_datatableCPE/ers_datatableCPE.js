@@ -86,6 +86,8 @@ export default class ers_datatableCPE extends LightningElement {
 
     selectedSObject = '';
     isRecordCollectionSelected = false;
+    isSerializedSelected = false;
+    isApexSelected = false;
     disableAllowALl = false;
     isCheckboxColumnHidden = false;
     isShowCheckboxColumn = false;
@@ -198,6 +200,7 @@ export default class ers_datatableCPE extends LightningElement {
     get showColumnAttributes() { 
         return (this.showColumnAttributesToggle || !this.isSObjectInput || this.inputValues.isSerializedRecordData.value);
     }
+    
     @api
     get isShowColumnAttributesToggle() { 
         return (this.isObjectSelected && !this.inputValues.isSerializedRecordData.value);
@@ -825,6 +828,7 @@ export default class ers_datatableCPE extends LightningElement {
 
             // Change the displayed Data Sources if the Apex Defined Object is selected
             if (changedAttribute == 'isUserDefinedObject') {
+                this.isApexSelected = event.detail.newValue;
                 if (event.detail.newValue) {
                     this.isDisplayAll = false;                          // Clear & Disable Display All Selection when selecting User Defined Object
                     if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
@@ -846,6 +850,7 @@ export default class ers_datatableCPE extends LightningElement {
             }
 
             if (changedAttribute == 'isSerializedRecordData') {
+                this.isSerializedSelected = event.detail.newValue;
                 if (event.detail.newValue) {
                     this.isDisplayAll = false;                          
                     if (this.inputValues.objectName.value == null) {    // Have to force Dynamic Type Mapping to avoid an error when trying to exit CPE
@@ -1170,7 +1175,7 @@ export default class ers_datatableCPE extends LightningElement {
             this.checkError((!this.isRecordCollectionSelected && !this.inputValues.isSerializedRecordData.value), 'tableData', 'You must provide a Collection of Records to display');
             this.checkError((!this.vFieldList), 'columnFields', 'At least 1 column must be selected');
         }
-        this.checkError(this.inputValues.isSerializedRecordData.value && this.inputValues.isUserDefinedObject.value, 'isSerializedRecordData', 'need to select only one option (Input data is Apex-Defined or Input data is Serialized)');
+        this.checkError(this.inputValues.isSerializedRecordData.value && this.inputValues.isUserDefinedObject.value, 'isSerializedRecordData', 'Select only one option (Input data is Apex-Defined or Input data is Serialized)');
 
         let allComboboxes = this.template.querySelectorAll('c-fsc_flow-combobox');
         if (allComboboxes) {

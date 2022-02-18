@@ -162,7 +162,7 @@ Features:   The only required paramters are the SObject collection of records an
 
             <template if:false={isShowTable}>
                 <div class="slds-p-around_x-small slds-text-heading_small">
-                    This table currently has no data to display
+                    {emptyTableMessage}
                 </div>
             </template>
             <div if:true={isWorking}>

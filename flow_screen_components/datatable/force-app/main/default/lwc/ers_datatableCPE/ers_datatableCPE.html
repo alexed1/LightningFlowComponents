@@ -339,6 +339,7 @@
 
     <!-- Apex Defined Object? -->
     <c-fsc_flow-checkbox
+        disabled={isSerializedSelected}
         name="select_isUserDefinedObject"
         label={inputValues.isUserDefinedObject.label}
         checked={inputValues.cb_isUserDefinedObject.value}
@@ -348,6 +349,7 @@
 
     <div class="slds-m-top_xx-small">
         <c-fsc_flow-checkbox
+            disabled={isApexSelected}
             name="select_isSerializedRecordData"
             label={inputValues.isSerializedRecordData.label}
             field-level-help={inputValues.isSerializedRecordData.helpText}

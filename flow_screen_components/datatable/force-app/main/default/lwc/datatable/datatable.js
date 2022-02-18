@@ -21,6 +21,8 @@ import ClearFilterAction from '@salesforce/label/c.ers_ClearFilterAction';
 import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
 import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
 import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
+import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
+import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
 
@@ -39,7 +41,9 @@ export default class Datatable extends LightningElement {
         ClearFilterAction,
         ColumnHeader,
         FilterHeader,
-        LabelHeader
+        LabelHeader,
+        RequiredMessage,
+        EmptyMessage
     };
 
     // Component Input & Output Attributes
@@ -71,7 +75,7 @@ export default class Datatable extends LightningElement {
 
 
     _tableData;
-   
+
     @api
     get tableData() {
         return this._tableData || [];
@@ -194,7 +198,7 @@ export default class Datatable extends LightningElement {
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             setTimeout(function() {
                 this.connectedCallback();
-              }.bind(this), 1000);
+            }.bind(this), 1000);
         }
         this.isUpdateTable = true;
     }                                             //NEW
@@ -218,6 +222,11 @@ export default class Datatable extends LightningElement {
         return (this.cb_allowOverflow == CB_TRUE) ? true : false;
     }
     @api cb_allowOverflow;
+
+    @api 
+    get emptyTableMessage() {
+        return this.label.EmptyMessage;
+    }
 
     @api tableDataString = [];
     @api preSelectedRowsString = [];
@@ -1434,6 +1443,16 @@ export default class Datatable extends LightningElement {
                     }
                 });                
 
+                // Repeat offset for date fields (v3.4.5)
+                let datefield = this.dateFieldArray;
+                datefield.forEach(date => {
+                    if (field[date]) {
+                        let rdt = Date.parse(field[date]);
+                        let rd = new Date();
+                        field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                    }
+                });
+
                 this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
             }
             return eitem;
@@ -1494,7 +1513,7 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = this.numberOfRowsSelected == 1 && (this._tableData.length == 1 && this.singleRowSelection) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        this.showClearButton = (this.numberOfRowsSelected == 1 && (this._tableData.length == 1 || this.singleRowSelection)) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
     }
 
     handleClearSelection() {
@@ -1797,11 +1816,11 @@ export default class Datatable extends LightningElement {
     handleCommitIconSelection(event) { 
         // Update the column icon value
         let newValue = this.selectedIcon;
-        if (newValue) {
+        // if (newValue) {  //v3.4.5
             this.filterColumns[this.columnNumber].iconName = newValue;
             this.columns = [...this.filterColumns]; 
             this.updateIconParam();
-        }
+        // }
         this.isOpenIconInput = false;
     }
 
@@ -2100,7 +2119,7 @@ export default class Datatable extends LightningElement {
             this.setIsInvalidFlag(true);
             return { 
                 isValid: false, 
-                errorMessage: 'This is a required entry.  At least 1 row must be selected.' 
+                errorMessage: this.label.RequiredMessage
             }; 
         }
         

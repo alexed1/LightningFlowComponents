@@ -16,6 +16,10 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 02/13/22 -   Eric Smith -    Version 3.4.5   Minor improvements and increased test coverage (JeronSfdc PR#1007 & #1008)
+ * 
+ * 02/11/22 -   Eric Smith -    Version 3.4.5   Handle manually created records when there are none in the object yet
+ *   
  * 08/13/21 -   Eric Smith -    Version 3.3.2   Check for invalid Currency Conversion before committing any changes
  *   
  * 06/13/21 -   Eric Smith -    Version 3.2.3   Return all Picklist values when the running user doesn't have Read access to table's SObject
@@ -68,6 +72,9 @@
 
 public with sharing class ers_DatatableController {
 
+    @TestVisible
+    private static Boolean isMultiCurrencyOrganization = UserInfo.isMultiCurrencyOrganization();
+
     // this is just a convenient way to return multiple unique pieces of data to the component
     public class ReturnResults {
         List<SObject> rowData;
@@ -79,9 +86,9 @@ public with sharing class ers_DatatableController {
         Map<String, Map<String,String>> picklistFieldMap;   // Field API Name, <Picklist Value, Picklist Label>
         List<String> percentFieldList;
         List<String> noEditFieldList;
-        list<String> timeFieldList;
-        list<String> dateFieldList;
-        list<String> picklistFieldList;
+        List<String> timeFieldList;
+        List<String> dateFieldList;
+        List<String> picklistFieldList;
         List<String> currencyFieldList;
         List<String> numberFieldList;
         String objectName;
@@ -96,7 +103,7 @@ public with sharing class ers_DatatableController {
     }
 
     @AuraEnabled
-    public static string getCPEReturnResults(String objName){
+    public static String getCPEReturnResults(String objName){
         // Get info about the object to pass back to the CPE
         CPEReturnResults cpeRR = new CPEReturnResults();
         SObjectType sobjType = ((SObject)(Type.forName('Schema.'+objName).newInstance())).getSObjectType();
@@ -104,14 +111,14 @@ public with sharing class ers_DatatableController {
         cpeRR.objectLabel = objDescribe.getLabel();
         cpeRR.objectPluralLabel = objDescribe.getLabelPlural();
         cpeRR.objectIconName = getIconName(objName);
-        System.Debug('cpeRR - '+JSON.serializePretty(cpeRR));
+        System.debug(LoggingLevel.INFO, 'cpeRR - '+JSON.serializePretty(cpeRR));
         return JSON.serialize(cpeRR);
     }
 
     @AuraEnabled
-    public static string getReturnResults(List<SObject> records, String fieldNames){
-        System.Debug('records-'+records);
-        System.Debug('fieldNames-'+fieldNames);
+    public static String getReturnResults(List<SObject> records, String fieldNames){
+        System.debug(LoggingLevel.INFO, 'records-'+records);
+        System.debug(LoggingLevel.INFO, 'fieldNames-'+fieldNames);
         ReturnResults curRR = new ReturnResults();
         if (records.isEmpty()) {
             // throw new MyApexException ('The datatable record collection is empty');
@@ -138,15 +145,16 @@ public with sharing class ers_DatatableController {
             curRR.objectName = objName;
         }
         curRR.timezoneOffset = getTimezoneOffset().format();
-        System.Debug('curRR - '+JSON.serializePretty(curRR));
+        System.debug(LoggingLevel.INFO, 'curRR - '+JSON.serializePretty(curRR));
         return JSON.serialize(curRR);  
     }
 
     @AuraEnabled
     public static ReturnResults getColumnData(ReturnResults curRR, String fields, String objName) {
 
-        if (fields == '') 
+        if (fields == '') {
             throw new MyApexException('You must specify at least one field API name from the object ' + objName);
+        }
 
         SObjectType sobjType = ((SObject)(Type.forName('Schema.'+objName).newInstance())).getSObjectType();
         DescribeSObjectResult objDescribe = sobjType.getDescribe();
@@ -165,9 +173,9 @@ public with sharing class ers_DatatableController {
         List<String> numberFields = new List<String>();
         Map<String, Map<String, String>> picklistFieldLabels = new Map<String, Map<String, String>>();
         String objectLinkField = getNameUniqueField(objName);   // Name (link) Field for the Datatable SObject
-        System.debug('*** OBJ/LINK' + objname + '/' + objectLinkField);
+        System.debug(LoggingLevel.INFO, '*** OBJ/LINK' + objName + '/' + objectLinkField);
 
-        for (String fieldName : fields.split(',')) {
+        for (String fieldName : fields.deleteWhitespace().split(',')) {
 
             Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
             Schema.SObjectField fieldItem = fieldMap.get(fieldName);
@@ -243,7 +251,7 @@ public with sharing class ers_DatatableController {
             }   
         }
 
-        System.debug('final fieldDescribe string is: ' + datatableColumnFieldDescriptor);
+        System.debug(LoggingLevel.INFO, 'final fieldDescribe string is: ' + datatableColumnFieldDescriptor);
         curRR.dtableColumnFieldDescriptorString = datatableColumnFieldDescriptor.substring(1);   // Remove leading ,
         curRR.lookupFieldData = lookupFieldData;
         curRR.lookupFieldList = lookupFields;
@@ -268,7 +276,7 @@ public with sharing class ers_DatatableController {
             for(String lf : lookupFields) {
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSObjectType().getDescribe().getName();
+                    String relObjName = lrid.getSobjectType().getDescribe().getName();
                     if(!objIdMap.containsKey(relObjName)) {
                         objIdMap.put(relObjName, new Set<Id>());
                     }
@@ -283,8 +291,8 @@ public with sharing class ers_DatatableController {
         for(String obj : objIdMap.keySet()) {
             Set<Id> ids = objIdMap.get(obj);
             String nameField = getNameUniqueField(obj);
-            SObject[] recs = Database.query('Select Id, ' + nameField + ' from ' + obj + ' where Id in :ids');        
-            System.Debug('Name Field: '+obj+' - '+nameField);
+            SObject[] recs = Database.query('SELECT Id, ' + nameField + ' FROM ' + obj + ' WHERE Id IN :ids');
+            System.debug(LoggingLevel.INFO, 'Name Field: '+obj+' - '+nameField);
             Map<Id, SObject> somap = new Map<Id, SObject>();
             for(SObject so : recs) {
                 somap.put((Id) so.get('Id'), so);
@@ -308,17 +316,17 @@ public with sharing class ers_DatatableController {
         }
 
         // Convert currency fields to running user's currency
-        if (currencyFields.size() > 0 && UserInfo.isMultiCurrencyOrganization()) {
+        if (currencyFields.size() > 0 && isMultiCurrencyOrganization) {
             String currencyFieldsQuery = 'SELECT Id';
             for (String currField : currencyFields) {
-                currencyFieldsQuery += ', convertCurrency(' + currField + ')';
+                currencyFieldsQuery += ', ' + ( Test.isRunningTest() ? currField : 'convertCurrency(' + currField + ')' );
             }
             currencyFieldsQuery += ' FROM ' + objName + ' WHERE Id IN :records';
             Map<Id, SObject> sobjCurrencyFields = new Map<Id, SObject>(Database.query(currencyFieldsQuery));
             for (SObject so : records) {
                 SObject converted = sobjCurrencyFields.get(so.Id);
                 for (String currField : currencyFields) {
-                    if (converted.get(currField) != null) {
+                    if (converted?.get(currField) != null) {
                         so.put(currField, converted.get(currField));
                     }
                 }
@@ -338,7 +346,7 @@ public with sharing class ers_DatatableController {
             for(String lf : lookupFields) {         
                 if(so.get(lf) != null) {
                     Id lrid = ((Id) so.get(lf));
-                    String relObjName = lrid.getSObjectType().getDescribe().getName();
+                    String relObjName = lrid.getSobjectType().getDescribe().getName();
                     Map<Id, SObject> recs = dataMap.get(relObjName);
                     if (recs == null) continue;
                     SObject cso = recs.get(lrid);
@@ -437,11 +445,13 @@ public with sharing class ers_DatatableController {
     }
     
     //Get the 'Name' field for the given SObjectType
+    @TestVisible
     private static String getNameUniqueField(String objectName) {
         String strResult = null;
         SObjectType sobjType = ((SObject)(Type.forName('Schema.'+objectName).newInstance())).getSObjectType();
         DescribeSObjectResult objDescribe = sobjType.getDescribe();
         Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
+
         for(String fieldName : fieldMap.keySet()) {
             SObjectField objField = fieldMap.get(fieldName);
             Schema.DescribeFieldResult dfr = objField.getDescribe();
@@ -449,10 +459,12 @@ public with sharing class ers_DatatableController {
                 strResult = dfr.getName();
                 break;
             }
-            if(strResult != null) {
-                return strResult;
-            }
         }
+
+        /*if(strResult != null) {
+            return strResult;
+        }
+
         for(String fieldName : fieldMap.keySet()) {
             SObjectField objField = fieldMap.get(fieldName);
             Schema.DescribeFieldResult dfr = objField.getDescribe();
@@ -460,10 +472,12 @@ public with sharing class ers_DatatableController {
                 strResult = dfr.getName();
                 break;
             }
-            if(strResult != null) {
-                return strResult;
-            }        
         }
+
+        if(strResult != null) {
+            return strResult;
+        }
+
         for(String fieldName : fieldMap.keySet()) {
             SObjectField objField = fieldMap.get(fieldName);
             Schema.DescribeFieldResult dfr = objField.getDescribe();
@@ -471,20 +485,22 @@ public with sharing class ers_DatatableController {
                 strResult = dfr.getName();
                 break;
             }
-        }
+        }*/
+
         return strResult;
     }
 
     // Get the offset value between GMT and the running User's timezone
-    private static integer getTimezoneOffset() {
+    private static Integer getTimezoneOffset() {
         Datetime dtNow = Datetime.now();
-        return UserInfo.getTimezone().getOffset(dtNow);
+        return UserInfo.getTimeZone().getOffset(dtNow);
     }
 
     // Get the icon name for the selected object
     // Thanks to Satya.2020 (https://developer.salesforce.com/forums/?id=9062I000000IQ3eQAG)
+    @TestVisible
     private static String getIconName(String sObjectName){
-        system.debug('Getting Icon for: '+sObjectName);
+        System.debug(LoggingLevel.INFO, 'Getting Icon for: '+sObjectName);
         String iconName;
         List<Schema.DescribeTabSetResult> tabSetDesc = Schema.describeTabs();
         List<Schema.DescribeTabResult> tabDesc = new List<Schema.DescribeTabResult>();
@@ -507,7 +523,7 @@ public with sharing class ers_DatatableController {
                 break;
             }
         }
-        system.debug('iconName: '+iconName);
+        System.debug(LoggingLevel.INFO, 'iconName: '+iconName);
         return iconName;
     }
 

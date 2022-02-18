@@ -55,7 +55,7 @@
             </lightning-layout-item>
         
             <lightning-layout-item>
-              <lightning-combobox class="slds-button_neutral" placeholder="Select View" options={viewOptionList} value={selectedViewOption.value} onchange={changeView}></lightning-combobox>
+              <lightning-combobox class="slds-button_neutral" placeholder="Select View" options={viewOptionList} value={selectedViewId} onchange={changeView}></lightning-combobox>
             </lightning-layout-item>
           </lightning-layout>
         </div>
@@ -79,6 +79,12 @@
       <template if:true={selectedViewOption.value}>
         <div class="slds-col slds-grow-none">
           <lightning-button-icon icon-name="utility:settings"  alternative-text="Settings" title="Settings" onclick={showConfigureView}></lightning-button-icon>
+        </div>
+      </template>
+
+      <template if:true={isRecordsUpdate}>
+        <div class="slds-col slds-grow-none slds-p-bottom_x-small slds-text-color_weak">
+          Updating...
         </div>
       </template>
       
@@ -135,7 +141,7 @@
               <!-- <input data-target-id="viewName" label="View Name" value={selectedViewOption.label} onfocus={focusViewNameHandler}></lightning-input> -->
               
               <lightning-radio-group name="radioGroup"
-                label="Radio Group"
+                label="Save View"
                 options={viewNameSaveOptions}
                 value={viewNameSaveOptionValue}
                 onchange={changeViewNameSaveOption}
@@ -143,9 +149,17 @@
               </lightning-radio-group>
               <div class="slds-form-element">
                 <label class="slds-form-element__label" for="text-input-id-47">
-                  View Name</label>
+                  View Name
+                </label>
                 <div class="slds-form-element__control">
-                  <input type="text" id="text-input-id-47" class="slds-input"  data-target-id="viewName" value={selectedViewOption.label} onfocus={focusViewNameHandler} />
+                  <input 
+                    type="text" 
+                    id="text-input-id-47" 
+                    class="slds-input"  
+                    data-target-id="viewName" 
+                    value={viewName} 
+                    onfocus={focusViewNameHandler} 
+                  />
                 </div>
               </div>
             </div>
@@ -178,7 +192,7 @@
       </template>
 
       <template if:true={displayConfigureView}>
-        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" onkeydown={handleConfigureViewKeyDown}>
           <div class="slds-modal__container">
             <header class="slds-modal__header slds-modal__header_empty">
               <lightning-button-icon icon-name="utility:close" onclick={closeConfigureView} variant="bare" class="slds-is-absolute close-btn" size="medium"></lightning-button-icon>

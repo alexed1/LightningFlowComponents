@@ -15,12 +15,22 @@ export default class SortingConfigurationLine extends LightningElement {
     }
 
     @api field = {};
+    @api fieldList = [];
+    @api availableFieldList = [];
     @api sortingDirection = 'ASC';
     @api objectName;
     @api index;
+    isAvailableFieldsOpen = false;
 
     get isFirstItem() {
         return this.index === 0;
+    }
+
+    get fieldLabel () {
+        console.log('fieldLabel', this.field, this.fieldList);
+        let field = this.fieldList.find( item => this.field === item.name );
+        console.log('fieldLabel1', field);
+        return  field ? field.label : '';
     }
 
     changeOrderDirection(event) {
@@ -43,6 +53,33 @@ export default class SortingConfigurationLine extends LightningElement {
             }
         });
         this.dispatchEvent(changeEvent);
+    }
+    
+    openAvailableFields() {
+        console.log('openAvailableFields');
+        this.isAvailableFieldsOpen = true;
+    }
+
+    closeAvailableFields() {
+        this.isAvailableFieldsOpen = false;
+    }
+
+    preventCloseFields(event){
+        event.preventDefault();
+    }
+
+    openAndSearchFields(event) {
+        console.log('openAndSearchFields', event.detail.value);
+        if(event.detail.value === '') {
+            this.field = '';
+            this.dispatchChangeEvent();
+        }
+    }
+
+    chooseField(event) {
+        this.field =  event.currentTarget.dataset.id;
+        this.isAvailableFieldsOpen = false;
+        this.dispatchChangeEvent();
     }
 
 }

@@ -8,7 +8,7 @@
         <actionName>usf__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Selected_Field_Definition</targetReference>
+            <targetReference>GetSelectedFieldInformation</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -19,28 +19,37 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>53.0</apiVersion>
-    <assignments>
-        <name>Add_Selected_Field</name>
-        <label>Add Selected Field</label>
-        <locationX>264</locationX>
-        <locationY>638</locationY>
-        <assignmentItems>
-            <assignToReference>selectedFieldList</assignToReference>
-            <operator>Add</operator>
-            <value>
-                <elementReference>Selected_Field_Definition</elementReference>
-            </value>
-        </assignmentItems>
+    <actionCalls>
+        <name>GetSelectedFieldInformation</name>
+        <label>GetSelectedFieldInformation</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <actionName>GetSelectedFieldInformation</actionName>
+        <actionType>apex</actionType>
         <connector>
-            <targetReference>Selected_Field_Definition</targetReference>
+            <targetReference>Configuration_Screen</targetReference>
         </connector>
-    </assignments>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fieldListString</name>
+            <value>
+                <elementReference>Get_FlowTableViewDefinition.Field_API_Names__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>objectName</name>
+            <value>
+                <elementReference>Get_FlowTableViewDefinition.Object_API_Name__c</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>54.0</apiVersion>
     <assignments>
         <name>Field_List_Update</name>
         <label>Field List Update</label>
         <locationX>176</locationX>
-        <locationY>1190</locationY>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>Get_FlowTableViewDefinition.Field_API_Names__c</assignToReference>
             <operator>Assign</operator>
@@ -59,54 +68,8 @@
             <targetReference>Updated_FlowTableViewDefinition</targetReference>
         </connector>
     </assignments>
-    <decisions>
-        <name>Select_Field</name>
-        <label>Select Field</label>
-        <locationX>396</locationX>
-        <locationY>518</locationY>
-        <defaultConnector>
-            <targetReference>Selected_Field_Definition</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
-        <rules>
-            <name>If_field_selected</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>Get_FlowTableViewDefinition.Field_API_Names__c</leftValueReference>
-                <operator>Contains</operator>
-                <rightValue>
-                    <elementReference>Selected_Field_Definition.name</elementReference>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>Selected_Field_Definition.name</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue>
-                    <stringValue>Id</stringValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Add_Selected_Field</targetReference>
-            </connector>
-            <label>If field selected</label>
-        </rules>
-    </decisions>
     <interviewLabel>QuickRecord_ConfigureView {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Configure QuickQuery</label>
-    <loops>
-        <name>Selected_Field_Definition</name>
-        <label>Selected Field Definition</label>
-        <locationX>176</locationX>
-        <locationY>398</locationY>
-        <collectionReference>GetFieldInformation.fields</collectionReference>
-        <iterationOrder>Asc</iterationOrder>
-        <nextValueConnector>
-            <targetReference>Select_Field</targetReference>
-        </nextValueConnector>
-        <noMoreValuesConnector>
-            <targetReference>Configuration_Screen</targetReference>
-        </noMoreValuesConnector>
-    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -151,7 +114,7 @@
         <name>Updated_FlowTableViewDefinition</name>
         <label>Updated FlowTableViewDefinition</label>
         <locationX>176</locationX>
-        <locationY>1310</locationY>
+        <locationY>878</locationY>
         <connector>
             <targetReference>Result_Screen</targetReference>
         </connector>
@@ -161,7 +124,7 @@
         <name>Configuration_Screen</name>
         <label>Configuration Screen</label>
         <locationX>176</locationX>
-        <locationY>950</locationY>
+        <locationY>518</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -191,15 +154,21 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>selectedOptionsFieldDescriptorList</name>
-                <value>
-                    <elementReference>selectedFieldList</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
                 <name>label</name>
                 <value>
                     <stringValue>Show which columns</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>required</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>selectedOptionsFieldDescriptorList</name>
+                <value>
+                    <elementReference>GetSelectedFieldInformation.fields</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -213,7 +182,7 @@
         <name>Result_Screen</name>
         <label>Result Screen</label>
         <locationX>176</locationX>
-        <locationY>1430</locationY>
+        <locationY>998</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -229,7 +198,7 @@
         <name>Set_Sorting</name>
         <label>Set Sorting</label>
         <locationX>176</locationX>
-        <locationY>1070</locationY>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>

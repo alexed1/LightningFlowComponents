@@ -194,23 +194,46 @@ public with sharing class QuickRecordViewController {
                 SELECT  Id,
                         Object_API_Name__c,
                         Field_API_Names__c,
-                        View_Name__c
+                        View_Name__c,
+                        (
+                            SELECT Id, Filter__c
+                            FROM QuickQueryConfigurations__r
+                            WHERE ViewUserId__c = :UserInfo.getUserId()
+                        )
                 FROM    FlowTableViewDefinition__c
                 WHERE   Id =: viewId
                 LIMIT   1
             ];
+            List<FilterObjectRepresentation> filterList = new List<FilterObjectRepresentation>();
+            if(!viewList[0].QuickQueryConfigurations__r.isEmpty() && String.isNotEmpty(viewList[0].QuickQueryConfigurations__r[0].Filter__c)) {
+                filterList = (List<FilterObjectRepresentation>) JSON.deserialize(
+                    viewList[0].QuickQueryConfigurations__r[0].Filter__c, 
+                    List<FilterObjectRepresentation>.class
+                );
+            }
+
             SObjectType r = ((SObject)(Type.forName('Schema.'+viewList[0].Object_API_Name__c).newInstance())).getSObjectType();
             DescribeSObjectResult d = r.getDescribe();
             List<String> fieldList = viewList[0].Field_API_Names__c.split(',');
             for(String fieldName : fieldList) {
-                String fieldType = FORMULA_TYPE_MAP.get(String.valueOf(d.fields.getMap().get(fieldName).getDescribe().getType()));
-                filterFields.add(
-                    new FilterObjectRepresentation(
-                        fieldType != null ? fieldType : 'text', 
-                        fieldName, 
-                        d.fields.getMap().get(fieldName).getDescribe().getLabel()
-                    )
-                );
+                FilterObjectRepresentation filter;
+                for(FilterObjectRepresentation item : filterList) {
+                    if(item.fieldName == fieldName) {
+                        filter = item;
+                    }
+                }
+                if(filter != null){
+                    filterFields.add(filter);
+                } else {
+                    String fieldType = FORMULA_TYPE_MAP.get(String.valueOf(d.fields.getMap().get(fieldName).getDescribe().getType()));
+                    filterFields.add(
+                        new FilterObjectRepresentation(
+                            fieldType != null ? fieldType : 'text', 
+                            fieldName, 
+                            d.fields.getMap().get(fieldName).getDescribe().getLabel()
+                        )
+                    );
+                }
             }
             return filterFields;
         } else {

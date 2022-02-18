@@ -46,6 +46,10 @@ export default class expressionLine extends LightningElement {
         this.operator = event.detail.value;
         let customEvent = new CustomEvent('changeexpression', { detail: {operator: this.operator, value : this.value}});
         this.dispatchEvent(customEvent);
+        let valueInput = this.template.querySelector('lightning-input');
+        if(valueInput) {
+            valueInput.focus();
+        }
     }
 
     handleValueChange(event) {
@@ -56,7 +60,7 @@ export default class expressionLine extends LightningElement {
         }
     }
 
-    onblurHandler() {
+    onblurHandler(event) {
         let customEvent = new CustomEvent('blur');
         this.dispatchEvent(customEvent);
     }

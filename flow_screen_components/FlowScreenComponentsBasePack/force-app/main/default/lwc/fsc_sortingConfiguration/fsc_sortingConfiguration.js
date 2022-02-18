@@ -18,7 +18,6 @@ export default class SortingConfiguration extends LightningElement {
             }
         );
 
-
         return availableFieldList;
     }
 
@@ -84,7 +83,6 @@ export default class SortingConfiguration extends LightningElement {
         
         this.fieldSortingList.forEach(
             (item, index) => {
-                console.log('fieldSortingList', item, index, event.detail.index);
                 if(!event.detail.field && index > event.detail.index) {
                     item.field = '';
                 }
@@ -105,7 +103,6 @@ export default class SortingConfiguration extends LightningElement {
         this.fieldSortingList.forEach(
             (item, index) => {
                 for(let i = index; i < this.fieldSortingList.length - 1; i++) {
-                    console.log('item', item);
                     if(item.field && item.field === this.fieldSortingList[i + 1].field) {
                         isFieldDuplicate = true;
                         break;
@@ -119,7 +116,6 @@ export default class SortingConfiguration extends LightningElement {
         );
 
         if(isFieldDuplicate) { 
-            console.log('validate reporting false');
             return { 
                 isValid: false, 
                 errorMessage: 'Field duplication' 
@@ -130,7 +126,6 @@ export default class SortingConfiguration extends LightningElement {
                 errorMessage: 'Need to fill all fields' 
             };  
         } else { 
-            console.log('validate reporting true');
             return { isValid: true }; 
         } 
     }

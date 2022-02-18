@@ -27,9 +27,7 @@ export default class SortingConfigurationLine extends LightningElement {
     }
 
     get fieldLabel () {
-        console.log('fieldLabel', this.field, this.fieldList);
         let field = this.fieldList.find( item => this.field === item.name );
-        console.log('fieldLabel1', field);
         return  field ? field.label : '';
     }
 
@@ -56,7 +54,6 @@ export default class SortingConfigurationLine extends LightningElement {
     }
     
     openAvailableFields() {
-        console.log('openAvailableFields');
         this.isAvailableFieldsOpen = true;
     }
 
@@ -69,7 +66,6 @@ export default class SortingConfigurationLine extends LightningElement {
     }
 
     openAndSearchFields(event) {
-        console.log('openAndSearchFields', event.detail.value);
         if(event.detail.value === '') {
             this.field = '';
             this.dispatchChangeEvent();

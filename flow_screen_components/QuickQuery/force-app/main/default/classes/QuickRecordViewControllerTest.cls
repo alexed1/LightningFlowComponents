@@ -327,4 +327,50 @@ public with sharing class QuickRecordViewControllerTest {
     }
 
 
+
+    @isTest
+    static void testUpdateSorting() {
+        FlowTableViewDefinition__c  flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c,
+                    Field_Sorting__c
+            FROM    FlowTableViewDefinition__c 
+            WHERE   View_Name__c = 'Case'
+            LIMIT   1
+        ];
+
+        String fieldSorting = '[{"field":"Subject","sortingDirection":"DESC"}]';
+
+        QuickRecordViewController.updateSorting(flowDef.Id, null);
+
+        
+        flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c,
+                    Field_Sorting__c
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Id = :flowDef.Id
+            LIMIT   1
+        ];
+
+        System.assert(flowDef.Field_Sorting__c == null);
+
+        QuickRecordViewController.updateSorting(flowDef.Id, fieldSorting);
+
+        flowDef = [
+            SELECT  Id, 
+                    Name, 
+                    View_Name__c,
+                    Field_Sorting__c
+            FROM    FlowTableViewDefinition__c 
+            WHERE   Id = :flowDef.Id
+            LIMIT   1
+        ];
+
+        System.assert(flowDef.Field_Sorting__c == fieldSorting);
+
+
+    }
 }

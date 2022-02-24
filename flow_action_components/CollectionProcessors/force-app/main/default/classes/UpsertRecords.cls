@@ -9,7 +9,7 @@ public with sharing class UpsertRecords {
                 List<SObject> inputCollection = curRequest.inputCollection != null ? curRequest.inputCollection : new List<SObject>();
                 SObject inputRecord = curRequest.inputRecord;
                 
-                if (curRequest.serializedRecordData != null && curRequest.objectName != null){
+                if (String.isNotEmpty(curRequest.serializedRecordData) && String.isNotEmpty(curRequest.objectName)){
                     inputCollection = (List<SObject>)JSON.deserialize(curRequest.serializedRecordData,  List<SObject>.class);
                     inputRecord = null;
                 }

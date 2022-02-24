@@ -457,6 +457,17 @@ public with sharing class QuickRecordViewController {
         delete recordList;
         
     }
+
+    @AuraEnabled
+    public static void updateSorting(String viewId, String fieldSorting){
+        if(String.isNotEmpty(viewId)){
+            FlowTableViewDefinition__c  flowTableViewDefinition = new FlowTableViewDefinition__c();
+            flowTableViewDefinition.Id = viewId;
+            flowTableViewDefinition.Field_Sorting__c = fieldSorting;
+
+            update flowTableViewDefinition;
+        }
+    }
     
     public class FieldOrderSetting {
         @AuraEnabled

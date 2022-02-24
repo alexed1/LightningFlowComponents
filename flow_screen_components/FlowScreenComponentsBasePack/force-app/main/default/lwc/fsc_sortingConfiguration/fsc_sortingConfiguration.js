@@ -1,5 +1,5 @@
 import { LightningElement, api, track, wire } from 'lwc';
-
+const MAX_FIELD_SORTING_SIZE = 4;
 
 export default class SortingConfiguration extends LightningElement {
    
@@ -44,30 +44,37 @@ export default class SortingConfiguration extends LightningElement {
         } else {
             this.fieldSortingList = [];
         }
-        
         if(this._fieldList) {
+            if(!this.fieldSortingList || this.fieldSortingList.length === 0){
+                
+                let fieldSortingList = [];
+                this._fieldList.forEach(
+                    (item, index) => {
+                        if(index < 4) {
+                            fieldSortingList.push({
+                                field : item.name,
+                                sortingDirection : 'ASC' 
+                            });   
+                        }   
+                    }   
+                );
+
+                this.fieldSortingList = fieldSortingList;
+            } else {
+                for(let i = this.fieldSortingList.length ; i < MAX_FIELD_SORTING_SIZE ; i++) {
+                    this.fieldSortingList.push({
+                        field : '',
+                        sortingDirection : 'ASC' 
+                    });
+                }
+            }
             let fieldAPINameList = [];
-            let fieldSortingList = [];
             this._fieldList.forEach(
-                (item, index) => {
+                (item) => {
                     fieldAPINameList.push(item.name);
-                    let fieldSorting = this.fieldSortingList.find(
-                            element => {
-                                return element.field === item.name
-                            }
-                    );
-                    if(fieldSorting) {
-                        fieldSortingList.push(fieldSorting);
-                    } else { 
-                        fieldSortingList.push({
-                            field : item.name,
-                            sortingDirection : 'ASC' 
-                        });
-                    }
-                        
-                }   
+                }
             );
-            this.fieldSortingList = fieldSortingList;
+            
                 
             this.selectedFieldListString = fieldAPINameList.join(',');
             
@@ -93,13 +100,11 @@ export default class SortingConfiguration extends LightningElement {
                 fieldAPINameList.push(item.field);
             }
         );
-        this.selectedFieldListString = fieldAPINameList.join(',');
-        this.fieldSortingListString = JSON.stringify(this.fieldSortingList)
+        this.fieldSortingListString = JSON.stringify(this.fieldSortingList.filter(item => item.field))
     }
 
     @api validate() {
         let isFieldDuplicate = false;
-        let isFieldEmpty = false;
         this.fieldSortingList.forEach(
             (item, index) => {
                 for(let i = index; i < this.fieldSortingList.length - 1; i++) {
@@ -109,9 +114,7 @@ export default class SortingConfiguration extends LightningElement {
                     }
                     
                 }
-                if(!item.field) {
-                    isFieldEmpty = true;
-                }
+               
             }
         );
 
@@ -119,11 +122,6 @@ export default class SortingConfiguration extends LightningElement {
             return { 
                 isValid: false, 
                 errorMessage: 'Field duplication' 
-            }; 
-        } else if(isFieldEmpty){
-            return { 
-                isValid: false, 
-                errorMessage: 'Need to fill all fields' 
             };  
         } else { 
             return { isValid: true }; 

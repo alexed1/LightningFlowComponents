@@ -267,8 +267,8 @@ export default class Datatable extends LightningElement {
     @api types = [];
         
     // Other Datatable attributes
-    @api sortedBy; 
-    @api sortedDirection;
+    @api sortedBy = '';
+    @api sortedDirection = '';
     @api maxRowSelection;
     @api errors;
     @api columnWidthValues;

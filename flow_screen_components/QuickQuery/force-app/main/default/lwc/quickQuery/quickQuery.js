@@ -30,15 +30,14 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @api recordId;
   @api objectInput;
   @api set sortedBy(value) {
-    this._sortedBy = value;
+    this._sortedBy = value ? value : '';
   }
   get sortedBy() {
-    return this.sortedBy
+    return this._sortedBy;
   }
 
   @api set sortDirection(value) {
-    this._sortDirection = value;
-
+    this._sortDirection = value ? value : '';
     setTimeout(
       () => {
         if(this._sortedBy && this._sortDirection) {
@@ -48,7 +47,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
               field : this._sortedBy, 
               sortingDirection : this._sortDirection.toUpperCase()
             }])
-          }).then().catch(error => {
+          }).then(result => {
+          }).catch(error => {
             console.error(error);
           });
         }
@@ -422,8 +422,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   
   getRecordDataStr(whereCondition) {
     this.isRecordsUpdate = true;
-    this.recordDataStringAll = '';
-    this.dispatchEvent(new FlowAttributeChangeEvent('recordDataStringAll', this.recordDataStringAll));
     setTimeout(
       () => this.isRecordsUpdate = false, 
       2000

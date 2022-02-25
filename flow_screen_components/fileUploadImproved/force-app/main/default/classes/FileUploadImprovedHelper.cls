@@ -169,17 +169,19 @@ public without sharing class FileUploadImprovedHelper{
                 Boolean visibleToAllUsers = input.visibleToAllUsers == null ? FALSE : input.visibleToAllUsers;
                 for(Id versId : input.versIds){
                     Id docId = mapVersIdToDocId.get(versId);
-                    if(mapDocIdToRecordIds.get(docId).contains(recordId)){
-                        continue;
-                    } else {
-                        ContentDocumentLink link = new ContentDocumentLink(
-                            ContentDocumentId = docId,
-                            LinkedEntityId = recordId
-                        );
-                        if(visibleToAllUsers){
-                            link.Visibility = 'AllUsers';
+                    if(docId != null){
+                        if(mapDocIdToRecordIds.get(docId).contains(recordId)){
+                            continue;
+                        } else {
+                            ContentDocumentLink link = new ContentDocumentLink(
+                                ContentDocumentId = docId,
+                                LinkedEntityId = recordId
+                            );
+                            if(visibleToAllUsers){
+                                link.Visibility = 'AllUsers';
+                            }
+                            links.add(link);
                         }
-                        links.add(link);
                     }
                 }
             }

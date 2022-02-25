@@ -19,6 +19,8 @@
             <property label="recordDataStringSelected" name="recordDataStringSelected" type="String"/>
             <property label="recordDataStringChanged" name="recordDataStringChanged" type="String"/>
             <property label="objectName" name="objectName" type="String" />
+            <property label="sortedBy" name="sortedBy" type="String" />
+            <property label="sortDirection" name="sortDirection" type="String" />
             <property label="displayColumns" name="displayColumns" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>

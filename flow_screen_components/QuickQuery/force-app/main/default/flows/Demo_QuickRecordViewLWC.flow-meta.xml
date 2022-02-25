@@ -8,11 +8,11 @@
         <actionName>UpsertRecords</actionName>
         <actionType>apex</actionType>
         <dataTypeMappings>
-            <typeName>T__inputCollection</typeName>
+            <typeName>T__inputRecord</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
         <dataTypeMappings>
-            <typeName>T__inputRecord</typeName>
+            <typeName>T__inputCollection</typeName>
             <typeValue>Account</typeValue>
         </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
@@ -30,7 +30,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>53.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <constants>
         <name>TestAccountRecordsJSON</name>
         <dataType>String</dataType>
@@ -90,6 +90,18 @@
                 <name>recordDataStringChanged</name>
                 <value>
                     <elementReference>Datatable.outputEditedSerializedRows</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>sortedBy</name>
+                <value>
+                    <elementReference>Datatable.sortedBy</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>sortDirection</name>
+                <value>
+                    <elementReference>Datatable.sortedDirection</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -162,6 +174,18 @@
                 <name>cb_suppressBottomBar</name>
                 <value>
                     <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_tableBorder</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>tableBorder</name>
+                <value>
+                    <booleanValue>true</booleanValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>

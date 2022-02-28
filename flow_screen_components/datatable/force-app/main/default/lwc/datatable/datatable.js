@@ -268,7 +268,7 @@ export default class Datatable extends LightningElement {
         
     // Other Datatable attributes
     @api sortedBy = '';
-    @api sortedDirection = '';
+    @api sortDirection = '';
     @api maxRowSelection;
     @api errors;
     @api columnWidthValues;
@@ -1530,11 +1530,11 @@ export default class Datatable extends LightningElement {
         // Handle column sorting
         console.log('Sort:',event.detail.fieldName,event.detail.sortDirection);
         this.sortedBy = event.detail.fieldName;
-        this.sortedDirection = event.detail.sortDirection;
+        this.sortDirection = event.detail.sortDirection;
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('sortedBy', this.sortedBy));
-        this.dispatchEvent(new FlowAttributeChangeEvent('sortedDirection', this.sortedDirection));
-        this.doSort(this.sortedBy, this.sortedDirection);
+        this.dispatchEvent(new FlowAttributeChangeEvent('sortDirection', this.sortDirection));
+        this.doSort(this.sortedBy, this.sortDirection);
     }
 
     doSort(sortField, sortDirection) {
@@ -1674,7 +1674,7 @@ export default class Datatable extends LightningElement {
 
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'clear_'+this.columnNumber).disabled = true;
                 if (this.sortedBy != undefined) {
-                    this.doSort(this.sortedBy, this.sortedDirection);       // Re-Sort the data
+                    this.doSort(this.sortedBy, this.sortDirection);       // Re-Sort the data
                 }
                 break;
 

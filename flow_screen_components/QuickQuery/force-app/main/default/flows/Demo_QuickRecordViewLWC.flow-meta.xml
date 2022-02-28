@@ -101,7 +101,7 @@
             <inputParameters>
                 <name>sortDirection</name>
                 <value>
-                    <elementReference>Datatable.sortedDirection</elementReference>
+                    <elementReference>Datatable.sortDirection</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>

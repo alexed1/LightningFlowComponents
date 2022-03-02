@@ -2,9 +2,9 @@
     <lightning-spinner if:true={loading} alternative-text="Uploading..." size="small"></lightning-spinner>
     <lightning-layout multiple-rows="true">
         <lightning-layout-item size="12" if:true={bottom}>
+            <span class="slds-form-element__label">{label}</span> <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
             <lightning-file-upload
                 if:false={external}
-                label={label}
                 name="uploadFile"
                 accept={acceptedFormats}
                 file-field-name='Guest_Record_fileupload__c'
@@ -16,7 +16,6 @@
             <lightning-input
                 if:true={external}
                 type="file"
-                label={label}
                 accept={acceptedFormats}
                 onchange={handleUpload_lightningInput}
                 multiple={allowMultiple}
@@ -68,9 +67,9 @@
             </lightning-layout>
         </lightning-layout-item>
         <lightning-layout-item size="12" if:false={bottom}>
+            <span class="slds-form-element__label">{label}</span> <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
             <lightning-file-upload
                 if:false={external}
-                label={label}
                 name="uploadFile"
                 accept={acceptedFormats}
                 file-field-name='Guest_Record_fileupload__c'
@@ -82,7 +81,6 @@
             <lightning-input
                 if:true={external}
                 type="file"
-                label={label}
                 accept={acceptedFormats}
                 onchange={handleUpload_lightningInput}
                 multiple={allowMultiple}

@@ -11,7 +11,7 @@ public with sharing class ManageMultiselectField {
             //verify type of specified field
             validateFieldType(curRequest);
             String fieldValue = (String)curRequest.curRecord.get(curRequest.fieldApiName);
-            List<String> selectedValueList = fieldValue.split(';');
+            List<String> selectedValueList = (fieldValue != null) ? fieldValue.split(';') : new List<String>();
             List<String> availableValuesList = getPicklistValues(curRequest.objectApiName, curRequest.fieldApiName);
             
             if (curRequest.operation != null) {

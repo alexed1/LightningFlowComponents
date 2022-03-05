@@ -288,7 +288,12 @@ export default class ers_datatableCPE extends LightningElement {
     set wiz_columnLabels(value) { 
         const name = 'columnLabels';
         this._wiz_columnLabels = value;
-        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        try{
+            this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        }
+        catch(err) {    // Handle column label that includes a % character
+            this.dispatchValue = value;
+        }
         this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
         this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
     }
@@ -662,7 +667,12 @@ export default class ers_datatableCPE extends LightningElement {
                 console.log('Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
 
-                    this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);                
+                    try {
+                        this.inputValues[curInputParam.name].value = (curInputParam.valueDataType === 'reference') ? '{!' + curInputParam.value + '}' : decodeURIComponent(curInputParam.value);
+                    }
+                    catch(err) {    // Handle column label that includes a % character
+                        this.inputValues[curInputParam.name].value = curInputParam.value
+                    }
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
 
                     if (curInputParam.name == 'objectName') { 
@@ -689,7 +699,7 @@ export default class ers_datatableCPE extends LightningElement {
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
                     if (this.flowParams.find(fp => fp.name == wizName)) {
-                        this.updateFlowParam(wizName, decodeURIComponent(curInputParam.value), '');
+                        this.updateFlowParam(wizName, this.inputValues[curInputParam.name].value, '');
                     }
 
                 }

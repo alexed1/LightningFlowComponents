@@ -72,6 +72,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 03/xx/22 -  Eric Smith -    Version 3.4.6 
+**Updates:** 
+-   
+ 
+**Bug Fixes:** 
+-   Fixed bug when using a % character in a column label [Issue-1069]
+  
 ## 02/16/22 -  Eric Smith -    Version 3.4.5 
 **Updates:** 
 -   Updated all component API versions to 53.0 (Winter '22)

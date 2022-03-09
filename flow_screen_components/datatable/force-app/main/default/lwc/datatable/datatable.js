@@ -281,9 +281,6 @@ export default class Datatable extends LightningElement {
     @track isAllFilter = false;
     @track showClearButton = false;
     @track tableHeightAttribute = 'height:';
-    @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-        +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-        + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); margin: -1px;';
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -681,7 +678,8 @@ export default class Datatable extends LightningElement {
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
-        this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
+        //this.borderClass = (this.tableBorder == true) ? 'slds-box' : ''; commented out to remove padding. replaced with below
+        this.borderClass = (this.tableBorder == true) ? 'datatable-border' : '';
 
         // Add overflow if max height is not set so the combobox will spill outside the table
         this.borderClass += (this.allowOverflow) ? ' overflowEnabled' : '';

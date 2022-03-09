@@ -2,7 +2,7 @@
     <lightning-spinner if:true={loading} alternative-text="Uploading..." size="small"></lightning-spinner>
     <lightning-layout multiple-rows="true">
         <lightning-layout-item size="12" if:true={bottom}>
-            <span class="slds-required">*</span>
+            <span class="slds-required" if:true={required}>*</span>
             <span class="slds-form-element__label">{label}</span>
             <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
             <lightning-file-upload
@@ -69,7 +69,7 @@
             </lightning-layout>
         </lightning-layout-item>
         <lightning-layout-item size="12" if:false={bottom}>
-            <span class="slds-required">*</span>
+            <span class="slds-required" if:true={required}>*</span>
             <span class="slds-form-element__label">{label}</span> 
             <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
             <lightning-file-upload

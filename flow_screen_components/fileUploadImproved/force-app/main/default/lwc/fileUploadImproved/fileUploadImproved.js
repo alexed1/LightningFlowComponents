@@ -21,7 +21,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     @api communityDetails; // deprecated
     @api contentDocumentIds;
     @api contentVersionIds;
+    @api disableDelete;
     @api embedExternally;
+    @api helpText;
     @api icon;
     @api label;
     @api overriddenFileName;
@@ -99,6 +101,13 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
                 })
         } else {
             this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+        }
+    }
+
+    renderedCallback(){
+        if(this.helpText){
+            let helpText = this.template.querySelectorAll('.fui-helptext');
+            helpText.blur();
         }
     }
 
@@ -318,31 +327,40 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
 
         let contentVersionId = event.target.dataset.contentversionid;    
 
-        deleteContentDoc({versId: contentVersionId})
+        if(this.disableDelete){
+            this.removeFileFromUi(contentVersionId);
+        } else {
+            deleteContentDoc({versId: contentVersionId})
             .then(() => {
-                let objFiles = this.objFiles;
-                let removeIndex;
-                for(let i=0; i<objFiles.length; i++){
-                    if(contentVersionId === objFiles[i].contentVersionId){
-                        removeIndex = i;
-                    }
-                }
-
-                this.objFiles.splice(removeIndex,1);
-                this.docIds.splice(removeIndex,1);
-                this.versIds.splice(removeIndex,1);
-                this.fileNames.splice(removeIndex,1);
-
-                this.checkDisabled();
-
-                this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
-
-                this.loading = false;
+                this.removeFileFromUi(contentVersionId);
             })
             .catch((error) => {
                 this.showErrors(this.reduceErrors(error).toString());
                 this.loading = false;
             })
+        }
+        
+    }
+
+    removeFileFromUi(contentVersionId){
+        let objFiles = this.objFiles;
+        let removeIndex;
+        for(let i=0; i<objFiles.length; i++){
+            if(contentVersionId === objFiles[i].contentVersionId){
+                removeIndex = i;
+            }
+        }
+
+        this.objFiles.splice(removeIndex,1);
+        this.docIds.splice(removeIndex,1);
+        this.versIds.splice(removeIndex,1);
+        this.fileNames.splice(removeIndex,1);
+
+        this.checkDisabled();
+
+        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+
+        this.loading = false;
     }
 
     disabled = false;

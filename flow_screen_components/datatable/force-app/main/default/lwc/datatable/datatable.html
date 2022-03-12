@@ -128,7 +128,7 @@ Features:   The only required paramters are the SObject collection of records an
 
             <template if:true={isShowTable}>
                 <div style={tableHeightAttribute} class={borderClass} id="datatable">
-                    
+
                     <c-ers_custom-lightning-datatable
                         aria-label={tableLabel}
                         data={mydata}
@@ -155,7 +155,6 @@ Features:   The only required paramters are the SObject collection of records an
 
                     <div if:true={showClearButton} class="slds-m-top_x-small">
                         <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
-                        </div>
                     </div>
 
                 </div>

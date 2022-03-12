@@ -4,7 +4,7 @@
         <lightning-layout-item size="12" if:true={bottom}>
             <span class="slds-required" if:true={required}>*</span>
             <span class="slds-form-element__label">{label}</span>
-            <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
+            <lightning-helptext if:true={helpText} content={helpText}></lightning-helptext>
             <lightning-file-upload
                 if:false={external}
                 name="uploadFile"
@@ -71,7 +71,7 @@
         <lightning-layout-item size="12" if:false={bottom}>
             <span class="slds-required" if:true={required}>*</span>
             <span class="slds-form-element__label">{label}</span> 
-            <lightning-helptext if:true={helpText} content={helpText} class="fui-helptext"></lightning-helptext>
+            <lightning-helptext if:true={helpText} content={helpText}></lightning-helptext>
             <lightning-file-upload
                 if:false={external}
                 name="uploadFile"

@@ -267,8 +267,8 @@ export default class Datatable extends LightningElement {
     @api types = [];
         
     // Other Datatable attributes
-    @api sortedBy;
-    @api sortDirection; 
+    @api sortedBy = '';
+    @api sortDirection = ''; 
     @api maxRowSelection;
     @api errors;
     @api columnWidthValues;
@@ -1531,8 +1531,11 @@ export default class Datatable extends LightningElement {
         // Handle column sorting
         console.log('Sort:',event.detail.fieldName,event.detail.sortDirection);
         this.sortedBy = event.detail.fieldName;
-        this.sortedDirection = event.detail.sortDirection;
-        this.doSort(this.sortedBy, this.sortedDirection);
+        this.sortDirection = event.detail.sortDirection;
+        this.isUpdateTable = false;
+        this.dispatchEvent(new FlowAttributeChangeEvent('sortedBy', this.sortedBy));
+        this.dispatchEvent(new FlowAttributeChangeEvent('sortDirection', this.sortDirection));       
+        this.doSort(this.sortedBy, this.sortDirection);
     }
 
     doSort(sortField, sortDirection) {
@@ -1672,7 +1675,7 @@ export default class Datatable extends LightningElement {
 
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'clear_'+this.columnNumber).disabled = true;
                 if (this.sortedBy != undefined) {
-                    this.doSort(this.sortedBy, this.sortedDirection);       // Re-Sort the data
+                    this.doSort(this.sortedBy, this.sortDirection);       // Re-Sort the data
                 }
                 break;
 
@@ -2067,6 +2070,7 @@ export default class Datatable extends LightningElement {
             const selData = this._tableData.find(d => d[this.keyField] == srow[this.keyField]);
             sdata.push(selData);
         });
+        this.isUpdateTable = false;
         this.outputSelectedRows = [...sdata]; // Set output attribute values
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
 

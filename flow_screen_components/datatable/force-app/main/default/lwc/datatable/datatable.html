@@ -128,35 +128,36 @@ Features:   The only required paramters are the SObject collection of records an
 
             <template if:true={isShowTable}>
                 <div style={tableHeightAttribute} class={borderClass} id="datatable">
-                    <div style={tableBorderStyle}>
-                        <c-ers_custom-lightning-datatable
-                            aria-label={tableLabel}
-                            data={mydata}
-                            columns={columns}
-                            key-field={keyField}
-                            sorted-by={sortedBy}
-                            sorted-direction={sortedDirection}
-                            max-row-selection={maxRowSelection}
-                            selected-rows={selectedRows}
-                            show-row-number-column={showRowNumbers}
-                            hide-checkbox-column={hideCheckboxColumn}
-                            suppress-bottom-bar={suppressBottomBar}
-                            onsort={updateColumnSorting}
-                            oncellchange={handleCellChange}
-                            onsave={handleSave}
-                            oncancel={cancelChanges}
-                            onheaderaction={handleHeaderAction}
-                            onrowselection={handleRowSelection}
-                            onrowaction={handleRowAction}
-                            onresize={handleResize}
-                            oncombovaluechange={handleComboValueChange}
-                        >
-                        
-                        </c-ers_custom-lightning-datatable>
-                        <div if:true={showClearButton} class="slds-m-top_x-small">
-                            <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
+                    
+                    <c-ers_custom-lightning-datatable
+                        aria-label={tableLabel}
+                        data={mydata}
+                        columns={columns}
+                        key-field={keyField}
+                        sorted-by={sortedBy}
+                        sorted-direction={sortedDirection}
+                        max-row-selection={maxRowSelection}
+                        selected-rows={selectedRows}
+                        show-row-number-column={showRowNumbers}
+                        hide-checkbox-column={hideCheckboxColumn}
+                        suppress-bottom-bar={suppressBottomBar}
+                        onsort={updateColumnSorting}
+                        oncellchange={handleCellChange}
+                        onsave={handleSave}
+                        oncancel={cancelChanges}
+                        onheaderaction={handleHeaderAction}
+                        onrowselection={handleRowSelection}
+                        onrowaction={handleRowAction}
+                        onresize={handleResize}
+                        oncombovaluechange={handleComboValueChange}
+                    >
+                    </c-ers_custom-lightning-datatable>
+
+                    <div if:true={showClearButton} class="slds-m-top_x-small">
+                        <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
                         </div>
                     </div>
+
                 </div>
             </template>
 

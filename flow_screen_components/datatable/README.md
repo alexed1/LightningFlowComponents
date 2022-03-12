@@ -74,7 +74,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## 03/xx/22 -  Eric Smith -    Version 3.4.6 
 **Updates:** 
--   
+-   Eliminate padding/margin for Table Border (Thanks to Jerry Poon)
  
 **Bug Fixes:** 
 -   Fixed bug when using a % character in a column label [Issue-1069]

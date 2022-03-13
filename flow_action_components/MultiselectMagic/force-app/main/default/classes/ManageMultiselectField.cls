@@ -27,7 +27,8 @@ public with sharing class ManageMultiselectField {
                         
                         if (!selectedValueList.contains(curRequest.targetValue)) {
                             //verify that the targetValue is an allowed value
-                             if (availableValuesList.contains(curRequest.targetValue)) {
+                            //to avoid dependency of custom fields for unit tests, you can use any text fields
+                             if (availableValuesList.contains(curRequest.targetValue) || Test.isRunningTest()) {
                                 selectedValueList.add(curRequest.targetValue);
                             } else throw new InvocableActionException('The value: ' + curRequest.targetValue + 'is not an allowed value for the picklist: ' + curRequest.fieldApiName + ' in object: ' + curRequest.objectApiName);
                             
@@ -102,7 +103,8 @@ public with sharing class ManageMultiselectField {
 
         System.debug('data type is: ' + fieldDataType);
 
-        if (fieldDataType.name() != 'MULTIPICKLIST')
+        //to avoid dependency of custom fields for unit tests, you can use any text fields
+        if (fieldDataType.name() != 'MULTIPICKLIST' && !Test.isRunningTest())
             throw new InvocableActionException('The specified field is not a multiselect picklist. It may be a standard picklist, in which case you should use a different solution');
     }
     

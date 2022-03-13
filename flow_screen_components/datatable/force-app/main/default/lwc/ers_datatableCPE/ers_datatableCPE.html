@@ -284,6 +284,13 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>
     <c-fsc_flow-checkbox
+        name="select_hideHeaderActions"
+        label={inputValues.hideHeaderActions.label} 
+        field-level-help={inputValues.hideHeaderActions.helpText}
+        checked={inputValues.cb_hideHeaderActions.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>  
+    <c-fsc_flow-checkbox
         disabled={isNoFilters}
         name="select_matchCaseOnFilters"
         label={inputValues.matchCaseOnFilters.label} 
@@ -292,7 +299,14 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>
     <c-fsc_flow-checkbox
-        disabled={isNoEdits}
+        name="select_hideClearSelectionButton"
+        label={inputValues.hideClearSelectionButton.label} 
+        field-level-help={inputValues.hideClearSelectionButton.helpText}
+        checked={inputValues.cb_hideClearSelectionButton.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>    
+    <c-fsc_flow-checkbox
+        disabled={isDisableSuppressBottomBar}
         name="select_suppressBottomBar"
         label={inputValues.suppressBottomBar.label} 
         field-level-help={inputValues.suppressBottomBar.helpText}
@@ -300,19 +314,13 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
     <c-fsc_flow-checkbox
-        name="select_hideHeaderActions"
-        label={inputValues.hideHeaderActions.label} 
-        field-level-help={inputValues.hideHeaderActions.helpText}
-        checked={inputValues.cb_hideHeaderActions.value} 
+        disabled={isDisableNavigateNext}
+        name="select_navigateNextOnSave"
+        label={inputValues.navigateNextOnSave.label} 
+        field-level-help={inputValues.navigateNextOnSave.helpText}
+        checked={inputValues.cb_navigateNextOnSave.value} 
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
-    <c-fsc_flow-checkbox
-        name="select_hideClearSelectionButton"
-        label={inputValues.hideClearSelectionButton.label} 
-        field-level-help={inputValues.hideClearSelectionButton.helpText}
-        checked={inputValues.cb_hideClearSelectionButton.value} 
-        oncheckboxchanged={handleCheckboxChange}
-    ></c-fsc_flow-checkbox>      
     <c-fsc_flow-checkbox
         name="select_not_suppressNameFieldLink"
         label={inputValues.not_suppressNameFieldLink.label} 

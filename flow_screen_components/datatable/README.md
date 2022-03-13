@@ -75,6 +75,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ## 03/xx/22 -  Eric Smith -    Version 3.4.6 
 **Updates:** 
 -   Eliminate padding/margin for Table Border (Thanks to Jerry Poon)
+-   Add option to Navigate Next when selecting the Save button for inline editing (Thanks to Idan Damari)
+-   Rearranged the order of the options in the Table Behavior Section
  
 **Bug Fixes:** 
 -   Fixed bug when using a % character in a column label [Issue-1069]

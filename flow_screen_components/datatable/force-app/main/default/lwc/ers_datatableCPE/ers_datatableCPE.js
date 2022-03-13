@@ -217,6 +217,16 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get isDisableNavigateNext() {
+        return (this.isNoEdits || this.inputValues.suppressBottomBar.value);
+    }
+
+    @api
+    get isDisableSuppressBottomBar() {
+        return (this.isNoEdits || this.inputValues.navigateNextOnSave.value);
+    }
+
+    @api
     get wiz_columnFields() { 
         return this._wiz_columnFields;
     }
@@ -457,6 +467,10 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: "Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited. \n" +  
             "When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."},
         cb_suppressBottomBar: {value: null, valueDataType: null, isCollection: false, label: ''},
+        navigateNextOnSave: {value: null, valueDataType: null, isCollection: false, label: 'Navigate to Next Flow Element on Save',
+            helpText: "When selecting Save after inline editing, immediately navigate to the next Flow element. \n" +  
+            "This removes the need for the User to select the Next button after saving. "},
+        cb_navigateNextOnSave: {value: null, valueDataType: null, isCollection: false, label: ''},        
         isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Apex-Defined', 
             helpText: 'Select if you are providing a User(Apex) Defined object rather than a Salesforce SObject.'},
         cb_isUserDefinedObject: {value: null, valueDataType: null, isCollection: false, label: ''},
@@ -539,12 +553,13 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'tableBehavior',
             attributes: [
                 {name: 'isRequired'},
+                {name: 'singleRowSelection'},                
                 {name: 'hideCheckboxColumn'},
-                {name: 'singleRowSelection'},
+                {name: 'hideHeaderActions'},                
                 {name: 'matchCaseOnFilters'},
-                {name: 'suppressBottomBar'},
-                {name: 'hideHeaderActions'},
                 {name: 'hideClearSelectionButton'},
+                {name: 'suppressBottomBar'},
+                {name: 'navigateNextOnSave'},
                 {name: 'not_suppressNameFieldLink'},
                 {name: 'openLinkinSameTab'},
             ]
@@ -895,6 +910,22 @@ export default class ers_datatableCPE extends LightningElement {
                 this.updateCheckboxValue('singleRowSelection', false);
             }
 
+            // Don't allow Navigate Next on Save when bottom bar (Save button) is suppressed
+            if (changedAttribute == 'suppressBottomBar') { 
+                this.isDisableNavigateNext = event.detail.newValue;
+                if (this.isDisableNavigateNext) {
+                    this.updateCheckboxValue('navigateNextOnSave', false);
+                }
+            }            
+
+            // Don't allow bottom bar to be suppressed when Navigate Next on Save is selected
+            if (changedAttribute == 'navigateNextOnSave') { 
+                this.isDisableSuppressBottomBar = event.detail.newValue;
+                if (this.isDisableSuppressBottomBar) {
+                    this.updateCheckboxValue('suppressBottomBar', false);
+                }
+            }     
+
         }
 
     }
@@ -933,6 +964,16 @@ export default class ers_datatableCPE extends LightningElement {
                 newType = 'Number';
             }
             this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
+
+            if (changedAttribute == 'columnEdits') {
+                if (!newValue) {
+                    this.updateCheckboxValue('suppressBottomBar', false);
+                    this.updateCheckboxValue('navigateNextOnSave', false);
+                    this.isNoEdits = true;
+                } else {
+                    this.isNoEdits = false;
+                }
+            }
 
             if (changedAttribute == 'tableData') {
                 this.isRecordCollectionSelected = !!event.detail.newValue;
@@ -1065,8 +1106,10 @@ export default class ers_datatableCPE extends LightningElement {
                                 this.isNoEdits = (value) ? false : true;
                                 this.dispatchFlowValueChangeEvent('isRequired', false, 'boolean');
                                 if (this.isNoEdits) {
-                                    this.inputValues.suppressBottomBar.value = false;
-                                    this.dispatchFlowValueChangeEvent('suppressBottomBar', false, 'boolean');
+                                    this.updateCheckboxValue('suppressBottomBar', false);
+                                    this.updateCheckboxValue('navigateNextOnSave', false);
+                                    this.isDisableSuppressBottomBar = true;
+                                    this.isDisableNavigateNext = true;
                                 }
                                 break;
                             case 'columnFilters':

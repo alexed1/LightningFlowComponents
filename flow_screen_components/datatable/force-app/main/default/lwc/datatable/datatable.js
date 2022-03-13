@@ -10,9 +10,11 @@
 
 import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
+
+// Translatable Custom Labels
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
 import SaveButton from '@salesforce/label/c.ers_SaveButton';
 import ClearSelectionButton from '@salesforce/label/c.ers_ClearSelectionButton';
@@ -133,6 +135,12 @@ export default class Datatable extends LightningElement {
         return (this.cb_suppressBottomBar == CB_TRUE) ? true : false;
     }
     @api cb_suppressBottomBar;
+
+    @api 
+    get navigateNextOnSave() {
+        return (this.cb_navigateNextOnSave == CB_TRUE) ? true : false;
+    }
+    @api cb_navigateNextOnSave;
 
     @api 
     get matchCaseOnFilters() {
@@ -1468,11 +1476,18 @@ export default class Datatable extends LightningElement {
 
         this.savePreEditData = [...data];   // Resave the current table values
         this.mydata = [...data];            // Reset the current table values
+        
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
             //clear draftValues. this is required for custom column types that need to specifically write into draftValues
             this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
+
+            if(this.navigateNextOnSave) {       // Added in v3.4.6
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
         }
+
     }
 
     cancelChanges(event) {

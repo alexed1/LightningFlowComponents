@@ -105,6 +105,9 @@
             <property name="suppressBottomBar" label="Suppress Cancel/Save Buttons during Edit Mode?" type="Boolean" default="false" role="inputOnly" description="Cancel/Save buttons will appear by default at the very bottom of the table once a field is edited.  
                 When hiding these buttons, field updates will be applied as soon as the user Tabs out or selects a different field."/>
             <property name="cb_suppressBottomBar" type="String" role="inputOnly"/>
+            <property name="navigateNextOnSave" label="Navigate to Next Flow Element on Save?" type="Boolean" default="false" role="inputOnly" description="When selecting Save after inline editing, immediately navigate to the next Flow element.  
+                This removes the need for the User to select the Next button after saving."/>
+            <property name="cb_navigateNextOnSave" type="String" role="inputOnly"/>
             <property name="tableHeight" label="Table Height" type="String" role="inputOnly" description="CSS specification for the height of the datatable (Examples: 30rem, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)"/>
             <property name="tableBorder" label="Table Border" type="Boolean" default="true" role="inputOnly" description="Display a border around the datatable."/>
             <property name="cb_tableBorder" type="String" role="inputOnly"/>

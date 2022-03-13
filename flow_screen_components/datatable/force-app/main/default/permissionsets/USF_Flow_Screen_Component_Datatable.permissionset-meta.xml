@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <classAccesses>
-        <apexClass>ers_QueryNRecords</apexClass>
-        <enabled>true</enabled>
-    </classAccesses>
-    <classAccesses>
         <apexClass>ers_DatatableController</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -12,9 +8,35 @@
         <apexClass>ers_EncodeDecodeURL</apexClass>
         <enabled>true</enabled>
     </classAccesses>
+    <classAccesses>
+        <apexClass>ers_QueryNRecords</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
     <description>Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the Datatable Flow Screen LWC</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>USF Flow Screen Component - Datatable</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>FlowTableViewDefinition__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>ers_datatableConfig__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <tabSettings>
+        <tab>FlowTableViewDefinition__c</tab>
+        <visibility>Available</visibility>
+    </tabSettings>
     <userPermissions>
         <enabled>true</enabled>
         <name>RunFlow</name>

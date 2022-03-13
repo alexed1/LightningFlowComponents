@@ -77,6 +77,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Eliminate padding/margin for Table Border (Thanks to Jerry Poon)
 -   Add option to Navigate Next when selecting the Save button for inline editing (Thanks to Idan Damari)
 -   Rearranged the order of the options in the Table Behavior Section
+-   Changed the Configuration Wizard to use the new FlowTableViewDefinition object from the ScreenComponentsBasePack instead of the ers_datatableConfig object
  
 **Bug Fixes:** 
 -   Fixed bug when using a % character in a column label [Issue-1069]

@@ -130,6 +130,8 @@
             <property name="cb_allowNoneToBeChosen" type="String" role="inputOnly"/>
             <property name="allowOverflow" type="Boolean" role="inputOnly"/>
             <property name="cb_allowOverflow" type="String" role="inputOnly"/>
+            <property name="suppressCurrencyConversion" type="Boolean" role="inputOnly"/>
+            <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>            
             <property name="sortedBy" label="sortedBy" type="String"  role="outputOnly"/>
             <property name="sortDirection" label="sortDirection" type="String" role="outputOnly"/>
         </targetConfig>

@@ -238,6 +238,12 @@ export default class Datatable extends LightningElement {
     @api cb_allowOverflow;
 
     @api 
+    get suppressCurrencyConversion() {
+        return (this.cb_suppressCurrencyConversion == CB_TRUE) ? true : false;
+    }
+    @api cb_suppressCurrencyConversion;
+
+    @api 
     get emptyTableMessage() {
         return this.label.EmptyMessage;
     }
@@ -826,7 +832,7 @@ export default class Datatable extends LightningElement {
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
             console.log('Passing data to Apex Controller', data);
-            getReturnResults({ records: data, fieldNames: fieldList })
+            getReturnResults({ records: data, fieldNames: fieldList, suppressCurrencyConversion: this.suppressCurrencyConversion })
             .then(result => {
                 let returnResults = JSON.parse(result);
 

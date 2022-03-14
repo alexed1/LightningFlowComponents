@@ -78,8 +78,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Add option to Navigate Next when selecting the Save button for inline editing (Thanks to Idan Damari)
 -   Rearranged the order of the options in the Table Behavior Section
 -   Changed the Configuration Wizard to use the new FlowTableViewDefinition object from the ScreenComponentsBasePack instead of the ers_datatableConfig object
--   Add optional Record Count to Table Header
- 
+-   Added Created and Modified Date columns to the Configuration Record selection datatable
+-   Added optional Record Count to Table Header
+-   Added option to suppress the currency conversion introduced in v3.1.1
+  
 **Bug Fixes:** 
 -   Fixed bug when using a % character in a column label [Issue-1069]
   

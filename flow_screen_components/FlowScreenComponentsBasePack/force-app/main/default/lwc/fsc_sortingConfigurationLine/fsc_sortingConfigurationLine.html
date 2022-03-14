@@ -9,7 +9,7 @@
     <lightning-layout>
         <lightning-layout-item size="6" padding="horizontal-small">
             <div class="slds-is-relative">
-                <lightning-input label="field" type="search" required autocomplete="off" 
+                <lightning-input label="field" type="search" autocomplete="off" 
                 onfocus={openAvailableFields} onblur={closeAvailableFields}
                 onchange={openAndSearchFields} value={fieldLabel}></lightning-input>
                 <template if:true={isAvailableFieldsOpen}>

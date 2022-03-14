@@ -1304,7 +1304,7 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <stringValue>Name,Object_API_Name__c,Field_API_Names__c</stringValue>
+                    <stringValue>Name,Object_API_Name__c,Field_API_Names__c,CreatedDate,LastModifiedDate</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1316,19 +1316,19 @@
             <inputParameters>
                 <name>columnLabels</name>
                 <value>
-                    <stringValue>Name:Configuration Name, Object_API_Name__c:Object, Field_API_Names__c:Columns</stringValue>
+                    <stringValue>Name:Configuration Name, Object_API_Name__c:Object, Field_API_Names__c:Columns, CreatedDate:Created, LastModifiedDate:Modified</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>Name:225, Object_API_Name__c:140, Field_API_Names__c:480</stringValue>
+                    <stringValue>Name:225, Object_API_Name__c:125, Field_API_Names__c:310, CreatedDate:110, LastModifiedDate:110</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWraps</name>
                 <value>
-                    <stringValue>MasterLabel:true, vSObject__c:true, vFieldList__c:true</stringValue>
+                    <stringValue>Name:true, Object_API_Name__c:true, Field_API_Names__c:true, Labels__c:true, CreatedDate:true, LastModifiedDate:true</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1371,6 +1371,18 @@
                 <name>preSelectedRows</name>
                 <value>
                     <elementReference>colPreSelectedConfigs</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_suppressBottomBar</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_navigateNextOnSave</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
                 </value>
             </inputParameters>
             <isRequired>true</isRequired>

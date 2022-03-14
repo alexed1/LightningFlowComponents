@@ -93,6 +93,8 @@
             <property name="cb_hideClearSelectionButton" type="String" role="inputOnly"/>
             <property name="showRowNumbers" label="Show Row Numbers" type="Boolean" default="false" role="inputOnly" description="Display a row number column as the first column in the table."/>
             <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
+            <property name="showRecordCount" label="Show Record Count in Header" type="Boolean" default="false" role="inputOnly" description="Display the number of records in the table header.  This will match what is shown in a List View header."/>
+            <property name="cb_showRecordCount" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
             <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
             <property name="cb_matchCaseOnFilters" type="String" role="inputOnly"/>

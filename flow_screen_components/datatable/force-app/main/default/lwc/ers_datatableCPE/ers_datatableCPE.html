@@ -245,6 +245,14 @@
     </div>
 
     <c-fsc_flow-checkbox
+        name="select_showRecordCount"
+        label={inputValues.showRecordCount.label} 
+        checked={inputValues.cb_showRecordCount.value} 
+        field-level-help={inputValues.showRecordCount.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
         name="select_tableBorder"
         label={inputValues.tableBorder.label} 
         checked={inputValues.cb_tableBorder.value} 

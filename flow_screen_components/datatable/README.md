@@ -19,7 +19,7 @@ Additional components packaged with this LWC:
                                     ers_datatableCPE
                                     ers_richTextColumnType
 
-                Custom Objects:     ers_datatableConfig
+                Custom Objects:     ers_datatableConfig (replaced in v3.5.0 by FlowTableViewDefinition from the FlowScreenComponentsBasePack)
 
                 Page Layouts:       ers_datatableConfig Layout
 
@@ -72,12 +72,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## 03/xx/22 -  Eric Smith -    Version 3.4.6 
+## 03/xx/22 -  Eric Smith -    Version 3.5.0 
 **Updates:** 
 -   Eliminate padding/margin for Table Border (Thanks to Jerry Poon)
 -   Add option to Navigate Next when selecting the Save button for inline editing (Thanks to Idan Damari)
 -   Rearranged the order of the options in the Table Behavior Section
 -   Changed the Configuration Wizard to use the new FlowTableViewDefinition object from the ScreenComponentsBasePack instead of the ers_datatableConfig object
+-   Add optional Record Count to Table Header
  
 **Bug Fixes:** 
 -   Fixed bug when using a % character in a column label [Issue-1069]

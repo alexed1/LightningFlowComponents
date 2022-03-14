@@ -73,7 +73,7 @@ c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primi
     visibility: hidden;
 }
 
-/* v3.4.6 Move border styling to css */
+/* v3.5.0 Move border styling to css */
 .datatable-border {
     border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));
     border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));

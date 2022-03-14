@@ -125,6 +125,12 @@ export default class Datatable extends LightningElement {
     @api cb_showRowNumbers;
     
     @api 
+    get showRecordCount() {
+        return (this.cb_showRecordCount == CB_TRUE) ? true : false;
+    }
+    @api cb_showRecordCount;
+
+    @api 
     get singleRowSelection() {
         return (this.cb_singleRowSelection == CB_TRUE) ? true : false;
     }
@@ -384,7 +390,11 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
-        return this.tableLabel;
+        return (this.showRecordCount) ? `${this.tableLabel} (${this.tableRecordCount})` : this.tableLabel;
+    }
+
+    get tableRecordCount() {
+        return this._tableData.length;
     }
 
     get isShowTable() {
@@ -1476,13 +1486,13 @@ export default class Datatable extends LightningElement {
 
         this.savePreEditData = [...data];   // Resave the current table values
         this.mydata = [...data];            // Reset the current table values
-        
+
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
             //clear draftValues. this is required for custom column types that need to specifically write into draftValues
             this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
 
-            if(this.navigateNextOnSave) {       // Added in v3.4.6
+            if(this.navigateNextOnSave) {       // Added in v3.5.0
                 const navigateNextEvent = new FlowNavigationNextEvent();
                 this.dispatchEvent(navigateNextEvent);
             }

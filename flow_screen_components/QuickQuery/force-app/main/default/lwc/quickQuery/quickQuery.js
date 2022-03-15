@@ -12,6 +12,7 @@ import upsertView from '@salesforce/apex/QuickRecordViewController.upsertView';
 import getDefaultView from '@salesforce/apex/QuickRecordViewController.getDefaultView';
 import updateRecords from '@salesforce/apex/QuickRecordViewController.updateRecords';
 import deleteRecords from '@salesforce/apex/QuickRecordViewController.deleteRecords';
+import updateSorting from '@salesforce/apex/QuickRecordViewController.updateSorting'
 
 const CREATE_VALUE = 'Create';
 const UPDATE_VALUE = 'Update';
@@ -28,6 +29,36 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   @api error = false;
   @api recordId;
   @api objectInput;
+  @api set sortedBy(value) {
+    this._sortedBy = value ? value : '';
+  }
+  get sortedBy() {
+    return this._sortedBy;
+  }
+
+  @api set sortDirection(value) {
+    this._sortDirection = value ? value : '';
+    setTimeout(
+      () => {
+        if(this._sortedBy && this._sortDirection) {
+          updateSorting({
+            viewId : this.selectedViewOption.value, 
+            fieldSorting : JSON.stringify([{
+              field : this._sortedBy, 
+              sortingDirection : this._sortDirection.toUpperCase()
+            }])
+          }).then(result => {
+          }).catch(error => {
+            console.error(error);
+          });
+        }
+      }
+    );
+  }
+  
+  get sortDirection() {
+    return this._sortDirection;
+  }
   @track selectedViewOption = {};
   @track viewOptionList = [];
   @track filterFields = [];
@@ -64,6 +95,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
 
   query = {operator:'equals'}
   _cancelBlur = false;
+  _sortedBy = '';
+  _sortDirection = '';
 
   get getObjectName() {
     return this.objectName.replace('__kav', '');
@@ -389,7 +422,6 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   
   getRecordDataStr(whereCondition) {
     this.isRecordsUpdate = true;
-
     setTimeout(
       () => this.isRecordsUpdate = false, 
       2000
@@ -425,6 +457,16 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
       viewNameInput.focus();
     });
     
+  }
+
+  changeViewName(event) {
+    this.viewName = event.target.value;
+
+    if(this.viewName === this.selectedViewOption.label) {
+      this.viewNameSaveOptionValue = UPDATE_VALUE;
+    } else {
+      this.viewNameSaveOptionValue = CREATE_VALUE;
+    }
   }
 
   focusViewNameHandler(event) {
@@ -504,10 +546,8 @@ export default class QuickRecordLWC extends NavigationMixin(LightningElement) {
   changeViewNameSaveOption(event) {
     let selectedOption = event.detail.value;
     this.viewNameSaveOptionValue = selectedOption;
-    if(selectedOption === CREATE_VALUE) {
+    if(selectedOption === CREATE_VALUE && this.viewName === this.selectedViewOption.label) {
       this.viewName ='';
-    } else {
-      this.viewName = this.selectedViewOption.label;
     }
 
   }

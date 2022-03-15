@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>53.0</apiVersion>
-    <description>Quick Record</description>
+    <description>Quick Query</description>
     <isExposed>true</isExposed>
-    <masterLabel>Quick Record</masterLabel>
+    <masterLabel>Quick Query</masterLabel>
 
     <targets>
         <target>lightning__AppPage</target>
@@ -19,6 +19,8 @@
             <property label="recordDataStringSelected" name="recordDataStringSelected" type="String"/>
             <property label="recordDataStringChanged" name="recordDataStringChanged" type="String"/>
             <property label="objectName" name="objectName" type="String" />
+            <property label="sortedBy" name="sortedBy" type="String" />
+            <property label="sortDirection" name="sortDirection" type="String" />
             <property label="displayColumns" name="displayColumns" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>

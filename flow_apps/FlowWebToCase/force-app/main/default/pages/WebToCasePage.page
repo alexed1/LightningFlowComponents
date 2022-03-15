@@ -1,0 +1,17 @@
+<apex:page>
+    <apex:includeLightning />
+    <div id="lightningLocator"></div>
+    
+    <script>
+        $Lightning.use("c:WebToCaseViaFlow",
+            function() {
+                $Lightning.createComponent(
+                    "c:EmbedFlowInExternalWebsite",
+                    { flowName : "{!JSENCODE($CurrentPage.parameters.flowName)}"},                  
+                    "lightningLocator",   
+                    function(cmp) {}
+                );
+            },
+        );
+    </script>
+</apex:page>

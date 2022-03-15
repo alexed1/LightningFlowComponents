@@ -213,6 +213,7 @@ export default class FieldSelector extends LightningElement {
     handleClearClick(event) {
         console.log('in handleClearClick');
         this.selectedFields = [];
+        this.dispatchFields();
         // These don't work, I think because the input hasn't rerendered yet
         // this.filterOptions();
         // this.showList();

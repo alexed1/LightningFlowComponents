@@ -38,8 +38,8 @@
             <stringValue>[{&quot;attributes&quot;:{&quot;type&quot;:&quot;Account&quot;,&quot;url&quot;:&quot;/services/data/v53.0/sobjects/Account/0010U00001DmBJMQA3&quot;},&quot;Id&quot;:&quot;0010U00001DmBJMQA3&quot;,&quot;Name&quot;:&quot;Sample Account for Entitlements&quot;},{&quot;attributes&quot;:{&quot;type&quot;:&quot;Account&quot;,&quot;url&quot;:&quot;/services/data/v53.0/sobjects/Account/0010U00001DnXukQAF&quot;},&quot;Id&quot;:&quot;0010U00001DnXukQAF&quot;,&quot;Name&quot;:&quot;Sample Account&quot;}]</stringValue>
         </value>
     </constants>
-    <interviewLabel>Demo QuickRecordViewLWC {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Demo QuickRecordViewLWC</label>
+    <interviewLabel>Quick Query Deployment {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quick Query Deployment</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -90,6 +90,18 @@
                 <name>recordDataStringChanged</name>
                 <value>
                     <elementReference>Datatable.outputEditedSerializedRows</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>sortDirection</name>
+                <value>
+                    <elementReference>Datatable.sortDirection</elementReference>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>sortedBy</name>
+                <value>
+                    <elementReference>Datatable.sortedBy</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -164,12 +176,30 @@
                     <stringValue>CB_TRUE</stringValue>
                 </value>
             </inputParameters>
+            <inputParameters>
+                <name>cb_tableBorder</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>allowOverflow</name>
+                <value>
+                    <booleanValue>true</booleanValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>cb_allowOverflow</name>
+                <value>
+                    <stringValue>CB_TRUE</stringValue>
+                </value>
+            </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
         <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
+        <showHeader>false</showHeader>
     </screens>
     <start>
         <locationX>50</locationX>

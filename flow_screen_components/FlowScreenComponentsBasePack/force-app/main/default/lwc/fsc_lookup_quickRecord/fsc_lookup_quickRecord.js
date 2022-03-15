@@ -120,6 +120,14 @@ export default class Lookup extends NavigationMixin(LightningElement) {
         }
     }
 
+    connectedCallback() {
+        setTimeout(
+            () => {
+                this.template.querySelector('input').focus(); 
+            }
+        );
+    }
+
     // INTERNAL FUNCTIONS
 
     updateSearchTerm(newSearchTerm) {
@@ -245,12 +253,13 @@ export default class Lookup extends NavigationMixin(LightningElement) {
             event.preventDefault();
         }
         else if (event.keyCode === KEY_ESCAPE) {
-            
             if(this._tempSearchTerm) {
                 this._focusedResultIndex = null;
                 this._searchTerm = this._tempSearchTerm;
                 this._tempSearchTerm = '';
             } 
+            this.handleBlur();
+
             event.preventDefault();
         }
     }

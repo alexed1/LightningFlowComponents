@@ -1,0 +1,8 @@
+<template>
+    <div class="slds-var-p-around_x-small">
+        <lightning-textarea value={textValue} label={label} max-length={maxLength} onchange={handleChange} placeholder={placeHolder}></lightning-textarea>
+    </div>
+    <div class={labelCss}>
+        {charsLeft}/{maxLength} characters remaining
+    </div>    
+</template>

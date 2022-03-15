@@ -129,6 +129,20 @@
                 description="If this flow is being embedded on an external website (like Wordpress, for example), set this to TRUE. Otherwise, this should almost always be either empty or FALSE."  
                 role="inputOnly"
             />
+            <property
+                name="disableDelete"
+                type="Boolean"
+                label="Disable File Deletion"
+                description="When this is TRUE, clicking the 'X' next to the Files will simply remove them from the UI and the output list, but the Files will NOT be deleted."
+                role="inputOnly"
+            />
+            <property
+                name="helpText"
+                type="String"
+                label="Help Text"
+                description="The message that will be displayed in the help text popup."
+                role="inputOnly"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

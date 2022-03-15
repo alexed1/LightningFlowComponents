@@ -288,7 +288,7 @@ export default class Datatable extends LightningElement {
         
     // Other Datatable attributes
     @api sortedBy = '';
-    @api sortDirection = ''; 
+    @api sortDirection = '';
     @api maxRowSelection;
     @api errors;
     @api columnWidthValues;
@@ -1565,7 +1565,7 @@ export default class Datatable extends LightningElement {
         this.sortDirection = event.detail.sortDirection;
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('sortedBy', this.sortedBy));
-        this.dispatchEvent(new FlowAttributeChangeEvent('sortDirection', this.sortDirection));       
+        this.dispatchEvent(new FlowAttributeChangeEvent('sortDirection', this.sortDirection));
         this.doSort(this.sortedBy, this.sortDirection);
     }
 

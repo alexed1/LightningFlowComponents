@@ -245,6 +245,14 @@
     </div>
 
     <c-fsc_flow-checkbox
+        name="select_showRecordCount"
+        label={inputValues.showRecordCount.label} 
+        checked={inputValues.cb_showRecordCount.value} 
+        field-level-help={inputValues.showRecordCount.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
         name="select_tableBorder"
         label={inputValues.tableBorder.label} 
         checked={inputValues.cb_tableBorder.value} 
@@ -284,6 +292,13 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>
     <c-fsc_flow-checkbox
+        name="select_hideHeaderActions"
+        label={inputValues.hideHeaderActions.label} 
+        field-level-help={inputValues.hideHeaderActions.helpText}
+        checked={inputValues.cb_hideHeaderActions.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>  
+    <c-fsc_flow-checkbox
         disabled={isNoFilters}
         name="select_matchCaseOnFilters"
         label={inputValues.matchCaseOnFilters.label} 
@@ -292,7 +307,14 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>
     <c-fsc_flow-checkbox
-        disabled={isNoEdits}
+        name="select_hideClearSelectionButton"
+        label={inputValues.hideClearSelectionButton.label} 
+        field-level-help={inputValues.hideClearSelectionButton.helpText}
+        checked={inputValues.cb_hideClearSelectionButton.value} 
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>    
+    <c-fsc_flow-checkbox
+        disabled={isDisableSuppressBottomBar}
         name="select_suppressBottomBar"
         label={inputValues.suppressBottomBar.label} 
         field-level-help={inputValues.suppressBottomBar.helpText}
@@ -300,19 +322,13 @@
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
     <c-fsc_flow-checkbox
-        name="select_hideHeaderActions"
-        label={inputValues.hideHeaderActions.label} 
-        field-level-help={inputValues.hideHeaderActions.helpText}
-        checked={inputValues.cb_hideHeaderActions.value} 
+        disabled={isDisableNavigateNext}
+        name="select_navigateNextOnSave"
+        label={inputValues.navigateNextOnSave.label} 
+        field-level-help={inputValues.navigateNextOnSave.helpText}
+        checked={inputValues.cb_navigateNextOnSave.value} 
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>  
-    <c-fsc_flow-checkbox
-        name="select_hideClearSelectionButton"
-        label={inputValues.hideClearSelectionButton.label} 
-        field-level-help={inputValues.hideClearSelectionButton.helpText}
-        checked={inputValues.cb_hideClearSelectionButton.value} 
-        oncheckboxchanged={handleCheckboxChange}
-    ></c-fsc_flow-checkbox>      
     <c-fsc_flow-checkbox
         name="select_not_suppressNameFieldLink"
         label={inputValues.not_suppressNameFieldLink.label} 
@@ -600,6 +616,17 @@
             label={inputValues.allowNoneToBeChosen.label} 
             field-level-help={inputValues.allowNoneToBeChosen.helpText}
             checked={inputValues.cb_allowNoneToBeChosen.value} 
+            oncheckboxchanged={handleCheckboxChange}
+        ></c-fsc_flow-checkbox> 
+    </div>
+
+    <!-- Suppress Currency Conversion -->
+    <div class="slds-m-top_xx-small">
+        <c-fsc_flow-checkbox
+            name="select_suppressCurrencyConversion"
+            label={inputValues.suppressCurrencyConversion.label} 
+            field-level-help={inputValues.suppressCurrencyConversion.helpText}
+            checked={inputValues.cb_suppressCurrencyConversion.value} 
             oncheckboxchanged={handleCheckboxChange}
         ></c-fsc_flow-checkbox> 
     </div>

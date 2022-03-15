@@ -24,14 +24,15 @@ private with sharing class ers_DatatableControllerTest {
     static void test() {
         Account[] accts = [SELECT Id, Name, OwnerId FROM Account];
         String fieldnames = 'Name, Id, OwnerId, AccountNumber, Website, Type, Description, IsDeleted, CreatedDate, AnnualRevenue, Fax, LastActivityDate, NumberOfEmployees, ShippingLongitude';
-        String testResponse = ers_DatatableController.getReturnResults(accts, fieldnames);
+        Boolean suppress = false;
+        String testResponse = ers_DatatableController.getReturnResults(accts, fieldnames, suppress);
         System.assert(testResponse.contains('"noEditFieldList":['));
         System.assert(testResponse.contains('"lookupFieldList":["OwnerId"]'));
 
         String testCPEResponse = ers_DatatableController.getCPEReturnResults('Account');
         
         Account[] empty = [SELECT Id, Name, OwnerId FROM Account WHERE Name='NotInAccounts'];
-        String testEmpty = ers_DatatableController.getReturnResults(empty, fieldnames);
+        String testEmpty = ers_DatatableController.getReturnResults(empty, fieldnames, suppress);
         System.assert(testEmpty.contains('"objectName":"EmptyCollection"'));
     }
 
@@ -39,10 +40,11 @@ private with sharing class ers_DatatableControllerTest {
     private static void testUnknownFieldException() {
         String fieldNames = 'Id, Name, BogusField';
         String assert = '';
+        Boolean suppress = false;
         List<Account> accts = [SELECT Id, Name, OwnerId FROM Account];
 
         try {
-            ers_DatatableController.getReturnResults(accts, fieldNames);
+            ers_DatatableController.getReturnResults(accts, fieldNames, suppress);
         } catch (Exception ex) {
             assert = ex.getMessage();
         }
@@ -54,8 +56,9 @@ private with sharing class ers_DatatableControllerTest {
     private static void testMultiCurrency() {
         String fieldNames = 'Id, Name, AnnualRevenue';
         List<Account> accts = [SELECT Id, Name, OwnerId FROM Account];
+        Boolean suppress = false;
         ers_DatatableController.isMultiCurrencyOrganization = true;
-        String testResponse = ers_DatatableController.getReturnResults(accts, fieldNames);
+        String testResponse = ers_DatatableController.getReturnResults(accts, fieldNames, suppress);
         System.assert(testResponse.contains('"AnnualRevenue":1000000'));
     }
 

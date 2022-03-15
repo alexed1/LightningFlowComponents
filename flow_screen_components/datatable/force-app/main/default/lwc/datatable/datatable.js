@@ -10,9 +10,11 @@
 
 import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
 import { getConstants } from 'c/ers_datatableUtils';
+
+// Translatable Custom Labels
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
 import SaveButton from '@salesforce/label/c.ers_SaveButton';
 import ClearSelectionButton from '@salesforce/label/c.ers_ClearSelectionButton';
@@ -123,6 +125,12 @@ export default class Datatable extends LightningElement {
     @api cb_showRowNumbers;
     
     @api 
+    get showRecordCount() {
+        return (this.cb_showRecordCount == CB_TRUE) ? true : false;
+    }
+    @api cb_showRecordCount;
+
+    @api 
     get singleRowSelection() {
         return (this.cb_singleRowSelection == CB_TRUE) ? true : false;
     }
@@ -133,6 +141,12 @@ export default class Datatable extends LightningElement {
         return (this.cb_suppressBottomBar == CB_TRUE) ? true : false;
     }
     @api cb_suppressBottomBar;
+
+    @api 
+    get navigateNextOnSave() {
+        return (this.cb_navigateNextOnSave == CB_TRUE) ? true : false;
+    }
+    @api cb_navigateNextOnSave;
 
     @api 
     get matchCaseOnFilters() {
@@ -224,6 +238,12 @@ export default class Datatable extends LightningElement {
     @api cb_allowOverflow;
 
     @api 
+    get suppressCurrencyConversion() {
+        return (this.cb_suppressCurrencyConversion == CB_TRUE) ? true : false;
+    }
+    @api cb_suppressCurrencyConversion;
+
+    @api 
     get emptyTableMessage() {
         return this.label.EmptyMessage;
     }
@@ -281,9 +301,9 @@ export default class Datatable extends LightningElement {
     @track isAllFilter = false;
     @track showClearButton = false;
     @track tableHeightAttribute = 'height:';
-    @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-        +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-        + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); margin: -1px;';
+    // @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
+    //     +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
+    //     + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); margin: -1px;';
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -376,7 +396,11 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
-        return this.tableLabel;
+        return (this.showRecordCount) ? `${this.tableLabel} (${this.tableRecordCount})` : this.tableLabel;
+    }
+
+    get tableRecordCount() {
+        return this._tableData.length;
     }
 
     get isShowTable() {
@@ -681,7 +705,8 @@ export default class Datatable extends LightningElement {
         console.log('tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
-        this.borderClass = (this.tableBorder == true) ? 'slds-box' : '';
+        //this.borderClass = (this.tableBorder == true) ? 'slds-box' : ''; commented out to remove padding. replaced with below
+        this.borderClass = (this.tableBorder == true) ? 'datatable-border' : '';
 
         // Add overflow if max height is not set so the combobox will spill outside the table
         this.borderClass += (this.allowOverflow) ? ' overflowEnabled' : '';
@@ -807,7 +832,7 @@ export default class Datatable extends LightningElement {
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
             console.log('Passing data to Apex Controller', data);
-            getReturnResults({ records: data, fieldNames: fieldList })
+            getReturnResults({ records: data, fieldNames: fieldList, suppressCurrencyConversion: this.suppressCurrencyConversion })
             .then(result => {
                 let returnResults = JSON.parse(result);
 
@@ -1467,11 +1492,18 @@ export default class Datatable extends LightningElement {
 
         this.savePreEditData = [...data];   // Resave the current table values
         this.mydata = [...data];            // Reset the current table values
+
         if (!this.suppressBottomBar) {
             this.columns = [...this.columns];   // Force clearing of the edit highlights
             //clear draftValues. this is required for custom column types that need to specifically write into draftValues
             this.template.querySelector('c-ers_custom-lightning-datatable').draftValues = [];
+
+            if(this.navigateNextOnSave) {       // Added in v3.5.0
+                const navigateNextEvent = new FlowNavigationNextEvent();
+                this.dispatchEvent(navigateNextEvent);
+            }
         }
+
     }
 
     cancelChanges(event) {

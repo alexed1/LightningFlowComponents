@@ -19,7 +19,7 @@ Additional components packaged with this LWC:
                                     ers_datatableCPE
                                     ers_richTextColumnType
 
-                Custom Objects:     ers_datatableConfig
+                Custom Objects:     ers_datatableConfig (replaced in v3.5.0 by FlowTableViewDefinition from the FlowScreenComponentsBasePack)
 
                 Page Layouts:       ers_datatableConfig Layout
 
@@ -43,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.32 or later  
-FlowScreenComponentsBasePack Version 2.5.4 or later  
+FlowActionsBasePack Version 2.36 or later  
+FlowScreenComponentsBasePack Version 2.7.7 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.4.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUrOQAU)   
-[Version 3.4.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUrOQAU)
+[Version 3.5.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUtZQAU)   
+[Version 3.5.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUtZQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,6 +72,19 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 03/15/22 -  Eric Smith -    Version 3.5.0 
+**Updates:** 
+-   Eliminate padding/margin for Table Border (Thanks to Jerry Poon)
+-   Add option to Navigate Next when selecting the Save button for inline editing (Thanks to Idan Damari)
+-   Rearranged the order of the options in the Table Behavior Section
+-   Changed the Configuration Wizard to use the new FlowTableViewDefinition object from the ScreenComponentsBasePack instead of the ers_datatableConfig object
+-   Added Created and Modified Date columns to the Configuration Record selection datatable
+-   Added optional Record Count to Table Header
+-   Added option to suppress the currency conversion introduced in v3.1.1
+  
+**Bug Fixes:** 
+-   Fixed bug when using a % character in a column label [Issue-1069]
+  
 ## 02/16/22 -  Eric Smith -    Version 3.4.5 
 **Updates:** 
 -   Updated all component API versions to 53.0 (Winter '22)

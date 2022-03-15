@@ -16,6 +16,9 @@
  *              of the Name fields in the corresponding records. Return the
  *              records that now include both the Id and Name for each lookup.
  * 
+ * 
+ * 03/14/22 -   Eric Smith -    Version 3.5.0   Added option to suppress the currency conversion introduced in v3.1.1
+ * 
  * 02/13/22 -   Eric Smith -    Version 3.4.5   Minor improvements and increased test coverage (JeronSfdc PR#1007 & #1008)
  * 
  * 02/11/22 -   Eric Smith -    Version 3.4.5   Handle manually created records when there are none in the object yet
@@ -116,9 +119,10 @@ public with sharing class ers_DatatableController {
     }
 
     @AuraEnabled
-    public static String getReturnResults(List<SObject> records, String fieldNames){
+    public static String getReturnResults(List<SObject> records, String fieldNames, Boolean suppressCurrencyConversion){
         System.debug(LoggingLevel.INFO, 'records-'+records);
         System.debug(LoggingLevel.INFO, 'fieldNames-'+fieldNames);
+        System.debug(LoggingLevel.INFO, 'suppressCurrencyConversion-'+suppressCurrencyConversion);
         ReturnResults curRR = new ReturnResults();
         if (records.isEmpty()) {
             // throw new MyApexException ('The datatable record collection is empty');
@@ -141,7 +145,8 @@ public with sharing class ers_DatatableController {
             String objName = records[0].getSObjectType().getDescribe().getName();
             curRR = getColumnData(curRR, fieldNames, objName);
             curRR = getLookupData(curRR, records, curRR.lookupFieldList, objName);
-            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList, curRR.currencyFieldList, curRR.numberFieldList);
+            Boolean currencyConvertFlag = suppressCurrencyConversion;
+            curRR = getRowData(curRR, records, curRR.dataMap, curRR.objNameFieldMap, curRR.lookupFieldList, curRR.percentFieldList, objName, curRR.noEditFieldList, curRR.currencyFieldList, curRR.numberFieldList, currencyConvertFlag);
             curRR.objectName = objName;
         }
         curRR.timezoneOffset = getTimezoneOffset().format();
@@ -307,7 +312,7 @@ public with sharing class ers_DatatableController {
     }
 
     @AuraEnabled
-    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields, List<String> currencyFields, List<String> numberFields) {
+    public static ReturnResults getRowData(ReturnResults curRR, List<SObject> records, Map<String, Map<Id, SObject>> dataMap, Map<String, String> objNameFieldMap, List<String> lookupFields, List<String> percentFields, String objName, List<String> noEditFields, List<String> currencyFields, List<String> numberFields, Boolean suppressCurrencyConversion) {
         // Update object to include values for the "Name" field referenced by Lookup fields
         String lookupFieldData = '';
         Map<String,Boolean> firstRecord = new Map<String,Boolean>();
@@ -316,7 +321,7 @@ public with sharing class ers_DatatableController {
         }
 
         // Convert currency fields to running user's currency
-        if (currencyFields.size() > 0 && isMultiCurrencyOrganization) {
+        if (currencyFields.size() > 0 && isMultiCurrencyOrganization && !suppressCurrencyConversion) {
             String currencyFieldsQuery = 'SELECT Id';
             for (String currField : currencyFields) {
                 currencyFieldsQuery += ', ' + ( Test.isRunningTest() ? currField : 'convertCurrency(' + currField + ')' );

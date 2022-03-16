@@ -72,3 +72,12 @@ c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primi
     opacity: 0.5;
     visibility: hidden;
 }
+
+/* v3.5.0 Move border styling to css */
+.datatable-border {
+    border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));
+    border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));
+    border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));
+    /* border-bottom: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); */
+    margin-left: -1px;
+}

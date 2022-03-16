@@ -38,6 +38,8 @@ export default class SortingConfiguration extends LightningElement {
 
     @api selectedFieldListString;
 
+    @track isShowConfiguration = true;
+
     connectedCallback() {
         if(this.fieldSortingListString){
             this.fieldSortingList = JSON.parse(this.fieldSortingListString);
@@ -84,23 +86,41 @@ export default class SortingConfiguration extends LightningElement {
         }
     }
     changeSorting(event) {
-        this.fieldSortingList[event.detail.index].sortingDirection = event.detail.sortingDirection;
-        this.fieldSortingList[event.detail.index].field = event.detail.field;
+        let fieldSorting = {
+            sortingDirection : event.detail.sortingDirection,
+            field : event.detail.field
+        };
         let fieldAPINameList = [];
         
         this.fieldSortingList.forEach(
             (item, index) => {
                 if(!event.detail.field && index > event.detail.index) {
                     item.field = '';
+                    item.sortingDirection = 'ASC'; 
+                }
+                if(!item.field && index < event.detail.index) {
+                    fieldSorting.field = '';
+                    fieldSorting.sortingDirection = 'ASC';
                 }
             }
         );
+
+        this.fieldSortingList[event.detail.index] = fieldSorting;
         this.fieldSortingList.forEach(
             (item, index) => {
                 fieldAPINameList.push(item.field);
             }
         );
-        this.fieldSortingListString = JSON.stringify(this.fieldSortingList.filter(item => item.field))
+        this.fieldSortingListString = JSON.stringify(this.fieldSortingList.filter(item => item.field));
+        //for list rerendering when field is empty
+        if(!fieldSorting.field) {
+            this.isShowConfiguration = false;
+            setTimeout(() => {
+                this.isShowConfiguration = true;
+            });
+        }
+        
+        
     }
 
     @api validate() {

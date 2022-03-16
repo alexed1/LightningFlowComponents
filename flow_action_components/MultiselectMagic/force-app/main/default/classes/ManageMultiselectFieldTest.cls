@@ -12,13 +12,13 @@ public with sharing class ManageMultiselectFieldTest {
 
         Account testAcct1 = new Account();
         testAcct1.Name = 'testAcct1';
-        testAcct1.Fruit__c = 'Apple;Strawberry;Rasberry';
+        testAcct1.Description = 'Apple;Strawberry;Rasberry';
         insert testAcct1;
 
-        System.debug('fruit is: ' + testAcct1.Fruit__c);
-
+        System.debug('fruit is: ' + testAcct1.Description);
+        //instead Multipicklist field unit test use text type field to avoid dependence on custom fields
         testRequest.objectApiName='Account';
-        testRequest.fieldApiName='Fruit__c';
+        testRequest.fieldApiName='Description';
         testRequest.curRecord = testAcct1;
         testRequest.operation = 'CheckForValue';
         testRequest.targetValue = 'Strawberry';

@@ -215,6 +215,10 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
     handleFieldUpdate(event) {
         console.log('in handleFieldUpdate');
         console.log(JSON.stringify(event.detail.value));
+        this._field = event.detail.value.map(item => item.name).join();
+        this.dispatchDataChangedEvent(this.fields.find(curField => curField.value == this._field));
+        const attributeChangeEvent = new FlowAttributeChangeEvent('field', this._field);
+        this.dispatchEvent(attributeChangeEvent);
     }
 
     dispatchDataChangedEvent(detail) {

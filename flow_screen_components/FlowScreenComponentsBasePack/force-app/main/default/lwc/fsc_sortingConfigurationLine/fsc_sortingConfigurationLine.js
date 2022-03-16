@@ -14,7 +14,7 @@ export default class SortingConfigurationLine extends LightningElement {
         return SORTING_DIRECTION_OPTIONS;
     }
 
-    @api field = {};
+    @api field = '';
     @api fieldList = [];
     @api availableFieldList = [];
     @api sortingDirection = 'ASC';

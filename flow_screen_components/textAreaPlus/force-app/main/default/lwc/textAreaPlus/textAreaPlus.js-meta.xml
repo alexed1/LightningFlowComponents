@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Textarea Plus!</masterLabel>
+    <description>Pretty much just a Textarea with a counter</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="maxlen" label="Maximum Length" type="Integer" role="inputOnly" />
+            <property name="value" label="Text Value" type="String" />
+            <property name="label" label="Label" type="String" role="inputOnly" />
+            <property name="placeHolder" label="Placeholder Text" type="String" role="inputOnly"/>
+        </targetConfig>
+ </targetConfigs>
+</LightningComponentBundle>

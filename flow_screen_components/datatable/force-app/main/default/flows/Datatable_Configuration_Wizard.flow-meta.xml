@@ -10,7 +10,6 @@
         <connector>
             <targetReference>Decode_Type_Attribute</targetReference>
         </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -29,7 +28,6 @@
         <connector>
             <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -48,7 +46,6 @@
         <connector>
             <targetReference>Decode_Other_Attribute</targetReference>
         </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -67,7 +64,6 @@
         <connector>
             <targetReference>Select_Fields</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectName</name>
             <value>
@@ -89,7 +85,6 @@
         <connector>
             <targetReference>Get_Records_Result</targetReference>
         </connector>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectApiName</name>
             <value>
@@ -433,9 +428,6 @@
         <assignmentItems>
             <assignToReference>objConfig.Widths__c</assignToReference>
             <operator>Assign</operator>
-            <value>
-                <elementReference>wiz_columnWidths</elementReference>
-            </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>objConfig.Wraps__c</assignToReference>
@@ -541,7 +533,30 @@
         </connector>
     </assignments>
     <assignments>
-        <name>Set_Metadata_Name</name>
+        <name>Set_Metadata_Name_create</name>
+        <label>Set Metadata Name</label>
+        <locationX>3299</locationX>
+        <locationY>282</locationY>
+        <assignmentItems>
+            <assignToReference>objConfig.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Configuration_Record_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>objConfig.View_Name__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Configuration_Record_Name</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Clear_Record_Id</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Set_Metadata_Name_saveas</name>
         <label>Set Metadata Name</label>
         <locationX>3283</locationX>
         <locationY>123</locationY>
@@ -552,20 +567,11 @@
                 <elementReference>Configuration_Record_Name_Change</elementReference>
             </value>
         </assignmentItems>
-        <connector>
-            <targetReference>Clear_Record_Id</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Metadata_Name_0</name>
-        <label>Set Metadata Name</label>
-        <locationX>3299</locationX>
-        <locationY>282</locationY>
         <assignmentItems>
-            <assignToReference>objConfig.Name</assignToReference>
+            <assignToReference>objConfig.View_Name__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>Configuration_Record_Name</elementReference>
+                <elementReference>Configuration_Record_Name_Change</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -829,7 +835,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Set_Metadata_Name</targetReference>
+                <targetReference>Set_Metadata_Name_saveas</targetReference>
             </connector>
             <label>SAVE AS</label>
         </rules>
@@ -844,7 +850,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Set_Metadata_Name_0</targetReference>
+                <targetReference>Set_Metadata_Name_create</targetReference>
             </connector>
             <label>CREATE</label>
         </rules>
@@ -1133,7 +1139,7 @@
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>ers_datatableConfig__c</object>
+        <object>FlowTableViewDefinition__c</object>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -1240,7 +1246,6 @@
                     <elementReference>vSelectionMethod</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1262,14 +1267,14 @@
             <name>ConfigTable</name>
             <dataTypeMappings>
                 <typeName>T</typeName>
-                <typeValue>ers_datatableConfig__c</typeValue>
+                <typeValue>FlowTableViewDefinition__c</typeValue>
             </dataTypeMappings>
             <extensionName>c:datatable</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>objectName</name>
                 <value>
-                    <stringValue>ers_datatableConfig__c</stringValue>
+                    <stringValue>FlowTableViewDefinition__c</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1299,7 +1304,7 @@
             <inputParameters>
                 <name>columnFields</name>
                 <value>
-                    <stringValue>Name,Object_API_Name__c,Field_API_Names__c</stringValue>
+                    <stringValue>Name,Object_API_Name__c,Field_API_Names__c,CreatedDate,LastModifiedDate</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1311,19 +1316,19 @@
             <inputParameters>
                 <name>columnLabels</name>
                 <value>
-                    <stringValue>Name:Configuration Name, Object_API_Name__c:Object, Field_API_Names__c:Columns</stringValue>
+                    <stringValue>Name:Configuration Name, Object_API_Name__c:Object, Field_API_Names__c:Columns, CreatedDate:Created, LastModifiedDate:Modified</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWidths</name>
                 <value>
-                    <stringValue>Name:225, Object_API_Name__c:140, Field_API_Names__c:480</stringValue>
+                    <stringValue>Name:225, Object_API_Name__c:125, Field_API_Names__c:310, CreatedDate:110, LastModifiedDate:110</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>columnWraps</name>
                 <value>
-                    <stringValue>MasterLabel:true, vSObject__c:true, vFieldList__c:true</stringValue>
+                    <stringValue>Name:true, Object_API_Name__c:true, Field_API_Names__c:true, Labels__c:true, CreatedDate:true, LastModifiedDate:true</stringValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -1351,6 +1356,12 @@
                 </value>
             </inputParameters>
             <inputParameters>
+                <name>columnFilters</name>
+                <value>
+                    <stringValue>All</stringValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
                 <name>tableData</name>
                 <value>
                     <elementReference>Get_Available_Config_Records</elementReference>
@@ -1363,12 +1374,17 @@
                 </value>
             </inputParameters>
             <inputParameters>
-                <name>columnFilters</name>
+                <name>cb_suppressBottomBar</name>
                 <value>
-                    <stringValue>All</stringValue>
+                    <stringValue>CB_FALSE</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+            <inputParameters>
+                <name>cb_navigateNextOnSave</name>
+                <value>
+                    <stringValue>CB_FALSE</stringValue>
+                </value>
+            </inputParameters>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1461,7 +1477,6 @@
                     <elementReference>apexColSelectedFieldDescriptors_usf</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
@@ -1674,7 +1689,6 @@
                     <elementReference>wiz_columnOtherAttribs</elementReference>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>wiz_columnLabels</assignToReference>
@@ -1741,7 +1755,6 @@
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1839,7 +1852,6 @@
                     <stringValue>[{&quot;label&quot;:&quot;Ignore Changes&quot;,&quot;value&quot;:&quot;Ignore&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:0},{&quot;label&quot;:&quot;Save Changes&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:1}]</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -1881,7 +1893,6 @@
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1943,7 +1954,6 @@
                     <stringValue>[{&quot;label&quot;:&quot;Create Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -2032,7 +2042,6 @@
                     <stringValue>[{&quot;label&quot;:&quot;Save Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -2087,7 +2096,6 @@
                     <stringValue>[{&quot;label&quot;:&quot;Done&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:null,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -2153,7 +2161,7 @@
         <isCollection>true</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>ers_datatableConfig__c</objectType>
+        <objectType>FlowTableViewDefinition__c</objectType>
     </variables>
     <variables>
         <name>colTitles</name>
@@ -2168,7 +2176,7 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
-        <objectType>ers_datatableConfig__c</objectType>
+        <objectType>FlowTableViewDefinition__c</objectType>
     </variables>
     <variables>
         <name>vConfigCount</name>

@@ -1,12 +1,37 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@2.36.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@2.7.8-0"
+                },
+                {
+                    "package": "datatable@3.4.8-0"
+                },
+                {
+                    "package": "CollectionActionsL@1.34.0-0"
+                }
+            ],
+            "package": "QuickQuery",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "QuickQuery",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "datatable@3.4.8-0": "04t5G000003rUt5QAE",
+        "FlowActionsBasePack@2.36.0-0": "04t4W00000309GAQAY",
+        "FlowScreenComponentsBasePack@2.7.8-0": "04t5G000003rUt0QAE",
+        "CollectionActionsL@1.34.0-0": "04t5G000003rUrsQAE",
+        "QuickQuery": "0Ho5G000000k9uySAA",
+        "QuickQuery@1.0.0-0": "04t5G000003rUtAQAU"
     }
-  ],
-  "name": "QuickQuery",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "52.0"
 }

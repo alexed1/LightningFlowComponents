@@ -104,13 +104,6 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         }
     }
 
-    renderedCallback(){
-        if(this.helpText){
-            let helpText = this.template.querySelectorAll('.fui-helptext');
-            helpText.blur();
-        }
-    }
-
     numberOfFilesToUpload = 0;
     loading = false;
     handleUpload_lightningInput(event){

@@ -149,6 +149,7 @@ public without sharing class FileUploadImprovedHelper{
         for(Input input : inputs){
             setContentVersIds.addAll(input.versIds);
         }
+        setContentVersIds.remove(null);
         if(!setContentVersIds.isEmpty()){
             Map<Id,Id> mapVersIdToDocId = new Map<Id,Id>();
             for(ContentVersion vers : [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id IN :setContentVersIds]){

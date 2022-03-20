@@ -27,9 +27,7 @@ export default class QuickChoiceCpe extends LightningElement {
         objectName: { value: null, valueDataType: null, isCollection: false, label: 'Select Object' },
         fieldName: { value: null, valueDataType: null, isCollection: false, label: 'Select Field' },
         recordTypeId: { value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:' },
-        isControllingCheckbox: { value: null, valueDataType: null, isCollection: false, label: 'Controlling field is a Checkbox field' },
-        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist Field):' },
-        controllingCheckboxValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Checkbox Field):' },
+        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist or Checkbox Field):' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' }
@@ -54,8 +52,7 @@ export default class QuickChoiceCpe extends LightningElement {
         flowDataTypeString: 'String',
         availableFieldTypesPicklist: 'Picklist',
         inputAttributePrefix: 'select_',
-        singleColumn: '1',
-        isControllingCheckbox: true
+        singleColumn: '1'
     }
 
     displayChoicesAsOptions = [
@@ -134,12 +131,6 @@ export default class QuickChoiceCpe extends LightningElement {
     get isDatasourcePicklist() {
         return this.inputValues.inputMode.value === this.settings.inputModePicklist;
     }
-
-//     get isControllingFieldCheckbox() {
-// console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 140 ~ QuickChoiceCpe ~ getisControllingFieldCheckbox ~ this.settings.isControllingCheckbox", this.settings.isControllingCheckbox);
-// console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 140 ~ QuickChoiceCpe ~ getisControllingFieldCheckbox ~ this.inputValues.isControllingCheckbox.value", this.inputValues.isControllingCheckbox.value);
-//         return this.inputValues.isControllingCheckbox.value === this.settings.isControllingCheckbox;
-//     }
 
     get isDatasourceDualCollection() {
         return this.inputValues.inputMode.value === this.settings.inputModeDualCollection;

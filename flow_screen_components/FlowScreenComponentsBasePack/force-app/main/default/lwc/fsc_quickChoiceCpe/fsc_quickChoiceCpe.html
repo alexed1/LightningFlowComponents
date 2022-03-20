@@ -55,34 +55,15 @@
                         automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
                 
-                <!-- <lightning-input class="slds-p-top_x-small" type="checkbox" label={inputValues.isControllingCheckbox.label}
-                        name="select_isControllingCheckbox" 
-                        checked={inputValues.isControllingCheckbox.value}
-                        onchange={handleValueChange}>
-                </lightning-input> -->
+                <c-fsc_flow-combobox name="select_controllingPicklistValue" label={inputValues.controllingPicklistValue.label}
+                        value={inputValues.controllingPicklistValue.value} value-type={inputValues.controllingPicklistValue.valueDataType}
+                        builder-context-filter-type="String"
+                        builder-context-filter-collection-boolean={inputValues.controllingPicklistValue.isCollection}
+                        builder-context={_builderContext}
+                        onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
+                ></c-fsc_flow-combobox>
 
-                <!-- <template if:false={isControllingFieldCheckbox}> -->
-                        <c-fsc_flow-combobox name="select_controllingPicklistValue" label={inputValues.controllingPicklistValue.label}
-                                value={inputValues.controllingPicklistValue.value} value-type={inputValues.controllingPicklistValue.valueDataType}
-                                builder-context-filter-type="String"
-                                builder-context-filter-collection-boolean={inputValues.controllingPicklistValue.isCollection}
-                                builder-context={_builderContext}
-                                onvaluechanged={handleFlowComboboxValueChange}
-                                automatic-output-variables={automaticOutputVariables}
-                        ></c-fsc_flow-combobox>
-                <!-- </template> -->
-
-                <!-- <template if:true={isControllingFieldCheckbox}> -->
-                        <c-fsc_flow-combobox name="select_controllingCheckboxValuee" label={inputValues.controllingCheckboxValue.label}
-                                value={inputValues.controllingCheckboxValue.value} value-type={inputValues.controllingCheckboxValue.valueDataType}
-                                builder-context-filter-type="Boolean"
-                                builder-context-filter-collection-boolean={inputValues.controllingCheckboxValue.isCollection}
-                                builder-context={_builderContext}
-                                onvaluechanged={handleFlowComboboxValueChange}
-                                automatic-output-variables={automaticOutputVariables}
-                        ></c-fsc_flow-combobox>
-                <!-- </template> -->
-                
         </template>
 
         <template if:true={isDatasourceDualCollection}>

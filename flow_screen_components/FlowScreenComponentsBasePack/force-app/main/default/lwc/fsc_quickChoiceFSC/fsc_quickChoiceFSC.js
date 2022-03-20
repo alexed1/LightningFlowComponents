@@ -28,7 +28,6 @@ export default class QuickChoiceFSC extends LightningElement {
 
     _controllingPicklistValue;
     priorControllingValue = null;
-    // _controllingCheckboxValue;
 
     @api
     get controllingPicklistValue() {
@@ -42,15 +41,6 @@ export default class QuickChoiceFSC extends LightningElement {
             this._selectedValue = null;
             this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         }
-    }
-
-    @api
-    get controllingCheckboxValue() {
-        return this._controllingPicklistValue;
-    }
-
-    set controllingCheckboxValue(value) {
-        this._controllingPicklistValue = value;
     }
 
     //-------------For inputMode = Visual Text Box (Card)

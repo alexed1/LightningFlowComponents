@@ -11,7 +11,8 @@
  * 1.0      05/05/2020      araganwalker@gmail.com      Initial release
 **/
 
-global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
+global without sharing class ConvertCSVToRecords implements Queueable { 
+    
     class GenerateCSVException extends Exception {}
     
     private static Integer SYNC_ITERATION_LIMIT = 200000;
@@ -58,6 +59,9 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
 
         @InvocableVariable(description='If set, the action will execute asynchrounously and file information will be posted to a platform event: CSV_Document__e. Use this identifier to listen for the platform event in a \'Wait\' element in Flow, or use Summer 20\'s \'Invoke Flow from a Platform Event\'')
         global String executeAsyncIdentifier;
+
+        @InvocableVariable(description='Network Id for community users, retrieve with a get' required=false)
+        global String networkId;
     }
 
     global class Outputs {
@@ -75,12 +79,12 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
     }
     
     // Use this queueable initializer if there is only one queueable task to be completed
-    global ConvertRecordsToCSVQueueable(Inputs input) {
+    global ConvertCSVToRecords(Inputs input) {
         this.input = input;
     }
 
     global void execute(QueueableContext context) {
-        Outputs returnVal = generateDocument(this.input.linkedRecordIds, this.input.documentTitle, this.input.documentShareType, this.input.documentVisibility, generateCSVContent(input.recordCollection, input.fieldsCollection, CSVParseType.ALL, true));
+        Outputs returnVal = generateDocument(this.input.linkedRecordIds, this.input.documentTitle, this.input.networkId, this.input.documentShareType, this.input.documentVisibility, generateCSVContent(input.recordCollection, input.fieldsCollection, CSVParseType.ALL, true));
 
         // Generate platform event
 	    // Use this to get document information for jobs that were executed asyncronously from your flow.
@@ -104,7 +108,7 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
         // }
     }
     @InvocableMethod(label='Convert Records to CSV' description='Generates a CSV given a list of sObjects, uplooads it to Files, and optionally links it to a list of related records.' category='Reporting')
-    global static List<ConvertRecordsToCSVQueueable.Outputs> generateCSV(List<ConvertRecordsToCSVQueueable.Inputs> inputVariables) {
+    global static List<ConvertCSVToRecords.Outputs> generateCSV(List<ConvertCSVToRecords.Inputs> inputVariables) {
         if (inputVariables.size() == 0) {
             throw new GenerateCSVException('No input variables provided.');
         }
@@ -115,7 +119,7 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
         	throw new GenerateCSVException('Heap Limit Reached. Input is too large for processing.');
         }
 
-        List<ConvertRecordsToCSVQueueable.Outputs> outputs = new List<ConvertRecordsToCSVQueueable.Outputs>{};
+        List<ConvertCSVToRecords.Outputs> outputs = new List<ConvertCSVToRecords.Outputs>{};
         for (Inputs input: inputVariables) {
             if(String.isNotEmpty(input.recordCollectionString) && (input.recordCollection == null || input.recordCollection.size() == 0)) {
                 input.recordCollection = (List<SObject>) JSON.deserialize(input.recordCollectionString, List<SObject>.class);
@@ -146,11 +150,11 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
     
             if (!executeAsync) {
                 String fullCSV = generateCSVContent(input.recordCollection, input.fieldsCollection, CSVParseType.ALL, executeAsync);
-                ConvertRecordsToCSVQueueable.Outputs returnVal = generateDocument(input.linkedRecordIds, input.documentTitle, input.documentShareType, input.documentVisibility, fullCSV);
-                return new List<ConvertRecordsToCSVQueueable.Outputs>{returnVal};
+                ConvertCSVToRecords.Outputs returnVal = generateDocument(input.linkedRecordIds, input.documentTitle, input.documentShareType, input.documentVisibility, fullCSV, input.networkId);
+                return new List<ConvertCSVToRecords.Outputs>{returnVal};
             }
             
-            ID jobId = System.enqueueJob(new ConvertRecordsToCSVQueueable(input));
+            ID jobId = System.enqueueJob(new ConvertCSVToRecords(input));
             Outputs returnVal = new Outputs();
             returnVal.asyncJobIds = new List<ID>{jobId};
             outputs.add(returnVal);
@@ -336,12 +340,16 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
         return columnHeadersCSV + rowElementsCSV;
     }
 
-    global static ConvertRecordsToCSVQueueable.Outputs generateDocument(List<String> linkedRecordIds, String documentTitle, String documentShareType, String documentVisibility, String content) {        
+    global static ConvertCSVToRecords.Outputs generateDocument(List<String> linkedRecordIds, String documentTitle, String documentShareType, String documentVisibility, String content, String networkId) {        
+        system.debug('network input is '+networkId);
         ContentVersion cv = new ContentVersion();
         cv.VersionData = Blob.valueOf(content);
         cv.Title = documentTitle;
         cv.PathOnClient = documentTitle + '.csv';
         cv.IsMajorVersion = false;
+        if(networkId != null ){
+                     cv.NetworkId = networkId;
+                    }
         insert cv;
 
         // Is new document
@@ -371,7 +379,7 @@ global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
             insert linkRecords;
         }
 
-        ConvertRecordsToCSVQueueable.Outputs returnVal = new ConvertRecordsToCSVQueueable.Outputs();
+        ConvertCSVToRecords.Outputs returnVal = new ConvertCSVToRecords.Outputs();
         returnVal.contentDocumentId=doc[0].Id;
         returnVal.contentVersionId=cv.Id;
         returnVal.contentDocumentLinks=linkRecords;

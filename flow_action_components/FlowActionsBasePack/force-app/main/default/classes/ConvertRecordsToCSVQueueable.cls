@@ -1,3 +1,16 @@
+/**
+ * Copyright (c) 2020 CapTech Consulting
+ * @File Name          : ConvertRecordsToCSVQueueable.cls
+ * @Description        : Converts a list of records to CSV and uploaded to Files
+ * @Author             : Ragan Walker
+ * @Last Modified By   : araganwalker@gmail.com
+ * @Last Modified On   : 05/05/2020
+ * @License            : LICENSE: https://github.com/captechconsulting/lightning-flow-utils/blob/master/LICENSE 
+ * @Modification Log   : 
+ * Ver      Date            Author      		        Modification
+ * 1.0      05/05/2020      araganwalker@gmail.com      Initial release
+**/
+
 global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
     
             class GenerateCSVException extends Exception {}

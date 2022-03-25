@@ -1,10 +1,11 @@
 @isTest
 private class ConvertRecordsToCSVQueueableTest {
+     
     @isTest
     private static void testGenerateCSVContent() {
         List <SObject> objects = new List<SObject>{new Account(Name='Test1', AccountNumber='3445556676'), new Account(Name='Test2', BillingCity='Richmond'), new Account(Name='Test3')};
         Test.startTest();
-        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(objects, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
+        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(objects, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, null);
         Test.stopTest();
         List<String> rows = fullCSV.split('\n');
         System.assertEquals(4, rows.size());
@@ -21,11 +22,11 @@ private class ConvertRecordsToCSVQueueableTest {
         Account account = new Account(Name='Linked Account');
         insert account;
         
-		Contact contact1 = new Contact(LastName='Test1');
+        Contact contact1 = new Contact(LastName='Test1');
         Contact contact2 = new Contact(LastName='Test2', Email='abc@gmail.com');
         Contact contact3 = new Contact(LastName='Test3', Email='abc@gmail.com', FirstName='Jonny');
         insert new List<Contact>{contact1, contact2, contact3};
-		
+        
         contact2.AccountId = account.Id;
         // Testing Note: add your own custom field here to validate custom relationships
         // contact2.Related_Contact__c = contact1.Id;
@@ -34,9 +35,9 @@ private class ConvertRecordsToCSVQueueableTest {
         List<Contact> contacts = [Select FirstName, LastName, Email, Account.Name from Contact];
 
         Test.startTest();
-        String allFields = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
-        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'LastName','Email','Account.Name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
-        String csv_CaseSensitive = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'lastName','email','Account.Name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
+        String allFields = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, '');
+        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'LastName','Email','Account.Name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, 'LastName,Email,Account.Name');
+        String csv_CaseSensitive = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'lastName','email','Account.Name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, 'LastName,Email,Account.Name');
         Test.stopTest();
         List<String> rows = fullCSV.split('\n');
         System.assertEquals(4, rows.size());
@@ -58,7 +59,7 @@ private class ConvertRecordsToCSVQueueableTest {
 
     @isTest
     private static void testGenerateCSVContentAggregateResult() {
-		Contact contact1 = new Contact(LastName='Test', FirstName='Sally');
+        Contact contact1 = new Contact(LastName='Test', FirstName='Sally');
         Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com');
         Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny');
         insert new List<Contact>{contact1, contact2, contact3};
@@ -67,18 +68,18 @@ private class ConvertRecordsToCSVQueueableTest {
         List<AggregateResult> contacts = [Select LastName name from Contact GROUP BY LastName];
         
         Test.startTest();
-        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
-        String unnamed = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
+        String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, 'name');
+        String unnamed = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, null);
         Test.stopTest();
         
         List<String> rows = fullCSV.split('\n');
-       	System.assertEquals(3, rows.size(), 'Full text: ' + fullCSV);
+        System.assertEquals(3, rows.size(), 'Full text: ' + fullCSV);
         System.assertEquals('name', rows[0]);
         System.assertEquals('Test', rows[1]);
         System.assertEquals('Test2', rows[2]);
           
         List<String> rows2 = unnamed.split('\n');
-       	System.assertEquals(3, rows2.size(), 'Full text: ' + unnamed);
+        System.assertEquals(3, rows2.size(), 'Full text: ' + unnamed);
         System.assertEquals('name', rows[0]);
         System.assertEquals('Test', rows2[1]);
         System.assertEquals('Test2', rows2[2]);
@@ -91,20 +92,20 @@ private class ConvertRecordsToCSVQueueableTest {
 
         List<AggregateResult> count = [SELECT count(Id) NumberOfAccounts, Type FROM Account WHERE Type != null Group by Type];
         
-        String aggrResult = ConvertRecordsToCSVQueueable.generateCSVContent(count, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
+        String aggrResult = ConvertRecordsToCSVQueueable.generateCSVContent(count, null, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false, null);
 
         List<String> rows = aggrResult.split('\n');
         System.assertEquals(3, rows.size(), 'Full text: ' + aggrResult);
         
         List<String> headers = rows[0].split(',');
-       	System.assertEquals(2, headers.size(), 'Full text: ' + headers);
+        System.assertEquals(2, headers.size(), 'Full text: ' + headers);
         System.assertEquals('NumberOfAccounts', headers[0]);
         System.assertEquals('Type', headers[1]);
     }
     
     @isTest
     private static void testFullAction() {
-		Contact contact1 = new Contact(LastName='Test1');
+        Contact contact1 = new Contact(LastName='Test1');
         Contact contact2 = new Contact(LastName='Test2', Email='abc@gmail.com');
         Contact contact3 = new Contact(LastName='Test3', Email='abc@gmail.com', FirstName='Jonny');
         insert new List<Contact>{contact1, contact2, contact3};
@@ -131,7 +132,7 @@ private class ConvertRecordsToCSVQueueableTest {
     
     @isTest
     private static void testFullActionAggrResult() {
-       	List <Account> objects = new List<Account>{new Account(Name='Test1', AccountNumber='3445556676', Type='Prospect'), new Account(Name='Test2', BillingCity='Richmond', Type='Prospect'), new Account(Name='Test3', Type='Other')};
+        List <Account> objects = new List<Account>{new Account(Name='Test1', AccountNumber='3445556676', Type='Prospect'), new Account(Name='Test2', BillingCity='Richmond', Type='Prospect'), new Account(Name='Test3', Type='Other')};
         insert objects;
 
         List<AggregateResult> count = [SELECT count(Id) NumberOfAccounts, Type FROM Account WHERE Type != null Group by Type];
@@ -154,7 +155,7 @@ private class ConvertRecordsToCSVQueueableTest {
         insert account;
 
         Test.startTest();
-        ConvertRecordsToCSVQueueable.Outputs result = ConvertRecordsToCSVQueueable.generateDocument(new List<String>{account.Id}, 'MyDoc', 'V', 'ALlUsers', csvContent);
+        ConvertRecordsToCSVQueueable.Outputs result = ConvertRecordsToCSVQueueable.generateDocument(new List<String>{account.Id}, 'MyDoc', 'V', 'ALlUsers', csvContent,'');
         Test.stopTest();
 
         System.assert(result.contentDocumentId != null);
@@ -168,7 +169,7 @@ private class ConvertRecordsToCSVQueueableTest {
         String csvContent = 'this, this, this, this, this \n';
     
         Test.startTest();
-        ConvertRecordsToCSVQueueable.Outputs result = ConvertRecordsToCSVQueueable.generateDocument(null, 'MyDoc', 'V', 'AllUsers', csvContent);
+        ConvertRecordsToCSVQueueable.Outputs result = ConvertRecordsToCSVQueueable.generateDocument(null, 'MyDoc', 'V', 'AllUsers', csvContent,'');
         Test.stopTest();
 
         System.assert(result.contentDocumentId != null);

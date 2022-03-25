@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.5.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUtZQAU)   
-[Version 3.5.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUtZQAU)
+[Version 3.5.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUuDQAU)   
+[Version 3.5.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUuDQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
+  
+## 03/25/22 -  Eric Smith -    Version 3.5.1 
+**Bug Fixes:** 
+-   Fixed a bug where table sorting, edits and column widths were getting reset when using the datatable on a screen with Sections or in an
+    org with the Reactive Screens pilot activated
  
 ## 03/15/22 -  Eric Smith -    Version 3.5.0 
 **Updates:** 

@@ -66,6 +66,7 @@
         "datatable@3.4.5-0": "04t5G000003rUrOQAU",
         "FlowActionsBasePack@2.36.0-0": "04t4W00000309GAQAY",
         "FlowScreenComponentsBasePack@2.7.7-0": "04t5G000003rUsqQAE",
-        "datatable@3.5.0-0": "04t5G000003rUtZQAU"
+        "datatable@3.5.0-0": "04t5G000003rUtZQAU",
+        "datatable@3.5.1-0": "04t5G000003rUuDQAU"
     }
 }

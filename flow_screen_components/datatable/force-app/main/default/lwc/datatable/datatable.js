@@ -75,7 +75,6 @@ export default class Datatable extends LightningElement {
     @api tableLabel;
     @api recordTypeId;
 
-
     _tableData;
 
     @api
@@ -84,15 +83,18 @@ export default class Datatable extends LightningElement {
     }
     
     set tableData(data = []) {
-        if (Array.isArray(data)) {
-            this._tableData = data;
-            if(this.columnFields) {
-                this.processDatatable();
+        if(this.isUpdateTable) {       
+            if (Array.isArray(data)) {
+                this._tableData = data;
+                if(this.columnFields) {
+                    this.processDatatable();
+                }
+            } else {
+                this._tableData = [];
             }
-        } else {
-            this._tableData = [];
         }
-    }
+        this.isUpdateTable = true;
+    }    
     
     @api 
     get isRequired() {
@@ -196,7 +198,7 @@ export default class Datatable extends LightningElement {
     }
     @api cb_isUserDefinedObject;
 
-    @api get  serializedRecordData() {
+    @api get serializedRecordData() {
         return JSON.stringify(this.tableData);
     }
     set serializedRecordData(value) {
@@ -215,7 +217,7 @@ export default class Datatable extends LightningElement {
             }.bind(this), 1000);
         }
         this.isUpdateTable = true;
-    }                                             //NEW
+    }                                                                       //NEW
     
     isUpdateTable = true;
 
@@ -1532,6 +1534,7 @@ export default class Datatable extends LightningElement {
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
+        this.isUpdateTable = false;
         this.outputSelectedRows = [...currentSelectedRows]; 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
@@ -1554,6 +1557,7 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = this.selectedRows;
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
+        this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
     }

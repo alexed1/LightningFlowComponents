@@ -12,7 +12,6 @@
 **/
 
 global without sharing class ConvertRecordsToCSVQueueable implements Queueable {
-    
         class GenerateCSVException extends Exception {}
         
         private static Integer SYNC_ITERATION_LIMIT = 200000;

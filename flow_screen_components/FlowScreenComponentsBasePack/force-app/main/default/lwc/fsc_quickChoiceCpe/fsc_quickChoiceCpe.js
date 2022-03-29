@@ -211,11 +211,9 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     handleValueChange(event) {
-console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 221 ~ QuickChoiceCpe ~ handleValueChange ~ event", event);
         if (event.target) {
             let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
             let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
-console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 225 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeValue", curAttributeValue);
             let curAttributeType;
             switch (event.target.type) {
                 case "checkbox":
@@ -227,9 +225,7 @@ console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 225 ~ QuickChoiceCpe ~ ha
                 default:
                     curAttributeType = 'String';
             }
-console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 227 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeType", curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
-console.log("🚀 ~ file: fsc_quickChoiceCpe.js ~ line 239 ~ QuickChoiceCpe ~ handleValueChange ~ curAttributeName", curAttributeName);
         }
     }
 

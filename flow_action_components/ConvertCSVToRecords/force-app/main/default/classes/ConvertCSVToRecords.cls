@@ -26,7 +26,7 @@ public with sharing class ConvertCSVToRecords {
       Map<String, SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
       for (String curContentDocumentId : curInput.contentDocumentIdList) {
         Blob csvBlobContent = getCsvContent(curContentDocumentId);
-        String csvStringContent = blobToString(csvBlobContent, 'ISO-8859-1');
+        String csvStringContent = blobToString(csvBlobContent, 'UTF-8');
         String fSepRepl = '~`~';
         String newlineRepl = '-`-';
         csvStringContent = csvStringContent.replaceAll('(\r\n|\r)', '\n');

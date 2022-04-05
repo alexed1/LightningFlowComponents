@@ -27,6 +27,7 @@ export default class QuickChoiceCpe extends LightningElement {
         objectName: { value: null, valueDataType: null, isCollection: false, label: 'Select Object' },
         fieldName: { value: null, valueDataType: null, isCollection: false, label: 'Select Field' },
         recordTypeId: { value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:' },
+        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist or Checkbox Field):' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' }
@@ -116,7 +117,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
 	_automaticOutputVariables;
 
-  @track staticChoices = [this.newChoice()];
+    @track staticChoices = [this.newChoice()];
     @track tempStaticChoices = [];
 
     get isVisualCards() {

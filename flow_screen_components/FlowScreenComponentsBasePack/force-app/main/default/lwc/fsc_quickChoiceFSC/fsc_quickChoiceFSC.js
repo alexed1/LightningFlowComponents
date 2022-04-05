@@ -26,6 +26,23 @@ export default class QuickChoiceFSC extends LightningElement {
     @api fieldName; //used for picklist fields
     @api sortList; //used for picklist fields
 
+    _controllingPicklistValue;
+    priorControllingValue = null;
+
+    @api
+    get controllingPicklistValue() {
+        return this._controllingPicklistValue;
+    }
+
+    set controllingPicklistValue(value) {
+        this._controllingPicklistValue = value;
+        if (value != this.priorControllingValue) {
+            this.priorControllingValue = value;
+            this._selectedValue = null;
+            this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+        }
+    }
+
     //-------------For inputMode = Visual Text Box (Card)
     @api choiceIcons;
     @api includeIcons;
@@ -51,14 +68,14 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._staticChoices || [];
     }
     set staticChoices(choices) {
-        console.log('setting staticChoices to '+ JSON.stringify(choices));
+        console.log(this.masterLabel + ": ", 'setting staticChoices to '+ JSON.stringify(choices));
         this._staticChoices = choices;
         this.choiceValues = [];
         this.choiceLabels = [];
-         for (let choice of choices) {
+        for (let choice of choices) {
             this.choiceValues.push(choice.value);
             this.choiceLabels.push(choice.label);        
-         }
+        }
     }
     @track _staticChoices = [];
 
@@ -68,7 +85,16 @@ export default class QuickChoiceFSC extends LightningElement {
     @api required;
     picklistOptionsStorage;
 
-    @track selectedValue;
+    // @track selectedValue;
+    _selectedValue = null;
+    @api 
+    get selectedValue() {
+        return this._selectedValue;
+    }
+    set selectedValue(value) {
+        this._selectedValue = value;
+    }
+
     @track _selectedLabel;
     @track _allValues = [];
     @track _allLabels = [];
@@ -84,14 +110,44 @@ export default class QuickChoiceFSC extends LightningElement {
     @track options = [];
     @track items = [];
     @track dualColumns = false;
+    _picklistOptions = [];
+    _showPicklist = true;
+    _isControlled = false;
 
+    @api
+    get picklistOptions() {
+        return this._picklistOptions;
+    }
+
+    set picklistOptions(data) {
+        this._picklistOptions = data;
+    }
+
+    @api 
+    get showPicklist() {
+        // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
+        return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
+    }
+
+    set showPicklist(value) {
+        this._showPicklist = value;
+    }
+
+    @api
+    get isControlled() {
+        return this._isControlled;
+    }
+
+    set isControlled(value) {
+        this_isControlled = value;
+    }
 
     @api get value() {
-        return this.selectedValue;
+        return this._selectedValue;
     }
 
     set value(value) {
-        this.selectedValue = value;
+        this._selectedValue = value;
         this.setSelectedLabel();
     }
 
@@ -138,28 +194,37 @@ export default class QuickChoiceFSC extends LightningElement {
     })
     picklistValues({error, data}) {
         if (data) {
-            console.log("gtPicklistValues returned data");
+            console.log(this.masterLabel + ": ", "gtPicklistValues returned data", data);
 
-            let picklistOptions = [];
+            this._picklistOptions = [];
             this._allValues = [];
             this._allLabels = [];
             if (this.allowNoneToBeChosen)
-                picklistOptions.push({label: "--None--", value: "None"});
+                this._picklistOptions.push({label: "--None--", value: "None"});
+
+            this._isControlled = false;
+            let controllingIndex;
+            if (Object.keys(data.controllerValues).length > 0) {
+                this._isControlled = true;
+                controllingIndex = data.controllerValues[this._controllingPicklistValue];
+            }
 
             // Picklist values
             data.values.forEach(key => {
-                picklistOptions.push({
-                    label: key.label,
-                    value: key.value
-                });
-                this._allLabels.push(key.label);
-                this._allValues.push(key.value);
+                if (!this._isControlled || key.validFor.includes(controllingIndex)) {
+                    this._picklistOptions.push({
+                        label: key.label,
+                        value: key.value
+                    });
+                    this._allLabels.push(key.label);
+                    this._allValues.push(key.value);
+                }
             });
 
             // Sort Picklist Values
-            this.picklistOptionsStorage = this.doSort(picklistOptions, this.sortList);
+            this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
 
-            console.log("displayMode is" + this.displayMode);
+            console.log(this.masterLabel + ": ", "displayMode is" + this.displayMode);
 
             if (this.inputMode === "Picklist Field") {
                 this.setPicklistOptions();
@@ -168,19 +233,20 @@ export default class QuickChoiceFSC extends LightningElement {
                 this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
                 this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
             }
+
         } else if (error) {
             this.error = JSON.stringify(error);
-            console.log("getPicklistValues wire service returned error: " + this.error);
-
+            console.log(this.masterLabel + ": ", "getPicklistValues wire service returned error: " + this.error);
         }
+
     }
 
     get calculatedObjectAndFieldName() {
-        console.log('in getter: objectApiName is: ' + this.objectName);
-        console.log('in getter: fieldApiName is: ' + this.fieldName);
+        console.log(this.masterLabel + ": ", 'in getter: objectApiName is: ' + this.objectName);
+        console.log(this.masterLabel + ": ", 'in getter: fieldApiName is: ' + this.fieldName);
 
         if ((this.objectName) && (this.fieldName)) {
-            console.log('satisfied calculatedObjectAndFieldName test');
+            console.log(this.masterLabel + ": ", 'satisfied calculatedObjectAndFieldName test');
             return `${this.objectName}.${this.fieldName}`;
         }
         return undefined;
@@ -208,7 +274,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     setPicklistOptions() {
         this.options = this.picklistOptionsStorage;
-        if (this.selectedValue) {
+        if (this._selectedValue) {
             this.setSelectedLabel();
         }
     }
@@ -227,8 +293,8 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     connectedCallback() {
-        console.log("Entering Connected Callback for smartchoice");
-        console.log("recordtypeId is: " + this.recordTypeId);
+        console.log(this.masterLabel + ": ", "Entering Connected Callback for smartchoice");
+        console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
         // Visual Card Selection
@@ -236,10 +302,10 @@ export default class QuickChoiceFSC extends LightningElement {
 		let index = 0;
         if (this.displayMode === "Card" || this.displayMode === "Visual") {
             this.showVisual = true;
-            console.log("includeIcons is: " + this.includeIcons);
-            console.log("choiceIcons is: " + this.choiceIcons);
+            console.log(this.masterLabel + ": ", "includeIcons is: " + this.includeIcons);
+            console.log(this.masterLabel + ": ", "choiceIcons is: " + this.choiceIcons);
             if (!this.includeIcons || !this.choiceIcons) {
-                console.log("icons not needed");
+                console.log(this.masterLabel + ": ", "icons not needed");
                 this.choiceIcons = this.choiceLabels;
             }
             if (this.numberOfColumns === "2") {
@@ -247,8 +313,8 @@ export default class QuickChoiceFSC extends LightningElement {
             }
 
             //User passes in Label collection of string for box header and Value collection of strings for box description
-            console.log("entering input mode Visual Text Box");
-            console.log("choiceLabels is: " + this.choiceLabels);
+            console.log(this.masterLabel + ": ", "entering input mode Visual Text Box");
+            console.log(this.masterLabel + ": ", "choiceLabels is: " + this.choiceLabels);
             this.choiceLabels.forEach(label => {
                 //Add the correct path to custom images
                 if (this.choiceIcons[index].includes(':')) {
@@ -260,14 +326,14 @@ export default class QuickChoiceFSC extends LightningElement {
                         icon: Quickchoice_Images + '/' + this.choiceIcons[index]
                     });
                 }
-                console.log("items is: " + items);
+                console.log(this.masterLabel + ": ", "items is: " + items);
                 index += 1;
             });
 
         }
 
         if (this.displayMode === "Picklist") {
-            console.log("setting Picklist on");
+            console.log(this.masterLabel + ": ", "setting Picklist on");
             this.showRadio = false;
         }
 
@@ -277,23 +343,23 @@ export default class QuickChoiceFSC extends LightningElement {
             switch (this.inputMode) {
                 //User can simply pass in a collection of strings as choiceValues. The same text is used for both label and value
                 case "Single String Collection":
-                    console.log("entering input mode String Collection");
-                    console.log("choiceValues is: " + this.choiceValues);
+                    console.log(this.masterLabel + ": ", "entering input mode String Collection");
+                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
                     //console.log ('splitting choice values would be: ' + this.choiceValues.split(','));
                     //let values = this.choiceValues.split(';');
 
                     this.choiceValues.forEach(value => {
-                        console.log("value is: " + value);
+                        console.log(this.masterLabel + ": ", "value is: " + value);
                         options.push({label: value, value: value});
-                        console.log("options is: " + options);
+                        console.log(this.masterLabel + ": ", "options is: " + options);
                     });
                     break;
 
                 //User can  pass in one collection of strings for visible labels and another for the underlying values (such as recordIds)
                 case "Dual String Collections":
                 case "Static Choices":
-                    console.log("entering input mode Dual String Collections");
-                    console.log("choiceValues is: " + this.choiceValues);
+                    console.log(this.masterLabel + ": ", "entering input mode Dual String Collections");
+                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
                     for (let i=0; i<this.choiceLabels.length; i++) {
                         options.push({label: this.choiceLabels[i], value: this.choiceValues[i]});
                     }
@@ -304,9 +370,9 @@ export default class QuickChoiceFSC extends LightningElement {
             this.options = options;
             this.items = items;
             this.setSelectedLabel();  
-                      
+
         } else {
-            console.log("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            console.log(this.masterLabel + ": ", "SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
             throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
         }
     }
@@ -323,24 +389,24 @@ export default class QuickChoiceFSC extends LightningElement {
     @api
     validate() {
     	//If the component is invalid, return the isValid parameter as false and return an error message.
-    	console.log("entering validate: required=" + this.required + " value=" + this.value);
-    	let errorMessage = "You must make a selection in: " + this.masterLabel + " to continue";
+        console.log(this.masterLabel + ": ", "entering validate: required=" + this.required + " value=" + this.value);
+        let errorMessage = "You must make a selection in: " + this.masterLabel + " to continue";
 
-    	if (this.required === true && !this.value) {
-    		return {
-    			isValid: false,
-    			errorMessage: errorMessage
-    		};
-    	}
+        if (this.required === true && !this.value) {
+            return {
+                isValid: false,
+                errorMessage: errorMessage
+            };
+        }
 
-    	return { isValid: true };
+        return { isValid: true };
     }
 
     handleChange(event) {
-        console.log('EVENT', event);
-        this.selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-        console.log("selected value is: " + this.selectedValue);
-        this.dispatchFlowAttributeChangedEvent('value', this.selectedValue);
+        console.log(this.masterLabel + ": ", 'EVENT', event);
+        this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
+        console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
+        this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);
@@ -349,7 +415,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     setSelectedLabel() {
         if (this.options && this.options.length) {
-            let selectedOption = this.options.find(curOption => curOption.value === this.selectedValue);
+            let selectedOption = this.options.find(curOption => curOption.value === this._selectedValue);
             if (selectedOption && selectedOption.label) {
                 this._selectedLabel = selectedOption.label;
                 this.dispatchFlowAttributeChangedEvent('selectedLabel', this._selectedLabel)

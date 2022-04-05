@@ -54,7 +54,18 @@
                         onvaluechanged={handleFlowComboboxValueChange}
                         automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
+                
+                <c-fsc_flow-combobox name="select_controllingPicklistValue" label={inputValues.controllingPicklistValue.label}
+                        value={inputValues.controllingPicklistValue.value} value-type={inputValues.controllingPicklistValue.valueDataType}
+                        builder-context-filter-type="String"
+                        builder-context-filter-collection-boolean={inputValues.controllingPicklistValue.isCollection}
+                        builder-context={_builderContext}
+                        onvaluechanged={handleFlowComboboxValueChange}
+                        automatic-output-variables={automaticOutputVariables}
+                ></c-fsc_flow-combobox>
+
         </template>
+
         <template if:true={isDatasourceDualCollection}>
                 <c-fsc_flow-combobox name="select_choiceLabels" label={inputValues.choiceLabels.label}
                         value={inputValues.choiceLabels.value} value-type={inputValues.choiceLabels.valueDataType}
@@ -72,7 +83,7 @@
                         builder-context-filter-collection-boolean={inputValues.choiceValues.isCollection}
                         builder-context={_builderContext} onvaluechanged={handleFlowComboboxValueChange}
                         automatic-output-variables={automaticOutputVariables}>  
-                  </c-fsc_flow-combobox>
+                </c-fsc_flow-combobox>
         </template>
         <template if:true={isDatasourceStaticChoices}>
                 <div class="slds-text-link pointer" onclick={handleStaticChoicesOpen}>View/edit choices</div>

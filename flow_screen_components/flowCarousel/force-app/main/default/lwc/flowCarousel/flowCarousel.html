@@ -1,8 +1,8 @@
 <template>       
     <div class= "slds-align_absolute-center">
         <div class= {slideSize} >{carouselTitle}                     
-            <lightning-carousel >                 
-                <template for:each= {items} for:item ="item">                              
+            <lightning-carousel scroll-duration = {slideDuration}>                 
+                <template for:each= {items} for:item ="item">                             
                    <lightning-carousel-image class = {slideSize}
                     key = {item.uniqueId}             
                     src = {item.src}
@@ -10,8 +10,8 @@
                     description = {item.description}
                     alternative-text = {item.alttext}                    
                     href = {item.href}>
-                </lightning-carousel-image> 
-            </template>                                              
+                    </lightning-carousel-image>                                    
+                </template>                                              
             </lightning-carousel>                
         </div>
     </div>

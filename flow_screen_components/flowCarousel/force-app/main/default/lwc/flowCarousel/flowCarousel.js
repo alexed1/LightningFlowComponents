@@ -1,13 +1,14 @@
 import { LightningElement,api,track } from 'lwc';
 
 export default class FlowCarousel extends LightningElement {
-    @api imageURLs;
-    @api headers;
-    @api descriptions;
-    @api hyperlinkURLs;
-    @api altText;
+    @api imageURLs = [];
+    @api headers = [];
+    @api descriptions = [];
+    @api hyperlinkURLs = [];
+    @api altText = [];
     @api carouselTitle;
     @api slideSize;
+    @api slideDuration;
     @track items = [];
 
     connectedCallback() {
@@ -33,4 +34,6 @@ export default class FlowCarousel extends LightningElement {
         });
         this.items = items;
     }
+
+    
 }

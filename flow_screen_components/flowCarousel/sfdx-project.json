@@ -11,6 +11,7 @@
     "sourceApiVersion": "51.0",
     "packageAliases": {
         "flowCarousel": "0Ho5G000000CahASAS",
-        "flowCarousel@1.1.0-0": "04t5G0000047xF7QAI"
+        "flowCarousel@1.1.0-0": "04t5G0000047xF7QAI",
+        "flowCarousel@1.2.0-0": "04t5G000003rUuSQAU"
     }
 }

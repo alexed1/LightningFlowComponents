@@ -1,6 +1,6 @@
-public with sharing class FieldSelectorController {
+global with sharing class FieldSelectorController {
     @AuraEnabled(cacheable=true)
-    public static List<Field> getObjectFields(String objectName) {
+    global static List<Field> getObjectFields(String objectName) {
         List<Field> fields = new List<Field>();
         try {
             Map<String, Schema.SObjectField> tokenMap = ((SObject)Type.forName('Schema', objectName).newInstance()).getSObjectType().getDescribe().fields.getMap();
@@ -16,12 +16,12 @@ public with sharing class FieldSelectorController {
         return fields;
     }
 
-    public class Response {
+    global class Response {
         public String errorMessage;
         public List<Field> fields;
     }
 
-    public class Field {
+    global class Field {
         @AuraEnabled public String name;
         @AuraEnabled public String label;
         @AuraEnabled public String type;

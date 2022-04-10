@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+  <types>
+    <name>ApexClass</name>
+    <members>DeployMetadata</members>
+    <members>ExpressionBuilder</members>
+    <members>ExpressionBuilderTest</members>
+    <members>FieldDescriptor</members>
+    <members>FieldPickerController</members>
+    <members>FieldPickerControllerTest</members>
+    <members>FlexCardController</members>
+    <members>FlexCardControllerTest</members>
+    <members>FlowListController</members>
+    <members>FlowListControllerTest</members>
+    <members>FormulaEvaluator</members>
+    <members>FormulaEvaluatorTest</members>
+    <members>GetFieldInformation</members>
+    <members>HexUtil</members>
+    <members>LaunchFlowDynamically</members>
+    <members>MetadataService</members>
+    <members>MetadataServiceTest</members>
+    <members>Puff</members>
+    <members>RegExps</members>
+    <members>RetrieveMetadata</members>
+    <members>SearchUtils</members>
+    <members>SearchUtilsTest</members>
+    <members>XmlUtils</members>
+    <members>Zippex</members>
+    <members>ZippexTests</members>
+  </types>
+  <types>
+    <name>ApexPage</name>
+    <members>GenerateSessionIdForLWC</members>
+  </types>
+  <version>51.0</version>
+  <fullName>mypackage</fullName>
+</Package>

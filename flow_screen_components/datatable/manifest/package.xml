@@ -2,7 +2,7 @@
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 <!-- 
     <types>
-        <members>Datatable_Configuration_Wizard</members>
+        <members>Datatable_Configuration_Wizard4</members>
         <name>Flow</name>
     </types>
     <types>

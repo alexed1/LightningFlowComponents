@@ -27,7 +27,7 @@ Additional components packaged with this LWC:
 
                 StaticResources:    ers_customLightningDatatableStyles
 
-                Flows:              Datatable_Configuration_Wizard
+                Flows:              Datatable_Configuration_Wizard4
 
                 Permission Set:     USF Flow Screen Component - Datatable          
                                                   

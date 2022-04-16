@@ -12,7 +12,7 @@
 
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="fieldList" type="apex://usf.FieldDescriptor[]" />
+            <property name="fieldList" type="apex://usf3.FieldDescriptor[]" />
             <property name="objectName" type="String"/>
             <property name="selectedFieldListString" type="String"/>
             <property name="fieldSortingListString" type="String"/>

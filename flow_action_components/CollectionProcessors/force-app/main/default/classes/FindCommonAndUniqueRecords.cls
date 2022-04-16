@@ -3,7 +3,7 @@
 * 						Specify the Ids you want to compare for each sObject and the action will take care of the rest.
 * @Author             : Adam White
 * @Last Modified By   : adamwhiteuva@gmail.com
-* @Last Modified On   : 1/26/2021 
+* @Last Modified On   : 4/14/2022 
 * @Modification Log   : 
 * Ver      Date            Author      		      		  Modification
 * 1.0      1/26/2021      adamwhiteuva@gmail.com      Initial release
@@ -44,17 +44,17 @@ global without sharing class FindCommonAndUniqueRecords {
                     if(!targetRecordCollection.isEmpty() && !sourceRecordCollection.isEmpty()){
                         //puts the source collection into a map so we can compare with the target collection map
                         Map<String, Sobject> sourceMap = new Map<String, Sobject>();
-                        string objectType = string.valueOf(sourceRecordCollection[0].Id.getSObjectType());
-                        string targetObjectType = string.valueOf(targetRecordCollection[0].Id.getSObjectType());
+                        string objectType = string.valueOf(sourceRecordCollection[0].getSObjectType());
+                        string targetObjectType = string.valueOf(targetRecordCollection[0].getSObjectType());
                         
                         if(!sobjectTypeMap.containsKey(objectType)){
-                            Schema.SObjectType s = sourceRecordCollection[0].Id.getSObjectType();
+                            Schema.SObjectType s = sourceRecordCollection[0].getSObjectType();
                             Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
                             sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
                         }
                         
                         if(!sobjectTypeMap.containsKey(targetObjectType)){
-                            Schema.SObjectType s = targetRecordCollection[0].Id.getSObjectType();
+                            Schema.SObjectType s = targetRecordCollection[0].getSObjectType();
                             Map<String, SObjectField> sourceFieldMap = s.getDescribe().fields.getMap();
                             sobjectTypeMap.put(string.valueOf(s), sourceFieldMap);
                         }

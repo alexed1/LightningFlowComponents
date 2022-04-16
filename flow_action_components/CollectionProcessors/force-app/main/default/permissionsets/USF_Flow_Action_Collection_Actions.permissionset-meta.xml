@@ -104,9 +104,9 @@
         <apexClass>UpsertRecords</apexClass>
         <enabled>true</enabled>
     </classAccesses>    
-    <description>Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the USF Collection Actions</description>
+    <description>Permission Set that gives access to the @AuraEnabled Apex Classes that are part of the usf3 Collection Actions</description>
     <hasActivationRequired>false</hasActivationRequired>
-    <label>USF Flow Action - Collection Actions</label>
+    <label>usf3 Flow Action - Collection Actions</label>
     <userPermissions>
         <enabled>true</enabled>
         <name>RunFlow</name>

@@ -41,10 +41,10 @@
                 onchange={handleValueChange}></lightning-radio-group>
         <!-- disabled={isVisualCards} onchange={handleValueChange}></lightning-radio-group> -->
         <template if:true={isDatasourcePicklist}>
-                <c-fsc_pick-object-and-field field-label={inputValues.fieldName.label}
+                <c-fsc_pick-object-and-field-3 field-label={inputValues.fieldName.label}
                         object-label={inputValues.objectName.label} object-type={inputValues.objectName.value}
                         field={inputValues.fieldName.value} onfieldselected={handlePickObjectAndFieldValueChange}
-                        available-field-types={settings.availableFieldTypesPicklist}></c-fsc_pick-object-and-field>
+                        available-field-types={settings.availableFieldTypesPicklist}></c-fsc_pick-object-and-field-3>
 
                 <c-fsc_flow-combobox name="select_recordTypeId" label={inputValues.recordTypeId.label}
                         value={inputValues.recordTypeId.value} value-type={inputValues.recordTypeId.valueDataType}

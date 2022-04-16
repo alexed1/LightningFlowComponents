@@ -1,6 +1,6 @@
 import {LightningElement, track, api, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
-import describeSObjects from '@salesforce/apex/usf.SearchUtils.describeSObjects';
+import describeSObjects from '@salesforce/apex/usf3.SearchUtils.describeSObjects';
 
 
 export default class FormulaBuilder extends LightningElement {

@@ -28,7 +28,7 @@ const DISPLAY_OPTIONS = {
     MENU: {value: 'menu', label: 'Menu'}
 }
 
-const VALIDATEABLE_INPUTS = ['c-fsc_flow-combobox', 'c-fsc_pick-object-and-field', 'c-field-selector'];
+const VALIDATEABLE_INPUTS = ['c-fsc_flow-combobox', 'c-fsc_pick-object-and-field-3', 'c-field-selector-3'];
 
 export default class fsc_flexcardCPE extends LightningElement {
     @api automaticOutputVariables;

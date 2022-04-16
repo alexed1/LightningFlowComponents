@@ -1,5 +1,5 @@
 import { LightningElement, api, track, wire } from 'lwc';
-import getObjectFields from '@salesforce/apex/usf.FieldSelectorController.getObjectFields';
+import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';
 
 const CLASSES = {
     PREFIX: '.',

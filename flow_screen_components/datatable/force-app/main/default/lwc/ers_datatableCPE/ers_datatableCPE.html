@@ -12,7 +12,7 @@
     <div class="slds-box slds-box_x-small slds-m-top_x-small">
         <div class={inputValues.objectName.class}>
             <div class="slds-form-element__control">
-                <c-fsc_pick-object-and-field 
+                <c-fsc_pick-object-and-field-3 
                     if:true={isSObjectInput}
                     field-label={inputValues.fieldName.label}
                     object-label={inputValues.objectName.label} 
@@ -22,7 +22,7 @@
                     field={inputValues.fieldName.value} 
                     onfieldselected={handleDynamicTypeMapping}
                     hide-field-picklist=true>
-                </c-fsc_pick-object-and-field>
+                </c-fsc_pick-object-and-field-3>
             </div>
             <c-fsc_display-error 
                 is-error={inputValues.objectName.isError}
@@ -149,7 +149,7 @@
                                     <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
                                 </div>
                                 <c-fsc_screen-flow width="100%" height={wizardHeight}
-                                    flow-name="Datatable_Configuration_Wizard" name="uniqueName"
+                                    flow-name="Datatable_Configuration_Wizard4" name="uniqueName"
                                     flow-params={wizardParams}
                                     onflowstatuschange={handleFlowStatusChange}>
                                 </c-fsc_screen-flow>

@@ -1,9 +1,9 @@
 import {LightningElement, track, api, wire} from 'lwc';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 //import conditionLogicHelpText from '@salesforce/label/c.ConditionLogicHelpText';
-import assembleFormulaString from '@salesforce/apex/usf.ExpressionBuilder.assembleFormulaString';
-import disassemblyFormulaString from '@salesforce/apex/usf.ExpressionBuilder.disassemblyFormulaString';
-import describeSObjects from '@salesforce/apex/usf.SearchUtils.describeSObjects';
+import assembleFormulaString from '@salesforce/apex/usf3.ExpressionBuilder.assembleFormulaString';
+import disassemblyFormulaString from '@salesforce/apex/usf3.ExpressionBuilder.disassemblyFormulaString';
+import describeSObjects from '@salesforce/apex/usf3.SearchUtils.describeSObjects';
 
 export default class fsc_ExpressionBuilder extends LightningElement {
     @api name;

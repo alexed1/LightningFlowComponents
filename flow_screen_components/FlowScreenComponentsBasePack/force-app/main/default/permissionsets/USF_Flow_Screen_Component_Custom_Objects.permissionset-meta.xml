@@ -180,12 +180,5 @@
         <object>FlowTableViewDefinition__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <tabSettings>
-        <tab>FlowPersonalConfiguration__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
-    <tabSettings>
-        <tab>FlowTableViewDefinition__c</tab>
-        <visibility>Visible</visibility>
-    </tabSettings>
+
 </PermissionSet>

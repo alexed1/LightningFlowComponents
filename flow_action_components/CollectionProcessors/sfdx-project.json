@@ -8,10 +8,10 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.12.0-0"
+                    "package": "FlowActionsBasePack@3.0.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@2.1.3-0"
+                    "package": "FlowScreenComponentsBasePack@3.0.5-0"
                 }
             ]
         }
@@ -21,7 +21,7 @@
     "sourceApiVersion": "48.0",
     "packageAliases": {
         "FlowBaseComponents": "04tf4000003RQxcAAG",
-        "FlowActionsBasePack@2.7.0-0": "04t4W000002vyJIQAY",
+        "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
         "FlowActionsBasePack@2.8.0-0": "04t4W000002vyMlQAI",
         "FlowActionsBasePack@2.11.0-0": "04t4W000002vyNUQAY",
         "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
@@ -29,7 +29,7 @@
         "CollectionActions@1.14.0-0": "04tf4000004J1IDAA0",
         "collectionProcessorsT": "0HoB0000000Cb1CKAS",
         "CollectionActions@1.15.0-0": "04tB0000000OxPiIAK",
-        "FlowScreenComponentsBasePack@2.1.1-0": "04t5G000004PuV3QAK",
+        "FlowScreenComponentsBasePack@3.0.5-0": "04t5G000003rUvGQAU",
         "FlowScreenComponentsBasePack@2.1.3-0": "04t5G000004PuWBQA0",
         "CollectionActions2": "0Hof4000000XZKvCAO",
         "CollectionActions2@1.16.0-0": "04tf4000004Ptm5AAC",
@@ -38,6 +38,7 @@
         "CollectionActionsL@1.20.1-0": "04tf4000004PuGCAA0",
         "CollectionActionsL@1.21.0-0": "04t5G000004PuWGQA0",
         "CollectionActionsL@1.28.0-0": "04t5G0000047xI1QAI",
-        "CollectionActionsL@1.30.0-0": "04t5G0000047xOOQAY"
+        "CollectionActionsL@1.30.0-0": "04t5G0000047xOOQAY",
+        "CollectionActionsL@3.0.0-0": "04t5G000003rUvQQAU"
     }
 }

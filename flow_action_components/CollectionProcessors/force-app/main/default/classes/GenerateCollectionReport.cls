@@ -35,7 +35,7 @@ global with sharing class GenerateCollectionReport {
                 Boolean hasRelationshipFields = shownFields.contains('.');
                 Map<Id, Sobject> relationshipFieldsMap = new Map<Id, Sobject>();
                 Set<String> relationshipFields = new Set<String>();
-                Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf.FieldDescriptor>>();
+                Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf3.FieldDescriptor>>();
                 if(hasRelationshipFields){
                     relationshipFieldsMap.putAll(database.query('SELECT ' + string.escapeSingleQuotes(shownFields) + ' FROM ' + inputCollection[0].getSObjectType() + ' WHERE Id IN :inputCollection'));
                     for(string s : shownFieldsArray){
@@ -43,7 +43,7 @@ global with sharing class GenerateCollectionReport {
                             relationshipFields.add(s);
                         }
                     }
-                    Map<String, usf.FieldDescriptor> originalObjectfieldMap = usf.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
+                    Map<String, usf3.FieldDescriptor> originalObjectfieldMap = usf3.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
                     
                     relationshipObjectDescribe = getRelatedObjectInformation(relationshipFields, originalObjectfieldMap);
                 }
@@ -101,9 +101,9 @@ global with sharing class GenerateCollectionReport {
         return fieldValue;
     }
 
-    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap,  Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe) {
+    global static String generateTableMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap,  Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe) {
         
-        Map<String, usf.FieldDescriptor> fieldMap = usf.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
+        Map<String, usf3.FieldDescriptor> fieldMap = usf3.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
         
         String tableHTML;
         if (!shownFieldsArray.isEmpty()) { 
@@ -140,12 +140,12 @@ global with sharing class GenerateCollectionReport {
         return tableHTML;
     }
 
-    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe) {
+    global static String generateSimpleMode(String reportString, List<String> shownFieldsArray, List<SObject> inputCollection, Map<Id, Sobject> relationshipFieldsMap, Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe) {
         if (!shownFieldsArray.isEmpty()) {
             for (SObject record: inputCollection) {
                 reportString += 'Record: ';
 
-                Map<String, usf.FieldDescriptor> fieldMap = usf.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
+                Map<String, usf3.FieldDescriptor> fieldMap = usf3.GetFieldInformation.describeSobjects(String.valueOf(inputCollection[0].getSobjectType()));
 
                 for (String fieldName : shownFieldsArray) {
                     String fieldValue = '';
@@ -168,7 +168,7 @@ global with sharing class GenerateCollectionReport {
     * @param fieldMap map of the field describe results
     * @return string 
     */
-    private static string getFieldLabel(String fieldName, Map<String, usf.FieldDescriptor> fieldMap, Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe){
+    private static string getFieldLabel(String fieldName, Map<String, usf3.FieldDescriptor> fieldMap, Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe){
         // If the field contains a '.' then it is a relationship field
         // Otherwise, use the fieldmap to look up the value
         if(fieldName.contains('.')){
@@ -200,17 +200,17 @@ global with sharing class GenerateCollectionReport {
     /*
      * @description Retrieve related object details for constructing appropriate labels
      * @param
-     * @return Map<String, List<usf.FieldDescriptor>>
+     * @return Map<String, List<usf3.FieldDescriptor>>
      */
-    private static Map<String, Map<String, usf.FieldDescriptor>> getRelatedObjectInformation(Set<String> relationshipFields, Map<String, usf.FieldDescriptor> originalObjectfieldMap){
-        Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf.FieldDescriptor>>();
+    private static Map<String, Map<String, usf3.FieldDescriptor>> getRelatedObjectInformation(Set<String> relationshipFields, Map<String, usf3.FieldDescriptor> originalObjectfieldMap){
+        Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe = new Map<String, Map<String, usf3.FieldDescriptor>>();
 
         for(string s : relationshipFields){
             string originalField = getOriginalField(s);
             if(originalObjectfieldMap.containsKey(originalfield)){
                 string relationshipToRetrieve = originalObjectfieldMap.get(originalfield).referenceTo[0];
                 if(relationshipObjectDescribe != null){
-                    Map<String, usf.FieldDescriptor> fieldMap = usf.GetFieldInformation.describeSobjects(relationshipToRetrieve);
+                    Map<String, usf3.FieldDescriptor> fieldMap = usf3.GetFieldInformation.describeSobjects(relationshipToRetrieve);
                     system.debug('>>> relationshipToRetrieve: ' + relationshipToRetrieve);
                     if(!relationshipObjectDescribe.containsKey(relationshipToRetrieve)){
                         relationshipObjectDescribe.put(relationshipToRetrieve, fieldMap);
@@ -222,7 +222,7 @@ global with sharing class GenerateCollectionReport {
                     if(newRelationshipField.contains('.')){ // If there isn't another relationship, nothing else to retrieve
                         Set<String> relationshipsToRetrieve = new Set<String>();
                         relationshipFields.add(newRelationshipField);
-                        Map<String, Map<String, usf.FieldDescriptor>> newRelationshipObjectDescribe = getRelatedObjectInformation(relationshipFields, fieldMap);
+                        Map<String, Map<String, usf3.FieldDescriptor>> newRelationshipObjectDescribe = getRelatedObjectInformation(relationshipFields, fieldMap);
                         for(String key : newRelationshipObjectDescribe.keySet()){
                             if(!relationshipObjectDescribe.containsKey(key)){
                                 relationshipObjectDescribe.put(key, newRelationshipObjectDescribe.get(key));
@@ -245,9 +245,9 @@ global with sharing class GenerateCollectionReport {
      * @param relationshipObjectDescribe All the object descriptions that will be needed to construct the label
      * @return string
      */
-    private static String getRelationshipFieldName(string fieldName, string processedName, string relationshipToRetrieve, Map<String, Map<String, usf.FieldDescriptor>> relationshipObjectDescribe){
+    private static String getRelationshipFieldName(string fieldName, string processedName, string relationshipToRetrieve, Map<String, Map<String, usf3.FieldDescriptor>> relationshipObjectDescribe){
         
-        Map<String, usf.FieldDescriptor> fieldMap = relationshipObjectDescribe.get(relationshipToRetrieve);
+        Map<String, usf3.FieldDescriptor> fieldMap = relationshipObjectDescribe.get(relationshipToRetrieve);
 
         if(fieldName.contains('.')){
             String originalField = getOriginalField(fieldName);

@@ -27,7 +27,7 @@
                     disabled={isFieldDisabled}
                     onchange={handleFieldChange}
                     required={required}></lightning-combobox> -->
-            <c-fsc_field-selector
+            <c-fsc_field-selector-3
                     if:false={renderFlowCombobox}
                     name="fieldField"
                     label={fieldLabel}
@@ -36,7 +36,7 @@
                     object-name={_objectType}
                     onfieldupdate={handleFieldUpdate}
                     allow-multiselect={allowFieldMultiselect}
-                    required={required}></c-fsc_field-selector>
+                    required={required}></c-fsc_field-selector-3>
             <c-fsc_flow-combobox
                     if:true={renderFlowCombobox}
                     name="select_field"

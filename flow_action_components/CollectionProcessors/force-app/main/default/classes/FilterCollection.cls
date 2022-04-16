@@ -19,10 +19,10 @@ global with sharing class FilterCollection {
             if (inputCollection != null && !inputCollection.isEmpty()) {
                 for (SObject member : inputCollection) {
 
-                    List<usf.FormulaEvaluator.ContextWrapper> context = new List<usf.FormulaEvaluator.ContextWrapper>();
-                    context.add(new usf.FormulaEvaluator.ContextWrapper('$Record', member.Id));
+                    List<usf3.FormulaEvaluator.ContextWrapper> context = new List<usf3.FormulaEvaluator.ContextWrapper>();
+                    context.add(new usf3.FormulaEvaluator.ContextWrapper('$Record', member.Id));
                     String stringContext = JSON.serialize(context);
-                    String result = usf.FormulaEvaluator.parseFormula(formulaString, stringContext);
+                    String result = usf3.FormulaEvaluator.parseFormula(formulaString, stringContext);
 
                     if (result == 'true') {
                         outputCollection.add(member);

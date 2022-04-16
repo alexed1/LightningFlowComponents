@@ -11,11 +11,11 @@
 **/
 
 import { LightningElement,track,api,wire } from 'lwc';
-import requestMetadata from '@salesforce/apex/usf.RetrieveMetadata.RetrieveMetadataItemV2';
-import checkRetrieveStatus from '@salesforce/apex/usf.RetrieveMetadata.checkAsyncRequest';
-import getFileNames from '@salesforce/apex/usf.RetrieveMetadata.getFileNames';
-import fsc_deployMetadata from '@salesforce/apex/usf.DeployMetadata.deploy';
-import checkDeployStatus from '@salesforce/apex/usf.DeployMetadata.checkAsyncRequest';
+import requestMetadata from '@salesforce/apex/usf3.RetrieveMetadata.RetrieveMetadataItemV2';
+import checkRetrieveStatus from '@salesforce/apex/usf3.RetrieveMetadata.checkAsyncRequest';
+import getFileNames from '@salesforce/apex/usf3.RetrieveMetadata.getFileNames';
+import fsc_deployMetadata from '@salesforce/apex/usf3.DeployMetadata.deploy';
+import checkDeployStatus from '@salesforce/apex/usf3.DeployMetadata.checkAsyncRequest';
 import {FlowAttributeChangeEvent, FlowNavigationNextEvent} from 'lightning/flowSupport';
 
 export default class TransferMetadata extends LightningElement {

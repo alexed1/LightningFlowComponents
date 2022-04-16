@@ -59,7 +59,7 @@
         <label>Get Field Information usf</label>
         <locationX>1263</locationX>
         <locationY>210</locationY>
-        <actionName>usf__GetFieldInformation</actionName>
+        <actionName>usf3__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>Select_Fields</targetReference>
@@ -1409,7 +1409,7 @@
         </fields>
         <fields>
             <name>SelectFields</name>
-            <extensionName>c:fsc_dualListBox2</extensionName>
+            <extensionName>c:fsc_dualListBox3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>allOptionsStringFormat</name>
@@ -2112,7 +2112,7 @@
     <status>Draft</status>
     <variables>
         <name>apexColFieldDescriptors_usf</name>
-        <apexClass>usf__FieldDescriptor</apexClass>
+        <apexClass>usf3__FieldDescriptor</apexClass>
         <dataType>Apex</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
@@ -2120,7 +2120,7 @@
     </variables>
     <variables>
         <name>apexColSelectedFieldDescriptors_usf</name>
-        <apexClass>usf__FieldDescriptor</apexClass>
+        <apexClass>usf3__FieldDescriptor</apexClass>
         <dataType>Apex</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
@@ -2128,7 +2128,7 @@
     </variables>
     <variables>
         <name>apexFieldDescriptor</name>
-        <apexClass>usf__FieldDescriptor</apexClass>
+        <apexClass>usf3__FieldDescriptor</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

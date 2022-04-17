@@ -3,7 +3,7 @@ public with sharing class GetProfilesTest {
 
     @isTest
     public static void CanCopyMetadataToDMC() {
-        usf.MetadataService.Profile testProfileP1 =  Fixture_TestProfile_MetadataService.testProfileP1();
+        usf3.MetadataService.Profile testProfileP1 =  Fixture_TestProfile_MetadataService.testProfileP1();
         
 
         flowDMC_Profile apexTypeProfile = GetProfiles.CopyMetadataToDMC(testProfileP1);

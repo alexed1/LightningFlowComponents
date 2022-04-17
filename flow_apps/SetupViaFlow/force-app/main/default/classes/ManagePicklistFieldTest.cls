@@ -26,18 +26,18 @@ public with sharing class ManagePicklistFieldTest {
         
     }
 
-    public static usf.MetadataService.CustomField getCustomField() {
+    public static usf3.MetadataService.CustomField getCustomField() {
         StaticResource sr = [SELECT Id, Body FROM StaticResource WHERE Name = 'CustomFieldMetadataAPIResponse' LIMIT 1];
 
-        usf.MetadataService.CustomField customField = (usf.MetadataService.CustomField)JSON.deserializeStrict(sr.Body.toString(), usf.MetadataService.CustomField.class);
+        usf3.MetadataService.CustomField customField = (usf3.MetadataService.CustomField)JSON.deserializeStrict(sr.Body.toString(), usf3.MetadataService.CustomField.class);
         return customField;
     }
 
-    public static List<usf.MetadataService.SaveResult> getSaveResult() {
-        usf.MetadataService.updateMetadataResponse_element mtdRespose = new usf.MetadataService.updateMetadataResponse_element();
-        usf.MetadataService.SaveResult result = new usf.MetadataService.SaveResult();
+    public static List<usf3.MetadataService.SaveResult> getSaveResult() {
+        usf3.MetadataService.updateMetadataResponse_element mtdRespose = new usf3.MetadataService.updateMetadataResponse_element();
+        usf3.MetadataService.SaveResult result = new usf3.MetadataService.SaveResult();
         result.success  = true;
-        mtdRespose.result = new List<usf.MetadataService.SaveResult> {result};
+        mtdRespose.result = new List<usf3.MetadataService.SaveResult> {result};
         return mtdRespose.result;
     }
 }

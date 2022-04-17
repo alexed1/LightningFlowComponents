@@ -369,7 +369,7 @@
         </fields>
         <fields>
             <name>pickObject</name>
-            <extensionName>c:fsc_pickObjectAndField</extensionName>
+            <extensionName>c:fsc_pickObjectAndField3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -697,7 +697,7 @@
         </fields>
         <fields>
             <name>dlbAssignRecordTypes</name>
-            <extensionName>c:fsc_dualListBox2</extensionName>
+            <extensionName>c:fsc_dualListBox3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>allOptionsStringFormat</name>

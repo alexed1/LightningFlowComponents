@@ -8,11 +8,11 @@ global with sharing class GetSelectedFieldInformation {
             requestList[0].fieldList =  requestList[0].fieldListString.split(',');
         }
 
-        List<usf.FieldDescriptor> fields = usf.GetFieldInformation.describeSObject(requestList[0].objectName);
-        response.fields = new List<usf.FieldDescriptor>();
+        List<usf3.FieldDescriptor> fields = usf3.GetFieldInformation.describeSObject(requestList[0].objectName);
+        response.fields = new List<usf3.FieldDescriptor>();
 
         for(String fieldName : requestList[0].fieldList) {
-            for(usf.FieldDescriptor field : fields) {
+            for(usf3.FieldDescriptor field : fields) {
                 if(field.name == fieldName) {
                     response.fields.add(field);
                 }
@@ -37,6 +37,6 @@ global with sharing class GetSelectedFieldInformation {
     global class Results {
 
         @InvocableVariable
-        global List<usf.FieldDescriptor> fields;
+        global List<usf3.FieldDescriptor> fields;
     }
 }

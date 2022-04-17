@@ -5,13 +5,13 @@
             "default": true,
             "dependencies": [
                 {
-                    "package": "FlowActionsBasePack@2.12.0-0"
+                    "package": "FlowActionsBasePack@3.0.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@2.1.3-0"
+                    "package": "FlowScreenComponentsBasePack@3.0.6-0"
                 },
                 {
-                    "package": "datatable@3.0.9-0"
+                    "package": "datatable@4.0.3-0"
                 }
             ],
             "package": "slackActions",
@@ -30,6 +30,10 @@
         "slackActions@1.0.0-0": "04t5G000004PudrQAC",
         "slackActions@1.1.0-0": "04t5G0000047xDVQAY",
         "slackActions@1.1.1-0": "04t5G0000047xO9QAI",
-        "slackActions@1.2.0-0": "04t5G000003rUYVQA2"
+        "slackActions@1.2.0-0": "04t5G000003rUYVQA2",
+        "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
+        "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
+        "datatable@4.0.3-0": "04t5G000003rUvLQAU",
+        "slackActions@3.0.0-0": "04t5G000003rUvpQAE"
     }
 }

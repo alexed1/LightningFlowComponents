@@ -46,9 +46,9 @@ public with sharing class GenerateFlowFromPersonalWorkflow {
             String conditionsXML = '';
             System.debug(personalWorkflowTrigger.TriggerCriteriaFormula__c);
             if(String.isNotEmpty(personalWorkflowTrigger.TriggerCriteriaFormula__c)) {
-                Map<String,Object> triggerCriteriaFormula = usf.ExpressionBuilder.disassemblyFormulaString(personalWorkflowTrigger.TriggerCriteriaFormula__c, null);
-                List<usf.ExpressionBuilder.ExpressionLineWrapper> expressionLineList = (List<usf.ExpressionBuilder.ExpressionLineWrapper>)triggerCriteriaFormula.get('expressionLines');
-                for(usf.ExpressionBuilder.ExpressionLineWrapper expressionLine : expressionLineList) {
+                Map<String,Object> triggerCriteriaFormula = usf3.ExpressionBuilder.disassemblyFormulaString(personalWorkflowTrigger.TriggerCriteriaFormula__c, null);
+                List<usf3.ExpressionBuilder.ExpressionLineWrapper> expressionLineList = (List<usf3.ExpressionBuilder.ExpressionLineWrapper>)triggerCriteriaFormula.get('expressionLines');
+                for(usf3.ExpressionBuilder.ExpressionLineWrapper expressionLine : expressionLineList) {
                     conditionsXML += '<filters>' + 
                         '<field>' + 
                             expressionLine.fieldName.split('\\.')[1] +

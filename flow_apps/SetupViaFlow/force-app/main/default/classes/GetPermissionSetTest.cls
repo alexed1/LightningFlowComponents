@@ -4,7 +4,7 @@ public with sharing class GetPermissionSetTest {
     @isTest
     public static void CanCopyMetadataToDMC() {
         //flowDMC_PermissionSet testPermSet1 = Fixture_TestPermissionSet.testPermSet1();
-        usf.MetadataService.PermissionSet testPermSetM1 =  Fixture_TestPermSet_MetadataService.testPermSetM1();
+        usf3.MetadataService.PermissionSet testPermSetM1 =  Fixture_TestPermSet_MetadataService.testPermSetM1();
         
 
         flowDMC_PermissionSet apexTypePermissionSet = GetPermissionSets.CopyMetadataToDMC(testPermSetM1);

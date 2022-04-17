@@ -521,7 +521,7 @@
         <allowPause>true</allowPause>
         <fields>
             <name>DeployMetadata</name>
-            <extensionName>c:fsc_transferMetadata</extensionName>
+            <extensionName>c:fsc_transferMetadata3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>metadataName</name>
@@ -920,7 +920,7 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>pickField</name>
-                    <extensionName>c:fsc_pickObjectAndField</extensionName>
+                    <extensionName>c:fsc_pickObjectAndField3</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
                         <name>hideObjectPicklist</name>
@@ -996,7 +996,7 @@
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>expFieldChanges</name>
-                    <extensionName>c:fsc_expressionBuilder</extensionName>
+                    <extensionName>c:fsc_expressionBuilder3</extensionName>
                     <fieldType>ComponentInstance</fieldType>
                     <inputParameters>
                         <name>contextObjectType</name>
@@ -1049,7 +1049,7 @@
         </fields>
         <fields>
             <name>contextObjectType</name>
-            <extensionName>c:fsc_pickObjectAndField</extensionName>
+            <extensionName>c:fsc_pickObjectAndField3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>masterLabel</name>
@@ -1173,7 +1173,7 @@
         </fields>
         <fields>
             <name>expressionOnCreateFilter</name>
-            <extensionName>c:fsc_expressionBuilder</extensionName>
+            <extensionName>c:fsc_expressionBuilder3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>addButtonLabel</name>

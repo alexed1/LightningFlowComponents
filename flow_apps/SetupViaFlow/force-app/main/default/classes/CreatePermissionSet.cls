@@ -5,20 +5,20 @@ public with sharing class CreatePermissionSet {
         System.debug('entering CreatePermissionSet');
         List<Result> responseWrapper = new List<Result>();
         for (Request curRequest : requestList) {
-            usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
+            usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();
 
             //process single permSet input
             flowDMC_PermissionSet permSetToCreate = curRequest.singlePermSet;
-            usf.MetadataService.PermissionSet metadata_permSetToCreate = ConvertApexTypeToMetadataService_PermissionSet(permSetToCreate);
+            usf3.MetadataService.PermissionSet metadata_permSetToCreate = ConvertApexTypeToMetadataService_PermissionSet(permSetToCreate);
 
 
-            List<usf.MetadataService.PermissionSet> permSetsToCreate = new List<usf.MetadataService.PermissionSet>();
+            List<usf3.MetadataService.PermissionSet> permSetsToCreate = new List<usf3.MetadataService.PermissionSet>();
             permSetsToCreate.add(metadata_permSetToCreate);
 
             //List<MetadataService.Metadata> deploymentMetadata = new List<MetadataService.Metadata>();
             //deploymentMetadata.add(deploymentMetadata);
 
-            usf.MetadataService.handleSaveResults(service.createMetadata(permSetsToCreate)[0]);
+            usf3.MetadataService.handleSaveResults(service.createMetadata(permSetsToCreate)[0]);
 
                     
                    
@@ -36,20 +36,20 @@ public with sharing class CreatePermissionSet {
     finalPermSet.recordTypeVisibilities = new List<flowDMC_PermSetRecordTypeVisibility>();
     finalPermSet.fullName = originalPermSet.fullName;
     finalPermSet.label = originalPermSet.label;
-    for (usf.MetadataService.PermissionSetRecordTypeVisibility curRecordTypeVisibility : originalPermSet.recordTypeVisibilities) {
+    for (usf3.MetadataService.PermissionSetRecordTypeVisibility curRecordTypeVisibility : originalPermSet.recordTypeVisibilities) {
         flowDMC_PermSetRecordTypeVisibility finalRecordTypeVisibility  = new flowDMC_PermSetRecordTypeVisibility();
         finalRecordTypeVisibility.recordType = curRecordTypeVisibility.recordType;
         finalRecordTypeVisibility.visible = curRecordTypeVisibility.visible;
         finalPermSet.recordTypeVisibilities.add(finalRecordTypeVisibility);
     } */
   
-    public static usf.MetadataService.PermissionSet ConvertApexTypeToMetadataService_PermissionSet(flowDMC_permissionSet originalPermSet) {
-        usf.MetadataService.PermissionSet finalPermSet = new  usf.MetadataService.PermissionSet();
-        finalPermSet.recordTypeVisibilities = new List<usf.MetadataService.PermissionSetRecordTypeVisibility>();
+    public static usf3.MetadataService.PermissionSet ConvertApexTypeToMetadataService_PermissionSet(flowDMC_permissionSet originalPermSet) {
+        usf3.MetadataService.PermissionSet finalPermSet = new  usf3.MetadataService.PermissionSet();
+        finalPermSet.recordTypeVisibilities = new List<usf3.MetadataService.PermissionSetRecordTypeVisibility>();
         finalPermSet.fullName = originalPermSet.fullName;
         finalPermSet.label = originalPermSet.label;
         for (flowDMC_PermSetRecordTypeVisibility curRecordTypeVisibility : originalPermSet.recordTypeVisibilities) {
-            usf.MetadataService.PermissionSetRecordTypeVisibility finalRecordTypeVisibility = new usf.MetadataService.PermissionSetRecordTypeVisibility();
+            usf3.MetadataService.PermissionSetRecordTypeVisibility finalRecordTypeVisibility = new usf3.MetadataService.PermissionSetRecordTypeVisibility();
             finalRecordTypeVisibility.recordType = curRecordTypeVisibility.recordType;
             finalRecordTypeVisibility.visible = curRecordTypeVisibility.visible;
             finalPermSet.recordTypeVisibilities.add(finalRecordTypeVisibility);

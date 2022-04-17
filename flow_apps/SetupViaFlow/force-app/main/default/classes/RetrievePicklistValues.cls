@@ -7,7 +7,7 @@ public with sharing class RetrievePicklistValues {
             if(request.fieldName.endsWith(Label.CUSTOM_FIELD_POSTFIX_LABEL)) {
                 picklistValuesList = getPickListValuesForCustomField(request.objectApiName + '.' + request.fieldName);
             } else {
-                picklistValuesList = usf.FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName);
+                picklistValuesList = usf3.FieldPickerController.getPicklistValues(request.objectApiName, request.fieldName);
             }
             resultList.add(new Results(
                 JSON.serialize(picklistValuesList), 
@@ -19,12 +19,12 @@ public with sharing class RetrievePicklistValues {
         return resultList;
     }
 
-    public static List<usf.FieldPickerController.Member> getPickListValuesForCustomField(String apiName) {
-        usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
-        List<usf.FieldPickerController.Member> picklistValueList = new List<usf.FieldPickerController.Member>();
-        usf.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
-        for(usf.MetadataService.CustomValue item : customField.valueSet.valueSetDefinition.value) {
-            picklistValueList.add(new usf.FieldPickerController.Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
+    public static List<usf3.FieldPickerController.Member> getPickListValuesForCustomField(String apiName) {
+        usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();
+        List<usf3.FieldPickerController.Member> picklistValueList = new List<usf3.FieldPickerController.Member>();
+        usf3.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf3.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        for(usf3.MetadataService.CustomValue item : customField.valueSet.valueSetDefinition.value) {
+            picklistValueList.add(new usf3.FieldPickerController.Member(item.FullName, item.label, (item.isActive == null ? true : item.isActive), item.default_x));
         }
 		return picklistValueList;
     }

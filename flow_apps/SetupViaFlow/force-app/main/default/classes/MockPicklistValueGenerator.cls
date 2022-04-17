@@ -8,18 +8,18 @@ public with sharing class MockPicklistValueGenerator implements WebServiceMock{
 			String responseNS, String responseName, String responseType) 
 		{
 			StaticResource sr = [SELECT Id, Body FROM StaticResource WHERE Name = 'CustomFieldMetadataAPIResponse' LIMIT 1];
-            if(request instanceof usf.MetadataService.readMetadata_element) {
-                usf.MetadataService.CustomField customField = (usf.MetadataService.CustomField)JSON.deserializeStrict(sr.Body.toString(), usf.MetadataService.CustomField.class);
-                usf.MetadataService.readCustomFieldResponse_element mtdResponse = new usf.MetadataService.readCustomFieldResponse_element();
-                mtdResponse.result = new usf.MetadataService.ReadCustomFieldResult();
-                mtdResponse.result.records = new List<usf.MetadataService.CustomField> {customField};
+            if(request instanceof usf3.MetadataService.readMetadata_element) {
+                usf3.MetadataService.CustomField customField = (usf3.MetadataService.CustomField)JSON.deserializeStrict(sr.Body.toString(), usf3.MetadataService.CustomField.class);
+                usf3.MetadataService.readCustomFieldResponse_element mtdResponse = new usf3.MetadataService.readCustomFieldResponse_element();
+                mtdResponse.result = new usf3.MetadataService.ReadCustomFieldResult();
+                mtdResponse.result.records = new List<usf3.MetadataService.CustomField> {customField};
 
                 response.put(RESPONSE_X_LABEL, mtdResponse);
-            } else if(request instanceof usf.MetadataService.updateMetadata_element) {
-                usf.MetadataService.updateMetadataResponse_element mtdRespose = new usf.MetadataService.updateMetadataResponse_element();
-                usf.MetadataService.SaveResult result = new usf.MetadataService.SaveResult();
+            } else if(request instanceof usf3.MetadataService.updateMetadata_element) {
+                usf3.MetadataService.updateMetadataResponse_element mtdRespose = new usf3.MetadataService.updateMetadataResponse_element();
+                usf3.MetadataService.SaveResult result = new usf3.MetadataService.SaveResult();
                 result.success  = isSuccessDeploy;
-                mtdRespose.result = new List<usf.MetadataService.SaveResult> {result};
+                mtdRespose.result = new List<usf3.MetadataService.SaveResult> {result};
 
                 response.put(RESPONSE_X_LABEL, mtdRespose);
             }

@@ -4,9 +4,9 @@ public with sharing class ManagePicklistField {
         List<Results> resultList = new List<Results>();
         try {
             for(Requests request : requestList) {
-                List<usf.FieldPickerController.Member> picklistValueNameList = (List<usf.FieldPickerController.Member>)JSON.deserialize(request.picklistValueNameListJSON, List<usf.FieldPickerController.Member>.class);
+                List<usf3.FieldPickerController.Member> picklistValueNameList = (List<usf3.FieldPickerController.Member>)JSON.deserialize(request.picklistValueNameListJSON, List<usf3.FieldPickerController.Member>.class);
                 Map<String, String> picklistValueMap = new Map<String,String>();
-                for(usf.FieldPickerController.Member item : picklistValueNameList) {
+                for(usf3.FieldPickerController.Member item : picklistValueNameList) {
                     picklistValueMap.put(item.value, item.value);
                 }
                 deployPickListValues(request.objectApiName + '.' + request.fieldName, picklistValueMap, request.action);
@@ -19,13 +19,13 @@ public with sharing class ManagePicklistField {
     }
 
     public static void deployPickListValues(String apiName, Map<String, String> selectedPicklistValueMap, String picklistAction) {
-        usf.MetadataService.MetadataPort service = usf.MetadataService.createService();   
-        usf.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
+        usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();   
+        usf3.MetadataService.CustomField customField = Test.isRunningTest() ? ManagePicklistFieldTest.getCustomField() : (usf3.MetadataService.CustomField) service.readMetadata('CustomField', new String[] { apiName}).getRecords()[0];
         
         Integer activeValuesSize = 0;
 
         if(String.isNotEmpty(picklistAction)) {
-            for(usf.MetadataService.CustomValue objCustomValue : customField.valueSet.valueSetDefinition.value){
+            for(usf3.MetadataService.CustomValue objCustomValue : customField.valueSet.valueSetDefinition.value){
                 if(selectedPicklistValueMap.containsKey(objCustomValue.fullName)) {
                     objCustomValue.isActive = picklistAction == label.ACTIVATE_STATUS_LABEL ? true : false;
                 }
@@ -42,9 +42,9 @@ public with sharing class ManagePicklistField {
         }
 
         // Update picklist values
-        List<usf.MetadataService.SaveResult> lstResults = Test.isRunningTest() ? ManagePicklistFieldTest.getSaveResult() : service.updateMetadata( new usf.MetadataService.Metadata[] { customField });
+        List<usf3.MetadataService.SaveResult> lstResults = Test.isRunningTest() ? ManagePicklistFieldTest.getSaveResult() : service.updateMetadata( new usf3.MetadataService.Metadata[] { customField });
 
-        for (usf.MetadataService.SaveResult objResult : lstResults) {
+        for (usf3.MetadataService.SaveResult objResult : lstResults) {
             if (!objResult.success) {
                 throw new CustomException(Label.METADATA_DEPLOY_ERROR);
             }

@@ -5,13 +5,13 @@ public with sharing class GetPermissionSets {
         System.debug('entering GetPermissionSet');
         List<ResultSet> responseWrapper = new List<ResultSet>();
         for (Request curRequest : requestList) {
-            usf.MetadataService.MetadataPort service = usf.MetadataService.createService();
+            usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();
             List<String> permSetNames = new List<String>();
             permSetNames.add(curRequest.singlePermSetName);
             permSetNames.addAll(curRequest.permSetNameStringCollection);
 
-            List<usf.MetadataService.PermissionSet> retrievedPermSets =
-                (List<usf.MetadataService.PermissionSet>) service.readMetadata('PermissionSet',
+            List<usf3.MetadataService.PermissionSet> retrievedPermSets =
+                (List<usf3.MetadataService.PermissionSet>) service.readMetadata('PermissionSet',
                     permSetNames).getRecords();
                     
             System.debug('retrieved permission sets: ' + retrievedPermSets);
@@ -19,7 +19,7 @@ public with sharing class GetPermissionSets {
             //Create a ResultSet object to hold the return values
             ResultSet response = new ResultSet();
             response.singlePermSet = CopyMetadataToDMC(retrievedPermSets[0]);
-            for(usf.MetadataService.PermissionSet curPermSet : retrievedPermSets) {
+            for(usf3.MetadataService.PermissionSet curPermSet : retrievedPermSets) {
                 response.collectionPermSets.add(CopyMetadataToDMC(curPermSet));
             }
             responseWrapper.add(response);
@@ -30,13 +30,13 @@ public with sharing class GetPermissionSets {
     }
 
 
-    public static flowDMC_PermissionSet CopyMetadataToDMC (usf.MetadataService.PermissionSet originalPermSet) {
+    public static flowDMC_PermissionSet CopyMetadataToDMC (usf3.MetadataService.PermissionSet originalPermSet) {
         originalPermSet = FillInNulls(originalPermSet);
         flowDMC_PermissionSet finalPermSet = new flowDMC_PermissionSet();
         finalPermSet.recordTypeVisibilities = new List<flowDMC_PermSetRecordTypeVisibility>();
         finalPermSet.fullName = originalPermSet.fullName;
         finalPermSet.label = originalPermSet.label;
-        for (usf.MetadataService.PermissionSetRecordTypeVisibility curRecordTypeVisibility : originalPermSet.recordTypeVisibilities) {
+        for (usf3.MetadataService.PermissionSetRecordTypeVisibility curRecordTypeVisibility : originalPermSet.recordTypeVisibilities) {
             flowDMC_PermSetRecordTypeVisibility finalRecordTypeVisibility  = new flowDMC_PermSetRecordTypeVisibility();
             finalRecordTypeVisibility.recordType = curRecordTypeVisibility.recordType;
             finalRecordTypeVisibility.visible = curRecordTypeVisibility.visible;
@@ -47,9 +47,9 @@ public with sharing class GetPermissionSets {
     }
 
     //the data structures created by the MetadataService do not initialize Lists and if you leave them null, the code may through a null reference
-    private static usf.MetadataService.PermissionSet FillInNulls(usf.MetadataService.PermissionSet originalPermSet) {
+    private static usf3.MetadataService.PermissionSet FillInNulls(usf3.MetadataService.PermissionSet originalPermSet) {
         if (originalPermSet.recordTypeVisibilities == null)
-            originalPermSet.recordTypeVisibilities = new List<usf.MetadataService.PermissionSetRecordTypeVisibility>();
+            originalPermSet.recordTypeVisibilities = new List<usf3.MetadataService.PermissionSetRecordTypeVisibility>();
         return originalPermSet;
     }
 

@@ -5,7 +5,7 @@
         <label>GetFieldInformation</label>
         <locationX>176</locationX>
         <locationY>278</locationY>
-        <actionName>usf__GetFieldInformation</actionName>
+        <actionName>usf3__GetFieldInformation</actionName>
         <actionType>apex</actionType>
         <connector>
             <targetReference>GetSelectedFieldInformation</targetReference>
@@ -54,14 +54,14 @@
             <assignToReference>Get_FlowTableViewDefinition.Field_API_Names__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>SortingConfiguration.selectedFieldListString</elementReference>
+                <elementReference>sortingConfiguration3.selectedFieldListString</elementReference>
             </value>
         </assignmentItems>
         <assignmentItems>
             <assignToReference>Get_FlowTableViewDefinition.Field_Sorting__c</assignToReference>
             <operator>Assign</operator>
             <value>
-                <elementReference>SortingConfiguration.fieldSortingListString</elementReference>
+                <elementReference>sortingConfiguration3.fieldSortingListString</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -133,7 +133,7 @@
         </connector>
         <fields>
             <name>DualListBox</name>
-            <extensionName>c:fsc_dualListBox2</extensionName>
+            <extensionName>c:fsc_dualListBox3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>allOptionsStringFormat</name>
@@ -206,8 +206,8 @@
             <targetReference>Field_List_Update</targetReference>
         </connector>
         <fields>
-            <name>SortingConfiguration</name>
-            <extensionName>c:fsc_sortingConfiguration</extensionName>
+            <name>sortingConfiguration3</name>
+            <extensionName>c:fsc_sortingConfiguration3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>fieldList</name>
@@ -254,7 +254,7 @@
     </variables>
     <variables>
         <name>selectedFieldList</name>
-        <apexClass>usf__FieldDescriptor</apexClass>
+        <apexClass>usf3__FieldDescriptor</apexClass>
         <dataType>Apex</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>

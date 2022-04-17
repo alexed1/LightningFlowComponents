@@ -210,7 +210,7 @@
         </connector>
         <fields>
             <name>ObjectPick</name>
-            <extensionName>c:fsc_pickObjectAndField</extensionName>
+            <extensionName>c:fsc_pickObjectAndField3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>DataTypeFilter</name>

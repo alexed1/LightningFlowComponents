@@ -664,7 +664,7 @@
         </connector>
         <fields>
             <name>dlbSelectUsers</name>
-            <extensionName>c:fsc_dualListBox2</extensionName>
+            <extensionName>c:fsc_dualListBox3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>allOptionsStringFormat</name>

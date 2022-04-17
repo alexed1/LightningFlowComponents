@@ -9,6 +9,8 @@ public with sharing class ConvertCSVToRecords {
     Response[] responseList = new List<Response>{};
 
     for (Request curInput : inputs) {
+      Response output = new Response();
+      output.convertedCSVRows = new List<SObject>{};
       if (curInput.contentDocumentId == null && curInput.contentDocumentIdList == null) {
         throw new FlowCustomException(
           'You need to provide either a single ContentDocument Id OR a list of ContentDocumentIds as inputs to this Flow action.'
@@ -25,6 +27,7 @@ public with sharing class ConvertCSVToRecords {
       SObjectType sObjType = ((SObject) Type.forName(curInput.objectApiName).newInstance()).getSObjectType();
       Map<String, SObjectField> fieldMap = sObjType.getDescribe().fields.getMap();
       for (String curContentDocumentId : curInput.contentDocumentIdList) {
+        List<SObject> curFileConvertedCSVRows = new List<SObject>();
         Blob csvBlobContent = getCsvContent(curContentDocumentId);
         String csvStringContent = blobToString(csvBlobContent, 'UTF-8');
         String fSepRepl = '~`~';
@@ -47,8 +50,6 @@ public with sharing class ConvertCSVToRecords {
           fieldName.put(field, fieldApiName);
         }
 
-        Response output = new Response();
-        output.convertedCSVRows = new List<SObject>{};
         for (String row : csvRows) {
           row = replaceNewline(row, newlineRepl);
           SObject obj = sObjType.newSObject();
@@ -77,10 +78,11 @@ public with sharing class ConvertCSVToRecords {
               obj.put(fieldName.get(fields[i]), null);
             }
           }
-          output.convertedCSVRows.add(obj);
+          curFileConvertedCSVRows.add(obj);
         }
-        responseList.add(output);
+        output.convertedCSVRows.addAll(curFileConvertedCSVRows);
       }
+      responseList.add(output);
     }
     return responseList;
   }

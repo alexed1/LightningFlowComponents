@@ -168,26 +168,25 @@ public with sharing class ConvertCSVToRecordsTest {
     System.assertEquals('2021-01-12', String.valueOf((Date) result));
   }
 
-  @IsTest
+  @isTest
   private static void testConvertMultipleContentDocs() {
-    createData(); //Create the document once more so we have a list of contentdocument ids
-    //System.assert(false,[Select Id from ContentVersion].size());
-    ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
-    Test.startTest();
-    ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
-    Test.stopTest();
-    //We should get 2 responses in the output array, one for each ContentDocument Id
-    System.assertEquals(2, flowOutputs.size(), 'Expected 2 outputs from action, one for each Content Document Id');
-    for (ConvertCSVToRecords.Response flowOutput : flowOutputs) {
-      System.assert(flowOutput.convertedCSVRows.size() == 3, 'Expected 6 records but got ' + flowOutput.convertedCSVRows.size());
-      List<Account> accList = flowOutput.convertedCSVRows;
-      System.assertEquals(3, accList.size(), 'Expected 2 accounts to be parsed from csv input');
-      System.assertEquals(
-        DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE,
-        accList[1].Description,
-        'The description field with commas, newline and quotes was not parsed correctly'
-      );
-    }
+      //Create the document once more so we have a list of contentdocument ids
+      createData();
+      //System.assert(false,[Select Id from ContentVersion].size());
+      ConvertCSVToRecords.Request[] flowInputs = createFlowInputsList();
+      Test.startTest();
+      ConvertCSVToRecords.Response[] flowOutputs = ConvertCSVToRecords.convert(flowInputs);
+      Test.stopTest();
+      // we should get 1 response in the output array, to match the 1 request we put in
+      //  one input co-ordinates with one call of the invokable, not the number of ContentDocument Id's uploaded during this call
+      //  otherwise -> Error Occurred: The number of results does not match the number of interviews that were executed in a single bulk execution request.
+      System.assertEquals(1, flowOutputs.size(), 'Expected 1 outputs from action, one for each input Request');
+      for (ConvertCSVToRecords.Response flowOutput : flowOutputs) {
+          System.assert(flowOutput.convertedCSVRows.size() == 6, 'Expected 6 records but got ' + flowOutput.convertedCSVRows.size());
+          List<Account> accList = flowOutput.convertedCSVRows;
+          System.assertEquals(6, accList.size(), 'Expected 6 accounts to be parsed from combined csv input');
+          System.assertEquals(DESCRIPTION_WITH_COMMAS_NEWLINE_AND_QUOTES_POST_PARSE, accList[1].Description, 'The description field with commas, newline and quotes was not parsed correctly');
+      }
   }
 
   @IsTest

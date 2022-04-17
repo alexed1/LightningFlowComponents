@@ -1,0 +1,19 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "UpdateScreen",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "UpdateScreen",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "UpdateScreen": "0Ho5G000000k9uASAQ",
+        "UpdateScreen@2.0.0-0": "04t5G000003rUiBQAU"
+    }
+}

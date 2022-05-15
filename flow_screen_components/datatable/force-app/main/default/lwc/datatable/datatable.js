@@ -929,7 +929,7 @@ export default class Datatable extends LightningElement {
             // Adjust date with offset based on User's timezone
             dateFields.forEach(date => {
                 if (record[date]) {
-                    let dt = Date.parse(record[date]);
+                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
                     let d = new Date();
                     record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
                 }
@@ -1474,7 +1474,7 @@ export default class Datatable extends LightningElement {
                 let datefield = this.dateFieldArray;
                 datefield.forEach(date => {
                     if (field[date]) {
-                        let rdt = Date.parse(field[date]);
+                        let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
                         let rd = new Date();
                         field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
                     }

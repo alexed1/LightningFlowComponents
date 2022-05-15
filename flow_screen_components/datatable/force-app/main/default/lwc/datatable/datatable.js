@@ -527,11 +527,13 @@ export default class Datatable extends LightningElement {
 
         console.log('this._tableData',this._tableData);
         if(!this._tableData) {
+            this.isUpdateTable = false;
             this._tableData = [];
         }
 
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
         let cnt = Math.min(this._tableData.length, max);
+        this.isUpdateTable = false;
         this._tableData = [...this._tableData].slice(0,cnt);
 
         // Set roundValue for setting Column Widths in Config Mode

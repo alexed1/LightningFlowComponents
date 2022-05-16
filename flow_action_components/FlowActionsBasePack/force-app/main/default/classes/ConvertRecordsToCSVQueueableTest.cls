@@ -21,7 +21,7 @@ private class ConvertRecordsToCSVQueueableTest {
         Account account = new Account(Name='Linked Account');
         insert account;
         
-		Contact contact1 = new Contact(LastName='Test1');
+	Contact contact1 = new Contact(LastName='Test1');
         Contact contact2 = new Contact(LastName='Test2', Email='abc@gmail.com');
         Contact contact3 = new Contact(LastName='Test3', Email='abc@gmail.com', FirstName='Jonny');
         insert new List<Contact>{contact1, contact2, contact3};
@@ -58,13 +58,15 @@ private class ConvertRecordsToCSVQueueableTest {
 
     @isTest
         private static void testGenerateCSVContentAggregateResult() {
-		Contact contact1 = new Contact(LastName='Test', FirstName='Sally');
-        Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com');
-        Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny');
+		
+	//@isTest The GROUPBY LastName causes a test failure on orgs with Shield Encryption turned on, so chaged it to Group By LeadSource instead
+	Contact contact1 = new Contact(LastName='Test', FirstName='Sally', LeadSource = 'Web');
+        Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com', LeadSource = 'Advertisement');
+        Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny', LeadSource = 'Social');
         insert new List<Contact>{contact1, contact2, contact3};
         update contact2;
 
-        List<AggregateResult> contacts = [Select LastName name from Contact GROUP BY LastName];
+        List<AggregateResult> contacts = [Select LeadSource from Contact GROUP BY LeadSource];
         
         Test.startTest();
         String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);

@@ -18,4 +18,4 @@ Simply add this component in a blank screen at the end of your flow.
 
 ## How it works
 
-This component uses the `component.get("v.navigateFlow")` to get the navigation controller, and sets it to `navigate("NEXT")` to advance to the next screen. Refer to the [Salesforce Developer Documentation](https://developer.salesforce.com/docs/component-library/bundle/force:refreshView/documentation) for the techincal details
+This component uses the `component.get("v.navigateFlow")` to get the navigation controller, and sets it to `navigate("NEXT")` to advance to the next screen. Refer to the [Salesforce Developer Documentation](https://developer.salesforce.com/docs/atlas.en-us.lightning.meta/lightning/components_config_for_flow_screens_navigate_custom.htm) for the techincal details

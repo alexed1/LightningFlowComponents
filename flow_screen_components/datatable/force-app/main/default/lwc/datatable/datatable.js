@@ -65,6 +65,7 @@ export default class Datatable extends LightningElement {
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
+    @api selectedRowKeyValue = '';
     @api numberOfRowsEdited = 0;
     @api isConfigMode = false;
     @api tableHeight;
@@ -1550,7 +1551,11 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = (this.numberOfRowsSelected == 1 && (this._tableData.length == 1 || this.singleRowSelection)) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        if((this.numberOfRowsSelected == 1 && (this._tableData.length == 1 || this.singleRowSelection))) {
+            this.selectedRowKeyValue = (this.outputSelectedRow[this.keyField]) ? this.outputSelectedRow[this.keyField] : '';
+            this.dispatchEvent(new FlowAttributeChangeEvent('selectedRowKeyValue', this.selectedRowKeyValue));
+            this.showClearButton = !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        }
     }
 
     handleClearSelection() {

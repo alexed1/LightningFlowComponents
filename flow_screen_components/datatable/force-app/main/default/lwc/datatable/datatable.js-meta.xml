@@ -43,7 +43,8 @@
             <!-- Additional Output Parameters -->
             <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
             <property name="numberOfRowsEdited" label="Output Number of Edited Records" type="Integer" role="outputOnly" description="Total count of the number of edited records"/>
-            
+            <property name="selectedRowKeyValue" label="Selected Row Key Field Value" type="String" role="outputOnly" description="The value of the keyField(Id) of the selected row"/>
+
             <!-- Configuration Mode Only - Inputs/Outputs -->
             <property name="objectName" label="Wizard Only - Selected SObject" type="String"/>
             <property name="wizSObject" label="Wizard Only - Selected SObject" type="String" role="outputOnly"/>

@@ -786,7 +786,7 @@ export default class ers_datatableCPE extends LightningElement {
             this.dispatchFlowValueChangeEvent('objectName', typeValue, 'String');
         }
         this.handleGetObjectDetails(typeValue);
-    }
+    }    
 
     handleGetObjectDetails(objName) { 
         console.log('Passing object name to Apex Controller', objName);
@@ -1058,6 +1058,7 @@ export default class ers_datatableCPE extends LightningElement {
     get wizardParams() {
         // Parameter value string to pass to Wizard Flow
         this.updateFlowParam('vWizRecordCount', CONSTANTS.WIZROWCOUNT);
+        this.updateFlowParam('vSObject', this.inputValues.objectName.value);
         return JSON.stringify(this.flowParams);
     }
     

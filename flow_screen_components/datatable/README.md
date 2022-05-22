@@ -76,10 +76,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Updates:** 
 -   Added new Output Attribute - selectedRowKeyValue
     This outputs the value of the KeyField(Id) when single row selection is enabled.  This is designed to support inputs to other
-    components on the same screen when Reactive Screens are implemented
+    components on the same screen when Reactive Screens are implemented 
+-   Enhanced how Column Wizard configuration files are created and updated 
  
 **Bug Fixes:** 
 -   Fix Column Wizard error when reselecting after saving a flow 
+-   Saved Column Wizard configuration files now support >255 characters per attribute
  
 ## 05/15/22 -  Eric Smith -     Version 4.0.4 
 **Bug Fixes:** 

@@ -72,6 +72,15 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 05/22/22 -  Eric Smith -     Version 4.0.5 
+**Updates:** 
+-   Added new Output Attribute - selectedRowKeyValue
+    This outputs the value of the KeyField(Id) when single row selection is enabled.  This is designed to support inputs to other
+    components on the same screen when Reactive Screens are implemented
+ 
+**Bug Fixes:** 
+-   Fix Column Wizard error when reselecting after saving a flow 
+ 
 ## 05/15/22 -  Eric Smith -     Version 4.0.4 
 **Bug Fixes:** 
 -   Changed the Date timezone offset to start at Noon instead of Midnight in order to avoid DST issues with the offset

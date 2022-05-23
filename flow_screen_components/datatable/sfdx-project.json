@@ -8,11 +8,11 @@
                     "package": "FlowActionsBasePack@3.0.0-0"
                 },
                 {
-                    "package": "FlowScreenComponentsBasePack@3.0.5-0"
+                    "package": "FlowScreenComponentsBasePack@3.0.6-0"
                 }
             ],
             "package": "datatable",
-            "versionName": "Datatable v3",
+            "versionName": "Datatable v4",
             "versionDescription": "Datatable Flow Screen Component by Eric Smith",
             "versionNumber": "0.1.0.NEXT"
         }
@@ -72,6 +72,8 @@
         "datatable@3.5.1-0": "04t5G000003rUuDQAU",
         "datatable@4.0.0-0": "04t5G000003rUurQAE",
         "datatable@4.0.2-0": "04t5G000003rUvBQAU",
-        "datatable@4.0.3-0": "04t5G000003rUvLQAU"
+        "datatable@4.0.3-0": "04t5G000003rUvLQAU",
+        "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
+        "datatable@4.0.4-0": "04t5G000003rUxRQAU"
     }
 }

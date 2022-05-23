@@ -3,9 +3,8 @@
     <fullName>Field_API_Names__c</fullName>
     <externalId>false</externalId>
     <label>Field API Names</label>
-    <length>255</length>
-    <required>true</required>
+    <length>2000</length>
     <trackTrending>false</trackTrending>
-    <type>Text</type>
-    <unique>false</unique>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
 </CustomField>

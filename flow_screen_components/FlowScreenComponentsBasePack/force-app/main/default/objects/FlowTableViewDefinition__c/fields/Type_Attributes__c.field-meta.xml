@@ -3,9 +3,8 @@
     <fullName>Type_Attributes__c</fullName>
     <externalId>false</externalId>
     <label>Type Attributes</label>
-    <length>255</length>
-    <required>false</required>
+    <length>2000</length>
     <trackTrending>false</trackTrending>
-    <type>Text</type>
-    <unique>false</unique>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
 </CustomField>

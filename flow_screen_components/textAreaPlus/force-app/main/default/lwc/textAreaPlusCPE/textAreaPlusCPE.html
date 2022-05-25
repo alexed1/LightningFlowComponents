@@ -1,0 +1,91 @@
+<template>
+    <lightning-combobox label="Text Mode" options={textOptions} onchange={handleTextOptionChange} value={inputValues.textMode.value}></lightning-combobox>
+    <template if:true={isPlainText}>
+        <c-fsc_flow-banner banner-color="#1d4583" banner-label="Plain Text Options" banner-info={textBannerInfo}></c-fsc_flow-banner>
+
+        <c-fsc_flow-combobox name="label" value={inputValues.label.value} builder-context-filter-type="String"
+            label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value} builder-context-filter-type="String"
+            label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <template if:true={minlenErr}>
+            <p class="slds-text-color_error slds-p-top_small">Minimum characters required must be less than Maximum characters allowed in Character Counter</p>
+        </template>
+
+        <c-fsc_flow-combobox name="minlen" value={inputValues.minlen.value} builder-context-filter-type="String"
+            label={inputValues.minlen.label} onvaluechanged={handleFlowComboboxValueChange}
+            field-level-help={inputValues.minlen.helpText}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
+            label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-checkbox name="required" label={inputValues.required.label} field-level-help={inputValues.required.helpText}
+            checked={inputValues.cb_required.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+    </template>
+
+    <template if:false={isPlainText}>
+        <c-fsc_flow-banner banner-color="#1d4583" banner-label="Rich Text Options" banner-info={textBannerInfo}></c-fsc_flow-banner>
+
+        <c-fsc_flow-combobox name="label" value={inputValues.label.value} builder-context-filter-type="String"
+            label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value} builder-context-filter-type="String"
+            label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
+            label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+        <template if:true={minlenErr}>
+            <p class="slds-text-color_error slds-p-top_small">Minimum characters required must be less than Maximum characters allowed in Character Counter</p>
+        </template>
+
+        <c-fsc_flow-combobox name="minlen" value={inputValues.minlen.value} builder-context-filter-type="String"
+            label={inputValues.minlen.label} onvaluechanged={handleFlowComboboxValueChange}
+            field-level-help={inputValues.minlen.helpText}></c-fsc_flow-combobox>
+
+        <c-fsc_flow-checkbox name="required" label={inputValues.required.label} field-level-help={inputValues.required.helpText}
+            checked={inputValues.cb_required.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+        <c-fsc_flow-checkbox name="advancedTools" label={inputValues.advancedTools.label} field-level-help={inputValues.advancedTools.helpText}
+        checked={inputValues.cb_advancedTools.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+         <template if:true={showAdvancedTools}>
+
+            <c-fsc_flow-banner banner-color="#1d4583" banner-label="Advanced Tools"  banner-info={advToolsInfo}></c-fsc_flow-banner>
+
+            <c-fsc_flow-combobox name="disallowedWordsList" value={inputValues.disallowedWordsList.value} builder-context-filter-type="String"
+                label={inputValues.disallowedWordsList.label} onvaluechanged={handleFlowComboboxValueChange} field-level-help={inputValues.disallowedWordsList.helpText}></c-fsc_flow-combobox>
+
+            <c-fsc_flow-combobox name="disallowedSymbolsList" value={inputValues.disallowedSymbolsList.value} builder-context-filter-type="String"
+                label={inputValues.disallowedSymbolsList.label} onvaluechanged={handleFlowComboboxValueChange} field-level-help={inputValues.disallowedSymbolsList.helpText}></c-fsc_flow-combobox>
+
+            <c-fsc_flow-combobox name="autoReplaceMap" value={inputValues.autoReplaceMap.value} builder-context-filter-type="String"
+                label={inputValues.autoReplaceMap.label} onvaluechanged={handleFlowComboboxValueChange} field-level-help={inputValues.autoReplaceMap.helpText}></c-fsc_flow-combobox>
+            <template if:true={jsonErr}>
+                <p class="slds-text-color_error slds-p-top_small">Unable to parse JSON values in Autoreplace Map.</p>
+            </template>
+
+            <c-fsc_flow-checkbox name="warnOnly" label={inputValues.warnOnly.label} field-level-help={inputValues.warnOnly.helpText}
+                checked={inputValues.cb_warnOnly.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+         </template>
+    </template>
+
+    <c-fsc_flow-checkbox name="showCharCounter" label={inputValues.showCharCounter.label} field-level-help={inputValues.showCharCounter.helpText}
+        checked={inputValues.cb_showCharCounter.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+    <template if:true={showCounterSettings}>
+        <c-fsc_flow-banner banner-color="#1d4583" banner-label="Character Counter" banner-info={charCounterInfo}></c-fsc_flow-banner>
+
+        <c-fsc_flow-combobox name="maxlen" value={inputValues.maxlen.value} builder-context-filter-type="String"
+            label={inputValues.maxlen.label} onvaluechanged={handleFlowComboboxValueChange}
+            field-level-help={inputValues.maxlen.helpText}></c-fsc_flow-combobox>
+
+        <template if:true={hasValidMaxLength}>
+            <c-fsc_flow-combobox name="charsLeftTemplate" value={inputValues.charsLeftTemplate.value} builder-context-filter-type="String"
+                label={inputValues.charsLeftTemplate.label} field-level-help={inputValues.charsLeftTemplate.helpText}
+                onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+        </template>
+    </template>
+
+</template>

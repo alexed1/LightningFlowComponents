@@ -83,6 +83,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:** 
 -   Fix Column Wizard error when reselecting after saving a flow 
 -   Column Wizard configuration files now store the column widths values
+-   Fix test class for orgs without Orders enabled
  
 ## 05/15/22 -  Eric Smith -     Version 4.0.4 
 **Bug Fixes:** 

@@ -2,7 +2,7 @@ import { api, track, LightningElement } from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-    versionNumber = '2.34';
+    versionNumber = '2.35';
     staticChoicesModalClass = 'staticChoicesModal';
     _builderContext;
     _values;

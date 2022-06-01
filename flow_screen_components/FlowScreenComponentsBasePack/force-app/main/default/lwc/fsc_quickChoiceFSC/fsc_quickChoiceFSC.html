@@ -18,6 +18,10 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
 
+5/28/22 -   Eric Smith -    Version 2.35  
+                            Changed bottom padding to match standard flow screen input components
+                            Fixed bug when string label collection was empty
+
 11/20/21 -  Eric Smith -    Version 2.34  
                             Added Controlling Field Value attribute for dependent picklists (Best with Reactive Screens)
 
@@ -122,7 +126,7 @@ Additional components packaged with this LWC:
 
             <!-- Display Radio Buttons -->
             <template if:true={showRadio}>
-                <div style={inputStyle}>
+                <div style={inputStyle} class={inputClass}>
                     <lightning-radio-group 
                         name={radioGroup} 
                         label={masterLabel} 
@@ -137,7 +141,7 @@ Additional components packaged with this LWC:
 
             <!-- Display Picklist -->
             <template if:false={showRadio}>
-                <div style={inputStyle}>
+                <div style={inputStyle} class={inputClass}>
                     <lightning-combobox 
                         name={masterLabel} 
                         label={masterLabel} 

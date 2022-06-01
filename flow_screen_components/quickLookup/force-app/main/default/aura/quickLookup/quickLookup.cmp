@@ -25,20 +25,22 @@
 	<!-- 99% of the awesomesauce in this component comes from this LightningLookup component, created by
 		John Pipkin and Opfocus https://opfocus.com/lightning-lookup-input-field-2/ -->
 
-	<lightning:layout multipleRows="true">
-		<lightning:layoutItem size="12">
-			<label class="slds-form-element__label">
-				<abbr class="{!v.required ? 'slds-required' : 'slds-hide'}" title="required">*</abbr>
-				{!v.label}</label>
-		</lightning:layoutItem>
+	<div class="slds-p-bottom_x-small">
+		<lightning:layout multipleRows="true">
+			<lightning:layoutItem size="12">
+				<label class="slds-form-element__label">
+					<abbr class="{!v.required ? 'slds-required' : 'slds-hide'}" title="required">*</abbr>
+					{!v.label}</label>
+			</lightning:layoutItem>
 
-		<lightning:layoutItem size="12">
-			<c:QuickLightningLookup sObjectName="{!v.objectName}" displayedFieldName="{!v.displayFieldName}" searchFieldName="{!v.searchFieldName}"
-				whereClause="{!v.whereClause}" valueFieldName="{!v.valueFieldName}" label="{!v.label}"
-				selectedValue="{!v.selectedValue}" filteredFieldName="{!v.filterFieldName}"
-				filterFieldValue="{!v.filterFieldValue}" parentChild="{!v.parentChild}" required="{!v.required}"
-				defaultValue="{!v.defaultValue}" parentId="{!v.parentId}" cmpId="{!v.cmpid}" performLookupOnFocus="true"
-				svg="{!v.svg}" />
-		</lightning:layoutItem>
-	</lightning:layout>
+			<lightning:layoutItem size="12">
+				<c:QuickLightningLookup sObjectName="{!v.objectName}" displayedFieldName="{!v.displayFieldName}" searchFieldName="{!v.searchFieldName}"
+					whereClause="{!v.whereClause}" valueFieldName="{!v.valueFieldName}" label="{!v.label}"
+					selectedValue="{!v.selectedValue}" filteredFieldName="{!v.filterFieldName}"
+					filterFieldValue="{!v.filterFieldValue}" parentChild="{!v.parentChild}" required="{!v.required}"
+					defaultValue="{!v.defaultValue}" parentId="{!v.parentId}" cmpId="{!v.cmpid}" performLookupOnFocus="true"
+					svg="{!v.svg}" />
+			</lightning:layoutItem>
+		</lightning:layout>
+	</div>
 </aura:component>

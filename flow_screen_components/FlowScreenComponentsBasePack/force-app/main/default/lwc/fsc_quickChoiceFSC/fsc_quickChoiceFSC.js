@@ -14,8 +14,8 @@ export default class QuickChoiceFSC extends LightningElement {
     availableActions = [];
 
     @api masterLabel;
-    @api choiceLabels;
-    @api choiceValues; //string collection
+    @api choiceLabels = [];
+    @api choiceValues = []; //string collection
 
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
@@ -46,7 +46,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     //-------------For inputMode = Visual Text Box (Card)
-    @api choiceIcons;
+    @api choiceIcons = [];
     @api includeIcons;
     @api iconSize;
     @api navOnSelect;

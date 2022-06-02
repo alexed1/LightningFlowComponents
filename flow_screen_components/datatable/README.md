@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUxRQAU)   
-[Version 4.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUxRQAU)
+[Version 4.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)   
+[Version 4.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  

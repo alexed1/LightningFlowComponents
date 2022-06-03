@@ -69,7 +69,8 @@ private class SortCollectionTest {
                 testAccounts.add(new Account(Name = name,
                 BillingStreet = i + ' Main St',
                 BillingCity = 'San Narciso',
-                BillingState = 'CA',
+                BillingState = 'California',
+                BillingCountry = 'United States',
                 BillingPostalCode = '92311',
                 BillingLatitude = 34.9 + i/1000,
                 BillingLongitude = -117.016667 + i/1000
@@ -83,7 +84,10 @@ private class SortCollectionTest {
             String firstNameCharacter = String.fromCharArray(new List<Integer> {aCharCode + Math.mod(i,26)});
             String lastNameCharacter = String.fromCharArray(new List<Integer> {zCharCode - Math.mod(i,26)});
             if (Math.mod(i,3) == 0) {
-                testContacts.add(new Contact(LastName = lastNameCharacter));
+                testContacts.add(new Contact(FirstName = 'John ' + firstNameCharacter,
+                        LastName = lastNameCharacter,
+                        Email = firstNameCharacter + '.' + lastNameCharacter + '@example.com'
+                ));
             } else {
                 testContacts.add(new Contact(LastName = lastNameCharacter, 
                     FirstName = 'John ' + firstNameCharacter,

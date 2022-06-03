@@ -8,12 +8,14 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
 
 export default class QuickChoiceFSC extends LightningElement {
 
+    bottomPadding = 'slds-p-bottom_x-small';
+
     @api
     availableActions = [];
 
     @api masterLabel;
-    @api choiceLabels;
-    @api choiceValues; //string collection
+    @api choiceLabels = [];
+    @api choiceValues = []; //string collection
 
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
@@ -44,7 +46,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     //-------------For inputMode = Visual Text Box (Card)
-    @api choiceIcons;
+    @api choiceIcons = [];
     @api includeIcons;
     @api iconSize;
     @api navOnSelect;
@@ -253,7 +255,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get gridClass() {
-        return this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center' : 'slds-form-element__control';
+        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center ' : 'slds-form-element__control ') + this.bottomPadding;
     }
 
     get gridStyle() {
@@ -436,7 +438,10 @@ export default class QuickChoiceFSC extends LightningElement {
             return 'max-width: ' + this.style_width + 'px';
         }
         return ''
+    }
 
+    get inputClass() {
+        return this.bottomPadding;
     }
 
 }

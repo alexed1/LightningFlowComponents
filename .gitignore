@@ -39,4 +39,5 @@ $RECYCLE.BIN/
 .npmignore
 .gitignore
 package-lock.json
+config.json
 jsconfig.json

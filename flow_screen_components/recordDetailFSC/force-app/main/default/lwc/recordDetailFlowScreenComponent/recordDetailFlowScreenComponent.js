@@ -5,7 +5,18 @@ import NotSupportedMessage from '@salesforce/label/c.NotSupportedMessage';
 import {FlowNavigationNextEvent, FlowNavigationFinishEvent, FlowNavigationBackEvent} from 'lightning/flowSupport';
 
 export default class recordDetailFSC extends LightningElement {
-    @api recordId;
+
+    _recordId;
+
+    @api 
+    get recordId() {
+        return this._recordId || '';
+    }
+
+    set recordId(value = '') {
+        this._recordId = value;
+    }
+
     @api recordTypeId;
     @api mode = 'view';
     @api objectApiName;
@@ -42,6 +53,7 @@ export default class recordDetailFSC extends LightningElement {
     readOnlyFields = ['LastModifiedDate', 'LastModifiedById', 'LastViewedDate', 'LastReferencedDate', 'CreatedDate', 'CreatedById', 'SystemModstamp'];
 
     connectedCallback() {
+        this._recordId = '';
         this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
         this.elementSize = this.columnsize? (12/this.columnsize) : 6;
     }
@@ -55,7 +67,7 @@ export default class recordDetailFSC extends LightningElement {
 
     get fieldData() {
         return this.fieldsToDisplay.filter(curField => {
-            return this.recordId || (!this.recordId && !this.readOnlyFields.includes(curField));
+            return this._recordId || (!this._recordId && !this.readOnlyFields.includes(curField));
         }).map(curField => {
             let isError = !!this.notSupportedFields.find(curNSField => curNSField === curField) || !curField;
             return {
@@ -81,7 +93,7 @@ export default class recordDetailFSC extends LightningElement {
         }
     }
 
-    @wire(getRecord, {recordId: '$recordId', layoutTypes: 'Compact'})
+    @wire(getRecord, {recordId: '$_recordId', layoutTypes: 'Compact'})
     wiredRecord({error, data}) {
         if (error) {
             console.log(error.body[0].message)
@@ -139,7 +151,6 @@ export default class recordDetailFSC extends LightningElement {
     handleSuccess(event) {
         this.isSaving = false;
         this.recordId = event.detail.id;
-         
         if(!this.suppressToast){
             this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
         }

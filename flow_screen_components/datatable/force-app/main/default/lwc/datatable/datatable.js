@@ -65,6 +65,7 @@ export default class Datatable extends LightningElement {
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
     @api numberOfRowsSelected = 0;
+    @api selectedRowKeyValue = '';
     @api numberOfRowsEdited = 0;
     @api isConfigMode = false;
     @api tableHeight;
@@ -527,11 +528,13 @@ export default class Datatable extends LightningElement {
 
         console.log('this._tableData',this._tableData);
         if(!this._tableData) {
+            this.isUpdateTable = false;
             this._tableData = [];
         }
 
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
         let cnt = Math.min(this._tableData.length, max);
+        this.isUpdateTable = false;
         this._tableData = [...this._tableData].slice(0,cnt);
 
         // Set roundValue for setting Column Widths in Config Mode
@@ -929,7 +932,7 @@ export default class Datatable extends LightningElement {
             // Adjust date with offset based on User's timezone
             dateFields.forEach(date => {
                 if (record[date]) {
-                    let dt = Date.parse(record[date]);
+                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
                     let d = new Date();
                     record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
                 }
@@ -1474,7 +1477,7 @@ export default class Datatable extends LightningElement {
                 let datefield = this.dateFieldArray;
                 datefield.forEach(date => {
                     if (field[date]) {
-                        let rdt = Date.parse(field[date]);
+                        let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
                         let rd = new Date();
                         field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
                     }
@@ -1548,7 +1551,11 @@ export default class Datatable extends LightningElement {
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
-        this.showClearButton = (this.numberOfRowsSelected == 1 && (this._tableData.length == 1 || this.singleRowSelection)) && !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        if((this.numberOfRowsSelected == 1 && (this._tableData.length == 1 || this.singleRowSelection))) {
+            this.selectedRowKeyValue = (this.outputSelectedRow[this.keyField]) ? this.outputSelectedRow[this.keyField] : '';
+            this.dispatchEvent(new FlowAttributeChangeEvent('selectedRowKeyValue', this.selectedRowKeyValue));
+            this.showClearButton = !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+        }
     }
 
     handleClearSelection() {

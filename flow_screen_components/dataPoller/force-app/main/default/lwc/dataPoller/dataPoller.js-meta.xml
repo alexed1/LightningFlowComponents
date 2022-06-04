@@ -10,6 +10,7 @@
             <propertyType name="T" extends="SObject" label="Datatable Object API Name" description="Select the API Name of the SObject to use in the Datatable"/>
             <property name="pollingFrequency" type="Integer" />
             <property name="queryString" type="String" />
+            <property name="queryId" type="String" />
             <property name="retrievedRecords" type="{T[]}" role="outputOnly" />
             <property name="error" type="String" role="outputOnly" description="API Name of the metadata"/>
         </targetConfig>

@@ -3,6 +3,9 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
 5/22/22 -    D Summerlin      - Version 1.8.2
                                 Added custom submit handling to show progress indicator
 
+5/22/22 -    Eric Smith -       Version 1.8.x
+                                Added support for recordId to be reactive on input
+
 8/11/20 -    M Hamza Siddiqui - Version 1.8.1
                                 Added Class Option- Default Class = "slds-box slds-theme_default"
 
@@ -86,7 +89,7 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                             </lightning-input-field>
                                         </template>
                                         <div if:true={field.isError}
-                                             class="slds-text-color_destructive slds-align_absolute-center">
+                                            class="slds-text-color_destructive slds-align_absolute-center">
                                             {field.errorMessage}
                                         </div>
                                     </lightning-layout-item>

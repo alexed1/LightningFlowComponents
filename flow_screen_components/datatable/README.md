@@ -43,16 +43,16 @@ Twitter: 	https://twitter.com/esmith35
 
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
-FlowActionsBasePack Version 2.36 or later  
-FlowScreenComponentsBasePack Version 2.7.7 or later  
+FlowActionsBasePack Version 3.0.0 or later  
+FlowScreenComponentsBasePack Version 3.0.7 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 3.5.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUuDQAU)   
-[Version 3.5.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUuDQAU)
+[Version 4.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)   
+[Version 4.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,7 +71,28 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
-  
+ 
+## 05/22/22 -  Eric Smith -     Version 4.0.5 
+**Updates:** 
+-   Added new Output Attribute - selectedRowKeyValue
+    This outputs the value of the KeyField(Id) when single row selection is enabled.  This is designed to support inputs to other
+    components on the same screen when Reactive Screens are implemented 
+-   Enhanced how Column Wizard configuration files are created and updated 
+-   Saved Column Wizard configuration files now support >255 characters per attribute 
+ 
+**Bug Fixes:** 
+-   Fix Column Wizard error when reselecting after saving a flow 
+-   Column Wizard configuration files now store the column widths values
+-   Fix test class for orgs without Orders enabled
+ 
+## 05/15/22 -  Eric Smith -     Version 4.0.4 
+**Bug Fixes:** 
+-   Changed the Date timezone offset to start at Noon instead of Midnight in order to avoid DST issues with the offset
+ 
+## 04/14/22 -  Alex Edelstein - Version 4.0.3 
+**Updates:** 
+-   Updated to use the new v3 versions of the Base Packs
+ 
 ## 03/25/22 -  Eric Smith -    Version 3.5.1 
 **Bug Fixes:** 
 -   Fixed a bug where table sorting, edits and column widths were getting reset when using the datatable on a screen with Sections or in an

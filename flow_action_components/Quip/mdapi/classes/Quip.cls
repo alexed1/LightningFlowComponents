@@ -20,6 +20,10 @@ public class Quip implements IQuip {
         folderQueue.add(currentUser.archive_folder_id);
         folderQueue.add(currentUser.desktop_folder_id);
         folderQueue.add(currentUser.starred_folder_id);
+        folderQueue.add(currentUser.private_folder_id);      
+        folderQueue.add(currentUser.archive_folder_id);
+        folderQueue.add(currentUser.desktop_folder_id);
+        folderQueue.add(currentUser.starred_folder_id);
         folderQueue.add(currentUser.private_folder_id);
         while (folderQueue.size() > 0) {
             String folderId = folderQueue.remove(folderQueue.size() - 1);

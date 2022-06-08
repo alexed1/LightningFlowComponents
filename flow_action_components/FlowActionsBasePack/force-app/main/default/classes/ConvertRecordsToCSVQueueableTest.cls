@@ -57,16 +57,15 @@ private class ConvertRecordsToCSVQueueableTest {
     }
 
     @isTest
-        private static void testGenerateCSVContentAggregateResult() {
+    private static void testGenerateCSVContentAggregateResult() {
 		
-	//@isTest The GROUPBY LastName causes a test failure on orgs with Shield Encryption turned on, so chaged it to Group By LeadSource instead
-	Contact contact1 = new Contact(LastName='Test', FirstName='Sally', LeadSource = 'Web');
-        Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com', LeadSource = 'Advertisement');
+	    Contact contact1 = new Contact(LastName='Test', FirstName='Sally', LeadSource = 'Web');
+        Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com', LeadSource = 'Web');
         Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny', LeadSource = 'Social');
         insert new List<Contact>{contact1, contact2, contact3};
         update contact2;
 
-        List<AggregateResult> contacts = [Select LeadSource from Contact GROUP BY LeadSource];
+        List<AggregateResult> contacts = [Select LeadSource name from Contact GROUP BY LeadSource];
         
         Test.startTest();
         String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
@@ -76,14 +75,14 @@ private class ConvertRecordsToCSVQueueableTest {
         List<String> rows = fullCSV.split('\n');
        	System.assertEquals(3, rows.size(), 'Full text: ' + fullCSV);
         System.assertEquals('name', rows[0]);
-        System.assertEquals('Test', rows[1]);
-        System.assertEquals('Test2', rows[2]);
+        System.assertEquals('Web', rows[1]);
+        System.assertEquals('Social', rows[2]);
           
         List<String> rows2 = unnamed.split('\n');
        	System.assertEquals(3, rows2.size(), 'Full text: ' + unnamed);
         System.assertEquals('name', rows[0]);
-        System.assertEquals('Test', rows2[1]);
-        System.assertEquals('Test2', rows2[2]);
+        System.assertEquals('Web', rows2[1]);
+        System.assertEquals('Social', rows2[2]);
     }
     
     @isTest 

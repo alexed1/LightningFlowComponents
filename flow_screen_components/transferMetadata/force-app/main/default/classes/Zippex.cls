@@ -25,10 +25,7 @@ public class Zippex
         
         for (Integer fileLoop = 0; fileLoop < numberOfFiles; fileLoop++)
         {
-            FileObject tempFile = new FileObject(zipfileString, offset);
-            System.debug('File ' + tempFile.fileName);
-            zipFileMap.put(EncodingUtil.convertFromHex(tempFile.fileName).toString(), tempFile);
-            offset = tempFile.c_offsetToNextRecord;
+            
         }
     }
     

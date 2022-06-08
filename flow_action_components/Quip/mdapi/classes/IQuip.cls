@@ -23,4 +23,19 @@ public interface IQuip {
     void addDocumentToFolder(String threadIdOrName, String folderPath);
 
     void renameFolder(Folder folder, String newName);
+    
+    
+    Folder createFolder(String name, String parentFolderId);
+
+    List<Folder> getFolders(List<String> foldersId);
+
+    void grantAccess(String threadIdOrName, List<String> userIdsOrEmails);
+
+    void revokeAccess(String threadIdOrName, List<String> userIdsOrEmails);
+
+    Folder getFolderByPath(String path, Boolean createIfNotExists);
+
+    void addDocumentToFolder(String threadIdOrName, String folderPath);
+
+    void renameFolder(Folder folder, String newName);
 }

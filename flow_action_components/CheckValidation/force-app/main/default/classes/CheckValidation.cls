@@ -77,7 +77,7 @@ global inherited sharing class CheckValidation {
     global class InvocableActionException extends Exception {}
 
     // Expose this Action to the Flow
-    @InvocableMethod(iconName='resource:CheckValidationSVG:Layer_1')
+    @InvocableMethod(label='Validation Checker by Eric Smith' iconName='resource:CheckValidationSVG:Layer_1')
     global static List<Results> checkForValidationErrors(List<Requests> requestList) {
 
         // Prepare the response to send back to the Flow

@@ -39,3 +39,4 @@ $RECYCLE.BIN/
 .npmignore
 .gitignore
 package-lock.json
+jsconfig.json

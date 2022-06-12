@@ -1,0 +1,26 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters">
+        <template if:true={masterLabel}>
+            <div class="slds-col slds-size_1-of-1">
+                <legend class="slds-form-element__legend slds-form-element__label">{masterLabel}</legend>
+            </div>
+        </template>
+        <div class={computedColClass}>
+            <template if:false={hideObjectPicklist}>
+                <c-fsc_object-selector name="objectSelector" allow-multiselect={objectAllowMultiselect}
+                    label={objectLabel} required={required} available-object-selection={availableObjectSelection}
+                    available-objects={availableObjects} disabled={lockDefaultObject} onchange={handleObjectChange}
+                    value={objectValue}>
+                </c-fsc_object-selector>
+            </template>
+        </div>
+        <div class={computedColClass}>
+            <template if:false={hideFieldPicklist}>
+                <c-fsc_field-selector2 name="fieldSelector" label={fieldLabel} required={required}
+                    allow-multiselect={fieldAllowMultiselect} object-name={objectValue}
+                    available-field-types={availableFieldTypes} available-reference-types={availableReferenceTypes} onchange={handleFieldChange} value={fieldValue}>
+                </c-fsc_field-selector2>
+            </template>
+        </div>
+    </div>
+</template>

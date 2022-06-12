@@ -9,6 +9,8 @@
  * 
  * Custom Property Editor:          GetRecordsInCPE
  * 
+ * CPE Supporting Components:       Thanks to David Fromstein for wonderful new versions of Combobox and Object and Field selector
+ * 
  * 06/05/22 -   Eric Smith -    Version 1.0.0   
  * 
  **/
@@ -16,7 +18,7 @@
 global with sharing class GetRecordsIn {
     
     /* Flow Action */
-    @invocableMethod(label='Get Records In' configurationEditor='c:getRecordsInCPE' description='Perform a Get records WHERE a field value is IN a collection of values')
+    @invocableMethod(label='Get Records IN by Eric Smith' configurationEditor='c:getRecordsInCPE' description='Perform a Get records WHERE a field value is IN a collection of values')
     global static List<Results> GetRecordsIn(List<Requests> requestList) {
 
         /* Prepare Response */

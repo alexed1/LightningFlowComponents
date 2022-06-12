@@ -7,11 +7,15 @@
  *      In place of the normal selection and filter attributes, it is designed to return a collection of records
  *      where the value of a field in the record is IN a collection of values passed into the component.
  *
+ *      Thanks to David Fromstein for wonderful new versions of Combobox and Object and Field selector
+ *
  * 06/05/22 -   Eric Smith -    Version 1.0.0  
  *
  **/
 
 import { LightningElement, api, track } from 'lwc';
+import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject } from 'c/fsc_objectFieldSelectorUtils';
+
 
 // *** Set the component's current version # here
 const VERSION_NUMBER = "1.0.0";
@@ -26,29 +30,29 @@ const DEFAULTS = {
     attributeSpacing: "slds-m-vertical_x-small"
 };
 
-const COLORS = {
-    blue: "#4C6E96", //Brand is #1B5297, decreasing shades: #346096, #4C6E96, #657B96
-    blue_light: "#657B96",
-    green: "#659668",
-    green_light: "#7E967F",
-    red: "#966594",
-    red_light: "#967E95"
-};
+// const COLORS = {
+//     blue: "#4C6E96", //Brand is #1B5297, decreasing shades: #346096, #4C6E96, #657B96
+//     blue_light: "#657B96",
+//     green: "#659668",
+//     green_light: "#7E967F",
+//     red: "#966594",
+//     red_light: "#967E95"
+// };
 
 export default class GetRecordsInCPE extends LightningElement {
 
     versionNumber;
 
-    // *** Define any banner overrides you want to use (see fsc_flowBanner.js)
-    _bannerMargin = "slds-m-top_small slds-m-bottom_xx-small";
-    _bannerClass =
-        "slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small";
-    _defaultBannerColor = COLORS.blue;
-    _colorWizardOverride = COLORS.green;
-    _colorAdvancedOverride = COLORS.red;
-    _defaultModalHeaderColor = COLORS.blue_light;
-    _modalHeaderColorWizardOverride = COLORS.green_light;
-    _modalHeaderColorAdvancedOverride = COLORS.red_light;
+    // // *** Define any banner overrides you want to use (see fsc_flowBanner.js)
+    // _bannerMargin = "slds-m-top_small slds-m-bottom_xx-small";
+    // _bannerClass =
+    //     "slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small";
+    // _defaultBannerColor = COLORS.blue;
+    // _colorWizardOverride = COLORS.green;
+    // _colorAdvancedOverride = COLORS.red;
+    // _defaultModalHeaderColor = COLORS.blue_light;
+    // _modalHeaderColorWizardOverride = COLORS.green_light;
+    // _modalHeaderColorAdvancedOverride = COLORS.red_light;
 
     // Flow Builder interface
     _inputVariables = [];
@@ -107,45 +111,45 @@ export default class GetRecordsInCPE extends LightningElement {
     validateErrors = [];
     firstPass = true;
 
-    @api
-    get bannerMargin() {
-        return this._bannerMargin;
-    }
+    // @api
+    // get bannerMargin() {
+    //     return this._bannerMargin;
+    // }
 
-    @api
-    get bannerClass() {
-        return this._bannerClass;
-    }
+    // @api
+    // get bannerClass() {
+    //     return this._bannerClass;
+    // }
 
-    @api
-    get defaultBannerColor() {
-        return this._defaultBannerColor;
-    }
+    // @api
+    // get defaultBannerColor() {
+    //     return this._defaultBannerColor;
+    // }
 
-    @api
-    get colorWizardOverride() {
-        return this._colorWizardOverride;
-    }
+    // @api
+    // get colorWizardOverride() {
+    //     return this._colorWizardOverride;
+    // }
 
-    @api
-    get colorAdvancedOverride() {
-        return this._colorAdvancedOverride;
-    }
+    // @api
+    // get colorAdvancedOverride() {
+    //     return this._colorAdvancedOverride;
+    // }
 
-    @api
-    get defaultModalHeaderColor() {
-        return this._defaultModalHeaderColor;
-    }
+    // @api
+    // get defaultModalHeaderColor() {
+    //     return this._defaultModalHeaderColor;
+    // }
 
-    @api
-    get modalHeaderColorWizardOverride() {
-        return this._modalHeaderColorWizardOverride;
-    }
+    // @api
+    // get modalHeaderColorWizardOverride() {
+    //     return this._modalHeaderColorWizardOverride;
+    // }
 
-    @api
-    get modalHeaderColorAdvancedOverride() {
-        return this._modalHeaderColorAdvancedOverride;
-    }
+    // @api
+    // get modalHeaderColorAdvancedOverride() {
+    //     return this._modalHeaderColorAdvancedOverride;
+    // }
 
     @api
     get attributeSpacing() {
@@ -159,24 +163,6 @@ export default class GetRecordsInCPE extends LightningElement {
 
     set automaticOutputVariables (value) {
         this._automaticOutputVariables = value;
-    }
-
-    get isDisplayAll() {
-        // TODO: First provide a more limited object picklist (see Datatable)
-        return true;
-    }
-    
-    get availableObjectTypes() { 
-        return (this.isDisplayAll) ? 'All' : '';
-    }
-
-    get typeOptions() { // TODO: @wire
-        return [
-            { label: 'Account', value: 'Account' },
-            { label: 'Case', value: 'Case' },
-            { label: 'Lead', value: 'Lead' },
-            { label: 'Contact', value: 'Contact' },
-        ];
     }
 
     get outputObject() {
@@ -209,6 +195,36 @@ export default class GetRecordsInCPE extends LightningElement {
     get sourceRecordCollection() {
         const param = this._inputVariables.find(({ name }) => name === 'sourceRecordCollection');
         return param && param.value;
+    }
+
+    // *** David Fromstein's Object/Field Picker
+    get required() {
+        return true;
+    }
+
+    get notRequired() {
+        return null;
+    }
+
+    get allow(){
+        return true;
+    }
+
+    get doNotAllow(){
+        return null;
+    }
+
+    get objectOnly() {
+        return DISPLAY_TYPE_OPTIONS.OBJECT.value;
+    }
+
+    get fieldsOnly() {
+        return DISPLAY_TYPE_OPTIONS.FIELD.value;
+    }
+
+    get availableObjectSelection() {
+        // TODO: return 'both' for Standard & Custom or 'all'
+        return 'both';
     }
 
     // *** Custom CPE handling here
@@ -358,25 +374,25 @@ export default class GetRecordsInCPE extends LightningElement {
         }
 };
 
-    // *** Define sections for the Help Text on each Banner
-    sectionEntries = {
-        // sectionName: { label: "My Section Label", info: [] }
-    };
+    // // *** Define sections for the Help Text on each Banner
+    // sectionEntries = {
+    //     // sectionName: { label: "My Section Label", info: [] }
+    // };
 
-    // *** List the attribute names and/or custom entries for each help text section
-    helpSections = [
-        {
-        // name: "sectionName",
-        // attributes: [
-        //     { name: "attributeName" },
-        //     { name: "attributeName" },
-        //     { name: "attributeName" },
-        //     { name: DEFAULTS.customHelpDefinition,
-        //         label: 'My Custom Label',
-        //         helpText: 'My Custom Help Text'}
-        // ]
-        }
-    ];
+    // // *** List the attribute names and/or custom entries for each help text section
+    // helpSections = [
+    //     {
+    //     // name: "sectionName",
+    //     // attributes: [
+    //     //     { name: "attributeName" },
+    //     //     { name: "attributeName" },
+    //     //     { name: "attributeName" },
+    //     //     { name: DEFAULTS.customHelpDefinition,
+    //     //         label: 'My Custom Label',
+    //     //         helpText: 'My Custom Help Text'}
+    //     // ]
+    //     }
+    // ];
 
     initializeValues() {
         console.log("CPE - initializeValues");
@@ -422,7 +438,7 @@ export default class GetRecordsInCPE extends LightningElement {
 
         if (this.firstPass) {
             this.handleDefaultAttributes();
-            this.handleBuildHelpInfo();
+            // this.handleBuildHelpInfo();
         }
         this.firstPass = false;
     }
@@ -431,27 +447,27 @@ export default class GetRecordsInCPE extends LightningElement {
         console.log("CPE - handle default attributes");
     }
 
-    handleBuildHelpInfo() {
-        console.log("CPE - build help info");
-        this.helpSections.forEach((section) => {
-            if (Object.keys(this.sectionEntries).length > 0) {
-                this.sectionEntries[section.name].info = [];
-                section.attributes.forEach((attribute) => {
-                    if (attribute.name == DEFAULTS.customHelpDefinition) {
-                        this.sectionEntries[section.name].info.push({
-                            label: attribute.label,
-                            helpText: attribute.helpText
-                        });
-                    } else {
-                        this.sectionEntries[section.name].info.push({
-                            label: this.inputValues[attribute.name].label,
-                            helpText: this.inputValues[attribute.name].helpText
-                        });
-                    }
-                });
-            }
-        });
-    }
+    // handleBuildHelpInfo() {
+    //     console.log("CPE - build help info");
+    //     this.helpSections.forEach((section) => {
+    //         if (Object.keys(this.sectionEntries).length > 0) {
+    //             this.sectionEntries[section.name].info = [];
+    //             section.attributes.forEach((attribute) => {
+    //                 if (attribute.name == DEFAULTS.customHelpDefinition) {
+    //                     this.sectionEntries[section.name].info.push({
+    //                         label: attribute.label,
+    //                         helpText: attribute.helpText
+    //                     });
+    //                 } else {
+    //                     this.sectionEntries[section.name].info.push({
+    //                         label: this.inputValues[attribute.name].label,
+    //                         helpText: this.inputValues[attribute.name].helpText
+    //                     });
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 
     handleOutputObjectChange(event) {
         console.log("CPE - Handle Output Object Change");
@@ -524,6 +540,7 @@ export default class GetRecordsInCPE extends LightningElement {
         }
     }
 
+    // TODO: THis can go away when I figure out filtered collection list based on source object
     updateRecordVariablesComboboxOptions(objectType) {
 console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 485 ~ GetRecordsInCPE ~ updateRecordVariablesComboboxOptions ~ objectType", objectType);
 const vars = this._flowVariables;
@@ -611,8 +628,8 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
                 DEFAULTS.inputAttributePrefix,
                 ""
             );
-            let newType = event.detail.newValueDataType;
-            let newValue = event.detail.newValue;
+            let newType = event.detail?.newValueDataType || 'String';
+            let newValue = event.detail?.newValue || event.detail.value;
 
             // *** Handle all Number attributes here
             // if (changedAttribute == "contentSize" && newType != "reference") {
@@ -665,8 +682,8 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
         this.validateErrors.length = 0;
     
         // *** Custom Error Checking Here
-        this.checkError((!this.isOutputObjectSelected), 'outputObject', 'You must select the Output Object');
-        this.checkError((this.isSourceMethodObject && !this.isSourceObjectSelected), 'sourceObject', 'You must select the Source Object');
+        this.checkError((!this.isOutputObjectSelected), 'outputObject', 'You must select the Output object');
+        this.checkError((this.isSourceMethodObject && !this.isSourceObjectSelected), 'sourceObject', 'You must select the Source object');
 
         // ComboBox Errors
         let allComboboxes = this.template.querySelectorAll("c-fsc_flow-combobox");

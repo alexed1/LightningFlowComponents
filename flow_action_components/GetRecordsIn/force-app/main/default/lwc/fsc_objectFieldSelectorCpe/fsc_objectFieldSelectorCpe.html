@@ -1,0 +1,112 @@
+<template>
+    <div class="slds-p-vertical_x-small">
+        <h3 class="slds-text-heading_small slds-p-bottom_xxx-small">General Settings</h3>
+        <lightning-input name="masterLabel" label={inputValues.masterLabel.label} value={inputValues.masterLabel.value}
+            oncommit={handleValueChange} field-level-help={inputValues.masterLabel.fieldLevelHelp}></lightning-input>
+
+        <label class="slds-text-title slds-m-top_small">{inputValues.displayType.label}
+            <lightning-helptext content={inputValues.displayType.fieldLevelHelp} class="slds-p-left_xx-small">
+            </lightning-helptext>
+        </label>
+        <lightning-radio-group name="displayType" options={displayTypes.options} label={inputValues.displayType.label}
+            value={inputValues.displayType.value} variant="label-hidden" onchange={handleValueChange}>
+        </lightning-radio-group>
+
+        <label class="slds-text-title">{inputValues.required.label}</label>
+        <lightning-radio-group name="required" options={yesNoOptions} label={inputValues.required.label}
+            variant="label-hidden" type="button" value={inputValues.required.value} onchange={handleValueChange}>
+        </lightning-radio-group>
+        <!-- <lightning-helptext content={inputValues.required.fieldLevelHelp}></lightning-helptext> -->
+
+        <template if:true={showLayoutOptions}>
+            <label class="slds-text-title">{inputValues.layout.label}
+                <!-- <lightning-helptext
+                    content={inputValues.layout.fieldLevelHelp}></lightning-helptext> -->
+            </label>
+            <lightning-radio-group name="layout" options={layoutOptions.options} label={inputValues.layout.label}
+                variant="label-hidden" type="button" value={inputValues.layout.value} onchange={handleValueChange}>
+            </lightning-radio-group>
+        </template>
+    </div>
+    <template if:true={showObject}>
+        <hr class="slds-m-vertical_xx-small">
+        <div class="slds-p-vertical_x-small">
+            <h3 class="slds-text-heading_small slds-p-bottom_xxx-small">Object Settings</h3>
+            <lightning-input name="objectLabel" label={inputValues.objectLabel.label}
+                value={inputValues.objectLabel.value} oncommit={handleValueChange} required
+                field-level-help={inputValues.displayType.fieldLevelHelp}></lightning-input>
+            <lightning-combobox name="availableObjectSelection" label={inputValues.availableObjectSelection.label}
+                options={availableObjectOptions.options} value={inputValues.availableObjectSelection.value}
+                onchange={handleValueChange} field-level-help={inputValues.availableObjectSelection.fieldLevelHelp}>
+            </lightning-combobox>
+            <template if:true={showSpecificObjects}>
+                <c-fsc_object-selector name="availableObjects" label={inputValues.availableObjects.label}
+                    allow-multiselect value={inputValues.availableObjects.value} onchange={handleValueChange}
+                    field-level-help={inputValues.availableObjects.fieldLevelHelp}>
+                </c-fsc_object-selector>
+            </template>
+            <c-fsc_object-selector name="objectValue" label={inputValues.objectValue.label}
+                allow-multiselect={inputValues.objectAllowMultiselect.value} onchange={handleValueChange}
+                field-level-help={inputValues.objectAllowMultiselect.fieldLevelHelp}
+                available-object-selection={inputValues.availableObjectSelection.value}
+                available-objects={inputValues.availableObjects.value} value={inputValues.objectValue.value}>
+            </c-fsc_object-selector>
+            <template if:true={showField}>
+                <label class="slds-text-title">{inputValues.lockDefaultObject.label}</label>
+                <lightning-radio-group name="lockDefaultObject" options={yesNoOptions}
+                    label={inputValues.lockDefaultObject.label} variant="label-hidden"
+                    value={inputValues.lockDefaultObject.value} type="button" disabled={disableLockDefaultObject}
+                    onchange={handleValueChange} field-level-help={inputValues.lockDefaultObject.fieldLevelHelp}>
+                </lightning-radio-group>
+            </template>
+            <template if:false={showField}>
+                <label class="slds-text-title">{inputValues.objectAllowMultiselect.label}</label>
+                <lightning-radio-group name="objectAllowMultiselect" options={multiselectOptions}
+                    label={inputValues.objectAllowMultiselect.label} variant="label-hidden"
+                    value={inputValues.objectAllowMultiselect.value} type="button" onchange={handleValueChange}
+                    field-level-help={inputValues.displayType.fieldLevelHelp}>
+                </lightning-radio-group>
+            </template>
+        </div>
+    </template>
+    <template if:true={showField}>
+        <hr class="slds-m-vertical_xx-small">
+        <div class="slds-p-vertical_x-small">
+            <h3 class="slds-text-heading_small slds-p-bottom_xxx-small">Field Settings</h3>
+            <lightning-input name="fieldLabel" label={inputValues.fieldLabel.label} value={inputValues.fieldLabel.value}
+                oncommit={handleValueChange} required field-level-help={inputValues.fieldLabel.fieldLevelHelp}>
+            </lightning-input>
+            <template if:false={showObject}>
+                <c-fsc_object-selector name="objectValue" label="Select Object for Field List"
+                    value={inputValues.objectValue.value} onchange={handleValueChange} required
+                    field-level-help={inputValues.objectValue.fieldLevelHelp}>
+                </c-fsc_object-selector>
+
+                <c-fsc_field-selector2 name="fieldValue" label={inputValues.fieldValue.label}
+                    allow-multiselect={inputValues.fieldAllowMultiselect.value} onchange={handleValueChange}
+                    field-level-help={inputValues.fieldValue.fieldLevelHelp} object-name={inputValues.objectValue.value}
+                    value={inputValues.fieldValue.value}>
+                </c-fsc_field-selector2>
+            </template>
+
+            <label class="slds-text-title">{inputValues.fieldAllowMultiselect.label}
+                <lightning-helptext content={inputValues.fieldAllowMultiselect.fieldLevelHelp}
+                    class="slds-p-left_xx-small"></lightning-helptext>
+            </label>
+            <lightning-radio-group name="fieldAllowMultiselect" options={multiselectOptions}
+                label={inputValues.fieldAllowMultiselect.label} variant="label-hidden"
+                value={inputValues.fieldAllowMultiselect.value} type="button" onchange={handleValueChange}>
+            </lightning-radio-group>
+            <c-fsc_combobox name="availableFieldTypes" label={inputValues.availableFieldTypes.label} allow-multiselect
+                value={inputValues.availableFieldTypes.value} options={fieldTypeOptions.options}
+                onchange={handleValueChange} field-level-help={inputValues.availableFieldTypes.fieldLevelHelp}>
+            </c-fsc_combobox>
+            <template if:true={showAvailableReferenceTypes}>
+                <c-fsc_object-selector name="availableReferenceTypes" allow-multiselect
+                    label={inputValues.availableReferenceTypes.label} value={inputValues.availableReferenceTypes.value}
+                    onchange={handleValueChange} field-level-help={inputValues.availableReferenceTypes.fieldLevelHelp}>
+                </c-fsc_object-selector>
+            </template>
+        </div>
+    </template>
+</template>

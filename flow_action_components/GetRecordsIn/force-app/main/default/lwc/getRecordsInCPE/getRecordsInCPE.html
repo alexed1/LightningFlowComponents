@@ -8,15 +8,15 @@
         <div class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.outputObject.class}>
                 <div class="slds-form-element__control">
-                    <lightning-combobox
+                    <c-fsc_object-selector
                         name="outputObject"
                         label={inputValues.outputObject.label}
                         value={outputObject}
-                        placeholder="Select object..."
-                        options={typeOptions}
+                        required={required}
+                        available-object-selection={availableObjectSelection}
                         onchange={handleOutputObjectChange}
-                        required>
-                    </lightning-combobox>
+                        >
+                    </c-fsc_object-selector>
                 </div>
                 <c-fsc_display-error 
                     is-error={inputValues.outputObject.isError}
@@ -27,24 +27,22 @@
     </div>
 
     <!-- Select field to Compare -->
-    <!-- TODO: Field Selector based on selected output object -->
     <div class="slds-m-bottom_small slds-border_top">
         <h3 class="slds-text-heading_small slds-p-vertical_small">
             ... where the Value of this Field ...
         </h3>
         <div class="slds-form-element slds-size_1-of-2">
             <div class="slds-form-element__control">
-                <c-fsc_flow-combobox
+                <c-fsc_field-selector2 
                     name="select_targetField" 
                     label={inputValues.targetField.label}
                     value={inputValues.targetField.value} 
-                    value-type={inputValues.targetField.valueDataType}
-                    field-level-help={inputValues.targetField.helpText}
-                    builder-context-filter-collection-boolean={inputValues.targetField.isCollection}
-                    builder-context={_builderContext} 
-                    onvaluechanged={handleFlowComboboxValueChange}
-                    automatic-output-variables={automaticOutputVariables}>
-                </c-fsc_flow-combobox>
+                    required={notRequired}
+                    allow-multiselect={doNotAllow}
+                    object-name={outputObject}
+                    onchange={handleFlowComboboxValueChange}
+                    >
+            </c-fsc_field-selector2>
             </div>
         </div>
     </div>
@@ -116,15 +114,15 @@
         <div if:true={isSourceMethodObject} class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.sourceObject.class}>
                 <div class="slds-form-element__control">
-                    <lightning-combobox
+                    <c-fsc_object-selector
                         name="sourceObject"
                         label={inputValues.sourceObject.label}
                         value={sourceObject}
-                        placeholder="Select object..."
-                        options={typeOptions}
+                        required={required}
+                        available-object-selection={availableObjectSelection}
                         onchange={handleSourceObjectChange}
-                        required>
-                    </lightning-combobox>
+                        >
+                    </c-fsc_object-selector>
                 </div>
                 <c-fsc_display-error 
                     is-error={inputValues.sourceObject.isError}
@@ -146,18 +144,16 @@
                 </div>
 
                 <div class="slds-m-top_small">
-                    <!-- TODO: Field Selector based on selected source object -->
-                    <c-fsc_flow-combobox 
+                    <c-fsc_field-selector2 
                         name="select_sourceField" 
                         label={inputValues.sourceField.label}
                         value={inputValues.sourceField.value} 
-                        value-type={inputValues.sourceField.valueDataType}
-                        field-level-help={inputValues.sourceField.helpText}
-                        builder-context-filter-collection-boolean={inputValues.sourceField.isCollection}
-                        builder-context={_builderContext} 
-                        onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}>
-                    </c-fsc_flow-combobox>
+                        required={notRequired}
+                        allow-multiselect={doNotAllow}
+                        object-name={sourceObject}
+                        onchange={handleFlowComboboxValueChange}
+                        >
+                    </c-fsc_field-selector2>
                 </div>
             </div>
         </div>
@@ -177,18 +173,16 @@
             </lightning-radio-group>
         </div>
         <div if:true={isChooseFields} class="slds-m-top_small">
-            <!-- TODO: Field Selector based on selected output object -->
-            <c-fsc_flow-combobox 
+            <c-fsc_field-selector2 
                 name="select_outputFieldNames" 
+                allow-multiselect={allow}
                 label={inputValues.outputFieldNames.label}
                 value={inputValues.outputFieldNames.value} 
-                value-type={inputValues.outputFieldNames.valueDataType}
-                field-level-help={inputValues.outputFieldNames.helpText}
-                builder-context-filter-collection-boolean={inputValues.outputFieldNames.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}>
-            </c-fsc_flow-combobox>
+                required={required}
+                object-name={outputObject}
+                onchange={handleFlowComboboxValueChange}
+                >
+            </c-fsc_field-selector2>
         </div>
     </div>
 

@@ -1,0 +1,22 @@
+<template>
+    <c-fsc_combobox 
+        name={name}
+        options={objectOptions} 
+        label={label} 
+        values={values} 
+        public-class={publicClass} 
+        public-style={publicStyle} 
+        show-selected-count={showSelectedCount}
+        required={required} 
+        allow-multiselect={allowMultiselect} 
+        is-loading={isLoading} 
+        placeholder={computedPlaceholder}
+        onchange={handleComboboxChange} 
+        disabled={disabled}
+        value-delimiter={valueDelimiter}
+        hide-pills={hidePills}
+        exclude-sublabel-in-filter={excludeSublabelInFilter}
+        include-value-in-filter={includeValueInFilter}
+        icon-size="x-small"
+        field-level-help={fieldLevelHelp}></c-fsc_combobox>
+</template>

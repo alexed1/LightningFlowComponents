@@ -1,7 +1,7 @@
 /** 
  *  Check Validation Flow Action
  * 
- *  Eric Smith - x/x/22 - v1.6
+ *  Eric Smith - 6/12/22 - v1.6
  *  Add custom SVG image for flow builder canvas
  * 
  *  Eric Smith - 5/5/21 - v1.5

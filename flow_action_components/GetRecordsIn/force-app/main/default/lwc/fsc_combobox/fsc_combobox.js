@@ -257,7 +257,6 @@ export default class OptionSelector extends LightningElement {
     }
 
     get showPills() {
-console.log("🚀 ~ file: fsc_combobox.js ~ line 261 ~ OptionSelector ~ getshowPills ~ allowMultiselect", this.allowMultiselect, !this.hidePills, this.values.length, this.values, this.selectedOptions);
         return this.allowMultiselect && !this.hidePills && this.values.length;
     }
 

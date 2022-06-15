@@ -18,7 +18,10 @@
 global with sharing class GetRecordsIn {
     
     /* Flow Action */
-    @invocableMethod(label='Get Records IN by Eric Smith' configurationEditor='c:getRecordsInCPE' description='Perform a Get records WHERE a field value is IN a collection of values')
+    @invocableMethod(label='Get Records IN by Eric Smith'
+        iconName='slds:standard:record_lookup'
+        configurationEditor='c:getRecordsInCPE' 
+        description='Perform a Get records WHERE a field value is IN a collection of values')
     global static List<Results> GetRecordsIn(List<Requests> requestList) {
 
         /* Prepare Response */

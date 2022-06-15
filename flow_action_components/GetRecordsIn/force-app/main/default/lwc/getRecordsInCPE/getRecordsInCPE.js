@@ -30,29 +30,9 @@ const DEFAULTS = {
     attributeSpacing: "slds-m-vertical_x-small"
 };
 
-// const COLORS = {
-//     blue: "#4C6E96", //Brand is #1B5297, decreasing shades: #346096, #4C6E96, #657B96
-//     blue_light: "#657B96",
-//     green: "#659668",
-//     green_light: "#7E967F",
-//     red: "#966594",
-//     red_light: "#967E95"
-// };
-
 export default class GetRecordsInCPE extends LightningElement {
 
     versionNumber;
-
-    // // *** Define any banner overrides you want to use (see fsc_flowBanner.js)
-    // _bannerMargin = "slds-m-top_small slds-m-bottom_xx-small";
-    // _bannerClass =
-    //     "slds-text-color_inverse slds-text-heading_medium slds-m-bottom_xx-small";
-    // _defaultBannerColor = COLORS.blue;
-    // _colorWizardOverride = COLORS.green;
-    // _colorAdvancedOverride = COLORS.red;
-    // _defaultModalHeaderColor = COLORS.blue_light;
-    // _modalHeaderColorWizardOverride = COLORS.green_light;
-    // _modalHeaderColorAdvancedOverride = COLORS.red_light;
 
     // Flow Builder interface
     _inputVariables = [];
@@ -110,46 +90,6 @@ export default class GetRecordsInCPE extends LightningElement {
 
     validateErrors = [];
     firstPass = true;
-
-    // @api
-    // get bannerMargin() {
-    //     return this._bannerMargin;
-    // }
-
-    // @api
-    // get bannerClass() {
-    //     return this._bannerClass;
-    // }
-
-    // @api
-    // get defaultBannerColor() {
-    //     return this._defaultBannerColor;
-    // }
-
-    // @api
-    // get colorWizardOverride() {
-    //     return this._colorWizardOverride;
-    // }
-
-    // @api
-    // get colorAdvancedOverride() {
-    //     return this._colorAdvancedOverride;
-    // }
-
-    // @api
-    // get defaultModalHeaderColor() {
-    //     return this._defaultModalHeaderColor;
-    // }
-
-    // @api
-    // get modalHeaderColorWizardOverride() {
-    //     return this._modalHeaderColorWizardOverride;
-    // }
-
-    // @api
-    // get modalHeaderColorAdvancedOverride() {
-    //     return this._modalHeaderColorAdvancedOverride;
-    // }
 
     @api
     get attributeSpacing() {
@@ -222,9 +162,9 @@ export default class GetRecordsInCPE extends LightningElement {
         return DISPLAY_TYPE_OPTIONS.FIELD.value;
     }
 
+    isDisplayAll = false;
     get availableObjectSelection() {
-        // TODO: return 'both' for Standard & Custom or 'all'
-        return 'both';
+        return (this.isDisplayAll) ? 'all' : 'both';
     }
 
     // *** Custom CPE handling here
@@ -257,6 +197,21 @@ export default class GetRecordsInCPE extends LightningElement {
     selectedSourceObject = '';
     get isSourceObjectSelected() {
         return (!!this.selectedSourceObject);
+    }
+
+    enteredRecordCollection = '';
+    get isRecordCollectionEntered() {
+        return (!!this.enteredRecordCollection);
+    }
+
+    enteredSourceString = '';
+    get isSourceStringEntered() {
+        return (!!this.enteredSourceString);
+    }
+
+    enteredSourceCollection = '';
+    get isSourceCollectionEntered() {
+        return (!!this.enteredSourceCollection);
     }
 
     get storeRecordDataOptions() {
@@ -372,27 +327,7 @@ export default class GetRecordsInCPE extends LightningElement {
             isError: false, 
             errorMessage: null
         }
-};
-
-    // // *** Define sections for the Help Text on each Banner
-    // sectionEntries = {
-    //     // sectionName: { label: "My Section Label", info: [] }
-    // };
-
-    // // *** List the attribute names and/or custom entries for each help text section
-    // helpSections = [
-    //     {
-    //     // name: "sectionName",
-    //     // attributes: [
-    //     //     { name: "attributeName" },
-    //     //     { name: "attributeName" },
-    //     //     { name: "attributeName" },
-    //     //     { name: DEFAULTS.customHelpDefinition,
-    //     //         label: 'My Custom Label',
-    //     //         helpText: 'My Custom Help Text'}
-    //     // ]
-    //     }
-    // ];
+    };
 
     initializeValues() {
         console.log("CPE - initializeValues");
@@ -433,7 +368,15 @@ export default class GetRecordsInCPE extends LightningElement {
             if (curInputParam.name == 'sourceObject') { 
                 this.selectedSourceObject = curInputParam.value;    
             }
-
+            if (curInputParam.name == 'sourceRecordCollection') { 
+                this.enteredRecordCollection = curInputParam.value;    
+            }            
+            if (curInputParam.name == 'sourceValueString') { 
+                this.enteredSourceString = curInputParam.value;    
+            }
+            if (curInputParam.name == 'sourceValueCollection') { 
+                this.enteredSourceCollection = curInputParam.value;    
+            }
         });
 
         if (this.firstPass) {
@@ -446,28 +389,6 @@ export default class GetRecordsInCPE extends LightningElement {
     handleDefaultAttributes() {
         console.log("CPE - handle default attributes");
     }
-
-    // handleBuildHelpInfo() {
-    //     console.log("CPE - build help info");
-    //     this.helpSections.forEach((section) => {
-    //         if (Object.keys(this.sectionEntries).length > 0) {
-    //             this.sectionEntries[section.name].info = [];
-    //             section.attributes.forEach((attribute) => {
-    //                 if (attribute.name == DEFAULTS.customHelpDefinition) {
-    //                     this.sectionEntries[section.name].info.push({
-    //                         label: attribute.label,
-    //                         helpText: attribute.helpText
-    //                     });
-    //                 } else {
-    //                     this.sectionEntries[section.name].info.push({
-    //                         label: this.inputValues[attribute.name].label,
-    //                         helpText: this.inputValues[attribute.name].helpText
-    //                     });
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
 
     handleOutputObjectChange(event) {
         console.log("CPE - Handle Output Object Change");
@@ -540,7 +461,7 @@ export default class GetRecordsInCPE extends LightningElement {
         }
     }
 
-    // TODO: THis can go away when I figure out filtered collection list based on source object
+    // TODO: This can go away when I figure out filtered collection list based on source object
     updateRecordVariablesComboboxOptions(objectType) {
 console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 485 ~ GetRecordsInCPE ~ updateRecordVariablesComboboxOptions ~ objectType", objectType);
 const vars = this._flowVariables;
@@ -583,29 +504,30 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
     }
 
     handleCheckboxChange(event) {
-        if (event.target && event.detail) {
-        let changedAttribute = event.target.name.replace(
-            DEFAULTS.inputAttributePrefix,
-            ""
-        );
-        this.dispatchFlowValueChangeEvent(
-            changedAttribute,
-            event.detail.newValue,
-            event.detail.newValueDataType
-        );
-        this.dispatchFlowValueChangeEvent(
-            CB_ATTRIB_PREFIX + changedAttribute,
-            event.detail.newStringValue,
-            "String"
-        );
+        this.isDisplayAll = event.target.checked;
+        // if (event.target && event.detail) {
+        // let changedAttribute = event.target.name.replace(
+        //     DEFAULTS.inputAttributePrefix,
+        //     ""
+        // );
+        // this.dispatchFlowValueChangeEvent(
+        //     changedAttribute,
+        //     event.detail.newValue,
+        //     event.detail.newValueDataType
+        // );
+        // this.dispatchFlowValueChangeEvent(
+        //     CB_ATTRIB_PREFIX + changedAttribute,
+        //     event.detail.newStringValue,
+        //     "String"
+        // );
 
-        // *** Handle any internal value settings based on attribute values here
-        // if (changedAttribute == 'displayAll') {
-        //     this.inputValues.objectName.value = null;
-        //     this.selectedSObject = null;
-        //     this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+        // // *** Handle any internal value settings based on attribute values here
+        // // if (changedAttribute == 'displayAll') {
+        // //     this.inputValues.objectName.value = null;
+        // //     this.selectedSObject = null;
+        // //     this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
+        // // }
         // }
-        }
     }
 
     updateCheckboxValue(name, value) {
@@ -684,6 +606,9 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
         // *** Custom Error Checking Here
         this.checkError((!this.isOutputObjectSelected), 'outputObject', 'You must select the Output object');
         this.checkError((this.isSourceMethodObject && !this.isSourceObjectSelected), 'sourceObject', 'You must select the Source object');
+        this.checkError((this.isSourceMethodObject && !this.isRecordCollectionEntered), 'sourceRecordCollection', 'You must enter the Source Record Collection');
+        this.checkError((this.isSourceMethodString && !this.isSourceStringEntered), 'sourceValueString', 'You must enter the Source Value String');
+        this.checkError((this.isSourceMethodCollection && !this.isSourceCollectionEntered), 'sourceValueCollection', 'You must enter the Source Value Collection');
 
         // ComboBox Errors
         let allComboboxes = this.template.querySelectorAll("c-fsc_flow-combobox");

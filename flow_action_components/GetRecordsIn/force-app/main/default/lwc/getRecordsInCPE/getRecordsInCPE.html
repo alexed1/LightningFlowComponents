@@ -23,6 +23,16 @@
                     error-message={inputValues.outputObject.errorMessage}
                 ></c-fsc_display-error>
             </div>
+            <div>
+                <lightning-input 
+                    type="checkbox" 
+                    label="Display ALL Objects for Selection"
+                    name="displayAll"
+                    field-level-help="Advanced: Select if you don't see the Standard Salesforce object you are looking for"
+                    checked={isDisplayAll}
+                    onchange={handleCheckboxChange}>
+                </lightning-input>
+            </div>
         </div>
     </div>
 
@@ -67,18 +77,24 @@
     <div class="slds-m-top_small">
 
         <div if:true={isSourceMethodString}>
-            <c-fsc_flow-combobox 
-                name="select_sourceValueString" 
-                label={inputValues.sourceValueString.label}
-                value={inputValues.sourceValueString.value} 
-                value-type={inputValues.sourceValueString.valueDataType}
-                field-level-help={inputValues.sourceValueString.helpText}
-                builder-context-filter-collection-boolean={inputValues.sourceValueString.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}
-                required>
-            </c-fsc_flow-combobox>
+            <div class={inputValues.sourceValueString.class}>
+                <c-fsc_flow-combobox 
+                    name="select_sourceValueString" 
+                    label={inputValues.sourceValueString.label}
+                    value={inputValues.sourceValueString.value} 
+                    value-type={inputValues.sourceValueString.valueDataType}
+                    field-level-help={inputValues.sourceValueString.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceValueString.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}
+                    required>
+                </c-fsc_flow-combobox>
+                <c-fsc_display-error 
+                    is-error={inputValues.sourceValueString.isError}
+                    error-message={inputValues.sourceValueString.errorMessage}
+                ></c-fsc_display-error>
+            </div>
             <div class="slds-m-top_small">
                 <div class="slds-form-element slds-size_1-of-2">
                     <c-fsc_flow-combobox 
@@ -97,18 +113,24 @@
         </div>
 
         <div if:true={isSourceMethodCollection}>
-            <c-fsc_flow-combobox 
-                name="select_sourceValueCollection" 
-                label={inputValues.sourceValueCollection.label}
-                value={inputValues.sourceValueCollection.value} 
-                value-type={inputValues.sourceValueCollection.valueDataType}
-                field-level-help={inputValues.sourceValueCollection.helpText}
-                builder-context-filter-collection-boolean={inputValues.sourceValueCollection.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}
-                required>
-            </c-fsc_flow-combobox>
+            <div class={inputValues.sourceValueCollection.class}>
+                <c-fsc_flow-combobox 
+                    name="select_sourceValueCollection" 
+                    label={inputValues.sourceValueCollection.label}
+                    value={inputValues.sourceValueCollection.value} 
+                    value-type={inputValues.sourceValueCollection.valueDataType}
+                    field-level-help={inputValues.sourceValueCollection.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceValueCollection.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}
+                    required>
+                </c-fsc_flow-combobox>
+                <c-fsc_display-error 
+                    is-error={inputValues.sourceValueCollection.isError}
+                    error-message={inputValues.sourceValueCollection.errorMessage}
+                ></c-fsc_display-error>
+            </div>
         </div>
 
         <div if:true={isSourceMethodObject} class="slds-form-element slds-size_1-of-2">
@@ -132,15 +154,23 @@
 
             <div if:true={isSourceObjectSelected}>
                 <div class="slds-m-top_small">
-                    <lightning-combobox
-                        name="sourceRecordCollection"
-                        label={inputValues.sourceRecordCollection.label}
-                        value={sourceRecordCollection}
-                        placeholder={sourceRecordCollectionPlaceholder}
-                        options={sourceCollectionValueOptions}
-                        onchange={handlesourceRecordCollectionChange}
-                        required>
-                    </lightning-combobox>
+                    <div class={inputValues.sourceRecordCollection.class}>
+                        <div class="slds-form-element__control">
+                            <lightning-combobox
+                                name="sourceRecordCollection"
+                                label={inputValues.sourceRecordCollection.label}
+                                value={sourceRecordCollection}
+                                placeholder={sourceRecordCollectionPlaceholder}
+                                options={sourceCollectionValueOptions}
+                                onchange={handlesourceRecordCollectionChange}
+                                required>
+                            </lightning-combobox>
+                        </div>
+                        <c-fsc_display-error 
+                            is-error={inputValues.sourceRecordCollection.isError}
+                            error-message={inputValues.sourceRecordCollection.errorMessage}
+                        ></c-fsc_display-error>
+                    </div>
                 </div>
 
                 <div class="slds-m-top_small">

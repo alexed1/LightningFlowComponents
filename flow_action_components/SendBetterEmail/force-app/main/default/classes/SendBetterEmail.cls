@@ -32,6 +32,15 @@
  **/
 
 public without sharing class SendBetterEmail {
+  @future
+  public static void SendEmailFuture(String requestsJSON) {
+    List<SendBetterEmailRequest> requests = (List<SendBetterEmailRequest>) JSON.deserialize(
+      requestsJSON,
+      List<SendBetterEmailRequest>.class
+    );
+    SendEmail(requests);
+  }
+    
   @invocableMethod(
     label='Send Better Email'
     configurationEditor='c:sendBetterEmailCPE'
@@ -50,6 +59,10 @@ public without sharing class SendBetterEmail {
 
     List<Messaging.SendEmailResult> singleSendEmailResults = new List<Messaging.SendEmailResult>();
     List<Messaging.SendEmailResult> massSendEmailResults = new List<Messaging.SendEmailResult>();
+
+    // init list of request that will be sent Asynchronously
+    List<SendBetterEmailRequest> futureRequests = new List<SendBetterEmailRequest>();
+    Boolean isFuture = System.isFuture();
 
     // Set for template Names and content document Ids
     Set<String> templateNames = new Set<String>();
@@ -70,6 +83,9 @@ public without sharing class SendBetterEmail {
 
     // Collect all inputs for SOQL
     for (SendBetterEmailRequest curRequest : requests) {
+      if (curRequest.sendAsync && !isFuture) {
+        continue;
+      }
       if (
         curRequest.templateName != null &&
         curRequest.templateName.length() > 0
@@ -123,6 +139,13 @@ public without sharing class SendBetterEmail {
     for (SendBetterEmailRequest curRequest : requests) {
       //Assign Request Number to the Requests
       curRequest.index = requestIndex;
+      SendBetterEmailResponse thisResponse = new SendBetterEmailResponse();
+      thisResponse.index = requestIndex;
+      if (curRequest.sendAsync && !isFuture) {
+        thisResponse.isSuccess = true;
+        responseList.add(thisResponse);
+        continue;
+      }
 
       String HTMLbody = curRequest.HTMLbody;
       String orgWideEmailAddressId = curRequest.orgWideEmailAddressId;
@@ -154,8 +177,6 @@ public without sharing class SendBetterEmail {
         subject = null;
       }
 
-      SendBetterEmailResponse thisResponse = new SendBetterEmailResponse();
-      thisResponse.index = requestIndex;
       curRequest.setSaveAsTask = curRequest.saveAsTask;
       curRequest.setSaveAsActivity = curRequest.saveAsActivity;
 
@@ -612,6 +633,9 @@ public without sharing class SendBetterEmail {
         'No Messages were sent.  First Error: ' + responseList[0].errors
       );
     }
+
+    SendEmailFuture(JSON.serialize(futureRequests));
+
     return responseList;
   }
 

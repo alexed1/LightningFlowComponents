@@ -1,12 +1,29 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@3.0.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@3.0.7-0"
+                }
+            ],
+            "package": "getRecordsIn",
+            "versionName": "GetRecordsIN v1",
+            "versionDescription": "GetRecordsIN Flow Action by Eric Smith",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "getRecordsIn": "0Ho5G000000k9v8SAA",
+        "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
+        "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
+        "getRecordsIn@1.0.0-0": "04t5G000003rUz3QAE"
     }
-  ],
-  "name": "GetRecordsIn",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0"
 }

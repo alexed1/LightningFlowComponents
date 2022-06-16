@@ -8,7 +8,7 @@
         <div class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.outputObject.class}>
                 <div class="slds-form-element__control">
-                    <c-fsc_object-selector
+                    <c-df_object-selector
                         name="outputObject"
                         label={inputValues.outputObject.label}
                         value={outputObject}
@@ -16,7 +16,7 @@
                         available-object-selection={availableObjectSelection}
                         onchange={handleOutputObjectChange}
                         >
-                    </c-fsc_object-selector>
+                    </c-df_object-selector>
                 </div>
                 <c-fsc_display-error 
                     is-error={inputValues.outputObject.isError}
@@ -43,7 +43,7 @@
         </h3>
         <div class="slds-form-element slds-size_1-of-2">
             <div class="slds-form-element__control">
-                <c-fsc_field-selector2 
+                <c-df_field-selector2 
                     name="select_targetField" 
                     label={inputValues.targetField.label}
                     value={inputValues.targetField.value} 
@@ -52,7 +52,7 @@
                     object-name={outputObject}
                     onchange={handleFlowComboboxValueChange}
                     >
-            </c-fsc_field-selector2>
+            </c-df_field-selector2>
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@
         <div if:true={isSourceMethodObject} class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.sourceObject.class}>
                 <div class="slds-form-element__control">
-                    <c-fsc_object-selector
+                    <c-df_object-selector
                         name="sourceObject"
                         label={inputValues.sourceObject.label}
                         value={sourceObject}
@@ -144,7 +144,7 @@
                         available-object-selection={availableObjectSelection}
                         onchange={handleSourceObjectChange}
                         >
-                    </c-fsc_object-selector>
+                    </c-df_object-selector>
                 </div>
                 <c-fsc_display-error 
                     is-error={inputValues.sourceObject.isError}
@@ -174,7 +174,7 @@
                 </div>
 
                 <div class="slds-m-top_small">
-                    <c-fsc_field-selector2 
+                    <c-df_field-selector2 
                         name="select_sourceField" 
                         label={inputValues.sourceField.label}
                         value={inputValues.sourceField.value} 
@@ -183,7 +183,7 @@
                         object-name={sourceObject}
                         onchange={handleFlowComboboxValueChange}
                         >
-                    </c-fsc_field-selector2>
+                    </c-df_field-selector2>
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@
             </lightning-radio-group>
         </div>
         <div if:true={isChooseFields} class="slds-m-top_small">
-            <c-fsc_field-selector2 
+            <c-df_field-selector2 
                 name="select_outputFieldNames" 
                 allow-multiselect={allow}
                 label={inputValues.outputFieldNames.label}
@@ -212,7 +212,7 @@
                 object-name={outputObject}
                 onchange={handleFlowComboboxValueChange}
                 >
-            </c-fsc_field-selector2>
+            </c-df_field-selector2>
         </div>
     </div>
 

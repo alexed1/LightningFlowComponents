@@ -1,18 +1,77 @@
-# Salesforce DX Project: Next Steps
+# GetRecordsIN
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+Invocable Action for Flow:       **GetRecordsIN**
 
-## How Do You Plan to Deploy Your Changes?
+**This component allows the user do a Get Records where the value of a field is IN a collection of values.  The value collection can be any of the following:**
+ 
+-   Delimited String
+-   Flow Text Collection Variable
+-   A Field Value in a Collection of Records
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+Additional components packaged with this LWC:
 
-## Configure Your Salesforce DX Project
+                Apex Classes:       GetRecordsIn
+                                    GetRecordsInTest
+                                    ObjectFieldSelectorController 
+                                    ObjectFieldSelectorControllerTest
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+                LWCs:               df_combobox
+                                    df_combobocUtils
+                                    df_fieldSelector2
+                                    df_objectFieldSelectorUtils
+                                    df_objectSelector
+                                    getRecordsInCPE
 
-## Read All About It
+                Custom Objects:     
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+                Page Layouts:       
+
+                Tabs:               
+
+                StaticResources:    
+
+                Flows:              
+
+                Permission Set:               
+                                                  
+**Documentation:**  https://unofficialsf.com/xxx/ 
+  
+**Created by:**	Eric Smith  
+**Date:**		2022
+  
+LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
+Salesforce: https://trailblazer.me/id/ericsmith  
+Blog:		https://ericsplayground.wordpress.com/blog/  
+Twitter: 	https://twitter.com/esmith35  
+
+---
+**You must install these components FIRST in order to install and use the Datatable component**     
+FlowActionsBasePack Version 3.0.0 or later  
+FlowScreenComponentsBasePack Version 3.0.7 or later  
+  
+Both Base Packs are available here:   
+https://unofficialsf.com/flow-action-and-screen-component-basepacks/
+  
+---
+**Install GetRecordsIN**  
+[Version 1.0.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUz3QAE)   
+[Version 1.0.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUz3QAE)
+ 
+---
+**Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
+
+Release Notes: https://releasenotes.docs.salesforce.com/en-us/winter21/release-notes/rn_lc_restrict_apex_authenticated_users.htm  
+
+This will affect any Aura or Lightning Web Component that uses @AuraEnabled Apex Classes.  
+
+In order to use **GetRecordsIN**, permission must be given to access the following Apex Classes:  
+
+    GetRecordsIn   
+    ObjectFieldSelectorController 
+
+---
+# Release Notes
+ 
+## 06/16/22 -  Eric Smith -     Version 1.0.0 
+ 
+---

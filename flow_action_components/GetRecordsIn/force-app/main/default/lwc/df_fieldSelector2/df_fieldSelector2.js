@@ -1,7 +1,7 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import getObjectFields from '@salesforce/apex/ObjectFieldSelectorController.getObjectFields';
-import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject, includesIgnoreCase } from 'c/fsc_objectFieldSelectorUtils';
+import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject, includesIgnoreCase } from 'c/df_objectFieldSelectorUtils';
 import { setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/df_comboboxUtils';
 
 const DATA_TYPE_ICONS = {

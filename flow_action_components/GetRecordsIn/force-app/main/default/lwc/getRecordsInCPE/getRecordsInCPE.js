@@ -16,7 +16,7 @@
  **/
 
 import { LightningElement, api, track } from 'lwc';
-import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject } from 'c/fsc_objectFieldSelectorUtils';
+import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject } from 'c/df_objectFieldSelectorUtils';
 
 
 // *** Set the component's current version # here
@@ -565,7 +565,7 @@ export default class GetRecordsInCPE extends LightningElement {
         this.checkError((this.isSourceMethodCollection && !this.isSourceCollectionEntered), 'sourceValueCollection', 'You must enter the Source Value Collection');
 
         // ComboBox Errors
-        let allComboboxes = this.template.querySelectorAll("c-fsc_flow-combobox");
+        let allComboboxes = this.template.querySelectorAll("c-df_flow-combobox");
         if (allComboboxes) {
             allComboboxes.forEach((curCombobox) => {
             if (!curCombobox.reportValidity()) {

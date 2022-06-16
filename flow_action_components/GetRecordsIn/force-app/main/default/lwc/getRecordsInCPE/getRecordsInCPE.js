@@ -120,8 +120,9 @@ export default class GetRecordsInCPE extends LightningElement {
     }
 
     get sourceCollectionValueOptions() {
-        // TODO: restrict options to only those that match Source Object
-        const variables = this.builderContext.variables;
+        const variables = this._flowVariables.filter(
+            (variable) => variable.objectType === this.sourceObject
+        );
         return variables.map(({ name }) => ({
             label: name,
             value: name,
@@ -377,6 +378,12 @@ export default class GetRecordsInCPE extends LightningElement {
             if (curInputParam.name == 'sourceValueCollection') { 
                 this.enteredSourceCollection = curInputParam.value;    
             }
+            if (curInputParam.name == 'storeFieldsMethod') { 
+                if (this.inputValues.storeFieldsMethod.value == 'Choose' && !this.inputValues.outputFieldNames.value) {
+                    this.dispatchFlowValueChangeEvent('outputFieldNames', 'Id', 'String');
+                }    
+            }
+            
         });
 
         if (this.firstPass) {
@@ -461,27 +468,6 @@ export default class GetRecordsInCPE extends LightningElement {
         }
     }
 
-    // TODO: This can go away when I figure out filtered collection list based on source object
-    updateRecordVariablesComboboxOptions(objectType) {
-console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 485 ~ GetRecordsInCPE ~ updateRecordVariablesComboboxOptions ~ objectType", objectType);
-const vars = this._flowVariables;
-vars.forEach((v) => {
-console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 490 ~ GetRecordsInCPE ~ var.forEach ~ v", v.name, v.objectType);
-});
-        const variables = this._flowVariables.filter(
-            (variable) => variable.objectType === objectType
-        );
-        let comboboxOptions = [];
-        variables.forEach((variable) => {
-console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ variables.forEach ~ variable", variable);
-            comboboxOptions.push({
-                label: variable.name,
-                value: "{!" + variable.name + "}"
-            });
-        });
-        return comboboxOptions;
-    }
-
     handleValueChange(event) {
         console.log('CPE - Handle Value Change Event: ', event);
         if (event.target) {
@@ -505,43 +491,6 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
 
     handleCheckboxChange(event) {
         this.isDisplayAll = event.target.checked;
-        // if (event.target && event.detail) {
-        // let changedAttribute = event.target.name.replace(
-        //     DEFAULTS.inputAttributePrefix,
-        //     ""
-        // );
-        // this.dispatchFlowValueChangeEvent(
-        //     changedAttribute,
-        //     event.detail.newValue,
-        //     event.detail.newValueDataType
-        // );
-        // this.dispatchFlowValueChangeEvent(
-        //     CB_ATTRIB_PREFIX + changedAttribute,
-        //     event.detail.newStringValue,
-        //     "String"
-        // );
-
-        // // *** Handle any internal value settings based on attribute values here
-        // // if (changedAttribute == 'displayAll') {
-        // //     this.inputValues.objectName.value = null;
-        // //     this.selectedSObject = null;
-        // //     this.dispatchFlowValueChangeEvent('objectName',this.selectedSObject, 'String');
-        // // }
-        // }
-    }
-
-    updateCheckboxValue(name, value) {
-        // Used to force a checkbox value change elsewhere in the CPE based on custom logic
-        this.inputValues[name].value = value;
-        this.dispatchFlowValueChangeEvent(name, value, "boolean");
-        this.inputValues[CB_ATTRIB_PREFIX + name].value = value
-            ? CB_TRUE
-            : CB_FALSE;
-        this.dispatchFlowValueChangeEvent(
-            CB_ATTRIB_PREFIX + name,
-            this.inputValues[CB_ATTRIB_PREFIX + name].value,
-            "String"
-        );
     }
 
     handleFlowComboboxValueChange(event) {
@@ -558,12 +507,19 @@ console.log("🚀 ~ file: GetRecordsInCPE.js ~ line 487 ~ GetRecordsInCPE ~ vari
             //     newType = "Number";
             // }
 
-            this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
-
             // *** Handle custom attribute changes here
-            // if (changedAttribute == 'tableData') {
-            //     this.isRecordCollectionSelected = !!event.detail.newValue;
-            // }
+            if (changedAttribute == 'outputFieldNames') {
+                if ((newValue.length == 2 && newValue != 'Id') ||
+                    (newValue.length != 2
+                    && (newValue.slice(-3) != ',Id')
+                    && (newValue.slice(0, 3) != 'Id,')
+                    && (!newValue.includes(',Id,'))))
+                    {
+                        newValue = (newValue.length == 0) ? 'Id': 'Id,' + newValue;
+                    }
+            }
+
+            this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
 
         }
     }

@@ -10,6 +10,8 @@
  * Custom Property Editor:          GetRecordsInCPE
  * 
  * CPE Supporting Components:       Thanks to David Fromstein for wonderful new versions of Combobox and Object and Field selector
+ *                                  ObjectFieldSelectorController.cls, ObjectFieldSelectorControllerTest.cls
+ *                                  LWCs: df_combobox, dfcomboboxUtils, df_fieldSelector2, df_objectSelector, df_objectFieldSelectorUtils
  * 
  * 06/05/22 -   Eric Smith -    Version 1.0.0   
  * 

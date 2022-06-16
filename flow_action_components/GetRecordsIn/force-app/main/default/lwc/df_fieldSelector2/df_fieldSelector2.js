@@ -2,7 +2,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import getObjectFields from '@salesforce/apex/ObjectFieldSelectorController.getObjectFields';
 import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject, includesIgnoreCase } from 'c/fsc_objectFieldSelectorUtils';
-import { setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/fsc_comboboxUtils';
+import { setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/df_comboboxUtils';
 
 const DATA_TYPE_ICONS = {
     Address: 'utility:location',
@@ -27,7 +27,7 @@ const DEFAULT_ICON = 'utility:text';
 
 const INVALID_TYPE_ERROR = 'INVALID_TYPE';
 
-export default class Fsc_fieldSelector2 extends LightningElement {
+export default class Df_fieldSelector2 extends LightningElement {
     @api name;
     @api allowMultiselect = false;
     @api required = false;
@@ -115,13 +115,13 @@ export default class Fsc_fieldSelector2 extends LightningElement {
 
     @api
     reportValidity() {
-        return this.template.querySelector('c-fsc_combobox').reportValidity();
+        return this.template.querySelector('c-df_combobox').reportValidity();
     }
 
     @api
     validate() {
-        // console.log('in fieldSelector validate, returning '+ JSON.stringify(this.template.querySelector('c-fsc_combobox').validate()));
-        return this.template.querySelector('c-fsc_combobox').validate();
+        // console.log('in fieldSelector validate, returning '+ JSON.stringify(this.template.querySelector('c-df_combobox').validate()));
+        return this.template.querySelector('c-df_combobox').validate();
     }
 
     get isLoadingOrDisabled() {

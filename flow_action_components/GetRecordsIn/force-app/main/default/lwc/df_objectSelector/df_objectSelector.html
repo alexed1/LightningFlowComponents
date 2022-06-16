@@ -1,7 +1,7 @@
 <template>
-    <c-fsc_combobox
+    <c-df_combobox 
         name={name}
-        options={fields} 
+        options={objectOptions} 
         label={label} 
         values={values} 
         public-class={publicClass} 
@@ -12,13 +12,11 @@
         is-loading={isLoading} 
         placeholder={computedPlaceholder}
         onchange={handleComboboxChange} 
-        disabled={isLoadingOrDisabled}
+        disabled={disabled}
         value-delimiter={valueDelimiter}
         hide-pills={hidePills}
         exclude-sublabel-in-filter={excludeSublabelInFilter}
         include-value-in-filter={includeValueInFilter}
         icon-size="x-small"
-        field-level-help={fieldLevelHelp}
-        error-message={errorMessage}
-        ></c-fsc_combobox>
+        field-level-help={fieldLevelHelp}></c-df_combobox>
 </template>

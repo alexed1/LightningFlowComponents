@@ -1,10 +1,10 @@
 import { LightningElement, wire, track, api } from 'lwc';
 import getObjects from '@salesforce/apex/ObjectFieldSelectorController.getObjects';
-import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject } from 'c/fsc_objectFieldSelectorUtils';
-import { setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/fsc_comboboxUtils';
+import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPTIONS, transformConstantObject } from 'c/df_objectFieldSelectorUtils';
+import { setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/df_comboboxUtils';
 
 const ANCILLARY_SUFFIXES = ['Feed', 'Tag', 'Share', 'ChangeEvent', 'History'];
-export default class Fsc_objectSelector extends LightningElement {
+export default class Df_objectSelector extends LightningElement {
     availableObjectOptions = transformConstantObject(AVAILABLE_OBJECT_OPTIONS);
 
     @api name;
@@ -116,12 +116,12 @@ export default class Fsc_objectSelector extends LightningElement {
 
     @api
     reportValidity() {
-        return this.template.querySelector('c-fsc_combobox').reportValidity();
+        return this.template.querySelector('c-df_combobox').reportValidity();
     }
 
     @api
     validate() {
-        return this.template.querySelector('c-fsc_combobox').validate();
+        return this.template.querySelector('c-df_combobox').validate();
     }
 
     connectedCallback() {

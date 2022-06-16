@@ -8,6 +8,8 @@
  *      where the value of a field in the record is IN a collection of values passed into the component.
  *
  *      Thanks to David Fromstein for wonderful new versions of Combobox and Object and Field selector
+ *                                  ObjectFieldSelectorController.cls, ObjectFieldSelectorControllerTest.cls
+ *                                  LWCs: df_combobox, dfcomboboxUtils, df_fieldSelector2, df_objectSelector, df_objectFieldSelectorUtils
  *
  * 06/05/22 -   Eric Smith -    Version 1.0.0  
  *
@@ -19,10 +21,6 @@ import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPT
 
 // *** Set the component's current version # here
 const VERSION_NUMBER = "1.0.0";
-
-const CB_TRUE = "CB_TRUE";      // Used with fsc_flowCheckbox component
-const CB_FALSE = "CB_FALSE";    // Used with fsc_flowCheckbox component
-const CB_ATTRIB_PREFIX = "cb_"; // Used with fsc_flowCheckbox component
 
 const DEFAULTS = {
     inputAttributePrefix: "select_",

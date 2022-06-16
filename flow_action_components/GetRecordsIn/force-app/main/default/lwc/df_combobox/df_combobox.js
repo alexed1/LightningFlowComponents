@@ -1,6 +1,6 @@
 // Style from: https://www.lightningdesignsystem.com/components/combobox
 import { LightningElement, api, track } from 'lwc';
-import { KEYS, setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/fsc_comboboxUtils';
+import { KEYS, setValuesFromMultipleInput, setValuesFromSingularInput } from 'c/df_comboboxUtils';
 
 const VARIANTS = {
     BASE: 'base',

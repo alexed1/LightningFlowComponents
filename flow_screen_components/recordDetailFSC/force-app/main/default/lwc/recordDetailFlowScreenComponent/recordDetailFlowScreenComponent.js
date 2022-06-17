@@ -27,6 +27,7 @@ export default class recordDetailFSC extends LightningElement {
     @api availableActions = [];
     @api showCancelButton = false;
     @api suppressToast = false;
+    @api isSaving = false;
     @api SaveBtnLabel = 'Save';
     @api CancelBtnLabel = 'Cancel';
     @api columnsize = 2;
@@ -139,10 +140,17 @@ export default class recordDetailFSC extends LightningElement {
     get isError() {
         return this.errors.length > 0;
     }
+    
+    handleSubmit(event) {
+        event.preventDefault();
+        this.isSaving = true;
+        const fields = event.detail.fields;
+        this.template.querySelector('lightning-record-edit-form').submit(fields);
+    }
 
     handleSuccess(event) {
-        this._recordId = event.detail.id;
-
+        this.isSaving = false;
+        this.recordId = event.detail.id;
         if(!this.suppressToast){
             this.showToast(this.labels.successMessage, this.labels.recordSaveSuccessMessage, 'success', true);
         }
@@ -163,6 +171,7 @@ export default class recordDetailFSC extends LightningElement {
 
     handleCancel(event) {
         // set output value to true
+        this.isSaving = false;
         this.isCancelButton = true;
         // reset field values
         const inputFields = this.template.querySelectorAll(
@@ -196,6 +205,7 @@ export default class recordDetailFSC extends LightningElement {
     }
 
     handleError(event) {
+        this.isSaving = false;
         this.showToast(this.labels.errorMessage, event.detail.message + ': ' + event.detail.detail, 'error', true);
     }
 

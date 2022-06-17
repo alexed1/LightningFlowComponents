@@ -21,7 +21,7 @@ private class ConvertRecordsToCSVQueueableTest {
         Account account = new Account(Name='Linked Account');
         insert account;
         
-		Contact contact1 = new Contact(LastName='Test1');
+	Contact contact1 = new Contact(LastName='Test1');
         Contact contact2 = new Contact(LastName='Test2', Email='abc@gmail.com');
         Contact contact3 = new Contact(LastName='Test3', Email='abc@gmail.com', FirstName='Jonny');
         insert new List<Contact>{contact1, contact2, contact3};
@@ -57,14 +57,15 @@ private class ConvertRecordsToCSVQueueableTest {
     }
 
     @isTest
-        private static void testGenerateCSVContentAggregateResult() {
-		Contact contact1 = new Contact(LastName='Test', FirstName='Sally');
-        Contact contact2 = new Contact(LastName='Test', FirstName='Mary', Email='abc@gmail.com');
-        Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny');
+    private static void testGenerateCSVContentAggregateResult() {
+		
+	    Contact contact1 = new Contact(LastName='Test', FirstName='Sally', LeadSource = 'Web');
+        Contact contact2 = new Contact(LastName='Test1', FirstName='Mary', Email='abc@gmail.com', LeadSource = 'Web');
+        Contact contact3 = new Contact(LastName='Test2', Email='abc@gmail.com', FirstName='Jonny', LeadSource = 'Social');
         insert new List<Contact>{contact1, contact2, contact3};
         update contact2;
 
-        List<AggregateResult> contacts = [Select LastName name from Contact GROUP BY LastName];
+        List<AggregateResult> contacts = [Select LeadSource name from Contact GROUP BY LeadSource ORDER BY LeadSource];
         
         Test.startTest();
         String fullCSV = ConvertRecordsToCSVQueueable.generateCSVContent(contacts, new List<String>{'name'}, ConvertRecordsToCSVQueueable.CSVParseType.ALL, false);
@@ -74,14 +75,14 @@ private class ConvertRecordsToCSVQueueableTest {
         List<String> rows = fullCSV.split('\n');
        	System.assertEquals(3, rows.size(), 'Full text: ' + fullCSV);
         System.assertEquals('name', rows[0]);
-        System.assertEquals('Test', rows[1]);
-        System.assertEquals('Test2', rows[2]);
+        System.assertEquals('Social', rows[1]);
+        System.assertEquals('Web', rows[2]);
           
         List<String> rows2 = unnamed.split('\n');
        	System.assertEquals(3, rows2.size(), 'Full text: ' + unnamed);
         System.assertEquals('name', rows[0]);
-        System.assertEquals('Test', rows2[1]);
-        System.assertEquals('Test2', rows2[2]);
+        System.assertEquals('Social', rows2[1]);
+        System.assertEquals('Web', rows2[2]);
     }
     
     @isTest 

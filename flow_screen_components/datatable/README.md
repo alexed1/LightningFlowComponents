@@ -44,15 +44,15 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 3.0.0 or later  
-FlowScreenComponentsBasePack Version 3.0.6 or later  
+FlowScreenComponentsBasePack Version 3.0.7 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUxRQAU)   
-[Version 4.0.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUxRQAU)
+[Version 4.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)   
+[Version 4.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -78,10 +78,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     This outputs the value of the KeyField(Id) when single row selection is enabled.  This is designed to support inputs to other
     components on the same screen when Reactive Screens are implemented 
 -   Enhanced how Column Wizard configuration files are created and updated 
+-   Saved Column Wizard configuration files now support >255 characters per attribute 
  
 **Bug Fixes:** 
 -   Fix Column Wizard error when reselecting after saving a flow 
--   Saved Column Wizard configuration files now support >255 characters per attribute
+-   Column Wizard configuration files now store the column widths values
+-   Fix test class for orgs without Orders enabled
  
 ## 05/15/22 -  Eric Smith -     Version 4.0.4 
 **Bug Fixes:** 

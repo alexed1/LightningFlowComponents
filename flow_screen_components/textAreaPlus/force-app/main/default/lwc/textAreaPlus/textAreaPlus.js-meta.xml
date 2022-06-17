@@ -1,18 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>52.0</apiVersion>
+    <apiVersion>54.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Textarea Plus!</masterLabel>
-    <description>Pretty much just a Textarea with a counter</description>
+    <description>Plain Text with a counter or Rich Text with a counter and search features</description>
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
-            <property name="maxlen" label="Maximum Length" type="Integer" role="inputOnly" />
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-text-area-plus-c-p-e">
+            <property name="maxlen" label="Maximum Length" type="String" role="inputOnly" />
+            <property name="minlen" label="Minimum Length" type="String" role="inputOnly" />
             <property name="value" label="Text Value" type="String" />
+            <property name="charsLeftTemplate" label="Chars Left Template" type="String" />
             <property name="label" label="Label" type="String" role="inputOnly" />
-            <property name="placeHolder" label="Placeholder Text" type="String" role="inputOnly"/>
+            <property name="placeHolder" label="Placeholder Text" type="String" role="inputOnly" />
+            <property name="textMode" label="Text Mode" type="String" default="Rich Text" role="inputOnly" description="Choose between Rich or Plain text" />
+
+            <property label="Advanced Tools" name="advancedTools" type="Boolean" role="inputOnly" description="Enable Advanced Tools - Search/Replace, Auto-replace, and blocked words/symbols." />
+            <property name="cb_advancedTools" type="String" role="inputOnly" />
+            <property label="Blocked Words" name="disallowedWordsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: bad,worse,worst" />
+            <property label="Blocked Symbols" name="disallowedSymbolsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: /,@,*" />
+            <property label="Auto Replace Map" name="autoReplaceMap" type="String" role="inputOnly" description="JSON for key:value pairs you want to replace.  Key = value to replace, Value = value to replace with.  Example: {&quot;Test&quot;:&quot;GreatTest™&quot;}" />
+            <property label="Warning Only" name="warnOnly" type="Boolean" role="inputOnly" description="Set to True if you want disallowed Symbols or Words to only alert and not block next/finish.  Default is false." />
+            <property name="cb_warnOnly" type="String" role="inputOnly" />
+            <property label="Required?" name="required" type="Boolean" role="inputOnly" default="false" description="Set to True if you want to require an entry for this input." />
+            <property name="cb_required" type="String" role="inputOnly" />
+            <property label="Show Counter" name="showCharCounter" type="Boolean" role="inputOnly" default="false" description="Display Character Counter" />
+            <property name="cb_showCharCounter" type="String" role="inputOnly" />
         </targetConfig>
- </targetConfigs>
+    </targetConfigs>
 </LightningComponentBundle>

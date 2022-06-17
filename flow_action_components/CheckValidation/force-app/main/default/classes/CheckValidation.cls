@@ -1,6 +1,9 @@
 /** 
  *  Check Validation Flow Action
  * 
+ *  Eric Smith - 6/12/22 - v1.6
+ *  Add custom SVG image for flow builder canvas
+ * 
  *  Eric Smith - 5/5/21 - v1.5
  *  Disable duplicate check on inserts of more than 150 records to avoid too many DML statements error
  * 
@@ -74,7 +77,7 @@ global inherited sharing class CheckValidation {
     global class InvocableActionException extends Exception {}
 
     // Expose this Action to the Flow
-    @InvocableMethod
+    @InvocableMethod(label='Validation Checker by Eric Smith' iconName='resource:CheckValidationSVG:Layer_1')
     global static List<Results> checkForValidationErrors(List<Requests> requestList) {
 
         // Prepare the response to send back to the Flow

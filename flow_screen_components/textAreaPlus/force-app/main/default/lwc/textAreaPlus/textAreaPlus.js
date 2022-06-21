@@ -93,8 +93,8 @@ export default class TextAreaPlus extends LightningElement {
   get applyAltText() {
     try {
       const prettyMap = Object.keys(this.replaceMap)
-        .map(x => `${x} -> ${this.replaceMap[x]}`)
-        .join(',');
+        ?.map(x => `${x} -> ${this.replaceMap?.[x]}`)
+        ?.join(',');
       return `Apply Suggested Terms (${prettyMap})`;
     } catch (e) {
       return 'Apply Suggested Terms';
@@ -113,9 +113,9 @@ export default class TextAreaPlus extends LightningElement {
     }
 
     return this._charsLeftTemplate
-      .replaceAll('$R', this.charsLeft)
-      .replaceAll('$M', this.maxLength)
-      .replaceAll('$L', this.len)
+      ?.replaceAll('$R', this.charsLeft)
+      ?.replaceAll('$M', this.maxLength)
+      ?.replaceAll('$L', this.len)
   }
 
   get plainText() {
@@ -410,7 +410,7 @@ export default class TextAreaPlus extends LightningElement {
   // different highlight styles and store it on the highlight map object
   setReplaceText(hl, prop, text, term, value) {
     // Creates highlight HTML (e.g. bright, mid) with the left and right tags (lt/rt)
-    this.hlText[prop] = text.replaceAll(term,`${hl.lt}${value}${hl.rt}`);
+    this.hlText[prop] = text?.replaceAll(term,`${hl.lt}${value}${hl.rt}`);
   }
 
   // push text value on to the undo stack *only* if it is different than the last item on the stack
@@ -505,19 +505,24 @@ export default class TextAreaPlus extends LightningElement {
 
   //Clean input for RegExp and matching rich text
   escapeRegExp(str) {
+    if (str) {
     rtfEscapeChars.forEach(({char,text}) => {
       str = str.replaceAll(char,text);
     });
-    return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    str = str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+    return str;
   }
 
   // The opposite of escaping RTF for accurate char count
   unescapeRichText(str) {
+    if (str) {
     // go in reverse order, starting with &amp;
     const rtfUnescape = [...rtfEscapeChars].reverse();
     rtfUnescape.forEach(x => {
       str = str.replaceAll(x.text, x.char);
     });
+  }
     return str;
   }
 

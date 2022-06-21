@@ -59,8 +59,15 @@ global with sharing class GetRecordsIn {
             if (sourceMethod != 'Object' && sourceValueCollection != null && !sourceValueCollection.isEmpty()) {
                 inValues = '\'' + String.join(sourceValueCollection, '\',\'') + '\'';
             } else {
-                if (sourceMethod == 'Object' && sourceField != null && sourceObject != null && sourceField != '' && sourceObject != '') {
-                    inValues = 'SELECT ' + sourceField + ' FROM ' + sourceObject;
+                if (sourceMethod == 'Object' && sourceField != null && sourceObject != null && sourceField != '' && sourceObject != '' && sourceRecordCollection != null) {
+                    Set<String> valueSet = new Set<String>();
+                    for (SObject record : sourceRecordCollection) {
+                        String fieldValue = String.valueOf(record.get(sourceField));
+                        if (fieldValue != null) {
+                            valueSet.add(fieldValue);
+                        }
+                    }
+                    inValues = '\'' + String.join(new List<String>(valueSet), '\',\'') + '\'';
                 }
             }
             

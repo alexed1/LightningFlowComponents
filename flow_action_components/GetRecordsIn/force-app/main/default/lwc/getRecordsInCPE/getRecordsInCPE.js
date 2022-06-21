@@ -20,7 +20,7 @@ import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPT
 
 
 // *** Set the component's current version # here
-const VERSION_NUMBER = "1.0.0";
+const VERSION_NUMBER = "1.0.1";
 
 const DEFAULTS = {
     inputAttributePrefix: "select_",
@@ -164,6 +164,19 @@ export default class GetRecordsInCPE extends LightningElement {
     isDisplayAll = false;
     get availableObjectSelection() {
         return (this.isDisplayAll) ? 'all' : 'both';
+    }
+
+    get supportedFieldTypes() {
+        return [
+            FIELD_TYPES.REFERENCE.value,
+            FIELD_TYPES.EMAIL.value,
+            FIELD_TYPES.PHONE.value,
+            FIELD_TYPES.PICKLIST.value,
+            FIELD_TYPES.MULTIPICKLIST.value,
+            FIELD_TYPES.TEXT.value,
+            FIELD_TYPES.TEXTAREA.value,
+            FIELD_TYPES.URL.value
+        ].join();
     }
 
     // *** Custom CPE handling here

@@ -49,6 +49,7 @@
                     value={inputValues.targetField.value} 
                     required={notRequired}
                     allow-multiselect={doNotAllow}
+                    available-field-types={supportedFieldTypes}
                     object-name={outputObject}
                     onchange={handleFlowComboboxValueChange}
                     >
@@ -76,7 +77,7 @@
 
     <div class="slds-m-top_small">
 
-        <div if:true={isSourceMethodString}>
+        <div if:true={isSourceMethodString} class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.sourceValueString.class}>
                 <c-fsc_flow-combobox 
                     name="select_sourceValueString" 
@@ -96,23 +97,21 @@
                 ></c-fsc_display-error>
             </div>
             <div class="slds-m-top_small">
-                <div class="slds-form-element slds-size_1-of-2">
-                    <c-fsc_flow-combobox 
-                        name="select_sourceDelimiter" 
-                        label={inputValues.sourceDelimiter.label}
-                        value={inputValues.sourceDelimiter.value} 
-                        value-type={inputValues.sourceDelimiter.valueDataType}
-                        field-level-help={inputValues.sourceDelimiter.helpText}
-                        builder-context-filter-collection-boolean={inputValues.sourceDelimiter.isCollection}
-                        builder-context={_builderContext} 
-                        onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}>
-                    </c-fsc_flow-combobox>
-                </div>
+                <c-fsc_flow-combobox 
+                    name="select_sourceDelimiter" 
+                    label={inputValues.sourceDelimiter.label}
+                    value={inputValues.sourceDelimiter.value} 
+                    value-type={inputValues.sourceDelimiter.valueDataType}
+                    field-level-help={inputValues.sourceDelimiter.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceDelimiter.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
             </div>
         </div>
 
-        <div if:true={isSourceMethodCollection}>
+        <div if:true={isSourceMethodCollection} class="slds-form-element slds-size_1-of-2">
             <div class={inputValues.sourceValueCollection.class}>
                 <c-fsc_flow-combobox 
                     name="select_sourceValueCollection" 
@@ -180,6 +179,7 @@
                         value={inputValues.sourceField.value} 
                         required={notRequired}
                         allow-multiselect={doNotAllow}
+                        available-field-types={supportedFieldTypes}
                         object-name={sourceObject}
                         onchange={handleFlowComboboxValueChange}
                         >

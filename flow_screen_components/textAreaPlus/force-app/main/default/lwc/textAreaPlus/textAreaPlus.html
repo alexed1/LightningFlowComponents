@@ -9,10 +9,11 @@
 
     <!-- Rich Text Input Section -->
     <template if:false={plainText}>
+        <lightning-formatted-rich-text value={label}></lightning-formatted-rich-text>
         <lightning-input-rich-text value={value} formats={formats} onchange={handleTextChange}
-            label={label} required={required} onkeydown={handleRichTextKeyDown} valid={isValidCheck}
+            required={required} onkeydown={handleRichTextKeyDown} valid={isValidCheck}
             message-when-bad-input={errorMessage}
-            label-visible="true" placeholder={placeHolder}>
+            placeholder={placeHolder}>
         </lightning-input-rich-text>
     </template>
 

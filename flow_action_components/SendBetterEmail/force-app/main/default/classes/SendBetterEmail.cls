@@ -143,6 +143,7 @@ public without sharing class SendBetterEmail {
       thisResponse.index = requestIndex;
       if (curRequest.sendAsync && !isFuture) {
         thisResponse.isSuccess = true;
+        futureRequests.add(curRequest);
         responseList.add(thisResponse);
         continue;
       }
@@ -634,7 +635,9 @@ public without sharing class SendBetterEmail {
       );
     }
 
-    SendEmailFuture(JSON.serialize(futureRequests));
+    if(!futureRequests.isEmpty()){
+        SendEmailFuture(JSON.serialize(futureRequests));
+    }
 
     return responseList;
   }

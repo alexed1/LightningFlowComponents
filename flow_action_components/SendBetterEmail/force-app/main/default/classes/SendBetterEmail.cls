@@ -83,7 +83,7 @@ public without sharing class SendBetterEmail {
 
     // Collect all inputs for SOQL
     for (SendBetterEmailRequest curRequest : requests) {
-      if (curRequest.sendAsync && !isFuture) {
+      if (curRequest.sendAsync == true && !isFuture) {
         continue;
       }
       if (
@@ -141,7 +141,7 @@ public without sharing class SendBetterEmail {
       curRequest.index = requestIndex;
       SendBetterEmailResponse thisResponse = new SendBetterEmailResponse();
       thisResponse.index = requestIndex;
-      if (curRequest.sendAsync && !isFuture) {
+      if (curRequest.sendAsync == true && !isFuture) {
         thisResponse.isSuccess = true;
         futureRequests.add(curRequest);
         responseList.add(thisResponse);

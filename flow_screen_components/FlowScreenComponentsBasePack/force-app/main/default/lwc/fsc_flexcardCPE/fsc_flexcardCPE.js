@@ -39,6 +39,22 @@ export default class fsc_flexcardCPE extends LightningElement {
     _typeMappings = [];
     rendered;
 
+     // Banner Help Text
+     recordObjectInfo = [
+        {label: 'Object Type Selection', helpText: 'Select "All" if you want the Object picklist to display all Objects in Salesforce note: not all objects are supported full list can be found here https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_all_supported_objects.htm.'},
+        {label: 'Preselected recordId', helpText: 'This is a single recordId that will default the value for "value" '},
+        
+    ];
+    componentStyling = [
+        {label: 'Card Size', helpText: 'Size in pixels default is 300px'},
+        {label: 'Style attribute for the card headers', helpText: 'Standard HTML syling to apply to the card headers'},
+        {label: 'Pick an Icon', helpText: 'When an Icon is selected it will apply it before the name in the card header'},
+    ];
+    flexCardActions = [
+        {label: 'List or Menu', helpText: 'Menu will display that action in a dropdown list, list will display the action as a list on the card'},
+        
+    ];
+
     @track inputValues = {
         value: { value: null, valueDataType: null, isCollection: false, label: 'Preselected recordId' },
         icon: { value: null, valueDataType: null, isCollection: false, label: 'Icon name for example standard:account' },

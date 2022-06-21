@@ -1,5 +1,7 @@
 <!-- 
 Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
+5/22/22 -    D Summerlin      - Version 1.8.2
+                                Added custom submit handling to show progress indicator
 
 5/22/22 -    Eric Smith -       Version 1.8.x
                                 Added support for recordId to be reactive on input
@@ -72,10 +74,12 @@ Lightning Web Component for Flow Screens:       recordDetailFlowScreenComponent
                                 record-id={recordId}
                                 record-type-id={recordTypeId}
                                 object-api-name={objectApiName}
+                                onsubmit={handleSubmit}
                                 onsuccess={handleSuccess}
                                 onerror={handleError}
                         >
-                            <lightning-layout multiple-rows="true">
+                            <lightning-spinner alternative-text="Loading" if:true={isSaving}></lightning-spinner>
+                            <lightning-layout multiple-rows="true" if:false={isSaving}>
                                 <template for:each={fieldData} for:item="field">
                                     <lightning-layout-item key={field.fieldName} size={elementSize}>
                                         <template if:false={field.isError} >

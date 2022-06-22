@@ -88,6 +88,8 @@ export default class GetRecordsInCPE extends LightningElement {
 
     validateErrors = [];
     firstPass = true;
+    isObjectSelected = false;
+    selectedSourceObject = '';
 
     @api
     get attributeSpacing() {
@@ -434,10 +436,13 @@ export default class GetRecordsInCPE extends LightningElement {
     }
 
     handleSourceObjectChange(event) {
-        console.log("CPE - Handle Input Object Change");
+        console.log("CPE - Handle Source Object Change");
         if (event && event.detail) {
             const newValue = event.detail.value;
             this.dispatchSourceObjectChange(newValue);
+            this.isObjectSelected = true;
+            this.selectedSourceObject = newValue;
+// this.updateRecordVariablesComboboxOptions(newValue);
         }
     }
 
@@ -457,6 +462,20 @@ export default class GetRecordsInCPE extends LightningElement {
         this.dispatchEvent(typeChangedEvent);
         this.dispatchFlowValueChangeEvent('sourceObject', newValue, 'String');
     }
+
+// updateRecordVariablesComboboxOptions(objectType) {       
+//     const variables = this._flowVariables.filter(
+//         (variable) => variable.objectType === objectType
+//     );
+//     let comboboxOptions = [];
+//     variables.forEach((variable) => {
+//         comboboxOptions.push({
+//             label: variable.name,
+//             value: "{!" + variable.name + "}"
+//         });
+//     });
+//     return comboboxOptions;
+// }
 
     handlesourceRecordCollectionChange(event) {
         if (event && event.detail) {

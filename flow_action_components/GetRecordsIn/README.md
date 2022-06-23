@@ -54,8 +54,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install GetRecordsIN**  
-[Version 1.0.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUz3QAE)   
-[Version 1.0.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUz3QAE)
+[Version 1.0.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUzIQAU)   
+[Version 1.0.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUzIQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -73,5 +73,6 @@ In order to use **GetRecordsIN**, permission must be given to access the followi
 # Release Notes
  
 ## 06/16/22 -  Eric Smith -     Version 1.0.0 
+## 06/23/22 -  Eric Smith -     Version 1.0.1 
  
 ---

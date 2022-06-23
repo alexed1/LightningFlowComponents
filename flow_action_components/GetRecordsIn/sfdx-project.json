@@ -24,6 +24,7 @@
         "getRecordsIn": "0Ho5G000000k9v8SAA",
         "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
         "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
-        "getRecordsIn@1.0.0-0": "04t5G000003rUz3QAE"
+        "getRecordsIn@1.0.0-0": "04t5G000003rUz3QAE",
+        "getRecordsIn@1.0.1-0": "04t5G000003rUzIQAU"
     }
 }

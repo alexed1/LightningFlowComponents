@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 
                 Permission Set:               
                                                   
-**Documentation:**  https://unofficialsf.com/xxx/ 
+**Documentation:**  https://unofficialsf.com/get-records-in-flow-action/ 
   
 **Created by:**	Eric Smith  
 **Date:**		2022

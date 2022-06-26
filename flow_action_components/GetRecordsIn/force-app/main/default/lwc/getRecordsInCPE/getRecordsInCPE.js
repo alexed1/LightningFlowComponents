@@ -20,7 +20,7 @@ import { DISPLAY_TYPE_OPTIONS, AVAILABLE_OBJECT_OPTIONS, FIELD_TYPES, LAYOUT_OPT
 
 
 // *** Set the component's current version # here
-const VERSION_NUMBER = "1.0.1";
+const VERSION_NUMBER = "1.0.2";
 
 const DEFAULTS = {
     inputAttributePrefix: "select_",
@@ -208,7 +208,6 @@ export default class GetRecordsInCPE extends LightningElement {
         return (!!this.selectedOutputObject);
     }
 
-    selectedSourceObject = '';
     get isSourceObjectSelected() {
         return (!!this.selectedSourceObject);
     }
@@ -380,7 +379,8 @@ export default class GetRecordsInCPE extends LightningElement {
                 this.selectedOutputObject = curInputParam.value;    
             }
             if (curInputParam.name == 'sourceObject') { 
-                this.selectedSourceObject = curInputParam.value;    
+                this.selectedSourceObject = curInputParam.value;
+                this.isObjectSelected = true;
             }
             if (curInputParam.name == 'sourceRecordCollection') { 
                 this.enteredRecordCollection = curInputParam.value;    
@@ -440,9 +440,6 @@ export default class GetRecordsInCPE extends LightningElement {
         if (event && event.detail) {
             const newValue = event.detail.value;
             this.dispatchSourceObjectChange(newValue);
-            this.isObjectSelected = true;
-            this.selectedSourceObject = newValue;
-// this.updateRecordVariablesComboboxOptions(newValue);
         }
     }
 
@@ -461,41 +458,10 @@ export default class GetRecordsInCPE extends LightningElement {
         );
         this.dispatchEvent(typeChangedEvent);
         this.dispatchFlowValueChangeEvent('sourceObject', newValue, 'String');
-    }
-
-// updateRecordVariablesComboboxOptions(objectType) {       
-//     const variables = this._flowVariables.filter(
-//         (variable) => variable.objectType === objectType
-//     );
-//     let comboboxOptions = [];
-//     variables.forEach((variable) => {
-//         comboboxOptions.push({
-//             label: variable.name,
-//             value: "{!" + variable.name + "}"
-//         });
-//     });
-//     return comboboxOptions;
-// }
-
-    handlesourceRecordCollectionChange(event) {
-        if (event && event.detail) {
-            const newValue = event.detail.value;
-            const valueChangedEvent = new CustomEvent(
-                'configuration_editor_input_value_changed',
-                {
-                    bubbles: true,
-                    cancelable: false,
-                    composed: true,
-                    detail: {
-                        name: 'sourceRecordCollection',
-                        newValue,
-                        newValueDataType: 'reference',
-                    },
-                }
-            );
-        this.dispatchEvent(valueChangedEvent);
-        this.inputValues.sourceRecordCollection.value = newValue;
-        }
+        this.isObjectSelected = true;
+        this.selectedSourceObject = newValue;
+        this.dispatchFlowValueChangeEvent('sourceRecordCollection', null, 'reference');
+        this.dispatchFlowValueChangeEvent('sourceField', '', 'String');
     }
 
     handleValueChange(event) {

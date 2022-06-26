@@ -155,29 +155,19 @@
                 <div class="slds-m-top_small">
                     <div class={inputValues.sourceRecordCollection.class}>
                         <div class="slds-form-element__control">
-                            <lightning-combobox
-                                name="sourceRecordCollection"
-                                label={inputValues.sourceRecordCollection.label}
-                                value={sourceRecordCollection}
-                                placeholder={sourceRecordCollectionPlaceholder}
-                                options={sourceCollectionValueOptions}
-                                onchange={handlesourceRecordCollectionChange}
-                                required>
-                            </lightning-combobox>
-                            <!-- TODO: Support original combobox so Get Records outputs can be used instead of just flow variables -->
-                            <!-- <c-fsc_flow-combobox 
+                            <c-fsc_flow-combobox 
                                 if:true={isObjectSelected}
                                 name="sourceRecordCollection" 
                                 label={inputValues.sourceRecordCollection.label}
                                 value={inputValues.sourceRecordCollection.value} 
                                 value-type={inputValues.sourceRecordCollection.valueDataType}
                                 field-level-help={inputValues.sourceRecordCollection.helpText}
-                                builder-context-filter-type={selectedSObject}
+                                builder-context-filter-type={selectedSourceObject}
                                 builder-context-filter-collection-boolean={inputValues.sourceRecordCollection.isCollection}
                                 builder-context={_builderContext} 
-                                onvaluechanged={handlesourceRecordCollectionChange}
+                                onvaluechanged={handleFlowComboboxValueChange}
                                 automatic-output-variables={automaticOutputVariables}>
-                            </c-fsc_flow-combobox> -->
+                            </c-fsc_flow-combobox>
                         </div>
                         <c-fsc_display-error 
                             is-error={inputValues.sourceRecordCollection.isError}

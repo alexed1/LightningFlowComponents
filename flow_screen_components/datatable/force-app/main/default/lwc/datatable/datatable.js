@@ -48,6 +48,11 @@ export default class Datatable extends LightningElement {
         EmptyMessage
     };
 
+    // Virtual Rendering
+    renderConfig = {
+        virtualize: 'vertical',
+    };
+    
     // Component Input & Output Attributes
     //@api tableData = []; see new version below
     @api columnFields = '';

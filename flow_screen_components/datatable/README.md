@@ -72,6 +72,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 07/xx/22 -  Eric Smith -     Version 4.0.6 
+**Updates:** 
+-   
+**Bug Fixes:** 
+-   Fixed the ability to edit date values when the column is using Type Attributes
+ 
 ## 05/22/22 -  Eric Smith -     Version 4.0.5 
 **Updates:** 
 -   Added new Output Attribute - selectedRowKeyValue

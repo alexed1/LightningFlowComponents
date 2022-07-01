@@ -74,7 +74,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## 07/xx/22 -  Eric Smith -     Version 4.0.6 
 **Updates:** 
--   
+-   Enabled the new Virtual Rendering attributes to ensure smooth scrolling (New in Summer '22)
+ 
 **Bug Fixes:** 
 -   Fixed the ability to edit date values when the column is using Type Attributes
  

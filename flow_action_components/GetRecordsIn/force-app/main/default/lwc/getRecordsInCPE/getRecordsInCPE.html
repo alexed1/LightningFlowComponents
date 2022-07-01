@@ -1,0 +1,228 @@
+<template>
+
+    <!-- Select Output Object -->
+    <div class="slds-m-bottom_small slds-border_top">
+        <h3 class="slds-text-heading_small slds-p-vertical_small">
+            Get Records of this Object ...
+        </h3>
+        <div class="slds-form-element slds-size_1-of-2">
+            <div class={inputValues.outputObject.class}>
+                <div class="slds-form-element__control">
+                    <c-df_object-selector
+                        name="outputObject"
+                        label={inputValues.outputObject.label}
+                        value={outputObject}
+                        required={required}
+                        available-object-selection={availableObjectSelection}
+                        onchange={handleOutputObjectChange}
+                        >
+                    </c-df_object-selector>
+                </div>
+                <c-fsc_display-error 
+                    is-error={inputValues.outputObject.isError}
+                    error-message={inputValues.outputObject.errorMessage}
+                ></c-fsc_display-error>
+            </div>
+            <div>
+                <lightning-input 
+                    type="checkbox" 
+                    label="Display ALL Objects for Selection"
+                    name="displayAll"
+                    field-level-help="Advanced: Select if you don't see the Standard Salesforce object you are looking for"
+                    checked={isDisplayAll}
+                    onchange={handleCheckboxChange}>
+                </lightning-input>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select field to Compare -->
+    <div class="slds-m-bottom_small slds-border_top">
+        <h3 class="slds-text-heading_small slds-p-vertical_small">
+            ... where the Value of this Field ...
+        </h3>
+        <div class="slds-form-element slds-size_1-of-2">
+            <div class="slds-form-element__control">
+                <c-df_field-selector2 
+                    name="select_targetField" 
+                    label={inputValues.targetField.label}
+                    value={inputValues.targetField.value} 
+                    required={notRequired}
+                    allow-multiselect={doNotAllow}
+                    available-field-types={supportedFieldTypes}
+                    object-name={outputObject}
+                    onchange={handleFlowComboboxValueChange}
+                    >
+            </c-df_field-selector2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Select IN collection type -->
+    <div class="slds-m-bottom_small slds-border_top">
+        <h3 class="slds-text-heading_small slds-p-vertical_small">
+            ... is IN this Collection 
+        </h3>
+        <div class="slds-form-element__control">
+            <lightning-radio-group name="select_sourceMethod"
+                label={inputValues.sourceMethod.label}
+                options={formatOptions}
+                value={inputValues.sourceMethod.value}
+                onchange={handleValueChange}
+                required
+                type="radio">
+            </lightning-radio-group>
+        </div>
+    </div>
+
+    <div class="slds-m-top_small">
+
+        <div if:true={isSourceMethodString} class="slds-form-element slds-size_1-of-2">
+            <div class={inputValues.sourceValueString.class}>
+                <c-fsc_flow-combobox 
+                    name="select_sourceValueString" 
+                    label={inputValues.sourceValueString.label}
+                    value={inputValues.sourceValueString.value} 
+                    value-type={inputValues.sourceValueString.valueDataType}
+                    field-level-help={inputValues.sourceValueString.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceValueString.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}
+                    required>
+                </c-fsc_flow-combobox>
+                <c-fsc_display-error 
+                    is-error={inputValues.sourceValueString.isError}
+                    error-message={inputValues.sourceValueString.errorMessage}
+                ></c-fsc_display-error>
+            </div>
+            <div class="slds-m-top_small">
+                <c-fsc_flow-combobox 
+                    name="select_sourceDelimiter" 
+                    label={inputValues.sourceDelimiter.label}
+                    value={inputValues.sourceDelimiter.value} 
+                    value-type={inputValues.sourceDelimiter.valueDataType}
+                    field-level-help={inputValues.sourceDelimiter.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceDelimiter.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
+            </div>
+        </div>
+
+        <div if:true={isSourceMethodCollection} class="slds-form-element slds-size_1-of-2">
+            <div class={inputValues.sourceValueCollection.class}>
+                <c-fsc_flow-combobox 
+                    name="select_sourceValueCollection" 
+                    label={inputValues.sourceValueCollection.label}
+                    value={inputValues.sourceValueCollection.value} 
+                    value-type={inputValues.sourceValueCollection.valueDataType}
+                    field-level-help={inputValues.sourceValueCollection.helpText}
+                    builder-context-filter-collection-boolean={inputValues.sourceValueCollection.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}
+                    required>
+                </c-fsc_flow-combobox>
+                <c-fsc_display-error 
+                    is-error={inputValues.sourceValueCollection.isError}
+                    error-message={inputValues.sourceValueCollection.errorMessage}
+                ></c-fsc_display-error>
+            </div>
+        </div>
+
+        <div if:true={isSourceMethodObject} class="slds-form-element slds-size_1-of-2">
+            <div class={inputValues.sourceObject.class}>
+                <div class="slds-form-element__control">
+                    <c-df_object-selector
+                        name="sourceObject"
+                        label={inputValues.sourceObject.label}
+                        value={sourceObject}
+                        required={required}
+                        available-object-selection={availableObjectSelection}
+                        onchange={handleSourceObjectChange}
+                        >
+                    </c-df_object-selector>
+                </div>
+                <c-fsc_display-error 
+                    is-error={inputValues.sourceObject.isError}
+                    error-message={inputValues.sourceObject.errorMessage}
+                ></c-fsc_display-error>
+            </div>
+
+            <div if:true={isSourceObjectSelected}>
+                <div class="slds-m-top_small">
+                    <div class={inputValues.sourceRecordCollection.class}>
+                        <div class="slds-form-element__control">
+                            <c-fsc_flow-combobox 
+                                if:true={isObjectSelected}
+                                name="sourceRecordCollection" 
+                                label={inputValues.sourceRecordCollection.label}
+                                value={inputValues.sourceRecordCollection.value} 
+                                value-type={inputValues.sourceRecordCollection.valueDataType}
+                                field-level-help={inputValues.sourceRecordCollection.helpText}
+                                builder-context-filter-type={selectedSourceObject}
+                                builder-context-filter-collection-boolean={inputValues.sourceRecordCollection.isCollection}
+                                builder-context={_builderContext} 
+                                onvaluechanged={handleFlowComboboxValueChange}
+                                automatic-output-variables={automaticOutputVariables}>
+                            </c-fsc_flow-combobox>
+                        </div>
+                        <c-fsc_display-error 
+                            is-error={inputValues.sourceRecordCollection.isError}
+                            error-message={inputValues.sourceRecordCollection.errorMessage}
+                        ></c-fsc_display-error>
+                    </div>
+                </div>
+
+                <div class="slds-m-top_small">
+                    <c-df_field-selector2 
+                        name="select_sourceField" 
+                        label={inputValues.sourceField.label}
+                        value={inputValues.sourceField.value} 
+                        required={notRequired}
+                        allow-multiselect={doNotAllow}
+                        available-field-types={supportedFieldTypes}
+                        object-name={sourceObject}
+                        onchange={handleFlowComboboxValueChange}
+                        >
+                    </c-df_field-selector2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Select Output Fields -->
+    <div class="slds-m-vertical_small slds-border_top">
+        <div class="slds-form-element__control slds-p-top_small">
+            <lightning-radio-group name="select_storeFieldsMethod"
+                label={inputValues.storeFieldsMethod.label}
+                options={storeRecordDataOptions}
+                value={inputValues.storeFieldsMethod.value}
+                onchange={handleValueChange}
+                required
+                type="radio">
+            </lightning-radio-group>
+        </div>
+        <div if:true={isChooseFields} class="slds-m-top_small">
+            <c-df_field-selector2 
+                name="select_outputFieldNames" 
+                allow-multiselect={allow}
+                label={inputValues.outputFieldNames.label}
+                value={inputValues.outputFieldNames.value} 
+                required={required}
+                object-name={outputObject}
+                onchange={handleFlowComboboxValueChange}
+                >
+            </c-df_field-selector2>
+        </div>
+    </div>
+
+    <!-- *** Component Name and current Version # to appear at the bottom of the CPE -->
+    <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">
+        Get-Records-In Version #: {versionNumber}
+    </div>
+
+</template>

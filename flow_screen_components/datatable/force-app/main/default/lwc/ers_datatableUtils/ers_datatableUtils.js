@@ -4,6 +4,7 @@
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 const baseURL = window.location.hostname;
+console.log("datatable environment baseURL", baseURL);
 
 var myDomain;
 var isCommunity = false;
@@ -13,6 +14,9 @@ if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
     myDomain = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 } else if (baseURL.includes('.lightning.')) {   // Running in Lightning
     myDomain = 'https://' + window.location.hostname.split('.')[0];
+    if (baseURL.includes('.sandbox.')) {        // Running in a sandbox with Enhanced Domain enabled
+        myDomain += '.sandbox';
+    }
 } else {                                        // Running in a Community
     myDomain = window.location.href;            // https://<domain>.<instance>.force.com/<site title>/s/
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)

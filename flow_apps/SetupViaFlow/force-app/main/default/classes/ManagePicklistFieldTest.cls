@@ -16,13 +16,13 @@ public with sharing class ManagePicklistFieldTest {
         request.action = Label.DEACTIVATE_STATUS_LABEL;
         request.picklistValueNameListJSON = '[{"value":"qwerty","label":"qwerty","isDefaultValue":false,"isActive":true},{"value":"test","label":"test","isDefaultValue":false,"isActive":true}]';
         result = ManagePicklistField.managePicklistField(new List<ManagePicklistField.Requests>{request })[0];
-        System.assert(result.isSuccess);
+        System.assert(result.isSuccess); //this is throwing an error which seesm related to this error https://duckduckgo.com/?q=Methods+defined+as+TestMethod+do+not+support+getContent+call&ia=web
 
         //set Deploy error
         request.action = Label.ACTIVATE_STATUS_LABEL;
         request.picklistValueNameListJSON = '[{"value":"qwerty","label":"qwerty","isDefaultValue":false,"isActive":true},{"value":"test","label":"test","isDefaultValue":false,"isActive":true}]';
         result = ManagePicklistField.managePicklistField(new List<ManagePicklistField.Requests>{request })[0];
-        System.assert(result.isSuccess);
+        System.assert(result.isSuccess); //see comment above
         
     }
 

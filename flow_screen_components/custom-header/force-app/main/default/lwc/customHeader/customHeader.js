@@ -2,20 +2,23 @@ import { LightningElement,api } from 'lwc';
 import staticResourceReference from '@salesforce/resourceUrl/customHeaderImages';
 
 export default class CustomHeader extends LightningElement {
+    //---recordId- used when the component is placed on a record page
     @api recordId;
+    @api displayForRecordId;
+    
+    //---When using the component more than once on the same screen, OrderNumber helps distinguish the components
     @api orderNumber;
-    @api imageName;
-    @api iconPadding;
-    @api iconSize;
+
+    //----display Mode
+    @api displayMode;
     @api displayAsHorizontalLine = false;
-    @api isTextAHyperlink = false;
-    @api linkTargetNewWindow = false;
-    @api removeTextDecoration = false;
-    @api urlToRedirect;
-    @api imageIsALightningIcon = false;
-    @api imageIsAStaticResource = false;
-    @api headerText;
-    @api headerTextAlignment;
+    @api isTextOnly = false;
+    @api isTextLeftImageRight = false;
+    @api isTextAndImageOnLeftOfText = false;
+
+    
+    //----Banner styling
+    @api textAlignment;
     @api headerHeight;
     @api headerBgColor; 
     @api headerTxtColor; 
@@ -23,40 +26,64 @@ export default class CustomHeader extends LightningElement {
     @api headerTxtSize; 
     @api headerBrdrRadius; 
     @api headerBrdr;
-    @api displayForRecordId;
-    @api staticResourceImageHeight;
-    @api staticResourceImageWidth;
     @api headerMargin;
     @api headerPadding;
-    @api isTextOnly = false;
-    @api isTextLeftImageRight = false;
-    @api isTextAndImageOnLeftOfText = false;
+    @api isBold = false;
+    @api isItalicized = false;
+    @api isUnderlined = false;
+    
+    @api imageName;
+    @api iconPadding;
+    @api iconSize;
+    @api isTextAHyperlink = false;
+    @api linkTargetNewWindow = false;
+    @api removeTextDecoration = false;
+    @api urlToRedirect;
+    @api imageType = '';
+    @api imageIsALightningIcon = false;
+    @api imageIsAStaticResource = false;
+    @api staticResourceImageHeight;
+    @api staticResourceImageWidth;
+
+    @api headerText;
+
+    displayChoicesAsOptions = [
+        {label: 'Horizontal Line', value: 'horizontalLine'},
+        {label: 'Text Only', value: 'textOnly'},
+        {label: 'Text (Left) and Image (Right)', value: 'textLeftImageRight'},
+        {label: 'Image (Left) and Text (Right)', value: 'ImageLeftTextRight'}
+    ];
+
     linkTarget ='_self';
-    isTextHyperlink = false;
     showHeader = false;
     showLightningIcon = false;
-    lightningIcon = 'utility:down';
-    showStaticResource = false;
     staticResourceUrl;
-    showTextOnly = false;
-    showTextOnLeftImageOnRight = false;
-    showTextAndImageOnLeftOfText = false;
-    imgHeight;
-    imgWidth;
-    lightningIconSize;
 
     stylesheet = ".customHeaderCSS"+this.orderNumber+" {}";
     linkCSS = "";
     iconCSS = ".iconCSS {}";
-    randomNumber = 0;
-    mini = 0;
-    maxi = 0;
     customHeaderCSSName = "customHeaderCSS"+this.orderNumber;
-    randomNumberNew = 0;
     
     connectedCallback(){
-        
+        console.log('in connectedCallback');
+        console.log('this.headerText '+this.headerText);
+        console.log('this.headerBgColor '+this.headerBgColor);
+        console.log('this.headerHeight '+this.headerHeight);
+        console.log('this.headerMargin '+this.headerMargin);
+        console.log('this.headerBrdrRadius '+this.headerBrdrRadius);
+        console.log('this.headerBrdr '+this.headerBrdr);
+        console.log('this.headerPadding '+this.headerPadding);
+        console.log('this.textAlignment '+this.textAlignment);
+        console.log('this.headerTxtColor '+this.headerTxtColor);
+        console.log('this.headerTxtFont '+this.headerTxtFont);
+        console.log('this.headerTxtSize '+this.headerTxtSize);
+             
         this.customHeaderCSSName = "customHeaderCSS"+this.orderNumber;
+        this.setDisplayMode(this.displayMode);
+        console.log('displayAsHorizontalLine-2 :'+this.displayAsHorizontalLine);
+          console.log('isTextOnly-2 :'+this.isTextOnly);
+          console.log('isImageLeftTextRight-2 :'+this.isImageLeftTextRight);
+          console.log('isTextLeftImageRight-2 :'+this.isTextLeftImageRight);
         if(this.displayAsHorizontalLine){
             this.showHeader = false;
         }else{
@@ -78,136 +105,160 @@ export default class CustomHeader extends LightningElement {
            
             
         }
-        if(this.showHeader){
-
-        this.isTextHyperlink = this.isTextAHyperlink;
-        console.log('this.isTextOnly:'+this.isTextOnly);
-        if(this.isTextOnly){
-            this.showTextOnly = true;
-
-        }else if(this.isTextLeftImageRight){
-            console.log('this.isTextLeftImageRight:'+this.isTextLeftImageRight);
-            this.showTextOnLeftImageOnRight = true;
-            
-        }else if(this.isTextAndImageOnLeftOfText){
-            console.log('this.isTextAndImageOnLeftOfText:'+this.isTextAndImageOnLeftOfText);
-            this.showTextAndImageOnLeftOfText = true;
-        }/*else {
-            //if none are true
-            console.log('if none are true:');
-            this.showTextOnly = true;
-        }*/
-
-        if(this.imageName!= null && (this.showTextOnLeftImageOnRight || this.showTextAndImageOnLeftOfText)){
-
-            if(this.iconPadding != null){
-                this.iconCSS = ".iconCSS {margin:"+ this.iconPadding +";}";//"text-align: "+this.headerTextAlignment+";";
-            }
-
-            if(this.imageIsALightningIcon){
-                this.lightningIcon = this.imageName;
-                this.lightningIconSize = this.iconSize;
-                this.showLightningIcon = true;
-                
-            }else if(this.imageIsAStaticResource){
-                this.staticResourceUrl = staticResourceReference +'/'+this.imageName;
-                this.imgHeight = this.staticResourceImageHeight;
-                this.imgWidth = this.staticResourceImageWidth;
-                this.showStaticResource = true;
-            }
-
-        }
-
-
-        if(this.linkTargetNewWindow){
-            this.linkTarget = '_blank';
-        }
-
-        if(this.removeTextDecoration){
-            this.linkCSS = ".linkCSS {text-decoration:none !important;}";
-        }
 
         this.stylesheet = "."+this.customHeaderCSSName+" {";
+
+        if(this.headerBgColor != null){
+            this.stylesheet = this.stylesheet + "background-color: "+this.headerBgColor+"; ";
+        }
+        if(this.headerHeight != null){
+            this.stylesheet = this.stylesheet + "height: "+this.headerHeight+"px; ";
+        }
+        if(this.headerMargin != null){
+            this.stylesheet = this.stylesheet + "margin: "+this.headerMargin+"; ";
+        }
+        if(this.headerBrdrRadius != null){
+            this.stylesheet = this.stylesheet + "border-radius: "+this.headerBrdrRadius+"px; ";
+        }
+        if(this.headerBrdr != null){
+            this.stylesheet = this.stylesheet + "border: "+this.headerBrdr+"; ";
+        }
+        if(this.headerPadding != null){
+            this.stylesheet = this.stylesheet + "padding: "+this.headerPadding+"; ";
+        }
         
-        if(this.isTextOnly || this.isTextAndImageOnLeftOfText){
-            if(this.headerTextAlignment != null){
-                console.log('this.headerTextAlignment--1 '+this.headerTextAlignment);
-                this.stylesheet = this.stylesheet + "text-align: "+this.headerTextAlignment+";";
+
+        if(this.showHeader){
+
+        console.log('this.isTextOnly:'+this.isTextOnly);
+        
+        if(this.imageName!= null && (this.isTextLeftImageRight || this.isImageLeftTextRight)){
+
+            if(this.iconPadding != null){
+                this.iconCSS = ".iconCSS {margin:"+ this.iconPadding +"; }";
+            }
+
+            if(this.imageType == 'lightningIcon'){//imageType is set from CPE available for FLow Screens only
+                this.imageIsALightningIcon = true;
+                this.imageIsAStaticResource = false;
+            }else if(this.imageType == 'staticResource'){
+                this.imageIsALightningIcon = false;
+                this.imageIsAStaticResource = true;
+            }
+
+
+            if(this.imageIsALightningIcon){//lightning icon gets priority over Static Resource
+                this.imageIsAStaticResource = false;
+            }
+                
+            if(this.imageIsAStaticResource){
+                this.staticResourceUrl = staticResourceReference +'/'+this.imageName;
             }
 
         }
 
 
+        
+        if(this.isTextAHyperlink){
+            if(this.linkTargetNewWindow){
+                this.linkTarget = '_blank';
+            }
 
-        
-        
-        
-        if(this.headerBgColor != null){
-            console.log('this.headerBgColor '+this.headerBgColor);
-            this.stylesheet = this.stylesheet + "background-color: "+this.headerBgColor+";";
+            this.linkCSS = "a.linkCSS:link, a.linkCSS:hover, a.linkCSS:visited, a.linkCSS:active {";
+
+            if(this.removeTextDecoration){
+                this.linkCSS = this.linkCSS + "text-decoration:none !important;";
+            }
+
+            if(this.headerTxtColor != null){
+                this.linkCSS = this.linkCSS + "color: "+this.headerTxtColor+"; ";
+            }
+            if(this.headerTxtSize != null){
+                this.linkCSS = this.linkCSS + "font-size: "+this.headerTxtSize+"; ";
+            }
+
+            this.linkCSS = this.linkCSS + "}";
+            
         }
+        
+        
+        if(this.isTextOnly || this.isImageLeftTextRight){
+            if(this.textAlignment != null){
+                this.stylesheet = this.stylesheet + "text-align: "+this.textAlignment+"; ";
+            }
+
+        }
+        
         if(this.headerTxtColor != null){
-            console.log('this.headerTxtColor '+this.headerTxtColor);
-            this.stylesheet = this.stylesheet + "color: "+this.headerTxtColor+";";
-        }
-        if(this.headerHeight != null){
-            console.log('this.headerHeight '+this.headerHeight);
-            this.stylesheet = this.stylesheet + "height: "+this.headerHeight+"%;";
+            this.stylesheet = this.stylesheet + "color: "+this.headerTxtColor+"; ";
         }
         if(this.headerTxtFont != null){
-            console.log('this.headerTxtFont '+this.headerTxtFont);
-            this.stylesheet = this.stylesheet + "font-family: "+this.headerTxtFont+";";
+            this.stylesheet = this.stylesheet + "font-family: "+this.headerTxtFont+"; ";
         }
         if(this.headerTxtSize != null){
-            console.log('this.headerTxtSize '+this.headerTxtSize);
-            this.stylesheet = this.stylesheet + "font-size: "+this.headerTxtSize+";";
+            this.stylesheet = this.stylesheet + "font-size: "+this.headerTxtSize+"; ";
         }
-        if(this.headerBrdrRadius != null){
-            console.log('this.headerBrdrRadius '+this.headerBrdrRadius);
-            this.stylesheet = this.stylesheet + "border-radius: "+this.headerBrdrRadius+"px;";
+        if(this.isBold){
+            this.stylesheet = this.stylesheet + "font-weight: bold; ";
         }
-        if(this.headerBrdr != null){
-            console.log('this.headerBrdr '+this.headerBrdr);
-            this.stylesheet = this.stylesheet + "border: "+this.headerBrdr+";";
+        if(this.isItalicized){
+            this.stylesheet = this.stylesheet + "font-style: italic; ";
         }
-        if(this.headerMargin != null){
-            console.log('this.headerMargin '+this.headerMargin);
-            this.stylesheet = this.stylesheet + "margin: "+this.headerMargin+";";
-        }
-        if(this.headerPadding != null){
-            console.log('this.headerPadding '+this.headerPadding);
-            this.stylesheet = this.stylesheet + "padding: "+this.headerPadding+";";
+        if(this.isUnderlined){
+            this.stylesheet = this.stylesheet + "text-decoration: underline !important; ";
         }
         this.stylesheet = this.stylesheet + " }";
         this.stylesheet = this.stylesheet + " " +this.iconCSS;
         this.stylesheet = this.stylesheet + " " +this.linkCSS;
-        console.log('this.stylesheet '+this.stylesheet);
+        
     } else{
 
-        this.stylesheet = "."+this.customHeaderCSSName+" { width:100%; ";
-        //this.stylesheet = " { width:100%; ";
-        if(this.headerBgColor != null){
-            console.log('this.headerBgColor '+this.headerBgColor);
-            this.stylesheet = this.stylesheet + "background-color: "+this.headerBgColor+";";
-        }
-        if(this.headerHeight != null){
-            console.log('this.headerHeight '+this.headerHeight);
-            this.stylesheet = this.stylesheet + "height: "+this.headerHeight+"%;";
-        }
-        if(this.headerMargin != null){
-            console.log('this.headerMargin '+this.headerMargin);
-            this.stylesheet = this.stylesheet + "margin: "+this.headerMargin+";";
-        }
-        this.stylesheet = this.stylesheet + " }";
-        console.log('this.stylesheet '+this.stylesheet);
-        
+        this.stylesheet = this.stylesheet + " width:100%;} ";
 
     }
+    console.log('this.stylesheet '+this.stylesheet);
+        
+    }
+
+    setDisplayMode(inputDisplayMode){
+        console.log('in setDisplayMode: '+inputDisplayMode);
+        this.displayAsHorizontalLine = false;
+        this.isTextOnly = false;
+        this.isImageLeftTextRight = false;
+        this.isTextLeftImageRight = false;
+
+        switch(inputDisplayMode) {
+            case 'horizontalLine':
+            case 'Horizontal Line':
+            console.log('case horizontalLine');
+              this.displayAsHorizontalLine = true;
+              break;
+            case 'textOnly':
+            case 'Text Only':
+                console.log('case textOnly');
+              this.isTextOnly = true;
+              break;
+            case 'textLeftImageRight':
+            case 'Text on Left and Image on Right':
+                console.log('case textLeftImageRight');
+              this.isTextLeftImageRight = true;
+              break;
+            case 'ImageLeftTextRight':
+            case 'Image on Left and Text on Right':
+                console.log('case ImageLeftTextRight');
+              this.isImageLeftTextRight = true;
+              break;
+            default:
+                console.log('case default');
+                this.displayAsHorizontalLine = true;
+          }
+
         
     }
     
 
     renderedCallback() {
+        //console.log('in renderedCallback');
         // This finds the placeholder element in the template
         const div = this.template.querySelector("div[data-id='stylesheet']");
 

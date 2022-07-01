@@ -34,6 +34,7 @@
         "SetupViaFlow@1.1.1-0": "04t5G0000047xLoQAI",
         "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
         "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
-        "datatable@4.0.3-0":"04t5G000003rUvLQAU"
+        "datatable@4.0.3-0": "04t5G000003rUvLQAU",
+        "SetupViaFlow@3.0.0-0": "04t5G000003rUyeQAE"
     }
 }

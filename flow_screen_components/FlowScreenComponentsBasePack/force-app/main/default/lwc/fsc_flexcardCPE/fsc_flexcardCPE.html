@@ -1,17 +1,19 @@
 <template>
-    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Record and Object Information"></c-fsc_flow-banner>
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Record and Object Information"
+        banner-info={recordObjectInfo}></c-fsc_flow-banner>
 
-    <lightning-combobox label="Show Standard and Custom or All Object Types?" value={inputValues.allowAllObjects.value} placeholder="Standard and Custom" options={objectTypes} onchange={handleAllowAllObjects} field-level-help= 'Select "All" if you want the Object picklist to display all Objects in Salesforce note: not all objects are supported full list can be found here https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_all_supported_objects.htm.'
-    ></lightning-combobox>    
-    
+    <lightning-combobox label="Object Type" value={inputValues.allowAllObjects.value} placeholder="Standard and Custom"
+        options={objectTypes} onchange={handleAllowAllObjects}></lightning-combobox>
+
     <c-fsc_pick-object-and-field-3 object-label={inputValues.objectAPIName.label} name="objectAPIName"
-        object-type={inputValues.objectAPIName.value} available-object-types={inputValues.allowAllObjects.value} hide-field-picklist=true
-        onfieldselected={handleObjectChange} required>
+        object-type={inputValues.objectAPIName.value} available-object-types={inputValues.allowAllObjects.value}
+        hide-field-picklist=true onfieldselected={handleObjectChange} required>
     </c-fsc_pick-object-and-field-3>
 
     <c-fsc_field-selector-3 name="fields" object-name={inputValues.objectAPIName.value} public-style="width:100%"
-    onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} allow-multiselect=true required></c-fsc_field-selector-3>
-    
+        onfieldupdate={handleValueChange} selected-fields={inputValues.fields.value} allow-multiselect=true required>
+    </c-fsc_field-selector-3>
+
     <c-fsc_flow-combobox name="records" value={inputValues.records.value} label={inputValues.records.label}
         builder-context-filter-type={inputValues.objectAPIName.value}
         builder-context-filter-collection-boolean={inputValues.records.isCollection} builder-context={_builderContext}
@@ -21,7 +23,8 @@
     <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
         label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Component Styling"></c-fsc_flow-banner>
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Component Styling" banner-info={componentStyling}>
+    </c-fsc_flow-banner>
 
     <lightning-slider data-name="cardSizeString" value={inputValues.cardSizeString.value} max="500"
         label={inputValues.cardSizeString.label} onchange={handlesliderChange}></lightning-slider>
@@ -35,13 +38,15 @@
     <c-fsc_pick-icon name="icons" mode="combobox" oniconselection={handlePickIcon} icon-name={inputValues.icon.value}>
     </c-fsc_pick-icon>
 
-    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Flex Card Actions"></c-fsc_flow-banner>
-    <lightning-combobox label="Display actions as list or menu?" value={inputValues.actionDisplayType.value} options={displayOptions} onchange={handleDisplayTypeChange} required
-    ></lightning-combobox>
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Flex Card Actions" banner-info={flexCardActions}>
+    </c-fsc_flow-banner>
+    <lightning-combobox label="Display actions as list or menu?" value={inputValues.actionDisplayType.value}
+        options={displayOptions} onchange={handleDisplayTypeChange} required></lightning-combobox>
 
     <template if:true={isMenu}>
-    <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value} label={inputValues.buttonLabel.label}
-        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+        <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value}
+            label={inputValues.buttonLabel.label} builder-context-filter-type="String"
+            onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
     </template>
 
     <c-fsc_flow-picker-3 label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
@@ -52,6 +57,7 @@
         </lightning-pill>
     </template>
 
-    <lightning-combobox label="Are Cards Clickable?" options={clickActions.options} onchange={handleClickActionChange} value={clickAction}></lightning-combobox>
+    <lightning-combobox label="Are Cards Clickable?" options={clickActions.options} onchange={handleClickActionChange}
+        value={clickAction}></lightning-combobox>
 
 </template>

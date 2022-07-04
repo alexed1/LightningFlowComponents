@@ -9,7 +9,7 @@ console.log("datatable environment baseURL", baseURL);
 var myDomain;
 var isCommunity = false;
 
-if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
+if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     // Running in Flow Builder || Flow Builder (Enhanced Domain)
     // Get domain url by replacing the last occurance of '--c' in the current url
     myDomain = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 } else if (baseURL.includes('.lightning.')) {   // Running in Lightning

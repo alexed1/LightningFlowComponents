@@ -68,9 +68,29 @@ export default class FlowButtonBarCPE extends LightningElement {
 
     /* CUSTOM PROPERTY EDITOR SETTINGS */
     _builderContext;
+    _automaticOutputVariables;
     _values;
 
-    @api builderContext;
+    @api 
+    get automaticOutputVariables () {
+        return this._automaticOutputVariables;
+    }
+
+    set automaticOutputVariables(value) {
+        this._automaticOutputVariables = value;
+    }
+
+    @api
+    get builderContext() {
+        return this._builderContext;
+    }
+    set builderContext(context) {
+        this._builderContext = context || {};
+        if (this._builderContext) {
+            const { variables } = this._builderContext;
+            this._flowVariables = [...variables];
+        }
+    }
 
     @api
     get inputVariables() {
@@ -386,6 +406,19 @@ export default class FlowButtonBarCPE extends LightningElement {
         this.showPreviewModal = false;
     }
 
+    handleFlowComboboxValueChange(event) {   
+        if (event.target && event.detail) {
+            let changedAttribute = event.target.name;
+            let newType = event.detail.newValueDataType;
+            let newValue = event.detail.newValue;
+            this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
+
+            if (changedAttribute == 'disabled') {
+
+            }
+        }
+    }
+
     /* INPUT CHANGE EVENT HANDLERS */
     handleModalLabelChange(event) {
         this.selectedButton.label = event.currentTarget.value;
@@ -533,7 +566,11 @@ export default class FlowButtonBarCPE extends LightningElement {
             value: value,
             descriptionText: descriptionText,
             iconPosition: 'left',   // TODO: un-hard code this
-            variant: this.variants.default.value
+            variant: this.variants.default.value,
+            disabled: false,
+            disabledVariable: null,
+            hidden: false,
+            hiddenVariable: null
         }
         return newButton;
     }

@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.7 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV06QAE)   
-[Version 4.0.7 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV06QAE)
+[Version 4.0.7 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV0GQAU)   
+[Version 4.0.7 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV0GQAU)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -79,6 +79,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 **Bug Fixes:** 
 -   Fixed the ability to edit date values when date columns are using Type Attributes
+-   Fixed issue with 4.0.6 package being released as a beta
  
 ## 06/29/22 -  Eric Smith -     Version 4.0.6 
 **Updates:** 

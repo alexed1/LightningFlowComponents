@@ -430,6 +430,11 @@ export default class FlowButtonBarCPE extends LightningElement {
     handleModalValueChange(event) {
         this.selectedButton.value = event.currentTarget.value;
     }
+    handleModalStatusChange(event) {
+        this.selectedButton.status = event.currentTarget.value;
+        this.selectedButton.disabled = (this.selectedButton.status.toLowerCase() == 'disabled') ? true : false;
+        this.selectedButton.hidden = (this.selectedButton.status.toLowerCase() == 'hidden') ? true : false;
+    }
     handleModalDescriptionChange(event) {
         this.selectedButton.descriptionText = event.currentTarget.value;
     }
@@ -567,10 +572,9 @@ export default class FlowButtonBarCPE extends LightningElement {
             descriptionText: descriptionText,
             iconPosition: 'left',   // TODO: un-hard code this
             variant: this.variants.default.value,
+            status: null,
             disabled: false,
-            disabledVariable: null,
-            hidden: false,
-            hiddenVariable: null
+            hidden: false
         }
         return newButton;
     }

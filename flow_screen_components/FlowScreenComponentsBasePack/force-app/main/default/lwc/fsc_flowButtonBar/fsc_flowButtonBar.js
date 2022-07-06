@@ -57,7 +57,14 @@ export default class FlowButtonBar extends LightningElement {
     // buttons expects either an array of button objects (defined in the CPE) or a JSON string that parses into an array of buttons
     @api
     get buttons() {
-        return this._buttons;
+        let updatedButtons = [];
+        this._buttons.forEach(btn => {
+            if (typeof btn.disabled !== 'undefined') btn.disabled = (btn?.status.toLowerCase() == 'disabled') ? true : false;
+            if (typeof btn.hidden !== 'undefined') btn.hidden = (btn?.status.toLowerCase() == 'hidden') ? true : false;
+            updatedButtons.push(btn);
+        });
+        return updatedButtons;
+
     }
     set buttons(buttons) {
         if (Array.isArray(buttons)) {

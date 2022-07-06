@@ -1,5 +1,5 @@
 public inherited sharing class BusinessHoursAddAction {
-    @InvocableMethod(label='Add Milliseconds' category='Business Hours')
+    @InvocableMethod(label='Add seconds' category='Business Hours')
     public static List<Datetime> execute(List<Input> inputs) {
         List<Datetime> result = new List<Datetime>();
 

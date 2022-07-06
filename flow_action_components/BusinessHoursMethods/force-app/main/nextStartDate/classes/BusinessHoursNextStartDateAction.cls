@@ -1,5 +1,5 @@
 public inherited sharing class BusinessHoursNextStartDateAction {
-    @InvocableMethod(label='Next Start Date/time' category='Business Hours')
+    @InvocableMethod(label='Next start date/time' category='Business Hours')
     public static List<Datetime> execute(List<Input> inputs) {
         List<Datetime> result = new List<Datetime>();
 

@@ -1,5 +1,5 @@
 public inherited sharing class BusinessHoursAddGmtAction {
-    @InvocableMethod(label='Add Milliseconds (GMT)' category='Business Hours')
+    @InvocableMethod(label='Add seconds (GMT)' category='Business Hours')
     public static List<Datetime> execute(List<Input> inputs) {
         List<Datetime> result = new List<Datetime>();
 

@@ -1,5 +1,5 @@
 public inherited sharing class BusinessHoursDiffAction {
-    @InvocableMethod(label='Difference between two BHs (seconds)' category='Business Hours')
+    @InvocableMethod(label='Difference between two business hours (in seconds)' category='Business Hours')
     public static List<Integer> execute(List<Input> inputs) {
         List<Integer> result = new List<Integer>();
 

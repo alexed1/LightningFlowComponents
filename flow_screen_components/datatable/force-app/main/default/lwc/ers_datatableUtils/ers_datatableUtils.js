@@ -4,15 +4,19 @@
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 const baseURL = window.location.hostname;
+console.log("DATATABLE environment baseURL", baseURL);
 
 var myDomain;
 var isCommunity = false;
 
-if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
+if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     // Running in Flow Builder || Flow Builder (Enhanced Domain)
     // Get domain url by replacing the last occurance of '--c' in the current url
     myDomain = 'https://' + reverse(reverse(window.location.hostname.split('.')[0]).replace(reverse('--c'),''));
 } else if (baseURL.includes('.lightning.')) {   // Running in Lightning
     myDomain = 'https://' + window.location.hostname.split('.')[0];
+    if (baseURL.includes('.sandbox.')) {        // Running in a sandbox with Enhanced Domain enabled
+        myDomain += '.sandbox';
+    }
 } else {                                        // Running in a Community
     myDomain = window.location.href;            // https://<domain>.<instance>.force.com/<site title>/s/
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)
@@ -21,7 +25,7 @@ if (baseURL.includes('--c.visualforce.')) {     // Running in Flow Builder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.0.6',   // Current Source Code Version #
+        VERSION_NUMBER : '4.0.8',   // Current Source Code Version #
         MAXROWCOUNT : 1000,         // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,             // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,            // Number of records to display in the Column Wizard datatable

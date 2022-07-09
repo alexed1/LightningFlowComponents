@@ -31,7 +31,7 @@ export default class ScreenFlow extends LightningElement {
             this.saveParams = event.data.flowParams;
             this.dispatchEvent(moveEvt);
         });
-        let sfIdent = 'force.com';
+        let sfIdent = '.com'; //in a previous version this was set to force.com by doing so it breaks on experience cloud where enhanced domain is enabled
         this.url = window.location.href.substring(0, window.location.href.indexOf(sfIdent) + sfIdent.length);
     }
 

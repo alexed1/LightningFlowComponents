@@ -67,9 +67,18 @@ export default class FlowButtonBarCPE extends LightningElement {
     @track yesNo = this.getConstant(YES_NO);
 
     /* CUSTOM PROPERTY EDITOR SETTINGS */
+    _inputVariables = [];
+    _builderContext = [];
+    _elementInfo = {};
+    _flowVariables;
+    _elementType;
+    _elementName;
+
     _builderContext;
     _automaticOutputVariables;
     _values;
+
+    cFalse = false;
 
     @api 
     get automaticOutputVariables () {
@@ -89,6 +98,19 @@ export default class FlowButtonBarCPE extends LightningElement {
         if (this._builderContext) {
             const { variables } = this._builderContext;
             this._flowVariables = [...variables];
+        }
+    }
+
+    @api
+    get elementInfo() {
+        return this._elementInfo;
+    }
+
+    set elementInfo(info) {
+        this._elementInfo = info || {};
+        if (this._elementInfo) {
+            this._elementName = this._elementInfo.apiName;
+            this._elementType = this._elementInfo.type;
         }
     }
 
@@ -127,8 +149,6 @@ export default class FlowButtonBarCPE extends LightningElement {
                 }
             }
         };
-
-
         return inputValue;
     }
 
@@ -411,22 +431,29 @@ export default class FlowButtonBarCPE extends LightningElement {
             let changedAttribute = event.target.name;
             let newType = event.detail.newValueDataType;
             let newValue = event.detail.newValue;
-            this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
 
-            if (changedAttribute == 'disabled') {
+            switch(changedAttribute) {
+                case 'label':
+                    this.selectedButton.label = newValue;
+                    this.selectedButton.labelType - newType;
+                    break;
+                case 'status':
 
+                    break;
+                default:
+                    this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
             }
         }
     }
 
     /* INPUT CHANGE EVENT HANDLERS */
-    handleModalLabelChange(event) {
-        this.selectedButton.label = event.currentTarget.value;
-    }
-    handleModalLabelBlur(event) {
-        this.selectedButton.label = event.currentTarget.value;
-        this.setValueFromLabel();
-    }
+    // handleModalLabelChange(event) {
+    //     this.selectedButton.label = event.currentTarget.value;
+    // }
+    // handleModalLabelBlur(event) {
+    //     this.selectedButton.label = event.currentTarget.value;
+    //     this.setValueFromLabel();
+    // }
     handleModalValueChange(event) {
         this.selectedButton.value = event.currentTarget.value;
     }
@@ -565,7 +592,7 @@ export default class FlowButtonBarCPE extends LightningElement {
         }
     }
 
-    newButton(label, value, descriptionText) {
+    newButton(label, value, descriptionText, labelType) {
         let newButton = {
             label: label,
             value: value,
@@ -574,7 +601,9 @@ export default class FlowButtonBarCPE extends LightningElement {
             variant: this.variants.default.value,
             status: null,
             disabled: false,
-            hidden: false
+            hidden: false,
+            labelType: labelType,
+            statusType: 'String'
         }
         return newButton;
     }

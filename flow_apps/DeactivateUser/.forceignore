@@ -4,7 +4,8 @@
 
 package.xml
 main/default/profiles
-
+UserAlt-User Profile Layout.layout-meta.xml                                   
+CommunityMemberLayout-Community Member Layout.layout-meta.xml
 # LWC configuration files
 **/jsconfig.json
 **/.eslintrc.json

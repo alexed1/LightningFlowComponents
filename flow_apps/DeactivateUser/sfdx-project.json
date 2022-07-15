@@ -1,6 +1,5 @@
 {
     "packageDirectories": [
-
         {
             "path": "force-app",
             "package": "DeactivateUserOrchestration",
@@ -14,6 +13,7 @@
     "sfdcLoginUrl": "https://login.salesforce.com",
     "sourceApiVersion": "55.0",
     "packageAliases": {
-        "DeactivateUserOrchestration": "0Ho5G000000k9vISAQ"
+        "DeactivateUserOrchestration": "0Ho5G000000k9vISAQ",
+        "DeactivateUserOrchestration@1.0.0-0": "04t5G000003rV0QQAU"
     }
 }

@@ -15599,7 +15599,7 @@ global class MetadataService {
 		{
 			MetadataService.MetadataPort service = new MetadataService.MetadataPort();
 			service.SessionHeader = new MetadataService.SessionHeader_element();
-			service.SessionHeader.sessionId = Page.GenerateSessionIdForLWC.getContent().toString();
+			service.SessionHeader.sessionId = Test.isRunningTest() ? 'TEST_SESSION_ID' : Page.GenerateSessionIdForLWC.getContent().toString();
 			return service;
 		}
 		

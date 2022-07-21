@@ -31,7 +31,7 @@
 global class MetadataService {
 	
 	global static String SOAP_M_URI='http://soap.sforce.com/2006/04/metadata';
-	
+	static final String TEST_SESSION_ID = 'TEST_SESSION_ID';
 	global class ReportTypeColumnTranslation {
 		global String label;
 		global String name;
@@ -15599,7 +15599,7 @@ global class MetadataService {
 		{
 			MetadataService.MetadataPort service = new MetadataService.MetadataPort();
 			service.SessionHeader = new MetadataService.SessionHeader_element();
-			service.SessionHeader.sessionId = Page.GenerateSessionIdForLWC.getContent().toString();
+			service.SessionHeader.sessionId = Test.isRunningTest() ? TEST_SESSION_ID : Page.GenerateSessionIdForLWC.getContent().toString();
 			return service;
 		}
 		

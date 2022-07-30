@@ -99,10 +99,6 @@ global with sharing class ChangeOwner {
                     optionList.options.add(opt);
                 }
 
-<<<<<<< HEAD
-                
-               // partnerSoapSforceCom.SaveResult[] mySaveResult = partnerSoapSforceCom.update();
-=======
                 if(request.TransferContracts != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
                     opt.execute=request.TransferContracts;
@@ -186,7 +182,6 @@ global with sharing class ChangeOwner {
                         } 
                     }
                 }
->>>>>>> 86ce0a7aa688c7ce9980a4d24289ff6d6f10071f
                 outputs.add(curResult);
 
             }catch(Exception e) {

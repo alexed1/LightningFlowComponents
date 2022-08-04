@@ -7,7 +7,7 @@ public with sharing class ConvertCSVToStringCollection {
         for (Request curRequest : requests) {
 
             Response response = new Response();
-            response.stringCollection = curRequest.csvString?.split(',');
+            response.stringCollection = csvString.trim().split('\\s*,\\s*');
             responseList.add(response);
         }
 

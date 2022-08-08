@@ -111,7 +111,7 @@ export default class dualListBox extends LightningElement {
             return;
         }
         if (optionType === defaults.csv) {
-            return value.replace(/[\s]+/, '').split(',');
+            return value.replace(/^ +| +$|( ) +/g, ' ').split(',');
         } else if (optionType === defaults.list || optionType === defaults.twoLists) {
             return value;
         } else if (optionType === defaults.originalObject) {
@@ -144,7 +144,7 @@ export default class dualListBox extends LightningElement {
             return;
         }
         if (optionType === defaults.csv) {
-            let localItems = items.replace(/[\s]+/, '').split(',');
+            let localItems = items.replace(/^ +| +$|( ) +/g, ' ').split(',');
             return localItems.map(curItem => {
                 return {label: curItem, value: curItem}
             });

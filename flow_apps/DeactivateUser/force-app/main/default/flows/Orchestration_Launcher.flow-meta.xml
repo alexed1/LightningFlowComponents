@@ -11,7 +11,7 @@
         <inputParameters>
             <name>flowName</name>
             <value>
-                <stringValue>Handle_User_Deactivation</stringValue>
+                <stringValue>TestAutoLaunchedFlow</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,6 +24,12 @@
             <name>param1Value</name>
             <value>
                 <elementReference>recordId</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useFutureLaunch</name>
+            <value>
+                <booleanValue>false</booleanValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>

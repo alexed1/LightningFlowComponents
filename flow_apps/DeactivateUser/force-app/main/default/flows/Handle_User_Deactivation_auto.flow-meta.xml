@@ -5,7 +5,7 @@
         <name>Did_User_Respond</name>
         <label>Did User Respond?</label>
         <locationX>176</locationX>
-        <locationY>431</locationY>
+        <locationY>278</locationY>
         <defaultConnector>
             <targetReference>Reassign_Opportunities</targetReference>
         </defaultConnector>
@@ -30,7 +30,7 @@
         <name>Contact_Current_Owner</name>
         <label>Contact Current Owner</label>
         <locationX>176</locationX>
-        <locationY>311</locationY>
+        <locationY>158</locationY>
         <connector>
             <targetReference>Did_User_Respond</targetReference>
         </connector>
@@ -55,7 +55,7 @@
             <actionType>stepInteractive</actionType>
             <assignees>
                 <assignee>
-                    <elementReference>foobar</elementReference>
+                    <elementReference>curUser.Username</elementReference>
                 </assignee>
                 <assigneeType>User</assigneeType>
             </assignees>
@@ -63,7 +63,7 @@
             <inputParameters>
                 <name>ActionInput__RecordId</name>
                 <value>
-                    <elementReference>recordId</elementReference>
+                    <elementReference>curUser.Id</elementReference>
                 </value>
             </inputParameters>
             <label>Invite Owner to Confirm Interest</label>
@@ -74,15 +74,37 @@
             <actionName>Wait_for_User_to_Responsd</actionName>
             <actionType>stepBackground</actionType>
             <entryConditionLogic>and</entryConditionLogic>
+            <entryConditions>
+                <leftValueReference>Invite_Owner_to_Confirm_Interest.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Completed</stringValue>
+                </rightValue>
+            </entryConditions>
             <label>Wait for User to Respond</label>
             <requiresAsyncProcessing>true</requiresAsyncProcessing>
+        </stageSteps>
+        <stageSteps>
+            <description>This orchestration is launched dynamically and all we have is the recordId of the context User. Currently orchestration assignment requires a username.</description>
+            <name>Load_User</name>
+            <actionName>Load_User</actionName>
+            <actionType>stepBackground</actionType>
+            <entryConditionLogic>and</entryConditionLogic>
+            <inputParameters>
+                <name>recordId</name>
+                <value>
+                    <elementReference>recordId</elementReference>
+                </value>
+            </inputParameters>
+            <label>Load User</label>
+            <requiresAsyncProcessing>false</requiresAsyncProcessing>
         </stageSteps>
     </orchestratedStages>
     <orchestratedStages>
         <name>Reassign_Opportunities</name>
         <label>Reassign Opportunities</label>
         <locationX>308</locationX>
-        <locationY>551</locationY>
+        <locationY>398</locationY>
         <exitConditionLogic>and</exitConditionLogic>
         <stageSteps>
             <name>Reassign_Account_Ownership</name>
@@ -90,7 +112,7 @@
             <actionType>stepInteractive</actionType>
             <assignees>
                 <assignee>
-                    <elementReference>foobar</elementReference>
+                    <elementReference>curUser.Manager.Username</elementReference>
                 </assignee>
                 <assigneeType>User</assigneeType>
             </assignees>
@@ -98,13 +120,13 @@
             <inputParameters>
                 <name>ActionInput__RecordId</name>
                 <value>
-                    <elementReference>foobar</elementReference>
+                    <elementReference>curUser.Id</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>foobar</elementReference>
+                    <elementReference>curUser.Id</elementReference>
                 </value>
             </inputParameters>
             <label>Reassign Account Ownership</label>
@@ -159,10 +181,23 @@
         <connector>
             <targetReference>Contact_Current_Owner</targetReference>
         </connector>
-       
-        
     </start>
-    <status>Draft</status>
+    <status>Active</status>
+    <variables>
+        <name>curUser</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>UserResponded</name>
         <dataType>Boolean</dataType>

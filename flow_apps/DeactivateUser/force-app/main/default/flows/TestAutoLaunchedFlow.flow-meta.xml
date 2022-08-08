@@ -2,21 +2,21 @@
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <assignments>
-        <name>Assign</name>
-        <label>Assign</label>
+        <name>assign</name>
+        <label>assign</label>
         <locationX>176</locationX>
-        <locationY>335</locationY>
+        <locationY>158</locationY>
         <assignmentItems>
-            <assignToReference>$Record.City</assignToReference>
+            <assignToReference>test</assignToReference>
             <operator>Assign</operator>
             <value>
-                <stringValue>foo</stringValue>
+                <elementReference>recordId</elementReference>
             </value>
         </assignmentItems>
     </assignments>
     <environments>Default</environments>
-    <interviewLabel>Test of Activation Problem {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test of Activation Problem</label>
+    <interviewLabel>TestAutoLaunchedFlow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>TestAutoLaunchedFlow</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -40,19 +40,22 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Assign</targetReference>
+            <targetReference>assign</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Reassignment_Requested__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <object>User</object>
-        <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>test</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
 </Flow>

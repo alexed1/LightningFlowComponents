@@ -59,10 +59,6 @@ global with sharing class ChangeOwner {
                     optionList.options.add(opt);
                 }
 
-<<<<<<< HEAD
-                Results curResult = new Results();
- 
-=======
                 if(request.TransferAllOwnedCases != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
                     opt.execute=request.TransferAllOwnedCases;
@@ -90,7 +86,6 @@ global with sharing class ChangeOwner {
                     opt.type_x = 'TransferArticleAllVersions';
                     optionList.options.add(opt);
                 }
->>>>>>> 86ce0a7aa688c7ce9980a4d24289ff6d6f10071f
 
                 if(request.TransferContacts != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
@@ -245,13 +240,9 @@ global with sharing class ChangeOwner {
 
     global class Results {
         @InvocableVariable
-<<<<<<< HEAD
-        global String errors;
-=======
         global Boolean success;
         @InvocableVariable
         global String errorMessage;
->>>>>>> 86ce0a7aa688c7ce9980a4d24289ff6d6f10071f
     
     }
 }

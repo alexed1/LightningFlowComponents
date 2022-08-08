@@ -55,7 +55,7 @@
             <actionType>stepInteractive</actionType>
             <assignees>
                 <assignee>
-                    <elementReference>$Record.Id</elementReference>
+                    <elementReference>foobar</elementReference>
                 </assignee>
                 <assigneeType>User</assigneeType>
             </assignees>
@@ -63,7 +63,7 @@
             <inputParameters>
                 <name>ActionInput__RecordId</name>
                 <value>
-                    <elementReference>$Record.Id</elementReference>
+                    <elementReference>recordId</elementReference>
                 </value>
             </inputParameters>
             <label>Invite Owner to Confirm Interest</label>
@@ -90,7 +90,7 @@
             <actionType>stepInteractive</actionType>
             <assignees>
                 <assignee>
-                    <elementReference>$Record.Manager.Username</elementReference>
+                    <elementReference>foobar</elementReference>
                 </assignee>
                 <assigneeType>User</assigneeType>
             </assignees>
@@ -98,13 +98,13 @@
             <inputParameters>
                 <name>ActionInput__RecordId</name>
                 <value>
-                    <elementReference>$Record.Id</elementReference>
+                    <elementReference>foobar</elementReference>
                 </value>
             </inputParameters>
             <inputParameters>
                 <name>recordId</name>
                 <value>
-                    <elementReference>$Record.Id</elementReference>
+                    <elementReference>foobar</elementReference>
                 </value>
             </inputParameters>
             <label>Reassign Account Ownership</label>
@@ -159,20 +159,10 @@
         <connector>
             <targetReference>Contact_Current_Owner</targetReference>
         </connector>
-        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Reassignment_Requested__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <object>User</object>
-        <recordTriggerType>CreateAndUpdate</recordTriggerType>
-        <triggerType>RecordAfterSave</triggerType>
+       
+        
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>UserResponded</name>
         <dataType>Boolean</dataType>

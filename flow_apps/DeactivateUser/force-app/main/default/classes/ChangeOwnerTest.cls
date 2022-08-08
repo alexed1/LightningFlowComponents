@@ -27,7 +27,7 @@ public with sharing class ChangeOwnerTest {
             request.KeepAccountTeam = true;
             request.KeepSalesTeam = true;
             request.KeepSalesTeamGrantCurrentOwnerReadWriteAccess = true;
-            request.SendEmailAlert = true;
+            //request.SendEmailAlert = true;
             request.TransferAllOwnedCases = true;
             request.TransferArticleOwnedPublishedVersion = true;
             request.TransferArticleOwnedArchivedVersions = true;

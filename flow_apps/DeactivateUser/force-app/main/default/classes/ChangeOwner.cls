@@ -52,12 +52,12 @@ global with sharing class ChangeOwner {
                     optionList.options.add(opt);
                 }
 
-                if(request.SendEmailAlert != null) {
-                    opt = new partnerSoapSforceCom.OwnerChangeOption();
-                    opt.execute=request.SendEmailAlert;
-                    opt.type_x = 'SendEmail';
-                    optionList.options.add(opt);
-                }
+                // if(request.SendEmailAlert != null) {
+                //     opt = new partnerSoapSforceCom.OwnerChangeOption();
+                //     opt.execute=request.SendEmailAlert;
+                //     opt.type_x = 'SendEmail';
+                //     optionList.options.add(opt);
+                // }
 
                 if(request.TransferAllOwnedCases != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
@@ -198,7 +198,7 @@ global with sharing class ChangeOwner {
         global string targetRecordId;
         @InvocableVariable
         global SObject targetRecord;
-        @InvocableVariable
+        @InvocableVariable(required=true)
         global string newOwnerId;
         @InvocableVariable
         global Boolean EnforceNewOwnerHasReadAccess;
@@ -208,8 +208,8 @@ global with sharing class ChangeOwner {
         global Boolean KeepSalesTeam;
         @InvocableVariable
         global Boolean KeepSalesTeamGrantCurrentOwnerReadWriteAccess;
-        @InvocableVariable
-        global Boolean SendEmailAlert;
+        // @InvocableVariable
+        // global Boolean SendEmailAlert;
         @InvocableVariable
         global Boolean TransferAllOwnedCases;
         @InvocableVariable

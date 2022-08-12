@@ -72,6 +72,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 08/xx/22 -  Eric Smith -     Version 4.0.9
+**Bug Fixes:**  
+-   Get correct clickable links for LWR Experience Sites 
+-   Fixed intermittant error with isDisableSuppressBottomBar
+ 
 ## 07/09/22 -  Eric Smith -     Version 4.0.8
 **Bug Fixes:**  
 -   Removed Virtual Rendering as it would not display tables with a single record 

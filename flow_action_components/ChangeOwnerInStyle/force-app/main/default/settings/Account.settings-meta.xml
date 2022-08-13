@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AccountSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <enableAccountHistoryTracking>false</enableAccountHistoryTracking>
+    <enableAccountTeams>true</enableAccountTeams>
+    <enableContactHistoryTracking>false</enableContactHistoryTracking>
+    <enableRelateContactToMultipleAccounts>false</enableRelateContactToMultipleAccounts>
+    <showViewHierarchyLink>true</showViewHierarchyLink>
+</AccountSettings>

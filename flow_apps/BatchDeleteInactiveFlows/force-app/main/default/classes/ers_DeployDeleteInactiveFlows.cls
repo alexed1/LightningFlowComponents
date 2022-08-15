@@ -7,7 +7,7 @@
      * 05/29/20 -   Eric Smith -    Version 1.1     Created an Apex-Defined Descriptor Class for the Flow Information
      * 05/09/20 -   Eric Smith -    Version 1.0
      * 
-     * Apex-Defined Variable Descriptor Class:      FlowDatatableDescriptor.cls
+     * Apex-Defined Variable Descriptor Class:      ers_FlowDatatableDescriptor.cls
      * 
      */
 
@@ -39,7 +39,7 @@
         public static List<Results> DeployDeleteInactiveFlows(List<Requests> requestList) {
     
             // Instantiate the record collection
-            List<FlowDatatableDescriptor> flowRecords = new List<FlowDatatableDescriptor>();
+            List<ers_FlowDatatableDescriptor> flowRecords = new List<ers_FlowDatatableDescriptor>();
             
             // Prepare the response to send back to the Flow
             Results response = new Results();
@@ -53,15 +53,15 @@
                 Boolean waitForCompletion = req.waitForCompletion;
     
                 // BEGIN APEX ACTION PROCESSING LOGIC
-                MetadataService.MetadataPort service = new MetadataService.MetadataPort();
-                service.SessionHeader = new MetadataService.SessionHeader_element();
+                usf3.MetadataService.MetadataPort service = new usf3.MetadataService.MetadataPort();
+                service.SessionHeader = new usf3.MetadataService.SessionHeader_element();
                 service.SessionHeader.sessionId = UserInfo.getSessionId();
                 String testLevel = 'NoTestRun';
     
                 String zippedFile = generateZipfile(flowRecordString);
                 String jobId;
                 if (!Test.isRunningTest()) {
-                    MetadataService.AsyncResult deployResult= service.deploy(zippedFile, getDeployOptions());
+                    usf3.MetadataService.AsyncResult deployResult= service.deploy(zippedFile, getDeployOptions());
                     jobId = deployResult.id;
                 } else {
                     getDeployOptions();
@@ -74,7 +74,7 @@
                 Long startingTime;
                 do {
                     if (!Test.isRunningTest()) {
-                        MetadataService.DeployResult result = service.checkDeployStatus(jobId,true);
+                        usf3.MetadataService.DeployResult result = service.checkDeployStatus(jobId,true);
                         System.debug('deploy status is: ' + result.status + ' ' + result.stateDetail + ' Sleep Timer: ' + sleepTimer);
                         status = result.status;
                     }
@@ -97,9 +97,9 @@
     
         }   
     
-        // public static String generateZipfile(List<FlowDatatableDescriptor> flowRecords) {
+        // public static String generateZipfile(List<ers_FlowDatatableDescriptor> flowRecords) {
         public static String generateZipfile(String flowRecordString) {
-            Zippex sampleZip = new Zippex();
+            usf3.Zippex sampleZip = new usf3.Zippex();
             Blob fileData = Blob.valueOf(getPackageXml());
             sampleZip.addFile('package.xml', fileData, null);
             fileData = Blob.valueOf(getDestructiveChangesXml(flowRecordString));
@@ -107,9 +107,9 @@
             return EncodingUtil.base64Encode(sampleZip.getZipArchive());
         }
     
-        public static MetadataService.DeployOptions getDeployOptions(){
+        public static usf3.MetadataService.DeployOptions getDeployOptions(){
                     
-            MetadataService.DeployOptions lvDeployOption = new MetadataService.DeployOptions();
+            usf3.MetadataService.DeployOptions lvDeployOption = new usf3.MetadataService.DeployOptions();
             lvDeployOption.allowMissingFiles = false;
             lvDeployOption.autoUpdatePackage = true;
             lvDeployOption.checkOnly = false;
@@ -135,14 +135,14 @@
         
         public static String getDestructiveChangesXml(String flowRecordString) {
     
-            List<FlowDatatableDescriptor> flowRecords = (List<FlowDatatableDescriptor>)System.JSON.deserialize(flowRecordString, List<FlowDatatableDescriptor>.class);
+            List<ers_FlowDatatableDescriptor> flowRecords = (List<ers_FlowDatatableDescriptor>)System.JSON.deserialize(flowRecordString, List<ers_FlowDatatableDescriptor>.class);
     
             String retFile;
             retFile =   '<?xml version="1.0" encoding="UTF-8"?>' +
                         '<Package xmlns="http://soap.sforce.com/2006/04/metadata">' +
                             '<types>';
             
-            for (FlowDatatableDescriptor fn : flowRecords) {
+            for (ers_FlowDatatableDescriptor fn : flowRecords) {
                 if (fn.Status != 'Active') {
                     retFile = retFile + '<members>'+fn.ApiName+'-'+String.valueOf(fn.VersionNumber)+'</members>';
                 }

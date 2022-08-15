@@ -22,6 +22,7 @@
     "sourceApiVersion": "55.0",
     "packageAliases": {
         "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
-        "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU"
+        "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
+        "BatchDeleteInactiveFlows": "0Ho5G0000008ObRSAU"
     }
 }

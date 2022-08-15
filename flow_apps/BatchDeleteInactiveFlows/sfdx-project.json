@@ -1,27 +1,27 @@
 {
-  "packageDirectories": [
-      {
-          "path": "force-app",
-          "default": true,
-          "dependencies": [
-              {
-                  "package": "FlowActionsBasePack@3.0.0-0"
-              },
-              {
-                  "package": "FlowScreenComponentsBasePack@3.0.6-0"
-              }
-          ],
-          "package": "BatchDeleteInactiveFlows",
-          "versionName": "BatchDeleteInactiveFlows v2",
-          "versionDescription": "Batch Delete Inactive Flows & PBs App by Eric Smith",
-          "versionNumber": "0.1.0.NEXT"
-      }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0",
-  "packageAliases": {
-      "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
-      "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU"
-  }
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@3.0.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@3.0.7-0"
+                }
+            ],
+            "package": "BatchDeleteInactiveFlows",
+            "versionName": "BatchDeleteInactiveFlows v2",
+            "versionDescription": "Batch Delete Inactive Flows & PBs App by Eric Smith",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
+        "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU"
+    }
 }

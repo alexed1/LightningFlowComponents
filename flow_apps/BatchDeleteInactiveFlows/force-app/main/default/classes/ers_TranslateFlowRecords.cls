@@ -6,9 +6,9 @@
  *  This example translates an Apex-Defined Variable 
  *  between a Collection of Object Records and a Seraialized String
  * 
- *  Eric Smith - May 2020
+ *  Eric Smith - May 2020 / Aug 2022
  * 
- *  Apex-Defined Variable Descriptor Class:      FlowDatatableDesscriptor.cls
+ *  Apex-Defined Variable Descriptor Class:      ers_FlowDatatableDesscriptor.cls
  * 
 **/ 
 

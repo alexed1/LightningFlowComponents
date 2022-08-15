@@ -43,7 +43,7 @@
             public String flowVersionRecords;
     
             @InvocableVariable
-            public List<FlowDatatableDescriptor> recordCollection;
+            public List<ers_FlowDatatableDescriptor> recordCollection;
         }
        
         // Fields in FlowDefinitionView Object

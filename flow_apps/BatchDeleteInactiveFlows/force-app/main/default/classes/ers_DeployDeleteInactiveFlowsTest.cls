@@ -1,5 +1,5 @@
 @isTest
-public with sharing class DeployDeleteInactiveFlowsTest {
+public with sharing class ers_DeployDeleteInactiveFlowsTest {
 
     static testMethod void test() {
 

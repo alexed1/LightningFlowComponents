@@ -16,7 +16,7 @@
 
         Static Final Integer QUERY_LIMIT = 20;                 // Batch size for reading FlowDefinitionView records
         Static Final String ACTIVE_THEME = 'slds-theme_info';  // Display theme for Active Flows when displaying both Active & Inactive
- 
+
         // Attributes passed in from the Flow
         public class Requests {
     
@@ -25,7 +25,7 @@
     
             @InvocableVariable(label='Status: "Active", "Inactive" or "Both"')
             public String statusSelection;
-           
+
             @InvocableVariable(label='Select API Names greater than or equal to this value')
             public String lowerBoundary; 
             
@@ -45,7 +45,7 @@
             @InvocableVariable
             public List<ers_FlowDatatableDescriptor> recordCollection;
         }
-       
+
         // Fields in FlowDefinitionView Object
         public class FlowDefInfo {
             String DurableId;
@@ -57,7 +57,7 @@
             Datetime LastModifiedDate;
             String TriggerType;
         }
-       
+
         // Fields in FlowVariableView Object
         public class FlowVarInfo {
             String ApiName;
@@ -77,7 +77,7 @@
             // Instantiate the record variable & collection
             ers_FlowDatatableDescriptor fvi = new ers_FlowDatatableDescriptor();
             List<ers_FlowDatatableDescriptor> fvRecords = new List<ers_FlowDatatableDescriptor>();
-  
+
             // Prepare the response to send back to the Flow
             Results response = new Results();
             List<Results> responseWrapper = new List<Results>();

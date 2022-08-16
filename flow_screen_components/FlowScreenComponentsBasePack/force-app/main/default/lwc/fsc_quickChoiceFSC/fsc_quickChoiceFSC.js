@@ -259,7 +259,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get gridStyle() {
-        return this.dualColumns ? 'width:52rem' : '';
+        //return this.dualColumns ? 'width:52rem' : '';
     }
 
     get columnClass() {
@@ -267,7 +267,9 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get cardSize() {
-        return (this.dualColumns || !this.isResponsive) ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        //return (this.dualColumns || !this.isResponsive) ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        return 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+
     }
 
     get responsiveSize() {

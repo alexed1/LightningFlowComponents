@@ -9,7 +9,16 @@
                 },
                 {
                     "package": "FlowScreenComponentsBasePack@3.0.7-0"
-                }
+                },
+                {
+                    "package": "datatable@4.0.8-0"
+                },
+                {
+                    "package": "flowPickerFSC@1.4.0-0"
+                },  
+                {
+                    "package": "NavigateEverywhereAction@1.1.1-0"
+                }                                
             ],
             "package": "BatchDeleteInactiveFlows",
             "versionName": "BatchDeleteInactiveFlows v2",
@@ -23,6 +32,9 @@
     "packageAliases": {
         "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
         "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
+        "datatable@4.0.8-0": "04t5G000003rV0LQAU",
+        "flowPickerFSC@1.4.0-0": "04t1K000002iklE",
+        "NavigateEverywhereAction@1.1.1-0": "04t5G000003rUhrQAE",                
         "BatchDeleteInactiveFlows": "0Ho5G0000008ObRSAU"
     }
 }

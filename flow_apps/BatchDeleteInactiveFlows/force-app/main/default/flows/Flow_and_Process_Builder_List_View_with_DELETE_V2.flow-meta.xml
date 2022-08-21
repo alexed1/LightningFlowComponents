@@ -427,14 +427,6 @@ CASE({!Status},
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>acolFlowInfosx</name>
-        <apexClass>FlowDatatableDescriptor</apexClass>
-        <dataType>Apex</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>acolInactiveFlows</name>
         <apexClass>ers_FlowDatatableDescriptor</apexClass>
         <dataType>Apex</dataType>
@@ -443,24 +435,8 @@ CASE({!Status},
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <name>acolInactiveFlowsx</name>
-        <apexClass>FlowDatatableDescriptor</apexClass>
-        <dataType>Apex</dataType>
-        <isCollection>true</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
         <name>aFlowInfo</name>
         <apexClass>ers_FlowDatatableDescriptor</apexClass>
-        <dataType>Apex</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-    </variables>
-    <variables>
-        <name>aFlowInfox</name>
-        <apexClass>FlowDatatableDescriptor</apexClass>
         <dataType>Apex</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>

@@ -18,10 +18,14 @@ public with sharing class GoogleCalendarEvent {
 	public String id {get;set;} 
     @AuraEnabled
 	public String status {get;set;} 
-    @AuraEnabled
+	@AuraEnabled
 	public String htmlLink {get;set;} 
     @AuraEnabled
 	public String updated {get;set;}
+	@AuraEnabled
+	public String summary {get;set;} 
+	@AuraEnabled
+	public String description {get;set;} 
     @AuraEnabled 
 	public GoogleDateTime start {get;set;} 
     @AuraEnabled
@@ -30,6 +34,7 @@ public with sharing class GoogleCalendarEvent {
 	public String visibility {get;set;} 
     @AuraEnabled
 	public String iCalUID {get;set;} 
+	
 
 	/* public GoogleCalendarEvent(JSONParser parser) {
 		while (parser.nextToken() != System.JSONToken.END_OBJECT) {

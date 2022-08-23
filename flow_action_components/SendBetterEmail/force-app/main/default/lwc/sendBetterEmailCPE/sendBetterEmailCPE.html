@@ -504,6 +504,20 @@
           >
           </c-fsc_flow-combobox>
         </div>
+        <div style="padding: 5px 0 5px">
+          <c-fsc_flow-combobox
+            name="messageID"
+            label={inputValues.messageID.label}
+            value={inputValues.messageID.value}
+            value-type={inputValues.messageID.valueDataType}
+            builder-context-filter-type="String"
+            builder-context-filter-collection-boolean={inputValues.messageID.isCollection}
+            automatic-output-variables={automaticOutputVariables}
+            builder-context={_builderContext}
+            onvaluechanged={handleFlowComboboxValueChange}
+          >
+          </c-fsc_flow-combobox>
+        </div>
         <div style="padding: 0.5rem; background: #16325c">
           <h1 class="slds-text-color_inverse slds-text-heading_medium">
             Attachments

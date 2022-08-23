@@ -56,9 +56,21 @@
             <targetReference>ScreenConsole1</targetReference>
         </connector>
         <inputParameters>
+            <name>cb_UseSalesforceSignature</name>
+            <value>
+                <stringValue>CB_FALSE</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>HTMLbody</name>
             <value>
                 <elementReference>x1_HTML_Body</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>messageID</name>
+            <value>
+                <elementReference>testMessageId</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -661,6 +673,13 @@
                 <elementReference>X1_Screen_HTML_Body</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>testMessageId</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>X1_Screen_MessageId</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>X1_Simplest_Better_Email</targetReference>
         </connector>
@@ -706,8 +725,8 @@ Also create an empty string collection of email addresses</description>
         <description>You can&apos;t use a screen input component directly unless that component has an output assignment in it (Winter &apos;21, but possibly Summer &apos;21 will change that [safe harbor]), so this captures the output from the components and manually puts them into a usable variable.</description>
         <name>X3_Assignments</name>
         <label>X3_Assignments</label>
-        <locationX>831</locationX>
-        <locationY>627</locationY>
+        <locationX>800</locationX>
+        <locationY>612</locationY>
         <assignmentItems>
             <assignToReference>sendSubject</assignToReference>
             <operator>Assign</operator>
@@ -1159,7 +1178,7 @@ Also create an empty string collection of email addresses</description>
                 <leftValueReference>testEmailAddress1</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1188,7 +1207,7 @@ Also create an empty string collection of email addresses</description>
                 <leftValueReference>testEmailAddress2</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1373,7 +1392,7 @@ Also create an empty string collection of email addresses</description>
                 <leftValueReference>X4_Screen_Template_RecordId</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1405,7 +1424,7 @@ Also create an empty string collection of email addresses</description>
                 <leftValueReference>X8_Screen_Template_RecordId</leftValueReference>
                 <operator>NotEqualTo</operator>
                 <rightValue>
-                    <stringValue/>
+                    <stringValue></stringValue>
                 </rightValue>
             </conditions>
             <connector>
@@ -1969,6 +1988,16 @@ Also create an empty string collection of email addresses</description>
                 <elementReference>HTMLTextTemplate</elementReference>
             </defaultValue>
             <fieldText>HTML Body</fieldText>
+            <fieldType>InputField</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <fields>
+            <name>X1_Screen_MessageId</name>
+            <dataType>String</dataType>
+            <defaultValue>
+                <elementReference>testMessageId</elementReference>
+            </defaultValue>
+            <fieldText>Message Id</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>false</isRequired>
         </fields>
@@ -2661,7 +2690,7 @@ Also create an empty string collection of email addresses</description>
             <targetReference>Choose_Example_Screen</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <subflows>
         <description>sendBetterEmail Test - Create Test Templates if Needed</description>
         <name>X4_Create_Test_Templates_if_Needed</name>
@@ -3023,6 +3052,16 @@ The value must be one of the following types:
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>testMessageId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>CASE5008c00001IBYK1AAP@sfdc.net</stringValue>
+        </value>
     </variables>
     <variables>
         <name>testPlainTextBody</name>

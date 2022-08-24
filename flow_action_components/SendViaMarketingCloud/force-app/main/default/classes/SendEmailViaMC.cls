@@ -41,20 +41,7 @@ global with sharing class SendEmailViaMC {
                  ',"' +curRequest.mergeKey4 + '": "' + curRequest.mergeValue4 + '"' + 
                  ',"' +curRequest.mergeKey5 + '": "' + curRequest.mergeValue5 + '"' + 
                  ' } }}';
-    /* 
-                "   {
-                    "definitionKey": "E360_Email_Send_2",
-                    "recipient":
-                    {
-                    "contactKey": "alex@edelstein.org",
-                    "to": "alex@edelstein.org",
-                    "attributes": {
-                        "FirstName": "Steve",
-                        "LastName": "Fisher"
-                    }
-                    }
-                }
-                " */
+
 
                     System.debug ('url is: ' + url);
                     responseJSON = Send(url, token, body);

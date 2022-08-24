@@ -132,7 +132,6 @@ public without sharing class SendBetterEmail {
       String senderDisplayName = curRequest.senderDisplayName;
       String subject = curRequest.subject;
       String messageID = curRequest.messageID;
-        System.debug('Message ID = ' + messageID);
       String templateID = curRequest.templateID;
       String templateName = curRequest.templateName;
       String templateLanguage = curRequest.templateLanguage;

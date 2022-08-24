@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <decisions>
+        <name>Is_Professor</name>
+        <label>Is Professor or Doctor?</label>
+        <locationX>182</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Copy_2_of_Create_Email_Send</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ssot__Salutation__c</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>Prof</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ssot__Salutation__c</leftValueReference>
+                <operator>StartsWith</operator>
+                <rightValue>
+                    <stringValue>Dr</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Create_Email_Send</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Event-Based Journey 240 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Dr Strange Promotion</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Journey</processType>
+    <recordCreates>
+        <name>Copy_2_of_Create_Email_Send</name>
+        <label>Email Send for Non-Professors</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>EmailAddy__c</field>
+            <value>
+                <stringValue>bjennings@salesforce.com</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EmailBody__c</field>
+            <value>
+                <elementReference>EmailBodyContentForNonProfessors</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject__c</field>
+            <value>
+                <stringValue>Test of Journey Email Sending</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ssotId__c</field>
+            <value>
+                <elementReference>$Record.ssot__Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SendEmail240__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>Create_Email_Send</name>
+        <label>Send an Email to Professors</label>
+        <locationX>50</locationX>
+        <locationY>278</locationY>
+        <inputAssignments>
+            <field>EmailAddy__c</field>
+            <value>
+                <stringValue>bjennings@salesforce.com</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>EmailBody__c</field>
+            <value>
+                <elementReference>EmailBodyContentForProfessors</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject__c</field>
+            <value>
+                <stringValue>Test of Journey Email Sending</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ssotId__c</field>
+            <value>
+                <elementReference>$Record.ssot__Id__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>First_Name__c</field>
+            <value>
+                <elementReference>$Record.ssot__FirstName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Last_Name__c</field>
+            <value>
+                <elementReference>$Record.ssot__LastName__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Salutation__c</field>
+            <value>
+                <elementReference>$Record.ssot__Salutation__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>SendEmail240__c</object>
+    </recordCreates>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_Professor</targetReference>
+        </connector>
+        <object>UnifiedssotIndividual1__dlm</object>
+        <triggerType>EventDrivenJourney</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <description>Used to Personalize the Email Body</description>
+        <name>EmailBodyContentForNonProfessors</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hello, {!$Record.ssot__Salutation__c} {!$Record.ssot__FirstName__c} {!$Record.ssot__LastName__c}!
+This is a customized email using Journeys built on flow. We know that you are NOT a professor. Isn&apos;t it cool?</text>
+    </textTemplates>
+    <textTemplates>
+        <description>Used to Personalize the Email Body</description>
+        <name>EmailBodyContentForProfessors</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Hello, {!$Record.ssot__Salutation__c} {!$Record.ssot__FirstName__c} {!$Record.ssot__LastName__c}!
+This is a customized email using Journeys built on flow. We know that you are a professor! Isn&apos;t it cool?</text>
+    </textTemplates>
+</Flow>

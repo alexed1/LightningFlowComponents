@@ -6,7 +6,7 @@
         </lightning-layout-item>
         <lightning-layout-item  size="2" padding="around-small">{item.meetingStatus}</lightning-layout-item>
         <lightning-layout-item  size="2" padding="around-small"><lightning-formatted-date-time value={item.start.startTime} year="numeric" month="numeric" day="numeric" hour="2-digit"
-                        minute="2-digit" time-zone-name="short"></lightning-formatted-date-time></lightning-layout-item>
+                        minute="2-digit"></lightning-formatted-date-time></lightning-layout-item>
         <lightning-layout-item  size="3" padding="around-small">
             <template if:true={isSnoozed}><lightning-button label="Activate" data-id={item.id} data-status="Activated" onclick={updateEvent} class="slds-p-around_xx-small"></lightning-button></template>
             <template if:false={isSnoozed}><lightning-button label="Snooze" data-id={item.id} data-status="Snoozed" onclick={updateEvent} class="slds-p-around_xx-small"></lightning-button></template>

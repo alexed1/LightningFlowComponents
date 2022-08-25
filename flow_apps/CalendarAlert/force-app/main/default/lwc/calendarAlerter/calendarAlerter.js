@@ -47,7 +47,6 @@ export default class CalendarAlerter extends LightningElement {
 
     alertCount = 0;
     get eventToShowList () {
-        console.log('eventToShowList', this.eventList);
         return this.eventList.filter(
             (item) => item.alarmStatus !== DISMESSED_STATUS
         );
@@ -68,19 +67,17 @@ export default class CalendarAlerter extends LightningElement {
         if(this.imminentIntervalId) {
             window.clearInterval(this.imminentIntervalId);
             this.imminentIntervalId = '';
-            this.audio.pause();
-            this.audio.currentTime = 0;
         }
         console.log('status ', this.statusForFirstMeeting);
         let volume = 0;
         if(this.statusForFirstMeeting === UPCOMING_STATUS) {
-            volume = 0.4;
+            volume = 0.1;
             this.alertCount = 2;
         } else if(this.statusForFirstMeeting === SOON_STATUS) {
-            volume = 0.6;
+            volume = 0.4;
             this.alertCount = 3;
         } else if(this.statusForFirstMeeting === IMMINENT_STATUS) {
-            volume = 0.8;
+            volume = 0.7;
             this.alertCount = 5;
         } else if(this.statusForFirstMeeting === LATE_STATUS) {
             volume = 1;    
@@ -94,12 +91,11 @@ export default class CalendarAlerter extends LightningElement {
             this.alertCount--;
             this.imminentIntervalId = setInterval(
                 () => {
-                    console.log('imminentInterval1', this.audio.duration);
-
                     this.audio.play();
                     this.alertCount--;
                     if(this.alertCount <= 0 ) {
                         window.clearInterval(this.imminentIntervalId);
+                        this.imminentIntervalId = '';
                     }
                 }, this.audio.duration * 1000 + 1000
             );
@@ -109,9 +105,7 @@ export default class CalendarAlerter extends LightningElement {
     connectedCallback() {
         
         this.eventList = JSON.parse(JSON.stringify(this.eventList));
-        console.log('connectedCallback1', this.eventList);
         let eventListJSON = localStorage.getItem('eventList');
-        console.log('connectedCallback2', eventListJSON);
         if(eventListJSON) {
             let eventList = JSON.parse(eventListJSON);
 
@@ -120,10 +114,13 @@ export default class CalendarAlerter extends LightningElement {
                     let event = eventList.find((findItem) => findItem.id === item.id);
                     if(event) {
                         item.alarmStatus = event.alarmStatus;
-                        // item.firstAlarmCompleted = event.firstAlarmCompleted;
-                        // item.secondAlarmCompleted = event.secondAlarmCompleted;
-                        // item.thirdAlarmCompleted = event.thirdAlarmCompleted;
-                        //item.status = event.status;
+                        if(item.start.startTime === event.start.startTime) {
+                            item.firstAlarmCompleted = event.firstAlarmCompleted;
+                            item.secondAlarmCompleted = event.secondAlarmCompleted;
+                            item.thirdAlarmCompleted = event.thirdAlarmCompleted;
+                            item.meetingStatus = event.meetingStatus;
+                        }
+                        
                         
                     }
                 }
@@ -149,7 +146,6 @@ export default class CalendarAlerter extends LightningElement {
     }
 
     evaluateEvents = () => {
-        console.log('aaaaaa', this.audio);
         this.statusForFirstMeeting = '';
         let minutsToFirstMeet = this.firstAlarm + 1;
         this.eventList.forEach((event) => {
@@ -160,34 +156,34 @@ export default class CalendarAlerter extends LightningElement {
             let isRunAlert = false;
             if(event.alarmStatus !== SNOOZED_STATUS && event.alarmStatus !== DISMESSED_STATUS) {
                 if(!event.firstAlarmCompleted && minutsToEvent <= this.firstAlarm && minutsToEvent > this.secondAlarm) {
-                    event.status = UPCOMING_STATUS;
+                    event.meetingStatus = UPCOMING_STATUS;
                     event.firstAlarmCompleted = true;
                     isRunAlert = true;
                 } else if(!event.secondAlarmCompleted && minutsToEvent <= this.secondAlarm && minutsToEvent > this.thirdAlarm) {
                     event.firstAlarmCompleted = true;
                     event.secondAlarmCompleted = true;
                     isRunAlert = true;
-                    event.status = SOON_STATUS;
+                    event.meetingStatus = SOON_STATUS;
                 } else if(!event.thirdAlarmCompleted && minutsToEvent < this.thirdAlarm && minutsToEvent > 0) {
                     event.firstAlarmCompleted = true;
                     event.secondAlarmCompleted = true;
                     event.thirdAlarmCompleted = true;
                     isRunAlert = true;
-                    event.status = IMMINENT_STATUS;
+                    event.meetingStatus = IMMINENT_STATUS;
                 } else if(minutsToEvent < 0 && minutsToEvent > -15){
-                    event.status = LATE_STATUS;
+                    event.meetingStatus = LATE_STATUS;
                     isRunAlert = true;
                 }
 
                 if(isRunAlert && minutsToEvent <= minutsToFirstMeet) {
-                    this.statusForFirstMeeting = event.status;
+                    this.statusForFirstMeeting = event.meetingStatus;
                     this.alertedMeetingId = event.id;
                     minutsToFirstMeet = minutsToEvent
                 }
                 
         }
 
-            console.log(event.status);
+            console.log(event.meetingStatus);
         });
         this.eventList = JSON.parse(JSON.stringify(this.eventList));
 
@@ -222,7 +218,6 @@ export default class CalendarAlerter extends LightningElement {
     }
 
     @api validate() {
-        console.log('validate');
         clearInterval(this.imminentIntervalId);
         clearInterval(this.evaluationIntervalId);
         this.audio.pause();

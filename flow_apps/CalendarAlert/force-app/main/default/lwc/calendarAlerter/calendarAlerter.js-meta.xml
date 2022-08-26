@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>55.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Alerter</masterLabel>
+    <masterLabel>Meeting Alerter</masterLabel>
     <targets>
         <target>lightning__FlowScreen</target>
         <target>lightning__AppPage</target>

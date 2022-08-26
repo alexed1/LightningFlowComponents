@@ -54,53 +54,7 @@ export default class CalendarAlerter extends LightningElement {
     statusForFirstMeeting = '';
     audio = {};
 
-    playThis = '/resource/MeetingAlert'
-
-    initAudio() {
-        this.audio = new Audio();
-        this.audio.src = this.playThis;
-        this.audio.load();
-
-    }
-
-    playAudio() {
-        if(this.imminentIntervalId) {
-            window.clearInterval(this.imminentIntervalId);
-            this.imminentIntervalId = '';
-        }
-        console.log('status ', this.statusForFirstMeeting);
-        let volume = 0;
-        if(this.statusForFirstMeeting === UPCOMING_STATUS) {
-            volume = 0.1;
-            this.alertCount = 2;
-        } else if(this.statusForFirstMeeting === SOON_STATUS) {
-            volume = 0.4;
-            this.alertCount = 3;
-        } else if(this.statusForFirstMeeting === IMMINENT_STATUS) {
-            volume = 0.7;
-            this.alertCount = 5;
-        } else if(this.statusForFirstMeeting === LATE_STATUS) {
-            volume = 1;    
-            this.alertCount = 1000;
-        }
-
-        
-        if(volume > 0) {
-            this.audio.volume = volume;
-            this.audio.play();
-            this.alertCount--;
-            this.imminentIntervalId = setInterval(
-                () => {
-                    this.audio.play();
-                    this.alertCount--;
-                    if(this.alertCount <= 0 ) {
-                        window.clearInterval(this.imminentIntervalId);
-                        this.imminentIntervalId = '';
-                    }
-                }, this.audio.duration * 1000 + 1000
-            );
-        }
-    }
+    playThis = '/resource/MeetingAlert';
 
     connectedCallback() {
         
@@ -144,6 +98,53 @@ export default class CalendarAlerter extends LightningElement {
             }, this.meetitngRange * 60000
         );
     }
+
+    initAudio() {
+        this.audio = new Audio();
+        this.audio.src = this.playThis;
+        this.audio.load();
+
+    }
+
+    playAudio() {
+        if(this.imminentIntervalId) {
+            window.clearInterval(this.imminentIntervalId);
+            this.imminentIntervalId = '';
+        }
+        console.log('status ', this.statusForFirstMeeting, this.firstAlarm, this.secondAlarm, this.thirdAlarm);
+        let volume = 0;
+        if(this.statusForFirstMeeting === UPCOMING_STATUS) {
+            volume = 0.1;
+            this.alertCount = 2;
+        } else if(this.statusForFirstMeeting === SOON_STATUS) {
+            volume = 0.4;
+            this.alertCount = 3;
+        } else if(this.statusForFirstMeeting === IMMINENT_STATUS) {
+            volume = 0.7;
+            this.alertCount = 5;
+        } else if(this.statusForFirstMeeting === LATE_STATUS) {
+            volume = 1;    
+            this.alertCount = 1000;
+        }
+
+        
+        if(volume > 0) {
+            this.audio.volume = volume;
+            this.audio.play();
+            this.alertCount--;
+            this.imminentIntervalId = setInterval(
+                () => {
+                    this.audio.play();
+                    this.alertCount--;
+                    if(this.alertCount <= 0 ) {
+                        window.clearInterval(this.imminentIntervalId);
+                        this.imminentIntervalId = '';
+                    }
+                }, this.audio.duration * 1000 + 1000
+            );
+        }
+    }
+
 
     evaluateEvents = () => {
         this.statusForFirstMeeting = '';

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Meeting Alerter</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__AppPage</target>
+       <target>lightning__RecordPage</target>
+       <target>lightning__HomePage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="firstAlarm" type="Integer"  />
+            <property name="secondAlarm" type="Integer"  />
+            <property name="thirdAlarm" type="Integer"  />
+            <property name="eventList" type="apex://GoogleCalendarEvent[]"  role="inputOnly"/>
+            <property name="meetitngRange" type="Integer"  />
+            <property name="evaluationFrequency" type="Integer"  />
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

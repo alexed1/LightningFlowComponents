@@ -1,0 +1,16 @@
+<template>
+    <lightning-layout multiple-rows="true">
+        <lightning-layout-item size="2" padding="around-small">{item.summary}</lightning-layout-item>
+        <lightning-layout-item  size="3" padding="around-small">
+            <lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text>
+        </lightning-layout-item>
+        <lightning-layout-item  size="2" padding="around-small">{item.meetingStatus}</lightning-layout-item>
+        <lightning-layout-item  size="2" padding="around-small"><lightning-formatted-date-time value={item.start.startTime} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                        minute="2-digit"></lightning-formatted-date-time></lightning-layout-item>
+        <lightning-layout-item  size="3" padding="around-small">
+            <template if:true={isSnoozed}><lightning-button label="Activate" data-id={item.id} data-status="Activated" onclick={updateEvent} class="slds-p-around_xx-small"></lightning-button></template>
+            <template if:false={isSnoozed}><lightning-button label="Snooze" data-id={item.id} data-status="Snoozed" onclick={updateEvent} class="slds-p-around_xx-small"></lightning-button></template>
+            <lightning-button label="Dismiss" data-id={item.id} data-status="Dismissed" onclick={updateEvent} class="slds-p-around_xx-small"></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

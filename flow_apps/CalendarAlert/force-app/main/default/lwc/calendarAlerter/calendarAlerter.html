@@ -1,5 +1,5 @@
 <template>
-    <lightning-card title="Upcomming Meetings">
+    <lightning-card title="Upcoming Meetings">
         
             <template for:each={eventToShowList} for:item="item">
                 <c-tracked-event-display key={item.id} item={item} oneventupdated={updateEvent}></c-tracked-event-display>

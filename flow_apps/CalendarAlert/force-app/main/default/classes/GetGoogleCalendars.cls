@@ -1,6 +1,5 @@
-global with sharing class GetGoogleCalendarEvents {
- 
-
+global with sharing class GetGoogleCalendars {
+  
     @InvocableMethod
     global static List <Result> execute(List<Request> requestList) {
      
@@ -8,7 +7,7 @@ global with sharing class GetGoogleCalendarEvents {
     List<Result> responses = new List<Result>();
     String currentTime = GetCurrentTimeString();
     for (Request curRequest: requestList ){
-        String maxResultsString = String.valueOf(curRequest.maxResults);
+       /*  String maxResultsString = String.valueOf(curRequest.maxResults);
         if (String.isEmpty(maxResultsString)){
             maxResultsString = '3';
         }
@@ -21,14 +20,14 @@ global with sharing class GetGoogleCalendarEvents {
         String endTime = curRequest.endTime;
         if(String.isEmpty(startTime)){
             startTime = GetCurrentTimeString();
-        } 
-
-        String endpoint = 'callout:' + curRequest.credName + '/calendar/v3/calendars/' + curRequest.calendarIdentifier + '/events?';
-        String params = 'maxResults=' + maxResultsString + '&orderBy=' + orderBy + '&singleEvents=true&timeMin='+ startTime;
+        }  */
+        ///calendar/v3/users/me/calendarList
+        String endpoint = 'callout:' + curRequest.credName + '/calendar/v3/users/me/calendarList'; //+ curRequest.calendarIdentifier + '/events?';
+        String params ='';  /*= 'maxResults=' + maxResultsString + '&orderBy=' + orderBy + '&singleEvents=true&timeMin='+ startTime;
         if(String.isNotEmpty(curRequest.endTime))
             params = params + '&timeMax=' + endTime;
         if(String.isNotEmpty(curRequest.queryString))
-            params = params + '&q=' + curRequest.queryString;
+            params = params + '&q=' + curRequest.queryString; */
             
         String url = endpoint + params;
         System.debug('call is:' + url);
@@ -56,7 +55,7 @@ global with sharing class GetGoogleCalendarEvents {
             
         }
 
-        //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
+        /* //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
         responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
         System.debug('modified responseJSOn is: ' + responseJSON);
         curResponse.responseBody= responseJSON;
@@ -68,7 +67,8 @@ global with sharing class GetGoogleCalendarEvents {
         List<GoogleCalendarEvent> curEventsList = curEventSet.items;
         System.debug('event list  is: ' + curEventsList);
 
-        curResponse.eventList=curEventsList;
+        curResponse.eventList=curEventsList; */
+        curResponse.responseBody= responseJSON;
         responses.add(curResponse);
          
     }
@@ -134,7 +134,7 @@ global with sharing class GetGoogleCalendarEvents {
         @InvocableVariable(required=true)
         global String credName;
 
-        @InvocableVariable(required=true)
+       /*  @InvocableVariable(required=true)
         global String calendarIdentifier;
 
         @InvocableVariable(label='Max Results - defaults to 3')
@@ -150,7 +150,7 @@ global with sharing class GetGoogleCalendarEvents {
         global String endTime;
 
         @InvocableVariable(label='Search Query - this will do a free text search on summary, description, location, attendee\'s displayName, attendee\'s email')
-        global String queryString;
+        global String queryString; */
     }
 
     global class Result {
@@ -166,9 +166,9 @@ global with sharing class GetGoogleCalendarEvents {
         @InvocableVariable
         global String errors;
 
-        @InvocableVariable
+       /*  @InvocableVariable
         global List<GoogleCalendarEvent>  eventList;
-
+ */
 
 
     }

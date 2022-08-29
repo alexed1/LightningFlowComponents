@@ -1,10 +1,10 @@
 <template>
     <lightning-layout multiple-rows="true">
-        <lightning-layout-item size="2" padding="around-small">{item.summary}</lightning-layout-item>
+        <lightning-layout-item size="2" padding="around-small">Event Name: {item.summary}</lightning-layout-item>
         <lightning-layout-item  size="3" padding="around-small">
             <lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text>
         </lightning-layout-item>
-        <lightning-layout-item  size="2" padding="around-small">{item.meetingStatus}</lightning-layout-item>
+        <lightning-layout-item  size="2" padding="around-small">Event Status: {item.meetingStatus}</lightning-layout-item>
         <lightning-layout-item  size="2" padding="around-small"><lightning-formatted-date-time value={item.start.startTime} year="numeric" month="numeric" day="numeric" hour="2-digit"
                         minute="2-digit"></lightning-formatted-date-time></lightning-layout-item>
         <lightning-layout-item  size="3" padding="around-small">

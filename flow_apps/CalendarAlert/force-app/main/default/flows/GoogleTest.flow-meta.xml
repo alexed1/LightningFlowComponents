@@ -1,29 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Calendar_List</name>
-        <label>Get Calendar List</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
-        <actionName>GetGoogleCalendars</actionName>
-        <actionType>apex</actionType>
-        <connector>
-            <targetReference>Get_Calendar_List_Screen</targetReference>
-        </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
-        <inputParameters>
-            <name>credName</name>
-            <value>
-                <stringValue>GoogleNamedCred</stringValue>
-            </value>
-        </inputParameters>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </actionCalls>
-    <actionCalls>
         <name>Get_Google_Calendar_Events</name>
         <label>Get Google Calendar Events</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>158</locationY>
         <actionName>GetGoogleCalendarEvents</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -67,29 +48,10 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>Get_Calendar_List_Screen</name>
-        <label>Get Calendar List Screen</label>
-        <locationX>176</locationX>
-        <locationY>278</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Get_Google_Calendar_Events</targetReference>
-        </connector>
-        <fields>
-            <name>ShowCalendarList</name>
-            <fieldText>&lt;p&gt;Get Calendar List Response:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Get_Calendar_List.responseBody}&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
         <name>Screen_1</name>
         <label>Screen 1</label>
         <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -137,7 +99,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Get_Calendar_List</targetReference>
+            <targetReference>Get_Google_Calendar_Events</targetReference>
         </connector>
     </start>
     <status>Draft</status>

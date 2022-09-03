@@ -43,6 +43,20 @@ global with sharing class GetGoogleCalendarEvents {
                 System.debug ('url is: ' + url);
                 responseJSON = Send(url);
                 System.debug('initial responseJSON is: ' + responseJSON);
+                responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
+                System.debug('modified responseJSOn is: ' + responseJSON);
+                curResponse.responseBody= responseJSON;
+                //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
+                GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
+                GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
+                curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
+                System.debug('curEventSet parsed out is: ' + curEventSet);
+                List<GoogleCalendarEvent> curEventsList = curEventSet.items;
+                System.debug('event list  is: ' + curEventsList);
+
+                curResponse.eventList=curEventsList;
+                curResponse.status= true;
+                
                
             } else {
                 
@@ -53,23 +67,13 @@ global with sharing class GetGoogleCalendarEvents {
         } catch (Exception e) {
             System.debug(LoggingLevel.INFO,'post error: ' + e);
             curResponse.errors = e.getMessage();
+            curResponse.status = false;
             
         }
+        responses.add(curResponse);
 
         //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
-        responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
-        System.debug('modified responseJSOn is: ' + responseJSON);
-        curResponse.responseBody= responseJSON;
-        //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
-        GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
-        GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
-        curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
-        System.debug('curEventSet parsed out is: ' + curEventSet);
-        List<GoogleCalendarEvent> curEventsList = curEventSet.items;
-        System.debug('event list  is: ' + curEventsList);
-
-        curResponse.eventList=curEventsList;
-        responses.add(curResponse);
+        
          
     }
     return responses;
@@ -91,7 +95,7 @@ global with sharing class GetGoogleCalendarEvents {
 
     global static String  Send(String endpoint) {
         
-        String res;
+        HttpResponse res;
         try {
             HttpRequest req = new HttpRequest();
             req.setEndpoint(endpoint);
@@ -102,7 +106,9 @@ global with sharing class GetGoogleCalendarEvents {
             req.setHeader('Accept', '*/*');
             res = transmit(req);
 
-            
+            if(res.getStatusCode() != 200) {
+                throw new InvocableActionException(res.getBody());
+            }
             
             
         } catch (Exception e) {
@@ -110,20 +116,24 @@ global with sharing class GetGoogleCalendarEvents {
             throw new InvocableActionException('Error: '+ e.getMessage());
         }
 
-        return res;
+        return res.getBody();
     
     }
 
-    global  static  string transmit(HttpRequest req) {
+    global  static  HttpResponse transmit(HttpRequest req) {
         Http http = new Http();
         System.debug('req is: ' + req);
         System.debug('body is: ' + req.getBody());
         if(!Test.isRunningTest()){
             HttpResponse res = http.send(req);
+            System.debug('made it back: ' + res);
             System.debug('made it back: ' + res.getBody());
-            return res.getBody();
+            return res;
         } else {
-            return '{"ok":true}';
+            HttpResponse res = new HttpResponse();
+            res.setStatusCode(200);
+            res.setBody('{"ok":true}');
+            return res;
         }
     }
     
@@ -165,6 +175,9 @@ global with sharing class GetGoogleCalendarEvents {
 
         @InvocableVariable
         global String errors;
+
+        @InvocableVariable
+        global Boolean status;
 
         @InvocableVariable
         global List<GoogleCalendarEvent>  eventList;

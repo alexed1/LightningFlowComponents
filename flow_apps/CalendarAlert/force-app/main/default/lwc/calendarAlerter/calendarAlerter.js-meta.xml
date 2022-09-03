@@ -17,6 +17,7 @@
             <property name="eventList" type="apex://GoogleCalendarEvent[]"  role="inputOnly"/>
             <property name="meetitngRange" type="Integer"  />
             <property name="evaluationFrequency" type="Integer"  />
+            <property name="responseStatus" type="Boolean"  />
 
         </targetConfig>
     </targetConfigs>

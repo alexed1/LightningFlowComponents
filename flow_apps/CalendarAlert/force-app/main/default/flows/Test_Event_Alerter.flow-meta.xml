@@ -14,13 +14,13 @@
         <inputParameters>
             <name>calendarIdentifier</name>
             <value>
-                <stringValue>aedelstein@salesforce.com</stringValue>
+                <stringValue>sahib.gadzhiev@jetbi.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>credName</name>
             <value>
-                <stringValue>GoogleNamedCred</stringValue>
+                <stringValue>GoogleCredential</stringValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -78,7 +78,7 @@
             <inputParameters>
                 <name>secondAlarm</name>
                 <value>
-                    <numberValue>3.0</numberValue>
+                    <numberValue>5.0</numberValue>
                 </value>
             </inputParameters>
             <inputParameters>
@@ -90,7 +90,13 @@
             <inputParameters>
                 <name>firstAlarm</name>
                 <value>
-                    <numberValue>5.0</numberValue>
+                    <numberValue>15.0</numberValue>
+                </value>
+            </inputParameters>
+            <inputParameters>
+                <name>responseStatus</name>
+                <value>
+                    <elementReference>get_events.status</elementReference>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -107,5 +113,5 @@
             <targetReference>get_events</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

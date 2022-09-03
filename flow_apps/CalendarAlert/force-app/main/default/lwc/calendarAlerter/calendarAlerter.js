@@ -11,6 +11,8 @@ const UPCOMING_STATUS = 'Upcoming';
 const ACTIVE_STATUS = 'Active';
 const SNOOZED_STATUS = 'Snoozed';
 const DISMESSED_STATUS = 'Dismissed';
+const RETRYING_LABEL = 'Retrying...';
+const UPDATING_CALENDAR_LABEL = 'Updating calendar info...'
 
 export default class CalendarAlerter extends LightningElement {
     @api firstAlarm = 15; //The number of minutes before an event when Alerter starts generating alarms
@@ -22,25 +24,26 @@ export default class CalendarAlerter extends LightningElement {
         id : '37nnq4lel3v3g3nlb3g09vo',
         summary : 'test 1',
         start : {
-            startTime : '2022-08-18T16:15:00+01:00'
+            startTime : '2022-09-18T16:15:00+01:00'
         },
 
     },{
         summary : 'test 2',
         id : '37nnq4lel3v3g3nlb3g09von01',
         start : {
-            startTime : '2022-08-18T16:30:00+01:00'
+            startTime : '2022-09-01T10:10:00+01:00'
         },
 
     },{
         summary : 'test 3',
         id : '37nnq4lel3v3g3nlb3g09von02',
         start : {
-            startTime : '2022-08-18T16:50:00+01:00'
+            startTime : '2022-09-18T16:50:00+01:00'
         },
 
     },];
-
+    @api responseStatus;
+    displayStatusText = '';
     imminentIntervalId = '';
     evaluationIntervalId = '';
     alertedMeetingId = '';
@@ -57,12 +60,21 @@ export default class CalendarAlerter extends LightningElement {
     playThis = '/resource/MeetingAlert';
 
     connectedCallback() {
-        
         this.eventList = JSON.parse(JSON.stringify(this.eventList));
         let eventListJSON = localStorage.getItem('eventList');
+        if(!this.responseStatus) {
+            this.displayStatusText = RETRYING_LABEL;
+            setTimeout(
+                () => {
+                    const navigateNextEvent = new FlowNavigationNextEvent();
+                    this.dispatchEvent(navigateNextEvent);
+                }, 5000);
+        }
         if(eventListJSON) {
             let eventList = JSON.parse(eventListJSON);
-
+            if(!this.eventList || this.eventList.length === 0) {
+                this.eventList = eventList;
+            }
             this.eventList.forEach(
                 (item) => {
                     let event = eventList.find((findItem) => findItem.id === item.id);
@@ -74,12 +86,12 @@ export default class CalendarAlerter extends LightningElement {
                             item.thirdAlarmCompleted = event.thirdAlarmCompleted;
                             item.meetingStatus = event.meetingStatus;
                         }
-                        
-                        
                     }
                 }
             );
         }
+
+        this.removeOldEvents();
 
         this.initAudio();
         setTimeout(
@@ -93,6 +105,7 @@ export default class CalendarAlerter extends LightningElement {
 
         setTimeout(
             () => {
+                this.displayStatusText = UPDATING_CALENDAR_LABEL;
                 const navigateNextEvent = new FlowNavigationNextEvent();
                 this.dispatchEvent(navigateNextEvent);
             }, this.meetitngRange * 60000
@@ -146,7 +159,21 @@ export default class CalendarAlerter extends LightningElement {
     }
 
 
+    removeOldEvents() {
+        let newEventList = [];
+        this.eventList.forEach(
+            (item) => {
+                   
+                let minutsToEvent = (Date.parse(item.start.startTime) / 60000) - (Date.now()/ 60000);
+                if(minutsToEvent > -15) {
+                    newEventList.push(item);
+                }
+            }
+        );
+        this.eventList = newEventList;
+    }
     evaluateEvents = () => {
+        this.removeOldEvents();
         this.statusForFirstMeeting = '';
         let minutsToFirstMeet = this.firstAlarm + 1;
         this.eventList.forEach((event) => {
@@ -158,34 +185,52 @@ export default class CalendarAlerter extends LightningElement {
             if(event.alarmStatus !== SNOOZED_STATUS && event.alarmStatus !== DISMESSED_STATUS) {
                 if(!event.firstAlarmCompleted && minutsToEvent <= this.firstAlarm && minutsToEvent > this.secondAlarm) {
                     event.meetingStatus = UPCOMING_STATUS;
-                    event.firstAlarmCompleted = true;
                     isRunAlert = true;
                 } else if(!event.secondAlarmCompleted && minutsToEvent <= this.secondAlarm && minutsToEvent > this.thirdAlarm) {
-                    event.firstAlarmCompleted = true;
-                    event.secondAlarmCompleted = true;
                     isRunAlert = true;
                     event.meetingStatus = SOON_STATUS;
                 } else if(!event.thirdAlarmCompleted && minutsToEvent < this.thirdAlarm && minutsToEvent > 0) {
-                    event.firstAlarmCompleted = true;
-                    event.secondAlarmCompleted = true;
-                    event.thirdAlarmCompleted = true;
                     isRunAlert = true;
                     event.meetingStatus = IMMINENT_STATUS;
-                } else if(minutsToEvent < 0 && minutsToEvent > -15){
+                } else if(minutsToEvent < 0){
                     event.meetingStatus = LATE_STATUS;
                     isRunAlert = true;
                 }
 
-                if(isRunAlert && minutsToEvent <= minutsToFirstMeet) {
+                if(isRunAlert && minutsToEvent <= minutsToFirstMeet && !this.statusForFirstMeeting) {
                     this.statusForFirstMeeting = event.meetingStatus;
                     this.alertedMeetingId = event.id;
-                    minutsToFirstMeet = minutsToEvent
+                    minutsToFirstMeet = minutsToEvent;
                 }
                 
-        }
+            }
+        
 
             console.log(event.meetingStatus);
         });
+
+        if(this.alertedMeetingId) {
+            this.eventList.forEach(
+                event => {
+                    if(event.id == this.alertedMeetingId) {
+                        if(event.meetingStatus === UPCOMING_STATUS) {
+                            event.firstAlarmCompleted = true;
+                        }else if(event.meetingStatus === SOON_STATUS) {
+                            event.firstAlarmCompleted = true;
+                            event.secondAlarmCompleted = true;
+                        } else if(event.meetingStatus === IMMINENT_STATUS) {
+                            event.firstAlarmCompleted = true;
+                            event.secondAlarmCompleted = true;
+                            event.thirdAlarmCompleted = true;
+                        } else if(event.meetingStatus === LATE_STATUS) {
+                            event.firstAlarmCompleted = true;
+                            event.secondAlarmCompleted = true;
+                            event.thirdAlarmCompleted = true;
+                        }
+                    }
+                }
+            );
+        }
         this.eventList = JSON.parse(JSON.stringify(this.eventList));
 
         localStorage.setItem('eventList', JSON.stringify(this.eventList));
@@ -206,6 +251,39 @@ export default class CalendarAlerter extends LightningElement {
 
         if(meeting) {
             meeting.alarmStatus = meetingStatus;
+        }
+
+        
+        if(meeting.alarmStatus === SNOOZED_STATUS) {
+            let snoozyDelayMinuts = 5;
+            if(meeting.meetingStatus === UPCOMING_STATUS) {
+                snoozyDelayMinuts = 5;
+            } else if(meeting.meetingStatus === SOON_STATUS) {
+                snoozyDelayMinuts = 2;
+            } else if(meeting.meetingStatus === IMMINENT_STATUS) {
+                snoozyDelayMinuts = 1;
+            } else if(meeting.meetingStatus === IMMINENT_STATUS) {
+                snoozyDelayMinuts = 0;
+            }
+
+            if(snoozyDelayMinuts) {
+                setTimeout(() => {
+                    meeting.alarmStatus = ACTIVE_STATUS;
+                    this.eventList.forEach(
+                        (item) => {
+                            if(item.id === meeting.id) {
+                                item.alarmStatus = ACTIVE_STATUS;
+                                item.firstAlarmCompleted = false;
+                                item.secondAlarmCompleted = false;
+                                item.thirdAlarmCompleted = false;
+                            }
+                        }   
+                    );
+                    this.eventList = JSON.parse(JSON.stringify(this.eventList));
+                    localStorage.setItem('eventList', JSON.stringify(this.eventList));
+                    this.evaluateEvents();
+                }, snoozyDelayMinuts * 60 * 1000);
+            }
         }
 
         console.log(this.eventList);

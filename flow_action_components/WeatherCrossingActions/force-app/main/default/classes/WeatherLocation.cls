@@ -3,9 +3,6 @@ public with sharing class WeatherLocation {
 
     }
 
-    //public Object stationContributions {get;set;} 
-    //@auraEnabled
-    //public List<Values> values {get;set;} 
     @auraEnabled
     public String id {get;set;} 
     @auraEnabled
@@ -27,6 +24,5 @@ public with sharing class WeatherLocation {
     @auraEnabled
     public WeatherConditionsSet currentConditions {get;set;} 
     
-    
-    //public Object alerts {get;set;} 
+
 }

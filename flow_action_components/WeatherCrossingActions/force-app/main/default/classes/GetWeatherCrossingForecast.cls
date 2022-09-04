@@ -12,12 +12,16 @@ global with sharing class GetWeatherCrossingForecast {
             String token = curRequest.key;
             String aggregateHours = curRequest.aggregateHours;
             String contentType;
+            String unitGroup;
             if (String.isEmpty(curRequest.contentType)){
                 contentType = 'json';
             } else contentType = curRequest.contentType;
+            if (String.isEmpty(curRequest.unitGroup)){
+                unitGroup = 'us';
+            } else unitGroup = curRequest.unitGroup;
 
             String endpoint = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/weatherdata/forecast?';
-            String params = 'key=' + token+ '&locations=' + locations + '&aggregateHours='+ aggregateHours +'&contentType='+ contentType;
+            String params = 'key=' + token+ '&locations=' + locations + '&aggregateHours='+ aggregateHours +'&contentType='+ contentType +'&unitGroup='+ unitGroup;
                 
             String url = endpoint + params;
             System.debug('call is:' + url);
@@ -26,32 +30,37 @@ global with sharing class GetWeatherCrossingForecast {
             Result curResponse = new Result();
             
             String responseJSON;
-            try {
-                
-                if(!Test.isRunningTest()) {
-                    System.debug ('url is: ' + url);
-                    curResponse = Send(url, curResponse);
-                    System.debug('errors is: ' + curResponse.errors);
-                    System.debug('initial responseBody is: ' + curResponse.responseBody);
-                
-                } else {
-                    
-                    String testResponse = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
-                    responseMap = (Map<String, Object>) JSON.deserializeUntyped(testResponse);
-                    System.debug('response  is: ' + responseMap);
-                }
-            } catch (Exception e) {
-                System.debug(LoggingLevel.INFO,'post error: ' + e);
-                curResponse.errors = e.getMessage();
-                
-            }
-
             WeatherReport curWeatherReport = new WeatherReport();
             WeatherResultSet curWeatherResultSet = new WeatherResultSet();
            // curWeatherResultSet = (WeatherResultSet)System.JSON.deserialize(curResponse.responseBody, WeatherResultSet.class);
 
            //the Locations data is not well formed and has to be parsed out by hand
            List<WeatherLocation> curWeatherLocationList = new List<WeatherLocation>();
+           WeatherLocation curLocation = new WeatherLocation();
+
+            System.debug ('url is: ' + url);
+            try {
+                
+                if(!Test.isRunningTest()) {
+               
+                    curResponse = Send(url, curResponse);
+                  
+                
+                } else {
+                    
+                     curResponse.responseBody = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
+                    curResponse.errors = 'errortext';
+                    curWeatherLocationList.add(curLocation);
+                }
+            } catch (Exception e) {
+                System.debug(LoggingLevel.INFO,'post error: ' + e);
+                curResponse.errors = e.getMessage();
+                
+            }
+            System.debug('errors is: ' + curResponse.errors);
+            System.debug('initial responseBody is: ' + curResponse.responseBody);
+
+          
            JSONParser parser = JSON.createParser(curResponse.responseBody);
            while (parser.nextToken() != null) {
             if ((parser.getCurrentToken() == JSONToken.FIELD_NAME) && (parser.getText() == 'locations')) {
@@ -62,7 +71,7 @@ global with sharing class GetWeatherCrossingForecast {
                     system.debug('current parser values is: ' + parser.getText());
                     if (parser.getCurrentToken() == JSONToken.START_OBJECT) {
                         // Read entire invoice object, including its array of line items.
-                        WeatherLocation curLocation = (WeatherLocation)parser.readValueAs(WeatherLocation.class);
+                        curLocation = (WeatherLocation)parser.readValueAs(WeatherLocation.class);
                         system.debug('weather distance: ' + curLocation.distance);
                         //system.debug('Size of list items: ' + inv.lineItems.size());
                         // For debugging purposes, serialize again to verify what was parsed.
@@ -83,20 +92,7 @@ global with sharing class GetWeatherCrossingForecast {
             curResponse.fullLocationsReport = curWeatherLocationList;
             curResponse.singleLocationReport = curWeatherLocationList[0];
 
-           /*  Map<String,Object> myMap  = (Map<String,Object>)System.JSON.deserializeUntyped(curResponse.responseBody);
-            String myLocations  =String.valueOf(myMap.get('locations'));
-            System.debug('myLocations is:' + myLocations);
-            List<WeatherLocation> curWeatherLocationList = new List<WeatherLocation>();
-            for (String key : myMap.keySet()) {
-                System.debug('curkey is: ' + key);
-                WeatherLocation curLocation = (WeatherLocation)System.JSON.deserialize(myLocations, WeatherLocation.class);
-                
-                curWeatherLocationList.add(curLocation);
-            } 
-            System.debug ('myMap locations are  ' + myMap.get('locations'));*/
-/*             System.debug ('curWeatherLocationList is: ' + curWeatherLocationList);
-            System.debug ('curWeatherResultSet is: ' + curWeatherResultSet);
-            System.debug('locations is:' + curWeatherResultSet.locations); */
+
             responses.add(curResponse);
             
         }
@@ -153,11 +149,15 @@ global with sharing class GetWeatherCrossingForecast {
         @InvocableVariable(required=true)
         global String locations;
 
-        @InvocableVariable(label='The interval between weather forecast data in the output. 1 represents an hourly forecast, 24 represents a daily forecast.')
+        @InvocableVariable(label='aggregateHours - The interval between weather forecast data in the output. 1 represents an hourly forecast, 24 represents a daily forecast.')
         global String aggregateHours;
 
         @InvocableVariable(label='Format -  this can be csv or json. default is json')
         global String contentType;
+
+        @InvocableVariable(label='Unit Group - set to us, metric, uk, or base')
+        global String unitGroup;
+
  
     }
 

@@ -8,18 +8,14 @@ global with sharing class SendEmailViaMC {
 
         for (Request curRequest: requestList ){
 
-            String endpoint = 'https://mcgs269vcy2ztdsfpt5bjwv1mfl1.rest.marketingcloudapis.com/messaging/v1/email/messages/';
+            String endpoint = curRequest.apiEndpoint + '/messaging/v1/email/messages/';
             String params = '';
-
-
 
             if (String.isEmpty(curRequest.contactKey)) {
                 System.debug('generating a contact key...');
                 Long timestamp = Datetime.now().getTime();
                 curRequest.contactKey = String.valueOf(timestamp);
-
             }
-
 
             String url = endpoint + curRequest.contactKey + params;
             System.debug('call is:' + url);
@@ -31,8 +27,6 @@ global with sharing class SendEmailViaMC {
 
             String responseJSON;
             try {
-                
-                if(!Test.isRunningTest()) {
                 String body = '{"definitionKey": "'+curRequest.definitionKey+'",   "recipient": {"contactKey": "' + curRequest.contactKey + 
                 '",  "to":  "' + curRequest.toRecipient + '",   "attributes": {' +
                  '"' +curRequest.mergeKey1 + '": "' + curRequest.mergeValue1 + '"' + 
@@ -42,31 +36,23 @@ global with sharing class SendEmailViaMC {
                  ',"' +curRequest.mergeKey5 + '": "' + curRequest.mergeValue5 + '"' + 
                  ' } }}';
 
-
+                if(!Test.isRunningTest()) {
+               
                     System.debug ('url is: ' + url);
-                    responseJSON = Send(url, token, body);
-                    System.debug('initial responseJSON is: ' + responseJSON);
-                
-                    //responseMap = (Map<String, Object>) JSON.deserializeUntyped(responseJSON);
-
-                    //System.debug('response after deserialization is  is: ' + responseMap);
+                    curResponse = Send(url, token, body, curResponse);
                 } else {
-                    
-                    String testResponse = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
-                    responseMap = (Map<String, Object>) JSON.deserializeUntyped(testResponse);
-                    System.debug('response  is: ' + responseMap);
+                    curResponse.responseBody = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
                 }
-            } catch (Exception e) {
+
+                System.debug('errors is: ' + curResponse.errors);
+                System.debug('initial responseBody is: ' + curResponse.responseBody);
+            } 
+            catch (Exception e) {
                 System.debug(LoggingLevel.INFO,'post error: ' + e);
                 curResponse.errors = e.getMessage();
                 
             }
-
-            //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
-            // responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
     
-            curResponse.responseBody= responseJSON;
-        
             responses.add(curResponse);
             
         }
@@ -76,7 +62,7 @@ global with sharing class SendEmailViaMC {
  
 
 
-    global static String  Send(String endpoint, String token, String body) {
+    global static Result  Send(String endpoint, String token, String body, Result curResponse) {
         
         String res;
         try {
@@ -93,15 +79,16 @@ global with sharing class SendEmailViaMC {
             System.debug('req is: ' + req);
             res = transmit(req);
            // System.debug('First Response back is: ' + res);
-            
+           curResponse.responseBody = res;
             
             
         } catch (Exception e) {
             System.debug('error:' + e.getMessage());
-            throw new InvocableActionException('Error: '+ e.getMessage());
+            //throw new InvocableActionException('Error: '+ e.getMessage());
+            curResponse.errors=e.getMessage();
         }
 
-        return res;
+        return curResponse;
     
     }
 
@@ -131,10 +118,13 @@ global with sharing class SendEmailViaMC {
         @InvocableVariable(required=true)
         global String toRecipient;
 
+        @InvocableVariable(required=true)
+        global String apiEndpoint;
+
         @InvocableVariable
         global String contactKey ; //this points to an existing contact in MC but can be set to the current target recipient if they don't exist already
 
-        @InvocableVariable
+        @InvocableVariable(required=true)
         global String definitionKey ; //this is essentially the apiname of an Email Template in MC
 
         @InvocableVariable

@@ -100,6 +100,13 @@ export default class SendBetterEmailCPE extends LightningElement {
       default: null,
       label: "Email Template Id"
     },
+    messageID: {
+      value: null,
+      valueDataType: null,
+      isCollection: false,
+      default: null,
+      label: "Message ID"
+  },
     templateTargetObjectId: {
       value: null,
       valueDataType: null,

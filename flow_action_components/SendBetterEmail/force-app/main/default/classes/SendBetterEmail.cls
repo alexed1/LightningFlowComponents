@@ -131,6 +131,7 @@ public without sharing class SendBetterEmail {
       String replyEmailAddress = curRequest.replyEmailAddress;
       String senderDisplayName = curRequest.senderDisplayName;
       String subject = curRequest.subject;
+      String messageID = curRequest.messageID;
       String templateID = curRequest.templateID;
       String templateName = curRequest.templateName;
       String templateLanguage = curRequest.templateLanguage;
@@ -345,6 +346,9 @@ public without sharing class SendBetterEmail {
 
         // Specify the subject line for your email address.
         mail.setSubject(subject);
+
+         // Specify the Message ID.
+         mail.setReferences(messageID);
 
         // Set to True if you want to BCC yourself on the email.
         mail.setBccSender(bcc);

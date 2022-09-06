@@ -26,10 +26,11 @@ import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
+const ISFLOWBUILDER = CONSTANTS.ISFLOWBUILDER;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
@@ -970,6 +971,8 @@ export default class Datatable extends LightningElement {
                         // Add new column with correct Lookup urls
                         if (ISCOMMUNITY) {
                             record[lufield + '_lookup'] = MYDOMAIN + 'detail/' + record[lufield + '_id'];
+                        } else if (ISFLOWBUILDER) {
+                            record[lufield + '_lookup'] = MYDOMAIN + '/' + record[lufield + '_id'];
                         } else {
                             record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
                         }
@@ -981,6 +984,8 @@ export default class Datatable extends LightningElement {
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
             if (ISCOMMUNITY) {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
+            } else if (ISFLOWBUILDER) {
+                record[lufield + '_lookup'] = MYDOMAIN + '/' + record[lufield + '_id'];
             } else {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
             }

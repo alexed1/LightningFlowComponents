@@ -255,11 +255,11 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get gridClass() {
-        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center ' : 'slds-form-element__control ') + this.bottomPadding;
+        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center slds-grid_vertical-stretch ' : 'slds-form-element__control ') + this.bottomPadding;
     }
 
     get gridStyle() {
-        return this.dualColumns ? 'width:52rem' : '';
+        return this.dualColumns ? 'width: auto' : '';
     }
 
     get columnClass() {
@@ -267,7 +267,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get cardSize() {
-        return (this.dualColumns || !this.isResponsive) ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        return (this.dualColumns || !this.isResponsive) ? 'min-height: calc(25vh - 8rem); width: auto !important' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
     }
 
     get responsiveSize() {

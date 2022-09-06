@@ -211,6 +211,7 @@ export default class Datatable extends LightningElement {
             }
             this.outputEditedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
             this.outputEditedSerializedRows = '';
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             setTimeout(function() {
@@ -1490,6 +1491,7 @@ export default class Datatable extends LightningElement {
         
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
         if(this.isSerializedRecordData) {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
@@ -2151,7 +2153,7 @@ export default class Datatable extends LightningElement {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
         }
-        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+
         console.log('outputSelectedRows', this.outputSelectedRows.length, this.outputSelectedRows);
         console.log('outputEditedRows',this.outputEditedRows.length, this.outputEditedRows);
 

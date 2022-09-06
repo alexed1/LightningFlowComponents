@@ -72,10 +72,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
-## 08/xx/22 -  Eric Smith -     Version 4.0.9
+## 09/xx/22 -  Eric Smith -     Version 4.0.9
 **Bug Fixes:**  
 -   Get correct clickable links for LWR Experience Sites 
 -   Fixed intermittant error with isDisableSuppressBottomBar
+-   Winter 23 - Fixed clickable links while running in the Flow Builder
+-   Winter 23 - numberOfRowsEdited now outputs the correct value
  
 ## 07/09/22 -  Eric Smith -     Version 4.0.8
 **Bug Fixes:**  

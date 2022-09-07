@@ -80,6 +80,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Winter 23 - numberOfRowsEdited now outputs the correct value
 -   Winter 23 - Fixed datetime columns not displaying any values
 -   Test Class fix for ers_DatatableController
+-   Multiple date field edits will no longer clear the edited rows output when the bottom bar is suppressed
  
 ## 07/09/22 -  Eric Smith -     Version 4.0.8
 **Bug Fixes:**  

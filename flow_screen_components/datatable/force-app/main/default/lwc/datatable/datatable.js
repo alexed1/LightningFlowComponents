@@ -1434,6 +1434,7 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
+        let editField = '';
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1441,7 +1442,12 @@ export default class Datatable extends LightningElement {
             const draft = draftValues.find(d => d[this.keyField] == item[this.keyField]);
             if (draft != undefined) {
                 let fieldNames = Object.keys(draft);
-                fieldNames.forEach(el => item[el] = draft[el]);
+                fieldNames.forEach(el => {
+                    item[el] = draft[el];
+                    if (this.suppressBottomBar && (el != this.keyField)) {
+                        editField = el;
+                    }
+                });
             }
             return item;
         });
@@ -1453,10 +1459,12 @@ export default class Datatable extends LightningElement {
             if (edraft != undefined) {
                 let efieldNames = Object.keys(edraft);
                 efieldNames.forEach(ef => {
-                    if(this.percentFieldArray.indexOf(ef) != -1) {
-                        eitem[ef] = Number(edraft[ef])*100; // Percent field
-                    } else {
-                        eitem[ef] = edraft[ef];
+                    if (!this.suppressBottomBar || (ef == editField)) {
+                        if(this.percentFieldArray.indexOf(ef) != -1) {
+                            eitem[ef] = Number(edraft[ef])*100; // Percent field
+                        } else {
+                            eitem[ef] = edraft[ef];
+                        }
                     }
                 });
 
@@ -1476,30 +1484,38 @@ export default class Datatable extends LightningElement {
                 let field = eitem
                 let numberFields = this.numberFieldArray;
                 numberFields.forEach(nb => {
-                    field[nb] = parseFloat(field[nb]);
+                    if (!this.suppressBottomBar || (nb == editField)) {
+                        field[nb] = parseFloat(field[nb]);
+                    }
                 });
 
                 // Correct formatting for percent fields
                 let pctfield = this.percentFieldArray;
                 pctfield.forEach(pct => {
-                    field[pct] = parseFloat(field[pct]);
+                    if (!this.suppressBottomBar || (pct == editField)) {
+                        field[pct] = parseFloat(field[pct]);
+                    }
                 });
 
                 // Revert formatting for time fields
                 let timefield = this.timeFieldArray;
                 timefield.forEach(time => {
-                    if (field[time]) {
-                        field[time] = this.convertTime(field[time]);
+                    if (!this.suppressBottomBar || (time == editField)) {
+                        if (field[time]) {
+                            field[time] = this.convertTime(field[time]);
+                        }
                     }
                 });                
 
                 // Repeat offset for date fields (v3.4.5)
                 let datefield = this.dateFieldArray;
                 datefield.forEach(date => {
-                    if (field[date] && field[date].slice(-1) != "Z") {          //Don't process if date has been converted to datetime because of TypeAttributes (v4.0.6)
-                        let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
-                        let rd = new Date();
-                        field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                    if (!this.suppressBottomBar || (date == editField)) {
+                        if (field[date] && field[date].slice(-1) != "Z") {          //Don't process if date has been converted to datetime because of TypeAttributes (v4.0.6)
+                            let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
+                            let rd = new Date();
+                            field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                        }
                     }
                 });
 

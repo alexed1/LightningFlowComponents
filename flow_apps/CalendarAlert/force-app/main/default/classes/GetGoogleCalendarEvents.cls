@@ -8,15 +8,31 @@ global with sharing class GetGoogleCalendarEvents {
     List<Result> responses = new List<Result>();
     String currentTime = GetCurrentTimeString();
     for (Request curRequest: requestList ){
-        //String endpoint = 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest';
-        //this works to get the list of all cals: String endpoint = 'callout:GoogleCredential/calendar/v3/users/me/calendarList';
-        String endpoint = 'callout:GoogleCredential/calendar/v3/calendars/aedelstein@salesforce.com/events?';
-        String params = 'maxResults=3&orderBy=startTime&singleEvents=true&timeMin='+ currentTime;
+        String maxResultsString = String.valueOf(curRequest.maxResults);
+        if (String.isEmpty(maxResultsString)){
+            maxResultsString = '3';
+        }
+
+        String orderBy;
+        if (String.isEmpty(curRequest.orderBy))
+            orderBy = 'startTime';
+       
+        String startTime= curRequest.startTime;
+        String endTime = curRequest.endTime;
+        if(String.isEmpty(startTime)){
+            startTime = GetCurrentTimeString();
+        } 
+
+        String endpoint = 'callout:' + curRequest.credName + '/calendar/v3/calendars/' + curRequest.calendarIdentifier + '/events?';
+        String params = 'maxResults=' + maxResultsString + '&orderBy=' + orderBy + '&singleEvents=true&timeMin='+ startTime;
+        if(String.isNotEmpty(curRequest.endTime))
+            params = params + '&timeMax=' + endTime;
+        if(String.isNotEmpty(curRequest.queryString))
+            params = params + '&q=' + curRequest.queryString;
+            
         String url = endpoint + params;
         System.debug('call is:' + url);
      
-       // String endpoint = AIzaSyASmhaizFZ2oYvIzVgGb0q4BgnoEBel8mc
-        String token = curRequest.token;
         Map<String,Object> responseMap = new Map<String,Object>();
         Result curResponse = new Result();
         List<GoogleCalendarEvent> eventList = new List<GoogleCalendarEvent>();
@@ -24,14 +40,24 @@ global with sharing class GetGoogleCalendarEvents {
         try {
             
             if(!Test.isRunningTest()) {
-               // String body = '{"roomId": "'+curRequest.roomId+'","text":"' + curRequest.text + '"}';
                 System.debug ('url is: ' + url);
-                responseJSON = Send(url, token);
+                responseJSON = Send(url);
                 System.debug('initial responseJSON is: ' + responseJSON);
-               
-                //responseMap = (Map<String, Object>) JSON.deserializeUntyped(responseJSON);
+                responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
+                System.debug('modified responseJSOn is: ' + responseJSON);
+                curResponse.responseBody= responseJSON;
+                //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
+                GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
+                GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
+                curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
+                System.debug('curEventSet parsed out is: ' + curEventSet);
+                List<GoogleCalendarEvent> curEventsList = curEventSet.items;
+                System.debug('event list  is: ' + curEventsList);
 
-                //System.debug('response after deserialization is  is: ' + responseMap);
+                curResponse.eventList=curEventsList;
+                curResponse.status= true;
+                
+               
             } else {
                 
                 String testResponse = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
@@ -41,23 +67,13 @@ global with sharing class GetGoogleCalendarEvents {
         } catch (Exception e) {
             System.debug(LoggingLevel.INFO,'post error: ' + e);
             curResponse.errors = e.getMessage();
+            curResponse.status = false;
             
         }
+        responses.add(curResponse);
 
         //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
-        responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
-        System.debug('modified responseJSOn is: ' + responseJSON);
-        curResponse.responseBody= responseJSON;
-        //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
-        GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
-        GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
-        curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
-        System.debug('curEventSet parsed out is: ' + curEventSet);
-        List<GoogleCalendarEvent> curEventsList = curEventSet.items;
-        System.debug('event list  is: ' + curEventsList);
-
-        curResponse.eventList=curEventsList;
-        responses.add(curResponse);
+        
          
     }
     return responses;
@@ -77,24 +93,22 @@ global with sharing class GetGoogleCalendarEvents {
     }
 
 
-    global static String  Send(String endpoint, String token) {
+    global static String  Send(String endpoint) {
         
-        String res;
+        HttpResponse res;
         try {
             HttpRequest req = new HttpRequest();
             req.setEndpoint(endpoint);
             req.setMethod('GET');
             req.setHeader('Content-Type', 'application/json');
-           // req.setHeader('Authorization', 'Bearer ' + token);
+            //req.setHeader('Authorization', 'Bearer ' + token); //right now you have to use a Named Credential, and can't pass in a raw token
             req.setHeader('Accept-Encoding', 'gzip, deflate, br');
             req.setHeader('Accept', '*/*');
-
-            //req.setBody(body);
-            //System.debug('set body to:' + body);
-            //System.debug('req is: ' + req);
             res = transmit(req);
-           // System.debug('First Response back is: ' + res);
-            
+
+            if(res.getStatusCode() != 200) {
+                throw new InvocableActionException(res.getBody());
+            }
             
             
         } catch (Exception e) {
@@ -102,38 +116,51 @@ global with sharing class GetGoogleCalendarEvents {
             throw new InvocableActionException('Error: '+ e.getMessage());
         }
 
-        return res;
+        return res.getBody();
     
     }
 
-    global  static  string transmit(HttpRequest req) {
+    global  static  HttpResponse transmit(HttpRequest req) {
         Http http = new Http();
         System.debug('req is: ' + req);
         System.debug('body is: ' + req.getBody());
         if(!Test.isRunningTest()){
             HttpResponse res = http.send(req);
+            System.debug('made it back: ' + res);
             System.debug('made it back: ' + res.getBody());
-            return res.getBody();
+            return res;
         } else {
-            return '{"ok":true}';
+            HttpResponse res = new HttpResponse();
+            res.setStatusCode(200);
+            res.setBody('{"ok":true}');
+            return res;
         }
     }
-
-
-
     
 
     global class Request {
       
 
         @InvocableVariable(required=true)
-        global String token;
+        global String credName;
 
-        @InvocableVariable
-        global String text ;
+        @InvocableVariable(required=true)
+        global String calendarIdentifier;
 
-        @InvocableVariable
-        global String roomId ;
+        @InvocableVariable(label='Max Results - defaults to 3')
+        global Integer maxResults;
+
+        @InvocableVariable(label='Sort Order - allowable values are \'start time\'  and \'updated\'')
+        global String orderBy;
+
+        @InvocableVariable(label='Start Time - requires RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00. If left null or empty, the current time will be used')
+        global String startTime;
+
+        @InvocableVariable(label='End Time - requires RFC3339 timestamp with mandatory time zone offset, for example, 2011-06-03T10:00:00-07:00.')
+        global String endTime;
+
+        @InvocableVariable(label='Search Query - this will do a free text search on summary, description, location, attendee\'s displayName, attendee\'s email')
+        global String queryString;
     }
 
     global class Result {
@@ -148,6 +175,9 @@ global with sharing class GetGoogleCalendarEvents {
 
         @InvocableVariable
         global String errors;
+
+        @InvocableVariable
+        global Boolean status;
 
         @InvocableVariable
         global List<GoogleCalendarEvent>  eventList;

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&amp;prompt=consent</authorizeUrl>
+    <consumerKey>1026383221763-brv5rqipcs0ivc4ll5f1vshdp66uv9qr.apps.googleusercontent.com</consumerKey>
+    <consumerSecret>+SkULeGVBgqSw8Q4OZ7kbdfEzh294yJspQzeBa3Ne+89G8FL9wwGZw==</consumerSecret>
+    <defaultScopes>https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events.freebusy</defaultScopes>
+    <friendlyName>Google old</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>Google</providerType>
+    <sendAccessTokenInHeader>false</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+</AuthProvider>

@@ -1,0 +1,28 @@
+@isTest
+public class HardDeleteRecordsTest {
+
+
+    public static testMethod void doTest(){
+    
+    Test.startTest();
+
+Account acc1 = new Account(name='Account1');
+insert acc1;
+
+list<Account> acclist = new list<Account>();
+list<list<sObject>> sObjectlist = new list<list<sObject>>();
+
+acclist.add(acc1);
+sObjectlist.add(acclist);
+
+
+HardDeleteRecords.HardDeleteRecords(sObjectlist);
+
+        Test.stopTest();
+
+List<Account> retrievedAccounts = [SELECT Id FROM Account WHERE isDeleted=true AND Id=:acc1.Id];
+System.assertEquals(0, retrievedAccounts.size());
+
+
+}
+}

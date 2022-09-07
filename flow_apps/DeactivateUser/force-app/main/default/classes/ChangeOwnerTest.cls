@@ -21,40 +21,76 @@ public with sharing class ChangeOwnerTest {
 
             insert accountList;
 
+            List<Opportunity> oppList = new List<Opportunity>();
+            for(Integer i = 0; i < 5; i++) {
+                oppList.add(new Opportunity(Name = 'test ' + i, AccountId = accountList[0].Id, StageName = 'Closed Won', CloseDate = Date.today()));
+            }
+
+            insert oppList;
+
             Test.startTest();
             ChangeOwner.Requests request = new ChangeOwner.Requests();
-            request.EnforceNewOwnerHasReadAccess = true;
-            request.KeepAccountTeam = true;
-            request.KeepSalesTeam = true;
-            request.KeepSalesTeamGrantCurrentOwnerReadWriteAccess = true;
-            //request.SendEmailAlert = true;
-            request.TransferAllOwnedCases = true;
-            request.TransferArticleOwnedPublishedVersion = true;
-            request.TransferArticleOwnedArchivedVersions = true;
-            request.TransferArticleAllVersions = true;
-            request.TransferContacts = true;
-            request.TransferContracts = true;
-            request.TransferNotesAndAttachments = true;
-            request.TransferOpenActivities = true;
-            request.TransferOrders = true;
-            request.TransferOthersOpenOpportunities = true;
-            request.TransferOwnedClosedOpportunities = true;
-            request.TransferOwnedOpenCases = true;
-            request.TransferOwnedOpenOpportunities = true;
-
-            //request.targetRecordId = true;
-            //request.targetRecord = true;
+            //check supported inputs for Account Record
+            request.TransferAllOwnedCases = false;
+            request.TransferOthersOpenOpportunities = false;
+            request.TransferOwnedClosedOpportunities = false;
+            request.TransferOwnedOpenCases = false;
+            request.TransferOwnedOpenOpportunities = false;
             request.targetRecordCollection = accountList;
             request.newOwnerId = ownerId;
 
             ChangeOwner.Results result = ChangeOwner.execute(new List<ChangeOwner.Requests>{request})[0];
-            request.targetRecordCollection = null;
+            System.debug('Result: ' + result);
+            System.assert(result.success);
+
+            //check not supported inputs for Account Record
+            request.EnforceNewOwnerHasReadAccess = false;
+            request.KeepAccountTeam = false;
+            request.KeepSalesTeam = false;
+            request.KeepSalesTeamGrantCurrentOwnerReadWriteAccess = false;
+            request.TransferArticleOwnedPublishedVersion = false;
+            request.TransferArticleOwnedArchivedVersions = false;
+            request.TransferArticleAllVersions = false;
+            request.TransferContacts = false;
+            request.TransferContracts = false;
+            request.TransferNotesAndAttachments = false;
+            request.TransferOpenActivities = false;
+            request.TransferOrders = false;
             request.targetRecord = accountList[0];
             request.targetRecordId = accountList[1].Id;
             result = ChangeOwner.execute(new List<ChangeOwner.Requests>{request})[0];
 
             System.debug('Result: ' + result);
+            System.assert(!result.success);
+
+           
+
+            request = new ChangeOwner.Requests();
+            //check supported inputs for Opportunity Record
+            request.KeepSalesTeam = false;
+            request.KeepSalesTeamGrantCurrentOwnerReadWriteAccess = false;
+            request.targetRecordCollection = oppList;
+            request.newOwnerId = ownerId;
+
+            result = ChangeOwner.execute(new List<ChangeOwner.Requests>{request})[0];
+            System.debug('Result: ' + result);
             System.assert(result.success);
+
+            
+            //check supported inputs for Opportunity Record
+            request.TransferAllOwnedCases = false;
+            request.TransferOthersOpenOpportunities = false;
+            request.TransferOwnedClosedOpportunities = false;
+            request.TransferOwnedOpenCases = false;
+            request.TransferOwnedOpenOpportunities = false;
+            request.targetRecordCollection = oppList;
+            request.newOwnerId = ownerId;
+
+            result = ChangeOwner.execute(new List<ChangeOwner.Requests>{request})[0];
+            System.debug('Result: ' + result);
+            System.assert(!result.success);
+
+
             Test.stopTest();
         }
     }

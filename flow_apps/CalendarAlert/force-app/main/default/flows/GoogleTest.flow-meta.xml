@@ -12,9 +12,15 @@
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>token</name>
+            <name>calendarIdentifier</name>
             <value>
-                <stringValue>null</stringValue>
+                <stringValue>aedelstein@salesforce.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>credName</name>
+            <value>
+                <stringValue>GoogleNamedCred</stringValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>

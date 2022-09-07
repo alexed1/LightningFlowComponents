@@ -79,6 +79,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Winter 23 - Fixed clickable links while running in the Flow Builder
 -   Winter 23 - numberOfRowsEdited now outputs the correct value
 -   Winter 23 - Fixed datetime columns not displaying any values
+-   Test Class fix for ers_DatatableController
  
 ## 07/09/22 -  Eric Smith -     Version 4.0.8
 **Bug Fixes:**  

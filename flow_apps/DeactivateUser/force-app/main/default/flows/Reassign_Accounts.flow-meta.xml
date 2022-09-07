@@ -20,9 +20,21 @@
         </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
-            <name>KeepAccountTeam</name>
+            <name>AlsoTransferKnowledgeVersions</name>
             <value>
-                <booleanValue>true</booleanValue>
+                <stringValue>Published</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>AlsoTransferRelatedCases</name>
+            <value>
+                <stringValue>All</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>AlsoTransferRelatedOpportunities</name>
+            <value>
+                <stringValue>Closed</stringValue>
             </value>
         </inputParameters>
         <inputParameters>

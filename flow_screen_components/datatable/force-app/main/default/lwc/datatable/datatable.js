@@ -351,6 +351,7 @@ export default class Datatable extends LightningElement {
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
     dateFieldArray = [];
+    datetimeFieldArray = [];
     @api picklistFieldArray = [];
     @api picklistReplaceValues = false;     
     apex_picklistFieldMap = [];
@@ -788,6 +789,10 @@ export default class Datatable extends LightningElement {
                         this.timeFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'time';
                         break;
+                    case 'datetime':
+                        this.datetimeFieldArray.push(this.basicColumns[t.column].fieldName);
+                        this.basicColumns[t.column].type = 'datetime';
+                        break;
                     // case 'date':
                     //     this.dateFieldArray.push(this.basicColumns[t.column].fieldName);
                     //     this.basicColumns[t.column].type = 'date-local';
@@ -849,6 +854,7 @@ export default class Datatable extends LightningElement {
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
+                this.datetimeFieldArray = (returnResults.datetimeFieldList.length > 0) ? returnResults.datetimeFieldList.toString().split(',') : [];
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
@@ -916,6 +922,7 @@ export default class Datatable extends LightningElement {
         let dateFields = this.dateFieldArray;
         let percentFields = this.percentFieldArray;
         let numberFields = this.numberFieldArray;
+        let datetimeFields = this.datetimeFieldArray;
         let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
@@ -937,6 +944,13 @@ export default class Datatable extends LightningElement {
                     let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
                     let d = new Date();
                     record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                }
+            });
+
+            // Adjust datetime with correct timezone reference
+            datetimeFields.forEach(datetime => {
+                if (record[datetime]) {
+                    record[datetime] = record[datetime].replace("+0000", "Z");
                 }
             });
 

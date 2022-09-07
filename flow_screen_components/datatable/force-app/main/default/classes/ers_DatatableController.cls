@@ -17,6 +17,8 @@
  *              records that now include both the Id and Name for each lookup.
  * 
  * 
+ * 09/06/22 -   Eric Smith -    Version 4.0.9   Return a collection of datetime fields for handling in the LWC
+ * 
  * 03/14/22 -   Eric Smith -    Version 3.5.0   Added option to suppress the currency conversion introduced in v3.1.1
  * 
  * 02/13/22 -   Eric Smith -    Version 3.4.5   Minor improvements and increased test coverage (JeronSfdc PR#1007 & #1008)
@@ -91,6 +93,7 @@ public with sharing class ers_DatatableController {
         List<String> noEditFieldList;
         List<String> timeFieldList;
         List<String> dateFieldList;
+        List<String> datetimeFieldList;
         List<String> picklistFieldList;
         List<String> currencyFieldList;
         List<String> numberFieldList;
@@ -135,6 +138,7 @@ public with sharing class ers_DatatableController {
             curRR.noEditFieldList = emptyList;
             curRR.timeFieldList = emptyList;
             curRR.dateFieldList = emptyList;
+            curRR.datetimeFieldList = emptyList;
             curRR.picklistFieldList = emptyList;
             curRR.currencyFieldList = emptyList;
             curRR.numberFieldList = emptyList;
@@ -173,6 +177,7 @@ public with sharing class ers_DatatableController {
         List<String> noEditFields = new List<String>();
         List<String> timeFields = new List<String>();
         List<String> dateFields = new List<String>();
+        List<String> datetimeFields = new List<String>();
         List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
         List<String> numberFields = new List<String>();
@@ -240,6 +245,9 @@ public with sharing class ers_DatatableController {
                 when 'DATE' {   // Only saving DATE, not DATETIME for TimeZone Offset Conversion
                     dateFields.add(fieldName);
                 }
+                when 'DATETIME' {
+                    datetimeFields.add(fieldName);
+                }
                 when 'PICKLIST', 'MULTIPICKLIST' {
                     picklistFields.add(dfr.getName());
                     // if (!noEditFields.contains(fieldName)) {
@@ -264,6 +272,7 @@ public with sharing class ers_DatatableController {
         curRR.noEditFieldList = noEditFields;
         curRR.timeFieldList = timeFields;
         curRR.dateFieldList = dateFields;
+        curRR.datetimeFieldList = datetimeFields;
         curRR.picklistFieldList = picklistFields;
         curRR.picklistFieldMap = picklistFieldLabels;
         curRR.objectLinkField = objectLinkField;

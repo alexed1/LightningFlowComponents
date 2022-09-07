@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.8 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV0LQAU)   
-[Version 4.0.8 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rV0LQAU)
+[Version 4.0.9 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpXQAQ)   
+[Version 4.0.9 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpXQAQ)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,16 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
+ 
+## 09/07/22 -  Eric Smith -     Version 4.0.9
+**Bug Fixes:**  
+-   Get correct clickable links for LWR Experience Sites 
+-   Fixed intermittant error with isDisableSuppressBottomBar
+-   Winter 23 - Fixed clickable links while running in the Flow Builder
+-   Winter 23 - numberOfRowsEdited now outputs the correct value
+-   Winter 23 - Fixed datetime columns not displaying any values
+-   Test Class fix for ers_DatatableController
+-   Multiple date field edits will no longer clear the edited rows output when the bottom bar is suppressed
  
 ## 07/09/22 -  Eric Smith -     Version 4.0.8
 **Bug Fixes:**  

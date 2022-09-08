@@ -1,9 +1,16 @@
 ({
     doInit: function(component, event, helper) {
-        component.set("v.fieldNameList", component.get("v.fieldChange").split(","));
-        component.set("v.fieldCompare", component.get("v.fieldNameList")[1]);
-        console.log('fieldSet', component.get("v.fieldNameList"));
-        console.log('fieldCompare', component.get("v.fieldCompare"));
+        // By Default set the Id field as this is required
+        var tempFieldList = ['Id'];
+        // Check to see if the user wants to watch any other fields
+        if (component.get("v.fieldChange")) {
+            tempFieldList.push(component.get("v.fieldChange"));
+
+            // The field we compare will always be in the #2 spot. We can grab that value and store for later use
+            component.set("v.fieldCompare", component.get("v.fieldChange"));
+        }
+        // Set the updated list which recordData uses
+        component.set("v.fieldNameList", tempFieldList);
     },
 
     openModal : function(component, event, helper) {

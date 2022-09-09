@@ -6,6 +6,7 @@
 Version:       1.0
 History
         @date 27/12/2019      Created
+              09/09/2022      Winter '23 fix
 ------------------------------------------------------------*/
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';

@@ -118,10 +118,10 @@ global with sharing class ChangeOwner {
                 //     optionList.options.add(opt);
                 // }
 
-                if(request.TransferAllOwnedCases != null || request.AlsoTransferRelatedCases == availableValuesForAlsoTransferRelatedCases[2] ) {
+                if(request.AlsoTransferRelatedCases == availableValuesForAlsoTransferRelatedCases[2] ) {
                     if(sobjectName == ACCOUNT_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                    opt.execute=request.TransferAllOwnedCases;
+                    opt.execute=true;
                     opt.type_x = 'TransferAllOwnedCases';
                     optionList.options.add(opt);
                     } else {
@@ -130,10 +130,10 @@ global with sharing class ChangeOwner {
                     
                 }
 
-                if(request.TransferArticleOwnedPublishedVersion != null || request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[1]) {
+                if(request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[1]) {
                     if(sobjectName == KNOWLEDGE_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferArticleOwnedPublishedVersion;
+                        opt.execute = true;
                         opt.type_x = 'TransferArticleOwnedPublishedVersion';
                         optionList.options.add(opt);
                     } else {
@@ -141,10 +141,10 @@ global with sharing class ChangeOwner {
                     }
                 }
 
-                if(request.TransferArticleOwnedArchivedVersions != null || request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[2]) {
+                if(request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[2]) {
                     if(sobjectName == KNOWLEDGE_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferArticleOwnedArchivedVersions;
+                        opt.execute = true;
                         opt.type_x = 'TransferArticleOwnedArchivedVersions';
                         optionList.options.add(opt);
                     } else {
@@ -152,10 +152,10 @@ global with sharing class ChangeOwner {
                     }
                 }
 
-                if(request.TransferArticleAllVersions != null || request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[3]) {
+                if(request.AlsoTransferKnowledgeVersions == availableValuesForAlsoTransferKnowledgeVersions[3]) {
                     if(sobjectName == KNOWLEDGE_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferArticleAllVersions;
+                        opt.execute = true;
                         opt.type_x = 'TransferArticleAllVersions';
                         optionList.options.add(opt);
                     } else {
@@ -193,10 +193,10 @@ global with sharing class ChangeOwner {
                 }
 
 
-                if(request.TransferOthersOpenOpportunities != null || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[0] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[3]) {
+                if(request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[0] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[3]) {
                     if(sobjectName == ACCOUNT_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferOthersOpenOpportunities;
+                        opt.execute=true;
                         opt.type_x = 'TransferOthersOpenOpportunities';
                         optionList.options.add(opt);
                     } else {
@@ -206,11 +206,11 @@ global with sharing class ChangeOwner {
                 }
 
 
-                if(request.TransferOwnedClosedOpportunities != null || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[1] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[4]) {
+                if(request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[1] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[4]) {
 
                     if(sobjectName == ACCOUNT_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferOwnedClosedOpportunities;
+                        opt.execute = true;
                         opt.type_x = 'TransferOwnedClosedOpportunities';
                         optionList.options.add(opt);
                     } else {
@@ -220,11 +220,11 @@ global with sharing class ChangeOwner {
                 }
 
 
-                if(request.TransferOwnedOpenCases != null || request.AlsoTransferRelatedCases == availableValuesForAlsoTransferRelatedCases[1] ) {
+                if(request.AlsoTransferRelatedCases == availableValuesForAlsoTransferRelatedCases[1] ) {
 
                     if(sobjectName == ACCOUNT_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferOwnedOpenCases;
+                        opt.execute = true;
                         opt.type_x = 'TransferOwnedOpenCases';
                         optionList.options.add(opt);
                     } else {
@@ -234,11 +234,11 @@ global with sharing class ChangeOwner {
                 }
 
 
-                if(request.TransferOwnedOpenOpportunities != null || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[2] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[1]) {
+                if(request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[2] || request.AlsoTransferRelatedOpportunities == availableValuesForAlsoTransferRelatedOpp[1]) {
 
                     if(sobjectName == ACCOUNT_API_NAME) {
                         opt = new partnerSoapSforceCom.OwnerChangeOption();
-                        opt.execute=request.TransferOwnedOpenOpportunities;
+                        opt.execute=true;
                         opt.type_x = 'TransferOwnedOpenOpportunities';
                         optionList.options.add(opt);
                     } else {
@@ -317,16 +317,6 @@ global with sharing class ChangeOwner {
         global Boolean KeepSalesTeam;
         @InvocableVariable
         global Boolean KeepSalesTeamGrantCurrentOwnerReadWriteAccess;
-        // @InvocableVariable
-        // global Boolean SendEmailAlert;
-        @InvocableVariable(label='When Transferring Cases with an Account, Transfer Open AND Closed Cases Owned By The Original Owner')
-        global Boolean TransferAllOwnedCases;
-        @InvocableVariable(label='Also transfer Published versions owned by the current draft owner [KNOWLEDGE ONLY] ')
-        global Boolean TransferArticleOwnedPublishedVersion;
-        @InvocableVariable(label='Also transfer Archived versions owned by the current draft owner [KNOWLEDGE ONLY]')
-        global Boolean TransferArticleOwnedArchivedVersions;
-        @InvocableVariable(label='Also transfer All versions owned by the current draft owner [KNOWLEDGE ONLY]')
-        global Boolean TransferArticleAllVersions;
         @InvocableVariable
         global Boolean TransferContacts;
         @InvocableVariable
@@ -337,14 +327,6 @@ global with sharing class ChangeOwner {
         global Boolean TransferOpenActivities;
         @InvocableVariable
         global Boolean TransferOrders;
-        @InvocableVariable(label='Transfer open opportunities that were owned by someone OTHER than the previous owner [ACCOUNT ONLY]')
-        global Boolean TransferOthersOpenOpportunities;
-        @InvocableVariable(label='Transfer closed opportunities associated with the account [ACCOUNT ONLY]')
-        global Boolean TransferOwnedClosedOpportunities;
-        @InvocableVariable(label='When Transferring Cases with an Account, Transfer Open Cases Owned By The Original Owner')
-        global Boolean TransferOwnedOpenCases;
-        @InvocableVariable(label='Transfer open opportunities that were owned by the previous owner [ACCOUNT ONLY]')
-        global Boolean TransferOwnedOpenOpportunities;
 
         @InvocableVariable(description='available values:  None, Published, Archived, All')
         global  String AlsoTransferKnowledgeVersions;

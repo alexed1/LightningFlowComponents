@@ -55,7 +55,7 @@ private with sharing class ers_DatatableControllerTest {
     @IsTest
     private static void testMultiCurrency() {
         String fieldNames = 'Id, Name, AnnualRevenue';
-        List<Account> accts = [SELECT Id, Name, OwnerId FROM Account];
+        List<Account> accts = [SELECT Id, Name, OwnerId, AnnualRevenue FROM Account];
         Boolean suppress = false;
         ers_DatatableController.isMultiCurrencyOrganization = true;
         String testResponse = ers_DatatableController.getReturnResults(accts, fieldNames, suppress);

@@ -263,7 +263,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get columnClass() {
-        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2' : 'slds-visual-picker slds-visual-picker_vertical';
+        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2 paddingFix' : 'slds-visual-picker slds-visual-picker_vertical';
     }
 
     get cardSize() {

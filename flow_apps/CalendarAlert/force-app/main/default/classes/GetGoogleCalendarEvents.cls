@@ -37,25 +37,13 @@ global with sharing class GetGoogleCalendarEvents {
         Result curResponse = new Result();
         List<GoogleCalendarEvent> eventList = new List<GoogleCalendarEvent>();
         String responseJSON;
+        Result curResult = new Result();
         try {
             
             if(!Test.isRunningTest()) {
                 System.debug ('url is: ' + url);
-                responseJSON = Send(url);
-                System.debug('initial responseJSON is: ' + responseJSON);
-                responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
-                System.debug('modified responseJSOn is: ' + responseJSON);
-                curResponse.responseBody= responseJSON;
-                //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
-                GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
-                GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
-                curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
-                System.debug('curEventSet parsed out is: ' + curEventSet);
-                List<GoogleCalendarEvent> curEventsList = curEventSet.items;
-                System.debug('event list  is: ' + curEventsList);
-
-                curResponse.eventList=curEventsList;
-                curResponse.status= true;
+                curResult = Send(url, curResponse);
+                
                 
                
             } else {
@@ -63,6 +51,7 @@ global with sharing class GetGoogleCalendarEvents {
                 String testResponse = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
                 responseMap = (Map<String, Object>) JSON.deserializeUntyped(testResponse);
                 System.debug('response  is: ' + responseMap);
+                curResult.responseBody = testResponse;
             }
         } catch (Exception e) {
             System.debug(LoggingLevel.INFO,'post error: ' + e);
@@ -70,6 +59,22 @@ global with sharing class GetGoogleCalendarEvents {
             curResponse.status = false;
             
         }
+
+        responseJSON = curResult.responseBody;
+        System.debug('initial responseJSON is: ' + responseJSON);
+        responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
+        System.debug('modified responseJSOn is: ' + responseJSON);
+        curResponse.responseBody= responseJSON;
+        //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
+        GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
+        GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
+        curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
+        System.debug('curEventSet parsed out is: ' + curEventSet);
+        List<GoogleCalendarEvent> curEventsList = curEventSet.items;
+        System.debug('event list  is: ' + curEventsList);
+
+        curResponse.eventList=curEventsList;
+        curResponse.status= true;
         responses.add(curResponse);
 
         //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
@@ -93,7 +98,7 @@ global with sharing class GetGoogleCalendarEvents {
     }
 
 
-    global static String  Send(String endpoint) {
+    global static Result  Send(String endpoint, Result curResponse) {
         
         HttpResponse res;
         try {
@@ -109,14 +114,15 @@ global with sharing class GetGoogleCalendarEvents {
             if(res.getStatusCode() != 200) {
                 throw new InvocableActionException(res.getBody());
             }
-            
+            curResponse.responseBody = res.getBody();
             
         } catch (Exception e) {
             System.debug('error:' + e.getMessage());
-            throw new InvocableActionException('Error: '+ e.getMessage());
+            //throw new InvocableActionException('Error: '+ e.getMessage());
+            curResponse.errors=e.getMessage();
         }
 
-        return res.getBody();
+        return curResponse;
     
     }
 

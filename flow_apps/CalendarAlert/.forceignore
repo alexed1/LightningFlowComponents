@@ -4,7 +4,8 @@
 
 package.xml
 force-app/main/default/profiles
-
+force-app/main/default/namedCredentials
+force-app/main/default/authproviders
 
 # LWC configuration files
 **/jsconfig.json

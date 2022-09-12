@@ -14,20 +14,20 @@
         <inputParameters>
             <name>calendarIdentifier</name>
             <value>
-                <stringValue>sahib.gadzhiev@jetbi.com</stringValue>
+                <stringValue>aedelstein@salesforce.com</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>credName</name>
             <value>
-                <stringValue>GoogleCredential</stringValue>
+                <stringValue>Google_Named_Cred_3</stringValue>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
-    <interviewLabel>Test Event Alerter {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test Event Alerter</label>
+    <interviewLabel>Alerter {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Alerter</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -113,5 +113,5 @@
             <targetReference>get_events</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

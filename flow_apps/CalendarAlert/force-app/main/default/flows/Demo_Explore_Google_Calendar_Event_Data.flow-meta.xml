@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>get_events</name>
+        <label>get events</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>GetGoogleCalendarEvents</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Test_Screen</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>calendarIdentifier</name>
+            <value>
+                <stringValue>aedelstein@salesforce.com</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>credName</name>
+            <value>
+                <stringValue>Google_Named_Cred_3</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <interviewLabel>Demo Explore Google Calendar Event Data {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Demo Explore Google Calendar Event Data</label>
+    <loops>
+        <name>Inspect_Each_Event</name>
+        <label>Inspect Each Event</label>
+        <locationX>176</locationX>
+        <locationY>398</locationY>
+        <collectionReference>get_events.eventList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Event_Detail</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <isGoTo>true</isGoTo>
+            <targetReference>get_events</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Event_Detail</name>
+        <label>Event Detail</label>
+        <locationX>264</locationX>
+        <locationY>518</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Inspect_Each_Event</targetReference>
+        </connector>
+        <fields>
+            <name>disp2</name>
+            <fieldText>&lt;p&gt;The event start time is: &lt;/p&gt;&lt;p&gt;{!Inspect_Each_Event.start.startTime}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Test_Screen</name>
+        <label>Test Screen</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Inspect_Each_Event</targetReference>
+        </connector>
+        <fields>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;This action returns the &apos;event list&apos;:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!get_events.eventList}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Here is the response from the call to Google:&lt;/p&gt;&lt;p&gt;{!get_events.responseBody}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>get_events</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+</Flow>

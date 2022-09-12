@@ -999,7 +999,7 @@ export default class Datatable extends LightningElement {
             if (ISCOMMUNITY) {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
             } else if (ISFLOWBUILDER) {
-                record[lufield + '_lookup'] = MYDOMAIN + '/' + record[lufield + '_id'];
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '/' + record['Id'];
             } else {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
             }

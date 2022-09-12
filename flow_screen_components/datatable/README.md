@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.9 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpXQAQ)   
-[Version 4.0.9 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpXQAQ)
+[Version 4.0.11 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)   
+[Version 4.0.11 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,6 +72,15 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+## 09/09/22 -  Eric Smith -     Version 4.0.11
+**Bug Fixes:**  
+-   Fixed Version # display in CPE  
+  
+## 09/09/22 -  Eric Smith -     Version 4.0.10
+**Bug Fixes:**  
+-   Fixed URL for links in Flow Builder for Objects w/ a standard name field  
+-   Fixed intermittent failure when closing the Column Wizard flow modal  
+  
 ## 09/07/22 -  Eric Smith -     Version 4.0.9
 **Bug Fixes:**  
 -   Get correct clickable links for LWR Experience Sites 

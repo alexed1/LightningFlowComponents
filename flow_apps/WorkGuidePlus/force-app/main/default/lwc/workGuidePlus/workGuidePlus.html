@@ -1,17 +1,23 @@
 <template>
-    <lightning-card>
-        <!-- <template if:false={workItemIsSelected}> -->
+    <lightning-card title={workGuideTitle}>
+        <div slot="title">
+            <lightning-button label="Show Work Items" onclick={showWorkItem}></lightning-button>
+        </div>
+        <template if:false={workItemIsSelected}>
             <lightning-flow flow-api-name={showWorkItemsFlowName}
                             onstatuschange={handleShowWorkItemsStatusChange}
                             flow-finish-behavior="NONE">
             </lightning-flow>
-        <!-- </template>
+        </template>
         <template if:true={workItemIsSelected}>
             <lightning-flow flow-api-name={screenFlowAPIName}
                             flow-input-variables={flowInputs}
-                            onstatuschange={handleScreenFlowStatusChange}>
+                            onstatuschange={handleScreenFlowStatusChange}
+                            flow-finish-behavior="NONE">
         </lightning-flow>
-        </template> -->
-        
+        </template>
+        <template if:true={showSpinner}>
+            <lightning-spinner></lightning-spinner>
+        </template>
     </lightning-card>
 </template>

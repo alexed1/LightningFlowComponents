@@ -15,9 +15,12 @@ public with sharing class ResolveApprovalRequest {
             
             approvalWorkItem.setWorkitemId(approverId);
             
+            system.debug('approvalWorkItem ' + approvalWorkItem);
+            
             // Submit the request for approval
-            Approval.ProcessResult approvalResult =  Approval.process(approvalWorkItem);
+            Approval.ProcessResult[] approvalResult =  Approval.process(approvalWorkItem);
 
+            system.debug('ApprovalResult ' + approvalResult);
             
             // Verify the results
             System.assert(approvalResult.isSuccess(), 'Result Status:'+ approvalResult.isSuccess());

@@ -1,8 +1,7 @@
 <template>
     <lightning-card title={workGuideTitle}>
-        <div slot="title">
-            <lightning-button label="Show Work Items" onclick={showWorkItem}></lightning-button>
-        </div>
+        
+        <lightning-button label="Show Work Items" onclick={showWorkItem} slot="actions"></lightning-button>
         <template if:false={workItemIsSelected}>
             <lightning-flow flow-api-name={showWorkItemsFlowName}
                             onstatuschange={handleShowWorkItemsStatusChange}

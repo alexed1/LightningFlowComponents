@@ -341,6 +341,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         console.log('EVENT: QuickEvtChangeLookup');
          var ev = $A.get('e.c:QuickEvtChangeLookup'); 
         // var ev = component.get("e.updateLookup"); 
+
         ev.setParams({
             'name' : name,
             'record' : record,
@@ -375,6 +376,10 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         console.log('EVENT: QuickEvtClearLookup');
         var ev = $A.get('e.c:QuickEvtClearLookup'); 
         // var ev = component.get("e.clearLookup");
+        // Check name if parent or child in lowercase
+        if(name.toLowerCase() === 'parent'){
+            this.fireSaveFilter(name, '');
+        }
         ev.setParams({
             'name' : name,
             'recordId' : rid,
@@ -576,25 +581,25 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
      */
     clearField : function(component, fireEvent){
         try{
-          var ov = component.get('v.selectedValue');
-          var oname = component.get('v.selectedName');
-            component.set('v.selectedName',null);
-            component.set('v.selectedValue',null);
-            component.set('v.selectedRecord',null);
-            component.find('pillsdiv').set('v.body',null);
-            component.set("v.matchedListDisplay", null);
-            component.set("v.matchedListValue", null);
-            component.set("v.matchedListRecords", null);
-            $A.util.removeClass(component.find("inputField"),'hide');
-            $A.util.addClass(component.find('removebtn'),'hide');
-            
-            
-            if(fireEvent)
-                this.fireClear(component.get('v.cmpId'), ov, oname);
-        }
-        catch(e){
-            this.showError(component, e.message);
-        }
+            var ov = component.get('v.selectedValue');
+            var oname = component.get('v.selectedName');
+                component.set('v.selectedName',null);
+                component.set('v.selectedValue',null);
+                component.set('v.selectedRecord',null);
+                component.find('pillsdiv').set('v.body',null);
+                component.set("v.matchedListDisplay", null);
+                component.set("v.matchedListValue", null);
+                component.set("v.matchedListRecords", null);
+                $A.util.removeClass(component.find("inputField"),'hide');
+                $A.util.addClass(component.find('removebtn'),'hide');
+                
+                
+                if(fireEvent)
+                    this.fireClear(component.get('v.cmpId'), ov, oname);
+            }
+            catch(e){
+                this.showError(component, e.message);
+            }
     },
     
     /**

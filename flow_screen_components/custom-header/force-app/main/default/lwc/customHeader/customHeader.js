@@ -23,7 +23,8 @@ export default class CustomHeader extends LightningElement {
     @api headerBgColor; 
     @api headerTxtColor; 
     @api headerTxtFont; 
-    @api headerTxtSize; 
+    @api headerTxtSize;
+    @api headerTxtWeight; 
     @api headerBrdrRadius; 
     @api headerBrdr;
     @api headerMargin;
@@ -77,6 +78,7 @@ export default class CustomHeader extends LightningElement {
         console.log('this.headerTxtColor '+this.headerTxtColor);
         console.log('this.headerTxtFont '+this.headerTxtFont);
         console.log('this.headerTxtSize '+this.headerTxtSize);
+        console.log('this.headerTxtWeight '+this.headerTxtWeight);
              
         this.customHeaderCSSName = "customHeaderCSS"+this.orderNumber;
         this.setDisplayMode(this.displayMode);
@@ -199,7 +201,14 @@ export default class CustomHeader extends LightningElement {
             this.stylesheet = this.stylesheet + "font-size: "+this.headerTxtSize+"; ";
         }
         if(this.isBold){
-            this.stylesheet = this.stylesheet + "font-weight: bold; ";
+            console.log('isBold', this.isBold);
+            console.log('headerTxtWeight', this.headerTxtWeight);
+            if(this.headerTxtWeight != null){
+                this.stylesheet = this.stylesheet + "font-weight: "+this.headerTxtWeight+"; ";
+            } else {
+                this.stylesheet = this.stylesheet + "font-weight: bold; ";
+            }
+            console.log('stylesheet', this.stylesheet);
         }
         if(this.isItalicized){
             this.stylesheet = this.stylesheet + "font-style: italic; ";

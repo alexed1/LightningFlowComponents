@@ -49,14 +49,23 @@
             <lightning-input type="checkbox" label={inputValues.isBold.label} name="select_isBold"
                 checked={inputValues.isBold.value} onchange={handleValueChange}
                 field-level-help={inputValues.isBold.helpText}
-                placeholder={inputValues.isBold.placeholderText}></lightning-input>
+                placeholder={inputValues.isBold.placeholderText}
+                data-id='isBold'></lightning-input>
 
-                <lightning-input type="checkbox" label={inputValues.isItalicized.label} name="select_isItalicized"
+                <template if:true={isBold}>
+                    <lightning-combobox name="select_headerTxtWeight" label={inputValues.headerTxtWeight.label}
+                        value={inputValues.headerTxtWeight.value} options={weightOptions} onchange={handleValueChange}
+                        field-level-help={inputValues.headerTxtWeight.helpText}
+                        placeholder={inputValues.headerTxtWeight.placeholderText}>
+                    </lightning-combobox>
+                </template>
+
+            <lightning-input type="checkbox" label={inputValues.isItalicized.label} name="select_isItalicized"
                 checked={inputValues.isItalicized.value} onchange={handleValueChange}
                 field-level-help={inputValues.isItalicized.helpText}
                 placeholder={inputValues.isItalicized.placeholderText}></lightning-input>
 
-                <lightning-input type="checkbox" label={inputValues.isUnderlined.label} name="select_isUnderlined"
+            <lightning-input type="checkbox" label={inputValues.isUnderlined.label} name="select_isUnderlined"
                 checked={inputValues.isUnderlined.value} onchange={handleValueChange}
                 field-level-help={inputValues.isUnderlined.helpText}
                 placeholder={inputValues.isUnderlined.placeholderText}></lightning-input>

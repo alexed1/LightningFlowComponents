@@ -119,7 +119,6 @@ export default class CustomHeaderCpe extends LightningElement {
     renderedCallback(){
         
         var displayModeValue=this.template.querySelector(".displayModeClass");
-        console.log('displayModeValue:'+displayModeValue.value);
         switch (displayModeValue.value) {
                     case "textLeftImageRight":
                     case "ImageLeftTextRight":
@@ -190,9 +189,6 @@ export default class CustomHeaderCpe extends LightningElement {
             let curAttributeName = event.target.name ? event.target.name.replace(this.settings.inputAttributePrefix, '') : null;
             let curAttributeValue = event.target.type === 'checkbox' ? event.target.checked : event.detail.value;
             let curAttributeType;
-            console.log('curAttributeName:'+curAttributeName);
-            console.log('curAttributeValue:'+curAttributeValue);
-            console.log('curAttributeType:'+curAttributeType);
             switch (event.target.type) {
                 case "checkbox":
                     curAttributeType = 'Boolean';
@@ -206,32 +202,26 @@ export default class CustomHeaderCpe extends LightningElement {
 
             switch (curAttributeName) {
                 case "displayMode":
-                    console.log('case displayMode');
                     switch (curAttributeValue) {
                         case "textLeftImageRight":
                         case "ImageLeftTextRight":
-                            console.log('case textLeftImageRight & ImageLeftTextRight');
                             this.hasImage = true;
                             this.isNotHorizontalLine = true;
                             break;
                         case "horizontalLine":
-                            console.log('case horizontalLine');
                             this.isNotHorizontalLine = false;
                             this.hasImage = false;
                             break;
                         case "textOnly":
-                            console.log('case horizontalLine');
                             this.isNotHorizontalLine = true;
                             this.hasImage = false;
                             break;
                         default:
-                            console.log('case default---');
                             this.isNotHorizontalLine = false;
                             this.hasImage = false;
                     }
                     break;
                 case "isBold":
-                    console.log('case isBold');
                     if (curAttributeValue) {
                         this.isBold = true;
                     } else {

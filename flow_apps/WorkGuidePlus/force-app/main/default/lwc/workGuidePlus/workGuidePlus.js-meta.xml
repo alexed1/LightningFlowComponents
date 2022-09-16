@@ -8,4 +8,10 @@
        <target>lightning__RecordPage</target>
        <target>lightning__HomePage</target>
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen,lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+            <property name="delay" label="Delay" type="Integer"/>
+            <property name="recordId" label="Record Id" type="String" description="The value should be {!recordId}."/>
+        </targetConfig>
+ </targetConfigs>
 </LightningComponentBundle>

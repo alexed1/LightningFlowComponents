@@ -1,10 +1,12 @@
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import publishFlowOrchestrationEvent from '@salesforce/apex/WorkGuidePlusController.publishFlowOrchestrationEvent'
 const FINISHED_STATUS = 'FINISHED';
 const FINISHED_SCREEN_STATUS = 'FINISHED_SCREEN';
 const SHOW_WORK_ITEM_NAME = 'ShowWorkItems';
 const WORK_GUIDE_LABEL = 'Work Guide Plus';
 const COMPLETED_STATUS = 'Completed';
+const STRING_TYPE = 'String';
+const RECORD_ID_FIELD_NAME = 'recordId';
 
 export default class WorkGuidePlus extends LightningElement {
     orchestrationStepId;
@@ -16,11 +18,28 @@ export default class WorkGuidePlus extends LightningElement {
     orchestrationStepRun;
     workItemIsSelected = false;
     showSpinner = false;
+    @api recordId;
+    @api delay = 2;
     get flowInputs() {
         if(this.screenFlowInputs) {
-            return JSON.parse(this.screenFlowInputs);
+            let outputVariables = JSON.parse(this.screenFlowInputs);
+            let hasRecordId = false;
+            outputVariables.forEach(
+                item => {
+                    if(item.name === RECORD_ID_FIELD_NAME) {
+                        hasRecordId = true;
+                    }
+                }
+            );
+            if(!hasRecordId && this.recordId) {
+                outputVariables.push({name:RECORD_ID_FIELD_NAME,type:STRING_TYPE,value:this.recordId});
+            }
+            return outputVariables;
         } else {
-            return null;
+            if(this.recordId) {
+                return [{name:RECORD_ID_FIELD_NAME,type:STRING_TYPE,value:this.recordId}];
+            }
+            return [];
         }
     }
     handleShowWorkItemsStatusChange(event) {
@@ -32,8 +51,6 @@ export default class WorkGuidePlus extends LightningElement {
             );
             this.workItemIsSelected = true;
         }
-        console.log(event);
-
     }
 
     handleScreenFlowStatusChange(event) {
@@ -52,11 +69,11 @@ export default class WorkGuidePlus extends LightningElement {
                         () => {
                             this.showSpinner = false;
                             this.workItemIsSelected = false;
-                        }, 3000
+                        }, this.delay * 1000
                     );
                 }
             ).catch(
-                () => {console.log('error')}
+                (error) => {console.log('error', error)}
             );
         }
     }

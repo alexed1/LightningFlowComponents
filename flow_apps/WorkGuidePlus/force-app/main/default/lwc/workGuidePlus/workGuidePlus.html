@@ -1,7 +1,7 @@
 <template>
     <lightning-card title={workGuideTitle}>
         
-        <lightning-button label="Show Work Items" onclick={showWorkItem} slot="actions"></lightning-button>
+        
         <template if:false={workItemIsSelected}>
             <lightning-flow flow-api-name={showWorkItemsFlowName}
                             onstatuschange={handleShowWorkItemsStatusChange}
@@ -9,6 +9,7 @@
             </lightning-flow>
         </template>
         <template if:true={workItemIsSelected}>
+            <lightning-button label="Show Work Items" onclick={showWorkItem} slot="actions"></lightning-button>
             <lightning-flow flow-api-name={screenFlowAPIName}
                             flow-input-variables={flowInputs}
                             onstatuschange={handleScreenFlowStatusChange}
@@ -16,7 +17,9 @@
         </lightning-flow>
         </template>
         <template if:true={showSpinner}>
+            <div class="slds-p-around_small">Updating Work Item Status...</div>
             <lightning-spinner></lightning-spinner>
         </template>
+        
     </lightning-card>
 </template>

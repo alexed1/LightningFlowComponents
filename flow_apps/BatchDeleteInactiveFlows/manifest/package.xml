@@ -35,6 +35,7 @@
         <members>Flow_and_Process_Builder_List_View_with_DELETE_V2</members>
         <members>Flow_and_Process_Builder_OneView_Promo_V2</members>
         <members>Flow_and_Process_Builder_Select_with_DELETE_V2</members>
+        <members>Flow_Check_Latest_Versions_vs_Active_Versions</members>
         <name>Flow</name>
     </types>
     <types>

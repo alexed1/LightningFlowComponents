@@ -42,7 +42,7 @@ public with sharing class ers_FlowDatatableDescriptor {
 
     //From FlowVariableView
     @AuraEnabled
-    public  String WorkflowObject;      // Process Builder Only
+    public String WorkflowObject;      // Process Builder Only
 
     //Additional Datatable Specific Fields
     @AuraEnabled
@@ -52,7 +52,7 @@ public with sharing class ers_FlowDatatableDescriptor {
     @AuraEnabled
     public String RowShadeValue;
     @AuraEnabled
-    public  String Label_name;
+    public String Label_name;
     @AuraEnabled
     public String Label_lookup;
 

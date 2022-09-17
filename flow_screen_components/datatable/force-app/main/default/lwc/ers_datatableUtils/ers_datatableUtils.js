@@ -31,7 +31,7 @@ if (myDomain.includes('flow/runtime')) {     // Running in Flow Builder || Flow 
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.0.11',      // Current Source Code Version #
+        VERSION_NUMBER : '4.0.12',      // Current Source Code Version #
         MAXROWCOUNT : 1000,             // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,                 // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,                // Number of records to display in the Column Wizard datatable

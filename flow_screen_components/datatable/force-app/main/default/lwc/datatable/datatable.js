@@ -1511,8 +1511,8 @@ export default class Datatable extends LightningElement {
                 let datefield = this.dateFieldArray;
                 datefield.forEach(date => {
                     if (!this.suppressBottomBar || (date == editField)) {
-                        if (field[date] && field[date].slice(-1) != "Z") {          //Don't process if date has been converted to datetime because of TypeAttributes (v4.0.6)
-                            let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
+                        if (field[date] && field[date].toISOString().slice(-1) != "Z") {    //Don't process if date has been converted to datetime because of TypeAttributes (v4.0.6)
+                            let rdt = Date.parse(field[date] + "T12:00:00.000Z");           //Set to Noon to avoid DST issues with the offset (v4.0.4));
                             let rd = new Date();
                             field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
                         }

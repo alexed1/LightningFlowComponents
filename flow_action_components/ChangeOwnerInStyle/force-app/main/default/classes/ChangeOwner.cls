@@ -77,6 +77,13 @@ global with sharing class ChangeOwner {
                     optionList.options.add(opt);
                 }
 
+                if(request.TransferOwnedOpenCases != null) {
+                    opt = new partnerSoapSforceCom.OwnerChangeOption();
+                    opt.execute=request.TransferOwnedOpenCases;
+                    opt.type_x = 'TransferOwnedOpenCases';
+                    optionList.options.add(opt);
+                }
+
                 if(request.TransferArticleOwnedPublishedVersion != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
                     opt.execute=request.TransferArticleOwnedPublishedVersion;
@@ -128,6 +135,13 @@ global with sharing class ChangeOwner {
                 }
 
 
+                if(request.TransferOpenActivities != null) {
+                    opt = new partnerSoapSforceCom.OwnerChangeOption();
+                    opt.execute=request.TransferOpenActivities;
+                    opt.type_x = 'TransferOpenActivities';
+                    optionList.options.add(opt);
+                }
+
                 if(request.TransferOthersOpenOpportunities != null) {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
                     opt.execute=request.TransferOthersOpenOpportunities;
@@ -140,14 +154,6 @@ global with sharing class ChangeOwner {
                     opt = new partnerSoapSforceCom.OwnerChangeOption();
                     opt.execute=request.TransferOwnedClosedOpportunities;
                     opt.type_x = 'TransferOwnedClosedOpportunities';
-                    optionList.options.add(opt);
-                }
-
-
-                if(request.TransferOwnedOpenCases != null) {
-                    opt = new partnerSoapSforceCom.OwnerChangeOption();
-                    opt.execute=request.TransferOwnedOpenCases;
-                    opt.type_x = 'TransferOwnedOpenCases';
                     optionList.options.add(opt);
                 }
 

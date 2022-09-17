@@ -20,6 +20,12 @@
         </dataTypeMappings>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
+            <name>TransferOrders</name>
+            <value>
+                <elementReference>Also_transfer_draft_Orders_associated_with_this_account</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>TransferContacts</name>
             <value>
                 <elementReference>Also_change_ownership_of_CONTACTS_associated_with_this_Account</elementReference>
@@ -62,12 +68,39 @@
             </value>
         </inputParameters>
         <inputParameters>
-            <name>targetRecord</name>
+            <name>targetRecordId</name>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
         </inputParameters>
         <inputParameters>
-            <name>targetRecordCollection</name>
+            <name>TransferOwnedClosedOpportunities</name>
             <value>
-                <elementReference>Get_Accounts2</elementReference>
+                <elementReference>Transfer_closed_opportunities_associated_with_the_account</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TransferOthersOpenOpportunities</name>
+            <value>
+                <elementReference>TransferOtherOpenOpportunities</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TransferOwnedOpenOpportunities</name>
+            <value>
+                <elementReference>Transfer_open_opportunities_associated_with_the_account</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TransferAllOwnedCases</name>
+            <value>
+                <elementReference>TransferCasesAll</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>TransferOwnedOpenCases</name>
+            <value>
+                <elementReference>TransferCasesButJustOpenOnes</elementReference>
             </value>
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -169,6 +202,21 @@
         <dataType>Boolean</dataType>
         <expression>
 AND({!Transfer_open_opportunities_associated_with_the_account} , {!Which_Opportunities} == {!All_opportunities})</expression>
+    </formulas>
+    <formulas>
+        <name>TransferCasesAll</name>
+        <dataType>Boolean</dataType>
+        <expression>IF({!TransferCasesButJustOpenOnes}==True, False, True)</expression>
+    </formulas>
+    <formulas>
+        <name>TransferCasesButJustOpenOnes</name>
+        <dataType>Boolean</dataType>
+        <expression>IF( AND({!Transfer_which_cases}=={!Allcases}, {!Also_change_ownership_of_cases_owned_by_this_owner}==True), False, True)</expression>
+    </formulas>
+    <formulas>
+        <name>TransferOtherOpenOpportunities</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!Transfer_open_opportunities_associated_with_the_account}==True,{!Which_Opportunities}=={!All_opportunities})</expression>
     </formulas>
     <interviewLabel>Change Owner (Account) {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Change Owner (Account)</label>
@@ -556,7 +604,7 @@ AND({!Transfer_open_opportunities_associated_with_the_account} , {!Which_Opportu
         <allowPause>true</allowPause>
         <fields>
             <name>dispresults</name>
-            <fieldText>&lt;p&gt;Status of change:  &lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!Change_Owner.success}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Error Message:&lt;/p&gt;&lt;p&gt;{!Change_Owner.errorMessage}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Ownership change successful?&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!Change_Owner.success}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Error Message:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!Change_Owner.errorMessage}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
@@ -569,7 +617,7 @@ AND({!Transfer_open_opportunities_associated_with_the_account} , {!Which_Opportu
             <targetReference>Is_Test_Mode</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <variables>
         <name>curAccount</name>
         <dataType>SObject</dataType>
@@ -594,6 +642,13 @@ AND({!Transfer_open_opportunities_associated_with_the_account} , {!Which_Opportu
         <value>
             <booleanValue>true</booleanValue>
         </value>
+    </variables>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
     </variables>
     <variables>
         <name>recordIdSouthernPacific</name>

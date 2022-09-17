@@ -117,11 +117,11 @@
             lvDeployOption.performRetrieve = false;
             lvDeployOption.purgeOnDelete = false;
             lvDeployOption.rollbackOnError = true;
-            // lvDeployOption.runTests = new String[]{};
-            lvDeployOption.runTests = new String[]{'DeployDeleteInactiveFlowsTest'};
+            lvDeployOption.runTests = new String[]{};
+            // lvDeployOption.runTests = new String[]{'DeployDeleteInactiveFlowsTest'};
             lvDeployOption.singlePackage = true;
-            // lvDeployOption.testLevel = 'NoTestRun';
-            lvDeployOption.testLevel = 'RunSpecifiedTests';
+            lvDeployOption.testLevel = 'NoTestRun';
+            // lvDeployOption.testLevel = 'RunSpecifiedTests';
                 
             return lvDeployOption;
         }

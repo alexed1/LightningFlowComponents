@@ -1,3 +1,4 @@
+import TickerSymbol from '@salesforce/schema/Account.TickerSymbol';
 import { LightningElement, api } from 'lwc';
 
 export default class CustomHeaderCpe extends LightningElement {
@@ -20,6 +21,7 @@ export default class CustomHeaderCpe extends LightningElement {
     isLightningIcon = false;
     isNotHorizontalLine = false;
     isTextAURL = false;
+    isBold = false;
 
     inputValues = {
         displayMode: {value: null, placeholderText:null, valueDataType: null, isCollection: false, label: 'Display the header as:', helpText:''},
@@ -41,6 +43,7 @@ export default class CustomHeaderCpe extends LightningElement {
         headerTxtColor: {value: null, placeholderText:'#000000', valueDataType: null, isCollection: false, label: 'Banner Text Color (#000000)', helpText:''},
         headerTxtFont: {value: null, placeholderText:'Arial', valueDataType: null, isCollection: false, label: 'Banner Text Font Style (provide up to 3 separated by ;)', helpText:''},
         headerTxtSize: {value: null, placeholderText:null, valueDataType: null, isCollection: false, label: 'Banner Text Font Size (in px)', helpText:''},
+        headerTxtWeight: {value: null, placeholderText:null, valueDataType: null, isCollection: false, label: 'Banner Text Font Weight', helpText:''},
         headerBrdrRadius: {value: null, placeholderText:10, valueDataType: null, isCollection: false, label: 'Banner Border Radius (in px)', helpText:''},
         headerBrdr: {value: null, placeholderText:'0px 0px 5px 0px dotted red', valueDataType: null, isCollection: false, label: 'Banner Border', helpText:'include width, style (required) and color, example- 0px 0px 5px 0px dotted red'},
         headerMargin: {value: null, placeholderText:'5px 5px 5px 5px', valueDataType: null, isCollection: false, label: 'Banner Margin', helpText:''},
@@ -69,6 +72,20 @@ export default class CustomHeaderCpe extends LightningElement {
         {label: 'medium', value: 'medium'},
         {label: 'large', value: 'large'}
     ];
+
+    weightOptions = [
+        {label: '100', value: '100'},
+        {label: '200', value: '200'},
+        {label: '300', value: '300'},
+        {label: '400', value: '400'},
+        {label: '500', value: '500'},
+        {label: '600', value: '600'},
+        {label: '700', value: '700'},
+        {label: '800', value: '800'},
+        {label: '900', value: '900'}
+    ];
+
+
 
     imageTypeOptions = [
         {label: 'Lightning Icon', value: 'lightningIcon'},
@@ -102,7 +119,6 @@ export default class CustomHeaderCpe extends LightningElement {
     renderedCallback(){
         
         var displayModeValue=this.template.querySelector(".displayModeClass");
-        console.log('displayModeValue:'+displayModeValue.value);
         switch (displayModeValue.value) {
                     case "textLeftImageRight":
                     case "ImageLeftTextRight":
@@ -118,6 +134,15 @@ export default class CustomHeaderCpe extends LightningElement {
                         this.hasImage = false;
                         break;
                 }
+        
+        var boldValue = this.template.querySelector("[data-id='isBold']");
+        if (boldValue) {
+            if(boldValue.checked){
+                this.isBold = true;
+            }else{
+                this.isBold = false;
+            }
+        }
                 /*
                 if(this.isNotHorizontalLine){
 
@@ -177,28 +202,30 @@ export default class CustomHeaderCpe extends LightningElement {
 
             switch (curAttributeName) {
                 case "displayMode":
-                    console.log('case displayMode');
                     switch (curAttributeValue) {
                         case "textLeftImageRight":
                         case "ImageLeftTextRight":
-                            console.log('case textLeftImageRight & ImageLeftTextRight');
                             this.hasImage = true;
                             this.isNotHorizontalLine = true;
                             break;
                         case "horizontalLine":
-                            console.log('case horizontalLine');
                             this.isNotHorizontalLine = false;
                             this.hasImage = false;
                             break;
                         case "textOnly":
-                            console.log('case horizontalLine');
                             this.isNotHorizontalLine = true;
                             this.hasImage = false;
                             break;
                         default:
-                            console.log('case default---');
                             this.isNotHorizontalLine = false;
                             this.hasImage = false;
+                    }
+                    break;
+                case "isBold":
+                    if (curAttributeValue) {
+                        this.isBold = true;
+                    } else {
+                        this.isBold = false;
                     }
                     break;
                 /*case "imageIsALightningIcon":

@@ -37,6 +37,7 @@
                 <property label="Banner Text Color (#000000)" name="headerTxtColor" type="String"/>
                 <property label="Banner Text Font Style (provide 3 separated by ;)" name="headerTxtFont" type="String"/>
                 <property label="Banner Text Font Size" name="headerTxtSize" type="String"/>
+                <property label="Banner Text Font Weight" name="headerTxtWeight" type="String"/>
                 <property label="Banner Border Radius (in px)" name="headerBrdrRadius" type="String"/>
                 <property label="Banner Border" name="headerBrdr" type="String"/>
                 <property label="Banner Margin" name="headerMargin" type="String"/>
@@ -72,6 +73,7 @@
         <property label="Banner Text Color (#000000)" name="headerTxtColor" type="String" default="Black"/>
         <property label="Banner Text Font Style (provide 3 separated by ;)" name="headerTxtFont" type="String" default="Arial"/>
         <property label="Banner Text Font Size" name="headerTxtSize" type="String" datasource="xx-small,x-small,small,medium,large"/>
+        <property label="Banner Text Font Weight" name="headerTxtWeight" type="String" datasource="100,200,300,400,500,600,700,800,900" default="700"/>
         <property label="Banner Border Radius (in px)" name="headerBrdrRadius" type="String" default="12"/>
         <property label="Banner Border" name="headerBrdr" type="String" default="12px Solid Red" description="include width, style (required) and color, example- 0px 0px 5px 0px dotted red;"/>
         <property label="Banner Margin" name="headerMargin" type="String" default="5px 5px 5px 5px"/>
@@ -110,6 +112,7 @@
         <property label="Banner Text Color (#000000)" name="headerTxtColor" type="String" default="Black"/>
         <property label="Banner Text Font Style (provide 3 separated by ;)" name="headerTxtFont" type="String" default="Arial"/>
         <property label="Banner Text Font Size" name="headerTxtSize" type="String" datasource="xx-small,x-small,small,medium,large"/>
+        <property label="Banner Text Font Weight" name="headerTxtWeight" type="String" datasource="100,200,300,400,500,600,700,800,900" default="700"/>
         <property label="Banner Border Radius (in px)" name="headerBrdrRadius" type="String" default="12"/>
         <property label="Banner Border" name="headerBrdr" type="String" default="12px Solid Red" description="include width, style (required) and color, example- 0px 0px 5px 0px dotted red;"/>
         <property label="Banner Margin" name="headerMargin" type="String" default="5px 5px 5px 5px"/>

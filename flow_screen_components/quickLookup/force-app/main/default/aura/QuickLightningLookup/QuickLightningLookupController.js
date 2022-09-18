@@ -27,6 +27,13 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         helper.hlpGetFieldHelp(component);
         helper.hlpGetField(component);
 
+        // Add Event Listner for click event on the component
+        document.addEventListener('click', $A.getCallback(function(event) {
+            if (helper.isDropDownOpen(component, event)) {
+                helper.hideDropDown(component);
+            }
+        }, false));
+
     },
     performLookup : function(component, event, helper) {
         helper.hlpPerformLookup(component);
@@ -36,6 +43,7 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         helper.hlpSelectItem(component, index);
     },
     toggleMenu : function(component, event, helper) {
+        console.log('toggleMenu');
         if(component.get('v.performLookupOnFocus') === true && !helper.isDropDownOpen(component)){
             console.log('performLookupOnFocus');
             var defaultV = component.get('v.defaultValue'); 

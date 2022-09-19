@@ -2,3 +2,35 @@
   margin-left: 1rem;
   margin-top: 1rem;
 }
+
+.visible-scrollbar,
+.invisible-scrollbar,
+.mostly-customized-scrollbar {
+  display: block;
+  overflow: hidden;
+}
+
+.visible-scrollbar:hover,
+.invisible-scrollbar:hover,
+.mostly-customized-scrollbar:hover {
+  display: block;   
+  overflow: auto;  
+  
+}
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Demonstrate a "mostly customized" scrollbar
+ * (won't be visible otherwise if width/height is specified) */
+.mostly-customized-scrollbar:-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #aaa; /* or add it to the track */
+}
+
+/* Add a thumb */
+.mostly-customized-scrollbar::-webkit-scrollbar-thumb {
+  background: #000;
+}

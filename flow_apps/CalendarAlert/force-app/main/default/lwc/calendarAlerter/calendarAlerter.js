@@ -18,7 +18,7 @@ export default class CalendarAlerter extends LightningElement {
     @api firstAlarm = 15; //The number of minutes before an event when Alerter starts generating alarms
     @api secondAlarm = 5;
     @api thirdAlarm = 1;
-    @api meetitngRange = 15;
+    @api meetitngRange = 5;
     @api evaluationFrequency = 1;
     @api eventList = [{
         id : '37nnq4lel3v3g3nlb3g09vo',
@@ -84,6 +84,7 @@ export default class CalendarAlerter extends LightningElement {
                             item.firstAlarmCompleted = event.firstAlarmCompleted;
                             item.secondAlarmCompleted = event.secondAlarmCompleted;
                             item.thirdAlarmCompleted = event.thirdAlarmCompleted;
+                            item.lateAlarmCompleted = event.lateAlarmCompleted;
                             item.meetingStatus = event.meetingStatus;
                         }
                     }
@@ -174,7 +175,9 @@ export default class CalendarAlerter extends LightningElement {
     }
     evaluateEvents = () => {
         this.removeOldEvents();
+        let statusForLastMeeting = this.statusForFirstMeeting;
         this.statusForFirstMeeting = '';
+        
         let minutsToFirstMeet = this.firstAlarm + 1;
         this.eventList.forEach((event) => {
             console.log(new Date(Date.now()));
@@ -182,7 +185,7 @@ export default class CalendarAlerter extends LightningElement {
             console.log((Date.parse(event.start.startTime) / 60000) - (Date.now()/ 60000)  );
             let minutsToEvent = (Date.parse(event.start.startTime) / 60000) - (Date.now()/ 60000) ;
             let isRunAlert = false;
-            if(event.alarmStatus !== SNOOZED_STATUS && event.alarmStatus !== DISMESSED_STATUS) {
+            
                 if(!event.firstAlarmCompleted && minutsToEvent <= this.firstAlarm && minutsToEvent > this.secondAlarm) {
                     event.meetingStatus = UPCOMING_STATUS;
                     isRunAlert = true;
@@ -192,12 +195,27 @@ export default class CalendarAlerter extends LightningElement {
                 } else if(!event.thirdAlarmCompleted && minutsToEvent < this.thirdAlarm && minutsToEvent > 0) {
                     isRunAlert = true;
                     event.meetingStatus = IMMINENT_STATUS;
-                } else if(minutsToEvent < 0){
+                } else if(!event.lateAlarmCompleted && minutsToEvent < 0){
                     event.meetingStatus = LATE_STATUS;
                     isRunAlert = true;
                 }
 
-                if(isRunAlert && minutsToEvent <= minutsToFirstMeet && !this.statusForFirstMeeting) {
+                if(isRunAlert && statusForLastMeeting !== event.meetingStatus && statusForLastMeeting === LATE_STATUS) {
+                    ///event.lateAlarmCompleted = true;
+                    statusForLastMeeting = event.meetingStatus;
+                    this.eventList.forEach(
+                        item => {
+                            if(item.id === this.alertedMeetingId) {
+                                item.lateAlarmCompleted = true;
+                            }
+                        }
+                    );
+                    this.statusForFirstMeeting = '';
+                    minutsToFirstMeet = this.firstAlarm + 1;
+                }
+
+            if(event.alarmStatus !== SNOOZED_STATUS && event.alarmStatus !== DISMESSED_STATUS) {
+                if(isRunAlert && minutsToEvent <= minutsToFirstMeet && !this.statusForFirstMeeting ) {
                     this.statusForFirstMeeting = event.meetingStatus;
                     this.alertedMeetingId = event.id;
                     minutsToFirstMeet = minutsToEvent;
@@ -271,7 +289,7 @@ export default class CalendarAlerter extends LightningElement {
                     meeting.alarmStatus = ACTIVE_STATUS;
                     this.eventList.forEach(
                         (item) => {
-                            if(item.id === meeting.id) {
+                            if(item.id === meeting.id && item.alarmStatus !== DISMESSED_STATUS) {
                                 item.alarmStatus = ACTIVE_STATUS;
                                 item.firstAlarmCompleted = false;
                                 item.secondAlarmCompleted = false;

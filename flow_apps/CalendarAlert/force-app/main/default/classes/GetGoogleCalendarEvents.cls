@@ -8,77 +8,80 @@ global with sharing class GetGoogleCalendarEvents {
     List<Result> responses = new List<Result>();
     String currentTime = GetCurrentTimeString();
     for (Request curRequest: requestList ){
-        String maxResultsString = String.valueOf(curRequest.maxResults);
-        if (String.isEmpty(maxResultsString)){
-            maxResultsString = '3';
-        }
-
-        String orderBy;
-        if (String.isEmpty(curRequest.orderBy))
-            orderBy = 'startTime';
-       
-        String startTime= curRequest.startTime;
-        String endTime = curRequest.endTime;
-        if(String.isEmpty(startTime)){
-            startTime = GetCurrentTimeString();
-        } 
-
-        String endpoint = 'callout:' + curRequest.credName + '/calendar/v3/calendars/' + curRequest.calendarIdentifier + '/events?';
-        String params = 'maxResults=' + maxResultsString + '&orderBy=' + orderBy + '&singleEvents=true&timeMin='+ startTime;
-        if(String.isNotEmpty(curRequest.endTime))
-            params = params + '&timeMax=' + endTime;
-        if(String.isNotEmpty(curRequest.queryString))
-            params = params + '&q=' + curRequest.queryString;
-            
-        String url = endpoint + params;
-        System.debug('call is:' + url);
-     
-        Map<String,Object> responseMap = new Map<String,Object>();
-        Result curResponse = new Result();
-        List<GoogleCalendarEvent> eventList = new List<GoogleCalendarEvent>();
-        String responseJSON;
-        Result curResult = new Result();
         try {
+            String maxResultsString = String.valueOf(curRequest.maxResults);
+            if (String.isEmpty(maxResultsString)){
+                maxResultsString = '3';
+            }
+
+            String orderBy;
+            if (String.isEmpty(curRequest.orderBy))
+                orderBy = 'startTime';
+        
+            String startTime= curRequest.startTime;
+            String endTime = curRequest.endTime;
+            if(String.isEmpty(startTime)){
+                startTime = GetCurrentTimeString();
+            } 
+
+            String endpoint = 'callout:' + curRequest.credName + '/calendar/v3/calendars/' + curRequest.calendarIdentifier + '/events?';
+            String params = 'maxResults=' + maxResultsString + '&orderBy=' + orderBy + '&singleEvents=true&timeMin='+ startTime;
+            if(String.isNotEmpty(curRequest.endTime))
+                params = params + '&timeMax=' + endTime;
+            if(String.isNotEmpty(curRequest.queryString))
+                params = params + '&q=' + curRequest.queryString;
+                
+            String url = endpoint + params;
+            System.debug('call is:' + url);
+        
+            Map<String,Object> responseMap = new Map<String,Object>();
+            Result curResponse = new Result();
+            List<GoogleCalendarEvent> eventList = new List<GoogleCalendarEvent>();
+            String responseJSON;
+            Result curResult = new Result();
             
+                
             if(!Test.isRunningTest()) {
                 System.debug ('url is: ' + url);
                 curResult = Send(url, curResponse);
+                    
+                    
                 
-                
-               
             } else {
-                
+                    
                 String testResponse = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
                 responseMap = (Map<String, Object>) JSON.deserializeUntyped(testResponse);
                 System.debug('response  is: ' + responseMap);
                 curResult.responseBody = testResponse;
             }
-        } catch (Exception e) {
-            System.debug(LoggingLevel.INFO,'post error: ' + e);
-            curResponse.errors = e.getMessage();
-            curResponse.status = false;
             
-        }
 
-        responseJSON = curResult.responseBody;
-        System.debug('initial responseJSON is: ' + responseJSON);
-        responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
-        System.debug('modified responseJSOn is: ' + responseJSON);
-        curResponse.responseBody= responseJSON;
-        //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
-        GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
-        GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
-        curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
-        System.debug('curEventSet parsed out is: ' + curEventSet);
-        List<GoogleCalendarEvent> curEventsList = curEventSet.items;
-        System.debug('event list  is: ' + curEventsList);
+            responseJSON = curResult.responseBody;
+            System.debug('initial responseJSON is: ' + responseJSON);
+            responseJSON = responseJSON.replace('"dateTime"', '"startTime"');
+            System.debug('modified responseJSOn is: ' + responseJSON);
+            curResponse.responseBody= responseJSON;
+            //(GoogleCalendarEvent) System.JSON.deserialize(json, GoogleCalendarEvent.class);
+            GoogleCalendarEventSet curEventSet  = new GoogleCalendarEventSet();
+            GoogleCalendarEvent curEvent = new GoogleCalendarEvent();
+            curEventSet = (GoogleCalendarEventSet)System.JSON.deserialize(responseJSON, GoogleCalendarEventSet.class);
+            System.debug('curEventSet parsed out is: ' + curEventSet);
+            List<GoogleCalendarEvent> curEventsList = curEventSet.items;
+            System.debug('event list  is: ' + curEventsList);
 
-        curResponse.eventList=curEventsList;
-        curResponse.status= true;
-        responses.add(curResponse);
+            curResponse.eventList=curEventsList;
+            curResponse.status= true;
+            responses.add(curResponse);
 
         //Google returns start times with the key 'datetime', which causes problems in Salesforce, so we map it to something more useful
-        
+        } catch (Exception e) {
+            System.debug(LoggingLevel.INFO,'post error: ' + e);
+            Result curResponse = new Result();
+            curResponse.errors = e.getMessage();
+            curResponse.status = false;
+            responses.add(curResponse);
+            
+        }
          
     }
     return responses;

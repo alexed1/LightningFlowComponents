@@ -20,6 +20,7 @@ export default class CalendarAlerter extends LightningElement {
     @api thirdAlarm = 1;
     @api meetitngRange = 5;
     @api evaluationFrequency = 1;
+    @api errorText;
     @api eventList = [{
         id : '37nnq4lel3v3g3nlb3g09vo',
         summary : 'test 1',

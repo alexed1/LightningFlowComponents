@@ -1,0 +1,37 @@
+<template>
+    <lightning-card title="Select Flow to Compare">
+        <lightning-layout>
+            <lightning-layout-item size="6" padding="around-small">
+                <div class="slds-box slds-p-around_small">
+                    <lightning-card title="Select Flow and Version">
+                        <c-flow-picker-f-s-c label="Select first flow" onlightning__flowattributechange={changeFlow1Name}></c-flow-picker-f-s-c>
+                        <lightning-radio-group name="radioGroup1"
+                                if:true={flow1VersionOptionList.length}
+                                label="Select Version"
+                                options={radioGroupOptionList}
+                                value={flow1Option}
+                                type="radio"
+                                onchange={changeFlow1Option}></lightning-radio-group>
+                        <lightning-combobox if:true={flow1VersionOptionList.length} options={flow1VersionOptionList}></lightning-combobox>
+                    </lightning-card>
+                </div>
+            </lightning-layout-item>
+
+            <lightning-layout-item size="6" padding="around-small" >
+                <div class="slds-box slds-p-around_small">
+                    <lightning-card title="Select Flow and Version">
+                        <c-flow-picker-f-s-c label="Select second flow" onlightning__flowattributechange={changeFlow2Name}></c-flow-picker-f-s-c>
+                        <lightning-radio-group name="radioGroup2"
+                                if:true={flow2VersionOptionList.length}
+                                label="Select Version"
+                                options={radioGroupOptionList}
+                                value={flow2Option}
+                                onchange={changeFlow2Option}
+                                type="radio"></lightning-radio-group>
+                        <lightning-combobox if:true={flow2VersionOptionList.length} options={flow2VersionOptionList}></lightning-combobox>
+                    </lightning-card>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+</template>

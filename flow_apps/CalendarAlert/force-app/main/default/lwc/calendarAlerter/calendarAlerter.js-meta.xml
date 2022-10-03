@@ -18,6 +18,7 @@
             <property name="meetitngRange" type="Integer"  />
             <property name="evaluationFrequency" type="Integer"  />
             <property name="responseStatus" type="Boolean"  />
+            <property name="errorText" type="String"  />
 
         </targetConfig>
     </targetConfigs>

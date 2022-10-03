@@ -20,6 +20,7 @@ export default class CalendarAlerter extends LightningElement {
     @api thirdAlarm = 1;
     @api meetitngRange = 5;
     @api evaluationFrequency = 1;
+    @api errorText;
     @api eventList = [{
         id : '37nnq4lel3v3g3nlb3g09vo',
         summary : 'test 1',
@@ -79,7 +80,9 @@ export default class CalendarAlerter extends LightningElement {
                 (item) => {
                     let event = eventList.find((findItem) => findItem.id === item.id);
                     if(event) {
-                        item.alarmStatus = event.alarmStatus;
+                        if(event.alarmStatus !== SNOOZED_STATUS) {
+                            item.alarmStatus = event.alarmStatus;
+                        }
                         if(item.start.startTime === event.start.startTime) {
                             item.firstAlarmCompleted = event.firstAlarmCompleted;
                             item.secondAlarmCompleted = event.secondAlarmCompleted;

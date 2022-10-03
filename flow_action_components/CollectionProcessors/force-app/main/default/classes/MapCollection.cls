@@ -75,6 +75,11 @@ global with sharing class MapCollection {
             }
         } else if (fieldType == 'JSON') {
             obj.put(fieldName, JSON.serialize(fieldValue));
+            
+        } else if (fieldType == 'Time')
+        {
+            string[] timeParts = fieldValue.split(':');
+            obj.put(fieldName, Time.newInstance(Integer.valueOf(timeParts[0]), Integer.valueOf(timeparts[1]), 0, 0));
         } else {
             obj.put(fieldName, fieldValue);
         }

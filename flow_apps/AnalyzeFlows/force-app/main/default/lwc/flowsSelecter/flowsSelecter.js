@@ -4,71 +4,26 @@ export default class FlowsSelecter extends LightningElement {
     @api selectedFlow1APIName = '';
     @api selectedFlow2APIName = '';
 
-    flow1APIviersionList = [];
-    get flow1VersionOptionList() {
-        return  this.flow1APIviersionList.map(item => {
-            return {value : ''+ item.VersionNumber, label : '' + item.VersionNumber};
-        });
+    selectFlow1(event) {
+        console.log('selectFlow1', event.detail);
+        this.selectedFlow1APIName = event.detail;
     }
 
-    flow1Option = 'Latest';
-    flow2Option = 'Latest';
-    flow2APIviersionList = [];
-
-
-    get flow2VersionOptionList() {
-        return  this.flow2APIviersionList.map(item => {
-            return {value : ''+ item.VersionNumber, label : '' + item.VersionNumber};
-        });
+    selectFlow2(event) {
+        console.log(event.detail);
+        this.selectedFlow2APIName = event.detail;
     }
 
-    radioGroupOptionList =[
-        { label: 'Latest', value: 'Latest' },
-        { label: 'Active', value: 'Active' },
-        { label: 'Specific Version', value: 'Specific Version' },
-    ];
-    changeFlow1Name(event) {
-        console.log('event');
-        console.log('event', event);
-        this.selectedFlow1APIName = event.detail.value;
-
-        getFlowVersions({flowAPIName : this.selectedFlow1APIName}).then(
-            result => {
-                console.log('result', result);
-                this.flow1APIviersionList = result;
-            }
-        ).catch(
-            error => {
-                console.error(error);
-            }
-        );
-    }
-
-    changeFlow2Name(event) {
-        console.log('event');
-        console.log('event', event);
-        this.selectedFlow2APIName = event.detail.value;
-
-        getFlowVersions({flowAPIName : this.selectedFlow2APIName}).then(
-            result => {
-                console.log('result', result);
-                this.flow2APIviersionList = result;
-            }
-        ).catch(
-            error => {
-                console.error(error);
-            }
-        );
-    }
-
-    changeFlow1Option(event) {
-        this.flow1Option = event.detail.value;
-        console.log(this.flow1Option);
-    }
-
-    changeFlow2Option(event) {
-        this.flow2Option = event.detail.value;
-        console.log(this.flow2Option);
+    @api
+    validate() {
+        if (!this.selectedFlow1APIName || !this.selectedFlow2APIName) {
+            return {
+                isValid: false,
+                errorMessage: 'Please select two Flows'
+            };
+        } else {
+            return {isValid: true};
+        }
     }
 
 }

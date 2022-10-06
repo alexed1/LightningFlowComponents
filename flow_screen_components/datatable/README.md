@@ -72,9 +72,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
- ## 09/xx/22 -  Eric Smith -     Version 4.0.12
+ ## 10/xx/22 -  Eric Smith -     Version 4.0.12
 **Bug Fixes:**  
 -   Fixed .slice is not a function error  
+-   PR #1229 - fix regression bug with disableNavigateNext and suppressBottomBar attributes (JonTronki)
   
 ## 09/09/22 -  Eric Smith -     Version 4.0.11
 **Bug Fixes:**  

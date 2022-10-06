@@ -47,6 +47,7 @@ export default class CalendarAlerter extends LightningElement {
     displayStatusText = '';
     imminentIntervalId = '';
     evaluationIntervalId = '';
+    snoozyDelayTimeoutIdList = [];
     alertedMeetingId = '';
 
     alertCount = 0;
@@ -288,7 +289,7 @@ export default class CalendarAlerter extends LightningElement {
             }
 
             if(snoozyDelayMinuts) {
-                setTimeout(() => {
+                let snoozyDelayTimeoutId = setTimeout(() => {
                     meeting.alarmStatus = ACTIVE_STATUS;
                     this.eventList.forEach(
                         (item) => {
@@ -304,6 +305,8 @@ export default class CalendarAlerter extends LightningElement {
                     localStorage.setItem('eventList', JSON.stringify(this.eventList));
                     this.evaluateEvents();
                 }, snoozyDelayMinuts * 60 * 1000);
+
+                this.snoozyDelayTimeoutIdList.push(snoozyDelayTimeoutId);
             }
         }
 
@@ -320,6 +323,12 @@ export default class CalendarAlerter extends LightningElement {
     @api validate() {
         clearInterval(this.imminentIntervalId);
         clearInterval(this.evaluationIntervalId);
+        this.snoozyDelayTimeoutIdList.forEach(
+            item => {
+                console.log('clearTimeout',item);
+                clearTimeout(item);
+            }
+        );
         this.audio.pause();
         this.audio.currentTime = 0;
     }

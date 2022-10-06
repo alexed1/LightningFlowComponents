@@ -5,7 +5,6 @@ export default class FlowsSelector extends LightningElement {
     @api selectedFlow2APIName = '';
 
     selectFlow1(event) {
-        console.log('selectFlow1', event.detail);
         this.selectedFlow1APIName = event.detail;
     }
 

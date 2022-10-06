@@ -30,13 +30,10 @@ export default class FlowSelectorCard extends LightningElement {
         { label: SPECIFIC_VERSION_VALUE, value: SPECIFIC_VERSION_VALUE },
     ];
     changeFlowName(event) {
-        console.log('event');
-        console.log('event', event);
         this.selectedFlowAPIName = event.detail.value;
 
         getFlowVersions({flowAPIName : this.selectedFlowAPIName}).then(
             result => {
-                console.log('result', result);
                 this.flowAPIVersionList = result;
                 this.selectedFlowAPIVersion = '' + this.flowAPIVersionList[this.flowAPIVersionList.length - 1].VersionNumber;
                 this.fireSelectEvent();
@@ -58,7 +55,6 @@ export default class FlowSelectorCard extends LightningElement {
             this.flowAPIVersionList.forEach(
                 item => {
                     if(item.Status === ACTIVE_VALUE) {
-                        console.log('Activate', item.VersionNumber);
                         this.selectedFlowAPIVersion = '' + item.VersionNumber;
                     }
                 }

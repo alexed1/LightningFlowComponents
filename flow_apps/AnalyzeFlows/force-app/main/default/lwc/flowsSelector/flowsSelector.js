@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import getFlowVersions from '@salesforce/apex/FlowsSelecterController.getFlowVersions';
-export default class FlowsSelecter extends LightningElement {
+export default class FlowsSelector extends LightningElement {
     @api selectedFlow1APIName = '';
     @api selectedFlow2APIName = '';
 

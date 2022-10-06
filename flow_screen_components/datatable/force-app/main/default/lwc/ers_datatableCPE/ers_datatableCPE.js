@@ -218,12 +218,20 @@ export default class ers_datatableCPE extends LightningElement {
 
     @api
     get isDisableNavigateNext() {
-        return (this.isNoEdits || this.inputValues.suppressBottomBar.value);
+        return this.isNoEdits || this.inputValues.suppressBottomBar.value;
+    }
+    //please follow https://github.com/alexed1/LightningFlowComponents/commit/9222af0e75760f3da325173cd3cc01d3aa878db3
+    set isDisableNavigateNext(value) {
+        this.inputValues.suppressBottomBar.value = value;
     }
 
     @api
     get isDisableSuppressBottomBar() {
-        return (this.isNoEdits || this.inputValues.navigateNextOnSave.value);
+        return this.isNoEdits || this.inputValues.navigateNextOnSave.value;
+    }
+    //please follow https://github.com/alexed1/LightningFlowComponents/commit/9222af0e75760f3da325173cd3cc01d3aa878db3
+    set isDisableSuppressBottomBar(value) {
+        this.inputValues.navigateNextOnSave.value = value;
     }
 
     @api

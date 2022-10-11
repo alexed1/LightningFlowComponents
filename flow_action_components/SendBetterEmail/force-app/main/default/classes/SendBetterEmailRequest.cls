@@ -246,4 +246,9 @@ public inherited sharing class SendBetterEmailRequest {
   )
   @AuraEnabled
   public List<String> whatIds;
+
+
+  @invocableVariable(label='Send Email Asynchronously' description='Send the email using a future method')
+  @AuraEnabled
+  public Boolean sendAsync;
 }

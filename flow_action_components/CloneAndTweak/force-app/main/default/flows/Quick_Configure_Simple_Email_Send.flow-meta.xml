@@ -4,7 +4,7 @@
         <name>Modify_Flow_Metadata</name>
         <label>Modify Flow Metadata</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>518</locationY>
         <actionName>ModifyFlowMetadata</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -41,8 +41,8 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
-    <interviewLabel>Clone and Tweak {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Clone and Tweak</label>
+    <interviewLabel>Quick Configure: Simple Email Send {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Quick Configure: Simple Email Send</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -69,17 +69,31 @@
         <locationY>158</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Set_Initial_Values</targetReference>
+            <targetReference>another_Screen</targetReference>
         </connector>
         <getFirstRecordOnly>false</getFirstRecordOnly>
         <object>EmailTemplate</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <screens>
+        <name>another_Screen</name>
+        <label>Another Screen</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Set_Initial_Values</targetReference>
+        </connector>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Console1</name>
         <label>Console1</label>
         <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationY>638</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -95,7 +109,7 @@
         <name>Set_Initial_Values</name>
         <label>Set Initial Values</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>398</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -109,6 +123,32 @@
             <fields>
                 <name>Set_Initial_Values_Section1_Column1</name>
                 <fieldType>Region</fieldType>
+                <fields>
+                    <name>segmentation</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>segment2</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageHeight</name>
+                        <value>
+                            <stringValue>90</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
                 <fields>
                     <name>Specify_Segment_Name</name>
                     <dataType>String</dataType>
@@ -128,18 +168,37 @@
                 <name>Set_Initial_Values_Section1_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
+                    <name>emailTemplate</name>
+                    <extensionName>flowruntime:image</extensionName>
+                    <fieldType>ComponentInstance</fieldType>
+                    <inputParameters>
+                        <name>imageName</name>
+                        <value>
+                            <stringValue>email2</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>horizontalAlignment</name>
+                        <value>
+                            <stringValue>center</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputParameters>
+                        <name>imageHeight</name>
+                        <value>
+                            <stringValue>90</stringValue>
+                        </value>
+                    </inputParameters>
+                    <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
+                    <isRequired>true</isRequired>
+                    <storeOutputAutomatically>true</storeOutputAutomatically>
+                </fields>
+                <fields>
                     <name>Select_Email_Template</name>
                     <choiceReferences>emailTemplateList</choiceReferences>
                     <dataType>String</dataType>
                     <fieldText>Select Email Template</fieldText>
                     <fieldType>DropdownBox</fieldType>
-                    <isRequired>false</isRequired>
-                </fields>
-                <fields>
-                    <name>Select_Date_Time</name>
-                    <dataType>DateTime</dataType>
-                    <fieldText>Select Date &amp; Time</fieldText>
-                    <fieldType>InputField</fieldType>
                     <isRequired>false</isRequired>
                 </fields>
                 <inputParameters>
@@ -165,5 +224,5 @@
             <targetReference>Get_Email_Templates</targetReference>
         </connector>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
 </Flow>

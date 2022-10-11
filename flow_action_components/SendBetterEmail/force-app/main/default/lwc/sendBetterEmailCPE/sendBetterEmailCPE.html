@@ -572,6 +572,20 @@
         </c-fsc_flow-checkbox>
       </div>
     </template>
+	<!--	If Either -->
+	<div style="padding: 0.5rem; background: #16325c">
+        <h1 class="slds-text-color_inverse slds-text-heading_medium">
+          Advanced Features
+        </h1>
+    </div>
+	<c-fsc_flow-checkbox
+      name="checkbox_sel_sendAsync"
+      label={inputValues.sendAsync.label}
+      field-level-help={inputValues.sendAsync.helpText}
+      checked={inputValues.sendAsync.value}
+      oncheckboxchanged={handleCheckboxChange}
+    >
+    </c-fsc_flow-checkbox>
   </template>
   <hr width="”100%”" />
 </template>

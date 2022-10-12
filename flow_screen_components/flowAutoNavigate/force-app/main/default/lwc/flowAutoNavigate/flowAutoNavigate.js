@@ -12,7 +12,7 @@ export default class flowAutoNavigate extends LightningElement {
     //set triggered to true if we auto navigated
 
     timeIntervalInstance;
-    totalMilliseconds = 0;;
+    totalMilliseconds = 0;
 
     connectedCallback() {
         var parentThis = this;
@@ -33,7 +33,6 @@ export default class flowAutoNavigate extends LightningElement {
             parentThis.totalMilliseconds += 100;
         }, 100);
 
- 
 
     }
 

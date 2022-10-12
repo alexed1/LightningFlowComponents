@@ -8,9 +8,11 @@ export default class flowAutoNavigate extends LightningElement {
     @api showReset;
     @api timerLabel;
     @api availableActions = [];
+    @api triggered = false;
+    //set triggered to true if we auto navigated
 
     timeIntervalInstance;
-    totalMilliseconds = 0;
+    totalMilliseconds = 0;;
 
     connectedCallback() {
         var parentThis = this;
@@ -31,23 +33,27 @@ export default class flowAutoNavigate extends LightningElement {
             parentThis.totalMilliseconds += 100;
         }, 100);
 
-
+ 
 
     }
 
     renderedCallback() {
         var parentThis = this;
+        
         // Navigate to the next step in the flow either next action or finish
         if (parentThis.timeVal === parentThis.maxTime) {
             if (parentThis.availableActions.find(action => action === 'NEXT')) {
                 const navigateNextEvent = new FlowNavigationNextEvent();
                 parentThis.dispatchEvent(navigateNextEvent);
                 console.log("navigate next");
+
             } else if (parentThis.availableActions.find(action => action === 'FINISH')) {
                 const navigateFinishEvent = new FlowNavigationFinishEvent();
                 parentThis.dispatchEvent(navigateFinishEvent);
                 console.log("navigate finish");
             }
+           //set triggered to true if we auto navigated
+           parentThis.triggered = true;
         }
 
 

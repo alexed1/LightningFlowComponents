@@ -1,7 +1,13 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import flowLabels from '@salesforce/apex/usf3.FlexCardController.getFlowLabel';
+import {FlowAttributeChangeEvent,FlowNavigationNextEvent,FlowNavigationFinishEvent} from 'lightning/flowSupport';
+import LightningModal from 'lightning/modal';
 
-export default class fsc_ActionList extends LightningElement {
+export default class fsc_ActionList extends LightningModal {
+
+    @api
+    availableActions = [];
+
     @api
     flowNames;
 
@@ -60,6 +66,7 @@ export default class fsc_ActionList extends LightningElement {
 
     showModal(){
         this.openModal = true;
+        
     }
 
     closeModal() {
@@ -82,8 +89,25 @@ export default class fsc_ActionList extends LightningElement {
     handleFlowStatusChange(event) {
         console.log('flow status change:');
         console.log(JSON.stringify(event.detail));
+        if (this.availableActions.find((action) => action === 'NEXT')) {
+            // navigate to the next screen
+            const navigateNextEvent = new FlowNavigationNextEvent();
+            this.dispatchEvent(navigateNextEvent);
+            console.log('NEXT')
+        }
+        if (event.detail.status === 'FINISHED') {           
+            this.closeModal();
+            console.log('FINISHED')
+        }
+        //if (event.detail.status === 'FINISHED') 
+         //   this.flowFinishBehavior === 'NONE';
+           // this.closeModal();
+        
+        
         
     }
+
+   
 
     get displayMenu() {                
             if(this.choiceType == 'menu')
@@ -98,8 +122,15 @@ export default class fsc_ActionList extends LightningElement {
 }
               
     get flowParams() {
-        let params = [{name: 'recordId', type: 'String', value: this.recordId || ''}];
-        console.log('params is: ' + params);
-        return JSON.stringify(params);
+        return [
+            {
+                name: 'recordId',
+                type: 'String',
+                value: this.recordId || ''
+            },
+            
+        ];
     }
+        
+       
 }

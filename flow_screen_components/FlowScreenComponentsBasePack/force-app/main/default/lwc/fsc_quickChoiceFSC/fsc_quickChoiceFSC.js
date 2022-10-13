@@ -127,8 +127,8 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get showPicklist() {
-        // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
-        return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
+        // Show if not controlled or if controlled that there are available picklist values
+        return (!this._isControlled || this._picklistOptions.length > 0);
     }
 
     set showPicklist(value) {
@@ -204,9 +204,10 @@ export default class QuickChoiceFSC extends LightningElement {
             if (this.allowNoneToBeChosen)
                 this._picklistOptions.push({label: "--None--", value: "None"});
 
+            // Set isControlled only if a controlling value was provided and there are available controller values
             this._isControlled = false;
             let controllingIndex;
-            if (Object.keys(data.controllerValues).length > 0) {
+            if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
                 this._isControlled = true;
                 controllingIndex = data.controllerValues[this._controllingPicklistValue];
             }

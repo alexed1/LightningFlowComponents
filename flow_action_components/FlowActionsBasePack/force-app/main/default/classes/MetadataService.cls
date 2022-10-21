@@ -4274,59 +4274,95 @@ global class MetadataService {
 		private String[] fullName_type_info=new String[]{'fullName',SOAP_M_URI,null,'0','1','false'};
 		global MetadataService.FlowActionCall[] actionCalls;
 		global MetadataService.FlowApexPluginCall[] apexPluginCalls;
+		global Double apiVersion;
 		global MetadataService.FlowAssignment[] assignments;
 		global MetadataService.FlowChoice[] choices;
+		global Flow.FlowCollectionProcessor[] collectionProcessors;
 		global MetadataService.FlowConstant[] constants;
 		global MetadataService.FlowDecision[] decisions;
 		global String description;
 		global MetadataService.FlowDynamicChoiceSet[] dynamicChoiceSets;
+		global String[] environments;
 		global MetadataService.FlowFormula[] formulas;
 		global String interviewLabel;
+		global Boolean isAdditionalPermissionRequiredToRun;
+		global Boolean isOverridable;
+		global Boolean isTemplate;
 		global String label;
 		global MetadataService.FlowLoop[] loops;
+		global String migratedFromWorkflowRuleName;
+		global Flow.FlowOrchestratedStage[] orchestratedStages;
+		global String overriddenFlow;
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
 		global String processType;
 		global MetadataService.FlowRecordCreate[] recordCreates;
 		global MetadataService.FlowRecordDelete[] recordDeletes;
 		global MetadataService.FlowRecordLookup[] recordLookups;
+		global Flow.FlowRecordRollback[] recordRollbacks;
 		global MetadataService.FlowRecordUpdate[] recordUpdates;
+		global String runInMode;
 		global MetadataService.FlowScreen[] screens;
+		global String sourceTemplate;
 		global MetadataService.FlowStage[] stages;
+		global Flow.FlowStart start;
 		global String startElementReference;
+		global String status;
 		global MetadataService.FlowStep[] steps;
 		global MetadataService.FlowSubflow[] subflows;
 		global MetadataService.FlowTextTemplate[] textTemplates;
+		global String timeZoneSidKey;
+		global Integer triggerOrder;
 		global MetadataService.FlowVariable[] variables;
 		global MetadataService.FlowWait[] waits;
 		private String[] actionCalls_type_info=new String[]{'actionCalls',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apexPluginCalls_type_info=new String[]{'apexPluginCalls',SOAP_M_URI,null,'0','-1','false'};
+		private String[] apiVersion_type_info=new String[]{'apiVersion',SOAP_M_URI,null,'0','1','true'};
 		private String[] assignments_type_info=new String[]{'assignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] choices_type_info=new String[]{'choices',SOAP_M_URI,null,'0','-1','false'};
+		private String[] collectionProcessors_type_info=new String[]{'collectionProcessors',SOAP_M_URI,null,'0','-1','false'};
 		private String[] constants_type_info=new String[]{'constants',SOAP_M_URI,null,'0','-1','false'};
 		private String[] decisions_type_info=new String[]{'decisions',SOAP_M_URI,null,'0','-1','false'};
 		private String[] description_type_info=new String[]{'description',SOAP_M_URI,null,'0','1','false'};
 		private String[] dynamicChoiceSets_type_info=new String[]{'dynamicChoiceSets',SOAP_M_URI,null,'0','-1','false'};
+		private String[] environments_type_info=new String[]{'environments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] formulas_type_info=new String[]{'formulas',SOAP_M_URI,null,'0','-1','false'};
 		private String[] interviewLabel_type_info=new String[]{'interviewLabel',SOAP_M_URI,null,'0','1','false'};
+		private String[] isAdditionalPermissionRequiredToRun_type_info=new String[]{'isAdditionalPermissionRequiredToRun',SOAP_M_URI,null,'0','1','false'};
+		private String[] isOverridable_type_info=new String[]{'isOverridable',SOAP_M_URI,null,'0','1','false'};
+		private String[] isTemplate_type_info=new String[]{'isTemplate',SOAP_M_URI,null,'0','1','false'};
 		private String[] label_type_info=new String[]{'label',SOAP_M_URI,null,'1','1','false'};
 		private String[] loops_type_info=new String[]{'loops',SOAP_M_URI,null,'0','-1','false'};
+		private String[] migratedFromWorkflowRuleName_type_info=new String[]{'migratedFromWorkflowRuleName',SOAP_M_URI,null,'0','1','false'};
+		private String[] orchestratedStages_type_info=new String[]{'orchestratedStages',SOAP_M_URI,null,'0','-1','false'};
+		private String[] overriddenFlow_type_info=new String[]{'overriddenFlow',SOAP_M_URI,null,'0','1','false'};
 		private String[] processMetadataValues_type_info=new String[]{'processMetadataValues',SOAP_M_URI,null,'0','-1','false'};
 		private String[] processType_type_info=new String[]{'processType',SOAP_M_URI,null,'0','1','false'};
 		private String[] recordCreates_type_info=new String[]{'recordCreates',SOAP_M_URI,null,'0','-1','false'};
 		private String[] recordDeletes_type_info=new String[]{'recordDeletes',SOAP_M_URI,null,'0','-1','false'};
 		private String[] recordLookups_type_info=new String[]{'recordLookups',SOAP_M_URI,null,'0','-1','false'};
+		private String[] recordRollbacks_type_info=new String[]{'recordRollbacks',SOAP_M_URI,null,'0','-1','false'};
 		private String[] recordUpdates_type_info=new String[]{'recordUpdates',SOAP_M_URI,null,'0','-1','false'};
+		private String[] runInMode_type_info=new String[]{'runInMode',SOAP_M_URI,null,'0','1','false'};
 		private String[] screens_type_info=new String[]{'screens',SOAP_M_URI,null,'0','-1','false'};
+		private String[] sourceTemplate_type_info=new String[]{'sourceTemplate',SOAP_M_URI,null,'0','1','false'};
 		private String[] stages_type_info=new String[]{'stages',SOAP_M_URI,null,'0','-1','false'};
+		private String[] start_type_info=new String[]{'start',SOAP_M_URI,null,'0','1','false'};
 		private String[] startElementReference_type_info=new String[]{'startElementReference',SOAP_M_URI,null,'0','1','false'};
+		private String[] status_type_info=new String[]{'status',SOAP_M_URI,null,'0','1','false'};
 		private String[] steps_type_info=new String[]{'steps',SOAP_M_URI,null,'0','-1','false'};
 		private String[] subflows_type_info=new String[]{'subflows',SOAP_M_URI,null,'0','-1','false'};
 		private String[] textTemplates_type_info=new String[]{'textTemplates',SOAP_M_URI,null,'0','-1','false'};
+		private String[] timeZoneSidKey_type_info=new String[]{'timeZoneSidKey',SOAP_M_URI,null,'0','1','false'};
+		private String[] triggerOrder_type_info=new String[]{'triggerOrder',SOAP_M_URI,null,'0','1','true'};
 		private String[] variables_type_info=new String[]{'variables',SOAP_M_URI,null,'0','-1','false'};
 		private String[] waits_type_info=new String[]{'waits',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'fullName', 'actionCalls','apexPluginCalls','assignments','choices','constants','decisions','description','dynamicChoiceSets','formulas','interviewLabel','label','loops','processMetadataValues','processType','recordCreates','recordDeletes','recordLookups','recordUpdates','screens','stages','startElementReference','steps','subflows','textTemplates','variables','waits'};
+		private String[] field_order_type_info=new String[]{'fullName', 'actionCalls','apexPluginCalls', 'apiVersion','assignments','choices', 'collectionProcessors','constants','decisions','description',
+		'dynamicChoiceSets', 'environments','formulas','interviewLabel', 'isAdditionalPermissionRequiredToRun', 'isOverridable', 'isTemplate','label','loops', 'migratedFromWorkflowRuleName', 
+		'orchestratedStages', 'overriddenFlow', 'processMetadataValues','processType',
+		'recordCreates','recordDeletes','recordLookups', 'recordRollbacks','recordUpdates', 'runInMode','screens', 'sourceTemplate','stages', 'start', 'startElementReference',  'status',
+		'steps','subflows','textTemplates', 'timeZoneSidKey', 'triggerOrder','variables','waits'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -15252,7 +15288,7 @@ global class MetadataService {
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class MetadataPort {
-		global String endpoint_x=URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/42.0';
+		global String endpoint_x=URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/55.0';
 		global Map<String,String> inputHttpHeaders_x;
 		global Map<String,String> outputHttpHeaders_x;
 		global String clientCertName_x;

@@ -1,12 +1,19 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "BusinessHoursMethods",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "BusinessHoursAdd",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "BusinessHoursMethods": "0Ho5G0000008OcFSAU",
+        "BusinessHoursMethods@1.0.0-0": "04t5G0000043wslQAA"
     }
-  ],
-  "name": "BusinessHoursAdd",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0"
 }

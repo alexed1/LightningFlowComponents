@@ -1,5 +1,9 @@
 # Business Hours
 
+
+also see https://unofficialsf.com/from-renato-oliveira-new-business-hours-actions/
+
+
 Exposes the methods from the Business Hours class in Apex to the flow.
 
 ## Add hours

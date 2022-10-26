@@ -4,6 +4,7 @@ const _data = {};
 // returns unique index for requesting component
 function getIndex() {
   // Keep a separate index counter so each component can have its own index
+  // Counter needs to be reset, but array needs to persist
   if (!_data.ctr) {
     _data.ctr = [];
   }
@@ -13,9 +14,20 @@ function getIndex() {
   if (!_data.valid) {
     _data.valid = [];
   }
-  let index = _data.ctr.length;
+
+  const index = _data.ctr.length;
   _data.ctr.push(null);
+
+  // fill the array with nulls to make sure it matches the number of elements
+  if (index >= _data.arr.length) {
+    _data.arr.push(null);
+  }
+
   return index;
+}
+
+function isMaxIndex(index) {
+  return index === _data.arr.length - 1;
 }
 
 function setItem(index, value) {
@@ -23,23 +35,17 @@ function setItem(index, value) {
 }
 
 function getItem(index) {
-  return _data.arr ? _data.arr[index] : null;
+  if (_data.arr?.length > index) {
+    return _data.arr ? _data.arr[index] : null;
+  } else return null;
 }
 
 function getArr() {
   return _data.arr;
 }
 
-function setArr(value) {
-  _data.arr = value;
-  if (value.length > 0) {
-    _data.valid = Array(value.length).fill(false);
-  }
-}
-
 function setValid(index, isValid) {
   _data.valid[index] = isValid;
-  console.log("setValid", _data.valid);
 }
 
 function getAllValid() {
@@ -53,13 +59,23 @@ function reset() {
   _data.valid = [];
 }
 
+function resetCounter() {
+  _data.ctr = [];
+}
+
+function resetValidation() {
+  _data.valid = [];
+}
+
 export {
+  isMaxIndex,
   getIndex,
   setItem,
   getItem,
   getArr,
-  setArr,
   reset,
   setValid,
-  getAllValid
+  getAllValid,
+  resetValidation,
+  resetCounter
 };

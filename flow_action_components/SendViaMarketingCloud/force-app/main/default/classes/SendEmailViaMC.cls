@@ -9,16 +9,21 @@ global with sharing class SendEmailViaMC {
         for (Request curRequest: requestList ){
 
             String endpoint = curRequest.apiEndpoint + '/messaging/v1/email/messages/';
-            String params = '';
 
-            if (String.isEmpty(curRequest.contactKey)) {
-                System.debug('generating a contact key...');
+
+ 
+            if(!String.isEmpty(curRequest.messageKey)) {
+                endpoint = endpoint + curRequest.messageKey;
+            } else {
+                System.debug('generating a message key...');
                 Long timestamp = Datetime.now().getTime();
-                curRequest.contactKey = String.valueOf(timestamp);
+                curRequest.messageKey = String.valueOf(timestamp);
+                endpoint = endpoint + curRequest.messageKey;
             }
-
-            String url = endpoint + curRequest.contactKey + params;
-            System.debug('call is:' + url);
+            if(String.isEmpty(curRequest.contactKey)) {
+               curRequest.contactKey=curRequest.toRecipient;
+            }
+            System.debug('call is:' + endpoint);
         
 
             String token = curRequest.token;
@@ -38,8 +43,13 @@ global with sharing class SendEmailViaMC {
 
                 if(!Test.isRunningTest()) {
                
-                    System.debug ('url is: ' + url);
-                    curResponse = Send(url, token, body, curResponse);
+                    System.debug ('url is: ' + endpoint);
+                    curResponse = Send(endpoint, token, body, curResponse);
+               
+                    responseMap = (Map<String, Object>)JSON.deserializeUntyped(curResponse.responseBody);
+                    List<Object> responseList  = (List<Object>)responseMap.get('responses');
+                    Map<String,Object> mymap = (Map<String,Object>)responseList[0];
+                    curResponse.messageKey = (String)mymap.get('messageKey');
                 } else {
                     curResponse.responseBody = '{"ok": true, "channel": {"id": "CXX", "name": "endeavor"}}';
                 }
@@ -78,9 +88,10 @@ global with sharing class SendEmailViaMC {
             System.debug('set body to:' + body);
             System.debug('req is: ' + req);
             res = transmit(req);
-           // System.debug('First Response back is: ' + res);
-           curResponse.responseBody = res;
-            
+            curResponse.responseBody = res;
+           
+       
+
             
         } catch (Exception e) {
             System.debug('error:' + e.getMessage());
@@ -152,7 +163,8 @@ global with sharing class SendEmailViaMC {
         @InvocableVariable
         global String mergeValue5;  
 
-
+        @InvocableVariable
+        global String messageKey;  
 
 
 
@@ -164,10 +176,7 @@ global with sharing class SendEmailViaMC {
 
     global class Result {
 
-        public Result() {
-            
 
-        }
 
         @InvocableVariable
         global String responseBody;
@@ -175,8 +184,9 @@ global with sharing class SendEmailViaMC {
         @InvocableVariable
         global String errors;
 
-
-
+        @InvocableVariable
+        global String messageKey;
+ 
 
 
     }

@@ -135,6 +135,7 @@
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
+        <backButtonLabel>Schedule a Send</backButtonLabel>
         <connector>
             <targetReference>Modify_Flow_Metadata</targetReference>
         </connector>
@@ -159,7 +160,10 @@
             <fieldText>Select Date &amp; Time</fieldText>
             <fieldType>InputField</fieldType>
             <isRequired>true</isRequired>
+
         </fields>
+        <nextOrFinishButtonLabel>Send Now</nextOrFinishButtonLabel>
+        <pauseButtonLabel>View in Builder</pauseButtonLabel>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>

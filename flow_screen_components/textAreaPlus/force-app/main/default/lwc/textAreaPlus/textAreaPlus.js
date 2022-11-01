@@ -1,6 +1,7 @@
 import { LightningElement, api, track } from "lwc";
 import { FlowAttributeChangeEvent } from "lightning/flowSupport";
-import * as share from "./tapshare.js";
+
+const SESSION_STORAGE_KEY = "text-area-plus-temp-text";
 
 const SESSION_STORAGE_KEY = "tap-temp-text";
 
@@ -8,52 +9,32 @@ const SESSION_STORAGE_KEY = "tap-temp-text";
 // Required for escaping search text
 // If you find a new one, add it here
 const rtfEscapeChars = [
-  { char: "&", text: "&amp;" }, // DO THIS FIRST! Trust me
-  { char: "<", text: "&lt;" },
-  { char: ">", text: "&gt;" }
+  {char: '&', text: '&amp;'}, // DO THIS FIRST! Trust me
+  {char: '<', text: '&lt;'},
+  {char: '>', text: '&gt;'},
 ];
 
 // Used for search and replace temp highlight
 // mapping of highlight style to left tag (lt) and right tag (rt)
 const hlStyles = {
-  bright: { lt: `<span style="background-color:#ffd500">`, rt: "</span>" },
-  mid: { lt: `<span style="background-color:#fff2b2">`, rt: "</span>" },
-  none: { lt: "", rt: "" }
+  bright: {lt: `<span style="background-color:#ffd500">`, rt: '</span>'},
+  mid: {lt: `<span style="background-color:#fff2b2">`, rt: '</span>'},
+  none: {lt: '', rt: ''}
 };
 
 // timing for animation of highlights
 const hlTimers = [
-  { style: "mid", ms: 0 },
-  { style: "bright", ms: 75 }, // main highlight - bright
-  { style: "mid", ms: 525 }, // start fading out for 75ms
-  { style: "none", ms: 600 } // reset to text without highlight html
+  {style: 'mid', ms: 0},
+  {style: 'bright', ms: 75}, // main highlight - bright
+  {style: 'mid', ms: 525}, // start fading out for 75ms
+  {style: 'none', ms: 600} // reset to text without highlight html
 ];
 
 // All possible options as of SP22
 // Valid rich text formats
-const validFormats = [
-  "font",
-  "size",
-  "bold",
-  "italic",
-  "underline",
-  "strike",
-  "list",
-  "indent",
-  "align",
-  "link",
-  "image",
-  "clean",
-  "table",
-  "header",
-  "color",
-  "background",
-  "code",
-  "code-block",
-  "script",
-  "blockquote",
-  "direction"
-];
+const validFormats = ['font','size','bold','italic','underline','strike','list','indent','align',
+'link','image','clean','table','header','color','background',
+'code','code-block','script','blockquote','direction'];
 
 // Convert CB values to a boolean
 function cbToBool(value) {
@@ -73,10 +54,9 @@ export default class TextAreaPlus extends LightningElement {
   // Component facing props
   @track runningBlockedInput = [];
   @track undoStack = [];
-  @track escapedVals = { searchTerm: "", replaceValue: "" };
-  index = null;
+  @track escapedVals = {searchTerm: '', replaceValue: ''};
 
-  _charsLeftTemplate = "$L/$M Characters"; // Must match CPE.js default setting
+  _charsLeftTemplate = '$L/$M Characters'; // Must match CPE.js default setting
   searchButton = false;
   textValue;
   autoReplaceEnabled = false;
@@ -91,7 +71,6 @@ export default class TextAreaPlus extends LightningElement {
   hlText;
   replaceMap = {};
   formats = validFormats;
-  textValue;
 
   // If either search or autoreplace is enabled, allow case insensitive
   get showCaseInsensitive() {
@@ -105,10 +84,8 @@ export default class TextAreaPlus extends LightningElement {
 
   // Show help text appropriately based on whether Suggested Terms is enabled
   get caseInsensitiveHelpText() {
-    return `${
-      this.showCaseInsensitive ? "Ignore Case for Search and Replace" : ""
-    }
-            ${this.autoReplaceEnabled ? " and Suggested Terms" : ""}`;
+    return `${this.showCaseInsensitive ? 'Ignore Case for Search and Replace' : ''}
+            ${this.autoReplaceEnabled ? ' and Suggested Terms' : ''}`;
   }
 
   get ignoreCaseVariant() {
@@ -116,16 +93,14 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   get applyAltText() {
-    let mapTxt = "";
     try {
       const prettyMap = Object.keys(this.replaceMap)
-        ?.map((x) => `${x} -> ${this.replaceMap?.[x]}`)
-        ?.join(",");
-      mapTxt = `(${prettyMap})`;
+        ?.map(x => `${x} -> ${this.replaceMap?.[x]}`)
+        ?.join(',');
+      return `Apply Suggested Terms (${prettyMap})`;
     } catch (e) {
-      console.log("Exception in applyAltText", e);
+      return 'Apply Suggested Terms';
     }
-    return `Apply Suggested Terms ${mapTxt}`;
   }
 
   // based on whether ignore case is selected, use the modifier
@@ -136,26 +111,17 @@ export default class TextAreaPlus extends LightningElement {
   get counterText() {
     // base case - template is blank
     if (!this._charsLeftTemplate) {
-      return "";
+      return '';
     }
 
     return this._charsLeftTemplate
-      ?.replaceAll("$R", this.charsLeft)
-      ?.replaceAll("$M", this.maxLength)
-      ?.replaceAll("$L", this.len);
+      ?.replaceAll('$R', this.charsLeft)
+      ?.replaceAll('$M', this.maxLength)
+      ?.replaceAll('$L', this.len)
   }
 
   get plainText() {
     return this.textMode === "plain";
-  }
-
-  get displayText() {
-    return this.textMode === "display";
-  }
-
-  get richText() {
-    // if it's never set - it's rich text
-    return this.textMode == null || this.textMode === "rich";
   }
 
   get showCounter() {
@@ -165,9 +131,7 @@ export default class TextAreaPlus extends LightningElement {
   @api
   get advancedTools() {
     // advanced tools can only be explained for rich text
-    return (
-      !this.plainText && !this.displayText && cbToBool(this.cb_advancedTools)
-    );
+    return !this.plainText && cbToBool(this.cb_advancedTools);
   }
   @api cb_advancedTools;
 
@@ -185,8 +149,7 @@ export default class TextAreaPlus extends LightningElement {
 
   @api
   get showCharCounter() {
-    // display text will only display the value
-    return cbToBool(this.cb_showCharCounter) && !this.displayText;
+    return cbToBool(this.cb_showCharCounter);
   }
   @api cb_showCharCounter;
 
@@ -197,7 +160,7 @@ export default class TextAreaPlus extends LightningElement {
   set maxlen(value) {
     if (!Number.isNaN(value)) {
       this.maxLength = Number(value);
-    }
+    };
   }
 
   @api
@@ -207,7 +170,7 @@ export default class TextAreaPlus extends LightningElement {
   set minlen(value) {
     if (!Number.isNaN(value)) {
       this.minLength = Number(value);
-    }
+    };
   }
 
   @api
@@ -250,7 +213,7 @@ export default class TextAreaPlus extends LightningElement {
 
     // Case 1 - required has been checked, but there's not text
     if (this.required === true && this.len <= 0) {
-      errors.push("Field is Required");
+      errors.push('Field is Required');
     }
 
     // Case 2 - characters are below minimum length required
@@ -261,7 +224,7 @@ export default class TextAreaPlus extends LightningElement {
     // Case 3, char counter is enabled, but remaining characters is negative
     // This can happen with rich text when too much text is pasted
     if (this.showCharCounter && this.charsLeft < 0) {
-      errors.push("Character Limit Exceeded.");
+      errors.push('Character Limit Exceeded.');
     }
 
     // these errors take precedence over warn only, return them now
@@ -278,9 +241,7 @@ export default class TextAreaPlus extends LightningElement {
 
     // Case 3: Advanced tools only, invalid words have been used
     if (this.runningBlockedInput.length > 0) {
-      errors.push(
-        `Invalid Symbols/Words: ${this.runningBlockedInput.join(", ")}`
-      );
+      errors.push(`Invalid Symbols/Words: ${this.runningBlockedInput.join(', ')}`);
     }
 
     if (errors.length > 0) {
@@ -311,18 +272,20 @@ export default class TextAreaPlus extends LightningElement {
       return str;
     } else {
       // Switch all the HTML safe text back to characters for accurate length
-      str = str?.replace(/(<([^>]+)>)/g, "");
+      str = str?.replace( /(<([^>]+)>)/g, '');
       return this.unescapeRichText(str);
     }
   }
 
   connectedCallback() {
-    // Build regexes first - will be needed for validation
+    this.popStoredValue();
     if (this.advancedTools) {
+      // Use value from session, or blank
+      this.textValue = this.value || '';
       // Build regex for disallowed symbols and words (if listed)
       // This will pass in a function to format the regex correctly by type
-      this.setRegex("Symbols", (x) => `\\${x}`);
-      this.setRegex("Words", (x) => `\\b${x}\\b`);
+      this.setRegex('Symbols', x => `\\${x}`);
+      this.setRegex('Words', x => `\\b${x}\\b`);
 
       if (this.autoReplaceMap != undefined) {
         this.replaceMap = JSON.parse(this.autoReplaceMap);
@@ -353,7 +316,7 @@ export default class TextAreaPlus extends LightningElement {
         .replace(/\s/g, "")
         .split(",")
         .map(fn) // Used the passed in function to create the regex
-        .join("|");
+        .join('|');
       this[`disallowed${type}Regex`] = new RegExp(pipedList, this.regexMod);
     }
   }
@@ -368,15 +331,19 @@ export default class TextAreaPlus extends LightningElement {
   // Dynamically calculate remaining characters
   get charsLeft() {
     const tlen = this.len;
-    return this.maxLength - (tlen >= 0 ? tlen : 0);
+    return (
+      this.maxLength - (tlen >= 0 ? tlen : 0)
+    );
   }
 
   // Set the class based on rich text vs plain text, and number of chars left
   get charsLeftClass() {
-    const padding = this.plainText
-      ? "slds-var-p-top_xxx-small slds-var-p-left_x-small"
-      : "slds-var-p-left_x-small slds-var-p-right_xxx-small slds-var-p-top_x-small slds-var-p-bottom_xxx-small";
-    return `${padding} ${this.charsLeft > 0 ? "default" : "warning"}`;
+    const padding = this.plainText ?
+      'slds-var-p-top_xxx-small slds-var-p-left_x-small' :
+      'slds-var-p-left_x-small slds-var-p-right_xxx-small slds-var-p-top_x-small slds-var-p-bottom_xxx-small';
+    return `${padding} ${
+      this.charsLeft > 0 ? "default" : "warning"
+    }`;
   }
 
   handleIgnoreCaseToggle() {
@@ -384,10 +351,7 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   // Common text value updater for Plan or Rich text
-  updateText(item) {
-    const value = item?.value;
-    const init = item?.init;
-    // update tracked value (not api value directly)
+  updateText(value) {
     this.textValue = value;
 
     // update the singleton, but not on initialization
@@ -405,12 +369,12 @@ export default class TextAreaPlus extends LightningElement {
 
   // Event handler for plain text change
   handleChange({ detail }) {
-    this.updateText(detail);
+    this.updateText(detail.value);
   }
 
   //Handle updates to Rich Text field
-  handleTextChange({ target }) {
-    this.updateText(target);
+  handleTextChange({target}) {
+    this.updateText(target.value);
     this.isValidCheck = true;
 
     // We're done if advanced tools aren't enabled
@@ -424,7 +388,7 @@ export default class TextAreaPlus extends LightningElement {
     if (this.minlen > 0 && this.len < this.minlen) {
       this.isValidCheck = false;
       // Will display on Rich Text.  TextArea is covered by min-length property
-      this.errorMessage = `Minimum length of ${this.minlen} characters required`;
+      this.errorMessage = `Minimum length of ${this.minlen} characters required`
       return;
     }
 
@@ -441,19 +405,15 @@ export default class TextAreaPlus extends LightningElement {
 
     // Check invalid symbols and words
     const rbi = this.runningBlockedInput;
-    this.errorMessage =
-      rbi.length > 0
-        ? `Error - Invalid Symbols/Words: ${rbi.join(", ")}`
-        : null;
+    this.errorMessage = rbi.length > 0 ? `Error - Invalid Symbols/Words: ${rbi.join(', ')}` : null;
   }
 
   handleRichTextKeyDown(event) {
     // Allow backspace (8), delete (46), home (36), end (35), arrows (37-40), control/cmd (17)
-    const keys = [8, 46, 17, 18, 35, 36, 37, 38, 39, 40, 46];
+    const keys = [8,46,17,18,35,36,37,38,39,40,46];
     // Allow Control-a (65), Control-c (67), Control-x (88) so user can delete and stuff, but not type new characters or paste more junk
-    const ctlKeys = [65, 67, 88];
-    const validKey = ({ ctrlKey, keyCode }) =>
-      keys.includes(keyCode) || (ctrlKey && ctlKeys.includes(keyCode));
+    const ctlKeys = [65,67,88];
+    const validKey = ({ctrlKey, keyCode}) => keys.includes(keyCode) || ctrlKey && ctlKeys.includes(keyCode);
     if (this.showCounter && this.charsLeft <= 0 && !validKey(event)) {
       event.preventDefault();
     }
@@ -465,10 +425,8 @@ export default class TextAreaPlus extends LightningElement {
 
     // Create a list of disallowed words/symbols that actually contain elements.
     // Anything empty will be removed
-    const naughtyLists = [
-      this.disallowedWordsRegex,
-      this.disallowedSymbolsRegex
-    ].filter((x) => !!x);
+    const naughtyLists = [this.disallowedWordsRegex, this.disallowedSymbolsRegex]
+      .filter(x => !!x);
 
     // Update runningBlockedInput
     for (const rx of naughtyLists) {
@@ -486,25 +444,20 @@ export default class TextAreaPlus extends LightningElement {
 
   // Create a unique list of items, add any that aren't already in the blocked list
   addBlockedItems(items) {
-    items = items.map((w) => w.toLowerCase());
-    this.runningBlockedInput = Array.from(
-      new Set([...this.runningBlockedInput, ...items])
-    );
+    items = items.map(w => w.toLowerCase());
+    this.runningBlockedInput = Array.from(new Set([...this.runningBlockedInput,...items]));
   }
 
   // Helper function to build text for search replace with
   // different highlight styles and store it on the highlight map object
   setReplaceText(hl, prop, text, term, value) {
     // Creates highlight HTML (e.g. bright, mid) with the left and right tags (lt/rt)
-    this.hlText[prop] = text?.replaceAll(term, `${hl.lt}${value}${hl.rt}`);
+    this.hlText[prop] = text?.replaceAll(term,`${hl.lt}${value}${hl.rt}`);
   }
 
   // push text value on to the undo stack *only* if it is different than the last item on the stack
   addUndo() {
-    if (
-      this.undoStack.length == 0 ||
-      this.undoStack[this.undoStack.length - 1] !== this.textValue
-    ) {
+    if (this.undoStack.length == 0 || this.undoStack[this.undoStack.length -1] !== this.textValue) {
       this.undoStack.push(this.textValue);
     }
   }
@@ -515,7 +468,7 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   // Kick off search/replace if enter is pressed
-  handleSearchKeyDown({ keyCode }) {
+  handleSearchKeyDown({keyCode}) {
     if (keyCode === 13) {
       this.handleSearchReplace();
     }
@@ -525,14 +478,13 @@ export default class TextAreaPlus extends LightningElement {
   handleSearchReplaceChange({ target }) {
     //TODO: Fix infinite loop, block invalid chars @ keypress
     const filteredValue = this.escapeRegExp(target.value);
-    const targetValue =
-      target.dataset.id === "search" ? "searchTerm" : "replaceValue";
+    const targetValue = target.dataset.id === 'search' ? 'searchTerm' : 'replaceValue';
     this.escapedVals[targetValue] = filteredValue;
   }
 
   //Execute Search and REplace
   handleSearchReplace() {
-    if (this.escapedVals.searchTerm === "") {
+    if (this.escapedVals.searchTerm === '') {
       // An empty string will add the replacement value between every character!
       // This could cause exponential growth of the text with each click, so let's just not do that.
       return;
@@ -559,13 +511,11 @@ export default class TextAreaPlus extends LightningElement {
   animateHighlight() {
     // By passing the second parameter, animate, the search and autoreplace buttons will be disabled during
     // animation.  The last item will return false, which will re-enable the buttons.
-    hlTimers.forEach((timer, ix) =>
-      this.setHighlightTimer(timer, ix < hlTimers.length - 1)
-    );
+    hlTimers.forEach((timer, ix) => this.setHighlightTimer(timer, ix < hlTimers.length - 1));
   }
 
   // Sets a future highlight change
-  setHighlightTimer({ style, ms }, animate) {
+  setHighlightTimer({style, ms}, animate) {
     setTimeout(() => {
       this.animating = animate;
       this.textValue = this.hlText[style];
@@ -598,23 +548,23 @@ export default class TextAreaPlus extends LightningElement {
   //Clean input for RegExp and matching rich text
   escapeRegExp(str) {
     if (str) {
-      rtfEscapeChars.forEach(({ char, text }) => {
-        str = str.replaceAll(char, text);
-      });
-      str = str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    }
+    rtfEscapeChars.forEach(({char,text}) => {
+      str = str.replaceAll(char,text);
+    });
+    str = str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
     return str;
   }
 
   // The opposite of escaping RTF for accurate char count
   unescapeRichText(str) {
     if (str) {
-      // go in reverse order, starting with &amp;
-      const rtfUnescape = [...rtfEscapeChars].reverse();
-      rtfUnescape.forEach((x) => {
-        str = str.replaceAll(x.text, x.char);
-      });
-    }
+    // go in reverse order, starting with &amp;
+    const rtfUnescape = [...rtfEscapeChars].reverse();
+    rtfUnescape.forEach(x => {
+      str = str.replaceAll(x.text, x.char);
+    });
+  }
     return str;
   }
 

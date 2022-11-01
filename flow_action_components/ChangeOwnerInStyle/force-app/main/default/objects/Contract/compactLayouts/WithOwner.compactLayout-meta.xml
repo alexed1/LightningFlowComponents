@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WithOwner</fullName>
+    <fields>ContractNumber</fields>
+    <fields>AccountId</fields>
+    <fields>Status</fields>
+    <fields>StartDate</fields>
+    <fields>EndDate</fields>
+    <fields>ContractTerm</fields>
+    <fields>OwnerId</fields>
+    <label>WithOwner</label>
+</CompactLayout>

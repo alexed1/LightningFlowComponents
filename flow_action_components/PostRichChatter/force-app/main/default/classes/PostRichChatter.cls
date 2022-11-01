@@ -56,6 +56,19 @@ global with sharing class PostRichChatter {
         body = MyMatcher.replaceAll('');
         System.debug ('body after replacement is: ' + body);
 
+        //change <br> to <p></p>:
+        String brPattern = '<br>';
+        MyPattern = Pattern.compile(brPattern);
+        MyMatcher = MyPattern.matcher(body);
+        body = MyMatcher.replaceAll('<p></p>');
+        System.debug ('body after replacement is: ' + body);
+
+        //change <strong> to <b> and </strong> to </b>:
+        String strongPattern = 'strong>';
+        MyPattern = Pattern.compile(strongPattern);
+        MyMatcher = MyPattern.matcher(body);
+        body = MyMatcher.replaceAll('b>');
+        System.debug ('body after replacement is: ' + body);
 
         //image links work fine, but we'll do a little reformatting to remove the html 
         String imagePattern = '<img src="([^"]+)">';

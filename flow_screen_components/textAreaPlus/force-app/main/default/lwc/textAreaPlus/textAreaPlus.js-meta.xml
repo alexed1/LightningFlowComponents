@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>54.0</apiVersion>
+    <apiVersion>55.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Textarea Plus!</masterLabel>
     <description>Plain Text with a counter or Rich Text with a counter and search features</description>
@@ -15,7 +15,7 @@
             <property name="charsLeftTemplate" label="Chars Left Template" type="String" />
             <property name="label" label="Label" type="String" role="inputOnly" />
             <property name="placeHolder" label="Placeholder Text" type="String" role="inputOnly" />
-            <property name="textMode" label="Text Mode" type="String" default="Rich Text" role="inputOnly" description="Choose between Rich or Plain text" />
+            <property name="textMode" label="Text Mode" type="String" default="rich" role="inputOnly" description="Choose between Rich or Plain text" />
 
             <property label="Advanced Tools" name="advancedTools" type="Boolean" role="inputOnly" description="Enable Advanced Tools - Search/Replace, Auto-replace, and blocked words/symbols." />
             <property name="cb_advancedTools" type="String" role="inputOnly" />

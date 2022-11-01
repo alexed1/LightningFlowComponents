@@ -41,3 +41,4 @@ $RECYCLE.BIN/
 .gitignore
 package-lock.json
 jsconfig.json
+.sf/config.json

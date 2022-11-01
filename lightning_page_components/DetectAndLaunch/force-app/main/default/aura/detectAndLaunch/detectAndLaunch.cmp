@@ -5,17 +5,25 @@
     <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
     <aura:attribute name="editFlowName" type="String"  description="Launch this flow when the record is edited"/>
     <aura:attribute name="deleteFlowName" type="String"  description="Launch this flow when the record is deleted"/>
+    <aura:attribute name="loadFlowName" type="String"  description="Launch this flow when the record is loaded"/>
+    <aura:attribute name="fieldChange" type="String" description="Launch this flow when the record is edited and this field is changed"/>
+    <aura:attribute name="fieldValue" type="String" description="Launch this flow when the record is edited and this field equals this"/>
     <aura:attribute name="targetFlowName" type="String"  />
     <aura:attribute name="launchMode" type="String" default="Modeless" description="Launch this flow when the record changes"/>
+
     <force:recordData aura:id="recordLoader"
-        fields="Id"
-        recordId="{!v.recordId}"
-        targetError="{!v.recordError}"
-        recordUpdated="{!c.recordUpdated}"
-        mode="VIEW"/>
+    fields="{!v.fieldNameList}"
+    recordId="{!v.recordId}"
+    targetError="{!v.recordError}"
+    recordUpdated="{!c.recordUpdated}"
+    mode="VIEW"/>
 
 
     <aura:attribute name="openModal" type="Boolean" default="false" />
+    <aura:attribute name="isChangedRecord" type="Boolean" default="false" />
+    <aura:attribute name="fieldNameList" access="private" type="String[]" default="['Id']" />
+    <aura:attribute name="fieldCompare" access="private" type="String" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
 
     
     <!-- Here we wrapped our modal code inside aura:if. If it evaluates true, code inside it will be visible -->

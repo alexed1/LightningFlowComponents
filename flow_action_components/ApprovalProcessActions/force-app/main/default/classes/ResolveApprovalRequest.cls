@@ -2,17 +2,25 @@ public with sharing class ResolveApprovalRequest {
     @InvocableMethod
     public static List<Results> execute(List<Requests> requests) {
         List<Results> responseWrapper = new List<Results>();
+        String approverId = '';
         for (Requests curRequest : requests) {
             Results response = new Results();
             Approval.ProcessWorkitemRequest approvalWorkItem = new Approval.ProcessWorkitemRequest();
             approvalWorkItem.setComments(curRequest.comments);
             approvalWorkItem.setAction(curRequest.action);
             approvalWorkItem.setNextApproverIds(curRequest.nextApproverIds);
-            approvalWorkItem.setWorkitemId(curRequest.approvalRequestId);
+            if(String.isBlank(curRequest.approvalRequestId)){
+                approverId = getapprovalRequestID(curRequest.recordId,curRequest.ObjName).Id;
+            }
+            
+            approvalWorkItem.setWorkitemId(approverId);
+            
+            system.debug('approvalWorkItem ' + approvalWorkItem);
             
             // Submit the request for approval
-            Approval.ProcessResult approvalResult =  Approval.process(approvalWorkItem);
+            Approval.ProcessResult[] approvalResult =  Approval.process(approvalWorkItem);
 
+            system.debug('ApprovalResult ' + approvalResult);
             
             // Verify the results
             System.assert(approvalResult.isSuccess(), 'Result Status:'+ approvalResult.isSuccess());
@@ -44,7 +52,13 @@ public with sharing class ResolveApprovalRequest {
         return errorStrings;
     }
 
-     
+    public static ProcessInstanceWorkitem getapprovalRequestID (String recordId,String objName){
+        return [select id,ActorId, CreatedDate, OriginalActorId,OriginalActor.name, ProcessInstanceId, ProcessInstance.Status, ProcessInstance.SubmittedById, ProcessInstance.ProcessDefinition.TableEnumOrId,ProcessInstance.ProcessDefinition.Type  
+                from ProcessInstanceWorkitem where ProcessInstance.TargetObjectId =:recordId
+                and ProcessInstance.ProcessDefinition.Type ='Approval' 
+                and ProcessInstance.ProcessDefinition.TableEnumOrId= :objName
+                and ProcessInstance.Status ='Pending'  limit 1];
+    }
 
     public class InvocableErrorException extends Exception {
     }
@@ -52,6 +66,12 @@ public with sharing class ResolveApprovalRequest {
 
     public class Requests {
 
+        @InvocableVariable
+        public String recordId;
+        
+        @InvocableVariable
+        public String objName;
+        
         @InvocableVariable
         public String approvalRequestId;
 

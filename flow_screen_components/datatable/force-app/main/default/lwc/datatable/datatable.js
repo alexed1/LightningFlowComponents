@@ -3,7 +3,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.x.x
+ * VERSION:             4.x.x
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -26,10 +26,11 @@ import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
+const ISFLOWBUILDER = CONSTANTS.ISFLOWBUILDER;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 
 export default class Datatable extends LightningElement {
@@ -211,6 +212,7 @@ export default class Datatable extends LightningElement {
             }
             this.outputEditedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
             this.outputEditedSerializedRows = '';
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             setTimeout(function() {
@@ -349,6 +351,7 @@ export default class Datatable extends LightningElement {
     @api noEditFieldArray = [];
     @api timeFieldArray = [];
     dateFieldArray = [];
+    datetimeFieldArray = [];
     @api picklistFieldArray = [];
     @api picklistReplaceValues = false;     
     apex_picklistFieldMap = [];
@@ -786,6 +789,10 @@ export default class Datatable extends LightningElement {
                         this.timeFieldArray.push(this.basicColumns[t.column].fieldName);
                         this.basicColumns[t.column].type = 'time';
                         break;
+                    case 'datetime':
+                        this.datetimeFieldArray.push(this.basicColumns[t.column].fieldName);
+                        this.basicColumns[t.column].type = 'datetime';
+                        break;
                     // case 'date':
                     //     this.dateFieldArray.push(this.basicColumns[t.column].fieldName);
                     //     this.basicColumns[t.column].type = 'date-local';
@@ -847,6 +854,7 @@ export default class Datatable extends LightningElement {
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
+                this.datetimeFieldArray = (returnResults.datetimeFieldList.length > 0) ? returnResults.datetimeFieldList.toString().split(',') : [];
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
@@ -914,6 +922,7 @@ export default class Datatable extends LightningElement {
         let dateFields = this.dateFieldArray;
         let percentFields = this.percentFieldArray;
         let numberFields = this.numberFieldArray;
+        let datetimeFields = this.datetimeFieldArray;
         let picklistFields = this.picklistFieldArray;
         let lookupFieldObject = '';
 
@@ -935,6 +944,13 @@ export default class Datatable extends LightningElement {
                     let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
                     let d = new Date();
                     record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                }
+            });
+
+            // Adjust datetime with correct timezone reference
+            datetimeFields.forEach(datetime => {
+                if (record[datetime]) {
+                    record[datetime] = record[datetime].replace("+0000", "Z");
                 }
             });
 
@@ -969,6 +985,8 @@ export default class Datatable extends LightningElement {
                         // Add new column with correct Lookup urls
                         if (ISCOMMUNITY) {
                             record[lufield + '_lookup'] = MYDOMAIN + 'detail/' + record[lufield + '_id'];
+                        } else if (ISFLOWBUILDER) {
+                            record[lufield + '_lookup'] = MYDOMAIN + '/' + record[lufield + '_id'];
                         } else {
                             record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
                         }
@@ -980,6 +998,8 @@ export default class Datatable extends LightningElement {
             record[this.objectLinkField + '_name'] = record[this.objectLinkField];
             if (ISCOMMUNITY) {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
+            } else if (ISFLOWBUILDER) {
+                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '/' + record['Id'];
             } else {
                 record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
             }
@@ -1414,6 +1434,7 @@ export default class Datatable extends LightningElement {
     handleSave(event) {
         // Only used with inline editing
         const draftValues = event.detail.draftValues;
+        let editField = '';
 
         // Apply drafts to mydata
         let data = [...this.mydata];
@@ -1421,7 +1442,12 @@ export default class Datatable extends LightningElement {
             const draft = draftValues.find(d => d[this.keyField] == item[this.keyField]);
             if (draft != undefined) {
                 let fieldNames = Object.keys(draft);
-                fieldNames.forEach(el => item[el] = draft[el]);
+                fieldNames.forEach(el => {
+                    item[el] = draft[el];
+                    if (this.suppressBottomBar && (el != this.keyField)) {
+                        editField = el;
+                    }
+                });
             }
             return item;
         });
@@ -1433,10 +1459,12 @@ export default class Datatable extends LightningElement {
             if (edraft != undefined) {
                 let efieldNames = Object.keys(edraft);
                 efieldNames.forEach(ef => {
-                    if(this.percentFieldArray.indexOf(ef) != -1) {
-                        eitem[ef] = Number(edraft[ef])*100; // Percent field
-                    } else {
-                        eitem[ef] = edraft[ef];
+                    if (!this.suppressBottomBar || (ef == editField)) {
+                        if(this.percentFieldArray.indexOf(ef) != -1) {
+                            eitem[ef] = Number(edraft[ef])*100; // Percent field
+                        } else {
+                            eitem[ef] = edraft[ef];
+                        }
                     }
                 });
 
@@ -1456,30 +1484,38 @@ export default class Datatable extends LightningElement {
                 let field = eitem
                 let numberFields = this.numberFieldArray;
                 numberFields.forEach(nb => {
-                    field[nb] = parseFloat(field[nb]);
+                    if (!this.suppressBottomBar || (nb == editField)) {
+                        field[nb] = parseFloat(field[nb]);
+                    }
                 });
 
                 // Correct formatting for percent fields
                 let pctfield = this.percentFieldArray;
                 pctfield.forEach(pct => {
-                    field[pct] = parseFloat(field[pct]);
+                    if (!this.suppressBottomBar || (pct == editField)) {
+                        field[pct] = parseFloat(field[pct]);
+                    }
                 });
 
                 // Revert formatting for time fields
                 let timefield = this.timeFieldArray;
                 timefield.forEach(time => {
-                    if (field[time]) {
-                        field[time] = this.convertTime(field[time]);
+                    if (!this.suppressBottomBar || (time == editField)) {
+                        if (field[time]) {
+                            field[time] = this.convertTime(field[time]);
+                        }
                     }
                 });                
 
                 // Repeat offset for date fields (v3.4.5)
                 let datefield = this.dateFieldArray;
                 datefield.forEach(date => {
-                    if (field[date]) {
-                        let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
-                        let rd = new Date();
-                        field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                    if (!this.suppressBottomBar || (date == editField)) {
+                        if (field[date] && field[date].slice(-1) != "Z") {          //Don't process if date has been converted to datetime because of TypeAttributes (v4.0.6)
+                            let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
+                            let rd = new Date();
+                            field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                        }
                     }
                 });
 
@@ -1490,6 +1526,7 @@ export default class Datatable extends LightningElement {
         
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
         if(this.isSerializedRecordData) {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
@@ -2151,7 +2188,7 @@ export default class Datatable extends LightningElement {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
         }
-        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+
         console.log('outputSelectedRows', this.outputSelectedRows.length, this.outputSelectedRows);
         console.log('outputEditedRows',this.outputEditedRows.length, this.outputEditedRows);
 

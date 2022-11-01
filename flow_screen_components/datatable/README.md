@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)   
-[Version 4.0.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000003rUyKQAU)
+[Version 4.0.11 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)   
+[Version 4.0.11 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,48 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes
+ 
+## 09/09/22 -  Eric Smith -     Version 4.0.11
+**Bug Fixes:**  
+-   Fixed Version # display in CPE  
+  
+## 09/09/22 -  Eric Smith -     Version 4.0.10
+**Bug Fixes:**  
+-   Fixed URL for links in Flow Builder for Objects w/ a standard name field  
+-   Fixed intermittent failure when closing the Column Wizard flow modal  
+  
+## 09/07/22 -  Eric Smith -     Version 4.0.9
+**Bug Fixes:**  
+-   Get correct clickable links for LWR Experience Sites 
+-   Fixed intermittant error with isDisableSuppressBottomBar
+-   Winter 23 - Fixed clickable links while running in the Flow Builder
+-   Winter 23 - numberOfRowsEdited now outputs the correct value
+-   Winter 23 - Fixed datetime columns not displaying any values
+-   Test Class fix for ers_DatatableController
+-   Multiple date field edits will no longer clear the edited rows output when the bottom bar is suppressed
+ 
+## 07/09/22 -  Eric Smith -     Version 4.0.8
+**Bug Fixes:**  
+-   Removed Virtual Rendering as it would not display tables with a single record 
+ 
+## 07/07/22 -  Eric Smith -     Version 4.0.7
+**Updates:** 
+-   Removed View All and Modify All Permissions on the FlowTableViewDefinition Object in the included Permission Set
+ 
+**Bug Fixes:** 
+-   Fixed issue with 4.0.6 package being released as a beta 
+ 
+## 07/04/22 -  Eric Smith -     Version 4.0.6(beta) 
+**Updates:** 
+-   Enabled the new Virtual Rendering attributes to ensure smooth scrolling (New in Summer ’22) 
+-   Added link support for Enhanced Domain orgs when running in a Sandbox or in the Flow Builder 
+ 
+**Bug Fixes:** 
+-   Fixed the ability to edit date values when date columns are using Type Attributes 
+ 
+## 06/29/22 -  Eric Smith -     Version 4.0.6 
+**Updates:** 
+-   Removed View All and Modify All Permissions on the FlowTableViewDefinition Object in the included Permission Set
  
 ## 05/22/22 -  Eric Smith -     Version 4.0.5 
 **Updates:** 

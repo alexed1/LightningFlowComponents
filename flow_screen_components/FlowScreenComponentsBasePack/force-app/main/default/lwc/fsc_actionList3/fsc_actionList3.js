@@ -1,15 +1,20 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import flowLabels from '@salesforce/apex/usf3.FlexCardController.getFlowLabel';
+import fsc_modalFlow from 'c/fsc_modalFlow';
 
-export default class fsc_ActionList extends LightningElement {
+export default class fsc_ActionList3 extends LightningElement {
+
+    @api
+    availableActions = [];
+
     @api
     flowNames;
 
     @api 
     recordId;
     
-    @track
-    openModal = false;
+   // @track
+    //openModal = false;
 
     visibleFlows = [];
 
@@ -30,6 +35,15 @@ export default class fsc_ActionList extends LightningElement {
 
     @track
     flowData = [];
+
+    @track
+    flowParams = [];
+
+    
+    flowName;
+
+    
+    flowNameToInvoke;
 
     connectedCallback() {
         this.removeDuplicateFlows();
@@ -55,35 +69,39 @@ export default class fsc_ActionList extends LightningElement {
             this.visibleFlows = Array.from(new Set(flows));
         }
        
-    }
-
-
-    showModal(){
-        this.openModal = true;
-    }
-
-    closeModal() {
-        this.openModal = false;
-        console.log('closing modal');
-    }
+    }  
 
     launchFlow(event) {
         let flowName = event.currentTarget.dataset.value;
         this.flowNameToInvoke = flowName;
-        this.showModal();
+        this.openModal();
+        console.log('flow name: ' + this.flowNameToInvoke);
     }
 
     launchFlowMenu(event) {
         let flowName = event.detail.value;
         this.flowNameToInvoke = flowName;
-        this.showModal();
+        this.openModal();
+        console.log('flow name: ' + this.flowNameToInvoke);
     }
+
+   async openModal() {
     
-    handleFlowStatusChange(event) {
-        console.log('flow status change:');
-        console.log(JSON.stringify(event.detail));
+    const result = await fsc_modalFlow.open({
+        flowNameToInvoke : this.flowNameToInvoke,
+        flowParams :  [
+                {
+                    name: 'recordId',
+                    type: 'String',
+                    value: this.recordId || ''
+                },
+                
+            ],
         
-    }
+        flowFinishBehavior : 'NONE'
+    });
+    console.log(result);
+}      
 
     get displayMenu() {                
             if(this.choiceType == 'menu')
@@ -96,10 +114,7 @@ export default class fsc_ActionList extends LightningElement {
         return true;
         return false;        
 }
-              
-    get flowParams() {
-        let params = [{name: 'recordId', type: 'String', value: this.recordId || ''}];
-        console.log('params is: ' + params);
-        return JSON.stringify(params);
-    }
+
+      
+       
 }

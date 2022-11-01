@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <description>Key Prefix of the WhatId / Related To field value</description>
+        <name>relatedToKeyPrefix</name>
+        <dataType>String</dataType>
+        <expression>LEFT({!$Record.WhatId},3)</expression>
+    </formulas>
+    <interviewLabel>Set Related To Fields {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Task: Set Related To Fields</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>RelatedToEntityDefinition</name>
+        <label>RelatedToEntityDefinition</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Task_s_Related_To_Type_Field</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>KeyPrefix</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>relatedToKeyPrefix</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>KeyPrefix</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>EntityDefinition</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Set_Task_s_Related_To_Type_Field</name>
+        <label>Set Task&apos;s Related To Type Field</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Related_To_Type__c</field>
+            <value>
+                <elementReference>RelatedToEntityDefinition.QualifiedApiName</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>RelatedToEntityDefinition</targetReference>
+        </connector>
+        <filterFormula>(ISNEW() &amp;&amp; NOT(ISBLANK({!$Record.WhatId})))
+|| ISCHANGED({!$Record.WhatId})</filterFormula>
+        <object>Task</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

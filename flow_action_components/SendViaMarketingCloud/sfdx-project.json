@@ -1,0 +1,20 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "SendViaMarketingCloud",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "SendViaMarketingCloud",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "SendViaMarketingCloud": "0Ho5G0000008ObbSAE",
+        "SendViaMarketingCloud@1.0.0-0": "04t5G0000043wpIQAQ",
+        "SendViaMarketingCloud@1.1.0-0": "04t5G0000043wsbQAA"
+    }
+}

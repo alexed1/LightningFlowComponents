@@ -41,10 +41,10 @@
             @InvocableVariable(description='Collection of Ids' required=true)
             global List<String> inputIds;
             
-            @InvocableVariable
+            @InvocableVariable(description='The object that the Ids represent' )
             global String objectName;
     
-            @InvocableVariable
+            @InvocableVariable(description='Fields to be retrieved' )
             global String fieldNames;
     
         }

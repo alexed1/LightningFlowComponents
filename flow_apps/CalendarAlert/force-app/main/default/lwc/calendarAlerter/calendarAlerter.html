@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Upcoming Meetings">
+        
+            <template for:each={eventToShowList} for:item="item">
+                <c-tracked-event-display key={item.id} item={item} oneventupdated={updateEvent}></c-tracked-event-display>
+                
+            </template>
+            <template if:true={errorText}>
+                <div>An error has occurred: {errorText}</div>
+            </template> <div>{displayStatusText}</div>
+            
+    </lightning-card>
+</template>

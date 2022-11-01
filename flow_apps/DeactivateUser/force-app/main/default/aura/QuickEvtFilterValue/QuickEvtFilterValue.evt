@@ -1,0 +1,4 @@
+<aura:event type="APPLICATION" description="Filter Value Changes" >
+    <aura:attribute name="MasterFilterValue" type="String" description="Value of the Master Filter Field" required="false"/>
+    <aura:attribute name="parent" type="String" description="ID of the parent component" required="false"/>
+</aura:event>

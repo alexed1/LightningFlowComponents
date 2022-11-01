@@ -127,8 +127,8 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get showPicklist() {
-        // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
-        return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
+        // Show if not controlled or if controlled that there are available picklist values
+        return (!this._isControlled || this._picklistOptions.length > 0);
     }
 
     set showPicklist(value) {
@@ -204,9 +204,10 @@ export default class QuickChoiceFSC extends LightningElement {
             if (this.allowNoneToBeChosen)
                 this._picklistOptions.push({label: "--None--", value: "None"});
 
+            // Set isControlled only if a controlling value was provided and there are available controller values
             this._isControlled = false;
             let controllingIndex;
-            if (Object.keys(data.controllerValues).length > 0) {
+            if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
                 this._isControlled = true;
                 controllingIndex = data.controllerValues[this._controllingPicklistValue];
             }
@@ -255,19 +256,19 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get gridClass() {
-        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center ' : 'slds-form-element__control ') + this.bottomPadding;
+        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center slds-grid_vertical-stretch ' : 'slds-form-element__control ') + this.bottomPadding;
     }
 
     get gridStyle() {
-        return this.dualColumns ? 'width:52rem' : '';
+        return this.dualColumns ? 'width: auto' : '';
     }
 
     get columnClass() {
-        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2' : 'slds-visual-picker slds-visual-picker_vertical';
+        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2 paddingFix' : 'slds-visual-picker slds-visual-picker_vertical';
     }
 
     get cardSize() {
-        return (this.dualColumns || !this.isResponsive) ? 'width:25rem' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        return (this.dualColumns || !this.isResponsive) ? 'min-height: calc(25vh - 8rem); width: auto !important' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
     }
 
     get responsiveSize() {

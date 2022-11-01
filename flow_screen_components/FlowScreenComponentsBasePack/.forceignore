@@ -3,7 +3,8 @@
 #
 
 package.xml
-**/flows
+force-app/main/default/profiles
+#**/flows
 
 # LWC configuration files
 **/jsconfig.json

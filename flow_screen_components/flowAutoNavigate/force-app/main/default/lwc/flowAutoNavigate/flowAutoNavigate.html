@@ -1,0 +1,16 @@
+<template>
+    
+   <template if:true={showTimer}>       
+    <div style="font-size:20px;text-align:center;">{timeVal}</div>
+    <lightning-formatted-rich-text class="slds-align_absolute-center" value={timerLabel}></lightning-formatted-rich-text>
+    <template if:true={showReset}>
+    <lightning-button label="Reset" onclick={reset} class="slds-align_absolute-center"></lightning-button>
+    </template>
+   </template>
+   <template if:false={showTimer}>  
+    <div style="font-size:1px;text-align:right;opacity: 0.1;">{timeVal}</div>     
+   </template> 
+
+</template>
+
+

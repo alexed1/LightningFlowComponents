@@ -94,20 +94,20 @@ public with sharing class InvocableApprovalHelper {
 	}
 
 	public class Request {
-		@InvocableVariable(label='1. Record Id' required=true)
+		@InvocableVariable(label='1. Record Id (The current Approval Request Id will be found for you)')
 		public String recordId;
 
+		@InvocableVariable(label='2. Approval Request Id (use either this or the Record Id)')
+		public String approvalRequestId;
+
 		@InvocableVariable(
-			label='2. Action, Valid values: \'Approve\', \'Reject\', \'Removed\' (Removed is for admins only)'
+			label='3. Action, Valid values: \'Approve\', \'Reject\', \'Removed\' (Removed is for admins only)'
 			required=true
 		)
 		public String action; // 'Approve', 'Reject'. 'Removed' https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_ProcessWorkitemRequest.htm#apex_Approval_ProcessWorkitemRequest_setAction
 
-		@InvocableVariable(label='3. Comments')
+		@InvocableVariable(label='4. Comments')
 		public String comments;
-
-		@InvocableVariable(label='4. Approval Request Id (if multiple might exist on same record)')
-		public String approvalRequestId;
 
 		@InvocableVariable(label='5. Next Approver Ids')
 		public List<String> nextApproverIds;

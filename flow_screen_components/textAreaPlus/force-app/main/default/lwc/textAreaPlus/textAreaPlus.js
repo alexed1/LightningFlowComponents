@@ -2,6 +2,8 @@ import { LightningElement, api, track } from "lwc";
 import { FlowAttributeChangeEvent } from "lightning/flowSupport";
 import * as share from "./tapshare.js";
 
+const SESSION_STORAGE_KEY = "tap-temp-text";
+
 // List of special characters to RTF characters
 // Required for escaping search text
 // If you find a new one, add it here
@@ -61,6 +63,7 @@ function cbToBool(value) {
 export default class TextAreaPlus extends LightningElement {
   // Flow inputs
   @api autoReplaceMap;
+  @api counterTextTemplate;
   @api disallowedSymbolsList;
   @api disallowedWordsList;
   @api label;
@@ -159,11 +162,6 @@ export default class TextAreaPlus extends LightningElement {
     return this.maxLength && this.maxLength > 0;
   }
 
-  get isLast() {
-    // returns true if this is the last element on the page
-    return share.isMaxIndex(this.index);
-  }
-
   @api
   get advancedTools() {
     // advanced tools can only be explained for rich text
@@ -214,7 +212,6 @@ export default class TextAreaPlus extends LightningElement {
 
   @api
   get value() {
-    // need to separate textValue from api property
     return this.textValue;
   }
   set value(val) {
@@ -235,14 +232,21 @@ export default class TextAreaPlus extends LightningElement {
     // Create a bulleted error message list with line breaks
     const errorMessage = `Validation Failed, please correct the following issues:
                   ${errors.map((x) => `· ${x}`).join("\r\n")}`;
-    return this.finalizeValidation(false, errorMessage);
+
+    share.setValid(this.index, false);
+    return {
+      isValid: false,
+      errorMessage
+    };
   }
 
   @api validate() {
-    const errors = [];
+    // whatever the text is, store it in the session
+    if (this.index === 0) {
+      this.storeValues();
+    }
 
-    // if this is the first element, reset the validation tracking on the singleton
-    this.prepForValidation();
+    const errors = [];
 
     // Case 1 - required has been checked, but there's not text
     if (this.required === true && this.len <= 0) {
@@ -268,7 +272,8 @@ export default class TextAreaPlus extends LightningElement {
     // If advanced tools haven't been enabled
     // Or advanced tools is enabled with warn only, we're done
     if (!this.advancedTools || this.warnOnly) {
-      return this.finalizeValidation(true);
+      this.finalizeValidation();
+      return { isValid: true };
     }
 
     // Case 3: Advanced tools only, invalid words have been used
@@ -282,31 +287,22 @@ export default class TextAreaPlus extends LightningElement {
       return this.getFailObject(errors);
     }
 
-    return this.finalizeValidation(true);
+    this.finalizeValidation();
+    return { isValid: true };
   }
 
-  // Make sure singleton validation tracking is reset correctly
-  prepForValidation() {
-    // Only applies to the first item in the index
-    if (this.index === 0) {
-      share.resetValidation();
+  // If this component is valid, track the status and confirm that all items are valid
+  finalizeValidation() {
+    share.setValid(this.index, true);
+    const tmpArr = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY));
+    if (tmpArr?.length > 0) {
+      console.log("tru", this.index, tmpArr?.length, share.getAllValid());
+      // we can detect the last element here and make sure all elements are valid.
+      // In this case, we know we'll move to the next step and can remove the stored array
+      if (this.index === tmpArr?.length - 1 && share.getAllValid()) {
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      }
     }
-  }
-
-  // Set the validation on the singleton, and reset counters so the
-  // components can retrieve the array values
-  finalizeValidation(isValid, errorMessage) {
-    share.setValid(this.index, isValid);
-    // For the last item, reset counters
-    if (this.isLast && share.getAllValid()) {
-      // Everything is valid, reset the singleton
-      // reset all arrays so we don't pick them up on the next page
-      share.reset();
-    } else if (this.isLast) {
-      // Something is invalid, reset only the counter but keep the array
-      share.resetCounter();
-    }
-    return { isValid, errorMessage };
   }
 
   // Helper for removing html tags for accurate rich text length count
@@ -334,12 +330,10 @@ export default class TextAreaPlus extends LightningElement {
       }
     }
 
-    // Assign an index from the singleton to this component
-    // in case multiple components are in the same flow
+    // Assign an index to this component in case multiple components are in the same flow
+    this.getStoredValues();
     if (!this.index) {
       this.index = share.getIndex();
-
-      // If singleton has text for this element, load it
       const txt = share.getItem(this.index);
       const obj = { value: txt, init: true };
       // use handler here so we can get error messages, blocked items, etc.
@@ -395,6 +389,7 @@ export default class TextAreaPlus extends LightningElement {
     const init = item?.init;
     // update tracked value (not api value directly)
     this.textValue = value;
+
     // update the singleton, but not on initialization
     if (!init) {
       share.setItem(this.index, value);
@@ -423,6 +418,8 @@ export default class TextAreaPlus extends LightningElement {
       return;
     }
 
+    console.log("handleTextChange", target, this.disallowedWordsList);
+
     // minimum length takes precedence over disallowed words
     if (this.minlen > 0 && this.len < this.minlen) {
       this.isValidCheck = false;
@@ -430,15 +427,14 @@ export default class TextAreaPlus extends LightningElement {
       this.errorMessage = `Minimum length of ${this.minlen} characters required`;
       return;
     }
-    this.runningBlockedInput = [];
 
+    this.runningBlockedInput = [];
     // base case, there are no disallowed symbols or words
     if (!this.disallowedSymbolsRegex && !this.disallowedWordsRegex) {
       this.isValidCheck = true;
       return;
     }
 
-    // naughty naughty
     if (this.hasBlockedItems(target.value)) {
       this.isValidCheck = false;
     }
@@ -527,6 +523,7 @@ export default class TextAreaPlus extends LightningElement {
 
   //Search and Replace Search for Value
   handleSearchReplaceChange({ target }) {
+    //TODO: Fix infinite loop, block invalid chars @ keypress
     const filteredValue = this.escapeRegExp(target.value);
     const targetValue =
       target.dataset.id === "search" ? "searchTerm" : "replaceValue";
@@ -619,5 +616,29 @@ export default class TextAreaPlus extends LightningElement {
       });
     }
     return str;
+  }
+
+  // Get the stored values from the session and put them on the singleton
+  getStoredValues() {
+    if (this.index > 0) {
+      return;
+    }
+    const tmpArr = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY));
+    if (tmpArr) {
+      share.setArr(tmpArr);
+    }
+    console.log("got session arr", tmpArr);
+  }
+
+  // Store whatever is in the singleton into the session storage
+  storeValues() {
+    if (this.index > 0) {
+      return;
+    }
+    console.log("storeValue()", share.getArr());
+    const serializedArr = JSON.stringify(share.getArr());
+    sessionStorage.setItem(SESSION_STORAGE_KEY, serializedArr);
+    share.reset();
+    console.log("stored", sessionStorage.getItem(SESSION_STORAGE_KEY));
   }
 }

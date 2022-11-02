@@ -1516,6 +1516,7 @@ export default class Datatable extends LightningElement {
                                 let rdt = Date.parse(field[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4));
                                 let rd = new Date();
                                 field[date] = new Date(rd.setTime(Number(rdt) - Number(this.timezoneOffset)));
+                                field[date] = field[date].toISOString().slice(0,10);   // Winter '23 Patch 12 fix
                             }
                         }
                         catch(err) {
@@ -2157,7 +2158,8 @@ export default class Datatable extends LightningElement {
         this.isUpdateTable = false;
         this.outputSelectedRows = [...sdata]; // Set output attribute values
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-
+        this.updateNumberOfRowsSelected(this.outputSelectedRows);   // Winter '23 Patch 12 fix
+        
 /*      // Validate Edited Rows
         let errorMessage = '';
         this.outputEditedRows.forEach(erow => {

@@ -1,15 +1,10 @@
 @isTest
 public with sharing class InvocableApprovalHelperTest {
-	@TestSetup
-	static void makeData() {
-		TestHelper.createTestData();
-	}
-
 	@isTest
 	public static void doApproveAction() {
-		Account acc = new Account(Name='testAcc');
+		Account acc = new Account(Name = 'testAcc');
 		insert acc;
-		
+
 		// Create Request Object
 		List<InvocableApprovalHelper.Request> requests = new List<InvocableApprovalHelper.Request>();
 

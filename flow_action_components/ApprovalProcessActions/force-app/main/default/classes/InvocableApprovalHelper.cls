@@ -69,42 +69,54 @@ public with sharing class InvocableApprovalHelper {
 	}
 
 	public static Id getapprovalRequestId(String recordId) {
-		String objName = ((Id) recordId).getSobjectType().getDescribe().getLocalName();
-		List<ProcessInstanceWorkitem> piws = [
-			SELECT
-				id,
-				ActorId,
-				CreatedDate,
-				OriginalActorId,
-				OriginalActor.name,
-				ProcessInstanceId,
-				ProcessInstance.Status,
-				ProcessInstance.SubmittedById,
-				ProcessInstance.ProcessDefinition.TableEnumOrId,
-				ProcessInstance.ProcessDefinition.Type
-			FROM ProcessInstanceWorkitem
-			WHERE
-				ProcessInstance.TargetObjectId = :recordId
-				AND ProcessInstance.ProcessDefinition.Type = 'Approval'
-				AND ProcessInstance.ProcessDefinition.TableEnumOrId = :objName
-				AND ProcessInstance.Status = 'Pending'
-			LIMIT 1
-		];
-		return piws.isEmpty() ? null : piws[0].Id;
+		return new NoSharing().getapprovalRequestId(recordId);
+	}
+
+	public without sharing class NoSharing {
+		public Id getapprovalRequestId(String recordId) {
+			String objName = ((Id) recordId).getSobjectType().getDescribe().getLocalName();
+			String userId = UserInfo.getUserId();
+			List<ProcessInstanceWorkitem> piws = [
+				SELECT Id
+				FROM ProcessInstanceWorkitem
+				WHERE
+					ProcessInstance.TargetObjectId = :recordId
+					AND ProcessInstance.ProcessDefinition.Type = 'Approval'
+					AND ProcessInstance.ProcessDefinition.TableEnumOrId = :objName
+					AND ProcessInstance.Status = 'Pending'
+					AND ActorId = :UserInfo.getUserId()
+				LIMIT 1
+			];
+
+			// the user is allowed to approve/reject if the user is not a listed approver but has read all to the approval object
+			if (piws.isEmpty() && hasReadAllPermission(objName)) {
+				piws = [
+					SELECT id
+					FROM ProcessInstanceWorkitem
+					WHERE
+						ProcessInstance.TargetObjectId = :recordId
+						AND ProcessInstance.ProcessDefinition.Type = 'Approval'
+						AND ProcessInstance.ProcessDefinition.TableEnumOrId = :objName
+						AND ProcessInstance.Status = 'Pending'
+					LIMIT 1
+				];
+			}
+			return piws.isEmpty() ? null : piws[0].Id;
+		}
 	}
 
 	public class Request {
-		@InvocableVariable(label='1. Record Id (The current Approval Request Id will be found for you)')
-		public String recordId;
-
-		@InvocableVariable(label='2. Approval Request Id (use either this or the Record Id)')
-		public String approvalRequestId;
-
 		@InvocableVariable(
-			label='3. Action, Valid values: \'Approve\', \'Reject\', \'Removed\' (Removed is for admins only)'
+			label='1. Action, Valid values: \'Approve\', \'Reject\', \'Removed\' (Removed is for admins only)'
 			required=true
 		)
 		public String action; // 'Approve', 'Reject'. 'Removed' https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_ProcessWorkitemRequest.htm#apex_Approval_ProcessWorkitemRequest_setAction
+
+		@InvocableVariable(label='2. Record Id (The current Approval Request Id will be found for you)')
+		public String recordId;
+
+		@InvocableVariable(label='3. Approval Request Id (use either this or the Record Id)')
+		public String approvalRequestId;
 
 		@InvocableVariable(label='4. Comments')
 		public String comments;
@@ -130,5 +142,21 @@ public with sharing class InvocableApprovalHelper {
 			this.errorString = getErrorInfo(approvalResult.getErrors()); //warning. only hacking out the first error
 			this.currentApprovalProcessStatus = approvalResult.getInstanceStatus();
 		}
+	}
+
+	// report whether a given user has 'Read all' permission on a particular type of sObject
+	public static Boolean hasReadAllPermission(String sObjectName) {
+		return ![
+				SELECT Id
+				FROM PermissionSetAssignment
+				WHERE
+					PermissionSetId IN (
+						SELECT ParentId
+						FROM ObjectPermissions
+						WHERE SObjectType = :sObjectName AND PermissionsViewAllRecords = TRUE
+					)
+					AND Assignee.Id = :UserInfo.getUserId()
+			]
+			.isEmpty();
 	}
 }

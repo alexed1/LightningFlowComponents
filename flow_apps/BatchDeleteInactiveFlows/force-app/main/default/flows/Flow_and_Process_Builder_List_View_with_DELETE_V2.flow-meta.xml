@@ -10,7 +10,6 @@
         <connector>
             <targetReference>List_View_and_Delete2</targetReference>
         </connector>
-        <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
             <name>lowerBoundary</name>
             <value>
@@ -296,7 +295,6 @@ CASE({!Status},
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -342,7 +340,7 @@ CASE({!Status},
             <choiceReferences>shade</choiceReferences>
             <choiceReferences>default</choiceReferences>
             <dataType>String</dataType>
-            <defaultSelectedChoiceReference>warning</defaultSelectedChoiceReference>
+            <defaultSelectedChoiceReference>shade</defaultSelectedChoiceReference>
             <fieldText>Select Highlight Theme for Active Flow Rows</fieldText>
             <fieldType>DropdownBox</fieldType>
             <isRequired>true</isRequired>

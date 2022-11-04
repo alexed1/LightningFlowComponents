@@ -7,7 +7,6 @@
         <locationY>518</locationY>
         <actionName>c:navigateEverywhereLFA</actionName>
         <actionType>component</actionType>
-        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>destinationType</name>
             <value>
@@ -44,7 +43,7 @@
         <choiceText>List View Only</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Flow_and_Process_Builder_List_View</stringValue>
+            <stringValue>Flow_and_Process_Builder_List_View_V2</stringValue>
         </value>
     </choices>
     <choices>
@@ -52,7 +51,7 @@
         <choiceText>List View with Option to Delete Inactive Versions</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Flow_and_Process_Builder_List_View_with_DELETE</stringValue>
+            <stringValue>Flow_and_Process_Builder_List_View_with_DELETE_V2</stringValue>
         </value>
     </choices>
     <choices>
@@ -60,7 +59,7 @@
         <choiceText>Select a Single Flow or PB with Option to Delete Inactive Versions</choiceText>
         <dataType>String</dataType>
         <value>
-            <stringValue>Flow_and_Process_Builder_Select_with_DELETE</stringValue>
+            <stringValue>Flow_and_Process_Builder_Select_with_DELETE_V2</stringValue>
         </value>
     </choices>
     <formulas>

@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.11 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)   
-[Version 4.0.11 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)
+[Version 4.0.12 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wt5QAA)   
+[Version 4.0.12 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wt5QAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,6 +72,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes
  
+ ## 11/02/22 -  Eric Smith -    Version 4.0.12
+**Bug Fixes:**  
+-   Fixed .slice is not a function error  
+-   PR #1229 - fix regression bug with disableNavigateNext and suppressBottomBar attributes (JonTronki)
+-   Fixed issue caused by the Winter 23 Patch 12 where a table with a Date column would cause an error if a single row was selected or any record was edited
+  
 ## 09/09/22 -  Eric Smith -     Version 4.0.11
 **Bug Fixes:**  
 -   Fixed Version # display in CPE  

@@ -1,9 +1,8 @@
 import { LightningElement, api, track, wire } from 'lwc';
 import flowLabels from '@salesforce/apex/usf3.FlexCardController.getFlowLabel';
-import {FlowAttributeChangeEvent,FlowNavigationNextEvent,FlowNavigationFinishEvent} from 'lightning/flowSupport';
-import LightningModal from 'lightning/modal';
+import fsc_modalFlow from 'c/fsc_modalFlow';
 
-export default class fsc_ActionList extends LightningModal {
+export default class fsc_ActionList3 extends LightningElement {
 
     @api
     availableActions = [];
@@ -14,8 +13,8 @@ export default class fsc_ActionList extends LightningModal {
     @api 
     recordId;
     
-    @track
-    openModal = false;
+   // @track
+    //openModal = false;
 
     visibleFlows = [];
 
@@ -36,6 +35,15 @@ export default class fsc_ActionList extends LightningModal {
 
     @track
     flowData = [];
+
+    @track
+    flowParams = [];
+
+    
+    flowName;
+
+    
+    flowNameToInvoke;
 
     connectedCallback() {
         this.removeDuplicateFlows();
@@ -61,53 +69,39 @@ export default class fsc_ActionList extends LightningModal {
             this.visibleFlows = Array.from(new Set(flows));
         }
        
-    }
-
-
-    showModal(){
-        this.openModal = true;
-        
-    }
-
-    closeModal() {
-        this.openModal = false;
-        console.log('closing modal');
-    }
+    }  
 
     launchFlow(event) {
         let flowName = event.currentTarget.dataset.value;
         this.flowNameToInvoke = flowName;
-        this.showModal();
+        this.openModal();
+        console.log('flow name: ' + this.flowNameToInvoke);
     }
 
     launchFlowMenu(event) {
         let flowName = event.detail.value;
         this.flowNameToInvoke = flowName;
-        this.showModal();
-    }
-    
-    handleFlowStatusChange(event) {
-        console.log('flow status change:');
-        console.log(JSON.stringify(event.detail));
-        if (this.availableActions.find((action) => action === 'NEXT')) {
-            // navigate to the next screen
-            const navigateNextEvent = new FlowNavigationNextEvent();
-            this.dispatchEvent(navigateNextEvent);
-            console.log('NEXT')
-        }
-        if (event.detail.status === 'FINISHED') {           
-            this.closeModal();
-            console.log('FINISHED')
-        }
-        //if (event.detail.status === 'FINISHED') 
-         //   this.flowFinishBehavior === 'NONE';
-           // this.closeModal();
-        
-        
-        
+        this.openModal();
+        console.log('flow name: ' + this.flowNameToInvoke);
     }
 
-   
+   async openModal() {
+    
+    const result = await fsc_modalFlow.open({
+        flowNameToInvoke : this.flowNameToInvoke,
+        flowParams :  [
+                {
+                    name: 'recordId',
+                    type: 'String',
+                    value: this.recordId || ''
+                },
+                
+            ],
+        
+        flowFinishBehavior : 'NONE'
+    });
+    console.log(result);
+}      
 
     get displayMenu() {                
             if(this.choiceType == 'menu')
@@ -120,17 +114,7 @@ export default class fsc_ActionList extends LightningModal {
         return true;
         return false;        
 }
-              
-    get flowParams() {
-        return [
-            {
-                name: 'recordId',
-                type: 'String',
-                value: this.recordId || ''
-            },
-            
-        ];
-    }
-        
+
+      
        
 }

@@ -3,6 +3,8 @@ import { FlowAttributeChangeEvent } from "lightning/flowSupport";
 
 const SESSION_STORAGE_KEY = "text-area-plus-temp-text";
 
+const SESSION_STORAGE_KEY = "tap-temp-text";
+
 // List of special characters to RTF characters
 // Required for escaping search text
 // If you find a new one, add it here
@@ -192,7 +194,9 @@ export default class TextAreaPlus extends LightningElement {
   getFailObject(errors) {
     // Create a bulleted error message list with line breaks
     const errorMessage = `Validation Failed, please correct the following issues:
-                  ${errors.map(x => `· ${x}`).join('\r\n')}`;
+                  ${errors.map((x) => `· ${x}`).join("\r\n")}`;
+
+    share.setValid(this.index, false);
     return {
       isValid: false,
       errorMessage
@@ -201,8 +205,10 @@ export default class TextAreaPlus extends LightningElement {
 
   @api validate() {
     // whatever the text is, store it in the session
-    this.storeValue();
-    this.value = this.textValue;
+    if (this.index === 0) {
+      this.storeValues();
+    }
+
     const errors = [];
 
     // Case 1 - required has been checked, but there's not text
@@ -229,6 +235,7 @@ export default class TextAreaPlus extends LightningElement {
     // If advanced tools haven't been enabled
     // Or advanced tools is enabled with warn only, we're done
     if (!this.advancedTools || this.warnOnly) {
+      this.finalizeValidation();
       return { isValid: true };
     }
 
@@ -241,9 +248,22 @@ export default class TextAreaPlus extends LightningElement {
       return this.getFailObject(errors);
     }
 
-    // If we're here, it's valid
+    this.finalizeValidation();
     return { isValid: true };
+  }
 
+  // If this component is valid, track the status and confirm that all items are valid
+  finalizeValidation() {
+    share.setValid(this.index, true);
+    const tmpArr = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY));
+    if (tmpArr?.length > 0) {
+      console.log("tru", this.index, tmpArr?.length, share.getAllValid());
+      // we can detect the last element here and make sure all elements are valid.
+      // In this case, we know we'll move to the next step and can remove the stored array
+      if (this.index === tmpArr?.length - 1 && share.getAllValid()) {
+        sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      }
+    }
   }
 
   // Helper for removing html tags for accurate rich text length count
@@ -268,8 +288,22 @@ export default class TextAreaPlus extends LightningElement {
       this.setRegex('Words', x => `\\b${x}\\b`);
 
       if (this.autoReplaceMap != undefined) {
-          this.replaceMap = JSON.parse(this.autoReplaceMap);
-          this.autoReplaceEnabled = true;
+        this.replaceMap = JSON.parse(this.autoReplaceMap);
+        this.autoReplaceEnabled = true;
+      }
+    }
+
+    // Assign an index to this component in case multiple components are in the same flow
+    this.getStoredValues();
+    if (!this.index) {
+      this.index = share.getIndex();
+      const txt = share.getItem(this.index);
+      const obj = { value: txt, init: true };
+      // use handler here so we can get error messages, blocked items, etc.
+      if (this.plainText && txt) {
+        this.handleChange({ detail: obj });
+      } else if (this.richText && txt) {
+        this.handleTextChange({ target: obj });
       }
     }
   }
@@ -319,6 +353,12 @@ export default class TextAreaPlus extends LightningElement {
   // Common text value updater for Plan or Rich text
   updateText(value) {
     this.textValue = value;
+
+    // update the singleton, but not on initialization
+    if (!init) {
+      share.setItem(this.index, value);
+    }
+
     // required for Flow
     const attributeChangeEvent = new FlowAttributeChangeEvent(
       "value",
@@ -341,6 +381,8 @@ export default class TextAreaPlus extends LightningElement {
     if (!this.advancedTools) {
       return;
     }
+
+    console.log("handleTextChange", target, this.disallowedWordsList);
 
     // minimum length takes precedence over disallowed words
     if (this.minlen > 0 && this.len < this.minlen) {
@@ -433,7 +475,7 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   //Search and Replace Search for Value
-  handleSearchReplaceChange({target}) {
+  handleSearchReplaceChange({ target }) {
     //TODO: Fix infinite loop, block invalid chars @ keypress
     const filteredValue = this.escapeRegExp(target.value);
     const targetValue = target.dataset.id === 'search' ? 'searchTerm' : 'replaceValue';
@@ -526,43 +568,27 @@ export default class TextAreaPlus extends LightningElement {
     return str;
   }
 
-  popStoredValue() {
-    // Text values should be on the session storage in case validation fails
-    // pop from the stack of values in order
-    const tmpArr = this.sessionArray;
-    if (tmpArr.length > 0) {
-      this.value = tmpArr.shift();
-      if (tmpArr.length > 0) {
-        sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(tmpArr));
-      } else {
-        sessionStorage.removeItem(SESSION_STORAGE_KEY); //clear value after selection
-      }
+  // Get the stored values from the session and put them on the singleton
+  getStoredValues() {
+    if (this.index > 0) {
+      return;
     }
-  }
-
-  storeValue() {
-    let tmpArr = this.sessionArray;
-    tmpArr.push(this.value);
-    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(tmpArr));
-  }
-
-  // return a valid array, otherwise, remove session storage
-  get sessionArray() {
-    const tmpArrStr = sessionStorage?.getItem(SESSION_STORAGE_KEY);
-    let tmpArr;
-    if (tmpArrStr) {
-      try {
-        tmpArr = JSON.parse(tmpArrStr);
-        if (Array.isArray(tmpArr)) {
-          // This is valid - return the deserialized array
-          return tmpArr;
-        }
-      } catch (e) {
-        console.log('error parsing session info')
-      }
+    const tmpArr = JSON.parse(sessionStorage.getItem(SESSION_STORAGE_KEY));
+    if (tmpArr) {
+      share.setArr(tmpArr);
     }
-    sessionStorage.removeItem(SESSION_STORAGE_KEY);
-    return [];
+    console.log("got session arr", tmpArr);
   }
 
+  // Store whatever is in the singleton into the session storage
+  storeValues() {
+    if (this.index > 0) {
+      return;
+    }
+    console.log("storeValue()", share.getArr());
+    const serializedArr = JSON.stringify(share.getArr());
+    sessionStorage.setItem(SESSION_STORAGE_KEY, serializedArr);
+    share.reset();
+    console.log("stored", sessionStorage.getItem(SESSION_STORAGE_KEY));
+  }
 }

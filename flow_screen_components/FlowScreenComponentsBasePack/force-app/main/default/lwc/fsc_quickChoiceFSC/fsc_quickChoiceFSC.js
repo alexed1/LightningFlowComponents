@@ -51,6 +51,7 @@ export default class QuickChoiceFSC extends LightningElement {
     @api iconSize;
     @api navOnSelect;
     @api isResponsive;
+    @api isSameHeight;
 
     //-------------For displayMode = Picklist or Radio
     @api style_width = 320;
@@ -260,7 +261,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get gridStyle() {
-        return this.dualColumns ? 'width: auto' : '';
+        return this.dualColumns ? 'width: auto;' : '';
     }
 
     get columnClass() {
@@ -268,7 +269,14 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     get cardSize() {
-        return (this.dualColumns || !this.isResponsive) ? 'min-height: calc(25vh - 8rem); width: auto !important' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        if (this.isSameHeight && ( this.dualColumns || !this.isResponsive)) {
+            return 'min-height: calc(25vh - 8rem); width: auto !important';
+        } else if (this.dualColumns || this.isResponsive) {
+            return 'width: auto !important';
+        } else {
+            return 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        }
+
     }
 
     get responsiveSize() {

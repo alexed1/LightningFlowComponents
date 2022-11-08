@@ -272,7 +272,7 @@ export default class QuickChoiceFSC extends LightningElement {
         if (this.isSameHeight && ( this.dualColumns || !this.isResponsive)) {
             return 'min-height: calc(25vh - 8rem); width: auto !important';
         } else if (this.dualColumns || this.isResponsive) {
-            return 'width: auto !important';
+            return 'height: min-content; width: auto !important';
         } else {
             return 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
         }

@@ -1,0 +1,23 @@
+{
+  "orgName": "aedelstein company",
+  "edition": "Developer",
+  "features": [
+    "LightningServiceConsole",
+    "ServiceCloud",
+    "ServiceUser",
+    "Knowledge",
+    "Entitlements"
+],
+"settings": {
+    "lightningExperienceSettings": {
+        "enableS1DesktopEnabled": true
+    },
+    "mobileSettings": {
+        "enableS1EncryptedStoragePref2": false
+    },
+    "knowledgeSettings": {
+        "enableKnowledge": true,
+        "enableLightningKnowledge": true
+    }
+}
+}

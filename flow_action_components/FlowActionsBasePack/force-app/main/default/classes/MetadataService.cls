@@ -1362,17 +1362,19 @@ global class MetadataService {
 		private String[] locationY_type_info=new String[]{'locationY',SOAP_M_URI,null,'1','1','false'};
 		global MetadataService.FlowConnector connector;
 		global MetadataService.FlowConnector faultConnector;
+		global String filterLogic;
 		global MetadataService.FlowRecordFilter[] filters;
 		global String inputReference;
 		global String object_x;
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
+		private String[] filterLogic_type_info = new String[]{'filterLogic',SOAP_M_URI,null,'0','1','false'};
 		private String[] filters_type_info=new String[]{'filters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] inputReference_type_info=new String[]{'inputReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filters','inputReference','object_x'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filterLogic', 'filters','inputReference','object_x'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -2095,6 +2097,7 @@ global class MetadataService {
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'1','1','false'};
 		global String[] choiceReferences;
 		global String dataType;
+		global Flow.FlowDataTypeMapping[] dataTypeMappings;
 		global String defaultSelectedChoiceReference;
 		global MetadataService.FlowElementReferenceOrValue defaultValue;
 		global String extensionName;
@@ -2102,13 +2105,16 @@ global class MetadataService {
 		global String fieldType;
 		global String helpText;
 		global MetadataService.FlowScreenFieldInputParameter[] inputParameters;
+		global String inputsOnNextNavToAssocScrn;
 		global Boolean isRequired;
 		global Boolean isVisible;
 		global MetadataService.FlowScreenFieldOutputParameter[] outputParameters;
 		global Integer scale;
+		global Boolean storeOutputAutomatically;
 		global MetadataService.FlowInputValidationRule validationRule;
 		private String[] choiceReferences_type_info=new String[]{'choiceReferences',SOAP_M_URI,null,'0','-1','false'};
 		private String[] dataType_type_info=new String[]{'dataType',SOAP_M_URI,null,'0','1','false'};
+		private String[] dataTypeMappings_type_info = new String[]{'dataTypeMappings',SOAP_M_URI,null,'0','-1','false'};
 		private String[] defaultSelectedChoiceReference_type_info=new String[]{'defaultSelectedChoiceReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] defaultValue_type_info=new String[]{'defaultValue',SOAP_M_URI,null,'0','1','false'};
 		private String[] extensionName_type_info=new String[]{'extensionName',SOAP_M_URI,null,'0','1','false'};
@@ -2116,14 +2122,16 @@ global class MetadataService {
 		private String[] fieldType_type_info=new String[]{'fieldType',SOAP_M_URI,null,'1','1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
 		private String[] inputParameters_type_info=new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
+		private String[] inputsOnNextNavToAssocScrn_type_info = new String[]{'inputsOnNextNavToAssocScrn',SOAP_M_URI,null,'0','1','false'};
 		private String[] isRequired_type_info=new String[]{'isRequired',SOAP_M_URI,null,'0','1','false'};
 		private String[] isVisible_type_info=new String[]{'isVisible',SOAP_M_URI,null,'0','1','false'};
 		private String[] outputParameters_type_info=new String[]{'outputParameters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] scale_type_info=new String[]{'scale',SOAP_M_URI,null,'0','1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] validationRule_type_info=new String[]{'validationRule',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceReferences','dataType','defaultSelectedChoiceReference','defaultValue','extensionName','fieldText','fieldType','helpText','inputParameters','isRequired','isVisible','outputParameters','scale','validationRule'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceReferences','dataType','dataTypeMappings', 'defaultSelectedChoiceReference','defaultValue','extensionName','fieldText','fieldType','helpText','inputParameters','inputsOnNextNavToAssocScrn', 'isRequired','isVisible','outputParameters','scale', 'storeOutputAutomatically','validationRule'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -4812,15 +4820,17 @@ global class MetadataService {
 		global MetadataService.FlowInputFieldAssignment[] inputAssignments;
 		global String inputReference;
 		global String object_x;
+		global Boolean storeOutputAutomatically;
 		private String[] assignRecordIdToReference_type_info=new String[]{'assignRecordIdToReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
 		private String[] inputAssignments_type_info=new String[]{'inputAssignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] inputReference_type_info=new String[]{'inputReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'0','1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignRecordIdToReference','connector','faultConnector','inputAssignments','inputReference','object_x'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignRecordIdToReference','connector','faultConnector','inputAssignments','inputReference','object_x', 'storeOutputAutomatically'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -7047,11 +7057,13 @@ global class MetadataService {
 		global String type='FlowConnector';
 		global MetadataService.FlowMetadataValue[] processMetadataValues;
 		private String[] processMetadataValues_type_info=new String[]{'processMetadataValues',SOAP_M_URI,null,'0','-1','false'};
+		global Boolean isGoTo;
 		global String targetReference;
+		private String[] isGoTo_type_info = new String[]{'isGoTo',SOAP_M_URI,null,'0','1','false'};
 		private String[] targetReference_type_info=new String[]{'targetReference',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues', 'targetReference'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues', 'isGoTo','targetReference'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -7190,26 +7202,32 @@ global class MetadataService {
 		global Boolean assignNullValuesIfNoRecordsFound;
 		global MetadataService.FlowConnector connector;
 		global MetadataService.FlowConnector faultConnector;
+		global String filterLogic;
 		global MetadataService.FlowRecordFilter[] filters;
+		global Boolean getFirstRecordOnly;
 		global String object_x;
 		global MetadataService.FlowOutputFieldAssignment[] outputAssignments;
 		global String outputReference;
 		global String[] queriedFields;
 		global String sortField;
 		global String sortOrder;
+		global Boolean storeOutputAutomatically;
 		private String[] assignNullValuesIfNoRecordsFound_type_info=new String[]{'assignNullValuesIfNoRecordsFound',SOAP_M_URI,null,'0','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
+		private String[] filterLogic_type_info = new String[]{'filterLogic',SOAP_M_URI,null,'0','1','false'};
 		private String[] filters_type_info=new String[]{'filters',SOAP_M_URI,null,'0','-1','false'};
+		private String[] getFirstRecordOnly_type_info = new String[]{'getFirstRecordOnly',SOAP_M_URI,null,'0','1','false'};
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'1','1','false'};
 		private String[] outputAssignments_type_info=new String[]{'outputAssignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] outputReference_type_info=new String[]{'outputReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] queriedFields_type_info=new String[]{'queriedFields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] sortField_type_info=new String[]{'sortField',SOAP_M_URI,null,'0','1','false'};
 		private String[] sortOrder_type_info=new String[]{'sortOrder',SOAP_M_URI,null,'0','1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignNullValuesIfNoRecordsFound','connector','faultConnector','filters','object_x','outputAssignments','outputReference','queriedFields','sortField','sortOrder'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignNullValuesIfNoRecordsFound','connector','faultConnector', 'filterLogic', 'filters','getFirstRecordOnly','object_x','outputAssignments','outputReference','queriedFields','sortField','sortOrder', 'storeOutputAutomatically'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -8163,6 +8181,8 @@ global class MetadataService {
 		global MetadataService.FlowConnector connector;
 		global MetadataService.FlowScreenField[] fields;
 		global String helpText;
+		global String nextOrFinishButtonLabel;
+		global String pauseButtonLabel;
 		global String pausedText;
 		global MetadataService.FlowScreenRule[] rules;
 		global Boolean showFooter;
@@ -8173,13 +8193,15 @@ global class MetadataService {
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] fields_type_info=new String[]{'fields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
+		private String[] nextOrFinishButtonLabel_type_info = new String[]{'nextOrFinishButtonLabel',SOAP_M_URI,null,'0','1','false'};
+        private String[] pauseButtonLabel_type_info = new String[]{'pauseButtonLabel',SOAP_M_URI,null,'0','1','false'};
 		private String[] pausedText_type_info=new String[]{'pausedText',SOAP_M_URI,null,'0','1','false'};
 		private String[] rules_type_info=new String[]{'rules',SOAP_M_URI,null,'0','-1','false'};
 		private String[] showFooter_type_info=new String[]{'showFooter',SOAP_M_URI,null,'0','1','false'};
 		private String[] showHeader_type_info=new String[]{'showHeader',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'allowBack','allowFinish','allowPause','connector','fields','helpText','pausedText','rules','showFooter','showHeader'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'allowBack','allowFinish','allowPause','connector','fields','helpText','nextOrFinishButtonLabel', 'pauseButtonLabel', 'pausedText','rules','showFooter','showHeader'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -8374,18 +8396,24 @@ global class MetadataService {
 		global String actionName;
 		global String actionType;
 		global MetadataService.FlowConnector connector;
+		global Flow.FlowDataTypeMapping[] dataTypeMappings;
 		global MetadataService.FlowConnector faultConnector;
+		global String flowTransactionModel;
 		global MetadataService.FlowActionCallInputParameter[] inputParameters;
 		global MetadataService.FlowActionCallOutputParameter[] outputParameters;
+		global Boolean storeOutputAutomatically;
 		private String[] actionName_type_info=new String[]{'actionName',SOAP_M_URI,null,'1','1','false'};
 		private String[] actionType_type_info=new String[]{'actionType',SOAP_M_URI,null,'1','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
+		private String[] dataTypeMappings_type_info = new String[]{'dataTypeMappings',SOAP_M_URI,null,'0','-1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
+		private String[] flowTransactionModel_type_info = new String[]{'flowTransactionModel',SOAP_M_URI,null,'0','1','false'};
 		private String[] inputParameters_type_info=new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] outputParameters_type_info=new String[]{'outputParameters',SOAP_M_URI,null,'0','-1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'actionName','actionType','connector','faultConnector','inputParameters','outputParameters'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'actionName','actionType','connector', 'dataTypeMappings','faultConnector','flowTransactionModel', 'inputParameters','outputParameters', 'storeOutputAutomatically'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -8981,13 +9009,15 @@ global class MetadataService {
 		global String flowName;
 		global MetadataService.FlowSubflowInputAssignment[] inputAssignments;
 		global MetadataService.FlowSubflowOutputAssignment[] outputAssignments;
+		global Boolean storeOutputAutomatically;
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] flowName_type_info=new String[]{'flowName',SOAP_M_URI,null,'1','1','false'};
 		private String[] inputAssignments_type_info=new String[]{'inputAssignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] outputAssignments_type_info=new String[]{'outputAssignments',SOAP_M_URI,null,'0','-1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','flowName','inputAssignments','outputAssignments'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','flowName','inputAssignments','outputAssignments', 'storeOutputAutomatically'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -14352,19 +14382,21 @@ global class MetadataService {
 		private String[] locationY_type_info=new String[]{'locationY',SOAP_M_URI,null,'1','1','false'};
 		global MetadataService.FlowConnector connector;
 		global MetadataService.FlowConnector faultConnector;
+		global String filterLogic;
 		global MetadataService.FlowRecordFilter[] filters;
 		global MetadataService.FlowInputFieldAssignment[] inputAssignments;
 		global String inputReference;
 		global String object_x;
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
+		private String[] filterLogic_type_info = new String[]{'filterLogic',SOAP_M_URI,null,'0','1','false'};
 		private String[] filters_type_info=new String[]{'filters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] inputAssignments_type_info=new String[]{'inputAssignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] inputReference_type_info=new String[]{'inputReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filters','inputAssignments','inputReference','object_x'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'connector','faultConnector','filterLogic', 'filters','inputAssignments','inputReference','object_x'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')

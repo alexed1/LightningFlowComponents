@@ -1,8 +1,8 @@
-
 global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStart {
+        global String type='FlowStart';
         global MetadataService.FlowConnector connector;
         global Boolean doesRequireRecordChangedToMeetCriteria;
         global String filterFormula;
@@ -38,6 +38,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScheduledPath {
+        global String type='FlowScheduledPath';
         global String name;
 		private String[] name_type_info=new String[]{'name',MetadataService.SOAP_M_URI,null,'0','1','false'};
         global MetadataService.FlowConnector connector;
@@ -62,6 +63,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowSchedule {
+        global String type='FlowSchedule';
         global String frequency;
         global Date startDate;
         global String startTime;
@@ -74,6 +76,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowRecordRollback extends MetadataService.FlowNode{
+        global String type='FlowRecordRollback';
         global MetadataService.FlowConnector connector;
         global String label;
 		global Integer locationX;
@@ -88,6 +91,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowOrchestratedStage {
+        global String type='FlowOrchestratedStage';
         global MetadataService.FlowConnector connector;
         global Flow.FlowStageStepExitActionInputParameter[] exitActionInputParameters;
         global String exitActionName;
@@ -112,6 +116,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStageStepExitActionInputParameter {
+        global String type='FlowStageStepExitActionInputParameter';
         global String name;
         global MetadataService.FlowElementReferenceOrValue value;
         private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -122,6 +127,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStageStepExitActionOutputParameter {
+        global String type='FlowStageStepExitActionOutputParameter';
         global String assignToReference;
         global String name;
         private String[] assignToReference_type_info = new String[]{'assignToReference',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -132,6 +138,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowStageStep {
+        global String type='FlowStageStep';
         global String actionName;
         global String actionType;
         global Flow.FlowStageStepAssignee[] assignees;
@@ -174,6 +181,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCollectionProcessor {
+        global String type='FlowCollectionProcessor';
         global String assignNextValueToReference;
         global String collectionProcessorType;
         global String collectionReference;
@@ -202,6 +210,7 @@ global class Flow{
 
 	@JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCollectionSortOption {
+        global String type='FlowCollectionSortOption';
         global Boolean doesPutEmptyStringAndNullFirst;
         global String sortField;
         global String sortOrder;
@@ -214,6 +223,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowCollectionMapItem {
+        global String type='FlowCollectionMapItem';
         global String assignToFieldReference;
         global String operator;
         global MetadataService.FlowElementReferenceOrValue value;
@@ -226,6 +236,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowStageStepOutputParameter {
+        global String type='FlowStageStepOutputParameter';
         global String assignToReference;
         global String name;
         private String[] assignToReference_type_info = new String[]{'assignToReference',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -236,6 +247,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowStageStepInputParameter {
+        global String type='FlowStageStepInputParameter';
         global String name;
         global  MetadataService.FlowElementReferenceOrValue value;
         private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -246,6 +258,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowStageStepEntryActionOutputParameter {
+        global String type='FlowStageStepEntryActionOutputParameter';
         global String assignToReference;
         global String name;
         private String[] assignToReference_type_info = new String[]{'assignToReference',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -256,6 +269,7 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowStageStepEntryActionInputParameter {
+        global String type='FlowStageStepEntryActionInputParameter';
         global String name;
         global MetadataService.FlowElementReferenceOrValue value;
         private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
@@ -266,11 +280,23 @@ global class Flow{
 
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowStageStepAssignee {
+        global String type='FlowStageStepAssignee';
         global MetadataService.FlowElementReferenceOrValue assignee;
         global String assigneeType;
         private String[] assignee_type_info = new String[]{'assignee',MetadataService.SOAP_M_URI,null,'1','1','false'};
         private String[] assigneeType_type_info = new String[]{'assigneeType',MetadataService.SOAP_M_URI,null,'1','1','false'};
         private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
         private String[] field_order_type_info = new String[]{'assignee','assigneeType'};
+    }
+
+    @JsonAccess(serializable='always' deserializable = 'always')
+    global class FlowDataTypeMapping {
+        global String type='FlowDataTypeMapping';
+        public String typeName;
+        public String typeValue;
+        private String[] typeName_type_info = new String[]{'typeName',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] typeValue_type_info = new String[]{'typeValue',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'typeName','typeValue'};
     }
 }

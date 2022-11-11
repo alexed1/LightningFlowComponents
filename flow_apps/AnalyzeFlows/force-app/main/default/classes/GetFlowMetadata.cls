@@ -4,10 +4,10 @@ public with sharing class GetFlowMetadata {
         List<Result> resultList  = new List<Result>();
         for(Request req : requestList) {
             try {
-                usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();
+                MetadataService.MetadataPort service = MetadataService.createService();
 
-                List<usf3.MetadataService.Flow > flowList =
-                (List<usf3.MetadataService.Flow >) service.readMetadata('Flow', new List<String> {req.flowName}).getRecords();
+                List<MetadataService.Flow > flowList =
+                (List<MetadataService.Flow >) service.readMetadata('Flow', new List<String> {req.flowName}).getRecords();
 
                 System.debug(flowList[0].fullName);
                 Result res = new Result();
@@ -38,7 +38,7 @@ public with sharing class GetFlowMetadata {
         public String flowMetadataJSON;
 
         @InvocableVariable
-        public usf3.MetadataService.Flow flowMetadata;
+        public MetadataService.Flow flowMetadata;
 
     }
 

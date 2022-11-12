@@ -45,6 +45,7 @@
     "flowPickerFSC@1.5.0-0": "04t1K0000033MAq",
     "NavigateEverywhereAction@1.1.1-0": "04t5G000003rUhrQAE",
     "BatchDeleteInactiveFlowsV2": "0Ho5G0000008OcKSAU",
-    "BatchDeleteInactiveFlowsV2@2.0.0-0": "04t5G0000043wtFQAQ"
+    "BatchDeleteInactiveFlowsV2@2.0.0-0": "04t5G0000043wtFQAQ",
+    "BatchDeleteInactiveFlowsV2@2.0.1-0": "04t5G0000043wtKQAQ"
   }
 }

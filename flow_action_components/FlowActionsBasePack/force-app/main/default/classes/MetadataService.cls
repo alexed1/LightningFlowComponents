@@ -7205,6 +7205,7 @@ global class MetadataService {
 		global String filterLogic;
 		global MetadataService.FlowRecordFilter[] filters;
 		global Boolean getFirstRecordOnly;
+		global Integer limit_x;
 		global String object_x;
 		global MetadataService.FlowOutputFieldAssignment[] outputAssignments;
 		global String outputReference;
@@ -7215,16 +7216,17 @@ global class MetadataService {
 		private String[] assignNullValuesIfNoRecordsFound_type_info=new String[]{'assignNullValuesIfNoRecordsFound',SOAP_M_URI,null,'0','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
-		private String[] filterLogic_type_info = new String[]{'filterLogic',SOAP_M_URI,null,'0','1','false'};
+		private String[] filterLogic_type_info=new String[]{'filterLogic',SOAP_M_URI,null,'0','1','false'};
 		private String[] filters_type_info=new String[]{'filters',SOAP_M_URI,null,'0','-1','false'};
-		private String[] getFirstRecordOnly_type_info = new String[]{'getFirstRecordOnly',SOAP_M_URI,null,'0','1','false'};
+		private String[] limit_x_type_info=new String[]{'limit',SOAP_M_URI,null,'0','1','false'};
+		private String[] getFirstRecordOnly_type_info=new String[]{'getFirstRecordOnly',SOAP_M_URI,null,'0','1','false'};
 		private String[] object_x_type_info=new String[]{'object',SOAP_M_URI,null,'1','1','false'};
 		private String[] outputAssignments_type_info=new String[]{'outputAssignments',SOAP_M_URI,null,'0','-1','false'};
 		private String[] outputReference_type_info=new String[]{'outputReference',SOAP_M_URI,null,'0','1','false'};
 		private String[] queriedFields_type_info=new String[]{'queriedFields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] sortField_type_info=new String[]{'sortField',SOAP_M_URI,null,'0','1','false'};
 		private String[] sortOrder_type_info=new String[]{'sortOrder',SOAP_M_URI,null,'0','1','false'};
-		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
+		private String[] storeOutputAutomatically_type_info=new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'assignNullValuesIfNoRecordsFound','connector','faultConnector', 'filterLogic', 'filters','getFirstRecordOnly','object_x','outputAssignments','outputReference','queriedFields','sortField','sortOrder', 'storeOutputAutomatically'};
@@ -8399,18 +8401,18 @@ global class MetadataService {
 		global Flow.FlowDataTypeMapping[] dataTypeMappings;
 		global MetadataService.FlowConnector faultConnector;
 		global String flowTransactionModel;
+		global Boolean storeOutputAutomatically;
 		global MetadataService.FlowActionCallInputParameter[] inputParameters;
 		global MetadataService.FlowActionCallOutputParameter[] outputParameters;
-		global Boolean storeOutputAutomatically;
 		private String[] actionName_type_info=new String[]{'actionName',SOAP_M_URI,null,'1','1','false'};
+		private String[] flowTransactionModel_type_info=new String[]{'flowTransactionModel',SOAP_M_URI,null,'1','1','false'};
 		private String[] actionType_type_info=new String[]{'actionType',SOAP_M_URI,null,'1','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] dataTypeMappings_type_info = new String[]{'dataTypeMappings',SOAP_M_URI,null,'0','-1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
-		private String[] flowTransactionModel_type_info = new String[]{'flowTransactionModel',SOAP_M_URI,null,'0','1','false'};
+		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] inputParameters_type_info=new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] outputParameters_type_info=new String[]{'outputParameters',SOAP_M_URI,null,'0','-1','false'};
-		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
 		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'actionName','actionType','connector', 'dataTypeMappings','faultConnector','flowTransactionModel', 'inputParameters','outputParameters', 'storeOutputAutomatically'};
@@ -15680,15 +15682,20 @@ global class MetadataService {
 				System.debug('Metadata Save completed successfully');
 				return;
 			}
-		 
+		    handleErrors( saveResult.success, saveResult.fullName, saveResult.errors);
+			
+					}
+
+		global static void handleErrors(Boolean success, String fullName, MetadataService.Error[] errors) {
+
 			// Construct error message and throw an exception
-			if(saveResult.errors!=null)
+			if(errors!=null)
 			{
 				List<String> messages = new List<String>();
 				messages.add(
-					(saveResult.errors.size()==1 ? 'Error ' : 'Errors ') +
-						'occured processing component ' + saveResult.fullName + '.');
-				for(MetadataService.Error error : saveResult.errors)
+					(errors.size()==1 ? 'Error ' : 'Errors ') +
+						'occured processing component ' + fullName + '.');
+				for(MetadataService.Error error : errors)
 					messages.add(
 						error.message + ' (' + error.statusCode + ').' +
 						( error.fields!=null && error.fields.size()>0 ?
@@ -15696,8 +15703,9 @@ global class MetadataService {
 				if(messages.size()>0)
 					throw new MetadataServiceExamplesException(String.join(messages, ' '));
 			}
-			if(!saveResult.success)
-				throw new MetadataServiceExamplesException('Request failed with no specified error.');
+			if(!success)
+				throw new MetadataService.MetadataServiceExamplesException('Request failed with no specified error.');
+
 		}
 	
 }

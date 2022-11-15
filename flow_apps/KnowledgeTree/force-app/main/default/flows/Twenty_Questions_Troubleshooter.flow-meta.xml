@@ -38,7 +38,7 @@
         <description>If you reach a leaf node, it might not have a target node selected</description>
         <name>Does_Outcome_Have_a_Target_Node</name>
         <label>Does Outcome Have a Target Node?</label>
-        <locationX>1239</locationX>
+        <locationX>1242</locationX>
         <locationY>318</locationY>
         <defaultConnector>
             <targetReference>No_Node_Found</targetReference>
@@ -50,6 +50,13 @@
             <conditions>
                 <leftValueReference>outcomeChoices</leftValueReference>
                 <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>curRecord.End_Node__c</leftValueReference>
+                <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>

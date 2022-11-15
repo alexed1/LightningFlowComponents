@@ -3,6 +3,7 @@
     <fullName>Continuation_Node__c</fullName>
     <defaultValue>false</defaultValue>
     <externalId>false</externalId>
+    <inlineHelpText>Mark this field true if you intended this DiagnosticNode screen to allow the end-user to progress forward through the diagnostic pathway without requiring a selection from them (i.e. if you intend to make a guiding statement to them and but also want them to continue on through the diagnostic pathway).</inlineHelpText>
     <label>Continuation Node</label>
     <trackTrending>false</trackTrending>
     <type>Checkbox</type>

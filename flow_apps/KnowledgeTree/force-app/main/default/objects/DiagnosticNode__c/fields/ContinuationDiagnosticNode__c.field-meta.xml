@@ -3,6 +3,7 @@
     <fullName>ContinuationDiagnosticNode__c</fullName>
     <deleteConstraint>SetNull</deleteConstraint>
     <externalId>false</externalId>
+    <inlineHelpText>If Continuation Node is marked true, lookup to the next Diagnostic Node this continuation node will lead to.</inlineHelpText>
     <label>ContinuationDiagnosticNode</label>
     <referenceTo>DiagnosticNode__c</referenceTo>
     <relationshipLabel>DiagnosticNodes</relationshipLabel>

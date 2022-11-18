@@ -50,7 +50,7 @@ public with sharing class MainAnalysis_FlowStart {
     }
 
     public static ElementStatusChange detectTriggerChanges(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
-        ElementStatusChange changeElement = new ElementStatusChange();
+        ElementStatusChange changeElement;
         if(initFlow.start != null && secondFlow.start != null) {
             if(
                 initFlow.start.doesRequireRecordChangedToMeetCriteria != secondFlow.start.doesRequireRecordChangedToMeetCriteria ||
@@ -75,7 +75,7 @@ public with sharing class MainAnalysis_FlowStart {
     }
 
     public static ElementStatusChange detectScheduleChanges(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
-        ElementStatusChange changeElement = new ElementStatusChange();
+        ElementStatusChange changeElement;
         Boolean scheduleIsChanged = false;
         if(initFlow.start != null && secondFlow.start != null) {
             if(

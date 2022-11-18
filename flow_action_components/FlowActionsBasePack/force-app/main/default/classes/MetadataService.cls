@@ -8178,6 +8178,7 @@ global class MetadataService {
 		global Boolean allowBack;
 		global Boolean allowFinish;
 		global Boolean allowPause;
+		global String backButtonLabel;
 		global MetadataService.FlowConnector connector;
 		global MetadataService.FlowScreenField[] fields;
 		global String helpText;
@@ -8190,6 +8191,7 @@ global class MetadataService {
 		private String[] allowBack_type_info=new String[]{'allowBack',SOAP_M_URI,null,'0','1','false'};
 		private String[] allowFinish_type_info=new String[]{'allowFinish',SOAP_M_URI,null,'0','1','false'};
 		private String[] allowPause_type_info=new String[]{'allowPause',SOAP_M_URI,null,'0','1','false'};
+		private String[] backButtonLabel_type_info=new String[]{'backButtonLabel',SOAP_M_URI,null,'0','1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'0','1','false'};
 		private String[] fields_type_info=new String[]{'fields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
@@ -8201,7 +8203,7 @@ global class MetadataService {
 		private String[] showHeader_type_info=new String[]{'showHeader',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'allowBack','allowFinish','allowPause','connector','fields','helpText','nextOrFinishButtonLabel', 'pauseButtonLabel', 'pausedText','rules','showFooter','showHeader'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'allowBack','allowFinish','allowPause', 'backButtonLabel', 'connector','fields','helpText','nextOrFinishButtonLabel', 'pauseButtonLabel', 'pausedText','rules','showFooter','showHeader'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')

@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_UpdateRecords {
-    public static FlowAnalysis analyzeCreateRecords(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis analyzeCreateRecords(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;
@@ -10,8 +10,8 @@ public with sharing class MainAnalysis_UpdateRecords {
         result.analysisTime = DateTime.now();
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.recordCreates != null && secondFlow.recordCreates != null) {
-            for(MetadataService.FlowRecordUpdate initRecordUpdate : initFlow.recordUpdates) {
-                for(MetadataService.FlowRecordUpdate secondRecordupdate : secondFlow.recordUpdates) {
+            for(usf3.MetadataService.FlowRecordUpdate initRecordUpdate : initFlow.recordUpdates) {
+                for(usf3.MetadataService.FlowRecordUpdate secondRecordupdate : secondFlow.recordUpdates) {
                     if(initRecordUpdate.name == secondRecordupdate.name) {
                         ElementStatusChange newChange = FlowElementAnalysisFunctions.subAnalysis_ConnectorAndFaultConnector(initRecordUpdate.connector, secondRecordupdate.connector, 'Outbound Primary Connector Path Points To A Different Element');
                         if(newChange != null) {

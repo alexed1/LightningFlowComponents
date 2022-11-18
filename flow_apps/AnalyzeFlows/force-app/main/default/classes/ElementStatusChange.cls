@@ -1,18 +1,35 @@
-public with sharing class ElementStatusChange {
+global with sharing class ElementStatusChange {
     @AuraEnabled
-    public String name;
+    global String name;
     @AuraEnabled
-    public String label;
+    global String label;
     @AuraEnabled
-    public String changeType;
+    global String changeType;
     @AuraEnabled
-    public String elementType;
+    global String elementType;
     @AuraEnabled
-    public String description;
+    global String description;
     @AuraEnabled
-    public String notes;
+    global String notes;
     @AuraEnabled
-    public String oldValue;
+    global String oldValue;
     @AuraEnabled
-    public String newValue;
+    global String newValue;
+
+
+    global  ElementStatusChange() {
+
+    }
+
+    global  ElementStatusChange(String name, String label, String changeType, String elementType, String description, String notes, String oldValue, String newValue) {
+        this.name = name;
+        this.label = label;
+        this.changeType = changeType;
+        this.elementType = elementType;
+        this.description = description;
+        this.notes = notes;
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+    }
+
 }

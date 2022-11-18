@@ -1,5 +1,5 @@
 public with sharing class FlowElementAnalysisFunctions {
-    public static ElementStatusChange subAnalysis_ConnectorAndFaultConnector(MetadataService.FlowConnector initFlowConnector, MetadataService.FlowConnector secondFlowConnector, String changeType) {
+    public static ElementStatusChange subAnalysis_ConnectorAndFaultConnector(usf3.MetadataService.FlowConnector initFlowConnector, usf3.MetadataService.FlowConnector secondFlowConnector, String changeType) {
         ElementStatusChange newChange;
         if(initFlowConnector == null && secondFlowConnector!= null) {
             newChange = new ElementStatusChange();
@@ -27,8 +27,8 @@ public with sharing class FlowElementAnalysisFunctions {
 
     public static ElementStatusChange SubAnalysis_FilterConditions( String initFlowFilterLogic, 
                                                                     String secondFlowFilterLogic, 
-                                                                    List<MetadataService.FlowRecordFilter> initFlowRecordFilterList,
-                                                                    List<MetadataService.FlowRecordFilter> secondFlowRecordFilterList) {
+                                                                    List<usf3.MetadataService.FlowRecordFilter> initFlowRecordFilterList,
+                                                                    List<usf3.MetadataService.FlowRecordFilter> secondFlowRecordFilterList) {
         ElementStatusChange newChange;
        
         if(initFlowFilterLogic != secondFlowFilterLogic) {
@@ -38,28 +38,30 @@ public with sharing class FlowElementAnalysisFunctions {
             newChange.newValue = secondFlowFilterLogic;
             newChange.oldValue = initFlowFilterLogic;
         }
-        if(initFlowRecordFilterList.size() != secondFlowRecordFilterList.size()) {
-            newChange = new ElementStatusChange();
-            newChange.changeType = 'Filter Conditions have been modified';
-            newChange.elementType = 'String';
-            newChange.newValue = 'Compare the two versions to see the difference';
-            newChange.oldValue = 'Compare the two versions to see the difference';
-        }
-
-        for(MetadataService.FlowRecordFilter initFlowRecordFilter : initFlowRecordFilterList) {
-            boolean isChanged = true;
-            for(MetadataService.FlowRecordFilter secondFlowRecordFilter : secondFlowRecordFilterList) {
-                if(initFlowRecordFilter.field == secondFlowRecordFilter.field && initFlowRecordFilter.operator == secondFlowRecordFilter.operator) {
-                    isChanged = false;
-                }
-            }
-
-            if(isChanged) {
+        if(initFlowRecordFilterList != null && secondFlowRecordFilterList != null) {
+            if(initFlowRecordFilterList.size() != secondFlowRecordFilterList.size()) {
                 newChange = new ElementStatusChange();
                 newChange.changeType = 'Filter Conditions have been modified';
-                newChange.elementType = initFlowRecordFilter.type;
+                newChange.elementType = 'String';
                 newChange.newValue = 'Compare the two versions to see the difference';
                 newChange.oldValue = 'Compare the two versions to see the difference';
+            }
+
+            for(usf3.MetadataService.FlowRecordFilter initFlowRecordFilter : initFlowRecordFilterList) {
+                boolean isChanged = true;
+                for(usf3.MetadataService.FlowRecordFilter secondFlowRecordFilter : secondFlowRecordFilterList) {
+                    if(initFlowRecordFilter.field == secondFlowRecordFilter.field && initFlowRecordFilter.operator == secondFlowRecordFilter.operator) {
+                        isChanged = false;
+                    }
+                }
+
+                if(isChanged) {
+                    newChange = new ElementStatusChange();
+                    newChange.changeType = 'Filter Conditions have been modified';
+                    newChange.elementType = initFlowRecordFilter.type;
+                    newChange.newValue = 'Compare the two versions to see the difference';
+                    newChange.oldValue = 'Compare the two versions to see the difference';
+                }
             }
         }
 
@@ -95,19 +97,22 @@ public with sharing class FlowElementAnalysisFunctions {
 
     }
 
-    public static ElementStatusChange SubAnalysis_InputAndOutputParams(List<MetadataService.FlowInputFieldAssignment> initFlowInputFieldAssignmentList,List<MetadataService.FlowInputFieldAssignment> secondFlowInputFieldAssignmentList) {
+    public static ElementStatusChange SubAnalysis_InputAndOutputParams(List<usf3.MetadataService.FlowInputFieldAssignment> initFlowInputFieldAssignmentList,List<usf3.MetadataService.FlowInputFieldAssignment> secondFlowInputFieldAssignmentList) {
         ElementStatusChange newChange;
         if((initFlowInputFieldAssignmentList == null && secondFlowInputFieldAssignmentList!= null) || (initFlowInputFieldAssignmentList != null && secondFlowInputFieldAssignmentList == null)) {
             newChange = new ElementStatusChange();
             newChange.changeType = 'The input variable for this element has been modified';
             newChange.elementType = 'FlowInputFieldAssignment';
-            newChange.newValue = 'Not Available';
-            newChange.oldValue = 'Not Available';
+            newChange.newValue = 'N/A';
+            newChange.oldValue = 'N/A';
         } else if(initFlowInputFieldAssignmentList == null && secondFlowInputFieldAssignmentList!= null) {
-            for(MetadataService.FlowInputFieldAssignment initFlowInputFieldAssignment : initFlowInputFieldAssignmentList) {
+            for(usf3.MetadataService.FlowInputFieldAssignment initFlowInputFieldAssignment : initFlowInputFieldAssignmentList) {
                 Boolean isChanged = true;
-                for(MetadataService.FlowInputFieldAssignment secondFlowInputFieldAssignment : secondFlowInputFieldAssignmentList) {
-                    if(initFlowInputFieldAssignment.field == secondFlowInputFieldAssignment.field && initFlowInputFieldAssignment.value == secondFlowInputFieldAssignment.value) {
+                for(usf3.MetadataService.FlowInputFieldAssignment secondFlowInputFieldAssignment : secondFlowInputFieldAssignmentList) {
+                    if(
+                        initFlowInputFieldAssignment.field == secondFlowInputFieldAssignment.field && 
+                        JSON.serialize(initFlowInputFieldAssignment.value) == JSON.serialize(secondFlowInputFieldAssignment.value)
+                    ) {
                         isChanged = false;
                         break;
                     }
@@ -116,8 +121,8 @@ public with sharing class FlowElementAnalysisFunctions {
                     newChange = new ElementStatusChange();
                     newChange.changeType = 'The input variable for this element has been modified';
                     newChange.elementType = initFlowInputFieldAssignment.type;
-                    newChange.newValue = 'Not Available';
-                    newChange.oldValue = 'Not Available';
+                    newChange.newValue = 'N/A';
+                    newChange.oldValue = 'N/A';
                 }
             }
 
@@ -133,14 +138,14 @@ public with sharing class FlowElementAnalysisFunctions {
         if(initFlowElementMap.get('getFirstRecordOnly') != secondFlowElementMap.get('getFirstRecordOnly') 
             || initFlowElementMap.get('outputReference') != secondFlowElementMap.get('outputReference')
             || initFlowElementMap.get('storeOutputAutomatically') != secondFlowElementMap.get('storeOutputAutomatically')
-            || initFlowElementMap.get('outputAssignments') != secondFlowElementMap.get('outputAssignments')
-            || initFlowElementMap.get('queriedFields') != secondFlowElementMap.get('queriedFields')
+            || JSON.serialize(initFlowElementMap.get('outputAssignments')) != JSON.serialize(secondFlowElementMap.get('outputAssignments'))
+            || JSON.serialize(initFlowElementMap.get('queriedFields')) != JSON.serialize(secondFlowElementMap.get('queriedFields'))
         ) {
             newChange = new ElementStatusChange();
             newChange.changeType = 'Output Handling Has Been Modified';
             newChange.elementType = 'String';
-            newChange.newValue = ' Not Available';
-            newChange.oldValue = ' Not Available';
+            newChange.newValue = ' N/A';
+            newChange.oldValue = ' N/A';
         }
 
         return newChange;

@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_CreateRecords {
-    public static FlowAnalysis analyzeCreateRecords(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis analyzeCreateRecords(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;
@@ -10,8 +10,8 @@ public with sharing class MainAnalysis_CreateRecords {
         result.analysisTime = DateTime.now();
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.recordCreates != null && secondFlow.recordCreates != null) {
-            for(MetadataService.FlowRecordCreate initRecordCreate : initFlow.recordCreates) {
-                for(MetadataService.FlowRecordCreate secondRecordCreate : secondFlow.recordCreates) {
+            for(usf3.MetadataService.FlowRecordCreate initRecordCreate : initFlow.recordCreates) {
+                for(usf3.MetadataService.FlowRecordCreate secondRecordCreate : secondFlow.recordCreates) {
                     if(initRecordCreate.name == secondRecordCreate.name) {
 
                         if(initRecordCreate.assignRecordIdToReference != secondRecordCreate.assignRecordIdToReference) {

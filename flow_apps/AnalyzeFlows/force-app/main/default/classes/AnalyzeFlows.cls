@@ -8,8 +8,8 @@ public with sharing class AnalyzeFlows {
         List<Result> resultList  = new List<Result>();
         for(Request req : requestList) {
             try {
-                MetadataService.Flow initFlow = (MetadataService.Flow)JSON.deserialize(req.initFlow, MetadataService.Flow.class);
-                MetadataService.Flow secondFlow = (MetadataService.Flow)JSON.deserialize(req.secondFlow, MetadataService.Flow.class);
+                usf3.MetadataService.Flow initFlow = (usf3.MetadataService.Flow)JSON.deserialize(req.initFlow, usf3.MetadataService.Flow.class);
+                usf3.MetadataService.Flow secondFlow = (usf3.MetadataService.Flow)JSON.deserialize(req.secondFlow, usf3.MetadataService.Flow.class);
                 System.debug(initFlow);
                 System.debug(secondFlow);
                 Result res = new Result();
@@ -27,6 +27,9 @@ public with sharing class AnalyzeFlows {
                     report.elementChanges.addAll(MainAnalysis_UpdateRecords.analyzeCreateRecords(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_DeleteRecords.analyzeDeleteRecords(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_CreateRecords.analyzeCreateRecords(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_FlowScreen.analyzeFlowScreens(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_FlowStart.analyzeFlowStart(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_FlowSubflow.analyzeSubflows(initFlow, secondFlow).elementChanges);
                     res.analysisResults.add(report);
                 }
                 resultList.add(res);

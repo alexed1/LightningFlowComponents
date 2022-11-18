@@ -1,19 +1,19 @@
-public with sharing class FlowAnalysis {
+global with sharing class FlowAnalysis {
 
     @AuraEnabled
-    public String baseFlowName;
+    global String baseFlowName;
     @AuraEnabled
-    public Integer baseFlowVersion;
+    global Integer baseFlowVersion;
     @AuraEnabled
-    public String baseFlowStatus;
+    global String baseFlowStatus;
     @AuraEnabled
-    public String comparisonFlowName;
+    global String comparisonFlowName;
     @AuraEnabled
-    public integer comparisonFlowVersion;
+    global integer comparisonFlowVersion;
     @AuraEnabled
-    public String comparisonFlowStatus;
+    global String comparisonFlowStatus;
     @AuraEnabled
-    public DateTime analysisTime;
+    global DateTime analysisTime;
     @AuraEnabled
-    public List<ElementStatusChange> elementChanges;
+    global List<ElementStatusChange> elementChanges;
 }

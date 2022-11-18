@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_DeleteRecords {
-    public static FlowAnalysis analyzeDeleteRecords(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis analyzeDeleteRecords(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;
@@ -10,8 +10,8 @@ public with sharing class MainAnalysis_DeleteRecords {
         result.analysisTime = DateTime.now();
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.recordDeletes != null && secondFlow.recordDeletes != null) {
-            for(MetadataService.FlowRecordDelete initRecordDelete : initFlow.recordDeletes) {
-                for(MetadataService.FlowRecordDelete secondRecordDelete : secondFlow.recordDeletes) {
+            for(usf3.MetadataService.FlowRecordDelete initRecordDelete : initFlow.recordDeletes) {
+                for(usf3.MetadataService.FlowRecordDelete secondRecordDelete : secondFlow.recordDeletes) {
                     if(initRecordDelete.name == secondRecordDelete.name) {
 
                         ElementStatusChange newChange = FlowElementAnalysisFunctions.subAnalysis_ConnectorAndFaultConnector(initRecordDelete.connector, secondRecordDelete.connector, 'Outbound Primary Connector Path Points To A Different Element');

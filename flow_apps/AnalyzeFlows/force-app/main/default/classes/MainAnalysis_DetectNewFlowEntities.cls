@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_DetectNewFlowEntities {
-    public static FlowAnalysis detectNewFlowEntities(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis detectNewFlowEntities(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;

@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_GetRecords {
-    public static FlowAnalysis analyzeGetRecords(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis analyzeGetRecords(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;
@@ -10,8 +10,8 @@ public with sharing class MainAnalysis_GetRecords {
         result.analysisTime = DateTime.now();
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.recordLookups != null && secondFlow.recordLookups != null) {
-            for(MetadataService.FlowRecordLookup initRecordLookup : initFlow.recordLookups) {
-                for(MetadataService.FlowRecordLookup secondRecordLookup : secondFlow.recordLookups) {
+            for(usf3.MetadataService.FlowRecordLookup initRecordLookup : initFlow.recordLookups) {
+                for(usf3.MetadataService.FlowRecordLookup secondRecordLookup : secondFlow.recordLookups) {
                     if(initRecordLookup.name == secondRecordLookup.name) {
                         if(initRecordLookup.sortOrder != secondRecordLookup.sortOrder || initRecordLookup.sortField != secondRecordLookup.sortField ) {
                             ElementStatusChange newChange = new ElementStatusChange();

@@ -63,7 +63,7 @@ public with sharing class MainAnalysis_FlowStart {
                                 'A change was detected in the trigger configuration.',
                                 initFlow.start.type,
                                 null,
-                                'notes',
+                                '',
                                 null,
                                 null
                 );
@@ -80,9 +80,9 @@ public with sharing class MainAnalysis_FlowStart {
         if(initFlow.start != null && secondFlow.start != null) {
             if(
                 initFlow.start.schedule != null && secondFlow.start.schedule != null &&
-                initFlow.start.schedule.frequency != null && secondFlow.start.schedule.frequency != null &&
-                initFlow.start.schedule.startDate != null && secondFlow.start.schedule.startDate != null &&
-                initFlow.start.schedule.startTime != null && secondFlow.start.schedule.startTime != null 
+                initFlow.start.schedule.frequency != secondFlow.start.schedule.frequency &&
+                initFlow.start.schedule.startDate != secondFlow.start.schedule.startDate &&
+                initFlow.start.schedule.startTime != secondFlow.start.schedule.startTime 
             ) {
                 scheduleIsChanged = true;
 
@@ -127,7 +127,7 @@ public with sharing class MainAnalysis_FlowStart {
                                 'A change was detected in the trigger configuration.',
                                 'Schedule',
                                 'Schedule',
-                                'notes',
+                                '',
                                 null,
                                 null
                 );

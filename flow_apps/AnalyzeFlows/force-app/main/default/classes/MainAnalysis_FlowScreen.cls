@@ -20,7 +20,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'allowBack has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreen.allowBack),
                                 String.valueOf(initFlowScreen.allowBack)
                             ));
@@ -32,7 +32,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'allowFinish has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreen.allowFinish),
                                 String.valueOf(initFlowScreen.allowFinish)
                             ));
@@ -44,7 +44,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'allowPause has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreen.allowPause),
                                 String.valueOf(initFlowScreen.allowPause)
                             ));
@@ -56,7 +56,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'backButtonLabel has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 secondFlowScreen.backButtonLabel,
                                 initFlowScreen.backButtonLabel
                             ));
@@ -68,7 +68,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'helpText has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 secondFlowScreen.helpText,
                                 initFlowScreen.helpText
                             ));
@@ -80,7 +80,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'nextOrFinishButtonLabel has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 secondFlowScreen.nextOrFinishButtonLabel,
                                 initFlowScreen.nextOrFinishButtonLabel
                             ));
@@ -92,7 +92,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'pauseButtonlabel has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 secondFlowScreen.pauseButtonlabel,
                                 initFlowScreen.pauseButtonlabel
                             ));
@@ -104,7 +104,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'pausedText has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 secondFlowScreen.pausedText,
                                 initFlowScreen.pausedText
                             ));
@@ -116,7 +116,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'showFooter has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreen.showFooter),
                                 String.valueOf(initFlowScreen.showFooter)
                             ));
@@ -128,7 +128,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'showFooter has been modified',
                                 initFlowScreen.type,
                                 initFlowScreen.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreen.showFooter),
                                 String.valueOf(initFlowScreen.showFooter)
                             ));
@@ -170,7 +170,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'New ScreenField detected',
                                 initFlowScreenField.type,
                                 initFlowScreenField.description,
-                                'notes',
+                                '',
                                 'N/A',
                                 String.valueOf(initFlowScreenField.name)
                             ));
@@ -198,7 +198,7 @@ public with sharing class MainAnalysis_FlowScreen {
                                 'Removed ScreenField detected',
                                 secondFlowScreenField.type,
                                 secondFlowScreenField.description,
-                                'notes',
+                                '',
                                 String.valueOf(secondFlowScreenField.name),
                                 'N/A'
                                

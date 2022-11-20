@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>AnalyzeFlows</name>
+        <label>AnalyzeFlows</label>
+        <locationX>176</locationX>
+        <locationY>638</locationY>
+        <actionName>AnalyzeFlows</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>GenerateReportFromFlowAnalysis</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>analyticalModulenames</name>
+            <value>
+                <stringValue>DetectElementModifications,DetectNewElements</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>initFlow</name>
+            <value>
+                <elementReference>Get_Flow_1.flowMetadataJSON</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>secondFlow</name>
+            <value>
+                <elementReference>Get_Flow_2.flowMetadataJSON</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>GenerateReportFromFlowAnalysis</name>
+        <label>GenerateReportFromFlowAnalysis</label>
+        <locationX>176</locationX>
+        <locationY>758</locationY>
+        <actionName>GenerateReportFromFlowAnalysis</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Result_Screen</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>headerStyleString</name>
+            <value>
+                <stringValue>background-color: #4CAF50; color : white;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>hideHeader</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>AnalyzeFlows.analysisResults</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>rowStyleString</name>
+            <value>
+                <stringValue>background-color: #ccddff</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Get_Flow_1</name>
         <label>Get Flow 1</label>
         <locationX>176</locationX>
@@ -27,7 +95,7 @@
         <actionName>GetFlowMetadata</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Result_Screen</targetReference>
+            <targetReference>AnalyzeFlows</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -126,13 +194,13 @@
         <name>Result_Screen</name>
         <label>Result Screen</label>
         <locationX>176</locationX>
-        <locationY>638</locationY>
+        <locationY>878</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>result</name>
-            <fieldText>&lt;p&gt;{!AnalyzeFlow.selectedFlow1APIName}&lt;/p&gt;&lt;p&gt;{!AnalyzeFlow.selectedFlow2APIName}&lt;/p&gt;&lt;p&gt;{!Get_Flow_1.flowMetadataJSON}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!GenerateReportFromFlowAnalysis.reportString}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!AnalyzeFlows.errors}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>

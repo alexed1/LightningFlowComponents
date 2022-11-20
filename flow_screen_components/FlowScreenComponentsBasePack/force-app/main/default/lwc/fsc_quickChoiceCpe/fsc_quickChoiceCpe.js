@@ -2,7 +2,7 @@ import { api, track, LightningElement } from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-    versionNumber = '2.36';
+    versionNumber = '2.37';
     staticChoicesModalClass = 'staticChoicesModal';
     _builderContext;
     _values;
@@ -11,6 +11,7 @@ export default class QuickChoiceCpe extends LightningElement {
 
     @track inputValues = {
         displayMode: { value: null, valueDataType: null, isCollection: false, label: 'Display the choices as:' },
+        isSameHeight: { value: null, valueDataType: null, isCollection: false, label: 'Display Columns As Same Height' },
         isResponsive: { value: null, valueDataType: null, isCollection: false, label: 'Make Card Size Responsive' },
         inputMode: { value: null, valueDataType: null, isCollection: false, label: 'Select datasource:' },
         allowNoneToBeChosen: { value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice' },
@@ -128,6 +129,10 @@ export default class QuickChoiceCpe extends LightningElement {
         return this.inputValues.numberOfColumns.value === this.settings.singleColumn;
     }
 
+    get isDualColumn() {
+        return this.inputValues.numberOfColumns.value != this.settings.singleColumn;
+    }
+
     get isDatasourcePicklist() {
         return this.inputValues.inputMode.value === this.settings.inputModePicklist;
     }
@@ -225,6 +230,8 @@ export default class QuickChoiceCpe extends LightningElement {
                 default:
                     curAttributeType = 'String';
             }
+            console.log('The current attribute name is ' + curAttributeName + ' and the current attribute value is ' + curAttributeValue);
+            console.log('The current attribute type is ' + curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
         }
     }

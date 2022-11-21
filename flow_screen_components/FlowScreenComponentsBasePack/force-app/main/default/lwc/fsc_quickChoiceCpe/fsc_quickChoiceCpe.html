@@ -17,6 +17,11 @@
                                 label={inputValues.isResponsive.label} checked={inputValues.isResponsive.value}
                                 onchange={handleValueChange}></lightning-input>
                 </template>
+                <template if:true={isDualColumn}>
+                        <lightning-input type="checkbox" label={inputValues.isSameHeight.label} name="select_isSameHeight"
+                                checked={inputValues.isSameHeight.value} onchange={handleValueChange}></lightning-input>
+                </template>
+
                 <!-- </template> -->
                 <!-- <template if:true={inputValues.includeIcons.value}> -->
                 <c-fsc_flow-combobox name="select_choiceIcons" label={inputValues.choiceIcons.label}

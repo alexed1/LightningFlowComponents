@@ -1,8 +1,39 @@
-<template>  
+<template>
+    <template if:true={openModal}>
+
+        <!--Modal Box Start-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-hidden="false"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-modal_large slds-fade-in-open slds-backdrop">
+            <div class="slds-modal__container">
+                <!--Modal Header Start-->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close">
+                        <lightning-icon variant="inverse" onclick={closeModal} alternative-text="close"
+                            icon-name="utility:close" size="small"></lightning-icon>
+                    </button>
+
+                </header>
+                <!--Modal Body Start-->
+                <div class="slds-modal__content slds-p-around_medium slds-text-align_left" id="modal-content-id-1">
+
+
+                    <lightning-flow flow-api-name={flowNameToInvoke} flow-input-variables={flowParams}
+                        onstatuschange={handleFlowStatusChange}></lightning-flow>
+
+
+                </div>
+
+            </div>
+        </section>
+
+        <!--Modal Box end-->
+    </template>
+
     <template if:true={displayMenu}>
         <lightning-button-menu label={buttonLabel} alternative-text="Actions"
             tooltip="List of available actions for this specific record click on the name of the action to launch"
-            onselect={launchFlowMenu}  aria-haspopup="modal">
+            onselect={launchFlowMenu}>
 
             <template for:each={flowData} for:item="flow">
                 <lightning-menu-item id={flow.apiName} label={flow.label} value={flow.apiName} key={flow.label}>
@@ -16,7 +47,7 @@
         <template for:each={flowData} for:item="flow">
             <div key={flow.apiName} class="slds-m-top_medium slds-card__body slds-card__body_inner">
                 <div class="slds-m-top_xx-small">
-                    <a value={flow.apiName} aria-haspopup="modal" onclick={launchFlow}>{flow.label}</a>
+                    <a data-value={flow.apiName} onclick={launchFlow}>{flow.label}</a>
                 </div>
             </div>
         </template>

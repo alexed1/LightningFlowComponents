@@ -17,6 +17,8 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
+11/08/22 -  Andy Haas  -   Versions 2.37
+                            Updated the cardSize to allow the height of the card to contain the content
                                                 
 10/12/22 -  Eric Smith -    Version 2.36  
                             Fixed backwards compatability bug from 2.34 when no controlling value attribute is provided for a controlled picklist field
@@ -72,7 +74,7 @@ Additional components packaged with this LWC:
     <template if:true={showPicklist}>
         <!-- Display Visual Card Pickers -->
         <template if:true={showVisual}>
-            <fieldset class="slds-form-element">
+            <fieldset class="slds-form-element" style="margin-right:1rem;">
                 <label class="slds-form-element__legend slds-form-element__label">
                     <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
                 <div class={gridClass} style={gridStyle}>

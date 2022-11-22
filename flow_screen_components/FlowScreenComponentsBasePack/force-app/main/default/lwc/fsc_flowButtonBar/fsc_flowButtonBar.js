@@ -190,12 +190,12 @@ export default class FlowButtonBar extends LightningElement {
         }
     }
     
-    @api validate(){
-        return {
-            isValid: this.isNotRequired || !!this.value,
-            errorMessage: 'You must make a selection to continue'
-        };
-    }
+   // @api validate(){
+    //    return {
+      //      isValid: this.isNotRequired || !!this.value,
+      //      errorMessage: 'You must make a selection to continue'
+      //  };
+  //  }
 
     /* ACTION FUNCTIONS */
     dispatchClickEvent() {

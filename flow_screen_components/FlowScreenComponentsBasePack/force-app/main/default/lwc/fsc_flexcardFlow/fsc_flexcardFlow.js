@@ -9,7 +9,20 @@ export default class FlexcardFlow extends LightningElement {
     @api value;
     @api buttonLabel;
     @api selectedLabel;
-    @api records;
+    _records;
+    @api 
+    get records(){
+        return this._records || [];
+    }
+    
+    set records(data = []) {
+        if (Array.isArray(data)) {
+            this._records = data;
+            this.processRecords();
+        } else {
+            this._records = [];
+        }
+    }
     @api visibleFieldNames;
     @api visibleFlowNames;
     @api src;
@@ -46,6 +59,7 @@ export default class FlexcardFlow extends LightningElement {
     @track fieldHTML = '';
     @track recordLayoutData = {};
     @track objectInfo;
+    @api recordDataString;
     @track recs = [];
     @api
     get fields() {
@@ -84,13 +98,22 @@ export default class FlexcardFlow extends LightningElement {
 
     connectedCallback() {
         console.log('entering connectedCallback');
-        if (!this.records) {
+       if (!this.records) {
             throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
         }
         console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
        
-    }  
+    } 
+
+  
+
+    processRecords() {
+
+    this.recs = JSON.parse(JSON.stringify(this._records));
+   
+    
+    }
    
     retrieveFieldLabels(item, index) {
         console.log('retrieving field label for field named: ' + item);
@@ -136,7 +159,6 @@ export default class FlexcardFlow extends LightningElement {
     }
 
     handleClick(event) {
-
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;

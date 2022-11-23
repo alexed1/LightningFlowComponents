@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 11-22-2022
+  @last modified on  : 11-23-2022
   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
 -->
 <template>
@@ -69,7 +69,7 @@
         checked={inputValues.cb_visibleToAllUsers.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
 
     <c-fsc_flow-checkbox name="embedExternally" label={inputValues.embedExternally.label}
-        checked={inputValues.cb_embedExternally.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+        checked={inputValues.cb_embedExternally.value} oncheckboxchanged={handleCheckboxChange} field-level-help={inputValues.embedExternally.helpText}></c-fsc_flow-checkbox>
 
     <c-fsc_flow-checkbox name="disableDelete" label={inputValues.disableDelete.label}
         checked={inputValues.cb_disableDelete.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>

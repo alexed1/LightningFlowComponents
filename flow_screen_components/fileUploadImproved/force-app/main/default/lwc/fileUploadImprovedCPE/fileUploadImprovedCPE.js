@@ -16,7 +16,7 @@ const FLOW_EVENT_TYPE = {
     CHANGE: 'configuration_editor_input_value_changed'
 }
 
-const VALIDATEABLE_INPUTS = ['c-fsc_flow-combobox', 'c-fsc_pick-object-and-field-3', 'c-field-selector-3'];
+const VALIDATEABLE_INPUTS = ["c-fsc_flow-combobox"];
 
 export default class fileUploadImprovedCPE extends LightningElement {
     @api automaticOutputVariables;
@@ -37,6 +37,7 @@ export default class fileUploadImprovedCPE extends LightningElement {
         {label: 'Required?', helpText: 'When checked requires the user to upload at least one file.'},
         {label: 'Required Validation Message', helpText: 'The validation message displayed if the user has not uploaded at least one file and the component is marked as required. The default message is "Upload at least one file."'},
         {label: 'Allow Multiple File Upload?', helpText: 'When checked allows the user to upload multiple files. If this is not checked, then once the user uploads one file, the file upload component will not allow any additional files to be uploaded.'},
+        {label: 'More Resources', helpText: 'https://unofficialsf.com/from-josh-dayment-improved-file-upload-in-flow-screens/ <br> https://developer.salesforce.com/docs/component-library/bundle/lightning-file-upload/documentation'},
     ];
     advancedConfiguration = [
         {label: 'Pick an Icon', helpText: 'The default LDS Icon that will be displayed next to each uploaded file. Options here: https://www.lightningdesignsystem.com/icons/#doctype. Prepend icon name with doctype:, ie doctype:word. Leave blank and the system will display the icon based on the extension type.'},
@@ -47,6 +48,7 @@ export default class fileUploadImprovedCPE extends LightningElement {
         {label: 'Set Visibility to All Users', helpText: 'By default, when an internal user uploads a file, the file is only visible to other internal users (meaning community users cannot see it). If you would like to make the uploaded file visible to all users, check this box. When a community user uploads a file, the file is already visible to all users.'},
         {label: 'Embed on External Website', helpText: 'If this flow is being embedded on an external website (like Wordpress, for example), check this box. Otherwise, this should almost always be unchecked'},
         {label: 'Disable File Deletion', helpText: 'When this is checked, clicking the "X" next to the Files will simply remove them from the UI and the output list, but the Files will NOT be deleted.'},
+        {label: 'More Resources', helpText: 'https://unofficialsf.com/from-josh-dayment-improved-file-upload-in-flow-screens/ <br> https://developer.salesforce.com/docs/component-library/bundle/lightning-file-upload/documentation'},
     ];
     
 
@@ -70,7 +72,7 @@ export default class fileUploadImprovedCPE extends LightningElement {
         cb_renderFilesBelow: { value: null, valueDataType: null, isCollection: false, label: '' },
         visibleToAllUsers: { value: null, valueDataType: null, isCollection: false, label: 'Set Visibility to All Users' },
         cb_visibleToAllUsers: { value: null, valueDataType: null, isCollection: false, label: '' },
-        embedExternally: { value: null, valueDataType: null, isCollection: false, label: 'Embed on External Website' },
+        embedExternally: { value: null, valueDataType: null, isCollection: false, label: 'Embed on External Website', helpText: 'This is used when embedding the flow on an external website see the banner help for more info' },
         cb_embedExternally: { value: null, valueDataType: null, isCollection: false, label: '' },
         disableDelete: { value: null, valueDataType: null, isCollection: false, label: 'Disable File Deletion' },
         cb_disableDelete: { value: null, valueDataType: null, isCollection: false, label: '' },
@@ -104,7 +106,23 @@ export default class fileUploadImprovedCPE extends LightningElement {
         this._typeMappings = value;
         this.initializeTypeMappings();
     }     
-        
+    
+    @api
+    validate() {
+        let validity = [];
+        for (let inputType of VALIDATEABLE_INPUTS) {
+            for (let input of this.template.querySelectorAll(inputType)) {
+                if (!input.reportValidity()) {
+                    validity.push({
+                        key: input.name || ('Error_' + validity.length),
+                        errorString: 'This field has an error (missing or invalid entry)',
+                    });
+                }
+            }
+        }
+        return validity;
+    }
+                    
 
     /* LIFECYCLE HOOKS */
     connectedCallback() {

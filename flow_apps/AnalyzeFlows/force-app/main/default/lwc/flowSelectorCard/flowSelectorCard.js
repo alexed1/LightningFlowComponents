@@ -21,6 +21,10 @@ export default class FlowSelectorCard extends LightningElement {
         this.flowOption === SPECIFIC_VERSION_VALUE;
     }
 
+    get flowPickerDisabled() {
+        return this.flowOption !== SPECIFIC_VERSION_VALUE;
+    }
+
 
     
 
@@ -59,8 +63,6 @@ export default class FlowSelectorCard extends LightningElement {
                     }
                 }
             );
-        } else if(this.flowOption === this.radioGroupOptionList[2].value) {
-            this.selectedFlowAPIVersion = '' + this.flowAPIVersionList[0].VersionNumber;
         }
         this.fireSelectEvent();
         console.log(this.flowOption, this.selectedFlowAPIVersion);

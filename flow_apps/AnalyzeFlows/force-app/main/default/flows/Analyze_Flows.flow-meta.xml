@@ -14,7 +14,7 @@
         <inputParameters>
             <name>analyticalModulenames</name>
             <value>
-                <stringValue>DetectElementModifications,DetectNewElements</stringValue>
+                <stringValue>DetectElementModifications,DetectNewElements,DetectRemovedElements</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -158,7 +158,7 @@
         </connector>
         <fields>
             <name>AnalyzeFlow</name>
-            <extensionName>c:flowsSelector</extensionName>
+            <extensionName>c:dualFlowsSelector</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>

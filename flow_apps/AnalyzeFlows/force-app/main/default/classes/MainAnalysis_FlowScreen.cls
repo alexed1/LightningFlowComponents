@@ -1,5 +1,5 @@
 public with sharing class MainAnalysis_FlowScreen {
-    public static FlowAnalysis analyzeFlowScreens(MetadataService.Flow initFlow, MetadataService.Flow secondFlow) {
+    public static FlowAnalysis analyzeFlowScreens(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         FlowAnalysis result = new FlowAnalysis();
         result.baseFlowName = initFlow.fullName;
         result.baseFlowVersion = (Integer)initFlow.apiVersion;
@@ -10,8 +10,8 @@ public with sharing class MainAnalysis_FlowScreen {
         result.analysisTime = DateTime.now();
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.screens != null && secondFlow.screens != null) {
-            for(MetadataService.FlowScreen initFlowScreen : initFlow.screens) {
-                for(MetadataService.FlowScreen secondFlowScreen : secondFlow.screens) {
+            for(usf3.MetadataService.FlowScreen initFlowScreen : initFlow.screens) {
+                for(usf3.MetadataService.FlowScreen secondFlowScreen : secondFlow.screens) {
                     if(initFlowScreen.name == secondFlowScreen.name) {
                         if(initFlowScreen.allowBack != secondFlowScreen.allowBack) {
                             changeList.add(new ElementStatusChange(
@@ -152,11 +152,11 @@ public with sharing class MainAnalysis_FlowScreen {
         return result;
     }
 
-    public static List<ElementStatusChange> detectNewScreenEntities(MetadataService.FlowScreen initFlowScreen, MetadataService.FlowScreen secondFlowScreen) {
+    public static List<ElementStatusChange> detectNewScreenEntities(usf3.MetadataService.FlowScreen initFlowScreen, usf3.MetadataService.FlowScreen secondFlowScreen) {
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
-        for(MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
+        for(usf3.MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
             Boolean entityIsExist = false;
-            for(MetadataService.FlowScreenField secondFlowScreenField : secondFlowScreen.fields) {
+            for(usf3.MetadataService.FlowScreenField secondFlowScreenField : secondFlowScreen.fields) {
                 if(initFlowScreenField.name == secondFlowScreenField.name) {
                     entityIsExist = true;
                     break;
@@ -180,11 +180,11 @@ public with sharing class MainAnalysis_FlowScreen {
         return changeList;
     }
 
-    public static List<ElementStatusChange> detectRemovedScreenEntities(MetadataService.FlowScreen initFlowScreen, MetadataService.FlowScreen secondFlowScreen) {
+    public static List<ElementStatusChange> detectRemovedScreenEntities(usf3.MetadataService.FlowScreen initFlowScreen, usf3.MetadataService.FlowScreen secondFlowScreen) {
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
-        for(MetadataService.FlowScreenField  secondFlowScreenField : secondFlowScreen.fields) {
+        for(usf3.MetadataService.FlowScreenField  secondFlowScreenField : secondFlowScreen.fields) {
             Boolean entityIsRemoved = true;
-            for(MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
+            for(usf3.MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
                 if(initFlowScreenField.name == secondFlowScreenField.name) {
                     entityIsRemoved = false;
                     break;

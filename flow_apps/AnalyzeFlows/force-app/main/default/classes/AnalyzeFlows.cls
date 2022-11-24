@@ -24,7 +24,7 @@ public with sharing class AnalyzeFlows {
 
                 if(req.analyticalModulenames.contains(DETECTED_ELEMENTS_MODIFICATIONS)) {
                     FlowAnalysis report = MainAnalysis_GetRecords.analyzeGetRecords(initFlow, secondFlow);
-                    report.elementChanges.addAll(MainAnalysis_UpdateRecords.analyzeCreateRecords(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_UpdateRecords.analyzeUpdateRecords(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_DeleteRecords.analyzeDeleteRecords(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_CreateRecords.analyzeCreateRecords(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_FlowScreen.analyzeFlowScreens(initFlow, secondFlow).elementChanges);

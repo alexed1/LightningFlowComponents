@@ -1,16 +1,20 @@
 global with sharing class MetadataUtils {
-    global static MetadataService.Flow getFlowMetadata(String flowName) {
+    global static List<MetadataService.Flow> getFlowMetadata(String flowName) {
+        return getFlowMetadata(new List<String>{flowName});
+    }
+
+    global static List<MetadataService.Flow > getFlowMetadata(List<String> flowNameList) {
         
         MetadataService.MetadataPort service = MetadataService.createService();
 
         List<MetadataService.Flow > flowList =  (List<MetadataService.Flow >) service.readMetadata(
                 'Flow', 
-                new List<String> {flowName}
+                flowNameList
         ).getRecords();
         System.debug('getFlowMetadata');
         System.debug(JSON.serialize(flowList[0]).replace(',', ',\n'));
         System.debug(flowList[0].startElementReference);
-        return flowList[0];
+        return flowList;
     }
 
     global static void createFlowMetadata(MetadataService.Flow flow) {

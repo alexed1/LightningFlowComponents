@@ -1,6 +1,6 @@
 public with sharing class AnalyzeFlows {
     static final String DETECTED_NEW_ELEMENTS = 'DetectNewElements';
-    static final String DETECTED_REMOVED_ELEMENTS = 'DetectRemovedElements';
+    static final String DETECTED_MISSING_ELEMENTS = 'DetectMissingElements';
     static final String DETECTED_ELEMENTS_MODIFICATIONS= 'DetectElementModifications';
 
     @InvocableMethod
@@ -18,8 +18,8 @@ public with sharing class AnalyzeFlows {
                     res.analysisResults.add(MainAnalysis_DetectNewFlowEntities.detectNewFlowEntities(initFlow, secondFlow));
                 }
 
-                if(req.analyticalModulenames.contains(DETECTED_REMOVED_ELEMENTS)) {
-                    res.analysisResults.add(MainAnalysis_DetectRemovedFlowEntities.detectRemovedFlowEntities(initFlow, secondFlow));
+                if(req.analyticalModulenames.contains(DETECTED_MISSING_ELEMENTS)) {
+                    res.analysisResults.add(MainAnalysis_DetectMissingFlowEntities.detectMissingFlowEntities(initFlow, secondFlow));
                 }
 
                 if(req.analyticalModulenames.contains(DETECTED_ELEMENTS_MODIFICATIONS)) {

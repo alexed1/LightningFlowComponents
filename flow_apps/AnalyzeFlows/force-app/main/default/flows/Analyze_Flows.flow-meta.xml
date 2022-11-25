@@ -14,7 +14,7 @@
         <inputParameters>
             <name>analyticalModulenames</name>
             <value>
-                <stringValue>DetectElementModifications,DetectNewElements,DetectRemovedElements</stringValue>
+                <stringValue>DetectElementModifications,DetectNewElements,DetectMissingElements</stringValue>
             </value>
         </inputParameters>
         <inputParameters>

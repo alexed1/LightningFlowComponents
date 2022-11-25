@@ -1,13 +1,6 @@
 public with sharing class MainAnalysis_GetRecords {
     public static FlowAnalysis analyzeGetRecords(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
-        FlowAnalysis result = new FlowAnalysis();
-        result.baseFlowName = initFlow.fullName;
-        result.baseFlowVersion = (Integer)initFlow.apiVersion;
-        result.baseFlowStatus = initFlow.status;
-        result.comparisonFlowName = secondFlow.fullName;
-        result.comparisonFlowVersion = (Integer)secondFlow.apiVersion;
-        result.comparisonFlowStatus = secondFlow.status;
-        result.analysisTime = DateTime.now();
+        FlowAnalysis result = FlowElementAnalysisFunctions.initFlowAnalysisObject(initFlow, secondFlow);
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         if(initFlow.recordLookups != null && secondFlow.recordLookups != null) {
             for(usf3.MetadataService.FlowRecordLookup initRecordLookup : initFlow.recordLookups) {

@@ -13,21 +13,21 @@ public with sharing class ResolveApprovalRequest {
                 approverId = getapprovalRequestID(curRequest.recordId,curRequest.ObjName).Id;
             }
             
-            approvalWorkItem.setWorkitemId(approverId);
+            approvalWorkItem.setWorkitemId(curRequest.approvalRequestId);
             
             system.debug('approvalWorkItem ' + approvalWorkItem);
             
             // Submit the request for approval
-            Approval.ProcessResult[] approvalResult =  Approval.process(approvalWorkItem);
+            Approval.ProcessResult approvalResult =  Approval.process(approvalWorkItem);
 
             system.debug('ApprovalResult ' + approvalResult);
             
             // Verify the results
             System.assert(approvalResult.isSuccess(), 'Result Status:'+ approvalResult.isSuccess());
             
-            System.assertEquals(
+            /*System.assertEquals(
                 'Approved', approvalResult.getInstanceStatus(), 
-                'Instance Status'+approvalResult.getInstanceStatus());
+                'Instance Status'+approvalResult.getInstanceStatus());*/
             
 
             response.isSuccess = approvalResult.isSuccess();

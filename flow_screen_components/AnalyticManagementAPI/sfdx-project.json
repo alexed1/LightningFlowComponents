@@ -1,0 +1,24 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "AnalyticsNotificationAPI",
+      "versionName": "ver 0.3",
+      "versionNumber": "0.3.0.NEXT",
+      "dependencies": [
+        {
+          "subscriberPackageVersionId": "04t8b000000mKnoAAE"
+        }
+      ]
+    }
+  ],
+  "name": "ReportSubscriptions",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "AnalyticsNotificationAPI": "0Ho5e0000010wNICAY",
+    "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE"
+  }
+}

@@ -1,0 +1,12 @@
+.disabledCursor, .disabledCursor ~ .slds-button {
+    cursor: not-allowed;
+}
+
+/*adjusting help text position*/
+.customIcon .slds-form-element__icon {
+    padding-top: 0px !important;
+}
+ 
+.THIS.customIcon div{
+    padding-top: 0px !important;
+}

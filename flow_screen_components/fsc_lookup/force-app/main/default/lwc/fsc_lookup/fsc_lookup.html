@@ -1,0 +1,27 @@
+<template>
+    <c-fsc_combobox options={records} label={label} icon-size="small" public-class={publicClass} public-style={publicStyle} values={values}
+        custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect}
+        is-loading={isLoading} exclude-sublabel-in-filter={includeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
+        include-value-in-filter={excludeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
+        oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} >
+    </c-fsc_combobox>
+
+    <template if:true={showNewRecordModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-modal_large slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeNewRecordModal}>
+                    </lightning-button-icon>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Create New {objectInfo.data.label}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-form object-api-name={objectName} layout-type="Full"
+                        onsuccess={handleNewRecordSave} oncancel={closeNewRecordModal}></lightning-record-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

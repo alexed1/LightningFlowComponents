@@ -9,7 +9,7 @@
                     value={flowOption}
                     type="radio"
                     onchange={changeFlowOption}></lightning-radio-group>
-            <lightning-combobox if:true={flowVersionOptionList.length} options={flowVersionOptionList} value={selectedFlowAPIVersion} onchange={changeFlowVersion}></lightning-combobox>
+            <lightning-combobox if:true={flowVersionOptionList.length} options={flowVersionOptionList} value={selectedFlowAPIVersion} onchange={changeFlowVersion} disabled={flowPickerDisabled}></lightning-combobox>
         </lightning-card>
     </div>
 </template>

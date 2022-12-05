@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>56.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>
@@ -8,7 +8,7 @@
     <masterLabel>File Upload Improved</masterLabel>
     <description>Improving the standard File Upload component.</description>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-file-upload-improved-c-p-e">
             <property
                 name="label"
                 type="String"
@@ -16,119 +16,125 @@
                 description="The text on the file upload button."
             />
             <property
-                name="uploadedlabel" 
-                type="String" 
-                label='Uploaded File List Label' 
-                description="The text on the list of files uploaded. You might find that you prefer to leave this blank, as the UX is obvious." 
+                name="uploadedlabel"
+                type="String"
+                label='Uploaded File List Label'
+                description="The text on the list of files uploaded. You might find that you prefer to leave this blank, as the UX is obvious."
                 role="inputOnly"
             />
-            <property 
-                name="acceptedFormats" 
-                type="String" label="Accepted Formats" 
+            <property
+                name="acceptedFormats"
+                type="String" label="Accepted Formats"
                 description="The accepted file types. Enter a comma-separated list of the file extensions (such as .jpg) that the user can upload."
             />
-            <property 
-                name="allowMultiple" 
-                type="Boolean" 
-                label="Allow Multiple Files" 
+            <property
+                name="allowMultiple"
+                type="Boolean"
+                label="Allow Multiple Files"
                 description="Allow the user to upload multiple files. If this is not TRUE, then once the user uploads one file, the file upload component will not allow any additional files to be uploaded."
             />
-            <property 
-                name="sessionKey" 
-                type="String" 
-                label='{!$Flow.InterviewGuid}' 
-                description="Unique identifier for this field. You can start by using {!$Flow.InterviewGuid}. If you have multiple of this component type in the same flow, you'll have to prepend {!$Flow.InterviewGuid} with something else like '1' or '2' to make each component unique." 
+            <property name="cb_allowMultiple" type="String" role="inputOnly" />
+            <property
+                name="sessionKey"
+                type="String"
+                label='{!$Flow.InterviewGuid}'
+                description="Unique identifier for this field. You can start by using {!$Flow.InterviewGuid}. If you have multiple of this component type in the same flow, you'll have to prepend {!$Flow.InterviewGuid} with something else like '1' or '2' to make each component unique."
                 role="inputOnly"
             />
-            <property 
-                name="contentDocumentIds" 
-                type="String[]" 
-                label='Content Document Ids' 
-                description="The Ids of the uploaded files. Store this value in a text collection variable. Content Document Ids are hidden from community users, so the collection will be null for them." 
+            <property
+                name="contentDocumentIds"
+                type="String[]"
+                label='Content Document Ids'
+                description="The Ids of the uploaded files. Store this value in a text collection variable. Content Document Ids are hidden from community users, so the collection will be null for them."
                 role="outputOnly"
             />
-            <property 
-                name="contentVersionIds" 
+            <property
+                name="contentVersionIds"
                 type="String[]"
                 label='Content Version Ids'
-                description="The Version Ids of the uploaded files. Store this value in a text collection variable." 
-                role="outputOnly" 
+                description="The Version Ids of the uploaded files. Store this value in a text collection variable."
+                role="outputOnly"
             />
-            <property 
-                name="recordId" 
-                type="String" 
-                label='Related Record Id'
-                description="The Id of the record to associate the files with. Be aware that sharing rules are NOT enforced, so the user could be uploading files to a record that they wouldn't normally have access to. Don't know the Related Record Id because you're going to create the record after this screen? You can leave this field blank and use the 'Create Content Document Links Downstream' Apex Action." 
-            />
-            <property 
-                name="uploadedFileNames" 
-                type="String[]" 
-                label='Uploaded File Names'
-                description="The names of the uploaded files. Store this value in a text collection variable." 
-                role="outputOnly" 
-            />
-            <property 
-                name="required" 
-                type="Boolean" 
-                label='Required'
-                description="Require the user to upload at least one file." 
-                role="inputOnly" 
-            />
-            <property 
-                name="requiredMessage" 
-                type="String" 
-                label='Required Validation Message'
-                description="The validation message displayed if the user has not uploaded at least one file. The default message is 'Upload at least one file.'" 
-                role="inputOnly" 
-            />
-            <property 
-                name="icon" 
+            <property
+                name="recordId"
                 type="String"
-                label="Icon" 
-                description="The default LDS Icon that will be displayed next to each uploaded file. Options here: https://www.lightningdesignsystem.com/icons/#doctype. Prepend icon name with 'doctype:', ie 'doctype:word'. Leave blank and the system will display the icon based on the extension type." 
+                label='Related Record Id'
+                description="The Id of the record to associate the files with. Be aware that sharing rules are NOT enforced, so the user could be uploading files to a record that they wouldn't normally have access to. Don't know the Related Record Id because you're going to create the record after this screen? You can leave this field blank and use the 'Create Content Document Links Downstream' Apex Action."
             />
-            <property 
-                name="community" 
-                type="Boolean" 
-                label="Deprecated"
-                description="This input is deprecated. Any value set here will no longer impact the function of the component." 
-                role="inputOnly" 
+            <property
+                name="uploadedFileNames"
+                type="String[]"
+                label='Uploaded File Names'
+                description="The names of the uploaded files. Store this value in a text collection variable."
+                role="outputOnly"
             />
-            <property 
-                name="overriddenFileName" 
-                type="String" 
-                label="Overridden File Name"
-                description="The file name of the uploaded files defaults to the actual name of the file. If you'd prefer to override the default file name, you can specify the new file name here." 
-                role="inputOnly" 
-            />
-            <property 
-                name="renderExistingFiles" 
-                type="Boolean" 
-                label="Show Existing Files Related to Record Id"
-                description="If you'd like to show the existing files associated with the Related Record Id (in addition to the ones that the user may upload), set this to TRUE. Be aware that sharing rules are NOT enforced, so the user could see files that they wouldn't normally have access to."  
-                role="inputOnly" 
-            />
-            <property 
-                name="renderFilesBelow" 
-                type="Boolean" 
-                label="Show Files Below the File Upload Component"
-                description="By default, the files will show above the File Upload Component. If you'd prefer they be shown below the component, set this to TRUE."  
-                role="inputOnly" 
-            />
-            <property 
-                name="visibleToAllUsers" 
-                type="Boolean" 
-                label="Set Visibility to All Users"
-                description="By default, when an internal user uploads a file, the file is only visible to other internal users (meaning community users can't see it). If you'd like to make the uploaded file visible to all users, set this to TRUE. When a community user uploads a file, the file is already visible to all users."  
-                role="inputOnly" 
-            />
-            <property 
-                name="embedExternally" 
-                type="Boolean" 
-                label="Embed on External Website"
-                description="If this flow is being embedded on an external website (like Wordpress, for example), set this to TRUE. Otherwise, this should almost always be either empty or FALSE."  
+            <property
+                name="required"
+                type="Boolean"
+                label='Required'
+                description="Require the user to upload at least one file."
                 role="inputOnly"
             />
+            <property name="cb_required" type="String" role="inputOnly" />
+            <property
+                name="requiredMessage"
+                type="String"
+                label='Required Validation Message'
+                description="The validation message displayed if the user has not uploaded at least one file. The default message is 'Upload at least one file.'"
+                role="inputOnly"
+            />
+            <property
+                name="icon"
+                type="String"
+                label="Icon"
+                description="The default LDS Icon that will be displayed next to each uploaded file. Options here: https://www.lightningdesignsystem.com/icons/#doctype. Prepend icon name with 'doctype:', ie 'doctype:word'. Leave blank and the system will display the icon based on the extension type."
+            />
+            <property
+                name="community"
+                type="Boolean"
+                label="Deprecated"
+                description="This input is deprecated. Any value set here will no longer impact the function of the component."
+                role="inputOnly"
+            />
+            <property
+                name="overriddenFileName"
+                type="String"
+                label="Overridden File Name"
+                description="The file name of the uploaded files defaults to the actual name of the file. If you'd prefer to override the default file name, you can specify the new file name here."
+                role="inputOnly"
+            />
+            <property
+                name="renderExistingFiles"
+                type="Boolean"
+                label="Show Existing Files Related to Record Id"
+                description="If you'd like to show the existing files associated with the Related Record Id (in addition to the ones that the user may upload), set this to TRUE. Be aware that sharing rules are NOT enforced, so the user could see files that they wouldn't normally have access to."
+                role="inputOnly"
+            />
+            <property name="cb_renderExistingFiles" type="String" role="inputOnly" />
+            <property
+                name="renderFilesBelow"
+                type="Boolean"
+                label="Show Files Below the File Upload Component"
+                description="By default, the files will show above the File Upload Component. If you'd prefer they be shown below the component, set this to TRUE."
+                role="inputOnly"
+            />
+            <property name="cb_renderFilesBelow" type="String" role="inputOnly" />
+            <property
+                name="visibleToAllUsers"
+                type="Boolean"
+                label="Set Visibility to All Users"
+                description="By default, when an internal user uploads a file, the file is only visible to other internal users (meaning community users can't see it). If you'd like to make the uploaded file visible to all users, set this to TRUE. When a community user uploads a file, the file is already visible to all users."
+                role="inputOnly"
+            />
+            <property name="cb_visibleToAllUsers" type="String" role="inputOnly" />
+            <property
+                name="embedExternally"
+                type="Boolean"
+                label="Embed on External Website"
+                description="If this flow is being embedded on an external website (like Wordpress, for example), set this to TRUE. Otherwise, this should almost always be either empty or FALSE."
+                role="inputOnly"
+            />
+            <property name="cb_embedExternally" type="String" role="inputOnly" />
             <property
                 name="disableDelete"
                 type="Boolean"
@@ -136,6 +142,7 @@
                 description="When this is TRUE, clicking the 'X' next to the Files will simply remove them from the UI and the output list, but the Files will NOT be deleted."
                 role="inputOnly"
             />
+            <property name="cb_disableDelete" type="String" role="inputOnly" />
             <property
                 name="helpText"
                 type="String"

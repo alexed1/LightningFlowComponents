@@ -35,7 +35,7 @@ public with sharing class MainAnalysis_CreateRecords {
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputVariable(initRecordCreate.inputReference, secondRecordCreate.inputReference);
+                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputReference(initRecordCreate.inputReference, secondRecordCreate.inputReference);
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
@@ -51,15 +51,7 @@ public with sharing class MainAnalysis_CreateRecords {
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_OutputHandling((Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initRecordCreate)),(Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondRecordCreate)));
-                        if(newChange != null) {
-                            newChange.name = initRecordCreate.name;
-                            newChange.label = initRecordCreate.label;
-                            newChange.elementType = initRecordCreate.type;
-                            changeList.add(newChange);
-                        }
-
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputAndOutputParams(initRecordCreate.inputAssignments, secondRecordCreate.inputAssignments);
+                        newChange = FlowElementAnalysisFunctions.SubAnalysis_ManualInputAssignments(initRecordCreate.inputAssignments, secondRecordCreate.inputAssignments);
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;

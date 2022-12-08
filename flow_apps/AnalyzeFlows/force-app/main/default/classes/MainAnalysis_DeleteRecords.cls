@@ -23,7 +23,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputVariable(initRecordDelete.inputReference, secondRecordDelete.inputReference);
+                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputReference(initRecordDelete.inputReference, secondRecordDelete.inputReference);
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;

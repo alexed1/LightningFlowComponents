@@ -83,7 +83,7 @@ public with sharing class FlowElementAnalysisFunctions {
 
     }
 
-    public static ElementStatusChange SubAnalysis_InputVariable(String initFlowInputReference, String secondFlowInputReference) {
+    public static ElementStatusChange SubAnalysis_InputReference(String initFlowInputReference, String secondFlowInputReference) {
         ElementStatusChange newChange;
         if(initFlowInputReference != secondFlowInputReference) {
             newChange = new ElementStatusChange();
@@ -97,7 +97,7 @@ public with sharing class FlowElementAnalysisFunctions {
 
     }
 
-    public static ElementStatusChange SubAnalysis_InputAndOutputParams(List<usf3.MetadataService.FlowInputFieldAssignment> initFlowInputFieldAssignmentList,List<usf3.MetadataService.FlowInputFieldAssignment> secondFlowInputFieldAssignmentList) {
+    public static ElementStatusChange SubAnalysis_ManualInputAssignments(List<usf3.MetadataService.FlowInputFieldAssignment> initFlowInputFieldAssignmentList,List<usf3.MetadataService.FlowInputFieldAssignment> secondFlowInputFieldAssignmentList) {
         ElementStatusChange newChange;
         if((initFlowInputFieldAssignmentList == null && secondFlowInputFieldAssignmentList!= null) || (initFlowInputFieldAssignmentList != null && secondFlowInputFieldAssignmentList == null)) {
             newChange = new ElementStatusChange();
@@ -128,25 +128,6 @@ public with sharing class FlowElementAnalysisFunctions {
 
         }
 
-
-        return newChange;
-
-    }
-
-    public static ElementStatusChange SubAnalysis_OutputHandling(Map<String, Object> initFlowElementMap, Map<String, Object> secondFlowElementMap) {
-        ElementStatusChange newChange;
-        if(initFlowElementMap.get('getFirstRecordOnly') != secondFlowElementMap.get('getFirstRecordOnly') 
-            || initFlowElementMap.get('outputReference') != secondFlowElementMap.get('outputReference')
-            || initFlowElementMap.get('storeOutputAutomatically') != secondFlowElementMap.get('storeOutputAutomatically')
-            || JSON.serialize(initFlowElementMap.get('outputAssignments')) != JSON.serialize(secondFlowElementMap.get('outputAssignments'))
-            || JSON.serialize(initFlowElementMap.get('queriedFields')) != JSON.serialize(secondFlowElementMap.get('queriedFields'))
-        ) {
-            newChange = new ElementStatusChange();
-            newChange.changeType = 'Output Handling Has Been Modified';
-            newChange.elementType = 'String';
-            newChange.newValue = ' N/A';
-            newChange.oldValue = ' N/A';
-        }
 
         return newChange;
 

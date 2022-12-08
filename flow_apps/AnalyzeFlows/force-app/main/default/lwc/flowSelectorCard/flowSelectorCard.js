@@ -6,7 +6,28 @@ const SPECIFIC_VERSION_VALUE = 'Specific Version';
 
 export default class FlowSelectorCard extends LightningElement {
     @api selectedFlowAPIName = '';
-    @track selectedFlowAPIVersion = '';
+    @api selectedFlowAPIVersion = '';
+    @api flowSelectorLabel = 'Select flow';
+    
+    connectedCallback() {  
+        if(this.selectedFlowAPIName) {
+            getFlowVersions({flowAPIName : this.selectedFlowAPIName}).then(
+                result => {
+                    this.flowAPIVersionList = result;
+                    if(!this.selectedFlowAPIVersion) {
+                        this.selectedFlowAPIVersion = '' + this.flowAPIVersionList[this.flowAPIVersionList.length - 1].VersionNumber;
+                    } else {
+                        this.flowOption = SPECIFIC_VERSION_VALUE;
+                    }
+                    this.fireSelectEvent();
+                }
+            ).catch(
+                error => {
+                    console.error(error);
+                }
+            );
+        }
+    }
 
     flowAPIVersionList = [];
     get flowVersionOptionList() {
@@ -35,7 +56,7 @@ export default class FlowSelectorCard extends LightningElement {
     ];
     changeFlowName(event) {
         this.selectedFlowAPIName = event.detail.value;
-
+        this.flowOption = LATEST_VALUE;
         getFlowVersions({flowAPIName : this.selectedFlowAPIName}).then(
             result => {
                 this.flowAPIVersionList = result;
@@ -65,7 +86,6 @@ export default class FlowSelectorCard extends LightningElement {
             );
         }
         this.fireSelectEvent();
-        console.log(this.flowOption, this.selectedFlowAPIVersion);
     }
 
     fireSelectEvent() {

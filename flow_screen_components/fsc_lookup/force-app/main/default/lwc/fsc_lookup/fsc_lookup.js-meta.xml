@@ -7,13 +7,13 @@
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__FlowScreen">
+        <targetConfig targets="lightning__FlowScreen" configurationEditor="c-fsc_lookup-C-P-E">
             <!-- <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject"/> -->
             <property name="objectName" label="Object Name" type="String" required="true" role="inputOnly"/>
             <property name="label" label="Label" type="String" default="Select Record" role="inputOnly"/>
             <property name="fieldsToDisplay" label="Fields to Display" type="String" description="Enter a comma-separated string of field API names" role="inputOnly"></property>
             <property name="whereClause" label="Where Clause" type="String" description="(Advanced) Enter a value for the SOQL query's WHERE clause" role="inputOnly"></property>          
-            <property name="value" label="Default Value" type="String" role="inputOnly"></property>          
+            <property name="defaultValueInput" label="Default Value" type="String" role="inputOnly"></property>          
             <property name="required" label="Required" type="Boolean" role="inputOnly"></property> 
             <property name="messageWhenValueMissing" label="Message When Value Missing" type="String" role="inputOnly"></property>     
             <property name="showNewRecordAction" label="Show 'New Record' Action" type="Boolean" role="inputOnly"></property>   
@@ -22,10 +22,22 @@
             <property name="noMatchString" label="No Match Response" type="String" role="inputOnly"></property>
             <property name="fieldLevelHelp" label="Field Level Help" type="String" role="inputOnly"></property>
             <property name="fieldsToSearch" label="Fields to Search" type="String" role="inputOnly"></property>
-            <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" role="inputOnly"></property>
             <property name="leftIconName" label="Left Icon Name" type="String" default="utility:search" role="inputOnly"></property>
             <property name="rightIconName" label="Right Icon Name" type="String" default="utility:down" role="inputOnly"></property>
+            <property name="disabled" label="Disabled" type="Boolean" role="inputOnly"></property>
 
+            <!-- Multiselect Variables -->
+            <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" role="inputOnly"></property>
+            <property name="minimumNumberOfSelectedRecords" label="Minimum Number of Selected Records" type="Integer" role="inputOnly"></property>
+            <property name="maximumNumberOfSelectedRecords" label="Maximum Number of Selected Records" type="Integer" role="inputOnly"></property>
+
+            <!-- Parent Child Lookup Variables -->
+            <property name="parentOrChildLookup" label="Parent or Child" type="String" role="inputOnly"></property>
+            <property name="parentComponentApiName" label="Parent Component API Name" type="String" role="inputOnly"></property>
+            <property name="childRelationshipApiName" label="Child Relationship API Name" type="String" role="inputOnly"></property>
+            <property name="componentName" label="Component Name" type="String" role="inputOnly"></property>
+
+            <!-- Output Variables -->
             <property name="selectedRecordsOutput" label="Selected Records" type="String[]" role="outputOnly"></property>
             <property name="selectedRecordOutput" label="Selected Record" type="String" role="outputOnly"></property>
             <property name="numberOfRecordsOutput" label="Number of Records" type="Integer" role="outputOnly"></property>

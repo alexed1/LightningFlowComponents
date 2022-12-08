@@ -1,0 +1,148 @@
+<template>
+    <!-- Get Object -->
+    <c-fsc_pick-object-and-field-3 
+        id="objectName"
+        object-label={inputValues.objectName.label}
+        field-label={inputValues.fieldsToDisplay.label}
+        object-type={inputValues.objectName.value}
+        hide-field-picklist=false
+        onfieldselected={handleObjectChange}
+        builder-context={_builderContext}
+        required
+    ></c-fsc_pick-object-and-field-3 >
+
+    <!-- Fields to Display -->
+    <c-fsc_field-selector-3
+    id="fieldsToDisplay"
+    name="fieldsToDisplay"
+    object-name={inputValues.objectName.value}
+    label={inputValues.fieldsToDisplay.label}
+    selected-fields={inputValues.fieldsToDisplay.value}
+    required
+    allow-multiselect=true
+    onfieldupdate={handleValueChange}>
+    </c-fsc_field-selector-3>
+    
+
+    <!-- Fields to Search -->
+    <c-fsc_field-selector-3
+    id="fieldsToSearch"
+    name="fieldsToSearch"
+    object-name={inputValues.objectName.value}
+    label={inputValues.fieldsToSearch.label}
+    selected-fields={inputValues.fieldsToSearch.value}
+    allow-multiselect=true
+    onfieldupdate={handleValueChange}>
+    </c-fsc_field-selector-3>
+
+    <!-- WHERE CLAUSE -->
+    <!-- Simple -->
+    <lightning-input
+        type="text"
+        label={inputValues.whereClause.label}
+        name="whereClause"
+        value={inputValues.whereClause.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Advanced -->
+    <!-- Launch Flow and Open SOQL Query Builder When Returned parse out Everything RIGHT of WHERE-->
+
+    <!-- Default Value -->
+    <lightning-input
+        type="text"
+        label={inputValues.defaultValueInput.label}
+        name="defaultValueInput"
+        value={inputValues.defaultValueInput.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Message When Value Missing -->
+    <lightning-input
+        type="text"
+        label={inputValues.messageWhenValueMissing.label}
+        name="messageWhenValueMissing"
+        value={inputValues.messageWhenValueMissing.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+
+    <!-- Field Level Help -->
+    <lightning-input
+        type="text"
+        label={inputValues.fieldLevelHelp.label}
+        name="fieldLevelHelp"
+        value={inputValues.fieldLevelHelp.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- No Match String -->
+    <lightning-input
+        type="text"
+        label={inputValues.noMatchString.label}
+        name="noMatchString"
+        value={inputValues.noMatchString.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Placeholder -->
+    <lightning-input
+        type="text"
+        label={inputValues.placeholder.label}
+        name="placeholder"
+        value={inputValues.placeholder.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Show New Record Action -->
+    <lightning-input
+        type="checkbox"
+        label={inputValues.showNewRecordAction.label}
+        name="showNewRecordAction"
+        checked={inputValues.showNewRecordAction.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Allow Multi Select -->
+    <lightning-input
+        type="checkbox"
+        label={inputValues.allowMultiselect.label}
+        name="allowMultiselect"
+        checked={inputValues.allowMultiselect.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Required -->
+    <lightning-input
+        type="checkbox"
+        label={inputValues.required.label}
+        name="required"
+        checked={inputValues.required.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <!-- Icon Name -->
+    <c-fsc_pick-icon
+    label={inputValues.iconName.label}
+    icon-name={inputValues.iconName.value}
+    mode="combobox"
+    oniconselection={handleIconChange}>
+    </c-fsc_pick-icon>
+
+    <!-- Left Icon -->
+    <c-fsc_pick-icon
+    label={inputValues.leftIconName.label}
+    icon-name={inputValues.leftIconName.value}
+    mode="combobox"
+    oniconselection={handleLeftIconChange}>
+    </c-fsc_pick-icon>
+
+    <!-- Right Icon -->
+    <c-fsc_pick-icon
+    label={inputValues.rightIconName.label}
+    icon-name={inputValues.rightIconName.value}
+    mode="combobox"
+    oniconselection={handleRightIconChange}>
+    </c-fsc_pick-icon>
+
+</template>

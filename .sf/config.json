@@ -1,3 +1,4 @@
 {
-  "target-org": "lexhost"
+  "target-org": "lwc_dev",
+  "target-dev-hub": "milestoneProd"
 }

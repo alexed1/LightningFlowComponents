@@ -32,8 +32,39 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api publicClass;
         @api publicStyle;
         @api debounceDelay = DEFAULTS.DEBOUNCE_DELAY;
-        @api fieldsToSearch = '';
-        @api fieldsToDisplay = '';
+        @api get fieldsToSearch() {
+            return this._fieldsToSearch;
+        };
+        set fieldsToSearch(value) {
+            console.log('in set fieldsToSearch');
+            console.log(value);
+            this._fieldsToSearch = value;
+            this.visibleFields_ToSearchNames = JSON.parse(value).map(field => field.name).join();
+            this.fieldCollection_toSearch = JSON.parse(value).map(field => field.name);
+            console.log('this.fieldCollection_toSearch: ' + JSON.stringify(this.fieldCollection_toSearch));
+            console.log('this.visibleFields_ToSearchNames: ' + JSON.stringify(this.visibleFields_ToSearchNames));
+        }
+        @track _fieldsToSearch;
+        @api visibleFields_ToSearchNames;
+        @api fieldCollection_toSearch = [];
+
+        @api get fieldsToDisplay() {
+            return this._fieldsToDisplay;
+        };
+        set fieldsToDisplay(value) {
+            console.log('in set fieldsToDisplay');
+            console.log(value);
+            this._fieldsToDisplay = value;
+            this.visibleFields_ToDisplayNames = JSON.parse(value).map(field => field.name).join();
+            this.fieldCollection_toDisplay = JSON.parse(value).map(field => field.name);
+            console.log('this.fieldCollection_toDisplay: ' + JSON.stringify(this.fieldCollection_toDisplay));
+            console.log('this.visibleFields_ToDisplayNames: ' + JSON.stringify(this.visibleFields_ToDisplayNames));
+        }
+        @track _fieldsToDisplay;
+        @api visibleFields_ToDisplayNames;
+        @api fieldCollection_toDisplay = [];
+
+
         @api iconName;
         @api leftIconName = 'utility:search';
         @api rightIconName = 'utility:down';
@@ -46,6 +77,17 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api includeValueInFilter = false;  // If true, the 'value' text of an option is not included when determining if an option is a match for a given search text.
         @api whereClause; // Reserved for future use
         @api orderByClause; // Reserved for future use
+        @api defaultValueInput;
+        @api minimumNumberOfSelectedRecords = 0;
+        @api maximumNumberOfSelectedRecords = 0;
+        @api disabled = false;
+
+        // Determins if the lookup is a parent or child lookup
+        @api parentOrChildLookup = '';
+        @api parentComponentApiName = '';
+        @api childRelationshipApiName = '';
+        @api componentName = '';
+
 
         /* PRIVATE PROPERTIES */
         @track recentlyViewedRecords = [];
@@ -56,6 +98,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api selectedRecordsOutput = [];
         @api selectedRecordOutput;
         @api numberOfRecordsOutput = 0;
+
 
         /* PUBLIC GETTERS AND SETTERS */
         @api
@@ -74,7 +117,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                     // String objectName, String fieldsToReturn, List<String> idsToRetrieve
                     getRecordsFromIds({
                         objectName: this.objectName,
-                        fieldsToReturn: this.fieldsToDisplay,
+                        fieldsToReturn: this.visibleFields_ToDisplayNames,
                         idsToRetrieve: unqueriedValues
                     }).then(result => {
                         console.log('got result');
@@ -116,17 +159,25 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         get selectedRecord() {
             return this.selectedRecords.length ? this.selectedRecords[0] : null;
         }
+
+        // Get the object info
         @wire(getObjectInfo, { objectApiName: '$objectName' })
         objectInfo;
     
+        // Lifecycle hooks
         connectedCallback() {
             console.log('in lookup connectedcallback');
-            this.getRecentlyViewed();
+            // If defaultValueInput is set, we want to ignore the values passed in and set the default value
+            if ( this.defaultValueInput ) {
+                this.values = this.defaultValueInput;
+            } else {
+                this.getRecentlyViewed();
+            }
         }
     
         getRecentlyViewed() {
             this.isLoading = true;
-            getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.fieldsToDisplay, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
+            getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
                 .then(result => {
                     console.log('result = ' + JSON.stringify(result));
                     this.recentlyViewedRecords = this.parseFields(result);
@@ -150,8 +201,8 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 search({
                     searchTerm: searchText,
                     objectName: this.objectName,
-                    fieldsToSearch: this.fieldsToSearch || (this.excludeSublabelInFilter ? null : this.fieldsToDisplay),
-                    fieldsToReturn: this.fieldsToDisplay,
+                    fieldsToSearch: this.visibleFields_ToSearchNames || (this.excludeSublabelInFilter ? null : this.visibleFields_ToDisplayNames),
+                    fieldsToReturn: this.visibleFields_ToDisplayNames,
                     whereClause: this.whereClause,
                     orderByClause: this.orderByClause,
                     numRecordsToReturn: 0
@@ -173,8 +224,8 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
     
         parseFields(apexResults) {
             let displayFields, labelField, sublabel;
-            if (this.fieldsToDisplay) {
-                displayFields = this.fieldsToDisplay.split(',');
+            if (this.visibleFields_ToDisplayNames) {
+                displayFields = this.visibleFields_ToDisplayNames.split(',');
                 labelField = displayFields.splice(0, 1);
             }
     
@@ -224,6 +275,20 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 this.selectedRecordsOutput = event.detail.values;
                 this.numberOfRecordsOutput = event.detail.values.length ? event.detail.values.length : 0;
                 this.selectedRecordOutput = null;
+
+                // Check number of records to maximumNumberOfSelectedRecords, if we equal set dissabled to true
+                if (this.numberOfRecordsOutput === this.maximumNumberOfSelectedRecords) {
+                    this.disabled = true;
+                } else {
+                    this.disabled = false;
+                }
+
+                // Check number of records to minimumNumberOfSelectedRecords, if we are less then set required to true
+                if (this.numberOfRecordsOutput < this.minimumNumberOfSelectedRecords) {
+                    this.required = true;
+                } else {
+                    this.required = false;
+                }
             } else {
                 this.value = event.detail.value;
                 this.selectedRecordOutput = event.detail.value;

@@ -1,6 +1,6 @@
 <template>
     <c-fsc_combobox options={records} label={label} icon-size="small" public-class={publicClass} public-style={publicStyle} values={values}
-        custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect}
+        custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect} disabled={disabled}
         is-loading={isLoading} exclude-sublabel-in-filter={includeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
         include-value-in-filter={excludeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
         oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} >

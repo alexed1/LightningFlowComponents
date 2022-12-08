@@ -10,6 +10,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -17,6 +18,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -24,6 +26,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -31,6 +34,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -38,6 +42,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -45,6 +50,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
                     }

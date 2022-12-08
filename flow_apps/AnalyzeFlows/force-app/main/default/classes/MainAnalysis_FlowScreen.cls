@@ -131,6 +131,7 @@ public with sharing class MainAnalysis_FlowScreen {
                         if(newChange != null) {
                             newChange.name = initFlowScreen.name;
                             newChange.label = initFlowScreen.label;
+                            newChange.elementType = initFlowScreen.type;
                             changeList.add(newChange);
                         }
                         

@@ -23,6 +23,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
 
@@ -30,6 +31,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
 
@@ -37,6 +39,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
 
@@ -44,6 +47,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
 
@@ -51,6 +55,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
 
@@ -58,6 +63,7 @@ public with sharing class MainAnalysis_CreateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordCreate.name;
                             newChange.label = initRecordCreate.label;
+                            newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
                     }

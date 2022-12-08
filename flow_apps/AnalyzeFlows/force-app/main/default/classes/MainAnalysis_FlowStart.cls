@@ -18,6 +18,7 @@ public with sharing class MainAnalysis_FlowStart {
             if(newChange != null) {
                             newChange.name = 'FlowStart';
                             newChange.label = 'FlowStart';
+                            newChange.elementType = initFlow.start.type;
                             changeList.add(newChange);
             }
 
@@ -25,6 +26,7 @@ public with sharing class MainAnalysis_FlowStart {
             if(newChange != null) {
                             newChange.name = 'FlowStart';
                             newChange.label = 'FlowStart';
+                            newChange.elementType = initFlow.start.type;
                             changeList.add(newChange);
             }
 
@@ -32,6 +34,7 @@ public with sharing class MainAnalysis_FlowStart {
             if(newChange != null) {
                             newChange.name = 'FlowStart';
                             newChange.label = 'FlowStart';
+                            newChange.elementType = initFlow.start.type;
                             changeList.add(newChange);
             }
 

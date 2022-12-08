@@ -24,6 +24,7 @@ public with sharing class MainAnalysis_FlowSubflow {
                         if(newChange != null) {
                             newChange.name = initFlowSubflow.name;
                             newChange.label = initFlowSubflow.label;
+                            newChange.elementType = initFlowSubflow.type;
                             changeList.add(newChange);
                         }
 
@@ -34,6 +35,7 @@ public with sharing class MainAnalysis_FlowSubflow {
                         if(newChange != null) {
                             newChange.name = initFlowSubflow.name;
                             newChange.label = initFlowSubflow.label;
+                            newChange.elementType = initFlowSubflow.type;
                             changeList.add(newChange);
                         }
 

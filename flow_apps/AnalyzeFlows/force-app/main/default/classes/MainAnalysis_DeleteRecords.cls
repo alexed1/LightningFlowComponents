@@ -11,6 +11,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;
+                            newChange.elementType = initRecordDelete.type;
                             changeList.add(newChange);
                         }
 
@@ -18,6 +19,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;
+                            newChange.elementType = initRecordDelete.type;
                             changeList.add(newChange);
                         }
 
@@ -25,6 +27,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;
+                            newChange.elementType = initRecordDelete.type;
                             changeList.add(newChange);
                         }
 
@@ -32,6 +35,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;
+                            newChange.elementType = initRecordDelete.type;
                             changeList.add(newChange);
                         }
 
@@ -39,6 +43,7 @@ public with sharing class MainAnalysis_DeleteRecords {
                         if(newChange != null) {
                             newChange.name = initRecordDelete.name;
                             newChange.label = initRecordDelete.label;
+                            newChange.elementType = initRecordDelete.type;
                             changeList.add(newChange);
                         }
                     }

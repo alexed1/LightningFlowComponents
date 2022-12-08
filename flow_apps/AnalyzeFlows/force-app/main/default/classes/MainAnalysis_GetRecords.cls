@@ -20,6 +20,7 @@ public with sharing class MainAnalysis_GetRecords {
                         if(newChange != null) {
                             newChange.name = initRecordLookup.name;
                             newChange.label = initRecordLookup.label;
+                            newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
 
@@ -27,6 +28,7 @@ public with sharing class MainAnalysis_GetRecords {
                         if(newChange != null) {
                             newChange.name = initRecordLookup.name;
                             newChange.label = initRecordLookup.label;
+                            newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
 
@@ -34,6 +36,7 @@ public with sharing class MainAnalysis_GetRecords {
                         if(newChange != null) {
                             newChange.name = initRecordLookup.name;
                             newChange.label = initRecordLookup.label;
+                            newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
 
@@ -41,6 +44,7 @@ public with sharing class MainAnalysis_GetRecords {
                         if(newChange != null) {
                             newChange.name = initRecordLookup.name;
                             newChange.label = initRecordLookup.label;
+                            newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
 
@@ -48,6 +52,7 @@ public with sharing class MainAnalysis_GetRecords {
                         if(newChange != null) {
                             newChange.name = initRecordLookup.name;
                             newChange.label = initRecordLookup.label;
+                            newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
                     }

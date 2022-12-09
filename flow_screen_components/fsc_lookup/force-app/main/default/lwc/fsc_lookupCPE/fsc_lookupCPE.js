@@ -160,7 +160,6 @@ export default class Fsc_lookupCPE extends LightningElement {
     }
 
     handleValueChange(event) {
-        console.log('in handleValueChange: ' + JSON.stringify(event));
         if (event.detail && event.currentTarget.name) {
             let dataType = DATA_TYPE.STRING;
             if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
@@ -172,8 +171,6 @@ export default class Fsc_lookupCPE extends LightningElement {
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
 
             // If event.currentTarget.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
-            console.log("event.currentTarget.name == 'parentOrChildLookup' " + (event.currentTarget.name == 'parentOrChildLookup'))
-            console.log("event.currentTarget.name == 'allowMultiselect' " + (event.currentTarget.name == 'allowMultiselect'))
             if (event.currentTarget.name == 'parentOrChildLookup') {
                 if (newValue === 'Child') {
                     this.showChildInputs = true;
@@ -225,9 +222,6 @@ export default class Fsc_lookupCPE extends LightningElement {
     }
 
     handleObjectChange(event) {
-        console.log('in handleObjectChange: ' + JSON.stringify(event));
-        console.log('in handleObjectChange: ' + JSON.stringify(event.detail.objectType));
-        console.log('in handleObjectChange: ' + JSON.stringify(event.currentTarget.name));
         this.dispatchFlowValueChangeEvent('objectName', event.detail.objectType, DATA_TYPE.STRING);
     }
 

@@ -4,12 +4,18 @@
       "path": "force-app",
       "default": true,
       "package": "MC_Lookup",
-      "versionName": "ver 0.2",
-      "versionNumber": "0.1.3.NEXT",
+      "versionName": "ver 1.0",
+      "versionNumber": "0.2.3.NEXT",
       "versionDescription": "",
       "dependencies": [
         {
           "subscriberPackageVersionId": "04t5e0000012DeJAAU"
+        },
+        {
+          "subscriberPackageVersionId": "04t8b000000mKnoAAE"
+        },
+        {
+          "subscriberPackageVersionId": "04t5G000003rUvVQAU"
         }
       ]
     }
@@ -20,6 +26,8 @@
   "sourceApiVersion": "55.0",
   "packageAliases": {
     "MC_Lookup": "0Ho5e0000010wNhCAI",
-    "MC_Combobox": "04t5e0000012DeJAAU"
+    "MC_Combobox": "04t5e0000012DeJAAU",
+    "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE",
+    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU"
   }
 }

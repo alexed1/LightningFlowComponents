@@ -84,6 +84,16 @@
     <!-- Advanced -->
     <!-- Launch Flow and Open SOQL Query Builder When Returned parse out Everything RIGHT of WHERE-->
 
+    <!-- Label -->
+    <lightning-input
+        type="text"
+        label={inputValues.label.label}
+        name="label"
+        value={inputValues.label.value}
+        onchange={handleValueChange}
+        field-level-help="The label to display for the field."
+    ></lightning-input>
+    
     <!-- Default Value -->
     <lightning-input
         type="text"

@@ -40,7 +40,7 @@ export default class Fsc_lookupCPE extends LightningElement {
         rightIconName: {value: 'utility:down', valueDataType: null, isCollection: false, label: 'Right Icon Name'},
         allowMultiselect: {value: false, valueDataType: null, isCollection: false, label: 'Allow Multiselect'},
         fieldLevelHelp: {value: null, valueDataType: null, isCollection: false, label: 'Field Level Help'},
-        noMatchString: {value: 'No matches found', valueDataType: null, isCollection: false, label: 'No Match String'},
+        noMatchString: {value: 'No matches found', valueDataType: null, isCollection: false, label: 'No Match Response'},
         placeholder: {value: null, valueDataType: null, isCollection: false, label: 'Placeholder'},
         disabled: {value: null, valueDataType: null, isCollection: false, label: 'Disabled'},
         minimumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Minimum Number of Selected Records'},

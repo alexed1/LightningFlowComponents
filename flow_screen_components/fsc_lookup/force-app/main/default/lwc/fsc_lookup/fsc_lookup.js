@@ -86,9 +86,14 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api whereClause; // Reserved for future use
         @api orderByClause; // Reserved for future use
         @api defaultValueInput;
+        @api disabled = false;
+
+        // Custom Labels for number of records selected
         @api minimumNumberOfSelectedRecords = 0;
         @api maximumNumberOfSelectedRecords = 0;
-        @api disabled = false;
+
+        @api minimumNumberOfSelectedRecordsMessage = 'Please select at least {0} records';
+        @api maximumNumberOfSelectedRecordsMessage = 'Please select no more than {0} records';
 
         // Used in CPE
         @api isManualEntryFieldsToDisplay = false;
@@ -185,6 +190,16 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 this.values = this.defaultValueInput;
             } else {
                 this.getRecentlyViewed();
+            }
+
+            // Set Custom Labels
+            // If the minimumNumberOfSelectedRecords is set, set the custom label
+            if ( this.minimumNumberOfSelectedRecords ) {
+                this.minimumNumberOfSelectedRecordsMessage = this.minimumNumberOfSelectedRecordsMessage.replace('{0}', this.minimumNumberOfSelectedRecords);
+            }
+            // If the maximumNumberOfSelectedRecords is set, set the custom label
+            if ( this.maximumNumberOfSelectedRecords ) {
+                this.maximumNumberOfSelectedRecordsMessage = this.maximumNumberOfSelectedRecordsMessage.replace('{0}', this.maximumNumberOfSelectedRecords);
             }
         }
     
@@ -343,9 +358,6 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                     inputValue.setCustomValidity(
                         "Please select at least " + this.minimumNumberOfSelectedRecords + " records"
                     );
-                    this.required = true;
-                } else {
-                    this.required = false;
                 }
             } else {
                 this.value = event.detail.value;

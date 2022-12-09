@@ -34,6 +34,8 @@
             <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" role="inputOnly"></property>
             <property name="minimumNumberOfSelectedRecords" label="Minimum Number of Selected Records" type="Integer" role="inputOnly"></property>
             <property name="maximumNumberOfSelectedRecords" label="Maximum Number of Selected Records" type="Integer" role="inputOnly"></property>
+            <property name="minimumNumberOfSelectedRecordsMessage" label="Minimum Number of Selected Records Message" type="String" role="inputOnly"></property>
+            <property name="maximumNumberOfSelectedRecordsMessage" label="Maximum Number of Selected Records Message" type="String" role="inputOnly"></property>
 
             <!-- Parent Child Lookup Variables -->
             <property name="parentOrChildLookup" label="Parent or Child" type="String" role="inputOnly"></property>

@@ -45,6 +45,8 @@ export default class Fsc_lookupCPE extends LightningElement {
         disabled: {value: null, valueDataType: null, isCollection: false, label: 'Disabled'},
         minimumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Minimum Number of Selected Records'},
         maximumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Selected Records'},
+        minimumNumberOfSelectedRecordsMessage: {value: 'Please select at least {0} records', valueDataType: null, isCollection: false, label: 'Minimum Number of Selected Records Message'},
+        maximumNumberOfSelectedRecordsMessage: {value: 'Please select no more than {0} records', valueDataType: null, isCollection: false, label: 'Maximum Number of Selected Records Message'},
         parentOrChildLookup: {value: 'Parent', valueDataType: null, isCollection: false, label: 'Parent or Child Lookup'},
         parentComponentApiName: {value: null, valueDataType: null, isCollection: false, label: 'Parent Component API Name'},
         childRelationshipApiName: {value: null, valueDataType: null, isCollection: false, label: 'Child Relationship API Name'},
@@ -139,6 +141,11 @@ export default class Fsc_lookupCPE extends LightningElement {
                 if (curInputParam.name == 'isManualEntryFieldsToDisplay') {
                     this.isManualEntry = curInputParam.value;
                 }
+
+                // If input is allowMultiselect, then set the isMultiSelect flag
+                if (curInputParam.name == 'allowMultiselect') {
+                    this.isMultiSelect = curInputParam.value;
+                }
             });
         }
     }
@@ -183,6 +190,10 @@ export default class Fsc_lookupCPE extends LightningElement {
                     this.isMultiSelect = true;
                 } else {
                     this.isMultiSelect = false;
+
+                    // Set minimumNumberOfSelectedRecords and maximumNumberOfSelectedRecords to 0
+                    this.dispatchFlowValueChangeEvent('minimumNumberOfSelectedRecords', 0, DATA_TYPE.INTEGER);
+                    this.dispatchFlowValueChangeEvent('maximumNumberOfSelectedRecords', 0, DATA_TYPE.INTEGER);
                 }
             }
 

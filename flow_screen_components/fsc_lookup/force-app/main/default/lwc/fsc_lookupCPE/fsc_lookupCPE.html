@@ -29,6 +29,7 @@
         name="isManualEntryFieldsToDisplay"
         checked={inputValues.isManualEntryFieldsToDisplay.value}
         onchange={handleValueChange}
+        field-level-help="If checked, you can enter the fields to display manually. Use this for Polymorphic Field. Polymorphic Field exmple is Owner.Name. If not checked, you can select the fields to display in the lookup."
     ></lightning-input>
 
     <template if:true={isManualEntry}>
@@ -40,6 +41,7 @@
             value={inputValues.fieldsToDisplay.value}
             onchange={handleValueChange}
             required
+            field-level-help="The fields to display in the lookup. Use the format: FieldName, FieldName. You can use up to 5 fields."
         ></lightning-input>
     </template>
 
@@ -76,6 +78,7 @@
         name="whereClause"
         value={inputValues.whereClause.value}
         onchange={handleValueChange}
+        field-level-help="The WHERE clause to use when querying for records. Use the format: FieldName = 'Value'. You can use AND and OR to combine multiple conditions. Do not include the WHERE keyword. "
     ></lightning-input>
 
     <!-- Advanced -->
@@ -88,6 +91,7 @@
         name="defaultValueInput"
         value={inputValues.defaultValueInput.value}
         onchange={handleValueChange}
+        field-level-help="The default value. Set this value in the format of a record ID."
     ></lightning-input>
 
     <!-- Message When Value Missing -->
@@ -97,6 +101,7 @@
         name="messageWhenValueMissing"
         value={inputValues.messageWhenValueMissing.value}
         onchange={handleValueChange}
+        field-level-help="The text to display when the user doesn't enter a value and the field is required."
     ></lightning-input>
 
 
@@ -107,6 +112,7 @@
         name="fieldLevelHelp"
         value={inputValues.fieldLevelHelp.value}
         onchange={handleValueChange}
+        field-level-help="The text to display when the user hovers over the field-level-help icon."
     ></lightning-input>
 
     <!-- No Match String -->
@@ -116,6 +122,7 @@
         name="noMatchString"
         value={inputValues.noMatchString.value}
         onchange={handleValueChange}
+        field-level-help="The text to display when the user enters a value that doesn't match any records."
     ></lightning-input>
 
     <!-- Placeholder -->
@@ -125,6 +132,7 @@
         name="placeholder"
         value={inputValues.placeholder.value}
         onchange={handleValueChange}
+        field-level-help="The text to display when the field is empty, to prompt the user for a valid entry."
     ></lightning-input>
 
     <!-- Show New Record Action -->
@@ -134,6 +142,7 @@
         name="showNewRecordAction"
         checked={inputValues.showNewRecordAction.value}
         onchange={handleValueChange}
+        field-level-help="If checked, the user can create a new record from the lookup."
     ></lightning-input>
 
     <!-- Allow Multi Select -->
@@ -143,6 +152,7 @@
         name="allowMultiselect"
         checked={inputValues.allowMultiselect.value}
         onchange={handleValueChange}
+        field-level-help="If checked, the user can select multiple values."
     ></lightning-input>
 
     <!-- Required -->
@@ -152,6 +162,7 @@
         name="required"
         checked={inputValues.required.value}
         onchange={handleValueChange}
+        field-level-help="If checked, the user must select a value before they can proceed."
     ></lightning-input>
 
     <!-- Icon Name -->
@@ -179,7 +190,7 @@
     </c-fsc_pick-icon>
 
     <!-- If Multi Select False -->
-    <template if:false={isMultiSelect}>
+    <template if:true={isMultiSelect}>
         <!-- If reactive screens work with this component for child/parent then we can remove any notion of parent/child fields here and in the lookup component ANDY -->
         <!-- Parent or Child Lookup -->
         <!-- <lightning-combobox
@@ -208,6 +219,7 @@
                 name="minimumNumberOfSelectedRecords"
                 value={inputValues.minimumNumberOfSelectedRecords.value}
                 onchange={handleValueChange}
+                field-level-help="This is the minimum number of records that must be selected. If you leave this field blank, there will be no minimum number of selected records.">
             ></lightning-input>
 
             <!-- Maximum Number of Selected Records -->
@@ -216,8 +228,29 @@
                 label={inputValues.maximumNumberOfSelectedRecords.label}
                 name="maximumNumberOfSelectedRecords"
                 value={inputValues.maximumNumberOfSelectedRecords.value}
-                onchange={handleValueChange}>
+                onchange={handleValueChange}
+                field-level-help="This is the maximum number of records that can be selected. If you leave this field blank, there will be no maximum number of selected records.">
             </lightning-input>
+
+            <!-- Minimum Number of Selected Records Message -->
+            <lightning-input
+                type="text"
+                label={inputValues.minimumNumberOfSelectedRecordsMessage.label}
+                name="minimumNumberOfSelectedRecordsMessage"
+                value={inputValues.minimumNumberOfSelectedRecordsMessage.value}
+                onchange={handleValueChange}
+                field-level-help="This is the message that will be displayed if the user selects less records than the minimum number of selected records. Use the {0} placeholder to display the minimum number of selected records. If you leave this field blank, the default message will be used."
+            ></lightning-input>
+
+            <!-- Maximum Number of Selected Records Message -->
+            <lightning-input
+                type="text"
+                label={inputValues.maximumNumberOfSelectedRecordsMessage.label}
+                name="maximumNumberOfSelectedRecordsMessage"
+                value={inputValues.maximumNumberOfSelectedRecordsMessage.value}
+                onchange={handleValueChange}
+                field-level-help="This is the message that will be displayed if the user selects more records than the maximum number of selected records. Use the {0} placeholder to display the maximum number of selected records. If you leave this field blank, the default message will be used."
+            ></lightning-input>
         <!-- </template>  -->
 
         <!-- If parentOrChildLookup = Child -->

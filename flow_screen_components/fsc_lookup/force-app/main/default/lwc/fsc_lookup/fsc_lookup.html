@@ -7,6 +7,28 @@
         id={componentName}>
     </c-fsc_combobox>
 
+    <!-- If minimumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={minimumNumberOfSelectedRecords}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {minimumNumberOfSelectedRecords}
+                </span>
+            </span>
+        </div>
+    </template>
+
+    <!-- If maximumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={maximumNumberOfSelectedRecords}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {maximumNumberOfSelectedRecords}
+                </span>
+            </span>
+        </div>
+    </template>
+
     <template if:true={showNewRecordModal}>
         <section role="dialog" tabindex="-1" class="slds-modal slds-modal_large slds-fade-in-open">
             <div class="slds-modal__container">

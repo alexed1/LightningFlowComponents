@@ -266,6 +266,7 @@ export default class OptionSelector extends LightningElement {
     }
 
     get noMatchFound() {
+        console.log('noMatchFound: ' + JSON.stringify(this.options));
         return this.options.every(option => option.hidden || option.isAction);
     }
 
@@ -334,29 +335,37 @@ export default class OptionSelector extends LightningElement {
     }
 
     filterOptions() {
+        console.log('in filterOptions', this.inputElement?.value);
         let searchText = (this.inputElement?.value || '').toLowerCase();
         // console.log('in filterOptions', searchText);
         let numDisplayedCount = 0;
         for (let option of this.options) {
             if (numDisplayedCount > this.numOptionsDisplayed) {
                 option.hidden = true;
+                console.log('hiding due to numDisplayedCount ', option.label + ' ' + numDisplayedCount + ' ' + this.numOptionsDisplayed);
             } else if (searchText && option.isGrouping) {
                 option.hidden = true;
+                console.log('hiding due to grouping ', option.label + ' ' + option.isGrouping);
             } else if (this.values.includes(option.value)) {
                 // If the option has already been selected, hide it from the list of available options
                 option.hidden = true;
+                console.log('hiding due to being already selected ', option.label);
             }
             else {
                 // If the option's label matches the search text, display it. Also optionally check the option's sublabel and value.
+                // Check if the search value is defined, and if so, check that as well. This is added because the search value may be different from the label
+                // If the label is empty but matches the search value we want to hide the result
                 if (option.label?.toLowerCase().includes(searchText)
                     || (this.includeValueInFilter && option.value && option.value.toLowerCase().includes(searchText))
-                    || (!this.excludeSublabelInFilter && option.sublabel && option.sublabel.toLowerCase().includes(searchText))) {
+                    || (!this.excludeSublabelInFilter && option.sublabel && option.sublabel.toLowerCase().includes(searchText))
+                    || (option.searchValue?.toLowerCase().includes(searchText) && option.label )) {
                     option.hidden = false;
                     if (option.grouping) {
                         this.options.find(grouping => grouping.isGrouping && grouping.label == option.grouping).hidden = false;
                     }
                 } else {
                     option.hidden = true;
+                    console.log('hiding due to not matching search text ', option.label);
                 }
             }
 

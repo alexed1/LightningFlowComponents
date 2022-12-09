@@ -55,6 +55,11 @@ public with sharing class MainAnalysis_GetRecords {
                             newChange.elementType = initRecordLookup.type;
                             changeList.add(newChange);
                         }
+
+                        changeList.addAll(FlowElementAnalysisFunctions.subAnalysis_OutputMappings(
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initRecordLookup)), 
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondRecordLookup))
+                        ));
                     }
                 }
             }

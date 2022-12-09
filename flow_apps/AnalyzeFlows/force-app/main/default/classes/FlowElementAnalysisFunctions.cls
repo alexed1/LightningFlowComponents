@@ -213,4 +213,190 @@ public with sharing class FlowElementAnalysisFunctions {
         result.analysisTime = DateTime.now();
         return result;
     }
+
+    public static List<ElementStatusChange> SubAnalysis_InputParameters(List<Object> initFlowInputList,List<Object> secondFlowInputList, String elementType) {
+        ElementStatusChange newChange;
+        List<ElementStatusChange> newChangeList = new List<ElementStatusChange>();
+        initFlowInputList = initFlowInputList == null ? new List<Object>() : initFlowInputList;
+        secondFlowInputList = secondFlowInputList == null ? new List<Object>() : secondFlowInputList;
+    
+        //detect new or changed
+        for(Object initFlowInput : initFlowInputList) {
+            Map<String, Object> tempInitFlowInput = (Map<String, Object>)initFlowInput;
+            Boolean isNew = true;
+            for(Object  secondFlowInput: secondFlowInputList) {
+                Map<String, Object> tempSecondFlowInput = (Map<String, Object>)secondFlowInput;
+                if(tempInitFlowInput.get('name') == tempSecondFlowInput.get('name')) {
+                        String initFlowInputValue = getFlowInputValue((usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(tempInitFlowInput.get('value')), usf3.MetadataService.FlowElementReferenceOrValue.class));
+                        String secondFlowInputValue = getFlowInputValue((usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(tempSecondFlowInput.get('value')), usf3.MetadataService.FlowElementReferenceOrValue.class));
+
+                        if(initFlowInputValue != secondFlowInputValue) {
+                            newChange = new ElementStatusChange();
+                            newChange.changeType = 'An Input parameter value changed';
+                            newChange.elementType = elementType;
+                            newChange.newValue = initFlowInputValue;
+                            newChange.oldValue = secondFlowInputValue;
+                            newChangeList.add(newChange);
+                        }
+                        isNew = false;
+                }
+            }
+            if(isNew) {
+                newChange = new ElementStatusChange();
+                newChange.changeType = 'An Input parameter value was turned on';
+                newChange.elementType = elementType;
+                newChange.newValue = getFlowInputValue((usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(tempInitFlowInput.get('value')), usf3.MetadataService.FlowElementReferenceOrValue.class));
+                newChange.oldValue = 'not present';
+                newChangeList.add(newChange);
+            }
+        }
+        //detect old
+        for(Object initFlowInput :  secondFlowInputList) {
+            Map<String, Object> tempInitFlowInput = (Map<String, Object>)initFlowInput;
+            Boolean isOld = true;
+            for(Object secondFlowInput : initFlowInputList) {
+                Map<String, Object> tempSecondFlowInput = (Map<String, Object>)secondFlowInput;
+                if(tempInitFlowInput.get('name') == tempSecondFlowInput.get('name')) {
+                    isOld = false;
+                }
+            }
+            if(isOld) {
+                newChange = new ElementStatusChange();
+                newChange.changeType = 'Input parameter value was turned off';
+                newChange.newValue = 'not present';
+                newChange.elementType = elementType;
+                newChange.oldValue = getFlowInputValue((usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(tempInitFlowInput.get('value')), usf3.MetadataService.FlowElementReferenceOrValue.class));
+                newChangeList.add(newChange);
+            }
+        }
+    
+        return newChangeList;
+    }
+
+    public static List<ElementStatusChange> subAnalysis_OutputMappings(Map<String, Object> initFlowElementMap, Map<String, Object> secondFlowElementMap) {
+        List<ElementStatusChange> newChangeList = new List<ElementStatusChange>();
+        ElementStatusChange newChange;
+        if( initFlowElementMap.get('storeOutputAutomatically') != secondFlowElementMap.get('storeOutputAutomatically')
+        ) {
+            newChange = new ElementStatusChange();
+            newChange.changeType = 'StoreOutputAutomatically changed. This implies a change between automatic output mapping and manual mapping.';
+            newChange.elementType = String.valueOf(initFlowElementMap.get('type'));
+            newChange.newValue = String.valueOf(initFlowElementMap.get('storeOutputAutomatically'));
+            newChange.oldValue = String.valueOf(secondFlowElementMap.get('storeOutputAutomatically'));
+            newChangeList.add(newChange);
+        }
+
+        if(newChangeList.isEmpty()) {
+            if(initFlowElementMap.get('outputAssignments') != null || secondFlowElementMap.get('outputAssignments') != null) {
+                newChangeList.addAll(SubAnalysis_OutputsParameters(
+                    (List<Object>)initFlowElementMap.get('outputAssignments') ,
+                    (List<Object>)secondFlowElementMap.get('outputAssignments'), 
+                    String.valueOf(initFlowElementMap.get('type'))
+                ));
+            } else if(initFlowElementMap.get('outputParameters') != null || secondFlowElementMap.get('outputParameters') != null) {
+                newChangeList.addAll(SubAnalysis_OutputsParameters(
+                    (List<Object>)initFlowElementMap.get('outputParameters') ,
+                    (List<Object>)secondFlowElementMap.get('outputParameters'), 
+                    String.valueOf(initFlowElementMap.get('type'))
+                ));
+            }
+        }
+
+        return newChangeList;
+
+    }
+
+    public static List<ElementStatusChange> SubAnalysis_OutputsParameters(List<Object> initFlowOutputList,List<Object> secondFlowOutputList, String elementType) {
+        ElementStatusChange newChange;
+        List<ElementStatusChange> newChangeList = new List<ElementStatusChange>();
+        initFlowOutputList = initFlowOutputList == null ? new List<Object>() : initFlowOutputList;
+        secondFlowOutputList = secondFlowOutputList == null ? new List<Object>() : secondFlowOutputList;
+    
+        //detect new or changed
+        System.debug(initFlowOutputList);
+        System.debug(secondFlowOutputList);
+        for(Object initFlowOutput : initFlowOutputList) {
+            Map<String, Object> tempInitFlowOutput = (Map<String, Object>)initFlowOutput;
+            Boolean isNew = true;
+            for(Object  secondFlowOutput: secondFlowOutputList) {
+                Map<String, Object> tempSecondFlowOutput = (Map<String, Object>)secondFlowOutput;
+                if( equalsOutputNames(tempInitFlowOutput, tempSecondFlowOutput)) {    
+                        if(tempInitFlowOutput.get('assignToReference') != tempSecondFlowOutput.get('assignToReference') ) {
+                            newChange = new ElementStatusChange();
+                            newChange.changeType = 'An Output parameter value changed';
+                            newChange.elementType = elementType;
+                            newChange.newValue = String.valueOf(tempInitFlowOutput.get('assignToReference'));
+                            newChange.oldValue = String.valueOf(tempSecondFlowOutput.get('assignToReference'));
+                            newChangeList.add(newChange);
+                        }
+                        isNew = false;
+                }
+            }
+            if(isNew) {
+                newChange = new ElementStatusChange();
+                newChange.changeType = 'An Output parameter value was turned on';
+                newChange.elementType = elementType;
+                newChange.newValue =  String.valueOf(tempInitFlowOutput.get('assignToReference'));
+                newChange.oldValue = 'not present';
+                newChangeList.add(newChange);
+            }
+        }
+        //detect old
+        System.debug(initFlowOutputList);
+        System.debug(secondFlowOutputList);
+        for(Object initFlowOutput :  secondFlowOutputList) {
+            Map<String, Object> tempInitFlowOutput = (Map<String, Object>)initFlowOutput;
+            Boolean isOld = true;
+            for(Object secondFlowOutput : initFlowOutputList) {
+                Map<String, Object> tempSecondFlowOutput = (Map<String, Object>)secondFlowOutput;
+                if(equalsOutputNames(tempInitFlowOutput, tempSecondFlowOutput)) {
+                    isOld = false;
+                }
+            }
+            if(isOld) {
+                newChange = new ElementStatusChange();
+                newChange.changeType = 'AN Output parameter value was turned off';
+                newChange.newValue = 'not present';
+                newChange.elementType = elementType;
+                newChange.oldValue = String.valueOf(tempInitFlowOutput.get('assignToReference'));
+                newChangeList.add(newChange);
+            }
+        }
+    
+        return newChangeList;
+    }
+
+    static String getFlowInputValue(usf3.MetadataService.FlowElementReferenceOrValue value) {
+        String resultValue = '';
+        if(value.booleanValue != null) {
+            resultValue = String.valueOf(value.booleanValue);
+        } else if(value.dateTimeValue != null) {
+            resultValue = String.valueOf(value.dateTimeValue);
+        } else if(value.dateValue != null) {
+            resultValue = String.valueOf(value.dateValue);
+        } else if(value.elementReference != null) {
+            resultValue = String.valueOf(value.elementReference);
+        } else if(value.numberValue != null) {
+            resultValue = String.valueOf(value.numberValue);
+        } else if(value.stringValue != null) {
+            resultValue = String.valueOf(value.stringValue);
+        }
+        return resultValue;
+
+    }
+
+    static Boolean equalsOutputNames(Map<String, Object> initFlowOutput, Map<String, Object> secondFlowOutput) {
+        System.debug('equalsOutputNames');
+        System.debug(initFlowOutput.get('name'));
+        System.debug(secondFlowOutput.get('name'));
+        System.debug(initFlowOutput.get('field'));
+        System.debug(secondFlowOutput.get('field'));
+        if(initFlowOutput.get('name') != null || secondFlowOutput.get('name') != null) {
+            return initFlowOutput.get('name') == secondFlowOutput.get('name');
+        } else {
+            return  initFlowOutput.get('field') == secondFlowOutput.get('field');
+        }
+    }
 }
+
+

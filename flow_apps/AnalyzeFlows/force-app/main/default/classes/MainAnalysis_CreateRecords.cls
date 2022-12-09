@@ -58,6 +58,11 @@ public with sharing class MainAnalysis_CreateRecords {
                             newChange.elementType = initRecordCreate.type;
                             changeList.add(newChange);
                         }
+
+                        changeList.addAll(FlowElementAnalysisFunctions.subAnalysis_OutputMappings(
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initRecordCreate)), 
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondRecordCreate))
+                        ));
                     }
                 }
             }

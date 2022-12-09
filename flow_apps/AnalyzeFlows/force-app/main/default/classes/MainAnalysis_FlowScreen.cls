@@ -135,8 +135,9 @@ public with sharing class MainAnalysis_FlowScreen {
                             changeList.add(newChange);
                         }
                         
-                        // changeList.addAll(detectNewScreenEntities(initFlowScreen, initFlowScreen));
-                        // changeList.addAll(detectRemovedScreenEntities(initFlowScreen, initFlowScreen));
+                        changeList.addAll(detectNewScreenEntities(initFlowScreen, secondFlowScreen, 'New ScreenField detected'));
+                        changeList.addAll(detectNewScreenEntities(secondFlowScreen, initFlowScreen, 'Removed ScreenField detected'));
+                        changeList.addAll(detectNewScreenEntities(secondFlowScreen, initFlowScreen, 'Removed ScreenField detected'));
                     }
                 }
             }
@@ -146,7 +147,11 @@ public with sharing class MainAnalysis_FlowScreen {
         return result;
     }
 
-    public static List<ElementStatusChange> detectNewScreenEntities(usf3.MetadataService.FlowScreen initFlowScreen, usf3.MetadataService.FlowScreen secondFlowScreen) {
+    public static List<ElementStatusChange> detectNewScreenEntities(
+        usf3.MetadataService.FlowScreen initFlowScreen, 
+        usf3.MetadataService.FlowScreen secondFlowScreen,
+        String changeType
+    ) {
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
         for(usf3.MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
             Boolean entityIsExist = false;
@@ -161,8 +166,8 @@ public with sharing class MainAnalysis_FlowScreen {
                 changeList.add(new ElementStatusChange(
                                 initFlowScreenField.name,
                                 initFlowScreenField.name,
-                                'New ScreenField detected',
-                                initFlowScreenField.type,
+                                changeType,//'New ScreenField detected',
+                                initFlowScreen.type,
                                 initFlowScreenField.description,
                                 '',
                                 'N/A',
@@ -174,33 +179,29 @@ public with sharing class MainAnalysis_FlowScreen {
         return changeList;
     }
 
-    public static List<ElementStatusChange> detectRemovedScreenEntities(usf3.MetadataService.FlowScreen initFlowScreen, usf3.MetadataService.FlowScreen secondFlowScreen) {
+    public static List<ElementStatusChange> detectChangedScreenEntities(
+        usf3.MetadataService.FlowScreen initFlowScreen, 
+        usf3.MetadataService.FlowScreen secondFlowScreen,
+        String changeType
+    ) {
         List<ElementStatusChange> changeList = new List<ElementStatusChange>();
-        for(usf3.MetadataService.FlowScreenField  secondFlowScreenField : secondFlowScreen.fields) {
-            Boolean entityIsRemoved = true;
-            for(usf3.MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
+        for(usf3.MetadataService.FlowScreenField initFlowScreenField : initFlowScreen.fields) {
+            for(usf3.MetadataService.FlowScreenField secondFlowScreenField : secondFlowScreen.fields) {
                 if(initFlowScreenField.name == secondFlowScreenField.name) {
-                    entityIsRemoved = false;
-                    break;
-                }
-            }
+                    changeList.addAll(FlowElementAnalysisFunctions.SubAnalysis_InputParameters(
+                        (List<Object>)JSON.deserializeUntyped(JSON.serialize(initFlowScreenField.inputParameters)), 
+                        (List<Object>)JSON.deserializeUntyped(JSON.serialize(secondFlowScreenField.inputParameters)),
+                        initFlowScreen.type
+                    ));
 
-            if(entityIsRemoved) {
-                changeList.add(new ElementStatusChange(
-                                secondFlowScreenField.name,
-                                secondFlowScreenField.name,
-                                'Removed ScreenField detected',
-                                secondFlowScreenField.type,
-                                secondFlowScreenField.description,
-                                '',
-                                String.valueOf(secondFlowScreenField.name),
-                                'N/A'
-                               
-                            ));
+                    changeList.addAll(FlowElementAnalysisFunctions.subAnalysis_OutputMappings(
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initFlowScreenField)), 
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondFlowScreenField))
+                        ));
+                }
             }
         }
 
         return changeList;
     }
-
 }

@@ -28,6 +28,11 @@ public with sharing class MainAnalysis_FlowSubflow {
                             changeList.add(newChange);
                         }
 
+                        changeList.addAll(FlowElementAnalysisFunctions.subAnalysis_OutputMappings(
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initFlowSubflow)), 
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondFlowSubflow))
+                        ));
+
                     }
                 }
             }

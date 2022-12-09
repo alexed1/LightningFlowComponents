@@ -145,4 +145,76 @@
     oniconselection={handleRightIconChange}>
     </c-fsc_pick-icon>
 
+    <!-- If Multi Select False -->
+    <template if:false={isMultiSelect}>
+        <!-- Parent or Child Lookup -->
+        <!-- <lightning-combobox
+            label={inputValues.parentOrChildLookup.label}
+            name="parentOrChildLookup"
+            value={inputValues.parentOrChildLookup.value}
+            options={parentOrChildLookupOptions}
+            onchange={handleValueChange}
+        ></lightning-combobox> -->
+
+        <!-- If parentOrChildLookup = Parent -->
+        <!-- <template if:false={showChildInputs}> -->
+            <!-- Component Name -->
+            <!-- <lightning-input
+                type="text"
+                label={inputValues.componentName.label}
+                name="componentName"
+                value={inputValues.componentName.value}
+                onchange={handleValueChange}
+            ></lightning-input> -->
+
+            <!-- Minimum Number of Selected Records -->
+            <lightning-input
+                type="number"
+                label={inputValues.minimumNumberOfSelectedRecords.label}
+                name="minimumNumberOfSelectedRecords"
+                value={inputValues.minimumNumberOfSelectedRecords.value}
+                onchange={handleValueChange}
+            ></lightning-input>
+
+            <!-- Maximum Number of Selected Records -->
+            <lightning-input
+                type="number"
+                label={inputValues.maximumNumberOfSelectedRecords.label}
+                name="maximumNumberOfSelectedRecords"
+                value={inputValues.maximumNumberOfSelectedRecords.value}
+                onchange={handleValueChange}>
+            </lightning-input>
+        <!-- </template>  -->
+
+        <!-- If parentOrChildLookup = Child -->
+        <template if:true={showChildInputs}>
+            <!-- Child Relationship API Name -->
+            <c-fsc_field-selector-3
+                id="childRelationshipApiName"
+                name="fieldsToDisplay"
+                object-name={inputValues.objectName.value}
+                label={inputValues.childRelationshipApiName.label}
+                selected-fields={inputValues.childRelationshipApiName.value}
+                required
+                allow-multiselect=false
+                onfieldupdate={handleValueChange}>
+            </c-fsc_field-selector-3>
+
+            <!-- Parent Component API Name -->
+            <lightning-input
+                type="text"
+                label={inputValues.parentComponentApiName.label}
+                name="parentComponentApiName"
+                value={inputValues.parentComponentApiName.value}
+                onchange={handleValueChange}
+                required
+            ></lightning-input>
+        </template>
+
+
+
+
+    </template>
+
+
 </template>

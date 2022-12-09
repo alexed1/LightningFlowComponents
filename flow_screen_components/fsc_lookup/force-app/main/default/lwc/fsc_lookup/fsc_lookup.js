@@ -83,10 +83,10 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api disabled = false;
 
         // Determins if the lookup is a parent or child lookup
-        @api parentOrChildLookup = '';
+        @api parentOrChildLookup = 'Parent';
         @api parentComponentApiName = '';
         @api childRelationshipApiName = '';
-        @api componentName = '';
+        @api componentName = 'parentComponent';
 
 
         /* PRIVATE PROPERTIES */
@@ -285,6 +285,11 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
 
                 // Check number of records to minimumNumberOfSelectedRecords, if we are less then set required to true
                 if (this.numberOfRecordsOutput < this.minimumNumberOfSelectedRecords) {
+                    let inputfield = this.template.querySelector("#" + this.componentName);
+                    let inputValue = inputfield.value;
+                    inputValue.setCustomValidity(
+                        "Please select at least " + this.minimumNumberOfSelectedRecords + " records"
+                    );
                     this.required = true;
                 } else {
                     this.required = false;

@@ -14,11 +14,15 @@ const FLOW_EVENT_TYPE = {
 
 const VALIDATEABLE_INPUTS = ['objectName', 'fieldsToDisplay'];
 
+
 export default class Fsc_lookupCPE extends LightningElement {
     typeValue;
     _builderContext = {};
     _values = [];
     _typeMappings = [];
+
+    showChildInputs = false;
+    isMultiSelect = false;
 
     @track inputValues = {
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Lookup which Object?', required: true, errorMessage: 'Please select an object'},
@@ -33,17 +37,17 @@ export default class Fsc_lookupCPE extends LightningElement {
         iconName: {value: null, valueDataType: null, isCollection: false, label: 'Icon Name'},
         leftIconName: {value: 'utility:search', valueDataType: null, isCollection: false, label: 'Left Icon Name'},
         rightIconName: {value: 'utility:down', valueDataType: null, isCollection: false, label: 'Right Icon Name'},
-        allowMultiselect: {value: null, valueDataType: null, isCollection: false, label: 'Allow Multiselect'},
+        allowMultiselect: {value: false, valueDataType: null, isCollection: false, label: 'Allow Multiselect'},
         fieldLevelHelp: {value: null, valueDataType: null, isCollection: false, label: 'Field Level Help'},
         noMatchString: {value: 'No matches found', valueDataType: null, isCollection: false, label: 'No Match String'},
         placeholder: {value: null, valueDataType: null, isCollection: false, label: 'Placeholder'},
         disabled: {value: null, valueDataType: null, isCollection: false, label: 'Disabled'},
         minimumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Minimum Number of Selected Records'},
         maximumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Selected Records'},
-        parentOrChildLookup: {value: null, valueDataType: null, isCollection: false, label: 'Parent or Child Lookup'},
+        parentOrChildLookup: {value: 'Parent', valueDataType: null, isCollection: false, label: 'Parent or Child Lookup'},
         parentComponentApiName: {value: null, valueDataType: null, isCollection: false, label: 'Parent Component API Name'},
         childRelationshipApiName: {value: null, valueDataType: null, isCollection: false, label: 'Child Relationship API Name'},
-        componentName: {value: null, valueDataType: null, isCollection: false, label: 'Component Name'}
+        componentName: {value: 'parentComponent', valueDataType: null, isCollection: false, label: 'Component Name'}
     }
 
     @api get builderContext() {
@@ -71,6 +75,13 @@ export default class Fsc_lookupCPE extends LightningElement {
         this.initializeTypeMappings();
     }
 
+    get parentOrChildLookupOptions() {
+        return [
+            {label: 'Parent', value: 'Parent'},
+            {label: 'Child', value: 'Child'}
+        ];
+    }
+
     @api validate() {
         console.log('in validate: ' + JSON.stringify(VALIDATEABLE_INPUTS));
         const validity = [];
@@ -95,6 +106,7 @@ export default class Fsc_lookupCPE extends LightningElement {
                 });
             }
         });
+
         return validity;
     }
 
@@ -136,6 +148,27 @@ export default class Fsc_lookupCPE extends LightningElement {
             let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
             console.log('in handleValueChange: ' + event.currentTarget.name + ' = ' + newValue);
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
+
+            // If event.currentTarget.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
+            console.log("event.currentTarget.name == 'parentOrChildLookup' " + (event.currentTarget.name == 'parentOrChildLookup'))
+            console.log("event.currentTarget.name == 'allowMultiselect' " + (event.currentTarget.name == 'allowMultiselect'))
+            if (event.currentTarget.name == 'parentOrChildLookup') {
+                if (newValue === 'Child') {
+                    this.showChildInputs = true;
+                } else {
+                    this.showChildInputs = false;
+                }
+                console.log('this.showChildInputs: ' + this.showChildInputs);
+            }
+
+            // If event.currentTarget.name is allowMultiselect and value is true then isMultiSelect is true
+            if (event.currentTarget.name == 'allowMultiselect') {
+                if (newValue) {
+                    this.isMultiSelect = true;
+                } else {
+                    this.isMultiSelect = false;
+                }
+            }
         }
     }
 

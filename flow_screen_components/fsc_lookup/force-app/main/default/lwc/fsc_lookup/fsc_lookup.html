@@ -3,7 +3,8 @@
         custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect} disabled={disabled}
         is-loading={isLoading} exclude-sublabel-in-filter={includeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
         include-value-in-filter={excludeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
-        oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} >
+        oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} 
+        id={componentName}>
     </c-fsc_combobox>
 
     <template if:true={showNewRecordModal}>

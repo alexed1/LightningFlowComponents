@@ -23,6 +23,7 @@ export default class Fsc_lookupCPE extends LightningElement {
 
     showChildInputs = false;
     isMultiSelect = false;
+    isManualEntry = false;
 
     @track inputValues = {
         objectName: {value: null, valueDataType: null, isCollection: false, label: 'Lookup which Object?', required: true, errorMessage: 'Please select an object'},
@@ -47,7 +48,9 @@ export default class Fsc_lookupCPE extends LightningElement {
         parentOrChildLookup: {value: 'Parent', valueDataType: null, isCollection: false, label: 'Parent or Child Lookup'},
         parentComponentApiName: {value: null, valueDataType: null, isCollection: false, label: 'Parent Component API Name'},
         childRelationshipApiName: {value: null, valueDataType: null, isCollection: false, label: 'Child Relationship API Name'},
-        componentName: {value: 'parentComponent', valueDataType: null, isCollection: false, label: 'Component Name'}
+        componentName: {value: 'parentComponent', valueDataType: null, isCollection: false, label: 'Component Name'},
+        isManualEntryFieldsToDisplay: {value: false, valueDataType: null, isCollection: false, label: 'Manually Enter Fields to Display'},
+        allowAllObjects: { value: null, valueDataType: null, isCollection: false, label: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.' },
     }
 
     @api get builderContext() {
@@ -79,6 +82,13 @@ export default class Fsc_lookupCPE extends LightningElement {
         return [
             {label: 'Parent', value: 'Parent'},
             {label: 'Child', value: 'Child'}
+        ];
+    }
+
+    get objectTypes() {
+        return [
+            {label: 'Standard and Custom', value: ''},
+            {label: 'All', value: 'All'},
         ];
     }
 
@@ -124,6 +134,11 @@ export default class Fsc_lookupCPE extends LightningElement {
                     }
                     this.inputValues[curInputParam.name].valueDataType = curInputParam.valueDataType;
                 }
+
+                // If input is isManualEntryFieldsToDisplay, then set the isManualEntry flag
+                if (curInputParam.name == 'isManualEntryFieldsToDisplay') {
+                    this.isManualEntry = curInputParam.value;
+                }
             });
         }
     }
@@ -162,12 +177,26 @@ export default class Fsc_lookupCPE extends LightningElement {
             }
 
             // If event.currentTarget.name is allowMultiselect and value is true then isMultiSelect is true
+            // Used to disable/enable max and min fields
             if (event.currentTarget.name == 'allowMultiselect') {
                 if (newValue) {
                     this.isMultiSelect = true;
                 } else {
                     this.isMultiSelect = false;
                 }
+            }
+
+            // If event.currentTarget.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
+            // Used for fieldsToDisplay for allowing Polymorphic Fields
+            if (event.currentTarget.name == 'isManualEntryFieldsToDisplay') {
+                if (newValue) {
+                    this.isManualEntry = true;
+                } else {
+                    this.isManualEntry = false;
+                }
+
+                // Set inputsValues.fieldsToDisplay.value to empty string
+                this.dispatchFlowValueChangeEvent('fieldsToDisplay', '', DATA_TYPE.STRING);
             }
         }
     }

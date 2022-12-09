@@ -52,10 +52,15 @@ public without sharing class fsc_lookupController {
         }
 
         if (String.isBlank(fieldsToReturn)) {
-            // fieldsToReturn = 'Id, '+ objectNameField;
+            // If no fields to return are specified, return the name field
             fieldsToReturn = objectNameField;
-        // } else {
-        //     fieldsToReturn = String.join(splitAndTrim(fieldsToReturn), ',');
+        } else if (!String.isBlank(fieldsToSearch)) {
+            // Go through the list of fields to search and add them to the list of fields to return if they are not already there
+            for (String searchField : fieldsToSearch.split(',')) {
+                if (!fieldsToReturn.contains(searchField)) {
+                    fieldsToReturn += ', '+ searchField;
+                }
+            }
         }
 
         String queryString = 'SELECT '+ fieldsToReturn +' FROM '+ objectName;

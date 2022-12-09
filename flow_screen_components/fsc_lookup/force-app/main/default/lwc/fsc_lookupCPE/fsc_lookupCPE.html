@@ -1,4 +1,14 @@
 <template>
+    <!-- Allow user to select from All objects or Standard and Custom -->
+    <lightning-combobox 
+        label="Object Type" 
+        value={inputValues.allowAllObjects.value} 
+        name="allowAllObjects"
+        placeholder="Standard and Custom"
+        options={objectTypes} 
+        onchange={handleValueChange}>
+    </lightning-combobox>
+
     <!-- Get Object -->
     <c-fsc_pick-object-and-field-3 
         id="objectName"
@@ -8,31 +18,54 @@
         hide-field-picklist=false
         onfieldselected={handleObjectChange}
         builder-context={_builderContext}
+        available-object-types={inputValues.allowAllObjects.value}
         required
     ></c-fsc_pick-object-and-field-3 >
 
-    <!-- Fields to Display -->
-    <c-fsc_field-selector-3
-    id="fieldsToDisplay"
-    name="fieldsToDisplay"
-    object-name={inputValues.objectName.value}
-    label={inputValues.fieldsToDisplay.label}
-    selected-fields={inputValues.fieldsToDisplay.value}
-    required
-    allow-multiselect=true
-    onfieldupdate={handleValueChange}>
-    </c-fsc_field-selector-3>
-    
+    <!-- Allow Users to type in the fields to Display -->
+    <lightning-input
+        type="checkbox"
+        label={inputValues.isManualEntryFieldsToDisplay.label}
+        name="isManualEntryFieldsToDisplay"
+        checked={inputValues.isManualEntryFieldsToDisplay.value}
+        onchange={handleValueChange}
+    ></lightning-input>
+
+    <template if:true={isManualEntry}>
+        <!-- Fields to Display Manual -->
+        <lightning-input
+            type="text"
+            label={inputValues.fieldsToDisplay.label}
+            name="fieldsToDisplay"
+            value={inputValues.fieldsToDisplay.value}
+            onchange={handleValueChange}
+            required
+        ></lightning-input>
+    </template>
+
+    <template if:false={isManualEntry}>
+        <!-- Fields to Display -->
+        <c-fsc_field-selector-3
+        id="fieldsToDisplay"
+        name="fieldsToDisplay"
+        object-name={inputValues.objectName.value}
+        label={inputValues.fieldsToDisplay.label}
+        selected-fields={inputValues.fieldsToDisplay.value}
+        required
+        allow-multiselect=true
+        onfieldupdate={handleValueChange}>
+        </c-fsc_field-selector-3>
+    </template>
 
     <!-- Fields to Search -->
     <c-fsc_field-selector-3
-    id="fieldsToSearch"
-    name="fieldsToSearch"
-    object-name={inputValues.objectName.value}
-    label={inputValues.fieldsToSearch.label}
-    selected-fields={inputValues.fieldsToSearch.value}
-    allow-multiselect=true
-    onfieldupdate={handleValueChange}>
+        id="fieldsToSearch"
+        name="fieldsToSearch"
+        object-name={inputValues.objectName.value}
+        label={inputValues.fieldsToSearch.label}
+        selected-fields={inputValues.fieldsToSearch.value}
+        allow-multiselect=true
+        onfieldupdate={handleValueChange}>
     </c-fsc_field-selector-3>
 
     <!-- WHERE CLAUSE -->
@@ -123,26 +156,26 @@
 
     <!-- Icon Name -->
     <c-fsc_pick-icon
-    label={inputValues.iconName.label}
-    icon-name={inputValues.iconName.value}
-    mode="combobox"
-    oniconselection={handleIconChange}>
+        label={inputValues.iconName.label}
+        icon-name={inputValues.iconName.value}
+        mode="combobox"
+        oniconselection={handleIconChange}>
     </c-fsc_pick-icon>
 
     <!-- Left Icon -->
     <c-fsc_pick-icon
-    label={inputValues.leftIconName.label}
-    icon-name={inputValues.leftIconName.value}
-    mode="combobox"
-    oniconselection={handleLeftIconChange}>
+        label={inputValues.leftIconName.label}
+        icon-name={inputValues.leftIconName.value}
+        mode="combobox"
+        oniconselection={handleLeftIconChange}>
     </c-fsc_pick-icon>
 
     <!-- Right Icon -->
     <c-fsc_pick-icon
-    label={inputValues.rightIconName.label}
-    icon-name={inputValues.rightIconName.value}
-    mode="combobox"
-    oniconselection={handleRightIconChange}>
+        label={inputValues.rightIconName.label}
+        icon-name={inputValues.rightIconName.value}
+        mode="combobox"
+        oniconselection={handleRightIconChange}>
     </c-fsc_pick-icon>
 
     <!-- If Multi Select False -->

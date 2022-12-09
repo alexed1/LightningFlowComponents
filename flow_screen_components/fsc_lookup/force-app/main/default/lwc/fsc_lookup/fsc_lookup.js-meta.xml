@@ -26,6 +26,10 @@
             <property name="rightIconName" label="Right Icon Name" type="String" default="utility:down" role="inputOnly"></property>
             <property name="disabled" label="Disabled" type="Boolean" role="inputOnly"></property>
 
+            <!-- Used in CPE -->
+            <property name="isManualEntryFieldsToDisplay" label="Manually Enter Fields to Display" type="Boolean" role="inputOnly"></property>
+            <property name="allowAllObjects" label="Allow All Objects" type="String" role="inputOnly"></property>
+
             <!-- Multiselect Variables -->
             <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" role="inputOnly"></property>
             <property name="minimumNumberOfSelectedRecords" label="Minimum Number of Selected Records" type="Integer" role="inputOnly"></property>

@@ -55,8 +55,16 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
             console.log('in set fieldsToDisplay');
             console.log(value);
             this._fieldsToDisplay = value;
-            this.visibleFields_ToDisplayNames = JSON.parse(value).map(field => field.name).join();
-            this.fieldCollection_toDisplay = JSON.parse(value).map(field => field.name);
+
+            // Check to see it _fieldsToDisplay is a array then parse it. If string do nothing
+            // Depending if the user typed in the fields or used the picklist we need to account for both
+            if (!value.includes('[')) {
+                this.visibleFields_ToDisplayNames = value.replaceAll('"', '');
+                this.fieldCollection_toDisplay = value.replaceAll('"', '');
+            } else {
+                this.visibleFields_ToDisplayNames = JSON.parse(value).map(field => field.name).join();
+                this.fieldCollection_toDisplay = JSON.parse(value).map(field => field.name);
+            }
             console.log('this.fieldCollection_toDisplay: ' + JSON.stringify(this.fieldCollection_toDisplay));
             console.log('this.visibleFields_ToDisplayNames: ' + JSON.stringify(this.visibleFields_ToDisplayNames));
         }
@@ -81,6 +89,10 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api minimumNumberOfSelectedRecords = 0;
         @api maximumNumberOfSelectedRecords = 0;
         @api disabled = false;
+
+        // Used in CPE
+        @api isManualEntryFieldsToDisplay = false;
+        @api allowAllObjects = '';
 
         // Determins if the lookup is a parent or child lookup
         @api parentOrChildLookup = 'Parent';
@@ -167,6 +179,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         // Lifecycle hooks
         connectedCallback() {
             console.log('in lookup connectedcallback');
+
             // If defaultValueInput is set, we want to ignore the values passed in and set the default value
             if ( this.defaultValueInput ) {
                 this.values = this.defaultValueInput;
@@ -210,6 +223,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                     console.log('got result');
                     console.log(JSON.stringify(result));
                     this.records = this.parseFields(result);
+                    console.log('records = ' + JSON.stringify(this.records));
                     this.addNewRecordAction();
                     console.log('finished get result');
                 }).catch(error => {
@@ -223,21 +237,46 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         }
     
         parseFields(apexResults) {
-            let displayFields, labelField, sublabel;
+            let displayFields, labelField, sublabel, searchValue;
             if (this.visibleFields_ToDisplayNames) {
                 displayFields = this.visibleFields_ToDisplayNames.split(',');
                 labelField = displayFields.splice(0, 1);
             }
-    
+
+            console.log('Start labelField = ' + labelField);
+
+            // If labelField contains a dot, it's a relationship field
+            // Parse the value from the object and use the relationship name
+            if (labelField && labelField.toString().indexOf('.') !== -1) {
+                let labelString = labelField.toString();
+                let relationshipName = labelString.split('.')[0];
+
+                labelString = labelString.split('.')[1];
+                console.log('relationshipName = ' + relationshipName);
+                console.log('labelField = ' + labelString);
+                apexResults = apexResults.map(record => {
+                    console.log('record = ' + JSON.stringify(record));
+                    record[relationshipName] = record[relationshipName][labelString];
+                    console.log('record = ' + JSON.stringify(record));
+                    return record;
+                });
+                // Set the labelField to the value of the relationship field
+                labelField = relationshipName;
+            }
+
             return apexResults.map(record => {
                 if (!labelField) {
                     let nonIdFields = Object.keys(record).filter(fieldName => fieldName != 'Id');
+                    console.log('nonIdFields = ' + JSON.stringify(nonIdFields));
                     if (nonIdFields.length !== 1) {
                         // THROW ERROR
                         console.log('Error: expected exactly one other field');
                     }
                     labelField = nonIdFields[0];
+                    console.log('labelField = ' + labelField);
                 }
+
+                // if displayFields is set, join the values and set as sublabel
                 if (displayFields && displayFields.length) {
                     let sublabelValues = [];
                     for (let sublabelField of displayFields) {
@@ -247,11 +286,25 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                     }
                     sublabel = sublabelValues.join(' • ');
                 }
+
+                // if visibleFields_ToSearchNames is set, join the values and set as searchField
+                if (this.visibleFields_ToSearchNames) {
+                    let searchFields = this.visibleFields_ToSearchNames.split(',');
+                    let searchFieldValues = [];
+                    for (let searchField of searchFields) {
+                        if (record[searchField]) {
+                            searchFieldValues.push(record[searchField]);
+                        }
+                    }
+                    searchValue = searchFieldValues.join('');
+                }
+
                 return {
                     label: record[labelField],
                     value: record.Id,
                     sublabel: sublabel,
-                    icon: this.iconName
+                    icon: this.iconName,
+                    searchValue: searchValue
                 }
             });
         }

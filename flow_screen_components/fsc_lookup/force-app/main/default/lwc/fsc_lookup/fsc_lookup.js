@@ -95,6 +95,13 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api minimumNumberOfSelectedRecordsMessage = 'Please select at least {0} records';
         @api maximumNumberOfSelectedRecordsMessage = 'Please select no more than {0} records';
 
+        @track _minimumNumberOfSelectedRecordsMessage;
+        @track _maximumNumberOfSelectedRecordsMessage;
+
+        @track _showMinimumNumberOfSelectedRecordsMessage = false;
+        @track _showMinimumNumberOfSelectedRecordsErrorMessage = false;
+        @track _showMaximumNumberOfSelectedRecordsMessage = false;
+
         // Used in CPE
         @api isManualEntryFieldsToDisplay = false;
         @api allowAllObjects = '';
@@ -177,6 +184,23 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
             return this.selectedRecords.length ? this.selectedRecords[0] : null;
         }
 
+        @api
+        validate() {
+            // If the minimumNumberOfSelectedRecords not equal to 0, check to see if the number of records selected is less than the minimum
+            // If it is not valid then return error message and isValid = false
+            if ( this.minimumNumberOfSelectedRecords !== 0 ) {
+                if ( this.selectedRecords.length < this.minimumNumberOfSelectedRecords ) {
+                    this._showMinimumNumberOfSelectedRecordsErrorMessage = true;
+                    return {
+                        isValid: false,
+                        errorMessage: this._minimumNumberOfSelectedRecordsMessage
+                    }
+                } else {
+                    return { isValid: true };
+                }
+            }
+        }
+
         // Get the object info
         @wire(getObjectInfo, { objectApiName: '$objectName' })
         objectInfo;
@@ -193,13 +217,17 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
             }
 
             // Set Custom Labels
-            // If the minimumNumberOfSelectedRecords is set, set the custom label
-            if ( this.minimumNumberOfSelectedRecords ) {
-                this.minimumNumberOfSelectedRecordsMessage = this.minimumNumberOfSelectedRecordsMessage.replace('{0}', this.minimumNumberOfSelectedRecords);
+            // If the minimumNumberOfSelectedRecords is set, set the custom label)
+            if ( this.minimumNumberOfSelectedRecords !== 0 ) {
+                this._showMinimumNumberOfSelectedRecordsMessage = true;
+                this._minimumNumberOfSelectedRecordsMessage = this.minimumNumberOfSelectedRecordsMessage.replace('{0}', this.minimumNumberOfSelectedRecords);
             }
             // If the maximumNumberOfSelectedRecords is set, set the custom label
-            if ( this.maximumNumberOfSelectedRecords ) {
-                this.maximumNumberOfSelectedRecordsMessage = this.maximumNumberOfSelectedRecordsMessage.replace('{0}', this.maximumNumberOfSelectedRecords);
+            console.log('this.maximumNumberOfSelectedRecords = ' + this.maximumNumberOfSelectedRecords);
+            if ( this.maximumNumberOfSelectedRecords !== 0 ) {
+                this._showMaximumNumberOfSelectedRecordsMessage = true;
+                this._maximumNumberOfSelectedRecordsMessage = this.maximumNumberOfSelectedRecordsMessage.replace('{0}', this.maximumNumberOfSelectedRecords);
+                console.log('this._maximumNumberOfSelectedRecordsMessage = ' + this._maximumNumberOfSelectedRecordsMessage);
             }
         }
     
@@ -349,15 +377,6 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                     this.disabled = true;
                 } else {
                     this.disabled = false;
-                }
-
-                // Check number of records to minimumNumberOfSelectedRecords, if we are less then set required to true
-                if (this.numberOfRecordsOutput < this.minimumNumberOfSelectedRecords) {
-                    let inputfield = this.template.querySelector("#" + this.componentName);
-                    let inputValue = inputfield.value;
-                    inputValue.setCustomValidity(
-                        "Please select at least " + this.minimumNumberOfSelectedRecords + " records"
-                    );
                 }
             } else {
                 this.value = event.detail.value;

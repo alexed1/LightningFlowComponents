@@ -4,28 +4,35 @@
         is-loading={isLoading} exclude-sublabel-in-filter={excludeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
         include-value-in-filter={includeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
         oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} 
-        id={componentName}>
+        id={componentName} class={componentName}>
     </c-fsc_combobox>
 
     <!-- If minimumNumberOfSelectedRecords is not null then show that as a label -->
-    <template if:true={minimumNumberOfSelectedRecords}>
+    <template if:true={_showMinimumNumberOfSelectedRecordsMessage}>
         <div class="slds-form-element__label slds-form-element__label_required">
             <span class="slds-form-element__label-text">
                 <span class="slds-form-element__label-required">
-                    {minimumNumberOfSelectedRecords}
+                    {_minimumNumberOfSelectedRecordsMessage}
                 </span>
             </span>
         </div>
     </template>
 
     <!-- If maximumNumberOfSelectedRecords is not null then show that as a label -->
-    <template if:true={maximumNumberOfSelectedRecords}>
+    <template if:true={_showMaximumNumberOfSelectedRecordsMessage}>
         <div class="slds-form-element__label slds-form-element__label_required">
             <span class="slds-form-element__label-text">
                 <span class="slds-form-element__label-required">
-                    {maximumNumberOfSelectedRecords}
+                    {_maximumNumberOfSelectedRecordsMessage}
                 </span>
             </span>
+        </div>
+    </template>
+
+    <!-- If under the mininumSelectedRecords Show Error Message -->
+    <template if:true={_showMinimumNumberOfSelectedRecordsErrorMessage}>
+        <div class="slds-form-element__help">
+            {_minimumNumberOfSelectedRecordsMessage}
         </div>
     </template>
 

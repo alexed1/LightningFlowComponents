@@ -1,0 +1,4 @@
+.my-icon {
+    --sds-c-icon-color-foreground: var(--foregroundColor);
+    --sds-c-icon-color-background: var(--backgroundColor);
+}

@@ -161,7 +161,7 @@ export default class Fsc_lookupCPE extends LightningElement {
 
     handleValueChange(event) {
         console.log('in handleValueChange: ' + JSON.stringify(event));
-        if (event.detail.newValue && event.target) {
+        if (event.detail && event.target) {
             // Any component using fsc_flow-combobox will be ran through here
             // This is the newer version and will allow users to use merge fields
             console.log('(NEW) in handleValueChange: ' + event.target.name + ' = ' + event.detail.newValue);
@@ -203,7 +203,7 @@ export default class Fsc_lookupCPE extends LightningElement {
                 // Set inputsValues.fieldsToDisplay.value to empty string
                 this.dispatchFlowValueChangeEvent('fieldsToDisplay', null);
             }
-        } else if ( event.detail.value && event.currentTarget.name ) {
+        } else if ( event.detail && event.currentTarget ) {
             // This is the older version for any old inputs that are still using currentTarget
             // Kept for backwards compatibility
             console.log('(OLD) in handleValueChange: ' + event.currentTarget.name + ' = ' + event.detail);

@@ -75,6 +75,7 @@
         name="whereClause" 
         value={inputValues.whereClause.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.whereClause.label}
         field-level-help="The WHERE clause to use when querying for records. Use the format: FieldName = 'Value'. You can use AND and OR to combine multiple conditions. Do not include the WHERE keyword. "
         onvaluechanged={handleValueChange}>
@@ -88,6 +89,7 @@
         name="label" 
         value={inputValues.label.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.label.label}
         field-level-help="The label to display for the field."
         onvaluechanged={handleValueChange}>
@@ -98,6 +100,7 @@
         name="defaultValueInput" 
         value={inputValues.defaultValueInput.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.defaultValueInput.label}
         field-level-help="The default value. Set this value in the format of a record ID."
         onvaluechanged={handleValueChange}>
@@ -108,6 +111,7 @@
         name="messageWhenValueMissing" 
         value={inputValues.messageWhenValueMissing.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.messageWhenValueMissing.label}
         field-level-help="The text to display when the user doesn't enter a value and the field is required."
         onvaluechanged={handleValueChange}>
@@ -118,6 +122,7 @@
         name="fieldLevelHelp" 
         value={inputValues.fieldLevelHelp.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.fieldLevelHelp.label}
         field-level-help="The text to display when the user hovers over the field-level-help icon."
         onvaluechanged={handleValueChange}>
@@ -128,6 +133,7 @@
         name="noMatchString" 
         value={inputValues.noMatchString.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.noMatchString.label}
         field-level-help="The text to display when the user enters a value that doesn't match any records."
         onvaluechanged={handleValueChange}>
@@ -138,6 +144,7 @@
         name="placeholder" 
         value={inputValues.placeholder.value}
         builder-context-filter-type="String"
+        builder-context={_builderContext}
         label={inputValues.placeholder.label}
         field-level-help="The text to display when the field is empty, to prompt the user for a valid entry."
         onvaluechanged={handleValueChange}>
@@ -222,6 +229,7 @@
                 name="minimumNumberOfSelectedRecords" 
                 value={inputValues.minimumNumberOfSelectedRecords.value}
                 builder-context-filter-type="Number"
+                builder-context={_builderContext}
                 label={inputValues.minimumNumberOfSelectedRecords.label}
                 field-level-help="This is the minimum number of records that must be selected. If you leave this field blank, there will be no minimum number of selected records."
                 onvaluechanged={handleValueChange}>
@@ -232,6 +240,7 @@
                 name="maximumNumberOfSelectedRecords" 
                 value={inputValues.maximumNumberOfSelectedRecords.value}
                 builder-context-filter-type="Number"
+                builder-context={_builderContext}
                 label={inputValues.maximumNumberOfSelectedRecords.label}
                 field-level-help="This is the maximum number of records that can be selected. If you leave this field blank, there will be no maximum number of selected records."
                 onvaluechanged={handleValueChange}>
@@ -242,6 +251,7 @@
                 name="minimumNumberOfSelectedRecordsMessage" 
                 value={inputValues.minimumNumberOfSelectedRecordsMessage.value}
                 builder-context-filter-type="String"
+                builder-context={_builderContext}
                 label={inputValues.minimumNumberOfSelectedRecordsMessage.label}
                 field-level-help="This is the message that will be displayed if the user selects less records than the minimum number of selected records. Use the {0} placeholder to display the minimum number of selected records. If you leave this field blank, the default message will be used."
                 onvaluechanged={handleValueChange}>
@@ -252,6 +262,7 @@
                 name="maximumNumberOfSelectedRecordsMessage" 
                 value={inputValues.maximumNumberOfSelectedRecordsMessage.value}
                 builder-context-filter-type="String"
+                builder-context={_builderContext}
                 label={inputValues.maximumNumberOfSelectedRecordsMessage.label}
                 field-level-help="This is the message that will be displayed if the user selects more records than the maximum number of selected records. Use the {0} placeholder to display the maximum number of selected records. If you leave this field blank, the default message will be used."
                 onvaluechanged={handleValueChange}>

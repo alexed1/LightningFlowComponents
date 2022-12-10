@@ -714,6 +714,11 @@ export default class FlowCombobox extends LightningElement {
             } else {
                 this._dataType = flowComboboxDefaults.stringDataType;
             }
+
+            // checkValidity on valueInput
+            if ( !valueInput.checkValidity() ) {
+                this.hasError = true;
+            }
         }
     }
 
@@ -735,7 +740,7 @@ export default class FlowCombobox extends LightningElement {
     get formElementClass() {
         let resultClass = 'slds-form-element';
         if (this.hasError) {
-            resultClass += ' slds-has-error';
+            resultClass += ' slds-has-error slds-m-bottom_medium';
         }
         return resultClass;
     }

@@ -160,18 +160,14 @@ export default class Fsc_lookupCPE extends LightningElement {
     }
 
     handleValueChange(event) {
-        if (event.detail && event.currentTarget.name) {
-            let dataType = DATA_TYPE.STRING;
-            if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
-            if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
-            if (event.currentTarget.type == 'integer') dataType = DATA_TYPE.INTEGER;
+        if (event.detail && event.target) {
+            // Any component using fsc_flow-combobox will be ran through here
+            // This is the newer version and will allow users to use merge fields
+            console.log('in handleValueChange: ' + event.target.name + ' = ' + event.detail.newValue);
+            this.dispatchFlowValueChangeEvent(event.target.name, event.detail.newValue, event.detail.newValueDataType);
 
-            let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
-            console.log('in handleValueChange: ' + event.currentTarget.name + ' = ' + newValue);
-            this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
-
-            // If event.currentTarget.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
-            if (event.currentTarget.name == 'parentOrChildLookup') {
+            // If event.target.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
+            if (event.target.name == 'parentOrChildLookup') {
                 if (newValue === 'Child') {
                     this.showChildInputs = true;
                 } else {
@@ -180,9 +176,9 @@ export default class Fsc_lookupCPE extends LightningElement {
                 console.log('this.showChildInputs: ' + this.showChildInputs);
             }
 
-            // If event.currentTarget.name is allowMultiselect and value is true then isMultiSelect is true
+            // If event.target.name is allowMultiselect and value is true then isMultiSelect is true
             // Used to disable/enable max and min fields
-            if (event.currentTarget.name == 'allowMultiselect') {
+            if (event.target.name == 'allowMultiselect') {
                 if (newValue) {
                     this.isMultiSelect = true;
                 } else {
@@ -194,9 +190,9 @@ export default class Fsc_lookupCPE extends LightningElement {
                 }
             }
 
-            // If event.currentTarget.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
+            // If event.target.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
             // Used for fieldsToDisplay for allowing Polymorphic Fields
-            if (event.currentTarget.name == 'isManualEntryFieldsToDisplay') {
+            if (event.target.name == 'isManualEntryFieldsToDisplay') {
                 if (newValue) {
                     this.isManualEntry = true;
                 } else {
@@ -206,6 +202,16 @@ export default class Fsc_lookupCPE extends LightningElement {
                 // Set inputsValues.fieldsToDisplay.value to empty string
                 this.dispatchFlowValueChangeEvent('fieldsToDisplay', '', DATA_TYPE.STRING);
             }
+        } else if ( event.detail && event.currentTarget.name ) {
+            // This is the older version for any old inputs that are still using currentTarget
+            // Kept for backwards compatibility
+            console.log('in handleValueChange: ' + event.currentTarget.name + ' = ' + event.detail);
+            let dataType = DATA_TYPE.STRING;
+            if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
+            if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
+            if (event.currentTarget.type == 'integer') dataType = DATA_TYPE.INTEGER;
+            let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
+            this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
         }
     }
 

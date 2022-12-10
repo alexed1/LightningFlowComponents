@@ -99,7 +99,7 @@ export default class Fsc_lookupCPE extends LightningElement {
         const validity = [];
         VALIDATEABLE_INPUTS.forEach((input) => {
             console.log('in validate: ' + input + ' = ' + this.inputValues[input].value + ' required: ' + this.inputValues[input].required)
-            if ( this.inputValues[input].value.toString().length == 0 && this.inputValues[input].required) {
+            if ( this.inputValues[input].value?.toString().length == 0 && this.inputValues[input].required) {
                 console.log('in validate: ' + input + ' is required');
                 let cmp = '';
                 if(input == 'fieldsToDisplay'){
@@ -160,10 +160,11 @@ export default class Fsc_lookupCPE extends LightningElement {
     }
 
     handleValueChange(event) {
-        if (event.detail && event.target) {
+        console.log('in handleValueChange: ' + JSON.stringify(event));
+        if (event.detail.newValue && event.target) {
             // Any component using fsc_flow-combobox will be ran through here
             // This is the newer version and will allow users to use merge fields
-            console.log('in handleValueChange: ' + event.target.name + ' = ' + event.detail.newValue);
+            console.log('(NEW) in handleValueChange: ' + event.target.name + ' = ' + event.detail.newValue);
             this.dispatchFlowValueChangeEvent(event.target.name, event.detail.newValue, event.detail.newValueDataType);
 
             // If event.target.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
@@ -179,7 +180,7 @@ export default class Fsc_lookupCPE extends LightningElement {
             // If event.target.name is allowMultiselect and value is true then isMultiSelect is true
             // Used to disable/enable max and min fields
             if (event.target.name == 'allowMultiselect') {
-                if (newValue) {
+                if (event.detail.newValue) {
                     this.isMultiSelect = true;
                 } else {
                     this.isMultiSelect = false;
@@ -193,25 +194,50 @@ export default class Fsc_lookupCPE extends LightningElement {
             // If event.target.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
             // Used for fieldsToDisplay for allowing Polymorphic Fields
             if (event.target.name == 'isManualEntryFieldsToDisplay') {
-                if (newValue) {
+                if (event.detail.newValue) {
                     this.isManualEntry = true;
                 } else {
                     this.isManualEntry = false;
                 }
 
                 // Set inputsValues.fieldsToDisplay.value to empty string
-                this.dispatchFlowValueChangeEvent('fieldsToDisplay', '', DATA_TYPE.STRING);
+                this.dispatchFlowValueChangeEvent('fieldsToDisplay', null);
             }
-        } else if ( event.detail && event.currentTarget.name ) {
+        } else if ( event.detail.value && event.currentTarget.name ) {
             // This is the older version for any old inputs that are still using currentTarget
             // Kept for backwards compatibility
-            console.log('in handleValueChange: ' + event.currentTarget.name + ' = ' + event.detail);
+            console.log('(OLD) in handleValueChange: ' + event.currentTarget.name + ' = ' + event.detail);
             let dataType = DATA_TYPE.STRING;
             if (event.currentTarget.type == 'checkbox') dataType = DATA_TYPE.BOOLEAN;
             if (event.currentTarget.type == 'number') dataType = DATA_TYPE.NUMBER;
             if (event.currentTarget.type == 'integer') dataType = DATA_TYPE.INTEGER;
             let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
+        } else if (event.currentTarget?.name == 'isManualEntryFieldsToDisplay'){
+            // Special case for isManualEntryFieldsToDisplay
+            // Set inputsValues.fieldsToDisplay.value to empty string
+            if (event.detail.newValue) {
+                this.isManualEntry = true;
+            } else {
+                this.isManualEntry = false;
+            }
+
+            // Set inputsValues.fieldsToDisplay.value to empty string
+            this.dispatchFlowValueChangeEvent('fieldsToDisplay', null);
+        } else if (event.currentTarget?.name == 'allowMultiselect'){
+            // Special case for allowMultiselect
+            // Set inputsValues.fieldsToDisplay.value to empty string
+            if (event.detail.newValue) {
+                this.isMultiSelect = true;
+            } else {
+                this.isMultiSelect = false;
+
+                // Set minimumNumberOfSelectedRecords and maximumNumberOfSelectedRecords to 0
+                this.dispatchFlowValueChangeEvent('minimumNumberOfSelectedRecords', 0, DATA_TYPE.INTEGER);
+                this.dispatchFlowValueChangeEvent('maximumNumberOfSelectedRecords', 0, DATA_TYPE.INTEGER);
+            }
+        } else {
+            console.log('in handleValueChange: no event detail');
         }
     }
 

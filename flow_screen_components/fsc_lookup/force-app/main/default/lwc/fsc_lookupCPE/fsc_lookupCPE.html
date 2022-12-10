@@ -23,14 +23,13 @@
     ></c-fsc_pick-object-and-field-3 >
 
     <!-- Allow Users to type in the fields to Display -->
-    <c-fsc_flow-combobox 
+    <c-fsc_flow-checkbox 
         name="isManualEntryFieldsToDisplay" 
-        value={inputValues.isManualEntryFieldsToDisplay.value}
-        builder-context-filter-type="Boolean"
+        checked={inputValues.isManualEntryFieldsToDisplay.value}
         label={inputValues.isManualEntryFieldsToDisplay.label}
         field-level-help="If checked, you can enter the fields to display manually. Use this for Polymorphic Field. Polymorphic Field exmple is Owner.Name. If not checked, you can select the fields to display in the lookup."
-        onvaluechanged={handleValueChange}>
-    </c-fsc_flow-combobox>
+        oncheckboxchanged={handleValueChange}>
+    </c-fsc_flow-checkbox>
 
     <template if:true={isManualEntry}>
         <!-- Fields to Display Manual -->
@@ -39,6 +38,7 @@
             value={inputValues.fieldsToDisplay.value}
             builder-context-filter-type="String"
             label={inputValues.fieldsToDisplay.label}
+            required
             field-level-help="The fields to display in the lookup. Use the format: FieldName, FieldName. You can use up to 5 fields."
             onvaluechanged={handleValueChange}>
         </c-fsc_flow-combobox>
@@ -144,34 +144,31 @@
     </c-fsc_flow-combobox>
 
     <!-- Show New Record Action -->
-    <c-fsc_flow-combobox 
+    <c-fsc_flow-checkbox 
         name="showNewRecordAction" 
-        value={inputValues.showNewRecordAction.value}
-        builder-context-filter-type="Boolean"
+        checked={inputValues.showNewRecordAction.value}
         label={inputValues.showNewRecordAction.label}
         field-level-help="If checked, the user can create a new record from the lookup."
-        onvaluechanged={handleValueChange}>
-    </c-fsc_flow-combobox>
+        oncheckboxchanged={handleValueChange}>
+    </c-fsc_flow-checkbox>
 
     <!-- Allow Multi Select -->
-    <c-fsc_flow-combobox 
+    <c-fsc_flow-checkbox 
         name="allowMultiselect" 
-        value={inputValues.allowMultiselect.value}
-        builder-context-filter-type="Boolean"
+        checked={inputValues.allowMultiselect.value}
         label={inputValues.allowMultiselect.label}
         field-level-help="If checked, the user can select multiple values."
-        onvaluechanged={handleValueChange}>
-    </c-fsc_flow-combobox>
+        oncheckboxchanged={handleValueChange}>
+    </c-fsc_flow-checkbox>
 
     <!-- Required -->
-    <c-fsc_flow-combobox 
+    <c-fsc_flow-checkbox 
         name="required" 
-        value={inputValues.required.value}
-        builder-context-filter-type="Boolean"
+        checked={inputValues.required.value}
         label={inputValues.required.label}
         field-level-help="If checked, the user must select a value before they can proceed."
-        onvaluechanged={handleValueChange}>
-    </c-fsc_flow-combobox>
+        oncheckboxchanged={handleValueChange}>
+    </c-fsc_flow-checkbox>
 
     <!-- Icon Name -->
     <c-fsc_pick-icon

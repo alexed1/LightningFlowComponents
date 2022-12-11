@@ -30,6 +30,7 @@ public with sharing class AnalyzeFlows {
                     report.elementChanges.addAll(MainAnalysis_FlowScreen.analyzeFlowScreens(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_FlowStart.analyzeFlowStart(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_FlowSubflow.analyzeSubflows(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_FlowActionCall.analyzeFlowActionCalls(initFlow, secondFlow).elementChanges);
                     res.analysisResults.add(report);
                 }
                 resultList.add(res);

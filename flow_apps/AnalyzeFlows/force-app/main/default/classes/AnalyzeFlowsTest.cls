@@ -27,6 +27,15 @@ public with sharing class AnalyzeFlowsTest {
         callInputParamenter.value = new usf3.MetadataService.FlowElementReferenceOrValue();
         callInputParamenter.value.stringValue = 'testvalue';
         flowActionCall.inputParameters.add(callInputParamenter);
+        flowActionCall.outputParameters = new List< usf3.MetadataService.FlowActionCallOutputParameter>();
+        usf3.MetadataService.FlowActionCallOutputParameter callOutputParamenter = new usf3.MetadataService.FlowActionCallOutputParameter();
+        callOutputParamenter.name = 'Test_Input';
+        callOutputParamenter.assignToReference = 'testvalue';
+        flowActionCall.outputParameters.add(callOutputParamenter);
+        flowActionCall.connector = new usf3.MetadataService.FlowConnector();
+        flowActionCall.connector.targetReference = 'test_target_reference_1';
+        flowActionCall.faultConnector = new usf3.MetadataService.FlowConnector();
+        flowActionCall.faultConnector.targetReference = 'test_target_reference_1';
         flow.actionCalls.add(flowActionCall);
 
         // flow.assignments = new  List<usf3.MetadataService.FlowAssignment>();
@@ -215,7 +224,26 @@ public with sharing class AnalyzeFlowsTest {
         usf3.MetadataService.Flow flow = genereateFlowForTest1();
         flow.fullName = 'Test_Flow';
 
-        flow.actionCalls = null;
+        flow.actionCalls = new  List<usf3.MetadataService.FlowActionCall>();
+        usf3.MetadataService.FlowActionCall flowActionCall = new usf3.MetadataService.FlowActionCall();
+        flowActionCall.Name = 'test_action_call';
+        flowActionCall.inputParameters = new List<usf3.MetadataService.FlowActionCallInputParameter>();
+        usf3.MetadataService.FlowActionCallInputParameter callInputParamenter = new usf3.MetadataService.FlowActionCallInputParameter();
+        callInputParamenter.name = 'Test_Input';
+        callInputParamenter.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        callInputParamenter.value.stringValue = 'testvalue2';
+        flowActionCall.inputParameters.add(callInputParamenter);
+
+        flowActionCall.outputParameters = new List< usf3.MetadataService.FlowActionCallOutputParameter>();
+        usf3.MetadataService.FlowActionCallOutputParameter callOutputParamenter = new usf3.MetadataService.FlowActionCallOutputParameter();
+        callOutputParamenter.name = 'Test_Input';
+        callOutputParamenter.assignToReference = 'testvalue2';
+        flowActionCall.outputParameters.add(callOutputParamenter);
+        flowActionCall.connector = new usf3.MetadataService.FlowConnector();
+        flowActionCall.connector.targetReference = 'test_target_reference_2';
+        flowActionCall.faultConnector = new usf3.MetadataService.FlowConnector();
+        flowActionCall.faultConnector.targetReference = 'test_target_reference_2';
+        flow.actionCalls.add(flowActionCall);
 
         flow.assignments = new  List<usf3.MetadataService.FlowAssignment>();
         usf3.MetadataService.FlowAssignment flowAssignment = new usf3.MetadataService.FlowAssignment();

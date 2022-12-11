@@ -24,18 +24,14 @@ public with sharing class MainAnalysis_FlowSubflow {
                         if(newChange != null) {
                             newChange.name = initFlowSubflow.name;
                             newChange.label = initFlowSubflow.label;
+                            newChange.elementType = initFlowSubflow.type;
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_OutputHandling(
-                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initFlowSubflow)),
-                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initFlowSubflow))
-                        );
-                        if(newChange != null) {
-                            newChange.name = initFlowSubflow.name;
-                            newChange.label = initFlowSubflow.label;
-                            changeList.add(newChange);
-                        }
+                        changeList.addAll(FlowElementAnalysisFunctions.subAnalysis_OutputMappings(
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(initFlowSubflow)), 
+                            (Map<String, Object>)JSON.deserializeUntyped(JSON.serialize(secondFlowSubflow))
+                        ));
 
                     }
                 }

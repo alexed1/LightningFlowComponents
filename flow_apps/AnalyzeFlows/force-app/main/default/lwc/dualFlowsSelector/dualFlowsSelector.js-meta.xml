@@ -11,6 +11,12 @@
         <targetConfig targets="lightning__FlowScreen">
             <property name="selectedFlow1APIName" label="selectedFlow1" type="String" role="outputOnly"/>
             <property name="selectedFlow2APIName" label="selectedFlow2" type="String" role="outputOnly"/>
+            <property name="baseFlowName" label="Base Flow Name" type="String" role="inputOnly"/>
+            <property name="baseFlowVersion" label="Base Flow Version" type="String" role="inputOnly"/>
+            <property name="secondFlowName" label="Second Flow Name" type="String" role="inputOnly"/>
+            <property name="secondFlowVersion" label="Second Flow Version" type="String" role="inputOnly"/>
+            <property name="mainLabel" label="Main Label" type="String" role="inputOnly"/>
+            <property name="selectFlowLabel" label="Select Flow Label" type="String" role="inputOnly"/>
             
         </targetConfig>
     </targetConfigs>

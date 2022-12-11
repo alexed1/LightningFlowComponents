@@ -6,6 +6,7 @@ import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import search from '@salesforce/apex/fsc_lookupController.search';
 import getRecentlyViewed from '@salesforce/apex/fsc_lookupController.getRecentlyViewed';
 import getRecordsFromIds from '@salesforce/apex/fsc_lookupController.getRecordsFromIds';
+import getObjectIcon from '@salesforce/apex/fsc_lookupController.getObjectIcon';
 
 const DEFAULTS = {
     NUM_RECENTLY_VIEWED: 5,
@@ -208,6 +209,8 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         // Lifecycle hooks
         connectedCallback() {
             console.log('in lookup connectedcallback');
+            // Get the object's icon from getObjectIcon and set iconName
+            this.getObjectIcon();
 
             // If defaultValueInput is set, we want to ignore the values passed in and set the default value
             if ( this.defaultValueInput ) {
@@ -229,6 +232,15 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 this._maximumNumberOfSelectedRecordsMessage = this.maximumNumberOfSelectedRecordsMessage.replace('{0}', this.maximumNumberOfSelectedRecords);
                 console.log('this._maximumNumberOfSelectedRecordsMessage = ' + this._maximumNumberOfSelectedRecordsMessage);
             }
+        }
+
+
+        // Get the object's icon from getObjectIcon and set iconName
+        getObjectIcon() {
+            getObjectIcon({ objectName: this.objectName })
+            .then(result => {
+                this.iconName = result;
+            });
         }
     
         getRecentlyViewed() {

@@ -45,4 +45,9 @@ public with sharing class fsc_lookupControllerTest {
         String testString = 'test1, test2, test3';
         fsc_lookupController.splitAndTrim(testString,',');
     }
+
+    @isTest
+    private static void getObjectIconTest() {
+        fsc_lookupController.getObjectIcon('Account');
+    }
 }

@@ -44,9 +44,9 @@
             <property name="componentName" label="Component Name" type="String" role="inputOnly"></property>
 
             <!-- Output Variables -->
-            <property name="selectedRecordsOutput" label="Selected Records" type="String[]" role="outputOnly"></property>
-            <property name="selectedRecordOutput" label="Selected Record" type="String" role="outputOnly"></property>
-            <property name="numberOfRecordsOutput" label="Number of Records" type="Integer" role="outputOnly"></property>
+            <property name="selectedRecordsOutput" label="Selected Record Ids" type="String[]" role="outputOnly"></property>
+            <property name="selectedRecordOutput" label="Selected Record Id" type="String" role="outputOnly"></property>
+            <property name="numberOfRecordsOutput" label="Number of Selected Records" type="Integer" role="outputOnly"></property>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

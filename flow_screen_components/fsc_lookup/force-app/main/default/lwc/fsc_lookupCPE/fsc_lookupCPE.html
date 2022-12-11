@@ -106,17 +106,6 @@
         onvaluechanged={handleValueChange}>
     </c-fsc_flow-combobox>
 
-    <!-- Message When Value Missing -->
-    <c-fsc_flow-combobox 
-        name="messageWhenValueMissing" 
-        value={inputValues.messageWhenValueMissing.value}
-        builder-context-filter-type="String"
-        builder-context={_builderContext}
-        label={inputValues.messageWhenValueMissing.label}
-        field-level-help="The text to display when the user doesn't enter a value and the field is required."
-        onvaluechanged={handleValueChange}>
-    </c-fsc_flow-combobox>
-
     <!-- Field Level Help -->
     <c-fsc_flow-combobox 
         name="fieldLevelHelp" 
@@ -125,6 +114,17 @@
         builder-context={_builderContext}
         label={inputValues.fieldLevelHelp.label}
         field-level-help="The text to display when the user hovers over the field-level-help icon."
+        onvaluechanged={handleValueChange}>
+    </c-fsc_flow-combobox>
+
+    <!-- Message When Value Missing -->
+    <c-fsc_flow-combobox 
+        name="messageWhenValueMissing" 
+        value={inputValues.messageWhenValueMissing.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.messageWhenValueMissing.label}
+        field-level-help="The text to display when the user doesn't enter a value and the field is required."
         onvaluechanged={handleValueChange}>
     </c-fsc_flow-combobox>
 
@@ -176,14 +176,6 @@
         field-level-help="If checked, the user must select a value before they can proceed."
         oncheckboxchanged={handleValueChange}>
     </c-fsc_flow-checkbox>
-
-    <!-- Icon Name -->
-    <c-fsc_pick-icon
-        label={inputValues.iconName.label}
-        icon-name={inputValues.iconName.value}
-        mode="combobox"
-        oniconselection={handleIconChange}>
-    </c-fsc_pick-icon>
 
     <!-- Left Icon -->
     <c-fsc_pick-icon

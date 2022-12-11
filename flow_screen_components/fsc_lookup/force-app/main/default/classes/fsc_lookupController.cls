@@ -151,4 +151,32 @@ public without sharing class fsc_lookupController {
         }
         return null;
     }
+
+    // Get the icon for a given object
+    @AuraEnabled(cacheable=true)
+    public static String getObjectIcon(String objectName) {
+        String u;
+        List<Schema.DescribeTabSetResult> tabSetDesc = Schema.describeTabs();
+        List<Schema.DescribeTabResult> tabDesc = new List<Schema.DescribeTabResult>();
+        List<Schema.DescribeIconResult> iconDesc = new List<Schema.DescribeIconResult>();
+
+        for(Schema.DescribeTabSetResult tsr : tabSetDesc) { tabDesc.addAll(tsr.getTabs()); }
+
+        for(Schema.DescribeTabResult tr : tabDesc) {
+            if( objectName == tr.getSobjectName() ) {
+                if( tr.isCustom() == true ) {
+                    iconDesc.addAll(tr.getIcons());
+                } else {
+                    u = 'standard:' + objectName.toLowerCase();
+                }
+            }
+        }
+        for (Schema.DescribeIconResult ir : iconDesc) {
+            if (ir.getContentType() == 'image/svg+xml'){
+                u = 'custom:' + ir.getUrl().substringBetween('custom/','.svg').substringBefore('_');
+                break;
+            }
+        }
+        return u;
+    }
 }

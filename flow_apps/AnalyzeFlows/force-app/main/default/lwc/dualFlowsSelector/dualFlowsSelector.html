@@ -2,11 +2,21 @@
     <lightning-card title="Select Flow to Compare">
         <lightning-layout>
             <lightning-layout-item size="6" padding="around-small">
-                <c-flow-selector-card onselectflow={selectFlow1}></c-flow-selector-card>
+                <c-flow-selector-card   onselectflow={selectFlow1} 
+                                        selected-flow-a-p-i-name={baseFlowName}
+                                        selected-flow-a-p-i-version={baseFlowVersion}
+                                        flow-selector-label={mainLabel}
+                >
+                </c-flow-selector-card>
             </lightning-layout-item>
 
             <lightning-layout-item size="6" padding="around-small" >
-                <c-flow-selector-card onselectflow={selectFlow2}></c-flow-selector-card>
+                <c-flow-selector-card   onselectflow={selectFlow2}
+                                        selected-flow-a-p-i-name={secondFlowName}
+                                        selected-flow-a-p-i-version={secondFlowVersion}
+                                        flow-selector-label={selectFlowLabel}
+                >
+                </c-flow-selector-card>
             </lightning-layout-item>
         </lightning-layout>
     </lightning-card>

@@ -10,6 +10,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -17,13 +18,15 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputVariable(initRecordUpdate.inputReference, secondRecordupdate.inputReference);
+                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputReference(initRecordUpdate.inputReference, secondRecordupdate.inputReference);
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -31,13 +34,15 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
-                        newChange = FlowElementAnalysisFunctions.SubAnalysis_InputAndOutputParams(initRecordUpdate.inputAssignments, secondRecordupdate.inputAssignments);
+                        newChange = FlowElementAnalysisFunctions.SubAnalysis_ManualInputAssignments(initRecordUpdate.inputAssignments, secondRecordupdate.inputAssignments);
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
 
@@ -45,6 +50,7 @@ public with sharing class MainAnalysis_UpdateRecords {
                         if(newChange != null) {
                             newChange.name = initRecordUpdate.name;
                             newChange.label = initRecordUpdate.label;
+                            newChange.elementType = initRecordUpdate.type;
                             changeList.add(newChange);
                         }
                     }

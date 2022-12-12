@@ -86,8 +86,8 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api includeValueInFilter = false;  // If true, the 'value' text of an option is not included when determining if an option is a match for a given search text.
         @api whereClause; // Reserved for future use
         @api orderByClause; // Reserved for future use
-        @api defaultValueInput;
         @api disabled = false;
+        @api _defaultValueInput;
 
         // Custom Labels for number of records selected
         @api minimumNumberOfSelectedRecords = 0;
@@ -120,9 +120,65 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         showNewRecordModal;
 
         /* OUTPUT PROPERTIES */
-        @api selectedRecordsOutput = [];
-        @api selectedRecordOutput;
-        @api numberOfRecordsOutput = 0;
+        @track _selectedRecordsOutput = [];
+        @track _selectedRecordOutput;
+        @track _numberOfRecords = 0;
+
+        @api
+        get selectedRecordsOutput() {
+            return this._selectedRecordsOutput;
+        }
+
+        set selectedRecordsOutput(value) {
+            this._selectedRecordsOutput = value;
+            this.handleEventChanges('selectedRecordsOutput', value);
+        }
+
+        @api get numberOfRecordsOutput() {
+            console.log('in get numberOfRecordsOutput');
+            console.log(this._numberOfRecords);
+            return this._numberOfRecords;
+        }
+
+        set numberOfRecordsOutput(value) {
+            console.log('in set numberOfRecordsOutput');
+            console.log(value);
+            this._numberOfRecords = value;
+            this.handleEventChanges('numberOfRecordsOutput', value);
+        }
+
+        @api get selectedRecordOutput() {
+            return this._selectedRecordOutput;
+        }
+
+        set selectedRecordOutput(value) {
+            this._selectedRecordOutput = value;
+            this.handleEventChanges('selectedRecordOutput', value);
+        }
+
+        @api 
+        get defaultValueInput() {
+            return this._defaultValueInput;
+        }
+
+        set defaultValueInput(value) {
+            this._defaultValueInput = value;
+            // If defaultValueInput is set, then we need to set the selectedRecordsOutput if allowMultiSelect is true
+            // Else set the selectedRecordOutput
+            if (this.allowMultiSelect) {
+                this.selectedRecordsOutput = value;
+
+                // Set numberOfRecordsOutput count number of records in value string of strings
+                if (value) {
+                    this.numberOfRecordsOutput = value.split(',').length;
+                }
+            } else {
+                this.selectedRecordOutput = value;
+                // Set numberOfRecordsOutput if value is set
+                value ? this.numberOfRecordsOutput = 1 : this.numberOfRecordsOutput = 0;
+            }
+            this.handleEventChanges('defaultValueInput', value);
+        }
 
 
         /* PUBLIC GETTERS AND SETTERS */
@@ -376,6 +432,8 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         }
     
         handleComboboxChange(event) {
+            console.log('in handleComboboxChange');
+            let detail;
             if (this.allowMultiselect) {
                 this.values = event.detail.values;
 
@@ -390,13 +448,21 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 } else {
                     this.disabled = false;
                 }
+                detail = {
+                    values: this.values,
+                    selectedRecords: this.selectedRecords
+                }
             } else {
                 this.value = event.detail.value;
                 this.selectedRecordOutput = event.detail.value;
                 this.numberOfRecordsOutput = event.detail.value ? 1 : 0;
-                this.selectedRecordsOutput = null;
+                this.selectedRecordsOutput = null;                
+                detail = {
+                    value: this.value,
+                    selectedRecord: this.selectedRecord
+                }
             }
-            this.dispatchRecords();
+            this.dispatchEvent(new CustomEvent('recordchange', { detail: detail }));
         }
     
         handleCustomAction(event) {
@@ -421,28 +487,9 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         closeNewRecordModal() {
             this.showNewRecordModal = false;
         }
-    
-        dispatchRecords() {
-            let detail;
-            if (this.allowMultiselect) {
-                detail = {
-                    values: this.values,
-                    selectedRecords: this.selectedRecords
-                }
-            } else {
-                detail = {
-                    value: this.value,
-                    selectedRecord: this.selectedRecord
-                }
-            }
-            console.log('about to dispatch, ' + JSON.stringify(detail));
-            this.dispatchEvent(new CustomEvent('recordchange', { detail: detail }));
 
-            console.log('selectedRecordsOutput = ' + JSON.stringify(this.selectedRecordsOutput));
-            console.log('selectedRecordOutput = ' + JSON.stringify(this.selectedRecordOutput));
-            console.log('numberOfRecordsOutput = ' + this.numberOfRecordsOutput);
-            this.dispatchEvent(new FlowAttributeChangeEvent('selectedRecordsOutput', this.selectedRecordsOutput));
-            this.dispatchEvent(new FlowAttributeChangeEvent('selectedRecordOutput', this.selectedRecordOutput));
-            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRecordsOutput', this.numberOfRecordsOutput));
+        handleEventChanges(apiName, value) {
+            const attributeChangeEvent = new FlowAttributeChangeEvent(apiName, value);
+            this.dispatchEvent(attributeChangeEvent);
         }
 }

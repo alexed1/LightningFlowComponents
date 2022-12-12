@@ -1,8 +1,7 @@
-import { LightningElement, api, track, wire } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import search from '@salesforce/apex/fsc_lookupController.search';
 import getRecentlyViewed from '@salesforce/apex/fsc_lookupController.getRecentlyViewed';
 import getRecordsFromIds from '@salesforce/apex/fsc_lookupController.getRecordsFromIds';
@@ -257,10 +256,6 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
                 }
             }
         }
-
-        // Get the object info
-        @wire(getObjectInfo, { objectApiName: '$objectName' })
-        objectInfo;
     
         // Lifecycle hooks
         connectedCallback() {

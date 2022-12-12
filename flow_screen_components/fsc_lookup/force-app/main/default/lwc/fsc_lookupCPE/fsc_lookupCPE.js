@@ -163,8 +163,18 @@ export default class Fsc_lookupCPE extends LightningElement {
         if (event.detail && event.target) {
             // Any component using fsc_flow-combobox will be ran through here
             // This is the newer version and will allow users to use merge fields
-            console.log('(NEW) in handleValueChange: ' + event.target.name + ' = ' + event.detail.newValue);
-            this.dispatchFlowValueChangeEvent(event.target.name, event.detail.newValue, event.detail.newValueDataType);
+            // If event.detail.newValue is set then use it, otherwise use event.detail.value
+            let newValue = event.detail.newValue;
+            if (newValue == null) {
+                newValue = event.detail.value;
+
+                // If event.detail.value.name is set then use it, otherwise use event.detail.value
+                if (newValue.name != null) {
+                    newValue = newValue.name;
+                }
+            }
+            console.log('(NEW) in handleValueChange: ' + event.target.name + ' = ' + newValue);
+            this.dispatchFlowValueChangeEvent(event.target.name, newValue, event.detail.newValueDataType);
 
             // If event.target.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
             if (event.target.name == 'parentOrChildLookup') {
@@ -179,7 +189,7 @@ export default class Fsc_lookupCPE extends LightningElement {
             // If event.target.name is allowMultiselect and value is true then isMultiSelect is true
             // Used to disable/enable max and min fields
             if (event.target.name == 'allowMultiselect') {
-                if (event.detail.newValue) {
+                if (newValue) {
                     this.isMultiSelect = true;
                 } else {
                     this.isMultiSelect = false;
@@ -193,7 +203,7 @@ export default class Fsc_lookupCPE extends LightningElement {
             // If event.target.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
             // Used for fieldsToDisplay for allowing Polymorphic Fields
             if (event.target.name == 'isManualEntryFieldsToDisplay') {
-                if (event.detail.newValue) {
+                if (newValue) {
                     this.isManualEntry = true;
                 } else {
                     this.isManualEntry = false;

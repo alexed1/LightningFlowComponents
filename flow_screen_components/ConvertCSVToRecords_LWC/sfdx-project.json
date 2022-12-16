@@ -1,0 +1,29 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "ConvertCSVToRecordsLWC",
+      "versionName": "ver 0.2",
+      "versionNumber": "0.2.5.NEXT",
+      "versionDescription": "",
+      "dependencies": [
+        {
+          "subscriberPackageVersionId": "04t8b000000mKnoAAE"
+        },
+        {
+          "subscriberPackageVersionId": "04t5G000003rUvVQAU"
+        }
+      ]
+    }
+  ],
+  "name": "ConvertCSVToRecords_LWC",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "ConvertCSVToRecordsLWC": "0Ho5e0000010wNNCAY",
+    "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE",
+    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU"
+  }
+}

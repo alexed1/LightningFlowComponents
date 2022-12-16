@@ -73,7 +73,13 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api fieldCollection_toDisplay = [];
 
 
-        @api iconName;
+        @api get iconName() {
+            return this._iconName;
+        };
+        set iconName(value) {
+            this._iconName = value;
+        }
+        @track _iconName;
         @api leftIconName = 'utility:search';
         @api rightIconName = 'utility:down';
         @api placeholder;
@@ -290,7 +296,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         getObjectIcon() {
             getObjectIcon({ objectName: this.objectName })
             .then(result => {
-                this.iconName = result;
+                this._iconName = result;
             });
         }
     

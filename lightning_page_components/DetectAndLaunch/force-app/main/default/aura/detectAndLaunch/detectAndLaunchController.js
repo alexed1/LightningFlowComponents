@@ -38,8 +38,8 @@
         // This will then populate the users field value within the fields list
         if(component.get("v.fieldChange") != null && component.get("v.fieldValue") != null ){
             component.set("v.isChangedRecord", true);
-            //console.log('fieldChange',component.get("v.fieldChange"));
-            //console.log('fieldValue',component.get("v.fieldValue"));
+            console.log('fieldChange',component.get("v.fieldChange"));
+            console.log('fieldValue',component.get("v.fieldValue"));
             // Make sure there was an edited field and we just edited a record
             if ( eventParams.changedFields && eventParams.changeType === "CHANGED") {
                 console.log('eventParams.changedFields', eventParams.changedFields);
@@ -47,8 +47,8 @@
                 //console.log('changed', changed);
                 //console.log('changed.dynamic', changed[component.get("v.fieldCompare")]);
                 if (changed[component.get("v.fieldCompare")]) {
-                    //console.log('changed.dynamic.value', changed[component.get("v.fieldCompare")].value);
-                    if ( changed[component.get("v.fieldCompare")].value === component.get("v.fieldValue") ) {
+                    console.log('changed.dynamic.value', changed[component.get("v.fieldCompare")].value);
+                    if ( changed[component.get("v.fieldCompare")].value.toString() === component.get("v.fieldValue") ) {
                         //console.log('hit');
                         component.set("v.targetFlowName", component.get("v.editFlowName"));
                         helper.processChangeEvent(component, eventParams);

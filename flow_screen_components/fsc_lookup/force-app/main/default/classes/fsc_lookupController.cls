@@ -120,6 +120,17 @@ public without sharing class fsc_lookupController {
         // }
     }
 
+    // Get a list of records that match the where clause
+    @AuraEnabled(cacheable=true)
+    public static List<SObject> getRecords(String objectName, String fieldsToReturn, Integer numRecordsToReturn, String whereClause){
+        // if numRecordsToReturn is not specified, default to 5
+        if (!(numRecordsToReturn > 0)) {
+            numRecordsToReturn = 5;
+        }
+        System.debug('getRecords: '+ objectName +', '+ fieldsToReturn +', '+ numRecordsToReturn +', '+ whereClause);
+        return search(null, objectName, null, fieldsToReturn, numRecordsToReturn, whereClause, null);
+    }
+
     public static List<String> splitAndTrim(String inputString) {
         return splitAndTrim(inputString, ',');
     }

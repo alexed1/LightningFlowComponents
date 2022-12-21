@@ -89,7 +89,7 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @api showNewRecordAction = false;
         @api excludeSublabelInFilter = false;   // If true, the 'sublabel' text of an option is included when determining if an option is a match for a given search text.
         @api includeValueInFilter = false;  // If true, the 'value' text of an option is not included when determining if an option is a match for a given search text.
-        @api whereClause; // Reserved for future use
+        @api whereClause;
         @api orderByClause; // Reserved for future use
         @api disabled = false;
         @api _defaultValueInput;
@@ -271,8 +271,15 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
 
             // If defaultValueInput is set, we want to ignore the values passed in and set the default value
             if ( this.defaultValueInput ) {
+                console.log('using default value input');
                 this.values = this.defaultValueInput;
+            // Else if whereClause is set, we want to ignore the values passed in and set the whereClause
+            } else if ( this.whereClause ) {
+                console.log('using where clause');
+                this.getRecords();
+            // Else get the recently viewed records
             } else {
+                console.log('using recently viewed');
                 this.getRecentlyViewed();
             }
 
@@ -303,6 +310,26 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         getRecentlyViewed() {
             this.isLoading = true;
             getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
+                .then(result => {
+                    console.log('result = ' + JSON.stringify(result));
+                    this.recentlyViewedRecords = this.parseFields(result);
+                    if (!this.records.length) {
+                        this.resetRecentlyViewed();
+                    }
+                })
+                .catch(error => {
+                    console.log('ERROR: ' + JSON.stringify(error));
+                }).finally(() => {
+                    this.isLoading = false;
+                })
+        }
+
+        // Get the records from the whereClause
+        // This will then populate the dropdown with the records that match the whereClause
+        getRecords() {
+            this.isLoading = true;
+            console.log('in getRecords');
+            getRecords({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
                 .then(result => {
                     console.log('result = ' + JSON.stringify(result));
                     this.recentlyViewedRecords = this.parseFields(result);

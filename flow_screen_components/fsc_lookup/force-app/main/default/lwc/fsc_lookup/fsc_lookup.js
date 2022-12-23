@@ -6,6 +6,7 @@ import search from '@salesforce/apex/fsc_lookupController.search';
 import getRecentlyViewed from '@salesforce/apex/fsc_lookupController.getRecentlyViewed';
 import getRecordsFromIds from '@salesforce/apex/fsc_lookupController.getRecordsFromIds';
 import getObjectIcon from '@salesforce/apex/fsc_lookupController.getObjectIcon';
+import getRecords from '@salesforce/apex/fsc_lookupController.getRecords';
 
 const DEFAULTS = {
     NUM_RECENTLY_VIEWED: 5,
@@ -303,10 +304,11 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         getObjectIcon() {
             getObjectIcon({ objectName: this.objectName })
             .then(result => {
-                this._iconName = result;
+                this.iconName = result;
             });
         }
     
+        // Get the recently viewed records
         getRecentlyViewed() {
             this.isLoading = true;
             getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })

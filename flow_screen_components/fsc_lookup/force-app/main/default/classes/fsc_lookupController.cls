@@ -42,11 +42,76 @@ public without sharing class fsc_lookupController {
             // }
             for (String searchField : fieldsToSearch.split(',')) {
                 System.debug('searching for !'+ searchField +'!, or !'+ searchField.trim()+'!');
-                System.debug('found '+ fieldMap.get(searchField));
-                if (fieldMap.get(searchField).getDescribe().getType().name() == 'String')
-                    searchFieldList.add(searchField +' LIKE \'%'+ searchTerm +'%\'');
-                // else 
-                    // searchFieldList.add(searchField +' = \''+ searchTerm +'\'');
+                // Check if field contains a dot, indicating a relationship
+                if (searchField.contains('.')) {
+                    // Example Account.CreatedBy.FirstName
+                    // Get the middle part of the string
+                    String relationshipName = searchField.split('\\.')[1];
+                    String relationshipField = searchField.split('\\.')[2];
+                    String relationshipNameConverted = relationshipName;
+                    String relationshipObjectName = objectName;
+                    String searchFieldConverted = searchField;
+                    System.debug('relationshipName = '+ relationshipName);
+                    System.debug('relationshipField = '+ relationshipField);
+
+                    // Check if the relationship exists
+                    if (fieldMap.get(relationshipName) == null) {
+                        // Try a differnt relationshipName
+                        // Add __r to the end of the relationshipName
+                        relationshipNameConverted = relationshipName + '__r';
+                        if(fieldMap.get(relationshipNameConverted) != null) {
+                            // Replace the relationshipName in the searchField
+                            searchFieldConverted = searchFieldConverted.replace(relationshipName, relationshipNameConverted);
+
+                            // Set the relationshipName to the converted relationshipName
+                            relationshipName = relationshipNameConverted;
+                        } else {
+                            // Add Id to the end of the relationshipField
+                            relationshipNameConverted = relationshipName + 'Id';
+                            if(fieldMap.get(relationshipNameConverted) != null) {
+                                relationshipName = relationshipNameConverted;
+                            }
+                        }
+                    }
+
+                    Map<String, Schema.SObjectField> tokenMap = ((SObject)Type.forName('Schema', objectName).newInstance()).getSObjectType().getDescribe().fields.getMap();
+                    Schema.DescribeFieldResult fieldResult = tokenMap.get(relationshipName).getDescribe();
+                    if (fieldResult.getReferenceTo().size() == 1) {
+                        relationshipObjectName = fieldResult.getReferenceTo()[0].getDescribe().getName();
+                        System.debug('relationshipObjectName = '+ relationshipObjectName);
+                    }
+
+                    // Check if the relationship exists
+                    if (fieldMap.get(relationshipName) != null) {
+                        System.debug('fieldMap.get(relationshipName) = '+ fieldMap.get(relationshipName));
+                        // Check if the field exists on the relationship
+                        if (fieldMap.get(relationshipName).getDescribe().getRelationshipName() != null) {
+                            System.debug('fieldMap.get(relationshipName).getDescribe().getRelationshipName() = '+ fieldMap.get(relationshipName).getDescribe().getRelationshipName());
+                            // Get the relationship object field map
+                            Map<String, Schema.SObjectField> relationshipFieldMap = getFieldMap(relationshipObjectName);
+                            System.debug('relationshipFieldMap = '+ relationshipFieldMap);
+                            // Check if the field exists on the relationship object
+                            if (relationshipFieldMap.get(relationshipField) != null) {
+                                System.debug('relationshipFieldMap.get(relationshipField) = '+ relationshipFieldMap.get(relationshipField));
+                                // Add the search string to the list
+                                if (relationshipFieldMap.get(relationshipField).getDescribe().getType().name() == 'String') {
+                                    searchFieldList.add(searchFieldConverted +' LIKE \'%'+ searchTerm +'%\'');
+                                }
+                                // else 
+                                    // searchFieldList.add(searchField +' = \''+ searchTerm +'\'');
+                            }
+                        }
+                    }
+                } else {
+                    // Check if field exists
+                    if (fieldMap.get(searchField) != null) {
+                        System.debug('found '+ fieldMap.get(searchField));
+                        if (fieldMap.get(searchField).getDescribe().getType().name() == 'String')
+                            searchFieldList.add(searchField +' LIKE \'%'+ searchTerm +'%\'');
+                        // else 
+                            // searchFieldList.add(searchField +' = \''+ searchTerm +'\'');
+                    }
+                }
             }
             searchFieldString = String.join(searchFieldList, ' OR ');
         }

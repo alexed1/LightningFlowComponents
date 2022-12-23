@@ -50,4 +50,9 @@ public with sharing class fsc_lookupControllerTest {
     private static void getObjectIconTest() {
         fsc_lookupController.getObjectIcon('Account');
     }
+
+    @isTest
+    private static void getRecordsWhereClause() {
+        fsc_lookupController.getRecords('Account','Name',5,'Name LIKE \'%Test%\'');
+    }
 }

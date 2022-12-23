@@ -1,14 +1,4 @@
 <template>
-    <!-- Allow user to select from All objects or Standard and Custom -->
-    <lightning-combobox 
-        label="Object Type" 
-        value={inputValues.allowAllObjects.value} 
-        name="allowAllObjects"
-        placeholder="Standard and Custom"
-        options={objectTypes} 
-        onchange={handleValueChange}>
-    </lightning-combobox>
-
     <!-- Get Object -->
     <c-fsc_pick-object-and-field-3 
         id="objectName"
@@ -18,45 +8,20 @@
         hide-field-picklist=false
         onfieldselected={handleObjectChange}
         builder-context={_builderContext}
-        available-object-types={inputValues.allowAllObjects.value}
         required
     ></c-fsc_pick-object-and-field-3 >
 
-    <!-- Allow Users to type in the fields to Display -->
-    <c-fsc_flow-checkbox 
-        name="isManualEntryFieldsToDisplay" 
-        checked={inputValues.isManualEntryFieldsToDisplay.value}
-        label={inputValues.isManualEntryFieldsToDisplay.label}
-        field-level-help="If checked, you can enter the fields to display manually. Use this for Polymorphic Field. Polymorphic Field exmple is Owner.Name. If not checked, you can select the fields to display in the lookup."
-        oncheckboxchanged={handleValueChange}>
-    </c-fsc_flow-checkbox>
-
-    <template if:true={isManualEntry}>
-        <!-- Fields to Display Manual -->
-        <c-fsc_flow-combobox 
-            name="fieldsToDisplay" 
-            value={inputValues.fieldsToDisplay.value}
-            builder-context-filter-type="String"
-            label={inputValues.fieldsToDisplay.label}
-            required
-            field-level-help="The fields to display in the lookup. Use the format: FieldName, FieldName. You can use up to 5 fields."
-            onvaluechanged={handleValueChange}>
-        </c-fsc_flow-combobox>
-    </template>
-
-    <template if:false={isManualEntry}>
-        <!-- Fields to Display -->
-        <c-fsc_field-selector-3
-        id="fieldsToDisplay"
-        name="fieldsToDisplay"
-        object-name={inputValues.objectName.value}
-        label={inputValues.fieldsToDisplay.label}
-        selected-fields={inputValues.fieldsToDisplay.value}
-        required
-        allow-multiselect=true
-        onfieldupdate={handleValueChange}>
-        </c-fsc_field-selector-3>
-    </template>
+    <!-- Fields to Display -->
+    <c-fsc_field-selector-3
+    id="fieldsToDisplay"
+    name="fieldsToDisplay"
+    object-name={inputValues.objectName.value}
+    label={inputValues.fieldsToDisplay.label}
+    selected-fields={inputValues.fieldsToDisplay.value}
+    required
+    allow-multiselect=true
+    onfieldupdate={handleValueChange}>
+    </c-fsc_field-selector-3>
 
     <!-- Fields to Search -->
     <c-fsc_field-selector-3
@@ -195,99 +160,49 @@
 
     <!-- If Multi Select False -->
     <template if:true={isMultiSelect}>
-        <!-- If reactive screens work with this component for child/parent then we can remove any notion of parent/child fields here and in the lookup component ANDY -->
-        <!-- Parent or Child Lookup -->
-        <!-- <lightning-combobox
-            label={inputValues.parentOrChildLookup.label}
-            name="parentOrChildLookup"
-            value={inputValues.parentOrChildLookup.value}
-            options={parentOrChildLookupOptions}
-            onchange={handleValueChange}
-        ></lightning-combobox> -->
+        <!-- Minimum Number of Selected Records -->
+        <c-fsc_flow-combobox 
+            name="minimumNumberOfSelectedRecords" 
+            value={inputValues.minimumNumberOfSelectedRecords.value}
+            builder-context-filter-type="Number"
+            builder-context={_builderContext}
+            label={inputValues.minimumNumberOfSelectedRecords.label}
+            field-level-help="This is the minimum number of records that must be selected. If you leave this field blank, there will be no minimum number of selected records."
+            onvaluechanged={handleValueChange}>
+        </c-fsc_flow-combobox>
 
-        <!-- If parentOrChildLookup = Parent -->
-        <!-- <template if:false={showChildInputs}> -->
-            <!-- Component Name -->
-            <!-- <lightning-input
-                type="text"
-                label={inputValues.componentName.label}
-                name="componentName"
-                value={inputValues.componentName.value}
-                onchange={handleValueChange}
-            ></lightning-input> -->
+        <!-- Maximum Number of Selected Records -->
+        <c-fsc_flow-combobox 
+            name="maximumNumberOfSelectedRecords" 
+            value={inputValues.maximumNumberOfSelectedRecords.value}
+            builder-context-filter-type="Number"
+            builder-context={_builderContext}
+            label={inputValues.maximumNumberOfSelectedRecords.label}
+            field-level-help="This is the maximum number of records that can be selected. If you leave this field blank, there will be no maximum number of selected records."
+            onvaluechanged={handleValueChange}>
+        </c-fsc_flow-combobox>
 
-            <!-- Minimum Number of Selected Records -->
-            <c-fsc_flow-combobox 
-                name="minimumNumberOfSelectedRecords" 
-                value={inputValues.minimumNumberOfSelectedRecords.value}
-                builder-context-filter-type="Number"
-                builder-context={_builderContext}
-                label={inputValues.minimumNumberOfSelectedRecords.label}
-                field-level-help="This is the minimum number of records that must be selected. If you leave this field blank, there will be no minimum number of selected records."
-                onvaluechanged={handleValueChange}>
-            </c-fsc_flow-combobox>
+        <!-- Minimum Number of Selected Records Message -->
+        <c-fsc_flow-combobox 
+            name="minimumNumberOfSelectedRecordsMessage" 
+            value={inputValues.minimumNumberOfSelectedRecordsMessage.value}
+            builder-context-filter-type="String"
+            builder-context={_builderContext}
+            label={inputValues.minimumNumberOfSelectedRecordsMessage.label}
+            field-level-help="This is the message that will be displayed if the user selects less records than the minimum number of selected records. Use the {0} placeholder to display the minimum number of selected records. If you leave this field blank, the default message will be used."
+            onvaluechanged={handleValueChange}>
+        </c-fsc_flow-combobox>
 
-            <!-- Maximum Number of Selected Records -->
-            <c-fsc_flow-combobox 
-                name="maximumNumberOfSelectedRecords" 
-                value={inputValues.maximumNumberOfSelectedRecords.value}
-                builder-context-filter-type="Number"
-                builder-context={_builderContext}
-                label={inputValues.maximumNumberOfSelectedRecords.label}
-                field-level-help="This is the maximum number of records that can be selected. If you leave this field blank, there will be no maximum number of selected records."
-                onvaluechanged={handleValueChange}>
-            </c-fsc_flow-combobox>
-
-            <!-- Minimum Number of Selected Records Message -->
-            <c-fsc_flow-combobox 
-                name="minimumNumberOfSelectedRecordsMessage" 
-                value={inputValues.minimumNumberOfSelectedRecordsMessage.value}
-                builder-context-filter-type="String"
-                builder-context={_builderContext}
-                label={inputValues.minimumNumberOfSelectedRecordsMessage.label}
-                field-level-help="This is the message that will be displayed if the user selects less records than the minimum number of selected records. Use the {0} placeholder to display the minimum number of selected records. If you leave this field blank, the default message will be used."
-                onvaluechanged={handleValueChange}>
-            </c-fsc_flow-combobox>
-
-            <!-- Maximum Number of Selected Records Message -->
-            <c-fsc_flow-combobox 
-                name="maximumNumberOfSelectedRecordsMessage" 
-                value={inputValues.maximumNumberOfSelectedRecordsMessage.value}
-                builder-context-filter-type="String"
-                builder-context={_builderContext}
-                label={inputValues.maximumNumberOfSelectedRecordsMessage.label}
-                field-level-help="This is the message that will be displayed if the user selects more records than the maximum number of selected records. Use the {0} placeholder to display the maximum number of selected records. If you leave this field blank, the default message will be used."
-                onvaluechanged={handleValueChange}>
-            </c-fsc_flow-combobox>
-        <!-- </template>  -->
-
-        <!-- If parentOrChildLookup = Child -->
-        <template if:true={showChildInputs}>
-            <!-- Child Relationship API Name -->
-            <c-fsc_field-selector-3
-                id="childRelationshipApiName"
-                name="fieldsToDisplay"
-                object-name={inputValues.objectName.value}
-                label={inputValues.childRelationshipApiName.label}
-                selected-fields={inputValues.childRelationshipApiName.value}
-                required
-                allow-multiselect=false
-                onfieldupdate={handleValueChange}>
-            </c-fsc_field-selector-3>
-
-            <!-- Parent Component API Name -->
-            <lightning-input
-                type="text"
-                label={inputValues.parentComponentApiName.label}
-                name="parentComponentApiName"
-                value={inputValues.parentComponentApiName.value}
-                onchange={handleValueChange}
-                required
-            ></lightning-input>
-        </template>
-
-
-
+        <!-- Maximum Number of Selected Records Message -->
+        <c-fsc_flow-combobox 
+            name="maximumNumberOfSelectedRecordsMessage" 
+            value={inputValues.maximumNumberOfSelectedRecordsMessage.value}
+            builder-context-filter-type="String"
+            builder-context={_builderContext}
+            label={inputValues.maximumNumberOfSelectedRecordsMessage.label}
+            field-level-help="This is the message that will be displayed if the user selects more records than the maximum number of selected records. Use the {0} placeholder to display the maximum number of selected records. If you leave this field blank, the default message will be used."
+            onvaluechanged={handleValueChange}>
+        </c-fsc_flow-combobox>
 
     </template>
 

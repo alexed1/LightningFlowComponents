@@ -109,17 +109,6 @@ export default class Fsc_lookup extends NavigationMixin(LightningElement) {
         @track _showMinimumNumberOfSelectedRecordsErrorMessage = false;
         @track _showMaximumNumberOfSelectedRecordsMessage = false;
 
-        // Used in CPE
-        @api isManualEntryFieldsToDisplay = false;
-        @api allowAllObjects = '';
-
-        // Determins if the lookup is a parent or child lookup
-        @api parentOrChildLookup = 'Parent';
-        @api parentComponentApiName = '';
-        @api childRelationshipApiName = '';
-        @api componentName = 'parentComponent';
-
-
         /* PRIVATE PROPERTIES */
         @track recentlyViewedRecords = [];
         @track records = [];

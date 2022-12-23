@@ -46,12 +46,6 @@ export default class Fsc_lookupCPE extends LightningElement {
         maximumNumberOfSelectedRecords: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Selected Records'},
         minimumNumberOfSelectedRecordsMessage: {value: 'Please select at least {0} records', valueDataType: null, isCollection: false, label: 'Minimum Number of Selected Records Message'},
         maximumNumberOfSelectedRecordsMessage: {value: 'Please select no more than {0} records', valueDataType: null, isCollection: false, label: 'Maximum Number of Selected Records Message'},
-        parentOrChildLookup: {value: 'Parent', valueDataType: null, isCollection: false, label: 'Parent or Child Lookup'},
-        parentComponentApiName: {value: null, valueDataType: null, isCollection: false, label: 'Parent Component API Name'},
-        childRelationshipApiName: {value: null, valueDataType: null, isCollection: false, label: 'Child Relationship API Name'},
-        componentName: {value: 'parentComponent', valueDataType: null, isCollection: false, label: 'Component Name'},
-        isManualEntryFieldsToDisplay: {value: false, valueDataType: null, isCollection: false, label: 'Manually Enter Fields to Display'},
-        allowAllObjects: { value: null, valueDataType: null, isCollection: false, label: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.' },
     }
 
     @api get builderContext() {
@@ -77,13 +71,6 @@ export default class Fsc_lookupCPE extends LightningElement {
     set genericTypeMappings(value) {
         this._typeMappings = value;
         this.initializeTypeMappings();
-    }
-
-    get parentOrChildLookupOptions() {
-        return [
-            {label: 'Parent', value: 'Parent'},
-            {label: 'Child', value: 'Child'}
-        ];
     }
 
     get objectTypes() {
@@ -176,16 +163,6 @@ export default class Fsc_lookupCPE extends LightningElement {
             console.log('(NEW) in handleValueChange: ' + event.target.name + ' = ' + newValue);
             this.dispatchFlowValueChangeEvent(event.target.name, newValue, event.detail.newValueDataType);
 
-            // If event.target.name is parentOrChildLookup and value is 'Child' then showChildInputs is true
-            if (event.target.name == 'parentOrChildLookup') {
-                if (newValue === 'Child') {
-                    this.showChildInputs = true;
-                } else {
-                    this.showChildInputs = false;
-                }
-                console.log('this.showChildInputs: ' + this.showChildInputs);
-            }
-
             // If event.target.name is allowMultiselect and value is true then isMultiSelect is true
             // Used to disable/enable max and min fields
             if (event.target.name == 'allowMultiselect') {
@@ -199,19 +176,6 @@ export default class Fsc_lookupCPE extends LightningElement {
                     this.dispatchFlowValueChangeEvent('maximumNumberOfSelectedRecords', 0, DATA_TYPE.INTEGER);
                 }
             }
-
-            // If event.target.name is isManualEntryFieldsToDisplay and value is true then isManualEntry is true
-            // Used for fieldsToDisplay for allowing Polymorphic Fields
-            if (event.target.name == 'isManualEntryFieldsToDisplay') {
-                if (newValue) {
-                    this.isManualEntry = true;
-                } else {
-                    this.isManualEntry = false;
-                }
-
-                // Set inputsValues.fieldsToDisplay.value to empty string
-                this.dispatchFlowValueChangeEvent('fieldsToDisplay', null);
-            }
         } else if ( event.detail && event.currentTarget ) {
             // This is the older version for any old inputs that are still using currentTarget
             // Kept for backwards compatibility
@@ -222,17 +186,6 @@ export default class Fsc_lookupCPE extends LightningElement {
             if (event.currentTarget.type == 'integer') dataType = DATA_TYPE.INTEGER;
             let newValue = event.currentTarget.type === 'checkbox' ? event.currentTarget.checked : event.detail.value;
             this.dispatchFlowValueChangeEvent(event.currentTarget.name, newValue, dataType);
-        } else if (event.currentTarget?.name == 'isManualEntryFieldsToDisplay'){
-            // Special case for isManualEntryFieldsToDisplay
-            // Set inputsValues.fieldsToDisplay.value to empty string
-            if (event.detail.newValue) {
-                this.isManualEntry = true;
-            } else {
-                this.isManualEntry = false;
-            }
-
-            // Set inputsValues.fieldsToDisplay.value to empty string
-            this.dispatchFlowValueChangeEvent('fieldsToDisplay', null);
         } else if (event.currentTarget?.name == 'allowMultiselect'){
             // Special case for allowMultiselect
             // Set inputsValues.fieldsToDisplay.value to empty string

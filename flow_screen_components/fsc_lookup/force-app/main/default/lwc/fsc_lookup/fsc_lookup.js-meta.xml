@@ -26,22 +26,12 @@
             <property name="rightIconName" label="Right Icon Name" type="String" default="utility:down" role="inputOnly"></property>
             <property name="disabled" label="Disabled" type="Boolean" role="inputOnly"></property>
 
-            <!-- Used in CPE -->
-            <property name="isManualEntryFieldsToDisplay" label="Manually Enter Fields to Display" type="Boolean" role="inputOnly"></property>
-            <property name="allowAllObjects" label="Allow All Objects" type="String" role="inputOnly"></property>
-
             <!-- Multiselect Variables -->
             <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" role="inputOnly"></property>
             <property name="minimumNumberOfSelectedRecords" label="Minimum Number of Selected Records" type="Integer" role="inputOnly"></property>
             <property name="maximumNumberOfSelectedRecords" label="Maximum Number of Selected Records" type="Integer" role="inputOnly"></property>
             <property name="minimumNumberOfSelectedRecordsMessage" label="Minimum Number of Selected Records Message" type="String" role="inputOnly"></property>
             <property name="maximumNumberOfSelectedRecordsMessage" label="Maximum Number of Selected Records Message" type="String" role="inputOnly"></property>
-
-            <!-- Parent Child Lookup Variables -->
-            <property name="parentOrChildLookup" label="Parent or Child" type="String" role="inputOnly"></property>
-            <property name="parentComponentApiName" label="Parent Component API Name" type="String" role="inputOnly"></property>
-            <property name="childRelationshipApiName" label="Child Relationship API Name" type="String" role="inputOnly"></property>
-            <property name="componentName" label="Component Name" type="String" role="inputOnly"></property>
 
             <!-- Output Variables -->
             <property name="selectedRecordsOutput" label="Selected Record Ids" type="String[]" role="outputOnly"></property>

@@ -439,12 +439,14 @@ export default class FieldSelector extends LightningElement {
         console.log('in handleSearchBlur');
         console.log('this.lookupChain = ' + this.lookupChain);
         // If the user clicks on a isLookup field, we want to keep the list open
-        if (this.lookupChain) {
+        if (this.lookupChain !== null && this.lookupChain !== undefined) {
             console.log('isLookup field clicked');
             return;
         } else {
+            console.log('isLookup field not clicked');
             this.resetSearch();
             this.reportValidity();
+            this.hideList();
         }
     }
 
@@ -492,12 +494,13 @@ export default class FieldSelector extends LightningElement {
                 console.log('adding non-lookupField');
                 // If allowMultiselect is true push to array otherwise set selectedFields to array with one element
                 if (this.allowMultiselect) {
-                    this.selectedFields.push(this.fields[selectedIndex]);
+                    this.selectedFields.push(selectedIndex);
                 } else {
-                    this.selectedFields = [this.fields[selectedIndex]];
+                    this.selectedFields = [selectedIndex];
                 }
             }
             //this.inputElement.value = null;
+            console.log('selectedFields = ' + JSON.stringify(this.selectedFields));
             this.dispatchFields();
             this.resetSearch();
         }

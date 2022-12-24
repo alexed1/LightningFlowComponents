@@ -4,7 +4,7 @@ public with sharing class GetFlowMetadata {
         List<Result> resultList  = new List<Result>();
         for(Request req : requestList) {
             try {
-                List<usf3.MetadataService.Flow > flowList = usf3.MetadataUtils.getFlowMetadata(req.flowName);
+                List<usf3.MetadataService.Flow > flowList = usf3.MetadataUtils.getFlowMetadataFromName(req.flowName);
                 System.debug(flowList[0].fullName);
                 Result res = new Result();
                 res.flowMetadataJSON = JSON.serialize(flowList[0]);

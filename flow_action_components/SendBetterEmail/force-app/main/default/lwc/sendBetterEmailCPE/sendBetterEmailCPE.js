@@ -710,7 +710,7 @@ export default class SendBetterEmailCPE extends LightningElement {
         if (valueToCleanUp && valueToCleanUp.value) {
           this.dispatchFlowValueChangeEvent(
             valueToCleanUp.name,
-            constVal.nullValue,
+            null,
             constVal.stringCollectionVariablesOption
           );
         }

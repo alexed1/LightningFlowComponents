@@ -401,6 +401,15 @@ public with sharing class FlowElementAnalysisFunctions {
                             changeItem.label = String.valueOf(tempFirstVersionItem.get('label'));
                         }
                         newChangeList.addAll(tempChangeList);
+                    } else if(!fieldName.endsWith('_info') && !compareField(tempFirstVersionItem.get(fieldName), tempSecondVersionItem.get(fieldName))){
+                        newChange = new ElementStatusChange();
+                        newChange.name = String.valueOf(tempFirstVersionItem.get('name'));
+                        newChange.label = String.valueOf(tempFirstVersionItem.get('label'));
+                        newChange.changeType = String.valueOf(tempFirstVersionItem.get('type'))  + ' exists in the first version that is not present in identical form in the second version';
+                        newChange.elementType =  String.valueOf(tempFirstVersionItem.get('type'));
+                        newChange.oldValue = formatValueFromFlowItem(tempFirstVersionItem, fieldName);
+                        newChange.newValue = formatValueFromFlowItem(tempSecondVersionItem, fieldName);
+                        newChangeList.add(newChange);
                     }
                 }
             }
@@ -486,20 +495,42 @@ public with sharing class FlowElementAnalysisFunctions {
             for(String fieldName : flowItem.keySet()) {
                 if(!excludedFieldSet.contains(fieldName)) {
                 Object field = flowItem.get(fieldName);
-                if(isPrimitiveObject( field)) {
-                    resultValue += fieldName + ' = ' + field + '\n';
-                } else if(field != null && fieldName == 'value') {
-                    usf3.MetadataService.FlowElementReferenceOrValue valueField = ( usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowElementReferenceOrValue.class);
-                    resultValue += fieldName + ' = ' + getFlowInputValue(valueField) + '\n';
-                } else if(field != null && (fieldName == 'connector' ||fieldName == 'faultConnector' || fieldName == 'defaultConnector')) {
-                    usf3.MetadataService.FlowConnector valueField = ( usf3.MetadataService.FlowConnector)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowConnector.class);
-                    System.debug('FlowConnector' + valueField);
-                    resultValue += fieldName + ' = ' + valueField.targetReference + '\n';
-                }
+                resultValue += getFormatValues(field, fieldName);
             }
         }
 
         return resultValue;
+    }
+
+    static String formatValueFromFlowItem(Map<String, Object> flowItem, String fieldName) {
+        String resultValue = flowItem.get('type') + ': \n';
+        Object field = flowItem.get(fieldName);
+        resultValue += getFormatValues(field, fieldName);
+        return resultValue;
+    }
+
+    static String getFormatValues(Object field, String fieldName) {
+        String resultValue = '';
+        if(isPrimitiveObject(field)) {
+            resultValue += fieldName + ' = ' + field + '\n';
+        } else if(field != null && (fieldName == 'value' || fieldName == 'rightValue')) {
+            usf3.MetadataService.FlowElementReferenceOrValue valueField = ( usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowElementReferenceOrValue.class);
+            resultValue += fieldName + ' = ' + getFlowInputValue(valueField) + '\n';
+        } else if(field != null && (fieldName == 'connector' ||fieldName == 'faultConnector' || fieldName == 'defaultConnector')) {
+            usf3.MetadataService.FlowConnector valueField = ( usf3.MetadataService.FlowConnector)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowConnector.class);
+            System.debug('FlowConnector' + valueField);
+            resultValue += fieldName + ' = ' + valueField.targetReference + '\n';
+        }
+
+        return resultValue;
+    }
+
+    static Boolean compareField(Object firstItem, Object secondItem) {
+        if(isPrimitiveObject( firstItem)) {
+            return firstItem == secondItem;
+        } else  {
+            return JSON.serialize(firstItem) == JSON.serialize(secondItem);
+        } 
     }
 }
 

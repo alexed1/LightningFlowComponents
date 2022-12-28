@@ -495,16 +495,7 @@ public with sharing class FlowElementAnalysisFunctions {
             for(String fieldName : flowItem.keySet()) {
                 if(!excludedFieldSet.contains(fieldName)) {
                 Object field = flowItem.get(fieldName);
-                if(isPrimitiveObject( field)) {
-                    resultValue += fieldName + ' = ' + field + '\n';
-                } else if(field != null && (fieldName == 'value' || fieldName == 'rightValue')) {
-                    usf3.MetadataService.FlowElementReferenceOrValue valueField = ( usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowElementReferenceOrValue.class);
-                    resultValue += fieldName + ' = ' + getFlowInputValue(valueField) + '\n';
-                } else if(field != null && (fieldName == 'connector' ||fieldName == 'faultConnector' || fieldName == 'defaultConnector')) {
-                    usf3.MetadataService.FlowConnector valueField = ( usf3.MetadataService.FlowConnector)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowConnector.class);
-                    System.debug('FlowConnector' + valueField);
-                    resultValue += fieldName + ' = ' + valueField.targetReference + '\n';
-                }
+                resultValue += getFormatValues(field, fieldName);
             }
         }
 
@@ -514,6 +505,12 @@ public with sharing class FlowElementAnalysisFunctions {
     static String formatValueFromFlowItem(Map<String, Object> flowItem, String fieldName) {
         String resultValue = flowItem.get('type') + ': \n';
         Object field = flowItem.get(fieldName);
+        resultValue += getFormatValues(field, fieldName);
+        return resultValue;
+    }
+
+    static String getFormatValues(Object field, String fieldName) {
+        String resultValue = '';
         if(isPrimitiveObject(field)) {
             resultValue += fieldName + ' = ' + field + '\n';
         } else if(field != null && (fieldName == 'value' || fieldName == 'rightValue')) {

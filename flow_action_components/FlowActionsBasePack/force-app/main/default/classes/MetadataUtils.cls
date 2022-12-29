@@ -75,6 +75,10 @@ global with sharing class MetadataUtils {
         DeleteFlowMetadata(new List<String> {flowName});
     }
 
+    global static String filterLabelToApiName(String flowName) {
+        return flowName.replaceAll('[^a-zA-Z0-9]+', '_');
+    }
+
     global static void handleUpsertResults(MetadataService.UpsertResult upsertResult){
 			// Nothing to see?
 			if(upsertResult==null || upsertResult.success) {

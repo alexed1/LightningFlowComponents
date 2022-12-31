@@ -28,12 +28,13 @@
  * 2.01.06	2021-07-30	Jack D. Pond		    Fix remainder of checkboxes default/save Fix: #702,#831,#785,#829
 						sahib-gadzhiev		    Quick Choice and Flow Combobox Bugs from JET BI Fix: #823
  * 2.01.07  2021-06-29  Jack Pond               Added to Email Category for flow builder New Action
+ * 2.03.12  2022-12-30  David Schach  PMD fixes and formatting
  *
  **/
 
 public without sharing class SendBetterEmail {
   @future
-  public static void SendEmailFuture(String requestsJSON) {
+  public static void sendEmailFuture(String requestsJSON) {
     List<SendBetterEmailRequest> requests = (List<SendBetterEmailRequest>) JSON.deserialize(
       requestsJSON,
       List<SendBetterEmailRequest>.class
@@ -46,7 +47,7 @@ public without sharing class SendBetterEmail {
     configurationEditor='c:sendBetterEmailCPE'
     category='Email'
   )
-  public static List<SendBetterEmailResponse> SendEmail(
+  public static List<SendBetterEmailResponse> sendEmail(
     List<SendBetterEmailRequest> requests
   ) {
     List<SendBetterEmailResponse> responseList = new List<SendBetterEmailResponse>();
@@ -119,18 +120,18 @@ public without sharing class SendBetterEmail {
     String localeKey = SendBetterEmailConstant.getOrganization();
 
     // Cache Query results for Templates
-    mapTemplateNameByEmailTemplates = sendBetterEmailUtil.getMapTemplateNameByEmailTemplates(
+    mapTemplateNameByEmailTemplates = SendBetterEmailUtil.getMapTemplateNameByEmailTemplates(
       templateNames,
       mapIdByEmailTemplate
     );
 
     // Cache Query results for ContentDocument Ids
-    mapContentDocumentIdByContentVersion = sendBetterEmailUtil.getMapContentDocumentIdByContentVersions(
+    mapContentDocumentIdByContentVersion = SendBetterEmailUtil.getMapContentDocumentIdByContentVersions(
       contentDocumentIds
     );
 
     // Cache a Map of targetObjectIds(Contact, Lead, User or other Custom Objects)
-    mapRecordIdByName = sendBetterEmailUtil.getMapRecordIdByName(
+    mapRecordIdByName = SendBetterEmailUtil.getMapRecordIdByName(
       listTargetObjectIds
     );
 
@@ -286,7 +287,7 @@ public without sharing class SendBetterEmail {
             if (curRequest.templateName == null) {
               thisResponse.errors = 'You must specify a template name or Template ID - required parameter for mass emails.';
             } else {
-              templateID = sendBetterEmailUtil.getTemplateIDFromName(
+              templateID = SendBetterEmailUtil.getTemplateIDFromName(
                 templateName,
                 templateLanguage,
                 mapTemplateNameByEmailTemplates,
@@ -336,10 +337,10 @@ public without sharing class SendBetterEmail {
           : curRequest.setSaveAsActivity;
         // Strings to hold the email addresses to which you are sending the email.
         //String[] toAddresses = new String[] {oneAddress};
-        Map<String, Object> m = sendBetterEmailUtil.generateMap(curRequest);
-        curRequest.toAddresses = sendBetterEmailUtil.buildAddressList('TO', m);
-        curRequest.ccAddresses = sendBetterEmailUtil.buildAddressList('CC', m);
-        curRequest.bccAddresses = sendBetterEmailUtil.buildAddressList(
+        Map<String, Object> m = SendBetterEmailUtil.generateMap(curRequest);
+        curRequest.toAddresses = SendBetterEmailUtil.buildAddressList('TO', m);
+        curRequest.ccAddresses = SendBetterEmailUtil.buildAddressList('CC', m);
+        curRequest.bccAddresses = SendBetterEmailUtil.buildAddressList(
           'BCC',
           m
         );
@@ -408,7 +409,7 @@ public without sharing class SendBetterEmail {
           (templateName != null &&
           templateName.length() > 0)
         ) {
-          templateID = sendBetterEmailUtil.getTemplateIDFromName(
+          templateID = SendBetterEmailUtil.getTemplateIDFromName(
             templateName,
             templateLanguage,
             mapTemplateNameByEmailTemplates,
@@ -448,8 +449,6 @@ public without sharing class SendBetterEmail {
           thisResponse.errors = 'In order to log this email send as a task, you need to pass in a recordId';
         }
 
-        Boolean completed = true;
-        String error;
         if (
           templateTargetObjectId != null &&
           templateTargetObjectId.length() > 0
@@ -522,7 +521,7 @@ public without sharing class SendBetterEmail {
           ((Id) request.whatIds[0]).getSObjectType() == Schema.User.sObjectType)
         ) {
           response.isSuccess = false;
-          response.errors = sendBetterEmailUtil.getErrorString(
+          response.errors = SendBetterEmailUtil.getErrorString(
             emailResult.getErrors()
           );
         } else {
@@ -573,7 +572,7 @@ public without sharing class SendBetterEmail {
           ((Id) request.recordId).getSObjectType() == Schema.User.sObjectType)
         ) {
           response.isSuccess = false;
-          response.errors = sendBetterEmailUtil.getErrorString(
+          response.errors = SendBetterEmailUtil.getErrorString(
             emailResult.getErrors()
           );
         } else {
@@ -620,7 +619,7 @@ public without sharing class SendBetterEmail {
           'Task Insert failed for RecordId ' +
           taskRecord.whatId +
           ' with error ' +
-          sendBetterEmailUtil.getDatabaseErrorString(taskResult.getErrors())
+          SendBetterEmailUtil.getDatabaseErrorString(taskResult.getErrors())
         );
       }
     }

@@ -7,6 +7,7 @@
  * Modifications Log
  * Ver		Date		Author				Modification
  * 2.00.02	10-12-2020	Mohith Shrivastava	Initial Version - separated and refactored
+ * 2.03.12  2022-12-30  David Schach  PMD fixes and formatting
  **/
 public inherited sharing class SendBetterEmailAddTasksToEmail {
   // Add task activities
@@ -16,9 +17,7 @@ public inherited sharing class SendBetterEmailAddTasksToEmail {
     Map<Id, EmailTemplate> mapIdByEmailTemplate,
     Map<String, String> mapRecordIdByName
   ) {
-    List<String> thisResultIds = new List<String>();
-    String recipientListIds;
-    string subject = request.subject;
+    String subject = request.subject;
     if (
       request.templateID != null &&
       subject == null &&

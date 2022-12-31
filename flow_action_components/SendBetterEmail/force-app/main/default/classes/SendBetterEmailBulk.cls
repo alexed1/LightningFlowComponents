@@ -8,9 +8,11 @@
  * Ver		Date		Author				Modification
  * 2.00.02	10-06-2020	Mohith Shrivastava	Initial Version - Action Flow for Send Better Email
  * 2.00.02	10-06-2020	Jack D. Pond		Simplified
+ * 2.22.03  12-30-2022  David Schach  PMD fixes
  **/
+@SuppressWarnings('PMD.MethodWithSameNameAsEnclosingClass')
 public with sharing class SendBetterEmailBulk {
-  @invocableMethod(label='Send Better Email Bulk')
+  @InvocableMethod(label='Send Better Email Bulk')
   public static List<List<SendBetterEmailResponse>> SendBetterEmailBulk(
     List<List<SendBetterEmailRequest>> emailRequests
   ) {

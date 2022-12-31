@@ -12,6 +12,7 @@
  * 2.00.02	10-12-2020	Jack D. Pond		Reverted names for backward compatibility
  * 2.00.05	02-12-2021	Jack D. Pond		setTreatTargetObjectAsRecipient Fix: #586,ReplyEmail with SendBetterEmail #595
  * 2.01.06	02-12-2021	Jack D. Pond		Fix remainder of checkboxes default/save Fix: #702,#831
+ * 2.03.12  2022-12-30  David Schach  PMD fixes and formatting
  **/
 public inherited sharing class SendBetterEmailRequest {
   public String[] toAddresses;

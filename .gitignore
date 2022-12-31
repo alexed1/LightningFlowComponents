@@ -42,3 +42,4 @@ $RECYCLE.BIN/
 package-lock.json
 jsconfig.json
 .sf/config.json
+.pmdCache

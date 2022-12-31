@@ -29,7 +29,7 @@ private with sharing class ers_DatatableControllerTest {
         System.assert(testResponse.contains('"noEditFieldList":['));
         System.assert(testResponse.contains('"lookupFieldList":["OwnerId"]'));
 
-        String testCPEResponse = ers_DatatableController.getCPEReturnResults('Account');
+        String testCPEResponse = ers_DatatableController.getCPEReturnResults('Account'); //NOPMD
         
         Account[] empty = [SELECT Id, Name, OwnerId FROM Account WHERE Name='NotInAccounts'];
         String testEmpty = ers_DatatableController.getReturnResults(empty, fieldnames, suppress);

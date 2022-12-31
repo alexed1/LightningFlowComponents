@@ -1,7 +1,8 @@
 @isTest
 public with sharing class ers_QueryNRecordsTest {
 
-    static testMethod void test() {
+    @isTest
+    private static void test() {
         Account a1 = new Account(Name='Test1',
             AccountNumber='1',
             Website='https://trailblazer.me/id/ericsmith',

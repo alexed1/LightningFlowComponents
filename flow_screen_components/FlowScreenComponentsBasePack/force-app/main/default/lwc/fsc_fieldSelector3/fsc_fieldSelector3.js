@@ -46,7 +46,8 @@ export default class FieldSelector extends LightningElement {
     @api required;
     @api name;
     @api allowMultiselect;
-    @api allowLookups;
+    @api allowLookups = false;
+    @api fieldTypeFilter;
 
     @api placeholder;
 
@@ -270,7 +271,7 @@ export default class FieldSelector extends LightningElement {
                 this.fields = this.shallowCloneArray(result);
                 let lookupFields = [];
                 for (let field of this.fields) {
-                    if (field.parentObjectName) {
+                    if (field.parentObjectName && this.allowLookups) {
                         let lookupField = {
                             ...field,
                             isLookup: true
@@ -297,6 +298,22 @@ export default class FieldSelector extends LightningElement {
                     if (matchingField) {
                         this.fields.splice(this.fields.indexOf(matchingField), 1);
                     }
+                }
+
+                console.log('fieldTypeFilter = ' + this.fieldTypeFilter);
+                // Is fieldTypeFilter set?
+                if (this.fieldTypeFilter) {
+                    // Remove fields that don't match the fieldTypeFilter
+                    console.log('fieldTypeFilter = ' + this.fieldTypeFilter);
+                    let filteredFields = [];
+                    for (let field of this.fields) {
+                        if (field.type.toLowerCase() === this.fieldTypeFilter.toLowerCase()) {
+                            filteredFields.push(field);
+                        }
+                    }
+                    // Set the fields to the filtered fields
+                    this.fields = filteredFields;
+                    console.log('filteredFields = ' + JSON.stringify(filteredFields));
                 }
     
                 if (this.preselectedValuesString) {

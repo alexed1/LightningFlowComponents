@@ -2,11 +2,23 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "dependencies": [
+        {
+            "package": "FlowActionsBasePack@3.0.0-0"
+        }
+    ],
+    "package": "AnalyzeFlows",
+    "versionName": "ver 0.1",
+    "versionNumber": "0.1.0.NEXT"
     }
   ],
   "name": "AnalyzeFlows",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0"
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "FlowActionsBasePack": "04t4W000002vXUCQA2",
+    "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS"
+  }
 }

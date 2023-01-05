@@ -1,0 +1,9 @@
+<design:component>
+   
+    <design:attribute name="value" label="Value" />
+   
+    <design:attribute name="maxValue" label="Maximum Number of Stars" />
+    
+    <design:attribute name='readOnly' label='Read Only' />
+
+</design:component>

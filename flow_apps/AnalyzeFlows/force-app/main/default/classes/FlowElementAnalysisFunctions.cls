@@ -1,4 +1,11 @@
 public with sharing class FlowElementAnalysisFunctions {
+    static Set<String> excludedFieldSet = new Set<String> {
+        'label',
+        'locationY',
+        'locationX',
+        'type'
+    };
+
     public static ElementStatusChange subAnalysis_ConnectorAndFaultConnector(usf3.MetadataService.FlowConnector initFlowConnector, usf3.MetadataService.FlowConnector secondFlowConnector, String changeType) {
         ElementStatusChange newChange;
         if(initFlowConnector == null && secondFlowConnector!= null) {
@@ -196,10 +203,6 @@ public with sharing class FlowElementAnalysisFunctions {
 
     }
 
-    static Boolean isPrimitiveObject(Object obj) {
-        return obj instanceof String || obj instanceof Boolean || obj instanceof Integer || obj instanceof Double;
-    }
-
     public static FlowAnalysis initFlowAnalysisObject(usf3.MetadataService.Flow initFlow, usf3.MetadataService.Flow secondFlow) {
         List<String> initFlowNameList = initFlow.fullName.split('-');
         List<String> secondFlowNameList = secondFlow.fullName.split('-');
@@ -313,8 +316,6 @@ public with sharing class FlowElementAnalysisFunctions {
         secondFlowOutputList = secondFlowOutputList == null ? new List<Object>() : secondFlowOutputList;
     
         //detect new or changed
-        System.debug(initFlowOutputList);
-        System.debug(secondFlowOutputList);
         for(Object initFlowOutput : initFlowOutputList) {
             Map<String, Object> tempInitFlowOutput = (Map<String, Object>)initFlowOutput;
             Boolean isNew = true;
@@ -342,8 +343,6 @@ public with sharing class FlowElementAnalysisFunctions {
             }
         }
         //detect old
-        System.debug(initFlowOutputList);
-        System.debug(secondFlowOutputList);
         for(Object initFlowOutput :  secondFlowOutputList) {
             Map<String, Object> tempInitFlowOutput = (Map<String, Object>)initFlowOutput;
             Boolean isOld = true;
@@ -366,6 +365,75 @@ public with sharing class FlowElementAnalysisFunctions {
         return newChangeList;
     }
 
+    public static List<ElementStatusChange> compareFlowArrayStructure(List<Object> firstVersionArray,List<Object> secondVersionArray) {
+        ElementStatusChange newChange;
+        List<ElementStatusChange> newChangeList = new List<ElementStatusChange>();
+        firstVersionArray = firstVersionArray == null ? new List<Object>() : firstVersionArray;
+        secondVersionArray = secondVersionArray == null ? new List<Object>() : secondVersionArray;
+    
+        for(Object firstVersionItem : firstVersionArray) {
+            System.debug(firstVersionItem);
+            Map<String, Object> tempFirstVersionItem = (Map<String, Object>) firstVersionItem;
+            Map<String, Object> tempSecondVersionItem = getFlowItemByName(secondVersionArray, getElementName(tempFirstVersionItem));
+            if(tempSecondVersionItem == null) {
+                newChange = new ElementStatusChange();
+                newChange.name = String.valueOf(tempFirstVersionItem.get('name'));
+                newChange.label = String.valueOf(tempFirstVersionItem.get('label'));
+                newChange.changeType = String.valueOf(tempFirstVersionItem.get('type'))  + ' exists in the first version that is not present in identical form in the second version';
+                newChange.elementType =  String.valueOf(tempFirstVersionItem.get('type'));
+                newChange.oldValue = formatValueFromFlowItem(tempFirstVersionItem);
+                newChangeList.add(newChange);
+            } else {
+                for(String fieldName : tempFirstVersionItem.keySet()) {
+                    if(tempFirstVersionItem.get(fieldName) instanceof List<Object> && !fieldName.endsWith('_info')) {
+                        List<ElementStatusChange> tempChangeList = compareFlowArrayStructure((List<Object>)tempFirstVersionItem.get(fieldName), (List<Object>)tempSecondVersionItem.get(fieldName));
+                        if(tempChangeList.size() > 0) {
+                            newChange = new ElementStatusChange();
+                            newChange.name = String.valueOf(tempFirstVersionItem.get('name'));
+                            newChange.label = String.valueOf(tempFirstVersionItem.get('label'));
+                            newChange.changeType = String.valueOf(tempFirstVersionItem.get('type'))  + ' exists in the first version that is not present in identical form in the second version';
+                            newChange.elementType =  String.valueOf(tempFirstVersionItem.get('type'));
+                            newChange.oldValue = tempFirstVersionItem.get('type') + ':\n' + tempChangeList[0].elementType + ' = difference detected';
+                            newChangeList.add(newChange);
+                        }
+                        for(ElementStatusChange changeItem : tempChangeList) {
+                            changeItem.name = String.valueOf(tempFirstVersionItem.get('name'));
+                            changeItem.label = String.valueOf(tempFirstVersionItem.get('label'));
+                        }
+                        newChangeList.addAll(tempChangeList);
+                    } else if(!fieldName.endsWith('_info') && !compareField(tempFirstVersionItem.get(fieldName), tempSecondVersionItem.get(fieldName))){
+                        newChange = new ElementStatusChange();
+                        newChange.name = String.valueOf(tempFirstVersionItem.get('name'));
+                        newChange.label = String.valueOf(tempFirstVersionItem.get('label'));
+                        newChange.changeType = String.valueOf(tempFirstVersionItem.get('type'))  + ' exists in the first version that is not present in identical form in the second version';
+                        newChange.elementType =  String.valueOf(tempFirstVersionItem.get('type'));
+                        newChange.oldValue = formatValueFromFlowItem(tempFirstVersionItem, fieldName);
+                        newChange.newValue = formatValueFromFlowItem(tempSecondVersionItem, fieldName);
+                        newChangeList.add(newChange);
+                    }
+                }
+            }
+        }
+
+        for(Object secondVersionItem : secondVersionArray) {
+            Map<String, Object> tempSecondVersionItem = (Map<String, Object>) secondVersionItem;
+            Map<String, Object> tempFirstVersionItem = getFlowItemByName(firstVersionArray, getElementName(tempSecondVersionItem));
+            if(tempFirstVersionItem == null) {
+                newChange = new ElementStatusChange();
+                newChange.name = String.valueOf(tempSecondVersionItem.get('name'));
+                newChange.label = String.valueOf(tempSecondVersionItem.get('label'));
+                newChange.changeType = String.valueOf(tempSecondVersionItem.get('type')) + ' exists in the second version that is not present in identical form in the first version';
+                newChange.elementType =  String.valueOf(tempSecondVersionItem.get('type'));
+                newChange.oldValue = formatValueFromFlowItem(tempSecondVersionItem);
+                newChangeList.add(newChange);
+            }
+        }
+        
+        return newChangeList;
+    }
+
+    
+
     static String getFlowInputValue(usf3.MetadataService.FlowElementReferenceOrValue value) {
         String resultValue = '';
         if(value.booleanValue != null) {
@@ -386,16 +454,83 @@ public with sharing class FlowElementAnalysisFunctions {
     }
 
     static Boolean equalsOutputNames(Map<String, Object> initFlowOutput, Map<String, Object> secondFlowOutput) {
-        System.debug('equalsOutputNames');
-        System.debug(initFlowOutput.get('name'));
-        System.debug(secondFlowOutput.get('name'));
-        System.debug(initFlowOutput.get('field'));
-        System.debug(secondFlowOutput.get('field'));
         if(initFlowOutput.get('name') != null || secondFlowOutput.get('name') != null) {
             return initFlowOutput.get('name') == secondFlowOutput.get('name');
         } else {
             return  initFlowOutput.get('field') == secondFlowOutput.get('field');
         }
+    }
+
+    static Map<String, Object> getFlowItemByName(List<Object> flowItemList, String itemName ) {
+        for(Object flowItem : flowItemList) {
+            Map<String, Object> tempFlowItem = (Map<String, Object>) flowItem;
+             if(getElementName(tempFlowItem) == itemName) {
+                return tempFlowItem;
+             }
+        }
+
+        return null;
+    }
+
+    static Boolean isPrimitiveObject(Object obj) {
+        return obj instanceof String || obj instanceof Boolean || obj instanceof Integer || obj instanceof Double;
+    }
+
+    static String getElementName(Map<String, Object> flowElement) {
+        if(flowElement.get('name') != null) {
+            return (String) flowElement.get('name');
+        } else  if(flowElement.get('field') != null) {
+            return (String) flowElement.get('field');
+        } else  if(flowElement.get('assignToReference') != null) {
+            return (String) flowElement.get('assignToReference');
+        }else  if(flowElement.get('leftValueReference') != null) {
+            return (String) flowElement.get('leftValueReference');
+        }
+        
+        return null;
+    }
+
+    static String formatValueFromFlowItem(Map<String, Object> flowItem) {
+        String resultValue = flowItem.get('type') + ': \n';
+            for(String fieldName : flowItem.keySet()) {
+                if(!excludedFieldSet.contains(fieldName)) {
+                Object field = flowItem.get(fieldName);
+                resultValue += getFormatValues(field, fieldName);
+            }
+        }
+
+        return resultValue;
+    }
+
+    static String formatValueFromFlowItem(Map<String, Object> flowItem, String fieldName) {
+        String resultValue = flowItem.get('type') + ': \n';
+        Object field = flowItem.get(fieldName);
+        resultValue += getFormatValues(field, fieldName);
+        return resultValue;
+    }
+
+    static String getFormatValues(Object field, String fieldName) {
+        String resultValue = '';
+        if(isPrimitiveObject(field)) {
+            resultValue += fieldName + ' = ' + field + '\n';
+        } else if(field != null && (fieldName == 'value' || fieldName == 'rightValue')) {
+            usf3.MetadataService.FlowElementReferenceOrValue valueField = ( usf3.MetadataService.FlowElementReferenceOrValue)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowElementReferenceOrValue.class);
+            resultValue += fieldName + ' = ' + getFlowInputValue(valueField) + '\n';
+        } else if(field != null && (fieldName == 'connector' ||fieldName == 'faultConnector' || fieldName == 'defaultConnector')) {
+            usf3.MetadataService.FlowConnector valueField = ( usf3.MetadataService.FlowConnector)JSON.deserialize(JSON.serialize(field),  usf3.MetadataService.FlowConnector.class);
+            System.debug('FlowConnector' + valueField);
+            resultValue += fieldName + ' = ' + valueField.targetReference + '\n';
+        }
+
+        return resultValue;
+    }
+
+    static Boolean compareField(Object firstItem, Object secondItem) {
+        if(isPrimitiveObject( firstItem)) {
+            return firstItem == secondItem;
+        } else  {
+            return JSON.serialize(firstItem) == JSON.serialize(secondItem);
+        } 
     }
 }
 

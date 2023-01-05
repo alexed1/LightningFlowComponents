@@ -7,6 +7,10 @@ global with sharing class FieldSelectorController {
             for (String fieldName : tokenMap.keySet()) {
                 Schema.DescribeFieldResult fieldResult = tokenMap.get(fieldName).getDescribe();
                 Field newField = new Field(fieldResult.getName(), fieldResult.getLabel(), fieldResult.getType().name());
+                if (fieldResult.getReferenceTo().size() == 1) {
+                    newField.parentObjectName = fieldResult.getReferenceTo()[0].getDescribe().getName();
+                    newField.relationshipName = fieldResult.getRelationshipName();
+                }
                 System.debug(newField);
                 fields.add(newField);
             }        
@@ -25,6 +29,8 @@ global with sharing class FieldSelectorController {
         @AuraEnabled public String name;
         @AuraEnabled public String label;
         @AuraEnabled public String type;
+        @AuraEnabled public String parentObjectName;    // Used for lookup fields
+        @AuraEnabled public String relationshipName;    // Used for lookup fields
 
         public Field(String name, String label, String type) {
             this.name = name;

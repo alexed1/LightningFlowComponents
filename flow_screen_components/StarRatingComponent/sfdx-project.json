@@ -1,0 +1,20 @@
+{
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "StarRatingComponent",
+            "versionName": "ver 0.1",
+            "versionNumber": "0.1.0.NEXT"
+        }
+    ],
+    "name": "StarRatingComponent",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+        "StarRating": "0Ho5G0000008OcjSAE",
+        "StarRatingComponent": "0Ho5G0000008OcoSAE",
+        "StarRatingComponent@1.0.0-0": "04t5G0000043xs2QAA"
+    }
+}

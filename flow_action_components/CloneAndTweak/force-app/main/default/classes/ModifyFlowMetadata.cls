@@ -36,7 +36,8 @@ global with sharing class ModifyFlowMetadata {
                 //apply the change list
                 if(!Test.isRunningTest()) {
                     if(curRequest.action == CLONE_ACTION) {
-                        flow.fullName = curRequest.newFlowName + '-1';
+                        flow.label = curRequest.newFlowName;
+                        flow.fullName = usf3.MetadataUtils.filterLabelToApiName(curRequest.newFlowName) + '-1';
                         usf3.MetadataUtils.createFlowMetadata(flow);
                     } else if(curRequest.action == OWERWRITE_ACTION){
                         usf3.MetadataUtils.upsertFlowMetadata(flow);
@@ -263,7 +264,7 @@ global with sharing class ModifyFlowMetadata {
         global String action; //expects enum values 'clone', 'overwrite' or 'none' default is 'clone'
 
         @InvocableVariable
-        global String newFlowName; //expects enum values 'clone', 'overwrite' or 'none' default is 'clone'
+        global String newFlowName;
 
     }
 
@@ -278,6 +279,10 @@ global with sharing class ModifyFlowMetadata {
 
 
 
+    }
+
+    global static String filterLabelToApiName(String flowName) {
+        return flowName.replaceAll('[^a-zA-Z0-9]+', '_');
     }
     public class InvocableActionException extends Exception{}
 }

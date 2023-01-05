@@ -2,11 +2,25 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "dependencies": [
+        {
+            "package": "FlowActionsBasePack@3.5.0-0"
+        },
+        {
+            "package": "FlowScreenComponentsBasePack@3.0.6-0"
+        }
+     ]
     }
   ],
   "name": "CloneAndTweak",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0"
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+
+    "FlowActionsBasePack@3.5.0-0": "04t8b000000mKnjAAE",
+    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU"
+
+  }
 }

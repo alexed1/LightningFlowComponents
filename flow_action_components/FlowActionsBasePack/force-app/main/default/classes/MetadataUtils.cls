@@ -56,6 +56,29 @@ global with sharing class MetadataUtils {
 
     }
 
+    global static void DeleteFlowMetadata (List<String> flowNameList) {
+
+        MetadataService.MetadataPort service = MetadataService.createService();
+
+        List<MetadataService.DeleteResult>  deleteResultList = service.deleteMetadata(
+            'Flow', 
+            flowNameList
+        );
+        System.debug('upsertFlowMetadata');
+        System.debug(JSON.serialize(deleteResultList).replace(',', ',\n'));
+        for(MetadataService.DeleteResult deleteResult : deleteResultList) {
+            handleDeleteResults(deleteResult);
+        }
+    }
+
+    global static void DeleteFlowMetadata (String flowName) {
+        DeleteFlowMetadata(new List<String> {flowName});
+    }
+
+    global static String filterLabelToApiName(String flowName) {
+        return flowName.replaceAll('[^a-zA-Z0-9]+', '_');
+    }
+
     global static void handleUpsertResults(MetadataService.UpsertResult upsertResult){
 			// Nothing to see?
 			if(upsertResult==null || upsertResult.success) {
@@ -79,6 +102,32 @@ global with sharing class MetadataUtils {
 					throw new MetadataService.MetadataServiceExamplesException(String.join(messages, ' '));
 			}
 			if(!upsertResult.success)
+				throw new MetadataService.MetadataServiceExamplesException('Request failed with no specified error.');
+		}
+
+        global static void handleDeleteResults(MetadataService.DeleteResult deleteResult){
+			// Nothing to see?
+			if(deleteResult==null || deleteResult.success) {
+				System.debug('Metadata Delete completed successfully');
+				return;
+			}
+		 
+			// Construct error message and throw an exception
+			if(deleteResult.errors!=null)
+			{
+				List<String> messages = new List<String>();
+				messages.add(
+					(deleteResult.errors.size()==1 ? 'Error ' : 'Errors ') +
+						'occured processing component ' + deleteResult.fullName + '.');
+				for(MetadataService.Error error : deleteResult.errors)
+					messages.add(
+						error.message + ' (' + error.statusCode + ').' +
+						( error.fields!=null && error.fields.size()>0 ?
+							' Fields ' + String.join(error.fields, ',') + '.' : '' ) );
+				if(messages.size()>0)
+					throw new MetadataService.MetadataServiceExamplesException(String.join(messages, ' '));
+			}
+			if(!deleteResult.success)
 				throw new MetadataService.MetadataServiceExamplesException('Request failed with no specified error.');
 		}
 }

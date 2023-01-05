@@ -3,6 +3,7 @@
 #
 
 package.xml
+force-app/main/default/profiles
 
 # LWC configuration files
 **/jsconfig.json

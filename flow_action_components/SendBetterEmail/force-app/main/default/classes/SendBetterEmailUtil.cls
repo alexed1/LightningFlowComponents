@@ -21,7 +21,8 @@ public inherited sharing class SendBetterEmailUtil {
     //build address list
     //handle individual addresses
     String oneAddress = (String) m.get('Send' + type + 'thisOneEmailAddress');
-    if (oneAddress != null) {
+    
+    if (String.isNotEmpty(oneAddress)) {
       addressList.add(oneAddress);
     }
 

@@ -15,7 +15,7 @@ public with sharing class AnalyzeFlows {
                 Result res = new Result();
                 res.analysisResults = new List<FlowAnalysis>();
                 if(req.analyticalModulenames.contains(DETECTED_NEW_ELEMENTS)) {
-                    res.analysisResults.add(MainAnalysis_DetectNewFlowEntities.detectNewFlowEntities(initFlow, secondFlow));
+                    res.analysisResults.add(MainAnalysis_DetectNewFlowEntities.detectNewFlowEntities(initFlow, secondFlow)); //once 100% of elements are covered by modification analysis, this can possibly be removed as it produces duplicates
                 }
 
                 if(req.analyticalModulenames.contains(DETECTED_MISSING_ELEMENTS)) {
@@ -31,11 +31,14 @@ public with sharing class AnalyzeFlows {
                     report.elementChanges.addAll(MainAnalysis_FlowStart.analyzeFlowStart(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_FlowSubflow.analyzeSubflows(initFlow, secondFlow).elementChanges);
                     report.elementChanges.addAll(MainAnalysis_FlowActionCall.analyzeFlowActionCalls(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_Assignment.analyzeAssignments(initFlow, secondFlow).elementChanges);
+                    report.elementChanges.addAll(MainAnalysis_FlowDecision.analyzeFlowDecisions(initFlow, secondFlow).elementChanges);
                     res.analysisResults.add(report);
                 }
                 resultList.add(res);
             } catch(Exception e) {
                 Result res = new Result();
+                System.debug('hit an error in Analyze Flow: ' + e.getMessage());
                 res.errors = e.getMessage() + ' ' + e.getStackTraceString();
                 resultList.add(res);
             }

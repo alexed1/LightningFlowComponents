@@ -20,7 +20,8 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api availableObjectTypes;
     @api availableFields;
     @api isAllowAll = false;    // Eric Smith 12/18/20 - Handle a Display All Objects override
-    @api DataTypeFilter;
+    @api DataTypeFilter;        // Andy Haas 01/03/23 - Depreciated
+    @api fieldTypeFilter;       // Andy Haas 01/03/23 - Added to match the field selection component
 
     @api disableObjectPicklist = false;
     @api hideObjectPicklist = false;
@@ -66,7 +67,7 @@ export default class fsc_pickObjectAndField extends LightningElement {
     }
 
     connectedCallback() {
-        if(this.DataTypeFilter && this.DataTypeFilter.toLowerCase() !== this.picklistFieldTypeLabel.toLowerCase()) {
+        if(this.fieldTypeFilter && this.fieldTypeFilter.toLowerCase() !== this.picklistFieldTypeLabel.toLowerCase()) {
             this.errors.push(this.labels.dataTypeNotSupported);
         }
     }
@@ -156,7 +157,7 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
         /*Sahib Gadzhiev3/32/2021 DataTypeFilter property can filled in FLow Screen for field type setting. 
         used toLowerCase to remove case sensitivity(Example: 'Picklist' = 'picklist')
         */  
-        if (!this.DataTypeFilter || (!result && this.DataTypeFilter.toLowerCase() === field.dataType.toLowerCase())) {
+        if (!this.fieldTypeFilter || (!result && this.fieldTypeFilter.toLowerCase() === field.dataType.toLowerCase())) {
             result = true;    
         }
         return result;

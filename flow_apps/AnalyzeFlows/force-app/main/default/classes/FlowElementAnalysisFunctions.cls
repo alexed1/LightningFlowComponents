@@ -112,7 +112,7 @@ public with sharing class FlowElementAnalysisFunctions {
             newChange.elementType = 'FlowInputFieldAssignment';
             newChange.newValue = 'N/A';
             newChange.oldValue = 'N/A';
-        } else if(initFlowInputFieldAssignmentList == null && secondFlowInputFieldAssignmentList!= null) {
+        } else if(initFlowInputFieldAssignmentList != null && secondFlowInputFieldAssignmentList!= null) {
             for(usf3.MetadataService.FlowInputFieldAssignment initFlowInputFieldAssignment : initFlowInputFieldAssignmentList) {
                 Boolean isChanged = true;
                 for(usf3.MetadataService.FlowInputFieldAssignment secondFlowInputFieldAssignment : secondFlowInputFieldAssignmentList) {
@@ -533,5 +533,3 @@ public with sharing class FlowElementAnalysisFunctions {
         } 
     }
 }
-
-

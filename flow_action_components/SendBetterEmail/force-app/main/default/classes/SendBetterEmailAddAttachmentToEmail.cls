@@ -15,32 +15,36 @@
  **/
 @SuppressWarnings('PMD')
 public inherited sharing class SendBetterEmailAddAttachmentToEmail {
-	//credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
-	public static Messaging.SingleEmailMessage addAttachments(
-		Messaging.SingleEmailMessage mail,
-		List<ContentDocumentLink> contentDocumentLinks,
-		Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion
-	) {
-		Set<Id> contentVersionIds = new Set<Id>();
+    //credit to https://digitalflask.com/blog/send-email-attachments-salesforce-apex/
+    public static Messaging.SingleEmailMessage addAttachments(
+        Messaging.SingleEmailMessage mail,
+        List<ContentDocumentLink> contentDocumentLinks,
+        Map<Id, List<ContentVersion>> mapContentDocumentIdByContentVersion
+    ) {
+        Set<Id> contentVersionIds = new Set<Id>();
 
-		if (contentDocumentLinks != null && !contentDocumentLinks.isEmpty()) {
-			for (ContentDocumentLink cdl : contentDocumentLinks) {
-				Id contentDocumentId = cdl.ContentDocumentId;
-				if (
-					mapContentDocumentIdByContentVersion.get(contentDocumentId) != null &&
-					mapContentDocumentIdByContentVersion.get(contentDocumentId).size() > 0
-				) {
-					for (ContentVersion cv : mapContentDocumentIdByContentVersion.get(contentDocumentId)) {
-						contentVersionIds.add(cv.Id);
-					}
-				}
-			}
-		}
+        if (contentDocumentLinks != null && !contentDocumentLinks.isEmpty()) {
+            for (ContentDocumentLink cdl : contentDocumentLinks) {
+                Id contentDocumentId = cdl.ContentDocumentId;
+                if (
+                    mapContentDocumentIdByContentVersion.get(contentDocumentId) != null &&
+                    mapContentDocumentIdByContentVersion.get(contentDocumentId).size() > 0
+                ) {
+                    for (
+                        ContentVersion cv : mapContentDocumentIdByContentVersion.get(
+                            contentDocumentId
+                        )
+                    ) {
+                        contentVersionIds.add(cv.Id);
+                    }
+                }
+            }
+        }
 
-		if (contentVersionIds.size() > 0) {
-			mail.setEntityAttachments(new List<Id>(contentVersionIds));
-		}
+        if (contentVersionIds.size() > 0) {
+            mail.setEntityAttachments(new List<Id>(contentVersionIds));
+        }
 
-		return mail;
-	}
+        return mail;
+    }
 }

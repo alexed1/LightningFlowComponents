@@ -10,16 +10,21 @@
  **/
 @SuppressWarnings('PMD.MethodNamingConventions')
 public without sharing class SendBetterEmailBulkRequestSetup {
-	/**
-	 * @description
-	 *
-	 * @param requests SBE Requests
-	 * @return         `List<List<SendBetterEmailRequest>>`
-	 */
-	@invocableMethod(label='Send Better Email Bulk Request Setup' configurationEditor='c:sendBetterEmailCPE')
-	public static List<List<SendBetterEmailRequest>> SendEmail(List<SendBetterEmailRequest> requests) {
-		List<List<SendBetterEmailRequest>> responseList = new List<List<SendBetterEmailRequest>>();
-		responseList.add(requests);
-		return responseList;
-	}
+    /**
+     * @description
+     *
+     * @param requests SBE Requests
+     * @return         `List<List<SendBetterEmailRequest>>`
+     */
+    @invocableMethod(
+        label='Send Better Email Bulk Request Setup'
+        configurationEditor='c:sendBetterEmailCPE'
+    )
+    public static List<List<SendBetterEmailRequest>> SendEmail(
+        List<SendBetterEmailRequest> requests
+    ) {
+        List<List<SendBetterEmailRequest>> responseList = new List<List<SendBetterEmailRequest>>();
+        responseList.add(requests);
+        return responseList;
+    }
 }

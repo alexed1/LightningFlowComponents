@@ -11,12 +11,14 @@
  **/
 @SuppressWarnings('PMD')
 public with sharing class SendBetterEmailBulk {
-	@invocableMethod(label='Send Better Email Bulk')
-	public static List<List<SendBetterEmailResponse>> SendBetterEmailBulk(List<List<SendBetterEmailRequest>> emailRequests) {
-		List<List<SendBetterEmailResponse>> emailResponses = new List<List<SendBetterEmailResponse>>();
-		for (List<SendBetterEmailRequest> thisRequestList : emailRequests) {
-			emailResponses.add(SendBetterEmail.SendEmail(thisRequestList));
-		}
-		return emailResponses;
-	}
+    @invocableMethod(label='Send Better Email Bulk')
+    public static List<List<SendBetterEmailResponse>> SendBetterEmailBulk(
+        List<List<SendBetterEmailRequest>> emailRequests
+    ) {
+        List<List<SendBetterEmailResponse>> emailResponses = new List<List<SendBetterEmailResponse>>();
+        for (List<SendBetterEmailRequest> thisRequestList : emailRequests) {
+            emailResponses.add(SendBetterEmail.SendEmail(thisRequestList));
+        }
+        return emailResponses;
+    }
 }

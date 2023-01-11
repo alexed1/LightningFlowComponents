@@ -107,6 +107,7 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'actionCalls', label: 'ACTIONS', dataType: flowComboboxDefaults.actionType}, //fallback
         // {apiName: 'actionCalls.outputParameters', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         // {apiName: 'apexPluginCalls', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: 'globalVariables', label: 'Global Variables', dataType: flowComboboxDefaults.stringDataType},
     ];
 
     _staticOptions
@@ -364,6 +365,118 @@ export default class FlowCombobox extends LightningElement {
                 console.log(curType + ' is undefined');
             }
         });
+
+        // Add Global Variables
+        $Flow.CurrentDate
+        $Flow.CurrentDateTime
+        $Flow.CurrentRecord
+        $Flow.FaultMessage
+        $Flow.InterviewGuid
+        $Flow.InterviewStartTime
+        let globalFlowVariable = {
+            "$Flow":[
+            {
+                type: 'String',
+                label: '$Flow.ActiveStages',
+                valuse: '$Flow.ActiveStages',      
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            {
+                type: 'String',
+                label: '$Flow.CurrentStage',
+                valuse: '$Flow.CurrentStage',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            {
+                type: 'String',
+                label: '$Flow.CurrentDate',
+                valuse: '$Flow.CurrentDate',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            {
+                type: 'String',
+                label: '$Flow.CurrentDateTime',
+                valuse: '$Flow.CurrentDateTime',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            // { // Need to test this to see what this returns first
+            //     type: 'String',
+            //     label: '$Flow.CurrentRecord',
+            //     valuse: '$Flow.CurrentRecord',
+            //     isCollection: false,
+            //     optionIcon: "utility:world",
+            //     isObject: false,
+            //     displayType: "String",
+            //     flowType: "reference",
+            //     key: flowComboboxDefaults.defaultKeyPrefix + key++
+            // },
+            {
+                type: 'String',
+                label: '$Flow.FaultMessage',
+                valuse: '$Flow.FaultMessage',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            {
+                type: 'String',
+                label: '$Flow.InterviewGuid',
+                valuse: '$Flow.InterviewGuid',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            },
+            {
+                type: 'String',
+                label: '$Flow.InterviewStartTime',
+                valuse: '$Flow.InterviewStartTime',
+                isCollection: false,
+                optionIcon: "utility:world",
+                isObject: false,
+                displayType: "String",
+                flowType: "reference",
+                key: flowComboboxDefaults.defaultKeyPrefix + key++
+            }
+        ]};
+
+        // Add globalFlowVariable to optionsByType
+        optionsByType['Global Variables'] = this.getOptionLines(
+            globalFlowVariable['$Flow'],
+            'label',
+            'valuse',
+            'type',
+            'isCollection',
+            'displayType',
+            'flowType'
+        );
+        console.log('optionsByType', optionsByType)
+
         let options = [];
         let allOutputTypes = Object.keys(optionsByType);
 

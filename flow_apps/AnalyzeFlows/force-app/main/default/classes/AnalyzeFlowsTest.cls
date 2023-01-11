@@ -6,7 +6,7 @@ public with sharing class AnalyzeFlowsTest {
 
         request.initFlow = JSON.serialize( genereateFlowForTest1());
         request.secondFlow = JSON.serialize(genereateFlowForTest2());
-        request.analyticalModulenames = 'DetectElementModifications,DetectRemovedElements,DetectNewElements';
+        request.analyticalModulenames = 'DetectElementModifications,DetectMissingElements,DetectNewElements';
         
 
         AnalyzeFlows.Result result = AnalyzeFlows.execute(new List<AnalyzeFlows.Request>{request})[0];
@@ -38,16 +38,32 @@ public with sharing class AnalyzeFlowsTest {
         flowActionCall.faultConnector.targetReference = 'test_target_reference_1';
         flow.actionCalls.add(flowActionCall);
 
-        // flow.assignments = new  List<usf3.MetadataService.FlowAssignment>();
-        // usf3.MetadataService.FlowAssignment flowAssignment = new usf3.MetadataService.FlowAssignment();
-        // flowAssignment.Name = 'test_assignment';
-        // flowAssignment.assignmentItems = new List<usf3.MetadataService.FlowAssignmentItem>();
-        // usf3.MetadataService.FlowAssignmentItem flowAssignmentItem = new usf3.MetadataService.FlowAssignmentItem();
-        // flowAssignmentItem.assignToReference = 'Test_reference';
-        // flowAssignmentItem.value = new usf3.MetadataService.FlowElementReferenceOrValue();
-        // flowAssignmentItem.value.stringValue = 'testvalue';
-        // flowAssignment.assignmentItems.add(flowAssignmentItem);
-        // flow.assignments.add(flowAssignment);
+        flow.assignments = new  List<usf3.MetadataService.FlowAssignment>();
+        usf3.MetadataService.FlowAssignment flowAssignment = new usf3.MetadataService.FlowAssignment();
+        flowAssignment.Name = 'test_assignment';
+        flowAssignment.assignmentItems = new List<usf3.MetadataService.FlowAssignmentItem>();
+        usf3.MetadataService.FlowAssignmentItem flowAssignmentItem = new usf3.MetadataService.FlowAssignmentItem();
+        flowAssignmentItem.assignToReference = 'Test_reference';
+        flowAssignmentItem.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowAssignmentItem.value.stringValue = 'testvalue';
+        flowAssignment.assignmentItems.add(flowAssignmentItem);
+
+        flowAssignmentItem = new usf3.MetadataService.FlowAssignmentItem();
+        flowAssignmentItem.assignToReference = 'Test_reference3';
+        flowAssignmentItem.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowAssignmentItem.value.stringValue = 'testvalue3';
+        flowAssignment.assignmentItems.add(flowAssignmentItem);
+        flow.assignments.add(flowAssignment);
+
+        flowAssignment = new usf3.MetadataService.FlowAssignment();
+        flowAssignment.Name = 'test_assignment2';
+        flowAssignment.assignmentItems = new List<usf3.MetadataService.FlowAssignmentItem>();
+        flowAssignmentItem = new usf3.MetadataService.FlowAssignmentItem();
+        flowAssignmentItem.assignToReference = 'Test_reference2';
+        flowAssignmentItem.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowAssignmentItem.value.stringValue = 'testvalue2';
+        flowAssignment.assignmentItems.add(flowAssignmentItem);
+        flow.assignments.add(flowAssignment);
 
         flow.choices = new  List<usf3.MetadataService.FlowChoice>();
         usf3.MetadataService.FlowChoice flowChoice = new usf3.MetadataService.FlowChoice();
@@ -92,6 +108,12 @@ public with sharing class AnalyzeFlowsTest {
         flowRecordCreate.inputAssignments = new List<usf3.MetadataService.FlowInputFieldAssignment>();
         usf3.MetadataService.FlowInputFieldAssignment flowInputFieldAssignment = new usf3.MetadataService.FlowInputFieldAssignment();
         flowInputFieldAssignment.field = 'Test_Field';
+        flowInputFieldAssignment.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowInputFieldAssignment.value.numberValue = 321;
+        flowRecordCreate.inputAssignments.add(flowInputFieldAssignment);
+
+        flowInputFieldAssignment = new usf3.MetadataService.FlowInputFieldAssignment();
+        flowInputFieldAssignment.field = 'Test_Field2';
         flowInputFieldAssignment.value = new usf3.MetadataService.FlowElementReferenceOrValue();
         flowInputFieldAssignment.value.numberValue = 321;
         flowRecordCreate.inputAssignments.add(flowInputFieldAssignment);
@@ -256,6 +278,31 @@ public with sharing class AnalyzeFlowsTest {
         flowAssignment.assignmentItems.add(flowAssignmentItem);
         flow.assignments.add(flowAssignment);
 
+        flow.decisions = new  List<usf3.MetadataService.FlowDecision>();
+        usf3.MetadataService.FlowDecision flowDecision = new usf3.MetadataService.FlowDecision();
+        flowDecision.Name = 'test_decision';
+        flowDecision.rules = new List<usf3.MetadataService.FlowRule>();
+        usf3.MetadataService.FlowRule flowRule = new usf3.MetadataService.FlowRule();
+        flowRule.name = 'Test_Rule';
+        flowRule.conditions = new List<usf3.MetadataService.FlowCondition>();
+        usf3.MetadataService.FlowCondition flowCondition = new usf3.MetadataService.FlowCondition();
+        flowCondition.leftValueReference = 'Test_Reference';
+        flowCondition.rightValue = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowCondition.rightValue.stringValue = 'testvalue1';
+        flowRule.conditions.add(flowCondition);
+        flowDecision.rules.add(flowRule);
+
+        flowRule = new usf3.MetadataService.FlowRule();
+        flowRule.name = 'Test_Rule2';
+        flowRule.conditions = new List<usf3.MetadataService.FlowCondition>();
+        flowCondition = new usf3.MetadataService.FlowCondition();
+        flowCondition.leftValueReference = 'Test_Reference2';
+        flowCondition.rightValue = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowCondition.rightValue.stringValue = 'testvalue1';
+        flowRule.conditions.add(flowCondition);
+        flowDecision.rules.add(flowRule);
+
+        flow.decisions.add(flowDecision);
 
 
         flow.recordCreates = new  List<usf3.MetadataService.FlowRecordCreate>();
@@ -267,6 +314,13 @@ public with sharing class AnalyzeFlowsTest {
         flowRecordCreate.faultConnector = new usf3.MetadataService.FlowConnector();
         flowRecordCreate.faultConnector.targetReference = 'test_target_reference_2';
         flowRecordCreate.object_x = 'Case';
+        flowRecordCreate.inputAssignments = new List<usf3.MetadataService.FlowInputFieldAssignment>();
+        usf3.MetadataService.FlowInputFieldAssignment flowInputFieldAssignment = new usf3.MetadataService.FlowInputFieldAssignment();
+        flowInputFieldAssignment.field = 'Test_Field2';
+        flowInputFieldAssignment.value = new usf3.MetadataService.FlowElementReferenceOrValue();
+        flowInputFieldAssignment.value.numberValue = 3212;
+        flowRecordCreate.inputAssignments.add(flowInputFieldAssignment);
+        flow.recordCreates.add(flowRecordCreate);
 
         flow.recordDeletes = new  List<usf3.MetadataService.FlowRecordDelete>();
         usf3.MetadataService.FlowRecordDelete flowRecordDelete = new usf3.MetadataService.FlowRecordDelete();
@@ -295,15 +349,6 @@ public with sharing class AnalyzeFlowsTest {
 
 
         flow.recordLookups.add(flowRecordLookup);
-
-
-        flowRecordCreate.inputAssignments = new List<usf3.MetadataService.FlowInputFieldAssignment>();
-        usf3.MetadataService.FlowInputFieldAssignment flowInputFieldAssignment = new usf3.MetadataService.FlowInputFieldAssignment();
-        flowInputFieldAssignment.field = 'Test_Field2';
-        flowInputFieldAssignment.value = new usf3.MetadataService.FlowElementReferenceOrValue();
-        flowInputFieldAssignment.value.numberValue = 32;
-        flowRecordCreate.inputAssignments.add(flowInputFieldAssignment);
-        flow.recordCreates.add(flowRecordCreate);
 
         flow.recordUpdates = new  List<usf3.MetadataService.FlowRecordUpdate>();
         usf3.MetadataService.FlowRecordUpdate flowRecordUpdate = new usf3.MetadataService.FlowRecordUpdate();

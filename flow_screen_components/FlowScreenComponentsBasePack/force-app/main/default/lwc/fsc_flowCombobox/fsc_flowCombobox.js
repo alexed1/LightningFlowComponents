@@ -108,6 +108,7 @@ export default class FlowCombobox extends LightningElement {
         // {apiName: 'actionCalls.outputParameters', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         // {apiName: 'apexPluginCalls', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'globalVariables', label: 'Global Variables', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: '$Flow', label: 'Flow Global Variables', dataType: flowComboboxDefaults.stringDataType},
     ];
 
     _staticOptions
@@ -367,12 +368,6 @@ export default class FlowCombobox extends LightningElement {
         });
 
         // Add Global Variables
-        $Flow.CurrentDate
-        $Flow.CurrentDateTime
-        $Flow.CurrentRecord
-        $Flow.FaultMessage
-        $Flow.InterviewGuid
-        $Flow.InterviewStartTime
         let globalFlowVariable = {
             "$Flow":[
             {
@@ -465,16 +460,13 @@ export default class FlowCombobox extends LightningElement {
             }
         ]};
 
-        // Add globalFlowVariable to optionsByType
-        optionsByType['Global Variables'] = this.getOptionLines(
-            globalFlowVariable['$Flow'],
-            'label',
-            'valuse',
-            'type',
-            'isCollection',
-            'displayType',
-            'flowType'
-        );
+        // Add globalFlowVariablev object to optionsByType object
+        let globalFlowVariableType = this.getTypeDescriptor('$Flow').label;
+        if (optionsByType[globalFlowVariableType]) {
+            optionsByType[globalFlowVariableType] = [...optionsByType[globalFlowVariableType], ...globalFlowVariable.$Flow];
+        } else {
+            optionsByType[globalFlowVariableType] = globalFlowVariable.$Flow;
+        }
         console.log('optionsByType', optionsByType)
 
         let options = [];
@@ -489,6 +481,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor) {
+        console.log('getOptionLines', objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor);
         let typeOptions = [];
         objectArray.forEach(curObject => {
             let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType);

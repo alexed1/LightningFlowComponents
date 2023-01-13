@@ -175,7 +175,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     set automaticOutputVariables(value) {
-        console.log('setting automaticOutputVariables to ' + JSON.stringify(value));
+        // console.log('setting automaticOutputVariables to ' + JSON.stringify(value));
         this._automaticOutputVariables = value;
     }
 
@@ -298,7 +298,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     generateMergeFieldsFromBuilderContext(builderContext) {
-        console.log('generateMergeFieldsFromBuilderContext: ', JSON.stringify(builderContext));
+        // console.log('generateMergeFieldsFromBuilderContext: ', JSON.stringify(builderContext));
         let optionsByType = {};
         let key = 0;
 
@@ -332,7 +332,7 @@ export default class FlowCombobox extends LightningElement {
                             let allObjectToExamine = [];
                             objectToExamine.forEach(curObjToExam => {
                                 if (curObjToExam.storeOutputAutomatically) {
-                                    console.log('curObjToExam: ', JSON.stringify(curObjToExam));
+                                    // console.log('curObjToExam: ', JSON.stringify(curObjToExam));
                                     //TODO: Uncomment when it is clear how to get output parameters from actions and flow screens
                                     // allObjectToExamine.push({
                                     //     varApiName: curObjToExam.name,
@@ -388,7 +388,7 @@ export default class FlowCombobox extends LightningElement {
                 value: '$Flow',      
                 isCollection: false,
                 objectType: 'objectType',
-                optionIcon: "utility:world",
+                optionIcon: "utility:system_and_global_variable",
                 isObject: false,
                 globalVariable: true,
                 displayType: "String",
@@ -402,7 +402,7 @@ export default class FlowCombobox extends LightningElement {
                 value: '$User',      
                 isCollection: false,
                 objectType: 'objectType',
-                optionIcon: "utility:world",
+                optionIcon: "utility:system_and_global_variable",
                 isObject: false,
                 globalVariable: true,
                 displayType: "String",
@@ -416,7 +416,7 @@ export default class FlowCombobox extends LightningElement {
                 value: '$UserRole',      
                 isCollection: false,
                 objectType: 'objectType',
-                optionIcon: "utility:world",
+                optionIcon: "utility:system_and_global_variable",
                 isObject: false,
                 globalVariable: true,
                 displayType: "String",
@@ -430,7 +430,7 @@ export default class FlowCombobox extends LightningElement {
                 value: '$Profile',      
                 isCollection: false,
                 objectType: 'objectType',
-                optionIcon: "utility:world",
+                optionIcon: "utility:system_and_global_variable",
                 isObject: false,
                 globalVariable: true,
                 displayType: "String",
@@ -444,7 +444,7 @@ export default class FlowCombobox extends LightningElement {
                 value: '$System',  
                 isCollection: false,
                 objectType: 'objectType',
-                optionIcon: "utility:world",
+                optionIcon: "utility:system_and_global_variable",
                 isObject: false,
                 globalVariable: true,
                 displayType: "String",
@@ -463,7 +463,7 @@ export default class FlowCombobox extends LightningElement {
                     value: '$Record',
                     isCollection: false,
                     objectType: 'objectType',
-                    optionIcon: "utility:world",
+                    optionIcon: "utility:system_and_global_variable",
                     isObject: false,
                     globalVariable: true,
                     displayType: "String",
@@ -477,7 +477,7 @@ export default class FlowCombobox extends LightningElement {
                     value: '$Record__Prior',
                     isCollection: false,
                     objectType: 'objectType',
-                    optionIcon: "utility:world",
+                    optionIcon: "utility:system_and_global_variable",
                     isObject: false,
                     globalVariable: true,
                     displayType: "String",
@@ -495,7 +495,7 @@ export default class FlowCombobox extends LightningElement {
         } else {
             optionsByType[globalVariablesType] = globalVariables.globalVariables;
         }
-        console.log('optionsByType', optionsByType)
+        // console.log('optionsByType', optionsByType)
 
         let options = [];
         let allOutputTypes = Object.keys(optionsByType);
@@ -509,7 +509,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor) {
-        console.log('getOptionLines', JSON.stringify(objectArray), labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor);
+        // console.log('getOptionLines', JSON.stringify(objectArray), labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor);
         let typeOptions = [];
         objectArray.forEach(curObject => {
             let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType);
@@ -594,13 +594,13 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleOpenGlobalVariable(event) {
-        console.log('handleOpenGlobalVariable', JSON.stringify(event.currentTarget.dataset));
+        // console.log('handleOpenGlobalVariable', JSON.stringify(event.currentTarget.dataset));
         this.doOpenGlobalVariable(event, event.currentTarget.dataset.optionValue);
     }
 
     doOpenGlobalVariable(event, value) {
         event.stopPropagation();
-        console.log('doOpenGlobalVariable', value);
+        // console.log('doOpenGlobalVariable', value);
         let tempOptions = [];
         let objectName = '';
 
@@ -614,7 +614,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.ActiveStages',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -628,7 +628,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.CurrentStage',
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -642,7 +642,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.CurrentDate',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "Date",
@@ -656,7 +656,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.CurrentDateTime',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "DateTime",
@@ -670,7 +670,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.CurrentRecord',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -684,7 +684,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.FaultMessage',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -698,7 +698,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.InterviewGuid',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -712,7 +712,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$Flow.InterviewStartTime',      
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "Time",
@@ -727,7 +727,7 @@ export default class FlowCombobox extends LightningElement {
                 objectName = 'User';
                 getObjectFields({objectName: objectName})
                 .then(result => {
-                    console.log('result', result);
+                    // console.log('result', result);
                     let fields = this.shallowCloneArray(result);
                     fields.forEach(field => {
                         tempOptions.push({
@@ -736,7 +736,7 @@ export default class FlowCombobox extends LightningElement {
                             value: field.name,
                             isCollection: false,
                             objectType: 'objectType',
-                            optionIcon: "utility:world",
+                            optionIcon: "utility:system_and_global_variable",
                             isObject: false,
                             globalVariable: false,
                             displayType: "String",
@@ -758,7 +758,7 @@ export default class FlowCombobox extends LightningElement {
                         value: '$System.OriginDateTime',
                         isCollection: false,
                         objectType: 'objectType',
-                        optionIcon: "utility:world",
+                        optionIcon: "utility:system_and_global_variable",
                         isObject: false,
                         globalVariable: false,
                         displayType: "String",
@@ -773,7 +773,7 @@ export default class FlowCombobox extends LightningElement {
                 objectName = 'Profile';
                 getObjectFields({objectName: objectName})
                 .then(result => {
-                    console.log('result', result);
+                    // console.log('result', result);
                     let fields = this.shallowCloneArray(result);
                     fields.forEach(field => {
                         tempOptions.push({
@@ -782,7 +782,7 @@ export default class FlowCombobox extends LightningElement {
                             value: field.name,
                             isCollection: false,
                             objectType: 'objectType',
-                            optionIcon: "utility:world",
+                            optionIcon: "utility:system_and_global_variable",
                             isObject: false,
                             globalVariable: false,
                             displayType: "String",
@@ -800,7 +800,7 @@ export default class FlowCombobox extends LightningElement {
                 objectName = 'UserRole';
                 getObjectFields({objectName: objectName})
                 .then(result => {
-                    console.log('result', result);
+                    // console.log('result', result);
                     let fields = this.shallowCloneArray(result);
                     fields.forEach(field => {
                         tempOptions.push({
@@ -809,7 +809,7 @@ export default class FlowCombobox extends LightningElement {
                             value: field.name,
                             isCollection: false,
                             objectType: 'objectType',
-                            optionIcon: "utility:world",
+                            optionIcon: "utility:system_and_global_variable",
                             isObject: false,
                             globalVariable: false,
                             displayType: "String",
@@ -827,7 +827,7 @@ export default class FlowCombobox extends LightningElement {
                 objectName = this._RecordObject;
                 getObjectFields({objectName: objectName})
                 .then(result => {
-                    console.log('result', result);
+                    // console.log('result', result);
                     let fields = this.shallowCloneArray(result);
                     fields.forEach(field => {
                         tempOptions.push({
@@ -836,7 +836,7 @@ export default class FlowCombobox extends LightningElement {
                             value: field.name,
                             isCollection: false,
                             objectType: 'objectType',
-                            optionIcon: "utility:world",
+                            optionIcon: "utility:system_and_global_variable",
                             isObject: false,
                             globalVariable: false,
                             displayType: "String",
@@ -854,7 +854,7 @@ export default class FlowCombobox extends LightningElement {
                     objectName = this._RecordObject;
                     getObjectFields({objectName: objectName})
                     .then(result => {
-                        console.log('result', result);
+                        // console.log('result', result);
                         let fields = this.shallowCloneArray(result);
                         fields.forEach(field => {
                             tempOptions.push({
@@ -863,7 +863,7 @@ export default class FlowCombobox extends LightningElement {
                                 value: field.name,
                                 isCollection: false,
                                 objectType: 'objectType',
-                                optionIcon: "utility:world",
+                                optionIcon: "utility:system_and_global_variable",
                                 isObject: false,
                                 globalVariable: false,
                                 displayType: "String",

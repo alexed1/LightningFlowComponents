@@ -365,7 +365,9 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
             'MasterFilterValue' : recordId,
             'parent': component.get('v.cmpId')
         });
-        ev.fire();
+        setTimeout(() => {
+            ev.fire();
+        }, 10)
     },
     
     /**

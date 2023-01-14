@@ -56,6 +56,7 @@
                 }
             }
         } else {
+            console.log('changeType: ' + eventParams.changeType);
             // Get Flow To Use
             if(eventParams.changeType === "CHANGED") {
                 component.set("v.targetFlowName", component.get("v.editFlowName"));
@@ -69,8 +70,7 @@
             // Launch Flow
             if(eventParams.changeType === "CHANGED" || eventParams.changeType === "REMOVED") {
                 helper.processChangeEvent(component, eventParams);
-            } else if( eventParams.changeType === "LOAD" && changedFields !== null)  {
-                //console.log('changedFields ', changedFields);
+            } else if( eventParams.changeType === "LOADED")  {
                 helper.processChangeEvent(component, eventParams);
             } else if(eventParams.changeType === "ERROR") {
                 console.log(eventParams);

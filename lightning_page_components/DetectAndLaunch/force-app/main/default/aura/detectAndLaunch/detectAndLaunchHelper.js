@@ -1,7 +1,7 @@
 ({
     processChangeEvent : function(component, eventParams) {
         console.log('entering processChangeEvent');
-        if(eventParams.changeType === "CHANGED") {
+        if(eventParams.changeType === "CHANGED" || eventParams.changeType === "LOADED") {
             console.log ('changeType is: ' + eventParams.changeType);
             if(component.get("v.launchMode") == 'Modal') {
                 component.set('v.openModal',true);
@@ -57,7 +57,7 @@
             var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable
             console.log('targetURL is: ' + targetUrl);
             window.open(targetUrl);
-        }
+        }   
     }
 
     

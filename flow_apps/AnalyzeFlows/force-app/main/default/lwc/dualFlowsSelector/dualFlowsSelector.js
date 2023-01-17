@@ -25,10 +25,16 @@ export default class FlowsSelector extends LightningElement {
 
     @api
     validate() {
+        console.log(this.selectedFlow1APIName, this.selectedFlow2APIName);
         if (!this.selectedFlow1APIName || !this.selectedFlow2APIName) {
             return {
                 isValid: false,
                 errorMessage: 'Please select two Flows'
+            };
+        } else if(this.selectedFlow1APIName.split('-')[0] !== this.selectedFlow2APIName.split('-')[0]) {
+            return {
+                isValid: false,
+                errorMessage: 'Please select a flows with the same name'
             };
         } else {
             return {isValid: true};

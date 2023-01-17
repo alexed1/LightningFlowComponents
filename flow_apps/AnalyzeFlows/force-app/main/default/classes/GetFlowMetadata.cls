@@ -10,7 +10,6 @@ public with sharing class GetFlowMetadata {
                 
                 res.flowMetadataJSON = JSON.serialize(flowList[0]);
                 res.flowMetadata = flowList[0];
-                resultList.add(res);
             } catch(Exception e) {
                 res.errors = e.getMessage();
             }

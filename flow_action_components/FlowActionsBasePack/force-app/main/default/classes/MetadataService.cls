@@ -1381,14 +1381,16 @@ global class MetadataService {
 	global class FlowScreenFieldTranslation {
 		global String fieldText;
 		global String helpText;
+		global Flow.FlowInputParameterTranslation[] inputParameters;
 		global String name;
 		global MetadataService.FlowInputValidationRuleTranslation validationRule;
 		private String[] fieldText_type_info=new String[]{'fieldText',SOAP_M_URI,null,'0','1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
+		private String[] inputParameters_type_info = new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'1','1','false'};
 		private String[] validationRule_type_info=new String[]{'validationRule',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
-		private String[] field_order_type_info=new String[]{'fieldText','helpText','name','validationRule'};
+		private String[] field_order_type_info=new String[]{'fieldText','helpText','inputParameters','name','validationRule'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -1678,17 +1680,31 @@ global class MetadataService {
 		global String eventType;
 		global MetadataService.FlowWaitEventInputParameter[] inputParameters;
 		global String label;
+		global Integer maxBatchSize;
+        global Integer offset;
+        global String offsetUnit;
 		global MetadataService.FlowWaitEventOutputParameter[] outputParameters;
+		global Date resumeDate;
+        global String resumeDateReference;
+        global DateTime resumeTime;
 		private String[] conditionLogic_type_info=new String[]{'conditionLogic',SOAP_M_URI,null,'0','1','false'};
 		private String[] conditions_type_info=new String[]{'conditions',SOAP_M_URI,null,'0','-1','false'};
 		private String[] connector_type_info=new String[]{'connector',SOAP_M_URI,null,'1','1','false'};
 		private String[] eventType_type_info=new String[]{'eventType',SOAP_M_URI,null,'1','1','false'};
 		private String[] inputParameters_type_info=new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
+		private String[] maxBatchSize_type_info = new String[]{'maxBatchSize',SOAP_M_URI,null,'0','1','false'};
+        private String[] offset_type_info = new String[]{'offset',SOAP_M_URI,null,'0','1','false'};
+        private String[] offsetUnit_type_info = new String[]{'offsetUnit',SOAP_M_URI,null,'0','1','false'};
 		private String[] label_type_info=new String[]{'label',SOAP_M_URI,null,'1','1','false'};
 		private String[] outputParameters_type_info=new String[]{'outputParameters',SOAP_M_URI,null,'0','-1','false'};
+		private String[] resumeDate_type_info = new String[]{'resumeDate',SOAP_M_URI,null,'0','1','false'};
+        private String[] resumeDateReference_type_info = new String[]{'resumeDateReference',SOAP_M_URI,null,'0','1','false'};
+        private String[] resumeTime_type_info = new String[]{'resumeTime',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'conditionLogic','conditions','connector','eventType','inputParameters','label','outputParameters'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 
+			'conditionLogic','conditions','connector','eventType',
+			'inputParameters', 'maxBatchSize', 'offset', 'offsetUnit', 'label','outputParameters', 'resumeDate', 'resumeDateReference', 'resumeTime'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -2103,6 +2119,7 @@ global class MetadataService {
 		global String extensionName;
 		global String fieldText;
 		global String fieldType;
+		global FlowScreenField[] fields;
 		global String helpText;
 		global MetadataService.FlowScreenFieldInputParameter[] inputParameters;
 		global String inputsOnNextNavToAssocScrn;
@@ -2112,6 +2129,7 @@ global class MetadataService {
 		global Integer scale;
 		global Boolean storeOutputAutomatically;
 		global MetadataService.FlowInputValidationRule validationRule;
+		global Flow.FlowVisibilityRule visibilityRule;
 		private String[] choiceReferences_type_info=new String[]{'choiceReferences',SOAP_M_URI,null,'0','-1','false'};
 		private String[] dataType_type_info=new String[]{'dataType',SOAP_M_URI,null,'0','1','false'};
 		private String[] dataTypeMappings_type_info = new String[]{'dataTypeMappings',SOAP_M_URI,null,'0','-1','false'};
@@ -2120,6 +2138,7 @@ global class MetadataService {
 		private String[] extensionName_type_info=new String[]{'extensionName',SOAP_M_URI,null,'0','1','false'};
 		private String[] fieldText_type_info=new String[]{'fieldText',SOAP_M_URI,null,'0','1','false'};
 		private String[] fieldType_type_info=new String[]{'fieldType',SOAP_M_URI,null,'1','1','false'};
+		private String[] fields_type_info = new String[]{'fields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
 		private String[] inputParameters_type_info=new String[]{'inputParameters',SOAP_M_URI,null,'0','-1','false'};
 		private String[] inputsOnNextNavToAssocScrn_type_info = new String[]{'inputsOnNextNavToAssocScrn',SOAP_M_URI,null,'0','1','false'};
@@ -2129,9 +2148,10 @@ global class MetadataService {
 		private String[] scale_type_info=new String[]{'scale',SOAP_M_URI,null,'0','1','false'};
 		private String[] storeOutputAutomatically_type_info = new String[]{'storeOutputAutomatically',SOAP_M_URI,null,'0','1','false'};
 		private String[] validationRule_type_info=new String[]{'validationRule',SOAP_M_URI,null,'0','1','false'};
+		private String[] visibilityRule_type_info = new String[]{'visibilityRule',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceReferences','dataType','dataTypeMappings', 'defaultSelectedChoiceReference','defaultValue','extensionName','fieldText','fieldType','helpText','inputParameters','inputsOnNextNavToAssocScrn', 'isRequired','isVisible','outputParameters','scale', 'storeOutputAutomatically','validationRule'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'choiceReferences','dataType','dataTypeMappings', 'defaultSelectedChoiceReference','defaultValue','extensionName','fieldText','fieldType', 'fields', 'helpText','inputParameters','inputsOnNextNavToAssocScrn', 'isRequired','isVisible','outputParameters','scale', 'storeOutputAutomatically','validationRule', 'visibilityRule'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -2382,6 +2402,7 @@ global class MetadataService {
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global virtual class FlowNode extends FlowElement {
+		global String elementSubtype;
 		global String label;
 		global Integer locationX;
 		global Integer locationY;
@@ -4284,6 +4305,7 @@ global class MetadataService {
 		global MetadataService.FlowApexPluginCall[] apexPluginCalls;
 		global Double apiVersion;
 		global MetadataService.FlowAssignment[] assignments;
+		global String associatedRecord;
 		global MetadataService.FlowChoice[] choices;
 		global Flow.FlowCollectionProcessor[] collectionProcessors;
 		global MetadataService.FlowConstant[] constants;
@@ -4319,6 +4341,7 @@ global class MetadataService {
 		global MetadataService.FlowSubflow[] subflows;
 		global MetadataService.FlowTextTemplate[] textTemplates;
 		global String timeZoneSidKey;
+		global Flow.FlowTransform[] transforms;
 		global Integer triggerOrder;
 		global MetadataService.FlowVariable[] variables;
 		global MetadataService.FlowWait[] waits;
@@ -4326,6 +4349,7 @@ global class MetadataService {
 		private String[] apexPluginCalls_type_info=new String[]{'apexPluginCalls',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apiVersion_type_info=new String[]{'apiVersion',SOAP_M_URI,null,'0','1','true'};
 		private String[] assignments_type_info=new String[]{'assignments',SOAP_M_URI,null,'0','-1','false'};
+		private String[] associatedRecord_type_info=new String[]{'associatedRecord',SOAP_M_URI,null,'0','1','false'};
 		private String[] choices_type_info=new String[]{'choices',SOAP_M_URI,null,'0','-1','false'};
 		private String[] collectionProcessors_type_info=new String[]{'collectionProcessors',SOAP_M_URI,null,'0','-1','false'};
 		private String[] constants_type_info=new String[]{'constants',SOAP_M_URI,null,'0','-1','false'};
@@ -4366,7 +4390,7 @@ global class MetadataService {
 		private String[] waits_type_info=new String[]{'waits',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'fullName', 'actionCalls','apexPluginCalls', 'apiVersion','assignments','choices', 'collectionProcessors','constants','decisions','description',
+		private String[] field_order_type_info=new String[]{'fullName', 'actionCalls','apexPluginCalls', 'apiVersion','assignments','associatedRecord', 'choices', 'collectionProcessors','constants','decisions','description',
 		'dynamicChoiceSets', 'environments','formulas','interviewLabel', 'isAdditionalPermissionRequiredToRun', 'isOverridable', 'isTemplate','label','loops', 'migratedFromWorkflowRuleName', 
 		'orchestratedStages', 'overriddenFlow', 'processMetadataValues','processType',
 		'recordCreates','recordDeletes','recordLookups', 'recordRollbacks','recordUpdates', 'runInMode','screens', 'sourceTemplate','stages', 'start', 'startElementReference',  'status',
@@ -5203,16 +5227,22 @@ global class MetadataService {
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class FlowScreenTranslation {
+		global String backButtonLabel;
 		global MetadataService.FlowScreenFieldTranslation[] fields;
 		global String helpText;
 		global String name;
+		global String nextOrFinishButtonLabel;
+        global String pauseButtonLabel;
 		global String pausedText;
+		private String[] backButtonLabel_type_info = new String[]{'backButtonLabel',SOAP_M_URI,null,'0','1','false'};
 		private String[] fields_type_info=new String[]{'fields',SOAP_M_URI,null,'0','-1','false'};
 		private String[] helpText_type_info=new String[]{'helpText',SOAP_M_URI,null,'0','1','false'};
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'1','1','false'};
+		private String[] nextOrFinishButtonLabel_type_info = new String[]{'nextOrFinishButtonLabel',SOAP_M_URI,null,'0','1','false'};
+        private String[] pauseButtonLabel_type_info = new String[]{'pauseButtonLabel',SOAP_M_URI,null,'0','1','false'};
 		private String[] pausedText_type_info=new String[]{'pausedText',SOAP_M_URI,null,'0','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
-		private String[] field_order_type_info=new String[]{'fields','helpText','name','pausedText'};
+		private String[] field_order_type_info=new String[]{'backButtonLabel', 'fields','helpText','name', 'nextOrFinishButtonLabel', 'pauseButtonLabel','pausedText'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -8115,11 +8145,13 @@ global class MetadataService {
 		global String name;
 		private String[] description_type_info=new String[]{'description',SOAP_M_URI,null,'0','1','false'};
 		private String[] name_type_info=new String[]{'name',SOAP_M_URI,null,'1','1','false'};
+		global Boolean isViewedAsPlainText;
 		global String text;
+		private String[] isViewedAsPlainText_type_info = new String[]{'isViewedAsPlainText',SOAP_M_URI,null,'0','1','false'};
 		private String[] text_type_info=new String[]{'text',SOAP_M_URI,null,'1','1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'text'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name', 'isViewedAsPlainText', 'text'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -12808,12 +12840,16 @@ global class MetadataService {
 		global String fullName;
 		global String label;
 		global MetadataService.FlowScreenTranslation[] screens;
+		global Flow.FlowStageTranslation[] stages;
+        global Flow.FlowTextTemplateTranslation[] textTemplates;
 		private String[] choices_type_info=new String[]{'choices',SOAP_M_URI,null,'0','-1','false'};
 		private String[] fullName_type_info=new String[]{'fullName',SOAP_M_URI,null,'1','1','false'};
 		private String[] label_type_info=new String[]{'label',SOAP_M_URI,null,'0','1','false'};
 		private String[] screens_type_info=new String[]{'screens',SOAP_M_URI,null,'0','-1','false'};
+		private String[] stages_type_info = new String[]{'stages',SOAP_M_URI,null,'0','-1','false'};
+		private String[] textTemplates_type_info = new String[]{'textTemplates',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
-		private String[] field_order_type_info=new String[]{'choices','fullName','label','screens'};
+		private String[] field_order_type_info=new String[]{'choices','fullName','label','screens', 'stages','textTemplates'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -13070,14 +13106,16 @@ global class MetadataService {
 		global MetadataService.FlowConnector defaultConnector;
 		global String defaultConnectorLabel;
 		global MetadataService.FlowConnector faultConnector;
+		global String timeZoneId;
 		global MetadataService.FlowWaitEvent[] waitEvents;
 		private String[] defaultConnector_type_info=new String[]{'defaultConnector',SOAP_M_URI,null,'0','1','false'};
 		private String[] defaultConnectorLabel_type_info=new String[]{'defaultConnectorLabel',SOAP_M_URI,null,'1','1','false'};
 		private String[] faultConnector_type_info=new String[]{'faultConnector',SOAP_M_URI,null,'0','1','false'};
+		private String[] timeZoneId_type_info = new String[]{'timeZoneId',SOAP_M_URI,null,'0','1','false'};
 		private String[] waitEvents_type_info=new String[]{'waitEvents',SOAP_M_URI,null,'0','-1','false'};
 		private String[] apex_schema_type_info=new String[]{SOAP_M_URI,'true','false'};
 		private String[] type_att_info=new String[]{'xsi:type'};
-		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'defaultConnector','defaultConnectorLabel','faultConnector','waitEvents'};
+		private String[] field_order_type_info=new String[]{'processMetadataValues','description','name','label','locationX','locationY', 'defaultConnector','defaultConnectorLabel','faultConnector', 'timeZoneId', 'waitEvents'};
 	}
 
     @JsonAccess(serializable='always' deserializable = 'always')
@@ -13824,11 +13862,11 @@ global class MetadataService {
 		global MetadataService.PicklistValue[] picklistValues;
 		global Boolean restrictedPicklist;
 		global Boolean sorted;
-		private String[] controllingField_type_info=new String[]{'controllingField','http://soap.sforce.com/2006/04/metadata',null,'0','1','false'};
-		private String[] picklistValues_type_info=new String[]{'picklistValues','http://soap.sforce.com/2006/04/metadata',null,'0','-1','false'};
-		private String[] restrictedPicklist_type_info=new String[]{'restrictedPicklist','http://soap.sforce.com/2006/04/metadata',null,'0','1','false'};
-		private String[] sorted_type_info=new String[]{'sorted','http://soap.sforce.com/2006/04/metadata',null,'1','1','false'};
-		private String[] apex_schema_type_info=new String[]{'http://soap.sforce.com/2006/04/metadata','true','false'};
+		private String[] controllingField_type_info=new String[]{'controllingField',MetadataService.SOAP_M_URI,null,'0','1','false'};
+		private String[] picklistValues_type_info=new String[]{'picklistValues',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+		private String[] restrictedPicklist_type_info=new String[]{'restrictedPicklist',MetadataService.SOAP_M_URI,null,'0','1','false'};
+		private String[] sorted_type_info=new String[]{'sorted',MetadataService.SOAP_M_URI,null,'1','1','false'};
+		private String[] apex_schema_type_info=new String[]{MetadataService.SOAP_M_URI,'true','false'};
 		private String[] field_order_type_info=new String[]{'controllingField','picklistValues','restrictedPicklist','sorted'};
 	}
 
@@ -15324,7 +15362,7 @@ global class MetadataService {
 
     @JsonAccess(serializable='always' deserializable = 'always')
 	global class MetadataPort {
-		global String endpoint_x=URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/55.0';
+		global String endpoint_x=URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/57.0';
 		global Map<String,String> inputHttpHeaders_x;
 		global Map<String,String> outputHttpHeaders_x;
 		global String clientCertName_x;

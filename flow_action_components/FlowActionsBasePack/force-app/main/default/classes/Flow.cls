@@ -292,11 +292,280 @@ global class Flow{
     @JsonAccess(serializable='always' deserializable = 'always')
     global class FlowDataTypeMapping {
         global String type='FlowDataTypeMapping';
-        public String typeName;
-        public String typeValue;
+        global String typeName;
+        global String typeValue;
         private String[] typeName_type_info = new String[]{'typeName',MetadataService.SOAP_M_URI,null,'1','1','false'};
         private String[] typeValue_type_info = new String[]{'typeValue',MetadataService.SOAP_M_URI,null,'1','1','false'};
         private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
         private String[] field_order_type_info = new String[]{'typeName','typeValue'};
+    }
+
+    global class FlowTransform {
+        global String type='FlowTransform';
+        global String apexClass;
+        global MetadataService.FlowConnector connector;
+        global String dataType;
+        global Boolean isCollection;
+        global String objectType;
+        global Integer scale;
+        global FlowTransformValue[] transformValues;
+        private String[] apexClass_type_info = new String[]{'apexClass',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] connector_type_info = new String[]{'connector',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] dataType_type_info = new String[]{'dataType',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isCollection_type_info = new String[]{'isCollection',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] objectType_type_info = new String[]{'objectType',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] scale_type_info = new String[]{'scale',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] transformValues_type_info = new String[]{'transformValues',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'apexClass','connector','dataType','isCollection','objectType','scale','transformValues'};
+    }
+
+    global class FlowTransformValue {
+        global String type='FlowTransformValue';
+        global String inputReference;
+        global FlowTransformValueAction[] transformValueActions;
+        private String[] inputReference_type_info = new String[]{'inputReference',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] transformValueActions_type_info = new String[]{'transformValueActions',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'inputReference','transformValueActions'};
+    }
+
+    global class FlowTransformValueAction {
+        global String type='FlowTransformValueAction';
+        global String outputFieldApiName;
+        global String transformType;
+        global MetadataService.FlowElementReferenceOrValue value;
+        private String[] outputFieldApiName_type_info = new String[]{'outputFieldApiName',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] transformType_type_info = new String[]{'transformType',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] value_type_info = new String[]{'value',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'outputFieldApiName','transformType','value'};
+    }
+
+    global class FlowInputParameterTranslation {
+        global String type='FlowInputParameterTranslation';
+        global String name;
+        global FlowFerovTranslation value;
+        private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] value_type_info = new String[]{'value',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'name','value'};
+    }
+
+    global class FlowFerovTranslation {
+        global String type='FlowFerovTranslation';
+        global FlowComplexLiteralTranslation[] complexValues;
+        global String stringValue;
+        private String[] complexValues_type_info = new String[]{'complexValues',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] stringValue_type_info = new String[]{'stringValue',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'complexValues','stringValue'};
+    }
+
+    global class FlowComplexLiteralTranslation {
+        global String type='FlowComplexLiteralTranslation';
+        global FlowComplexLiteralTranslation[] complexValues;
+        global String customAspectKey;
+        global String value;
+        private String[] customAspectKey_type_info = new String[]{'customAspectKey',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] value_type_info = new String[]{'value',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'customAspectKey','value'};
+    }
+
+    global class FlowVisibilityRule {
+        global String type='FlowVisibilityRule';
+        global String conditionLogic;
+        global MetadataService.FlowCondition[] conditions;
+        private String[] conditionLogic_type_info = new String[]{'conditionLogic',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] conditions_type_info = new String[]{'conditions',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'conditionLogic','conditions'};
+    }
+
+    global class FlowTextTemplateTranslation {
+        global String type='FlowTextTemplateTranslation';
+        global String name;
+        global String text;
+        private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] text_type_info = new String[]{'text',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'name','text'};
+    }
+
+    global class FlowTestPoint {
+        global String type='FlowTestPoint';
+        global FlowTestAssertion[] assertions;
+        global String elementApiName;
+        global FlowTestParameter[] parameters;
+        private String[] assertions_type_info = new String[]{'assertions',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] elementApiName_type_info = new String[]{'elementApiName',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] parameters_type_info = new String[]{'parameters',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'assertions','elementApiName','parameters'};
+    }
+
+    global class FlowTestAssertion {
+        global String type='FlowTestAssertion';
+        global FlowTestCondition[] conditions;
+        global String errorMessage;
+        private String[] conditions_type_info = new String[]{'conditions',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] errorMessage_type_info = new String[]{'errorMessage',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'conditions','errorMessage'};
+    }
+
+    global class FlowTestParameter {
+        global String type='FlowTestParameter';
+        global String leftValueReference;
+        global String type_x;
+        global FlowTestReferenceOrValue value;
+        private String[] leftValueReference_type_info = new String[]{'leftValueReference',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] type_x_type_info = new String[]{'type',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] value_type_info = new String[]{'value',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'leftValueReference','type_x','value'};
+    }
+
+    global class FlowTestCondition {
+        global String type='FlowTestCondition';
+        global String leftValueReference;
+        global String operator;
+        global FlowTestReferenceOrValue rightValue;
+        private String[] leftValueReference_type_info = new String[]{'leftValueReference',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] operator_type_info = new String[]{'operator',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] rightValue_type_info = new String[]{'rightValue',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'leftValueReference','operator','rightValue'};
+    }
+
+    global class FlowTestReferenceOrValue {
+        global String type='FlowTestReferenceOrValue';
+        global Boolean booleanValue;
+        global DateTime dateTimeValue;
+        global Date dateValue;
+        global Double numberValue;
+        global String sobjectValue;
+        global String stringValue;
+        private String[] booleanValue_type_info = new String[]{'booleanValue',MetadataService.SOAP_M_URI,null,'0','1','true'};
+        private String[] dateTimeValue_type_info = new String[]{'dateTimeValue',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] dateValue_type_info = new String[]{'dateValue',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] numberValue_type_info = new String[]{'numberValue',MetadataService.SOAP_M_URI,null,'0','1','true'};
+        private String[] sobjectValue_type_info = new String[]{'sobjectValue',MetadataService.SOAP_M_URI,null,'0','1','true'};
+        private String[] stringValue_type_info = new String[]{'stringValue',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'booleanValue','dateTimeValue','dateValue','numberValue','sobjectValue','stringValue'};
+    }
+
+    global class FlowCoverageResult {
+        global String type='FlowCoverageResult';
+        global String[] elementsNotCovered;
+        global String flowId;
+        global String flowName;
+        global String flowNamespace;
+        global Integer numElements;
+        global Integer numElementsNotCovered;
+        global String processType;
+        private String[] elementsNotCovered_type_info = new String[]{'elementsNotCovered',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] flowId_type_info = new String[]{'flowId',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] flowName_type_info = new String[]{'flowName',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] flowNamespace_type_info = new String[]{'flowNamespace',MetadataService.SOAP_M_URI,null,'1','1','true'};
+        private String[] numElements_type_info = new String[]{'numElements',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] numElementsNotCovered_type_info = new String[]{'numElementsNotCovered',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] processType_type_info = new String[]{'processType',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'elementsNotCovered','flowId','flowName','flowNamespace','numElements','numElementsNotCovered','processType'};
+    }
+
+    global class FlowStageTranslation {
+        global String type='FlowStageTranslation';
+        global String label;
+        global String name;
+        private String[] label_type_info = new String[]{'label',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] name_type_info = new String[]{'name',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'label','name'};
+    }
+
+    global class FlowSettings {
+        global String type='FlowSettings';
+        global Boolean canDebugFlowAsAnotherUser;
+        global Boolean doesEnforceApexCpuTimeLimit;
+        global Boolean doesFormulaEnforceDataAccess;
+        global Boolean doesFormulaGenerateHtmlOutput;
+        global Boolean enableFlowBREncodedFixEnabled;
+        global Boolean enableFlowCustomPropertyEditor;
+        global Boolean enableFlowDeployAsActiveEnabled;
+        global Boolean enableFlowFieldFilterEnabled;
+        global Boolean enableFlowFormulasFixEnabled;
+        global Boolean enableFlowInterviewSharingEnabled;
+        global Boolean enableFlowNullPreviousValueFix;
+        global Boolean enableFlowPauseEnabled;
+        global Boolean enableFlowReactiveScreens;
+        global Boolean enableFlowUseApexExceptionEmail;
+        global Boolean enableFlowViaRestUsesUserCtxt;
+        global Boolean enableLightningRuntimeEnabled;
+        global Boolean isAccessToInvokedApexRequired;
+        global Boolean isApexPluginAccessModifierRespected;
+        global Boolean isEnhancedFlowListViewVisible;
+        global Boolean isFlowApexContextRetired;
+        global Boolean isFlowBlockAccessToSessionIDEnabled;
+        global Boolean isManageFlowRequiredForAutomationCharts;
+        global Boolean isSupportRollbackOnErrorForApexInvocableActionsEnabled;
+        global Boolean isTimeResumedInSameRunContext;
+        private String[] canDebugFlowAsAnotherUser_type_info = new String[]{'canDebugFlowAsAnotherUser',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] doesEnforceApexCpuTimeLimit_type_info = new String[]{'doesEnforceApexCpuTimeLimit',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] doesFormulaEnforceDataAccess_type_info = new String[]{'doesFormulaEnforceDataAccess',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] doesFormulaGenerateHtmlOutput_type_info = new String[]{'doesFormulaGenerateHtmlOutput',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowBREncodedFixEnabled_type_info = new String[]{'enableFlowBREncodedFixEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowCustomPropertyEditor_type_info = new String[]{'enableFlowCustomPropertyEditor',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowDeployAsActiveEnabled_type_info = new String[]{'enableFlowDeployAsActiveEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowFieldFilterEnabled_type_info = new String[]{'enableFlowFieldFilterEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowFormulasFixEnabled_type_info = new String[]{'enableFlowFormulasFixEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowInterviewSharingEnabled_type_info = new String[]{'enableFlowInterviewSharingEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowNullPreviousValueFix_type_info = new String[]{'enableFlowNullPreviousValueFix',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowPauseEnabled_type_info = new String[]{'enableFlowPauseEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowReactiveScreens_type_info = new String[]{'enableFlowReactiveScreens',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowUseApexExceptionEmail_type_info = new String[]{'enableFlowUseApexExceptionEmail',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableFlowViaRestUsesUserCtxt_type_info = new String[]{'enableFlowViaRestUsesUserCtxt',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] enableLightningRuntimeEnabled_type_info = new String[]{'enableLightningRuntimeEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isAccessToInvokedApexRequired_type_info = new String[]{'isAccessToInvokedApexRequired',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isApexPluginAccessModifierRespected_type_info = new String[]{'isApexPluginAccessModifierRespected',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isEnhancedFlowListViewVisible_type_info = new String[]{'isEnhancedFlowListViewVisible',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isFlowApexContextRetired_type_info = new String[]{'isFlowApexContextRetired',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isFlowBlockAccessToSessionIDEnabled_type_info = new String[]{'isFlowBlockAccessToSessionIDEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isManageFlowRequiredForAutomationCharts_type_info = new String[]{'isManageFlowRequiredForAutomationCharts',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isSupportRollbackOnErrorForApexInvocableActionsEnabled_type_info = new String[]{'isSupportRollbackOnErrorForApexInvocableActionsEnabled',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] isTimeResumedInSameRunContext_type_info = new String[]{'isTimeResumedInSameRunContext',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'canDebugFlowAsAnotherUser','doesEnforceApexCpuTimeLimit','doesFormulaEnforceDataAccess','doesFormulaGenerateHtmlOutput','enableFlowBREncodedFixEnabled','enableFlowCustomPropertyEditor','enableFlowDeployAsActiveEnabled','enableFlowFieldFilterEnabled','enableFlowFormulasFixEnabled','enableFlowInterviewSharingEnabled','enableFlowNullPreviousValueFix','enableFlowPauseEnabled','enableFlowReactiveScreens','enableFlowUseApexExceptionEmail','enableFlowViaRestUsesUserCtxt','enableLightningRuntimeEnabled','isAccessToInvokedApexRequired','isApexPluginAccessModifierRespected','isEnhancedFlowListViewVisible','isFlowApexContextRetired','isFlowBlockAccessToSessionIDEnabled','isManageFlowRequiredForAutomationCharts','isSupportRollbackOnErrorForApexInvocableActionsEnabled','isTimeResumedInSameRunContext'};
+    }
+
+    global class FlowCoverageWarning {
+        global String type='FlowCoverageWarning';
+        global String flowId;
+        global String flowName;
+        global String flowNamespace;
+        global String message;
+        private String[] flowId_type_info = new String[]{'flowId',MetadataService.SOAP_M_URI,null,'1','1','true'};
+        private String[] flowName_type_info = new String[]{'flowName',MetadataService.SOAP_M_URI,null,'1','1','true'};
+        private String[] flowNamespace_type_info = new String[]{'flowNamespace',MetadataService.SOAP_M_URI,null,'1','1','true'};
+        private String[] message_type_info = new String[]{'message',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'flowId','flowName','flowNamespace','message'};
+    }
+
+    global class FlowTest {
+        global String type='FlowTest';
+        global String description;
+        global String flowApiName;
+        global String label;
+        global FlowTestPoint[] testPoints;
+        private String[] description_type_info = new String[]{'description',MetadataService.SOAP_M_URI,null,'0','1','false'};
+        private String[] flowApiName_type_info = new String[]{'flowApiName',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] label_type_info = new String[]{'label',MetadataService.SOAP_M_URI,null,'1','1','false'};
+        private String[] testPoints_type_info = new String[]{'testPoints',MetadataService.SOAP_M_URI,null,'0','-1','false'};
+        private String[] apex_schema_type_info = new String[]{MetadataService.SOAP_M_URI,'true','false'};
+        private String[] field_order_type_info = new String[]{'description','flowApiName','label','testPoints'};
     }
 }

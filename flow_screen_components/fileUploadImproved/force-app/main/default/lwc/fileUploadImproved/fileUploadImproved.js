@@ -399,9 +399,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     communicateEvent(docIds, versIds, fileNames, objFiles){
-        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
-        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
-        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', [...docIds]));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', [...versIds]));
+        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', [...fileNames]));
 
         sessionStorage.setItem(this.sessionKey, JSON.stringify(objFiles));
     }

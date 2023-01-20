@@ -109,6 +109,7 @@ export default class QuickChoiceCpe extends LightningElement {
     }
     
     @api get automaticOutputVariables () {
+        console.log('automaticvars: ' + JSON.stringify(this._automaticOutputVariables));
         return this._automaticOutputVariables;
     }
 
@@ -158,6 +159,7 @@ export default class QuickChoiceCpe extends LightningElement {
     }
 
     initializeValues(value) {
+        console.log('automaticvars init: ' + JSON.stringify(this._automaticOutputVariables));
         if (this._values && this._values.length) {
 
             this._values.forEach(curInputParam => {

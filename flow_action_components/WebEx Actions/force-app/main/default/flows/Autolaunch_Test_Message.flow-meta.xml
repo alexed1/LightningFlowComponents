@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Post_update_to_WebEx</name>
+        <label>Post update to WebEx</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <actionName>PostMessageToWebEx</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>roomId</name>
+            <value>
+                <stringValue>eccef8c0-e1b5-11ec-a08d-6ba543357643</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <stringValue>test message!</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>token</name>
+            <value>
+                <stringValue>Y2M3NDU4MjAtZGQ4NS00MjFhLTgzMGMtMjcyZDQ1NzhiMzdlOWM2MjA4ODMtZWEw_P0A1_7a51a535-4b76-47d9-a7cb-0f8cb7aec6ce</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <interviewLabel>Autolaunch Test Message {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Autolaunch Test Message</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Post_update_to_WebEx</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+</Flow>

@@ -3,7 +3,7 @@ global with sharing class MetadataUtils {
         return getFlowMetadataFromNameList(new List<String>{flowName});
     }
 
-    global static List<MetadataService.Flow > getFlowMetadataFromNameList(List<String> flowNameList) {
+    global static List<MetadataService.Flow> getFlowMetadataFromNameList(List<String> flowNameList) {
         
         MetadataService.MetadataPort service = MetadataService.createService();
 

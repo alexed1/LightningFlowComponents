@@ -1,21 +1,21 @@
 @isTest
-public with sharing class mc_GetTimeZone_Test {
+public with sharing class GetTimeZone_Test {
     @isTest
-    private static void mc_GetTimeZone_Test_Success(){
+    private static void GetTimeZone_Test_Success(){
         // 32.704
         // -97.285
         // OK
         // America/Chicago
-        mc_GetTimeZone.Request rq = new mc_GetTimeZone.Request();
+        GetTimeZone.Request rq = new GetTimeZone.Request();
         rq.latitude = '32.704';
         rq.longitude = '-97.285';
         rq.googleApiKey = 'AIzaSyDZ2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z1Z';
-        list<mc_GetTimeZone.request> rqLst = new list<mc_GetTimeZone.request>();
+        list<GetTimeZone.request> rqLst = new list<GetTimeZone.request>();
         rqLst.add(rq);
         
         test.startTest();
         test.setMock(httpCalloutMock.class, new mockSuccess());
-        mc_GetTimeZone.mc_GetTimeZone(rqLst);
+        GetTimeZone.GetTimeZone(rqLst);
         test.stopTest();
     }
     public class mockSuccess implements httpCalloutMock {
@@ -37,21 +37,21 @@ public with sharing class mc_GetTimeZone_Test {
     }
 
     @isTest
-    private static void mc_GetTimeZone_Test_Fail(){
+    private static void GetTimeZone_Test_Fail(){
         // 32.704
         // -97.285
         // OK
         // America/Chicago
-        mc_GetTimeZone.Request rq = new mc_GetTimeZone.Request();
+        GetTimeZone.Request rq = new GetTimeZone.Request();
         rq.latitude = '32.704';
         rq.longitude = '-97.285';
         rq.googleApiKey = 'AIzaSyDZ2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z2Z1Z1Z';
-        list<mc_GetTimeZone.request> rqLst = new list<mc_GetTimeZone.request>();
+        list<GetTimeZone.request> rqLst = new list<GetTimeZone.request>();
         rqLst.add(rq);
         
         test.startTest();
         test.setMock(httpCalloutMock.class, new mockFail());
-        mc_GetTimeZone.mc_GetTimeZone(rqLst);
+        GetTimeZone.GetTimeZone(rqLst);
         test.stopTest();
     }
     public class mockFail implements httpCalloutMock {

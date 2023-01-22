@@ -1,6 +1,6 @@
-public with sharing class mc_GetTimeZone {
+public with sharing class GetTimeZone {
     @InvocableMethod(label='Get Time Zone')
-    public static List<Results>  mc_GetTimeZone(List<Request> requests) {
+    public static List<Results>  GetTimeZone(List<Request> requests) {
         // Set Response Wrapper
         List<Results> responseWrapper = new List<Results>();
         Results response = new Results();

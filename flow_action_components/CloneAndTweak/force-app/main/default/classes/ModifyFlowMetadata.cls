@@ -10,7 +10,7 @@ global with sharing class ModifyFlowMetadata {
         for (Request curRequest: requestList ){
             try{
                 Result curResult = new Result();
-                usf3.MetadataService.Flow flow = Test.isRunningTest() ? ModifyFlowMetadataTest.genereateFlowForTest() : usf3.MetadataUtils.GetFlowMetadata(curRequest.flowName);
+                usf3.MetadataService.Flow flow = Test.isRunningTest() ? ModifyFlowMetadataTest.genereateFlowForTest() : usf3.MetadataUtils.getFlowMetadataFromName(curRequest.flowName)[0];
 
                 if(String.isNotEmpty(curRequest.entityPath1)) {
                     modifyFlow(flow, curRequest.entityPath1, curRequest.value1);

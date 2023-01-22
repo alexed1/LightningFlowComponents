@@ -15724,13 +15724,12 @@ global class MetadataService {
 			}
 		    handleErrors( saveResult.success, saveResult.fullName, saveResult.errors);
 			
-					}
+		}
 
 		global static void handleErrors(Boolean success, String fullName, MetadataService.Error[] errors) {
 
 			// Construct error message and throw an exception
-			if(errors!=null)
-			{
+			if(errors!=null){
 				List<String> messages = new List<String>();
 				messages.add(
 					(errors.size()==1 ? 'Error ' : 'Errors ') +
@@ -15740,11 +15739,13 @@ global class MetadataService {
 						error.message + ' (' + error.statusCode + ').' +
 						( error.fields!=null && error.fields.size()>0 ?
 							' Fields ' + String.join(error.fields, ',') + '.' : '' ) );
-				if(messages.size()>0)
+				if(messages.size()>0){
 					throw new MetadataServiceExamplesException(String.join(messages, ' '));
+				}
 			}
-			if(!success)
+			if(!success){
 				throw new MetadataService.MetadataServiceExamplesException('Request failed with no specified error.');
+			}
 
 		}
 	

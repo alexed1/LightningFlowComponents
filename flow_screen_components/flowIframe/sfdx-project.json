@@ -2,10 +2,17 @@
   "packageDirectories": [
     {
       "path": "force-app",
-      "default": true
+      "default": true,
+      "package": "flowIframe",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT"
     }
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0"
+  "sourceApiVersion": "56.0",
+  "packageAliases": {
+    "flowIframe": "0Ho5G000000CahZSAS",
+    "flowIframe@1.1.0": "04t5G0000043xtyQAA"
+  }
 }

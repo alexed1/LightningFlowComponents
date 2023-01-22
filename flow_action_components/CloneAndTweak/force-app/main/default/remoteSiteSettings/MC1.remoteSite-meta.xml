@@ -2,5 +2,5 @@
 <RemoteSiteSetting xmlns="http://soap.sforce.com/2006/04/metadata">
     <disableProtocolSecurity>false</disableProtocolSecurity>
     <isActive>true</isActive>
-    <url>https://app-saas-8440-dev-ed--c.scratch.vf.force.com</url>
+    <url>https://mcgs269vcy2ztdsfpt5bjwv1mfl1.auth.marketingcloudapis.com</url>
 </RemoteSiteSetting>

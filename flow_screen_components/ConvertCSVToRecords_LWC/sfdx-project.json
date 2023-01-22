@@ -1,30 +1,31 @@
 {
-    "packageDirectories": [
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "package": "ConvertCSVToRecords_LWC",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "default": true,
+      "versionDescription": "",
+      "dependencies": [
         {
-            "path": "force-app",
-            "package": "ConvertCSVToRecords_LWC",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
-            "default": true,
-            "versionDescription": "",
-            "dependencies": [
-                {
-                    "subscriberPackageVersionId": "04t8b000000mKnoAAE"
-                },
-                {
-                    "subscriberPackageVersionId": "04t5G000003rUvVQAU"
-                }
-            ]
+          "subscriberPackageVersionId": "04t8b000000mKnoAAE"
+        },
+        {
+          "subscriberPackageVersionId": "04t5G000003rUvVQAU"
         }
-    ],
-    "name": "ConvertCSVToRecords_LWC",
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "55.0",
-    "packageAliases": {
-        "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE",
-        "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
-        "ConvertCSVToRecords_LWC": "0Ho5G0000008OcySAE",
-        "ConvertCSVToRecords_LWC@1.0.0-0": "04t5G0000043xsWQAQ"
+      ]
     }
+  ],
+  "name": "ConvertCSVToRecords_LWC",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "FlowActionsBasePack@3.6.0-0": "04t8b000000mKnoAAE",
+    "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
+    "ConvertCSVToRecords_LWC": "0Ho5G0000008OcySAE",
+    "ConvertCSVToRecords_LWC@1.0.0-0": "04t5G0000043xsWQAQ",
+    "ConvertCSVToRecords_LWC@1.0.1": "04t5G0000043xtPQAQ"
+  }
 }

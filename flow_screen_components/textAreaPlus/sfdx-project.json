@@ -1,12 +1,30 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "textAreaPlus",
+            "versionName": "versionName",
+            "versionNumber": "0.1.0.NEXT",
+            "dependencies": [
+                {
+                    "package": "FlowActionsBasePack@3.5.0-0"
+                },
+                {
+                    "package": "FlowScreenComponentsBasePack@3.0.6-0"
+                }
+            ]
+        }
+    ],
+    "name": "textAreaPlus",
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "52.0",
+    "packageAliases": {
+        "textAreaPlus": "0Ho5G000000k9uoSAA",
+        "FlowActionsBasePack@3.5.0-0": "04t8b000000mKnjAAE",
+        "FlowScreenComponentsBasePack@3.0.6-0": "04t5G000003rUvVQAU",
+        "textAreaPlus@1.5.2-0": "04t5G0000043wsvQAA",
+        "textAreaPlus@1.6.0-0": "04t5G0000043xrxQAA"
     }
-  ],
-  "name": "textAreaPlus",
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "52.0"
 }

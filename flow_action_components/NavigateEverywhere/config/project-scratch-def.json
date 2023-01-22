@@ -1,5 +1,13 @@
 {
   "orgName": "aedelstein company",
   "edition": "Developer",
-  "features": []
+  "features": [
+    "Communities"
+  ],
+  "settings": {
+    "communitiesSettings": {
+      "enableNetworksEnabled": true,
+      "enableOotbProfExtUserOpsEnable": true
+    }
+  }
 }

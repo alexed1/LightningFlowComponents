@@ -10,7 +10,7 @@
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0",
+    "sourceApiVersion": "56.0",
     "packageAliases": {
         "NavigateEverywhereAction": "0Hof4000000XZJiCAO",
         "NavigateEverywhereAction@1.0.1-0": "04tf4000004PsrUAAS",

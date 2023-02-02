@@ -1,0 +1,19 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "MC_Combobox",
+      "versionName": "ver 1.0",
+      "versionNumber": "0.2.0.NEXT",
+      "versionDescription": ""
+    }
+  ],
+  "name": "fsc_combobox",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "MC_Combobox": "0Ho5e0000010wNcCAI"
+  }
+}

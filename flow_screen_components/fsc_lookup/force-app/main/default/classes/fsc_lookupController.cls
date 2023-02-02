@@ -255,4 +255,38 @@ public without sharing class fsc_lookupController {
         }
         return u;
     }
+
+    // Get the entire record for a given object and id(s)
+    @AuraEnabled(cacheable=true)
+    public static List<SObject> getRecordDetail(String objectName, String recordIds) {
+        List<SObject> returnRecords = new List<SObject>();
+        System.debug('getRecordDetail: '+ objectName +', '+ recordIds);
+        // if recordIds is a single id, wrap it in quotes
+        // if there are multiple ids, split them into a list and wrap each one in quotes
+        if (recordIds.contains(',')) {
+            List<String> recordIdList = splitAndTrim(recordIds);
+            recordIds = '';
+            for (String recordId : recordIdList) {
+                recordIds += '\''+ recordId +'\',';
+            }
+            recordIds = recordIds.substringBeforeLast(',');
+        } else {
+            recordIds = '\''+ recordIds +'\'';
+        }
+
+        // Build the query from Schema.describeSObjects 
+        // From Schema.DescribeSObjectResult get the fields
+        String query = 'SELECT ';
+        SObjectType describeObject = Schema.getGlobalDescribe().get(objectName);
+        Map<String,Schema.SObjectField> mfields = describeObject.getDescribe().fields.getMap();
+        for (String field : mfields.keySet()) {
+            query += field +',';
+        }
+        query = query.substringBeforeLast(',');
+        query += ' FROM '+ objectName +' WHERE Id IN ('+ recordIds +')';
+        
+        System.debug('query: '+ query);
+        returnRecords = Database.query(query);
+        return returnRecords;
+    }
 }

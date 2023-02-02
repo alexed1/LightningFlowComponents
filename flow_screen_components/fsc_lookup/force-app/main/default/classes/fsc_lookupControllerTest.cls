@@ -55,4 +55,26 @@ public with sharing class fsc_lookupControllerTest {
     private static void getRecordsWhereClause() {
         fsc_lookupController.getRecords('Account','Name',5,'Name LIKE \'%Test%\'');
     }
+
+    @isTest
+    private static void getRecordDetailTest() {
+        String accts = '';
+        // Create two test data
+        Account a = new Account(Name = 'Test');
+        insert a;
+        accts = a.Id;
+        a = new Account(Name = 'Test2');
+        insert a;
+        accts += ',' + a.Id;
+
+
+        fsc_lookupController.getRecordDetail('Account',accts);
+    }
+
+    @isTest
+    private static void searchTest2() {
+        // Create test data
+        String whereClause = 'Name = \'Test\'';
+        fsc_lookupController.search('test','Account','Name,Phone,Type,Account.Owner.FirstName','Id,Name,Type',5,whereClause,'Name DESC');
+    }
 }

@@ -1,0 +1,417 @@
+<template>
+    <!-- Get Object -->
+    <c-fsc_pick-object-and-field-3 
+        id="objectName"
+        object-label={inputValues.objectName.label}
+        field-label={inputValues.fieldsToDisplay.label}
+        object-type={inputValues.objectName.value}
+        hide-field-picklist=false
+        onfieldselected={handleDynamicTypeMapping}
+        builder-context={_builderContext}
+        is-allow-all="true"
+        required
+    ></c-fsc_pick-object-and-field-3 >
+
+    <!-- Radio Buttons ( SOQL Query ) ( Flow Resources ) -->
+    <!-- Controls if the Advanced Configuration is show or the SOQL Builder -->
+    <lightning-radio-group name="dataSource"
+            label={inputValues.dataSource.label}
+            options={dataSourceOptions}
+            value={inputValues.dataSource.value}
+            type="button"
+            onchange={showAdvanceConfigurationHandler}>
+    </lightning-radio-group>
+
+    <!-- Advanced Component Configuration -->
+    <!-- Even when you use SOQL builder these still get filled in -->
+    <template if:true={showAdvanceConfiguration}>
+        <!-- Fields to Display -->
+        <c-fsc_field-selector-3
+        id="fieldsToDisplay"
+        name="fieldsToDisplay"
+        object-name={inputValues.objectName.value}
+        label={inputValues.fieldsToDisplay.label}
+        selected-fields={inputValues.fieldsToDisplay.value}
+        required
+        allow-multiselect=true
+        onfieldupdate={handleValueChange}>
+        </c-fsc_field-selector-3>
+
+        <!-- Fields to Search -->
+        <c-fsc_field-selector-3
+            id="fieldsToSearch"
+            name="fieldsToSearch"
+            object-name={inputValues.objectName.value}
+            label={inputValues.fieldsToSearch.label}
+            selected-fields={inputValues.fieldsToSearch.value}
+            allow-multiselect=true
+            onfieldupdate={handleValueChange}>
+        </c-fsc_field-selector-3>
+
+        <!-- WHERE CLAUSE -->
+        <c-fsc_flow-combobox 
+            name="whereClause" 
+            value={inputValues.whereClause.value}
+            builder-context-filter-type="String"
+            builder-context={_builderContext}
+            label={inputValues.whereClause.label}
+            field-level-help="The WHERE clause to use when querying for records. Use the format: FieldName = 'Value'. You can use AND and OR to combine multiple conditions. Do not include the WHERE keyword. "
+            onvaluechanged={handleValueChange}
+            automatic-output-variables={automaticOutputVariables}>
+        </c-fsc_flow-combobox>
+    </template>
+
+    <!-- Simple -->
+    <!-- Launch SOQL Query Builder -->
+    <!-- This will return the WHERE CLAUSE and any fields they want to display -->
+    <div class="slds-m-top_small slds-m-bottom_small">
+        <template if:false={showAdvanceConfiguration}>
+            <template if:false={inputValues.objectName.value}>
+                <lightning-button label="Build SOQL" icon-name="utility:lightning_extension" onclick={showModal} disabled></lightning-button>
+                <div>Select Object First</div>
+            </template>
+            <template if:true={inputValues.objectName.value}>
+                <lightning-button label="Build SOQL" icon-name="utility:lightning_extension" onclick={showModal}></lightning-button>
+            </template>
+        </template>
+    </div>
+    <template if:true={openModal}>
+        <div class="slds-modal slds-modal_large slds-fade-in-open slds-backdrop">
+            <div class="slds-modal__container">
+
+                <!-- Header Section -->
+                <div class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close"
+                        alternative-text="Close this window" size="large" variant="bare-inverse"
+                        onclick={closeModal} class="slds-modal__close">
+                    </lightning-button-icon>
+                    <div>
+                        <h1 class="slds-modal__title slds-hyphenate">Configure Advance Filter Criteria</h1>
+                    </div>
+                </div>
+
+                <!-- Body Section -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Access the LWC Directly -->
+                    <c-soql-query-builder
+                        onchange={handleSoqlQueryChange}
+                        object-type={inputValues.objectName.value}
+                        disable-object-type-selection=true
+                    ></c-soql-query-builder>
+                    <lightning-button 
+                        variant="brand" 
+                        label="Add Filter Criteria" 
+                        onclick={setFilterCriteria} 
+                        class="slds-m-left_x-small slds-float_right"
+                    ></lightning-button>
+                </div>
+
+            </div>
+        </div>
+    </template>
+
+    <!-- Label -->
+    <c-fsc_flow-combobox 
+        name="label" 
+        value={inputValues.label.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.label.label}
+        field-level-help="The label to display for the field."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+    
+    <!-- Default Value -->
+    <c-fsc_flow-combobox 
+        name="defaultValueInput" 
+        value={inputValues.defaultValueInput.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.defaultValueInput.label}
+        field-level-help="The default value. Set this value in the format of a record ID."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- Field Level Help -->
+    <c-fsc_flow-combobox 
+        name="fieldLevelHelp" 
+        value={inputValues.fieldLevelHelp.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.fieldLevelHelp.label}
+        field-level-help="The text to display when the user hovers over the field-level-help icon."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- Message When Value Missing -->
+    <c-fsc_flow-combobox 
+        name="messageWhenValueMissing" 
+        value={inputValues.messageWhenValueMissing.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.messageWhenValueMissing.label}
+        field-level-help="The text to display when the user doesn't enter a value and the field is required."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- No Match String -->
+    <c-fsc_flow-combobox 
+        name="noMatchString" 
+        value={inputValues.noMatchString.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.noMatchString.label}
+        field-level-help="The text to display when the user enters a value that doesn't match any records."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- Placeholder -->
+    <c-fsc_flow-combobox 
+        name="placeholder" 
+        value={inputValues.placeholder.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.placeholder.label}
+        field-level-help="The text to display when the field is empty, to prompt the user for a valid entry."
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- Left Icon -->
+    <c-fsc_pick-icon
+        label={inputValues.leftIconName.label}
+        icon-name={inputValues.leftIconName.value}
+        mode="combobox"
+        oniconselection={handleLeftIconChange}>
+    </c-fsc_pick-icon>
+
+    <!-- Right Icon -->
+    <c-fsc_pick-icon
+        label={inputValues.rightIconName.label}
+        icon-name={inputValues.rightIconName.value}
+        mode="combobox"
+        oniconselection={handleRightIconChange}>
+    </c-fsc_pick-icon>
+
+    <!-- Show New Record Action -->
+    <div class="slds-grid slds-grid_vertical-align-center slds-m-vertical_medium">
+        <div class="slds-col">
+            <template if:true={showFlowResource_NewRecord}>
+                <c-fsc_flow-combobox 
+                    name="placeholder" 
+                    value={inputValues.showNewRecordAction.value}
+                    builder-context-filter-type="Boolean"
+                    builder-context={_builderContext}
+                    label={inputValues.showNewRecordAction.label}
+                    field-level-help=""
+                    onvaluechanged={handleValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
+            </template>
+            <template if:false={showFlowResource_NewRecord}>
+                <!-- <lightning-radio-group 
+                    name="showNewRecordAction"
+                    label={inputValues.showNewRecordAction.label}
+                    options={showNewRecordActionOptions}
+                    value={inputValues.showNewRecordAction.value}
+                    type="button"
+                    onchange={handleValueChange}>
+                </lightning-radio-group> -->
+                <!-- <lightning-input 
+                    type="checkbox" 
+                    label={inputValues.showNewRecordAction.label}
+                    name="showNewRecordAction"
+                    value={inputValues.showNewRecordAction.value}
+                    onchange={handleValueChange}
+                ></lightning-input> -->
+                <!-- <c-fsc_flow-radio-group
+                    name="showNewRecordAction"
+                    label={inputValues.showNewRecordAction.label}
+                    options={showNewRecordActionOptions}
+                    value={inputValues.showNewRecordAction.value}
+                    onvaluechange={handleValueChange}>
+                ></c-fsc_flow-radio-group> -->
+                <c-fsc_flow-checkbox
+                    name="showNewRecordAction"
+                    label={inputValues.showNewRecordAction.label}
+                    checked={inputValues.showNewRecordAction.value}
+                    oncheckboxchanged={handleValueChange}>
+                </c-fsc_flow-checkbox>
+            </template>
+        </div>
+
+        <lightning-button-icon
+            value="showFlowResource_NewRecord"
+            class="slds-m-left_small"
+            icon-name="utility:threedots"
+            variant="outline"
+            alternative-text="Info"
+            onclick={showFlowResourceHandlerNewRecord}>
+        </lightning-button-icon>
+    </div>
+
+    <!-- Required -->
+    <div class="slds-grid slds-grid_vertical-align-center slds-m-vertical_medium">
+        <div class="slds-col">
+            <template if:true={showFlowResource_Required}>
+                <c-fsc_flow-combobox 
+                    name="placeholder" 
+                    value={inputValues.required.value}
+                    builder-context-filter-type="Boolean"
+                    builder-context={_builderContext}
+                    label={inputValues.required.label}
+                    field-level-help=""
+                    onvaluechanged={handleValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
+            </template>
+            <template if:false={showFlowResource_Required}>
+                <!-- <lightning-radio-group 
+                    name="required"
+                    label={inputValues.required.label}
+                    options={requiredOptions}
+                    value={inputValues.required.value}
+                    type="button"
+                    onchange={handleValueChange}>
+                </lightning-radio-group> -->
+                <!-- <lightning-input 
+                    type="checkbox" 
+                    label={inputValues.required.label}
+                    name="required"
+                    value={inputValues.required.value}
+                    onchange={handleValueChange}
+                    ></lightning-input> -->
+                    <c-fsc_flow-checkbox
+                        name="required"
+                        label={inputValues.required.label}
+                        checked={inputValues.required.value}
+                        oncheckboxchanged={handleValueChange}>
+                    </c-fsc_flow-checkbox>
+            </template>
+        </div>
+
+        <lightning-button-icon
+            value="showFlowResource_Required"
+            class="slds-m-left_small"
+            icon-name="utility:threedots"
+            variant="outline"
+            alternative-text="Info"
+            onclick={showFlowResourceHandlerRequired}>
+        </lightning-button-icon>
+    </div>
+
+    <!-- Allow Multi Select -->
+    <div class="slds-grid slds-grid_vertical-align-center slds-m-vertical_medium">
+        <div class="slds-col">
+            <template if:true={showFlowResource_Multi}>
+                <c-fsc_flow-combobox 
+                    name="placeholder" 
+                    value={inputValues.allowMultiselect.value}
+                    builder-context-filter-type="Boolean"
+                    builder-context={_builderContext}
+                    label={inputValues.allowMultiselect.label}
+                    field-level-help=""
+                    onvaluechanged={handleValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
+            </template>
+            <template if:false={showFlowResource_Multi}>
+                <!-- <lightning-radio-group 
+                    name="allowMultiselect"
+                    label={inputValues.allowMultiselect.label}
+                    options={allowMultiselectOptions}
+                    value={inputValues.allowMultiselect.value}
+                    type="button"
+                    onchange={handleValueChange}>
+                </lightning-radio-group> -->
+                <!-- <lightning-input 
+                    type="checkbox" 
+                    label={inputValues.allowMultiselect.label}
+                    name="allowMultiselect"
+                    value={inputValues.allowMultiselect.value}
+                    onchange={handleValueChange}
+                ></lightning-input> -->
+                <c-fsc_flow-checkbox
+                    name="allowMultiselect"
+                    label={inputValues.allowMultiselect.label}
+                    checked={inputValues.allowMultiselect.value}
+                    oncheckboxchanged={handleValueChange}>
+                </c-fsc_flow-checkbox>
+            </template>
+        </div>
+
+        <lightning-button-icon
+            value="showFlowResource_Multi"
+            class="slds-m-left_small"
+            icon-name="utility:threedots"
+            variant="outline"
+            alternative-text="Info"
+            onclick={showFlowResourceHandlerMulti}>
+        </lightning-button-icon>
+    </div> 
+
+
+    <!-- If Multi Select False -->
+    <template if:true={isMultiSelect}>
+        <c-fsc_flow-banner 
+            banner-color="#657B96"
+            banner-label="Multi Select Configuration"
+            banner-info=""
+        ></c-fsc_flow-banner>
+        <!-- Split to two columns -->
+        <div class="slds-box">
+            <span>Selected Records</span>
+            <!-- Minimum Number of Selected Records -->
+            <c-fsc_flow-combobox 
+                name="minimumNumberOfSelectedRecords" 
+                value={inputValues.minimumNumberOfSelectedRecords.value}
+                builder-context-filter-type="Number"
+                builder-context={_builderContext}
+                label={inputValues.minimumNumberOfSelectedRecords.label}
+                field-level-help="This is the minimum number of records that must be selected. If you leave this field blank, there will be no minimum number of selected records."
+                onvaluechanged={handleValueChange}>
+            </c-fsc_flow-combobox>
+            <!-- Maximum Number of Selected Records -->
+            <c-fsc_flow-combobox 
+                name="maximumNumberOfSelectedRecords" 
+                value={inputValues.maximumNumberOfSelectedRecords.value}
+                builder-context-filter-type="Number"
+                builder-context={_builderContext}
+                label={inputValues.maximumNumberOfSelectedRecords.label}
+                field-level-help="This is the maximum number of records that can be selected. If you leave this field blank, there will be no maximum number of selected records."
+                onvaluechanged={handleValueChange}>
+            </c-fsc_flow-combobox>
+        </div>
+
+        <div class="slds-box">
+            <span>Selected Records Messages</span>
+            <!-- Minimum Number of Selected Records Message -->
+            <c-fsc_flow-combobox 
+                name="minimumNumberOfSelectedRecordsMessage" 
+                value={inputValues.minimumNumberOfSelectedRecordsMessage.value}
+                builder-context-filter-type="String"
+                builder-context={_builderContext}
+                label={inputValues.minimumNumberOfSelectedRecordsMessage.label}
+                field-level-help="This is the message that will be displayed if the user selects less records than the minimum number of selected records. Use the {0} placeholder to display the minimum number of selected records. If you leave this field blank, the default message will be used."
+                onvaluechanged={handleValueChange}>
+            </c-fsc_flow-combobox>
+
+            <!-- Maximum Number of Selected Records Message -->
+            <c-fsc_flow-combobox 
+                name="maximumNumberOfSelectedRecordsMessage" 
+                value={inputValues.maximumNumberOfSelectedRecordsMessage.value}
+                builder-context-filter-type="String"
+                builder-context={_builderContext}
+                label={inputValues.maximumNumberOfSelectedRecordsMessage.label}
+                field-level-help="This is the message that will be displayed if the user selects more records than the maximum number of selected records. Use the {0} placeholder to display the maximum number of selected records. If you leave this field blank, the default message will be used."
+                onvaluechanged={handleValueChange}>
+            </c-fsc_flow-combobox>
+        </div>
+
+    </template>
+</template>

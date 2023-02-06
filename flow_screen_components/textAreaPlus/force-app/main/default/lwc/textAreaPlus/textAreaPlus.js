@@ -74,6 +74,7 @@ export default class TextAreaPlus extends LightningElement {
   @api label;
   @api placeHolder;
   @api textMode;
+  @api slackOutput;
 
   // Component facing props
   @track runningBlockedInput = [];
@@ -228,7 +229,6 @@ export default class TextAreaPlus extends LightningElement {
   @api
   get value() {
     // need to separate textValue from api property
-    this.handleHtmlToSlack();
     return this.textValue;
   }
   set value(val) {
@@ -403,7 +403,7 @@ export default class TextAreaPlus extends LightningElement {
     this.ignoreCase = !this.ignoreCase;
   }
 
-  // Common text value updater for Plan or Rich text
+  // Common text value updater for Plain or Rich text
   updateText(item) {
     const value = item?.value;
     const init = item?.init;
@@ -456,6 +456,15 @@ export default class TextAreaPlus extends LightningElement {
     if (this.hasBlockedItems(target.value)) {
       this.isValidCheck = false;
     }
+
+    // convert HTML to Slack
+    if (this.textMode ="slack") {
+      this.handleHtmlToSlack(target.value);
+      this.slackOutput=this.slackText;
+    }
+
+    
+    
 
     // Check invalid symbols and words
     const rbi = this.runningBlockedInput;
@@ -637,24 +646,28 @@ export default class TextAreaPlus extends LightningElement {
 
   // Replaces html to slack markdown
   handleHtmlToSlack(){
-    if (this.textMode = "slack"){
-    this.textValue = this.textValue.replace(/<p>/g,"");
-    this.textValue = this.textValue.replace(/<\/p>/g,"");  
-    this.textValue = this.textValue.replace(/<strong>/g,"*");
-    this.textValue = this.textValue.replace(/<\/strong>/g,"*");
-    this.textValue = this.textValue.replace(/<em>/g,"_");
-    this.textValue = this.textValue.replace(/<\/em>/g,"_");
-    this.textValue = this.textValue.replace(/<strike>/g,"~");
-    this.textValue = this.textValue.replace(/<\/strike>/g,"~");
-    this.textValue = this.textValue.replace(/&nbsp;/g,"");
-    this.textValue = this.textValue.replace(/<br>/g,"\n");
-    this.textValue = this.textValue.replace(/<ul>/g,"");
-    this.textValue = this.textValue.replace(/<\/ul>/g,"");
-    this.textValue = this.textValue.replace(/<li>/g,"• ");
-    this.textValue = this.textValue.replace(/<\/li>/g,"\n");
+    this.slackText = this.textValue;
+    this.slackText = this.slackText.replace(/<p>/g,"");
+    this.slackText = this.slackText.replace(/<\/p>/g,"");  
+    this.slackText = this.slackText.replace(/<strong>/g,"*");
+    this.slackText = this.slackText.replace(/<\/strong>/g,"*");
+    this.slackText = this.slackText.replace(/<em>/g,"_");
+    this.slackText = this.slackText.replace(/<\/em>/g,"_");
+    this.slackText = this.slackText.replace(/<strike>/g,"~");
+    this.slackText = this.slackText.replace(/<\/strike>/g,"~");
+    this.slackText = this.slackText.replace(/&nbsp;/g,"");
+    this.slackText = this.slackText.replace(/<br>/g,"\n");
+    this.slackText = this.slackText.replace(/<ul>/g,"");
+    this.slackText = this.slackText.replace(/<\/ul>/g,"");
+    this.slackText = this.slackText.replace(/<li>/g,"• ");
+    this.slackText = this.slackText.replace(/<\/li>/g,"\n");
+    console.log("Slack text: " + this.slackText)
     
-    return this.textValue
+    return this.slackText;
+
+    
+    
+    
      
   }
-}
 }

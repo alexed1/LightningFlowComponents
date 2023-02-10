@@ -60,17 +60,6 @@
         </connector>
     </assignments>
     <description>A template to connect to openAI GPT3 Davinci Model.</description>
-    <dynamicChoiceSets>
-        <name>ModelChSt</name>
-        <dataType>String</dataType>
-        <displayField>Name</displayField>
-        <object>GPTConfiguration__c</object>
-        <outputAssignments>
-            <assignToReference>aiEndpoint</assignToReference>
-            <field>Endpoint__c</field>
-        </outputAssignments>
-        <valueField>Id</valueField>
-    </dynamicChoiceSets>
     <environments>Default</environments>
     <interviewLabel>OpenAI Connect Template {!$Flow.CurrentDateTime}</interviewLabel>
     <label>OpenAI Connect Template</label>
@@ -128,7 +117,7 @@
             <targetReference>UserScreen</targetReference>
         </connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <description>Variable to define the endpoint from named credentials.</description>
         <name>aiEndpoint</name>

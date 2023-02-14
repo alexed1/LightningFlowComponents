@@ -5,4 +5,8 @@ public with sharing class LwcConvertCSVToRecordsHelper_Test {
         List<String> fields = LwcConvertCSVToRecordsHelper.getObjectFields('Account');
         System.assertEquals('Id', fields[0]);
      }
+
+    static testMethod void getObjectFieldTypeTest() {
+        LwcConvertCSVToRecordsHelper.getFieldType('Account', 'Type');
+    }
 }

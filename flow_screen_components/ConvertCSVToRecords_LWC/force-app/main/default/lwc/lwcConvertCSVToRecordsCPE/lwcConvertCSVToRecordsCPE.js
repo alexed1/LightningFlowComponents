@@ -68,6 +68,8 @@ export default class LwcConvertCSVToRecords_CPE extends LightningElement {
         fastMode: {value: false, valueDataType: null, isCollection: false, label: 'Fast Mode', required: false, fieldHelpText: 'Fast mode speeds up parsing significantly for large inputs. However, it only works when the input has no quoted fields. Fast mode will automatically be enabled if no " characters appear in the input.'},
         transform: {value: '', valueDataType: null, isCollection: false, label: 'Transform', required: false, fieldHelpText: 'A function to apply on each value. The function receives the value as its first argument and the column number or header name when enabled as its second argument. The return value of the function will replace the value it received. The transform function is applied before dynamicTyping.'},
         delimitersToGuess: {value: '', valueDataType: null, isCollection: false, label: 'Delimiters To Guess', required: false, fieldHelpText: 'An array of delimiters to guess from if the delimiter option is not set'},
+        ignoreMissingColumns: {value: true, valueDataType: null, isCollection: false, label: 'Ignore Missing Columns', required: false, fieldHelpText: 'If true, columns that are empty/null will be ignored. Otherwise, an error will be thrown.'},
+        ignoreMissingFields: {value: true, valueDataType: null, isCollection: false, label: 'Ignore Missing Fields', required: false, fieldHelpText: 'If true, fields that do not have matching columns will be ignored. Otherwise, an error will be thrown.'},
     }
 
     @api get builderContext() {

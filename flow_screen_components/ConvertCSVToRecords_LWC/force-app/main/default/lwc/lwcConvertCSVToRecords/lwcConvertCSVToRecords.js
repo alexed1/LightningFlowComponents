@@ -201,6 +201,22 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 	}
 	_isLoading = false;
 
+	@api get ignoreMissingColumns() {
+		return this._ignoreMissingColumns;
+	}
+	set ignoreMissingColumns(value) {
+		this._ignoreMissingColumns = value;
+	}
+	_ignoreMissingColumns = false;
+
+	@api get ignoreMissingFields() {
+		return this._ignoreMissingFields;
+	}
+	set ignoreMissingFields(value) {
+		this._ignoreMissingFields = value;
+	}
+	_ignoreMissingFields = false;
+
 
 	// Initialize the parser
 	renderedCallback() {
@@ -243,165 +259,293 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 								this._columnHeaders = parsedResults.meta.fields;
 								console.log('columnHeaders: ' + JSON.stringify(this._columnHeaders));
 
+								// See if there are any empty columns
+								let emptyColumns = parsedResults.meta.fields.filter(field => field === '');
+
+								// If there are empty columns, throw an error
+								if(emptyColumns.length > 0 && !this._ignoreMissingColumns){
+									// Set the isError variable to true
+									this._isError = true;
+									this._errorMessage = 'There are empty columns in the CSV file. Please remove the empty columns and try again.';
+									this._isLoading = false;
+									console.log('There are empty columns in the CSV file. Please remove the empty columns and try again.');
+									return;
+								} else if (emptyColumns.length > 0 && this._ignoreMissingColumns) {
+									// If there are empty columns, but the user wants to ignore them, remove the empty columns
+									parsedResults.meta.fields = parsedResults.meta.fields.filter(field => field !== '');
+
+									// Set the columnHeaders variable to the new columnHeaders array
+									this._columnHeaders = parsedResults.meta.fields;
+
+									// Remove the empty columns from the data
+									parsedResults.data = parsedResults.data.map(row => {
+										return row.filter(field => field !== '');
+									});
+
+									console.log('User wants to ignore empty columns. Removing empty columns from CSV file.');
+								}
+
+
+
 								console.log('objectName: ' + this.objectName);
 								
 								getObjectFields({objectName: this.objectName})
 								.then(fieldList => {
-										console.log('fieldList: ' + typeof fieldList);
+									console.log('fieldList: ' + JSON.stringify(fieldList));
+									// fieldList is an array of objects
+									// Each object has a Name and a Type property
 
-										// Set new columnHeader array
-										let newColumnHeaders = [];
+									// Set new fieldName array
+									let fieldNames = [];
+									fieldNames = fieldList.map(field => field.name);
 
-										// Set array of fields to remove
-										let fieldsToRemove = [];
+									// Set new columnHeader array
+									let newColumnHeaders = [];
 
-										// Compare the column headers to the fields for the selected object
-										// If the column header is not a match add __c to the end and recheck the fields
-										// If the column header is still not a match, remove the column header from the list
-										for (let i = 0; i < this._columnHeaders.length; i++) {
-											let columnHeader = this._columnHeaders[i];
+									// Set array of fields to remove
+									let fieldsToRemove = [];
 
-											// Trim the column header
-											columnHeader = columnHeader.trim();
+									// Compare the column headers to the fields for the selected object
+									// If the column header is not a match add __c to the end and recheck the fields
+									// If the column header is still not a match, remove the column header from the list
+									for (let i = 0; i < this._columnHeaders.length; i++) {
+										let columnHeader = this._columnHeaders[i];
 
-											console.log('columnHeader: ' + columnHeader);
+										// Trim the column header
+										columnHeader = columnHeader.trim();
 
-											// For standard fields we need to remove the space inbetween the words
-											// For example: Account Name becomes AccountName
-											// Create standardField variable to store the new value
-											let standardField;
-											if (columnHeader.includes(' ')) {
-												standardField = columnHeader.replaceAll(' ', '');
-											} else {
-												standardField = columnHeader;
+										console.log('columnHeader: ' + columnHeader);
+
+										// For standard fields we need to remove the space inbetween the words
+										// For example: Account Name becomes AccountName
+										// Create standardField variable to store the new value
+										let standardField;
+										if (columnHeader.includes(' ')) {
+											standardField = columnHeader.replaceAll(' ', '');
+										} else {
+											standardField = columnHeader;
+										}
+										if (fieldNames.includes(standardField)) {
+											console.log('standard field: ' + columnHeader);
+											newColumnHeaders.push({"newField":columnHeader, "oldField":columnHeader});
+										} else {
+										
+											// Create customField variable to store the new value
+											let customField;
+
+											// Replace spaces with underscores
+											customField = columnHeader.replaceAll(' ', '_');
+
+											// Limit the length of the field to 40 characters
+											customField = customField.substring(0, 40);
+
+											// Remove return characters
+											customField = customField.replace(/[\r]/g, '');
+
+											// If the field starts with a number, add an X to the beginning of the field
+											if (customField.match(/^[0-9]/)) {
+												customField = 'X' + customField;
 											}
-											if (fieldList.includes(standardField)) {
-												console.log('standard field: ' + columnHeader);
-												newColumnHeaders.push({"newField":columnHeader, "oldField":columnHeader});
+
+											// Remove any special characters
+											// % & * ( ) + - = { } [ ] : ; ' " , . < > ? / | \ ~ ` ! @ # $ ^
+											customField = customField.replace(/[^a-zA-Z0-9_]/g, '');
+
+											// newlines and carriage returns are also removed
+											customField = customField.replace(/[\r\n]+/gm, '');
+
+											// Remove any leading or trailing underscores
+											customField = customField.replace(/^_+|_+$/g, '');
+
+											// Replace any double underscores with a single underscore
+											customField = customField.replace(/__+/g, '_');
+
+											// Replace any triple underscores with a single underscore
+											customField = customField.replace(/___+/g, '_');
+
+											// Add __c to the end of the field
+											customField = customField + '__c';
+
+											// Validate the field name
+											if (fieldNames.includes(customField)) {
+												console.log('custom field: ' + customField);
+												newColumnHeaders.push({"newField":customField, "oldField":columnHeader});
 											} else {
-											
-												// Create customField variable to store the new value
-												let customField;
+												console.log('removed field: ' + columnHeader);
+												fieldsToRemove.push(columnHeader);
+											}
+										}
+									}
 
-												// Replace spaces with underscores
-												customField = columnHeader.replaceAll(' ', '_');
+									console.log('newColumnHeaders: ' + JSON.stringify(newColumnHeaders));
+									console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
 
-												// Limit the length of the field to 40 characters
-												customField = customField.substring(0, 40);
+									// If fieldsToRemove is not empty then error out
+									if (fieldsToRemove.length > 0 && !this.ignoreMissingFields) {
+										this._errorMessage = 'The following fields are not valid: ' + fieldsToRemove.join(', ') + '. Please remove them from the CSV file and try again.';
+										this._isError = true;
+										this._isLoading = false;
+										console.log('The following fields are not valid: ' + fieldsToRemove.join(', ') + '. Please remove them from the CSV file and try again.');
+										return;
+									} else {
+										this._errorMessage = '';
+										this._isError = false;											
+										console.log('The following fields are not valid: ' + fieldsToRemove.join(', ') + '. Please remove them from the CSV file and try again.');
+									}
 
-												// If the field starts with a number, add an X to the beginning of the field
-												if (customField.match(/^[0-9]/)) {
-													customField = 'X' + customField;
+									// Check if there are duplicate headers
+									let duplicateHeaders = [];
+									for (let i = 0; i < newColumnHeaders.length; i++) {
+										let columnHeader = newColumnHeaders[i].newField;
+										if (newColumnHeaders.filter(x => x.newField === columnHeader).length > 1) {
+											duplicateHeaders.push(columnHeader);
+										}
+									}
+
+									// If there is a duplicate header then error out
+									if (duplicateHeaders.length > 0) {
+										this._errorMessage = 'Duplicate headers found: ' + duplicateHeaders.join(', ') + '. Please remove the duplicate headers and try again.';
+										this._isError = true;
+										this._isLoading = false;
+										console.log('Duplicate headers found: ' + duplicateHeaders.join(', ') + '. Please remove the duplicate headers and try again.');
+										return;
+									}
+
+									// New array to store the rows of data
+									let newRows = [];
+									// Go through the parsedResults.data object and set key based on the fieldList object match on oldField and replace the oldField with the newField
+									// If the key is not in the columnHeaders object, remove the key and value from the object
+									// If the key is in the fieldsToRemove object, remove the key and value from the object
+									console.log('parsedResults.length: ' + parsedResults.data.length);
+									for (let i = 0; i < parsedResults.data.length; i++) {
+										let row = parsedResults.data[i];
+										let newRow = {};
+										for (let key in row) {
+											if (row.hasOwnProperty(key)) {
+												let newKey = key;
+												let newValue = row[key];
+												for (let j = 0; j < newColumnHeaders.length; j++) {
+													if (key === newColumnHeaders[j].oldField) {
+														console.log('oldKey: ' + key + ' newKey: ' + newColumnHeaders[j].newField);
+														newKey = newColumnHeaders[j].newField;
+													}
 												}
-
-												// Remove any special characters
-												// % & * ( ) + - = { } [ ] : ; ' " , . < > ? / | \ ~ ` ! @ # $ ^
-												customField = customField.replace(/[^a-zA-Z0-9_]/g, '');
-
-												// newlines and carriage returns are also removed
-												customField = customField.replace(/[\r\n]+/gm, '');
-
-												// Remove any leading or trailing underscores
-												customField = customField.replace(/^_+|_+$/g, '');
-
-												// Replace any double underscores with a single underscore
-												customField = customField.replace(/__+/g, '_');
-
-												// Replace any triple underscores with a single underscore
-												customField = customField.replace(/___+/g, '_');
-
-												// Add __c to the end of the field
-												customField = customField + '__c';
-
-												// Validate the field name
-												if (fieldList.includes(customField)) {
-													console.log('custom field: ' + customField);
-													newColumnHeaders.push({"newField":customField, "oldField":columnHeader});
+												if (fieldsToRemove.includes(key)) {
+													console.log('removed key: ' + key);
+													delete row[key];
 												} else {
-													console.log('removed field: ' + columnHeader);
-													fieldsToRemove.push(columnHeader);
-												}
-											}
-										}
+													console.log('newRow[' + newKey + ']: ' + newValue);
 
-										console.log('newColumnHeaders: ' + JSON.stringify(newColumnHeaders));
-										console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
-
-										// If fieldsToRemove is not empty then error out
-										if (fieldsToRemove.length > 0) {
-											console.log('fieldsToRemove: ' + JSON.stringify(fieldsToRemove));
-											this._errorMessage = 'The following fields are not valid: ' + fieldsToRemove.join(', ') + '. Please remove them from the CSV file and try again.';
-											this._isError = true;
-										}
-
-										// Check if there are duplicate headers
-										let duplicateHeaders = [];
-										for (let i = 0; i < newColumnHeaders.length; i++) {
-											let columnHeader = newColumnHeaders[i].newField;
-											if (newColumnHeaders.filter(x => x.newField === columnHeader).length > 1) {
-												duplicateHeaders.push(columnHeader);
-											}
-										}
-
-										// If there is a duplicate header then error out
-										if (duplicateHeaders.length > 0) {
-											console.log('duplicateHeaders: ' + JSON.stringify(duplicateHeaders));
-											this._errorMessage = 'Duplicate headers found: ' + duplicateHeaders.join(', ') + '. Please remove the duplicate headers and try again.';
-											this._isError = true;
-											this._isLoading = false;
-											return;
-										}
-
-										// New array to store the rows of data
-										let newRows = [];
-										// Go through the parsedResults.data object and set key based on the fieldList object match on oldField and replace the oldField with the newField
-										// If the key is not in the columnHeaders object, remove the key and value from the object
-										// If the key is in the fieldsToRemove object, remove the key and value from the object
-										console.log('parsedResults.length: ' + parsedResults.data.length);
-										for (let i = 0; i < parsedResults.data.length; i++) {
-											let row = parsedResults.data[i];
-											let newRow = {};
-											for (let key in row) {
-												if (row.hasOwnProperty(key)) {
-													let newKey = key;
-													let newValue = row[key];
-													for (let j = 0; j < newColumnHeaders.length; j++) {
-														if (key === newColumnHeaders[j].oldField) {
-															console.log('oldKey: ' + key + ' newKey: ' + newColumnHeaders[j].newField);
-															newKey = newColumnHeaders[j].newField;
+													// Use the fieldList array of objects to get the field type
+													// Add the new key and value to the new row	
+													// Get the field type from newKey
+													// If it is a date fields, format them to the correct format yyyy-MM-dd
+													// If it is a currency field, format it to the correct format 0.00
+													// If it is a number field, format it to the correct format 0
+													// If it is a percent field, format it to the correct format 0%
+													
+													// Find the field type from the fieldList array of objects
+													// fieldList = [{"name":"Id","type","ID"}]
+													let fieldType = '';
+													for (let k = 0; k < fieldList.length; k++) {
+														if (fieldList[k].name === newKey) {
+															fieldType = fieldList[k].type;
 														}
 													}
-													if (fieldsToRemove.includes(key)) {
-														console.log('removed key: ' + key);
-														delete row[key];
+
+													console.log('fieldType: ' + fieldType);
+													if (fieldType === 'DATE') {
+														// Check if the value is not null
+														// If it is not null, format it to the correct format yyyy-MM-dd
+														// If null return the value as null
+														if (newValue === null) {
+															newRow[newKey] = '';
+														} else {
+															let date = new Date(newValue);
+															// Check if the date is valid
+															// If it is not valid, return the value as null
+															if (isNaN(date)) {
+																newRow[newKey] = '';
+															} else {
+																let formattedDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+																newRow[newKey] = formattedDate;
+															}
+														}
+													} else if (fieldType === 'CURRENCY') {
+														// Remove the $ and , from the value
+														let formattedValue = newValue.replace('$', '').replace(',', '');
+
+														// Check if the value is a number
+														// If it is a number, format it to the correct format 0.00
+														// If not a number return the value as is
+														if (isNaN(formattedValue)) {
+															console.log('not a number: ' + formattedValue);
+															newRow[newKey] = formattedValue;
+														} else {
+															formattedValue = parseFloat(formattedValue).toFixed(2);
+															console.log('is a number: ' + formattedValue);
+															newRow[newKey] = parseFloat(formattedValue);
+														}
+													} else if (fieldType === 'DOUBLE' || fieldType === 'INT' || fieldType === 'LONG' || fieldType === 'PERCENT') {
+														// Remove the % sign from the value
+														let formattedValue = newValue.replace('%', '');
+
+														// Check if the value is a number
+														// If it is a number, format it to the correct format 0
+														// If not a number return the value as is
+														if (isNaN(formattedValue)) {
+															newRow[newKey] = formattedValue;
+														} else {
+															formattedValue = parseFloat(formattedValue).toFixed(0);
+															newRow[newKey] = parseFloat(formattedValue);
+														}
 													} else {
-														console.log('newRow[' + newKey + ']: ' + newValue);
-														newRow[newKey] = newValue;
+														// Remove character returns from the value
+														let formattedValue = newValue.replace(/(\r\n|\n|\r)/gm, '');
+														// Trim the value
+														formattedValue = formattedValue.trim();
+														// Remove extra spaces from the value
+														// 1905 CARIBOO                        HWY    N to 1905 CARIBOO HWY N
+														formattedValue = formattedValue.replace(/\s\s+/g, ' ');
+														newRow[newKey] = formattedValue;
 													}
 												}
 											}
-											newRows.push(newRow);
 										}
-										
-										// Set the rows of data
-										console.log('newRows: ' + JSON.stringify(newRows));
-										this._outputValue = newRows;
-										this._isLoading = false;
-										// Set outputValue to the results
-										this.handleValueChange('outputValue', newRows);
+										// Add the new row to the newRows array
+										newRows.push(newRow);
+									}
 
-										console.log('autoNavigateNext: ' + this._autoNavigateNext);
-										// If the autoNavigateNext attribute is true, navigate to the next screen
-										if (this._autoNavigateNext) {
-											console.log('autoNavigateNext');
-											this.handleNext();
-										}
+									// Go through the newRows and remove any rows that are empty
+									newRows = newRows.filter(x => Object.keys(x).length > 0);								
+									
+									// Set the rows of data
+									console.log('newRows: ' + JSON.stringify(newRows));
+
+									// Seralize the data with the objectName
+									let serializedData = {};
+									serializedData[this.objectName] = newRows;
+									console.log('serializedData: ' + JSON.stringify(serializedData));
+
+									// Set the outputValue to the serialized data
+									this._outputValue = serializedData;
+									this._isLoading = false;
+									// Set outputValue to the results
+									this.handleValueChange('outputValue', serializedData);
+
+									console.log('autoNavigateNext: ' + this._autoNavigateNext);
+									// If the autoNavigateNext attribute is true, navigate to the next screen
+									if (this._autoNavigateNext) {
+										console.log('autoNavigateNext');
+										this.handleNext();
+									}
 								})
 								.catch(error => {
 										console.log('error: ' + JSON.stringify(error));
 										this._errorMessage = JSON.stringify(error);
 										this._isError = true;
 										this._isLoading = false;
+										return;
 								});
 
 						},
@@ -410,6 +554,7 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 								this._errorMessage = 'Parser Error: ' + error;
 								this._isError = true;
 								this._isLoading = false;
+								return;
 						}
 				})
 		}
@@ -417,13 +562,19 @@ export default class lwcConvertCSVToRecords extends LightningElement {
 
 	// Handle auto navigation to the next screen/action
 	handleNext() {
-		if (this._availableActions.find((action) => action === "NEXT")) {
-			const navigateNextEvent = new FlowNavigationNextEvent();
-			this.dispatchEvent(navigateNextEvent);
-		}
-		if (this._availableActions.find((action) => action === "FINISH")) {
-			const navigateNextEvent = new FlowNavigationFinishEvent();
-			this.dispatchEvent(navigateNextEvent);
+		// If there is an error, do not navigate
+		console.log('handleNext: ' + this._isError);
+		if (this._isError) {
+			return;
+		} else {
+			if (this._availableActions.find((action) => action === "NEXT")) {
+				const navigateNextEvent = new FlowNavigationNextEvent();
+				this.dispatchEvent(navigateNextEvent);
+			}
+			if (this._availableActions.find((action) => action === "FINISH")) {
+				const navigateNextEvent = new FlowNavigationFinishEvent();
+				this.dispatchEvent(navigateNextEvent);
+			}
 		}
 	}
 

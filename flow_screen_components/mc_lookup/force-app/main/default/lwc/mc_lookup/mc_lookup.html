@@ -1,0 +1,57 @@
+<template>
+    <c-fsc_combobox options={records} label={label} icon-size="small" public-class={publicClass} public-style={publicStyle} values={values}
+        custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect} disabled={disabled}
+        is-loading={isLoading} exclude-sublabel-in-filter={excludeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
+        include-value-in-filter={includeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
+        oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} 
+        id="lookup" class={componentName}>
+    </c-fsc_combobox>
+
+    <!-- If minimumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={_showMinimumNumberOfSelectedRecordsMessage}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {_minimumNumberOfSelectedRecordsMessage}
+                </span>
+            </span>
+        </div>
+    </template>
+
+    <!-- If maximumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={_showMaximumNumberOfSelectedRecordsMessage}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {_maximumNumberOfSelectedRecordsMessage}
+                </span>
+            </span>
+        </div>
+    </template>
+
+    <!-- If under the mininumSelectedRecords Show Error Message -->
+    <template if:true={_showMinimumNumberOfSelectedRecordsErrorMessage}>
+        <div class="slds-form-element__help">
+            {_minimumNumberOfSelectedRecordsMessage}
+        </div>
+    </template>
+
+    <template if:true={showNewRecordModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-modal_large slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeNewRecordModal}>
+                    </lightning-button-icon>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Create New {objectInfo.data.label}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-form object-api-name={objectName} layout-type="Full"
+                        onsuccess={handleNewRecordSave} oncancel={closeNewRecordModal}></lightning-record-form>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

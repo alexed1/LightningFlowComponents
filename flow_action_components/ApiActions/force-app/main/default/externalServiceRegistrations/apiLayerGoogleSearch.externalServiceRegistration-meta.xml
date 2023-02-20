@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>apiLayerGoogleSearch</label>
+    <namedCredential>API_Layer</namedCredential>
+    <namedCredentialReference>API_Layer</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>googlex20search</name>
+    </operations>
+    <registrationProviderType>SchemaInferred</registrationProviderType>
+    <schema>{
+  &quot;openapi&quot;: &quot;3.0.1&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;apiLayerGoogleSearch&quot;,
+    &quot;description&quot;: &quot;&quot;
+  },
+  &quot;paths&quot;: {
+    &quot;/google_search&quot;: {
+      &quot;get&quot;: {
+        &quot;description&quot;: &quot;&quot;,
+        &quot;operationId&quot;: &quot;Google Search&quot;,
+        &quot;parameters&quot;: [{
+            &quot;name&quot;: &quot;q&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;required&quot;: true,
+            &quot;allowEmptyValue&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;2XX&quot;: {
+            &quot;description&quot;: &quot;&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;general&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                        &quot;basic_view&quot;: {
+                          &quot;type&quot;: &quot;boolean&quot;
+                        },
+                        &quot;mobile&quot;: {
+                          &quot;type&quot;: &quot;boolean&quot;
+                        },
+                        &quot;language&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        },
+                        &quot;location&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        },
+                        &quot;search_type&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        }
+                      }
+                    },
+                    &quot;related&quot;: {
+                      &quot;type&quot;: &quot;array&quot;,
+                      &quot;items&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;text&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      }
+                    },
+                    &quot;people_also_ask&quot;: {
+                      &quot;type&quot;: &quot;array&quot;,
+                      &quot;items&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;answer_link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;question_link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;question&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;answer_html&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;answer_display_link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;answer_source&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      }
+                    },
+                    &quot;organic&quot;: {
+                      &quot;type&quot;: &quot;array&quot;,
+                      &quot;items&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;extensions&quot;: {
+                            &quot;type&quot;: &quot;array&quot;,
+                            &quot;items&quot;: {
+                              &quot;type&quot;: &quot;object&quot;,
+                              &quot;properties&quot;: {
+                                &quot;inline&quot;: {
+                                  &quot;type&quot;: &quot;boolean&quot;
+                                },
+                                &quot;rating&quot;: {
+                                  &quot;type&quot;: &quot;boolean&quot;
+                                },
+                                &quot;text&quot;: {
+                                  &quot;type&quot;: &quot;string&quot;
+                                }
+                              }
+                            }
+                          },
+                          &quot;display_link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;link&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;rank&quot;: {
+                            &quot;type&quot;: &quot;integer&quot;,
+                            &quot;format&quot;: &quot;int64&quot;
+                          },
+                          &quot;description&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          },
+                          &quot;title&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      }
+                    },
+                    &quot;knowledge&quot;: {
+                      &quot;type&quot;: &quot;object&quot;,
+                      &quot;properties&quot;: {
+                        &quot;description_source&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        },
+                        &quot;name&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        },
+                        &quot;description&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        },
+                        &quot;description_link&quot;: {
+                          &quot;type&quot;: &quot;string&quot;
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi3</schemaType>
+    <serviceBinding>{&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+    <systemVersion>4</systemVersion>
+</ExternalServiceRegistration>

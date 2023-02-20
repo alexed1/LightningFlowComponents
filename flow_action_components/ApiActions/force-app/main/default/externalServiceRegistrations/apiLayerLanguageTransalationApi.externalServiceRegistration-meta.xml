@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>apiLayerLanguageTransalationApi</label>
+    <namedCredential>API_Layer</namedCredential>
+    <namedCredentialReference>API_Layer</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>languagex20translationx20api</name>
+    </operations>
+    <registrationProviderType>SchemaInferred</registrationProviderType>
+    <schema>{
+  &quot;openapi&quot;: &quot;3.0.1&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;apiLayerLanguageTransalationApi&quot;,
+    &quot;description&quot;: &quot;&quot;
+  },
+  &quot;paths&quot;: {
+    &quot;/language_translation/translate&quot;: {
+      &quot;post&quot;: {
+        &quot;description&quot;: &quot;&quot;,
+        &quot;operationId&quot;: &quot;Language Translation API&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;target&quot;,
+            &quot;in&quot;: &quot;query&quot;,
+            &quot;required&quot;: true,
+            &quot;allowEmptyValue&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;requestBody&quot;: {
+          &quot;content&quot;: {
+            &quot;text/plain&quot;: {
+              &quot;schema&quot;: {
+                 &quot;type&quot; : &quot;string&quot; 
+              }
+            }
+          },
+          &quot;required&quot; : true
+        },
+        &quot;responses&quot;: {
+          &quot;2XX&quot;: {
+            &quot;description&quot;: &quot;&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;word_count&quot;: {
+                      &quot;type&quot;: &quot;integer&quot;,
+                      &quot;format&quot;: &quot;int64&quot;
+                    },
+                    &quot;detected_language&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;translations&quot;: {
+                      &quot;type&quot;: &quot;array&quot;,
+                      &quot;items&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                          &quot;translation&quot;: {
+                            &quot;type&quot;: &quot;string&quot;
+                          }
+                        }
+                      }
+                    },
+                    &quot;detected_language_confidence&quot;: {
+                      &quot;type&quot;: &quot;number&quot;,
+                      &quot;format&quot;: &quot;double&quot;
+                    },
+                    &quot;character_count&quot;: {
+                      &quot;type&quot;: &quot;integer&quot;,
+                      &quot;format&quot;: &quot;int64&quot;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi3</schemaType>
+    <serviceBinding>{&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+    <systemVersion>4</systemVersion>
+</ExternalServiceRegistration>

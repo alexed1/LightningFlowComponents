@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExternalServiceRegistration xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>apiLayerEmailVerification</label>
+    <namedCredential>API_Layer</namedCredential>
+    <namedCredentialReference>API_Layer</namedCredentialReference>
+    <operations>
+        <active>true</active>
+        <name>emailx20verification</name>
+    </operations>
+    <registrationProviderType>SchemaInferred</registrationProviderType>
+    <schema>{
+  &quot;openapi&quot;: &quot;3.0.1&quot;,
+  &quot;info&quot;: {
+    &quot;title&quot;: &quot;apiLayerEmailVerification&quot;,
+    &quot;description&quot;: &quot;&quot;
+  },
+  &quot;paths&quot;: {
+    &quot;/email_verification/{email}&quot;: {
+      &quot;get&quot;: {
+        &quot;description&quot;: &quot;&quot;,
+        &quot;operationId&quot;: &quot;Email Verification&quot;,
+        &quot;parameters&quot;: [
+          {
+            &quot;name&quot;: &quot;email&quot;,
+            &quot;in&quot;: &quot;path&quot;,
+            &quot;required&quot;: true,
+            &quot;allowEmptyValue&quot;: false,
+            &quot;schema&quot;: {
+              &quot;type&quot;: &quot;string&quot;
+            }
+          }
+        ],
+        &quot;responses&quot;: {
+          &quot;2XX&quot;: {
+            &quot;description&quot;: &quot;&quot;,
+            &quot;content&quot;: {
+              &quot;application/json&quot;: {
+                &quot;schema&quot;: {
+                  &quot;type&quot;: &quot;object&quot;,
+                  &quot;properties&quot;: {
+                    &quot;mx_records&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;is_catch_all&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;is_disabled&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;is_disposable&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;score&quot;: {
+                      &quot;type&quot;: &quot;number&quot;,
+                      &quot;format&quot;: &quot;double&quot;
+                    },
+                    &quot;can_connect_smtp&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;domain&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;did_you_mean&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;is_inbox_full&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;is_role_account&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;free&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;is_deliverable&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;syntax_valid&quot;: {
+                      &quot;type&quot;: &quot;boolean&quot;
+                    },
+                    &quot;user&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    },
+                    &quot;email&quot;: {
+                      &quot;type&quot;: &quot;string&quot;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}</schema>
+    <schemaType>OpenApi3</schemaType>
+    <serviceBinding>{&quot;compatibleMediaTypes&quot;:{}}</serviceBinding>
+    <status>Complete</status>
+    <systemVersion>4</systemVersion>
+</ExternalServiceRegistration>

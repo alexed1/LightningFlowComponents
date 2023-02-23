@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>52.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>
@@ -10,9 +10,11 @@
             <property name="scannedBarcode" type="String" role="outputOnly"/>
             <property name="label" label="Label" type="String" role="inputOnly"/>
             <property name="autoNavigate" label="Auto Navigate" type="Boolean" role="inputOnly" description="When marked as true flow will automatically navigate to next screen/element after successful scan"/>
-            <property name="buttonLabel" label="Button Label" type="String" role="inputOnly" default="Scan Barcode" description="Label for button that launches scanner"/>
-            <property name="buttonIcon" label="Button Icon" type="String" role="inputOnly" description="Icon for the scanner button i.e. utility:cases"/>
+            <property name="buttonLabel" label="Button Label" type="String" role="inputOnly" default="Scan" description="Label for button that launches scanner"/>
+            <property name="buttonIcon" label="Button Icon" type="String" role="inputOnly" default="utility:scan" description="Icon for the scanner button i.e. utility:cases"/>
             <property name="scannerInstructions" label="Scanner Instructions" type="String" role="inputOnly" default="Click Scan Barcode to open a barcode scanner camera view. Position a barcode in the scanner view to scan it." description="Instructions for user on how to use barcode scanner displayed on the component"/>
+            <property name="allscannedBarcodes" type="String[]" role="outputOnly"/>
+            <property name="scanContinuously" type="Boolean" label="Continous Scan" description="When set at true allows for multiple barcodes to be scanned in one session results are stored in a string collection scannedBarcodes"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

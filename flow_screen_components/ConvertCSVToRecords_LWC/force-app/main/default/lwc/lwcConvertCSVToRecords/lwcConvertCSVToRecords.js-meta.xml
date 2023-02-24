@@ -26,7 +26,7 @@
 			<property name="inputLabel" label="Label" type="String" description="The label for the file input field" default="Upload CSV"/>
 			<property name="autoNavigateNext" type="Boolean" label="Auto Navigate Next" description="If true, the flow will automatically navigate to the next screen after the component has been initialized." required="true" default="false"/>
 			<property name="objectName" label="Object Name" type="String" required="true" default="Account" role="inputOnly"/>
-
+			
 
 			<!-- Flow Outputs -->
 			<propertyType name="T" extends="SObject" label="Output Object" description="Generic sObject data type used for output sObject properties" />         
@@ -36,3 +36,4 @@
 		</targetConfig>
 </targetConfigs>
 </LightningComponentBundle>
+

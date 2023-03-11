@@ -28,7 +28,7 @@ public with sharing class ConvertCSVToStringCollection {
     }
 
     public class Response {
-        @invocableVariable(label='String Collection' description='Collection variable to store output' required=true)
+        @invocableVariable(label='String Collection' description='Collection variable to store output')
         public List<String> stringCollection;
 
     }

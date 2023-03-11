@@ -1,6 +1,6 @@
 public with sharing class ConvertCSVToStringCollection {
 
-    @invocableMethod(label='Convert CSV to String Collection'
+    @invocableMethod(label='Convert Comma-separated-values to String Collection'
                      description='Converts a Comma-separated-values string (eg, from a field) to a String Collection' 
                      category= 'Utilities')
     public static List<Response> execute (List<Request> requests) {

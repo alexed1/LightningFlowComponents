@@ -2,4 +2,4 @@
 if "%1" neq "" set packageName=%1
 if "%2" neq "" set version=%2
 @echo on
-sfdx force:package:beta:version:promote -v lexhost --package "%packageName%@%version%-0"
+sfdx package:version:promote -v lexhost --package 04t5G000004C6usQAC

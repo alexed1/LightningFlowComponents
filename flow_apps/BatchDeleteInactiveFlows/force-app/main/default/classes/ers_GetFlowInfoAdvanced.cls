@@ -3,6 +3,7 @@
      * 
      * This component also adds additional fields used in a Custom Object datatable in my Flow List View Flows 
      * 
+     * 03/15/23 -   Eric Smith -    Version 2.0.3   Restrict types of Flows being queried to just those with a valid DurableId
      * 08/15/22 -   Eric Smith -    Version 2.0
      * 09/11/20 -   Eric Smith -    Version 1.2     Changed QUERY_LIMIT in Test mode to reduce change of SOQL 101 errors on installation
      * 05/29/20 -   Eric Smith -    Version 1.1     Created an Apex-Defined Descriptor Class for the Flow Information
@@ -158,7 +159,7 @@
                                 ProcessType,
                                 TriggerType
                         FROM    FlowDefinitionView 
-                        WHERE   DurableId NOT IN:fdvids
+                        WHERE   DurableId NOT IN:fdvids AND DurableId LIKE '300%'
                         ORDER BY Label ASC 
                         LIMIT   :q_limit]) {
                         try{

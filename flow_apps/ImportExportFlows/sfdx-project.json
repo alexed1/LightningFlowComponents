@@ -15,8 +15,8 @@
         }
       ],
       "package": "ImportExportFlowsV2",
-      "versionName": "ImportExportFlows v2",
-      "versionDescription": "Import and Export Flows by Eric Smith",
+      "versionName": "ver 0.1",
+      "versionDescription": "",
       "versionNumber": "0.1.0.NEXT",
       "name": "force-app",
       "fullPath": "D:\\esmit\\Documents\\VSCode\\LightningFlowComponents\\flow_apps\\ImportExportFlows\\force-app\\"
@@ -35,6 +35,8 @@
   "packageAliases": {
     "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
     "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
-    "flowPickerFSC@1.5.0-0": "04t1K0000033MAq"
+    "flowPickerFSC@1.5.0-0": "04t1K0000033MAq",
+    "ImportExportFlowsV2": "0Ho5G000000KyzESAS",
+    "ImportExportFlowsV2@2.0.1": "04t5G000004C6v2QAC"
   }
 }

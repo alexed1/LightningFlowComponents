@@ -42,7 +42,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>50.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Assign_DocumentId</name>
         <label>Assign DocumentId</label>
@@ -237,7 +237,7 @@ MID({!FlowFileUpload.fileNames},2,LEN({!FlowFileUpload.fileNames})-16))</express
         </connector>
         <fields>
             <name>DeployFlow_fsc</name>
-            <extensionName>c:fsc_transferMetadata</extensionName>
+            <extensionName>c:fsc_transferMetadata3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>metadataName</name>
@@ -421,7 +421,7 @@ MID({!FlowFileUpload.fileNames},2,LEN({!FlowFileUpload.fileNames})-16))</express
         </connector>
         <fields>
             <name>RetrieveFlow_usf</name>
-            <extensionName>c:fsc_transferMetadata</extensionName>
+            <extensionName>c:fsc_transferMetadata3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>metadataName</name>

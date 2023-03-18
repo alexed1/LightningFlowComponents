@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Flow_PB_List_View_and_Batch_Delete_V2</application>
+        <visible>true</visible>
+    </applicationVisibilities>
+    <classAccesses>
+        <apexClass>ers_DeployDeleteInactiveFlows</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ers_FlowDatatableDescriptor</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ers_GetFlowInfoAdvanced</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ers_TranslateFlowRecords</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Batch Delete Flows</label>
+    <tabSettings>
+        <tab>Flow_PB_List_View_and_Batch_Delete_V2</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

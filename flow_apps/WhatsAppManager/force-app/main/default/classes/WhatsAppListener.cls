@@ -42,6 +42,7 @@ global class WhatsAppListener {
         if (responseValid == SIGNATURE_VALID_MESSAGE){
             System.debug('Headers Response from WhatsApp \n ' + JSON.serialize(headers));
             System.debug('Response From WhatsApp \n ' + responseString);
+            GeneratePlatformEventforFlow(responseString);
         } else {
             response.responseBody = Blob.valueOf('{success:false, event: "Unknown", "message:" ' + responseValid+ '"}');
             response.statusCode = 401;
@@ -51,6 +52,24 @@ global class WhatsAppListener {
         RestRequest request = RestContext.request;
         System.debug('request is: ' + request.requestBody );
         
+    }
+
+    //convert the incoming webhook data into a platform event so it can resume a flow that's waiting for it.
+    global static void GeneratePlatformEventforFlow(String responseString) {
+        Whats_App_Message_Received__e whatsappEvent = new Whats_App_Message_Received__e();
+        whatsappEvent.Message_Text__c = responseString;
+        System.debug('responseString going into Message_Text__c is: ' + responseString);
+        Database.SaveResult result = EventBus.publish(whatsappEvent);
+        if (result.isSuccess()) {
+            System.debug('Successfully published event.');
+        } else {
+            for(Database.Error err : result.getErrors()) {
+                System.debug('Error returned: ' +
+                            err.getStatusCode() +
+                            ' - ' +
+                            err.getMessage());
+            }
+        }       
     }
 
     private static String validateWhatsAppSignature(RestRequest request, String responseString) {

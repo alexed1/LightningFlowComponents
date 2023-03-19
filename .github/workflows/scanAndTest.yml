@@ -3,25 +3,6 @@ name: Validate PR on master branch
 
 # The workflow will run whenever an event happens on a pull request or on manual activation
 on: 
-    workflow_dispatch: 
-        inputs:
-          logLevel:
-            description: 'Log level'
-            required: true
-            default: 'warning'
-            type: choice
-            options:
-            - info
-            - warning
-            - debug
-          tags:
-            description: 'Test scenario tags'
-            required: false
-            type: boolean
-          environment:
-            description: 'Environment to run tests against'
-            type: environment
-            required: true
     pull_request:
       # The events are that a PR is opened, or when a commit is pushed
       # to a branch that has an existing pull request

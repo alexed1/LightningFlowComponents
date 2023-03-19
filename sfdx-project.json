@@ -9,7 +9,7 @@
             "default": true
         },
         {
-            "path": "flow-apps",
+            "path": "flow_apps",
             "default": false
         },
         {

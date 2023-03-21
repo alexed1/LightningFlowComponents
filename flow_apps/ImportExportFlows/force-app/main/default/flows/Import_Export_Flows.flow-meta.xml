@@ -368,7 +368,7 @@ MID({!FlowFileUpload.fileNames},2,LEN({!FlowFileUpload.fileNames})-16))</express
         </fields>
         <fields>
             <name>SelectFlow</name>
-            <extensionName>c:flowPickerFSC</extensionName>
+            <extensionName>c:fsc_flowPicker3</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputParameters>
                 <name>componentWidth</name>

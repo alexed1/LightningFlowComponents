@@ -104,8 +104,12 @@ Additional components packaged with this LWC:
                                         <div
                                             class="slds-media__body slds-border_left slds-p-left_small slds-p-top_xxx-small">
                                             <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
-                                            <!-- <span class="slds-text-title wrapped-content">{item.description}</span> -->
-<span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            <template lwc:if={showAsRichText}>
+                                                <span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="slds-text-title wrapped-content">{item.description}</span>
+                                            </template>
                                         </div>
                                     </span>
                                 </template>
@@ -117,8 +121,12 @@ Additional components packaged with this LWC:
                                         style={cardSize}>
                                         <span>
                                             <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
-                                            <!-- <span class="slds-text-title">{item.description}</span> -->
-<span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            <template lwc:if={showAsRichText}>
+                                                <span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="slds-text-title">{item.description}</span>
+                                            </template>
                                         </span>
                                     </span>
                                 </template>

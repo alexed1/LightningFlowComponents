@@ -2,7 +2,7 @@ import { api, track, LightningElement } from 'lwc';
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-    versionNumber = '2.37';
+    versionNumber = '2.38';
     staticChoicesModalClass = 'staticChoicesModal';
     _builderContext;
     _values;
@@ -31,7 +31,8 @@ export default class QuickChoiceCpe extends LightningElement {
         controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist or Checkbox Field):' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
-        staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' }
+        staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' },
+        richTextFlagString: { value: null, valueDataType: null, isCollection: false, label: 'True if = RICHTEXT' }
     };
 
     settings = {
@@ -158,6 +159,14 @@ export default class QuickChoiceCpe extends LightningElement {
         return this.template.querySelector('.' + this.staticChoicesModalClass);
     }
 
+    get isRichText() {
+        return this.inputValues.richTextFlagString.value === 'RICHTEXT';
+    }
+
+    set isRichText(value) {
+        this.inputValues.richTextFlagString.value = (value) ? 'RICHTEXT' : null;
+    }
+
     initializeValues(value) {
         console.log('automaticvars init: ' + JSON.stringify(this._automaticOutputVariables));
         if (this._values && this._values.length) {
@@ -232,6 +241,13 @@ export default class QuickChoiceCpe extends LightningElement {
                 default:
                     curAttributeType = 'String';
             }
+
+            if (curAttributeName = 'richTextFlagString') {
+                this.isRichText = curAttributeValue;
+                curAttributeValue = this.inputValues.richTextFlagString.value;
+                curAttributeType = 'String';
+            }
+            
             console.log('The current attribute name is ' + curAttributeName + ' and the current attribute value is ' + curAttributeValue);
             console.log('The current attribute type is ' + curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);

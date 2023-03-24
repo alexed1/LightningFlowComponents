@@ -20,6 +20,11 @@ export default class QuickChoiceFSC extends LightningElement {
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
     @api numberOfColumns; //for Visual Pickers only, 1(default) or 2
+    
+    @api richTextFlagString; //Show Visual Card descriptions as RichText if value = RICHTEXT
+    get showAsRichText() {
+        return this.richTextFlagString == 'RICHTEXT';
+    }
 
     //-------------For inputMode = Picklist
     @api allowNoneToBeChosen; //For picklist field only
@@ -231,7 +236,7 @@ export default class QuickChoiceFSC extends LightningElement {
         // Set isControlled only if a controlling value was provided and there are available controller values
         this._isControlled = false;
         let controllingIndex;
-        if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
+        if (Object.keys(data.controllerValues).length > 0) {
             this._isControlled = true;
             controllingIndex = data.controllerValues[this._controllingPicklistValue];
         }
@@ -421,7 +426,6 @@ export default class QuickChoiceFSC extends LightningElement {
     handleChange(event) {
         console.log(this.masterLabel + ": ", 'EVENT', event);
         this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-// this.dispatchFlowAttributeChangedEvent('selectedValue', this._selectedValue);
         this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {

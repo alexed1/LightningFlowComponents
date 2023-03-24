@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Quick Choice</masterLabel>
     <targets>
@@ -33,6 +33,7 @@
             <property name="style_width" label="Set Width in Pixels" type="Integer" description="Set the width of the component for Picklist and Radio Buttons (Default 320 pixels)"/>
             <property name="sortList" label="Sort the Picklist by Label?" type="Boolean" description="Set this to true to sort the list of Picklist labels.  Default will the the order they were added."/>
             <property name="staticChoicesString" label="Static Choices" type="String" description="JSON string containing the list of label/value pairs"/>
+            <property name="richTextFlagString" label="Rich Text Descriptions?" type="String" description="Set to RICHTEXT to display Visual Card descriptions as Rich Text"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

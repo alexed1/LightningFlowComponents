@@ -33,11 +33,13 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api
     get controllingPicklistValue() {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:38 ~ QuickChoiceFSC ~ getcontrollingPicklistValue ~ this._controllingPicklistValue:", this.masterLabel + ": ", this._controllingPicklistValue);
         return this._controllingPicklistValue;
     }
 
     set controllingPicklistValue(value) {
         this._controllingPicklistValue = value;
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:42 ~ QuickChoiceFSC ~ setcontrollingPicklistValue ~ this.priorControllingValue, value:", this.masterLabel + ": ", this.priorControllingValue, value);
         if (value != this.priorControllingValue) {
             this.priorControllingValue = value;
             this._selectedValue = null;
@@ -128,6 +130,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get showPicklist() {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:134 ~ QuickChoiceFSC ~ getshowPicklist ~ this._isControlled, this._picklistOptions.length > 0 : ",this.masterLabel + ": ", this._isControlled, this._picklistOptions.length > 0 );
         // Show if not controlled or if controlled that there are available picklist values
         return (!this._isControlled || this._picklistOptions.length > 0);
     }
@@ -145,7 +148,8 @@ export default class QuickChoiceFSC extends LightningElement {
         this_isControlled = value;
     }
 
-    @api get value() {
+    @api 
+    get value() {
         return this._selectedValue;
     }
 
@@ -208,9 +212,13 @@ export default class QuickChoiceFSC extends LightningElement {
             // Set isControlled only if a controlling value was provided and there are available controller values
             this._isControlled = false;
             let controllingIndex;
-            if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:212 ~ QuickChoiceFSC ~ picklistValues ~ this._controllingPicklistValue:", this.masterLabel + ": ",this._controllingPicklistValue);
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:212 ~ QuickChoiceFSC ~ picklistValues ~ Object.keys(data.controllerValues).length", this.masterLabel + ": ",Object.keys(data.controllerValues).length);
+            // if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
+if (Object.keys(data.controllerValues).length > 0) {
                 this._isControlled = true;
                 controllingIndex = data.controllerValues[this._controllingPicklistValue];
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:215 ~ QuickChoiceFSC ~ picklistValues ~ controllingIndex:", this.masterLabel + ": ",controllingIndex);
             }
 
             // Picklist values
@@ -304,7 +312,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     connectedCallback() {
-        console.log(this.masterLabel + ": ", "Entering Connected Callback for smartchoice");
+        console.log(this.masterLabel + ": ", "Entering Connected Callback for QuickChoice");
         console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
 
@@ -348,7 +356,7 @@ export default class QuickChoiceFSC extends LightningElement {
             this.showRadio = false;
         }
 
-        //console.log("initializing smartChoice. inputMode is: " + this.inputMode);
+        //console.log("initializing QuickChoice. inputMode is: " + this.inputMode);
         let options = [];
         if (this.legitInputModes.includes(this.inputMode)) {
             switch (this.inputMode) {
@@ -383,8 +391,8 @@ export default class QuickChoiceFSC extends LightningElement {
             this.setSelectedLabel();  
 
         } else {
-            console.log(this.masterLabel + ": ", "SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
-            throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            console.log(this.masterLabel + ": ", "QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
         }
     }
 
@@ -416,8 +424,11 @@ export default class QuickChoiceFSC extends LightningElement {
     handleChange(event) {
         console.log(this.masterLabel + ": ", 'EVENT', event);
         this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-        console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:423 ~ QuickChoiceFSC ~ handleChange ~ event.target.value:", event.target.value);
+console.log("🚀 ~ file: fsc_quickChoiceFSC.js:423 ~ QuickChoiceFSC ~ handleChange ~ event.detail.value:", event.detail.value);
+this.dispatchFlowAttributeChangedEvent('selectedValue', this._selectedValue);
         this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+        console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);
@@ -435,6 +446,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
+console.log("🚀🚀 ~ file: fsc_quickChoiceFSC.js:449 ~ dispatchFlowAttributeChangedEvent ~ attributeName, attributeValue:", this.masterLabel + ": ", attributeName, attributeValue);       
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

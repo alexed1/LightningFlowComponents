@@ -30,20 +30,18 @@ export default class QuickChoiceFSC extends LightningElement {
 
     _controllingPicklistValue;
     priorControllingValue = null;
+    picklistFieldDetails;
 
     @api
     get controllingPicklistValue() {
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:38 ~ QuickChoiceFSC ~ getcontrollingPicklistValue ~ this._controllingPicklistValue:", this.masterLabel + ": ", this._controllingPicklistValue);
         return this._controllingPicklistValue;
     }
 
     set controllingPicklistValue(value) {
         this._controllingPicklistValue = value;
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:42 ~ QuickChoiceFSC ~ setcontrollingPicklistValue ~ this.priorControllingValue, value:", this.masterLabel + ": ", this.priorControllingValue, value);
         if (value != this.priorControllingValue) {
             this.priorControllingValue = value;
-            this._selectedValue = null;
-            this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+            this.setPicklistSelections(this.picklistFieldDetails);
         }
     }
 
@@ -130,7 +128,6 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:42 ~ QuickChoiceFSC ~ setcontrol
 
     @api 
     get showPicklist() {
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:134 ~ QuickChoiceFSC ~ getshowPicklist ~ this._isControlled, this._picklistOptions.length > 0 : ",this.masterLabel + ": ", this._isControlled, this._picklistOptions.length > 0 );
         // Show if not controlled or if controlled that there are available picklist values
         return (!this._isControlled || this._picklistOptions.length > 0);
     }
@@ -201,56 +198,13 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:134 ~ QuickChoiceFSC ~ getshowPi
     })
     picklistValues({error, data}) {
         if (data) {
-            console.log(this.masterLabel + ": ", "gtPicklistValues returned data", data);
-
-            this._picklistOptions = [];
-            this._allValues = [];
-            this._allLabels = [];
-            if (this.allowNoneToBeChosen)
-                this._picklistOptions.push({label: "--None--", value: "None"});
-
-            // Set isControlled only if a controlling value was provided and there are available controller values
-            this._isControlled = false;
-            let controllingIndex;
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:212 ~ QuickChoiceFSC ~ picklistValues ~ this._controllingPicklistValue:", this.masterLabel + ": ",this._controllingPicklistValue);
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:212 ~ QuickChoiceFSC ~ picklistValues ~ Object.keys(data.controllerValues).length", this.masterLabel + ": ",Object.keys(data.controllerValues).length);
-            // if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
-if (Object.keys(data.controllerValues).length > 0) {
-                this._isControlled = true;
-                controllingIndex = data.controllerValues[this._controllingPicklistValue];
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:215 ~ QuickChoiceFSC ~ picklistValues ~ controllingIndex:", this.masterLabel + ": ",controllingIndex);
-            }
-
-            // Picklist values
-            data.values.forEach(key => {
-                if (!this._isControlled || key.validFor.includes(controllingIndex)) {
-                    this._picklistOptions.push({
-                        label: key.label,
-                        value: key.value
-                    });
-                    this._allLabels.push(key.label);
-                    this._allValues.push(key.value);
-                }
-            });
-
-            // Sort Picklist Values
-            this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
-
-            console.log(this.masterLabel + ": ", "displayMode is" + this.displayMode);
-
-            if (this.inputMode === "Picklist Field") {
-                this.setPicklistOptions();
-            }
-            if (this._allValues && this._allValues.length) {
-                this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
-                this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
-            }
-
+            console.log(this.masterLabel + ": ", "getPicklistValues returned data", data);
+            this.setPicklistSelections(data);
+            this.picklistFieldDetails = data;
         } else if (error) {
             this.error = JSON.stringify(error);
             console.log(this.masterLabel + ": ", "getPicklistValues wire service returned error: " + this.error);
         }
-
     }
 
     get calculatedObjectAndFieldName() {
@@ -262,6 +216,69 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:215 ~ QuickChoiceFSC ~ picklistV
             return `${this.objectName}.${this.fieldName}`;
         }
         return undefined;
+    }
+
+    // Process available selections for the picklist
+    setPicklistSelections(data) {
+
+        this._picklistOptions = [];
+        this._allValues = [];
+        this._allLabels = [];
+        if (this.allowNoneToBeChosen) {
+            this._picklistOptions.push({label: "--None--", value: "None"});
+        }
+
+        // Set isControlled only if a controlling value was provided and there are available controller values
+        this._isControlled = false;
+        let controllingIndex;
+        if (!!this._controllingPicklistValue && Object.keys(data.controllerValues).length > 0) {
+            this._isControlled = true;
+            controllingIndex = data.controllerValues[this._controllingPicklistValue];
+        }
+
+        // Picklist values
+        data.values.forEach(key => {
+            if (!this._isControlled || key.validFor.includes(controllingIndex)) {
+                this._picklistOptions.push({
+                    label: key.label,
+                    value: key.value
+                });
+                this._allLabels.push(key.label);
+                this._allValues.push(key.value);
+            }
+        });
+
+        // Sort Picklist Values
+        this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
+
+        if (this.inputMode === "Picklist Field") {
+            this.setPicklistOptions();
+        }
+        if (this._allValues && this._allValues.length) {
+            this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
+            this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
+        }
+
+    }
+
+    setPicklistOptions() {
+        this.options = this.picklistOptionsStorage;
+        if (this._selectedValue) {
+            this.setSelectedLabel();
+        }
+    }
+
+    doSort(value, sortFlag) {
+        if (!value) {
+            return;
+        }
+        if (!sortFlag) {
+            return value;
+        }
+        let fieldValue = row => row['label'] || '';
+        return [...value.sort(
+            (a,b)=>(a=fieldValue(a).toUpperCase(),b=fieldValue(b).toUpperCase(),((a>b)-(b>a)))
+        )];                
     }
 
     get gridClass() {
@@ -289,26 +306,6 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:215 ~ QuickChoiceFSC ~ picklistV
 
     get responsiveSize() {
         return (this.dualColumns || !this.isResponsive) ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
-    }
-
-    setPicklistOptions() {
-        this.options = this.picklistOptionsStorage;
-        if (this._selectedValue) {
-            this.setSelectedLabel();
-        }
-    }
-
-    doSort(value, sortFlag) {
-        if (!value) {
-            return;
-        }
-        if (!sortFlag) {
-            return value;
-        }
-        let fieldValue = row => row['label'] || '';
-        return [...value.sort(
-            (a,b)=>(a=fieldValue(a).toUpperCase(),b=fieldValue(b).toUpperCase(),((a>b)-(b>a)))
-        )];                
     }
 
     connectedCallback() {
@@ -424,9 +421,7 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:215 ~ QuickChoiceFSC ~ picklistV
     handleChange(event) {
         console.log(this.masterLabel + ": ", 'EVENT', event);
         this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:423 ~ QuickChoiceFSC ~ handleChange ~ event.target.value:", event.target.value);
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:423 ~ QuickChoiceFSC ~ handleChange ~ event.detail.value:", event.detail.value);
-this.dispatchFlowAttributeChangedEvent('selectedValue', this._selectedValue);
+// this.dispatchFlowAttributeChangedEvent('selectedValue', this._selectedValue);
         this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
@@ -446,7 +441,6 @@ this.dispatchFlowAttributeChangedEvent('selectedValue', this._selectedValue);
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
-console.log("🚀🚀 ~ file: fsc_quickChoiceFSC.js:449 ~ dispatchFlowAttributeChangedEvent ~ attributeName, attributeValue:", this.masterLabel + ": ", attributeName, attributeValue);       
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

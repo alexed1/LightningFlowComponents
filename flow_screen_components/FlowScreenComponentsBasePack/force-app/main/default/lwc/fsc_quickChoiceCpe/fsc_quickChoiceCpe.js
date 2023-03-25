@@ -32,7 +32,7 @@ export default class QuickChoiceCpe extends LightningElement {
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' },
-        richTextFlagString: { value: null, valueDataType: null, isCollection: false, label: 'True if = RICHTEXT' }
+        richTextFlagString: { value: null, valueDataType: null, isCollection: false, label: 'Use Rich Text for Descriptions?' }
     };
 
     settings = {
@@ -159,12 +159,9 @@ export default class QuickChoiceCpe extends LightningElement {
         return this.template.querySelector('.' + this.staticChoicesModalClass);
     }
 
+    // isRichText = false;
     get isRichText() {
         return this.inputValues.richTextFlagString.value === 'RICHTEXT';
-    }
-
-    set isRichText(value) {
-        this.inputValues.richTextFlagString.value = (value) ? 'RICHTEXT' : null;
     }
 
     initializeValues(value) {
@@ -242,12 +239,13 @@ export default class QuickChoiceCpe extends LightningElement {
                     curAttributeType = 'String';
             }
 
-            if (curAttributeName = 'richTextFlagString') {
-                this.isRichText = curAttributeValue;
-                curAttributeValue = this.inputValues.richTextFlagString.value;
+            if (curAttributeName == 'richTextFlagString') {
+                // this.isRichText = curAttributeValue;
+                curAttributeValue = (event.target.checked) ? 'RICHTEXT' : null
                 curAttributeType = 'String';
+                this.inputValues.richTextFlagString.value = curAttributeValue;
             }
-            
+
             console.log('The current attribute name is ' + curAttributeName + ' and the current attribute value is ' + curAttributeValue);
             console.log('The current attribute type is ' + curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);

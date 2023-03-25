@@ -1,0 +1,16 @@
+.pointer {
+    cursor: pointer;
+}
+
+.actionColumn lightning-button-icon {
+    opacity: 0.15;
+    transition: opacity 0.5s;
+}
+
+.staticChoiceRow:hover lightning-button-icon {
+    opacity: .75;
+}
+
+.staticChoiceRow:hover lightning-button-icon:hover, .actionColumn lightning-button-icon:focus-within {
+    opacity: 1;
+}

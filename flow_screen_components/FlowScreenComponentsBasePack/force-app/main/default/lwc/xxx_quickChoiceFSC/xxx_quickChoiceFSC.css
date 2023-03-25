@@ -1,0 +1,14 @@
+/* force top margin because the standard component 
+   skips it for the first item in the list */
+.slds-visual-picker_vertical {
+    margin-left: 0;
+    margin-top: 1rem;
+}
+
+.wrapped-content{
+    overflow-wrap: break-word;
+}
+
+.paddingFix {
+    padding-right: 0rem !important;
+}

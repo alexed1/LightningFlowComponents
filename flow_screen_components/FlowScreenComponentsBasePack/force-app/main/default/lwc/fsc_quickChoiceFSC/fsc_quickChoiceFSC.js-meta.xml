@@ -28,7 +28,10 @@
             <property name="recordTypeId" label="Record Type Id" type="String" description="Record Type Id (for Picklist Field)"/>
             <property name="objectName" label="Object Name" type="String" description="Object Name (for Picklist Field)"/>
             <property name="fieldName" label="Field Name" type="String" description="Field Name (for Picklist Field)"/>
-            <property name="controllingPicklistValue" label="Controlling Value (Picklist Field)" type="String" description="Contolling Picklist Field Value"/>
+            <property name="dependentPicklist" label="Dependent Picklist?" type="Boolean" default="false" role="inputOnly" description="Is this a dependent Picklist field?"/>
+            <property name="cb_dependentPicklist" type="String" role="inputOnly"/>
+            <property name="controllingPicklistValue" label="Controlling Value (Picklist Field)" type="String" description="Controlling Picklist Field Value"/>
+            <property name="controllingCheckboxValue" label="Controlling Value (Checkbox Field)" type="Boolean" description="Controlling Checkbox Field Value"/>
             <property name="allowNoneToBeChosen" label="Allow 'None' to be Chosen" type="Boolean" description="Set this to true to include a None choice. (For Input Mode “Picklist Field” only)"/>
             <property name="style_width" label="Set Width in Pixels" type="Integer" description="Set the width of the component for Picklist and Radio Buttons (Default 320 pixels)"/>
             <property name="sortList" label="Sort the Picklist by Label?" type="Boolean" description="Set this to true to sort the list of Picklist labels.  Default will the the order they were added."/>

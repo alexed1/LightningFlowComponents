@@ -1,5 +1,9 @@
 import { api, track, LightningElement } from 'lwc';
 
+const CB_TRUE = 'CB_TRUE';            // Used with fsc_flowCheckbox component
+const CB_FALSE = 'CB_FALSE';          // Used with fsc_flowCheckbox component
+const CB_ATTRIB_PREFIX = 'cb_';       // Used with fsc_flowCheckbox component
+
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
     versionNumber = '2.38';
@@ -28,7 +32,11 @@ export default class QuickChoiceCpe extends LightningElement {
         objectName: { value: null, valueDataType: null, isCollection: false, label: 'Select Object' },
         fieldName: { value: null, valueDataType: null, isCollection: false, label: 'Select Field' },
         recordTypeId: { value: null, valueDataType: null, isCollection: false, label: 'Filter on Record Type ID:' },
-        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist or Checkbox Field):' },
+        dependentPicklist: { value: null, valueDataType: null, isCollection: false, label: 'Is this a Dependent Picklist?', 
+            helpText: 'Check this box if this is a dependent picklist and you will be defining a controlling value.  The controlling value can either be a picklist field value or a checkbox field value' },
+        cb_dependentPicklist: {value: null, valueDataType: null, isCollection: false, label: ''},
+        controllingPicklistValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Picklist Field):' },
+        controllingCheckboxValue: { value: null, valueDataType: null, isCollection: false, label: 'Controlling Value (Checkbox Field):' },
         choiceLabels: { value: null, valueDataType: null, isCollection: true, label: 'Choice Labels [Card Titles]' },
         choiceValues: { value: null, valueDataType: null, isCollection: true, label: 'Choice Values [Card Descriptions]' },
         staticChoicesString: { value: null, valueDataType: null, isCollection: false, label: 'String of Static Choice (JSON)' },
@@ -159,11 +167,14 @@ export default class QuickChoiceCpe extends LightningElement {
         return this.template.querySelector('.' + this.staticChoicesModalClass);
     }
 
-    // isRichText = false;
     get isRichText() {
         return this.inputValues.richTextFlagString.value === 'RICHTEXT';
     }
 
+    get showControllingValues() {
+        return this.inputValues.cb_dependentPicklist.value === CB_TRUE;
+    }
+    
     initializeValues(value) {
         console.log('automaticvars init: ' + JSON.stringify(this._automaticOutputVariables));
         if (this._values && this._values.length) {
@@ -219,7 +230,22 @@ export default class QuickChoiceCpe extends LightningElement {
 
     handleFlowComboboxValueChange(event) {
         if (event.target && event.detail) {
-            this.dispatchFlowValueChangeEvent(event.target.name.replace(this.settings.inputAttributePrefix, ''), event.detail.newValue, event.detail.newValueDataType);
+
+            let curAttributeName = event.target.name.replace(this.settings.inputAttributePrefix, '');
+            let curAttributeValue = event.detail.newValue;
+            let curAttributeType = event.detail.newValueDataType;
+
+            if (curAttributeName == 'controllingPicklistValue') {
+                this.inputValues.controllingCheckboxValue.value = null;
+                this.dispatchFlowValueChangeEvent('controllingCheckboxValue', null, curAttributeType);
+            }
+
+            if (curAttributeName == 'controllingCheckboxValue') {
+                this.inputValues.controllingPicklistValue.value = null;
+                this.dispatchFlowValueChangeEvent('controllingPicklistValue', null, curAttributeType);
+            }
+
+            this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
         }
     }
 
@@ -240,7 +266,6 @@ export default class QuickChoiceCpe extends LightningElement {
             }
 
             if (curAttributeName == 'richTextFlagString') {
-                // this.isRichText = curAttributeValue;
                 curAttributeValue = (event.target.checked) ? 'RICHTEXT' : null
                 curAttributeType = 'String';
                 this.inputValues.richTextFlagString.value = curAttributeValue;
@@ -249,6 +274,14 @@ export default class QuickChoiceCpe extends LightningElement {
             console.log('The current attribute name is ' + curAttributeName + ' and the current attribute value is ' + curAttributeValue);
             console.log('The current attribute type is ' + curAttributeType);
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
+        }
+    }
+
+    handleCheckboxChange(event) {
+        if (event.target && event.detail) {
+            let changedAttribute = event.target.name.replace(this.settings.inputAttributePrefix, '');
+            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            this.dispatchFlowValueChangeEvent(CB_ATTRIB_PREFIX+changedAttribute, event.detail.newStringValue, 'String');
         }
     }
 

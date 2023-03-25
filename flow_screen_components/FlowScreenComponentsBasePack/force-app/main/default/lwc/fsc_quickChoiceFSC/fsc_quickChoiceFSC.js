@@ -6,7 +6,7 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
-export default class QuickChoiceFSC extends LightningElement {
+export default class QuickChoiceXXX extends LightningElement {
 
     bottomPadding = 'slds-p-bottom_x-small';
 
@@ -34,18 +34,40 @@ export default class QuickChoiceFSC extends LightningElement {
     @api sortList; //used for picklist fields
 
     _controllingPicklistValue;
+    _controllingCheckboxValue;
+    controllingValue;
     priorControllingValue = null;
     picklistFieldDetails;
+    isControlledByCheckbox = false;
+
+    @api
+    get dependentPicklist() {
+        return (this.cb_dependentPicklist == CB_TRUE) ? true : false;
+    }
+    @api cb_dependentPicklist;
+
+    @api
+    get controllingCheckboxValue() {
+        return this._controllingCheckboxValue;
+    }
+
+    set controllingCheckboxValue(value) {
+        this._controllingCheckboxValue = value;
+        this.controllingValue = value;
+        if (value != this.priorControllingValue) {
+            this.priorControllingValue = value;
+            this.setPicklistSelections(this.picklistFieldDetails);
+        }
+    }
 
     @api
     get controllingPicklistValue() {
-console.log("***", this.masterLabel + ":", "get controllingPicklistValue", this._controllingPicklistValue);
         return this._controllingPicklistValue;
     }
 
     set controllingPicklistValue(value) {
-console.log("***", this.masterLabel + ":", "set controllingPicklistValue", value);
         this._controllingPicklistValue = value;
+        this.controllingValue = value;
         if (value != this.priorControllingValue) {
             this.priorControllingValue = value;
             this.setPicklistSelections(this.picklistFieldDetails);
@@ -136,9 +158,7 @@ console.log("***", this.masterLabel + ":", "set controllingPicklistValue", value
     @api 
     get showPicklist() {
         // Show if not controlled or if controlled that there are available picklist values
-console.log("***", this.masterLabel + ":", "get showPicklist", this._isControlled, this._picklistOptions.length);
-console.log("***", this.masterLabel + ":", "get showPicklist", !this._isControlled, this._picklistOptions.length > 0); 
-        return (!this._isControlled || this._picklistOptions.length > 0);
+        return (!this._isControlled || this._picklistOptions.length > 0 || this.isControlledByCheckbox);
     }
 
     set showPicklist(value) {
@@ -242,7 +262,11 @@ console.log("***", this.masterLabel + ":", "get showPicklist", !this._isControll
         let controllingIndex;
         if (Object.keys(data.controllerValues).length > 0) {
             this._isControlled = true;
-            controllingIndex = data.controllerValues[this._controllingPicklistValue];
+            this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
+            if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
+                this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
+            }
+            controllingIndex = data.controllerValues[this.controllingValue];
         }
 
         // Picklist values

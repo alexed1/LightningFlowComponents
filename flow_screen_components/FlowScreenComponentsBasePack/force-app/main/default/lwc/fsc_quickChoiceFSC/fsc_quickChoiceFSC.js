@@ -20,7 +20,7 @@ export default class QuickChoiceFSC extends LightningElement {
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
     @api numberOfColumns; //for Visual Pickers only, 1(default) or 2
-    
+
     @api richTextFlagString; //Show Visual Card descriptions as RichText if value = RICHTEXT
     get showAsRichText() {
         return this.richTextFlagString == 'RICHTEXT';
@@ -39,10 +39,12 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api
     get controllingPicklistValue() {
+console.log("***", this.masterLabel + ":", "get controllingPicklistValue", this._controllingPicklistValue);
         return this._controllingPicklistValue;
     }
 
     set controllingPicklistValue(value) {
+console.log("***", this.masterLabel + ":", "set controllingPicklistValue", value);
         this._controllingPicklistValue = value;
         if (value != this.priorControllingValue) {
             this.priorControllingValue = value;
@@ -134,6 +136,8 @@ export default class QuickChoiceFSC extends LightningElement {
     @api 
     get showPicklist() {
         // Show if not controlled or if controlled that there are available picklist values
+console.log("***", this.masterLabel + ":", "get showPicklist", this._isControlled, this._picklistOptions.length);
+console.log("***", this.masterLabel + ":", "get showPicklist", !this._isControlled, this._picklistOptions.length > 0); 
         return (!this._isControlled || this._picklistOptions.length > 0);
     }
 

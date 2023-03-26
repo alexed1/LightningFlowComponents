@@ -21,6 +21,8 @@
                         <lightning-input type="checkbox" label={inputValues.isSameHeight.label} name="select_isSameHeight"
                                 checked={inputValues.isSameHeight.value} onchange={handleValueChange}></lightning-input>
                 </template>
+                <lightning-input name="select_richTextFlagString" type="checkbox" label={inputValues.richTextFlagString.label}
+                        checked={isRichText} onchange={handleValueChange}></lightning-input>
 
                 <!-- </template> -->
                 <!-- <template if:true={inputValues.includeIcons.value}> -->
@@ -60,14 +62,40 @@
                         automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
                 
-                <c-fsc_flow-combobox name="select_controllingPicklistValue" label={inputValues.controllingPicklistValue.label}
-                        value={inputValues.controllingPicklistValue.value} value-type={inputValues.controllingPicklistValue.valueDataType}
-                        builder-context-filter-type="String"
-                        builder-context-filter-collection-boolean={inputValues.controllingPicklistValue.isCollection}
-                        builder-context={_builderContext}
-                        onvaluechanged={handleFlowComboboxValueChange}
-                        automatic-output-variables={automaticOutputVariables}
-                ></c-fsc_flow-combobox>
+                <!-- Dependent Picklist Attributes -->
+                <c-fsc_flow-checkbox
+                        name="select_dependentPicklist"
+                        label={inputValues.dependentPicklist.label}
+                        checked={inputValues.cb_dependentPicklist.value}
+                        field-level-help={inputValues.dependentPicklist.helpText}
+                        oncheckboxchanged={handleCheckboxChange}
+                ></c-fsc_flow-checkbox>
+                <div lwc:if={showControllingValues}>
+                        <c-fsc_flow-combobox 
+                                name="select_controllingPicklistValue" 
+                                label={inputValues.controllingPicklistValue.label}
+                                value={inputValues.controllingPicklistValue.value} 
+                                value-type={inputValues.controllingPicklistValue.valueDataType}
+                                field-level-help="If the controlling field is a Picklist, reference it here."
+                                builder-context-filter-type="String"
+                                builder-context-filter-collection-boolean={inputValues.controllingPicklistValue.isCollection}
+                                builder-context={_builderContext}
+                                onvaluechanged={handleFlowComboboxValueChange}
+                                automatic-output-variables={automaticOutputVariables}
+                        ></c-fsc_flow-combobox>
+                        <c-fsc_flow-combobox 
+                                name="select_controllingCheckboxValue" 
+                                label={inputValues.controllingCheckboxValue.label}
+                                value={inputValues.controllingCheckboxValue.value} 
+                                value-type={inputValues.controllingCheckboxValue.valueDataType}
+                                field-level-help="If the controlling field is a Picklist, reference it here."
+                                builder-context-filter-type="Boolean"
+                                builder-context-filter-collection-boolean={inputValues.controllingCheckboxValue.isCollection}
+                                builder-context={_builderContext}
+                                onvaluechanged={handleFlowComboboxValueChange}
+                                automatic-output-variables={automaticOutputVariables}
+                        ></c-fsc_flow-combobox>
+                </div>
 
         </template>
 

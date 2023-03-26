@@ -6,7 +6,7 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
-export default class QuickChoiceXXX extends LightningElement {
+export default class QuickChoiceFSC extends LightningElement {
 
     bottomPadding = 'slds-p-bottom_x-small';
 

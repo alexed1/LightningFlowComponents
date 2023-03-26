@@ -3,12 +3,12 @@ global with sharing class GetRandomNumber {
     @InvocableMethod
     global static List<Results> getRandomNumberFromRange(List<Requests> requests)
        {
-           
-            Results curResult = new Results();
-            curResult.randomNumber = generateRandomFromRange(requests[0].startNumber, requests[0].endNumber);
-           
             List<Results> resultsList = new List<results>();
-            resultsList.add(curResult);
+            for(Requests req: requests){
+                Results curResult = new Results();
+                curResult.randomNumber = generateRandomFromRange(req.startNumber, req.endNumber);
+                resultsList.add(curResult);
+            }
             return resultsList;
        }
   

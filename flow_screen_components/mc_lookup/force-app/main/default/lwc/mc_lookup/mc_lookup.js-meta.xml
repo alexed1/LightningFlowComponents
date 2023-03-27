@@ -18,7 +18,7 @@
             <property name="messageWhenValueMissing" label="Message When Value Missing" type="String" role="inputOnly"></property>     
             <property name="showNewRecordAction" label="Show 'New Record' Action" type="Boolean" default="false" role="inputOnly"></property>   
             <property name="iconName" label="Icon Name" type="String" description="Enter a Lightning Design System icon name" role="inputOnly"></property>
-            <property name="placeholder" label="Placeholder" type="String" role="inputOnly"></property>
+            <property name="placeholder" label="Placeholder Text" type="String" role="inputOnly"></property>
             <property name="noMatchString" label="No Match Response" type="String" role="inputOnly"></property>
             <property name="fieldLevelHelp" label="Field Level Help" type="String" role="inputOnly"></property>
             <property name="fieldsToSearch" label="Fields to Search" type="String" role="inputOnly"></property>

@@ -23,13 +23,6 @@
         {
             "path": "lightning_page_components",
             "default": false
-        },
-        {
-            "path": "DeactivateUser/force-app",
-            "package": "DeactivateUserOrchestration",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
-            "default": false
         }
     ],
     "namespace": "",

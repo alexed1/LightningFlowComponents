@@ -5,14 +5,14 @@
       "default": true,
       "dependencies": [
         {
-          "package": "FlowActionsBasePack@2.12.0-0"
+          "package": "FlowActionsBasePack@3.0.0-0"
         },
         {
-          "package": "FlowScreenComponentsBasePack@2.1.6-0"
+          "package": "FlowScreenComponentsBasePack@3.0.19-0"
         }
       ],
       "package": "clipboardButton",
-      "versionName": "Version 1.0",
+      "versionName": "Version 1.1",
       "versionDescription": "Copy to Clipboard Button Flow Screen Component by Eric Smith",
       "versionNumber": "0.1.0.NEXT"
     }
@@ -22,8 +22,9 @@
   "sourceApiVersion": "51.0",
   "packageAliases": {
     "clipboardButton": "0Ho5G000000CahKSAS",
-    "FlowActionsBasePack@2.12.0-0": "04t4W000002vyNZQAY",
-    "FlowScreenComponentsBasePack@2.1.6-0": "04t5G000004PucZQAS",
-    "clipboardButton@1.0.0-0": "04t5G0000047xEYQAY"
+    "FlowActionsBasePack@3.0.0-0": "04t8b000001BTf1AAG",
+    "FlowScreenComponentsBasePack@3.0.19-0": "04t5G000004C6vbQAC",
+    "clipboardButton@1.0.0-0": "04t5G0000047xEYQAY",
+    "clipboardButton@1.1.0": "04t5G000004C6vlQAC"
   }
 }

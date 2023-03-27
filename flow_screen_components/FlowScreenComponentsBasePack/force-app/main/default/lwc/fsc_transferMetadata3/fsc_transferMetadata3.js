@@ -1,4 +1,6 @@
 /**
+ * 03/27/23     Eric Smith      Don't run tests if deploying a flow in a sandbox
+ * 
  * 09/03/20     Eric Smith      Unescaped {} characters in the Metadata String in case it was passed in that way from a Flow
  * 
  * 08/21/20     Eric Smith      Added Extracted and Escaped Metadata Strings to the Output Attributes
@@ -37,6 +39,15 @@ export default class TransferMetadata extends LightningElement {
     modifiedName;
     @api availableActions = [];
 
+    @api    // Don't run Apex tests when just deploying a flow (Not for Production)
+    get testLevel() {
+        this._testLevel = (this.objectType == 'Flow') ? 'NoTestRun' : null;
+        return this._testLevel;
+    }
+    set testLevel(value) {
+        this._testLevel = value;
+    }
+    _testLevel;
 
     connectedCallback() {
  
@@ -91,7 +102,7 @@ export default class TransferMetadata extends LightningElement {
         documentContent = documentContent.replaceAll('&lbrace;', '{');
         documentContent = documentContent.replaceAll('&rbrace;', '}');
 
-        fsc_deployMetadata({ metadataText : documentContent, metadataName : this.modifiedName, testLevel: null, objectType : this.objectType,  })        
+        fsc_deployMetadata({ metadataText : documentContent, metadataName : this.modifiedName, testLevel: this.testLevel, objectType : this.objectType,  })        
         .then(result => {
             console.log('result of deployment request is: ' + result);
             console.log('successfully sent async deployment request');

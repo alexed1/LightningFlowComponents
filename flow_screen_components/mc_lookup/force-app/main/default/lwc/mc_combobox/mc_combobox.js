@@ -392,6 +392,7 @@ export default class OptionSelector extends LightningElement {
                 // this.values = [...this.values, selectedOption.value];   // using spread instead of values.push to trigger the setter
             } else {
                 this.value = selectedOption.value;
+                this.closeList(); // Fixes issue where the listbox would remain open after selecting an option on IOS                
             }            
             this.resetSearch();
             this.dispatchOptions();

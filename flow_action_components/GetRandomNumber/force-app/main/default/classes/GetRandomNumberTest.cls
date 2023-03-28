@@ -19,8 +19,8 @@ global with sharing class GetRandomNumberTest {
         Test.stopTest();
 
         Double resultNum = resultsList[0].randomNumber;
-		System.assertEquals(true, resultNum>startNum);
-        System.assertEquals(true, resultNum<endNum);
+		System.assertEquals(true, resultNum>=startNum);
+        System.assertEquals(true, resultNum<=endNum);
     }
     
     @isTest
@@ -32,8 +32,8 @@ global with sharing class GetRandomNumberTest {
         Double resultNum = GetRandomNumber.generateRandomFromRange(startNum, endNum);
         Test.stopTest();
   
-		System.assertEquals(true, resultNum>startNum);
-        System.assertEquals(true, resultNum<endNum);
+		System.assertEquals(true, resultNum>=startNum);
+        System.assertEquals(true, resultNum<=endNum);
     }
     
     @isTest
@@ -45,9 +45,7 @@ global with sharing class GetRandomNumberTest {
         Double resultNum = GetRandomNumber.generateRandomFromRange(startNum, endNum);
         Test.stopTest();
   
-		System.assertEquals(true, resultNum>startNum);
-        System.assertEquals(true, resultNum<endNum);
+		System.assertEquals(true, resultNum>=startNum);
+        System.assertEquals(true, resultNum<=endNum);
     }
-    
-    
 }

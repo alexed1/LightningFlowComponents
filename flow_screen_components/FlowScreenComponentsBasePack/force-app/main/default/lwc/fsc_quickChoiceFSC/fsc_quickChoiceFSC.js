@@ -6,7 +6,7 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
-const CB_TRUE = true;
+const CB_TRUE = 'CB_TRUE';
 
 export default class QuickChoiceFSC extends LightningElement {
 

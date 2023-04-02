@@ -29,6 +29,10 @@
  **/
 
  /**
+ * Eric Smith - 4/2/23
+ * 
+ * 		Update references to API version
+ * 
  * Eric Smith - 9/3/20
  * 
  * 		Escaped {} characters in the Extracted File String so it could be processed in a Flow
@@ -44,7 +48,7 @@
 
 global  with sharing class RetrieveMetadata 
 {
-	private static final Integer METADATA_API_VERSION = 49;
+	private static final Integer METADATA_API_VERSION = 57;
 
 	global static List<SelectOption> MetaDataTypes {get; set;}
 	global static String MetaDataType {get; set;}		
@@ -238,7 +242,7 @@ RetrieveResult retrieveResult = metadataConnection.checkRetrieveStatus(response.
                     '<members>' + flowName + '</members>' +
                     '<name>Flow</name>' + 
                 '</types>' + 
-                '<version>51.0</version>' + 
+                '<version>' + METADATA_API_VERSION + '.0</version>' + 
             '</Package>';		
     }
 	

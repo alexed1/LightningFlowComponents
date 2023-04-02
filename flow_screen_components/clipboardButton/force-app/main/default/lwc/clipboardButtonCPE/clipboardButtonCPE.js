@@ -16,7 +16,7 @@
 
 import { LightningElement, track, api } from "lwc";
 
-const VERSION_NUMBER = "1.0.0";
+const VERSION_NUMBER = "1.1.0";
 
 const CB_TRUE = "CB_TRUE"; // Used with fsc_flowCheckbox component
 const CB_FALSE = "CB_FALSE"; // Used with fsc_flowCheckbox component

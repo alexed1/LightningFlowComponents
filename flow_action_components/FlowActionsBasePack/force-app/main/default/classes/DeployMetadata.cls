@@ -1,4 +1,7 @@
 global with sharing class DeployMetadata {
+
+    private static final Integer METADATA_API_VERSION = 57;
+
     @AuraEnabled 
     global static String deploy(String metadataText, String metadataName, String testLevel, String objectType) {
         System.debug('entering deploy. metadata text, objectname, testlevel, and object type are:' );
@@ -110,14 +113,14 @@ global with sharing class DeployMetadata {
                         '<members>' + className + '</members>' +
                         '<name>' + objectType +'</name>' + 
                     '</types>' + 
-                    '<version>51.0</version>' + 
+                    '<version>' + METADATA_API_VERSION + '.0</version>' + 
                 '</Package>';		
         }
     
          public static String getStandardApexClassMetadata(){
             return '<?xml version="1.0" encoding="UTF-8"?>' +
                 '<ApexClass xmlns="http://soap.sforce.com/2006/04/metadata">' +
-                    '<apiVersion>48.0</apiVersion>' + 
+                    '<apiVersion>' + METADATA_API_VERSION + '.0</apiVersion>' + 
                     '<status>Active</status>' +
                 '</ApexClass>';		
         }
@@ -126,7 +129,7 @@ global with sharing class DeployMetadata {
         {
             String boilerplate =  '<?xml version="1.0" encoding="UTF-8"?>' +
             '<Flow xmlns="http://soap.sforce.com/2006/04/metadata">' +
-                '<apiVersion>51.0</apiVersion>' + 
+                '<apiVersion>' + METADATA_API_VERSION + '.0</apiVersion>' +  
                 '<status>Active</status>' +
             '</Flow>';
 

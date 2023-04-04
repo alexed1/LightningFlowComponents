@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata" fqn="Rich Text Area FSC">
-    <apiVersion>48.0</apiVersion>
+    <apiVersion>56.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>
@@ -8,6 +8,8 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property label="Disable Advanced Tools" name="disableAdvancedTools" type="Boolean" role="inputOnly" description="Set to true to disable expanded Rich Text tools - Search/Replace, Auto-replace, and blocked words/sybmols.  Default is false."/>
+            <property label="Disabled Categories" name="disabledCategories" type="String" role="inputOnly" description="An optional comma-separated list of button categories to remove from the toolbar."/>
+            <property label="Enabled Formats" name="enabledFormats" type="String" role="inputOnly" description="An optional comma-seperated list of allowed formats. By default, the list is computed based on enabled categories."/>
             <property label="Rich Text Value" name="value" type="String" description="Rich Text input/output to the Flow - this is the value you will be manipulating"/>
             <property label="Field Label" name="label" type="String" role="inputOnly" description="Label for the Rich Text field"/>
             <property label="Blocked Words" name="disallowedWordsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: bad,worse,worst"/>

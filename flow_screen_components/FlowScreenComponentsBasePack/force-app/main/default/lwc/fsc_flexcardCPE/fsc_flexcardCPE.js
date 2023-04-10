@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 02-23-2023
+ * @last modified by  : Josh Dayment
+**/
 import { api, track, LightningElement } from 'lwc';
 
 const DATA_TYPE = {
@@ -23,10 +30,11 @@ const CLICK_ACTIONS = {
     TRANSITION: { value: 'transition', label: 'Single-select and autonavigate' }
 }
 
-const DISPLAY_OPTIONS = {
-    LIST: {value: 'list', label: 'List'},
-    MENU: {value: 'menu', label: 'Menu'}
-}
+//const DISPLAY_OPTIONS = {
+//LIST: {value: 'list', label: 'List'},
+//MENU: {value: 'menu', label: 'Menu'}
+//}
+
 
 const VALIDATEABLE_INPUTS = ['c-fsc_flow-combobox', 'c-fsc_pick-object-and-field-3', 'c-field-selector-3'];
 
@@ -39,20 +47,20 @@ export default class fsc_flexcardCPE extends LightningElement {
     _typeMappings = [];
     rendered;
 
-     // Banner Help Text
-     recordObjectInfo = [
-        {label: 'Object Type Selection', helpText: 'Select "All" if you want the Object picklist to display all Objects in Salesforce note: not all objects are supported full list can be found here https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_all_supported_objects.htm.'},
-        {label: 'Preselected recordId', helpText: 'This is a single recordId that will default the value for "value" '},
-        
+    // Banner Help Text
+    recordObjectInfo = [
+        { label: 'Object Type Selection', helpText: 'Select "All" if you want the Object picklist to display all Objects in Salesforce note: not all objects are supported full list can be found here https://developer.salesforce.com/docs/atlas.en-us.uiapi.meta/uiapi/ui_api_all_supported_objects.htm.' },
+        { label: 'Preselected recordId', helpText: 'This is a single recordId that will default the value for "value" ' },
+
     ];
     componentStyling = [
-        {label: 'Card Size', helpText: 'Size in pixels default is 300px'},
-        {label: 'Style attribute for the card headers', helpText: 'Standard HTML syling to apply to the card headers'},
-        {label: 'Pick an Icon', helpText: 'When an Icon is selected it will apply it before the name in the card header'},
+        { label: 'Card Size', helpText: 'Size in pixels default is 300px' },
+        { label: 'Style attribute for the card headers', helpText: 'Standard HTML syling to apply to the card headers' },
+        { label: 'Pick an Icon', helpText: 'When an Icon is selected it will apply it before the name in the card header' },
     ];
     flexCardActions = [
-        {label: 'List or Menu', helpText: 'Menu will display that action in a dropdown list, list will display the action as a list on the card'},
-        
+        { label: 'List or Menu', helpText: 'Menu will display that action in a dropdown list, list will display the action as a list on the card' },
+
     ];
 
     @track inputValues = {
@@ -73,9 +81,14 @@ export default class fsc_flexcardCPE extends LightningElement {
         label: { value: null, valueDataType: null, isCollection: false, label: 'Component Label' },
         transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Transition to next when card clicked?' },
         cb_transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: '' },
-        actionDisplayType: { value: null, valueDataType: null, isCollection: false, label:'Display actions as hyperlinks in a list or a Menu List' },
-        buttonLabel: { value: null, valueDataType: null, isCollection: false, label:'Actions Menu Button Label' },
+        actionDisplayType: { value: null, valueDataType: null, isCollection: false, label: 'Display actions as hyperlinks in a list or a Menu List' },
+        buttonLabel: { value: null, valueDataType: null, isCollection: false, label: 'Actions Menu Button Label' },
         allowAllObjects: { value: null, valueDataType: null, isCollection: false, label: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.' },
+        subheadCSS: { value: null, valueDataType: null, isCollection: false, label: 'Style attribute for the card body ', helpText: 'ie. background-color:red;' },
+        cardHeight: { value: null, valueDataType: null, isCollection: false, label: 'Card Height', helpText: 'This is the height of the card in Pixels' },
+        cardWidth: { value: null, valueDataType: null, isCollection: false, label: 'Card Width', helpText: 'This is the width of the card in Pixels' },
+        fieldVariant: { value: null, valueDatatType: null, isCollection: false, label: 'Field Variant' },
+        fieldClass: { value: null, valueDataType: null, isCollection: false, label: 'Field Class' },
     };
 
     @api get builderContext() {
@@ -135,13 +148,13 @@ export default class fsc_flexcardCPE extends LightningElement {
             return CLICK_ACTIONS.NONE.value;
         }
 
-        
+
     }
 
     get objectTypes() {
         return [
-            {label: 'Standard and Custom', value: ''},
-            {label: 'All', value: 'All'},
+            { label: 'Standard and Custom', value: '' },
+            { label: 'All', value: 'All' },
         ];
     }
 
@@ -150,6 +163,34 @@ export default class fsc_flexcardCPE extends LightningElement {
             { label: 'List', value: 'list' },
             { label: 'Menu', value: 'menu' },
         ];
+    }
+
+    get fieldVariants() {
+        return [
+            { label: 'Show Field Labels', value: 'standard' },
+            { label: 'Hide Field Labels', value: 'label-hidden' },
+        ]
+    }
+
+    get fieldClassOptions() {
+        return [
+            { label: '--None--', value:''},
+            { label: 'Body Small', value: 'slds-text-body_small' },
+            { label: 'Heading Large', value: 'slds-text-heading_large' },
+            { label: 'Heading Medium', value: 'slds-text-heading_medium' },
+            { label: 'Heading Small', value: 'slds-text-heading_small' },
+            { label: 'Title', value: 'slds-text-title' },
+            { label: 'Title Uppercase', value: 'slds-text-title_caps' },
+            { label: 'Longform', value: 'slds-text-longform' },
+            { label: 'Align Left', value: 'slds-text-align_left' },
+            { label: 'Align Center', value: 'slds-text-align_center' },
+            { label: 'Align Right', value: 'slds-text-align_right' },
+            { label: 'Color Success', value: 'slds-text-color_success' },
+            { label: 'Color Weak', value: 'slds-text-color_weak' },
+            { label: 'Color Error', value: 'slds-text-color_error' },
+            { label: 'Color Destructive', value: 'slds-text-color_destructive' },
+            { label: 'Bold', value: 'slds-text-title_bold' },
+        ]
     }
 
     set clickAction(value) {
@@ -288,20 +329,11 @@ export default class fsc_flexcardCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent(name, newValue);
     }
 
-   // handleCheckboxChange(event) {
-     //   if (event.target && event.detail) {
-        //    let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
-         //   console.log('changedAttribute = ' + changedAttribute, 'newValue = ' + event.detail.newValue);
-         //   this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, 'boolean');
-         //   this.dispatchFlowValueChangeEvent('cb_' + changedAttribute, event.detail.newStringValue, event.detail.newValueDataType);
-       // }
-   // }
-
     handleCheckboxChange(event) {
         if (event.target && event.detail) {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
-            this.dispatchFlowValueChangeEvent('cb_'+changedAttribute, event.detail.newStringValue, 'String');
+            this.dispatchFlowValueChangeEvent('cb_' + changedAttribute, event.detail.newStringValue, 'String');
         }
     }
     handleCheckboxChange2(event) {
@@ -329,15 +361,23 @@ export default class fsc_flexcardCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent('actionDisplayType', event.detail.value, 'String');
     }
 
+    handleFieldVariantChange(event) {
+        this.dispatchFlowValueChangeEvent('fieldVariant', event.detail.value, 'String');
+    }
+
+    handleFieldClassChange(event) {
+        this.dispatchFlowValueChangeEvent('fieldClass', event.detail.value, 'String')
+    }
+
     handleAllowAllObjects(event) {
         this.dispatchFlowValueChangeEvent('allowAllObjects', event.detail.value, 'String');
     }
 
     get isMenu() {
         let displayType = this.inputValues.actionDisplayType.value
-        if(displayType == 'menu')
+        if (displayType == 'menu')
             return true;
-            return false;
+        return false;
     }
 
     handleFlowSelect(event) {

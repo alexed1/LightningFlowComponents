@@ -10,11 +10,11 @@ export default class FlexcardFlow extends LightningElement {
     @api buttonLabel;
     @api selectedLabel;
     _records;
-    @api 
-    get records(){
+    @api
+    get records() {
         return this._records || [];
     }
-    
+
     set records(data = []) {
         if (Array.isArray(data)) {
             this._records = data;
@@ -35,6 +35,7 @@ export default class FlexcardFlow extends LightningElement {
     }
     @api cb_isClickable;
     @api headerStyle = 'font-weight: bold;';
+    @api contentStyle;
     @api
     get allowMultiSelect() {
         return (this.cb_allowMultiSelect == 'CB_TRUE') ? true : false;
@@ -87,6 +88,11 @@ export default class FlexcardFlow extends LightningElement {
         if (!Number.isNaN(value))
             this.cardSize = value;
     }
+    @api cardHeight = 300;
+    @api cardWidth = 300;
+    @api fieldVariant;
+    @api fieldClass;
+
     curRecord;
     @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
     recordInfo({ data, error }) {
@@ -98,23 +104,23 @@ export default class FlexcardFlow extends LightningElement {
 
     connectedCallback() {
         console.log('entering connectedCallback');
-       if (!this.records) {
+        if (!this.records) {
             throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
         }
         console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
-       
-    } 
 
-  
+    }
+
+
 
     processRecords() {
 
-    this.recs = JSON.parse(JSON.stringify(this._records));
-   
-    
+        this.recs = JSON.parse(JSON.stringify(this._records));
+
+
     }
-   
+
     retrieveFieldLabels(item, index) {
         console.log('retrieving field label for field named: ' + item);
         //call apex to get field labels for fields
@@ -132,14 +138,15 @@ export default class FlexcardFlow extends LightningElement {
         return this.objectInfo && this.records.length > 0;
     }
 
-    get isFlowsLoaded() {        
-            return this.flows && this.flows.length > 0;        
+    get isFlowsLoaded() {
+        return this.flows && this.flows.length > 0;
     }
 
     //set card width and height
 
     get sizeWidth() {
-        return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
+        return 'width: ' + this.cardWidth + 'px ; height: ' + this.cardHeight + 'px';
+
     }
 
     get showIcon() {
@@ -164,7 +171,7 @@ export default class FlexcardFlow extends LightningElement {
                 this.selectedRecord = event.currentTarget.dataset.id;
                 console.log(this.value = this.selectedRecord);
             }
-            
+
         });
 
         // navigate to the next screen or (if last element) terminate the flow

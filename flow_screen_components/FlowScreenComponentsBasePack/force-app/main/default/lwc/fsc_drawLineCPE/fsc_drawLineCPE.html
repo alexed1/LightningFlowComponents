@@ -1,6 +1,17 @@
 <template>
 
-    <!-- =============== Draw Line Banner =============== -->
+    <!-- =============== Draw Line Sample =============== -->
+    <div class="slds-m-bottom_small">
+        <c-fsc_flow-banner
+            banner-color={colorAdvancedOverride}
+            banner-label={sectionEntries.sampleLine.label}
+            banner-info={sectionEntries.sampleLine.info}
+            modal-header-color={modalHeaderColorAdvancedOverride}
+        ></c-fsc_flow-banner>
+    </div>
+    <hr class={sldsClass} style={lineStyle}></hr>
+
+    <!-- =============== Draw Line Attributes =============== -->
     <c-fsc_flow-banner
         banner-color={defaultBannerColor}
         banner-label={sectionEntries.drawLine.label}
@@ -26,14 +37,17 @@
         onchange={handleStringChange}
     ></lightning-combobox>
 
-    <lightning-input
+    <lightning-slider 
         name="select_thickness"
-        type="number"
         label={inputValues.thickness.label}
         value={inputValues.thickness.value}
-        field-level-help={inputValues.thickness.helpText}
+        min="1"
+        max="50"
+        step="1"
+        type="horizontal"
+        size="small"
         onchange={handleNumberChange}
-    ></lightning-input>
+    ></lightning-slider>
 
     <lightning-input
         name="select_color"

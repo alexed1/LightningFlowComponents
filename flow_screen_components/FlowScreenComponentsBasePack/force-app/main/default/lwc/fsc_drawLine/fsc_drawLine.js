@@ -48,12 +48,10 @@ export default class Fsc_drawLine extends LightningElement {
     }
 
     get sldsClass() {
-        console.log('sldsClass:',`"slds-m-top_${this.classMarginTop} slds-m-bottom_${this.classMarginBottom}"`);
         return `slds-m-top_${this.classMarginTop} slds-m-bottom_${this.classMarginBottom}`;
     }
 
     get lineStyle() {
-        console.log('lineStyle:',`border-width: ${this.styleThickness}px;border-color: ${this.styleColor};`);
         return `border-width: ${this.styleThickness}px;border-color: ${this.styleColor};`;
     }
 

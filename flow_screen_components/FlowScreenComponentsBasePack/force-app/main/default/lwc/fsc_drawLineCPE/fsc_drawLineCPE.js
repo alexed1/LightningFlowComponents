@@ -17,7 +17,7 @@
  *
  **/
 
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 
 const VERSION_NUMBER = "1.0.0";
 
@@ -39,6 +39,31 @@ const COLORS = {
 export default class Fsc_drawLineCPE extends LightningElement {
 
     versionNumber;
+
+    // Set Sample Line Values
+    get classMarginTop() {
+        return this.inputValues['marginTop'].value;
+    }
+
+    get classMarginBottom() {
+        return this.inputValues['marginBottom'].value;
+    }
+
+    get styleThickness() {
+        return this.inputValues['thickness'].value;
+    }
+
+    get styleColor() {
+        return this.inputValues['color'].value;
+    }
+
+    get sldsClass() {
+        return `slds-m-top_${this.classMarginTop} slds-m-bottom_${this.classMarginBottom}`;
+    }
+
+    get lineStyle() {
+        return `border-width: ${this.styleThickness}px;border-color: ${this.styleColor};`;
+    }
 
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
     _bannerMargin = "slds-m-top_small slds-m-bottom_xx-small";
@@ -107,6 +132,7 @@ export default class Fsc_drawLineCPE extends LightningElement {
     _automaticOutputVariables;
 
     // These names have to match the input attribute names in your <myLWCcomponent>.js-meta.xml file
+    @track
     inputValues = {
         marginTop: {
             value: "none",
@@ -151,13 +177,25 @@ export default class Fsc_drawLineCPE extends LightningElement {
     ]
 
     sectionEntries = {
-        drawLine: { label: "Draw Line", info: [] }
+        sampleLine: { label: "Sample Line", info: []},
+        drawLine: { label: "Line Attributes", info: [] }
     };
 
     helpSections = [
         {
+            name: "sampleLine",
+            attributes: [
+                {name: defaults.customHelpDefinition, 
+                    label: 'Sample Line',
+                    helpText: 'The thickness, color and vertical spacing of the sample line should approximate what it will look like on a flow screen.'}
+            ]
+        },
+        {
             name: "drawLine",
             attributes: [
+                {name: defaults.customHelpDefinition, 
+                    label: 'Line Attributes',
+                    helpText: 'Change the available settings to set a line thickness and color along with the spacing above and below the line.'},
                 { name: "marginTop" },
                 { name: "marginBottom" },
                 { name: "thickness" },

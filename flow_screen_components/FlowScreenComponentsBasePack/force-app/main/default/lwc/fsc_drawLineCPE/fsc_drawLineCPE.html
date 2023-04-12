@@ -1,0 +1,51 @@
+<template>
+
+    <!-- =============== Draw Line Banner =============== -->
+    <c-fsc_flow-banner
+        banner-color={defaultBannerColor}
+        banner-label={sectionEntries.drawLine.label}
+        banner-info={sectionEntries.drawLine.info}
+        modal-header-color={defaultModalHeaderColor}
+    ></c-fsc_flow-banner>
+
+    <lightning-combobox
+        name="select_marginTop"
+        label={inputValues.marginTop.label}
+        value={inputValues.marginTop.value}
+        field-level-help={inputValues.marginTop.helpText}
+        options={marginOptions}
+        onchange={handleStringChange}
+    ></lightning-combobox>
+    
+    <lightning-combobox
+        name="select_marginBottom"
+        label={inputValues.marginBottom.label}
+        value={inputValues.marginBottom.value}
+        field-level-help={inputValues.marginBottom.helpText}
+        options={marginOptions}
+        onchange={handleStringChange}
+    ></lightning-combobox>
+
+    <lightning-input
+        name="select_thickness"
+        type="number"
+        label={inputValues.thickness.label}
+        value={inputValues.thickness.value}
+        field-level-help={inputValues.thickness.helpText}
+        onchange={handleNumberChange}
+    ></lightning-input>
+
+    <lightning-input
+        name="select_color"
+        type="text"
+        label={inputValues.color.label}
+        value={inputValues.color.value}
+        field-level-help={inputValues.color.helpText}
+        onchange={handleStringChange}
+    ></lightning-input>
+
+    <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success">
+        Draw Line Version #: {versionNumber}
+    </div>
+
+</template>

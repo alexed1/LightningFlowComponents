@@ -44,7 +44,7 @@ export default class Fsc_drawLine extends LightningElement {
     }
 
     get styleColor() {
-        return (this.color) ? this.color : 'Gray';
+        return (this.color) ? this.color : '#808080';
     }
 
     get sldsClass() {

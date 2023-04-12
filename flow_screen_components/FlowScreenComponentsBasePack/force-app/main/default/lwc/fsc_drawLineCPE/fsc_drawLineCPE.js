@@ -156,11 +156,11 @@ export default class Fsc_drawLineCPE extends LightningElement {
             helpText: "Number of pixels for the line thickness (Default = 1)"
         },
         color: {
-            value: "Gray",
+            value: "#808080",
             valueDataType: null,
             isCollection: false,
             label: "Line Color",
-            helpText: "Color code for the line.  You can also use the format #xxxxxx. (Default = Gray)"
+            helpText: "Color code for the line using the format #xxxxxx. (Default = Gray #808080)"
         }
     };
 

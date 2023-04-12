@@ -375,6 +375,11 @@ export default class Fsc_drawLineCPE extends LightningElement {
     
     disconnectedCallback() {}
     
+    // Match Slider Button Color to the Line Color
+    renderedCallback() {
+        document.documentElement.style.setProperty('--headerColor', this.styleColor);
+    }
+
     @api
     validate() {
         this.validateErrors.length = 0;

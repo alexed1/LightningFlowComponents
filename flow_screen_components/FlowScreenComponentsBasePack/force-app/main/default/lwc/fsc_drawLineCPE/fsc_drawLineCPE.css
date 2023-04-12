@@ -1,0 +1,3 @@
+:host {
+    --slds-c-slider-thumb-color-foreground: var(--headerColor);
+}

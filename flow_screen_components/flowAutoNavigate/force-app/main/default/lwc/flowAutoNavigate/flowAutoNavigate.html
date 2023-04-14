@@ -1,15 +1,29 @@
 <template>
     
+   <!-- When Show Timer is true, show the timer -->
    <template if:true={showTimer}>       
-    <div style="font-size:20px;text-align:center;">{timeVal}</div>
-    <lightning-formatted-rich-text class="slds-align_absolute-center" value={timerLabel}></lightning-formatted-rich-text>
-    <template if:true={showReset}>
-    <lightning-button label="Reset" onclick={reset} class="slds-align_absolute-center"></lightning-button>
-    </template>
+      <div style="font-size:20px;text-align:center;">
+         {timeVal}
+      </div>
+      <lightning-formatted-rich-text class="slds-align_absolute-center" value={timerLabel}></lightning-formatted-rich-text>
+
+      <!-- When Show Reset is true, show the reset button -->
+      <template if:true={showReset}>
+         <lightning-button label="Reset" onclick={reset} class="slds-align_absolute-center"></lightning-button>
+      </template>
    </template>
+
+   <!-- When Show Timer is false, show the time value in a small font -->
    <template if:false={showTimer}>  
-    <div style="font-size:1px;text-align:right;opacity: 0.1;">{timeVal}</div>     
+      <div style="font-size:1px;text-align:right;opacity: 0.1;">{timeVal}</div>     
    </template> 
+
+   <!-- When Show Loader is true, show the spinner -->
+   <template if:true{showLoader}>
+      <div class="slds-align_absolute-center">
+         <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+   </template>   
 
 </template>
 

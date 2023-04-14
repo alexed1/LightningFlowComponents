@@ -1,0 +1,10 @@
+<template>
+    <template if:true={displayVCard}>
+        <lightning-card>
+            <hr class={sldsClass} style={lineStyle}></hr>
+        </lightning-card>
+    </template>
+    <template if:false={displayVCard}>
+        <hr class={sldsClass} style={lineStyle}></hr>
+    </template>
+</template>

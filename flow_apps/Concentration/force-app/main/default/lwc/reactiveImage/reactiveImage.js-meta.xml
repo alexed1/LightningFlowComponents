@@ -8,8 +8,10 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="showBack" type="Boolean" role="inputOnly" />
-            <property name="showFront" type="Boolean" role="inputOnly" />
+            <property name="exposedId1" type="String" />
+            <property name="exposedId2" type="String" />
+            <property name="cardId" type="String" />
+            <property name="isSecond" type="Boolean" />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

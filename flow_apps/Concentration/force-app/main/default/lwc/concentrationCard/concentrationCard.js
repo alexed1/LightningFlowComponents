@@ -13,51 +13,37 @@ export default class ConcentrationCard extends LightningElement {
     set mismatchCounter(value) {
         this._mismatchCounter = value;
     }
-    _mismatchCounter = 0;
+    _mismatchCounter = 1;
 
     @api cardId;
-
-    @api
-    get cardValue() {
-        return this._cardValue;
-    }
-    set cardValue(value) {
-        this._cardValue = value;
-    }
-    _cardValue;
 
     @api
     get matchId() {
         return this._matchId;
     }
     set matchId(value) {
-        console.log('Card Match: Id, match, Back, Front, Blank', this._cardValue, value, this._showBack, this._showFront, this._showBlank);
-        if (value >= 10000) {
-            this._showBlank = false;
-            this._showFront = false;
-            this._showBack = true;
-            this.dispatchFlowAttributeChangedEvent('exposedId', 99);
-        } else {
-            if (!this._showBlank) {
-                console.log('Card is not Blank', this._cardValue);
-                if (value == this._cardValue) {
-                    console.log('Card value matches', this._cardValue, value);
+        console.log('Card Match: Id, match, Back, Front, Blank', this.cardId, this._cardValue, value, this._showBack, this._showFront, this._showBlank);
+        if (!this._showBlank) {
+            console.log('Card is not Blank', this.cardId, this._cardValue);
+            if (value == this._cardValue) {
+                console.log('Card value matches', this.cardId, this._cardValue, value);
+                this.waitEvent = setTimeout(() => {
                     this._showBack = false;
                     this._showFront = false;
                     this._showBlank = true;
-                } else {
-                    console.log('Card value does not match', this._cardValue, value);
-                    this.waitEvent = setTimeout(() => {
-                        this._showBlank = false;
-                        this._showFront = false;
-                        this._showBack = true;
-                        this.dispatchFlowAttributeChangedEvent('exposedId', this._mismatchCounter);
-                        this._mismatchCounter++;
-                    }, this.waitValue);
-                }
+                }, this.waitValue);
+            } else {
+                console.log('Card value does not match', this.cardId, this._cardValue, value);
+                this.waitEvent = setTimeout(() => {
+                    this._showBlank = false;
+                    this._showFront = false;
+                    this._showBack = true;
+                    this.dispatchFlowAttributeChangedEvent('exposedId', this.mismatchCounter);
+                    this._mismatchCounter++;
+                }, this.waitValue);
             }
-            this._matchId = value;
         }
+        this._matchId = value;
     }
     _matchId;
 
@@ -70,6 +56,14 @@ export default class ConcentrationCard extends LightningElement {
 
     }
     _exposedId;
+
+    get cardValue() {
+        return this._cardValue;
+    }
+    set cardValue(value) {
+        this._cardValue = value;
+    }
+    _cardValue;
 
     get showBack() {
         return this._showBack
@@ -99,12 +93,15 @@ export default class ConcentrationCard extends LightningElement {
     imageFront = Concentration + '/S15.png';
     imageBlank = Concentration + '/Blank.png';
 
-    pause(milliseconds) {
-        this.waitEvent = setTimeout(() => {}, milliseconds);
+    connectedCallback() {
+        const gameKey = localStorage.getItem('gameKey');
+        const locateId = gameKey.indexOf(this.cardId);
+        this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
+        console.log('Card Connected', this.cardId, gameKey, this._cardValue);
     }
 
     clickHandler(event) {
-        console.log('Click Handler Card, showBack', this._cardValue, this._showBack);
+        console.log('Click Handler Card, showBack', this.cardId, this._cardValue, this._showBack);
         if (this._showBack) {
             this._showBack = false;
             this._showFront = true;
@@ -113,7 +110,7 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
-        console.log('Card Dispatch', this._cardValue, attributeName, attributeValue);
+        console.log('Card Dispatch', this.cardId, this._cardValue, attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

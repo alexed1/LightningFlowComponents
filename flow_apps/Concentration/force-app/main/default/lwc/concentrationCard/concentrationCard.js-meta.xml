@@ -9,7 +9,6 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="cardId" type="String" role="inputOnly" />
-            <property name="cardValue" type="Integer" role="inputOnly" />
             <property name="matchId" type="Integer" role="inputOnly" />
             <property name="exposedId" type="Integer" role="outputOnly" />
         </targetConfig>

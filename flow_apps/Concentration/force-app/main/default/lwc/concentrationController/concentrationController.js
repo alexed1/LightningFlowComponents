@@ -3,6 +3,8 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 export default class ConcentrationController extends LightningElement {
 
+    sequence = 'A001B002C001D002E003F003';
+    replayCounter = 0;
 
     @api
     get exposedId_11() {
@@ -86,13 +88,13 @@ export default class ConcentrationController extends LightningElement {
 
     updateExposed(value) {
         console.log('CONTROLLER first, value', this._isFirst, value);
-        if (value != '0' && value != '99') {
+        if (value != 0 && value != 99 && !(value < 0)) {
             if (this._isFirst) {
                 this.cardValue1 = value;
                 this._isFirst = false;
             } else {
                 this.cardValue2 = value;
-                this._matchId = (this.cardValue1 == this.cardValue2) ? value : '0';
+                this._matchId = (this.cardValue1 == this.cardValue2) ? value : 0;
                 this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);
                 this._isFirst = true;
             }
@@ -100,7 +102,7 @@ export default class ConcentrationController extends LightningElement {
     }
 
     handlePlayAgain() {
-        this.dispatchFlowAttributeChangedEvent('matchId', 'RESET');
+        this.dispatchFlowAttributeChangedEvent('matchId', 10000);
         this._isFirst = true;
     }
     

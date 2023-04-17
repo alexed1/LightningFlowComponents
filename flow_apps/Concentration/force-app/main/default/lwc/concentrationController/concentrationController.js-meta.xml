@@ -8,13 +8,13 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
-            <property name="exposedId_11" type="String" role="inputOnly"/>
-            <property name="exposedId_12" type="String" role="inputOnly"/>
-            <property name="exposedId_13" type="String" role="inputOnly"/>
-            <property name="exposedId_21" type="String" role="inputOnly"/>
-            <property name="exposedId_22" type="String" role="inputOnly"/>
-            <property name="exposedId_23" type="String" role="inputOnly"/>
-            <property name="matchId" type="String" role="outputOnly"/>
+            <property name="exposedId_11" type="Integer" role="inputOnly"/>
+            <property name="exposedId_12" type="Integer" role="inputOnly"/>
+            <property name="exposedId_13" type="Integer" role="inputOnly"/>
+            <property name="exposedId_21" type="Integer" role="inputOnly"/>
+            <property name="exposedId_22" type="Integer" role="inputOnly"/>
+            <property name="exposedId_23" type="Integer" role="inputOnly"/>
+            <property name="matchId" type="Integer" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

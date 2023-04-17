@@ -7,6 +7,14 @@ export default class ConcentrationCard extends LightningElement {
     waitValue = 1000;
     waitEvent;
 
+    get mismatchCounter() {
+        return this._mismatchCounter * -1;
+    }
+    set mismatchCounter(value) {
+        this._mismatchCounter = value;
+    }
+    _mismatchCounter = 0;
+
     @api cardId;
 
     @api
@@ -24,11 +32,11 @@ export default class ConcentrationCard extends LightningElement {
     }
     set matchId(value) {
         console.log('Card Match: Id, match, Back, Front, Blank', this._cardValue, value, this._showBack, this._showFront, this._showBlank);
-        if (value == 'RESET') {
+        if (value >= 10000) {
             this._showBlank = false;
             this._showFront = false;
             this._showBack = true;
-            this.dispatchFlowAttributeChangedEvent('exposedId', '99');
+            this.dispatchFlowAttributeChangedEvent('exposedId', 99);
         } else {
             if (!this._showBlank) {
                 console.log('Card is not Blank', this._cardValue);
@@ -43,7 +51,8 @@ export default class ConcentrationCard extends LightningElement {
                         this._showBlank = false;
                         this._showFront = false;
                         this._showBack = true;
-                        this.dispatchFlowAttributeChangedEvent('exposedId', '0');
+                        this.dispatchFlowAttributeChangedEvent('exposedId', this._mismatchCounter);
+                        this._mismatchCounter++;
                     }, this.waitValue);
                 }
             }

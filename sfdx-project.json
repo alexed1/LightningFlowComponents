@@ -23,18 +23,11 @@
         {
             "path": "lightning_page_components",
             "default": false
-        },
-        {
-            "path": "DeactivateUser/force-app",
-            "package": "DeactivateUserOrchestration",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
-            "default": false
         }
     ],
     "namespace": "",
     "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "50.0",
+    "sourceApiVersion": "57.0",
     "packageAliases": {
         "DeactivateUserOrchestration": "0Ho5G000000k9vISAQ"
     }

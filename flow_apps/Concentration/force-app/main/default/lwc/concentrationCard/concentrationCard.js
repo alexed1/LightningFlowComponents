@@ -22,24 +22,30 @@ export default class ConcentrationCard extends LightningElement {
     }
     set matchId(value) {
         console.log('Card Match: Id, match, Back, Front, Blank', this._cardId, value, this._showBack, this._showFront, this._showBlank);
-        if (!this._showBlank) {
-            console.log('Card is not Blank', this._cardId);
-            if (value == this._cardId) {
-                console.log('Card value matches', this._cardId, value);
-                this._showBack = false;
-                this._showFront = false;
-                this._showBlank = true;
-            } else {
-                console.log('Card value does not match', this._cardId, value);
-                this.waitEvent = setTimeout(() => {
-                    this._showBlank = false;
+        if (value == 'RESET') {
+            this._showBlank = false;
+            this._showFront = false;
+            this._showBack = true;
+        } else {
+            if (!this._showBlank) {
+                console.log('Card is not Blank', this._cardId);
+                if (value == this._cardId) {
+                    console.log('Card value matches', this._cardId, value);
+                    this._showBack = false;
                     this._showFront = false;
-                    this._showBack = true;
-                    this.dispatchFlowAttributeChangedEvent('exposedId', '0');
-                }, this.waitValue);
+                    this._showBlank = true;
+                } else {
+                    console.log('Card value does not match', this._cardId, value);
+                    this.waitEvent = setTimeout(() => {
+                        this._showBlank = false;
+                        this._showFront = false;
+                        this._showBack = true;
+                        this.dispatchFlowAttributeChangedEvent('exposedId', '0');
+                    }, this.waitValue);
+                }
             }
+            this._matchId = value;
         }
-        this._matchId = value;
     }
     _matchId;
 

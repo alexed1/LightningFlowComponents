@@ -99,6 +99,10 @@ export default class ConcentrationController extends LightningElement {
         }
     }
 
+    handlePlayAgain() {
+        this.dispatchFlowAttributeChangedEvent('matchId', 'RESET');
+    }
+    
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
         console.log('CONTROLLER Dispatch', attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(

@@ -1,0 +1,19 @@
+<template>
+    <div class="slds-card slds-m-bottom_medium" onclick={clickHandler}>
+        <template lwc:if={showBack}>
+                <div class="slds-m-around_medium">
+                    <img src={imageBack}>
+                </div>
+        </template>
+        <template lwc:elseif={showFront}>
+                <div class="slds-m-around_medium">
+                    <img src={imageFront}>
+                </div>
+        </template>
+        <template lwc:else>
+                <div class="slds-m-around_medium">
+                    <img src={imageBlank}>
+                </div>
+        </template>
+    </div>
+</template>

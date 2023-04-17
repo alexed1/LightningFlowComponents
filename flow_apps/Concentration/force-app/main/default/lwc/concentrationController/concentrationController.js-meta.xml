@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Concentration Controller</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="exposedId_11" type="String" role="inputOnly"/>
+            <property name="exposedId_12" type="String" role="inputOnly"/>
+            <property name="exposedId_13" type="String" role="inputOnly"/>
+            <property name="exposedId_21" type="String" role="inputOnly"/>
+            <property name="exposedId_22" type="String" role="inputOnly"/>
+            <property name="exposedId_23" type="String" role="inputOnly"/>
+            <property name="matchId" type="String" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

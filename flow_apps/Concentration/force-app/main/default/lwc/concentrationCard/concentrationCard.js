@@ -7,35 +7,38 @@ export default class ConcentrationCard extends LightningElement {
     waitValue = 1000;
     waitEvent;
 
+    @api cardId;
+
     @api
-    get cardId() {
-        return this._cardId;
+    get cardValue() {
+        return this._cardValue;
     }
-    set cardId(value) {
-        this._cardId = value;
+    set cardValue(value) {
+        this._cardValue = value;
     }
-    _cardId;
+    _cardValue;
 
     @api
     get matchId() {
         return this._matchId;
     }
     set matchId(value) {
-        console.log('Card Match: Id, match, Back, Front, Blank', this._cardId, value, this._showBack, this._showFront, this._showBlank);
+        console.log('Card Match: Id, match, Back, Front, Blank', this._cardValue, value, this._showBack, this._showFront, this._showBlank);
         if (value == 'RESET') {
             this._showBlank = false;
             this._showFront = false;
             this._showBack = true;
+            this.dispatchFlowAttributeChangedEvent('exposedId', '0');
         } else {
             if (!this._showBlank) {
-                console.log('Card is not Blank', this._cardId);
-                if (value == this._cardId) {
-                    console.log('Card value matches', this._cardId, value);
+                console.log('Card is not Blank', this._cardValue);
+                if (value == this._cardValue) {
+                    console.log('Card value matches', this._cardValue, value);
                     this._showBack = false;
                     this._showFront = false;
                     this._showBlank = true;
                 } else {
-                    console.log('Card value does not match', this._cardId, value);
+                    console.log('Card value does not match', this._cardValue, value);
                     this.waitEvent = setTimeout(() => {
                         this._showBlank = false;
                         this._showFront = false;
@@ -92,16 +95,16 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     clickHandler(event) {
-        console.log('Click Handler Card, showBack', this._cardId, this._showBack);
+        console.log('Click Handler Card, showBack', this._cardValue, this._showBack);
         if (this._showBack) {
             this._showBack = false;
             this._showFront = true;
-            this.dispatchFlowAttributeChangedEvent('exposedId', this._cardId);
+            this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
         }
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
-        console.log('Card Dispatch', this._cardId, attributeName, attributeValue);
+        console.log('Card Dispatch', this._cardValue, attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

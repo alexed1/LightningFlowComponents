@@ -81,18 +81,18 @@ export default class ConcentrationController extends LightningElement {
     }
     _isFirst = true;
 
-    card1 = '';
-    card2 = '';
+    cardValue1 = '';
+    cardValue2 = '';
 
     updateExposed(value) {
         console.log('CONTROLLER first, value', this._isFirst, value);
         if (value != '0') {
             if (this._isFirst) {
-                this.card1 = value;
+                this.cardValue1 = value;
                 this._isFirst = false;
             } else {
-                this.card2 = value;
-                this._matchId = (this.card1 == this.card2) ? value : '0';
+                this.cardValue2 = value;
+                this._matchId = (this.cardValue1 == this.cardValue2) ? value : '0';
                 this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);
                 this._isFirst = true;
             }

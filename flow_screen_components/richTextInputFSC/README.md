@@ -1,6 +1,7 @@
 # Rich Text Edit Control #
 
 https://unofficialsf.com/rich-text-input-flow-screen-component/
+
 Note: another version of rich text input, with a different set of controls, is available here: https://unofficialsf.com/text-area-plus/
 
 # inputRichTextFSC

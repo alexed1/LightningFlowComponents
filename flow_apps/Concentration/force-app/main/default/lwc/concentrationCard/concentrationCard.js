@@ -28,7 +28,7 @@ export default class ConcentrationCard extends LightningElement {
             this._showBlank = false;
             this._showFront = false;
             this._showBack = true;
-            this.dispatchFlowAttributeChangedEvent('exposedId', '0');
+            this.dispatchFlowAttributeChangedEvent('exposedId', '99');
         } else {
             if (!this._showBlank) {
                 console.log('Card is not Blank', this._cardValue);

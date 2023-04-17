@@ -86,7 +86,7 @@ export default class ConcentrationController extends LightningElement {
 
     updateExposed(value) {
         console.log('CONTROLLER first, value', this._isFirst, value);
-        if (value != '0') {
+        if (value != '0' && value != '99') {
             if (this._isFirst) {
                 this.cardValue1 = value;
                 this._isFirst = false;
@@ -101,6 +101,7 @@ export default class ConcentrationController extends LightningElement {
 
     handlePlayAgain() {
         this.dispatchFlowAttributeChangedEvent('matchId', 'RESET');
+        this._isFirst = true;
     }
     
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {

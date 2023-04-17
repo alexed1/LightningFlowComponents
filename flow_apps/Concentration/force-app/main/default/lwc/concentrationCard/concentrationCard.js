@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
-import Concentration from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
+import Concentration from '@salesforce/resourceUrl/Concentration';
 
 export default class ConcentrationCard extends LightningElement {
 
@@ -95,9 +95,9 @@ export default class ConcentrationCard extends LightningElement {
     }
     _showBlank = false;
 
-    imageBack = Concentration + '/astro.png';
-    imageFront = Concentration + '/Sales.PNG';
-    imageBlank = Concentration + '/Service.PNG';
+    imageBack = Concentration + '/Salesforce.png';
+    imageFront = Concentration + '/S15.png';
+    imageBlank = Concentration + '/Blank.png';
 
     pause(milliseconds) {
         this.waitEvent = setTimeout(() => {}, milliseconds);

@@ -113,6 +113,7 @@ export default class ConcentrationController extends LightningElement {
                 this.cardValue2 = value;
                 this._matchId = (this.cardValue1 == this.cardValue2) ? value :this.mismatchCounter;
                 this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);
+                this._mismatchCounter++;
                 this._isFirst = true;
             }
         }

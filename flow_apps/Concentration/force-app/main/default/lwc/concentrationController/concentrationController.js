@@ -123,7 +123,6 @@ export default class ConcentrationController extends LightningElement {
     }
 
     updateExposed(value) {
-        console.log('CONTROLLER first, value', this._isFirst, value);
         if (!(value < 0)) {
             if (this._isFirst) {
                 this.cardValue1 = value;
@@ -139,7 +138,6 @@ export default class ConcentrationController extends LightningElement {
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
-        console.log('CONTROLLER Dispatch', attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

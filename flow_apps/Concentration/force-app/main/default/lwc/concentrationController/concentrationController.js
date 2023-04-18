@@ -3,7 +3,7 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 export default class ConcentrationController extends LightningElement {
 
-    imageCount = 18;
+    imageCount = 25;
     cardCount = 6;
 
     get mismatchCounter() {

@@ -8,9 +8,11 @@ export default class ConcentrationCard extends LightningElement {
     waitEvent;
 
     imageArray = [
-        'Appy', 'Astro', 'Brandy', 'C18', 'Cloudy', 'Codey',
-        'Einstein', 'Genie', 'Hootie', 'Max', 'Ruth', 'S12',
-        'S14', 'S15', 'S17', 'S17r', 'S18', 'S20'
+        'Appy', 'Astro', 'Astro20', 'Brandy', 'C18', 
+        'Cloudy', 'Codey', 'Earnie', 'Einstein', 'Einstein19', 
+        'Flo', 'Genie', 'Hootie', 'Koa', 'Max', 
+        'Ruth', 'S12', 'S14', 'S15', 'S15r', 
+        'S17', 'S17r', 'S18', 'S20', 'S20r'
     ];
 
     get mismatchCounter() {
@@ -93,7 +95,7 @@ export default class ConcentrationCard extends LightningElement {
 
     imageBack = Concentration + '/Salesforce.png';
     imageBlank = Concentration + '/Blank.png';
-    imageFront = Concentration + '/S15.png';
+    imageFront = Concentration + '/Blank.png';
 
     connectedCallback() {
         const gameKey = localStorage.getItem('gameKey');

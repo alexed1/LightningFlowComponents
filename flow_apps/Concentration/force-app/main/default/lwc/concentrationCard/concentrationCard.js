@@ -7,6 +7,27 @@ export default class ConcentrationCard extends LightningElement {
     waitValue = 1000;
     waitEvent;
 
+    imageArray = [
+        'Appy',
+        'Astro',
+        'Brandy',
+        'C18',
+        'Cloudy',
+        'Codey',
+        'Einstein',
+        'Genie',
+        'Hootie',
+        'Max',
+        'Ruth',
+        'S12',
+        'S14',
+        'S15',
+        'S17',
+        'S17r',
+        'S18',
+        'S20'
+    ];
+
     get mismatchCounter() {
         return this._mismatchCounter * -1;
     }
@@ -90,14 +111,19 @@ export default class ConcentrationCard extends LightningElement {
     _showBlank = false;
 
     imageBack = Concentration + '/Salesforce.png';
-    imageFront = Concentration + '/S15.png';
     imageBlank = Concentration + '/Blank.png';
+    imageFront = Concentration + '/S15.png';
 
     connectedCallback() {
         const gameKey = localStorage.getItem('gameKey');
         const locateId = gameKey.indexOf(this.cardId);
         this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
-        console.log('Card Connected', this.cardId, gameKey, this._cardValue);
+        const imageOrder = localStorage.getItem('imageOrder');
+        console.log('imageOrder',imageOrder);
+        console.log('_cardValue', this._cardValue);
+        console.log('imageArray', this.imageArray[imageOrder[this._cardValue]]);
+        this.imageFront = Concentration + '/' + this.imageArray[imageOrder[this._cardValue]] + '.png';
+        console.log('Card Connected', this.cardId, gameKey, imageOrder, this._cardValue, this.imageFront);
     }
 
     clickHandler(event) {

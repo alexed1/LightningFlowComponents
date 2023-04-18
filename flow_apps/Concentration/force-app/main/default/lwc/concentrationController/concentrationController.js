@@ -93,6 +93,8 @@ export default class ConcentrationController extends LightningElement {
 
     sequence = [1,1,2,2,3,3]
     shuffled = [];
+    imageMaster = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
+    imageOrder = [];
 
     get buildKey() {
         return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}`;
@@ -101,6 +103,8 @@ export default class ConcentrationController extends LightningElement {
     connectedCallback() {
         this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
         localStorage.setItem('gameKey', this.buildKey);
+        this.imageOrder = this.imageMaster.sort(() => Math.random() - 0.5);
+        localStorage.setItem('imageOrder', this.imageOrder);
     }
 
     updateExposed(value) {

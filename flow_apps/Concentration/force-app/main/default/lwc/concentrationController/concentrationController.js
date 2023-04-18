@@ -3,6 +3,9 @@ import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 export default class ConcentrationController extends LightningElement {
 
+    imageCount = 18;
+    cardCount = 6;
+
     get mismatchCounter() {
         return this._mismatchCounter * -1;
     }
@@ -91,9 +94,29 @@ export default class ConcentrationController extends LightningElement {
     cardValue1 = '';
     cardValue2 = '';
 
-    sequence = [1,1,2,2,3,3]
+    get sequence() {
+        let arr = [];
+        let i = 0;
+        while (i < this.cardCount/2) {
+            i++;
+            arr.push(i);
+            arr.push(i);
+        }
+        console.log('sequence', arr);
+        return arr;
+    }
+
+    get imageMaster() {
+        let arr = [];
+        let i = 0;
+        while (arr.push(i) < this.imageCount) {
+            i++
+        }
+        console.log('imageMaster', arr);
+        return arr;
+    }
+    
     shuffled = [];
-    imageMaster = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17];
     imageOrder = [];
 
     get buildKey() {

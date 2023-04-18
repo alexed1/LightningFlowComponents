@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
-import Concentration from '@salesforce/resourceUrl/Concentration';
+import Concentration from '@salesforce/resourceUrl/ers_ConcentrationImages';
 
 export default class ConcentrationCard extends LightningElement {
 
@@ -8,24 +8,9 @@ export default class ConcentrationCard extends LightningElement {
     waitEvent;
 
     imageArray = [
-        'Appy',
-        'Astro',
-        'Brandy',
-        'C18',
-        'Cloudy',
-        'Codey',
-        'Einstein',
-        'Genie',
-        'Hootie',
-        'Max',
-        'Ruth',
-        'S12',
-        'S14',
-        'S15',
-        'S17',
-        'S17r',
-        'S18',
-        'S20'
+        'Appy', 'Astro', 'Brandy', 'C18', 'Cloudy', 'Codey',
+        'Einstein', 'Genie', 'Hootie', 'Max', 'Ruth', 'S12',
+        'S14', 'S15', 'S17', 'S17r', 'S18', 'S20'
     ];
 
     get mismatchCounter() {

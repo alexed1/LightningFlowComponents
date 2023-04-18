@@ -15,6 +15,8 @@
             <property name="exposedId_22" type="Integer" role="inputOnly"/>
             <property name="exposedId_23" type="Integer" role="inputOnly"/>
             <property name="matchId" type="Integer" role="outputOnly"/>
+            <property name="imageOrder" type="String" role="outputOnly"/>
+            <property name="gameKey" type="String" role="outputOnly"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -6,6 +6,9 @@ export default class ConcentrationController extends LightningElement {
     imageCount = 25;
     cardCount = 6;
 
+    waitValue = 1000;
+    waitEvent;
+
     get mismatchCounter() {
         return this._mismatchCounter * -1;
     }
@@ -83,6 +86,24 @@ export default class ConcentrationController extends LightningElement {
     }
     _matchId;
 
+    @api
+    get imageOrder() {
+        return this._imageOrder;
+    }
+    set imageOrder(value) {
+        this._imageOrder = value;
+    }
+    _imageOrder;
+    
+    @api
+    get gameKey() {
+        return this._gameKey;
+    }
+    set gameKey(value) {
+        this._gameKey = value;
+    }
+    _gameKey;
+
     get isFirst() {
         return _isFirst;
     }
@@ -117,17 +138,23 @@ export default class ConcentrationController extends LightningElement {
     }
     
     shuffled = [];
-    imageOrder = [];
+    // imageOrder = [];
 
     get buildKey() {
         return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}`;
     }
 
     connectedCallback() {
-        this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
-        localStorage.setItem('gameKey', this.buildKey);
-        this.imageOrder = this.shuffle(this.imageMaster);
-        localStorage.setItem('imageOrder', this.imageOrder);
+        console.log('CONTROLLER Connected');
+        this.waitEvent = setTimeout(() => {
+            this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
+            this._gameKey = this.buildKey;
+            this.dispatchFlowAttributeChangedEvent('gameKey', this._gameKey);
+            // localStorage.setItem('gameKey', this.buildKey);
+            this._imageOrder = this.shuffle(this.imageMaster).join();
+            this.dispatchFlowAttributeChangedEvent('imageOrder', this._imageOrder);
+            // localStorage.setItem('imageOrder', this.imageOrder);
+        }, this.waitValue);
     }
 
     shuffle(array) {

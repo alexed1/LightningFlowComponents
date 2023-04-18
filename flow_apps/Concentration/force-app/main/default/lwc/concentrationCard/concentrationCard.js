@@ -57,9 +57,31 @@ export default class ConcentrationCard extends LightningElement {
     }
     set exposedId(value) {
         this._exposedId = value;
-
     }
     _exposedId;
+
+    @api
+    get imageOrder() {
+        return this._imageOrder;
+    }
+    set imageOrder(value) {
+        this.imageFront = Concentration + '/' + this.imageArray[value.split(",")[this._cardValue]] + '.png';
+        this._imageOrder = value;
+        console.log('imageOrder', this.cardId, value, this.imageFront);
+    }
+    _imageOrder;
+    
+    @api
+    get gameKey() {
+        return this._gameKey;
+    }
+    set gameKey(value) {
+        const locateId = value.indexOf(this.cardId);
+        this._cardValue = parseInt(value.substring(locateId+1,locateId+2));
+        this._gameKey = value;
+        console.log('gameKey', this.cardId, this._cardValue);
+    }
+    _gameKey;
 
     get cardValue() {
         return this._cardValue;
@@ -98,11 +120,12 @@ export default class ConcentrationCard extends LightningElement {
     imageFront = Concentration + '/Blank.png';
 
     connectedCallback() {
-        const gameKey = localStorage.getItem('gameKey');
-        const locateId = gameKey.indexOf(this.cardId);
-        this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
-        const imageOrder = localStorage.getItem('imageOrder').split(",");
-        this.imageFront = Concentration + '/' + this.imageArray[imageOrder[this._cardValue]] + '.png';
+        console.log('CARD Connected');
+        // const gameKey = localStorage.getItem('gameKey');
+        // const locateId = gameKey.indexOf(this.cardId);
+        // this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
+        // const imageOrder = localStorage.getItem('imageOrder').split(",");
+        // this.imageFront = Concentration + '/' + this.imageArray[imageOrder[this._cardValue]] + '.png';
     }
 
     clickHandler(event) {

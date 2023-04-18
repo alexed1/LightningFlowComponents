@@ -103,8 +103,23 @@ export default class ConcentrationController extends LightningElement {
     connectedCallback() {
         this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
         localStorage.setItem('gameKey', this.buildKey);
-        this.imageOrder = this.imageMaster.sort(() => Math.random() - 0.5);
+        this.imageOrder = this.shuffle(this.imageMaster);
         localStorage.setItem('imageOrder', this.imageOrder);
+    }
+
+    shuffle(array) {
+        let curId = array.length;
+        // There remain elements to shuffle
+        while (0 !== curId) {
+            // Pick a remaining element
+            let randId = Math.floor(Math.random() * curId);
+            curId -= 1;
+            // Swap it with the current element.
+            let tmp = array[curId];
+            array[curId] = array[randId];
+            array[randId] = tmp;
+        }
+        return array;
     }
 
     updateExposed(value) {

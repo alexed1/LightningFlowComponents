@@ -118,9 +118,10 @@ export default class ConcentrationCard extends LightningElement {
         const gameKey = localStorage.getItem('gameKey');
         const locateId = gameKey.indexOf(this.cardId);
         this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
-        const imageOrder = localStorage.getItem('imageOrder');
+        const imageOrder = localStorage.getItem('imageOrder').split(",");
         console.log('imageOrder',imageOrder);
         console.log('_cardValue', this._cardValue);
+        console.log('imageOrder[cv]', imageOrder[this._cardValue])
         console.log('imageArray', this.imageArray[imageOrder[this._cardValue]]);
         this.imageFront = Concentration + '/' + this.imageArray[imageOrder[this._cardValue]] + '.png';
         console.log('Card Connected', this.cardId, gameKey, imageOrder, this._cardValue, this.imageFront);

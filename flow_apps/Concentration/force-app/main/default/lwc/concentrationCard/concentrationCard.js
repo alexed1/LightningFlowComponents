@@ -48,6 +48,8 @@ export default class ConcentrationCard extends LightningElement {
             }
         }
         this._matchId = value;
+        // this.clickCounter = 0;
+        ConcentrationController.log('Match Reset', this.cardId);
     }
     _matchId;
 
@@ -119,8 +121,14 @@ export default class ConcentrationCard extends LightningElement {
     imageBlank = Concentration + '/Blank.png';
     imageFront = Concentration + '/Blank.png';
 
+    // clickCounter = 0;
+    allowClick = false;
+
     connectedCallback() {
         console.log('CARD Connected');
+        this.waitEvent = setTimeout(() => {
+            this.allowClick = true;
+        }, this.waitValue);
         // const gameKey = localStorage.getItem('gameKey');
         // const locateId = gameKey.indexOf(this.cardId);
         // this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
@@ -129,10 +137,14 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     clickHandler(event) {
-        if (this._showBack) {
-            this._showBack = false;
-            this._showFront = true;
-            this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
+        if (this.allowClick) {
+            if (this._showBack) {
+                this._showBack = false;
+                this._showFront = true;
+                this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
+                // this.clickCounter++;
+                // console.log('clickcounter', this.clickCounter);
+            }
         }
     }
 

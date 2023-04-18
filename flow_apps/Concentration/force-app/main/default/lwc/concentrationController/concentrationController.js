@@ -6,7 +6,7 @@ export default class ConcentrationController extends LightningElement {
     imageCount = 25;
     cardCount = 6;
 
-    waitValue = 1000;
+    waitValue = 500;
     waitEvent;
 
     get mismatchCounter() {
@@ -131,7 +131,7 @@ export default class ConcentrationController extends LightningElement {
         let arr = [];
         let i = 0;
         while (arr.push(i) < this.imageCount) {
-            i++
+            i++;
         }
         console.log('imageMaster', arr);
         return arr;

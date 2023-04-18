@@ -94,6 +94,15 @@ export default class ConcentrationController extends LightningElement {
     sequence = [1,1,2,2,3,3]
     shuffled = [];
 
+    get buildKey() {
+        return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}`;
+    }
+
+    connectedCallback() {
+        this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
+        localStorage.setItem('gameKey', this.buildKey);
+    }
+
     updateExposed(value) {
         console.log('CONTROLLER first, value', this._isFirst, value);
         if (!(value < 0)) {
@@ -109,11 +118,6 @@ export default class ConcentrationController extends LightningElement {
         }
     }
 
-    handlePlayAgain() {
-        this.dispatchFlowAttributeChangedEvent('matchId', 10000);
-        this._isFirst = true;
-    }
-    
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
         console.log('CONTROLLER Dispatch', attributeName, attributeValue);
         const attributeChangeEvent = new FlowAttributeChangeEvent(

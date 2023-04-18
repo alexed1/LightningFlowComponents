@@ -128,7 +128,7 @@ export default class ConcentrationCard extends LightningElement {
         console.log('CARD Connected');
         this.waitEvent = setTimeout(() => {
             this.allowClick = true;
-        }, this.waitValue);
+        }, this.waitValue/2);
         // const gameKey = localStorage.getItem('gameKey');
         // const locateId = gameKey.indexOf(this.cardId);
         // this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));

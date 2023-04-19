@@ -11,8 +11,8 @@ export default class ConcentrationCard extends LightningElement {
     imageArray = [
         'Appy', 'Astro', 'Astro18', 'Astro20', 'Brandy', 'C18', 
         'Cloudy', 'Codey', 'Earnie', 'Einstein', 'Einstein19', 
-        'Flo', 'Genie', 'Hootie', 'Koa', 'Max', 
-        'Ruth', 'S12', 'S14', 'S15', 'S15r', 
+        'Flo', 'Genie', 'Hootie', 'Koa', 'Max', 'Codey23',
+        'Ruth', 'S12', 'S14', 'S15', 'S15r', 'Ruth23',
         'S17', 'S17r', 'S18', 'S20', 'S20r'
     ];
 

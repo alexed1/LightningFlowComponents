@@ -3,7 +3,7 @@ import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/f
 
 export default class ConcentrationController extends LightningElement {
 
-    imageCount = 26;
+    imageCount = 28;
     cardCount = 12;
 
     waitValue = 500;

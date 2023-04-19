@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
 
 export default class ConcentrationController extends LightningElement {
 
@@ -187,6 +187,11 @@ export default class ConcentrationController extends LightningElement {
         }
     }
 
+    handlePlayAgain() {
+        const navigateFinishEvent = new FlowNavigationFinishEvent();
+        this.dispatchEvent(navigateFinishEvent);
+    }
+    
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,

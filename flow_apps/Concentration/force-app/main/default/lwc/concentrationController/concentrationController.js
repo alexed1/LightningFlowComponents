@@ -220,7 +220,8 @@ export default class ConcentrationController extends LightningElement {
     connectedCallback() {
         console.log('CONTROLLER Connected');
         this.waitEvent = setTimeout(() => {
-            this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
+            // this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
+            this.shuffled = this.shuffle(this.sequence);
             this._gameKey = this.buildKey;
             this.dispatchFlowAttributeChangedEvent('gameKey', this._gameKey);
             // localStorage.setItem('gameKey', this.buildKey);

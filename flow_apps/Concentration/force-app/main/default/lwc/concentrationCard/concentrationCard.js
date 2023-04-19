@@ -6,6 +6,7 @@ export default class ConcentrationCard extends LightningElement {
 
     waitValue = 1000;
     waitEvent;
+    imageCache;
 
     imageArray = [
         'Appy', 'Astro', 'Astro18', 'Astro20', 'Brandy', 'C18', 
@@ -49,7 +50,7 @@ export default class ConcentrationCard extends LightningElement {
         }
         this._matchId = value;
         // this.clickCounter = 0;
-        ConcentrationController.log('Match Reset', this.cardId);
+        console.log('Match Reset', this.cardId);
     }
     _matchId;
 
@@ -126,6 +127,9 @@ export default class ConcentrationCard extends LightningElement {
 
     connectedCallback() {
         console.log('CARD Connected');
+        this.imageArray.forEach(img => {
+            this.imageCache = Concentration + '/' + img + '.png';
+        });
         this.waitEvent = setTimeout(() => {
             this.allowClick = true;
         }, this.waitValue/2);
@@ -137,7 +141,6 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     clickHandler(event) {
-        if (this.allowClick) {
             if (this._showBack) {
                 this._showBack = false;
                 this._showFront = true;
@@ -145,7 +148,6 @@ export default class ConcentrationCard extends LightningElement {
                 // this.clickCounter++;
                 // console.log('clickcounter', this.clickCounter);
             }
-        }
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {

@@ -4,7 +4,7 @@ import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/f
 export default class ConcentrationController extends LightningElement {
 
     imageCount = 26;
-    cardCount = 6;
+    cardCount = 12;
 
     waitValue = 500;
     waitEvent;
@@ -78,6 +78,66 @@ export default class ConcentrationController extends LightningElement {
     _exposedId_23;
 
     @api
+    get exposedId_31() {
+        return this._exposedId_31;
+    }
+    set exposedId_31(value) {
+        this._exposedId_31 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_31;
+
+    @api
+    get exposedId_32() {
+        return this._exposedId_32;
+    }
+    set exposedId_32(value) {
+        this._exposedId_32 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_32;
+
+    @api
+    get exposedId_33() {
+        return this._exposedId_33;
+    }
+    set exposedId_33(value) {
+        this._exposedId_33 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_33;
+
+    @api
+    get exposedId_41() {
+        return this._exposedId_41;
+    }
+    set exposedId_41(value) {
+        this._exposedId_41 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_41;
+
+    @api
+    get exposedId_42() {
+        return this._exposedId_42;
+    }
+    set exposedId_42(value) {
+        this._exposedId_42 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_42;
+
+    @api
+    get exposedId_43() {
+        return this._exposedId_43;
+    }
+    set exposedId_43(value) {
+        this._exposedId_43 = value;
+        this.updateExposed(value);
+    }
+    _exposedId_43;
+
+    @api
     get matchId() {
         return this._matchId;
     }
@@ -141,7 +201,7 @@ export default class ConcentrationController extends LightningElement {
     // imageOrder = [];
 
     get buildKey() {
-        return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}`;
+        return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}G${this.shuffled[6]}H${this.shuffled[7]}I${this.shuffled[8]}J${this.shuffled[9]}K${this.shuffled[10]}L${this.shuffled[11]}`;
     }
 
     connectedCallback() {

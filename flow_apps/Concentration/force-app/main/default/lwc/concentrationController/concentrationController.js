@@ -8,6 +8,7 @@ export default class ConcentrationController extends LightningElement {
 
     waitValue = 500;
     waitEvent;
+    priorExposedCount = 0;
 
     get mismatchCounter() {
         return this._mismatchCounter * -1;
@@ -164,6 +165,18 @@ export default class ConcentrationController extends LightningElement {
     }
     _gameKey;
 
+    get cardsExposed() {
+        return this._cardsExposed;
+    }
+    set cardsExposed(value) {
+        this._cardsExposed = value;
+        if (this._cardsExposed != this.priorExposedCount) {
+            // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
+            this.priorExposedCount = this._cardsExposed;
+        }
+    }
+    _cardsExposed;
+
     get isFirst() {
         return _isFirst;
     }
@@ -214,6 +227,7 @@ export default class ConcentrationController extends LightningElement {
             this._imageOrder = this.shuffle(this.imageMaster).join();
             this.dispatchFlowAttributeChangedEvent('imageOrder', this._imageOrder);
             // localStorage.setItem('imageOrder', this.imageOrder);
+            // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
         }, this.waitValue);
     }
 
@@ -244,6 +258,7 @@ export default class ConcentrationController extends LightningElement {
                 this._mismatchCounter++;
                 this._isFirst = true;
             }
+            // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
         }
     }
 

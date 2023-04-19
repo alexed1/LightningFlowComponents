@@ -47,6 +47,8 @@ export default class ConcentrationCard extends LightningElement {
                     this._mismatchCounter++;
                 }, this.waitValue);
             }
+            this._cardsExposed = 0;
+            // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
         }
         this._matchId = value;
         // this.clickCounter = 0;
@@ -86,6 +88,14 @@ export default class ConcentrationCard extends LightningElement {
     }
     _gameKey;
 
+    get cardsExposed() {
+        return _cardsExposed;
+    }
+    set cardsExposed(value) {
+        this._cardsExposed = value;
+    }
+    _cardsExposed;
+
     get cardValue() {
         return this._cardValue;
     }
@@ -123,7 +133,7 @@ export default class ConcentrationCard extends LightningElement {
     imageFront = Concentration + '/Blank.png';
 
     // clickCounter = 0;
-    allowClick = false;
+    isConnected = false;
 
     connectedCallback() {
         console.log('CARD Connected');
@@ -131,8 +141,10 @@ export default class ConcentrationCard extends LightningElement {
             this.imageCache = Concentration + '/' + img + '.png';
         });
         this.waitEvent = setTimeout(() => {
-            this.allowClick = true;
+            this.isConnected = true;
         }, this.waitValue/2);
+        this._cardsExposed = 0;
+        // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
         // const gameKey = localStorage.getItem('gameKey');
         // const locateId = gameKey.indexOf(this.cardId);
         // this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
@@ -141,13 +153,17 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     clickHandler(event) {
+        if (this.isConnected) {
             if (this._showBack) {
                 this._showBack = false;
                 this._showFront = true;
+                this._cardsExposed++;
                 this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
+                // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
                 // this.clickCounter++;
                 // console.log('clickcounter', this.clickCounter);
             }
+        }
     }
 
     dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {

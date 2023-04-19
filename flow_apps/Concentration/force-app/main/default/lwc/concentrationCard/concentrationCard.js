@@ -8,7 +8,7 @@ export default class ConcentrationCard extends LightningElement {
     waitEvent;
 
     imageArray = [
-        'Appy', 'Astro', 'Astro20', 'Brandy', 'C18', 
+        'Appy', 'Astro', 'Astro18', 'Astro20', 'Brandy', 'C18', 
         'Cloudy', 'Codey', 'Earnie', 'Einstein', 'Einstein19', 
         'Flo', 'Genie', 'Hootie', 'Koa', 'Max', 
         'Ruth', 'S12', 'S14', 'S15', 'S15r', 

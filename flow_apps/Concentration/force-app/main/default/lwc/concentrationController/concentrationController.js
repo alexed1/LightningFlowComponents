@@ -1,6 +1,8 @@
 import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
 import { loadScript } from 'lightning/platformResourceLoader';
+
+// JavaScript confetti app from Kiril Vatev (https://github.com/catdad/canvas-confetti)
 import CONFETTI from '@salesforce/resourceUrl/ers_confetti';
 
 export default class ConcentrationController extends LightningElement {

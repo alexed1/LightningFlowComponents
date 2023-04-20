@@ -246,24 +246,6 @@ export default class ConcentrationController extends LightningElement {
         }, this.waitValue);
     }
 
-    setUpCanvas() {
-        var confettiCanvas = this.template.querySelector("canvas.confettiCanvas");
-        this.myconfetti = confetti.create(confettiCanvas, { resize: true });
-        this.myconfetti({
-            zIndex: 10000
-        });
-    }
-
-    basicCannon() {
-        confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: {
-            y: 0.6
-        }
-        });
-    }
-
     shuffle(array) {
         let curId = array.length;
         // There remain elements to shuffle
@@ -296,7 +278,7 @@ export default class ConcentrationController extends LightningElement {
     }
 
     handlePlayAgain() {
-        this.basicCannon();
+        this.fireworks();
         const navigateFinishEvent = new FlowNavigationFinishEvent();
         this.dispatchEvent(navigateFinishEvent);
     }
@@ -307,6 +289,35 @@ export default class ConcentrationController extends LightningElement {
             attributeValue
         );
         this.dispatchEvent(attributeChangeEvent);
+    }
+
+    setUpCanvas() {
+        var confettiCanvas = this.template.querySelector("canvas.confettiCanvas");
+        this.myconfetti = confetti.create(confettiCanvas, { resize: true });
+        this.myconfetti({
+            zIndex: 10000
+        });
+    }
+
+    fireworks() {
+        var end = Date.now() + 5 * 1000;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        let interval = setInterval(function() {
+            if (Date.now() > end) {
+            return clearInterval(interval);
+        }
+        // eslint-disable-next-line no-undef
+        confetti({
+            startVelocity: 30,
+            spread: 360,
+            ticks: 60,
+            origin: {
+                x: Math.random(),
+                // since they fall down, start a bit higher than random
+                y: Math.random() - 0.2
+            }
+        });
+        }, 200);
     }
 
 }

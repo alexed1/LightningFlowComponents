@@ -42,12 +42,16 @@ export default class ConcentrationCard extends LightningElement {
         return this._matchId;
     }
     set matchId(value) {
+        console.log('matchId, allowClick', this.cardId, value, this.allowClick);
+        this.allowClick = false;
         if (!this._showBlank) {
             if (value == this._cardValue) {
                 this.waitEvent = setTimeout(() => {
                     this._showBack = false;
                     this._showFront = false;
                     this._showBlank = true;
+                    this.allowClick = true;
+                    console.log('BLANK', this.cardId);
                 }, this.waitValue);
             } else {
                 this.waitEvent = setTimeout(() => {
@@ -56,14 +60,16 @@ export default class ConcentrationCard extends LightningElement {
                     this._showBack = true;
                     this.dispatchFlowAttributeChangedEvent('exposedId', this.mismatchCounter);
                     this._mismatchCounter++;
+                    this.allowClick = true;
+                    console.log('BACK', this.cardId);
                 }, this.waitValue);
             }
-            this._cardsExposed = 0;
+            // this._cardsExposed = 0;
             // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
         }
         this._matchId = value;
         // this.clickCounter = 0;
-        console.log('Match Reset', this.cardId);
+        console.log('Match Reset', this.cardId, this.allowClick);
     }
     _matchId;
 
@@ -83,7 +89,7 @@ export default class ConcentrationCard extends LightningElement {
     set imageOrder(value) {
         this.imageFront = Concentration + '/' + this.imageArray[value.split(",")[this._cardValue]] + '.png';
         this._imageOrder = value;
-        console.log('imageOrder', this.cardId, value, this.imageFront);
+        // console.log('imageOrder', this.cardId, value, this.imageFront);
     }
     _imageOrder;
     
@@ -95,17 +101,17 @@ export default class ConcentrationCard extends LightningElement {
         const locateId = value.indexOf(this.cardId);
         this._cardValue = parseInt(value.substring(locateId+1,locateId+2));
         this._gameKey = value;
-        console.log('gameKey', this.cardId, this._cardValue);
+        // console.log('gameKey', this.cardId, this._cardValue);
     }
     _gameKey;
 
-    get cardsExposed() {
-        return _cardsExposed;
-    }
-    set cardsExposed(value) {
-        this._cardsExposed = value;
-    }
-    _cardsExposed;
+    // get cardsExposed() {
+    //     return _cardsExposed;
+    // }
+    // set cardsExposed(value) {
+    //     this._cardsExposed = value;
+    // }
+    // _cardsExposed;
 
     get cardValue() {
         return this._cardValue;
@@ -145,6 +151,7 @@ export default class ConcentrationCard extends LightningElement {
 
     // clickCounter = 0;
     isConnected = false;
+    allowClick = true;
 
     connectedCallback() {
         console.log('CARD Connected');
@@ -153,8 +160,9 @@ export default class ConcentrationCard extends LightningElement {
         });
         this.waitEvent = setTimeout(() => {
             this.isConnected = true;
+            this.allowClick = true;
         }, this.waitValue/2);
-        this._cardsExposed = 0;
+        // this._cardsExposed = 0;
         // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
         // const gameKey = localStorage.getItem('gameKey');
         // const locateId = gameKey.indexOf(this.cardId);
@@ -164,11 +172,13 @@ export default class ConcentrationCard extends LightningElement {
     }
 
     clickHandler(event) {
-        if (this.isConnected) {
+        console.log('clickHandler, allowClick', this.cardId, this.allowClick);
+        if (this.isConnected && this.allowClick) {
             if (this._showBack) {
+                console.log('Showing Card', this.cardId, this.allowClick);
                 this._showBack = false;
                 this._showFront = true;
-                this._cardsExposed++;
+                // this._cardsExposed++;
                 this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
                 // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
                 // this.clickCounter++;

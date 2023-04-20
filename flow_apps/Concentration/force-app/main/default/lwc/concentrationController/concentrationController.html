@@ -1,9 +1,11 @@
 <template>
-    <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
-    <lightning-button 
-        variant="Brand" 
-        label="Play Again"
-        onclick={handlePlayAgain}
-        class="slds-m-top_small"
-    ></lightning-button>
+        <div class={showHide}>
+        <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
+        <lightning-button 
+            variant="Brand" 
+            label="Play Again"
+            onclick={handlePlayAgain}
+            class="slds-m-top_small"
+        ></lightning-button>
+    </div>
 </template>

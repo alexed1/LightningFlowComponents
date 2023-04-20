@@ -1,4 +1,4 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
 import { loadScript } from 'lightning/platformResourceLoader';
 import CONFETTI from '@salesforce/resourceUrl/ers_confetti';
@@ -13,6 +13,7 @@ export default class ConcentrationController extends LightningElement {
     priorExposedCount = 0;
 
     myconfetti;
+    @track showHide = "slds-hide";
 
     get mismatchCounter() {
         return this._mismatchCounter * -1;
@@ -243,6 +244,7 @@ export default class ConcentrationController extends LightningElement {
             this.dispatchFlowAttributeChangedEvent('imageOrder', this._imageOrder);
             // localStorage.setItem('imageOrder', this.imageOrder);
             // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
+            this.showHide = "slds-show";
         }, this.waitValue);
     }
 

@@ -1,5 +1,7 @@
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
+import { loadScript } from 'lightning/platformResourceLoader';
+import CONFETTI from '@salesforce/resourceUrl/ers_confetti';
 
 export default class ConcentrationController extends LightningElement {
 
@@ -9,6 +11,8 @@ export default class ConcentrationController extends LightningElement {
     waitValue = 500;
     waitEvent;
     priorExposedCount = 0;
+
+    myconfetti;
 
     get mismatchCounter() {
         return this._mismatchCounter * -1;
@@ -219,6 +223,16 @@ export default class ConcentrationController extends LightningElement {
 
     connectedCallback() {
         console.log('CONTROLLER Connected');
+        Promise.all([
+            loadScript(this, CONFETTI )
+        ])
+            .then(() => {
+                this.setUpCanvas();
+            })
+            .catch(error => {
+                console.log('Error loading Confetti', error.message);
+            });
+
         this.waitEvent = setTimeout(() => {
             // this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
             this.shuffled = this.shuffle(this.sequence);
@@ -230,6 +244,24 @@ export default class ConcentrationController extends LightningElement {
             // localStorage.setItem('imageOrder', this.imageOrder);
             // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
         }, this.waitValue);
+    }
+
+    setUpCanvas() {
+        var confettiCanvas = this.template.querySelector("canvas.confettiCanvas");
+        this.myconfetti = confetti.create(confettiCanvas, { resize: true });
+        this.myconfetti({
+            zIndex: 10000
+        });
+    }
+
+    basicCannon() {
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: {
+            y: 0.6
+        }
+        });
     }
 
     shuffle(array) {
@@ -264,6 +296,7 @@ export default class ConcentrationController extends LightningElement {
     }
 
     handlePlayAgain() {
+        this.basicCannon();
         const navigateFinishEvent = new FlowNavigationFinishEvent();
         this.dispatchEvent(navigateFinishEvent);
     }

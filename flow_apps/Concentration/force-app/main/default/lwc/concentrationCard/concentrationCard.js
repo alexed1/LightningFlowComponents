@@ -6,7 +6,18 @@ export default class ConcentrationCard extends LightningElement {
 
     waitValue = 1000;
     waitEvent;
-    imageCache;
+
+    get imageCache() {
+        return this._imageCache;
+    }
+    set imageCache(value) {
+        this._imageCache = value;
+    }
+    _imageCache;
+
+    get notStarted() {
+        return !this.isConnected;
+    }
 
     imageArray = [
         'Appy', 'Astro', 'Astro18', 'Astro20', 'Brandy', 'C18', 
@@ -138,7 +149,7 @@ export default class ConcentrationCard extends LightningElement {
     connectedCallback() {
         console.log('CARD Connected');
         this.imageArray.forEach(img => {
-            this.imageCache = Concentration + '/' + img + '.png';
+            this._imageCache = Concentration + '/' + img + '.png';
         });
         this.waitEvent = setTimeout(() => {
             this.isConnected = true;

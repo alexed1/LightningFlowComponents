@@ -11,6 +11,8 @@ export default class ConcentrationController extends LightningElement {
     waitValue = 500;
     waitEvent;
     priorExposedCount = 0;
+    // priorExposedValue = 0;
+    matchCount = 0;
 
     myconfetti;
     @track showHide = "slds-hide";
@@ -264,23 +266,42 @@ export default class ConcentrationController extends LightningElement {
     }
 
     updateExposed(value) {
+        console.log('Exposed Value', value);
         if (!(value < 0)) {
             if (this._isFirst) {
                 this.cardValue1 = value;
                 this._isFirst = false;
             } else {
                 this.cardValue2 = value;
-                this._matchId = (this.cardValue1 == this.cardValue2) ? value :this.mismatchCounter;
+                if (this.cardValue1 == this.cardValue2) {
+                    this._matchId = value;
+                    this.matchCount++;
+                    if (this.matchCount == this.cardCount/2) {
+                        this.fireworks();
+                    }
+                } else {
+                    this._matchId = this.mismatchCounter;
+                }
+                // this._matchId = (this.cardValue1 == this.cardValue2) ? value :this.mismatchCounter;
                 this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);
                 this._mismatchCounter++;
                 this._isFirst = true;
+                // this.priorExposedValue = 0;
             }
+            // if (this.priorExposedValue == value) {
+            //     this.matchCount++;
+            //     if (this.matchCount == this.cardCount/2) {
+            //         this.fireworks();
+            //     }
+            // }
+            console.log('Matched Count', this.matchCount);
+            // this.priorExposedValue = value;
             // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
         }
     }
 
     handlePlayAgain() {
-        this.fireworks();
+        // this.fireworks();
         const navigateFinishEvent = new FlowNavigationFinishEvent();
         this.dispatchEvent(navigateFinishEvent);
     }

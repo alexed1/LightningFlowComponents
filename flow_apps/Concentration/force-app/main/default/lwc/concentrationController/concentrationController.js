@@ -336,7 +336,7 @@ export default class ConcentrationController extends LightningElement {
         this.dispatchEvent(navigateFinishEvent);
     }
     
-    dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
+    dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {  // Let the flow know an output value has changed
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

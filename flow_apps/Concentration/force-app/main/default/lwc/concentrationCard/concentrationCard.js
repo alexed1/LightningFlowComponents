@@ -22,7 +22,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
-import Concentration from '@salesforce/resourceUrl/ers_ConcentrationImages';
+import Concentration from '@salesforce/resourceUrl/ers_ConcentrationImages';    // Card Images
 
 export default class ConcentrationCard extends LightningElement {
 
@@ -41,6 +41,7 @@ export default class ConcentrationCard extends LightningElement {
         return !this.isConnected;
     }
 
+    // Card Image Filenames
     imageArray = [
         'Appy', 'Astro', 'Astro18', 'Astro20', 'Brandy', 'C18', 
         'Cloudy', 'Codey', 'Earnie', 'Einstein', 'Einstein19', 
@@ -63,19 +64,19 @@ export default class ConcentrationCard extends LightningElement {
     get matchId() {
         return this._matchId;
     }
-    set matchId(value) {
-        console.log('matchId, allowClick', this.cardId, value, this.allowClick);
-        this.allowClick = false;
+    // This is where the output from the concentrationController component gets processed
+    set matchId(value) {   
+        this.allowClick = false;    // Don't allow another card to be selected until the comparison of the prevous two cards is completed
         if (!this._showBlank) {
-            if (value == this._cardValue) {
+            // Pause before removing or flipping cards back over
+            if (value == this._cardValue) {     // We have a match, show a blank space instead of a card
                 this.waitEvent = setTimeout(() => {
                     this._showBack = false;
                     this._showFront = false;
                     this._showBlank = true;
                     this.allowClick = true;
-                    console.log('BLANK', this.cardId);
                 }, this.waitValue);
-            } else {
+            } else {                            // The two selected cards do not match, flip them back over
                 this.waitEvent = setTimeout(() => {
                     this._showBlank = false;
                     this._showFront = false;
@@ -83,15 +84,10 @@ export default class ConcentrationCard extends LightningElement {
                     this.dispatchFlowAttributeChangedEvent('exposedId', this.mismatchCounter);
                     this._mismatchCounter++;
                     this.allowClick = true;
-                    console.log('BACK', this.cardId);
                 }, this.waitValue);
             }
-            // this._cardsExposed = 0;
-            // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
         }
         this._matchId = value;
-        // this.clickCounter = 0;
-        console.log('Match Reset', this.cardId, this.allowClick);
     }
     _matchId;
 
@@ -108,10 +104,10 @@ export default class ConcentrationCard extends LightningElement {
     get imageOrder() {
         return this._imageOrder;
     }
+    // imageOrder is used to select which image to use for the card front and is randomized and provided by the concentrationController component
     set imageOrder(value) {
         this.imageFront = Concentration + '/' + this.imageArray[value.split(",")[this._cardValue]] + '.png';
         this._imageOrder = value;
-        // console.log('imageOrder', this.cardId, value, this.imageFront);
     }
     _imageOrder;
     
@@ -119,21 +115,13 @@ export default class ConcentrationCard extends LightningElement {
     get gameKey() {
         return this._gameKey;
     }
+    // gameKey is used to assign the locations of the card value pairs and is randomized and provided by the concentrationController component
     set gameKey(value) {
         const locateId = value.indexOf(this.cardId);
         this._cardValue = parseInt(value.substring(locateId+1,locateId+2));
         this._gameKey = value;
-        // console.log('gameKey', this.cardId, this._cardValue);
     }
     _gameKey;
-
-    // get cardsExposed() {
-    //     return _cardsExposed;
-    // }
-    // set cardsExposed(value) {
-    //     this._cardsExposed = value;
-    // }
-    // _cardsExposed;
 
     get cardValue() {
         return this._cardValue;
@@ -171,45 +159,31 @@ export default class ConcentrationCard extends LightningElement {
     imageBlank = Concentration + '/Blank.png';
     imageFront = Concentration + '/Blank.png';
 
-    // clickCounter = 0;
     isConnected = false;
     allowClick = true;
 
     connectedCallback() {
-        console.log('CARD Connected');
+        // Try to cache the card images to reduce the lag when a card is first clicked
         this.imageArray.forEach(img => {
             this._imageCache = Concentration + '/' + img + '.png';
         });
+        // Pause to allow the concentrationController component to provide the game seeding values
         this.waitEvent = setTimeout(() => {
             this.isConnected = true;
             this.allowClick = true;
         }, this.waitValue/2);
-        // this._cardsExposed = 0;
-        // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
-        // const gameKey = localStorage.getItem('gameKey');
-        // const locateId = gameKey.indexOf(this.cardId);
-        // this._cardValue = parseInt(gameKey.substring(locateId+1,locateId+2));
-        // const imageOrder = localStorage.getItem('imageOrder').split(",");
-        // this.imageFront = Concentration + '/' + this.imageArray[imageOrder[this._cardValue]] + '.png';
     }
 
     clickHandler(event) {
-        console.log('clickHandler, allowClick', this.cardId, this.allowClick);
         if (this.isConnected && this.allowClick) {
-            if (this._showBack) {
-                console.log('Showing Card', this.cardId, this.allowClick);
+            if (this._showBack) {   // Flip the card over if the back is showing
                 this._showBack = false;
                 this._showFront = true;
-                // this._cardsExposed++;
                 this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
-                // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
-                // this.clickCounter++;
-                // console.log('clickcounter', this.clickCounter);
-            }
         }
     }
 
-    dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {
+    dispatchFlowAttributeChangedEvent(attributeName, attributeValue) {  // Let the flow know an output value has changed
         const attributeChangeEvent = new FlowAttributeChangeEvent(
             attributeName,
             attributeValue

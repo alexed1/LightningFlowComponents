@@ -5,7 +5,11 @@
             variant="Brand" 
             label="Play Again"
             onclick={handlePlayAgain}
-            class="slds-m-top_small"
         ></lightning-button>
+        <lightning-formatted-rich-text
+            value={attempts}
+            style="color:#009EDF"
+            class="slds-m-left_xx-large"
+        ></lightning-formatted-rich-text>
     </div>
 </template>

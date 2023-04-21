@@ -196,6 +196,12 @@ export default class ConcentrationController extends LightningElement {
     }
     _gameKey;
 
+    get attempts() {
+        let number = this._mismatchCounter - 1;
+        let word = (number == 1 ? 'Try' : 'Tries');
+        return (number > 0) ? `<h3>${number} ${word}</h3>` : ``;
+    }
+
     get cardsExposed() {
         return this._cardsExposed;
     }

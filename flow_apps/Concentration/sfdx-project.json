@@ -14,6 +14,7 @@
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "57.0",
   "packageAliases": {
-    "Concentration": "0Ho5G000000PB7DSAW"
+    "Concentration": "0Ho5G000000PB7DSAW",
+    "Concentration@1.0.0": "04t5G000004J7KNQA0"
   }
 }

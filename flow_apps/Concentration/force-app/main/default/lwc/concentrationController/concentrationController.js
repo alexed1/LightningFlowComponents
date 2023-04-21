@@ -35,7 +35,6 @@ export default class ConcentrationController extends LightningElement {
     waitValue = 500;
     waitEvent;
     priorExposedCount = 0;
-    // priorExposedValue = 0;
     matchCount = 0;
 
     myconfetti;
@@ -49,6 +48,7 @@ export default class ConcentrationController extends LightningElement {
     }
     _mismatchCounter = 1;
 
+    //  --- Handle (updateExposed) component logic when any one of the cards has been flipped over ---
     @api
     get exposedId_11() {
         return this._exposedId_11;
@@ -177,6 +177,7 @@ export default class ConcentrationController extends LightningElement {
         this._matchId = value;
     }
     _matchId;
+    //  --- End of possible inputs coming from the output of any of the concentrationCard components ---
 
     @api
     get imageOrder() {
@@ -196,23 +197,11 @@ export default class ConcentrationController extends LightningElement {
     }
     _gameKey;
 
-    get attempts() {
+    get attempts() {    // Text to show the number of pairing attempts
         let number = this._mismatchCounter - 1;
         let word = (number == 1 ? 'Try' : 'Tries');
         return (number > 0) ? `<h3>${number} ${word}</h3>` : ``;
     }
-
-    get cardsExposed() {
-        return this._cardsExposed;
-    }
-    set cardsExposed(value) {
-        this._cardsExposed = value;
-        if (this._cardsExposed != this.priorExposedCount) {
-            // this.dispatchFlowAttributeChangedEvent('cardsExposed', this._cardsExposed);
-            this.priorExposedCount = this._cardsExposed;
-        }
-    }
-    _cardsExposed;
 
     get isFirst() {
         return _isFirst;
@@ -225,7 +214,7 @@ export default class ConcentrationController extends LightningElement {
     cardValue1 = '';
     cardValue2 = '';
 
-    get sequence() {
+    get sequence() {    // Create an array for each of the card pairs in the game
         let arr = [];
         let i = 0;
         while (i < this.cardCount/2) {
@@ -233,29 +222,26 @@ export default class ConcentrationController extends LightningElement {
             arr.push(i);
             arr.push(i);
         }
-        console.log('sequence', arr);
         return arr;
     }
 
-    get imageMaster() {
+    get imageMaster() { // Create an array for each of the possible card images
         let arr = [];
         let i = 0;
         while (arr.push(i) < this.imageCount) {
             i++;
         }
-        console.log('imageMaster', arr);
         return arr;
     }
     
     shuffled = [];
-    // imageOrder = [];
 
-    get buildKey() {
+    get buildKey() {    // Build the gameKey holding the value of the image to be used by each card.  Each image will be assigned to two cards.
         return `A${this.shuffled[0]}B${this.shuffled[1]}C${this.shuffled[2]}D${this.shuffled[3]}E${this.shuffled[4]}F${this.shuffled[5]}G${this.shuffled[6]}H${this.shuffled[7]}I${this.shuffled[8]}J${this.shuffled[9]}K${this.shuffled[10]}L${this.shuffled[11]}`;
     }
 
-    connectedCallback() {
-        console.log('CONTROLLER Connected');
+    connectedCallback() {   
+        // Load the Confetti code
         Promise.all([
             loadScript(this, CONFETTI )
         ])
@@ -266,24 +252,23 @@ export default class ConcentrationController extends LightningElement {
                 console.log('Error loading Confetti', error.message);
             });
 
+        // Create the unique game values (card images and card order)
         this.waitEvent = setTimeout(() => {
-            // this.shuffled = this.sequence.sort(() => Math.random() - 0.5);
+            // Shuffle and assign the images to card pairs
             this.shuffled = this.shuffle(this.sequence);
             this._gameKey = this.buildKey;
             this.dispatchFlowAttributeChangedEvent('gameKey', this._gameKey);
-            // localStorage.setItem('gameKey', this.buildKey);
+            // Shuffle and assign the order the cards will placed on the screen
             this._imageOrder = this.shuffle(this.imageMaster).join();
             this.dispatchFlowAttributeChangedEvent('imageOrder', this._imageOrder);
-            // localStorage.setItem('imageOrder', this.imageOrder);
-            // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
+            // Now that the confetti script has loaded, it is ok to display this component
             this.showHide = "slds-show";
         }, this.waitValue);
     }
 
-    shuffle(array) {
+    shuffle(array) {    // Shuffle an array of values
         let curId = array.length;
-        // There remain elements to shuffle
-        while (0 !== curId) {
+        while (0 !== curId) {   // There remain elements to shuffle
             // Pick a remaining element
             let randId = Math.floor(Math.random() * curId);
             curId -= 1;
@@ -295,8 +280,8 @@ export default class ConcentrationController extends LightningElement {
         return array;
     }
 
+    // This is where the output from each of the concentrationCard components gets processed
     updateExposed(value) {
-        console.log('Exposed Value', value);
         if (!(value < 0)) {
             if (this._isFirst) {
                 this.cardValue1 = value;
@@ -306,32 +291,20 @@ export default class ConcentrationController extends LightningElement {
                 if (this.cardValue1 == this.cardValue2) {
                     this._matchId = value;
                     this.matchCount++;
-                    if (this.matchCount == this.cardCount/2) {
+                    if (this.matchCount == this.cardCount/2) {  // All pairs found - fire off the confetti
                         this.fireworks();
                     }
                 } else {
                     this._matchId = this.mismatchCounter;
                 }
-                // this._matchId = (this.cardValue1 == this.cardValue2) ? value :this.mismatchCounter;
-                this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);
+                this.dispatchFlowAttributeChangedEvent('matchId', this._matchId);   // Let each of the concentrationCard components know the results of the card comparison
                 this._mismatchCounter++;
                 this._isFirst = true;
-                // this.priorExposedValue = 0;
             }
-            // if (this.priorExposedValue == value) {
-            //     this.matchCount++;
-            //     if (this.matchCount == this.cardCount/2) {
-            //         this.fireworks();
-            //     }
-            // }
-            console.log('Matched Count', this.matchCount);
-            // this.priorExposedValue = value;
-            // this.dispatchFlowAttributeChangedEvent('isFirst', this._isFirst);
         }
     }
 
-    handlePlayAgain() {
-        // this.fireworks();
+    handlePlayAgain() {     // Exit the flow so it will restart
         const navigateFinishEvent = new FlowNavigationFinishEvent();
         this.dispatchEvent(navigateFinishEvent);
     }
@@ -344,7 +317,7 @@ export default class ConcentrationController extends LightningElement {
         this.dispatchEvent(attributeChangeEvent);
     }
 
-    setUpCanvas() {
+    setUpCanvas() {     // Prep the canvas for the confetti
         var confettiCanvas = this.template.querySelector("canvas.confettiCanvas");
         this.myconfetti = confetti.create(confettiCanvas, { resize: true });
         this.myconfetti({
@@ -352,8 +325,8 @@ export default class ConcentrationController extends LightningElement {
         });
     }
 
-    fireworks() {
-        var end = Date.now() + 5 * 1000;
+    fireworks() {       // Fire off the fireworks option for the confetti
+        var end = Date.now() + 5 * 1000;    // Show fireworks for 5 seconds
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         let interval = setInterval(function() {
             if (Date.now() > end) {

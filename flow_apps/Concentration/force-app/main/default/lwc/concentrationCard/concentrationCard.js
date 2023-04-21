@@ -180,6 +180,7 @@ export default class ConcentrationCard extends LightningElement {
                 this._showBack = false;
                 this._showFront = true;
                 this.dispatchFlowAttributeChangedEvent('exposedId', this._cardValue);
+            }
         }
     }
 

@@ -1,3 +1,25 @@
+/**
+ * Lightning Web Component for Flow Screens:            concentrationController
+ * 
+ * Displays a Play Again button, count of attempts, and shows confetti on game completeion.  
+ * It outputs the card value, when two sequential card selections match, along with unique game information.  For input it takes the value of of each individual card as it is selected.
+ * 
+ * This is part of a 2 component package for a Concentration Game screen flow that demonstrates how a compoent's input can be reactive to another component's output.
+ * 
+ * Additional components packaged with this LWC:
+ * 
+ *                      Lightning Web Components:       concentrationCard
+
+ * CREATED BY:          Eric Smith
+ * 
+ * VERSION:             1.0.0
+ * 
+ * DATE:                4/21/2023
+ * 
+ * RELEASE NOTES:       
+ * 
+**/
+
 import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
 import { loadScript } from 'lightning/platformResourceLoader';

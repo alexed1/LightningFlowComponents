@@ -1,3 +1,25 @@
+/**
+ * Lightning Web Component for Flow Screens:            concentrationCard
+ * 
+ * Displays a card showing either the card back, the card front, or a blank space.  
+ * It outputs the card value and for input it takes the value of matched cards as well as unique game information.    
+ * 
+ * This is part of a 2 component package for a Concentration Game screen flow that demonstrates how a compoent's input can be reactive to another component's output.
+ * 
+ * Additional components packaged with this LWC:
+ * 
+ *                      Lightning Web Components:       concentrationController
+
+ * CREATED BY:          Eric Smith
+ * 
+ * VERSION:             1.0.0
+ * 
+ * DATE:                4/21/2023
+ * 
+ * RELEASE NOTES:       
+ * 
+**/
+
 import { LightningElement, api } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import Concentration from '@salesforce/resourceUrl/ers_ConcentrationImages';

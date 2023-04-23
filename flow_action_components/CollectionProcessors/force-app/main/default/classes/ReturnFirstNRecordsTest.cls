@@ -22,6 +22,22 @@ public with sharing class ReturnFirstNRecordsTest {
         List<ReturnFirstNRecords.Results> testResultList = ReturnFirstNRecords.returnNRecords(testRequestList);
         System.assertEquals(0, testResultList[0].returnCount);
 
+        // Test fewer than total collection
+        testRequest.inputCollection = accts;
+        testRequest.recordCount = 2;
+        testRequestList.add(testRequest);
+        testResultList = ReturnFirstNRecords.returnNRecords(testRequestList);
+        System.assertEquals(2, testResultList[0].returnCount);
+        System.assertEquals(2, testResultList[0].outputCollection.size());
+
+        // Test more than total collection
+        testRequest.inputCollection = accts;
+        testRequest.recordCount = 4;
+        testRequestList.add(testRequest);
+        testResultList = ReturnFirstNRecords.returnNRecords(testRequestList);
+        System.assertEquals(3, testResultList[0].returnCount);
+        System.assertEquals(3, testResultList[0].outputCollection.size());
+
     }
 
 }

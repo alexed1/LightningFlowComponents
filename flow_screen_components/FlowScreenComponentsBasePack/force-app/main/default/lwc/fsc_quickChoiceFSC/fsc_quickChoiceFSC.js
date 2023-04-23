@@ -16,6 +16,12 @@ export default class QuickChoiceFSC extends LightningElement {
     availableActions = [];
 
     @api masterLabel;
+
+    @api helpText;
+    get showHelpText() {
+        return (this.helpText?.length > 0) ? "slds-show" : "slds-hide";
+    }
+
     @api choiceLabels = [];
     @api choiceValues = []; //string collection
 

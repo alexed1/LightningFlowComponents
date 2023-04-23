@@ -6,7 +6,7 @@ const CB_ATTRIB_PREFIX = 'cb_';       // Used with fsc_flowCheckbox component
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-    versionNumber = '2.39';
+    versionNumber = '2.40';
     staticChoicesModalClass = 'staticChoicesModal';
     _builderContext;
     _values;
@@ -22,6 +22,8 @@ export default class QuickChoiceCpe extends LightningElement {
         sortList: { value: null, valueDataType: null, isCollection: false, label: 'Sort Picklist by Label' },
         required: { value: null, valueDataType: null, isCollection: false, label: 'Required' },
         masterLabel: { value: null, valueDataType: null, isCollection: false, label: 'Master Label' },
+        helpText: { value: null, valueDataType: null, isCollection: false, label: 'Help Text',
+            helpText: 'Optional help text to show with the Master Label' },
         value: { value: null, valueDataType: null, isCollection: false, label: 'Value (Default or Existing)' },
         style_width: { value: null, valueDataType: null, isCollection: false, label: 'Width (Pixels)' },
         numberOfColumns: { value: null, valueDataType: null, isCollection: false, label: 'Number of Columns' },

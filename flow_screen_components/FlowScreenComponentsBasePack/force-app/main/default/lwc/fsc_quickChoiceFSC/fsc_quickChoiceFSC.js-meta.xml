@@ -22,6 +22,7 @@
             <property name="numberOfColumns" label="Card Mode - Number of Display Box Columns (1 or 2)" type="String" description="1 or blank (default) for a single column or 2 for dual columns"/>
             <property name="inputMode" label="Input Mode" type="String" description="“Single String Collection”, “Dual String Collections”, “Picklist Field”, or ” Visual Text Box ” are currently supported"/>
             <property name="masterLabel" label="Master Label" type="String" description="The main label for the picklist or radio button group"/>
+            <property name="helpText" label="Help Text" type="String" description="Optional help text to show with the Master Label"/>
             <property name="required" label="Required" type="Boolean" default="false" description="Will prevent transition if set to {!$GlobalConstant.True}"/>
             <property name="displayMode" label="Display Mode" type="String" description="Either “Visual”, “Picklist” or “Radio”, depending on which control you want"/>
             <property name="isResponsive" label="Make Width Responsive?" type="Boolean" default="false" description="Set this to true to adjust the size of single column visual cards to fit the screen and the amount of text."/>

@@ -18,6 +18,9 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
 
+4/23/23 -   Eric Smith -    Version 2.40  
+                            Added an attribute for a Help Text hover to appear next to the Master Label for all input types 
+
 3/29/23 -   Eric Smith -    Version 2.39  
                             Fixed dependent picklist bug (CB_TRUE not defined) 
 
@@ -83,8 +86,17 @@ Additional components packaged with this LWC:
         <!-- Display Visual Card Pickers -->
         <template if:true={showVisual}>
             <fieldset class="slds-form-element" style="margin-right:1rem;">
-                <label class="slds-form-element__legend slds-form-element__label">
-                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
+                <div class="slds-grid">
+                    <div class="slds-col slds-grow-none">
+                        <label class="slds-form-element__legend slds-form-element__label">
+                            <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
+                    </div>
+                    <div class={showHelpText}>
+                        <div class="slds-col">
+                            <lightning-helptext content={helpText}></lightning-helptext>
+                        </div>
+                    </div>
+                </div>
                 <div class={gridClass} style={gridStyle}>
                     <template for:each={items} for:item="item">
                         <div key={item.name} class={columnClass} style={responsiveSize}>
@@ -150,15 +162,24 @@ Additional components packaged with this LWC:
             <!-- Display Radio Buttons -->
             <template if:true={showRadio}>
                 <div style={inputStyle} class={inputClass}>
-                    <lightning-radio-group 
-                        name={radioGroup} 
-                        label={masterLabel} 
-                        value={selectedValue}
-                        options={options}
-                        required={required} 
-                        onchange={handleChange} 
-                        type="radio">
-                    </lightning-radio-group>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-grow-none">
+                            <lightning-radio-group 
+                                name={radioGroup} 
+                                label={masterLabel} 
+                                value={selectedValue}
+                                options={options}
+                                required={required} 
+                                onchange={handleChange} 
+                                type="radio">
+                            </lightning-radio-group>
+                        </div>
+                        <div class={showHelpText}>
+                            <div class="slds-col">
+                                <lightning-helptext content={helpText}></lightning-helptext>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </template>
 
@@ -171,6 +192,7 @@ Additional components packaged with this LWC:
                         value={selectedValue}
                         options={options}
                         required={required} 
+                        field-level-help={helpText}
                         onchange={handleChange}>
                     </lightning-combobox>
                 </div>

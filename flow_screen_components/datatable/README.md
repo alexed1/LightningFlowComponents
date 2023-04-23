@@ -70,8 +70,15 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes
+# Release Notes 
  
+## 04/xx/23 -  Eric Smith -    Version 4.0.13 
+**Updates:** 
+-   Updated API versions to 57.0 
+  
+**Bug Fixes:**  
+-   
+  
  ## 11/02/22 -  Eric Smith -    Version 4.0.12
 **Bug Fixes:**  
 -   Fixed .slice is not a function error  

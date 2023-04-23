@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Concentration Card</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="cardId" type="String" role="inputOnly" />
+            <property name="matchId" type="Integer" role="inputOnly" />
+            <property name="imageOrder" type="String" role="inputOnly"/>
+            <property name="gameKey" type="String" role="inputOnly"/>
+            <property name="exposedId" type="Integer" role="outputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

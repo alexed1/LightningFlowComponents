@@ -1065,7 +1065,6 @@ export default class ers_datatableCPE extends LightningElement {
         // Parameter value string to pass to Wizard Flow
         this.updateFlowParam('vWizRecordCount', CONSTANTS.WIZROWCOUNT);
         this.updateFlowParam('vSObject', this.inputValues.objectName.value);
-        // return JSON.stringify(this.flowParams);
         return this.flowParams;
     }
     
@@ -1079,12 +1078,10 @@ export default class ers_datatableCPE extends LightningElement {
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
         console.log('=== handleFlowStatusChange - ' + event.detail.status + ' ===');
-        // if (event.detail.flowStatus == "ERROR") { 
         if (event.detail.status === "ERROR") { 
             console.log('Flow Error: ',JSON.stringify(event));
         } else {      
             this.isFlowLoaded = true;
-            // event.detail.flowParams.forEach(attribute => {
             event.detail.outputVariables.forEach(attribute => {
                 let name = attribute.name;
                 let value = attribute.value; 
@@ -1110,7 +1107,6 @@ export default class ers_datatableCPE extends LightningElement {
 
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                     let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
-                    // if (event.detail.flowExit && !this.isEarlyExit) {
                     if (event.detail.status === "FINISHED" && !this.isEarlyExit) { 
 
                         // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
@@ -1163,6 +1159,7 @@ export default class ers_datatableCPE extends LightningElement {
                             default:
                         }
                         this.isFlowLoaded = false;
+                        this.closeModal();
                     }
                 }
             });

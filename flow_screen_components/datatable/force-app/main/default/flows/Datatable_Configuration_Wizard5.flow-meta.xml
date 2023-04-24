@@ -755,6 +755,19 @@
             <targetReference>Clear_Early_Exit_Flag</targetReference>
         </connector>
     </assignments>
+    <assignments>
+        <name>Wizard_Finish_ass</name>
+        <label>Wizard Finish</label>
+        <locationX>3234</locationX>
+        <locationY>542</locationY>
+        <assignmentItems>
+            <assignToReference>vEarlyExit</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </assignmentItems>
+    </assignments>
     <constants>
         <name>cConfig</name>
         <dataType>String</dataType>
@@ -844,7 +857,7 @@
         <locationX>3216</locationX>
         <locationY>208</locationY>
         <defaultConnector>
-            <targetReference>Wizard_Finish</targetReference>
+            <targetReference>Wizard_Finish_ass</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>NO CONFIG RECORD</defaultConnectorLabel>
         <rules>
@@ -1173,7 +1186,7 @@
         <locationX>3374</locationX>
         <locationY>456</locationY>
         <connector>
-            <targetReference>Wizard_Finish</targetReference>
+            <targetReference>Wizard_Finish_ass</targetReference>
         </connector>
         <inputReference>objConfig</inputReference>
     </recordCreates>
@@ -1234,7 +1247,7 @@
         <locationX>3097</locationX>
         <locationY>454</locationY>
         <connector>
-            <targetReference>Wizard_Finish</targetReference>
+            <targetReference>Wizard_Finish_ass</targetReference>
         </connector>
         <inputReference>objConfig</inputReference>
     </recordUpdates>
@@ -1625,22 +1638,6 @@
         <fields>
             <name>FinishMessage_0</name>
             <fieldText>&lt;p&gt;&lt;b style=&quot;color: rgb(182, 56, 56); font-size: 24px;&quot;&gt;&lt;i&gt;The ﻿﻿Column Wizard requires that the selected Object ({!vSObject}) has at least one record!&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
-            <fieldType>DisplayText</fieldType>
-        </fields>
-        <showFooter>false</showFooter>
-        <showHeader>false</showHeader>
-    </screens>
-    <screens>
-        <name>Wizard_Finish</name>
-        <label>Wizard Finish</label>
-        <locationX>3235</locationX>
-        <locationY>520</locationY>
-        <allowBack>false</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <fields>
-            <name>FinishMessage</name>
-            <fieldText>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;b style=&quot;color: rgb(101, 150, 104); font-size: 24px;&quot;&gt;&lt;i&gt;﻿﻿Column Wizard has finished.  Please close this window.&lt;/i&gt;&lt;/b&gt;&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>false</showFooter>

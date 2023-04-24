@@ -148,11 +148,17 @@
                                 <div if:false={isFlowLoaded}>
                                     <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
                                 </div>
-                                <c-fsc_screen-flow width="100%" height={wizardHeight}
+                                <lightning-flow
+                                    flow-api-name="Datatable_Configuration_Wizard5"
+                                    onstatuschange={handleFlowStatusChange}
+                                    flow-input-variables={wizardParams}
+                                >
+                                </lightning-flow>
+                                <!-- <c-fsc_screen-flow width="100%" height={wizardHeight}
                                     flow-name="Datatable_Configuration_Wizard4" name="uniqueName"
                                     flow-params={wizardParams}
                                     onflowstatuschange={handleFlowStatusChange}>
-                                </c-fsc_screen-flow>
+                                </c-fsc_screen-flow> -->
                             </div>
 
                             <!-- Footer Section -->

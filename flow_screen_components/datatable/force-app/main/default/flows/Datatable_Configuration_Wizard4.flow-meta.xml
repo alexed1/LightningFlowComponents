@@ -10,6 +10,7 @@
         <connector>
             <targetReference>Decode_Type_Attribute</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -28,6 +29,7 @@
         <connector>
             <targetReference>Set_Quick_Choice_Options</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -46,6 +48,7 @@
         <connector>
             <targetReference>Decode_Other_Attribute</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>inputStr</name>
             <value>
@@ -64,6 +67,7 @@
         <connector>
             <targetReference>Select_Fields</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectName</name>
             <value>
@@ -85,6 +89,7 @@
         <connector>
             <targetReference>Get_Records_Result</targetReference>
         </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
             <name>objectApiName</name>
             <value>
@@ -108,7 +113,7 @@
             <name>recordString</name>
         </outputParameters>
     </actionCalls>
-    <apiVersion>52.0</apiVersion>
+    <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Add_Config_Quick_Choice_Option</name>
         <label>Add Config Quick Choice Option</label>
@@ -1100,6 +1105,7 @@
         </rules>
     </decisions>
     <description>Flow designed to run inside of the datatable CPE to select and set component attributes by interacting with a sample datatable.</description>
+    <environments>Default</environments>
     <formulas>
         <name>fFirstField</name>
         <dataType>String</dataType>
@@ -1324,6 +1330,7 @@
                     <elementReference>vSelectionMethod</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1463,6 +1470,7 @@
                     <stringValue>CB_FALSE</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1555,6 +1563,7 @@
                     <elementReference>apexColSelectedFieldDescriptors_usf</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>vFieldList</assignToReference>
@@ -1767,6 +1776,7 @@
                     <elementReference>wiz_columnOtherAttribs</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <outputParameters>
                 <assignToReference>wiz_columnLabels</assignToReference>
@@ -1833,6 +1843,7 @@
                     <booleanValue>false</booleanValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -1930,6 +1941,7 @@
                     <stringValue>[{&quot;label&quot;:&quot;Ignore Changes&quot;,&quot;value&quot;:&quot;Ignore&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:0},{&quot;label&quot;:&quot;Save Changes&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;neutral&quot;,&quot;index&quot;:1}]</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -1971,6 +1983,7 @@
                     <elementReference>vConfigToggleStatus</elementReference>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>
@@ -2090,6 +2103,7 @@
                     <stringValue>CB_TRUE</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -2137,6 +2151,7 @@
                     <stringValue>[{&quot;label&quot;:&quot;Save As Selected Configuration Record&quot;,&quot;value&quot;:&quot;Save&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:save&quot;,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -2219,6 +2234,7 @@
                     <stringValue>[{&quot;label&quot;:&quot;Create New Configuration Record&quot;,&quot;value&quot;:&quot;Create&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand-outline&quot;,&quot;iconName&quot;:&quot;utility:new&quot;,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
             <visibilityRule>
@@ -2266,6 +2282,7 @@
                     <stringValue>[{&quot;label&quot;:&quot;Done&quot;,&quot;value&quot;:&quot;Done&quot;,&quot;iconPosition&quot;:&quot;left&quot;,&quot;variant&quot;:&quot;brand&quot;,&quot;iconName&quot;:null,&quot;index&quot;:0}]</stringValue>
                 </value>
             </inputParameters>
+            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
             <storeOutputAutomatically>true</storeOutputAutomatically>
         </fields>

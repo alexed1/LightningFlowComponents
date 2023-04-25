@@ -74,8 +74,9 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## 04/xx/23 -  Eric Smith -    Version 4.0.13 
 **Updates:** 
--   Switched Column Wizard Flow from Aura initiated to LWC
--       Provides a wider modal, cleaner exit behavior and eliminates conflicts with debug mode and clickjack protection 
+-   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
+-       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection
+-       NOTE: If debug mode is turned on, there will be no sample records in the Configuration Wizard datatable
 -       NOTE: Requires that the Datatable Configuration Wizard flow be Activated on installation
 -   Updated API versions to 57.0 
   

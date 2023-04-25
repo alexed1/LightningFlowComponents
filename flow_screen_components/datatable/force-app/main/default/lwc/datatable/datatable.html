@@ -127,7 +127,14 @@ Features:   The only required paramters are the SObject collection of records an
             </template>
 
             <template if:true={isShowTable}>
-                <div style={tableHeightAttribute} class={borderClass} id="datatable">
+
+                <div if:true={isWorking}>
+                    <lightning-spinner
+                        alternative-text="Working..." variant="brand">
+                    </lightning-spinner>
+                </div>
+
+                <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatable">
 
                     <c-ers_custom-lightning-datatable
                         aria-label={tableLabel}
@@ -158,18 +165,19 @@ Features:   The only required paramters are the SObject collection of records an
                     </div>
 
                 </div>
+
             </template>
 
             <template if:false={isShowTable}>
-                <div class="slds-p-around_x-small slds-text-heading_small">
+                <div if:true={haveRecords}>
+                    <lightning-spinner
+                        alternative-text="Working..." variant="brand">
+                    </lightning-spinner>
+                </div>
+                <div if:false={haveRecords} class="slds-p-around_x-small slds-text-heading_small">
                     {emptyTableMessage}
                 </div>
             </template>
-            <div if:true={isWorking}>
-                <lightning-spinner
-                    alternative-text="Working..." variant="brand">
-                </lightning-spinner>
-            </div>
 
         </div>
 

@@ -411,7 +411,13 @@ export default class Datatable extends LightningElement {
 
     get isShowTable() {
         return this.mydata.length > 0;
+        // return this._tableData.length > 0;
     }
+
+    get haveRecords() {
+        return this._tableData.length > 0;
+    }
+
     get linkTarget() {
         return (this.openLinkinSameTab) ? '_self' : '_blank';
     }

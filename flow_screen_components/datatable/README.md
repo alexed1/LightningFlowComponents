@@ -81,7 +81,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Updated API versions to 57.0 
   
 **Bug Fixes:**  
--   
+-   Display spinner instead of empty table message while processing the records
   
  ## 11/02/22 -  Eric Smith -    Version 4.0.12
 **Bug Fixes:**  

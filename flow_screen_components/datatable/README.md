@@ -74,6 +74,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## 04/xx/23 -  Eric Smith -    Version 4.0.13 
 **Updates:** 
+-   Updated maximum record count from 1000 to 2000 
 -   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
 -       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection
 -       NOTE: If debug mode is turned on, there will be no sample records in the Configuration Wizard datatable

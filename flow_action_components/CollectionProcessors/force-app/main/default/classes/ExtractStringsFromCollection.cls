@@ -6,7 +6,7 @@ global with sharing class ExtractStringsFromCollection {
         List<Result> outputStrings =  new List<Result>();
         
         for (Request request: requestList) {
-            if (request.inputRecordCollection == null || request.inputRecordCollection.size() == 0) {
+            if (request.allowEmptyCollection != true && (request.inputRecordCollection == null || request.inputRecordCollection.size() == 0)) {
                 throw new ExtractStringsException('Input record list is required, but empty');
             }
             if (request.fieldAPIName == null || request.fieldAPIName.length() == 0) {
@@ -16,8 +16,13 @@ global with sharing class ExtractStringsFromCollection {
                 request.dedupeValues = true;
             }
             Result result = new Result();
-         	result.fieldValueCollection = getUniqueTextCollection(request);
-          	result.fieldValueString = String.join(result.fieldValueCollection, ',');
+            if (request.allowEmptyCollection == true && (request.inputRecordCollection == null || request.inputRecordCollection.size() == 0)) {
+                result.fieldValueCollection = new List<String>{};
+                result.fieldValueString = '';
+            } else {
+                result.fieldValueCollection = getUniqueTextCollection(request);
+                result.fieldValueString = String.join(result.fieldValueCollection, ',');
+            }
             outputStrings.add(result);
         }
         return outputStrings;
@@ -48,6 +53,9 @@ global with sharing class ExtractStringsFromCollection {
 
         @InvocableVariable(description='If true only unique values will be returned. The default value is true')
         global Boolean dedupeValues;
+
+        @InvocableVariable(description='Allow the record collection to be empty?')
+        global Boolean allowEmptyCollection;
     }
     
     global class Result {

@@ -28,9 +28,24 @@ private class ExtractStringsFromCollectionTest {
             exc = e;
         }
         Test.stopTest();
-        System.assert(exc != null, 'DedupeFieldsFromCollectionTest : emptyInputCollectionReturnsEmptyOutputCollection failed');
+        System.assert(exc != null, 'DedupeFieldsFromCollectionTest : emptyInputCollectionThrowsError failed');
     }
     
+    @IsTest
+    static void emptyInputCollectionReturnsEmpty() {
+        List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
+        ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
+        flowRequest.inputRecordCollection = new List<Account>();
+        flowRequest.fieldAPIName = '';
+        flowRequest.allowEmptyCollection = true;
+        flowRequests.add(flowRequest);
+        ExtractStringsFromCollection.ExtractStringsException exc;
+        Test.startTest();
+        List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
+        Test.stopTest();
+        System.assert(results[0].fieldValueCollection.size() == 0, 'DedupeFieldsFromCollectionTest : emptyInputCollectionReturnsEmptyOutputCollection failed');
+    }
+
     @IsTest
     static void extractTextCollectionNoDedupe() {
         List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();

@@ -23,7 +23,7 @@ private class ExtractStringsFromCollectionTest {
         ExtractStringsFromCollection.ExtractStringsException exc;
         Test.startTest();
         try {
-           List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
+            List<ExtractStringsFromCollection.Result> results = ExtractStringsFromCollection.extract(flowRequests);
         } catch (ExtractStringsFromCollection.ExtractStringsException e) {
             exc = e;
         }
@@ -36,7 +36,8 @@ private class ExtractStringsFromCollectionTest {
         List<ExtractStringsFromCollection.Request> flowRequests = new List<ExtractStringsFromCollection.Request>();
         ExtractStringsFromCollection.Request flowRequest = new ExtractStringsFromCollection.Request();
         flowRequest.inputRecordCollection = new List<Account>();
-        flowRequest.fieldAPIName = '';
+        flowRequest.fieldAPIName = 'name';
+        flowRequest.dedupeValues = false;
         flowRequest.allowEmptyCollection = true;
         flowRequests.add(flowRequest);
         ExtractStringsFromCollection.ExtractStringsException exc;

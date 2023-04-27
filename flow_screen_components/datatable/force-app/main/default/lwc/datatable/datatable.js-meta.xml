@@ -56,6 +56,7 @@
             <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
             <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
             <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
+            <property name="wizColumnFlexes" label="Wizard Only - Column Flexes" type="String" role="outputOnly"/>
             <property name="wizColumnCellAttribs" label="Wizard Only - Special Cell Attributes" type="String" role="outputOnly"/>
             <property name="wizColumnTypeAttributes" label="Wizard Only - Special Type Attributes" type="String" role="outputOnly"/>
             <property name="wizColumnOtherAttributes" label="Wizard Only - Special Other Attributes" type="String" role="outputOnly"/>
@@ -81,6 +82,8 @@
             <property name="columnWidths" label="- Column Widths (Col#:width,...)" type="String" role="inputOnly" description="Comma separated list of ColID:Width (in pixels).  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnWraps" label="- Column Wraps (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnFlexes" label="- Column Flexes (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnCellAttribs" label=". Special: Column CellAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"/>
             <property name="columnOtherAttribs" label=". Special: Column Other Attributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"/>

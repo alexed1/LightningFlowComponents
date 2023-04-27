@@ -74,6 +74,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
  
 ## 04/xx/23 -  Eric Smith -    Version 4.0.13 
 **Updates:** 
+-   Added new Column Wizard header action to allow a column width to have a fixed or floating width
+-       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space
+-       This gives you more control over columns that you specifically want to be narrow or wide while allowing the other columns to find the best fit
+-       This option can be selected individually or can be applied to all columns at once
 -   Updated maximum record count from 1000 to 2000 
 -   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
 -       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection

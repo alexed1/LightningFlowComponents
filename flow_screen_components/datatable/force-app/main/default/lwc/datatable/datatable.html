@@ -200,14 +200,29 @@ Features:   The only required paramters are the SObject collection of records an
                     <lightning-button-stateful class="slds-m-right_small"
                         label-when-off="Make all columns editable" 
                         label-when-on="Make no columns editable"
+                        variant="neutral"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:undo"
                         selected={isAllEdit}
                         onclick={handleSelectAllEdit}>
                     </lightning-button-stateful>
                     <lightning-button-stateful class="slds-m-right_small"
                         label-when-off="Make all columns filterable"
                         label-when-on="Make no columns filterable"
+                        variant="neutral"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:undo"
                         selected={isAllFilter}
                         onclick={handleSelectAllFilter}>
+                    </lightning-button-stateful>
+                    <lightning-button-stateful class="slds-m-right_small"
+                        label-when-off="Make all column widths flexible"
+                        label-when-on="Make no column widths flexible"
+                        variant="neutral"
+                        icon-name-when-off="utility:add"
+                        icon-name-when-on="utility:undo"
+                        selected={isAllFlex}
+                        onclick={handleSelectAllFlex}>
                     </lightning-button-stateful>
                 </div>          
             </div>

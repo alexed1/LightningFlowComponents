@@ -62,7 +62,7 @@ export default class Datatable extends LightningElement {
     @api columnTypeAttribs = [];
     @api columnWidths = [];
     @api columnWraps = [];
-    @api columnFlexes = [];
+    @api columnFlexes = '';
     @api keyField = 'Id';
     @api maxNumberOfRows = 0;
     @api preSelectedRows = [];
@@ -306,6 +306,7 @@ export default class Datatable extends LightningElement {
     @track columnWidthsLabel;
     @track isAllEdit = false;
     @track isAllFilter = false;
+    isAllFlex = false;
     @track showClearButton = false;
     @track tableHeightAttribute = 'height:';
     // @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
@@ -363,6 +364,7 @@ export default class Datatable extends LightningElement {
     @api editAttribType = 'none';
     @api filters = [];
     @api filterAttribType = 'none';
+    flexAttribType = 'none';
     @api alignments = [];
     @api cellAttribs = [];
     @api cellAttributes;
@@ -678,6 +680,24 @@ export default class Datatable extends LightningElement {
             });
         });
 
+        // Parse Column Flex attribute
+        if (this.columnFlexes.toLowerCase() != 'all') {
+            const parseFlexes = (this.columnFlexes.length > 0) ? this.columnFlexes.replace(/\s/g, '').split(',') : [];
+            this.attribCount = (parseFlexes.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
+            this.flexAttribType = 'none';
+            parseFlexes.forEach(flex => {
+                let colFlex = (this.columnValue(flex).toLowerCase() == 'true') ? true : false;
+                this.flexes.push({
+                    column: this.columnReference(flex),
+                    flex: colFlex
+                });
+                this.flexAttribType = 'cols';
+            });
+        } else {
+            this.flexAttribType = 'all';
+            this.isAllFlex = true;
+        }
+
         // Parse Column Wrap attribute
         const parseWraps = (this.columnWraps.length > 0) ? this.columnWraps.replace(/\s/g, '').split(',') : [];
         this.attribCount = (parseWraps.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
@@ -688,16 +708,6 @@ export default class Datatable extends LightningElement {
             });
         });
 
-        // Parse Column Flex attribute
-        const parseFlexes = (this.columnFlexes.length > 0) ? this.columnFlexes.replace(/\s/g, '').split(',') : [];
-        this.attribCount = (parseFlexes.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
-        parseFlexes.forEach(flex => {
-            this.flexes.push({
-                column: this.columnReference(flex),
-                wrap: (this.columnValue(flex).toLowerCase() == 'true') ? true : false
-            });
-        });
-        
         // Parse Column CellAttribute attribute (Because multiple attributes use , these are separated by ;)
         const parseCellAttribs = (this.columnCellAttribs.length > 0) ? this.removeSpaces(this.columnCellAttribs).split(';') : [];
         this.attribCount = 0;   // These attributes must specify a column number or field API name
@@ -1079,7 +1089,6 @@ export default class Datatable extends LightningElement {
             let wrapAttrib = [];
             let flexAttrib = [];
             this.typeAttrib.type = type; 
-            flexAttrib.flex = false;         
 
             // Update Alignment attribute overrides by column
             let alignmentAttrib = this.alignments.find(i => i['column'] == columnNumber);
@@ -1164,6 +1173,18 @@ export default class Datatable extends LightningElement {
                 }
             }
 
+            // Update Flex attribute overrides by column
+            switch (this.flexAttribType) {
+                case 'cols':
+                    flexAttrib.flex = this.flexes.find(i => i['column'] == columnNumber);
+                    break;
+                case 'all': 
+                    flexAttrib.flex = true;
+                    break;
+                default:
+                    flexAttrib.flex = false;
+            }
+
             if (this.isConfigMode) { 
                 let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
                 let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
@@ -1171,7 +1192,6 @@ export default class Datatable extends LightningElement {
                 let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
                 let wizardFilter = filterAttrib.filter || false;
                 let wizardFlex = (!flexAttrib) ? false : (flexAttrib.flex || false);
-console.log("🚀 ~ file: datatable.js:1174 ~ updateColumns ~ wizardFlex, flexAttrib, flexAttrib.flex:", wizardFlex, flexAttrib, flexAttrib.flex);
                 filterAttrib.column = columnNumber; 
                 filterAttrib.filter = true;             
                 filterAttrib.actions = [
@@ -1217,9 +1237,6 @@ console.log("🚀 ~ file: datatable.js:1174 ~ updateColumns ~ wizardFlex, flexAt
 
             // Update Wrap attribute overrides by column
             wrapAttrib = this.wraps.find(i => i['column'] == columnNumber);
-
-            // Update Flex attribute overrides by column
-            flexAttrib = this.flexes.find(i => i['column'] == columnNumber);
 
             // Set default typeAttributes based on data type
             switch(type) {
@@ -1748,9 +1765,10 @@ console.log("🚀 ~ file: datatable.js:1174 ~ updateColumns ~ wizardFlex, flexAt
                 break;
 
             case 'flex': // Config Mode Only
-console.log("🚀 ~ file: datatable.js:1752 ~ handleHeaderAction ~ this.columnNumber, this.filterColumns[this.columnNumber]:", this.columnNumber, this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked, this.filterColumns[this.columnNumber]);
+                if (typeof this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked === 'object') {
+                    this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked = this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked.flex;
+                }
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked ^= true;    // Flip True-False Value
-console.log("🚀 ~ file: datatable.js:1752 ~ handleHeaderAction ~ this.columnNumber, this.filterColumns[this.columnNumber]:", this.columnNumber, this.filterColumns[this.columnNumber].actions.find(a => a.name == 'flex_'+this.columnNumber).checked, this.filterColumns[this.columnNumber]);
                 this.columns = [...this.filterColumns];
                 this.updateFlexParam();
                 break;
@@ -1879,7 +1897,7 @@ console.log("🚀 ~ file: datatable.js:1752 ~ handleHeaderAction ~ this.columnNu
         let colWidthsTotal = 0;
         let colFlexWidth = 0;
         this.basicColumns.forEach(colDef => {
-            colFlexWidth = this.columns[colNum]['flex'] ? 0 : sizes[colNum];
+            colFlexWidth = this.columns[colNum].actions?.find(a => a.name == 'flex_'+colNum)?.checked ? 0 : sizes[colNum];
             this.columns[colNum]['initialWidth'] = colFlexWidth;
             if (this.filterColumns) {
                 this.filterColumns[colNum]['initialWidth'] = colFlexWidth;
@@ -1927,6 +1945,21 @@ console.log("🚀 ~ file: datatable.js:1752 ~ handleHeaderAction ~ this.columnNu
         this.columnFilterParameter = (this.isAllFilter) ? 'All' : null;
         this.wizColumnFilters = this.columnFilterParameter;
         this.columns = [...this.filterColumns]; 
+    }
+
+    handleSelectAllFlex() {
+        // Set the Allow Flex Value to True for All Columns
+        this.isAllFlex = !this.isAllFlex;
+        this.filterColumns = JSON.parse(JSON.stringify([...this.columns]));
+        let colNum = 0;
+        this.filterColumns.forEach(colDef => {
+            colDef['actions'].find(a => a.name == 'flex_'+colNum).checked = this.isAllFlex;
+            colNum += 1;
+        });
+        this.columnFlexParameter = (this.isAllFlex) ? 'All' : null;
+        this.wizColumnFlexes = this.columnFlexParameter;
+        this.columns = [...this.filterColumns]; 
+        this.setWidth(this.columnWidthValues);
     }
 
     handleOpenSelectIcon() { 
@@ -2154,15 +2187,19 @@ console.log("🚀 ~ file: datatable.js:1752 ~ handleHeaderAction ~ this.columnNu
         // Create the Column Flex parameter for Config Mode
         let colNum = 0;
         var colString = '';
-        this.basicColumns.forEach(colDef => {
-            if (colDef['flex'] != this.filterColumns[colNum].checked) {
+        let allSelected = true;
+        this.filterColumns.forEach(colDef => {
+            if (colDef['actions'].find(a => a.name == 'flex_'+colNum).checked) {
                 colString = colString + ', ' + colDef['fieldName'] + ':true';
+            } else {
+                allSelected = false;
             }
             colNum += 1;
         });
-        this.columnFlexParameter = colString.substring(2);
-        this.wizColumnFlexes = this.columnFlexParameter;    
-console.log("🚀 ~ file: datatable.js:2163 ~ updateFlexParam ~ this.wizColumnFlexes:", this.wizColumnFlexes);
+        this.columnFlexParameter = (allSelected) ? 'All' : colString.substring(2);
+        this.wizColumnFlexes = this.columnFlexParameter;
+        this.isAllFlex = allSelected;
+        this.setWidth(this.columnWidthValues);
     }
 
     updateEditParam() {

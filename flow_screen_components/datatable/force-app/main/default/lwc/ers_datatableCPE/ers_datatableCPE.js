@@ -615,8 +615,8 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnScales'},
                 {name: 'columnTypes'},
                 {name: 'columnWidths'},
-                {name: 'columnWraps'},
                 {name: 'columnFlexes'},
+                {name: 'columnWraps'},
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
                 {name: 'columnOtherAttribs'},
@@ -1095,7 +1095,7 @@ export default class ers_datatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        console.log('=== handleFlowStatusChange - ' + event.detail.status + ' ===');
+        console.log('=== handleFlowStatusChange -', event.detail.status, '===');
         if (event.detail.status === "ERROR") { 
             console.log('Flow Error: ',JSON.stringify(event));
         } else {      

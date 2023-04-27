@@ -540,19 +540,6 @@
                 onvaluechanged={handleFlowComboboxValueChange}
                 automatic-output-variables={automaticOutputVariables}>
             </c-fsc_flow-combobox>
-
-            <!-- Column Wraps -->
-            <c-fsc_flow-combobox 
-                name="select_columnWraps" 
-                label={inputValues.columnWraps.label}
-                value={inputValues.columnWraps.value} 
-                value-type={inputValues.columnWraps.valueDataType}
-                field-level-help={inputValues.columnWraps.helpText}
-                builder-context-filter-collection-boolean={inputValues.columnWraps.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}>
-            </c-fsc_flow-combobox>
             
             <!-- Column Flexes -->
             <c-fsc_flow-combobox 
@@ -562,6 +549,19 @@
                 value-type={inputValues.columnFlexes.valueDataType}
                 field-level-help={inputValues.columnFlexes.helpText}
                 builder-context-filter-collection-boolean={inputValues.columnFlexes.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+
+            <!-- Column Wraps -->
+            <c-fsc_flow-combobox 
+                name="select_columnWraps" 
+                label={inputValues.columnWraps.label}
+                value={inputValues.columnWraps.value} 
+                value-type={inputValues.columnWraps.valueDataType}
+                field-level-help={inputValues.columnWraps.helpText}
+                builder-context-filter-collection-boolean={inputValues.columnWraps.isCollection}
                 builder-context={_builderContext} 
                 onvaluechanged={handleFlowComboboxValueChange}
                 automatic-output-variables={automaticOutputVariables}>

@@ -74,6 +74,7 @@ export default class ers_datatableCPE extends LightningElement {
     _wiz_columnLabels;
     _wiz_columnWidths;
     _wiz_columnWraps;
+    _wiz_columnFlexes;
     _wiz_columnCellAttribs;
     _wiz_columnTypeAttribs;
     _wiz_columnOtherAttribs;
@@ -339,6 +340,18 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get wiz_columnFlexes() { 
+        return this._wiz_columnFlexes;
+    }
+    set wiz_columnFlexes(value) { 
+        const name = 'columnFlexes';
+        this._wiz_columnFlexes = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
+    @api
     get wiz_columnCellAttribs() { 
         return this._wiz_columnCellAttribs;
     }
@@ -420,6 +433,9 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: "Comma separated list of ColID:Width (in pixels).  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
+            helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnFlexes: {value: null, valueDataType: null, isCollection: false, label: 'Column Flexes (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
         columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Cell Attributes',
@@ -600,6 +616,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnTypes'},
                 {name: 'columnWidths'},
                 {name: 'columnWraps'},
+                {name: 'columnFlexes'},
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
                 {name: 'columnOtherAttribs'},
@@ -638,6 +655,7 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'wiz_columnIcons', type: 'String', value: ''},
         {name: 'wiz_columnWidths', type: 'String', value: ''},
         {name: 'wiz_columnWraps', type: 'String', value: ''},
+        {name: 'wiz_columnFlexes', type: 'String', value: ''},
         {name: 'wiz_columnCellAttribs', type: 'String', value: ''},
         {name: 'wiz_columnTypeAttribs', type: 'String', value: ''},
         {name: 'wiz_columnOtherAttribs', type: 'String', value: ''},
@@ -1146,6 +1164,9 @@ export default class ers_datatableCPE extends LightningElement {
                                 break;
                             case 'columnWraps':
                                 this.wiz_columnWraps = value;
+                                break;
+                            case 'columnFlexes':
+                                this.wiz_columnFlexes = value;
                                 break;
                             case 'columnCellAttribs': 
                                 this.wiz_columnCellAttribs = value;

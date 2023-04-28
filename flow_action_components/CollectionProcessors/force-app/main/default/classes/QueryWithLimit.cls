@@ -4,7 +4,7 @@ public with sharing class QueryWithLimit {
     /* Class definition for throwing custom exceptions */
     public class FlowApexActionException extends Exception{}
     
-    @InvocableMethod(label='Query N records' description='Returns a list of N records, where is N specified by a user as a flow input.')
+    @InvocableMethod(label='Query N records [USF Collection Processor]' description='Returns a list of N records, where is N specified by a user as a flow input.' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     public static list<QueryResults> getNrecords(QueryParameters[] queryParams){
         
         if(queryParams[0].numberOfRecords >= 50000)

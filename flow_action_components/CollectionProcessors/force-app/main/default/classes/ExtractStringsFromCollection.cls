@@ -1,7 +1,7 @@
 global with sharing class ExtractStringsFromCollection {
     global class ExtractStringsException extends Exception {}
   
-    @InvocableMethod(label='Extract Strings From Collection' description='Extract and return field values from a list of records using a provided field API name as the unique value' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+    @InvocableMethod(label='Extract Strings From Collection [USF Collection Processor]' description='Extract and return field values from a list of records using a provided field API name as the unique value' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Result> extract(List<Request> requestList) {
         List<Result> outputStrings =  new List<Result>();
         

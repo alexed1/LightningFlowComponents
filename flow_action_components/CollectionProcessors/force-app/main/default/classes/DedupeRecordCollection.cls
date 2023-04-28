@@ -1,6 +1,6 @@
 global with sharing class DedupeRecordCollection {
 
-    @InvocableMethod(label='Dedupe Record Collection' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+    @InvocableMethod(label='Dedupe Record Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List<FlowResponse> dedupe(List<FlowRequest> requests) {
         List<FlowResponse> flowResponses = new List<FlowResponse>();
         for (FlowRequest request : requests) {

@@ -1,5 +1,5 @@
 global with sharing class CollectionCalculate {
-    @InvocableMethod(label='Collection Calculate' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+    @InvocableMethod(label='Collection Calculate [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> execute(List<Requests> requestList) {
         System.debug('entering CollectionCalculate');
         List<Results> responseWrapper = new List<Results>();

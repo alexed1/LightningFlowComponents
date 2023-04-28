@@ -1,6 +1,6 @@
     global inherited sharing class GetRecordsFromIds {
   
-        @InvocableMethod(label='Get Records From Ids' description='Given a collection of Ids, hydrate them into records' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+        @InvocableMethod(label='Get Records From Ids [USF Collection Processor]' description='Given a collection of Ids, hydrate them into records' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
         global static List <Result> execute (List<Request> requestList) {
             
             System.debug('entering Get Records From Ids');

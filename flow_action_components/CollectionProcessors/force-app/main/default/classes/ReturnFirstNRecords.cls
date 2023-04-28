@@ -39,7 +39,7 @@ global inherited sharing class ReturnFirstNRecords {
     global class InvocableActionException extends Exception {}
 
     // Expose this Action to the Flow
-    @InvocableMethod(label='Return First N Records by Eric Smith' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+    @InvocableMethod(label='Return First N Records by Eric Smith [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List<Results> returnNRecords(List<Requests> requestList) {
 
         // Prepare the response to send back to the Flow

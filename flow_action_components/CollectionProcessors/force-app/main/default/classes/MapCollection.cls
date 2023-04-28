@@ -1,5 +1,5 @@
 global with sharing class MapCollection {
-    @InvocableMethod(label='Map Collection' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
+    @InvocableMethod(label='Map Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> mapCollection(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
 

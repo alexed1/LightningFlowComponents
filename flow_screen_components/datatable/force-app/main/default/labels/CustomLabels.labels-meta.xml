@@ -25,6 +25,14 @@
         <value>Clear Selection</value>
     </labels>
     <labels>
+        <fullName>ers_ClearFilterButton</fullName>
+        <categories>buttons</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Clear All Filters</shortDescription>
+        <value>Clear All Filters</value>
+    </labels>
+    <labels>
         <fullName>ers_SetFilterAction</fullName>
         <categories>actions</categories>
         <language>en_US</language>

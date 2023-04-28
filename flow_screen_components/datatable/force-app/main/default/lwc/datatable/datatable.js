@@ -18,6 +18,7 @@ import { getConstants } from 'c/ers_datatableUtils';
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
 import SaveButton from '@salesforce/label/c.ers_SaveButton';
 import ClearSelectionButton from '@salesforce/label/c.ers_ClearSelectionButton';
+import ClearFilterButton from '@salesforce/label/c.ers_ClearFilterButton';
 import SetFilterAction from '@salesforce/label/c.ers_SetFilterAction';
 import ClearFilterAction from '@salesforce/label/c.ers_ClearFilterAction';
 import ColumnHeader from '@salesforce/label/c.ers_ColumnHeader';
@@ -308,6 +309,7 @@ export default class Datatable extends LightningElement {
     @track isAllFilter = false;
     isAllFlex = false;
     @track showClearButton = false;
+    @track showClearFilterButton = false;
     @track tableHeightAttribute = 'height:';
     // @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
     //     +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
@@ -1658,6 +1660,10 @@ export default class Datatable extends LightningElement {
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
+    }
+
+    handleClearFilterButton() {
+        this.showClearFilterButton = false;
     }
 
     updateColumnSorting(event) {

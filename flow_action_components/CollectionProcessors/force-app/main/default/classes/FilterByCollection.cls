@@ -2,7 +2,7 @@
 //e.g. get a set of campaigns in step 1, get all campaign members in step 2.
 
 global with sharing class FilterByCollection {
-    @InvocableMethod(label='Filter by Collection' category='Util' iconName='resource:FunnelSVG:colproc')
+    @InvocableMethod(label='Filter by Collection' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> filter(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

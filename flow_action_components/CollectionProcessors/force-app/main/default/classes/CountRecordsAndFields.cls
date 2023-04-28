@@ -1,5 +1,5 @@
 global with sharing class CountRecordsAndFields {
-    @InvocableMethod(label='Count Records & Fields' category='Util' iconName='resource:FunnelSVG:colproc')
+    @InvocableMethod(label='Count Records & Fields' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> count(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

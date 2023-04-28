@@ -1,5 +1,5 @@
 global with sharing class JoinCollections {
-    @InvocableMethod(label='Join Collections' category='Util' iconName='resource:FunnelSVG:colproc')
+    @InvocableMethod(label='Join Collections' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> joinCollections(List<Requests> requestList) {
 
         List<Results> responseWrapper = new List<Results>();

@@ -1,6 +1,6 @@
 global with sharing class EvaluateFormula {
    
-    @InvocableMethod(label='Evaluate Formula' category='Util' iconName='resource:FunnelSVG:colproc')
+    @InvocableMethod(label='Evaluate Formula' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> evaluate (List<Requests> requestList) {
         System.debug('entering Evaluate Formula');
         List<Results> responseWrapper = new List<Results>();

@@ -9,7 +9,7 @@
 * 1.0      1/26/2021      adamwhiteuva@gmail.com      Initial release
 **/
 global without sharing class FindCommonAndUniqueRecords {
-    @InvocableMethod(label='Get Common and Unique Records'description='Extract and return two collections comparing a source and target collection'category='Util')
+    @InvocableMethod(label='Get Common and Unique Records' description='Extract and return two collections comparing a source and target collection' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Result> compareRecords(List<Request> requestList) {
         
         List<Result> outputResults =  new List<Result>();

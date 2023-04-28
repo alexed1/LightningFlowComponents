@@ -3,7 +3,7 @@ global with sharing class GetLookupCollection {
     //    setup the query 
    
 
-    @InvocableMethod
+    @InvocableMethod(label='Get Lookup Collection' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> get(List<Request> requestList) {
 
         List<Results> responseWrapper = new List<Results>();

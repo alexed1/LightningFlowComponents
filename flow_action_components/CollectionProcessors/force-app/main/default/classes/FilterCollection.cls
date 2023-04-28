@@ -1,5 +1,5 @@
 global with sharing class FilterCollection {
-    @InvocableMethod
+    @InvocableMethod(label='Filter Collection' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> filter(List<Requests> requestList) {
 
 

@@ -5,7 +5,7 @@ global with sharing class GenerateCollectionReport {
     public static String rowStyleString;
     public static Boolean hideHeader;
 
-    @InvocableMethod
+    @InvocableMethod(label='Generate Collection Report' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List<Results> generateReport(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

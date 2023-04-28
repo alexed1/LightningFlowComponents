@@ -7,7 +7,7 @@
  * See SortCollectionTest.cls for test coverage of API data types and UI field types.
  */
 global with sharing class SortCollection {
-    @InvocableMethod
+    @InvocableMethod(label='Sort Collection' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> sort(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

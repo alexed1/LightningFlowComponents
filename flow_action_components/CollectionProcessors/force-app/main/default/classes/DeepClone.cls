@@ -11,7 +11,7 @@ global with sharing class DeepClone {
     private static String ERROR_RECORD_AND_ID = 'You need to pass either a record or a recordId into this action, but you can not pass both';
     @TestVisible
     private static String ERROR_SAVE_CHILD_WITHOUT_PARENT = 'You tried to save child records that didn\'t have a parentId, which might mean that you need to first save the parent record';
-    @InvocableMethod
+    @InvocableMethod(label='Deep Clone' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> clone(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
 

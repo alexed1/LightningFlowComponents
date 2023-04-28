@@ -1,7 +1,7 @@
 global with sharing class GetFirst {
   
   
-    @InvocableMethod
+    @InvocableMethod(label='Get First' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> execute (List<Requests> requestList) {
         System.debug('entering getFirst');
         List<Results> responseWrapper = new List<Results>();

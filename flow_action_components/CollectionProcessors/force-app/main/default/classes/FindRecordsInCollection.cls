@@ -1,6 +1,6 @@
 global with sharing class FindRecordsInCollection {
 
-    @InvocableMethod
+    @InvocableMethod(label='Find Records in Collection' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> execute(List<Requests> requestList) {
         System.debug('entering FindRecordInCollection');
         List<Results> responseWrapper = new List<Results>();

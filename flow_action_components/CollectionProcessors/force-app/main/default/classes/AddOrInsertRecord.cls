@@ -1,5 +1,5 @@
 global with sharing class AddOrInsertRecord {
-    @InvocableMethod
+    @InvocableMethod(label='Add or Insert Record' category='Util' iconName='resource:FunnelSVG:colproc')
     global static List <Results> addOrInsertRecord(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

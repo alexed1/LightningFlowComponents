@@ -1,7 +1,7 @@
 public with sharing class UpsertRecords {
   
   
-        @InvocableMethod
+        @InvocableMethod(label='Upsert Records' category='Util' iconName='resource:FunnelSVG:colproc')
         public static List<Results> execute (List<Request> requestList) {
             System.debug('entering Upsert');
             List<Results> responseWrapper = new List<Results>();

@@ -41,6 +41,7 @@ export default class Datatable extends LightningElement {
         CancelButton,
         SaveButton,
         ClearSelectionButton,
+        ClearFilterButton,
         SetFilterAction,
         ClearFilterAction,
         ColumnHeader,
@@ -418,7 +419,7 @@ export default class Datatable extends LightningElement {
     }
 
     get isShowTable() {
-        return this.mydata.length > 0;
+        return this.mydata.length > 0 || this.isFiltered;
         // return this._tableData.length > 0;
     }
 
@@ -1664,6 +1665,35 @@ export default class Datatable extends LightningElement {
 
     handleClearFilterButton() {
         this.showClearFilterButton = false;
+        let colNumber = 0;
+        this.columns.forEach(col => {   // Clear all Filter Values
+            this.columnFilterValues[colNumber] = null;
+            colNumber++;
+        });
+
+        // Reapply filters (none in place)
+        this.isWorking = true;
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                this.filterColumnData();
+                resolve();
+            }, 0);
+        })
+        .then(
+            () => this.isWorking = false
+        );
+
+        colNumber = 0;
+        this.columns.forEach(col => {   // Disable all column Clear header actions and reset Labels
+            this.columns[colNumber].actions.find(a => a.name == 'clear_'+colNumber).disabled = true;
+            this.columns[colNumber].label = this.columns[colNumber].label.split(' [')[0];
+            colNumber++;
+        });
+
+        // Re-Sort the data
+        if (this.sortedBy != undefined) {
+            this.doSort(this.sortedBy, this.sortDirection);
+        }
     }
 
     updateColumnSorting(event) {
@@ -1798,6 +1828,7 @@ export default class Datatable extends LightningElement {
                 this.columnFilterValue = (this.columnFilterValue) ? this.columnFilterValue : null;
                 this.columnType = colDef.type;
                 this.inputType = this.convertType(this.columnType);
+                this.inputType = (this.inputType == 'url') ? 'text' : this.inputType;
                 this.inputFormat = (this.inputType == 'number') ? this.convertFormat(this.columnType) : null;
                 this.handleOpenFilterInput();
                 break;
@@ -2114,6 +2145,10 @@ export default class Datatable extends LightningElement {
                                             break;
                                         }                            
                                 }
+                                    this.isFiltered = true;
+                                    this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = false;
+                            } else {
+                                this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = true;
                             }
                         }
                         if (match) {
@@ -2126,11 +2161,12 @@ export default class Datatable extends LightningElement {
             }, 0);
         })
         .then(
-            () => this.isWorking = false
+            () => {
+                this.isWorking = false;
+            }
         );
         
-        this.filterColumns[this.columnNumber].actions.find(a => a.name == 'clear_'+this.columnNumber).disabled = false;
-        this.isFiltered = true;
+        this.showClearFilterButton = !this.hideClearSelectionButton && !this.columnFilterValues.every(cfv => cfv === null);
     }
 
     updateAlignmentParam() {

@@ -470,8 +470,9 @@ export default class ers_datatableCPE extends LightningElement {
         hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
             helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
         cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
-        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection Button', 
-            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table.'},
+        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection/Filter Buttons', 
+            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table and the Clear Filter Button that would normally appear when any column has a filter applied. \n' +
+            'NOTE: The Clear Filter button will always appear when no matching records are available to display in a datatable.'},
         cb_hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
             helpText: 'Display a row number column as the first column in the table.'}, 

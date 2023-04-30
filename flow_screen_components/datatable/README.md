@@ -72,7 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
  
-## 04/xx/23 -  Eric Smith -    Version 4.0.13 
+## 05/xx/23 -  Eric Smith -    Version 4.0.13 
 **Updates:** 
 -   Added new Column Wizard header action to allow a column width to have a fixed or floating width
 -       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space
@@ -83,10 +83,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection
 -       NOTE: If debug mode is turned on, there will be no sample records in the Configuration Wizard datatable
 -       NOTE: Requires that the Datatable Configuration Wizard flow be Activated on installation
+-   Added a Clear All Filters button that is displayed when any column filters are applied
+-       NOTE: This can be disabled by selecting the Hide Clear Selection/Filter Buttons option in the Table Behavior section
+-   Display spinner instead of empty table message while processing the records
 -   Updated API versions to 57.0 
   
 **Bug Fixes:**  
--   Display spinner instead of empty table message while processing the records
+-   Fixed invalid format error when entering a filter value for a Name column when it was shown as a hyperlink
   
  ## 11/02/22 -  Eric Smith -    Version 4.0.12
 **Bug Fixes:**  

@@ -8,7 +8,7 @@ global with sharing class GetChildCollection {
     //    query for all of that object where the field *getField()* (https://developer.salesforce.com/docs/atlas.en-us.apexcode.meta/apexcode/apex_class_Schema_ChildRelationship.htm#apex_Schema_ChildRelationship_getField) is equal to the id of the record
 
 
-    @InvocableMethod
+    @InvocableMethod(label='Get Child Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> get(List<Request> requestList) {
 
         List<Results> responseWrapper = new List<Results>();

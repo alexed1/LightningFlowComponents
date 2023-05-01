@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 02-23-2023
+ * @last modified on  : 05-01-2023
  * @last modified by  : Josh Dayment
 **/
 import { api, track, LightningElement } from 'lwc';
@@ -212,7 +212,7 @@ export default class fsc_flexcardCPE extends LightningElement {
                 inp.allowMultiSelect.value = true;
             }
         }
-        console.log('after setting clickAction to ' + value, 'isClickable = ' + inp.isClickable.value, 'allowMultiSelect = ' + inp.allowMultiSelect.value, 'transitionOnClick = ' + inp.transitionOnClick.value);
+        //console.log('after setting clickAction to ' + value, 'isClickable = ' + inp.isClickable.value, 'allowMultiSelect = ' + inp.allowMultiSelect.value, 'transitionOnClick = ' + inp.transitionOnClick.value);
 
         this.dispatchFlowValueChangeEvent('isClickable', inp.isClickable.value, DATA_TYPE.BOOLEAN);
         this.dispatchFlowValueChangeEvent('cb_isClickable', inp.isClickable.value ? 'CB_TRUE' : 'CB_FALSE', DATA_TYPE.STRING);
@@ -222,7 +222,7 @@ export default class fsc_flexcardCPE extends LightningElement {
 
         this.dispatchFlowValueChangeEvent('transitionOnClick', inp.transitionOnClick.value, DATA_TYPE.BOOLEAN);
         this.dispatchFlowValueChangeEvent('cb_transitionOnClick', inp.transitionOnClick.value ? 'CB_TRUE' : 'CB_FALSE', DATA_TYPE.STRING);
-        console.log('finished dispatching events');
+        //console.log('finished dispatching events');
 
     }
 
@@ -337,7 +337,7 @@ export default class fsc_flexcardCPE extends LightningElement {
         }
     }
     handleCheckboxChange2(event) {
-        console.log(event.detail.value);
+        //console.log(event.detail.value);
     }
 
     handleClickActionChange(event) {

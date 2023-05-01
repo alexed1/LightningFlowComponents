@@ -9,20 +9,32 @@ global with sharing class CollectionCalculate {
             
             
             if (curRequest.operation != null) {
-                switch on curRequest.operation {
-                    when 'Multiply' {
+                switch on curRequest.operation.toLowerCase() {
+                    when 'multiply' {
                         Decimal startingValue = 1;
                         
                         response.outputDecimalResult = calculate('multiply', startingValue, curRequest);
                       
                     }
-                    when 'Add','add' {
+                    when 'add' {
                         Decimal startingValue = 0;
                         response.outputDecimalResult = calculate('add', startingValue, curRequest);
                     }
-                    when 'average','Average' {
+                    when 'average' {
                         Decimal startingValue = 0;
                         response.outputDecimalResult = calculate('average', startingValue, curRequest);
+                    }
+                    when 'min', 'minimum' {
+                        response.outputDecimalResult = min(curRequest.inputCollection, curRequest.fieldName);
+                    }
+                    when 'max', 'maximum' {
+                        response.outputDecimalResult = max(curRequest.inputCollection, curRequest.fieldName);
+                    }
+                    when 'sum' {
+                        response.outputDecimalResult = sum(curRequest.inputCollection, curRequest.fieldName);
+                    }
+                    when 'count' {
+                        response.outputDecimalResult = count(curRequest.inputCollection);
                     }
                     when else {
                         throw new InvocableActionException('You provided an invalid value for the operation input');
@@ -97,6 +109,73 @@ global with sharing class CollectionCalculate {
         }
         
         return aggregate;
+    }
+
+        // Summary: Method to calculate the sum of a field on a collection of SObjects
+    // Input Parameters:
+    // - records: Collection of SObjects on which to calculate the sum
+    // - fieldName: String representing the field on which to calculate the sum
+    // Output: Decimal representing the sum of the field values
+    // Created On: 2023-04-14
+    // Created By: Andy Haas
+    private static Decimal sum(SObject[] records, String fieldName) {
+        Decimal sum = 0;
+        for (SObject record : records) {
+            if (record.get(fieldName) != null && record.get(fieldName) instanceof Decimal) {
+                sum += (Decimal) record.get(fieldName);
+            }
+        }
+        return sum;
+    }
+
+    // Summary: Method to calculate the count of records in a collection of SObjects
+    // Input Parameters:
+    // - records: Collection of SObjects on which to calculate the count
+    // Output: Integer representing the count of records
+    // Created On: 2023-04-14
+    // Created By: Andy Haas
+    private static Integer count(SObject[] records) {
+        return records.size();
+    }
+
+    // Summary: Method to calculate the maximum value of a field on a collection of SObjects
+    // Input Parameters:
+    // - records: Collection of SObjects on which to calculate the maximum
+    // - fieldName: String representing the field on which to calculate the maximum
+    // Output: Decimal representing the maximum value of the field
+    // Created On: 2023-04-14
+    // Created By: Andy Haas    
+    private static Decimal max(SObject[] records, String fieldName) {
+        Decimal max = null;
+        for (SObject record : records) {
+            if (record.get(fieldName) != null && record.get(fieldName) instanceof Decimal) {
+                Decimal fieldValue = (Decimal) record.get(fieldName);
+                if (max == null || fieldValue > max) {
+                    max = fieldValue;
+                }
+            }
+        }
+        return max;
+    }
+
+    // Summary: Method to calculate the minimum value of a field on a collection of SObjects
+    // Input Parameters:
+    // - records: Collection of SObjects on which to calculate the minimum
+    // - fieldName: String representing the field on which to calculate the minimum
+    // Output: Decimal representing the minimum value of the field
+    // Created On: 2023-04-14
+    // Created By: Andy Haas
+    private static Decimal min(SObject[] records, String fieldName) {
+        Decimal min = null;
+        for (SObject record : records) {
+            if (record.get(fieldName) != null && record.get(fieldName) instanceof Decimal) {
+                Decimal fieldValue = (Decimal) record.get(fieldName);
+                if (min == null || fieldValue < min) {
+                    min = fieldValue;
+                }
+            }
+        }
+        return min;
     }
 
     global class Requests {

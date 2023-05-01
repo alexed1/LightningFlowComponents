@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 05-01-2023
+ * @last modified by  : Josh Dayment
+**/
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
@@ -107,7 +114,7 @@ export default class FlexcardFlow extends LightningElement {
         if (!this.records) {
             throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
         }
-        console.log('records are: ' + JSON.stringify(this.records));
+        //console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
 
     }
@@ -127,11 +134,11 @@ export default class FlexcardFlow extends LightningElement {
     }
 
     appendFieldInfo(item, index) {
-        console.log('entering append...fieldName is: ' + item);
-        console.log('and record is: ' + JSON.stringify(this.curRecord));
+        //console.log('entering append...fieldName is: ' + item);
+        //console.log('and record is: ' + JSON.stringify(this.curRecord));
         //console.log('this is: ' + this);
         this.fieldHTML = this.fieldHTML + ' <h2> ' + item + ' </h2>';
-        console.log('fieldHTML is now: ' + this.fieldHTML);
+        //console.log('fieldHTML is now: ' + this.fieldHTML);
     }
 
     get isDataLoaded() {
@@ -154,7 +161,7 @@ export default class FlexcardFlow extends LightningElement {
     }
 
     handleChange(event) {
-        console.log(event.target.checked);
+        //console.log(event.target.checked);
         if (event.target.checked == true) {
             this.recordValue = event.target.value;
             this.selectedRecordIds.push(this.recordValue);
@@ -169,7 +176,7 @@ export default class FlexcardFlow extends LightningElement {
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
-                console.log(this.value = this.selectedRecord);
+                //console.log(this.value = this.selectedRecord);
             }
 
         });

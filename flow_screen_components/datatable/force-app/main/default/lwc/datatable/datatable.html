@@ -109,25 +109,110 @@ Features:   The only required paramters are the SObject collection of records an
 
         <!-- DATATABLE -->
         <div class={formElementClass}>
-            <template if:true={isDisplayHeader}>
-                <label class="slds-form-element__label" for="datatable">
-                    <div class="slds-clearfix">
-                        <div class="slds-float_left">
-                            <div class="slds-media slds-media_center slds-media_small">
-                                <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
-                                <div class="slds-media__figure">
-                                    <template if:true={hasIcon}>
-                                        <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
-                                    </template>
-                                </div>
-                                <div class="slds-media__body">
-                                    <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
-                                    <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
-                                </div>
-                            </div>
+            <!-- New Format with Searchbar -->
+            <template if:true={isShowSearchBar}>
+                <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
+                <lightning-card variant="Narrow" icon-name={tableIcon}>
+                    <div slot="title">
+                        <div style="font-size: 1.2em; font-weight: bolder;">
+                            {formattedTableLabel}
                         </div>
-                        <div if:true={isShowSearchBar}> 
-                            <div class="slds-float_right">
+                    </div>
+                    <div slot="actions">
+                        <lightning-input 
+                            type="search"
+                            placeholder="Enter search term ..."
+                            value={searchTerm}
+                            onchange={handleSearchChange}
+                            is-loading={isWorking}
+                        ></lightning-input>
+                    </div>
+                    <template if:true={isShowTable}>
+                        <div if:true={isWorking}>
+                            <lightning-spinner
+                                alternative-text="Working..." variant="brand">
+                            </lightning-spinner>
+                        </div>
+        
+                        <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatableCard">
+        
+                            <c-ers_custom-lightning-datatable
+                                aria-label={tableLabel}
+                                data={mydata}
+                                columns={columns}
+                                key-field={keyField}
+                                sorted-by={sortedBy}
+                                sorted-direction={sortDirection}
+                                max-row-selection={maxRowSelection}
+                                selected-rows={selectedRows}
+                                show-row-number-column={showRowNumbers}
+                                hide-checkbox-column={hideCheckboxColumn}
+                                suppress-bottom-bar={suppressBottomBar}
+                                onsort={updateColumnSorting}
+                                oncellchange={handleCellChange}
+                                onsave={handleSave}
+                                oncancel={cancelChanges}
+                                onheaderaction={handleHeaderAction}
+                                onrowselection={handleRowSelection}
+                                onrowaction={handleRowAction}
+                                onresize={handleResize}
+                                oncombovaluechange={handleComboValueChange}
+                            >
+                            </c-ers_custom-lightning-datatable>
+        
+                            <div slot="footer">
+                                <lightning-layout>
+                                    <lightning-layout-item padding="right-small">
+                                        <div if:true={showClearButton} class="slds-m-top_x-small slds-m-left_small">
+                                            <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <div if:true={showClearFilterButton} class="slds-m-top_x-small slds-m-left_small">
+                                            <lightning-button variant="brand-outline" label={label.ClearFilterButton} icon-name="utility:clear" onclick={handleClearFilterButton}></lightning-button>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </div>
+        
+                        </div>
+        
+                    </template>
+        
+                    <template if:false={isShowTable}>
+                        <div if:true={haveRecords}>
+                            <lightning-spinner
+                                alternative-text="Working..." variant="brand">
+                            </lightning-spinner>
+                        </div>
+                        <div if:false={haveRecords} class="slds-p-around_x-small slds-text-heading_small">
+                            {emptyTableMessage}
+                        </div>
+                    </template>
+                </lightning-card>
+            </template>
+
+            <!-- Old Format with Searchbar commented out -->
+            <template if:false={isShowSearchBar}>
+                <template if:true={isDisplayHeader}>
+                    <div class="slds-grid slds-grid_align-spread">
+                        <div class="slds-col">
+                            <label class="slds-form-element__label" for="datatable">
+                                <div class="slds-media slds-media_center slds-media_small">
+                                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
+                                    <div class="slds-media__figure">
+                                        <template if:true={hasIcon}>
+                                            <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
+                                        </template>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <!-- <div if:true={isShowSearchBar}> 
+                            <div class="slds-col slds-p-bottom_xx-small">
                                 <lightning-input 
                                     type="search"
                                     placeholder="Enter search term ..."
@@ -136,73 +221,69 @@ Features:   The only required paramters are the SObject collection of records an
                                     is-loading={isWorking}
                                 ></lightning-input>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-                </label>
+                </template>
+
+                <template if:true={isShowTable}>
+
+                    <div if:true={isWorking}>
+                        <lightning-spinner
+                            alternative-text="Working..." variant="brand">
+                        </lightning-spinner>
+                    </div>
+
+                    <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatable">
+                        <c-ers_custom-lightning-datatable
+                            aria-label={tableLabel}
+                            data={mydata}
+                            columns={columns}
+                            key-field={keyField}
+                            sorted-by={sortedBy}
+                            sorted-direction={sortDirection}
+                            max-row-selection={maxRowSelection}
+                            selected-rows={selectedRows}
+                            show-row-number-column={showRowNumbers}
+                            hide-checkbox-column={hideCheckboxColumn}
+                            suppress-bottom-bar={suppressBottomBar}
+                            onsort={updateColumnSorting}
+                            oncellchange={handleCellChange}
+                            onsave={handleSave}
+                            oncancel={cancelChanges}
+                            onheaderaction={handleHeaderAction}
+                            onrowselection={handleRowSelection}
+                            onrowaction={handleRowAction}
+                            onresize={handleResize}
+                            oncombovaluechange={handleComboValueChange}
+                        >
+                        </c-ers_custom-lightning-datatable>
+
+                        <lightning-layout>
+                            <lightning-layout-item padding="right-small">
+                                <div if:true={showClearButton} class="slds-m-top_x-small slds-m-right_small">
+                                    <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item>
+                                <div if:true={showClearFilterButton} class="slds-m-top_x-small">
+                                    <lightning-button variant="brand-outline" label={label.ClearFilterButton} icon-name="utility:clear" onclick={handleClearFilterButton}></lightning-button>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+
+                <template if:false={isShowTable}>
+                    <div if:true={haveRecords}>
+                        <lightning-spinner
+                            alternative-text="Working..." variant="brand">
+                        </lightning-spinner>
+                    </div>
+                    <div if:false={haveRecords} class="slds-p-around_x-small slds-text-heading_small">
+                        {emptyTableMessage}
+                    </div>
+                </template>
             </template>
-
-            <template if:true={isShowTable}>
-
-                <div if:true={isWorking}>
-                    <lightning-spinner
-                        alternative-text="Working..." variant="brand">
-                    </lightning-spinner>
-                </div>
-
-                <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatable">
-
-                    <c-ers_custom-lightning-datatable
-                        aria-label={tableLabel}
-                        data={mydata}
-                        columns={columns}
-                        key-field={keyField}
-                        sorted-by={sortedBy}
-                        sorted-direction={sortDirection}
-                        max-row-selection={maxRowSelection}
-                        selected-rows={selectedRows}
-                        show-row-number-column={showRowNumbers}
-                        hide-checkbox-column={hideCheckboxColumn}
-                        suppress-bottom-bar={suppressBottomBar}
-                        onsort={updateColumnSorting}
-                        oncellchange={handleCellChange}
-                        onsave={handleSave}
-                        oncancel={cancelChanges}
-                        onheaderaction={handleHeaderAction}
-                        onrowselection={handleRowSelection}
-                        onrowaction={handleRowAction}
-                        onresize={handleResize}
-                        oncombovaluechange={handleComboValueChange}
-                    >
-                    </c-ers_custom-lightning-datatable>
-
-                    <lightning-layout>
-                        <lightning-layout-item padding="right-small">
-                            <div if:true={showClearButton} class="slds-m-top_x-small slds-m-right_small">
-                                <lightning-button variant="brand-outline" label={label.ClearSelectionButton} icon-name="utility:clear" onclick={handleClearSelection}></lightning-button>
-                            </div>
-                        </lightning-layout-item>
-                        <lightning-layout-item>
-                            <div if:true={showClearFilterButton} class="slds-m-top_x-small">
-                                <lightning-button variant="brand-outline" label={label.ClearFilterButton} icon-name="utility:clear" onclick={handleClearFilterButton}></lightning-button>
-                            </div>
-                        </lightning-layout-item>
-                    </lightning-layout>
-
-                </div>
-
-            </template>
-
-            <template if:false={isShowTable}>
-                <div if:true={haveRecords}>
-                    <lightning-spinner
-                        alternative-text="Working..." variant="brand">
-                    </lightning-spinner>
-                </div>
-                <div if:false={haveRecords} class="slds-p-around_x-small slds-text-heading_small">
-                    {emptyTableMessage}
-                </div>
-            </template>
-
         </div>
 
         <!-- Special Footer parameter display for Configuration Mode -->

@@ -27,12 +27,14 @@ import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
 const ISFLOWBUILDER = CONSTANTS.ISFLOWBUILDER;
 const CB_TRUE = CONSTANTS.CB_TRUE;
+const MIN_SEARCH_TERM_SIZE = CONSTANTS.MIN_SEARCH_TERM_SIZE;
+const SEARCH_WAIT_TIME = CONSTANTS.SEARCH_WAIT_TIME;
 
 export default class Datatable extends LightningElement {
 
@@ -172,6 +174,14 @@ export default class Datatable extends LightningElement {
         return (this.cb_isDisplayHeader == CB_TRUE) ? true : false;
     }
     @api cb_isDisplayHeader;
+
+    @api 
+    get isShowSearchBar() {
+        return true;
+    }
+
+    searchTerm = '';
+    searchTypeTimeout;
 
     @api 
     get not_suppressNameFieldLink() {       // Default value is to show the links
@@ -336,7 +346,8 @@ export default class Datatable extends LightningElement {
     @track isOpenIconInput = false;
     @track inputLabel;
     @track inputType = 'text';
-    @track inputFormat = null;    
+    @track inputFormat = null;
+    filteredData = [];    
 
     // Other Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
@@ -944,7 +955,6 @@ export default class Datatable extends LightningElement {
             });
 
         }
-        
     }
 
     updateDataRows() {
@@ -1956,6 +1966,21 @@ export default class Datatable extends LightningElement {
         this.isFiltered = false;
     }
 
+    handleSearchChange(event) {
+        this.searchTerm = event.detail.value;
+        if (this.searchTerm.length < MIN_SEARCH_TERM_SIZE && this.searchTerm.length > 0) {
+            this.searchTerm = '';
+        } else {
+            // Handle slight pause while typing
+            if (this.searchTypeTimeout) {
+                clearTimeout(this.searchTypeTimeout);
+            }
+            this.searchTypeTimeout = setTimeout(() => {
+                this.searchRowData(this.searchTerm);
+            }, SEARCH_WAIT_TIME);
+        }
+    }
+
     handleSelectAllEdit() {
         // Set the Allow Edit Value to True for All Columns
         this.isAllEdit = !this.isAllEdit;
@@ -2162,11 +2187,116 @@ export default class Datatable extends LightningElement {
         })
         .then(
             () => {
+                this.filteredData = [...this.mydata];
+                if (this.searchTerm && this.searchTerm != null) {
+                    this.searchRowData(this.searchTerm)
+                };
                 this.isWorking = false;
             }
         );
         
         this.showClearFilterButton = !this.hideClearSelectionButton && !this.columnFilterValues.every(cfv => cfv === null);
+    }
+
+    searchRowData(searchTerm) {
+        // Filter the rows based on the current search value
+        this.isWorking = true;
+        if (searchTerm && searchTerm != null) {
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    if (!this.isConfigMode) {
+                        const rows = this.filteredData.length > 0 ? [...this.filteredData] : [...this.savePreEditData];
+                        const cols = this.columns;
+                        let filteredRows = [];
+                        rows.forEach(row => {
+                            let match = false;
+                            for (let col = 0; col < cols.length; col++) {
+                                let fieldName = cols[col].fieldName;
+                                if (fieldName.endsWith('_lookup')) {
+                                    fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
+                                }
+                                
+                                if (cols[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
+                                    break; 
+                                }                   
+
+                                switch(cols[col].type) {
+                                    case 'number':
+                                    case 'currency':
+                                    case 'percent':
+                                        if (row[fieldName] == searchTerm) {    // Check for exact match on numeric fields
+                                            match = true;
+                                            break;                                
+                                        }
+                                        break;
+                                    case 'date-local':
+                                        let dl = row[fieldName];
+                                        let dtf = new Intl.DateTimeFormat('en', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit'
+                                        });
+                                        const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                        let formatedDate = `${ye}-${mo}-${da}`;
+                                        if (formatedDate == searchTerm) {    // Check for date match on date & time fields
+                                            match = true;
+                                            break;                                
+                                        }
+                                        break;
+                                    case 'date':
+                                    case 'datetime':
+                                    case 'time':
+                                        if (typeof(row[fieldName]) === typeof(+1)) { 
+                                            break;  //TODO - Figure out a way to filter on Time fields
+                                        }
+                                        let dt = row[fieldName].slice(0,10);
+                                        if (dt == searchTerm) {    // Check for date match on date & time fields
+                                            match = true;
+                                            break;                                
+                                        }
+                                        break;
+                                    default:
+                                        let fieldValue = row[fieldName].toString();
+                                        let filterValue = searchTerm;
+                                        if (!this.matchCaseOnFilters) {
+                                            fieldValue = fieldValue.toLowerCase();
+                                            filterValue = filterValue.toLowerCase();
+                                        }
+                                        if (fieldValue.search(filterValue) != -1) {  // Check for filter value within field value
+                                            match = true;
+                                            break;
+                                        }                            
+                                }
+                                    this.isFiltered = true;
+                            }
+                            if (match) {
+                                filteredRows.push(row);
+                            }
+                        });
+                        this.mydata = filteredRows;
+                    }
+                    resolve();
+                }, 0);
+            })
+            .then(
+                () => {
+                    this.isWorking = false;
+                }
+            );
+            
+        } else {    // Empty search term
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    this.mydata = this.filteredData.length > 0 ? [...this.filteredData] : [...this.savePreEditData];
+                    resolve();
+                }, 0);
+            })
+            .then(
+                () => {
+                    this.isWorking = false;
+                }
+            );
+        }
     }
 
     updateAlignmentParam() {

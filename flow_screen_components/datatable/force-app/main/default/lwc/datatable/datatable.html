@@ -111,16 +111,31 @@ Features:   The only required paramters are the SObject collection of records an
         <div class={formElementClass}>
             <template if:true={isDisplayHeader}>
                 <label class="slds-form-element__label" for="datatable">
-                    <div class="slds-media slds-media_center slds-media_small">
-                        <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
-                        <div class="slds-media__figure">
-                            <template if:true={hasIcon}>
-                                <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
-                            </template>
+                    <div class="slds-clearfix">
+                        <div class="slds-float_left">
+                            <div class="slds-media slds-media_center slds-media_small">
+                                <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
+                                <div class="slds-media__figure">
+                                    <template if:true={hasIcon}>
+                                        <lightning-icon icon-name={tableIcon} alternative-text="Datatable Icon" title="Icon" size="small"></lightning-icon>
+                                    </template>
+                                </div>
+                                <div class="slds-media__body">
+                                    <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
+                                    <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="slds-media__body">
-                            <!-- <lightning-formatted-rich-text value={formattedTableLabel}></lightning-formatted-rich-text> -->
-                            <div style="font-size: 1.2em; font-weight: bolder;">&nbsp;{formattedTableLabel}</div>
+                        <div if:true={isShowSearchBar}> 
+                            <div class="slds-float_right">
+                                <lightning-input 
+                                    type="search"
+                                    placeholder="Enter search term ..."
+                                    value={searchTerm}
+                                    onchange={handleSearchChange}
+                                    is-loading={isWorking}
+                                ></lightning-input>
+                            </div>
                         </div>
                     </div>
                 </label>

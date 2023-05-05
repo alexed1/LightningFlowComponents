@@ -422,7 +422,6 @@ export default class Datatable extends LightningElement {
     }
 
     get formattedTableLabel() {
-        // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
         let filteredCount = (this.filteredRecordCount != this.tableRecordCount) ? `${this.filteredRecordCount} of ` : '';
         return (this.showRecordCount) ? `${this.tableLabel} (${filteredCount}${this.tableRecordCount})` : this.tableLabel;
     }

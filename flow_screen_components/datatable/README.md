@@ -82,6 +82,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -       The Datatable will support both a Search Bar and individual Column Filters
 -       NOTE: When the Search Bar is enabled, the Header is required and will appear slightly larger than a table without a Search Bar
 -       NOTE: When the Search Bar is enabled, the border can't be disabled and it will appear with rounded rather than square corners
+-   When the number of displayed records are filtered and/or reduced based on a search term, the header will show both the filtered count and the total record count
 -   Updated maximum record count from 1000 to 2000 
 -   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
 -       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection

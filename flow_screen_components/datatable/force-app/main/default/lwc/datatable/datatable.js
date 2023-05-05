@@ -177,8 +177,9 @@ export default class Datatable extends LightningElement {
 
     @api 
     get isShowSearchBar() {
-        return true;
+        return(this.cb_isShowSearchBar == CB_TRUE) ? true : false;
     }
+    @api cb_isShowSearchBar;
 
     searchTerm = '';
     searchTypeTimeout;
@@ -422,11 +423,16 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         // return (this.tableLabel && this.tableLabel.length > 0) ? '<h2>&nbsp;'+this.tableLabel+'</h2>' : '';
-        return (this.showRecordCount) ? `${this.tableLabel} (${this.tableRecordCount})` : this.tableLabel;
+        let filteredCount = (this.filteredRecordCount != this.tableRecordCount) ? `${this.filteredRecordCount} of ` : '';
+        return (this.showRecordCount) ? `${this.tableLabel} (${filteredCount}${this.tableRecordCount})` : this.tableLabel;
     }
 
     get tableRecordCount() {
         return this._tableData.length;
+    }
+
+    get filteredRecordCount() {
+        return this.mydata.length;
     }
 
     get isShowTable() {

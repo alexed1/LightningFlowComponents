@@ -91,6 +91,8 @@
             <property name="isConfigMode" label="Configuration Mode?" type="Boolean" default="false" role="inputOnly" description="Display the Field API Names and the Column Widths in a box below the table.  This parameter is designed to be used by the setup Flow."/>
             <property name="hideCheckboxColumn" label="Hide Checkbox Column?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
             <property name="cb_hideCheckboxColumn" type="String" role="inputOnly"/>
+            <property name="isShowSearchBar" label="Show Search bar" type="Boolean" role="inputOnly"/>
+            <property name="cb_isShowSearchBar" type="String" role="inputOnly"/>
             <property name="hideHeaderActions" label="Hide Column Header Actions?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide all column header actions including Sort, Clip Text, Wrap Text + Filter."/>
             <property name="cb_hideHeaderActions" type="String" role="inputOnly"/>
             <property name="hideClearSelectionButton" label="Hide Clear Selection Button?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table."/>

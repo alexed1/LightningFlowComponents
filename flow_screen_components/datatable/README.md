@@ -78,6 +78,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space
 -       This gives you more control over columns that you specifically want to be narrow or wide while allowing the other columns to find the best fit
 -       This option can be selected individually or can be applied to all columns at once
+-   Added a new Search Bar option
+-       The Datatable will support both a Search Bar and individual Column Filters
+-       NOTE: When the Search Bar is enabled, the Header is required and will appear slightly larger than a table without a Search Bar
+-       NOTE: When the Search Bar is enabled, the border can't be disabled and it will appear with rounded rather than square corners
 -   Updated maximum record count from 1000 to 2000 
 -   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
 -       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection

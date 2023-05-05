@@ -233,6 +233,10 @@ export default class ers_datatableCPE extends LightningElement {
         this.inputValues.navigateNextOnSave.value = value;
     }
 
+    get disableSearchBarSelection() {
+        return !this.inputValues.isDisplayHeader.value;
+    }
+
     @api
     get wiz_columnFields() { 
         return this._wiz_columnFields;
@@ -467,6 +471,10 @@ export default class ers_datatableCPE extends LightningElement {
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
         cb_hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: ''}, 
+        isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: 'Show search bar', 
+            helpText: 'Select to show a Search Bar in the table header.  Search will work together with Column Filters to identify the records to show in the Datatable. \n' +
+            'NOTE: The Search Bar option requires that "Display Table Header" be selected'},
+        cb_isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
             helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
         cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
@@ -577,6 +585,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'maxNumberOfRows'},
                 {name: 'showRowNumbers'},
                 {name: 'showRecordCount'},
+                {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
             ]
         },
@@ -874,6 +883,7 @@ export default class ers_datatableCPE extends LightningElement {
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = '';
                     this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
+                    this.updateCheckboxValue('isShowSearchBar', false);
                 }
             }
 

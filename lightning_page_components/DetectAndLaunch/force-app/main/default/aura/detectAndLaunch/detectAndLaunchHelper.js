@@ -1,18 +1,27 @@
 ({
     processChangeEvent : function(component, eventParams) {
         console.log('entering processChangeEvent');
-        if(eventParams.changeType === "CHANGED") {
-            console.log ('changeType is: ' + eventParams.changeType);
-            this.callFlow(component, eventParams);
-        }  else if(eventParams.changeType === "REMOVED") {
-            console.log('record is being deleted');
-            //the other launch paths don't work well when the underlying page is deleted
-            var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable
-            console.log('targetURL is: ' + targetUrl);
-            window.open(targetUrl);
-        } else if(eventParams.changeType === "LOADED") {
-            console.log ('changeType is: ' + eventParams.changeType);
-            this.callFlow(component, eventParams);
+        // Get current URL 
+        // If URL contains flexipageEditor do nothing
+        var currentUrl = window.location.href;
+        console.log('currentUrl is: ' + currentUrl);
+        if (currentUrl.includes('flexipageEditor')) {
+            console.log('currentUrl includes flexipageEditor');
+            return;
+        } else {
+            if(eventParams.changeType === "CHANGED") {
+                console.log ('changeType is: ' + eventParams.changeType);
+                this.callFlow(component, eventParams);
+            }  else if(eventParams.changeType === "REMOVED") {
+                console.log('record is being deleted');
+                //the other launch paths don't work well when the underlying page is deleted
+                var targetUrl = '/flow/' + component.get("v.targetFlowName") + '?recordId=' + component.get("v.recordId"); //added input variable
+                console.log('targetURL is: ' + targetUrl);
+                window.open(targetUrl);
+            } else if(eventParams.changeType === "LOADED") {
+                console.log ('changeType is: ' + eventParams.changeType);
+                this.callFlow(component, eventParams);
+            }
         }
     },
 

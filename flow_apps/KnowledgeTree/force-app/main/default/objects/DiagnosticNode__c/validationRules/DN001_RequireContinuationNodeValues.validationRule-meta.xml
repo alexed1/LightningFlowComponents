@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DN001_RequireContinuationNodeValues</fullName>
+    <active>true</active>
+    <description>Require all continuation node values in order to ensure screen flow runs without error.</description>
+    <errorConditionFormula>(Continuation_Node__c = true &amp;&amp; ISBLANK(ContinuationDiagnosticNode__c))
+||(Continuation_Node__c = false &amp;&amp; NOT(ISBLANK(ContinuationDiagnosticNode__c)))</errorConditionFormula>
+    <errorMessage>If this is a continuation node, you must complete both the &quot;Continuation Node&quot; checkbox and the &quot;ContinuationDiagnosticNode&quot; lookup field. [Error DN001]</errorMessage>
+</ValidationRule>

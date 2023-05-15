@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 05-15-2023
+ * @last modified by  : Josh Dayment
+**/
 import { api, track, LightningElement } from "lwc";
 
 const DATA_TYPE = {
@@ -193,7 +200,15 @@ export default class textAreaPlusCPE extends LightningElement {
       valueDataType: null,
       isCollection: false,
       label: ""
-    }
+    },
+    textAreaHeight: {
+      value: null,
+      valueDataType: null,
+      isCollection: false,
+      label: "Text Area Height",
+      helpText: "Set the minimum height of the text input area i.e. 800"
+    },
+
   };
 
   get hasValidMaxLength() {

@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 05-15-2023
+  @last modified by  : Josh Dayment
+-->
 <template>
     <lightning-combobox
       label="Text Mode"
@@ -15,6 +22,7 @@
       ></c-fsc_flow-combobox>
       <lightning-input-rich-text
         name="value"
+        value={inputValues.value.value}
         onchange={handleRichTextChange}
       ></lightning-input-rich-text>
     </template>
@@ -40,6 +48,15 @@
         builder-context-filter-type="String"
         label={inputValues.placeHolder.label}
         onvaluechanged={handleFlowComboboxValueChange}
+      ></c-fsc_flow-combobox>
+
+      <c-fsc_flow-combobox
+        name="textAreaHeight"
+        value={inputValues.textAreaHeight.value}
+        builder-context-filter-type="String"
+        label={inputValues.textAreaHeight.label}
+        onvaluechanged={handleFlowComboboxValueChange}
+        field-level-help={inputValues.textAreaHeight.helpText}
       ></c-fsc_flow-combobox>
   
       <template if:true={minlenErr}>
@@ -97,6 +114,15 @@
         builder-context-filter-type="String"
         label={inputValues.placeHolder.label}
         onvaluechanged={handleFlowComboboxValueChange}
+      ></c-fsc_flow-combobox>
+
+      <c-fsc_flow-combobox
+        name="textAreaHeight"
+        value={inputValues.textAreaHeight.value}
+        builder-context-filter-type="String"
+        label={inputValues.textAreaHeight.label}
+        onvaluechanged={handleFlowComboboxValueChange}
+        field-level-help={inputValues.textAreaHeight.helpText}
       ></c-fsc_flow-combobox>
   
       <c-fsc_flow-combobox

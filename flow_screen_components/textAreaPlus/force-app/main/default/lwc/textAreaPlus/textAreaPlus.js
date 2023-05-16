@@ -476,7 +476,7 @@ export default class TextAreaPlus extends LightningElement {
     }
 
     // convert HTML to Slack
-    if (this.textMode ="slack") {
+    if (this.textMode == "slack") {
       this.handleHtmlToSlack(target.value);
       this.slackOutput=this.slackText;
     }
@@ -662,23 +662,23 @@ export default class TextAreaPlus extends LightningElement {
     return str;
   }
 
-  // Replaces html to slack markdown
+ // Replaces html to slack markdown
   handleHtmlToSlack(){
     this.slackText = this.textValue;
-    this.slackText = this.slackText.replace(/<p>/g,"");
-    this.slackText = this.slackText.replace(/<\/p>/g,"");  
-    this.slackText = this.slackText.replace(/<strong>/g,"*");
-    this.slackText = this.slackText.replace(/<\/strong>/g,"*");
-    this.slackText = this.slackText.replace(/<em>/g,"_");
-    this.slackText = this.slackText.replace(/<\/em>/g,"_");
-    this.slackText = this.slackText.replace(/<strike>/g,"~");
-    this.slackText = this.slackText.replace(/<\/strike>/g,"~");
-    this.slackText = this.slackText.replace(/&nbsp;/g,"");
-    this.slackText = this.slackText.replace(/<br>/g,"\n");
-    this.slackText = this.slackText.replace(/<ul>/g,"");
-    this.slackText = this.slackText.replace(/<\/ul>/g,"");
-    this.slackText = this.slackText.replace(/<li>/g,"• ");
-    this.slackText = this.slackText.replace(/<\/li>/g,"\n");
+    this.slackText = this?.slackText.replace(/<p>/g,"");
+    this.slackText = this?.slackText.replace(/<\/p>/g,"");  
+    this.slackText = this?.slackText.replace(/<strong>/g,"*");
+    this.slackText = this?.slackText.replace(/<\/strong>/g,"*");
+    this.slackText = this?.slackText.replace(/<em>/g,"_");
+    this.slackText = this?.slackText.replace(/<\/em>/g,"_");
+    this.slackText = this?.slackText.replace(/<strike>/g,"~");
+    this.slackText = this?.slackText.replace(/<\/strike>/g,"~");
+    this.slackText = this?.slackText.replace(/&nbsp;/g,"");
+    this.slackText = this?.slackText.replace(/<br>/g,"\n");
+    this.slackText = this?.slackText.replace(/<ul>/g,"");
+    this.slackText = this?.slackText.replace(/<\/ul>/g,"");
+    this.slackText = this?.slackText.replace(/<li>/g,"• ");
+    this.slackText = this?.slackText.replace(/<\/li>/g,"\n");
     //console.log("Slack text: " + this.slackText);
      
     

@@ -72,7 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
  
-## 05/xx/23 -  Eric Smith -    Version 4.0.13 
+## 05/xx/23 -  Eric Smith -    Version 4.1.0 
 **Updates:** 
 -   Added new Column Wizard header action to allow a column width to have a fixed or floating width
 -       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space

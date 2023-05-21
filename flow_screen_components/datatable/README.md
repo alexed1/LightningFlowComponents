@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.12 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wt5QAA)   
-[Version 4.0.12 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wt5QAA)
+[Version 4.1.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7LQQA0)   
+[Version 4.1.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7LQQA0)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,7 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
  
-## 05/xx/23 -  Eric Smith -    Version 4.1.0 
+## 05/21/23 -  Eric Smith -    Version 4.1.0 
 **Updates:** 
 -   Added new Column Wizard header action to allow a column width to have a fixed or floating width
 -       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space

@@ -982,9 +982,9 @@ export default class Datatable extends LightningElement {
             timeFields.forEach(time => {
                 if (record[time]) {
                     // record[time] = "2020-05-12T" + record[time];
-                    record[time] = String.valueOf(System.today()) + "T" + record[time];
-                    let dt = Date.parse(record[time]);
                     let d = new Date();
+                    record[time] = d.toISOString().slice(0,10) + "T" + record[time];
+                    let dt = Date.parse(record[time]);
                     record[time] = d.setTime(Number(dt) - Number(this.timezoneOffset));
                 }
             });

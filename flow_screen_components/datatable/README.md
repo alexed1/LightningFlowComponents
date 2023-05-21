@@ -94,7 +94,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Updated API versions to 57.0 
   
 **Bug Fixes:**  
--   Fixed invalid format error when entering a filter value for a Name column when it was shown as a hyperlink
+-   Fixed invalid format error when entering a filter value for a Name column when it was shown as a hyperlink 
+-   Addressed occasional DST issues by changing the default date prepended to Time fields to be the current date 
   
  ## 11/02/22 -  Eric Smith -    Version 4.0.12
 **Bug Fixes:**  

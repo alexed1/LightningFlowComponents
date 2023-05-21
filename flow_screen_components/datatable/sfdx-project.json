@@ -19,7 +19,7 @@
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "56.0",
+  "sourceApiVersion": "57.0",
   "packageAliases": {
     "datatable": "0Ho5G000000XZNaSAO",
     "FlowActionsBasePack": "04t4W000002vXUCQA2",

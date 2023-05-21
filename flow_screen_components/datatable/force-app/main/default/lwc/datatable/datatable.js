@@ -981,7 +981,8 @@ export default class Datatable extends LightningElement {
             // Prepend a date to the Time field so it can be displayed and calculate offset based on User's timezone
             timeFields.forEach(time => {
                 if (record[time]) {
-                    record[time] = "2020-05-12T" + record[time];
+                    // record[time] = "2020-05-12T" + record[time];
+                    record[time] = String.valueOf(System.today()) + "T" + record[time];
                     let dt = Date.parse(record[time]);
                     let d = new Date();
                     record[time] = d.setTime(Number(dt) - Number(this.timezoneOffset));

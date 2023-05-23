@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.x.x
+ * VERSION:             3.x.x & 4.x.x
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -74,6 +74,7 @@ export default class ers_datatableCPE extends LightningElement {
     _wiz_columnLabels;
     _wiz_columnWidths;
     _wiz_columnWraps;
+    _wiz_columnFlexes;
     _wiz_columnCellAttribs;
     _wiz_columnTypeAttribs;
     _wiz_columnOtherAttribs;
@@ -232,6 +233,10 @@ export default class ers_datatableCPE extends LightningElement {
         this.inputValues.navigateNextOnSave.value = value;
     }
 
+    get disableSearchBarSelection() {
+        return !this.inputValues.isDisplayHeader.value;
+    }
+
     @api
     get wiz_columnFields() { 
         return this._wiz_columnFields;
@@ -339,6 +344,18 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get wiz_columnFlexes() { 
+        return this._wiz_columnFlexes;
+    }
+    set wiz_columnFlexes(value) { 
+        const name = 'columnFlexes';
+        this._wiz_columnFlexes = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
+    @api
     get wiz_columnCellAttribs() { 
         return this._wiz_columnCellAttribs;
     }
@@ -422,6 +439,9 @@ export default class ers_datatableCPE extends LightningElement {
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnFlexes: {value: null, valueDataType: null, isCollection: false, label: 'Column Flexes (Col#:true,...)', 
+            helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Cell Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
             "EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"},
@@ -451,11 +471,16 @@ export default class ers_datatableCPE extends LightningElement {
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
         cb_hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: ''}, 
+        isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: 'Show search bar', 
+            helpText: 'Select to show a Search Bar in the table header.  Search will work together with Column Filters to identify the records to show in the Datatable. \n' +
+            'NOTE: The Search Bar option requires that "Display Table Header" be selected'},
+        cb_isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
             helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
         cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
-        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection Button', 
-            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table.'},
+        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection/Filter Buttons', 
+            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table and the Clear Filter Button that would normally appear when any column has a filter applied. \n' +
+            'NOTE: The Clear Filter button will always appear when no matching records are available to display in a datatable.'},
         cb_hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
             helpText: 'Display a row number column as the first column in the table.'}, 
@@ -560,6 +585,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'maxNumberOfRows'},
                 {name: 'showRowNumbers'},
                 {name: 'showRecordCount'},
+                {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
             ]
         },
@@ -599,6 +625,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnScales'},
                 {name: 'columnTypes'},
                 {name: 'columnWidths'},
+                {name: 'columnFlexes'},
                 {name: 'columnWraps'},
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
@@ -638,6 +665,7 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'wiz_columnIcons', type: 'String', value: ''},
         {name: 'wiz_columnWidths', type: 'String', value: ''},
         {name: 'wiz_columnWraps', type: 'String', value: ''},
+        {name: 'wiz_columnFlexes', type: 'String', value: ''},
         {name: 'wiz_columnCellAttribs', type: 'String', value: ''},
         {name: 'wiz_columnTypeAttribs', type: 'String', value: ''},
         {name: 'wiz_columnOtherAttribs', type: 'String', value: ''},
@@ -855,6 +883,7 @@ export default class ers_datatableCPE extends LightningElement {
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = '';
                     this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
+                    this.updateCheckboxValue('isShowSearchBar', false);
                 }
             }
 
@@ -1065,7 +1094,7 @@ export default class ers_datatableCPE extends LightningElement {
         // Parameter value string to pass to Wizard Flow
         this.updateFlowParam('vWizRecordCount', CONSTANTS.WIZROWCOUNT);
         this.updateFlowParam('vSObject', this.inputValues.objectName.value);
-        return JSON.stringify(this.flowParams);
+        return this.flowParams;
     }
     
     // handlePickObjectAndFieldValueChange(event) { 
@@ -1077,12 +1106,12 @@ export default class ers_datatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        console.log('=== handleFlowStatusChange ===');
-        if (event.detail.flowStatus == "ERROR") { 
+        console.log('=== handleFlowStatusChange -', event.detail.status, '===');
+        if (event.detail.status === "ERROR") { 
             console.log('Flow Error: ',JSON.stringify(event));
         } else {      
             this.isFlowLoaded = true;
-            event.detail.flowParams.forEach(attribute => {
+            event.detail.outputVariables.forEach(attribute => {
                 let name = attribute.name;
                 let value = attribute.value; 
                 console.log('Output from Wizard Flow: ', name, value);
@@ -1107,7 +1136,8 @@ export default class ers_datatableCPE extends LightningElement {
 
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                     let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
-                    if (event.detail.flowExit && !this.isEarlyExit) { 
+                    if (event.detail.status === "FINISHED" && !this.isEarlyExit) { 
+
                         // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
                         switch (changedAttribute) { 
                             case 'columnFields':
@@ -1146,6 +1176,9 @@ export default class ers_datatableCPE extends LightningElement {
                             case 'columnWraps':
                                 this.wiz_columnWraps = value;
                                 break;
+                            case 'columnFlexes':
+                                this.wiz_columnFlexes = value;
+                                break;
                             case 'columnCellAttribs': 
                                 this.wiz_columnCellAttribs = value;
                                 break;
@@ -1158,6 +1191,7 @@ export default class ers_datatableCPE extends LightningElement {
                             default:
                         }
                         this.isFlowLoaded = false;
+                        this.closeModal();
                     }
                 }
             });

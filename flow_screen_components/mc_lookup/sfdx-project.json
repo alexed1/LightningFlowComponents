@@ -14,7 +14,7 @@
   "name": "MC_Lookup",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "55.0",
+  "sourceApiVersion": "57.0",
   "packageAliases": {
     "MC_Lookup": "0Ho5e0000010wNhCAI",
     "SOQLBuildAndExecute@1.3.1-0": "04tf4000004PtguAAC",

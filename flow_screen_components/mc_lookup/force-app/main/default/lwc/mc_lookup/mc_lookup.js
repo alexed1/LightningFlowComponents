@@ -2,6 +2,7 @@ import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import newRecordModal from 'c/mc_newRecordModal';
 import search from '@salesforce/apex/mc_lookupController.search';
 import getRecentlyViewed from '@salesforce/apex/mc_lookupController.getRecentlyViewed';
 import getRecordsFromIds from '@salesforce/apex/mc_lookupController.getRecordsFromIds';
@@ -113,7 +114,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     /* PRIVATE PROPERTIES */
     @track recentlyViewedRecords = [];
     @track records = [];
-    showNewRecordModal;
+    @track showNewRecordModal; // Deprecated 2023-05-24 Andy Haas
 
     /* OUTPUT PROPERTIES */
     @track _selectedRecordIdsOutput = []; // Ids of selected records
@@ -544,23 +545,42 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         console.log('in handleCustomAction: ', JSON.stringify(event.detail));
         console.log(event.detail);
         if (event.detail === ACTIONS.NEW_RECORD.value) {
-            this.showNewRecordModal = true;
+            // Call the new record modal
+            newRecordModal.open({
+                size: 'large',
+                description: 'Create a new ' + this.objectName,
+                objectApiName: this.objectName,
+                modalTitle: 'New ' + this.objectName,
+            })
+            .then(result => {
+                console.log('new record modal result = ' + JSON.stringify(result));
+
+                // If the modal is closed with success, then get the record details and set the selectedRecordIdOutput
+                if (result.status === 'success') {
+                    console.log('result = ' + JSON.stringify(result));
+                    console.log('result.id = ' + result.id);
+
+                    // Set the selectedRecordIdOutput
+                    this.value = result.id;
+                    this.selectedRecordIdOutput = result.id;
+                    this.numberOfRecordsOutput = 1;
+                    this.selectedRecordIdsOutput = null;
+
+                    let detail = {
+                        value: this.value,
+                        selectedRecord: this.selectedRecord
+                    }
+                    this.dispatchEvent(new CustomEvent('recordchange', { detail: detail }));
+                }
+            }).catch(error => {
+                console.log('error = ' + JSON.stringify(error));
+            });
+
+            // Template way of opening modal
+            // this.showNewRecordModal = true;
+            // Old way of opening modal
             // this.template.querySelector('.newRecordModal').open();
         }
-    }
-
-    handlewNewRecordSave(event) {
-        const evt = new ShowToastEvent({
-            title: 'Record Created',
-            message: 'Record ID: ' + event.detail.id,
-            variant: 'success',
-        });
-        this.dispatchEvent(evt);
-        this.closeNewRecordModal();
-    }
-
-    closeNewRecordModal() {
-        this.showNewRecordModal = false;
     }
 
     handleEventChanges(apiName, value) {

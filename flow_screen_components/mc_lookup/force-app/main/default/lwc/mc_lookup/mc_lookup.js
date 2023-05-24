@@ -288,7 +288,12 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     validate() {
         // If the minimumNumberOfSelectedRecords not equal to 0, check to see if the number of records selected is less than the minimum
         // If it is not valid then return error message and isValid = false
-        if ( this.minimumNumberOfSelectedRecords !== 0 ) {
+        if( this.required && !this.values.length ) {
+            return {
+                isValid: false,
+                errorMessage: this.messageWhenValueMissing
+            }
+        } else if ( this.minimumNumberOfSelectedRecords !== 0 ) {
             if ( this.selectedRecords.length < this.minimumNumberOfSelectedRecords ) {
                 this._showMinimumNumberOfSelectedRecordsErrorMessage = true;
                 return {

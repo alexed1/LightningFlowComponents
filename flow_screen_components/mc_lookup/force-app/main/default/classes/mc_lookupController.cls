@@ -289,4 +289,13 @@ public without sharing class mc_lookupController {
         returnRecords = Database.query(query);
         return returnRecords;
     }
+
+    // Check if the user can create a record for a given object
+    @AuraEnabled(cacheable=true)
+    public static Boolean canCreateRecord(String objectName) {
+        SObjectType objectType = Schema.getGlobalDescribe().get(objectName);
+        DescribeSObjectResult objectDescribe = objectType.getDescribe();
+        return objectDescribe.isCreateable();
+    }
+
 }

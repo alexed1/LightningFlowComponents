@@ -9,6 +9,7 @@ import getRecordsFromIds from '@salesforce/apex/mc_lookupController.getRecordsFr
 import getObjectIcon from '@salesforce/apex/mc_lookupController.getObjectIcon';
 import getRecords from '@salesforce/apex/mc_lookupController.getRecords';
 import getRecordDetail from '@salesforce/apex/mc_lookupController.getRecordDetail';
+import canCreateRecord from '@salesforce/apex/mc_lookupController.canCreateRecord';
 
 const DEFAULTS = {
     NUM_RECENTLY_VIEWED: 5,
@@ -92,7 +93,6 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     @api showNewRecordAction = false;
     @api excludeSublabelInFilter = false;   // If true, the 'sublabel' text of an option is included when determining if an option is a match for a given search text.
     @api includeValueInFilter = false;  // If true, the 'value' text of an option is not included when determining if an option is a match for a given search text.
-    @api whereClause;
     @api orderByClause; // Reserved for future use
     @api disabled = false;
     @api _defaultValueInput;
@@ -124,22 +124,39 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     @track _numberOfRecords = 0;
 
     @api
+    get whereClause() {
+        console.log('in get whereClause' + this._whereClause);
+        return this._whereClause;
+    }
+
+    set whereClause(value) {
+        console.log('whereClause: ' + value);
+        this._whereClause = value;
+        this.handleEventChanges('whereClause', this._whereClause);
+
+        // If the where clause is changed then we need to reset the records
+        this.loadRecords();
+    }
+
+    _whereClause;
+
+    @api
     get selectedRecordIdsOutput() {
         return this._selectedRecordIdsOutput;
     }
 
     set selectedRecordIdsOutput(value) {
         this._selectedRecordIdsOutput = value ? value : [];
-        this.handleEventChanges('selectedRecordIdsOutput', value);
-        console.log('in set selectedRecordIdsOutput value: ' + value);
+        this.handleEventChanges('selectedRecordIdsOutput', this._selectedRecordIdsOutput);
+        console.log('in set selectedRecordIdsOutput value: ' + this._selectedRecordIdsOutput);
         // If value is set then get the full record details
-        if (value) {
+        if (this._selectedRecordIdsOutput) {
             // Convert value to string if it is an array
-            if (Array.isArray(value)) {
-                value = value.toString();
+            if (Array.isArray(this._selectedRecordIdsOutput)) {
+                this._selectedRecordIdsOutput = this._selectedRecordIdsOutput.toString();
             }
             // Get the full details of the selected records
-            getRecordDetail({objectName: this.objectName, recordIds: value})
+            getRecordDetail({objectName: this.objectName, recordIds: this._selectedRecordIdsOutput})
                 .then(result => {
                     this.selectedRecordsOutput = result ? result : [];
                     this.handleEventChanges('selectedRecordsOutput', this.selectedRecordsOutput);
@@ -148,7 +165,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         }
     }
 
-    @api get numberOfRecordsOutput() {
+    @api 
+    get numberOfRecordsOutput() {
         console.log('in get numberOfRecordsOutput');
         console.log(this._numberOfRecords);
         return this._numberOfRecords;
@@ -161,19 +179,25 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         this.handleEventChanges('numberOfRecordsOutput', value);
     }
 
-    @api get selectedRecordIdOutput() {
+    @api 
+    get selectedRecordIdOutput() {
         return this._selectedRecordIdOutput;
     }
 
     set selectedRecordIdOutput(value) {
         this._selectedRecordIdOutput = value ? value : '';
-        this.handleEventChanges('selectedRecordIdOutput', value);
-        console.log('in set selectedRecordIdOutput value: ' + value);
+
+        // Dispatch the selectedRecordId 
+        this.handleEventChanges('selectedRecordIdOutput', this._selectedRecordIdOutput);
+        console.log('in set selectedRecordIdOutput value: ' + this._selectedRecordIdOutput);
+        this.handleEventChanges('whereClause', this._whereClause);
+
         // If value is set then get the full record details
         if (value) {
             // Get the full details of the selected records
-            getRecordDetail({objectName: this.objectName, recordIds: value})
+            getRecordDetail({objectName: this.objectName, recordIds: this._selectedRecordIdOutput})
                 .then(result => {
+                    // Dispatch the entire record details
                     this.selectedRecordOutput = result ? result[0] : {};
                     this.handleEventChanges('selectedRecordOutput', this.selectedRecordOutput);
                     console.log('in set selectedRecordIdOutput result: ' + JSON.stringify(result));
@@ -195,7 +219,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         this.handleEventChanges('selectedRecordsOutput', value);
     }
 
-    @api get selectedRecordOutput() {
+    @api 
+    get selectedRecordOutput() {
         return this._selectedRecordOutput;
     }
 
@@ -259,6 +284,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             }
         }
     }
+
     @track _values = [];
     @api
     get value() {
@@ -268,6 +294,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         value = String(value);
         this.values = this.allowMultiselect ? value.split(this.valueDelimiter).map(val => val.trim()) : [value];
     }
+
     @api
     get selectedRecords() {
         let records = [];
@@ -279,6 +306,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         }
         return records;
     }
+
     @api
     get selectedRecord() {
         return this.selectedRecords.length ? this.selectedRecords[0] : null;
@@ -309,6 +337,12 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     // Lifecycle hooks
     connectedCallback() {
         console.log('in lookup connectedcallback');
+        
+        // Load the inital values and icon
+        this.loadRecords();
+    }
+
+    loadRecords() {
         // Get the object's icon from getObjectIcon and set iconName
         getObjectIcon({ objectName: this.objectName })
         .then(result => {
@@ -319,7 +353,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 console.log('using default value input');
                 this.values = this.defaultValueInput;
             // Else if whereClause is set, we want to ignore the values passed in and set the whereClause
-            } else if ( this.whereClause ) {
+            } else if ( this._whereClause ) {
                 console.log('using where clause');
                 this.getRecords();
             // Else get the recently viewed records
@@ -347,7 +381,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     // Get the recently viewed records
     getRecentlyViewed() {
         this.isLoading = true;
-        getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
+        getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this._whereClause })
             .then(result => {
                 console.log('result = ' + JSON.stringify(result));
                 this.recentlyViewedRecords = this.parseFields(result);
@@ -367,7 +401,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     getRecords() {
         this.isLoading = true;
         console.log('in getRecords');
-        getRecords({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this.whereClause })
+        getRecords({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this._whereClause })
             .then(result => {
                 console.log('result = ' + JSON.stringify(result));
                 this.recentlyViewedRecords = this.parseFields(result);
@@ -393,7 +427,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 objectName: this.objectName,
                 fieldsToSearch: this.visibleFields_ToSearchNames || (this.excludeSublabelInFilter ? null : this.visibleFields_ToDisplayNames),
                 fieldsToReturn: this.visibleFields_ToDisplayNames,
-                whereClause: this.whereClause,
+                whereClause: this._whereClause,
                 orderByClause: this.orderByClause,
                 numRecordsToReturn: 0
             }).then(result => {
@@ -487,7 +521,16 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
     addNewRecordAction() {
         if (this.showNewRecordAction) {
-            this.records.unshift(ACTIONS.NEW_RECORD);
+            // Check to see if the ACTION.NEW_RECORD is already in the list
+            let newRecordAction = this.records.find(record => record.value === ACTIONS.NEW_RECORD.value);
+            if (!newRecordAction)
+            {
+                // Check if the user has create access
+                if(!this.canCreateRecord){
+                    // Add the new record action to the top of the list
+                    this.records.unshift(ACTIONS.NEW_RECORD);
+                }
+            }
         }
     }
 
@@ -519,9 +562,9 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             this.values = event.detail.values;
 
             // For each record that was selected map to Id and the value the value to the selectedRecordIdsOutput array
-            this.selectedRecordIdsOutput = event.detail.values;
-            this.numberOfRecordsOutput = event.detail.values.length ? event.detail.values.length : 0;
-            this.selectedRecordIdOutput = null;
+            this._selectedRecordIdsOutput = event.detail.values;
+            this._numberOfRecordsOutput = event.detail.values.length ? event.detail.values.length : 0;
+            this._selectedRecordIdOutput = null;
 
             // Check number of records to maximumNumberOfSelectedRecords, if we equal set dissabled to true
             if (this.numberOfRecordsOutput === this.maximumNumberOfSelectedRecords) {
@@ -535,15 +578,18 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             }
         } else {
             this.value = event.detail.value;
-            this.selectedRecordIdOutput = event.detail.value;
-            this.numberOfRecordsOutput = event.detail.value ? 1 : 0;
-            this.selectedRecordIdsOutput = null;                
+            this._selectedRecordIdOutput = event.detail.value;
+            this._numberOfRecordsOutput = event.detail.value ? 1 : 0;
+            this._selectedRecordIdsOutput = null;                
             detail = {
                 value: this.value,
                 selectedRecord: this.selectedRecord
             }
         }
         this.dispatchEvent(new CustomEvent('recordchange', { detail: detail }));
+        this.handleEventChanges('selectedRecordIdOutput', this._selectedRecordIdOutput);
+        this.handleEventChanges('selectedRecordIdsOutput', this._selectedRecordIdsOutput);
+        this.handleEventChanges('numberOfRecordsOutput', this._numberOfRecordsOutput);
     }
 
     handleCustomAction(event) {
@@ -567,15 +613,18 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
                     // Set the selectedRecordIdOutput
                     this.value = result.id;
-                    this.selectedRecordIdOutput = result.id;
-                    this.numberOfRecordsOutput = 1;
-                    this.selectedRecordIdsOutput = null;
+                    this._selectedRecordIdOutput = result.id;
+                    this._numberOfRecordsOutput = 1;
+                    this._selectedRecordIdsOutput = null;
 
                     let detail = {
                         value: this.value,
                         selectedRecord: this.selectedRecord
                     }
                     this.dispatchEvent(new CustomEvent('recordchange', { detail: detail }));
+                    this.handleEventChanges('selectedRecordIdOutput', this._selectedRecordIdOutput);
+                    this.handleEventChanges('selectedRecordIdsOutput', this._selectedRecordIdsOutput);
+                    this.handleEventChanges('numberOfRecordsOutput', this._numberOfRecordsOutput);
                 }
             }).catch(error => {
                 console.log('error = ' + JSON.stringify(error));

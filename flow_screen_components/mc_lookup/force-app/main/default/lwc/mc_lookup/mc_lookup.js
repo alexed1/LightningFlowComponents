@@ -2,12 +2,12 @@ import { LightningElement, api, track } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import search from '@salesforce/apex/fsc_lookupController.search';
-import getRecentlyViewed from '@salesforce/apex/fsc_lookupController.getRecentlyViewed';
-import getRecordsFromIds from '@salesforce/apex/fsc_lookupController.getRecordsFromIds';
-import getObjectIcon from '@salesforce/apex/fsc_lookupController.getObjectIcon';
-import getRecords from '@salesforce/apex/fsc_lookupController.getRecords';
-import getRecordDetail from '@salesforce/apex/fsc_lookupController.getRecordDetail';
+import search from '@salesforce/apex/mc_lookupController.search';
+import getRecentlyViewed from '@salesforce/apex/mc_lookupController.getRecentlyViewed';
+import getRecordsFromIds from '@salesforce/apex/mc_lookupController.getRecordsFromIds';
+import getObjectIcon from '@salesforce/apex/mc_lookupController.getObjectIcon';
+import getRecords from '@salesforce/apex/mc_lookupController.getRecords';
+import getRecordDetail from '@salesforce/apex/mc_lookupController.getRecordDetail';
 
 const DEFAULTS = {
     NUM_RECENTLY_VIEWED: 5,

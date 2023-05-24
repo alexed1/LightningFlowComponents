@@ -1,6 +1,6 @@
 import { LightningElement, api } from 'lwc';
 
-export default class Fsc_flowRadioGroup extends LightningElement {
+export default class MC_flowRadioGroup extends LightningElement {
     @api label;
     @api name;
     @api options; // [{label: 'Option 1', value: '1'}, {label: 'Option 2', value: '2'}]

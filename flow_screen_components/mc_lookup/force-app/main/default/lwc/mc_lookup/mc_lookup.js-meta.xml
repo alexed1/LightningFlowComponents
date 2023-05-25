@@ -26,6 +26,9 @@
             <property name="rightIconName" label="Right Icon Name" type="String" default="utility:down" role="inputOnly"></property>
             <property name="disabled" label="Disabled" type="Boolean" default="false" role="inputOnly"></property>
 
+            <!-- Debuging Purposes Not Exposed in CPE -->
+            <property name="componentName" type="String" role="inputOnly"/>
+
             <!-- Multiselect Variables -->
             <property name="allowMultiselect" label="Allow Multiselect" type="Boolean" default="false" role="inputOnly"></property>
             <property name="minimumNumberOfSelectedRecords" label="Minimum Number of Selected Records" type="Integer" role="inputOnly"></property>

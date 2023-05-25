@@ -26,6 +26,13 @@ const ACTIONS = {
 }
 
 export default class Mc_lookup extends NavigationMixin(LightningElement) {
+    // For Debuging only
+    @api componentName;
+
+    debugLog(message) {
+        console.log(this.componentName + ' : ' + message);
+    }
+
     /* PUBLIC PROPERTIES */
     @api objectName;
 
@@ -40,13 +47,13 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         return this._fieldsToSearch;
     };
     set fieldsToSearch(value) {
-        console.log('in set fieldsToSearch');
-        console.log(value);
+        this.debugLog('in set fieldsToSearch');
+        this.debugLog(value);
         this._fieldsToSearch = value;
         this.visibleFields_ToSearchNames = JSON.parse(value).map(field => field.name).join();
         this.fieldCollection_toSearch = JSON.parse(value).map(field => field.name);
-        console.log('this.fieldCollection_toSearch: ' + JSON.stringify(this.fieldCollection_toSearch));
-        console.log('this.visibleFields_ToSearchNames: ' + JSON.stringify(this.visibleFields_ToSearchNames));
+        this.debugLog('this.fieldCollection_toSearch: ' + JSON.stringify(this.fieldCollection_toSearch));
+        this.debugLog('this.visibleFields_ToSearchNames: ' + JSON.stringify(this.visibleFields_ToSearchNames));
     }
     @track _fieldsToSearch;
     @api visibleFields_ToSearchNames;
@@ -56,8 +63,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         return this._fieldsToDisplay;
     };
     set fieldsToDisplay(value) {
-        console.log('in set fieldsToDisplay');
-        console.log(value);
+        this.debugLog('in set fieldsToDisplay');
+        this.debugLog(value);
         this._fieldsToDisplay = value;
 
         // Check to see it _fieldsToDisplay is a array then parse it. If string do nothing
@@ -69,8 +76,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             this.visibleFields_ToDisplayNames = JSON.parse(value).map(field => field.name).join();
             this.fieldCollection_toDisplay = JSON.parse(value).map(field => field.name);
         }
-        console.log('set this.fieldCollection_toDisplay: ' + JSON.stringify(this.fieldCollection_toDisplay));
-        console.log('set this.visibleFields_ToDisplayNames: ' + JSON.stringify(this.visibleFields_ToDisplayNames));
+        this.debugLog('set this.fieldCollection_toDisplay: ' + JSON.stringify(this.fieldCollection_toDisplay));
+        this.debugLog('set this.visibleFields_ToDisplayNames: ' + JSON.stringify(this.visibleFields_ToDisplayNames));
     }
     @track _fieldsToDisplay;
     @api visibleFields_ToDisplayNames;
@@ -125,20 +132,18 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
     @api
     get whereClause() {
-        console.log('in get whereClause' + this._whereClause);
+        this.debugLog('in get whereClause' + this._whereClause);
         return this._whereClause;
     }
 
     set whereClause(value) {
-        console.log('whereClause: ' + value);
+        this.debugLog('whereClause: ' + value);
         this._whereClause = value;
-        this.handleEventChanges('whereClause', this._whereClause);
-
         // If the where clause is changed then we need to reset the records
         this.loadRecords();
     }
 
-    _whereClause;
+    @track _whereClause;
 
     @api
     get selectedRecordIdsOutput() {
@@ -147,8 +152,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
     set selectedRecordIdsOutput(value) {
         this._selectedRecordIdsOutput = value ? value : [];
-        this.handleEventChanges('selectedRecordIdsOutput', this._selectedRecordIdsOutput);
-        console.log('in set selectedRecordIdsOutput value: ' + this._selectedRecordIdsOutput);
+        this.debugLog('in set selectedRecordIdsOutput value: ' + this._selectedRecordIdsOutput);
         // If value is set then get the full record details
         if (this._selectedRecordIdsOutput) {
             // Convert value to string if it is an array
@@ -159,22 +163,21 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             getRecordDetail({objectName: this.objectName, recordIds: this._selectedRecordIdsOutput})
                 .then(result => {
                     this.selectedRecordsOutput = result ? result : [];
-                    this.handleEventChanges('selectedRecordsOutput', this.selectedRecordsOutput);
-                    console.log('in set selectedRecordIdsOutput result: ' + JSON.stringify(result));
+                    this.debugLog('in set selectedRecordIdsOutput result: ' + JSON.stringify(result));
                 });
         }
     }
 
     @api 
     get numberOfRecordsOutput() {
-        console.log('in get numberOfRecordsOutput');
-        console.log(this._numberOfRecords);
+        this.debugLog('in get numberOfRecordsOutput');
+        this.debugLog(this._numberOfRecords);
         return this._numberOfRecords;
     }
 
     set numberOfRecordsOutput(value) {
-        console.log('in set numberOfRecordsOutput');
-        console.log(value);
+        this.debugLog('in set numberOfRecordsOutput');
+        this.debugLog(value);
         this._numberOfRecords = value;
         this.handleEventChanges('numberOfRecordsOutput', value);
     }
@@ -185,12 +188,10 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     }
 
     set selectedRecordIdOutput(value) {
-        this._selectedRecordIdOutput = value ? value : '';
+        this._selectedRecordIdOutput = value;
 
         // Dispatch the selectedRecordId 
-        this.handleEventChanges('selectedRecordIdOutput', this._selectedRecordIdOutput);
-        console.log('in set selectedRecordIdOutput value: ' + this._selectedRecordIdOutput);
-        this.handleEventChanges('whereClause', this._whereClause);
+        this.debugLog('in set selectedRecordIdOutput value: ' + this._selectedRecordIdOutput);
 
         // If value is set then get the full record details
         if (value) {
@@ -199,8 +200,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 .then(result => {
                     // Dispatch the entire record details
                     this.selectedRecordOutput = result ? result[0] : {};
-                    this.handleEventChanges('selectedRecordOutput', this.selectedRecordOutput);
-                    console.log('in set selectedRecordIdOutput result: ' + JSON.stringify(result));
+                    this.debugLog('in set selectedRecordIdOutput result: ' + JSON.stringify(result));
                 });
         }
     }
@@ -259,9 +259,9 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
             this._values = [];
         } else {
             this._values = Array.isArray(values) ? values : [values];
-            console.log('in set values');
+            this.debugLog('in set values');
             let unqueriedValues = this.values.filter(value => !this.records.some(record => record.value == value));
-            console.log('unqueried values: ' + JSON.stringify(unqueriedValues));
+            this.debugLog('unqueried values: ' + JSON.stringify(unqueriedValues));
             if (unqueriedValues.length) {
                 // String objectName, String fieldsToReturn, List<String> idsToRetrieve
                 getRecordsFromIds({
@@ -269,16 +269,16 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                     fieldsToReturn: this.visibleFields_ToDisplayNames,
                     idsToRetrieve: unqueriedValues
                 }).then(result => {
-                    console.log('got result');
-                    console.log(JSON.stringify(result));
+                    this.debugLog('got result');
+                    this.debugLog(JSON.stringify(result));
                     this.records = [...this.records, ...this.parseFields(result)];
                     this.addNewRecordAction();
-                    console.log('finished get getRecordsFromIds result');
+                    this.debugLog('finished get getRecordsFromIds result');
                 }).catch(error => {
-                    console.log('in getRecordsFromIds error');
-                    console.log(JSON.stringify(error));
+                    this.debugLog('in getRecordsFromIds error');
+                    this.debugLog(JSON.stringify(error));
                 }).finally(() => {
-                    console.log('finished search change, setting isloading to false');
+                    this.debugLog('finished search change, setting isloading to false');
                     this.isLoading = false;
                 })
             }
@@ -336,7 +336,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
     // Lifecycle hooks
     connectedCallback() {
-        console.log('in lookup connectedcallback');
+        this.debugLog('in lookup connectedcallback');
         
         // Load the inital values and icon
         this.loadRecords();
@@ -350,15 +350,15 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
 
             // If defaultValueInput is set, we want to ignore the values passed in and set the default value
             if ( this.defaultValueInput ) {
-                console.log('using default value input');
+                this.debugLog('using default value input');
                 this.values = this.defaultValueInput;
             // Else if whereClause is set, we want to ignore the values passed in and set the whereClause
             } else if ( this._whereClause ) {
-                console.log('using where clause');
+                this.debugLog('using where clause');
                 this.getRecords();
             // Else get the recently viewed records
             } else {
-                console.log('using recently viewed');
+                this.debugLog('using recently viewed');
                 this.getRecentlyViewed();
             }
 
@@ -369,11 +369,11 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 this._minimumNumberOfSelectedRecordsMessage = this.minimumNumberOfSelectedRecordsMessage.replace('{0}', this.minimumNumberOfSelectedRecords);
             }
             // If the maximumNumberOfSelectedRecords is set, set the custom label
-            console.log('this.maximumNumberOfSelectedRecords = ' + this.maximumNumberOfSelectedRecords);
+            this.debugLog('this.maximumNumberOfSelectedRecords = ' + this.maximumNumberOfSelectedRecords);
             if ( this.maximumNumberOfSelectedRecords !== 0 ) {
                 this._showMaximumNumberOfSelectedRecordsMessage = true;
                 this._maximumNumberOfSelectedRecordsMessage = this.maximumNumberOfSelectedRecordsMessage.replace('{0}', this.maximumNumberOfSelectedRecords);
-                console.log('this._maximumNumberOfSelectedRecordsMessage = ' + this._maximumNumberOfSelectedRecordsMessage);
+                this.debugLog('this._maximumNumberOfSelectedRecordsMessage = ' + this._maximumNumberOfSelectedRecordsMessage);
             }
         });
     }
@@ -383,14 +383,14 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         this.isLoading = true;
         getRecentlyViewed({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this._whereClause })
             .then(result => {
-                console.log('result = ' + JSON.stringify(result));
+                this.debugLog('getRecentlyViewed result = ' + JSON.stringify(result));
                 this.recentlyViewedRecords = this.parseFields(result);
                 if (!this.records.length) {
                     this.resetRecentlyViewed();
                 }
             })
             .catch(error => {
-                console.log('ERROR: ' + JSON.stringify(error));
+                this.debugLog('ERROR: ' + JSON.stringify(error));
             }).finally(() => {
                 this.isLoading = false;
             })
@@ -400,24 +400,24 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     // This will then populate the dropdown with the records that match the whereClause
     getRecords() {
         this.isLoading = true;
-        console.log('in getRecords');
+        this.debugLog('in getRecords');
+        this.debugLog('this.visibleFields_ToDisplayNames = ' + this.visibleFields_ToDisplayNames);
         getRecords({ objectName: this.objectName, fieldsToReturn: this.visibleFields_ToDisplayNames, numRecordsToReturn: DEFAULTS.NUM_RECENTLY_VIEWED, whereClause: this._whereClause })
             .then(result => {
-                console.log('result = ' + JSON.stringify(result));
-                this.recentlyViewedRecords = this.parseFields(result);
-                if (!this.records.length) {
-                    this.resetRecentlyViewed();
-                }
+                this.debugLog('getRecords result = ' + JSON.stringify(result));
+                this.records = this.parseFields(result);
+                this.addNewRecordAction();
             })
             .catch(error => {
-                console.log('ERROR: ' + JSON.stringify(error));
+                this.debugLog('ERROR: ' + JSON.stringify(error));
             }).finally(() => {
+                this.debugLog('in finally for getRecords');
                 this.isLoading = false;
             })
     }
 
     handleSearchChange = (searchText) => {
-        console.log('in handleSearchChange for ' + searchText);
+        this.debugLog('in handleSearchChange for ' + searchText);
         if (!searchText) {
             this.resetRecentlyViewed();
         } else {
@@ -431,65 +431,70 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 orderByClause: this.orderByClause,
                 numRecordsToReturn: 0
             }).then(result => {
-                console.log('got result');
-                console.log(JSON.stringify(result));
+                this.debugLog('got result');
+                this.debugLog(JSON.stringify(result));
                 this.records = this.parseFields(result);
-                console.log('records = ' + JSON.stringify(this.records));
+                this.debugLog('records = ' + JSON.stringify(this.records));
                 this.addNewRecordAction();
-                console.log('finished get result');
+                this.debugLog('finished get result');
             }).catch(error => {
-                console.log('in error');
-                console.log(JSON.stringify(error));
+                this.debugLog('in error');
+                this.debugLog(JSON.stringify(error));
             }).finally(() => {
-                console.log('finished search change, setting isloading to false');
+                this.debugLog('finished search change, setting isloading to false');
                 this.isLoading = false;
             })
         }
     }
 
     parseFields(apexResults) {
+        this.debugLog('in parseFields');
         let displayFields, labelField, sublabel, searchValue;
+
+        // If visibleFields_ToDisplayNames is set, use that to parse the fields
         if (this.visibleFields_ToDisplayNames) {
-            console.log('parseFields this.visibleFields_ToDisplayNames = ' + this.visibleFields_ToDisplayNames)
+            this.debugLog('parseFields this.visibleFields_ToDisplayNames = ' + this.visibleFields_ToDisplayNames)
             displayFields = this.visibleFields_ToDisplayNames.split(',');
             labelField = displayFields.splice(0, 1);
         }
 
-        console.log('Start labelField = ' + labelField);
+        this.debugLog('Start labelField = ' + labelField);
 
 
         return apexResults.map(record => {
             if (!labelField) {
                 let nonIdFields = Object.keys(record).filter(fieldName => fieldName != 'Id');
-                console.log('nonIdFields = ' + JSON.stringify(nonIdFields));
+                this.debugLog('nonIdFields = ' + JSON.stringify(nonIdFields));
                 if (nonIdFields.length !== 1) {
                     // THROW ERROR
-                    console.log('Error: expected exactly one other field');
+                    this.debugLog('Error: expected exactly one other field');
                 }
                 labelField = nonIdFields[0];
-                console.log('labelField = ' + labelField);
+                this.debugLog('labelField = ' + labelField);
 
                 // Check if the label is a lookup field
                 if (labelField.includes('.')) {
                     labelField = this.parseRelationshipFields(label,record);
-                    console.log('labelField = ' + labelField);
+                    this.debugLog('labelField = ' + labelField);
                 }
             }
 
             // Go through the displayFields and build the sublabel
             // If the field is a lookup, parse the relationship fields
-            if (displayFields) {
-                console.log('displayFields = ' + displayFields);
+            if (displayFields && displayFields.length > 0) {
+                this.debugLog('displayFields = ' + displayFields);
                 sublabel = displayFields.map(fieldName => {
-                    console.log('fieldName = ' + fieldName);
+                    this.debugLog('fieldName = ' + fieldName);
                     if (fieldName.includes('.')) {
                         return this.parseRelationshipFields(fieldName, record);
                     } else {
+                        this.debugLog('record: ' + JSON.stringify(record));
+                        this.debugLog('record[fieldName] = ' + record[fieldName]);
                         return record[fieldName];
                     }
                 }).join(' - ');
+
             }
-            console.log('sublabel = ' + sublabel);
 
 
             // if visibleFields_ToSearchNames is set, join the values and set as searchField
@@ -537,8 +542,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     // Parse the relationship fields
     // Define the key fields for the relationship and remove them from the list of fields to return
     parseRelationshipFields(fieldName, record) {
-        console.log('in parseRelationshipFields for ' + fieldName);
-        // console.log('record = ' + JSON.stringify(record));
+        this.debugLog('in parseRelationshipFields for ' + fieldName);
+        // this.debugLog('record = ' + JSON.stringify(record));
         // fieldName is set like this Account.CreatedBy.FirstName
         let relationshipFields = fieldName.split('.');
         let relationshipField = relationshipFields[1];
@@ -546,17 +551,17 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
         // Value is set like this "CreatedBy":{"FirstName":"Andy","Id":"0055e000001mKpCAAU"}
         // Set new object 
         let relationshipObject = record[relationshipField];
-        // console.log('relationshipObject = ' + JSON.stringify(relationshipObject));
+        // this.debugLog('relationshipObject = ' + JSON.stringify(relationshipObject));
         // "CreatedBy.FirstName":"Andy"
         let keyFieldValue = relationshipObject[field];
-        // console.log('keyFieldValue = ' + keyFieldValue);
+        // this.debugLog('keyFieldValue = ' + keyFieldValue);
 
         return keyFieldValue;
         
     }
 
     handleComboboxChange(event) {
-        console.log('in handleComboboxChange');
+        this.debugLog('in handleComboboxChange');
         let detail;
         if (this.allowMultiselect) {
             this.values = event.detail.values;
@@ -593,8 +598,8 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
     }
 
     handleCustomAction(event) {
-        console.log('in handleCustomAction: ', JSON.stringify(event.detail));
-        console.log(event.detail);
+        this.debugLog('in handleCustomAction: ', JSON.stringify(event.detail));
+        this.debugLog(event.detail);
         if (event.detail === ACTIONS.NEW_RECORD.value) {
             // Call the new record modal
             newRecordModal.open({
@@ -604,12 +609,12 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                 modalTitle: 'New ' + this.objectName,
             })
             .then(result => {
-                console.log('new record modal result = ' + JSON.stringify(result));
+                this.debugLog('new record modal result = ' + JSON.stringify(result));
 
                 // If the modal is closed with success, then get the record details and set the selectedRecordIdOutput
                 if (result.status === 'success') {
-                    console.log('result = ' + JSON.stringify(result));
-                    console.log('result.id = ' + result.id);
+                    this.debugLog('result = ' + JSON.stringify(result));
+                    this.debugLog('result.id = ' + result.id);
 
                     // Set the selectedRecordIdOutput
                     this.value = result.id;
@@ -627,7 +632,7 @@ export default class Mc_lookup extends NavigationMixin(LightningElement) {
                     this.handleEventChanges('numberOfRecordsOutput', this._numberOfRecordsOutput);
                 }
             }).catch(error => {
-                console.log('error = ' + JSON.stringify(error));
+                this.debugLog('error = ' + JSON.stringify(error));
             });
 
             // Template way of opening modal

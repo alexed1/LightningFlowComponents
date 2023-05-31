@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 05-01-2023
+ * @last modified on  : 05-31-2023
  * @last modified by  : Josh Dayment
 **/
 import { api, track, LightningElement } from 'lwc';
@@ -60,6 +60,7 @@ export default class fsc_flexcardCPE extends LightningElement {
     ];
     flexCardActions = [
         { label: 'List or Menu', helpText: 'Menu will display that action in a dropdown list, list will display the action as a list on the card' },
+        { label: 'Actons Menu Label', helpText: 'When there is a text string here it either adds a label to the menu button or if list it will add a label with an h1 tag' },
 
     ];
 
@@ -82,7 +83,7 @@ export default class fsc_flexcardCPE extends LightningElement {
         transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: 'Transition to next when card clicked?' },
         cb_transitionOnClick: { value: null, valueDataType: null, isCollection: false, label: '' },
         actionDisplayType: { value: null, valueDataType: null, isCollection: false, label: 'Display actions as hyperlinks in a list or a Menu List' },
-        buttonLabel: { value: null, valueDataType: null, isCollection: false, label: 'Actions Menu Button Label' },
+        buttonLabel: { value: null, valueDataType: null, isCollection: false, label: 'Actions Menu Label' },
         allowAllObjects: { value: null, valueDataType: null, isCollection: false, label: 'Select if you want the Object picklist to display all Standard and Custom Salesforce Objects.' },
         subheadCSS: { value: null, valueDataType: null, isCollection: false, label: 'Style attribute for the card body ', helpText: 'ie. background-color:red;' },
         cardHeight: { value: null, valueDataType: null, isCollection: false, label: 'Card Height', helpText: 'This is the height of the card in Pixels' },

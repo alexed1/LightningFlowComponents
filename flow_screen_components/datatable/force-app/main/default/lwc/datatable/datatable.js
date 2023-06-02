@@ -1678,7 +1678,7 @@ console.log("🚀 ~ file: datatable.js:817 ~ assignApexDefinedRecords ~ this.pre
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
-        this.isUpdateTable = false;
+        // this.isUpdateTable = false;      // Commented out in v4.1.1
         this.outputSelectedRows = [...currentSelectedRows]; 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);

@@ -268,7 +268,29 @@ console.log("🚀 ~ file: datatable.js:93 ~ settableData ~ this.isUpdateTable, d
         return this.label.EmptyMessage;
     }
 
-    @api tableDataString = [];
+    // v4.1.1 Make Apex-Defined data reactive
+    // @api tableDataString = [];
+    @api
+    get tableDataString() {
+        return this._tableDataString;
+    }
+    set tableDataString(value) {
+console.log("🚀 ~ file: datatable.js:278 ~ settableDataString ~ this.isUpdateTable, value:", this.isUpdateTable, value);        
+        if (this.isUpdateTable) {
+            if (value.length > 0) {
+                this._tableDataString = value;
+                if (this.columnFields) {
+                    this.assignApexDefinedRecords();
+                    this.processDatatable();
+                }
+            } else {
+                this._tableDataString = '';
+            }
+        }
+        this.isUpdateTable = true;
+    }
+    _tableDataString;
+
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
     @api outputEditedRowsString = '';
@@ -543,19 +565,10 @@ console.log("🚀 ~ file: datatable.js:93 ~ settableData ~ this.isUpdateTable, d
             console.log("Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
-        console.log('tableDataString - ',this.tableDataString, this.isUserDefinedObject);
-        // JSON input attributes
+        console.log('tableDataString - ',this._tableDataString, this.isUserDefinedObject);
+
         if (this.isUserDefinedObject) {
-            console.log('tableDataString - ',this.tableDataString);
-            if (!this.tableDataString || this.tableDataString.length == 0) {
-                this.tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
-                this.columnFields = this.keyField;
-                this.columnTypes = [];
-                this.columnScales = [];
-            }
-            this._tableData = JSON.parse(this.tableDataString);
-            console.log('tableData - ',this._tableData);    
-            this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
+            this.assignApexDefinedRecords();
         }
 
         // Restrict the number of records handled by this component
@@ -789,6 +802,21 @@ console.log("🚀 ~ file: datatable.js:784 ~ connectedCallback ~ this.isUpdateTa
 
     }
 
+    assignApexDefinedRecords() {
+        // JSON input attributes
+        console.log('tableDataString - ',this._tableDataString);
+        if (!this._tableDataString || this._tableDataString.length == 0) {
+            this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
+            this.columnFields = this.keyField;
+            this.columnTypes = [];
+            this.columnScales = [];
+        }
+        this._tableData = JSON.parse(this._tableDataString);
+        console.log('tableData - ',this._tableData);    
+        this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
+console.log("🚀 ~ file: datatable.js:817 ~ assignApexDefinedRecords ~ this.preSelectedRowsString, this.preSelectedRows:", this.preSelectedRowsString, this.preSelectedRows);
+    }
+    
     removeSpaces(string) {
         return string
             .replace(/, | ,/g,',')
@@ -890,7 +918,7 @@ console.log("🚀 ~ file: datatable.js:784 ~ connectedCallback ~ this.isUpdateTa
                     delete record['attributes'];   
                 });
             } else {
-                data = (this._tableData) ? JSON.parse(this.tableDataString) : [];
+                data = (this._tableData) ? JSON.parse(this._tableDataString) : [];
                 data.forEach(record => { 
                     delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
                 });

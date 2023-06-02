@@ -90,6 +90,7 @@ export default class Datatable extends LightningElement {
     }
     
     set tableData(data = []) {
+console.log("🚀 ~ file: datatable.js:93 ~ settableData ~ this.isUpdateTable, data:", this.isUpdateTable, data);
         if(this.isUpdateTable) {       
             if (Array.isArray(data)) {
                 this._tableData = data;
@@ -779,6 +780,8 @@ export default class Datatable extends LightningElement {
 
             console.log('Processing Datatable');
             this.processDatatable();
+            this.isUpdateTable = true;      // Added in v4.1.1 so Datatable will show records from Datafetcher upon initialization          
+console.log("🚀 ~ file: datatable.js:784 ~ connectedCallback ~ this.isUpdateTable:", this.isUpdateTable);
 
         } else {
             this.showSpinner = false;

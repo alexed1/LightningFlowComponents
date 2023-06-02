@@ -72,6 +72,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
  
+
+ ## 06/xx/23 -  Eric Smith -    Version 4.1.1 
+**Updates:** 
+**Bug Fixes:**  
+-   Fixed reactivity for DataFetcher on initial load of screen
+ 
 ## 05/21/23 -  Eric Smith -    Version 4.1.0 
 **Updates:** 
 -   Added new Column Wizard header action to allow a column width to have a fixed or floating width

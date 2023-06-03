@@ -28,6 +28,8 @@ if (myDomain.includes('flow/runtime')) {     // Running in Flow Builder || Flow 
     isCommunity = false;
     isFlowBuilder = true;
 }
+console.log("DATATABLE myDomain:", myDomain);
+console.log("DATATABLE isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder);
 
 const getConstants = () => {
     return {

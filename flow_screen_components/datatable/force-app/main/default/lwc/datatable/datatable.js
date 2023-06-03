@@ -90,7 +90,6 @@ export default class Datatable extends LightningElement {
     }
     
     set tableData(data = []) {
-console.log("🚀 ~ file: datatable.js:93 ~ settableData ~ this.isUpdateTable, data:", this.isUpdateTable, data);
         if(this.isUpdateTable) {       
             if (Array.isArray(data)) {
                 this._tableData = data;
@@ -275,7 +274,6 @@ console.log("🚀 ~ file: datatable.js:93 ~ settableData ~ this.isUpdateTable, d
         return this._tableDataString;
     }
     set tableDataString(value) {
-console.log("🚀 ~ file: datatable.js:278 ~ settableDataString ~ this.isUpdateTable, value:", this.isUpdateTable, value);        
         if (this.isUpdateTable) {
             if (value.length > 0) {
                 this._tableDataString = value;
@@ -794,7 +792,6 @@ console.log("🚀 ~ file: datatable.js:278 ~ settableDataString ~ this.isUpdateT
             console.log('Processing Datatable');
             this.processDatatable();
             this.isUpdateTable = true;      // Added in v4.1.1 so Datatable will show records from Datafetcher upon initialization          
-console.log("🚀 ~ file: datatable.js:784 ~ connectedCallback ~ this.isUpdateTable:", this.isUpdateTable);
 
         } else {
             this.showSpinner = false;
@@ -814,7 +811,6 @@ console.log("🚀 ~ file: datatable.js:784 ~ connectedCallback ~ this.isUpdateTa
         this._tableData = JSON.parse(this._tableDataString);
         console.log('tableData - ',this._tableData);    
         this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
-console.log("🚀 ~ file: datatable.js:817 ~ assignApexDefinedRecords ~ this.preSelectedRowsString, this.preSelectedRows:", this.preSelectedRowsString, this.preSelectedRows);
     }
     
     removeSpaces(string) {

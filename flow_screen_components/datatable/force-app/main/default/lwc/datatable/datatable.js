@@ -26,6 +26,7 @@ import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
 import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
+import SearchPlaceholder from '@salesforce/label/c.ers_SearchPlaceholder';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME
 
@@ -50,7 +51,8 @@ export default class Datatable extends LightningElement {
         FilterHeader,
         LabelHeader,
         RequiredMessage,
-        EmptyMessage
+        EmptyMessage,
+        SearchPlaceholder
     };
 
     // Component Input & Output Attributes
@@ -262,11 +264,15 @@ export default class Datatable extends LightningElement {
     }
     @api cb_suppressCurrencyConversion;
 
-    @api 
+    @api
     get emptyTableMessage() {
         return this.label.EmptyMessage;
     }
 
+    get searchPlaceholder() {
+        return this.label.SearchPlaceholder
+    }
+    
     // v4.1.1 Make Apex-Defined data reactive
     // @api tableDataString = [];
     @api

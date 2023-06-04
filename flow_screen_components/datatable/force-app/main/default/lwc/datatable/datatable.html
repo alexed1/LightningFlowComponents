@@ -121,7 +121,7 @@ Features:   The only required paramters are the SObject collection of records an
                     <div slot="actions">
                         <lightning-input 
                             type="search"
-                            placeholder="Enter search term ..."
+                            placeholder={searchPlaceholder}
                             value={searchTerm}
                             onchange={handleSearchChange}
                             is-loading={isWorking}

@@ -73,9 +73,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 # Release Notes 
  
 
- ## 06/xx/23 -  Eric Smith -    Version 4.1.1 
+ ## 06/04/23 -  Eric Smith -    Version 4.1.1 
 **Updates:** 
 -   Added reactivity for Apex-Defind objects (Pre-Selected Rows are not reactive)
+-   Made the placeholder for 'Enter search term ...' a translatable label
  
 **Bug Fixes:**  
 -   Fixed reactivity for DataFetcher on initial load of screen

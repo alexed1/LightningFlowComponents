@@ -1,5 +1,5 @@
 @echo off
-if "%1" neq "" set version=%1
+if "%1" neq "" set packageName=%1
+if "%2" neq "" set version=%2
 @echo on
-REM sfdx force:package:version:promote -v lexhost --package "datatable@%version%-0"
-sfdx force:package:version:promote -v lexhost --package "datatable@%version%"
+sfdx package:version:promote -v lexhost --package "%packageName%@%version%"

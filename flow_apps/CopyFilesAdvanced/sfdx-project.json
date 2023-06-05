@@ -28,6 +28,7 @@
     "FlowActionsBasePack@3.0.15-0": "04t8b000001BTgsAAG",
     "FlowScreenComponentsBasePack@3.1.0-0": "04t5G000004J7JyQAK",
     "CollectionActionsL@3.1.1": "04t5G000004J7LBQA0",
-    "CopyFilesAdvanced": "0Ho5G000000PB7cSAG"
+    "CopyFilesAdvanced": "0Ho5G000000PB7cSAG",
+    "CopyFilesAdvanced@1.0.0": "04t5G000004J7MEQA0"
   }
 }

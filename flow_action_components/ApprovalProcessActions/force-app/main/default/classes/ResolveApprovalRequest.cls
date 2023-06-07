@@ -79,7 +79,7 @@ public with sharing class ResolveApprovalRequest {
         public String comments;
 
         @InvocableVariable
-        public String action; // 'Approved', 'Rejected'. 'Removed' https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_ProcessWorkitemRequest.htm#apex_Approval_ProcessWorkitemRequest_setAction 
+        public String action; // 'Approve', 'Reject'. 'Removed' https://developer.salesforce.com/docs/atlas.en-us.apexref.meta/apexref/apex_ProcessWorkitemRequest.htm#apex_Approval_ProcessWorkitemRequest_setAction 
     
         @InvocableVariable
         public List<String> nextApproverIds;

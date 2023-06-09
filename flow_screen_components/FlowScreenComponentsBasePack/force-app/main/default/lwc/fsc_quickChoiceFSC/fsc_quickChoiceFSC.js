@@ -428,6 +428,11 @@ export default class QuickChoiceFSC extends LightningElement {
             this.items = items;
             this.setSelectedLabel();  
 
+            // Output default value for reactivity
+            if (this._selectedValue != null) {
+                this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+            }
+
         } else {
             console.log(this.masterLabel + ": ", "QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
             throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");

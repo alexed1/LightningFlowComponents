@@ -87,5 +87,13 @@
         <protected>false</protected>
         <shortDescription>Empty</shortDescription>
         <value>This table currently has no data to display</value>
-    </labels>          
+    </labels>
+    <labels>
+        <fullName>ers_SearchPlaceholder</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Search Term</shortDescription>
+        <value>Enter search term ...</value>
+    </labels>       
 </CustomLabels>

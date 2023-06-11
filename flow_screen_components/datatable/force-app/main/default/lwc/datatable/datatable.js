@@ -26,6 +26,7 @@ import FilterHeader from '@salesforce/label/c.ers_FilterHeader';
 import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
+import SearchPlaceholder from '@salesforce/label/c.ers_SearchPlaceholder';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME
 
@@ -50,7 +51,8 @@ export default class Datatable extends LightningElement {
         FilterHeader,
         LabelHeader,
         RequiredMessage,
-        EmptyMessage
+        EmptyMessage,
+        SearchPlaceholder
     };
 
     // Component Input & Output Attributes
@@ -262,12 +264,37 @@ export default class Datatable extends LightningElement {
     }
     @api cb_suppressCurrencyConversion;
 
-    @api 
+    @api
     get emptyTableMessage() {
         return this.label.EmptyMessage;
     }
 
-    @api tableDataString = [];
+    get searchPlaceholder() {
+        return this.label.SearchPlaceholder
+    }
+    
+    // v4.1.1 Make Apex-Defined data reactive
+    // @api tableDataString = [];
+    @api
+    get tableDataString() {
+        return this._tableDataString;
+    }
+    set tableDataString(value) {
+        if (this.isUpdateTable) {
+            if (value.length > 0) {
+                this._tableDataString = value;
+                if (this.columnFields) {
+                    this.assignApexDefinedRecords();
+                    this.processDatatable();
+                }
+            } else {
+                this._tableDataString = '';
+            }
+        }
+        this.isUpdateTable = true;
+    }
+    _tableDataString;
+
     @api preSelectedRowsString = [];
     @api outputSelectedRowsString = '';
     @api outputEditedRowsString = '';
@@ -542,19 +569,10 @@ export default class Datatable extends LightningElement {
             console.log("Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
-        console.log('tableDataString - ',this.tableDataString, this.isUserDefinedObject);
-        // JSON input attributes
+        console.log('tableDataString - ',this._tableDataString, this.isUserDefinedObject);
+
         if (this.isUserDefinedObject) {
-            console.log('tableDataString - ',this.tableDataString);
-            if (!this.tableDataString || this.tableDataString.length == 0) {
-                this.tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
-                this.columnFields = this.keyField;
-                this.columnTypes = [];
-                this.columnScales = [];
-            }
-            this._tableData = JSON.parse(this.tableDataString);
-            console.log('tableData - ',this._tableData);    
-            this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
+            this.assignApexDefinedRecords();
         }
 
         // Restrict the number of records handled by this component
@@ -779,6 +797,7 @@ export default class Datatable extends LightningElement {
 
             console.log('Processing Datatable');
             this.processDatatable();
+            this.isUpdateTable = true;      // Added in v4.1.1 so Datatable will show records from Datafetcher upon initialization          
 
         } else {
             this.showSpinner = false;
@@ -786,6 +805,20 @@ export default class Datatable extends LightningElement {
 
     }
 
+    assignApexDefinedRecords() {
+        // JSON input attributes
+        console.log('tableDataString - ',this._tableDataString);
+        if (!this._tableDataString || this._tableDataString.length == 0) {
+            this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
+            this.columnFields = this.keyField;
+            this.columnTypes = [];
+            this.columnScales = [];
+        }
+        this._tableData = JSON.parse(this._tableDataString);
+        console.log('tableData - ',this._tableData);    
+        this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
+    }
+    
     removeSpaces(string) {
         return string
             .replace(/, | ,/g,',')
@@ -887,7 +920,7 @@ export default class Datatable extends LightningElement {
                     delete record['attributes'];   
                 });
             } else {
-                data = (this._tableData) ? JSON.parse(this.tableDataString) : [];
+                data = (this._tableData) ? JSON.parse(this._tableDataString) : [];
                 data.forEach(record => { 
                     delete record['attributes'];    // When running the Column Wizard, clean up the record string before getting the field details from ers_DatatableController
                 });
@@ -1647,7 +1680,7 @@ export default class Datatable extends LightningElement {
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
-        this.isUpdateTable = false;
+        // this.isUpdateTable = false;      // Commented out in v4.1.1
         this.outputSelectedRows = [...currentSelectedRows]; 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);

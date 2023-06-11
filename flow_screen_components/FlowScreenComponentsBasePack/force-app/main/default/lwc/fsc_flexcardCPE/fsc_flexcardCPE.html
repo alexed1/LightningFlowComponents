@@ -2,8 +2,8 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 02-13-2023
-  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  @last modified on  : 05-31-2023
+  @last modified by  : Josh Dayment
 -->
 <template>
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Record and Object Information"
@@ -62,11 +62,10 @@
     <lightning-combobox label="Display actions as list or menu?" value={inputValues.actionDisplayType.value}
         options={displayOptions} onchange={handleDisplayTypeChange} required></lightning-combobox>
 
-    <template lwc:if={isMenu}>
-        <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value}
-            label={inputValues.buttonLabel.label} builder-context-filter-type="String"
-            onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
-    </template>
+
+    <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value} label={inputValues.buttonLabel.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
 
     <c-fsc_flow-picker-3 label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
     </c-fsc_flow-picker-3>

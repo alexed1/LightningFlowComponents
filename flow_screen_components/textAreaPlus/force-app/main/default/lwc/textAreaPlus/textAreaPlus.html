@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : Josh Dayment
+  @group             : 
+  @last modified on  : 05-12-2023
+  @last modified by  : Josh Dayment
+-->
 <template>
     <!-- Display Text-->
     <template if:true={displayText}>
@@ -16,6 +23,7 @@
           onchange={handleChange}
           placeholder={placeHolder}
           required={required}
+          style={minHeight}
         ></lightning-textarea>
       </div>
     </template>
@@ -34,7 +42,7 @@
         valid={isValidCheck}
         message-when-bad-input={errorMessage}
         placeholder={placeHolder}
-      >
+        style={minHeight}>
       </lightning-input-rich-text>
     </template>
   

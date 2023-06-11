@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 05-15-2023
+ * @last modified by  : Josh Dayment
+**/
 import { LightningElement, api, track } from "lwc";
 import { FlowAttributeChangeEvent } from "lightning/flowSupport";
 import * as share from "./tapshare.js";
@@ -73,8 +80,10 @@ export default class TextAreaPlus extends LightningElement {
   @api disallowedWordsList;
   @api label;
   @api placeHolder;
+  @api textAreaHeight;
   @api textMode;
   @api slackOutput;
+
 
   // Component facing props
   @track runningBlockedInput = [];
@@ -130,7 +139,7 @@ export default class TextAreaPlus extends LightningElement {
         ?.join(",");
       mapTxt = `(${prettyMap})`;
     } catch (e) {
-      console.log("Exception in applyAltText", e);
+      //console.log("Exception in applyAltText", e);
     }
     return `Apply Suggested Terms ${mapTxt}`;
   }
@@ -363,6 +372,8 @@ export default class TextAreaPlus extends LightningElement {
         this.handleTextChange({ target: obj });
       }
     }
+
+    
   }
 
   // Helper to convert comma delimited list of words or symbols to pipe delimited regular expression
@@ -384,6 +395,13 @@ export default class TextAreaPlus extends LightningElement {
     // for rich text, strip the HTML
     return this.stripHtml(this.textValue)?.length || 0;
   }
+
+  //set text area height
+    get minHeight(){
+    return '--slds-c-textarea-sizing-min-height:' + this.textAreaHeight + 'px'; 
+     
+
+}
 
   // Dynamically calculate remaining characters
   get charsLeft() {
@@ -458,7 +476,7 @@ export default class TextAreaPlus extends LightningElement {
     }
 
     // convert HTML to Slack
-    if (this.textMode ="slack") {
+    if (this.textMode == "slack") {
       this.handleHtmlToSlack(target.value);
       this.slackOutput=this.slackText;
     }
@@ -644,30 +662,37 @@ export default class TextAreaPlus extends LightningElement {
     return str;
   }
 
-  // Replaces html to slack markdown
+ // Replaces html to slack markdown
   handleHtmlToSlack(){
     this.slackText = this.textValue;
-    this.slackText = this.slackText.replace(/<p>/g,"");
-    this.slackText = this.slackText.replace(/<\/p>/g,"");  
-    this.slackText = this.slackText.replace(/<strong>/g,"*");
-    this.slackText = this.slackText.replace(/<\/strong>/g,"*");
-    this.slackText = this.slackText.replace(/<em>/g,"_");
-    this.slackText = this.slackText.replace(/<\/em>/g,"_");
-    this.slackText = this.slackText.replace(/<strike>/g,"~");
-    this.slackText = this.slackText.replace(/<\/strike>/g,"~");
-    this.slackText = this.slackText.replace(/&nbsp;/g,"");
-    this.slackText = this.slackText.replace(/<br>/g,"\n");
-    this.slackText = this.slackText.replace(/<ul>/g,"");
-    this.slackText = this.slackText.replace(/<\/ul>/g,"");
-    this.slackText = this.slackText.replace(/<li>/g,"• ");
-    this.slackText = this.slackText.replace(/<\/li>/g,"\n");
-    console.log("Slack text: " + this.slackText)
+    this.slackText = this?.slackText.replace(/<p>/g,"");
+    this.slackText = this?.slackText.replace(/<\/p>/g,"");  
+    this.slackText = this?.slackText.replace(/<strong>/g,"*");
+    this.slackText = this?.slackText.replace(/<\/strong>/g,"*");
+    this.slackText = this?.slackText.replace(/<em>/g,"_");
+    this.slackText = this?.slackText.replace(/<\/em>/g,"_");
+    this.slackText = this?.slackText.replace(/<strike>/g,"~");
+    this.slackText = this?.slackText.replace(/<\/strike>/g,"~");
+    this.slackText = this?.slackText.replace(/&nbsp;/g,"");
+    this.slackText = this?.slackText.replace(/<br>/g,"\n");
+    this.slackText = this?.slackText.replace(/<ul>/g,"");
+    this.slackText = this?.slackText.replace(/<\/ul>/g,"");
+    this.slackText = this?.slackText.replace(/<li>/g,"• ");
+    this.slackText = this?.slackText.replace(/<\/li>/g,"\n");
+    //console.log("Slack text: " + this.slackText);
+     
     
     return this.slackText;
+    
 
     
     
     
      
   }
+
+  
+
+
+
 }

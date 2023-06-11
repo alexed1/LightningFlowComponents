@@ -28,6 +28,7 @@
             <property label="Show Counter" name="showCharCounter" type="Boolean" role="inputOnly" default="false" description="Display Character Counter" />
             <property name="cb_showCharCounter" type="String" role="inputOnly" />
             <property name="slackOutput" label="Slack Formatted Output" type="String"/>
+            <property name="textAreaHeight" label="Text Area Height" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

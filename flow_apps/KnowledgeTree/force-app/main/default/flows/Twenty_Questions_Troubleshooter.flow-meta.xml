@@ -5,8 +5,8 @@
         <description>Take the value of the radio button selected. That is the id of the next node to transition to.</description>
         <name>Set_Next_Node_From_Choice</name>
         <label>Set Next Node (From Choice)</label>
-        <locationX>514</locationX>
-        <locationY>311</locationY>
+        <locationX>515</locationX>
+        <locationY>310</locationY>
         <assignmentItems>
             <assignToReference>curDiagnosticNodeId</assignToReference>
             <operator>Assign</operator>
@@ -101,7 +101,7 @@
         <name>Next_Node_Found</name>
         <label>Next Node Found?</label>
         <locationX>134</locationX>
-        <locationY>493</locationY>
+        <locationY>494</locationY>
         <defaultConnector>
             <targetReference>No_Node_Found</targetReference>
         </defaultConnector>
@@ -123,28 +123,29 @@
         </rules>
     </decisions>
     <decisions>
+        <description>This decision can be expanded to evaluate if the content should be displayed from the Diagnostic Node itself, or from another source like a Knowledge article. Displaying screen flow content that comes directly from Knowledge could be done by: 1) adding an outcome here (i.e. &quot;Content from Knowledge Article&quot; where the curRecord&gt;Use Knowledge Article Content equals true), 2) pointing that outcome to a Get Records that queries the knowledge article cited on the DiagnosticNode (i.e. Id is equal to the curRecord&gt;Knowledge__c field), 3) pointing the Get Records to a knowledge specific screen (i.e. Display Knowledge Screen) that displays the title and content of the knowledge article record in the flow screen using the variable values obtained from the preceding Get Records variable, and 4) pointing the knowledge specific flow screen to the &quot;Does Outcome Have a Target Node&quot; decision to continue on in the normal screen progression.</description>
         <name>What_is_Data_Source</name>
         <label>What is Data Source?</label>
         <locationX>331</locationX>
         <locationY>497</locationY>
         <defaultConnector>
-            <targetReference>Display_Diagnostic_Node</targetReference>
+            <targetReference>No_Display_Content_Found</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Content in the DiagnosticNode</defaultConnectorLabel>
+        <defaultConnectorLabel>No Display Content Found</defaultConnectorLabel>
         <rules>
-            <name>Content_from_Knowledge</name>
+            <name>Display_Content_from_Diagnostic_Node</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>curRecord.Use_Knowledge_Article_Content__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>curRecord.Node_Content__c</leftValueReference>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <booleanValue>true</booleanValue>
+                    <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Knowledge</targetReference>
+                <targetReference>Display_Diagnostic_Node</targetReference>
             </connector>
-            <label>Content from Knowledge Article</label>
+            <label>Display Content from Diagnostic Node</label>
         </rules>
     </decisions>
     <dynamicChoiceSets>
@@ -185,31 +186,6 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <name>Get_Knowledge</name>
-        <label>Get Knowledge</label>
-        <locationX>337</locationX>
-        <locationY>676</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
-        <connector>
-            <targetReference>Display_Knowledge_Node</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>curRecord.Knowledge__c</elementReference>
-            </value>
-        </filters>
-        <object>Knowledge__kav</object>
-        <outputReference>curKnowledge2</outputReference>
-        <queriedFields>Id</queriedFields>
-        <queriedFields>Content__c</queriedFields>
-        <queriedFields>ArticleNumber</queriedFields>
-        <queriedFields>VersionNumber</queriedFields>
-        <queriedFields>Title</queriedFields>
-    </recordLookups>
-    <recordLookups>
         <name>Load_Current_Node</name>
         <label>Load Current Node</label>
         <locationX>142</locationX>
@@ -231,8 +207,6 @@
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
         <queriedFields>Node_Content__c</queriedFields>
-        <queriedFields>Use_Knowledge_Article_Content__c</queriedFields>
-        <queriedFields>Knowledge__c</queriedFields>
         <queriedFields>End_Node__c</queriedFields>
         <queriedFields>Continuation_Node__c</queriedFields>
         <queriedFields>ContinuationDiagnosticNode__c</queriedFields>
@@ -313,60 +287,17 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
-        <name>Display_Knowledge_Node</name>
-        <label>Display Knowledge Node</label>
-        <locationX>583</locationX>
-        <locationY>676</locationY>
+        <name>No_Display_Content_Found</name>
+        <label>No Display Content Found</label>
+        <locationX>336</locationX>
+        <locationY>674</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
-        <allowPause>false</allowPause>
-        <connector>
-            <targetReference>Does_Outcome_Have_a_Target_Node</targetReference>
-        </connector>
+        <allowPause>true</allowPause>
         <fields>
-            <name>dispNodeContent_0</name>
-            <fieldText>&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Knowledge Article :&lt;/b&gt; {!curKnowledge2.Title}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;b style=&quot;font-size: 16px;&quot;&gt;Body:&lt;/b&gt;&lt;/p&gt;&lt;p&gt;{!curKnowledge2.Content__c}&lt;/p&gt;</fieldText>
+            <name>noDisplayContentFoundMessage</name>
+            <fieldText>&lt;p&gt;The flow couldn&apos;t find any content to display. Contact your Salesforce Admin, or add text to the Node Content field on the DiagnosticNode record.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
-        </fields>
-        <fields>
-            <name>outcomeChoices_0</name>
-            <choiceReferences>curOutcomeChoices</choiceReferences>
-            <dataType>String</dataType>
-            <fieldText>Select:</fieldText>
-            <fieldType>RadioButtons</fieldType>
-            <isRequired>false</isRequired>
-        </fields>
-        <fields>
-            <name>rule1_0</name>
-            <extensionName>c:horizontalRuleFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
-        </fields>
-        <fields>
-            <name>navButton_0</name>
-            <extensionName>c:navigationButtonFSC</extensionName>
-            <fieldType>ComponentInstance</fieldType>
-            <inputParameters>
-                <name>label</name>
-                <value>
-                    <stringValue>Edit Content</stringValue>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>targetRecordId</name>
-                <value>
-                    <elementReference>curRecord.Id</elementReference>
-                </value>
-            </inputParameters>
-            <inputParameters>
-                <name>destinationType</name>
-                <value>
-                    <stringValue>record</stringValue>
-                </value>
-            </inputParameters>
-            <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
-            <isRequired>true</isRequired>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
@@ -404,14 +335,6 @@
         <value>
             <stringValue>a0lB0000001ulKbIAI</stringValue>
         </value>
-    </variables>
-    <variables>
-        <name>curKnowledge2</name>
-        <dataType>SObject</dataType>
-        <isCollection>false</isCollection>
-        <isInput>false</isInput>
-        <isOutput>false</isOutput>
-        <objectType>Knowledge__kav</objectType>
     </variables>
     <variables>
         <name>curRecord</name>

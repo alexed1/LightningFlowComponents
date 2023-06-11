@@ -1,0 +1,38 @@
+<template>
+    <c-mc_combobox options={records} label={label} icon-size="small" public-class={publicClass} public-style={publicStyle} values={values}
+        custom-search-handler={handleSearchChange} required={required} allow-multiselect={allowMultiselect} disabled={disabled}
+        is-loading={isLoading} exclude-sublabel-in-filter={excludeSublabelInFilter} placeholder={placeholder} field-level-help={fieldLevelHelp}
+        include-value-in-filter={includeValueInFilter} onchange={handleComboboxChange} right-icon={rightIconName} left-icon={leftIconName}
+        oncustomaction={handleCustomAction} debounce-delay={debounceDelay} no-match-string={noMatchString} message-when-value-missing={messageWhenValueMissing} 
+        id="lookup" class={componentName} component-name={componentName}>
+    </c-mc_combobox>
+
+    <!-- If minimumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={_showMinimumNumberOfSelectedRecordsMessage}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {_minimumNumberOfSelectedRecordsMessage}
+                </span>
+            </span>
+        </div>
+    </template>
+
+    <!-- If maximumNumberOfSelectedRecords is not null then show that as a label -->
+    <template if:true={_showMaximumNumberOfSelectedRecordsMessage}>
+        <div class="slds-form-element__label slds-form-element__label_required">
+            <span class="slds-form-element__label-text">
+                <span class="slds-form-element__label-required">
+                    {_maximumNumberOfSelectedRecordsMessage}
+                </span>
+            </span>
+        </div>
+    </template>
+
+    <!-- If under the mininumSelectedRecords Show Error Message -->
+    <template if:true={_showMinimumNumberOfSelectedRecordsErrorMessage}>
+        <div class="slds-form-element__help">
+            {_minimumNumberOfSelectedRecordsMessage}
+        </div>
+    </template>
+</template>

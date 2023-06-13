@@ -94,6 +94,7 @@ export default class Datatable extends LightningElement {
     set tableData(data = []) {
         if(this.isUpdateTable) {       
             if (Array.isArray(data)) {
+                this.maxRowSelection = (this.singleRowSelection) ? 1 : this._tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used (v4.1.2)                
                 this._tableData = data;
                 if(this.columnFields) {
                     this.processDatatable();

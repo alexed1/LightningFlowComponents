@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.1.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MsQAK)   
-[Version 4.1.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MsQAK)
+[Version 4.1.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)   
+[Version 4.1.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,6 +72,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
  
+## 06/14/23 -  Eric Smith -    Version 4.1.4 
+**Bug Fixes:**  
+-   Fixed issue with tables showing as empty if row selection was disabled 
+
  ## 06/13/23 -  Eric Smith -    Version 4.1.3 
 **Bug Fixes:**  
 -   Fixed issue where Datatables fed by DataFetcher were defaulting to single row selection only 

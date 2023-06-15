@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 05-15-2023
+ * @last modified on  : 06-14-2023
  * @last modified by  : Josh Dayment
 **/
 import { api, track, LightningElement } from "lwc";
@@ -208,6 +208,13 @@ export default class textAreaPlusCPE extends LightningElement {
       label: "Text Area Height",
       helpText: "Set the minimum height of the text input area i.e. 800"
     },
+    fieldLevelHelp: {
+      value: null,
+      valueDataType: null,
+      isCollection: false,
+      label: "Help Text",
+      helpText: "Help text detailing the purpose and function of the text editor."
+    },
 
   };
 
@@ -244,10 +251,11 @@ export default class textAreaPlusCPE extends LightningElement {
 
   @api get textOptions() {
     return [
-      { label: "Plain Text", value: "plain" },
-      { label: "Rich Text", value: "rich" },
+      { label: "Plain Text Area", value: "plain" },
+      { label: "Rich Text Area", value: "rich" },
       { label: "Display Text", value: "display" },
-      { label: "Rich Text with Slack markdown", value: "slack"},
+      { label: "Rich Text with Slack markdown", value: "slack" },
+      { label: "Text Input", value: "textInput" },
     ];
   }
 
@@ -284,7 +292,7 @@ export default class textAreaPlusCPE extends LightningElement {
     this.minlenErr =
       Number(this.inputValues.maxlen.value) > 0 &&
       Number(this.inputValues.minlen.value) >=
-        Number(this.inputValues.maxlen.value);
+      Number(this.inputValues.maxlen.value);
     if (this.minlenErr) {
       validity.push({
         key: "minlenTooSmall",
@@ -294,7 +302,7 @@ export default class textAreaPlusCPE extends LightningElement {
     return validity;
   }
   /* LIFECYCLE HOOKS */
-  connectedCallback() {}
+  connectedCallback() { }
   renderedCallback() {
     if (!this.rendered) {
       this.rendered = true;
@@ -315,9 +323,9 @@ export default class textAreaPlusCPE extends LightningElement {
         if (inputVal) {
           console.log(
             "in initializeValues: " +
-              curInputParam.name +
-              " = " +
-              curInputParam.value
+            curInputParam.name +
+            " = " +
+            curInputParam.value
           );
           if (inputVal.serialized) {
             inputVal.value = JSON.parse(curInputParam.value);
@@ -411,6 +419,10 @@ export default class textAreaPlusCPE extends LightningElement {
     return this.eq("textMode", "plain");
   }
 
+  get isTextInput() {
+    return this.eq("textMode", "textInput");
+  }
+
   get isRichText() {
     return (this.eq("textMode", "rich") || this.eq("textMode", "slack"));
   }
@@ -426,7 +438,7 @@ export default class textAreaPlusCPE extends LightningElement {
   get showCounterSettings() {
     return (
       this.eq("cb_showCharCounter", "CB_TRUE") &&
-      (this.eq("textMode", "rich") || this.eq("textMode", "plain") || this.eq("textMode", "slack"))
+      (this.eq("textMode", "rich") || this.eq("textMode", "plain") || this.eq("textMode", "slack") || this.eq("textMode", "textInput"))
     );
   }
 }

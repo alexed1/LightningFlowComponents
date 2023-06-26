@@ -379,15 +379,17 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
         var ev = $A.get('e.c:QuickEvtClearLookup'); 
         // var ev = component.get("e.clearLookup");
         // Check name if parent or child in lowercase
-        if(name.toLowerCase() === 'parent'){
-            this.fireSaveFilter(name, '');
+        if (name) {
+            if(name.toLowerCase() === 'parent'){
+                this.fireSaveFilter(name, '');
+            }
+            ev.setParams({
+                'name' : name,
+                'recordId' : rid,
+                'recordName' : rname
+            });
+            ev.fire();
         }
-        ev.setParams({
-            'name' : name,
-            'recordId' : rid,
-            'recordName' : rname
-        });
-        ev.fire();
     },
     
     /**

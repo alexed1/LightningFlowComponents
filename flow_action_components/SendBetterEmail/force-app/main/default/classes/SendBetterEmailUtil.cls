@@ -137,6 +137,7 @@ public inherited sharing class SendBetterEmailUtil {
                 FileExtension
             FROM ContentVersion
             WHERE ContentDocumentId IN :contentDocumentIds
+            WITH SECURITY_ENFORCED
         ]) {
             if (!mapContentDocumentIdByContentVersion.containsKey(cv.ContentDocumentId)) {
                 mapContentDocumentIdByContentVersion.put(
@@ -172,6 +173,7 @@ public inherited sharing class SendBetterEmailUtil {
                 SELECT Id, Description, Name
                 FROM EmailTemplate
                 WHERE Name IN :templateNames AND isActive = TRUE
+                WITH SECURITY_ENFORCED
             ]) {
                 if (!mapTemplateNameByEmailTemplates.containsKey(et.Name)) {
                     mapTemplateNameByEmailTemplates.put(et.Name, new List<EmailTemplate>{ et });

@@ -336,7 +336,9 @@ export default class Datatable extends LightningElement {
     // Other Datatable attributes
     @api sortedBy = '';
     @api sortDirection = '';
-    @api maxRowSelection;
+    @api get maxRowSelection() {
+        return (this.singleRowSelection) ? 1 : this._tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
+    }
     @api errors;
     @api columnWidthValues;
     @track columns = [];
@@ -792,7 +794,6 @@ export default class Datatable extends LightningElement {
         if (this._tableData) {
 
             // Set other initial values here
-            this.maxRowSelection = (this.singleRowSelection) ? 1 : this._tableData.length + 1; // If maxRowSelection=1 then Radio Buttons are used
             this.wizColumnFields = this.columnFields;
 
             console.log('Processing Datatable');

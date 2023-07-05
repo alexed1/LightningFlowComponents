@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 05-15-2023
+ * @last modified on  : 06-14-2023
  * @last modified by  : Josh Dayment
 **/
 import { LightningElement, api, track } from "lwc";
@@ -83,6 +83,7 @@ export default class TextAreaPlus extends LightningElement {
   @api textAreaHeight;
   @api textMode;
   @api slackOutput;
+  @api fieldLevelHelp;
 
 
   // Component facing props
@@ -121,9 +122,8 @@ export default class TextAreaPlus extends LightningElement {
 
   // Show help text appropriately based on whether Suggested Terms is enabled
   get caseInsensitiveHelpText() {
-    return `${
-      this.showCaseInsensitive ? "Ignore Case for Search and Replace" : ""
-    }
+    return `${this.showCaseInsensitive ? "Ignore Case for Search and Replace" : ""
+      }
             ${this.autoReplaceEnabled ? " and Suggested Terms" : ""}`;
   }
 
@@ -175,7 +175,11 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   get slackFormat() {
-    return this.textMode == "slack";
+    return this.textMode === "slack";
+  }
+
+  get textInput() {
+    return this.textMode === "textInput";
   }
 
   get showCounter() {
@@ -191,7 +195,7 @@ export default class TextAreaPlus extends LightningElement {
   get advancedTools() {
     // advanced tools can only be explained for rich text
     return (
-      !this.plainText && !this.displayText && cbToBool(this.cb_advancedTools)
+      !this.plainText && !this.displayText && !this.textInput && cbToBool(this.cb_advancedTools)
     );
   }
   @api cb_advancedTools;
@@ -344,6 +348,7 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   connectedCallback() {
+    //console.log(this.textMode)
     // Build regexes first - will be needed for validation
     if (this.advancedTools) {
       // Build regex for disallowed symbols and words (if listed)
@@ -373,7 +378,7 @@ export default class TextAreaPlus extends LightningElement {
       }
     }
 
-    
+
   }
 
   // Helper to convert comma delimited list of words or symbols to pipe delimited regular expression
@@ -397,11 +402,11 @@ export default class TextAreaPlus extends LightningElement {
   }
 
   //set text area height
-    get minHeight(){
-    return '--slds-c-textarea-sizing-min-height:' + this.textAreaHeight + 'px'; 
-     
+  get minHeight() {
+    return '--slds-c-textarea-sizing-min-height:' + this.textAreaHeight + 'px';
 
-}
+
+  }
 
   // Dynamically calculate remaining characters
   get charsLeft() {
@@ -430,8 +435,8 @@ export default class TextAreaPlus extends LightningElement {
     // update the singleton, but not on initialization
     if (!init) {
       share.setItem(this.index, value);
-    }   
-   
+    }
+
     // required for Flow
     const attributeChangeEvent = new FlowAttributeChangeEvent(
       "value",
@@ -449,6 +454,13 @@ export default class TextAreaPlus extends LightningElement {
   handleTextChange({ target }) {
     this.updateText(target);
     this.isValidCheck = true;
+
+    // convert HTML to Slack
+    if (this.textMode == "slack") {
+      //console.log("calling htmltoslack");
+      this.handleHtmlToSlack(target.value);
+      this.slackOutput = this.slackText;
+    }
 
     // We're done if advanced tools aren't enabled
     if (!this.advancedTools) {
@@ -474,15 +486,6 @@ export default class TextAreaPlus extends LightningElement {
     if (this.hasBlockedItems(target.value)) {
       this.isValidCheck = false;
     }
-
-    // convert HTML to Slack
-    if (this.textMode == "slack") {
-      this.handleHtmlToSlack(target.value);
-      this.slackOutput=this.slackText;
-    }
-
-    
-    
 
     // Check invalid symbols and words
     const rbi = this.runningBlockedInput;
@@ -662,36 +665,36 @@ export default class TextAreaPlus extends LightningElement {
     return str;
   }
 
- // Replaces html to slack markdown
-  handleHtmlToSlack(){
+  // Replaces html to slack markdown
+  handleHtmlToSlack() {
     this.slackText = this.textValue;
-    this.slackText = this?.slackText.replace(/<p>/g,"");
-    this.slackText = this?.slackText.replace(/<\/p>/g,"");  
-    this.slackText = this?.slackText.replace(/<strong>/g,"*");
-    this.slackText = this?.slackText.replace(/<\/strong>/g,"*");
-    this.slackText = this?.slackText.replace(/<em>/g,"_");
-    this.slackText = this?.slackText.replace(/<\/em>/g,"_");
-    this.slackText = this?.slackText.replace(/<strike>/g,"~");
-    this.slackText = this?.slackText.replace(/<\/strike>/g,"~");
-    this.slackText = this?.slackText.replace(/&nbsp;/g,"");
-    this.slackText = this?.slackText.replace(/<br>/g,"\n");
-    this.slackText = this?.slackText.replace(/<ul>/g,"");
-    this.slackText = this?.slackText.replace(/<\/ul>/g,"");
-    this.slackText = this?.slackText.replace(/<li>/g,"• ");
-    this.slackText = this?.slackText.replace(/<\/li>/g,"\n");
+    this.slackText = this?.slackText.replace(/<p>/g, "");
+    this.slackText = this?.slackText.replace(/<\/p>/g, "");
+    this.slackText = this?.slackText.replace(/<strong>/g, "*");
+    this.slackText = this?.slackText.replace(/<\/strong>/g, "*");
+    this.slackText = this?.slackText.replace(/<em>/g, "_");
+    this.slackText = this?.slackText.replace(/<\/em>/g, "_");
+    this.slackText = this?.slackText.replace(/<strike>/g, "~");
+    this.slackText = this?.slackText.replace(/<\/strike>/g, "~");
+    this.slackText = this?.slackText.replace(/&nbsp;/g, "");
+    this.slackText = this?.slackText.replace(/<br>/g, "\n");
+    this.slackText = this?.slackText.replace(/<ul>/g, "");
+    this.slackText = this?.slackText.replace(/<\/ul>/g, "");
+    this.slackText = this?.slackText.replace(/<li>/g, "• ");
+    this.slackText = this?.slackText.replace(/<\/li>/g, "\n");
     //console.log("Slack text: " + this.slackText);
-     
-    
-    return this.slackText;
-    
 
-    
-    
-    
-     
+
+    return this.slackText;
+
+
+
+
+
+
   }
 
-  
+
 
 
 

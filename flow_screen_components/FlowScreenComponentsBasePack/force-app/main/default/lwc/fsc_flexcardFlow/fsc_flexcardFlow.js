@@ -176,7 +176,7 @@ export default class FlexcardFlow extends LightningElement {
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
-                //console.log(this.value = this.selectedRecord);
+                this.value = this.selectedRecord;
             }
 
         });

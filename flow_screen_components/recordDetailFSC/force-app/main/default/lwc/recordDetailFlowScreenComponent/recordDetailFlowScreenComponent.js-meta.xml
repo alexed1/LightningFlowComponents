@@ -30,6 +30,7 @@
             <property name="suppressToast" type="Boolean" label="Show Toast on Success?" description="If True, Toast will be triggered on success"/>
             <property name="suppressUnderline" type="Boolean" label="Suppress underlines in View mode?" description="If True, underlines will not be displayed in View mode"/>
             <property name="boxclass" type="String" label="Main Div Classes" default="slds-box slds-theme_default" description="SLDS classes, Visit SLDS page for more options : https://www.lightningdesignsystem.com/components/utilities/themes"/>
+            <property name="version" type="String" label="Version # for RecordDetail" default="1.9.1" description="There is no entry required for this attribute.  It is here just to show the current version # of the component."/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

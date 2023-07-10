@@ -147,7 +147,8 @@ public inherited sharing class SendBetterEmailUtil {
                 ContentVersion lastFound = mapContentDocumentIdByContentVersion.get(
                     cv.ContentDocumentId
                 )[0];
-                if (lastFound.VersionNumber < cv.VersionNumber) {
+                if (lastFound.VersionNumber.isNumeric() && cv.VersionNumber.isNumeric() ? Decimal.valueOf(lastFound.VersionNumber) < Decimal.valueOf(cv.VersionNumber) 
+                    : lastFound.VersionNumber < cv.VersionNumber) {
                     mapContentDocumentIdByContentVersion.get(cv.ContentDocumentId)[0] = cv;
                 }
             }

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Extract Field To Collection</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collection"/>
+            <property name="inputRecordCollection" type="{T[]}" role="inputOnly" description="List of records to extract field values from"/>
+            <property name="fieldAPIName" type="String" role="inputOnly" description="API Name of the text field to extract"/>
+            <property name="dedupeValues" type="Boolean" role="inputOnly" description="If true only unique values will be returned (default=true)"/>
+            <property name="allowEmptyCollection" type="Boolean" role="inputOnly" description="Allow the record collection to be empty? (default=false)"/>
+            <property name="fieldValueCollection" type="String[]" role="outputOnly" description="List of unique field values for API name provided"/>
+            <property name="fieldValueString" type="String" role="outputOnly" description="Comma separated string of unique field values for API name provided"/>
+            <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

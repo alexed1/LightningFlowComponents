@@ -52,7 +52,6 @@ export default class ExtractFieldToCollection extends LightningElement {        
     }
     
     _callAuraEnabledMethod() {                                                                                          // Call the Aura Enabled Method in the Controller
-
         extractFieldToCollection({                                                                                      // * Identify the Aura Enabled Method
             inputRecordCollection: this.inputRecordCollection,                                                          // * methodAttributeName: value from LWC
             fieldAPIName: this.fieldAPIName,                                                                            // * 

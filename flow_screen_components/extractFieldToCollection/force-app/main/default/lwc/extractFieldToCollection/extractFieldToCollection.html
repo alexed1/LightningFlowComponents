@@ -1,6 +1,11 @@
 <template>
+
+    <!-- This template includes a standard 'error' output attribute that will be exposed on the flow screen -->
     <template if:true={error}>
         The extractFieldToCollection screen component on this screen is reporting the following Error: {error}
     </template>
-    <span hidden><lightning-formatted-text value={collectionString} onchange={handleOnChange}></lightning-formatted-text></span>
+
+    <!-- Track, but do not display the reactive attribute(s) -->
+    <span hidden><lightning-formatted-text value={oldReactiveValue} onchange={handleOnChange}></lightning-formatted-text></span>
+    
 </template>

@@ -1,17 +1,22 @@
 /**
  * Call an Invocable Action from a Reactive Flow Screen Component
  * 
- * Sample AuraEnabled class, that calls an Invocable Flow Action, designed to be called by an LWC that is 
+ * Sample Controller with an AuraEnabled class, that calls an Invocable Flow Action, designed to be called by an LWC that is 
  * exposed to flow as a reactive Flow Screen Component
  * 
  * By:      Eric Smith
  * Date:    07/21/23
  * Version: 1.0.0
  * 
- * Action:  ExtractStringsFromCollection
- *          Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
+ * LWC:         extractFieldToCollection
+ * Controller:  ExtractFieldToCollectionController
+ * Action:      ExtractStringsFromCollection
+ *              Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
  *       
 **/
+
+// Code commented this way is a standard part of the template and should stay as is
+// * Code commented this way should be adjusted to fit your use case
 
 public with sharing class ExtractFieldToCollectionController {                                                      // * Give the class a name similar to the invocable action
 

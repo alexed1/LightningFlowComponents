@@ -2,12 +2,17 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <isExposed>true</isExposed>
+
+    <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
     <masterLabel>Extract Field To Collection</masterLabel>
+
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
+
+            <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
             <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collection"/>
             <property name="inputRecordCollection" type="{T[]}" role="inputOnly" description="List of records to extract field values from"/>
             <property name="fieldAPIName" type="String" role="inputOnly" description="API Name of the text field to extract"/>
@@ -16,6 +21,7 @@
             <property name="fieldValueCollection" type="String[]" role="outputOnly" description="List of unique field values for API name provided"/>
             <property name="fieldValueString" type="String" role="outputOnly" description="Comma separated string of unique field values for API name provided"/>
             <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>
+
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

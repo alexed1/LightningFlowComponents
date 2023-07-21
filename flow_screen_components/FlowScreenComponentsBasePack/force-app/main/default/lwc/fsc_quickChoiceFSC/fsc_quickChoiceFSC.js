@@ -165,7 +165,6 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get showPicklist() {
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:172 ~ QuickChoiceFSC ~ getshowPicklist ~ this._controllingPicklistValue:", this.masterLabel + ": ", this._controllingPicklistValue);
         // Show if not controlled or if controlled that there are available picklist values
         this._controllingPicklistValue
         return (!this._isControlled || this._picklistOptions.length > 0 || this.isControlledByCheckbox);
@@ -270,10 +269,9 @@ console.log("🚀 ~ file: fsc_quickChoiceFSC.js:172 ~ QuickChoiceFSC ~ getshowPi
         // Set isControlled only if a controlling value was provided and there are available controller values
         this._isControlled = false;
         let controllingIndex;
-console.log("🚀 ~ file: fsc_quickChoiceFSC.js:274 ~ QuickChoiceFSC ~ setPicklistSelections ~ Object.keys(data.controllerValues).length:", this.masterLabel + ": ", Object.keys(data.controllerValues).length);
         if (Object.keys(data.controllerValues).length > 0) {
             this._isControlled = true;
-this._showPicklist = true;
+            this._showPicklist = true;
             this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
             if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
                 this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
@@ -445,11 +443,10 @@ this._showPicklist = true;
                 this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
             }
         }
-// Output default value for reactivity
-if (this._selectedValue != null) {
-    console.log("🚀 ~ file: fsc_quickChoiceFSC.js:449 ~ QuickChoiceFSC ~ renderedCallback ~ this._selectedValue:", this.masterLabel + ": ", this._selectedValue);
-    this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
-}
+        // Output default value for reactivity
+        if (this._selectedValue != null) {
+            this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+        }
     }
 
     @api

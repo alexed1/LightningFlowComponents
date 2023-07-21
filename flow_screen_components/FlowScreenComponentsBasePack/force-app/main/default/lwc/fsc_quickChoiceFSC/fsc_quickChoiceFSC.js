@@ -22,8 +22,24 @@ export default class QuickChoiceFSC extends LightningElement {
         return (this.helpText?.length > 0) ? "slds-show" : "slds-hide";
     }
 
-    @api choiceLabels = [];
-    @api choiceValues = []; //string collection
+    @api 
+    get choiceLabels() {
+        return this._choiceLabels;
+    }
+    set choiceLabels(value) {
+        this.choiceLabels = value;
+    }
+    _choiceLabels;
+
+    @api 
+    get choiceValues() {
+        return this._choiceValues;
+    }
+    set choiceValues(value) {
+        this._choiceValues = value;
+        this._handleChoiceCollections();
+    }
+    _choiceValues = [];
 
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
@@ -83,7 +99,15 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     //-------------For inputMode = Visual Text Box (Card)
-    @api choiceIcons = [];
+    @api 
+    get choiceIcons() {
+        return this._choiceIcons;
+    }
+    set choiceIcons(value) {
+        this._choiceIcons = value;
+    }
+    _choiceIcons;
+
     @api includeIcons;
     @api iconSize;
     @api navOnSelect;
@@ -110,11 +134,11 @@ export default class QuickChoiceFSC extends LightningElement {
     set staticChoices(choices) {
         console.log(this.masterLabel + ": ", 'setting staticChoices to '+ JSON.stringify(choices));
         this._staticChoices = choices;
-        this.choiceValues = [];
-        this.choiceLabels = [];
+        this._choiceValues = [];
+        this._choiceLabels = [];
         for (let choice of choices) {
-            this.choiceValues.push(choice.value);
-            this.choiceLabels.push(choice.label);        
+            this._choiceValues.push(choice.value);
+            this._choiceLabels.push(choice.label);        
         }
     }
     @track _staticChoices = [];
@@ -351,21 +375,18 @@ export default class QuickChoiceFSC extends LightningElement {
         return (this.dualColumns || !this.isResponsive) ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
     }
 
-    connectedCallback() {
-        console.log(this.masterLabel + ": ", "Entering Connected Callback for QuickChoice");
-        console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
-        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+    _handleChoiceCollections() {
 
         // Visual Card Selection
         let items = [];	//parameters for visual picker selection
-		let index = 0;
+        let index = 0;
         if (this.displayMode === "Card" || this.displayMode === "Visual") {
             this.showVisual = true;
             console.log(this.masterLabel + ": ", "includeIcons is: " + this.includeIcons);
-            console.log(this.masterLabel + ": ", "choiceIcons is: " + this.choiceIcons);
-            if (!this.includeIcons || !this.choiceIcons) {
+            console.log(this.masterLabel + ": ", "_choiceIcons is: " + this._choiceIcons);
+            if (!this.includeIcons || !this._choiceIcons) {
                 console.log(this.masterLabel + ": ", "icons not needed");
-                this.choiceIcons = this.choiceLabels;
+                this._choiceIcons = this._choiceLabels;
             }
             if (this.numberOfColumns === "2") {
                 this.dualColumns = true;
@@ -373,41 +394,35 @@ export default class QuickChoiceFSC extends LightningElement {
 
             //User passes in Label collection of string for box header and Value collection of strings for box description
             console.log(this.masterLabel + ": ", "entering input mode Visual Text Box");
-            console.log(this.masterLabel + ": ", "choiceLabels is: " + this.choiceLabels);
-            this.choiceLabels.forEach(label => {
+            console.log(this.masterLabel + ": ", "_choiceLabels is: " + this._choiceLabels);
+            this._choiceLabels.forEach(label => {
                 //Add the correct path to custom images
-                if (this.choiceIcons[index].includes(':')) {
-                    items.push({name: label, description: this.choiceValues[index], icon: this.choiceIcons[index]});
+                if (this._choiceIcons[index].includes(':')) {
+                    items.push({name: label, description: this._choiceValues[index], icon: this._choiceIcons[index]});
                 } else {
                     items.push({
                         name: label,
-                        description: this.choiceValues[index],
-                        icon: Quickchoice_Images + '/' + this.choiceIcons[index]
+                        description: this._choiceValues[index],
+                        icon: Quickchoice_Images + '/' + this._choiceIcons[index]
                     });
                 }
                 console.log(this.masterLabel + ": ", "items is: " + items);
                 index += 1;
             });
-
-        }
-
-        if (this.displayMode === "Picklist") {
-            console.log(this.masterLabel + ": ", "setting Picklist on");
-            this.showRadio = false;
         }
 
         //console.log("initializing QuickChoice. inputMode is: " + this.inputMode);
         let options = [];
         if (this.legitInputModes.includes(this.inputMode)) {
             switch (this.inputMode) {
-                //User can simply pass in a collection of strings as choiceValues. The same text is used for both label and value
+                //User can simply pass in a collection of strings as _choiceValues. The same text is used for both label and value
                 case "Single String Collection":
                     console.log(this.masterLabel + ": ", "entering input mode String Collection");
-                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
-                    //console.log ('splitting choice values would be: ' + this.choiceValues.split(','));
-                    //let values = this.choiceValues.split(';');
+                    console.log(this.masterLabel + ": ", "_choiceValues is: " + this._choiceValues);
+                    //console.log ('splitting choice values would be: ' + this._choiceValues.split(','));
+                    //let values = this._choiceValues.split(';');
 
-                    this.choiceValues.forEach(value => {
+                    this._choiceValues.forEach(value => {
                         console.log(this.masterLabel + ": ", "value is: " + value);
                         options.push({label: value, value: value});
                         console.log(this.masterLabel + ": ", "options is: " + options);
@@ -418,9 +433,9 @@ export default class QuickChoiceFSC extends LightningElement {
                 case "Dual String Collections":
                 case "Static Choices":
                     console.log(this.masterLabel + ": ", "entering input mode Dual String Collections");
-                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
-                    for (let i=0; i<this.choiceLabels.length; i++) {
-                        options.push({label: this.choiceLabels[i], value: this.choiceValues[i]});
+                    console.log(this.masterLabel + ": ", "_choiceValues is: " + this._choiceValues);
+                    for (let i=0; i<this._choiceLabels.length; i++) {
+                        options.push({label: this._choiceLabels[i], value: this._choiceValues[i]});
                     }
                     break;
 
@@ -434,6 +449,20 @@ export default class QuickChoiceFSC extends LightningElement {
             console.log(this.masterLabel + ": ", "QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
             throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
         }
+
+    }
+
+    connectedCallback() {
+        console.log(this.masterLabel + ": ", "Entering Connected Callback for QuickChoice");
+        console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
+        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+
+        if (this.displayMode === "Picklist") {
+            console.log(this.masterLabel + ": ", "setting Picklist on");
+            this.showRadio = false;
+        }
+
+        this._handleChoiceCollections();
     }
 
     //show default visual card as selected

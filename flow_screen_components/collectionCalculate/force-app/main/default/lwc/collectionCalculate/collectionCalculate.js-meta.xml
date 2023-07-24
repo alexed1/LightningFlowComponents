@@ -4,7 +4,7 @@
     <isExposed>true</isExposed>
 
     <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
-    <masterLabel>Collection Calculate - Field Summary Result</masterLabel>
+    <masterLabel>ColProc - Calculate Field Summary Result</masterLabel>
 
     <targets>
         <target>lightning__FlowScreen</target>

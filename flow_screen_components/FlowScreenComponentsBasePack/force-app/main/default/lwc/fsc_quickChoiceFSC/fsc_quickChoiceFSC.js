@@ -27,9 +27,10 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._choiceLabels;
     }
     set choiceLabels(value) {
-        this.choiceLabels = value;
+        this._choiceLabels = value;
+        this._handleChoiceCollections();
     }
-    _choiceLabels;
+    _choiceLabels = [];
 
     @api 
     get choiceValues() {
@@ -105,8 +106,9 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     set choiceIcons(value) {
         this._choiceIcons = value;
+        this._handleChoiceCollections();
     }
-    _choiceIcons;
+    _choiceIcons = [];
 
     @api includeIcons;
     @api iconSize;

@@ -34,7 +34,7 @@ export default class ExtractFieldToCollection extends LightningElement {        
     @track oldReactiveValue;                                                                                            // * Track prior value(s) for reactive attributes
 
     get reactiveValue() {                                                                                               // Get the Reactive Attribute Value
-        return JSON.stringify(this.inputRecordCollection);                                                              // * Return reactive attribute as a string to be used in tracking
+        return JSON.stringify(this.inputRecordCollection) + this.fieldAPIName;                                          // * Return reactive attribute as a string to be used in tracking
     }
 
     get dedupeDefault() {                                                                                               // * Handle any boolean attributes that need a default value of true

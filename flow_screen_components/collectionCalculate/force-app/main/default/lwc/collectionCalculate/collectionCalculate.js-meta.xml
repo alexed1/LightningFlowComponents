@@ -16,7 +16,7 @@
             <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collection"/>
             <property name="inputCollection" type="{T[]}" role="inputOnly" description="List of records to summarize field values from" required="true"/>
             <property name="fieldName" type="String" role="inputOnly" description="API Name of the field to summarize" required="true"/>
-            <property name="operation" type="Boolean" role="inputOnly" description="Summary operation (multiply, add, average, min, max, sum, count)" required="true"/>
+            <property name="operation" type="String" role="inputOnly" description="Summary operation (multiply, add, average, min, max, sum, count)" required="true"/>
             <property name="policyForNullAndEmptyFields" type="Boolean" role="inputOnly" description="Allowable Values (use0, use1)"/>
             <property name="outputDecimalResult" type="Integer" role="outputOnly" description="Decimal Result (Integer Only)"/>
             <property name="outputStringResult" type="String" role="outputOnly" description="String Result"/>

@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 05-01-2023
+ * @last modified on  : 07-06-2023
  * @last modified by  : Josh Dayment
 **/
 import { LightningElement, api, track, wire } from 'lwc';
@@ -176,7 +176,7 @@ export default class FlexcardFlow extends LightningElement {
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
-                //console.log(this.value = this.selectedRecord);
+                this.value = this.selectedRecord;
             }
 
         });

@@ -1,165 +1,122 @@
+<!--
+  @description       : 
+  @author            : Josh Dayment
+  @group             : 
+  @last modified on  : 06-14-2023
+  @last modified by  : Josh Dayment
+-->
 <template>
-    <!-- Display Text-->
-    <template if:true={displayText}>
-      <lightning-formatted-rich-text value={textValue}>
-      </lightning-formatted-rich-text>
-    </template>
-  
-    <!-- Plain Text / TextArea Section -->
-    <template if:true={plainText}>
-      <div class="slds-var-p-around_x-small">
-        <lightning-textarea
-          value={textValue}
-          label={label}
-          maxlength={maxLength}
-          minlength={minLength}
-          onchange={handleChange}
-          placeholder={placeHolder}
-          required={required}
-        ></lightning-textarea>
-      </div>
-    </template>
-  
-    <!-- Rich Text Input Section -->
-    <template if:true={richText}>
-      <lightning-formatted-rich-text
-        value={label}
-      ></lightning-formatted-rich-text>
-      <lightning-input-rich-text
-        value={textValue}
-        formats={formats}
-        onchange={handleTextChange}
-        required={required}
-        onkeydown={handleRichTextKeyDown}
-        valid={isValidCheck}
-        message-when-bad-input={errorMessage}
-        placeholder={placeHolder}
-      >
-      </lightning-input-rich-text>
-    </template>
-  
-    <!-- Slack Markdown Input Section -->
-    <template if:true={slackFormat}>
-        <lightning-formatted-rich-text
-          value={label}
-        ></lightning-formatted-rich-text>
-        <lightning-input-rich-text
-          value={textValue}
-          formats={slackFormats}
-          onchange={handleTextChange}
-          required={required}
-          onkeydown={handleRichTextKeyDown}
-          valid={isValidCheck}
-          message-when-bad-input={errorMessage}
-          placeholder={placeHolder}
-        >
-        </lightning-input-rich-text>
-      </template>
 
-    <!-- Character Counter - Same for Rich or Plain Text-->
-    <template if:true={showCharCounter}>
-      <div class={charsLeftClass}>{counterText}</div>
-    </template>
-  
-    <!-- Advanced Tools Apply to Rich Text only - Search and Replace and Apply Suggestions -->
-    <template if:true={advancedTools}>
-      <div
-        class="slds-grid slds-wrap slds-var-p-around_xx-small slds-var-m-bottom_x-small lgc-bg"
-      >
-        <lightning-button-group>
+  <!-- Display Text-->
+  <template if:true={displayText}>
+    <lightning-formatted-rich-text value={textValue}>
+    </lightning-formatted-rich-text>
+  </template>
+
+  <!-- Plain Text / TextArea Section -->
+  <template if:true={plainText}>
+    <div class="slds-var-p-around_x-small">
+      <lightning-textarea value={textValue} label={label} maxlength={maxLength} minlength={minLength}
+        onchange={handleChange} placeholder={placeHolder} required={required} style={minHeight}
+        field-level-help={fieldLevelHelp}></lightning-textarea>
+    </div>
+  </template>
+
+  <!-- Rich Text Input Section -->
+  <template if:true={richText}>
+    <div class="slds-grid">
+      <div class="slds-col slds-grow-none"><lightning-formatted-rich-text value={label}></lightning-formatted-rich-text>
+      </div>
+      <div class="slds-col slds-grow-none"><lightning-helptext if:true={fieldLevelHelp}
+          content={fieldLevelHelp}></lightning-helptext></div>
+    </div>
+    <lightning-input-rich-text value={textValue} formats={formats} onchange={handleTextChange} required={required}
+      onkeydown={handleRichTextKeyDown} valid={isValidCheck} message-when-bad-input={errorMessage}
+      placeholder={placeHolder} style={minHeight}>
+
+    </lightning-input-rich-text>
+
+  </template>
+
+  <!-- Slack Markdown Input Section -->
+  <template if:true={slackFormat}>
+    <div class="slds-grid">
+      <div class="slds-col slds-grow-none"><lightning-formatted-rich-text value={label}></lightning-formatted-rich-text>
+      </div>
+      <div class="slds-col slds-grow-none"><lightning-helptext if:true={fieldLevelHelp}
+          content={fieldLevelHelp}></lightning-helptext></div>
+    </div>
+    <lightning-input-rich-text value={textValue} formats={slackFormats} onchange={handleTextChange} required={required}
+      onkeydown={handleRichTextKeyDown} valid={isValidCheck} message-when-bad-input={errorMessage}
+      placeholder={placeHolder} style={minHeight}>
+    </lightning-input-rich-text>
+
+  </template>
+
+  <!--Text Input-->
+  <template if:true={textInput}>
+    <lightning-input type="text" value={textValue} label={label} maxlength={maxLength} minlength={minLength}
+      onchange={handleChange} placeholder={placeHolder} required={required}
+      field-level-help={fieldLevelHelp}></lightning-input>
+  </template>
+
+  <!-- Character Counter - Same for Rich or Plain Text-->
+  <template if:true={showCharCounter}>
+    <div class={charsLeftClass}>{counterText}</div>
+  </template>
+
+  <!-- Advanced Tools Apply to Rich Text only - Search and Replace and Apply Suggestions -->
+  <template if:true={advancedTools}>
+    <div class="slds-grid slds-wrap slds-var-p-around_xx-small slds-var-m-bottom_x-small lgc-bg">
+      <lightning-button-group>
+        <div class="slds-var-p-around_xxx-small">
+          <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:search"
+            onclick={handleOpenSearch} alternative-text="Open Search and Replace" tooltip="Open Search and Replace">
+            <label>Info</label>
+          </lightning-button-icon>
+        </div>
+        <template if:true={searchButton}>
           <div class="slds-var-p-around_xxx-small">
-            <lightning-button-icon
-              variant="border-filled"
-              size="medium"
-              icon-name="utility:search"
-              onclick={handleOpenSearch}
-              alternative-text="Open Search and Replace"
-              tooltip="Open Search and Replace"
-            >
-              <label>Info</label>
+            <lightning-input type="text" placeholder="Search Text" variant="label-hidden"
+              onkeydown={handleSearchKeyDown} value={searchTerm} onchange={handleSearchReplaceChange}
+              data-id="search"></lightning-input>
+          </div>
+          <div class="slds-var-p-around_xxx-small">
+            <lightning-input type="text" placeholder="Replace with Text" variant="label-hidden"
+              onkeydown={handleSearchKeyDown} value={replaceValue} onchange={handleSearchReplaceChange}
+              data-id="replace"></lightning-input>
+          </div>
+          <div
+            class="slds-var-p-left_xxx-small slds-var-p-right_small slds-var-p-top_xxx-small slds-var-p-bottom_xxx-small">
+            <lightning-button-icon variant="brand" size="medium" icon-name="utility:check" disabled={animating}
+              onclick={handleSearchReplace} alternative-text="Search and Replace" tooltip="Search and Replace">
             </lightning-button-icon>
           </div>
-          <template if:true={searchButton}>
-            <div class="slds-var-p-around_xxx-small">
-              <lightning-input
-                type="text"
-                placeholder="Search Text"
-                variant="label-hidden"
-                onkeydown={handleSearchKeyDown}
-                value={searchTerm}
-                onchange={handleSearchReplaceChange}
-                data-id="search"
-              ></lightning-input>
-            </div>
-            <div class="slds-var-p-around_xxx-small">
-              <lightning-input
-                type="text"
-                placeholder="Replace with Text"
-                variant="label-hidden"
-                onkeydown={handleSearchKeyDown}
-                value={replaceValue}
-                onchange={handleSearchReplaceChange}
-                data-id="replace"
-              ></lightning-input>
-            </div>
-            <div
-              class="slds-var-p-left_xxx-small slds-var-p-right_small slds-var-p-top_xxx-small slds-var-p-bottom_xxx-small"
-            >
-              <lightning-button-icon
-                variant="brand"
-                size="medium"
-                icon-name="utility:check"
-                disabled={animating}
-                onclick={handleSearchReplace}
-                alternative-text="Search and Replace"
-                tooltip="Search and Replace"
-              >
-              </lightning-button-icon>
-            </div>
-          </template>
-          <template if:true={autoReplaceEnabled}>
-            <div class="slds-var-p-around_xxx-small">
-              <lightning-button-icon
-                variant="border-filled"
-                size="medium"
-                icon-name="utility:merge"
-                disabled={animating}
-                onclick={applySuggested}
-                alternative-text={applyAltText}
-                tooltip={applyAltText}
-              >
-              </lightning-button-icon>
-            </div>
-          </template>
-          <template if:true={showCaseInsensitive}>
-            <div
-              class="slds-var-p-left_xxx-small slds-var-p-right_small slds-var-p-top_xxx-small slds-var-p-bottom_xxx-small"
-            >
-              <lightning-button-icon
-                variant={ignoreCaseVariant}
-                size="medium"
-                icon-name="utility:text"
-                onclick={handleIgnoreCaseToggle}
-                alternative-text={caseInsensitiveHelpText}
-                tooltip={caseInsensitiveHelpText}
-              >
-              </lightning-button-icon>
-            </div>
-          </template>
-          <template if:true={dirty}>
-            <div class="slds-var-p-around_xxx-small">
-              <lightning-button-icon
-                variant="border-filled"
-                size="medium"
-                icon-name="utility:undo"
-                onclick={handleRevert}
-                alternative-text="Undo Replace"
-                tooltip="Undo Replace"
-              >
-              </lightning-button-icon>
-            </div>
-          </template>
-        </lightning-button-group>
-      </div>
-    </template>
+        </template>
+        <template if:true={autoReplaceEnabled}>
+          <div class="slds-var-p-around_xxx-small">
+            <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:merge" disabled={animating}
+              onclick={applySuggested} alternative-text={applyAltText} tooltip={applyAltText}>
+            </lightning-button-icon>
+          </div>
+        </template>
+        <template if:true={showCaseInsensitive}>
+          <div
+            class="slds-var-p-left_xxx-small slds-var-p-right_small slds-var-p-top_xxx-small slds-var-p-bottom_xxx-small">
+            <lightning-button-icon variant={ignoreCaseVariant} size="medium" icon-name="utility:text"
+              onclick={handleIgnoreCaseToggle} alternative-text={caseInsensitiveHelpText}
+              tooltip={caseInsensitiveHelpText}>
+            </lightning-button-icon>
+          </div>
+        </template>
+        <template if:true={dirty}>
+          <div class="slds-var-p-around_xxx-small">
+            <lightning-button-icon variant="border-filled" size="medium" icon-name="utility:undo" onclick={handleRevert}
+              alternative-text="Undo Replace" tooltip="Undo Replace">
+            </lightning-button-icon>
+          </div>
+        </template>
+      </lightning-button-group>
+    </div>
   </template>
+</template>

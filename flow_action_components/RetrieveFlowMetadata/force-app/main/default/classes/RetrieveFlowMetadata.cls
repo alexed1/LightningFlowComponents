@@ -1,8 +1,8 @@
-global with sharing class RetrieveFlowMetadata {
+public with sharing class RetrieveFlowMetadata {
  
   
         @InvocableMethod(label='Retrieve Flow Metadata' description='Retrieve Flow Metadata')
-        global static List<Result> execute (List<Request> requestList) {
+        public static List<Result> execute (List<Request> requestList) {
             
             System.debug('entering Retrieve Flow Metadata');
             List<Result> results =  new List<Result>();
@@ -13,15 +13,21 @@ global with sharing class RetrieveFlowMetadata {
                 Result curResult = new Result();
                 
                 String flowName = curRequest.flowName;
-                String url = baseUrl + '/services/data/v57.0/tooling/query/?q=Select+id,Metadata+from+Flow+Where+Definition.DeveloperName=\'' + flowName + '\''; 
+                String url = baseUrl +                                   '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
+                //String url = 'callout:' + curRequest.namedCredential + '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
+                //String url = 'callout:' + curRequest.namedCredential;
 
                 if(!Test.isRunningTest()) {
-                    response = Send(url);  
-                    System.debug('response body string is: ' + response.getBody());            
+                    response = Send(url );  
+                    String responseBody = response.getBody();
+                    System.debug('response body string is: ' + responseBody);            
                     if(response.getStatusCode() != 200) {
-                        throw new InvocableActionException(response.getBody());
+                        throw new InvocableActionException(responseBody);
                     }
-                    String flowMetadata  = ExtractFlowMetadata(response.getBody());  
+                    Dom.XmlNode recordsNode = PerformInitialParsingOnQueryResult(responseBody);
+                    String flowMetadata  = ExtractFlowMetadata(recordsNode); 
+                    //recordsNode  = ExtractRecordId(recordsNode);
+                    curResult.recordId = ExtractRecordId(recordsNode);
                     System.debug('flow metadata = ' + flowMetadata);
                     curResult.flowMetadata = flowMetadata;
                 } else {               
@@ -54,7 +60,7 @@ global with sharing class RetrieveFlowMetadata {
 
         // this method plucks the flow metadata out from the QueryResult, and tweaks it so it looks like a normal Flow metadata file that you'd retrieve via the metadata api
 
-        global static String ExtractFlowMetadata(String responseXML) {
+        public static Dom.XmlNode PerformInitialParsingOnQueryResult(String responseXML) {
             System.debug('beginning extraction on this responseXML: ' + responseXML);
             
             Dom.Document doc = new Dom.Document();
@@ -66,16 +72,47 @@ global with sharing class RetrieveFlowMetadata {
             Dom.XMLNode root = doc.getRootElement();
 
             //drill down throught the 'records' node and the 'Metadata' node to get to the actual good stuff
-            List<Dom.XmlNode> recordsList= getChildrenByName(root, 'records');
-            Dom.XmlNode metadataNode = recordsList[0];
-            recordsList = getChildrenByName(metadataNode, 'Metadata')[0].getChildren();
-            System.debug('recordsList is: ' + recordsList[0]);
+
+            List<Dom.XmlNode> recordsNodeList= getChildrenByName(root, 'records');
+            Dom.XmlNode recordsNode = recordsNodeList[0];
+            System.debug('remaining XML node is: ' + recordsNode);
+            return recordsNode;
+        }
+
+        public static String ExtractRecordId (Dom.XmlNode recordsNode) {
+            Dom.XmlNode recordIdNode = getChildrenByName(recordsNode, 'Id')[0];
+            String id = recordIdNode.getText();
+            System.debug ('recordIdNode is: ' + recordIdNode);
+            System.debug ('id is: ' + id);
+            return id;
+        }
+        public static String ExtractFlowMetadata(Dom.XmlNode recordsNode) {
+           
+
+            //note that if you introduce versions into the converation, which can be as simple as adding LatestVersion to the set of fields you want,
+            //the xml inserts a LatestVersion child between records and Metadata
+
+            //check to see if there's a LatestVersion by trying to fetch it
+            List<Dom.XmlNode> LatestVersionNodeList = getChildrenByName(recordsNode, 'LatestVersion');
+            System.debug('retrieval of LatestVersion node is: ' + LatestVersionNodeList);
+            Dom.XmlNode MetadataNode;
+            if(LatestVersionNodeList.size() == 1) {
+                //there's a LatestVersion node, so fetch its Metadata child
+                MetadataNode = getChildrenByName(LatestVersionNodeList[0], 'Metadata')[0];
+            } else {
+                //there's no LatestVersion node, so fetch the Metadata child from recordsNode
+                MetadataNode = getChildrenByName(recordsNode, 'Metadata')[0];
+            }
+
+            
+            System.debug('retrieval of Metadata node is: ' + MetadataNode);
+            List<Dom.XmlNode> MetadataNodeChildren = MetadataNode.getChildren();
  
             //to extract the good stuff as a string, it appears to be necessary to create a second XML document, and copy stuff over one at a time. Perhaps there's a better way....
             Dom.Document flowDocument = new Dom.Document();
             Dom.XmlNode rootNode = flowDocument.createRootElement( 'Flow', null, null);
             rootNode.setAttribute('xmlns','http://soap.sforce.com/2006/04/metadata');
-            for(Dom.XmlNode curNode : recordsList) {
+            for(Dom.XmlNode curNode : MetadataNodeChildren) {
                 rootNode.insertBefore(curNode, null);
             }
 
@@ -86,15 +123,15 @@ global with sharing class RetrieveFlowMetadata {
             System.debug ('getting children with the name: ' + elementName);
             List<Dom.XmlNode> allNodes = flowXml.getChildren();
             List<Dom.XMLNode> matchingNodes = new  List<Dom.XMLNode>();
+            System.debug('allNodes is' + allNodes);
     
             //look across all of the main Flow elements
             for (Dom.xmlNode curNode : allNodes) {
                 if (curNode.getName() == elementName)
                        matchingNodes.add(curNode);
                 
-    
             }
-            System.debug ('number of nodes matching target: ' + elementName + ' ' + matchingNodes.size());
+            System.debug ('number of nodes matching target: ' + elementName + ' is ' + matchingNodes.size());
             return matchingNodes;
         
     
@@ -120,7 +157,7 @@ global with sharing class RetrieveFlowMetadata {
         }
       
  
-        global static HttpResponse  Send(String endpoint) {
+        public static HttpResponse  Send(String endpoint) {
         
             HttpRequest req = new HttpRequest();
             req.setEndpoint(endpoint);
@@ -135,7 +172,7 @@ global with sharing class RetrieveFlowMetadata {
             return res;
         }
     
-        global static HttpResponse transmit(HttpRequest req) {
+        public static HttpResponse transmit(HttpRequest req) {
             Http http = new Http();
             System.debug('req is: ' + req);
             System.debug('body is: ' + req.getBody());
@@ -152,22 +189,27 @@ global with sharing class RetrieveFlowMetadata {
     
     
     
-        global class Request {
+        public class Request {
         
-            @InvocableVariable(description='Flow Name' )
-            global String flowName;
+            @InvocableVariable(required=true description='Flow Name' )
+            public String flowName;
 
-    
+            @InvocableVariable(description='Named Credential' )
+            public String namedCredential;
         }
         
-        global class Result {
+        public class Result {
 
     
             @InvocableVariable
-            global String errors;
+            public String errors;
 
             @InvocableVariable
-            global String flowMetadata;
+            public String flowMetadata;
+
+            @InvocableVariable
+            public String recordId; //the id of the Flow Definition
+ 
      
         }
         public class InvocableActionException extends Exception{}

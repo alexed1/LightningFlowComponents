@@ -22,5 +22,12 @@ public with sharing class ExtractFieldToCollectionControllerTest {
         Assert.areEqual( 3, objAsStrings.size() );
         Assert.areEqual( 8, String.valueOf( resultMap.get('fieldValueString') ).length() );
 
+        accounts = new List<SObject>{};
+        result = ExtractFieldToCollectionController.extractFieldToCollection( accounts, 'NumberOfEmployees', false, true );
+
+        // Force error
+        result = ExtractFieldToCollectionController.extractFieldToCollection( accounts, 'NumberOfEmployees', false, null );
+
     }
+    
 }

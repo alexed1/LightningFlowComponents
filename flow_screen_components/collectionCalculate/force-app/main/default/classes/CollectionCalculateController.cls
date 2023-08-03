@@ -63,9 +63,9 @@ public with sharing class CollectionCalculateController {
     }
 
     // Convert an object to a list of strings
-    private static List<String> objToList(Object obj) {
-        return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
-    } 
+    // private static List<String> objToList(Object obj) {
+    //     return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
+    // } 
 
     // Convert an object to a String
     private static String objToString(Object obj) {  

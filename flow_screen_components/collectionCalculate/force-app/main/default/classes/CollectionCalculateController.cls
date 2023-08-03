@@ -5,7 +5,7 @@
  * Version: 1.0.0
  * 
  * LWC:         collectionCalculate
- * Controller:  collectionCalculateController
+ * Controller:  CollectionCalculateController, CollectionCalculateControllerTest
  * Action:      CollectionCalculate
  *              Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
  *       

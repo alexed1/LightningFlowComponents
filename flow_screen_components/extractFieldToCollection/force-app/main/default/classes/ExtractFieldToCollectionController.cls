@@ -9,7 +9,7 @@
  * Version: 1.0.0
  * 
  * LWC:         extractFieldToCollection
- * Controller:  ExtractFieldToCollectionController
+ * Controller:  ExtractFieldToCollectionController, ExtractFieldToCollectionControllerTest
  * Action:      ExtractStringsFromCollection
  *              Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
  *       

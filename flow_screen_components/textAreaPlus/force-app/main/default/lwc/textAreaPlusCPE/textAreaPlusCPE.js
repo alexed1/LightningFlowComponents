@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 06-14-2023
+ * @last modified on  : 08-19-2023
  * @last modified by  : Josh Dayment
 **/
 import { api, track, LightningElement } from "lwc";
@@ -25,7 +25,6 @@ const FLOW_EVENT_TYPE = {
 
 const VALIDATEABLE_INPUTS = ["c-fsc_flow-combobox"];
 export default class textAreaPlusCPE extends LightningElement {
-  @api automaticOutputVariables;
   minlenErr = false;
   jsonErr = false;
   typeValue;
@@ -33,6 +32,7 @@ export default class textAreaPlusCPE extends LightningElement {
   _values = [];
   _flowVariables = [];
   _typeMappings = [];
+  //_automaticOutputVariables;
 
   rendered;
   // Help for Rich Text Options
@@ -74,6 +74,18 @@ export default class textAreaPlusCPE extends LightningElement {
         "$L - Characters Left, $M - Max Characters, $R - Remaining Characters"
     }
   ];
+
+  @api automaticOutputVariables;
+
+ // @api 
+  //get automaticOutputVariables () {
+  //    return this._automaticOutputVariables;
+ // }
+
+ // set automaticOutputVariables(value) {
+ //     this._automaticOutputVariables = value;
+ // }
+  
   @track inputValues = {
     value: {
       value: null,

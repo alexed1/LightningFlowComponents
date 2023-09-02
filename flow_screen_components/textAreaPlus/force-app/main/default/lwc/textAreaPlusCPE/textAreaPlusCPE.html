@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 06-14-2023
+  @last modified on  : 08-20-2023
   @last modified by  : Josh Dayment
 -->
 <template>
@@ -10,8 +10,8 @@
     value={inputValues.textMode.value}></lightning-combobox>
 
   <template if:true={isDisplayText}>
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-      label="Text Value" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value}
+      label="Text Value" onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
     <lightning-input-rich-text name="value" value={inputValues.value.value}
       onchange={handleRichTextChange}></lightning-input-rich-text>
   </template>
@@ -20,19 +20,19 @@
     </c-fsc_flow-banner>
 
     <c-fsc_flow-combobox name="label" value={inputValues.label.value} builder-context-filter-type="String"
-      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox name="fieldLevelHelp" value={inputValues.fieldLevelHelp.value}
       builder-context-filter-type="String" label="Help Text" field-level-help={inputValues.fieldLevelHelp.helpText}
-      onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value} builder-context-filter-type="String"
-      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value}
+      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox name="textAreaHeight" value={inputValues.textAreaHeight.value}
       builder-context-filter-type="String" label={inputValues.textAreaHeight.label}
       onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.textAreaHeight.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.textAreaHeight.helpText} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <template if:true={minlenErr}>
       <p class="slds-text-color_error slds-p-top_small">
@@ -43,10 +43,10 @@
 
     <c-fsc_flow-combobox name="minlen" value={inputValues.minlen.value} builder-context-filter-type="String"
       label={inputValues.minlen.label} onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.minlen.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.minlen.helpText} automatic-output-variables={automaticOutputVariables} ></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value} 
+      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-checkbox name="required" label={inputValues.required.label}
       field-level-help={inputValues.required.helpText} checked={inputValues.cb_required.value}
@@ -58,14 +58,14 @@
     </c-fsc_flow-banner>
 
     <c-fsc_flow-combobox name="label" value={inputValues.label.value} builder-context-filter-type="String"
-      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables} ></c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox name="fieldLevelHelp" value={inputValues.fieldLevelHelp.value}
       builder-context-filter-type="String" label="Help Text" field-level-help={inputValues.fieldLevelHelp.helpText}
-      onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value} builder-context-filter-type="String"
-      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value}
+      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <template if:true={minlenErr}>
       <p class="slds-text-color_error slds-p-top_small">
@@ -76,10 +76,10 @@
 
     <c-fsc_flow-combobox name="minlen" value={inputValues.minlen.value} builder-context-filter-type="String"
       label={inputValues.minlen.label} onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.minlen.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.minlen.helpText} automatic-output-variables={automaticOutputVariables} ></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value}
+      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-checkbox name="required" label={inputValues.required.label}
       field-level-help={inputValues.required.helpText} checked={inputValues.cb_required.value}
@@ -91,22 +91,22 @@
     </c-fsc_flow-banner>
 
     <c-fsc_flow-combobox name="label" value={inputValues.label.value} builder-context-filter-type="String"
-      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      label={inputValues.label.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox name="fieldLevelHelp" value={inputValues.fieldLevelHelp.value}
       builder-context-filter-type="String" label="Help Text" field-level-help={inputValues.fieldLevelHelp.helpText}
-      onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+      onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value} builder-context-filter-type="String"
-      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="placeHolder" value={inputValues.placeHolder.value}
+      label={inputValues.placeHolder.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables} ></c-fsc_flow-combobox>
 
     <c-fsc_flow-combobox name="textAreaHeight" value={inputValues.textAreaHeight.value}
       builder-context-filter-type="String" label={inputValues.textAreaHeight.label}
       onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.textAreaHeight.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.textAreaHeight.helpText} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value}
+      label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <template if:true={minlenErr}>
       <p class="slds-text-color_error slds-p-top_small">
@@ -117,7 +117,7 @@
 
     <c-fsc_flow-combobox name="minlen" value={inputValues.minlen.value} builder-context-filter-type="String"
       label={inputValues.minlen.label} onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.minlen.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.minlen.helpText} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-checkbox name="required" label={inputValues.required.label}
       field-level-help={inputValues.required.helpText} checked={inputValues.cb_required.value}
@@ -134,16 +134,16 @@
       <c-fsc_flow-combobox name="disallowedWordsList" value={inputValues.disallowedWordsList.value}
         builder-context-filter-type="String" label={inputValues.disallowedWordsList.label}
         onvaluechanged={handleFlowComboboxValueChange}
-        field-level-help={inputValues.disallowedWordsList.helpText}></c-fsc_flow-combobox>
+        field-level-help={inputValues.disallowedWordsList.helpText} automatic-output-variables={automaticOutputVariables} ></c-fsc_flow-combobox>
 
       <c-fsc_flow-combobox name="disallowedSymbolsList" value={inputValues.disallowedSymbolsList.value}
         builder-context-filter-type="String" label={inputValues.disallowedSymbolsList.label}
         onvaluechanged={handleFlowComboboxValueChange}
-        field-level-help={inputValues.disallowedSymbolsList.helpText}></c-fsc_flow-combobox>
+        field-level-help={inputValues.disallowedSymbolsList.helpText} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
       <c-fsc_flow-combobox name="autoReplaceMap" value={inputValues.autoReplaceMap.value}
         builder-context-filter-type="String" label={inputValues.autoReplaceMap.label}
-        onvaluechanged={handleFlowComboboxValueChange} field-level-help={inputValues.autoReplaceMap.helpText}>
+        onvaluechanged={handleFlowComboboxValueChange} field-level-help={inputValues.autoReplaceMap.helpText} automatic-output-variables={automaticOutputVariables}>
       </c-fsc_flow-combobox>
       <template if:true={jsonErr}>
         <p class="slds-text-color_error slds-p-top_small">
@@ -169,13 +169,13 @@
 
     <c-fsc_flow-combobox name="maxlen" value={inputValues.maxlen.value} builder-context-filter-type="String"
       label={inputValues.maxlen.label} onvaluechanged={handleFlowComboboxValueChange}
-      field-level-help={inputValues.maxlen.helpText}></c-fsc_flow-combobox>
+      field-level-help={inputValues.maxlen.helpText} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <template if:true={hasValidMaxLength}>
       <c-fsc_flow-combobox name="charsLeftTemplate" value={inputValues.charsLeftTemplate.value}
         builder-context-filter-type="String" label={inputValues.charsLeftTemplate.label}
         field-level-help={inputValues.charsLeftTemplate.helpText}
-        onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+        onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
     </template>
   </template>
 </template>

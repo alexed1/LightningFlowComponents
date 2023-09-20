@@ -42,12 +42,14 @@ public with sharing class ConvertDateToDatetimeFlowAction {
     @InvocableMethod
     public static List<Results> convertDateToDatetime(List<Requests> requestList) {
 
-        // Prepare the response to send back to the Flow
-        Results response = new Results();
+        // Prepare the responseWrapper to send back to the Flow
         List<Results> responseWrapper = new List<Results>();
 
         // Bulkify proccessing of multiple requests
         for (Requests req : requestList) {
+		
+            // Initalize the response for this loop
+            Results response = new Results();
 
             // Get Input Value(s)
             Date dateValue = req.dateValue;

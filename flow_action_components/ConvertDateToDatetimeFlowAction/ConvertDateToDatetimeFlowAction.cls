@@ -3,7 +3,10 @@
  * 
  * Created By:  Eric Smith
  * 
- * Version 1.0  07/22/20    Eric Smith
+ * Version 1.1      09/21/23    Christopher Strecker
+ *                  Moved Result initialization inside of the Request loop to fix bulkification
+ * 
+ * Version 1.0      07/22/20    Eric Smith
  * 
  * This Flow Action can be used to convert a Date value to a Datetime value.  
  * The default time of the return value is 12:00am.

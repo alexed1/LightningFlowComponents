@@ -36,7 +36,7 @@ public with sharing class RetrieveFlowMetadataTest {
         }
 
         @isTest
-        static  void canExtractFlowMetadata() {
+        static  void canPerformInitialParsing() {
 
             //List<RetrieveFlowMetadata.Request> requestList = new List<RetrieveFlowMetadata.Request>();
            // RetrieveFlowMetadata.Request request = new RetrieveFlowMetadata.Request();
@@ -47,11 +47,11 @@ public with sharing class RetrieveFlowMetadataTest {
            // List<RetrieveFlowMetadata.Result> resultsList = RetrieveFlowMetadata.execute(requestList);
             //System.debug('resultsList[0].flowMetadata = ' + resultsList[0].flowMetadata );
 
-            String flowMetadata = RetrieveFlowMetadata.ExtractFlowMetadata(rawXMLREsponse);
+            Dom.XmlNode flowMetadata = RetrieveFlowMetadata.PerformInitialParsingOnQueryResult(rawXMLREsponse);
             System.debug('returning flowmetadata is:' + flowMetadata);
             System.debug('comparison string is:' + getExtractedString());
 
-            System.assert(flowMetadata == getExtractedString());
+            System.assert('flowMetadata' == getExtractedString()); //replace 'flowMetadata' with appropriate'
         }
 
         static String getExtractedString() {

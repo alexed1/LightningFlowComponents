@@ -13,9 +13,9 @@ public with sharing class RetrieveFlowMetadata {
                 Result curResult = new Result();
                 
                 String flowName = curRequest.flowName;
-                String url = baseUrl +                                   '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
-                //String url = 'callout:' + curRequest.namedCredential + '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
-                //String url = 'callout:' + curRequest.namedCredential;
+                String url = baseUrl +                                   '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata,+LatestVersionId+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
+                //String url = 'callout:' + curRequest.namedCredential + '/services/data/v58.0/tooling/query?q=Select+Id,+LatestVersion.metadata,+LatestVersionId+FROM+FlowDefinition+WHERE+developerName=\'' + flowName + '\''; 
+            
 
                 if(!Test.isRunningTest()) {
                     response = Send(url );  
@@ -27,7 +27,8 @@ public with sharing class RetrieveFlowMetadata {
                     Dom.XmlNode recordsNode = PerformInitialParsingOnQueryResult(responseBody);
                     String flowMetadata  = ExtractFlowMetadata(recordsNode); 
                     //recordsNode  = ExtractRecordId(recordsNode);
-                    curResult.recordId = ExtractRecordId(recordsNode);
+                    curResult.flowDefinitionId = ExtractValue(recordsNode, 'Id');
+                    curResult.flowLatestVersionid = ExtractValue(recordsNode, 'LatestVersionId');
                     System.debug('flow metadata = ' + flowMetadata);
                     curResult.flowMetadata = flowMetadata;
                 } else {               
@@ -79,12 +80,12 @@ public with sharing class RetrieveFlowMetadata {
             return recordsNode;
         }
 
-        public static String ExtractRecordId (Dom.XmlNode recordsNode) {
-            Dom.XmlNode recordIdNode = getChildrenByName(recordsNode, 'Id')[0];
-            String id = recordIdNode.getText();
-            System.debug ('recordIdNode is: ' + recordIdNode);
-            System.debug ('id is: ' + id);
-            return id;
+        public static String ExtractValue (Dom.XmlNode recordsNode, String name) {
+            Dom.XmlNode recordIdNode = getChildrenByName(recordsNode, name)[0];
+            return recordIdNode.getText();
+            //System.debug ('recordIdNode is: ' + recordIdNode);
+            //System.debug ('id is: ' + id);
+            
         }
         public static String ExtractFlowMetadata(Dom.XmlNode recordsNode) {
            
@@ -208,9 +209,10 @@ public with sharing class RetrieveFlowMetadata {
             public String flowMetadata;
 
             @InvocableVariable
-            public String recordId; //the id of the Flow Definition
+            public String flowDefinitionId; //the id of the Flow Definition
  
-     
+            @InvocableVariable
+            public String flowLatestVersionid;  
         }
         public class InvocableActionException extends Exception{}
     }

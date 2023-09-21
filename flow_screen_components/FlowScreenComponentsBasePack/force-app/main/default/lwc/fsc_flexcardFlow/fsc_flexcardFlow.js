@@ -109,6 +109,12 @@ export default class FlexcardFlow extends LightningElement {
         }
     }
 
+    renderedCallback() {
+        if (this.value != null && !this.allowMultiSelect && this.isClickable) {
+            this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
+        }
+    }
+
     connectedCallback() {
         console.log('entering connectedCallback');
         if (!this.records) {

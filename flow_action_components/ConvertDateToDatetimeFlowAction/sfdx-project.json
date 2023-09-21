@@ -1,0 +1,20 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "ConvertDateToDatetimeFlowAction",
+      "versionName": "ver 0.1",
+      "versionDescription": "",
+      "versionNumber": "0.1.0.NEXT"
+    }
+  ],
+  "name": "ConvertDateToDatetimeFlowAction by Eric Smith",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "58.0",
+  "packageAliases": {
+    "ConvertDateToDatetimeFlowAction": "0Ho5G000000oLlhSAE",
+    "ConvertDateToDatetimeFlowAction@1.0.1": "04t5G000004XZh0QAG"
+  }
+}

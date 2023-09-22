@@ -59,32 +59,18 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <screens>
-        <name>Lightning_Styling_for_Flows_Formula_Fields_for_Choices_and_Datatables</name>
-        <label>Lightning Styling for Flows: Formula Fields for Choices and Datatables</label>
+        <name>Lightning_Styling_for_Flows_Example</name>
+        <label>Lightning Styling for Flows Example</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>134</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
-        <showFooter>true</showFooter>
-        <showHeader>true</showHeader>
-    </screens>
-    <screens>
-        <name>Section_Title_Examples</name>
-        <label>Section Title Examples</label>
-        <locationX>176</locationX>
-        <locationY>158</locationY>
-        <allowBack>true</allowBack>
-        <allowFinish>true</allowFinish>
-        <allowPause>true</allowPause>
-        <connector>
-            <targetReference>Lightning_Styling_for_Flows_Formula_Fields_for_Choices_and_Datatables</targetReference>
-        </connector>
         <fields>
-            <name>Section_Title_Examples_Section1</name>
+            <name>Lightning_Styling_for_Flows_Example_Section1</name>
             <fieldType>RegionContainer</fieldType>
             <fields>
-                <name>Section_Title_Examples_Section1_Column1</name>
+                <name>Lightning_Styling_for_Flows_Example_Section1_Column1</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>BoxSectionHeaderDisplay</name>
@@ -125,7 +111,7 @@
                 <isRequired>false</isRequired>
             </fields>
             <fields>
-                <name>Section_Title_Examples_Section1_Column2</name>
+                <name>Lightning_Styling_for_Flows_Example_Section1_Column2</name>
                 <fieldType>Region</fieldType>
                 <fields>
                     <name>NotificationsSectionHeaderDisplay</name>
@@ -190,7 +176,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Section_Title_Examples</targetReference>
+            <targetReference>Lightning_Styling_for_Flows_Example</targetReference>
         </connector>
     </start>
     <status>Active</status>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <environments>Default</environments>
+    <formulas>
+        <name>DarkBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge_Dark},&apos;_BADGE_LABEL_&apos;,&apos;Dark Badge&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>DefaultBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge},&apos;_BADGE_LABEL_&apos;,&apos;Default&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>ErrorBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge_Error},&apos;_BADGE_LABEL_&apos;,&apos;Error Badge&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>htmlEncodedCode</name>
+        <dataType>String</dataType>
+        <expression>HTMLENCODE(&apos;&lt;html&gt;&apos;) &amp; BR() &amp; HTMLENCODE(&apos;&lt;body&gt;&lt;/body&gt;&apos;) &amp; BR() &amp; HTMLENCODE(&apos;&lt;/html&gt;&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>LightBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge_Light},&apos;_BADGE_LABEL_&apos;,&apos;Light Badge&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>SuccessBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge_Success},&apos;_BADGE_LABEL_&apos;,&apos;Success Badge&apos;)</expression>
+    </formulas>
+    <formulas>
+        <name>WarningBadge</name>
+        <dataType>String</dataType>
+        <expression>SUBSTITUTE({!$Label.FlowStyles_Badge_Warning},&apos;_BADGE_LABEL_&apos;,&apos;Warning Badge&apos;)</expression>
+    </formulas>
+    <interviewLabel>Lightning Styling for Flows {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lightning Styling for Flows</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <screens>
+        <name>Lightning_Styling_for_Flows_Formula_Fields_for_Choices_and_Datatables</name>
+        <label>Lightning Styling for Flows: Formula Fields for Choices and Datatables</label>
+        <locationX>176</locationX>
+        <locationY>278</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Section_Title_Examples</name>
+        <label>Section Title Examples</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Lightning_Styling_for_Flows_Formula_Fields_for_Choices_and_Datatables</targetReference>
+        </connector>
+        <fields>
+            <name>Section_Title_Examples_Section1</name>
+            <fieldType>RegionContainer</fieldType>
+            <fields>
+                <name>Section_Title_Examples_Section1_Column1</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>BoxSectionHeaderDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_SectionTitle}&lt;/p&gt;&lt;p&gt;Box Styles&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>PlainBoxDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Box}&lt;/p&gt;&lt;p&gt;Here is some content that is contained within a plain box!&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Good for visually separating help or guidance text&lt;/li&gt;&lt;li&gt;You can still control the content from the Display Text rich text editor&lt;/li&gt;&lt;li&gt;This means you can &lt;strong&gt;still&lt;/strong&gt; &lt;em&gt;apply&lt;/em&gt; &lt;u&gt;rich&lt;/u&gt; text formatting! &lt;/li&gt;&lt;/ul&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>ShadedBox_Display</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Box_Shaded}&lt;/p&gt;&lt;p&gt;Example of a box that uses a light shade theme&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>InfoBoxDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Box_Info}&lt;/p&gt;&lt;p&gt;Example of a box that uses a darker &quot;info&quot; shade theme&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>DarkBlueBoxDisplay</name>
+                    <fieldText>&lt;p&gt;&lt;span style=&quot;background-color: rgb(255, 255, 255); color: rgb(68, 68, 68);&quot;&gt;{!$Label.FlowStyles_Box_DarkBlue}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Example of a box that uses a dark blue &quot;inverse&quot; theme&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>AlternateDarkBlueBoxDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Box_DarkBlueAlt}&lt;/p&gt;&lt;p&gt;Example of a box that uses an alternative blue &quot;inverse&quot; theme&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <fields>
+                <name>Section_Title_Examples_Section1_Column2</name>
+                <fieldType>Region</fieldType>
+                <fields>
+                    <name>NotificationsSectionHeaderDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_SectionTitle}&lt;/p&gt;&lt;p&gt;Notification Styles&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>SuccessNotificationDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Notification_Success}&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;Success Notification!&lt;/strong&gt; Draw attention to a successful action&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>WarningNotificationDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Notification_Warning}&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;Warning Notification!&lt;/strong&gt; Draw attention to a warning&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>ErrorNotificationDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Notification_Error}&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;strong&gt;Error Notification!&lt;/strong&gt; Draw attention to an error message&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>AddSpaceDisplay</name>
+                    <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>BadgesSectionHeaderDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_SectionTitle}&lt;/p&gt;&lt;p&gt;Badges&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <fields>
+                    <name>HelloBadgeDisplay</name>
+                    <fieldText>&lt;p&gt;{!$Label.FlowStyles_Box}&lt;/p&gt;&lt;p&gt;{!DefaultBadge}{!DarkBadge}{!LightBadge}{!SuccessBadge}{!WarningBadge}{!ErrorBadge}&lt;/p&gt;</fieldText>
+                    <fieldType>DisplayText</fieldType>
+                </fields>
+                <inputParameters>
+                    <name>width</name>
+                    <value>
+                        <stringValue>6</stringValue>
+                    </value>
+                </inputParameters>
+                <isRequired>false</isRequired>
+            </fields>
+            <isRequired>false</isRequired>
+            <regionContainerType>SectionWithoutHeader</regionContainerType>
+        </fields>
+        <fields>
+            <name>ButtonLinksSectionHeaderDisplay</name>
+            <fieldText>&lt;p&gt;{!$Label.FlowStyles_SectionTitle}&lt;/p&gt;&lt;p&gt;Links that look like Buttons&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <fields>
+            <name>ButtonsDisplay</name>
+            <fieldText>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;{!NeutralButtonLink} {!BrandButtonLink} {!OutlineBrandButtonLink}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Section_Title_Examples</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>blockQuote</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;blockquote&gt;Hello my darling, hello my baby, hello my blockquote tag&lt;/blockquote&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>BrandButtonLink</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;a class=&quot;slds-button slds-button_brand&quot; href=&quot;#&quot;&gt;Brand Button Link&lt;/a&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>formattedCode</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;code&gt;{!htmlEncodedCode}&lt;/code&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>NeutralButtonLink</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;a class=&quot;slds-button slds-button_neutral&quot; href=&quot;#&quot;&gt;Neutral Button Link&lt;/a&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>OutlineBrandButtonLink</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;a class=&quot;slds-button slds-button_outline-brand&quot; href=&quot;#&quot;&gt;Outline Brand Button Link&lt;/a&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>SectionStyle</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;div class=&quot;slds-section slds-section__title slds-theme_shade slds-p-horizontal_small&quot;&gt;</text>
+    </textTemplates>
+</Flow>

@@ -37,3 +37,5 @@ Each of the values in the CustomLabels file are prefixed with `FlowStyles` to ma
 
 ## Example Flow
 There is an example flow that demonstrates how to use this technique called `Lightning_Styling_For_Flows`
+
+![Screenshot of Example Screen Flow that incorporates the Lightning Design System](images/example-flow.png)

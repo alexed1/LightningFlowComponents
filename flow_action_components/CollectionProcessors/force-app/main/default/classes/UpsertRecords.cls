@@ -1,7 +1,7 @@
 public with sharing class UpsertRecords {
   
   
-        @InvocableMethod
+        @InvocableMethod(label='Upsert Records [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
         public static List<Results> execute (List<Request> requestList) {
             System.debug('entering Upsert');
             List<Results> responseWrapper = new List<Results>();

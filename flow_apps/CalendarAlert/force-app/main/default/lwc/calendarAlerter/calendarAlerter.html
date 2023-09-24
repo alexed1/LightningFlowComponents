@@ -5,8 +5,9 @@
                 <c-tracked-event-display key={item.id} item={item} oneventupdated={updateEvent}></c-tracked-event-display>
                 
             </template>
-
-            <div>{displayStatusText}</div>
+            <template if:true={errorText}>
+                <div>An error has occurred: {errorText}</div>
+            </template> <div>{displayStatusText}</div>
             
     </lightning-card>
 </template>

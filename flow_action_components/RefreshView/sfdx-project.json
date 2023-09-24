@@ -1,0 +1,18 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "Refresh View",
+      "versionName": "Basic",
+      "versionNumber": "1.0.0.NEXT"
+    }
+  ],
+  "name": "Refresh View",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "53.0",
+  "packageAliases": {
+    "Refresh View": "0Ho8d000000wk4FCAQ"
+  }
+}

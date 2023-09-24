@@ -188,6 +188,7 @@ export default class soqlQueryBuilder extends LightningElement {
     dispatchSoqlChangeEvent() {
         const attributeChangeEvent = new FlowAttributeChangeEvent('queryString', this._queryString);
         this.dispatchEvent(attributeChangeEvent);
+        this.dispatchEvent(new CustomEvent('change', { detail: this._queryString }));
     }
 
     clearSelectedValues() {

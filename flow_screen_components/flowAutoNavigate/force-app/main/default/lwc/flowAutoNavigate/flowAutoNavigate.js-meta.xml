@@ -7,10 +7,13 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen" category="Input">
-            <property name="maxTime" label="Maximum Time" type="String" default="0:1:30:0" role="inputOnly" description="This is the maximum time before the flow auto advances the format should be 'H:M:S:MS'" />
+            <property name="maxTime" label="Maximum Time" type="String" default="0:1:5:0" role="inputOnly" description="This is the maximum time before the flow auto advances the format should be 'H:M:S:MS'" />
             <property name="showTimer" label="Show Timer" type="Boolean" default="false" role="inputOnly" description="When marked as true this displays the timer on the screen" />
             <property name="showReset" label="Show Timer Reset" type="Boolean" default="false" role="inputOnly" description="When marked as true this displays a timer reset on the screen" />
             <property name="timerLabel" label="Message to Users" type="String" role="inputOnly" description="Display a message to users about the timer" />
-        </targetConfig>
+            <property name="showLoader" label="Show Loader" type="Boolean" default="false" role="inputOnly" description="When marked as true this displays a loader on the screen" />
+            <!--Output to indicate the auto navigate component triggered-->
+            <property name="triggered" type="Boolean" role="outputOnly" /> 
+            </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

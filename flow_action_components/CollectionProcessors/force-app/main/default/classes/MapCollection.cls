@@ -1,5 +1,5 @@
 global with sharing class MapCollection {
-    @InvocableMethod
+    @InvocableMethod(label='Map Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> mapCollection(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
 
@@ -75,6 +75,11 @@ global with sharing class MapCollection {
             }
         } else if (fieldType == 'JSON') {
             obj.put(fieldName, JSON.serialize(fieldValue));
+            
+        } else if (fieldType == 'Time')
+        {
+            string[] timeParts = fieldValue.split(':');
+            obj.put(fieldName, Time.newInstance(Integer.valueOf(timeParts[0]), Integer.valueOf(timeparts[1]), 0, 0));
         } else {
             obj.put(fieldName, fieldValue);
         }

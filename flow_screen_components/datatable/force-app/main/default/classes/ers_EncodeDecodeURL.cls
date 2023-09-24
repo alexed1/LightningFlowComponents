@@ -1,16 +1,26 @@
+/**
+ * @author Eric Smith
+ * @group DataTable
+ */
+@SuppressWarnings('PMD.ClassNamingConventions')
 public with sharing class ers_EncodeDecodeURL {
-
-    /* Flow Action */
-    @invocableMethod(label='URL Encode/Decode String' description='This Encodes or Decodes a string to handle spaces and other characters that are not allowed in urls')
+    /**
+     * @description       Flow Action
+     *
+     * @param requestList
+     * @return            `List<Results>`
+     */
+    @invocableMethod(
+        label='URL Encode/Decode String'
+        description='This Encodes or Decodes a string to handle spaces and other characters that are not allowed in urls'
+    )
     public static List<Results> decodeStringForURL(List<Requests> requestList) {
-
         /* Prepare Response */
         Results response = new Results();
         List<Results> responseWrapper = new List<Results>();
 
         /* Process Inputs */
         for (Requests req : requestList) {
-
             /* Get Input Values */
             String inputStr = req.inputStr;
             String curEncoding = req.curEncoding;
@@ -33,7 +43,9 @@ public with sharing class ers_EncodeDecodeURL {
         return responseWrapper;
     }
 
-    /* Input parameters for the Apex action */
+    /**
+     * Input parameters for the Apex action
+     */
     public class Requests {
         @invocableVariable(label='Input String')
         public String inputStr;
@@ -45,10 +57,11 @@ public with sharing class ers_EncodeDecodeURL {
         public Boolean encode = false;
     }
 
-    /* Output parameters of the Apex action */
+    /**
+     * Output parameters of the Apex actio
+     */
     public class Results {
         @invocableVariable(label='Output String')
         public String outputStr;
     }
-
 }

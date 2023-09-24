@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContinuationDiagnosticNode__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <externalId>false</externalId>
+    <inlineHelpText>If Continuation Node is marked true, lookup to the next Diagnostic Node this continuation node will lead to.</inlineHelpText>
+    <label>ContinuationDiagnosticNode</label>
+    <referenceTo>DiagnosticNode__c</referenceTo>
+    <relationshipLabel>DiagnosticNodes</relationshipLabel>
+    <relationshipName>ContinuationDiagnosticNodes</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

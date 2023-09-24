@@ -33,7 +33,7 @@ export default class recordDetailFSC extends LightningElement {
     @api columnsize = 2;
     @api suppressUnderline = false;
     @api boxclass='slds-box slds-theme_default';
-    
+    @api version;
 
     @track elementSize = 6;
     @track objectData;
@@ -53,7 +53,7 @@ export default class recordDetailFSC extends LightningElement {
     readOnlyFields = ['LastModifiedDate', 'LastModifiedById', 'LastViewedDate', 'LastReferencedDate', 'CreatedDate', 'CreatedById', 'SystemModstamp'];
 
     connectedCallback() {
-        this._recordId = '';
+        // this._recordId = '';
         this.cancelNavigationDirection = (this.flowNavigationOnCancelDirection.toLowerCase() === 'previous') ? 'back' : 'next';
         this.elementSize = this.columnsize? (12/this.columnsize) : 6;
     }

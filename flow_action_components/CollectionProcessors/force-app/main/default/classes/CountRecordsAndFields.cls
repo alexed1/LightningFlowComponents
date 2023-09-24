@@ -1,5 +1,5 @@
 global with sharing class CountRecordsAndFields {
-    @InvocableMethod
+    @InvocableMethod(label='Count Records & Fields [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> count(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

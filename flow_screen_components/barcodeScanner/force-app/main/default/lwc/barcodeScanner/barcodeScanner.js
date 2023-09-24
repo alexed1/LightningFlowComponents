@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 02-23-2023
+ * @last modified by  : Josh Dayment
+**/
 // barcodeScanner.js
 import { LightningElement,api } from 'lwc';
 import { FlowNavigationNextEvent } from 'lightning/flowSupport';
@@ -7,21 +14,97 @@ import { getBarcodeScanner } from 'lightning/mobileCapabilities';
 
 export default class BarcodeScanner extends LightningElement {
     myScanner;
+    sessionScanner;
     scanButtonDisabled = false;
+    scannedBarcodes;
     @api scannedBarcode = '';
     @api label;
     @api autoNavigate;
-    @api buttonLabel;
-    @api buttonIcon;
+    @api buttonLabel = 'Scan';
+    @api buttonIcon = 'utility:scan';
     @api scannerInstructions;
     @api availableActions = [];
-    // When component is initialized, detect whether to enable Scan button
+    @api scanContinuously;
+    @api allscannedBarcodes = [];
+    // When component is initialized, detect whether to enable Scan button and if it is single or continuous scan
     connectedCallback() {
+        if(this.scanContinuously){
+            this.sessionScanner = getBarcodeScanner();
+        }
+        else{
         this.myScanner = getBarcodeScanner();
         if (this.myScanner == null || !this.myScanner.isAvailable()) {
             this.scanButtonDisabled = true;
+        }}
+    }
+
+    beginScanning() {
+        // Reset scannedBarcodes before starting new scanning session
+        this.scannedBarcodes = [];
+
+        // Make sure BarcodeScanner is available before trying to use it
+        if (this.sessionScanner != null && this.sessionScanner.isAvailable()) {
+            const scanningOptions = {
+                barcodeTypes: [],
+                instructionText: 'Scan barcodes — Click ✖︎ when done',
+                successText: 'Successful scan.'
+            };
+            this.sessionScanner.beginCapture(scanningOptions)
+            .then((scannedBarcode) => {
+                this.processScannedBarcode(scannedBarcode);
+                this.continueScanning();
+            })
+            .catch((error) => {
+                this.processError(error);
+                this.sessionScanner.endCapture();
+            })
+        }
+        else {
+            console.log("BarcodeScanner unavailable. Non-mobile device?");
         }
     }
+    async continueScanning() {
+        // Pretend to do some work; see timing note below.
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        
+        this.sessionScanner.resumeCapture()
+        .then((scannedBarcode) => {
+            this.processScannedBarcode(scannedBarcode);
+            this.continueScanning();
+        })
+        .catch((error) => {
+            this.processError(error);
+            this.sessionScanner.endCapture();
+        })
+    }
+
+    processScannedBarcode(barcode) {
+        // Do something with the barcode scan value:
+        // - look up a record
+        // - create or update a record
+        // - parse data and put values into a form
+        // - and so on; this is YOUR code
+        console.log(JSON.stringify(barcode));
+        this.scannedBarcodes.push(barcode);
+        this.allscannedBarcodes.push(decodeURIComponent(barcode.value))
+    }
+
+    processError(error) {
+        // Check to see if user ended scanning
+        if (error.code == 'userDismissedScanner') {
+            console.log('User terminated scanning session via Cancel.');
+        }
+        else {
+            console.error(error);
+        }
+    }
+
+    get scannedBarcodesAsString() {
+        return this.scannedBarcodes.map(barcodeResult => {
+            return barcodeResult.value;
+        }).join('\n\n');
+    }
+
     handleBeginScanClick(event) {
         // Reset scannedBarcode to empty string before starting new scan
         this.scannedBarcode = '';
@@ -99,7 +182,7 @@ export default class BarcodeScanner extends LightningElement {
                 new ShowToastEvent({
                     title: 'Barcode Scanner Is Not Available',
                     message:
-                        'Try again from the Salesforce app on a mobile device.',
+                        'Try again from a supported app on a mobile device.',
                     variant: 'error'
                 })
             );

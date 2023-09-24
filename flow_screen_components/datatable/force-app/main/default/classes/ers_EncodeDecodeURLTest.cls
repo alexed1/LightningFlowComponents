@@ -1,9 +1,12 @@
+/**
+ * @author Eric Smith
+ * @group DataTable
+ */
+@SuppressWarnings('PMD.ClassNamingConventions')
 @isTest
 public with sharing class ers_EncodeDecodeURLTest {
-
     @isTest
     public static void testEncodeDecode() {
-
         string decoded = '2:{class: slds-theme_shade slds-theme_error}';
         string encoded = '2%3A%7Bclass%3A+slds-theme_shade+slds-theme_error%7D';
 
@@ -13,7 +16,9 @@ public with sharing class ers_EncodeDecodeURLTest {
         List<ers_EncodeDecodeURL.Requests> testDecodeRequestList = new List<ers_EncodeDecodeURL.Requests>();
         testRequest.inputStr = encoded;
         testDecodeRequestList.add(testRequest);
-        List<ers_EncodeDecodeURL.Results> testDecodeResponseList = ers_EncodeDecodeURL.decodeStringForURL(testDecodeRequestList);
+        List<ers_EncodeDecodeURL.Results> testDecodeResponseList = ers_EncodeDecodeURL.decodeStringForURL(
+            testDecodeRequestList
+        );
         System.assertEquals(decoded, testDecodeResponseList[0].outputStr);
 
         /* Encode */
@@ -21,8 +26,9 @@ public with sharing class ers_EncodeDecodeURLTest {
         testRequest.inputStr = decoded;
         testRequest.encode = true;
         testEncodeRequestList.add(testRequest);
-        List<ers_EncodeDecodeURL.Results> testEncodeResponseList = ers_EncodeDecodeURL.decodeStringForURL(testEncodeRequestList);
+        List<ers_EncodeDecodeURL.Results> testEncodeResponseList = ers_EncodeDecodeURL.decodeStringForURL(
+            testEncodeRequestList
+        );
         System.assertEquals(encoded, testEncodeResponseList[0].outputStr);
-
     }
 }

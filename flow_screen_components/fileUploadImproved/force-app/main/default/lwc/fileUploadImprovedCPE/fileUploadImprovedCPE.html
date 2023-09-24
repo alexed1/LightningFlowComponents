@@ -1,0 +1,81 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-20-2023
+  @last modified by  : Josh Dayment
+-->
+<template>
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Set Basic Configuration" banner-info={basicConfiguration}>
+    </c-fsc_flow-banner>
+
+    <c-fsc_flow-checkbox name="required" label={inputValues.required.label} checked={inputValues.cb_required.value}
+        oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+    <template if:true={isRequired}>
+        <c-fsc_flow-combobox name="requiredMessage" value={inputValues.requiredMessage.value}
+            builder-context-filter-type="String" label={inputValues.requiredMessage.label} 
+            onvaluechanged={handleFlowComboboxValueChange} automatic-output-variable={automaticOutputVariables}></c-fsc_flow-combobox>
+    </template>
+
+    <c-fsc_flow-checkbox name="allowMultiple" label={inputValues.allowMultiple.label}
+        checked={inputValues.cb_allowMultiple.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-combobox name="sessionKey" value={inputValues.sessionKey.value} builder-context-filter-type="String"
+        label={inputValues.sessionKey.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="label" value={inputValues.label.value} label={inputValues.label.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="recordId" value={inputValues.recordId.value}
+        label={inputValues.recordId.label} onvaluechanged={handleFlowComboboxValueChange} builder-context={builderContext} automatic-output-variable={automaticOutputVariables}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="acceptedFormats" value={inputValues.acceptedFormats.value}
+        builder-context-filter-type="String" label={inputValues.acceptedFormats.label}
+        onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="helpText" value={inputValues.helpText.value} builder-context-filter-type="String"
+        label={inputValues.helpText.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    
+
+    
+
+
+
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Advanced Features"
+        banner-info={advancedConfiguration}>
+    </c-fsc_flow-banner>
+
+    <c-fsc_pick-icon name="icon" mode="combobox" oniconselection={handlePickIcon} icon-name={inputValues.icon.value}>
+    </c-fsc_pick-icon>
+
+    <c-fsc_flow-combobox name="uploadedlabel" value={inputValues.uploadedlabel.value}
+        label={inputValues.uploadedlabel.label} builder-context-filter-type="String"
+        onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="overriddenFileName" value={inputValues.overriddenFileName.value}
+        label={inputValues.overriddenFileName.label} builder-context-filter-type="String"
+        onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-checkbox name="renderExistingFiles" label={inputValues.renderExistingFiles.label}
+        checked={inputValues.cb_renderExistingFiles.value} oncheckboxchanged={handleCheckboxChange}>
+    </c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox name="renderFilesBelow" label={inputValues.renderFilesBelow.label}
+        checked={inputValues.cb_renderFilesBelow.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox name="visibleToAllUsers" label={inputValues.visibleToAllUsers.label}
+        checked={inputValues.cb_visibleToAllUsers.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox name="embedExternally" label={inputValues.embedExternally.label}
+        checked={inputValues.cb_embedExternally.value} oncheckboxchanged={handleCheckboxChange} field-level-help={inputValues.embedExternally.helpText}></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox name="disableDelete" label={inputValues.disableDelete.label}
+        checked={inputValues.cb_disableDelete.value} oncheckboxchanged={handleCheckboxChange}></c-fsc_flow-checkbox>
+
+
+
+
+
+</template>

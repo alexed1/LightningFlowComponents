@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>52.0</apiVersion>
-    <description>Flow Picker FSC</description>
+    <description>Flow Picker FSC for FlowScreenComponentsBasePack (v1.7)</description>
     <isExposed>true</isExposed>
-    <masterLabel>Flow Picker FSC</masterLabel>
+    <masterLabel>Flow Picker</masterLabel>
     <targets>
         <target>lightning__FlowScreen</target>
         <target>lightning__RecordPage</target>

@@ -1,0 +1,28 @@
+<template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+    <template if:false={isLoading}>
+        <lightning-input
+            type="file"
+            label={inputLabel}
+            accept=".csv"
+            onchange={handleInputChange}
+        >
+        </lightning-input>
+        <lightning-layout-item class="slds-form-element__label" size="12">
+            <span class="slds-form-element__label">{uploadFileName}</span>
+            <span class="slds-form-element__label">{uploadFileStatus}</span>
+        </lightning-layout-item>
+        <template if:true={isError}>
+            <lightning-layout-item class="slds-form-element__label" size="12">
+                <div class="slds-box slds-theme_shade slds-theme_error">
+                    <p>
+                      <strong>{errorMessage}</strong>
+                    </p>
+                  </div>
+                <span class="slds-form-element__label is-error"></span>
+            </lightning-layout-item>
+        </template>
+    </template>
+</template>

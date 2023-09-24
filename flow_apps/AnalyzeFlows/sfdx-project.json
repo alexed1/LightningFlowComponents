@@ -1,0 +1,33 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "dependencies": [
+        {
+          "package": "FlowActionsBasePack@3.12.0-0"
+        },
+        {
+          "package": "FlowScreenComponentsBasePack@3.0.18-0"
+        }
+      ],
+      "package": "AnalyzeFlows",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "versionDescription": ""
+    }
+  ],
+  "name": "AnalyzeFlows",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "55.0",
+  "packageAliases": {
+    "FlowActionsBasePack": "04t4W000002vXUCQA2",
+    "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
+    "AnalyzeFlows": "0Ho5G0000008Od3SAE",
+    "FlowActionsBasePack@3.12.0-0": "04t8b000000mL43AAE",
+    "FlowScreenComponentsBasePack@3.0.18-0": "04t5G0000043xsbQAA",
+    "AnalyzeFlows@1.0.0": "04t5G0000043xt5QAA",
+    "AnalyzeFlows@1.0.1": "04t5G0000043xttQAA"
+  }
+}

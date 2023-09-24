@@ -1,0 +1,15 @@
+<template>
+        <div class={showHide}>
+        <canvas class="confettiCanvas" id="canvas" lwc:dom="manual"></canvas>
+        <lightning-button 
+            variant="Brand" 
+            label="Play Again"
+            onclick={handlePlayAgain}
+        ></lightning-button>
+        <lightning-formatted-rich-text
+            value={attempts}
+            style="color:#009EDF"
+            class="slds-m-left_xx-large"
+        ></lightning-formatted-rich-text>
+    </div>
+</template>

@@ -1,0 +1,20 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "Concentration",
+      "versionName": "ver 0.1",
+      "versionDescription": "",
+      "versionNumber": "0.1.0.NEXT"
+    }
+  ],
+  "name": "Concentration",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "57.0",
+  "packageAliases": {
+    "Concentration": "0Ho5G000000PB7DSAW",
+    "Concentration@1.0.0": "04t5G000004J7KNQA0"
+  }
+}

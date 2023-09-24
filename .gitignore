@@ -9,6 +9,7 @@
 **mdapi
 # Salesforce cache
 .sfdx/
+.sf/
 
 force-app/main/default/profiles
 
@@ -41,3 +42,4 @@ $RECYCLE.BIN/
 package-lock.json
 jsconfig.json
 .sf/config.json
+.pmdCache

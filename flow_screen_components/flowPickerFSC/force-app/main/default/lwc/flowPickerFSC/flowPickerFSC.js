@@ -1,5 +1,5 @@
 import {LightningElement, api, track, wire} from 'lwc';
-import getFlowNamesApex from '@salesforce/apex/usf.FlowListController.getFlowNamesApex';
+import getFlowNamesApex from '@salesforce/apex/usf3.FlowListController.getFlowNamesApex';
 import {FlowAttributeChangeEvent} from 'lightning/flowSupport';
 
 export default class flowPickerFSC extends LightningElement {
@@ -39,7 +39,8 @@ export default class flowPickerFSC extends LightningElement {
         }
         // Add filter for Search String
         if (this.searchString) {
-            filters['Label'] = ["\'%"+this.searchString+"%\'"];
+            // filters['Label'] = ["\'%"+this.searchString+"%\'"];
+            filters['Label'] = ['%'+this.searchString+'%'];         // v1.6
         }
         return JSON.stringify(filters);
     }

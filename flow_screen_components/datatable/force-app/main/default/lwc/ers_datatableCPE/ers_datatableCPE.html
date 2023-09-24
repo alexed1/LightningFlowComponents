@@ -148,11 +148,11 @@
                                 <div if:false={isFlowLoaded}>
                                     <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
                                 </div>
-                                <c-fsc_screen-flow width="100%" height={wizardHeight}
-                                    flow-name="Datatable_Configuration_Wizard4" name="uniqueName"
-                                    flow-params={wizardParams}
-                                    onflowstatuschange={handleFlowStatusChange}>
-                                </c-fsc_screen-flow>
+                                <lightning-flow
+                                    flow-api-name="Datatable_Configuration_Wizard5"
+                                    onstatuschange={handleFlowStatusChange}
+                                    flow-input-variables={wizardParams}
+                                ></lightning-flow>
                             </div>
 
                             <!-- Footer Section -->
@@ -249,6 +249,15 @@
         label={inputValues.showRecordCount.label} 
         checked={inputValues.cb_showRecordCount.value} 
         field-level-help={inputValues.showRecordCount.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+    
+    <c-fsc_flow-checkbox
+        disabled={disableSearchBarSelection}
+        name="select_isShowSearchBar"
+        label={inputValues.isShowSearchBar.label}
+        field-level-help={inputValues.isShowSearchBar.helpText}
+        checked={inputValues.cb_isShowSearchBar.value}
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox>
 
@@ -540,6 +549,19 @@
                 onvaluechanged={handleFlowComboboxValueChange}
                 automatic-output-variables={automaticOutputVariables}>
             </c-fsc_flow-combobox>
+            
+            <!-- Column Flexes -->
+            <c-fsc_flow-combobox 
+                name="select_columnFlexes" 
+                label={inputValues.columnFlexes.label}
+                value={inputValues.columnFlexes.value} 
+                value-type={inputValues.columnFlexes.valueDataType}
+                field-level-help={inputValues.columnFlexes.helpText}
+                builder-context-filter-collection-boolean={inputValues.columnFlexes.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
 
             <!-- Column Wraps -->
             <c-fsc_flow-combobox 
@@ -553,7 +575,7 @@
                 onvaluechanged={handleFlowComboboxValueChange}
                 automatic-output-variables={automaticOutputVariables}>
             </c-fsc_flow-combobox>
-            
+
             <!-- Special Column CellAttribs -->
             <c-fsc_flow-combobox 
                 name="select_columnCellAttribs" 

@@ -2,14 +2,14 @@
 * @Description        : Compares two record collections and returns records that are the shared and records that are unique to each collection. 
 * 						Specify the Ids you want to compare for each sObject and the action will take care of the rest.
 * @Author             : Adam White
-* @Last Modified By   : adamwhiteuva@gmail.com
-* @Last Modified On   : 4/14/2022 
+* @Last Modified By   : keenan.langston@gmail.com
+* @Last Modified On   : 09-09-2022
 * @Modification Log   : 
 * Ver      Date            Author      		      		  Modification
 * 1.0      1/26/2021      adamwhiteuva@gmail.com      Initial release
 **/
 global without sharing class FindCommonAndUniqueRecords {
-    @InvocableMethod(label='Get Common and Unique Records'description='Extract and return two collections comparing a source and target collection'category='Util')
+    @InvocableMethod(label='Get Common and Unique Records [USF Collection Processor]' description='Extract and return two collections comparing a source and target collection' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Result> compareRecords(List<Request> requestList) {
         
         List<Result> outputResults =  new List<Result>();
@@ -117,6 +117,11 @@ global without sharing class FindCommonAndUniqueRecords {
                         }
                     }
 
+                    if(result.sourceUniqueRecordCollection.size() == 0 && request.emptyListsReturnNull) result.sourceUniqueRecordCollection = null;
+                    if(result.sourceCommonRecordCollection.size() == 0 && request.emptyListsReturnNull) result.sourceCommonRecordCollection = null;
+                    if(result.targetUniqueRecordCollection.size() == 0 && request.emptyListsReturnNull) result.targetUniqueRecordCollection = null;
+                    if(result.targetCommonRecordCollection.size() == 0 && request.emptyListsReturnNull) result.targetCommonRecordCollection = null;
+
                     //add this result to the bulkified results (invocable specific)
                     outputResults.add(result);
                 }
@@ -137,6 +142,9 @@ global without sharing class FindCommonAndUniqueRecords {
         
         @InvocableVariable(description='The Target Record Unique ID (Field API Name) you want to compare against the Source Unique ID' required=true)
         global String targetUniqueID;            
+
+        @InvocableVariable(description='When false, empty Lists will be returned as is. When true, empty Lists will be returned as null.')
+        global boolean emptyListsReturnNull=false;
     }
     
     global class Result {

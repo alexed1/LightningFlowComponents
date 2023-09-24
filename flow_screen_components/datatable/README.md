@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.11 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)   
-[Version 4.0.11 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)
+[Version 4.1.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)   
+[Version 4.1.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -70,8 +70,55 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes
+# Release Notes 
  
+## 06/14/23 -  Eric Smith -    Version 4.1.4 
+**Bug Fixes:**  
+-   Fixed issue with tables showing as empty if row selection was disabled 
+
+ ## 06/13/23 -  Eric Smith -    Version 4.1.3 
+**Bug Fixes:**  
+-   Fixed issue where Datatables fed by DataFetcher were defaulting to single row selection only 
+  
+ ## 06/04/23 -  Eric Smith -    Version 4.1.1 
+**Updates:** 
+-   Added reactivity for Apex-Defind objects (Pre-Selected Rows are not reactive) 
+-   Made the placeholder for 'Enter search term ...' a translatable label 
+ 
+**Bug Fixes:**  
+-   Fixed reactivity for DataFetcher on initial load of screen 
+ 
+## 05/21/23 -  Eric Smith -    Version 4.1.0 
+**Updates:** 
+-   Added new Column Wizard header action to allow a column width to have a fixed or floating width
+-       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space
+-       This gives you more control over columns that you specifically want to be narrow or wide while allowing the other columns to find the best fit
+-       This option can be selected individually or can be applied to all columns at once
+-   Added a new Search Bar option
+-       The Datatable will support both a Search Bar and individual Column Filters
+-       NOTE: When the Search Bar is enabled, the Header is required and will appear slightly larger than a table without a Search Bar
+-       NOTE: When the Search Bar is enabled, the border can't be disabled and it will appear with rounded rather than square corners
+-   When the number of displayed records are filtered and/or reduced based on a search term, the header will show both the filtered count and the total record count
+-   Updated maximum record count from 1000 to 2000 
+-   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
+-       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection
+-       NOTE: If debug mode is turned on, there will be no sample records in the Configuration Wizard datatable
+-       NOTE: Requires that the Datatable Configuration Wizard flow be Activated on installation
+-   Added a Clear All Filters button that is displayed when any column filters are applied
+-       NOTE: This can be disabled by selecting the Hide Clear Selection/Filter Buttons option in the Table Behavior section
+-   Display spinner instead of empty table message while processing the records
+-   Updated API versions to 57.0 
+  
+**Bug Fixes:**  
+-   Fixed invalid format error when entering a filter value for a Name column when it was shown as a hyperlink 
+-   Addressed occasional DST issues by changing the default date prepended to Time fields to be the current date 
+  
+ ## 11/02/22 -  Eric Smith -    Version 4.0.12
+**Bug Fixes:**  
+-   Fixed .slice is not a function error  
+-   PR #1229 - fix regression bug with disableNavigateNext and suppressBottomBar attributes (JonTronki)
+-   Fixed issue caused by the Winter 23 Patch 12 where a table with a Date column would cause an error if a single row was selected or any record was edited
+  
 ## 09/09/22 -  Eric Smith -     Version 4.0.11
 **Bug Fixes:**  
 -   Fixed Version # display in CPE  

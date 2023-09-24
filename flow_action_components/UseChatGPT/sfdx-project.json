@@ -1,0 +1,19 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "package": "UseChatGPT",
+      "versionName": "version",
+      "versionNumber": "0.1.0.NEXT",
+      "default": true
+    }
+  ],
+  "name": "UseChatGPT",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "56.0",
+  "packageAliases": {
+    "UseChatGPT": "0Ho5G000000Kyz9SAC",
+    "UseChatGPT@1.0.0": "04t5G000004C6tzQAC"
+  }
+}

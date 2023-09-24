@@ -4,7 +4,7 @@
   <!--All types-->
   <aura:attribute name="type" type="String" required="true" default="text" />
   <aura:attribute name="label" type="String" required="true" default="Label" />
-  <aura:attribute name="value" type="String" default='' />
+  <aura:attribute name="value" type="String" />
   <aura:attribute name="class" type="String" />
   <aura:attribute name="name" type="String" />
   <aura:attribute name="readonly" type="String" />

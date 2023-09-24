@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#909BA4</headerColor>
+        <logo>BulkDeleteImage</logo>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>This App provides an enhanced List View for Flows and Process Builders as well as the ability to select an individual Flow or Process Builder or a full List View to then select multiple inactive versions to be deleted.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Flow &amp; PB List View and Batch Delete V2</label>
+    <navType>Standard</navType>
+    <tabs>Flow_PB_List_View_and_Batch_Delete_V2</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Flow_PB_List_View_and_Batch_Delete_V2_UtilityBar</utilityBar>
+</CustomApplication>

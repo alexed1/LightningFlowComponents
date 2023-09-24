@@ -1,0 +1,15 @@
+<template>
+    <div class="slds-box slds-p-around_small">
+        <lightning-card title="Select Flow and Version">
+            <c-fsc_flow-picker-3 label={flowSelectorLabel} onlightning__flowattributechange={changeFlowName} selected-flow-api-name={selectedFlowAPIName}></c-fsc_flow-picker-3>
+            <lightning-radio-group 
+                    if:true={flowVersionOptionList.length}
+                    label="Select Version"
+                    options={radioGroupOptionList}
+                    value={flowOption}
+                    type="radio"
+                    onchange={changeFlowOption}></lightning-radio-group>
+            <lightning-combobox if:true={flowVersionOptionList.length} options={flowVersionOptionList} value={selectedFlowAPIVersion} onchange={changeFlowVersion} disabled={flowPickerDisabled}></lightning-combobox>
+        </lightning-card>
+    </div>
+</template>

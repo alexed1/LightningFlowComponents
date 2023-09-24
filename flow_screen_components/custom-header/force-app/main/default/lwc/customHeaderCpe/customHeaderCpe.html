@@ -1,8 +1,8 @@
 <template>
     <lightning-radio-group class='displayModeClass' name="select_displayMode" label={inputValues.displayMode.label}
         options={displayChoicesAsOptions} value={inputValues.displayMode.value} type="radio"
-        onchange={handleValueChange} field-level-help={inputValues.displayMode.helpText}
-        placeholder={inputValues.displayMode.placeholderText}></lightning-radio-group>
+        onchange={handleValueChange}
+    </lightning-radio-group>
 
     <lightning-input type="number" label={inputValues.orderNumber.label} name="select_orderNumber"
         value={inputValues.orderNumber.value} onchange={handleValueChange}

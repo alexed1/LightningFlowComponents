@@ -1,31 +1,43 @@
 <!-- barcodeScanner.html -->
 <template>
-    <!-- After a barcode is successfully scanned, 
+    <template lwc:if={scanContinuously}>
+
+
+        <!-- Static help text -->
+        <div class="slds-text-align_center slds-text-color_weak slds-m-vertical_large">
+
+            <p>{scannerInstructions}</p>
+        </div>
+
+        <!-- Scan button, always enabled -->
+        <div class="slds-align_absolute-center slds-m-vertical_large">
+            <lightning-button variant="brand" class="slds-var-m-left_x-small" icon-name={buttonIcon} label={buttonLabel}
+                title="Start scanning barcodes, until there are no more barcodes to scan"
+                onclick={beginScanning}></lightning-button>
+        </div>
+    </template>
+    <template if:false={scanContinuously}>
+        <!-- After a barcode is successfully scanned, 
          its value is displayed here -->
-    <div
-        class="slds-var-m-vertical_large slds-var-p-vertical_medium 
+        <div class="slds-var-m-vertical_large slds-var-p-vertical_medium 
             slds-text-align_center slds-border_top slds-border_bottom">
-        {label}
-        <span class="slds-text-heading_small">{scannedBarcode}</span>
-    </div>
+            {label}
+            <span class="slds-text-heading_small">{scannedBarcode}</span>
+        </div>
 
-    <!-- This is static help text -->
-    <div class="slds-align_absolute-center slds-text-align_center 
+        <!-- This is static help text -->
+        <div class="slds-align_absolute-center slds-text-align_center 
             slds-text-color_weak">
-        {scannerInstructions}
-    </div>
+            {scannerInstructions}
+        </div>
 
-    <!-- The click-to-scan button;
+        <!-- The click-to-scan button;
        Disabled if BarcodeScanner isn't available -->
-    <div class="slds-text-align_center">
-        <lightning-button
-            variant="brand"
-            class="slds-var-m-left_x-small"
-            disabled={scanButtonDisabled}
-            icon-name={buttonIcon}
-            label={buttonLabel}
-            title="Open a camera view and look for a barcode to scan"
-            onclick={handleBeginScanClick}>
-        </lightning-button>
-    </div>
+        <div class="slds-text-align_center">
+            <lightning-button variant="brand" class="slds-var-m-left_x-small" disabled={scanButtonDisabled}
+                icon-name={buttonIcon} label={buttonLabel} title="Open a camera view and look for a barcode to scan"
+                onclick={handleBeginScanClick}>
+            </lightning-button>
+        </div>
+    </template>
 </template>

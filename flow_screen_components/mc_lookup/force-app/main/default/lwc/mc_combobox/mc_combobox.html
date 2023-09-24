@@ -1,0 +1,169 @@
+<template>
+    <div style={publicStyle} class={publicClass}>
+        <div class={computedFormElementClass}>
+            <label>
+                <template if:true={showLabel}>
+                    <p class="slds-form-element__label">
+                        <abbr class="slds-required" title="required" if:true={required}>*</abbr>
+                        {computedLabel}
+                        <template if:true={fieldLevelHelp}>
+                            <lightning-helptext class="slds-m-left_x-small customIcon" content={fieldLevelHelp}></lightning-helptext>
+                        </template>
+                    </p>
+                </template>
+            </label>
+            <div class="slds-form-element__control">
+                <div class={computedComboboxContainerClass} onkeydown={handleSearchKeydown}>
+                    <div class={computedComboboxClass}>
+                        <template if:true={showSelectedValue}>
+
+                            <div class={computedSelectedValueClass} role="none">
+                                <span class="slds-icon_container slds-combobox__input-entity-icon">
+                                    <lightning-icon icon-name={selectedOption.icon} size="x-small"></lightning-icon>
+                                </span>
+                                <button type="button" class={computedFauxInputClass} aria-expanded="false"
+                                    aria-haspopup="listbox" onclick={handleSelectedValueClick} onblur={handleSearchBlur}>
+                                    <span class="slds-truncate">{selectedOption.label}</span>
+                                </button>
+                                <!-- <template if:true={isBaseVariant}>
+                                    <span
+                                        class="slds-icon_container slds-icon-utility-down slds-input__icon slds-input__icon_right">
+                                        <lightning-icon icon-name="utility:down" size="x-small"></lightning-icon>
+                                    </span>
+                                </template>
+                                <template if:false={isBaseVariant}> -->
+                                    <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                                        title="Clear the text input" onclick={handleClearClick}>
+                                        <lightning-icon icon-name="utility:close" size="x-small"
+                                            class="slds-button__icon">
+                                        </lightning-icon>
+                                    </button>
+                                <!-- </template> -->
+                            </div>
+                        </template>
+                        <template if:false={showSelectedValue}>
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+                                role="none">
+
+                                <template if:true={leftIcon}>
+                                    <lightning-icon icon-name={leftIcon} size="xx-small"
+                                        class="slds-icon slds-input__icon slds-input__icon_left"
+                                        aria-hidden="true"></lightning-icon>
+                                </template>
+
+
+
+                                <input type="text" placeholder={placeholder} onclick={handleSearchClick}
+                                    onfocus={handleSearchFocus} onblur={handleSearchBlur} oninput={handleSearchChange}
+                                    onkeydown={handleSearchKeydown} disabled={isInputDisabled} class="slds-input"
+                                    required />
+
+                                <template if:true={isLoading}>
+                                    <div role="status"
+                                        class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </template>
+                                <template if:true={rightIcon}>
+                                    <lightning-icon icon-name={rightIcon} size="xx-small"
+                                        class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default slds-text-link_reset"
+                                        aria-hidden="true"></lightning-icon>
+                                </template>
+                            </div>
+                            <div class="slds-form-element__help">{errorMessage}</div>
+                        </template>
+                        <div class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid" role="listbox"
+                            onscroll={handleListboxScroll}>
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                <template for:each={options} for:item="option">
+                                    <template if:false={option.hidden}>
+                                        <li role="presentation" class="slds-listbox__item" key={option.value}
+                                            title={option.label} data-index={option.index}
+                                            onmousedown={handleOptionSelect} onmouseenter={handleOptionMouseenter}
+                                            onmouseleave={handleOptionMouseleave}>
+                                            <template if:false={option.isGrouping}>
+                                                <div class={option.comboboxClass} data-has-focus={option.hasFocus}
+                                                    role="option">
+                                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                                        <template if:true={option.icon}>
+                                                            <lightning-icon icon-name={option.icon} size={iconSize}>
+                                                            </lightning-icon>
+                                                        </template>
+                                                    </span>
+
+                                                    <span class="slds-media__body">
+                                                        <span
+                                                            class="slds-listbox__option-text slds-listbox__option-text_entity">{option.label}</span>
+                                                        <span
+                                                            class="slds-listbox__option-meta slds-listbox__option-meta_entity">
+                                                            {option.sublabel}</span>
+                                                    </span>
+                                                    <lightning-icon icon-name={option.rightIcon} size="x-small">
+                                                    </lightning-icon>
+                                                </div>
+                                            </template>
+                                            <template if:true={option.isGrouping}>
+                                                <div class="slds-media slds-media_center slds-listbox__option slds-listbox__option_has-meta slds-listbox__option_plain"
+                                                    role="presentation">
+                                                    <h3 class={groupingTextClass} role="presentation">
+                                                        {option.label}</h3>
+                                                </div>
+                                            </template>
+                                        </li>
+                                    </template>
+                                </template>
+                                <template if:true={noMatchFound}>
+                                    <li role="presentation" class="slds-listbox__item">
+                                        <span
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta slds-has-focus"
+                                            role="option">
+                                            <span class="slds-media__body">
+                                                <span class="slds-truncate">
+                                                    {noMatchString}
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+                <template if:true={showPills}>
+                    <div class={computedListboxSelectionGroupClass}>
+                        <ul class="slds-listbox slds-listbox_horizontal" role="listbox">
+                            <template for:each={selectedOptions} for:item="selectedValue" for:index="index">
+                                <li class="slds-listbox-item slds-p-around_xxx-small" key={selectedValue.value}>
+                                    <lightning-pill label={selectedValue.label} data-index={index}
+                                        onremove={handleOptionUnselect} title={selectedValue.value}
+                                        name={selectedValue.value}>
+                                        <template if:true={selectedValue.icon}>
+                                            <lightning-icon icon-name={selectedValue.icon} size={iconSize}>
+                                            </lightning-icon>
+                                        </template>
+                                    </lightning-pill>
+                                </li>
+                            </template>
+                            <template if:true={pillsNotFittingCount}>
+                                <template if:true={pillContainerIsExpanded}>
+                                    <button class="slds-button" onclick={handleCollapsePillContainer}>Collapse</button>
+                                </template>
+                                <template if:false={pillContainerIsExpanded}>
+                                    <span class="slds-listbox-toggle">
+                                        <button class="slds-button"
+                                            onclick={handleExpandPillContainer}>+{pillsNotFittingCount}
+                                            more</button>
+                                    </span>
+                                </template>
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+
+            </div>
+        </div>
+    </div>
+</template>

@@ -2,6 +2,7 @@ const flowComboboxDefaults = {
     stringDataType: 'String',
     referenceDataType: 'reference',
     defaultKeyPrefix: 'flowCombobox-',
+    defaultGlobalVariableKeyPrefix: 'flowCombobox-globalVariable-',
     recordLookupsType:'recordLookups',
     recordCreatesType:'recordCreates',
     recordUpdatesType:'recordUpdates',

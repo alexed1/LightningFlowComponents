@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 07-06-2023
+ * @last modified by  : Josh Dayment
+**/
 import { LightningElement, api, track, wire } from 'lwc';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent, FlowNavigationFinishEvent } from 'lightning/flowSupport';
@@ -9,7 +16,20 @@ export default class FlexcardFlow extends LightningElement {
     @api value;
     @api buttonLabel;
     @api selectedLabel;
-    @api records;
+    _records;
+    @api
+    get records() {
+        return this._records || [];
+    }
+
+    set records(data = []) {
+        if (Array.isArray(data)) {
+            this._records = data;
+            this.processRecords();
+        } else {
+            this._records = [];
+        }
+    }
     @api visibleFieldNames;
     @api visibleFlowNames;
     @api src;
@@ -22,6 +42,7 @@ export default class FlexcardFlow extends LightningElement {
     }
     @api cb_isClickable;
     @api headerStyle = 'font-weight: bold;';
+    @api contentStyle;
     @api
     get allowMultiSelect() {
         return (this.cb_allowMultiSelect == 'CB_TRUE') ? true : false;
@@ -46,6 +67,7 @@ export default class FlexcardFlow extends LightningElement {
     @track fieldHTML = '';
     @track recordLayoutData = {};
     @track objectInfo;
+    @api recordDataString;
     @track recs = [];
     @api
     get fields() {
@@ -73,6 +95,11 @@ export default class FlexcardFlow extends LightningElement {
         if (!Number.isNaN(value))
             this.cardSize = value;
     }
+    @api cardHeight = 300;
+    @api cardWidth = 300;
+    @api fieldVariant;
+    @api fieldClass;
+
     curRecord;
     @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
     recordInfo({ data, error }) {
@@ -82,41 +109,57 @@ export default class FlexcardFlow extends LightningElement {
         }
     }
 
+    renderedCallback() {
+        if (this.value != null && !this.allowMultiSelect && this.isClickable) {
+            this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
+        }
+    }
+
     connectedCallback() {
         console.log('entering connectedCallback');
         if (!this.records) {
             throw new Exception("Flexcard component received a null when it expected a collection of records. Make sure you have set the Object API Name in both locations and specified a Card Data Record Collection");
         }
-        console.log('records are: ' + JSON.stringify(this.records));
+        //console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
-       
-    }  
-   
+
+    }
+
+
+
+    processRecords() {
+
+        this.recs = JSON.parse(JSON.stringify(this._records));
+
+
+    }
+
     retrieveFieldLabels(item, index) {
         console.log('retrieving field label for field named: ' + item);
         //call apex to get field labels for fields
     }
 
     appendFieldInfo(item, index) {
-        console.log('entering append...fieldName is: ' + item);
-        console.log('and record is: ' + JSON.stringify(this.curRecord));
+        //console.log('entering append...fieldName is: ' + item);
+        //console.log('and record is: ' + JSON.stringify(this.curRecord));
         //console.log('this is: ' + this);
         this.fieldHTML = this.fieldHTML + ' <h2> ' + item + ' </h2>';
-        console.log('fieldHTML is now: ' + this.fieldHTML);
+        //console.log('fieldHTML is now: ' + this.fieldHTML);
     }
 
     get isDataLoaded() {
         return this.objectInfo && this.records.length > 0;
     }
 
-    get isFlowsLoaded() {        
-            return this.flows && this.flows.length > 0;        
+    get isFlowsLoaded() {
+        return this.flows && this.flows.length > 0;
     }
 
     //set card width and height
 
     get sizeWidth() {
-        return 'width: ' + this.cardSize + 'px ; height: ' + this.cardSize + 'px';
+        return 'width: ' + this.cardWidth + 'px ; height: ' + this.cardHeight + 'px';
+
     }
 
     get showIcon() {
@@ -124,7 +167,7 @@ export default class FlexcardFlow extends LightningElement {
     }
 
     handleChange(event) {
-        console.log(event.target.checked);
+        //console.log(event.target.checked);
         if (event.target.checked == true) {
             this.recordValue = event.target.value;
             this.selectedRecordIds.push(this.recordValue);
@@ -136,13 +179,12 @@ export default class FlexcardFlow extends LightningElement {
     }
 
     handleClick(event) {
-
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
-                console.log(this.value = this.selectedRecord);
+                this.value = this.selectedRecord;
             }
-            
+
         });
 
         // navigate to the next screen or (if last element) terminate the flow

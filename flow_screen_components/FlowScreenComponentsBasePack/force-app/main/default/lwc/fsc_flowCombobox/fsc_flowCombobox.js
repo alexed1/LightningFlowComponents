@@ -8,6 +8,8 @@ import {
     removeFormatting,
     flowComboboxDefaults
 } from 'c/fsc_flowComboboxUtils';
+import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';
+
 const OUTPUTS_FROM_LABEL = 'Outputs from '; 
 export default class FlowCombobox extends LightningElement {
     @api name;
@@ -28,6 +30,7 @@ export default class FlowCombobox extends LightningElement {
     @track isDataSelected = false;
     @track _selectedObjectType;
     @track _selectedFieldPath;
+    @track _RecordObject; // Used when a start element is in the flow
     @track hasError = false;
     isMenuOpen = false;
     isDataModified = false;
@@ -107,6 +110,7 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'actionCalls', label: 'ACTIONS', dataType: flowComboboxDefaults.actionType}, //fallback
         // {apiName: 'actionCalls.outputParameters', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         // {apiName: 'apexPluginCalls', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
+        {apiName: 'globalVariables', label: 'Global Variables', dataType: flowComboboxDefaults.stringDataType}, // Not within Flow Metadata API but compiled to allow Global Variables to be used
     ];
 
     _staticOptions
@@ -171,6 +175,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     set automaticOutputVariables(value) {
+        // console.log('setting automaticOutputVariables to ' + JSON.stringify(value));
         this._automaticOutputVariables = value;
     }
 
@@ -293,12 +298,20 @@ export default class FlowCombobox extends LightningElement {
     }
 
     generateMergeFieldsFromBuilderContext(builderContext) {
+        // console.log('generateMergeFieldsFromBuilderContext: ', JSON.stringify(builderContext));
         let optionsByType = {};
         let key = 0;
 
         this.getTypes().forEach(curType => {
-            let typeParts = curType.split('.');
+            let typeParts = curType.split('.'); // e.g. 'screen.fields'
             let typeOptions = [];
+
+            // Does builderContext have a "start" property
+            // If so we need to parse the "object" value
+            if (builderContext?.start) {
+                this._RecordObject = builderContext.start.object;
+            }
+
 
             if (typeParts.length && builderContext[typeParts[0]]) {
                 let objectToExamine = builderContext;
@@ -319,6 +332,7 @@ export default class FlowCombobox extends LightningElement {
                             let allObjectToExamine = [];
                             objectToExamine.forEach(curObjToExam => {
                                 if (curObjToExam.storeOutputAutomatically) {
+                                    // console.log('curObjToExam: ', JSON.stringify(curObjToExam));
                                     //TODO: Uncomment when it is clear how to get output parameters from actions and flow screens
                                     // allObjectToExamine.push({
                                     //     varApiName: curObjToExam.name,
@@ -364,6 +378,125 @@ export default class FlowCombobox extends LightningElement {
                 console.log(curType + ' is undefined');
             }
         });
+
+        // Add Global Variables
+        let globalVariables = {
+            "globalVariables":[
+            {
+                type: 'String',
+                label: '$Flow',
+                value: '$Flow',      
+                isCollection: false,
+                objectType: 'objectType',
+                optionIcon: "utility:system_and_global_variable",
+                isObject: false,
+                globalVariable: true,
+                displayType: "String",
+                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                flowType: "reference",
+                storeOutputAutomatically: false
+            },
+            {
+                type: 'String',
+                label: '$User',
+                value: '$User',      
+                isCollection: false,
+                objectType: 'objectType',
+                optionIcon: "utility:system_and_global_variable",
+                isObject: false,
+                globalVariable: true,
+                displayType: "String",
+                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                flowType: "reference",
+                storeOutputAutomatically: false
+            },
+            {
+                type: 'String',
+                label: '$UserRole',
+                value: '$UserRole',      
+                isCollection: false,
+                objectType: 'objectType',
+                optionIcon: "utility:system_and_global_variable",
+                isObject: false,
+                globalVariable: true,
+                displayType: "String",
+                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                flowType: "reference",
+                storeOutputAutomatically: false
+            },
+            {
+                type: 'String',
+                label: '$Profile',
+                value: '$Profile',      
+                isCollection: false,
+                objectType: 'objectType',
+                optionIcon: "utility:system_and_global_variable",
+                isObject: false,
+                globalVariable: true,
+                displayType: "String",
+                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                flowType: "reference",
+                storeOutputAutomatically: false
+            },
+            {
+                type: 'String',
+                label: '$System',
+                value: '$System',  
+                isCollection: false,
+                objectType: 'objectType',
+                optionIcon: "utility:system_and_global_variable",
+                isObject: false,
+                globalVariable: true,
+                displayType: "String",
+                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                flowType: "reference",
+                storeOutputAutomatically: false
+            }
+        ]};
+
+        // If _RecordObject is defined, add it to the global variables
+        if (this._RecordObject) {
+            globalVariables.globalVariables.push(
+                {
+                    type: 'String',
+                    label: '$Record',
+                    value: '$Record',
+                    isCollection: false,
+                    objectType: 'objectType',
+                    optionIcon: "utility:system_and_global_variable",
+                    isObject: false,
+                    globalVariable: true,
+                    displayType: "String",
+                    key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                    flowType: "reference",
+                    storeOutputAutomatically: false
+                },                
+                {
+                    type: 'String',
+                    label: '$Record__Prior',
+                    value: '$Record__Prior',
+                    isCollection: false,
+                    objectType: 'objectType',
+                    optionIcon: "utility:system_and_global_variable",
+                    isObject: false,
+                    globalVariable: true,
+                    displayType: "String",
+                    key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + key++,
+                    flowType: "reference",
+                    storeOutputAutomatically: false
+                }
+            );
+        }
+
+        // Add globalFlowVariablev object to optionsByType object
+        let globalVariablesType = this.getTypeDescriptor('globalVariables').label;
+        if (optionsByType[globalVariablesType]) {
+            optionsByType[globalVariablesType] = [...optionsByType[globalVariablesType], ...globalVariables.globalVariables];
+        } else {
+            optionsByType[globalVariablesType] = globalVariables.globalVariables;
+        }
+        // console.log('optionsByType', optionsByType)
+
         let options = [];
         let allOutputTypes = Object.keys(optionsByType);
 
@@ -376,6 +509,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     getOptionLines(objectArray, labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor) {
+        // console.log('getOptionLines', JSON.stringify(objectArray), labelField, valueField, typeField, isCollectionField, objectTypeField, typeDescriptor);
         let typeOptions = [];
         objectArray.forEach(curObject => {
             let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType);
@@ -386,7 +520,7 @@ export default class FlowCombobox extends LightningElement {
             typeOptions.push(this.generateOptionLine(
                 curDataType,
                 label,//curObject[labelField] ? curObject[labelField] : curObject[valueField],
-                typeDescriptor.dataType === flowComboboxDefaults.screenComponentType ? curObject[valueField].split('.')[1] : curObject[valueField],
+                typeDescriptor.dataType === flowComboboxDefaults.screenComponentType ? curObject[valueField].split('.')[1] : curObject[valueField], // For the split "Child_Case_Creation_Form.Text_Area" would be "Text_Area" only for screen components
                 typeDescriptor.apiName === flowComboboxDefaults.recordLookupsType ? !curIsCollection : !!curIsCollection,
                 curObject[objectTypeField],
                 this.getIconNameByType(curDataType),
@@ -427,6 +561,7 @@ export default class FlowCombobox extends LightningElement {
             objectType: objectType,
             optionIcon: optionIcon,
             isObject: isObject,
+            globalVariable: false,
             displayType: displayType,
             key: key,
             flowType: flowType ? flowType : flowComboboxDefaults.referenceDataType,
@@ -456,6 +591,299 @@ export default class FlowCombobox extends LightningElement {
                 this.closeOptionDialog();
             }
         }
+    }
+
+    handleOpenGlobalVariable(event) {
+        // console.log('handleOpenGlobalVariable', JSON.stringify(event.currentTarget.dataset));
+        this.doOpenGlobalVariable(event, event.currentTarget.dataset.optionValue);
+    }
+
+    doOpenGlobalVariable(event, value) {
+        event.stopPropagation();
+        // console.log('doOpenGlobalVariable', value);
+        let tempOptions = [];
+        let objectName = '';
+
+        // Switch Statement to handle different types of global variables
+        switch (value) {
+            case '$Flow':
+                tempOptions.push(
+                    {
+                        type: 'String',
+                        label: '$Flow.ActiveStages',
+                        value: '$Flow.ActiveStages',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'String', 
+                        label: '$Flow.CurrentStage',
+                        value: '$Flow.CurrentStage',
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'Date',
+                        label: '$Flow.CurrentDate',
+                        value: '$Flow.CurrentDate',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "Date",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'DateTime',
+                        label: '$Flow.CurrentDateTime',
+                        value: '$Flow.CurrentDateTime',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "DateTime",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'String',
+                        label: '$Flow.CurrentRecord',
+                        value: '$Flow.CurrentRecord',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'String',
+                        label: '$Flow.FaultMessage',
+                        value: '$Flow.FaultMessage',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'String',
+                        label: '$Flow.InterviewGuid',
+                        value: '$Flow.InterviewGuid',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    },
+                    {
+                        type: 'Time',
+                        label: '$Flow.InterviewStartTime',
+                        value: '$Flow.InterviewStartTime',      
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "Time",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    }
+                )
+            break;
+            case '$User':
+                // Get Fields from User
+                objectName = 'User';
+                getObjectFields({objectName: objectName})
+                .then(result => {
+                    // console.log('result', result);
+                    let fields = this.shallowCloneArray(result);
+                    fields.forEach(field => {
+                        tempOptions.push({
+                            type: field.type,
+                            label: field.label,
+                            value: field.name,
+                            isCollection: false,
+                            objectType: 'objectType',
+                            optionIcon: "utility:system_and_global_variable",
+                            isObject: false,
+                            globalVariable: false,
+                            displayType: "String",
+                            key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                            flowType: 'refrence',
+                            storeOutputAutomatically: false
+                        });
+                    });
+                    // Set the Options
+                    this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+                })
+                break;
+            case '$System':
+                // Get Fields from System
+                tempOptions.push(
+                    {
+                        type: 'String',
+                        label: '$System.OriginDateTime',
+                        value: '$System.OriginDateTime',
+                        isCollection: false,
+                        objectType: 'objectType',
+                        optionIcon: "utility:system_and_global_variable",
+                        isObject: false,
+                        globalVariable: false,
+                        displayType: "String",
+                        key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                        flowType: "reference",
+                        storeOutputAutomatically: false
+                    }
+                );
+                break;
+            case '$Profile':
+                // Get Fields from Profile
+                objectName = 'Profile';
+                getObjectFields({objectName: objectName})
+                .then(result => {
+                    // console.log('result', result);
+                    let fields = this.shallowCloneArray(result);
+                    fields.forEach(field => {
+                        tempOptions.push({
+                            type: field.type,
+                            label: field.label,
+                            value: field.name,
+                            isCollection: false,
+                            objectType: 'objectType',
+                            optionIcon: "utility:system_and_global_variable",
+                            isObject: false,
+                            globalVariable: false,
+                            displayType: "String",
+                            key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                            flowType: 'refrence',
+                            storeOutputAutomatically: false
+                        });
+                    });
+                    // Set the Options
+                    this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+                })
+                break;
+            case '$UserRole':
+                // Get Fields from UserRole
+                objectName = 'UserRole';
+                getObjectFields({objectName: objectName})
+                .then(result => {
+                    // console.log('result', result);
+                    let fields = this.shallowCloneArray(result);
+                    fields.forEach(field => {
+                        tempOptions.push({
+                            type: field.type,
+                            label: field.label,
+                            value: field.name,
+                            isCollection: false,
+                            objectType: 'objectType',
+                            optionIcon: "utility:system_and_global_variable",
+                            isObject: false,
+                            globalVariable: false,
+                            displayType: "String",
+                            key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                            flowType: 'refrence',
+                            storeOutputAutomatically: false
+                        });
+                    });
+                    // Set the Options
+                    this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+                })
+                break;
+            case '$Record':
+                // Get Fields from Record
+                objectName = this._RecordObject;
+                getObjectFields({objectName: objectName})
+                .then(result => {
+                    // console.log('result', result);
+                    let fields = this.shallowCloneArray(result);
+                    fields.forEach(field => {
+                        tempOptions.push({
+                            type: field.type,
+                            label: field.label,
+                            value: field.name,
+                            isCollection: false,
+                            objectType: 'objectType',
+                            optionIcon: "utility:system_and_global_variable",
+                            isObject: false,
+                            globalVariable: false,
+                            displayType: "String",
+                            key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                            flowType: 'refrence',
+                            storeOutputAutomatically: false
+                        });
+                    });
+                    // Set the Options
+                    this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+                })                
+                break;
+            case '$Record__Prior':
+                    // Get Fields from Record
+                    objectName = this._RecordObject;
+                    getObjectFields({objectName: objectName})
+                    .then(result => {
+                        // console.log('result', result);
+                        let fields = this.shallowCloneArray(result);
+                        fields.forEach(field => {
+                            tempOptions.push({
+                                type: field.type,
+                                label: field.label,
+                                value: field.name,
+                                isCollection: false,
+                                objectType: 'objectType',
+                                optionIcon: "utility:system_and_global_variable",
+                                isObject: false,
+                                globalVariable: false,
+                                displayType: "String",
+                                key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
+                                flowType: 'refrence',
+                                storeOutputAutomatically: false
+                            });
+                        });
+                        // Set the Options
+                        this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+                    })                
+                    break;
+
+            default:
+                return null;
+        }
+
+        // Set the Options
+        this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
+
     }
 
     doOpenObject(event, value, objectType) {
@@ -573,6 +1001,7 @@ export default class FlowCombobox extends LightningElement {
 
     processOptions(searchString) {
         let searchLC = '';
+        let allowBack = false;
 
         if (searchString) {
             let searchParts = searchString.split('.');
@@ -714,6 +1143,11 @@ export default class FlowCombobox extends LightningElement {
             } else {
                 this._dataType = flowComboboxDefaults.stringDataType;
             }
+
+            // checkValidity on valueInput
+            if ( !valueInput.checkValidity() ) {
+                this.hasError = true;
+            }
         }
     }
 
@@ -735,7 +1169,7 @@ export default class FlowCombobox extends LightningElement {
     get formElementClass() {
         let resultClass = 'slds-form-element';
         if (this.hasError) {
-            resultClass += ' slds-has-error';
+            resultClass += ' slds-has-error slds-m-bottom_medium';
         }
         return resultClass;
     }
@@ -763,6 +1197,17 @@ export default class FlowCombobox extends LightningElement {
             this.dispatchValueChangedEvent();
             this.isDataModified = false;
         }
+    }
+
+    shallowCloneArray(arrayToClone) {
+        if (!Array.isArray(arrayToClone))
+            return null;
+
+        let newArray = [];
+        for (let el of arrayToClone) {
+            newArray.push(Object.assign({}, el));
+        }
+        return newArray;
     }
 
 }

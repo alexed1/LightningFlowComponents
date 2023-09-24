@@ -1,5 +1,5 @@
 global with sharing class RemoveRecordInCollection {
-    @InvocableMethod
+    @InvocableMethod(label='Remove Record in Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> removeRecordByIndex(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
 

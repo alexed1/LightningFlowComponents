@@ -4,7 +4,7 @@ private class SearchUtilsTest {
     static final List<String> TYPES_TO_SEARCH = new List<String>{
             'User', 'Queue'
     };
-    static final String TEST_RECORD_NAME = 'testrecordname@test.te';
+    static final String TEST_RECORD_NAME = 'testrecordname@test.te1111';
 
     @testSetup
     static void setup() {

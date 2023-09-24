@@ -1,5 +1,5 @@
 global with sharing class AddOrInsertRecord {
-    @InvocableMethod
+    @InvocableMethod(label='Add or Insert Record [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> addOrInsertRecord(List<Requests> requestList) {
         List<Results> responseWrapper = new List<Results>();
         for (Requests curRequest : requestList) {

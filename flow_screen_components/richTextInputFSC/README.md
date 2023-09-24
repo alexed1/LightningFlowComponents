@@ -2,6 +2,7 @@
 
 https://unofficialsf.com/rich-text-input-flow-screen-component/
 
+Note: another version of rich text input, with a different set of controls, is available here: https://unofficialsf.com/text-area-plus/
 
 # inputRichTextFSC
 Rich Text enhancements for Flows
@@ -19,6 +20,12 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 1)  Default function is regular rich text input field.  To enable advanced features set enableAdvancedTools to true.
 2)  Setting label provides a field label for the rich text input.
 3)  Rich Text input/output is provided through the value attribute.
+##### Configure the default Rich Text Features in Flow:
+1)  By default, all rich text features (called formats) like bold, italic, image etc. are enabled.
+2)  Optionally, specify the exact formats you want to allow by providing a comma-separated list with formats to the "Enabled Formats" attribute. Example: bold, image
+3)  Optionally, disable certain categories by providing a comma-separated list with categories to the "Disabled Categories" attribute. Example: INSERT_CONTENT, ALIGN_TEXT
+4)  The complete list of formats and categories can be accessed in the Input Rich Text documentation on:
+https://developer.salesforce.com/docs/component-library/bundle/lightning-input-rich-text/documentation
 ##### Replace Text with Suggested Terms:
 1)  If autoReplaceMap is populated, then a button is shown to user.
 2)  Use autoReplaceMap to set up key:value pairs in JSON.  Example: {"Test":"GreatTest™"}
@@ -33,15 +40,17 @@ IMPORTANT:  Use enabledAdvancedTools = true input attribute if you want to lever
 2)  If warnOnly is not set when characterLimit is on, then the Flow Next/Finish cannot be used until resolved.
 
 |Parameter	               |I	 |O	     |Information 
-|--------------------------|-----|-------|----------------------------------------------------------------------------------------------------------------------------------|
-|**enableAdvancedTools**   |X    |       |Boolean.  Set to true if you want to use enhanced rich text.  Default is false (regular input component)                          |
-|**autoReplaceMap**	       |X	 |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )                                                               |
-|**disallowedSymbols**	   |X	 |       |Comma-separated list of words to block.  Example: /,@,*                                                                           |
-|**disallowedWords**	   |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst                                                                 |
-|**warnOnly**	           |X	 |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.                  |
-|**characterLimit**	       |X	 |	     |Integer.  Set character limit.  This will enable character count and limit, and if warnOnly is not true, then will block next.    |
-|**value**	           	   |X	 |X	     |Input and output Rich Text that you’ll be editing                                                                                 |
-|**label**                 |X    |X      |Input to provide field-level label if desired                                                                                     |
+|--------------------------|-----|-------|----------------------------------------------------------------------------------------------------------------------------------------|
+|**enabledFormats**        |X    |       |An optional comma-seperated list of allowed formats. By default, the list is computed based on enabled categories. Example: bold, image |
+|**disabledCategories**    |X    |       |An optional comma-separated list of button categories to remove from the toolbar. Example: INSERT_CONTENT, ALIGN_TEXT                   |
+|**enableAdvancedTools**   |X    |       |Boolean.  Set to true if you want to use enhanced rich text.  Default is false (regular input component)                                |
+|**autoReplaceMap**	       |X	 |       |JSON formatted key:value map.  (example => {"Test": "GreatTest™"} )                                                                     |
+|**disallowedSymbols**	   |X	 |       |Comma-separated list of words to block.  Example: /,@,*                                                                                 |
+|**disallowedWords**	   |X    |	     |Comma-separated list of words to block.  Example: bad,worse,worst                                                                       |
+|**warnOnly**	           |X	 |	     |Boolean.  Set to True if you want to allow Next even where disallowed Symbol or Word remains.  Default is false.                        |
+|**characterLimit**	       |X	 |	     |Integer.  Set character limit.  This will enable character count and limit, and if warnOnly is not true, then will block next.          |
+|**value**	           	   |X	 |X	     |Input and output Rich Text that you’ll be editing                                                                                       |
+|**label**                 |X    |X      |Input to provide field-level label if desired                                                                                           |
 
 
 ### User Instructions:

@@ -6,6 +6,8 @@ import Quickchoice_Images from '@salesforce/resourceUrl/fsc_Quickchoice_Images';
 /* eslint-disable no-alert */
 /* eslint-disable no-console */
 
+const CB_TRUE = 'CB_TRUE';
+
 export default class QuickChoiceFSC extends LightningElement {
 
     bottomPadding = 'slds-p-bottom_x-small';
@@ -14,12 +16,40 @@ export default class QuickChoiceFSC extends LightningElement {
     availableActions = [];
 
     @api masterLabel;
-    @api choiceLabels = [];
-    @api choiceValues = []; //string collection
+
+    @api helpText;
+    get showHelpText() {
+        return (this.helpText?.length > 0) ? "slds-show" : "slds-hide";
+    }
+
+    @api 
+    get choiceLabels() {
+        return this._choiceLabels;
+    }
+    set choiceLabels(value) {
+        this._choiceLabels = value;
+        this._handleChoiceCollections();
+    }
+    _choiceLabels = [];
+
+    @api 
+    get choiceValues() {
+        return this._choiceValues;
+    }
+    set choiceValues(value) {
+        this._choiceValues = value;
+        this._handleChoiceCollections();
+    }
+    _choiceValues = [];
 
     @api displayMode; //Picklist, Radio, Card (3 different selection types) - Visual is equivalent to Card
 
     @api numberOfColumns; //for Visual Pickers only, 1(default) or 2
+
+    @api richTextFlagString; //Show Visual Card descriptions as RichText if value = RICHTEXT
+    get showAsRichText() {
+        return this.richTextFlagString == 'RICHTEXT';
+    }
 
     //-------------For inputMode = Picklist
     @api allowNoneToBeChosen; //For picklist field only
@@ -29,7 +59,31 @@ export default class QuickChoiceFSC extends LightningElement {
     @api sortList; //used for picklist fields
 
     _controllingPicklistValue;
+    _controllingCheckboxValue;
+    controllingValue;
     priorControllingValue = null;
+    picklistFieldDetails;
+    isControlledByCheckbox = false;
+
+    @api
+    get dependentPicklist() {
+        return (this.cb_dependentPicklist == CB_TRUE) ? true : false;
+    }
+    @api cb_dependentPicklist;
+
+    @api
+    get controllingCheckboxValue() {
+        return this._controllingCheckboxValue;
+    }
+
+    set controllingCheckboxValue(value) {
+        this._controllingCheckboxValue = value;
+        this.controllingValue = value;
+        if (value != this.priorControllingValue) {
+            this.priorControllingValue = value;
+            this.setPicklistSelections(this.picklistFieldDetails);
+        }
+    }
 
     @api
     get controllingPicklistValue() {
@@ -38,19 +92,29 @@ export default class QuickChoiceFSC extends LightningElement {
 
     set controllingPicklistValue(value) {
         this._controllingPicklistValue = value;
+        this.controllingValue = value;
         if (value != this.priorControllingValue) {
             this.priorControllingValue = value;
-            this._selectedValue = null;
-            this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+            this.setPicklistSelections(this.picklistFieldDetails);
         }
     }
 
     //-------------For inputMode = Visual Text Box (Card)
-    @api choiceIcons = [];
+    @api 
+    get choiceIcons() {
+        return this._choiceIcons;
+    }
+    set choiceIcons(value) {
+        this._choiceIcons = value;
+        this._handleChoiceCollections();
+    }
+    _choiceIcons = [];
+
     @api includeIcons;
     @api iconSize;
     @api navOnSelect;
     @api isResponsive;
+    @api isSameHeight;
 
     //-------------For displayMode = Picklist or Radio
     @api style_width = 320;
@@ -72,11 +136,11 @@ export default class QuickChoiceFSC extends LightningElement {
     set staticChoices(choices) {
         console.log(this.masterLabel + ": ", 'setting staticChoices to '+ JSON.stringify(choices));
         this._staticChoices = choices;
-        this.choiceValues = [];
-        this.choiceLabels = [];
+        this._choiceValues = [];
+        this._choiceLabels = [];
         for (let choice of choices) {
-            this.choiceValues.push(choice.value);
-            this.choiceLabels.push(choice.label);        
+            this._choiceValues.push(choice.value);
+            this._choiceLabels.push(choice.label);        
         }
     }
     @track _staticChoices = [];
@@ -127,8 +191,9 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get showPicklist() {
-        // show if not controlled or if controlled (that there is a value for the controlling field & there are available picklist values based on the controlling field value) 
-        return (!this._isControlled || (this._controllingPicklistValue != null && this._picklistOptions.length > 0));
+        // Show if not controlled or if controlled that there are available picklist values
+        this._controllingPicklistValue
+        return (!this._isControlled || this._picklistOptions.length > 0 || this.isControlledByCheckbox);
     }
 
     set showPicklist(value) {
@@ -144,7 +209,8 @@ export default class QuickChoiceFSC extends LightningElement {
         this_isControlled = value;
     }
 
-    @api get value() {
+    @api 
+    get value() {
         return this._selectedValue;
     }
 
@@ -196,51 +262,13 @@ export default class QuickChoiceFSC extends LightningElement {
     })
     picklistValues({error, data}) {
         if (data) {
-            console.log(this.masterLabel + ": ", "gtPicklistValues returned data", data);
-
-            this._picklistOptions = [];
-            this._allValues = [];
-            this._allLabels = [];
-            if (this.allowNoneToBeChosen)
-                this._picklistOptions.push({label: "--None--", value: "None"});
-
-            this._isControlled = false;
-            let controllingIndex;
-            if (Object.keys(data.controllerValues).length > 0) {
-                this._isControlled = true;
-                controllingIndex = data.controllerValues[this._controllingPicklistValue];
-            }
-
-            // Picklist values
-            data.values.forEach(key => {
-                if (!this._isControlled || key.validFor.includes(controllingIndex)) {
-                    this._picklistOptions.push({
-                        label: key.label,
-                        value: key.value
-                    });
-                    this._allLabels.push(key.label);
-                    this._allValues.push(key.value);
-                }
-            });
-
-            // Sort Picklist Values
-            this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
-
-            console.log(this.masterLabel + ": ", "displayMode is" + this.displayMode);
-
-            if (this.inputMode === "Picklist Field") {
-                this.setPicklistOptions();
-            }
-            if (this._allValues && this._allValues.length) {
-                this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
-                this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
-            }
-
+            console.log(this.masterLabel + ": ", "getPicklistValues returned data", data);
+            this.setPicklistSelections(data);
+            this.picklistFieldDetails = data;
         } else if (error) {
             this.error = JSON.stringify(error);
             console.log(this.masterLabel + ": ", "getPicklistValues wire service returned error: " + this.error);
         }
-
     }
 
     get calculatedObjectAndFieldName() {
@@ -254,24 +282,52 @@ export default class QuickChoiceFSC extends LightningElement {
         return undefined;
     }
 
-    get gridClass() {
-        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center slds-grid_vertical-stretch ' : 'slds-form-element__control ') + this.bottomPadding;
-    }
+    // Process available selections for the picklist
+    setPicklistSelections(data) {
 
-    get gridStyle() {
-        return this.dualColumns ? 'width: auto' : '';
-    }
+        this._picklistOptions = [];
+        this._allValues = [];
+        this._allLabels = [];
+        if (this.allowNoneToBeChosen) {
+            this._picklistOptions.push({label: "--None--", value: "None"});
+        }
 
-    get columnClass() {
-        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2 paddingFix' : 'slds-visual-picker slds-visual-picker_vertical';
-    }
+        // Set isControlled only if a controlling value was provided and there are available controller values
+        this._isControlled = false;
+        let controllingIndex;
+        if (Object.keys(data.controllerValues).length > 0) {
+            this._isControlled = true;
+            this._showPicklist = true;
+            this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
+            if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
+                this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
+            }
+            controllingIndex = data.controllerValues[this.controllingValue];
+        }
 
-    get cardSize() {
-        return (this.dualColumns || !this.isResponsive) ? 'min-height: calc(25vh - 8rem); width: auto !important' : 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
-    }
+        // Picklist values
+        data.values.forEach(key => {
+            if (!this._isControlled || key.validFor.includes(controllingIndex)) {
+                this._picklistOptions.push({
+                    label: key.label,
+                    value: key.value
+                });
+                this._allLabels.push(key.label);
+                this._allValues.push(key.value);
+            }
+        });
 
-    get responsiveSize() {
-        return (this.dualColumns || !this.isResponsive) ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
+        // Sort Picklist Values
+        this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
+
+        if (this.inputMode === "Picklist Field") {
+            this.setPicklistOptions();
+        }
+        if (this._allValues && this._allValues.length) {
+            this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
+            this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
+        }
+
     }
 
     setPicklistOptions() {
@@ -294,21 +350,45 @@ export default class QuickChoiceFSC extends LightningElement {
         )];                
     }
 
-    connectedCallback() {
-        console.log(this.masterLabel + ": ", "Entering Connected Callback for smartchoice");
-        console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
-        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+    get gridClass() {
+        return (this.dualColumns ? 'slds-form-element__control slds-grid slds-gutters_medium slds-wrap slds-grid_vertical-align-center slds-grid_vertical-stretch ' : 'slds-form-element__control ') + this.bottomPadding;
+    }
+
+    get gridStyle() {
+        return this.dualColumns ? 'width: auto;' : '';
+    }
+
+    get columnClass() {
+        return this.dualColumns ? 'slds-visual-picker slds-visual-picker_vertical slds-col slds-size_1-of-2 paddingFix' : 'slds-visual-picker slds-visual-picker_vertical';
+    }
+
+    get cardSize() {
+        if (this.isSameHeight && ( this.dualColumns || !this.isResponsive)) {
+            return 'min-height: calc(25vh - 8rem); width: auto !important';
+        } else if (this.dualColumns || this.isResponsive) {
+            return 'height: min-content; width: auto !important';
+        } else {
+            return 'min-height: var(--lwc-sizeXxSmall,6rem) !important; height: auto !important; width: inherit !important;';
+        }
+
+    }
+
+    get responsiveSize() {
+        return (this.dualColumns || !this.isResponsive) ? '' : 'max-width: var(--lwc-sizeLarge,25rem); width: auto !important;';
+    }
+
+    _handleChoiceCollections() {
 
         // Visual Card Selection
         let items = [];	//parameters for visual picker selection
-		let index = 0;
+        let index = 0;
         if (this.displayMode === "Card" || this.displayMode === "Visual") {
             this.showVisual = true;
             console.log(this.masterLabel + ": ", "includeIcons is: " + this.includeIcons);
-            console.log(this.masterLabel + ": ", "choiceIcons is: " + this.choiceIcons);
-            if (!this.includeIcons || !this.choiceIcons) {
+            console.log(this.masterLabel + ": ", "_choiceIcons is: " + this._choiceIcons);
+            if (!this.includeIcons || !this._choiceIcons) {
                 console.log(this.masterLabel + ": ", "icons not needed");
-                this.choiceIcons = this.choiceLabels;
+                this._choiceIcons = this._choiceLabels;
             }
             if (this.numberOfColumns === "2") {
                 this.dualColumns = true;
@@ -316,41 +396,35 @@ export default class QuickChoiceFSC extends LightningElement {
 
             //User passes in Label collection of string for box header and Value collection of strings for box description
             console.log(this.masterLabel + ": ", "entering input mode Visual Text Box");
-            console.log(this.masterLabel + ": ", "choiceLabels is: " + this.choiceLabels);
-            this.choiceLabels.forEach(label => {
+            console.log(this.masterLabel + ": ", "_choiceLabels is: " + this._choiceLabels);
+            this._choiceLabels.forEach(label => {
                 //Add the correct path to custom images
-                if (this.choiceIcons[index].includes(':')) {
-                    items.push({name: label, description: this.choiceValues[index], icon: this.choiceIcons[index]});
+                if (this._choiceIcons[index].includes(':')) {
+                    items.push({name: label, description: this._choiceValues[index], icon: this._choiceIcons[index]});
                 } else {
                     items.push({
                         name: label,
-                        description: this.choiceValues[index],
-                        icon: Quickchoice_Images + '/' + this.choiceIcons[index]
+                        description: this._choiceValues[index],
+                        icon: Quickchoice_Images + '/' + this._choiceIcons[index]
                     });
                 }
                 console.log(this.masterLabel + ": ", "items is: " + items);
                 index += 1;
             });
-
         }
 
-        if (this.displayMode === "Picklist") {
-            console.log(this.masterLabel + ": ", "setting Picklist on");
-            this.showRadio = false;
-        }
-
-        //console.log("initializing smartChoice. inputMode is: " + this.inputMode);
+        //console.log("initializing QuickChoice. inputMode is: " + this.inputMode);
         let options = [];
         if (this.legitInputModes.includes(this.inputMode)) {
             switch (this.inputMode) {
-                //User can simply pass in a collection of strings as choiceValues. The same text is used for both label and value
+                //User can simply pass in a collection of strings as _choiceValues. The same text is used for both label and value
                 case "Single String Collection":
                     console.log(this.masterLabel + ": ", "entering input mode String Collection");
-                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
-                    //console.log ('splitting choice values would be: ' + this.choiceValues.split(','));
-                    //let values = this.choiceValues.split(';');
+                    console.log(this.masterLabel + ": ", "_choiceValues is: " + this._choiceValues);
+                    //console.log ('splitting choice values would be: ' + this._choiceValues.split(','));
+                    //let values = this._choiceValues.split(';');
 
-                    this.choiceValues.forEach(value => {
+                    this._choiceValues.forEach(value => {
                         console.log(this.masterLabel + ": ", "value is: " + value);
                         options.push({label: value, value: value});
                         console.log(this.masterLabel + ": ", "options is: " + options);
@@ -361,9 +435,9 @@ export default class QuickChoiceFSC extends LightningElement {
                 case "Dual String Collections":
                 case "Static Choices":
                     console.log(this.masterLabel + ": ", "entering input mode Dual String Collections");
-                    console.log(this.masterLabel + ": ", "choiceValues is: " + this.choiceValues);
-                    for (let i=0; i<this.choiceLabels.length; i++) {
-                        options.push({label: this.choiceLabels[i], value: this.choiceValues[i]});
+                    console.log(this.masterLabel + ": ", "_choiceValues is: " + this._choiceValues);
+                    for (let i=0; i<this._choiceLabels.length; i++) {
+                        options.push({label: this._choiceLabels[i], value: this._choiceValues[i]});
                     }
                     break;
 
@@ -374,9 +448,23 @@ export default class QuickChoiceFSC extends LightningElement {
             this.setSelectedLabel();  
 
         } else {
-            console.log(this.masterLabel + ": ", "SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
-            throw new Error("SmartChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            console.log(this.masterLabel + ": ", "QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
         }
+
+    }
+
+    connectedCallback() {
+        console.log(this.masterLabel + ": ", "Entering Connected Callback for QuickChoice");
+        console.log(this.masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
+        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+
+        if (this.displayMode === "Picklist") {
+            console.log(this.masterLabel + ": ", "setting Picklist on");
+            this.showRadio = false;
+        }
+
+        this._handleChoiceCollections();
     }
 
     //show default visual card as selected
@@ -385,6 +473,10 @@ export default class QuickChoiceFSC extends LightningElement {
             if (this.template.querySelector('[data-id="' + this.value + '"]') != null) {
                 this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
             }
+        }
+        // Output default value for reactivity
+        if (this._selectedValue != null) {
+            this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         }
     }
 
@@ -407,8 +499,8 @@ export default class QuickChoiceFSC extends LightningElement {
     handleChange(event) {
         console.log(this.masterLabel + ": ", 'EVENT', event);
         this._selectedValue = (this.showVisual) ? event.target.value : event.detail.value;
-        console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
         this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+        console.log(this.masterLabel + ": ", "selected value is: " + this._selectedValue);
         if (this.navOnSelect && this.availableActions.find(action => action === 'NEXT')) {
             const navigateNextEvent = new FlowNavigationNextEvent();
             this.dispatchEvent(navigateNextEvent);

@@ -245,6 +245,13 @@ export default class SendBetterEmailCPE extends LightningElement {
       default: null,
       label: "!Save Email as Task on recipient related record(s)?"
     },
+    sendAsync: {
+      value: null,
+      valueDataType: cbConstants.flowDataTypeBoolean,
+      isCollection: false,
+      default: null,
+      label: "Send Email Asynchronously?"
+    },
     setTreatTargetObjectAsRecipient: {
       value: null,
       valueDataType: cbConstants.flowDataTypeBoolean,
@@ -703,7 +710,7 @@ export default class SendBetterEmailCPE extends LightningElement {
         if (valueToCleanUp && valueToCleanUp.value) {
           this.dispatchFlowValueChangeEvent(
             valueToCleanUp.name,
-            constVal.nullValue,
+            null,
             constVal.stringCollectionVariablesOption
           );
         }

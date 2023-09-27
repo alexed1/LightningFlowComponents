@@ -215,7 +215,9 @@ export default class FlowButtonBar extends LightningElement {
     }
 
     updateSelected() {
-        
+        if (!this.value && this.defaultValue) {
+            this.handleButtonClick(null, this.defaultValue);
+        }
         if (this.isSelectionMode) {
             for (let button of this.template.querySelectorAll('lightning-button')) {
                 button.variant = this.values.includes(button.value) ? VARIANTS.SELECTED : VARIANTS.UNSELECTED;

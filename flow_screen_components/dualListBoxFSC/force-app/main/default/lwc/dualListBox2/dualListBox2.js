@@ -13,6 +13,11 @@ export default class dualListBoxFSC extends LightningElement {
     @api fieldLevelHelp;
     @api selectedLabel;
 
+    @api 
+    get selectAll() {
+        return (this.cb_selectAll == 'CB_TRUE') ? true : false;
+    }
+    @api cb_selectAll;
     @api min;
     @api max;
     @api disableReordering;
@@ -171,12 +176,24 @@ export default class dualListBoxFSC extends LightningElement {
 
     @api
     validate() {
-        if(this.required == true && this._selectedValues == []) { 
-            return { 
-                isValid: false, 
-                errorMessage: 'At least one value must be selected.' 
+        console.log('entering validate');
+        console.log("entering validate: required=" + this.required + " values=" + this._selectedValues);
+
+        if(this.required == true){
+            if (this.selectAll == true && this._selectedValues.length != this._options.length) {
+                console.log('validate reporting false');
+                return { 
+                    isValid: false, 
+                    errorMessage: 'All of the options must be selected.' 
                 }; 
-            } 
+            } else if (this._selectedValues == [] || this._selectedValues == '') { 
+                console.log('validate reporting false');
+                return { 
+                    isValid: false, 
+                    errorMessage: 'At least one value must be selected.' 
+                }; 
+            }
+        }
         else { 
             return { isValid: true }; 
         } 

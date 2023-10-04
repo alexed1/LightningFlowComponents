@@ -16,6 +16,7 @@ public with sharing class JoinCollectionsControllerTest {
 
         String result = JoinCollectionsController.joinCollections(accounts, accounts2);
         Map<String, Object> resultMap = (Map<String, Object>) JSON.deserializeUntyped(result);
+        // List<SObject> recs = objToObj(resultMap.get('outputCollection'));
         Assert.areEqual( 4, objToObj(resultMap.get('outputCollection')).size() );
 
     }

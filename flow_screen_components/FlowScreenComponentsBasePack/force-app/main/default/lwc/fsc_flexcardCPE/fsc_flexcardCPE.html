@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 05-31-2023
+  @last modified on  : 08-20-2023
   @last modified by  : Josh Dayment
 -->
 <template>
@@ -27,8 +27,8 @@
         onvaluechanged={handleFlowComboboxValueChange} required=true>
     </c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-        label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value}
+        label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange} automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Component Styling" banner-info={componentStyling}>
     </c-fsc_flow-banner>

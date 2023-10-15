@@ -3,9 +3,10 @@
  * 
  * Sample Reactive Flow Screen Component LWC, that calls an AuraEnabled Apex Method in a Controller, that calls an Invocable Flow Action
  * 
- * By:      Eric Smith
- * Date:    07/21/23
- * Version: 1.0.0
+ * Created By:  Eric Smith
+ * 
+ *              07/24/23    Version: 1.0.0  Initial Release
+ *              10/15/23    Version: 1.0.1  Updated with Date format fix
  * 
  * LWC:         extractFieldToCollection
  * Controller:  ExtractFieldToCollectionController
@@ -59,7 +60,7 @@ export default class ExtractFieldToCollection extends LightningElement {        
             allowEmptyCollection: this.allowEmptyCollection                                                             // * 
         })
         .then(result => {                                                                                               // If a valid result is returned,
-            let returnResults = JSON.parse(result);                                                                     // parse the result into individual attributes
+            let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));                                             // parse the result into individual attributes and fix the date format
             this._fireFlowEvent("fieldValueCollection", returnResults.fieldValueCollection);                            // * LWC Output Attribute Name, value returned from the method
             this._fireFlowEvent("fieldValueString", returnResults.fieldValueString);                                    // *
         })

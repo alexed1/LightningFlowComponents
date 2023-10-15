@@ -1,8 +1,11 @@
 /**
+ * Lightning Web Component for Flow Screens:       joinCollections
  * 
- * By:      Eric Smith
- * Date:    10/03/23
- * Version: 1.0.1
+ * Sample Reactive Flow Screen Component LWC, that calls an AuraEnabled Apex Method in a Controller, that calls an Invocable Flow Action
+ * 
+ * Created By:  Eric Smith
+ * 
+ *              10/15/23    Version: 1.0.1  Initial Release
  * 
  * LWC:         joinCollections
  * Controller:  JoinCollectionsCalculateController, JoinCollectionsCalculateControllerTest

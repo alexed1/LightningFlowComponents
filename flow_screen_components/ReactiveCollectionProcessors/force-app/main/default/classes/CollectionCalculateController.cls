@@ -1,8 +1,13 @@
 /**
+ * Call an Invocable Action from a Reactive Flow Screen Component
  * 
- * By:      Eric Smith
- * Date:    07/24/23
- * Version: 1.0.0
+ * Sample Controller with an AuraEnabled class, that calls an Invocable Flow Action, designed to be called by an LWC that is 
+ * exposed to flow as a reactive Flow Screen Component
+ * 
+ * Created By:  Eric Smith
+ * 
+ *              07/24/23    Version: 1.0.0  Initial Release
+ *              10/15/23    Version: 1.0.1  Updated with Date format fix
  * 
  * LWC:         collectionCalculate
  * Controller:  CollectionCalculateController, CollectionCalculateControllerTest
@@ -62,10 +67,15 @@ public with sharing class CollectionCalculateController {
 
     }
 
+    // Convert an object to a list of objects and fix date format
+    private static List<SObject> objToObj(Object obj) {
+        return (List<SObject>) JSON.deserialize(JSON.serialize(obj).replace('+0000','Z'), List<SObject>.class);
+    } 
+
     // Convert an object to a list of strings
-    // private static List<String> objToList(Object obj) {
-    //     return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
-    // } 
+    private static List<String> objToList(Object obj) {
+        return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
+    } 
 
     // Convert an object to a String
     private static String objToString(Object obj) {  

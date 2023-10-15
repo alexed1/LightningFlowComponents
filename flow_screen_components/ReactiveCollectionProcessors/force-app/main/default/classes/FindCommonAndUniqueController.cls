@@ -1,8 +1,12 @@
 /**
+ * Call an Invocable Action from a Reactive Flow Screen Component
  * 
- * By:      Eric Smith
- * Date:    10/04/23
- * Version: 1.0.0
+ * Sample Controller with an AuraEnabled class, that calls an Invocable Flow Action, designed to be called by an LWC that is 
+ * exposed to flow as a reactive Flow Screen Component
+ * 
+ * Created By:  Eric Smith
+ * 
+ *              10/03/23    Version: 1.0.1  Initial Release
  * 
  * LWC:         findCommonAndUnique
  * Controller:  FindCommonAndUniqueController, FindCommonAndUniqueControllerTest

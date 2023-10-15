@@ -1,8 +1,11 @@
 /**
+ * Lightning Web Component for Flow Screens:       findCommonAndUnique
  * 
- * By:      Eric Smith
- * Date:    10/04/23
- * Version: 1.0.0
+ * Sample Reactive Flow Screen Component LWC, that calls an AuraEnabled Apex Method in a Controller, that calls an Invocable Flow Action
+ * 
+ * Created By:  Eric Smith
+ * 
+ *              10/15/23    Version: 1.0.1  Initial Release
  * 
  * LWC:         findCommonAndUnique
  * Controller:  FindCommonAndUniqueController, FindCommonAndUniqueControllerTest
@@ -74,8 +77,9 @@ export default class FindCommonAndUnique extends LightningElement {
     
             // If a valid result is returned,
             .then(result => { 
-                // parse the result into individual attributes
-                let returnResults = JSON.parse(result);
+
+                // parse the result into individual attributes and fix the date format
+                let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));
     
                 // * LWC Output Attribute Name, value returned from the method
                 this._fireFlowEvent("sourceUniqueRecordCollection", returnResults.sourceUniqueRecordCollection);

@@ -1,8 +1,12 @@
 /**
+ * Lightning Web Component for Flow Screens:       collectionCalculate
  * 
- * By:      Eric Smith
- * Date:    07/24/23
- * Version: 1.0.0
+ * Sample Reactive Flow Screen Component LWC, that calls an AuraEnabled Apex Method in a Controller, that calls an Invocable Flow Action
+ * 
+ * Created By:  Eric Smith
+ * 
+ *              07/24/23    Version: 1.0.0  Initial Release
+ *              10/15/23    Version: 1.0.1  Updated with Date format fix
  * 
  * LWC:         collectionCalculate
  * Controller:  collectionCalculateController
@@ -69,8 +73,9 @@ export default class CollectionCalculate extends LightningElement {
 
         // If a valid result is returned,
         .then(result => { 
-            // parse the result into individual attributes
-            let returnResults = JSON.parse(result);
+
+            // parse the result into individual attributes and fix the date format
+            let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));
 
             // * LWC Output Attribute Name, value returned from the method
             this._fireFlowEvent("outputDecimalResult", returnResults.outputDecimalResult);

@@ -2,7 +2,7 @@
  * 
  * By:      Eric Smith
  * Date:    10/03/23
- * Version: 1.0.0
+ * Version: 1.0.1
  * 
  * LWC:         joinCollections
  * Controller:  JoinCollectionsCalculateController, JoinCollectionsCalculateControllerTest
@@ -65,8 +65,9 @@ export default class JoinCollections extends LightningElement {
     
             // If a valid result is returned,
             .then(result => { 
-                // parse the result into individual attributes
-                let returnResults = JSON.parse(result);
+
+                // parse the result into individual attributes and fix the date format
+                let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));
     
                 // * LWC Output Attribute Name, value returned from the method
                 this._fireFlowEvent("outputCollection", returnResults.outputCollection);

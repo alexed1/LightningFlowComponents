@@ -2,7 +2,7 @@
  * 
  * By:      Eric Smith
  * Date:    10/03/23
- * Version: 1.0.0
+ * Version: 1.0.1
  * 
  * LWC:         joinCollections
  * Controller:  JoinCollectionsCalculateController, JoinCollectionsCalculateControllerTest
@@ -56,9 +56,9 @@ public with sharing class JoinCollectionsController {
 
     }
 
-    // Convert an object to a list of objects
+    // Convert an object to a list of objects and fix date format
     private static List<SObject> objToObj(Object obj) {
-        return (List<SObject>) JSON.deserialize(JSON.serialize(obj), List<SObject>.class);
+        return (List<SObject>) JSON.deserialize(JSON.serialize(obj).replace('+0000','Z'), List<SObject>.class);
     } 
 
     // Convert an object to a list of strings

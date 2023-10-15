@@ -1,52 +1,55 @@
 /**
  *
- * @description Based on a component (ItemsToApprove) created by: Alex Edelstein (Salesforce)<br>
- * Based on a component (FlatTable) created by: J. Pipkin (OpFocus, Inc)<br>
- * <br>
- * Description: getColumnData<br>
- *              Get field information from a list of field names in order to build<br>
- *              the column definitions for the datatable<br>
- *<br>
- *              getLookupData<br>
- *              For each lookup type field get the related object and "Name" field<br>
- *<br>
- *              getRowData<br>
- *              Take a List of Records and a List of Lookup Field Names and<br>
- *              use the recordId values in the lookup fields get the values<br>
- *              of the Name fields in the corresponding records. Return the<br>
- *              records that now include both the Id and Name for each lookup.<br>
- * @author      Eric Smith
- * @since 	4/1/20	Version 1.0
- * @since 	4/14/20	Version 1.1 Cleaned up some error handling
- * @since 	4/28/20	Version 1.2 Handle lookup Objects without a Name field & Trap non-updatable Master/Detail fields
- * @since 	6/3/20	Version 2.0 Renamed to allow for easier installation with datatableV2
- * @since 	6/19/20	Version 2.33 Fixed issue with lookup fields being blank in the first record Renumbered to match datatableV2 versioning
- * @since 	7/1/20	Version 2.36 Added a return value for the "Name" field of the SObject This is used to display that field as a Link in the Datatable
- * @since 	7/7/20	Version 2.37 Fixed date displaying as a day earlier
- * @since 	8/26/20	Version 2.42 Get and return User's Timezone Offset so Time fields can be adjusted
- * @since 	9/1/20	Version 2.43 Update Percent Field Handling and set Formula Fields to be Non-Editable
- * @since 	9/22/20	Version 2.45 Set type as Richtext for Text Formula Fields
- * @since 	10/7/20	Allow case insensitive field names
- * @since 	10/7/20	Allow custom field API names w/o the __c suffix
- * @since 	10/7/20	Get and Return which fields are picklist fields along with Value & Label
- * @since 	10/7/20	Version 2.46 Issue error if no field names are given
- * @since 	12/14/20	Version 3.0.0 Return object plural name and icon name to the CPE
- * @since 	12/30/20	Version 3.0.5 Remove Field Names from Empty Table Header
- * @since 	1/6/21	Version 3.0.6 Handle Textarea as Richtext
- * @since 	2/25/21	Version 3.0.10 Handle regular Textarea (255 or fewer Characters) as Text
- * @since 	4/10/21	Version 3.1.1 Convert currency field values to the User's currency (Provided by Novarg1)
- * @since 	4/22/21	Version 3.2.0 Better handling of number & percent fields from different locales (Provided by GDuboc-hub)
- * @since 	5/16/21	Version 3.2.1 Removed Picklist field handling - now being processed in datatable.js
- * @since 	6/10/21	Version 3.2.2 Saved list of Date fields for time-zone offset processing
- * @since 	6/13/21	Version 3.2.3 Return all Picklist values when the running user doesn't have Read access to table's SObject
- * @since 	8/13/21	Version 3.3.2 Check for invalid Currency Conversion before committing any changes
- * @since 	2/11/22	Version 3.4.5 Handle manually created records when there are none in the object yet
- * @since 	2/13/22	Version 3.4.5 Minor improvements and increased test coverage (JeronSfdc PR#1007 & #1008)
- * @since 	3/14/22	Version 3.5.0 Added option to suppress the currency conversion introduced in v3.1.1
- * @since 	9/6/22	Version 4.0.9 Return a collection of datetime fields for handling in the LWC
- * @group DataTable
+ * Based on a component (ItemsToApprove) created by: Alex Edelstein (Salesforce)
+ * Based on a component (FlatTable) created by: J. Pipkin (OpFocus, Inc)
+ * 
+ * Description: getColumnData
+ *              Get field information from a list of field names in order to build
+ *              the column definitions for the datatable
+ *
+ *              getLookupData
+ *              For each lookup type field get the related object and "Name" field
+ *
+ *              getRowData
+ *              Take a List of Records and a List of Lookup Field Names and
+ *              use the recordId values in the lookup fields get the values
+ *              of the Name fields in the corresponding records. Return the
+ *              records that now include both the Id and Name for each lookup.
+ * 
+ * Created By:      Eric Smith
+ * 
+ *                  4/1/20	    Version 1.0
+ *                  4/28/20	    Version 1.2     Handle lookup Objects without a Name field & Trap non-updatable Master/Detail fields
+ *                  4/14/20	    Version 1.1     Cleaned up some error handling
+ *                  6/3/20	    Version 2.0     Renamed to allow for easier installation with datatableV2
+ *                  6/19/20	    Version 2.33    Fixed issue with lookup fields being blank in the first record Renumbered to match datatableV2 versioning
+ *                  7/1/20	    Version 2.36    Added a return value for the "Name" field of the SObject This is used to display that field as a Link in the Datatable
+ *                  7/7/20	    Version 2.37    Fixed date displaying as a day earlier
+ *                  8/26/20	    Version 2.42    Get and return User's Timezone Offset so Time fields can be adjusted
+ *                  9/1/20	    Version 2.43    Update Percent Field Handling and set Formula Fields to be Non-Editable
+ *                  9/22/20	    Version 2.45    Set type as Richtext for Text Formula Fields
+ *                  10/7/20	    Version 2.46    Allow case insensitive field names
+ *                  10/7/20	                    Allow custom field API names w/o the __c suffix
+ *                  10/7/20	                    Get and Return which fields are picklist fields along with Value & Label
+ *                  10/7/20	                    Issue error if no field names are given
+ *                  12/14/20	Version 3.0.0   Return object plural name and icon name to the CPE
+ *                  12/30/20	Version 3.0.5   Remove Field Names from Empty Table Header
+ *                  1/6/21	    Version 3.0.6   Handle Textarea as Richtext
+ *                  2/25/21	    Version 3.0.10  Handle regular Textarea (255 or fewer Characters) as Text
+ *                  4/10/21	    Version 3.1.1   Convert currency field values to the User's currency (Provided by Novarg1)
+ *                  4/22/21	    Version 3.2.0   Better handling of number & percent fields from different locales (Provided by GDuboc-hub)
+ *                  5/16/21	    Version 3.2.1   Removed Picklist field handling - now being processed in datatable.js
+ *                  6/10/21	    Version 3.2.2   Saved list of Date fields for time-zone offset processing
+ *                  6/13/21	    Version 3.2.3   Return all Picklist values when the running user doesn't have Read access to table's SObject
+ *                  8/13/21	    Version 3.3.2   Check for invalid Currency Conversion before committing any changes
+ *                  2/11/22	    Version 3.4.5   Handle manually created records when there are none in the object yet
+ *                  2/13/22	    Version 3.4.5   Minor improvements and increased test coverage (JeronSfdc PR#1007 & #1008)
+ *                  3/14/22	    Version 3.5.0   Added option to suppress the currency conversion introduced in v3.1.1
+ *                  9/6/22	    Version 4.0.9   Return a collection of datetime fields for handling in the LWC
+ *                  11/12/23    Version 4.1.5   Identify all datetime fields even if they are not in the Datatable (Needed to support reactive Collection Processors)
  */
 @SuppressWarnings('PMD.ClassNamingConventions')
+
 public with sharing class ers_DatatableController {
     @TestVisible
     private static Boolean isMultiCurrencyOrganization = UserInfo.isMultiCurrencyOrganization();
@@ -173,6 +176,7 @@ public with sharing class ers_DatatableController {
         List<String> timeFields = new List<String>();
         List<String> dateFields = new List<String>();
         List<String> datetimeFields = new List<String>();
+        List<String> datetimeFieldsAll = new List<String>();
         List<String> picklistFields = new List<String>();
         List<String> currencyFields = new List<String>();
         List<String> numberFields = new List<String>();
@@ -180,8 +184,9 @@ public with sharing class ers_DatatableController {
         String objectLinkField = getNameUniqueField(objName); // Name (link) Field for the Datatable SObject
         System.debug(LoggingLevel.INFO, '*** OBJ/LINK' + objName + '/' + objectLinkField);
 
+        Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
+
         for (String fieldName : fields.deleteWhitespace().split(',')) {
-            Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
             Schema.SObjectField fieldItem = fieldMap.get(fieldName);
             if (fieldItem == null) {
                 Schema.SObjectField fieldItem2 = fieldMap.get(fieldName + '__c'); // Allow for user to forget to add __c for custom fields
@@ -252,7 +257,7 @@ public with sharing class ers_DatatableController {
                     dateFields.add(fieldName);
                 }
                 when 'DATETIME' {
-                    datetimeFields.add(fieldName);
+                    datetimeFieldsAll.add(fieldName);
                 }
                 when 'PICKLIST', 'MULTIPICKLIST' {
                     picklistFields.add(dfr.getName());
@@ -268,6 +273,22 @@ public with sharing class ers_DatatableController {
                 when else {
                     System.debug('No field type match');
                 }
+            }
+        }
+
+        // Process ALL fields to check for Datetime fields
+        for (String objField : fieldMap.keySet()) {
+            Schema.SObjectField field = fieldMap.get(objField);
+            Schema.DescribeFieldResult dfr = field.getDescribe();
+            if (dfr.getType().name() == 'DATETIME') {
+                datetimeFieldsALl.add(dfr.getName());
+            }
+        }
+        // Dedupe the list
+        Set<String> datetimeFieldsUnique = new Set<String>();
+        for (String dtf : datetimeFieldsAll) {
+            if (datetimeFieldsUnique.add(dtf)) {
+                datetimeFields.add(dtf);
             }
         }
 
@@ -324,7 +345,7 @@ public with sharing class ers_DatatableController {
                 'SELECT Id, ' + nameField + ' FROM ' + obj + ' WHERE Id IN :ids'
             ); //NOPMD
             System.debug(LoggingLevel.INFO, 'Name Field: ' + obj + ' - ' + nameField);
-            Map<Id, SObject> somap = new Map<Id, SObject>();
+            Map<Id, SObject> somap = new Map<Id, SObject>();         
             for (SObject so : recs) {
                 somap.put((Id) so.get('Id'), so);
             }

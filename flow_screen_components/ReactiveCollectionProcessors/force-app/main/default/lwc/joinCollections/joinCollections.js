@@ -5,7 +5,7 @@
  * 
  * Created By:  Eric Smith
  * 
- *              10/15/23    Version: 1.0.1  Initial Release
+ *              10/21/23    Version: 1.0.1  Initial Release
  * 
  * LWC:         joinCollections
  * Controller:  JoinCollectionsCalculateController, JoinCollectionsCalculateControllerTest
@@ -73,7 +73,8 @@ export default class JoinCollections extends LightningElement {
                 let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));
     
                 // * LWC Output Attribute Name, value returned from the method
-                this._fireFlowEvent("outputCollection", returnResults.outputCollection);
+                // * If the attribute is a record collection, call the _removeAttr function on the result value
+                this._fireFlowEvent("outputCollection", this._removeAttr(returnResults.outputCollection));
     
             })
     
@@ -81,8 +82,13 @@ export default class JoinCollections extends LightningElement {
             // If an error is returned, extract error message, and expose the error in the browser console
             .catch(error => { 
                 this.error = error?.body?.message ?? JSON.stringify(error);
-                console.error(error.body.message);
-                this._fireFlowEvent("error", this.error);
+                // Skip if the error is undefined or empty
+                if (this.error.length > 2) {
+                    console.error(this.error);
+                    this._fireFlowEvent("error", this.error);
+                } else {
+                    this.error = "";
+                }
             });
     
             // Save the current value(s) of the reactive attribute(s)
@@ -98,6 +104,14 @@ export default class JoinCollections extends LightningElement {
             }    
         }  
     
+        // Remove 'attributes' that get added by the JSON conversion from a record collection
+        _removeAttr(obj) {
+            obj.forEach(rec => {
+                delete rec['attributes'];
+            });
+            return obj;
+        }
+
         // Dispatch the value of a changed attribute back to the flow
         _fireFlowEvent(attributeName, data) {
             this.dispatchEvent(new FlowAttributeChangeEvent(attributeName, data));

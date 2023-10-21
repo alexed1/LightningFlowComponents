@@ -72,24 +72,24 @@ public with sharing class FindCommonAndUniqueController {
     
         }
     
-        // Convert an object to a list of objects
+        // Convert an object to a list of objects and fix date format
         private static List<SObject> objToObj(Object obj) {
-            return (List<SObject>) JSON.deserialize(JSON.serialize(obj), List<SObject>.class);
+            return (List<SObject>) JSON.deserialize(JSON.serialize(obj).replace('+0000','Z'), List<SObject>.class);
+        } 
+        
+        // Convert an object to a list of strings
+        private static List<String> objToList(Object obj) {
+            return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
         } 
     
-        // Convert an object to a list of strings
-        // private static List<String> objToList(Object obj) {
-        //     return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
-        // } 
-    
         // Convert an object to a String
-        // private static String objToString(Object obj) {  
-        //     return String.valueof(obj);
-        // }
+        private static String objToString(Object obj) {  
+            return String.valueof(obj);
+        }
     
         // Convert an object to an integer
-        // private static Integer objToInteger(Object obj) {
-        //     return Integer.valueof(obj);
-        // }
+        private static Integer objToInteger(Object obj) {
+            return Integer.valueof(obj);
+        }
 
 }

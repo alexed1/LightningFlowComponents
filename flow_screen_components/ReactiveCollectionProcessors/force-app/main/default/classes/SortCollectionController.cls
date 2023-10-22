@@ -8,9 +8,9 @@
  * 
  *              10/21/23    Version: 1.0.1  Initial Release
  * 
- * LWC:         joinCollections
- * Controller:  JoinCollectionsController, JoinCollectionsControllerTest
- * Action:      JoinCollections
+ * LWC:         sortCollection_rsc
+ * Controller:  SortCollectionController, SortCollectionControllerTest
+ * Action:      SortCollection
  *              Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
  *       
 **/
@@ -19,7 +19,7 @@
 // * Code commented this way should be adjusted to fit your use case
 
 // * Give the class a name similar to the invocable action
-public with sharing class JoinCollectionsController {
+public with sharing class SortCollectionController {
     
     // * Define each of the attributes to be returned by the invocable action and then passed back to the calling LWC
     public class ReturnResultsWrapper {  
@@ -28,22 +28,22 @@ public with sharing class JoinCollectionsController {
 
     @AuraEnabled
     // * Give the method a name similar to the invocable action
-    public static String joinCollections(
+    public static String sortCollection(
         // * Define each of the arguments to be passed into this controller by the LWC and then directly on to the invocable action
         List<SObject> inputCollection,
-        List<SObject> inputCollection2
+        String sortKeys
     ) {
 
         // Initialize the return results object
         ReturnResultsWrapper curRR = new ReturnResultsWrapper();
 
         // * Set the 2nd argument to the name of the Invocable Apex Action
-        Invocable.Action action = Invocable.Action.createCustomAction('apex', 'JoinCollections');
+        Invocable.Action action = Invocable.Action.createCustomAction('apex', 'SortCollection');
 
         // * For each of the action's input attributes (Request), set the 1st argument  to the name of the InvocableVariable
         // * and the 2nd argument to the corresponding value passed into this controller
         action.setInvocationParameter('inputCollection', inputCollection); 
-        action.setInvocationParameter('inputCollection2', inputCollection2); 
+        action.setInvocationParameter('sortKeys', sortKeys); 
 
         // Invoke the action
         List<Invocable.Action.Result> results = action.invoke();

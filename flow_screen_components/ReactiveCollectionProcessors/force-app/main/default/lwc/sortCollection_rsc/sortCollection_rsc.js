@@ -1,5 +1,5 @@
 /**
- * Lightning Web Component for Flow Screens:       joinCollections
+ * Lightning Web Component for Flow Screens:       sortCollection
  * 
  * Sample Reactive Flow Screen Component LWC, that calls an AuraEnabled Apex Method in a Controller, that calls an Invocable Flow Action
  * 
@@ -7,9 +7,9 @@
  * 
  *              10/21/23    Version: 1.0.1  Initial Release
  * 
- * LWC:         joinCollections
- * Controller:  JoinCollectionsController, JoinCollectionsControllerTest
- * Action:      JoinCollections
+ * LWC:         sortCollection_rsc
+ * Controller:  SortCollectionController, SortCollectionControllerTest
+ * Action:      SortCollection
  *              Collection Processors (https://unofficialsf.com/list-actions-for-flow/)
  *       
 **/
@@ -23,14 +23,14 @@ import { api, track, LightningElement } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 
 // * Import the AuraEnabled Method from the Controller
-import joinCollections from '@salesforce/apex/JoinCollectionsController.joinCollections';
+import sortCollection from '@salesforce/apex/SortCollectionController.sortCollection';
 
 // * Define the name of the Component
-export default class JoinCollections extends LightningElement {
+export default class SortCollection_rsc extends LightningElement {
 
         // * Define each of the LWC's attributes, with defaults if needed
         @api inputCollection;
-        @api inputCollection2;
+        @api sortKeys;
         @api outputCollection;
         
         // Define the attribute used to store an error message
@@ -42,7 +42,7 @@ export default class JoinCollections extends LightningElement {
         // Get the Reactive Attribute Value
         get reactiveValue() { 
             // * Return reactive attributes as a string to be used in tracking
-            return JSON.stringify(this.inputCollection) + JSON.stringify(this.inputCollection2);
+            return JSON.stringify(this.inputCollection) + this.sortKeys;
         }
     
         // On rendering, check for a value or change in value of reactive attribute(s) and execute the handler
@@ -60,10 +60,10 @@ export default class JoinCollections extends LightningElement {
         // Call the Aura Enabled Method in the Controller
         _callAuraEnabledMethod() {
             // * Identify the Aura Enabled Method
-            joinCollections({ 
+            sortCollection({ 
                 // * For each attribute to be passed to the controller - methodAttributeName: value from LWC
                 inputCollection: this.inputCollection,
-                inputCollection2: this.inputCollection2
+                sortKeys: this.sortKeys
             })
     
             // If a valid result is returned,

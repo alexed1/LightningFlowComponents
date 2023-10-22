@@ -4,7 +4,7 @@
     <isExposed>true</isExposed>
 
     <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
-    <masterLabel>ColProc - Extract Field To Collection</masterLabel>
+    <masterLabel>CP - Extract Field To Collection</masterLabel>
 
     <targets>
         <target>lightning__FlowScreen</target>

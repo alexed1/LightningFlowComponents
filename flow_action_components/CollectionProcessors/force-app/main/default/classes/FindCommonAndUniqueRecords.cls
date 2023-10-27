@@ -6,7 +6,7 @@
 * @Last Modified On   : 09-09-2022
 * @Modification Log   : 
 * Ver      Date            Author      		      		  Modification
-* 1.0      1/26/2021      adamwhiteuva@gmail.com      Initial release
+* 1.0      1/26/2021      adam.white@salesforce.com      Initial release
 **/
 global without sharing class FindCommonAndUniqueRecords {
     @InvocableMethod(label='Get Common and Unique Records [USF Collection Processor]' description='Extract and return two collections comparing a source and target collection' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')

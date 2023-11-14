@@ -176,6 +176,9 @@ export default class FlowButtonBar extends LightningElement {
             // Don't unselect a button if it is both required and the only selected button
             if (!this.required || this.values.length > 1)
                 this.values.splice(curIndex, 1);
+            if (!this.multiselect) {
+                this.value = clickedValue;
+            }
         } else {
             if (this.multiselect) {
                 this.values.push(clickedValue);

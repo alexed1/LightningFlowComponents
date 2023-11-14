@@ -7,6 +7,9 @@
  * Attributes are available for vetical margins, color and thickness.
  * 
  * This component is packaged as part of the unofficialsf.com FlowScreenComponentsBasePack
+ * 
+ * 11/13/23 -   Eric Smith -    Version 1.0.1
+ *              Bug Fixes:      Line thickness attribute was causing an error when other components on the same screen had validation errors
  *
  * CREATED BY:          Eric Smith
  * 
@@ -14,12 +17,13 @@
  * 
  * DATE:                4/11/2023
  *
+ * 
  *
  **/
 
 import { LightningElement, api, track } from 'lwc';
 
-const VERSION_NUMBER = "1.0.0";
+const VERSION_NUMBER = "1.0.1";
 
 const defaults = {
     inputAttributePrefix: "select_",
@@ -53,6 +57,10 @@ export default class Fsc_drawLineCPE extends LightningElement {
         return this.inputValues['thickness'].value;
     }
 
+    get thicknessPixels() {
+        return this.inputValues['thickness'].value.slice(0,-2);
+    }
+
     get styleColor() {
         return this.inputValues['color'].value;
     }
@@ -62,7 +70,7 @@ export default class Fsc_drawLineCPE extends LightningElement {
     }
 
     get lineStyle() {
-        return `border-width: ${this.styleThickness}px;border-color: ${this.styleColor};`;
+        return `border-width: ${this.styleThickness};border-color: ${this.styleColor};`;
     }
 
     // Define any banner overrides you want to use (see fsc_flowBanner.js)
@@ -149,11 +157,11 @@ export default class Fsc_drawLineCPE extends LightningElement {
             helpText: "Size selection for the bottom margin (Default = xx-small)"
         },
         thickness: {
-            value: "1",
+            value: "1px",
             valueDataType: null,
             isCollection: false,
             label: "Line Thickness",
-            helpText: "Number of pixels for the line thickness (Default = 1)"
+            helpText: "Number of pixels for the line thickness (Default = 1px)"
         },
         color: {
             value: "#808080",
@@ -262,9 +270,12 @@ export default class Fsc_drawLineCPE extends LightningElement {
                         curInputParam.valueDataType;
 
                 // Handle any internal value settings based on attribute values here
-                // if (curInputParam.name == 'objectName') {
-                //     this.selectedSObject = curInputParam.value;
-                // }
+                if (curInputParam.name == "thickness") {
+                    if (this.inputValues[curInputParam.name].value.toString().slice(-1) != "x") {
+                        this.inputValues[curInputParam.name].value += "px";
+                        this.inputValues[curInputParam.name].valueDataType = "String";
+                    }
+                }
 
                 }
                 if (curInputParam.isError) {
@@ -318,8 +329,8 @@ export default class Fsc_drawLineCPE extends LightningElement {
             defaults.inputAttributePrefix,
             ""
         );
-        let newValue = event.detail.value;
-        this.dispatchFlowValueChangeEvent(changedAttribute, newValue, "Number");
+        let newValue = event.detail.value.toString() + "px";
+        this.dispatchFlowValueChangeEvent(changedAttribute, newValue, "String");
     }
 
     handleFlowComboboxValueChange(event) {

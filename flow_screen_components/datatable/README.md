@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		2019 - 2022
+**Date:**		2019 - 2023
   
 LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -71,16 +71,22 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
- 
+
+## 10/12/23 -  Eric Smith -    Version 4.1.5 
+**Updates:** 
+-   Made the following changes to support passing of Datatable output collections into my reactive Collection Processor screen components 
+-       Remove the "attributes" attribute from each record's details 
+-       Process all Datetime fields in each record even if they are not displayed in the Datatable
+
 ## 06/14/23 -  Eric Smith -    Version 4.1.4 
 **Bug Fixes:**  
 -   Fixed issue with tables showing as empty if row selection was disabled 
 
- ## 06/13/23 -  Eric Smith -    Version 4.1.3 
+## 06/13/23 -  Eric Smith -    Version 4.1.3 
 **Bug Fixes:**  
 -   Fixed issue where Datatables fed by DataFetcher were defaulting to single row selection only 
   
- ## 06/04/23 -  Eric Smith -    Version 4.1.1 
+## 06/04/23 -  Eric Smith -    Version 4.1.1 
 **Updates:** 
 -   Added reactivity for Apex-Defind objects (Pre-Selected Rows are not reactive) 
 -   Made the placeholder for 'Enter search term ...' a translatable label 

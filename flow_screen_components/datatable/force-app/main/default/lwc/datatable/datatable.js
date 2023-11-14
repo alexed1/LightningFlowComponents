@@ -940,6 +940,7 @@ export default class Datatable extends LightningElement {
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
                 this.datetimeFieldArray = (returnResults.datetimeFieldList.length > 0) ? returnResults.datetimeFieldList.toString().split(',') : [];
+                console.log("Datetime Fields ~ returnResults.datetimeFieldList.toString()", returnResults.datetimeFieldList.toString());
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
@@ -1011,6 +1012,8 @@ export default class Datatable extends LightningElement {
         let lookupFieldObject = '';
 
         data.forEach(record => {
+
+            delete record['attributes'];    // v4.1.5 - Remove so the reactive Collection Processor components will handle the output collections correctly
 
             // Prepend a date to the Time field so it can be displayed and calculate offset based on User's timezone
             timeFields.forEach(time => {
@@ -1682,7 +1685,7 @@ export default class Datatable extends LightningElement {
             this.setIsInvalidFlag(true);
         }
         // this.isUpdateTable = false;      // Commented out in v4.1.1
-        this.outputSelectedRows = [...currentSelectedRows]; 
+        this.outputSelectedRows = [...currentSelectedRows];
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       

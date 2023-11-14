@@ -4,9 +4,10 @@
  * Sample Controller with an AuraEnabled class, that calls an Invocable Flow Action, designed to be called by an LWC that is 
  * exposed to flow as a reactive Flow Screen Component
  * 
- * By:      Eric Smith
- * Date:    07/21/23
- * Version: 1.0.0
+ * Created By:  Eric Smith
+ * 
+ *              07/21/23    Version: 1.0.0  Initial Release
+ *              10/15/23    Version: 1.0.1  Updated with date format fix
  * 
  * LWC:         extractFieldToCollection
  * Controller:  ExtractFieldToCollectionController, ExtractFieldToCollectionControllerTest
@@ -52,12 +53,20 @@ public with sharing class ExtractFieldToCollectionController {                  
 
     }
 
+    private static List<SObject> objToObj(Object obj) {                                                             // Convert an object to a list of objects and fix date format
+        return (List<SObject>) JSON.deserialize(JSON.serialize(obj).replace('+0000','Z'), List<SObject>.class); 
+    } 
+
     private static List<String> objToList(Object obj) {                                                             // Convert an object to a list of strings
         return (List<String>) JSON.deserialize(JSON.serialize(obj), List<String>.class);
     } 
 
     private static String objToString(Object obj) {                                                                 // Convert an object to a string
         return String.valueof(obj);
+    }
+
+    private static Integer objToInteger(Object obj) {                                                               // Convert an object to an integer
+        return Integer.valueof(obj);
     }
 
 }

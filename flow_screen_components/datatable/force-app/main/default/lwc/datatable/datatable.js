@@ -2260,7 +2260,7 @@ export default class Datatable extends LightningElement {
                                 }
                                 
                                 if (cols[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
-                                    break; 
+                                    continue; 
                                 }                   
 
                                 switch(cols[col].type) {

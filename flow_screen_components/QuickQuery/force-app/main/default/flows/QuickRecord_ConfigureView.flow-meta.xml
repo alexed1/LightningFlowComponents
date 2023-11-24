@@ -44,7 +44,7 @@
         </inputParameters>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
-    <apiVersion>54.0</apiVersion>
+    <apiVersion>59.0</apiVersion>
     <assignments>
         <name>Field_List_Update</name>
         <label>Field List Update</label>

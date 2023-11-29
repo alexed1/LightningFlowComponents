@@ -7,7 +7,7 @@ public with sharing class ListActionsTest {
     private final static String FLOW_DATE_TIME_FORMAT = 'MM/dd/yyyy, hh:mm aa';
 
     @isTest
-    static void canCalculateCollection(){
+    static void canCalculateCollection() {
         List<Account> testAccounts = createAccounts(3, true);
         CollectionCalculate.Requests request = new CollectionCalculate.Requests();
         request.inputCollection = testAccounts;
@@ -16,11 +16,11 @@ public with sharing class ListActionsTest {
         List<CollectionCalculate.Requests> requests = new List<CollectionCalculate.Requests>();
         requests.add(request);
 
-        
-        List<CollectionCalculate.Results> responses = CollectionCalculate.execute(requests);
+        List<CollectionCalculate.Results> responses = CollectionCalculate.execute(
+            requests
+        );
         CollectionCalculate.Results response = responses[0];
         System.assertEquals(15000, response.outputDecimalResult);
-
     }
 
     @isTest
@@ -30,15 +30,26 @@ public with sharing class ListActionsTest {
         List<GetLookupCollection.Request> requests = new List<GetLookupCollection.Request>();
         GetLookupCollection.Request request = new GetLookupCollection.Request();
         requests.add(request);
-        List<GetLookupCollection.Results> responseWrapper = GetLookupCollection.get(requests);
+        List<GetLookupCollection.Results> responseWrapper = GetLookupCollection.get(
+            requests
+        );
         System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         List<Contact> testContacts = createContacts(testAccounts, true);
-        List<Opportunity> testOpportunity = createOpportunities(NUMBER_OF_TEST_RECORDS, true);
-        OpportunityContactRole testOpportunityContactRole = createOpportunityContactRole(testContacts, testOpportunity);
-        List<OpportunityContactRole> ocrList = new List<OpportunityContactRole> ();
+        List<Opportunity> testOpportunity = createOpportunities(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
+        OpportunityContactRole testOpportunityContactRole = createOpportunityContactRole(
+            testContacts,
+            testOpportunity
+        );
+        List<OpportunityContactRole> ocrList = new List<OpportunityContactRole>();
         ocrList.add(testOpportunityContactRole);
         System.debug('ocRoleid is: ' + testOpportunityContactRole.Id);
         request.inputCollection = ocrList;
@@ -51,31 +62,39 @@ public with sharing class ListActionsTest {
         requests.clear();
     }
 
-    static OpportunityContactRole createOpportunityContactRole(List<Contact> testContacts, List<Opportunity> testOpportunities) {
-
-        OpportunityContactRole ocRole = new OpportunityContactRole(contactId = testContacts[0].Id, opportunityId = testOpportunities[0].Id);
+    static OpportunityContactRole createOpportunityContactRole(
+        List<Contact> testContacts,
+        List<Opportunity> testOpportunities
+    ) {
+        OpportunityContactRole ocRole = new OpportunityContactRole(
+            contactId = testContacts[0].Id,
+            opportunityId = testOpportunities[0].Id
+        );
         insert ocRole;
 
         return ocRole;
     }
 
-
     @isTest
     static void canGetChildCollection() {
         //user must pass in at least one input recordid or an input record
-
 
         String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to start with';
         String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
         GetChildCollection.Request request = new GetChildCollection.Request();
         requests.add(request);
-        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(requests);
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(
+            requests
+        );
         System.debug('responseWrapper is: ' + responseWrapper);
         System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         List<Contact> testContacts = createContacts(testAccounts, true);
 
         //user can't pass in both an input recordid and an input record
@@ -95,15 +114,13 @@ public with sharing class ListActionsTest {
         System.assertNotEquals(responseWrapper[0].childCollection, null);
         System.assertEquals(1, responseWrapper[0].childCollection.size());
         requests.clear();
-
-
     }
 
     @isTest
     static void cloneRecordTests() {
         //user must pass in at least one input recordid or an input record
-//        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
-//        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        //        String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to clone';
+        //        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<DeepClone.Requests> requests = new List<DeepClone.Requests>();
         DeepClone.Requests request = new DeepClone.Requests();
         requests.add(request);
@@ -111,21 +128,34 @@ public with sharing class ListActionsTest {
         try {
             responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(true, ex.getMessage().contains(DeepClone.ERROR_NO_RECORD_NO_ID));
+            System.assertEquals(
+                true,
+                ex.getMessage().contains(DeepClone.ERROR_NO_RECORD_NO_ID)
+            );
         }
 
         requests.clear();
 
         //user can't pass in both an input recordid and an input record
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
+        List<Task> testTasks = createTasks(
+            NUMBER_OF_TEST_RECORDS,
+            testAccounts[0].Id,
+            true
+        );
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = testAccounts[0];
         requests.add(request);
         try {
             responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(true, ex.getMessage().contains(DeepClone.ERROR_RECORD_AND_ID));
+            System.assertEquals(
+                true,
+                ex.getMessage().contains(DeepClone.ERROR_RECORD_AND_ID)
+            );
         }
 
         requests.clear();
@@ -151,27 +181,39 @@ public with sharing class ListActionsTest {
         request.saveChildRecordsAutomatically = true;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, testAccounts[0].Id);
+        System.assertNotEquals(
+            responseWrapper[0].clonedRecord.Id,
+            testAccounts[0].Id
+        );
         System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null);
         List<Task> allTasks = [SELECT Id FROM Task];
         System.assertEquals(2 * NUMBER_OF_TEST_RECORDS, allTasks.size());
         requests.clear();
-
     }
-
 
     @isTest
     static void copyCollectionTest() {
         List<CopyCollection.Requests> requests = new List<CopyCollection.Requests>();
         CopyCollection.Requests request = new CopyCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         requests.add(request);
-        List<CopyCollection.Results> responseWrapper = CopyCollection.copyCollection(requests);
+        List<CopyCollection.Results> responseWrapper = CopyCollection.copyCollection(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(responseWrapper[0].outputCollection.size(), NUMBER_OF_TEST_RECORDS);
+        System.assertEquals(
+            responseWrapper[0].outputCollection.size(),
+            NUMBER_OF_TEST_RECORDS
+        );
         for (Integer i = 0; i < NUMBER_OF_TEST_RECORDS; i++) {
-            System.assertEquals(((Account) responseWrapper[0].outputCollection[i]).Name, testAccounts[i].Name);
+            System.assertEquals(
+                ((Account) responseWrapper[0].outputCollection[i]).Name,
+                testAccounts[i].Name
+            );
         }
     }
 
@@ -179,11 +221,16 @@ public with sharing class ListActionsTest {
     static void filterCollectionTest() {
         List<FilterCollection.Requests> requests = new List<FilterCollection.Requests>();
         FilterCollection.Requests request = new FilterCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.formula = 'OR(CONTAINS($Account.Name,"2"),CONTAINS($Account.Name,"3"))';
         requests.add(request);
-        List<FilterCollection.Results> responseWrapper = FilterCollection.filter(requests);
+        List<FilterCollection.Results> responseWrapper = FilterCollection.filter(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
         System.assertEquals(2, responseWrapper[0].outputCollection.size());
     }
@@ -195,7 +242,9 @@ public with sharing class ListActionsTest {
         request.formulaString = 'true';
         request.contextDataString = null;
         requests.add(request);
-        List<EvaluateFormula.Results> responseWrapper = EvaluateFormula.evaluate(requests);
+        List<EvaluateFormula.Results> responseWrapper = EvaluateFormula.evaluate(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
         System.assertEquals('true', responseWrapper[0].stringResult);
     }
@@ -205,14 +254,23 @@ public with sharing class ListActionsTest {
         // Simple Mode
         List<GenerateCollectionReport.Requests> requests = new List<GenerateCollectionReport.Requests>();
         GenerateCollectionReport.Requests request = new GenerateCollectionReport.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.shownFields = 'Name,Parent.Name';
         requests.add(request);
-        List<GenerateCollectionReport.Results> responseWrapper = GenerateCollectionReport.generateReport(requests);
+        List<GenerateCollectionReport.Results> responseWrapper = GenerateCollectionReport.generateReport(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(true, responseWrapper[0].reportString.startsWith('Collection Type: Account'));
-        
+        System.assertEquals(
+            true,
+            responseWrapper[0]
+                .reportString.startsWith('Collection Type: Account')
+        );
+
         // TableMode
         List<GenerateCollectionReport.Requests> requestsTable = new List<GenerateCollectionReport.Requests>();
         GenerateCollectionReport.Requests requestTable = new GenerateCollectionReport.Requests();
@@ -220,34 +278,46 @@ public with sharing class ListActionsTest {
         requestTable.shownFields = 'Name,Parent.Name';
         requestTable.displayMode = 'table';
         requestsTable.add(requestTable);
-        List<GenerateCollectionReport.Results> responseWrapperTable = GenerateCollectionReport.generateReport(requestsTable);
+        List<GenerateCollectionReport.Results> responseWrapperTable = GenerateCollectionReport.generateReport(
+            requestsTable
+        );
         System.assertEquals(responseWrapperTable.size(), 1);
-        System.assertEquals(true, responseWrapper[0].reportString.startsWith('Collection Type: Account'));
+        System.assertEquals(
+            true,
+            responseWrapper[0]
+                .reportString.startsWith('Collection Type: Account')
+        );
     }
 
     @isTest
     static void joinCollectionTest() {
         List<JoinCollections.Requests> requests = new List<JoinCollections.Requests>();
         JoinCollections.Requests request = new JoinCollections.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        List<Account> testAccounts2 = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
+        List<Account> testAccounts2 = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.inputCollection2 = testAccounts2;
         requests.add(request);
-        List<JoinCollections.Results> responseWrapper = JoinCollections.joinCollections(requests);
+        List<JoinCollections.Results> responseWrapper = JoinCollections.joinCollections(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
         System.assertEquals(10, responseWrapper[0].outputCollection.size());
-
     }
 
     @isTest
     static void mapCollection() {
         final Map<String, String> fieldNameValue = new Map<String, String>{
-                'Email' => 'test@site.com',
-                'HasOptedOutOfEmail' => 'true',
-                'AnnualRevenue' => '1.123'
+            'Email' => 'test@site.com',
+            'HasOptedOutOfEmail' => 'true',
+            'AnnualRevenue' => '1.123'
         };
-
 
         List<MapCollection.Requests> requests = new List<MapCollection.Requests>();
         MapCollection.Requests request = new MapCollection.Requests();
@@ -255,17 +325,30 @@ public with sharing class ListActionsTest {
         request.inputCollection = testLeads;
         request.keyValuePairs = '';
         for (String fieldName : fieldNameValue.keySet()) {
-            request.keyValuePairs += '"' + fieldName + '":"' + fieldNameValue.get(fieldName) + '",';
+            request.keyValuePairs +=
+                '"' +
+                fieldName +
+                '":"' +
+                fieldNameValue.get(fieldName) +
+                '",';
             request.keyValuePairs.removeEnd(',');
         }
 
         requests.add(request);
-        List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(requests);
+        List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS,
+            responseWrapper[0].outputCollection.size()
+        );
         for (SObject obj : responseWrapper[0].outputCollection) {
             for (String fieldName : fieldNameValue.keySet()) {
-                System.assertEquals(String.valueOf(fieldNameValue.get(fieldName)), String.valueOf(obj.get(fieldName)));
+                System.assertEquals(
+                    String.valueOf(fieldNameValue.get(fieldName)),
+                    String.valueOf(obj.get(fieldName))
+                );
             }
         }
     }
@@ -273,51 +356,85 @@ public with sharing class ListActionsTest {
     //@isTest
     //this test started failing. possibly it's a time zone issue. commenting it out rather than fixing it
     static void mapCollectionDateTime() {
-
         List<MapCollection.Requests> requests = new List<MapCollection.Requests>();
         MapCollection.Requests request = new MapCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
-        List<Task> testTasks = createTasks(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
+        List<Task> testTasks = createTasks(
+            NUMBER_OF_TEST_RECORDS,
+            testAccounts[0].Id,
+            true
+        );
 
         Datetime dt = Datetime.now();
         dt = dt.addSeconds(-dt.second());
         request.inputCollection = testTasks;
 
-        request.keyValuePairs = '"ActivityDate":"' + dt.format(FLOW_DATE_FORMAT) + '"';
+        request.keyValuePairs =
+            '"ActivityDate":"' +
+            dt.format(FLOW_DATE_FORMAT) +
+            '"';
         requests.add(request);
-        List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(requests);
+        List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS,
+            responseWrapper[0].outputCollection.size()
+        );
         for (SObject obj : responseWrapper[0].outputCollection) {
             System.assertEquals(obj.get('ActivityDate'), Date.today());
         }
 
-        List<Event> testEvents = createEvents(NUMBER_OF_TEST_RECORDS, testAccounts[0].Id, true);
+        List<Event> testEvents = createEvents(
+            NUMBER_OF_TEST_RECORDS,
+            testAccounts[0].Id,
+            true
+        );
         request.inputCollection = testEvents;
-        request.keyValuePairs = '"StartDateTime":"' + dt.format(FLOW_DATE_TIME_FORMAT) + '"';
+        request.keyValuePairs =
+            '"StartDateTime":"' +
+            dt.format(FLOW_DATE_TIME_FORMAT) +
+            '"';
         requests.add(request);
         responseWrapper = MapCollection.mapCollection(requests);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS,
+            responseWrapper[0].outputCollection.size()
+        );
         for (SObject obj : responseWrapper[0].outputCollection) {
             System.assertEquals(dt, obj.get('StartDateTime'));
         }
     }
-
 
     @isTest
     static void removeRecordInCollectionTest() {
         final Integer INDEX_TO_REMOVE = 0;
         List<RemoveRecordInCollection.Requests> requests = new List<RemoveRecordInCollection.Requests>();
         RemoveRecordInCollection.Requests request = new RemoveRecordInCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.index = INDEX_TO_REMOVE;
         requests.add(request);
         String accountNameToRemove = testAccounts[INDEX_TO_REMOVE].Name;
-        List<RemoveRecordInCollection.Results> responseWrapper = RemoveRecordInCollection.removeRecordByIndex(requests);
+        List<RemoveRecordInCollection.Results> responseWrapper = RemoveRecordInCollection.removeRecordByIndex(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS - 1, responseWrapper[0].outputCollection.size());
-        System.assertNotEquals(((Account) responseWrapper[0].outputCollection[0]).Name, accountNameToRemove);
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS - 1,
+            responseWrapper[0].outputCollection.size()
+        );
+        System.assertNotEquals(
+            ((Account) responseWrapper[0].outputCollection[0]).Name,
+            accountNameToRemove
+        );
     }
 
     @isTest
@@ -325,12 +442,18 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<GetFirst.Requests> requests = new List<GetFirst.Requests>();
         GetFirst.Requests request = new GetFirst.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.enforceSingleMember = false;
         requests.add(request);
         List<GetFirst.Results> responseWrapper = GetFirst.execute(requests);
-        System.assertEquals(testAccounts[0].Id, responseWrapper[0].outputMember.Id);
+        System.assertEquals(
+            testAccounts[0].Id,
+            responseWrapper[0].outputMember.Id
+        );
     }
 
     @isTest
@@ -338,7 +461,10 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<FindRecordsInCollection.Requests> requests = new List<FindRecordsInCollection.Requests>();
         FindRecordsInCollection.Requests request = new FindRecordsInCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.targetField = 'Name';
         request.targetValue = TEST_RECORD_NAME + '0';
@@ -346,9 +472,14 @@ public with sharing class ListActionsTest {
 
         requests.add(request);
 
-        List<FindRecordsInCollection.Results> responseWrapper = FindRecordsInCollection.execute(requests);
+        List<FindRecordsInCollection.Results> responseWrapper = FindRecordsInCollection.execute(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(testAccounts[0].Name, ((Account) responseWrapper[0].singleOutputMember).Name);
+        System.assertEquals(
+            testAccounts[0].Name,
+            ((Account) responseWrapper[0].singleOutputMember).Name
+        );
     }
 
     @isTest
@@ -356,16 +487,29 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<AddOrInsertRecord.Requests> requests = new List<AddOrInsertRecord.Requests>();
         AddOrInsertRecord.Requests request = new AddOrInsertRecord.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.inputRecord = testAccounts[0];
         request.index = 0;
         requests.add(request);
 
-        List<AddOrInsertRecord.Results> responseWrapper = AddOrInsertRecord.addOrInsertRecord(requests);
+        List<AddOrInsertRecord.Results> responseWrapper = AddOrInsertRecord.addOrInsertRecord(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS + 1, responseWrapper[0].outputCollection.size());
-        System.assertNotEquals(((Account) responseWrapper[0].outputCollection[0]).Name, ((Account) responseWrapper[0].outputCollection[NUMBER_OF_TEST_RECORDS]).Name);
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS + 1,
+            responseWrapper[0].outputCollection.size()
+        );
+        System.assertNotEquals(
+            ((Account) responseWrapper[0].outputCollection[0]).Name,
+            ((Account) responseWrapper[0]
+                    .outputCollection[NUMBER_OF_TEST_RECORDS])
+                .Name
+        );
     }
 
     @isTest
@@ -373,19 +517,27 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<CountRecordsAndFields.Requests> requests = new List<CountRecordsAndFields.Requests>();
         CountRecordsAndFields.Requests request = new CountRecordsAndFields.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         request.inputCollection = testAccounts;
         request.fieldName = 'Name';
         request.fieldValue = TEST_RECORD_NAME + '0';
         requests.add(request);
 
-        List<CountRecordsAndFields.Results> responseWrapper = CountRecordsAndFields.count(requests);
+        List<CountRecordsAndFields.Results> responseWrapper = CountRecordsAndFields.count(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
         System.assertEquals(1, responseWrapper[0].matchedNumber);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS,
+            responseWrapper[0].totalNumber
+        );
     }
-//this is incompatible with recent work done on this class. however, there's a new set of test classes in a separate file, so just going to comment this one out
-  /*   @isTest
+    //this is incompatible with recent work done on this class. however, there's a new set of test classes in a separate file, so just going to comment this one out
+    /*   @isTest
     static void extractStringsFromCollectionTest() {
         final Integer INDEX_TO_REMOVE = 0;
         List<ExtractStringsFromCollection.Requests> requests = new List<ExtractStringsFromCollection.Requests>();
@@ -410,53 +562,83 @@ public with sharing class ListActionsTest {
     @isTest
     static void sortCollectionTest() {
         final Map<String, String> sortDirection = new Map<String, String>{
-                'NumberOfEmployees' => 'ASC',
-                'Name' => 'DESC',
-                'Site' => 'ASC'
+            'NumberOfEmployees' => 'ASC',
+            'Name' => 'DESC',
+            'Site' => 'ASC'
         };
         List<SortCollection.Requests> requests = new List<SortCollection.Requests>();
         SortCollection.Requests request = new SortCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = createAccounts(
+            NUMBER_OF_TEST_RECORDS,
+            true
+        );
         testAccounts[NUMBER_OF_TEST_RECORDS - 1].NumberOfEmployees = 2;
         testAccounts[NUMBER_OF_TEST_RECORDS - 2].NumberOfEmployees = 3;
         testAccounts[NUMBER_OF_TEST_RECORDS - 3].NumberOfEmployees = 5;
         request.inputCollection = testAccounts;
         request.sortKeys = '';
         for (String fieldName : sortDirection.keySet()) {
-            request.sortKeys += '"' + fieldName + '":"' + sortDirection.get(fieldName) + '",';
+            request.sortKeys +=
+                '"' +
+                fieldName +
+                '":"' +
+                sortDirection.get(fieldName) +
+                '",';
         }
         request.sortKeys.removeEnd(',');
         requests.add(request);
         String firstAccountName = testAccounts[0].Name;
-        List<SortCollection.Results> responseWrapper = SortCollection.sort(requests);
+        List<SortCollection.Results> responseWrapper = SortCollection.sort(
+            requests
+        );
         System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].outputCollection.size());
+        System.assertEquals(
+            NUMBER_OF_TEST_RECORDS,
+            responseWrapper[0].outputCollection.size()
+        );
 
-        System.assertEquals(((Account) responseWrapper[0].outputCollection[NUMBER_OF_TEST_RECORDS - 1]).Name, firstAccountName);
+        System.assertEquals(
+            ((Account) responseWrapper[0]
+                    .outputCollection[NUMBER_OF_TEST_RECORDS - 1])
+                .Name,
+            firstAccountName
+        );
     }
 
-   public static List<Account> createAccounts(Integer numberOfRecords, Boolean doInsert) {
-
+    public static List<Account> createAccounts(
+        Integer numberOfRecords,
+        Boolean doInsert
+    ) {
         List<Account> returnList = new List<Account>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Account(Name = TEST_RECORD_NAME + i, Website = '' + i, AnnualRevenue=5000));
+            returnList.add(
+                new Account(
+                    Name = TEST_RECORD_NAME + i,
+                    Website = '' + i,
+                    AnnualRevenue = 5000
+                )
+            );
         }
         if (doInsert) {
             //insert returnList without triggering duplicate rules
-            Database.DMLOptions dml = new Database.DMLOptions(); 
-            dml.DuplicateRuleHeader.AllowSave = true; 
+            Database.DMLOptions dml = new Database.DMLOptions();
+            dml.DuplicateRuleHeader.AllowSave = true;
             List<Database.SaveResult> sr = Database.insert(returnList, dml);
-
         }
 
         return returnList;
     }
 
-    static List<Task> createTasks(Integer numberOfRecords, Id whatId, Boolean doInsert) {
-
+    static List<Task> createTasks(
+        Integer numberOfRecords,
+        Id whatId,
+        Boolean doInsert
+    ) {
         List<Task> returnList = new List<Task>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Task(Subject = TEST_RECORD_NAME + i, WhatId = whatId));
+            returnList.add(
+                new Task(Subject = TEST_RECORD_NAME + i, WhatId = whatId)
+            );
         }
         if (doInsert) {
             insert returnList;
@@ -465,17 +647,22 @@ public with sharing class ListActionsTest {
         return returnList;
     }
 
-    static List<Event> createEvents(Integer numberOfRecords, Id whatId, Boolean doInsert) {
-
+    static List<Event> createEvents(
+        Integer numberOfRecords,
+        Id whatId,
+        Boolean doInsert
+    ) {
         List<Event> returnList = new List<Event>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Event(
+            returnList.add(
+                new Event(
                     Subject = TEST_RECORD_NAME + i,
                     WhatId = whatId,
                     ActivityDateTime = DateTime.now().addDays(1),
                     DurationInMinutes = 100,
                     ActivityDate = Date.today().addDays(1)
-            ));
+                )
+            );
         }
         if (doInsert) {
             insert returnList;
@@ -485,10 +672,14 @@ public with sharing class ListActionsTest {
     }
 
     static List<Lead> createLeads(Integer numberOfRecords, Boolean doInsert) {
-
         List<Lead> returnList = new List<Lead>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Lead(LastName = TEST_RECORD_NAME + i, Company = TEST_RECORD_NAME));
+            returnList.add(
+                new Lead(
+                    LastName = TEST_RECORD_NAME + i,
+                    Company = TEST_RECORD_NAME
+                )
+            );
         }
         if (doInsert) {
             insert returnList;
@@ -497,12 +688,19 @@ public with sharing class ListActionsTest {
         return returnList;
     }
 
-    static List<Contact> createContacts(List<Account> accountList, Boolean doInsert) {
-
+    static List<Contact> createContacts(
+        List<Account> accountList,
+        Boolean doInsert
+    ) {
         List<Contact> contactList = new List<Contact>();
         Integer i = 1;
         for (Account curAccount : accountList) {
-            contactList.add(new Contact(LastName = TEST_CONTACT_NAME + i, AccountId = curAccount.Id));
+            contactList.add(
+                new Contact(
+                    LastName = TEST_CONTACT_NAME + i,
+                    AccountId = curAccount.Id
+                )
+            );
             i = i + 1;
         }
         if (doInsert) {
@@ -511,11 +709,19 @@ public with sharing class ListActionsTest {
         return contactList;
     }
 
-    static List<Opportunity> createOpportunities(Integer numberOfRecords, Boolean doInsert) {
-
+    static List<Opportunity> createOpportunities(
+        Integer numberOfRecords,
+        Boolean doInsert
+    ) {
         List<Opportunity> returnList = new List<Opportunity>();
         for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(new Opportunity(Name = 'Opportunity' + i, StageName = 'Prospecting', CloseDate = System.today()));
+            returnList.add(
+                new Opportunity(
+                    Name = 'Opportunity' + i,
+                    StageName = 'Prospecting',
+                    CloseDate = System.today()
+                )
+            );
         }
         if (doInsert) {
             insert returnList;
@@ -523,5 +729,4 @@ public with sharing class ListActionsTest {
 
         return returnList;
     }
-
 }

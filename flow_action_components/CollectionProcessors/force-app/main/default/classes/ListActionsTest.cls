@@ -20,7 +20,7 @@ public with sharing class ListActionsTest {
             requests
         );
         CollectionCalculate.Results response = responses[0];
-        System.assertEquals(15000, response.outputDecimalResult);
+        Assert.areEqual(15000, response.outputDecimalResult);
     }
 
     @isTest
@@ -33,7 +33,7 @@ public with sharing class ListActionsTest {
         List<GetLookupCollection.Results> responseWrapper = GetLookupCollection.get(
             requests
         );
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
+        Assert.areEqual(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
         List<Account> testAccounts = createAccounts(
@@ -58,7 +58,7 @@ public with sharing class ListActionsTest {
         requests.add(request);
         responseWrapper = GetLookupCollection.get(requests);
         System.debug('responseWrapper is: ' + responseWrapper);
-        System.assertEquals(null, responseWrapper[0].errorText);
+        Assert.areEqual(null, responseWrapper[0].errorText);
         requests.clear();
     }
 
@@ -88,7 +88,7 @@ public with sharing class ListActionsTest {
             requests
         );
         System.debug('responseWrapper is: ' + responseWrapper);
-        System.assertEquals(responseWrapper[0].errorText, noInputsMessage);
+        Assert.areEqual(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
         List<Account> testAccounts = createAccounts(
@@ -102,7 +102,7 @@ public with sharing class ListActionsTest {
         request.inputRecord = testAccounts[0];
         requests.add(request);
         responseWrapper = GetChildCollection.get(requests);
-        System.assertEquals(responseWrapper[0].errorText, dualInputsMessage);
+        Assert.areEqual(responseWrapper[0].errorText, dualInputsMessage);
         requests.clear();
 
         request.inputRecordId = null;
@@ -111,8 +111,8 @@ public with sharing class ListActionsTest {
         request.childRecordFieldsCSV = 'Id,Name';
         requests.add(request);
         responseWrapper = GetChildCollection.get(requests);
-        System.assertNotEquals(responseWrapper[0].childCollection, null);
-        System.assertEquals(1, responseWrapper[0].childCollection.size());
+        Assert.areNotEqual(responseWrapper[0].childCollection, null);
+        Assert.areEqual(1, responseWrapper[0].childCollection.size());
         requests.clear();
     }
 
@@ -128,7 +128,7 @@ public with sharing class ListActionsTest {
         try {
             responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(
+            Assert.areEqual(
                 true,
                 ex.getMessage().contains(DeepClone.ERROR_NO_RECORD_NO_ID)
             );
@@ -152,7 +152,7 @@ public with sharing class ListActionsTest {
         try {
             responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
-            System.assertEquals(
+            Assert.areEqual(
                 true,
                 ex.getMessage().contains(DeepClone.ERROR_RECORD_AND_ID)
             );
@@ -164,14 +164,14 @@ public with sharing class ListActionsTest {
         request.inputRecord = testAccounts[0];
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord, null);
+        Assert.areNotEqual(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = null;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
-        System.assertNotEquals(responseWrapper[0].clonedRecord, null);
+        Assert.areNotEqual(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
         request.inputRecordId = testAccounts[0].Id;
@@ -181,13 +181,13 @@ public with sharing class ListActionsTest {
         request.saveChildRecordsAutomatically = true;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
-        System.assertNotEquals(
+        Assert.areNotEqual(
             responseWrapper[0].clonedRecord.Id,
             testAccounts[0].Id
         );
-        System.assertNotEquals(responseWrapper[0].clonedRecord.Id, null);
+        Assert.areNotEqual(responseWrapper[0].clonedRecord.Id, null);
         List<Task> allTasks = [SELECT Id FROM Task];
-        System.assertEquals(2 * NUMBER_OF_TEST_RECORDS, allTasks.size());
+        Assert.areEqual(2 * NUMBER_OF_TEST_RECORDS, allTasks.size());
         requests.clear();
     }
 
@@ -204,13 +204,13 @@ public with sharing class ListActionsTest {
         List<CopyCollection.Results> responseWrapper = CopyCollection.copyCollection(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             responseWrapper[0].outputCollection.size(),
             NUMBER_OF_TEST_RECORDS
         );
         for (Integer i = 0; i < NUMBER_OF_TEST_RECORDS; i++) {
-            System.assertEquals(
+            Assert.areEqual(
                 ((Account) responseWrapper[0].outputCollection[i]).Name,
                 testAccounts[i].Name
             );
@@ -231,8 +231,8 @@ public with sharing class ListActionsTest {
         List<FilterCollection.Results> responseWrapper = FilterCollection.filter(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(2, responseWrapper[0].outputCollection.size());
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(2, responseWrapper[0].outputCollection.size());
     }
 
     @isTest
@@ -245,8 +245,8 @@ public with sharing class ListActionsTest {
         List<EvaluateFormula.Results> responseWrapper = EvaluateFormula.evaluate(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals('true', responseWrapper[0].stringResult);
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual('true', responseWrapper[0].stringResult);
     }
 
     @isTest
@@ -264,8 +264,8 @@ public with sharing class ListActionsTest {
         List<GenerateCollectionReport.Results> responseWrapper = GenerateCollectionReport.generateReport(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             true,
             responseWrapper[0]
                 .reportString.startsWith('Collection Type: Account')
@@ -281,8 +281,8 @@ public with sharing class ListActionsTest {
         List<GenerateCollectionReport.Results> responseWrapperTable = GenerateCollectionReport.generateReport(
             requestsTable
         );
-        System.assertEquals(responseWrapperTable.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapperTable.size(), 1);
+        Assert.areEqual(
             true,
             responseWrapper[0]
                 .reportString.startsWith('Collection Type: Account')
@@ -307,8 +307,8 @@ public with sharing class ListActionsTest {
         List<JoinCollections.Results> responseWrapper = JoinCollections.joinCollections(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(10, responseWrapper[0].outputCollection.size());
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(10, responseWrapper[0].outputCollection.size());
     }
 
     @isTest
@@ -338,14 +338,14 @@ public with sharing class ListActionsTest {
         List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS,
             responseWrapper[0].outputCollection.size()
         );
         for (SObject obj : responseWrapper[0].outputCollection) {
             for (String fieldName : fieldNameValue.keySet()) {
-                System.assertEquals(
+                Assert.areEqual(
                     String.valueOf(fieldNameValue.get(fieldName)),
                     String.valueOf(obj.get(fieldName))
                 );
@@ -380,13 +380,13 @@ public with sharing class ListActionsTest {
         List<MapCollection.Results> responseWrapper = MapCollection.mapCollection(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS,
             responseWrapper[0].outputCollection.size()
         );
         for (SObject obj : responseWrapper[0].outputCollection) {
-            System.assertEquals(obj.get('ActivityDate'), Date.today());
+            Assert.areEqual(obj.get('ActivityDate'), Date.today());
         }
 
         List<Event> testEvents = createEvents(
@@ -401,12 +401,12 @@ public with sharing class ListActionsTest {
             '"';
         requests.add(request);
         responseWrapper = MapCollection.mapCollection(requests);
-        System.assertEquals(
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS,
             responseWrapper[0].outputCollection.size()
         );
         for (SObject obj : responseWrapper[0].outputCollection) {
-            System.assertEquals(dt, obj.get('StartDateTime'));
+            Assert.areEqual(dt, obj.get('StartDateTime'));
         }
     }
 
@@ -426,12 +426,12 @@ public with sharing class ListActionsTest {
         List<RemoveRecordInCollection.Results> responseWrapper = RemoveRecordInCollection.removeRecordByIndex(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS - 1,
             responseWrapper[0].outputCollection.size()
         );
-        System.assertNotEquals(
+        Assert.areNotEqual(
             ((Account) responseWrapper[0].outputCollection[0]).Name,
             accountNameToRemove
         );
@@ -450,10 +450,7 @@ public with sharing class ListActionsTest {
         request.enforceSingleMember = false;
         requests.add(request);
         List<GetFirst.Results> responseWrapper = GetFirst.execute(requests);
-        System.assertEquals(
-            testAccounts[0].Id,
-            responseWrapper[0].outputMember.Id
-        );
+        Assert.areEqual(testAccounts[0].Id, responseWrapper[0].outputMember.Id);
     }
 
     @isTest
@@ -475,8 +472,8 @@ public with sharing class ListActionsTest {
         List<FindRecordsInCollection.Results> responseWrapper = FindRecordsInCollection.execute(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             testAccounts[0].Name,
             ((Account) responseWrapper[0].singleOutputMember).Name
         );
@@ -499,12 +496,12 @@ public with sharing class ListActionsTest {
         List<AddOrInsertRecord.Results> responseWrapper = AddOrInsertRecord.addOrInsertRecord(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS + 1,
             responseWrapper[0].outputCollection.size()
         );
-        System.assertNotEquals(
+        Assert.areNotEqual(
             ((Account) responseWrapper[0].outputCollection[0]).Name,
             ((Account) responseWrapper[0]
                     .outputCollection[NUMBER_OF_TEST_RECORDS])
@@ -529,12 +526,9 @@ public with sharing class ListActionsTest {
         List<CountRecordsAndFields.Results> responseWrapper = CountRecordsAndFields.count(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(1, responseWrapper[0].matchedNumber);
-        System.assertEquals(
-            NUMBER_OF_TEST_RECORDS,
-            responseWrapper[0].totalNumber
-        );
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(1, responseWrapper[0].matchedNumber);
+        Assert.areEqual(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
     }
     //this is incompatible with recent work done on this class. however, there's a new set of test classes in a separate file, so just going to comment this one out
     /*   @isTest
@@ -548,15 +542,15 @@ public with sharing class ListActionsTest {
         requests.add(request);
 
         List<ExtractStringsFromCollection.Results> responseWrapper = ExtractStringsFromCollection.extract(requests);
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(NUMBER_OF_TEST_RECORDS, responseWrapper[0].stringList.size());
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(NUMBER_OF_TEST_RECORDS, responseWrapper[0].stringList.size());
 
         String resultString = '';
         for (Account curAcc : testAccounts) {
             resultString += curAcc.Name + ',';
         }
         resultString = resultString.removeEnd(',');
-        System.assertEquals(resultString, String.join(responseWrapper[0].stringList, ','));
+        Assert.areEqual(resultString, String.join(responseWrapper[0].stringList, ','));
     } */
 
     @isTest
@@ -591,13 +585,13 @@ public with sharing class ListActionsTest {
         List<SortCollection.Results> responseWrapper = SortCollection.sort(
             requests
         );
-        System.assertEquals(responseWrapper.size(), 1);
-        System.assertEquals(
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(
             NUMBER_OF_TEST_RECORDS,
             responseWrapper[0].outputCollection.size()
         );
 
-        System.assertEquals(
+        Assert.areEqual(
             ((Account) responseWrapper[0]
                     .outputCollection[NUMBER_OF_TEST_RECORDS - 1])
                 .Name,

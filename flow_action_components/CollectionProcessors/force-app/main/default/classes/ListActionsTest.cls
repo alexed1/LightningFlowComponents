@@ -5,10 +5,53 @@ public with sharing class ListActionsTest {
     private final static String TEST_CONTACT_NAME = 'Test Contact';
     private final static String FLOW_DATE_FORMAT = 'MMMM dd, yyyy';
     private final static String FLOW_DATE_TIME_FORMAT = 'MM/dd/yyyy, hh:mm aa';
+    // Counter to use as an offset when multiple account list retrievals are
+    // performed in one test
+    private static Integer numAccountsRetrieved = 0;
+
+    @TestSetup
+    static void makeData() {
+        Test.startTest();
+        List<Account> testAccounts = new List<Account>();
+        for (Integer i = 0; i < NUMBER_OF_TEST_RECORDS; i++) {
+            testAccounts.add(
+                new Account(
+                    Name = TEST_RECORD_NAME + i,
+                    Website = '' + i,
+                    AnnualRevenue = 5000
+                )
+            );
+        }
+        // Insert testAccounts without triggering duplicate rules
+        Database.DMLOptions dml = new Database.DMLOptions();
+        dml.DuplicateRuleHeader.AllowSave = true;
+        Database.insert(testAccounts, dml);
+
+        List<Contact> testContacts = new List<Contact>();
+        List<Task> testTasks = new List<Task>();
+        for (Integer i = 0; i < testAccounts.size(); i++) {
+            testContacts.add(
+                new Contact(
+                    LastName = TEST_CONTACT_NAME + i,
+                    AccountId = testAccounts[i].Id
+                )
+            );
+            testTasks.add(
+                new Task(
+                    Subject = TEST_RECORD_NAME + i,
+                    WhatId = testAccounts[0].Id
+                )
+            );
+        }
+        insert testContacts;
+        insert testTasks;
+        Test.stopTest();
+    }
 
     @isTest
     static void canCalculateCollection() {
-        List<Account> testAccounts = createAccounts(3, true);
+        Integer numAccountsToGet = 3;
+        List<Account> testAccounts = getAccounts(numAccountsToGet);
         CollectionCalculate.Requests request = new CollectionCalculate.Requests();
         request.inputCollection = testAccounts;
         request.fieldName = 'AnnualRevenue';
@@ -20,7 +63,10 @@ public with sharing class ListActionsTest {
             requests
         );
         CollectionCalculate.Results response = responses[0];
-        Assert.areEqual(15000, response.outputDecimalResult);
+        Assert.areEqual(
+            numAccountsToGet * testAccounts[0].AnnualRevenue,
+            response.outputDecimalResult
+        );
     }
 
     @isTest
@@ -36,11 +82,7 @@ public with sharing class ListActionsTest {
         Assert.areEqual(responseWrapper[0].errorText, noInputsMessage);
         requests.clear();
 
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
-        List<Contact> testContacts = createContacts(testAccounts, true);
+        List<Contact> testContacts = getContacts(NUMBER_OF_TEST_RECORDS);
         List<Opportunity> testOpportunity = createOpportunities(
             NUMBER_OF_TEST_RECORDS,
             true
@@ -76,11 +118,70 @@ public with sharing class ListActionsTest {
     }
 
     @isTest
-    static void canGetChildCollection() {
-        //user must pass in at least one input recordid or an input record
+    static void canGetChildCollection_inputRecord() {
+        Account testAccount = getAccounts(1)[0];
 
+        List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
+        GetChildCollection.Request request = new GetChildCollection.Request();
+        requests.add(request);
+        request.inputRecordId = null;
+        request.inputRecord = testAccount;
+        // API name of the child relationship
+        request.childRelationshipName = 'Contacts';
+        request.childRecordFieldsCSV = 'Id,Name';
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(
+            requests
+        );
+        Assert.areNotEqual(responseWrapper[0].childCollection, null);
+        Assert.areEqual(1, responseWrapper[0].childCollection.size());
+        requests.clear();
+    }
+
+    @isTest
+    static void canGetChildCollection_inputRecordId() {
+        Account testAccount = getAccounts(1)[0];
+
+        List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
+        GetChildCollection.Request request = new GetChildCollection.Request();
+        requests.add(request);
+        request.inputRecordId = testAccount.Id;
+        request.inputRecord = null;
+        // API name of the child relationship
+        request.childRelationshipName = 'Contacts';
+        request.childRecordFieldsCSV = 'Id,Name';
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(
+            requests
+        );
+        Assert.areNotEqual(responseWrapper[0].childCollection, null);
+        Assert.areEqual(1, responseWrapper[0].childCollection.size());
+        requests.clear();
+    }
+
+    @isTest
+    static void canGetChildCollection_childSobjectName() {
+        Account testAccount = getAccounts(1)[0];
+
+        List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
+        GetChildCollection.Request request = new GetChildCollection.Request();
+        requests.add(request);
+        request.inputRecordId = testAccount.Id;
+        request.inputRecord = null;
+        // API name of the child SObject. If more than one relationship exists
+        // between Account and Contact, this may have unexpected results.
+        request.childRelationshipName = 'Contact';
+        request.childRecordFieldsCSV = 'Id,Name';
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(
+            requests
+        );
+        Assert.areNotEqual(responseWrapper[0].childCollection, null);
+        Assert.isTrue(String.isBlank(responseWrapper[0].errorText));
+        requests.clear();
+    }
+
+    @isTest
+    static void canGetChildCollection_noInputsError() {
+        // Wser must pass in at least one input recordid or an input record
         String noInputsMessage = 'You need to pass either a record or a recordId into this action, representing the entity you want to start with';
-        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
         List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
         GetChildCollection.Request request = new GetChildCollection.Request();
         requests.add(request);
@@ -89,31 +190,24 @@ public with sharing class ListActionsTest {
         );
         System.debug('responseWrapper is: ' + responseWrapper);
         Assert.areEqual(responseWrapper[0].errorText, noInputsMessage);
-        requests.clear();
+    }
 
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
-        List<Contact> testContacts = createContacts(testAccounts, true);
+    @isTest
+    static void canGetChildCollection_dualInputsError() {
+        // User must not pass in both inputRecordId and inputRecord
+        String dualInputsMessage = 'You need to pass either a record or a recordId into this action, but you can not pass both';
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
 
-        //user can't pass in both an input recordid and an input record
+        List<GetChildCollection.Request> requests = new List<GetChildCollection.Request>();
+        GetChildCollection.Request request = new GetChildCollection.Request();
+        requests.add(request);
         request.inputRecordId = testAccounts[0].Id;
         request.inputRecord = testAccounts[0];
         requests.add(request);
-        responseWrapper = GetChildCollection.get(requests);
+        List<GetChildCollection.Results> responseWrapper = GetChildCollection.get(
+            requests
+        );
         Assert.areEqual(responseWrapper[0].errorText, dualInputsMessage);
-        requests.clear();
-
-        request.inputRecordId = null;
-        request.inputRecord = testAccounts[0];
-        request.childRelationshipName = 'Contact';
-        request.childRecordFieldsCSV = 'Id,Name';
-        requests.add(request);
-        responseWrapper = GetChildCollection.get(requests);
-        Assert.areNotEqual(responseWrapper[0].childCollection, null);
-        Assert.areEqual(1, responseWrapper[0].childCollection.size());
-        requests.clear();
     }
 
     @isTest
@@ -136,19 +230,13 @@ public with sharing class ListActionsTest {
 
         requests.clear();
 
-        //user can't pass in both an input recordid and an input record
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
-        List<Task> testTasks = createTasks(
-            NUMBER_OF_TEST_RECORDS,
-            testAccounts[0].Id,
-            true
-        );
-        request.inputRecordId = testAccounts[0].Id;
-        request.inputRecord = testAccounts[0];
+        // Get the account that has tasks associated with it
+        Account testAccount = getAccountWithTasks();
+        request.inputRecordId = testAccount.Id;
+        request.inputRecord = testAccount;
         requests.add(request);
+
+        //user can't pass in both an input recordid and an input record
         try {
             responseWrapper = DeepClone.clone(requests);
         } catch (Exception ex) {
@@ -161,30 +249,27 @@ public with sharing class ListActionsTest {
         requests.clear();
 
         request.inputRecordId = null;
-        request.inputRecord = testAccounts[0];
+        request.inputRecord = testAccount;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
         Assert.areNotEqual(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
-        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecordId = testAccount.Id;
         request.inputRecord = null;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
         Assert.areNotEqual(responseWrapper[0].clonedRecord, null);
         requests.clear();
 
-        request.inputRecordId = testAccounts[0].Id;
+        request.inputRecordId = testAccount.Id;
         request.inputRecord = null;
         request.saveImmediately = true;
         request.childRelationshipsCSV = 'Tasks';
         request.saveChildRecordsAutomatically = true;
         requests.add(request);
         responseWrapper = DeepClone.clone(requests);
-        Assert.areNotEqual(
-            responseWrapper[0].clonedRecord.Id,
-            testAccounts[0].Id
-        );
+        Assert.areNotEqual(responseWrapper[0].clonedRecord.Id, testAccount.Id);
         Assert.areNotEqual(responseWrapper[0].clonedRecord.Id, null);
         List<Task> allTasks = [SELECT Id FROM Task];
         Assert.areEqual(2 * NUMBER_OF_TEST_RECORDS, allTasks.size());
@@ -195,10 +280,7 @@ public with sharing class ListActionsTest {
     static void copyCollectionTest() {
         List<CopyCollection.Requests> requests = new List<CopyCollection.Requests>();
         CopyCollection.Requests request = new CopyCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         requests.add(request);
         List<CopyCollection.Results> responseWrapper = CopyCollection.copyCollection(
@@ -221,10 +303,7 @@ public with sharing class ListActionsTest {
     static void filterCollectionTest() {
         List<FilterCollection.Requests> requests = new List<FilterCollection.Requests>();
         FilterCollection.Requests request = new FilterCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.formula = 'OR(CONTAINS($Account.Name,"2"),CONTAINS($Account.Name,"3"))';
         requests.add(request);
@@ -254,10 +333,7 @@ public with sharing class ListActionsTest {
         // Simple Mode
         List<GenerateCollectionReport.Requests> requests = new List<GenerateCollectionReport.Requests>();
         GenerateCollectionReport.Requests request = new GenerateCollectionReport.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.shownFields = 'Name,Parent.Name';
         requests.add(request);
@@ -293,14 +369,10 @@ public with sharing class ListActionsTest {
     static void joinCollectionTest() {
         List<JoinCollections.Requests> requests = new List<JoinCollections.Requests>();
         JoinCollections.Requests request = new JoinCollections.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
-        List<Account> testAccounts2 = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        Integer list1Size = 3;
+        Integer list2Size = 2;
+        List<Account> testAccounts = getAccounts(list1Size);
+        List<Account> testAccounts2 = getAccounts(list2Size);
         request.inputCollection = testAccounts;
         request.inputCollection2 = testAccounts2;
         requests.add(request);
@@ -308,7 +380,10 @@ public with sharing class ListActionsTest {
             requests
         );
         Assert.areEqual(responseWrapper.size(), 1);
-        Assert.areEqual(10, responseWrapper[0].outputCollection.size());
+        Assert.areEqual(
+            list1Size + list2Size,
+            responseWrapper[0].outputCollection.size()
+        );
     }
 
     @isTest
@@ -358,15 +433,8 @@ public with sharing class ListActionsTest {
     static void mapCollectionDateTime() {
         List<MapCollection.Requests> requests = new List<MapCollection.Requests>();
         MapCollection.Requests request = new MapCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
-        List<Task> testTasks = createTasks(
-            NUMBER_OF_TEST_RECORDS,
-            testAccounts[0].Id,
-            true
-        );
+        Account testAccount = getAccountWithTasks();
+        List<Task> testTasks = testAccount.Tasks;
 
         Datetime dt = Datetime.now();
         dt = dt.addSeconds(-dt.second());
@@ -391,7 +459,7 @@ public with sharing class ListActionsTest {
 
         List<Event> testEvents = createEvents(
             NUMBER_OF_TEST_RECORDS,
-            testAccounts[0].Id,
+            testAccount.Id,
             true
         );
         request.inputCollection = testEvents;
@@ -415,10 +483,7 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<RemoveRecordInCollection.Requests> requests = new List<RemoveRecordInCollection.Requests>();
         RemoveRecordInCollection.Requests request = new RemoveRecordInCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.index = INDEX_TO_REMOVE;
         requests.add(request);
@@ -442,10 +507,7 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<GetFirst.Requests> requests = new List<GetFirst.Requests>();
         GetFirst.Requests request = new GetFirst.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.enforceSingleMember = false;
         requests.add(request);
@@ -458,10 +520,7 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<FindRecordsInCollection.Requests> requests = new List<FindRecordsInCollection.Requests>();
         FindRecordsInCollection.Requests request = new FindRecordsInCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.targetField = 'Name';
         request.targetValue = TEST_RECORD_NAME + '0';
@@ -484,10 +543,7 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<AddOrInsertRecord.Requests> requests = new List<AddOrInsertRecord.Requests>();
         AddOrInsertRecord.Requests request = new AddOrInsertRecord.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.inputRecord = testAccounts[0];
         request.index = 0;
@@ -514,10 +570,7 @@ public with sharing class ListActionsTest {
         final Integer INDEX_TO_REMOVE = 0;
         List<CountRecordsAndFields.Requests> requests = new List<CountRecordsAndFields.Requests>();
         CountRecordsAndFields.Requests request = new CountRecordsAndFields.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.fieldName = 'Name';
         request.fieldValue = TEST_RECORD_NAME + '0';
@@ -530,13 +583,14 @@ public with sharing class ListActionsTest {
         Assert.areEqual(1, responseWrapper[0].matchedNumber);
         Assert.areEqual(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
     }
+
     //this is incompatible with recent work done on this class. however, there's a new set of test classes in a separate file, so just going to comment this one out
     /*   @isTest
     static void extractStringsFromCollectionTest() {
         final Integer INDEX_TO_REMOVE = 0;
         List<ExtractStringsFromCollection.Requests> requests = new List<ExtractStringsFromCollection.Requests>();
         ExtractStringsFromCollection.Requests request = new ExtractStringsFromCollection.Requests();
-        List<Account> testAccounts = createAccounts(NUMBER_OF_TEST_RECORDS, true);
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         request.inputCollection = testAccounts;
         request.fieldName = 'Name';
         requests.add(request);
@@ -562,10 +616,7 @@ public with sharing class ListActionsTest {
         };
         List<SortCollection.Requests> requests = new List<SortCollection.Requests>();
         SortCollection.Requests request = new SortCollection.Requests();
-        List<Account> testAccounts = createAccounts(
-            NUMBER_OF_TEST_RECORDS,
-            true
-        );
+        List<Account> testAccounts = getAccounts(NUMBER_OF_TEST_RECORDS);
         testAccounts[NUMBER_OF_TEST_RECORDS - 1].NumberOfEmployees = 2;
         testAccounts[NUMBER_OF_TEST_RECORDS - 2].NumberOfEmployees = 3;
         testAccounts[NUMBER_OF_TEST_RECORDS - 3].NumberOfEmployees = 5;
@@ -597,48 +648,6 @@ public with sharing class ListActionsTest {
                 .Name,
             firstAccountName
         );
-    }
-
-    public static List<Account> createAccounts(
-        Integer numberOfRecords,
-        Boolean doInsert
-    ) {
-        List<Account> returnList = new List<Account>();
-        for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(
-                new Account(
-                    Name = TEST_RECORD_NAME + i,
-                    Website = '' + i,
-                    AnnualRevenue = 5000
-                )
-            );
-        }
-        if (doInsert) {
-            //insert returnList without triggering duplicate rules
-            Database.DMLOptions dml = new Database.DMLOptions();
-            dml.DuplicateRuleHeader.AllowSave = true;
-            List<Database.SaveResult> sr = Database.insert(returnList, dml);
-        }
-
-        return returnList;
-    }
-
-    static List<Task> createTasks(
-        Integer numberOfRecords,
-        Id whatId,
-        Boolean doInsert
-    ) {
-        List<Task> returnList = new List<Task>();
-        for (Integer i = 0; i < numberOfRecords; i++) {
-            returnList.add(
-                new Task(Subject = TEST_RECORD_NAME + i, WhatId = whatId)
-            );
-        }
-        if (doInsert) {
-            insert returnList;
-        }
-
-        return returnList;
     }
 
     static List<Event> createEvents(
@@ -682,27 +691,6 @@ public with sharing class ListActionsTest {
         return returnList;
     }
 
-    static List<Contact> createContacts(
-        List<Account> accountList,
-        Boolean doInsert
-    ) {
-        List<Contact> contactList = new List<Contact>();
-        Integer i = 1;
-        for (Account curAccount : accountList) {
-            contactList.add(
-                new Contact(
-                    LastName = TEST_CONTACT_NAME + i,
-                    AccountId = curAccount.Id
-                )
-            );
-            i = i + 1;
-        }
-        if (doInsert) {
-            insert contactList;
-        }
-        return contactList;
-    }
-
     static List<Opportunity> createOpportunities(
         Integer numberOfRecords,
         Boolean doInsert
@@ -722,5 +710,43 @@ public with sharing class ListActionsTest {
         }
 
         return returnList;
+    }
+
+    private static List<Account> getAccounts(Integer numberOfRecords) {
+        List<Account> returnList = [
+            SELECT Id, Name, Website, AnnualRevenue, NumberOfEmployees, Site
+            FROM Account
+            ORDER BY Name
+            LIMIT :numberOfRecords
+            OFFSET :numAccountsRetrieved
+        ];
+        numAccountsRetrieved += numberOfRecords;
+        return returnList;
+    }
+
+    private static Account getAccountWithTasks() {
+        Task testTask = [SELECT Id, WhatId FROM Task LIMIT 1];
+        return [
+            SELECT
+                Id,
+                Name,
+                Website,
+                AnnualRevenue,
+                NumberOfEmployees,
+                Site,
+                (SELECT Id, Subject, WhatId FROM Tasks)
+            FROM Account
+            WHERE Id = :testTask.WhatId
+            LIMIT 1
+        ];
+    }
+
+    private static List<Contact> getContacts(Integer numberOfRecords) {
+        return [
+            SELECT Id, LastName, AccountId
+            FROM Contact
+            ORDER BY LastName
+            LIMIT :numberOfRecords
+        ];
     }
 }

@@ -1,0 +1,12 @@
+<template>
+    <div class="slds-var-p-around_x-small">
+        <lightning-textarea
+            value={sourceText}
+            label={label}
+            onchange={handleChange}
+            placeholder={placeHolder}
+            required={required}
+        ></lightning-textarea>
+    </div>
+    <div class={charCountClass}>{charString}</div>
+</template>

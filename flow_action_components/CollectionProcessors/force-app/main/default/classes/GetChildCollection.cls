@@ -18,51 +18,62 @@ global with sharing class GetChildCollection {
             SObject inputRecord = curRequest.inputRecord;
             String inputRecordId = curRequest.inputRecordId;
 
-            SObjectType recordType;
-            SObjectField lookupField;
+            SObjectType parentSobjType;
+            String childSobjTypeName;
+            String lookupFieldName;
 
             try {
-                if (inputRecordId == null && inputRecord == null) {
-                    throw new InvocableActionException(
-                        'You need to pass either a record or a recordId into this action, representing the entity you want to start with'
-                    );
-                } else if (inputRecordId != null && inputRecord != null) {
-                    throw new InvocableActionException(
-                        'You need to pass either a record or a recordId into this action, but you can not pass both'
-                    );
-                }
-                if (inputRecordId != null) {
-                    recordType = ID.valueOf(inputRecordId).getSObjectType();
-                    String typeName = recordType.getDescribe().getName();
-                    inputRecord = Database.query(
-                        'SELECT Id From ' +
-                            typeName +
-                            ' Where Id = :inputRecordId'
-                    );
+                // Get the parent SObjectType based on the incoming ID/record
+                if (inputRecordId == null) {
+                    // If we haven't received a record ID or record
+                    if (inputRecord == null) {
+                        throw new InvocableActionException(
+                            'You need to pass either a record or a recordId into this action, representing the entity you want to start with'
+                        );
+                    }
+                    parentSobjType = inputRecord.getSObjectType();
+                    inputRecordId = inputRecord.Id;
                 } else {
-                    recordType = inputRecord.getSObjectType();
+                    // If we received both a record ID and a record
+                    if (inputRecord != null) {
+                        throw new InvocableActionException(
+                            'You need to pass either a record or a recordId into this action, but you can not pass both'
+                        );
+                    }
+                    parentSobjType = Id.valueOf(inputRecordId).getSObjectType();
                 }
                 System.debug(
-                    'made it through validation. inputRecord is: ' + inputRecord
+                    'Made it through validation; parentSobjType is ' +
+                        parentSobjType +
+                        '; inputRecordId is ' +
+                        inputRecordId
                 );
                 for (
-                    ChildRelationship curChildRel : recordType.getDescribe()
+                    ChildRelationship curChildRel : parentSobjType.getDescribe()
                         .getChildRelationships()
                 ) {
-                    Schema.DescribeSObjectResult childRelDescribe = curChildRel.getChildSObject()
-                        .getDescribe();
-                    System.debug(
-                        'childRelDescribe.getName():::' +
-                        childRelDescribe.getName()
-                    );
+                    String curChildRelName = curChildRel.getRelationshipName();
+                    System.debug('curChildRelName: ' + curChildRelName);
+                    String curChildObjName = curChildRel.getChildSObject()
+                        .getDescribe()
+                        .getName();
+                    System.debug('curChildObjName: ' + curChildObjName);
+
+                    // If the provided childRelationshipName matches either the
+                    // API name of the child relationship OR the API name of the
+                    // child SObject, use this relationship
                     if (
-                        childRelDescribe.getName() ==
-                        curRequest.childRelationshipName
+                        curRequest.childRelationshipName == curChildRelName ||
+                        curRequest.childRelationshipName == curChildObjName
                     ) {
-                        lookupField = curChildRel.getField();
+                        lookupFieldName = curChildRel.getField()
+                            .getDescribe()
+                            .getName();
+                        childSobjTypeName = curChildObjName;
+                        break;
                     }
                 }
-                if (lookupField == null)
+                if (lookupFieldName == null)
                     throw new InvocableActionException(
                         'Did not find the relationship ' +
                             curRequest.childRelationshipName +
@@ -74,11 +85,11 @@ global with sharing class GetChildCollection {
                     'SELECT ' +
                     curRequest.childRecordFieldsCSV +
                     ' FROM ' +
-                    curRequest.childRelationshipName +
+                    childSobjTypeName +
                     ' WHERE ' +
-                    lookupField.getDescribe().getName() +
+                    lookupFieldName +
                     ' = \'' +
-                    inputRecord.Id +
+                    inputRecordId +
                     '\'';
                 System.debug('query is: ' + qry);
 

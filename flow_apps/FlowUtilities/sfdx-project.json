@@ -14,7 +14,7 @@
           "package": "clipboardButton@1.1.1"
         },
         {
-          "package": "datatable@4.0.12-0"
+          "package": "datatable@4.1.0-0"
         },
         {
           "package": "ImportExportFlowsV2@2.0.2"
@@ -46,7 +46,7 @@
     "FlowActionsBasePack@3.0.15-0": "04t8b000001BTgsAAG",
     "FlowScreenComponentsBasePack@3.1.0-0": "04t5G000004J7JyQAK",
     "clipboardButton@1.1.1": "04t5G000004C6vvQAC",
-    "datatable@4.0.12-0": "04t5G0000043wt5QAA",
+    "datatable@4.1.0-0": "04t5G000004J7LQQA0",
     "ImportExportFlowsV2@2.0.2": "04t5G000004C6v7QAC",
     "NavigateEverywhereAction@1.1.1": "04t5G000003rUhrQAE",
     "FlowOneView": "0Ho5G000000PB7SSAW",

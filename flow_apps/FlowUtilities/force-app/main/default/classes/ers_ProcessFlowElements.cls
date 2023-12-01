@@ -63,11 +63,11 @@ global inherited sharing class ers_ProcessFlowElements {
                 'recordDeletes',
                 'recordRollbacks',
                 'subflows',
+                'transforms',
                 'waits',
                 'screens',
                 'loops',
                 'decisions',
-                'transforms',
                 'customErrors'
             };
 

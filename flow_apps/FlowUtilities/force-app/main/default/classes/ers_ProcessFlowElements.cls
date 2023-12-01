@@ -66,7 +66,9 @@ global inherited sharing class ers_ProcessFlowElements {
                 'waits',
                 'screens',
                 'loops',
-                'decisions'
+                'decisions',
+                'transforms',
+                'customErrors'
             };
 
             sliceResults rbs = new sliceResults();
@@ -321,6 +323,12 @@ global inherited sharing class ers_ProcessFlowElements {
                                     slr = sliceText('<defaultConnectorLabel>', '</defaultConnectorLabel>', resource, FORWARD);
                                     objElement.put('ruleLabel__c', slr.textInner);
                                     objElement.put('connector__c', objElement.get('defaultConnector__c'));
+                                }
+                                when 'transforms' {
+                                    objElement.put('Element_Type__c', 'Transform');
+                                }
+                                when 'customErrors' {
+                                    objElement.put('Element_Type__c', 'Custom Error');
                                 }
                             }
 

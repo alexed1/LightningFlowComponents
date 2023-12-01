@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Check_for_Existing_Description</name>
         <label>Check for Existing Description</label>
-        <locationX>270</locationX>
-        <locationY>1118</locationY>
+        <locationX>468</locationX>
+        <locationY>1490</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -29,13 +29,15 @@
                 <elementReference>Extract_Entire_Resource.vResourceExtract</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Find_Name</name>
         <label>Find Name</label>
-        <locationX>402</locationX>
-        <locationY>1358</locationY>
+        <locationX>600</locationX>
+        <locationY>1706</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -54,14 +56,16 @@
                 <elementReference>Extract_Entire_Resource.vResourceExtract</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Assign_Deploy_Metadata</name>
         <label>Assign Deploy Metadata</label>
-        <locationX>50</locationX>
-        <locationY>398</locationY>
+        <locationX>248</locationX>
+        <locationY>842</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Assign</operator>
@@ -81,10 +85,42 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_Edit_Collection</name>
+        <label>Assign Edit Collection</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>colEdits</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>colResources</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Deploy_Metadata</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Edits</name>
+        <label>Assign Edits</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <assignmentItems>
+            <assignToReference>colEdits</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Resource_dt.outputEditedRows</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Deploy_Metadata</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Resource_Attributes</name>
         <label>Assign Resource Attributes</label>
-        <locationX>270</locationX>
-        <locationY>638</locationY>
+        <locationX>468</locationX>
+        <locationY>1058</locationY>
         <assignmentItems>
             <assignToReference>vResourceName</assignToReference>
             <operator>Assign</operator>
@@ -106,8 +142,8 @@
     <assignments>
         <name>Create_New_Description</name>
         <label>Create New Description</label>
-        <locationX>270</locationX>
-        <locationY>878</locationY>
+        <locationX>468</locationX>
+        <locationY>1274</locationY>
         <assignmentItems>
             <assignToReference>vDescription</assignToReference>
             <operator>Assign</operator>
@@ -136,13 +172,20 @@
     <assignments>
         <name>Finish_Building_New_Deploy_Metadata</name>
         <label>Finish Building New Deploy Metadata</label>
-        <locationX>270</locationX>
-        <locationY>1694</locationY>
+        <locationX>468</locationX>
+        <locationY>2006</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Add</operator>
             <value>
                 <elementReference>Extract_Entire_Resource.vResourceAfter</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vDeploy</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
             </value>
         </assignmentItems>
         <connector>
@@ -152,8 +195,8 @@
     <assignments>
         <name>Insert_New_Description</name>
         <label>Insert New Description</label>
-        <locationX>402</locationX>
-        <locationY>1478</locationY>
+        <locationX>600</locationX>
+        <locationY>1814</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Add</operator>
@@ -189,8 +232,8 @@
     <assignments>
         <name>Replace_Existing_Description</name>
         <label>Replace Existing Description</label>
-        <locationX>138</locationX>
-        <locationY>1358</locationY>
+        <locationX>336</locationX>
+        <locationY>1706</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Add</operator>
@@ -219,8 +262,8 @@
     <assignments>
         <name>Set_Cancel_Flag</name>
         <label>Set Cancel Flag</label>
-        <locationX>314</locationX>
-        <locationY>398</locationY>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>vCancel</assignToReference>
             <operator>Assign</operator>
@@ -232,8 +275,8 @@
     <assignments>
         <name>Start_Building_New_Deploy_Metadata</name>
         <label>Start Building New Deploy Metadata</label>
-        <locationX>270</locationX>
-        <locationY>998</locationY>
+        <locationX>468</locationX>
+        <locationY>1382</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Assign</operator>
@@ -248,8 +291,8 @@
     <decisions>
         <name>Check_for_Edited_Data_and_Save_Button</name>
         <label>Check for Edited Data and Save Button</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>446</locationX>
+        <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Set_Cancel_Flag</targetReference>
         </defaultConnector>
@@ -272,7 +315,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Assign_Deploy_Metadata</targetReference>
+                <targetReference>Assign_Edits</targetReference>
             </connector>
             <label>HAVE EDITS</label>
         </rules>
@@ -280,8 +323,8 @@
     <decisions>
         <name>Found_Description</name>
         <label>Found Description?</label>
-        <locationX>270</locationX>
-        <locationY>1238</locationY>
+        <locationX>468</locationX>
+        <locationY>1598</locationY>
         <defaultConnector>
             <targetReference>Find_Name</targetReference>
         </defaultConnector>
@@ -302,15 +345,40 @@
             <label>EXISTING</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Process_Only</name>
+        <label>Process Only?</label>
+        <locationX>248</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>Description_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CONTINUE (Default)</defaultConnectorLabel>
+        <rules>
+            <name>PROCESS_ONLY_dec</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vProcessOnly</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Edit_Collection</targetReference>
+            </connector>
+            <label>PROCESS ONLY</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Flow OneView - Update Descriptions {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Flow OneView - Update Descriptions</label>
     <loops>
         <name>Process_Edits</name>
         <label>Process Edits</label>
-        <locationX>50</locationX>
-        <locationY>518</locationY>
-        <collectionReference>Resource_dt.outputEditedRows</collectionReference>
+        <locationX>248</locationX>
+        <locationY>950</locationY>
+        <collectionReference>colEdits</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Resource_Attributes</targetReference>
@@ -339,8 +407,8 @@
     <screens>
         <name>Description_Screen</name>
         <label>Description Screen</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
+        <locationX>446</locationX>
+        <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -502,18 +570,18 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>122</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Description_Screen</targetReference>
+            <targetReference>Process_Only</targetReference>
         </connector>
     </start>
     <status>Draft</status>
     <subflows>
         <name>Extract_Entire_Resource</name>
         <label>Extract Entire Resource</label>
-        <locationX>270</locationX>
-        <locationY>758</locationY>
+        <locationX>468</locationX>
+        <locationY>1166</locationY>
         <connector>
             <targetReference>Create_New_Description</targetReference>
         </connector>
@@ -543,6 +611,14 @@
         <isViewedAsPlainText>true</isViewedAsPlainText>
         <text>&lt;name&gt;{!vResourceName}&lt;/name&gt;</text>
     </textTemplates>
+    <variables>
+        <name>colEdits</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Flow_OneView__c</objectType>
+    </variables>
     <variables>
         <name>colResources</name>
         <dataType>SObject</dataType>
@@ -588,6 +664,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vProcessOnly</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>vResourceName</name>

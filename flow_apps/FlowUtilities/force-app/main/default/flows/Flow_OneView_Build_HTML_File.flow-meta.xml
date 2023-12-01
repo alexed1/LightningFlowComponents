@@ -20,10 +20,12 @@
                 <elementReference>vContentResult</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>CreateFile</nameSegment>
         <outputParameters>
             <assignToReference>vContentDocumentId</assignToReference>
             <name>documentId</name>
         </outputParameters>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>

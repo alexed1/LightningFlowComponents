@@ -4,7 +4,7 @@
         <name>Check_for_Hard_Coded_Ids</name>
         <label>Check for Hard-Coded Ids</label>
         <locationX>176</locationX>
-        <locationY>158</locationY>
+        <locationY>134</locationY>
         <actionName>ers_CheckForIds</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -25,14 +25,16 @@
                 <elementReference>colResources</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_CheckForIds</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Assign_Results</name>
         <label>Assign Results</label>
         <locationX>176</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <assignmentItems>
             <assignToReference>colHardcodedIds</assignToReference>
             <operator>Assign</operator>
@@ -48,7 +50,7 @@
         <name>Check_Only</name>
         <label>Check Only?</label>
         <locationX>176</locationX>
-        <locationY>398</locationY>
+        <locationY>350</locationY>
         <defaultConnector>
             <targetReference>Show_Hard_Coded_Ids</targetReference>
         </defaultConnector>
@@ -93,8 +95,8 @@
     <screens>
         <name>Show_Hard_Coded_Ids</name>
         <label>Show Hard-Coded Ids</label>
-        <locationX>264</locationX>
-        <locationY>518</locationY>
+        <locationX>308</locationX>
+        <locationY>458</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -292,7 +294,7 @@
         <name>vCheckOnly</name>
         <dataType>Boolean</dataType>
         <isCollection>false</isCollection>
-        <isInput>false</isInput>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
         <value>
             <booleanValue>false</booleanValue>

@@ -4,7 +4,7 @@
         <name>Process_Flow_Details</name>
         <label>Process Flow Details</label>
         <locationX>182</locationX>
-        <locationY>158</locationY>
+        <locationY>134</locationY>
         <actionName>ers_ProcessFlowDetails</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -21,14 +21,16 @@
                 <elementReference>vSourceMetadata</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_ProcessFlowDetails</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Add_to_Collection</name>
         <label>Add to Collection</label>
-        <locationX>270</locationX>
-        <locationY>638</locationY>
+        <locationX>402</locationX>
+        <locationY>866</locationY>
         <assignmentItems>
             <assignToReference>colDetails</assignToReference>
             <operator>Add</operator>
@@ -44,7 +46,7 @@
         <name>Add_to_Return_Detail_other</name>
         <label>Add to Return Detail</label>
         <locationX>798</locationX>
-        <locationY>1214</locationY>
+        <locationY>1382</locationY>
         <assignmentItems>
             <assignToReference>vReturnDetail</assignToReference>
             <operator>Add</operator>
@@ -60,7 +62,7 @@
         <name>Add_to_Return_Detail_type</name>
         <label>Add to Return Detail</label>
         <locationX>534</locationX>
-        <locationY>1214</locationY>
+        <locationY>1382</locationY>
         <assignmentItems>
             <assignToReference>vReturnDetail</assignToReference>
             <operator>Add</operator>
@@ -80,10 +82,33 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_Description_Values</name>
+        <label>Assign Description Values</label>
+        <locationX>270</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>vFlowDescription</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Build_Message_Field.value__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vFlowHasDescription</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Assign_Message</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_Message</name>
         <label>Assign Message</label>
-        <locationX>270</locationX>
-        <locationY>518</locationY>
+        <locationX>402</locationX>
+        <locationY>758</locationY>
         <assignmentItems>
             <assignToReference>objDetail.Message__c</assignToReference>
             <operator>Assign</operator>
@@ -98,8 +123,8 @@
     <assignments>
         <name>Assign_Record</name>
         <label>Assign Record</label>
-        <locationX>270</locationX>
-        <locationY>398</locationY>
+        <locationX>402</locationX>
+        <locationY>350</locationY>
         <assignmentItems>
             <assignToReference>objDetail</assignToReference>
             <operator>Assign</operator>
@@ -115,14 +140,14 @@
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>Assign_Message</targetReference>
+            <targetReference>Resource_Type</targetReference>
         </connector>
     </assignments>
     <assignments>
         <name>Start_Return_Detail</name>
         <label>Start Return Detail</label>
         <locationX>270</locationX>
-        <locationY>1214</locationY>
+        <locationY>1382</locationY>
         <assignmentItems>
             <assignToReference>vReturnDetail</assignToReference>
             <operator>Assign</operator>
@@ -146,7 +171,7 @@
         <elementSubtype>SortCollectionProcessor</elementSubtype>
         <label>Sort by Sequence #</label>
         <locationX>182</locationX>
-        <locationY>854</locationY>
+        <locationY>1058</locationY>
         <collectionProcessorType>SortCollectionProcessor</collectionProcessorType>
         <collectionReference>colDetails</collectionReference>
         <connector>
@@ -162,7 +187,7 @@
         <name>Debug</name>
         <label>Debug?</label>
         <locationX>182</locationX>
-        <locationY>1526</locationY>
+        <locationY>1658</locationY>
         <defaultConnectorLabel>NORMAL (Default)</defaultConnectorLabel>
         <rules>
             <name>DEBUG_dec</name>
@@ -181,10 +206,35 @@
         </rules>
     </decisions>
     <decisions>
+        <name>Resource_Type</name>
+        <label>Resource Type?</label>
+        <locationX>402</locationX>
+        <locationY>458</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Message</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Other (Default)</defaultConnectorLabel>
+        <rules>
+            <name>description</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vResourceType</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>description</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Description_Values</targetReference>
+            </connector>
+            <label>description</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Which_Detail_Type</name>
         <label>Which Detail Type?</label>
         <locationX>534</locationX>
-        <locationY>1094</locationY>
+        <locationY>1274</locationY>
         <defaultConnector>
             <targetReference>Add_to_Return_Detail_other</targetReference>
         </defaultConnector>
@@ -281,7 +331,7 @@ CASE( {!vResourceType},
         <name>Build_Message_Field</name>
         <label>Build Message Field</label>
         <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationY>242</locationY>
         <collectionReference>Process_Flow_Details.detailRecordCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -295,7 +345,7 @@ CASE( {!vResourceType},
         <name>For_Each_Detail_Value</name>
         <label>For Each Detail Value</label>
         <locationX>182</locationX>
-        <locationY>974</locationY>
+        <locationY>1166</locationY>
         <collectionReference>colDetails</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -324,11 +374,12 @@ CASE( {!vResourceType},
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
+    <runInMode>SystemModeWithoutSharing</runInMode>
     <screens>
         <name>Screen</name>
         <label>Screen</label>
         <locationX>50</locationX>
-        <locationY>1646</locationY>
+        <locationY>1766</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
@@ -525,6 +576,23 @@ CASE( {!vResourceType},
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vFlowDescription</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vFlowHasDescription</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>vResourceType</name>

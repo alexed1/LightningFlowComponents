@@ -23,7 +23,9 @@
                 <elementReference>Find_Resource_Name.textAfter</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Find_Resource_Name</name>
@@ -48,7 +50,9 @@
                 <elementReference>vSourceMetadata</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Find_Resource_Start</name>
@@ -79,7 +83,9 @@
                 <elementReference>Find_Resource_Name.textBefore</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>

@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Locate_Orphan_Name_Reference</name>
         <label>Locate Orphan Name Reference</label>
-        <locationX>138</locationX>
-        <locationY>2486</locationY>
+        <locationX>479</locationX>
+        <locationY>3398</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -23,13 +23,15 @@
                 <elementReference>vDeployMetadata</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Locate_Resource_Begin</name>
         <label>Locate Resource Begin</label>
-        <locationX>138</locationX>
-        <locationY>2606</locationY>
+        <locationX>479</locationX>
+        <locationY>3506</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -54,13 +56,15 @@
                 <elementReference>Locate_Orphan_Name_Reference.textBefore</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Locate_Resource_End</name>
         <label>Locate Resource End</label>
-        <locationX>138</locationX>
-        <locationY>2726</locationY>
+        <locationX>479</locationX>
+        <locationY>3614</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -79,13 +83,15 @@
                 <elementReference>Locate_Orphan_Name_Reference.textAfter</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_After_Name_Direct</name>
         <label>Slice After Name - Direct</label>
-        <locationX>534</locationX>
-        <locationY>998</locationY>
+        <locationX>1436</locationX>
+        <locationY>1430</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -104,17 +110,19 @@
                 <elementReference>Slice_Name_Reference.textAfter</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_After_Name_ObjectField</name>
         <label>Slice After Name - ObjectField</label>
-        <locationX>534</locationX>
-        <locationY>1238</locationY>
+        <locationX>1436</locationX>
+        <locationY>1646</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Check_for_References</targetReference>
+            <targetReference>Check_for_Direct_Reference</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -129,13 +137,15 @@
                 <elementReference>Slice_Name_Reference.textAfter</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_Before_Name_Direct</name>
         <label>Slice Before Name - Direct</label>
-        <locationX>534</locationX>
-        <locationY>878</locationY>
+        <locationX>1436</locationX>
+        <locationY>1322</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -154,13 +164,15 @@
                 <elementReference>Slice_Name_Reference.textBefore</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_Before_Name_ObjectField</name>
         <label>Slice Before Name - ObjectField</label>
-        <locationX>534</locationX>
-        <locationY>1118</locationY>
+        <locationX>1436</locationX>
+        <locationY>1538</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -179,13 +191,69 @@
                 <elementReference>Slice_Name_Reference.textBefore</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Slice_Choice_Reference</name>
+        <label>Slice Choice Reference</label>
+        <locationX>1150</locationX>
+        <locationY>782</locationY>
+        <actionName>ers_SliceText</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_for_Choice_Reference</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>searchBegin</name>
+            <value>
+                <elementReference>ttChoiceReference</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sourceText</name>
+            <value>
+                <elementReference>vSourceMetadata</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Slice_Element_Reference</name>
+        <label>Slice Element Reference</label>
+        <locationX>1304</locationX>
+        <locationY>998</locationY>
+        <actionName>ers_SliceText</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Check_for_Element_Reference</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>searchBegin</name>
+            <value>
+                <elementReference>ttElementReference</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sourceText</name>
+            <value>
+                <elementReference>vSourceMetadata</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_Merge_Reference</name>
         <label>Slice Merge Reference</label>
-        <locationX>402</locationX>
-        <locationY>518</locationY>
+        <locationX>985</locationX>
+        <locationY>566</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -204,13 +272,15 @@
                 <elementReference>vSourceMetadata</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <actionCalls>
         <name>Slice_Name_Reference</name>
         <label>Slice Name Reference</label>
-        <locationX>534</locationX>
-        <locationY>758</locationY>
+        <locationX>1436</locationX>
+        <locationY>1214</locationY>
         <actionName>ers_SliceText</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -229,14 +299,16 @@
                 <elementReference>vSourceMetadata</elementReference>
             </value>
         </inputParameters>
+        <nameSegment>ers_SliceText</nameSegment>
         <storeOutputAutomatically>true</storeOutputAutomatically>
+        <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <assignments>
         <name>Add_to_Orphan_Collection</name>
         <label>Add to Orphan Collection</label>
-        <locationX>622</locationX>
-        <locationY>1478</locationY>
+        <locationX>1524</locationX>
+        <locationY>1862</locationY>
         <assignmentItems>
             <assignToReference>colOrphans</assignToReference>
             <operator>Add</operator>
@@ -249,10 +321,26 @@
         </connector>
     </assignments>
     <assignments>
+        <name>Assign_Metadata</name>
+        <label>Assign Metadata</label>
+        <locationX>50</locationX>
+        <locationY>242</locationY>
+        <assignmentItems>
+            <assignToReference>vDeployMetadata</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>vSourceMetadata</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Process_Orphan_Removal</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
         <name>Assign_New_Deploy_Metadata</name>
         <label>Assign New Deploy Metadata</label>
-        <locationX>138</locationX>
-        <locationY>2846</locationY>
+        <locationX>479</locationX>
+        <locationY>3722</locationY>
         <assignmentItems>
             <assignToReference>vDeployMetadata</assignToReference>
             <operator>Assign</operator>
@@ -267,6 +355,13 @@
                 <elementReference>Locate_Resource_End.textAfter</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vDeploy</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Process_Orphan_Removal</targetReference>
         </connector>
@@ -274,8 +369,8 @@
     <assignments>
         <name>Assign_Resource_Attributes_find</name>
         <label>Assign Resource Attributes</label>
-        <locationX>402</locationX>
-        <locationY>398</locationY>
+        <locationX>985</locationX>
+        <locationY>458</locationY>
         <assignmentItems>
             <assignToReference>vResourceName</assignToReference>
             <operator>Assign</operator>
@@ -290,8 +385,8 @@
     <assignments>
         <name>Assign_Resource_Attributes_process</name>
         <label>Assign Resource Attributes</label>
-        <locationX>138</locationX>
-        <locationY>2366</locationY>
+        <locationX>479</locationX>
+        <locationY>3290</locationY>
         <assignmentItems>
             <assignToReference>vResourceName</assignToReference>
             <operator>Assign</operator>
@@ -313,8 +408,8 @@
     <assignments>
         <name>Set_Cancel_Flag</name>
         <label>Set Cancel Flag</label>
-        <locationX>314</locationX>
-        <locationY>2126</locationY>
+        <locationX>1062</locationX>
+        <locationY>2714</locationY>
         <assignmentItems>
             <assignToReference>vCancel</assignToReference>
             <operator>Assign</operator>
@@ -326,8 +421,8 @@
     <assignments>
         <name>Set_Deploy_Flag</name>
         <label>Set Deploy Flag</label>
-        <locationX>50</locationX>
-        <locationY>2126</locationY>
+        <locationX>798</locationX>
+        <locationY>2714</locationY>
         <assignmentItems>
             <assignToReference>vDeploy</assignToReference>
             <operator>Assign</operator>
@@ -342,6 +437,13 @@
                 <elementReference>vSourceMetadata</elementReference>
             </value>
         </assignmentItems>
+        <assignmentItems>
+            <assignToReference>colProcess</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Orphan_dt.outputSelectedRows</elementReference>
+            </value>
+        </assignmentItems>
         <connector>
             <targetReference>Process_Orphan_Removal</targetReference>
         </connector>
@@ -350,56 +452,56 @@
         <name>Filter_Resources</name>
         <elementSubtype>FilterCollectionProcessor</elementSubtype>
         <label>Filter Resources</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
-        <assignNextValueToReference>currentItem_Filter_Resources</assignNextValueToReference>
+        <locationX>732</locationX>
+        <locationY>242</locationY>
+        <assignNextValueToReference>currentItem_Filter_Resources_0</assignNextValueToReference>
         <collectionProcessorType>FilterCollectionProcessor</collectionProcessorType>
         <collectionReference>colResources</collectionReference>
         <conditionLogic>or</conditionLogic>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>variables</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>textTemplates</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>formulas</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>constants</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>choices</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>dynamicChoiceSets</stringValue>
             </rightValue>
         </conditions>
         <conditions>
-            <leftValueReference>currentItem_Filter_Resources.Resource_Type__c</leftValueReference>
+            <leftValueReference>currentItem_Filter_Resources_0.Resource_Type__c</leftValueReference>
             <operator>EqualTo</operator>
             <rightValue>
                 <stringValue>stages</stringValue>
@@ -412,8 +514,8 @@
     <decisions>
         <name>Any_Selected_Records</name>
         <label>Any Selected Records?</label>
-        <locationX>182</locationX>
-        <locationY>2006</locationY>
+        <locationX>930</locationX>
+        <locationY>2606</locationY>
         <defaultConnector>
             <targetReference>Set_Cancel_Flag</targetReference>
         </defaultConnector>
@@ -442,19 +544,19 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Check_for_Merge_Reference</name>
-        <label>Check for Merge Reference</label>
-        <locationX>402</locationX>
-        <locationY>638</locationY>
+        <name>Check_for_Choice_Reference</name>
+        <label>Check for Choice Reference</label>
+        <locationX>1150</locationX>
+        <locationY>890</locationY>
         <defaultConnector>
-            <targetReference>Slice_Name_Reference</targetReference>
+            <targetReference>Slice_Element_Reference</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>NO MERGE (Default)</defaultConnectorLabel>
+        <defaultConnectorLabel>NO CHOICE (Default)</defaultConnectorLabel>
         <rules>
-            <name>FOUND_MERGE</name>
+            <name>FOUND_CHOICE</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Slice_Merge_Reference.notFound</leftValueReference>
+                <leftValueReference>Slice_Choice_Reference.notFound</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
@@ -463,14 +565,14 @@
             <connector>
                 <targetReference>Find_Orphans</targetReference>
             </connector>
-            <label>FOUND MERGE</label>
+            <label>FOUND CHOICE</label>
         </rules>
     </decisions>
     <decisions>
-        <name>Check_for_References</name>
-        <label>Check for References</label>
-        <locationX>534</locationX>
-        <locationY>1358</locationY>
+        <name>Check_for_Direct_Reference</name>
+        <label>Check for Direct Reference</label>
+        <locationX>1436</locationX>
+        <locationY>1754</locationY>
         <defaultConnector>
             <targetReference>Add_to_Orphan_Collection</targetReference>
         </defaultConnector>
@@ -512,29 +614,126 @@
             <label>FOUND DIRECT</label>
         </rules>
     </decisions>
+    <decisions>
+        <name>Check_for_Element_Reference</name>
+        <label>Check for Element Reference</label>
+        <locationX>1304</locationX>
+        <locationY>1106</locationY>
+        <defaultConnector>
+            <targetReference>Slice_Name_Reference</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO ELEMENT (Default)</defaultConnectorLabel>
+        <rules>
+            <name>FOUND_ELEMENT</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Slice_Element_Reference.notFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Find_Orphans</targetReference>
+            </connector>
+            <label>FOUND ELEMENT</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_for_Merge_Reference</name>
+        <label>Check for Merge Reference</label>
+        <locationX>985</locationX>
+        <locationY>674</locationY>
+        <defaultConnector>
+            <targetReference>Slice_Choice_Reference</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NO MERGE (Default)</defaultConnectorLabel>
+        <rules>
+            <name>FOUND_MERGE</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Slice_Merge_Reference.notFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Find_Orphans</targetReference>
+            </connector>
+            <label>FOUND MERGE</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Only</name>
+        <label>Check Only?</label>
+        <locationX>732</locationX>
+        <locationY>2390</locationY>
+        <defaultConnector>
+            <targetReference>Show_Orphans</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CONTINUE (Default)</defaultConnectorLabel>
+        <rules>
+            <name>CHECK_ONLY_dec</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vCheckOnly</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>CHECK ONLY</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Process_Only</name>
+        <label>Process Only?</label>
+        <locationX>391</locationX>
+        <locationY>134</locationY>
+        <defaultConnector>
+            <targetReference>Filter_Resources</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>CONTINUE (Default)</defaultConnectorLabel>
+        <rules>
+            <name>PROCESS_ONLY_dec</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>vProcessOnly</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Metadata</targetReference>
+            </connector>
+            <label>PROCESS ONLY</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Flow OneView - Identify Orphans {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Flow OneView - Identify Orphans</label>
     <loops>
         <name>Find_Orphans</name>
         <label>Find Orphans</label>
-        <locationX>182</locationX>
-        <locationY>278</locationY>
+        <locationX>732</locationX>
+        <locationY>350</locationY>
         <collectionReference>Filter_Resources</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Resource_Attributes_find</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>Show_Orphans</targetReference>
+            <targetReference>Check_Only</targetReference>
         </noMoreValuesConnector>
     </loops>
     <loops>
         <name>Process_Orphan_Removal</name>
         <label>Process Orphan Removal</label>
-        <locationX>50</locationX>
-        <locationY>2246</locationY>
-        <collectionReference>Orphan_dt.outputSelectedRows</collectionReference>
+        <locationX>391</locationX>
+        <locationY>3182</locationY>
+        <collectionReference>colProcess</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
             <targetReference>Assign_Resource_Attributes_process</targetReference>
@@ -563,8 +762,8 @@
     <screens>
         <name>Show_Orphans</name>
         <label>Show Orphans</label>
-        <locationX>182</locationX>
-        <locationY>1886</locationY>
+        <locationX>930</locationX>
+        <locationY>2498</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
@@ -702,17 +901,27 @@
         <showHeader>false</showHeader>
     </screens>
     <start>
-        <locationX>56</locationX>
+        <locationX>265</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Filter_Resources</targetReference>
+            <targetReference>Process_Only</targetReference>
         </connector>
     </start>
     <status>Draft</status>
     <textTemplates>
+        <name>ttChoiceReference</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;choiceReferences&gt;{!vResourceName}&lt;/choiceReferences&gt;</text>
+    </textTemplates>
+    <textTemplates>
         <name>ttDirectReference</name>
         <isViewedAsPlainText>true</isViewedAsPlainText>
         <text>&gt;{!vResourceName}&lt;/</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ttElementReference</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;elementReference&gt;{!vResourceName}&lt;/elementReference&gt;</text>
     </textTemplates>
     <textTemplates>
         <name>ttMergeReference</name>
@@ -744,6 +953,14 @@
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
         <isInput>false</isInput>
+        <isOutput>true</isOutput>
+        <objectType>Flow_OneView__c</objectType>
+    </variables>
+    <variables>
+        <name>colProcess</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>true</isInput>
         <isOutput>false</isOutput>
         <objectType>Flow_OneView__c</objectType>
     </variables>
@@ -756,7 +973,7 @@
         <objectType>Flow_OneView__c</objectType>
     </variables>
     <variables>
-        <name>currentItem_Filter_Resources</name>
+        <name>currentItem_Filter_Resources_0</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
@@ -769,6 +986,16 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vCheckOnly</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>vDeploy</name>
@@ -807,6 +1034,16 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vProcessOnly</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
     </variables>
     <variables>
         <name>vResourceName</name>

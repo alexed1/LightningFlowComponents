@@ -64,6 +64,8 @@ export default class QuickChoiceFSC extends LightningElement {
     priorControllingValue = null;
     picklistFieldDetails;
     isControlledByCheckbox = false;
+    priorOptions = [];
+    firstPassCompleted = true; 
 
     @api
     get dependentPicklist() {
@@ -145,9 +147,17 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     @track _staticChoices = [];
 
-
     masterRecordTypeId = "012000000000000AAA"; //if a recordTypeId is not provided, use this one
-    @api inputMode;
+
+    @api 
+    get inputMode() {
+        return this._inputMode;
+    }
+    set inputMode(im_value) {
+        this._inputMode = im_value;
+    }
+    _inputMode;
+
     @api required;
     picklistOptionsStorage;
 
@@ -320,7 +330,7 @@ export default class QuickChoiceFSC extends LightningElement {
         // Sort Picklist Values
         this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
 
-        if (this.inputMode === "Picklist Field") {
+        if (this._inputMode === "Picklist Field") {
             this.setPicklistOptions();
         }
         if (this._allValues && this._allValues.length) {
@@ -413,10 +423,16 @@ export default class QuickChoiceFSC extends LightningElement {
             });
         }
 
-        //console.log("initializing QuickChoice. inputMode is: " + this.inputMode);
+        // console.log(this.masterLabel + ": ", "initializing QuickChoice. inputMode is: " + this._inputMode);
         let options = [];
-        if (this.legitInputModes.includes(this.inputMode)) {
-            switch (this.inputMode) {
+        if (this.legitInputModes.includes(this._inputMode)) {
+
+            // v2.42 ALlow "Add a 'None' Choice" option for all valid picklist methods
+            if (this.allowNoneToBeChosen) {
+                options.push({label: "--None--", value: "None"});
+            }
+
+            switch (this._inputMode) {
                 //User can simply pass in a collection of strings as _choiceValues. The same text is used for both label and value
                 case "Single String Collection":
                     console.log(this.masterLabel + ": ", "entering input mode String Collection");
@@ -445,11 +461,18 @@ export default class QuickChoiceFSC extends LightningElement {
             }
             this.options = options;
             this.items = items;
-            this.setSelectedLabel();  
+            this.setSelectedLabel();
+
+            // v2.42 Clear the selected value if the options change on a reactive screen
+            if (this.firstPassCompleted && options != this.priorOptions) {
+                this.dispatchFlowAttributeChangedEvent('value', null);
+            }
+            this.priorOptions = options;
+            this.firstPassCompleted = true;     
 
         } else {
             console.log(this.masterLabel + ": ", "QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
-            throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one");
+            throw new Error("QuickChoiceFSC: Need a valid Input Mode value. Didn't get one.  If this component has conditional visibility, you should set the Advanced option to 'Refresh inputs to incorporate changes elsewhere in the flow'.");
         }
 
     }
@@ -469,6 +492,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     //show default visual card as selected
     renderedCallback() {
+        console.log(this.masterLabel + ": ", "Entering Rendered Callback for QuickChoice");
         if (this.showVisual && this.value != null) {
             if (this.template.querySelector('[data-id="' + this.value + '"]') != null) {
                 this.template.querySelector('[data-id="' + this.value + '"]').checked = true;

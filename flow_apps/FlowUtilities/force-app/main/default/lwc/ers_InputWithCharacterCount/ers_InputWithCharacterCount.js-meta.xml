@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Text Area Input w/ Character Count</masterLabel>
+    <description>Text Area input with a display the number of characters along with the maximum # of characters. An error message will be displayed if the count exceeds the max.  By Eric Smith</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="sourceText" label="Source Text" type="String" />
+            <property name="charMaxCount" label="Maximum Allowed Character Count" type="String" role="inputOnly" />
+            <property name="errorMessage" label="Error Message Text" type="String" role="inputOnly" />
+            <property name="label" label="Label" type="String" role="inputOnly" />
+            <property name="placeHolder" label="Placeholder" type="String" role="inputOnly" />
+            <property name="required" label="Required?" type="Boolean" role="inputOnly" />
+            <property name="charCount" label="Character Count" type="String" role="outputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

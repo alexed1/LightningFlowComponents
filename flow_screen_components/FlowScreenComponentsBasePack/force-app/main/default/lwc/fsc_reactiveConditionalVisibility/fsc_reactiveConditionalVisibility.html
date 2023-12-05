@@ -1,0 +1,17 @@
+<!-- 
+
+Lightning Web Component for Flow Screens:   reactiveConditionalVisibility
+
+    Use this component to provide reactive conditional visibility on a flow screen
+
+        Reactive formulas based on screen values cannot be used to control conditional visibility of other components on the same screen.
+        Provide a boolean formula as input to this component and use the component output to control the conditional visibility of other components.
+
+12/05/23 -  Eric Smith -    Version 1.0.0 
+                            Included in the ScreenComponentsBasePack v3.2.6 and later
+-->
+
+<template>
+    <!-- Track, but do not display the reactive attribute(s) -->
+    <span hidden><lightning-formatted-text value={textReactiveValue}></lightning-formatted-text></span>
+</template>

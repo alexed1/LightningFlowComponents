@@ -17,7 +17,7 @@ export default class QuickChoiceFSC extends LightningElement {
 
     @api 
     get masterLabel() {
-        return _masterLabel;
+        return this._masterLabel;
     }
     set masterLabel(ml_value) {
         this._masterLabel = ml_value;
@@ -35,7 +35,9 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     set choiceLabels(value) {
         this._choiceLabels = value;
-        this._handleChoiceCollections();
+        if (this.isConnected) {
+            this._handleChoiceCollections();
+        }
     }
     _choiceLabels = [];
 
@@ -45,7 +47,9 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     set choiceValues(value) {
         this._choiceValues = value;
-        this._handleChoiceCollections();
+        if (this.isConnected) {
+            this._handleChoiceCollections();
+        }
     }
     _choiceValues = [];
 
@@ -72,7 +76,8 @@ export default class QuickChoiceFSC extends LightningElement {
     picklistFieldDetails;
     isControlledByCheckbox = false;
     priorOptions = [];
-    firstPassCompleted = true; 
+    firstPassCompleted = false; 
+    isConnected = false;
 
     @api
     get dependentPicklist() {
@@ -115,7 +120,9 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     set choiceIcons(value) {
         this._choiceIcons = value;
-        this._handleChoiceCollections();
+        if (this.isConnected) {
+            this._handleChoiceCollections();
+        }
     }
     _choiceIcons = [];
 
@@ -495,6 +502,7 @@ export default class QuickChoiceFSC extends LightningElement {
         }
 
         this._handleChoiceCollections();
+        this.isConnected = true;
     }
 
     //show default visual card as selected

@@ -11,6 +11,7 @@
  * Controller:  ConvertCSVStringCollectionController, ConvertCSVStringCollectionControllerTest
  * Actions:     ConvertCSVToStringCollection, ConvertStringCollectionToCSV
  * Original:    Convert Strings to String Collections, and Vice Versa (https://unofficialsf.com/new-flow-actions-to-convert-csv-strings-to-string-collections-and-vice-versa/)
+ *              Requires v1.3 or later
  *       
 **/
 

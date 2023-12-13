@@ -12,7 +12,7 @@
  * Controller:  ConvertCSVStringCollectionController, ConvertCSVStringCollectionControllerTest
  * Actions:     ConvertCSVToStringCollection, ConvertStringCollectionToCSV
  * Original:    Convert Strings to String Collections, and Vice Versa (https://unofficialsf.com/new-flow-actions-to-convert-csv-strings-to-string-collections-and-vice-versa/)
- *       
+ *              Requires v1.3 or later
 **/
 
 // Code commented this way is a standard part of the template and should stay as is
@@ -57,6 +57,10 @@ public with sharing class ConvertCSVStringCollectionController {
         // Invoke the action
         List<Invocable.Action.Result> results1 = action1.invoke();  // String to Collection
         List<Invocable.Action.Result> results2 = action2.invoke();  // Collection to String      
+
+        // * Clear prior results
+        curRR.stringCollectionOut = New List<String>();
+        curRR.csvStringOut = '';
 
         // If a result was returned ...
         if (results1.size() > 0 && results1[0].isSuccess()) {   // String to Collection 

@@ -40,41 +40,34 @@ public with sharing class ConvertCSVStringCollectionController {
         ReturnResultsWrapper curRR = new ReturnResultsWrapper();
 
         // * Set the 2nd argument to the name of the Invocable Apex Action
-        if (csvStringIn != null) {          // String to Collection
-            Invocable.Action action1 = Invocable.Action.createCustomAction('apex', 'ConvertCSVToStringCollection');
-        }
-        if (stringCollectionIn != null) {   // Collection to String 
-            Invocable.Action action2 = Invocable.Action.createCustomAction('apex', 'ConvertStringCollectionToCSV');
-        }
+        // String to Collection
+        Invocable.Action action1 = Invocable.Action.createCustomAction('apex', 'ConvertCSVToStringCollection');
+        // Collection to String 
+        Invocable.Action action2 = Invocable.Action.createCustomAction('apex', 'ConvertStringCollectionToCSV');
         
         // * For each of the action's input attributes (Request), set the 1st argument  to the name of the InvocableVariable
         // * and the 2nd argument to the corresponding value passed into this controller
-        action.setInvocationParameter('delimiter', delimiter);
-        if (csvStringIn != null) {          // String to Collection
-            action1.setInvocationParameter('csvString', csvStringIn); 
-        } 
-        if (stringCollectionIn != null) {   // Collection to String 
-            action2.setInvocationParameter('stringCollection', stringCollectionIn); 
-        }
+        // String to Collection
+        action1.setInvocationParameter('delimiter', delimiter);
+        action1.setInvocationParameter('csvString', csvStringIn); 
+        // Collection to String 
+        action2.setInvocationParameter('delimiter', delimiter);
+        action2.setInvocationParameter('stringCollection', stringCollectionIn); 
 
         // Invoke the action
-        if (csvStringIn != null) {          // String to Collection
-            List<Invocable.Action.Result> results1 = action1.invoke();
-        } 
-        if (stringCollectionIn != null) {   // Collection to String 
-            List<Invocable.Action.Result> results2 = action2.invoke();        
-        }
+        List<Invocable.Action.Result> results1 = action1.invoke();  // String to Collection
+        List<Invocable.Action.Result> results2 = action2.invoke();  // Collection to String      
 
         // If a result was returned ...
-        if (results1.size() > 0 && results1[0].isSuccess()) { 
+        if (results1.size() > 0 && results1[0].isSuccess()) {   // String to Collection 
             // * Assign each of the returned attributes to the corresponding value in the ReturnResultsWrapper
-            curRR.stringCollectionOut = objToList(results[0].getOutputParameters().get('stringCollectionOut'));
+            curRR.stringCollectionOut = objToList(results1[0].getOutputParameters().get('stringCollection'));
         }
-        if (results2.size() > 0 && results2[0].isSuccess()) { 
+        if (results2.size() > 0 && results2[0].isSuccess()) {   // Collection to String 
             // * Assign each of the returned attributes to the corresponding value in the ReturnResultsWrapper
-            curRR.csvStringOut = objToString(results[0].getOutputParameters().get('csvStringOut'));
+            curRR.csvStringOut = objToString(results2[0].getOutputParameters().get('csvString'));
         }
-        
+
         // Return the results wrapper to the calling LWC
         return JSON.serialize(curRR);
 

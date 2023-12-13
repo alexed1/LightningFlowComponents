@@ -1,9 +1,9 @@
-public with sharing class ConvertStringCollectionToCSV {
+global with sharing class ConvertStringCollectionToCSV {
 
     @invocableMethod(label='Convert String Collection to Comma-separated-values' 
                      description='Converts a String Collection to Comma-separated-values string' 
                      category= 'Utilities')
-    public static List<Response> execute (List<Request> requests) {
+    global static List<Response> execute (List<Request> requests) {
 
         List<Response> responseList = new List<Response>();
         for (Request curRequest : requests) {
@@ -21,17 +21,17 @@ public with sharing class ConvertStringCollectionToCSV {
         return responseList;
     }
 
-    public class Request {
+    global class Request {
         @invocableVariable(label='String Collection' description='Input' required=true)
-        public List<String> stringCollection;
+        global List<String> stringCollection;
         
         @invocableVariable(label='Delimiter' description='Delimiter string; defaults to comma (,)' required=false)
-        public String delimiter;
+        global String delimiter;
     }
 
-    public class Response {
+    global class Response {
         @invocableVariable(label='String' description='String variable to store output')
-        public String csvString;
+        global String csvString;
     }
 
 }

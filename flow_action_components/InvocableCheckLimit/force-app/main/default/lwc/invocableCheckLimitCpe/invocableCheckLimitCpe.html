@@ -1,0 +1,17 @@
+<template>
+    <lightning-card title="Invocable Check Limit" icon-name="standard:capacity_plan">
+        <div class="slds-m-around_medium">
+            <lightning-combobox
+                name="limitName"
+                label="Select a Limit Type"
+                value={value}
+                options={options}
+                onchange={handleChange}>
+            </lightning-combobox>
+        </div>
+        <div class="slds-m-around_medium">
+            <!-- Display the description based on the selected value -->
+            <p>{description}</p>
+        </div>
+    </lightning-card>
+</template>

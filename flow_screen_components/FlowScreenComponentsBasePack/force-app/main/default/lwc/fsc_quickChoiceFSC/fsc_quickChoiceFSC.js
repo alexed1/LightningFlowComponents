@@ -64,10 +64,19 @@ export default class QuickChoiceFSC extends LightningElement {
 
     //-------------For inputMode = Picklist
     @api allowNoneToBeChosen; //For picklist field only
-    @api recordTypeId; //used for picklist fields
-    @api objectName; //used for picklist fields
-    @api fieldName; //used for picklist fields
-    @api sortList; //used for picklist fields
+    @api sortList;          //used for picklist fields
+
+    @api 
+    get recordTypeId() {    //used for picklist fields
+        return this._recordTypeId;
+    }
+    set recordTypeId(rtvalue) {
+        this._recordTypeId = (!rtvalue) ? this.masterRecordTypeId : rtvalue;
+    }
+    _recordTypeId;
+
+    @api objectName;        //used for picklist fields
+    @api fieldName;         //used for picklist fields
 
     _controllingPicklistValue;
     _controllingCheckboxValue;
@@ -298,6 +307,7 @@ export default class QuickChoiceFSC extends LightningElement {
     get calculatedObjectAndFieldName() {
         console.log(this._masterLabel + ": ", 'in getter: objectApiName is: ' + this.objectName);
         console.log(this._masterLabel + ": ", 'in getter: fieldApiName is: ' + this.fieldName);
+        console.log(this._masterLabel + ": ", 'in getter: _recordTypeId is: ' + this._recordTypeId);
 
         if ((this.objectName) && (this.fieldName)) {
             console.log(this._masterLabel + ": ", 'satisfied calculatedObjectAndFieldName test');
@@ -493,8 +503,8 @@ export default class QuickChoiceFSC extends LightningElement {
 
     connectedCallback() {
         console.log(this._masterLabel + ": ", "Entering Connected Callback for QuickChoice");
-        console.log(this._masterLabel + ": ", "recordtypeId is: " + this.recordTypeId);
-        if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
+        console.log(this._masterLabel + ": ", "recordtypeId is: " + this._recordTypeId);
+        if (!this._recordTypeId) this._recordTypeId = this.masterRecordTypeId;
 
         if (this.displayMode === "Picklist") {
             console.log(this._masterLabel + ": ", "setting Picklist on");

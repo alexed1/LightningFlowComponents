@@ -3,8 +3,12 @@ public with sharing class UpsertRecordsTest {
     
     @isTest
     public static void canUpsertNewRecords() {
-        Integer numAccountsToGet = 4;
-        List<Account> newAccounts = getAccounts(numAccountsToGet);
+        // Create test data
+        List<Account> newAccounts = new List<Account>();
+        for (Integer i = 0; i < 4; i++) {
+            newAccounts.add(new Account(Name = 'Test Account ' + i));
+        }
+        insert newAccounts;
         // List<Account> newAccounts = ListActionsTest.createAccounts(4, false);
         UpsertRecords.Request curRequest = new UpsertRecords.Request();
         curRequest.inputCollection = newAccounts;
@@ -18,8 +22,12 @@ public with sharing class UpsertRecordsTest {
 
     @isTest
     public static void canUpsertExistingRecords() {
-        Integer numAccountsToGet = 4;
-        List<Account> newAccounts = getAccounts(numAccountsToGet);
+        // Create test data
+        List<Account> newAccounts = new List<Account>();
+        for (Integer i = 0; i < 4; i++) {
+            newAccounts.add(new Account(Name = 'Test Account ' + i));
+        }
+        insert newAccounts;
         // List<Account> newAccounts = ListActionsTest.createAccounts(4, true);
         newAccounts[0].Name = 'foo';
 

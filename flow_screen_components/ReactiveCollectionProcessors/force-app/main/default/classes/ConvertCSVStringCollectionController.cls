@@ -41,9 +41,9 @@ public with sharing class ConvertCSVStringCollectionController {
 
         // * Set the 2nd argument to the name of the Invocable Apex Action
         // String to Collection
-        Invocable.Action action1 = Invocable.Action.createCustomAction('apex', 'ConvertCSVToStringCollection');
+        Invocable.Action action1 = Invocable.Action.createCustomAction('apex', 'ConvertCSVToStringCollection_CP');
         // Collection to String 
-        Invocable.Action action2 = Invocable.Action.createCustomAction('apex', 'ConvertStringCollectionToCSV');
+        Invocable.Action action2 = Invocable.Action.createCustomAction('apex', 'ConvertStringCollectionToCSV_CP');
         
         // * For each of the action's input attributes (Request), set the 1st argument  to the name of the InvocableVariable
         // * and the 2nd argument to the corresponding value passed into this controller

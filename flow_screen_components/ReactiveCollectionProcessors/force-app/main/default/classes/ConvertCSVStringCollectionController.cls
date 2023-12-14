@@ -13,6 +13,8 @@
  * Actions:     ConvertCSVToStringCollection_CP, ConvertStringCollectionToCSV_CP
  * Original:    Convert Strings to String Collections, and Vice Versa (https://unofficialsf.com/new-flow-actions-to-convert-csv-strings-to-string-collections-and-vice-versa/)
  *              (Renamed and moved to the Collection Processors Bundle)
+ * Requires:    Collection Processors v3.2.0 or later (https://unofficialsf.com/list-actions-for-flow/)
+ * 
 **/
 
 // Code commented this way is a standard part of the template and should stay as is

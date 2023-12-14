@@ -10,9 +10,9 @@
  * 
  * LWC:         convertCSVStringCollection_rsc
  * Controller:  ConvertCSVStringCollectionController, ConvertCSVStringCollectionControllerTest
- * Actions:     ConvertCSVToStringCollection, ConvertStringCollectionToCSV
+ * Actions:     ConvertCSVToStringCollection_CP, ConvertStringCollectionToCSV_CP
  * Original:    Convert Strings to String Collections, and Vice Versa (https://unofficialsf.com/new-flow-actions-to-convert-csv-strings-to-string-collections-and-vice-versa/)
- *              Requires v1.3 or later
+ *              (Renamed and moved to the Collection Processors Bundle)
 **/
 
 // Code commented this way is a standard part of the template and should stay as is

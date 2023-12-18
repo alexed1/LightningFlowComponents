@@ -38,7 +38,7 @@ public with sharing class CollectionProcessorsUtils {
 
         if (fieldType == 'datetime' || fieldType == 'date') {
             //Datetime is already formatted
-            if (fieldValue.contains('t') && fieldValue.contains('z') && fieldValue.indexOf('t') == 11) {
+            if (fieldValue.containsIgnoreCase('t') && fieldValue.containsIgnoreCase('z') && fieldValue.indexOfIgnoreCase('t') == 10) {
                 return fieldValue;
             }
             Map<String, String> localMonthNumbers = getLocalMonthNumbers();

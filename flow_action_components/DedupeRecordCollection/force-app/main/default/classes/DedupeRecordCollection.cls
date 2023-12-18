@@ -12,6 +12,7 @@ global with sharing class DedupeRecordCollection {
         return flowResponses;
     }
 
+    @TestVisible
     private static List<SObject> getUniqueSObjectCollection(FlowRequest request) {
         Map<String, SObject> sobjectMap = new Map<String, SObject>();
         for (SObject record : request.inputRecordCollection) {

@@ -1,0 +1,51 @@
+@IsTest
+private without sharing class CollectionProcessorsUtilsTest {
+
+    @IsTest
+    private static void testGetLocalMonthNumbers() {
+        Map<String, String> results = CollectionProcessorsUtils.getLocalMonthNumbers();
+        Assert.areEqual(12, results.size());
+    }
+
+    // TODO: This does not cover getFormattedValue(fieldValue, fieldType, format) completely -- Unclear logic 
+    /* 
+        ...
+        ...
+        Boolean isDate = false;
+        for (String monthName : localMonthNumbers.keySet()) {
+            if (fieldValue.contains(monthName)) {
+                fieldValue = fieldValue.replaceAll(monthName, localMonthNumbers.get(monthName) + ',');
+                isDate = true;
+            }
+        }
+
+        if (isDate) {
+            fieldValue = fieldValue.replaceAll(', ', '/');
+            fieldValue = fieldValue.replaceAll('/ ', '/');
+            fieldValue += ', 00:00 AM';
+        }
+        ...
+        ...
+    /*
+    @IsTest
+    private static void testGetFormattedValue() {
+        String fieldType = 'datetime';
+        String fieldValue = Datetime.newInstance(2023, 1, 15, 10,0,0)
+                                .format('yyyy-MM-dd\'T\'HH:mm:ss\'Z\''); // pre-formatted
+        String result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('2023-01-15T10:00:00Z', result);
+
+        fieldValue = Datetime.newInstance(2023, 1, 15, 10,0,0)
+                        .format(); // in user's locale
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('15-01-2023', result);
+
+        fieldType = 'date';
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('15-01-2023', result);
+
+        // Overloaded method without format
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType);
+        Assert.areEqual('2023-01-15 10:00:00', result);
+    }
+}

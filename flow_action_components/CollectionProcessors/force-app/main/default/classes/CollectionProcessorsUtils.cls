@@ -68,6 +68,7 @@ public with sharing class CollectionProcessorsUtils {
     }
 
     //Workaround to get local month name to month number map
+    @TestVisible
     private static Map<String, String> getLocalMonthNumbers() {
         Datetime dt = Datetime.newInstance(2020, 1, 1);
 

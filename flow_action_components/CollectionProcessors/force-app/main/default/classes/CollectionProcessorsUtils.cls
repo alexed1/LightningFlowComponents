@@ -38,7 +38,7 @@ public with sharing class CollectionProcessorsUtils {
 
         if (fieldType == 'datetime' || fieldType == 'date') {
             //Datetime is already formatted
-            if (fieldValue.contains('t') && fieldValue.contains('z') && fieldValue.indexOf('t') == 11) {
+            if (fieldValue.containsIgnoreCase('t') && fieldValue.containsIgnoreCase('z') && fieldValue.indexOfIgnoreCase('t') == 10) {
                 return fieldValue;
             }
             Map<String, String> localMonthNumbers = getLocalMonthNumbers();
@@ -68,11 +68,12 @@ public with sharing class CollectionProcessorsUtils {
     }
 
     //Workaround to get local month name to month number map
+    @TestVisible
     private static Map<String, String> getLocalMonthNumbers() {
-        Datetime dt = Datetime.newInstance(2020, 1, 1);
+        Datetime dt = Datetime.newInstance(2020, 1, 15);
 
         Map<String, String> resultMap = new Map<String, String>();
-        for (Integer i = 1; i < 12; i++) {
+        for (Integer i = 1; i < 13; i++) {
             resultMap.put(dt.format('MMMM').toLowerCase(), String.valueOf(i));
             dt = dt.addMonths(1);
         }

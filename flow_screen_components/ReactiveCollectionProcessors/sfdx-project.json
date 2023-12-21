@@ -11,7 +11,7 @@
           "subscriberPackageVersionId": "04t5G000003zgZLQAY"
         },
         {
-          "subscriberPackageVersionId": "04t5G000004J7LBQA0"
+          "subscriberPackageVersionId": "04t5G000004XZirQAG"
         }
       ],
       "package": "ReactiveCollectionProcessors",
@@ -27,6 +27,7 @@
   "packageAliases": {
     "ReactiveCollectionProcessors": "0Ho5G000000GmyBSAS",
     "ReactiveCollectionProcessors@1.0.0": "04t5G000003zgaJQAQ",
-    "ReactiveCollectionProcessors@1.0.1": "04t5G000004XZheQAG"
+    "ReactiveCollectionProcessors@1.0.1": "04t5G000004XZheQAG",
+    "ReactiveCollectionProcessors@1.0.2": "04t5G000004XZiwQAG"
   }
 }

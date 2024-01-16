@@ -92,6 +92,8 @@ export default class QuickChoiceFSC extends LightningElement {
     get dependentPicklist() {
         return (this.cb_dependentPicklist == CB_TRUE) ? true : false;
     }
+    set dependentPicklist(value) {}
+
     @api cb_dependentPicklist;
 
     @api
@@ -318,50 +320,50 @@ export default class QuickChoiceFSC extends LightningElement {
 
     // Process available selections for the picklist
     setPicklistSelections(data) {
-
-        this._picklistOptions = [];
-        this._allValues = [];
-        this._allLabels = [];
-        if (this.allowNoneToBeChosen) {
-            this._picklistOptions.push({label: "--None--", value: "None"});
-        }
-
-        // Set isControlled only if a controlling value was provided and there are available controller values
-        this._isControlled = false;
-        let controllingIndex;
-        if (Object.keys(data.controllerValues).length > 0) {
-            this._isControlled = true;
-            this._showPicklist = true;
-            this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
-            if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
-                this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
+        if (data != undefined) {
+            this._picklistOptions = [];
+            this._allValues = [];
+            this._allLabels = [];
+            if (this.allowNoneToBeChosen) {
+                this._picklistOptions.push({label: "--None--", value: "None"});
             }
-            controllingIndex = data.controllerValues[this.controllingValue];
-        }
 
-        // Picklist values
-        data.values.forEach(key => {
-            if (!this._isControlled || key.validFor.includes(controllingIndex)) {
-                this._picklistOptions.push({
-                    label: key.label,
-                    value: key.value
-                });
-                this._allLabels.push(key.label);
-                this._allValues.push(key.value);
+            // Set isControlled only if a controlling value was provided and there are available controller values
+            this._isControlled = false;
+            let controllingIndex;
+            if (Object.keys(data.controllerValues).length > 0) {
+                this._isControlled = true;
+                this._showPicklist = true;
+                this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
+                if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
+                    this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
+                }
+                controllingIndex = data.controllerValues[this.controllingValue];
             }
-        });
 
-        // Sort Picklist Values
-        this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
+            // Picklist values
+            data.values.forEach(key => {
+                if (!this._isControlled || key.validFor.includes(controllingIndex)) {
+                    this._picklistOptions.push({
+                        label: key.label,
+                        value: key.value
+                    });
+                    this._allLabels.push(key.label);
+                    this._allValues.push(key.value);
+                }
+            });
 
-        if (this._inputMode === "Picklist Field") {
-            this.setPicklistOptions();
+            // Sort Picklist Values
+            this.picklistOptionsStorage = this.doSort(this._picklistOptions, this.sortList);
+
+            if (this._inputMode === "Picklist Field") {
+                this.setPicklistOptions();
+            }
+            if (this._allValues && this._allValues.length) {
+                this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
+                this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
+            }
         }
-        if (this._allValues && this._allValues.length) {
-            this.dispatchFlowAttributeChangedEvent('allValues', this._allValues);
-            this.dispatchFlowAttributeChangedEvent('allLabels', this._allLabels);
-        }
-
     }
 
     setPicklistOptions() {

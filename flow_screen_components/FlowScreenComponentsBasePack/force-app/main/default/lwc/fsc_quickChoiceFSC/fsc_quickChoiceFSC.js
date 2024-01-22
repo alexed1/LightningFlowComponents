@@ -34,9 +34,11 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._choiceLabels;
     }
     set choiceLabels(value) {
-        this._choiceLabels = value;
-        if (this.isConnected) {
-            this._handleChoiceCollections();
+        if (value != null) {
+            this._choiceLabels = value;
+            if (this.isConnected) {
+                this._handleChoiceCollections();
+            }
         }
     }
     _choiceLabels = [];
@@ -46,9 +48,11 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._choiceValues;
     }
     set choiceValues(value) {
-        this._choiceValues = value;
-        if (this.isConnected) {
-            this._handleChoiceCollections();
+        if (value != null) {
+            this._choiceValues = value;
+            if (this.isConnected) {
+                this._handleChoiceCollections();
+            }
         }
     }
     _choiceValues = [];
@@ -102,11 +106,13 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     set controllingCheckboxValue(value) {
-        this._controllingCheckboxValue = value;
-        this.controllingValue = value;
-        if (value != this.priorControllingValue) {
-            this.priorControllingValue = value;
-            this.setPicklistSelections(this.picklistFieldDetails);
+        if (value != null) {
+            this._controllingCheckboxValue = value;
+            this.controllingValue = value;
+            if (value != this.priorControllingValue) {
+                this.priorControllingValue = value;
+                this.setPicklistSelections(this.picklistFieldDetails);
+            }
         }
     }
 
@@ -116,11 +122,13 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     set controllingPicklistValue(value) {
-        this._controllingPicklistValue = value;
-        this.controllingValue = value;
-        if (value != this.priorControllingValue) {
-            this.priorControllingValue = value;
-            this.setPicklistSelections(this.picklistFieldDetails);
+        if (value != null) {
+            this._controllingPicklistValue = value;
+            this.controllingValue = value;
+            if (value != this.priorControllingValue) {
+                this.priorControllingValue = value;
+                this.setPicklistSelections(this.picklistFieldDetails);
+            }
         }
     }
 
@@ -130,9 +138,11 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._choiceIcons;
     }
     set choiceIcons(value) {
-        this._choiceIcons = value;
-        if (this.isConnected) {
-            this._handleChoiceCollections();
+        if (value != null) {
+            this._choiceIcons = value;
+            if (this.isConnected) {
+                this._handleChoiceCollections();
+            }
         }
     }
     _choiceIcons = [];
@@ -151,8 +161,10 @@ export default class QuickChoiceFSC extends LightningElement {
         return this._staticChoicesString;
     }
     set staticChoicesString(jsonString) {
-        this._staticChoicesString = jsonString;
-        this.staticChoices = JSON.parse(jsonString);
+        if (jsonString != null) {
+            this._staticChoicesString = jsonString;
+            this.staticChoices = JSON.parse(jsonString);
+        }
     }
     _staticChoicesString;
 
@@ -162,12 +174,14 @@ export default class QuickChoiceFSC extends LightningElement {
     }
     set staticChoices(choices) {
         console.log(this._masterLabel + ": ", 'setting staticChoices to '+ JSON.stringify(choices));
-        this._staticChoices = choices;
-        this._choiceValues = [];
-        this._choiceLabels = [];
-        for (let choice of choices) {
-            this._choiceValues.push(choice.value);
-            this._choiceLabels.push(choice.label);        
+        if (choices != null) {
+            this._staticChoices = choices;
+            this._choiceValues = [];
+            this._choiceLabels = [];
+            for (let choice of choices) {
+                this._choiceValues.push(choice.value);
+                this._choiceLabels.push(choice.label);        
+            }
         }
     }
     @track _staticChoices = [];

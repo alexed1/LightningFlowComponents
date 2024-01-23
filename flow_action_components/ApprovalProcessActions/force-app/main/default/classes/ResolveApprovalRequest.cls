@@ -10,7 +10,7 @@ public with sharing class ResolveApprovalRequest {
             approvalWorkItem.setAction(curRequest.action);
             approvalWorkItem.setNextApproverIds(curRequest.nextApproverIds);
             if(String.isBlank(curRequest.approvalRequestId)){
-                approverId = getapprovalRequestID(curRequest.recordId,curRequest.ObjName).Id;
+                curRequest.approvalRequestId = getApprovalRequestId(curRequest.recordId, curRequest.ObjName).Id;
             }
             
             approvalWorkItem.setWorkitemId(curRequest.approvalRequestId);

@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 02-23-2023
+  @last modified on  : 01-03-2024
   @last modified by  : Josh Dayment
 -->
 <template>
@@ -12,7 +12,7 @@
             <template for:each={recs} for:item="record">
                 <div class="slds-visual-picker slds-card" key={record.Id}>
                     <template lwc:if={allowMultiSelect}>
-                        <input type="checkbox" onchange={handleChange} name="flexCards" id={record.Id}
+                        <input type="checkbox" onclick={handleChange} name="flexCards" id={record.Id}
                             title={record.Name} value={record.Id} data-id={record.Id} />
                     </template>
 

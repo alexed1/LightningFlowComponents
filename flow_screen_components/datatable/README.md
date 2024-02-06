@@ -72,6 +72,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
+## 02/06/24 -  Eric Smith -    Version 4.1.6 
+**Bug Fixes:**  
+-   Fixed several Spring '24 "Cannot read properties of undefined..." errors
+-   Allow a full row search when empty cells are present (thanks to clev32 PR#1478)
+
 ## 10/12/23 -  Eric Smith -    Version 4.1.5 
 **Updates:** 
 -   Made the following changes to support passing of Datatable output collections into my reactive Collection Processor screen components 

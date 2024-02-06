@@ -809,7 +809,7 @@ export default class Datatable extends LightningElement {
     assignApexDefinedRecords() {
         // JSON input attributes
         console.log('tableDataString - ',this._tableDataString);
-        if (!this._tableDataString || this._tableDataString.length == 0) {
+        if (!this._tableDataString || this._tableDataString?.length == 0) {
             this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
             this.columnFields = this.keyField;
             this.columnTypes = [];
@@ -900,7 +900,7 @@ export default class Datatable extends LightningElement {
             // Custom column processing
             this.updateColumns();
 
-            if(this.cols[0].fieldName.endsWith('_lookup')) {
+            if(this.cols[0]?.fieldName.endsWith('_lookup')) {
                 this.sortedBy = this.cols[0].fieldName;
                 this.doSort(this.sortedBy, 'asc');
             }

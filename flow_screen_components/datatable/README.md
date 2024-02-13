@@ -72,7 +72,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
-## 02/06/24 -  Eric Smith -    Version 4.1.6 
+## 02/14/24 -  Eric Smith -     Version 4.2.0  
+**Bug Fixes:**  
+-   Fixed bug where the maximum number of rows to be displayed gets cleared  
+  
+**Updates:** 
+-   Added optional pagination  
+  
+## 02/06/24 -  Eric Smith -     Version 4.1.6 
 **Bug Fixes:**  
 -   Fixed several Spring '24 "Cannot read properties of undefined..." errors
 -   Allow a full row search when empty cells are present (thanks to clev32 PR#1478)

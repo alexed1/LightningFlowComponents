@@ -464,8 +464,8 @@ export default class ers_datatableCPE extends LightningElement {
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)  \n' +
             'NOTE: This value will be ignored if the Allow Overflow attribute is set to True.'},
-        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
-            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
+        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Include', 
+            helpText: 'Enter a number here if you want to restrict how many records will be included from the record collection.'},
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field",                     // OBSOLETE as of v3.0.10
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 

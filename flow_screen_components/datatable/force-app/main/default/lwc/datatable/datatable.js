@@ -437,6 +437,11 @@ export default class Datatable extends LightningElement {
     @track columnFlexParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
+    
+    get collectionSize() {
+        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        return Math.min(this._tableData.length, max);
+    }
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
@@ -588,10 +593,10 @@ export default class Datatable extends LightningElement {
             this._tableData = [];
         }
 
-        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-        let cnt = Math.min(this._tableData.length, max);
+        // let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        // let cnt = Math.min(this._tableData.length, max);
         this.isUpdateTable = false;
-        this._tableData = [...this._tableData].slice(0,cnt);
+        this._tableData = [...this._tableData].slice(0,this.collectionSize);
 
         // Set roundValue for setting Column Widths in Config Mode
         this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
@@ -1000,7 +1005,7 @@ export default class Datatable extends LightningElement {
     updateDataRows() {
         // Process Incoming Data Collection
         console.log('Processing updateDataRows')
-        let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData])) : [];
+        let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData].slice(0,this.collectionSize))) : [];
         let lookupFields = this.lookups;
         let lufield = '';
         let timeFields = this.timeFieldArray;

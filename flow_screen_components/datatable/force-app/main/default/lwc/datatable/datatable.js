@@ -443,6 +443,10 @@ export default class Datatable extends LightningElement {
         return Math.min(this._tableData.length, max);
     }
 
+    get paginatedData() {
+        return this.mydata;
+    }
+
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
     }
@@ -1062,7 +1066,9 @@ export default class Datatable extends LightningElement {
             lookupFields.forEach(lookup => {
                 if (this.isUserDefinedObject) {
                     lufield = lookup;
-                    record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];                    
+                    if(record[lufield]) {
+                        record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];
+                    }                   
                 } else {
                     if(lookup.toLowerCase().endsWith('id')) {
                         lufield = lookup.replace(/Id$/gi,'');

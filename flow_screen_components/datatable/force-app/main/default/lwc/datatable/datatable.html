@@ -138,7 +138,7 @@ Features:   The only required paramters are the SObject collection of records an
         
                             <c-ers_custom-lightning-datatable
                                 aria-label={tableLabel}
-                                data={mydata}
+                                data={paginatedData}
                                 columns={columns}
                                 key-field={keyField}
                                 sorted-by={sortedBy}
@@ -236,7 +236,7 @@ Features:   The only required paramters are the SObject collection of records an
                     <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatable">
                         <c-ers_custom-lightning-datatable
                             aria-label={tableLabel}
-                            data={mydata}
+                            data={paginatedData}
                             columns={columns}
                             key-field={keyField}
                             sorted-by={sortedBy}

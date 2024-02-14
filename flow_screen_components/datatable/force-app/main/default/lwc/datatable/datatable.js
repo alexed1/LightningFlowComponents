@@ -1057,7 +1057,9 @@ export default class Datatable extends LightningElement {
             lookupFields.forEach(lookup => {
                 if (this.isUserDefinedObject) {
                     lufield = lookup;
-                    record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];                    
+                    if(record[lufield]) {
+                        record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];
+                    }
                 } else {
                     if(lookup.toLowerCase().endsWith('id')) {
                         lufield = lookup.replace(/Id$/gi,'');

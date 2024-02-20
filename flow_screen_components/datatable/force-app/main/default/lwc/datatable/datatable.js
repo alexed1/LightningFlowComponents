@@ -443,9 +443,116 @@ export default class Datatable extends LightningElement {
         return Math.min(this._tableData.length, max);
     }
 
+    // Pagination Attributes
+    get recordCountPerPage() {
+        return this.collectionSize;
+    }
+    
+    get recordCountTotal() {
+        return this.collectionSize;
+    }
+
+    @api
+    get pageCurrentNumber() {
+        this._pageCurrentNumber = this.enteredPageNumber;
+        console.log("🚀 ~ getpageCurrentNumber ~ this._pageCurrentNumber:", this._pageCurrentNumber);
+        return this._pageCurrentNumber;
+    }
+    set pageCurrentNumber(value) {
+        this._pageCurrentNumber = value;
+        console.log("🚀 ~ setpageCurrentNumber ~ this._pageCurrentNumber:", this._pageCurrentNumber);
+    }
+    _pageCurrentNumber = 1;
+    enteredPageNumber = 1;
+
+    get recordCountLabel() {
+        return 'Records per Page';
+    }
+
+    get pageNumberLabel() {
+        return `Showing Page ${this._pageCurrentNumber} of ${this.pageTotalCount} Pages`;
+    }
+
+    get buttonFirstLabel() {
+        return 'First';
+    }
+
+    get buttonLastLabel() {
+        return 'Last';
+    }
+    
+    get buttonPrevLabel() {
+        return 'Prev';
+    }
+    
+    get buttonNextLabel() {
+        return 'Next';
+    }
+    
+    get pageTotalCount() {
+        return Math.ceil(Number(this.recordCountTotal)/Number(this.recordCountPerPage));
+    }
+
+    get isFirstPage() {
+        return (this.pageCurrentNumber === 1);
+    }
+
+    get isLastpage() {
+        return (this.pageCurrentNumber === this.pageTotalCount);
+    }
+
+    get isOnlyOnePage() {
+        return (this.pageTotalCount === 1);
+    }
+
+    get isShowButtonFirstLast() {
+        return true;
+    }
+
+    get isPagination() {
+        return true;
+    }
+
+    get isShowNewheader() {
+        return (this.isShowSearchBar || this.isPagination);
+    }
+
+    get pageFooterAlignment() {
+        return 'Left';
+    }
+
     get paginatedData() {
         return this.mydata;
     }
+    // End pagination Attributes
+
+// Pagination Methods
+    handleRecordCountChange(event) {
+        this.recordCountPerPage = event.detail.value;
+    }
+
+    handlePageChange(event) {
+        this.enteredPageNumber = event.detail.value;
+        console.log("🚀 ~ handlePageChange ~ event.detail.value:", event.detail.value);
+    }
+
+    handleButtonFirst() {
+        this._pageCurrentNumber = 1;
+    }
+
+    handleButtonPrev() {
+        this._pageCurrentNumber--;
+    }
+    
+    handleButtonNext() {
+        this._pageCurrentNumber++;
+    }
+    
+    handleButtonLast() {
+        this._pageCurrentNumber = this.pageTotalCount;
+    }
+    
+// End Pagination Methods
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';

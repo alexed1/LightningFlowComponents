@@ -440,7 +440,6 @@ export default class Datatable extends LightningElement {
     
     get collectionSize() {
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableData.length);
         return Math.min(this._tableData.length, max);
     }
 
@@ -473,12 +472,10 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
 
     @api
     get pageCurrentNumber() {
-        console.log("🚀 ~ getpageCurrentNumber ~ this._pageCurrentNumber:", this._pageCurrentNumber);
         return this._pageCurrentNumber;
     }
     set pageCurrentNumber(value) {
         this._pageCurrentNumber = value;
-        console.log("🚀 ~ setpageCurrentNumber ~ this._pageCurrentNumber:", this._pageCurrentNumber);
         this.handlePagination();
     }
     _pageCurrentNumber = 1;
@@ -553,21 +550,18 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
     initiatePagination() {
         if (this.isPagination) {
             this.recordCountPerPage = this.collectionSize;  //TODO: Change to be set by CPE
-            console.log("🚀 ~ initiatePagination ~ this.recordCountPerPag:", this.recordCountPerPag);
         }
     }
 
     handleRecordCountChange(event) {
         this.recordCountPerPage = event.detail.value;
-        console.log("🚀 ~ handleRecordCountChange ~ this.recordCountPerPage:", this.recordCountPerPage);
-        this.pageCurrentNumber = 1; //TODO - Change to set to whatever the page would be to still display whatever the first record was on the prior page
+        this.pageCurrentNumber = 1; //TODO - Change to set to whatever the page would be to still display whatever the first record was previously
         this.handlePagination();
         this.priorRecordsPerPage = this.recordCountPerPage;
     }
 
     handlePageChange(event) {
         this.pageCurrentNumber = event.detail.value;
-        console.log("🚀 ~ handlePageChange ~ event.detail.value:", event.detail.value);
     }
 
     handleButtonFirst() {
@@ -589,13 +583,8 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
     handlePagination() {
         if (this.isPagination && (this._pageCurrentNumber != this.priorPagenumber) || (this.recordCountPerPage != this.priorRecordsPerPage)) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
-            console.log("🚀 ~ handlePagination ~ this._recordCountPerPage:", this._recordCountPerPage);
-            console.log("🚀 ~ handlePagination ~ this._pageCurrentNumber:", this._pageCurrentNumber);
-            console.log("🚀 ~ handlePagination ~ firstRecord:", firstRecord);
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
-            console.log("🚀 ~ handlePagination ~ lastRecord:", lastRecord);
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
-            console.log("🚀 ~ handlePagination ~ this.paginatedData:", this.paginatedData);
             this.priorPagenumber = this._pageCurrentNumber;
         } else {
             this.paginatedData = [...this._mydata];

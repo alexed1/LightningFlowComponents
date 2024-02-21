@@ -455,6 +455,9 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
     _mydata = [];
 
     // Pagination Attributes
+    priorPagenumber = -1;
+    priorRecordsPerPage = -1;
+
     @api
     get recordCountPerPage() {
         return this._recordCountPerPage;
@@ -559,6 +562,7 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
         console.log("🚀 ~ handleRecordCountChange ~ this.recordCountPerPage:", this.recordCountPerPage);
         this.pageCurrentNumber = 1; //TODO - Change to set to whatever the page would be to still display whatever the first record was on the prior page
         this.handlePagination();
+        this.priorRecordsPerPage = this.recordCountPerPage;
     }
 
     handlePageChange(event) {
@@ -583,7 +587,7 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
     }
     
     handlePagination() {
-        if (this.isPagination) {
+        if (this.isPagination && (this._pageCurrentNumber != this.priorPagenumber) || (this.recordCountPerPage != this.priorRecordsPerPage)) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
             console.log("🚀 ~ handlePagination ~ this._recordCountPerPage:", this._recordCountPerPage);
             console.log("🚀 ~ handlePagination ~ this._pageCurrentNumber:", this._pageCurrentNumber);
@@ -592,6 +596,7 @@ console.log("🚀 ~ getcollectionSize ~ this._tableData.length:", this._tableDat
             console.log("🚀 ~ handlePagination ~ lastRecord:", lastRecord);
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
             console.log("🚀 ~ handlePagination ~ this.paginatedData:", this.paginatedData);
+            this.priorPagenumber = this._pageCurrentNumber;
         } else {
             this.paginatedData = [...this._mydata];
         }

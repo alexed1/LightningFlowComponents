@@ -449,6 +449,7 @@ export default class Datatable extends LightningElement {
     }
     set mydata(value) {
         this._mydata = value;
+        console.log("🚀 ~ setmydata ~ this._mydata:", this._mydata);
         this.handlePagination();
     }
     _mydata = [];
@@ -546,7 +547,7 @@ export default class Datatable extends LightningElement {
     _paginatedData;
     // End pagination Attributes
 
-// Pagination Methods
+    // Pagination Methods
     initiatePagination() {
         if (this.isPagination) {
             this.recordCountPerPage = this.collectionSize;  //TODO: Change to be set by CPE
@@ -586,11 +587,13 @@ export default class Datatable extends LightningElement {
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
             this.priorPagenumber = this._pageCurrentNumber;
+            console.log("🚀 ~ handlePagination ~ this.selectedRows:", this.selectedRows);
+            this.updateSelectedRows(this.selectedRows);
         } else {
             this.paginatedData = [...this._mydata];
         }
     }
-// End Pagination Methods
+    // End Pagination Methods
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
@@ -648,7 +651,7 @@ export default class Datatable extends LightningElement {
             // Custom column processing
             this.updateColumns();
             // Extract Keys for Pre-Selected Rows 
-            this.updatePreSelectedRows();
+            this.updateSelectedRows(this.preSelectedRows);
         }
     }
 
@@ -1063,7 +1066,7 @@ export default class Datatable extends LightningElement {
             }
 
             // Handle Pre-Selected Rows
-            this.updatePreSelectedRows();
+            this.updateSelectedRows(this.preSelectedRows);
 
             // Done processing the datatable
             this.showSpinner = false;
@@ -1569,10 +1572,10 @@ export default class Datatable extends LightningElement {
 
     }
 
-    updatePreSelectedRows() {
+    updateSelectedRows(currentSelectedRows) {
         // Handle pre-selected records
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
-            this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
+            this.outputSelectedRows = currentSelectedRows.slice(0, this.maxNumberOfRows);
         
             this.updateNumberOfRowsSelected(this.outputSelectedRows);
             if (this.isUserDefinedObject) {
@@ -1581,14 +1584,18 @@ export default class Datatable extends LightningElement {
             } else {
                 this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
             }    
-            const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
+            const selected = JSON.parse(JSON.stringify([...currentSelectedRows]));
+            console.log("🚀 ~ updateSelectedRows ~ selected:", selected);
             let selectedKeys = [];
             selected.forEach(record => {
                 selectedKeys.push(record[this.keyField]);            
             });
             this.selectedRows = selectedKeys;
-            this.preSelectedRows = [];
-            this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
+
+            if (this.preSelectedRows == currentSelectedRows) {
+                this.preSelectedRows = [];
+                this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
+            }
         }
     }
 
@@ -1838,6 +1845,7 @@ export default class Datatable extends LightningElement {
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
+        console.log("🚀 ~ handleRowSelection ~ currentSelectedRows:", currentSelectedRows);
         this.updateNumberOfRowsSelected(currentSelectedRows);
         this.setIsInvalidFlag(false);
         if(this.isRequired && this.numberOfRowsSelected == 0) {

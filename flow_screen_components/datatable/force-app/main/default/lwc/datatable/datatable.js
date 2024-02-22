@@ -449,7 +449,6 @@ export default class Datatable extends LightningElement {
     }
     set mydata(value) {
         this._mydata = value;
-        console.log("🚀 ~ setmydata ~ this._mydata:", this._mydata);
         this.handlePagination();
     }
     _mydata = [];
@@ -587,8 +586,6 @@ export default class Datatable extends LightningElement {
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
             this.priorPagenumber = this._pageCurrentNumber;
-            console.log("🚀 ~ handlePagination ~ this.selectedRows:", this.selectedRows);
-            this.updateSelectedRows(this.selectedRows);
         } else {
             this.paginatedData = [...this._mydata];
         }
@@ -651,7 +648,7 @@ export default class Datatable extends LightningElement {
             // Custom column processing
             this.updateColumns();
             // Extract Keys for Pre-Selected Rows 
-            this.updateSelectedRows(this.preSelectedRows);
+            this.updatePreSelectedRows();
         }
     }
 
@@ -1066,7 +1063,7 @@ export default class Datatable extends LightningElement {
             }
 
             // Handle Pre-Selected Rows
-            this.updateSelectedRows(this.preSelectedRows);
+            this.updatePreSelectedRows();
 
             // Done processing the datatable
             this.showSpinner = false;
@@ -1572,10 +1569,10 @@ export default class Datatable extends LightningElement {
 
     }
 
-    updateSelectedRows(currentSelectedRows) {
+    updatePreSelectedRows() {
         // Handle pre-selected records
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
-            this.outputSelectedRows = currentSelectedRows.slice(0, this.maxNumberOfRows);
+            this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         
             this.updateNumberOfRowsSelected(this.outputSelectedRows);
             if (this.isUserDefinedObject) {
@@ -1584,18 +1581,14 @@ export default class Datatable extends LightningElement {
             } else {
                 this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
             }    
-            const selected = JSON.parse(JSON.stringify([...currentSelectedRows]));
-            console.log("🚀 ~ updateSelectedRows ~ selected:", selected);
+            const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
             let selectedKeys = [];
             selected.forEach(record => {
                 selectedKeys.push(record[this.keyField]);            
             });
             this.selectedRows = selectedKeys;
-
-            if (this.preSelectedRows == currentSelectedRows) {
-                this.preSelectedRows = [];
-                this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
-            }
+            this.preSelectedRows = [];
+            this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
         }
     }
 
@@ -1842,10 +1835,10 @@ export default class Datatable extends LightningElement {
     }
 
     handleRowSelection(event) {
+        // TODO - Pagination - Persist previously selected rows that are not displayed on the currently visible page
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
-        console.log("🚀 ~ handleRowSelection ~ currentSelectedRows:", currentSelectedRows);
         this.updateNumberOfRowsSelected(currentSelectedRows);
         this.setIsInvalidFlag(false);
         if(this.isRequired && this.numberOfRowsSelected == 0) {

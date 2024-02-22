@@ -454,8 +454,6 @@ export default class Datatable extends LightningElement {
     _mydata = [];
 
     // Pagination Attributes
-    priorPagenumber = -1;
-    priorRecordsPerPage = -1;
 
     @api
     get recordCountPerPage() {
@@ -505,7 +503,7 @@ export default class Datatable extends LightningElement {
     }
     
     get pageTotalCount() {
-        return Math.ceil(Number(this.recordCountTotal)/Number(this._recordCountPerPage));
+        return Math.ceil(Number(Math.min(this.recordCountTotal,this.filteredRecordCount))/Number(this._recordCountPerPage));
     }
 
     get isFirstPage() {
@@ -557,7 +555,6 @@ export default class Datatable extends LightningElement {
         this.recordCountPerPage = event.detail.value;
         this.pageCurrentNumber = 1; //TODO - Change to set to whatever the page would be to still display whatever the first record was previously
         this.handlePagination();
-        this.priorRecordsPerPage = this.recordCountPerPage;
     }
 
     handlePageChange(event) {
@@ -581,11 +578,10 @@ export default class Datatable extends LightningElement {
     }
     
     handlePagination() {
-        if (this.isPagination && (this._pageCurrentNumber != this.priorPagenumber) || (this.recordCountPerPage != this.priorRecordsPerPage)) {
+        if (this.isPagination) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
-            this.priorPagenumber = this._pageCurrentNumber;
         } else {
             this.paginatedData = [...this._mydata];
         }

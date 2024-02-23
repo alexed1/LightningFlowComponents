@@ -1567,6 +1567,7 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
+        console.log("🚀 ~ updatePreSelectedRows ~ this.preSelectedRows:", this.preSelectedRows);
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         
@@ -1586,6 +1587,7 @@ export default class Datatable extends LightningElement {
             this.preSelectedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
         }
+        console.log("🚀 ~ updatePreSelectedRows ~ this.selectedRows:", this.selectedRows);
     }
 
     parseAttributes(propertyType,inputAttributes,columnNumber) {

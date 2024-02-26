@@ -542,6 +542,8 @@ export default class Datatable extends LightningElement {
         this._paginatedData = value;
     }
     _paginatedData;
+
+    @api paginatedSelectedRows = [];    //TODO: Figure out how to retain selected rows when paginating, sorting, filtering, searching
     // End pagination Attributes
 
     // Pagination Methods
@@ -553,7 +555,7 @@ export default class Datatable extends LightningElement {
 
     handleRecordCountChange(event) {
         this.recordCountPerPage = event.detail.value;
-        this.pageCurrentNumber = 1; //TODO - Change to set to whatever the page would be to still display whatever the first record was previously
+        this.pageCurrentNumber = 1; //TODO: Change to set to whatever the page would be to still display whatever the first record was previously
         this.handlePagination();
     }
 

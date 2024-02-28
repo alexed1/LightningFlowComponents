@@ -79,6 +79,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:**  
 -   Fixed bug where the maximum number of rows to be displayed gets cleared  
 -   Fixed bug where an invalid link would show when an Apex Defined Lookup field was empty (@spyros-michailidisspyros-michailidis PR#1524)
+-   Fixed install issue with ers_DatatableController.cls if the target org has a class named "Test"
   
 ## 02/06/24 -  Eric Smith -     Version 4.1.6 
 **Bug Fixes:**  

@@ -110,7 +110,7 @@ Features:   The only required paramters are the SObject collection of records an
         <!-- DATATABLE -->
         <div class={formElementClass}>
             <!-- New Format with Searchbar and/or Pagination -->
-            <template if:true={isShowNewheader}>
+            <template lwc:if={isShowNewheader}>
                 <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
                 <lightning-card variant="Narrow" icon-name={tableIcon}>
                     <div slot="title">
@@ -120,7 +120,7 @@ Features:   The only required paramters are the SObject collection of records an
                     </div>
                     <div slot="actions">
                         <div class="slds-grid slds-grid_align-end">
-                            <template if:true={isPagination}>
+                            <template lwc:if={isPagination}>
                                 <legend class="slds-form-element__legend slds-form-element__label">{recordCountLabel}</legend>
                                 <lightning-input
                                     type="number"
@@ -130,7 +130,7 @@ Features:   The only required paramters are the SObject collection of records an
                                     onchange={handleRecordCountChange}
                                 ></lightning-input>
                             </template>
-                            <template if:true={isShowSearchBar}>
+                            <template lwc:if={isShowSearchBar}>
                                 <div class="slds-p-left_medium">
                                     <lightning-input 
                                         type="search"
@@ -304,9 +304,9 @@ Features:   The only required paramters are the SObject collection of records an
         </div>
 
         <!-- Pagination Footer -->
-        <template if:true={isPagination}>
+        <template lwc:if={isPagination}>
             <div class="slds-grid slds-grid_align-center">
-                <template if:true={isShowButtonFirstLast}>
+                <template lwc:if={isShowButtonFirstLast}>
                     <div class="slds-col slds-align-middle slds-p-top_medium slds-p-right_xx-small">
                         <lightning-button
                             label={buttonFirstLabel}
@@ -350,7 +350,7 @@ Features:   The only required paramters are the SObject collection of records an
                         disabled={isLastpage}
                     ></lightning-button>
                 </div>
-                <template if:true={isShowButtonFirstLast}>
+                <template lwc:if={isShowButtonFirstLast}>
                     <div class="slds-col slds-align-middle slds-p-top_medium slds-p-left_xx-small">
                         <lightning-button
                             label={buttonLastLabel}

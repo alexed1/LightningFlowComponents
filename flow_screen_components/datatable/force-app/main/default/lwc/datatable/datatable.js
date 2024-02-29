@@ -28,7 +28,7 @@ import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 import SearchPlaceholder from '@salesforce/label/c.ers_SearchPlaceholder';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -36,6 +36,7 @@ const ISFLOWBUILDER = CONSTANTS.ISFLOWBUILDER;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const MIN_SEARCH_TERM_SIZE = CONSTANTS.MIN_SEARCH_TERM_SIZE;
 const SEARCH_WAIT_TIME = CONSTANTS.SEARCH_WAIT_TIME;
+const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 
 export default class Datatable extends LightningElement {
 
@@ -135,6 +136,20 @@ export default class Datatable extends LightningElement {
     }
     @api cb_showRowNumbers;
     
+    @api 
+    get showPagination() {
+        return (this.cb_showPagination == CB_TRUE) ? true : false;
+    }
+    @api cb_showPagination;
+
+    @api recordsPerPage = RECORDS_PER_PAGE;
+
+    @api 
+    get showFirstLastButtons() {
+        return (this.cb_showFirstLastButtons == CB_TRUE) ? true : false;
+    }
+    @api cb_showFirstLastButtons = CB_TRUE;
+
     @api 
     get showRecordCount() {
         return (this.cb_showRecordCount == CB_TRUE) ? true : false;
@@ -519,15 +534,15 @@ export default class Datatable extends LightningElement {
     }
 
     get isShowButtonFirstLast() {
-        return true;
+        return this.showFirstLastButtons;
     }
 
     get isPagination() {
-        return true;
+        return this.showPagination;
     }
 
     get isShowNewheader() {
-        return (this.isShowSearchBar || this.isPagination);
+        return (this.isShowSearchBar || this.showPagination);
     }
 
     get pageFooterAlignment() {
@@ -549,7 +564,7 @@ export default class Datatable extends LightningElement {
     // Pagination Methods
     initiatePagination() {
         if (this.isPagination) {
-            this.recordCountPerPage = this.collectionSize;  //TODO: Change to be set by CPE
+            this.recordCountPerPage = Math.max(this.recordsPerPage,1);
         }
     }
 
@@ -1569,7 +1584,6 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
-        console.log("🚀 ~ updatePreSelectedRows ~ this.preSelectedRows:", this.preSelectedRows);
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
         
@@ -1589,7 +1603,6 @@ export default class Datatable extends LightningElement {
             this.preSelectedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
         }
-        console.log("🚀 ~ updatePreSelectedRows ~ this.selectedRows:", this.selectedRows);
     }
 
     parseAttributes(propertyType,inputAttributes,columnNumber) {

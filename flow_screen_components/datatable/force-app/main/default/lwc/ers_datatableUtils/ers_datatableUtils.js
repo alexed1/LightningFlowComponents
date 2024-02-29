@@ -45,6 +45,7 @@ const getConstants = () => {
         CB_ATTRIB_PREFIX : 'cb_',       // Used with fsc_flowCheckbox component
         MIN_SEARCH_TERM_SIZE : 2,       // Set the minimum number of characters required to start searching
         SEARCH_WAIT_TIME : 300,         // Set the delay to start searching while user is typing a search term
+        RECORDS_PER_PAGE : 9,          // Default number of records per page for pagination
     }
 }
 

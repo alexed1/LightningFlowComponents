@@ -27,6 +27,14 @@ import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 import SearchPlaceholder from '@salesforce/label/c.ers_SearchPlaceholder';
+import FirstButton from '@salesforce/label/c.ers_FirstButton';
+import PreviousButton from '@salesforce/label/c.ers_PreviousButton';
+import NextButton from '@salesforce/label/c.ers_NextButton';
+import LastButton from '@salesforce/label/c.ers_LastButton';
+import RecordsPerPage from '@salesforce/label/c.ers_RecordsPerPage';
+import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
+import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
+import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE
 
@@ -53,7 +61,15 @@ export default class Datatable extends LightningElement {
         LabelHeader,
         RequiredMessage,
         EmptyMessage,
-        SearchPlaceholder
+        SearchPlaceholder,
+        FirstButton,
+        PreviousButton,
+        NextButton,
+        LastButton,
+        RecordsPerPage,
+        ShowingPagePrefix,
+        ShowingPageMiddle,
+        ShowingPageSuffix
     };
 
     // Component Input & Output Attributes
@@ -494,27 +510,27 @@ export default class Datatable extends LightningElement {
     _pageCurrentNumber = 1;
 
     get recordCountLabel() {
-        return 'Records per Page';
+        return this.label.RecordsPerPage;
     }
 
     get pageNumberLabel() {
-        return `Showing Page ${this._pageCurrentNumber} of ${this.pageTotalCount} Pages`;
+        return `${this.label.ShowingPagePrefix} ${this._pageCurrentNumber} ${this.label.ShowingPageMiddle} ${this.pageTotalCount} ${this.label.ShowingPageSuffix}`;
     }
 
     get buttonFirstLabel() {
-        return 'First';
+        return this.label.FirstButton;
     }
 
     get buttonLastLabel() {
-        return 'Last';
+        return this.label.LastButton;
     }
     
     get buttonPrevLabel() {
-        return 'Prev';
+        return this.label.PreviousButton;
     }
     
     get buttonNextLabel() {
-        return 'Next';
+        return this.label.NextButton;
     }
     
     get pageTotalCount() {

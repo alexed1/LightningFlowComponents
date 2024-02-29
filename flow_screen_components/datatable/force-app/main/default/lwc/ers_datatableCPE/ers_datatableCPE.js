@@ -224,6 +224,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get paginationCheckboxClass() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
+    }
+
+    @api
     get isNoLinks() {
         return (this.inputValues.cb_not_suppressNameFieldLink.value == CB_FALSE);
     }

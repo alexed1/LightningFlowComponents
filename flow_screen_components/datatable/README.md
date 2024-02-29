@@ -72,9 +72,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
-## 02/14/24 -  Eric Smith -     Version 4.2.0  
+## 02/29/24 -  Eric Smith -     Version 4.2.0  
 **Updates:** 
--   Added optional pagination (Initial release does not support retaining selected records when sorting, filtering, searching, paginating)  
+-   Added optional pagination  
+-       Adds a selectable number of Records per Page input to the header - default value 10  
+-       Adds a navigation footer with a editable input showing the current page # and total number of pages  
+-       The footer also includes Prev & Next buttons as well as optional First & Last Buttons  
+-       The appropriate buttons are disabled if the user is on the first or the last page  
+-       (Initial release does not support retaining selected records when sorting, filtering, searching, paginating) 
   
 **Bug Fixes:**  
 -   Fixed bug where the maximum number of rows to be displayed gets cleared  

@@ -94,7 +94,7 @@ global without sharing class FindCommonAndUniqueRecords {
                             
                             for(sObject sourceRecord : sourceRecordCollection){
                                 //if it is, we add it to the common record collection and remove it from the target map. We do this
-                                String sourceFieldValue = sourceRecord.get(request.sourceUniqueID).toString();
+                                String sourceFieldValue = String.valueOf(sourceRecord.get(request.sourceUniqueID));
                                 
                                 if (targetMap.containsKey(sourceFieldValue)){
                                     result.sourceCommonRecordCollection.add(sourceRecord);
@@ -106,7 +106,7 @@ global without sharing class FindCommonAndUniqueRecords {
                             // we loop over the 'Target' collection to see if the record is in the 'Source' collection'.
                             for(sObject targetRecord : targetRecordCollection){
                                 //if it is, we add it to the common record collection and remove it from the target map. We do this
-                                String targetFieldValue = targetRecord.get(request.targetUniqueID).toString();
+                                String targetFieldValue = String.valueOf(targetRecord.get(request.targetUniqueID));
                                 
                                 if (sourceMap.containsKey(targetFieldValue)){
                                     result.targetCommonRecordCollection.add(targetRecord);

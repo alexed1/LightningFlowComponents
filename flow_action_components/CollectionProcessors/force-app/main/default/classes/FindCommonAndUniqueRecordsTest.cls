@@ -18,6 +18,9 @@ public class FindCommonAndUniqueRecordsTest {
         accounts.add(account3);        
         insert accounts;
         
+		accounts[2].ParentId=accounts[0].Id;
+        update accounts;
+        
     	List<Contact> contacts = new List<Contact>();
         
         Contact contact1 = new Contact(
@@ -61,6 +64,24 @@ public class FindCommonAndUniqueRecordsTest {
         Test.stopTest();
         System.assertEquals(1, results[0].sourceUniqueRecordCollection.size(), 'sourceUnique failed');
         System.assertEquals(2, results[0].sourceCommonRecordCollection.size(), 'sourceCommon failed');
+    }
+    
+    @IsTest
+    static void testCompareRecordswithNullUniqueIds() {
+        List<Account> accountsInSource = [Select Id, ParentId from Account];
+        
+        List<FindCommonAndUniqueRecords.Request> flowRequests = new List<FindCommonAndUniqueRecords.Request>();
+        FindCommonAndUniqueRecords.Request flowRequest = new FindCommonAndUniqueRecords.Request();
+        flowRequest.sourceRecordCollection = accountsInSource;
+        flowRequest.targetRecordCollection = accountsInSource;
+        flowRequest.sourceUniqueID = 'Id';
+        flowRequest.targetUniqueID = 'ParentId';
+        flowRequests.add(flowRequest);
+        Test.startTest();
+        List<FindCommonAndUniqueRecords.Result> results = FindCommonAndUniqueRecords.compareRecords(flowRequests);
+        Test.stopTest();
+        System.assertEquals(2, results[0].sourceUniqueRecordCollection.size(), 'sourceUnique failed');
+        System.assertEquals(1, results[0].sourceCommonRecordCollection.size(), 'sourceCommon failed');
     }
     
     @IsTest

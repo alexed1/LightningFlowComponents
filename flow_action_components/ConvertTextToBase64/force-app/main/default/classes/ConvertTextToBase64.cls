@@ -37,11 +37,15 @@
 
             // Base64 the Text
             String base64Value = EncodingUtil.Base64Encode(Blob.valueOf(textValue));
-            Blob blobValue = EncodingUtil.base64Decode(base64Value);
-            String stringValue = blobValue.toString();
+
+            /* Convert the other direction
+            // Text the Base64
+            // Blob blobValue = EncodingUtil.base64Decode(base64Value);
+            // String stringValue = blobValue.toString();
+            */
 
             /* Prepare Output */
-            response.base64Output = stringValue;
+            response.base64Output = base64Value;
 
             /* Process Outputs */
             responseWrapper.add(response);
@@ -56,8 +60,7 @@
     global class Requests {
 
         @InvocableVariable(label='Text Value for Conversion' 
-            description='Text value to be converted into Base64' 
-            required=true)
+            description='Text value to be converted into Base64')
         global String textInput;
 
     }

@@ -17,7 +17,7 @@
     
     /* Flow Action */
     @invocableMethod(label='Convert Text to Base64'
-        iconName='slds:utility:data_transforms'
+        iconName='slds:standard:data_transforms'
         category='Util'
         description='Convert a Text String to Base64 - By Eric Smith')
 
@@ -38,7 +38,7 @@
             // Base64 the Text
             String base64Value = EncodingUtil.Base64Encode(Blob.valueOf(textValue));
 
-            /* Convert the other direction
+            /* TODO: Convert the other direction
             // Text the Base64
             // Blob blobValue = EncodingUtil.base64Decode(base64Value);
             // String stringValue = blobValue.toString();

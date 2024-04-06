@@ -98,7 +98,18 @@ export default class Datatable extends LightningElement {
     @api outputSelectedRow;
     @api outputEditedRows = [];
     @api tableIcon;
-    @api tableLabel;
+    
+    // v4.2.0 Make Table Header Label reactive
+    // @api tableLabel;
+    @api 
+    get tableLabel() {
+        return this._tableLabel || '';
+    }
+    set tableLabel(value) {
+        this._tableLabel = value;
+    }
+    _tableLabel;
+
     @api recordTypeId;
 
     _tableData;
@@ -635,7 +646,7 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         let filteredCount = (this.filteredRecordCount != this.tableRecordCount) ? `${this.filteredRecordCount} of ` : '';
-        return (this.showRecordCount) ? `${this.tableLabel} (${filteredCount}${this.tableRecordCount})` : this.tableLabel;
+        return (this.showRecordCount) ? `${this._tableLabel} (${filteredCount}${this.tableRecordCount})` : this._tableLabel;
     }
 
     get tableRecordCount() {
@@ -1215,9 +1226,11 @@ export default class Datatable extends LightningElement {
             // Adjust date with offset based on User's timezone
             dateFields.forEach(date => {
                 if (record[date]) {
-                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
-                    let d = new Date();
-                    record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   // Set to Noon to avoid DST issues with the offset (v4.0.4)
+                    if (!isNaN(dt)) {   // Dates from External Objects are already formatted as Datetime (PR#1529)
+                        let d = new Date();
+                        record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                    }
                 }
             });
 

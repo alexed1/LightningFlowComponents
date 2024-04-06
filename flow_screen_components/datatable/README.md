@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.1.7 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZknQAG)   
-[Version 4.1.7 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZknQAG)
+[Version 4.2.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZknQAG)   
+[Version 4.2.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZknQAG)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,7 +72,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
-## 02/29/24 -  Eric Smith -     Version 4.2.0  
+## 04/06/24 -  Eric Smith -     Version 4.2.0  
 **Updates:** 
 -   Added optional pagination  
 -       Adds a selectable number of Records per Page input to the header - default value 10  
@@ -85,7 +85,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:**  
 -   Fixed bug where the maximum number of rows to be displayed gets cleared  
 -   Fixed bug where an invalid link would show when an Apex Defined Lookup field was empty (@spyros-michailidisspyros-michailidis PR#1524)
--   Fixed install issue with ers_DatatableController.cls if the target org has a class named "Test"  
+-   Fixed install issue with ers_DatatableController.cls if the target org has a class named "Test" 
+-   Fixed a bug where Date fields from External Objects would show as blank (@philipnovak-pentair PR#1529) 
   
 ## 02/06/24 -  Eric Smith -     Version 4.1.6 
 **Bug Fixes:**  

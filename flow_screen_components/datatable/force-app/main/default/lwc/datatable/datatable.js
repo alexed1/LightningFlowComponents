@@ -1030,8 +1030,10 @@ export default class Datatable extends LightningElement {
             dateFields.forEach(date => {
                 if (record[date]) {
                     let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
-                    let d = new Date();
-                    record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                    if (!isNaN(dt)) {
+                        let d = new Date();
+                        record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                    }
                 }
             });
 

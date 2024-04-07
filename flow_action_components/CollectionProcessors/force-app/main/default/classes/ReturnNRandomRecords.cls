@@ -9,6 +9,9 @@
  *  Derek Camp - 9/5/23 - v1.0.0
  *      Initial Release
  * 
+ *  Eric Smith - 3/18/24 - v1.0.1
+ *      Fix intermittant test class bug (index out of bounds)
+ *      Available in Collection Processor package v3.2.2 and later
  * 
 **/ 
 global inherited sharing class ReturnNRandomRecords {
@@ -72,7 +75,7 @@ global inherited sharing class ReturnNRandomRecords {
                 } else {
                     // Generate a list of random numbers
                     while (randomNumbers.size() < recordCount) {
-                        Integer randomNumber = ( (Integer)Math.round(Math.random() * inputCollection.size()) -1 );
+                        Integer randomNumber = (Integer)Math.round(Math.random() * (inputCollection.size()-1));
                         if( !randomNumbers.contains(randomNumber) ) {
                             randomNumbers.add(randomNumber);
                         }

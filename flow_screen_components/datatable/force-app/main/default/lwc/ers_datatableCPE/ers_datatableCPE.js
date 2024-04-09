@@ -595,10 +595,6 @@ export default class ers_datatableCPE extends LightningElement {
         },
         {name: 'tableFormatting',
             attributes: [
-                {name: defaults.customHelpDefinition, 
-                    label: 'Configure Columns Button',
-                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
-                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},
                 {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
@@ -614,6 +610,10 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'showRecordCount'},
                 {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'Configure Columns Button',
+                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
+                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},                
             ]
         },
         {name: 'tableBehavior',

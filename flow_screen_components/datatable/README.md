@@ -81,6 +81,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -       The appropriate buttons are disabled if the user is on the first or the last page  
 -       New pagination input prompts and button labels are translatable Custom Labels
 -       (Initial release does not support retaining selected records when sorting, filtering, searching, paginating) 
+-   Made the Table Header Label reactive  
+-   Moved the Configure Columns button from the top to the bottom of the Table Formatting section of the CPE  
   
 **Bug Fixes:**  
 -   Fixed bug where the maximum number of rows to be displayed gets cleared  

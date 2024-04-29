@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 05-31-2023
+ * @last modified on  : 04-29-2024
  * @last modified by  : Josh Dayment
 **/
 import { api, track, LightningElement } from 'lwc';
@@ -54,10 +54,26 @@ export default class fsc_flexcardCPE extends LightningElement {
 
     ];
     componentStyling = [
-        { label: 'Card Size', helpText: 'Size in pixels default is 300px' },
+        { label: 'Component Label', helpText: 'Label for the entire component does support rich text' },
+        { label: 'Card Width', helpText: 'Size in pixels default is 300px' },
+        { label: 'Card Height', helpText: 'Size in pixels default is 300px' },
+
+    ];
+
+    headerStyling = [
+        { label: 'Header Field', helpText: 'Choose the field name to populate in the card header' },
         { label: 'Style attribute for the card headers', helpText: 'Standard HTML syling to apply to the card headers' },
         { label: 'Pick an Icon', helpText: 'When an Icon is selected it will apply it before the name in the card header' },
+        { label: 'Apply SLDS class to header field?', helptText: 'Select SLDS class to apply to header text' },
     ];
+
+    cardStyling = [
+        { label: 'Style attribute for the card body', helpText: 'Standard HTML syling to apply to the card body' },
+        { label: 'Apply SLDS class to field values?', helptText: 'Select SLDS class to apply to field values' },
+        { label: 'Show or hide field labels?', helptText: 'Decide if you want to show the field labels or just the values' },
+
+    ];
+
     flexCardActions = [
         { label: 'List or Menu', helpText: 'Menu will display that action in a dropdown list, list will display the action as a list on the card' },
         { label: 'Actons Menu Label', helpText: 'When there is a text string here it either adds a label to the menu button or if list it will add a label with an h1 tag' },
@@ -90,6 +106,8 @@ export default class fsc_flexcardCPE extends LightningElement {
         cardWidth: { value: null, valueDataType: null, isCollection: false, label: 'Card Width', helpText: 'This is the width of the card in Pixels' },
         fieldVariant: { value: null, valueDatatType: null, isCollection: false, label: 'Field Variant' },
         fieldClass: { value: null, valueDataType: null, isCollection: false, label: 'Field Class' },
+        headerField: { value: null, valueDataType: null, isCollection: false, label: 'Header Field' },
+        headerFieldClass: { value: null, valueDataType: null, isCollection: false, label: 'Header Field Class' },
     };
 
     @api get builderContext() {
@@ -175,7 +193,7 @@ export default class fsc_flexcardCPE extends LightningElement {
 
     get fieldClassOptions() {
         return [
-            { label: '--None--', value:''},
+            { label: '--None--', value: '' },
             { label: 'Body Small', value: 'slds-text-body_small' },
             { label: 'Heading Large', value: 'slds-text-heading_large' },
             { label: 'Heading Medium', value: 'slds-text-heading_medium' },
@@ -370,8 +388,16 @@ export default class fsc_flexcardCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent('fieldClass', event.detail.value, 'String')
     }
 
+    handleHeaderFieldClassChange(event) {
+        this.dispatchFlowValueChangeEvent('headerFieldClass', event.detail.value, 'String')
+    }
+
     handleAllowAllObjects(event) {
         this.dispatchFlowValueChangeEvent('allowAllObjects', event.detail.value, 'String');
+    }
+
+    handleHeaderFieldNameChange(event) {
+        this.dispatchFlowValueChangeEvent('headerField', event.detail.value, 'String');
     }
 
     get isMenu() {

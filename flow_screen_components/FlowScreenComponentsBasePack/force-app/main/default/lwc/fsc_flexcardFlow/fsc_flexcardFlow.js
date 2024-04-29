@@ -146,9 +146,6 @@ export default class FlexcardFlow extends LightningElement {
     processRecords() {
 
         this.recs = JSON.parse(JSON.stringify(this._records));
-        this.setHeaderValue;
-        console.log(this.headerValue)
-
 
     }
 

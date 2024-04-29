@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 01-03-2024
+ * @last modified on  : 04-29-2024
  * @last modified by  : Josh Dayment
 **/
 import { LightningElement, api, track, wire } from 'lwc';
@@ -107,6 +107,8 @@ export default class FlexcardFlow extends LightningElement {
     @api cardWidth = 300;
     @api fieldVariant;
     @api fieldClass;
+    @api headerField = 'Name';
+    @api headerFieldClass = 'slds-text-heading_small';
     
 
     curRecord;
@@ -121,6 +123,7 @@ export default class FlexcardFlow extends LightningElement {
     renderedCallback() {
         if (this.value != null && !this.allowMultiSelect && this.isClickable) {
             this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
+            
         }
     }
 
@@ -131,6 +134,10 @@ export default class FlexcardFlow extends LightningElement {
         }
         //console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
+        
+        
+
+        
 
     }
 
@@ -139,6 +146,8 @@ export default class FlexcardFlow extends LightningElement {
     processRecords() {
 
         this.recs = JSON.parse(JSON.stringify(this._records));
+        this.setHeaderValue;
+        console.log(this.headerValue)
 
 
     }
@@ -214,5 +223,6 @@ export default class FlexcardFlow extends LightningElement {
             }
         }
     }
+
 
 }

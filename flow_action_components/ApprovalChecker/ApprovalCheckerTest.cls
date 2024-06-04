@@ -1,5 +1,5 @@
 @isTest
-private class ApprovalCheckerTest {
+private class LockCheckerTest {
     @isTest
     static void testIsLocked() {
         // Create test data
@@ -7,7 +7,7 @@ private class ApprovalCheckerTest {
         insert acc;
         
         // Call the method to be tested
-        List<Boolean> result = ApprovalChecker.isLocked(new List<Id>{acc.Id});
+        List<Boolean> result = LockChecker.isLocked(new List<Id>{acc.Id});
         
         // Perform assertions
         System.assertEquals(1, result.size(), 'Result should have only one entry');

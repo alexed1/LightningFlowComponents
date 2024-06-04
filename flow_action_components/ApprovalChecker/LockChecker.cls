@@ -1,4 +1,4 @@
-public class ApprovalChecker {
+public class LockChecker {
     @InvocableMethod (label='Check if a record is locked')
     public static List<Boolean> isLocked(List<Id> recordIdToCheck)	{
         List<Boolean> isLockedList = new List<Boolean>();

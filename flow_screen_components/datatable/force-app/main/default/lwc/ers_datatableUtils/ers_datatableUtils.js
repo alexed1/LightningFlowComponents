@@ -4,7 +4,7 @@
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
 const baseURL = window.location.hostname || 'LWR';          // LWR Experience does not support window.xxx
-console.log("DATATABLE environment baseURL", baseURL);
+console.log("DATATABLE: environment baseURL", baseURL);
 
 var myDomain;
 var isCommunity = false;
@@ -28,8 +28,8 @@ if (myDomain.includes('flow/runtime') || myDomain.includes('/flow/')) {     // R
     isCommunity = false;
     isFlowBuilder = true;
 }
-console.log("DATATABLE myDomain:", myDomain);
-console.log("DATATABLE isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder);
+console.log("DATATABLE: myDomain:", myDomain);
+console.log("DATATABLE: isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder);
 
 const getConstants = () => {
     return {
@@ -46,6 +46,8 @@ const getConstants = () => {
         MIN_SEARCH_TERM_SIZE : 2,       // Set the minimum number of characters required to start searching
         SEARCH_WAIT_TIME : 300,         // Set the delay to start searching while user is typing a search term
         RECORDS_PER_PAGE : 10,          // Default number of records per page for pagination
+        SHOW_DEBUG_INFO : true,        // Set to true to show sensitive debug info in the console and debug logs
+        DEBUG_INFO_PREFIX : 'DATATABLE: '  // Prefix to be used for debug info in the console
     }
 }
 

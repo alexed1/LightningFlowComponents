@@ -36,7 +36,7 @@ import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
 import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
 import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE, SHOW_DEBUG_INFO, DEBUG_INFO_PREFIX
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -45,6 +45,8 @@ const CB_TRUE = CONSTANTS.CB_TRUE;
 const MIN_SEARCH_TERM_SIZE = CONSTANTS.MIN_SEARCH_TERM_SIZE;
 const SEARCH_WAIT_TIME = CONSTANTS.SEARCH_WAIT_TIME;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
+const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
+const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 
 export default class Datatable extends LightningElement {
 
@@ -680,7 +682,7 @@ export default class Datatable extends LightningElement {
         } else if (error) {
             // An error is expected here if the running user does not have Read access to the datatable SObject
             // All picklist values will be used instead of just those specified by the supplied Record Type Id
-            console.log('getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
+            console.log(DEBUG_INFO_PREFIX+'getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
         }
         if (data != undefined || error != undefined) {
             // Update row data for lookup, time, picklist and percent fields
@@ -731,8 +733,8 @@ export default class Datatable extends LightningElement {
         // Display the component version number in the console log
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
-        console.log("%cdatatable VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
-        console.log('MYDOMAIN', MYDOMAIN);
+        console.log("%cDATATABLE VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
+        console.log(DEBUG_INFO_PREFIX+'MYDOMAIN', MYDOMAIN);
         
         // Picklist field processing
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
@@ -751,21 +753,22 @@ export default class Datatable extends LightningElement {
             this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
             this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
             this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
-            console.log("Config Mode Input columnAlignments:", this.columnAlignments);
-            console.log("Config Mode Input columnEdits:", this.columnEdits);
-            console.log("Config Mode Input columnFilters:", this.columnFilters);
-            console.log("Config Mode Input columnIcons:", this.columnIcons);
-            console.log("Config Mode Input columnLabels:", this.columnLabels);
-            console.log("Config Mode Input columnWidths:", this.columnWidths);
-            console.log("Config Mode Input columnWraps:", this.columnWraps);
-            console.log("Config Mode Input columnFlexes:", this.columnFlexes);
-            console.log("Config Mode Input columnFields:", this.columnFields);
-            console.log("Config Mode Input columnCellAttribs:", this.columnCellAttribs);
-            console.log("Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
-            console.log("Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnEdits:", this.columnEdits);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFilters:", this.columnFilters);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnIcons:", this.columnIcons);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnLabels:", this.columnLabels);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnWidths:", this.columnWidths);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnWraps:", this.columnWraps);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFlexes:", this.columnFlexes);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFields:", this.columnFields);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
-        console.log('tableDataString - ',this._tableDataString, this.isUserDefinedObject);
+
+        console.log(DEBUG_INFO_PREFIX+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***', this.isUserDefinedObject);
 
         if (this.isUserDefinedObject) {
             this.assignApexDefinedRecords();
@@ -779,8 +782,9 @@ export default class Datatable extends LightningElement {
         // Pagination Initiation
         this.initiatePagination();
 
-        console.log('this._tableData',this._tableData);
-        if(!this._tableData) {
+        console.log(DEBUG_INFO_PREFIX+'this._tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
+
+        if (!this._tableData) {
             this.isUpdateTable = false;
             this._tableData = [];
         }
@@ -796,7 +800,7 @@ export default class Datatable extends LightningElement {
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
         this.columnFieldParameter = this.columnArray.join(', ');
-        console.log('columnArray - ',this.columnArray);  
+        console.log(DEBUG_INFO_PREFIX+'columnArray - ',this.columnArray);  
 
         // JSON Version - Build basicColumns default values
         if (this.isUserDefinedObject) {
@@ -978,7 +982,7 @@ export default class Datatable extends LightningElement {
         if (!this.allowOverflow) {
             this.tableHeightAttribute = 'height:' + this.tableHeight;
         }
-        console.log('tableHeightAttribute',this.tableHeightAttribute);
+        console.log(DEBUG_INFO_PREFIX+'tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         //this.borderClass = (this.tableBorder == true) ? 'slds-box' : ''; commented out to remove padding. replaced with below
@@ -993,7 +997,7 @@ export default class Datatable extends LightningElement {
             // Set other initial values here
             this.wizColumnFields = this.columnFields;
 
-            console.log('Processing Datatable');
+            console.log(DEBUG_INFO_PREFIX+'Processing Datatable');
             this.processDatatable();
             this.isUpdateTable = true;      // Added in v4.1.1 so Datatable will show records from Datafetcher upon initialization          
 
@@ -1005,7 +1009,7 @@ export default class Datatable extends LightningElement {
 
     assignApexDefinedRecords() {
         // JSON input attributes
-        console.log('tableDataString - ',this._tableDataString);
+        console.log(DEBUG_INFO_PREFIX+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***');
         if (!this._tableDataString || this._tableDataString?.length == 0) {
             this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
             this.columnFields = this.keyField;
@@ -1013,7 +1017,7 @@ export default class Datatable extends LightningElement {
             this.columnScales = [];
         }
         this._tableData = JSON.parse(this._tableDataString);
-        console.log('tableData - ',this._tableData);    
+        console.log(DEBUG_INFO_PREFIX+'tableData - ',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
     }
     
@@ -1125,7 +1129,7 @@ export default class Datatable extends LightningElement {
             }
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
-            console.log('Passing data to Apex Controller', data);
+            console.log(DEBUG_INFO_PREFIX+'Passing data to Apex Controller', (SHOW_DEBUG_INFO) ? data : '***');
             getReturnResults({ records: data, fieldNames: fieldList, suppressCurrencyConversion: this.suppressCurrencyConversion })
             .then(result => {
                 let returnResults = JSON.parse(result);
@@ -1137,17 +1141,17 @@ export default class Datatable extends LightningElement {
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
                 this.datetimeFieldArray = (returnResults.datetimeFieldList.length > 0) ? returnResults.datetimeFieldList.toString().split(',') : [];
-                console.log("Datetime Fields ~ returnResults.datetimeFieldList.toString()", returnResults.datetimeFieldList.toString());
+                console.log(DEBUG_INFO_PREFIX+"Datetime Fields ~ returnResults.datetimeFieldList.toString()", returnResults.datetimeFieldList.toString());
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
-                console.log("Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
+                console.log(DEBUG_INFO_PREFIX+"Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
                 this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/[^\d-]/g, '');  // Numeric characters and - only
-                console.log("Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
+                console.log(DEBUG_INFO_PREFIX+"Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
 
                 // Check for differences in picklist API Values vs Labels
                 if (this.picklistReplaceValues) {
@@ -1165,7 +1169,7 @@ export default class Datatable extends LightningElement {
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';
                 this.basicColumns = JSON.parse(this.dtableColumnFieldDescriptorString);
-                console.log('dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
+                console.log(DEBUG_INFO_PREFIX+'dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
                 
                 // *** Moved to @wire ***
@@ -1182,7 +1186,7 @@ export default class Datatable extends LightningElement {
 
             })  // Handle any errors from the Apex Class
             .catch(error => {
-                console.log('getReturnResults error is: ' + JSON.stringify(error));
+                console.log(DEBUG_INFO_PREFIX+'getReturnResults error is: ' + JSON.stringify(error));
                 if (error.body) {
                     this.errorApex = 'Apex Action error: ' + error.body.message;
                     alert(this.errorApex + '\n');  // Present the error to the user
@@ -1196,7 +1200,7 @@ export default class Datatable extends LightningElement {
 
     updateDataRows() {
         // Process Incoming Data Collection
-        console.log('Processing updateDataRows')
+        console.log(DEBUG_INFO_PREFIX+'Processing updateDataRows')
         let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData].slice(0,this.collectionSize))) : [];
         let lookupFields = this.lookups;
         let lufield = '';
@@ -1316,15 +1320,15 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        console.log('selectedRows',this.selectedRows);
-        console.log('keyField:',this.keyField);
-        console.log('tableData',this._tableData);
-        console.log('mydata:',this._mydata);
+        console.log(DEBUG_INFO_PREFIX+'selectedRows',(SHOW_DEBUG_INFO) ? this.selectedRows : '***');
+        console.log(DEBUG_INFO_PREFIX+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
+        console.log(DEBUG_INFO_PREFIX+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
+        console.log(DEBUG_INFO_PREFIX+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
     }
 
     updateColumns() {
         // Parse column definitions
-        console.log('Processing updateColumns')
+        console.log(DEBUG_INFO_PREFIX+'Processing updateColumns')
         this.cols = [];
         let columnNumber = 0;
         let lufield = '';
@@ -1598,7 +1602,7 @@ export default class Datatable extends LightningElement {
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false,
                 flex: (flexAttrib) ? flexAttrib.flex : false
             });
-            console.log('this.cols',this.cols);
+            console.log(DEBUG_INFO_PREFIX+'this.cols',this.cols);
 
             // Update Other Attributes attribute overrides by column
             this.parseAttributes('other',this.otherAttribs,columnNumber);
@@ -1825,7 +1829,7 @@ export default class Datatable extends LightningElement {
                             }
                         }
                         catch(err) {
-                            console.log("Date not in ISO format", date, field[date]);
+                            console.log(DEBUG_INFO_PREFIX+"Date not in ISO format", date, field[date]);
                         }
                     }
                 });
@@ -1953,7 +1957,7 @@ export default class Datatable extends LightningElement {
 
     updateColumnSorting(event) {
         // Handle column sorting
-        console.log('Sort:',event.detail.fieldName,event.detail.sortDirection);
+        console.log(DEBUG_INFO_PREFIX+'Sort:',event.detail.fieldName,event.detail.sortDirection);
         this.sortedBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
         this.isUpdateTable = false;
@@ -2659,7 +2663,7 @@ export default class Datatable extends LightningElement {
 
     @api
     validate() {
-        console.log("validate and exit");
+        console.log(DEBUG_INFO_PREFIX+"validate and exit");
 
         // Finalize Selected Records for Output
         let sdata = [];
@@ -2708,8 +2712,8 @@ export default class Datatable extends LightningElement {
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
         }
 
-        console.log('outputSelectedRows', this.outputSelectedRows.length, this.outputSelectedRows);
-        console.log('outputEditedRows',this.outputEditedRows.length, this.outputEditedRows);
+        console.log(DEBUG_INFO_PREFIX+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
+        console.log(DEBUG_INFO_PREFIX+'outputEditedRows',this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

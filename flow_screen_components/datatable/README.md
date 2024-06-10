@@ -72,6 +72,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
+## 06/xx/24 -  Eric Smith -     Version 4.2.1  
+**Updates:** 
+-   TBD  
+  
+**Bug Fixes:** 
+-   TBD   
+  
 ## 04/06/24 -  Eric Smith -     Version 4.2.0  
 **Updates:** 
 -   Added optional pagination  

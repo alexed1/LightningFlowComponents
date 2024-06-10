@@ -553,7 +553,7 @@ export default class Datatable extends LightningElement {
     }
 
     get isLastpage() {
-        return (this._pageCurrentNumber === this.pageTotalCount);
+        return (this._pageCurrentNumber >= this.pageTotalCount);
     }
 
     get isOnlyOnePage() {

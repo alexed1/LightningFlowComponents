@@ -74,7 +74,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 
 ## 06/xx/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
--   TBD  
+-   Implemented a default setting (SHOW_DEBUG_INFO = false) to hide record details from console and debug logs  
+-       Source code changes in ers_datatableUtils.js, ers_DatatableController.cls & ers_QueryNRecords.cls  
   
 **Bug Fixes:** 
 -   Fixed bug where hyperlinks would open the flow rather than the referenced record  

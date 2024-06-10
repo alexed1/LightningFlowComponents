@@ -2418,7 +2418,9 @@ export default class Datatable extends LightningElement {
                                     this.isFiltered = true;
                                     this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = false;
                             } else {
-                                this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = true;
+                                if (this.filterColumns[col].actions && this.filterColumns[col].actions != null) {   // *** v4.2.1 fix ***
+                                    this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = true;
+                                }
                             }
                         }
                         if (match) {

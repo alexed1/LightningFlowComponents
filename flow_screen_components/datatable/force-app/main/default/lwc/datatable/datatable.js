@@ -549,11 +549,11 @@ export default class Datatable extends LightningElement {
     }
 
     get isFirstPage() {
-        return (this.pageCurrentNumber === 1);
+        return (this._pageCurrentNumber === 1);
     }
 
     get isLastpage() {
-        return (this.pageCurrentNumber === this.pageTotalCount);
+        return (this._pageCurrentNumber === this.pageTotalCount);
     }
 
     get isOnlyOnePage() {

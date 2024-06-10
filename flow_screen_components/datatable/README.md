@@ -77,7 +77,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   TBD  
   
 **Bug Fixes:** 
--   TBD   
+-   Fixed bug where hyperlinks would open the flow rather than the referenced record     
   
 ## 04/06/24 -  Eric Smith -     Version 4.2.0  
 **Updates:** 

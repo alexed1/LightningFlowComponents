@@ -23,7 +23,7 @@ if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     /
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)
     isCommunity = true;
 }
-if (myDomain.includes('flow/runtime')) {     // Running in Flow Builder || Flow Builder (Enhanced Domain)
+if (myDomain.includes('flow/runtime') || myDomain.includes('/flow/')) {     // Running in Flow Builder || Flow Builder (Enhanced Domain)
     myDomain = baseURL;
     isCommunity = false;
     isFlowBuilder = true;

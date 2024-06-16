@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 01-03-2024
+  @last modified on  : 04-29-2024
   @last modified by  : Josh Dayment
 -->
 <template>
@@ -31,7 +31,15 @@
                                     <template lwc:if={showIcon}>
                                         <lightning-avatar src={record.src_URL__c} fallback-icon-name={icon}
                                             class="slds-m-right_small"></lightning-avatar>
-                                    </template>{record.Name}
+                                    </template>
+
+                                    <lightning-record-view-form object-api-name={objectAPIName} record-id={record.Id}>
+
+                                        <lightning-output-field field-name={headerField} variant=label-hidden
+                                            field-class={headerFieldClass}>
+                                        </lightning-output-field>
+
+                                    </lightning-record-view-form>
 
                                 </header>
                             </div>

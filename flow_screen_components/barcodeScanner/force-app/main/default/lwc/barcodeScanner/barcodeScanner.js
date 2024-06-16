@@ -7,7 +7,7 @@
 **/
 // barcodeScanner.js
 import { LightningElement,api } from 'lwc';
-import { FlowNavigationNextEvent } from 'lightning/flowSupport';
+import { FlowNavigationNextEvent, FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getBarcodeScanner } from 'lightning/mobileCapabilities';
 
@@ -165,6 +165,7 @@ export default class BarcodeScanner extends LightningElement {
                     // Clean up by ending capture,
                     // whether we completed successfully or had an error
                     this.myScanner.endCapture();
+                    this.dispatchEvent(new FlowAttributeChangeEvent('scannedBarcode',this.scannedBarcode));
                 });
 
                                                

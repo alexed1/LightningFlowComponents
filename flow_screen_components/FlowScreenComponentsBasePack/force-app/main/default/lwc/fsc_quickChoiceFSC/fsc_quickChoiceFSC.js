@@ -125,12 +125,14 @@ export default class QuickChoiceFSC extends LightningElement {
         if (value != null) {
             this._controllingPicklistValue = value;
             this.controllingValue = value;
-            if (value != this.priorControllingValue) {
+            if (value != this.priorControllingValue && this.priorControllingValue == null) {
                 this.priorControllingValue = value;
                 this.setPicklistSelections(this.picklistFieldDetails);
+            }else if(value != this.priorControllingValue){
+                this.setPicklistSelections(this.picklistFieldDetails);
+                }
             }
         }
-    }
 
     //-------------For inputMode = Visual Text Box (Card)
     @api 
@@ -348,6 +350,10 @@ export default class QuickChoiceFSC extends LightningElement {
             if (Object.keys(data.controllerValues).length > 0) {
                 this._isControlled = true;
                 this._showPicklist = true;
+                if (this.controllingValue != this.priorControllingValue){
+                    this.value = null;
+                    this.priorControllingValue = this.controllingValue;
+                }
                 this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
                 if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
                     this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false

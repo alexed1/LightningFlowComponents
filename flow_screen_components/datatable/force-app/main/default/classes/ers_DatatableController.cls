@@ -47,6 +47,7 @@
  *                  3/14/22	    Version 3.5.0   Added option to suppress the currency conversion introduced in v3.1.1
  *                  9/6/22	    Version 4.0.9   Return a collection of datetime fields for handling in the LWC
  *                  11/12/23    Version 4.1.5   Identify all datetime fields even if they are not in the Datatable (Needed to support reactive Collection Processors)
+ *                  02/28/24    Version 4.2.0   Fix install issue if the target org has a class named "Test"
  */
 @SuppressWarnings('PMD.ClassNamingConventions')
 
@@ -389,7 +390,7 @@ public with sharing class ers_DatatableController {
             for (String currField : currencyFields) {
                 currencyFieldsQuery +=
                     ', ' +
-                    (Test.isRunningTest() ? currField : 'convertCurrency(' + currField + ')');
+                    (System.Test.isRunningTest() ? currField : 'convertCurrency(' + currField + ')');
             }
             currencyFieldsQuery += ' FROM ' + objName + ' WHERE Id IN :records';
             Map<Id, SObject> sobjCurrencyFields = new Map<Id, SObject>(

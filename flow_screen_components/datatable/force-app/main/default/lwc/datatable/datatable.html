@@ -109,8 +109,8 @@ Features:   The only required paramters are the SObject collection of records an
 
         <!-- DATATABLE -->
         <div class={formElementClass}>
-            <!-- New Format with Searchbar -->
-            <template if:true={isShowSearchBar}>
+            <!-- New Format with Searchbar and/or Pagination -->
+            <template lwc:if={isShowNewheader}>
                 <abbr class="slds-required" title="required">{requiredSymbol}</abbr>
                 <lightning-card variant="Narrow" icon-name={tableIcon}>
                     <div slot="title">
@@ -119,13 +119,30 @@ Features:   The only required paramters are the SObject collection of records an
                         </div>
                     </div>
                     <div slot="actions">
-                        <lightning-input 
-                            type="search"
-                            placeholder={searchPlaceholder}
-                            value={searchTerm}
-                            onchange={handleSearchChange}
-                            is-loading={isWorking}
-                        ></lightning-input>
+                        <div class="slds-grid slds-grid_align-end">
+                            <template lwc:if={isPagination}>
+                                <legend class="slds-form-element__legend slds-form-element__label">{recordCountLabel}</legend>
+                                <lightning-input
+                                    type="number"
+                                    min="1"
+                                    value={recordCountPerPage}
+                                    variant="label-hidden"
+                                    onchange={handleRecordCountChange}
+                                ></lightning-input>
+                            </template>
+                            <template lwc:if={isShowSearchBar}>
+                                <div class="slds-p-left_medium">
+                                    <lightning-input 
+                                        type="search"
+                                        placeholder={searchPlaceholder}
+                                        value={searchTerm}
+                                        variant="label-hidden"
+                                        onchange={handleSearchChange}
+                                        is-loading={isWorking}
+                                    ></lightning-input>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                     <template if:true={isShowTable}>
                         <div if:true={isWorking}>
@@ -138,7 +155,7 @@ Features:   The only required paramters are the SObject collection of records an
         
                             <c-ers_custom-lightning-datatable
                                 aria-label={tableLabel}
-                                data={mydata}
+                                data={paginatedData}
                                 columns={columns}
                                 key-field={keyField}
                                 sorted-by={sortedBy}
@@ -193,7 +210,7 @@ Features:   The only required paramters are the SObject collection of records an
             </template>
 
             <!-- Old Format with Searchbar commented out -->
-            <template if:false={isShowSearchBar}>
+            <template if:false={isShowNewheader}>
                 <template if:true={isDisplayHeader}>
                     <div class="slds-grid slds-grid_align-spread">
                         <div class="slds-col">
@@ -236,7 +253,7 @@ Features:   The only required paramters are the SObject collection of records an
                     <div if:false={isWorking} style={tableHeightAttribute} class={borderClass} id="datatable">
                         <c-ers_custom-lightning-datatable
                             aria-label={tableLabel}
-                            data={mydata}
+                            data={paginatedData}
                             columns={columns}
                             key-field={keyField}
                             sorted-by={sortedBy}
@@ -285,6 +302,68 @@ Features:   The only required paramters are the SObject collection of records an
                 </template>
             </template>
         </div>
+
+        <!-- Pagination Footer -->
+        <template lwc:if={isPagination}>
+            <div class="slds-grid slds-grid_align-center">
+                <template lwc:if={isShowButtonFirstLast}>
+                    <div class="slds-col slds-align-middle slds-p-top_medium slds-p-right_xx-small">
+                        <lightning-button
+                            label={buttonFirstLabel}
+                            variant="brand-outline"
+                            icon-position="left"
+                            icon-name="utility:arrow_left"
+                            onclick={handleButtonFirst}
+                            disabled={isFirstPage}
+                        ></lightning-button>
+                    </div>
+                </template>
+                <div class="slds-col slds-align-middle slds-p-top_medium">
+                    <lightning-button
+                        label={buttonPrevLabel}
+                        variant="brand-outline"
+                        icon-position="left"
+                        icon-name="utility:chevronleft"
+                        onclick={handleButtonPrev}
+                        disabled={isFirstPage}
+                    ></lightning-button>
+                </div>
+                <div class="slds-col slds-text-body_regular slds-p-horizontal_medium slds-align-middle">
+                    <lightning-input
+                        type="number"
+                        min="1"
+                        max={pageTotalCount}
+                        label={pageNumberLabel}
+                        value={pageCurrentNumber}
+                        variant="label-stacked"
+                        onchange={handlePageChange}
+                        disabled={isOnlyOnePage}
+                    ></lightning-input>
+                </div>
+                <div class="slds-col slds-align-middle slds-p-top_medium">
+                    <lightning-button
+                        label={buttonNextLabel}
+                        variant="brand-outline"
+                        icon-position="right"
+                        icon-name="utility:chevronright"
+                        onclick={handleButtonNext}
+                        disabled={isLastpage}
+                    ></lightning-button>
+                </div>
+                <template lwc:if={isShowButtonFirstLast}>
+                    <div class="slds-col slds-align-middle slds-p-top_medium slds-p-left_xx-small">
+                        <lightning-button
+                            label={buttonLastLabel}
+                            variant="brand-outline"
+                            icon-position="right"
+                            icon-name="utility:arrow_right"
+                            onclick={handleButtonLast}
+                            disabled={isLastpage}
+                        ></lightning-button>
+                    </div>
+                </template>
+            </div>
+        </template>
 
         <!-- Special Footer parameter display for Configuration Mode -->
         <template if:true={isConfigMode}>

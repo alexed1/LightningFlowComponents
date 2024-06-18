@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <masterLabel>Datatable</masterLabel>
     <description>This component allows the user to configure and display a datatable in a Flow screen.</description>
-    <apiVersion>57.0</apiVersion>
+    <apiVersion>60.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>
@@ -105,6 +105,11 @@
             <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
             <property name="cb_matchCaseOnFilters" type="String" role="inputOnly"/>
             <property name="maxNumberOfRows" label="Maximum Number of Records to Display" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows will be displayed in the datatable."/>
+            <property name="showPagination" type="Boolean" role="inputOnly"/>
+            <property name="cb_showPagination" type="String" role="inputOnly"/>
+            <property name="recordsPerPage" type="Integer" role="inputOnly"/>
+            <property name="showFirstLastButtons" type="Boolean" role="inputOnly"/>
+            <property name="cb_showFirstLastButtons" type="String" role="inputOnly"/>
             <property name="isRequired" label="Required?" type="Boolean" default="false" role="inputOnly" description="Require at least 1 row to be selected?"/>
             <property name="cb_isRequired" type="String" role="inputOnly"/>
             <property name="singleRowSelection" label="Single Row Selection (Radio Buttons)?" type="Boolean" default="false" role="inputOnly" description="When set to True, Radio Buttons will be displayed and only a single row can be selected.  

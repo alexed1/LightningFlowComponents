@@ -18,7 +18,7 @@
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "48.0",
+  "sourceApiVersion": "60.0",
   "packageAliases": {
     "FlowBaseComponents": "04tf4000003RQxcAAG",
     "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
@@ -41,6 +41,8 @@
     "CollectionActionsL@1.30.0-0": "04t5G0000047xOOQAY",
     "CollectionActionsL@3.0.0-0": "04t5G000003rUvQQAU",
     "CollectionActionsL@3.0.1-0": "04t5G000003rUvaQAE",
-    "CollectionActionsL@3.1.0": "04t5G000004J7KcQAK"
+    "CollectionActionsL@3.1.0": "04t5G000004J7KcQAK",
+    "CollectionActionsL@3.2.0": "04t5G000004XZirQAG",
+    "CollectionActionsL@3.2.1": "04t5G000004XZj6QAG"
   }
 }

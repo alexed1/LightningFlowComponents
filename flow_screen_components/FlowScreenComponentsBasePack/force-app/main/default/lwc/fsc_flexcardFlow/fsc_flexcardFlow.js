@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 07-06-2023
+ * @last modified on  : 04-29-2024
  * @last modified by  : Josh Dayment
 **/
 import { LightningElement, api, track, wire } from 'lwc';
@@ -49,7 +49,15 @@ export default class FlexcardFlow extends LightningElement {
     }
     @api cb_allowMultiSelect;
     @api recordValue;
-    @api selectedRecordIds = [];
+    //@api
+    //get selectedRecordIds() {
+    //    return this._selectedRecordIds;
+   // }
+    //set selectedRecordIds(selectedRecordIds = []) {
+    //    this._selectedRecordIds = selectedRecordIds;
+   // }
+    @api selectedRecordIds;
+    @track _selectedRecordIds = new Set();
     @api label;
     @api subheadCSS;
     @api
@@ -99,6 +107,9 @@ export default class FlexcardFlow extends LightningElement {
     @api cardWidth = 300;
     @api fieldVariant;
     @api fieldClass;
+    @api headerField = 'Name';
+    @api headerFieldClass = 'slds-text-heading_small';
+    
 
     curRecord;
     @wire(getObjectInfo, { objectApiName: '$objectAPIName' })
@@ -109,6 +120,13 @@ export default class FlexcardFlow extends LightningElement {
         }
     }
 
+    renderedCallback() {
+        if (this.value != null && !this.allowMultiSelect && this.isClickable) {
+            this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
+            
+        }
+    }
+
     connectedCallback() {
         console.log('entering connectedCallback');
         if (!this.records) {
@@ -116,6 +134,10 @@ export default class FlexcardFlow extends LightningElement {
         }
         //console.log('records are: ' + JSON.stringify(this.records));
         this.recs = JSON.parse(JSON.stringify(this.records));
+        
+        
+
+        
 
     }
 
@@ -124,7 +146,6 @@ export default class FlexcardFlow extends LightningElement {
     processRecords() {
 
         this.recs = JSON.parse(JSON.stringify(this._records));
-
 
     }
 
@@ -160,23 +181,30 @@ export default class FlexcardFlow extends LightningElement {
         return this.icon && this.icon.length > 0;
     }
 
+    
+
     handleChange(event) {
         //console.log(event.target.checked);
-        if (event.target.checked == true) {
-            this.recordValue = event.target.value;
-            this.selectedRecordIds.push(this.recordValue);
+        this.recordValue = event.target.value;
+        if (event.target.checked) {
+            this._selectedRecordIds.add(this.recordValue);
+        } else {
+            this._selectedRecordIds.delete(this.recordValue);
         }
-        else {
-            const remove = this.selectedRecordIds.indexOf(this.selectedRecordIds.find(element => element.Id === event.target.value));
-            this.selectedRecordIds.splice(remove, 1);
-        }
+        this.selectedRecordIds = Array.from(this._selectedRecordIds)
+        const attributeChangeEvent = new FlowAttributeChangeEvent('selectedRecordIds', this.selectedRecordIds);
+        this.dispatchEvent(attributeChangeEvent);
     }
+    
+    
 
     handleClick(event) {
         this.recs.find(record => {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
                 this.value = this.selectedRecord;
+                const attributeChangeEvent = new FlowAttributeChangeEvent('value', this.value);
+                this.dispatchEvent(attributeChangeEvent);
             }
 
         });
@@ -192,5 +220,6 @@ export default class FlexcardFlow extends LightningElement {
             }
         }
     }
+
 
 }

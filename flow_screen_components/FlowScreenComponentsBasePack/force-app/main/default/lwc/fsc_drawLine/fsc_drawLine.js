@@ -10,6 +10,9 @@
  * 
  *                      Lightning Web Components:       fsc_drawLineCPE
  * 
+ * 11/13/23 -   Eric Smith -    Version 1.0.1
+ *              Bug Fixes:      Line thickness attribute was causing an error when other components on the same screen had validation errors
+ * 
  * CREATED BY:          Eric Smith
  * 
  * VERSION:             1.0.0
@@ -26,7 +29,7 @@ export default class Fsc_drawLine extends LightningElement {
     // Component Input Attributes
     @api marginTop;
     @api marginBottom;
-    @api thickness;
+    @api thickness='';
     @api color;
     @api vCard;
 
@@ -40,7 +43,7 @@ export default class Fsc_drawLine extends LightningElement {
     }
 
     get styleThickness() {
-        return (this.thickness) ? this.thickness : '1';
+        return (this.thickness) ? this.thickness : '1px';
     }
 
     get styleColor() {
@@ -52,11 +55,16 @@ export default class Fsc_drawLine extends LightningElement {
     }
 
     get lineStyle() {
-        return `border-width: ${this.styleThickness}px;border-color: ${this.styleColor};`;
+        return `border-width: ${this.styleThickness};border-color: ${this.styleColor};`;
     }
 
     get displayVCard() {
         return (this.vCard === true) ? true : false;
     }
 
+    // @api validate(){
+    //     console.log("Draw Line entering validate: vCard=" + this.vCard);
+    //     return { isValid: true }; 
+    // }
+    
 }

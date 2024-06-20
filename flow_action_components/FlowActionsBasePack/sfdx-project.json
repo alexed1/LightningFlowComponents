@@ -11,7 +11,7 @@
   ],
   "namespace": "usf3",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "51.0",
+  "sourceApiVersion": "60.0",
   "packageAliases": {
     "FlowActionsBasePack": "0Ho8b000000oLkPCAU",
     "FlowActionsBasePack@2.0.0-0": "04t4W000002vXU7QAM",

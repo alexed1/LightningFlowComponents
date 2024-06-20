@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		2019 - 2022
+**Date:**		2019 - 2023
   
 LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.1.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)   
-[Version 4.1.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004J7MxQAK)
+[Version 4.1.6 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZk9QAG)   
+[Version 4.1.6 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZk9QAG)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,16 +71,27 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
- 
+
+## 02/06/24 -  Eric Smith -    Version 4.1.6 
+**Bug Fixes:**  
+-   Fixed several Spring '24 "Cannot read properties of undefined..." errors
+-   Allow a full row search when empty cells are present (thanks to clev32 PR#1478)
+
+## 10/12/23 -  Eric Smith -    Version 4.1.5 
+**Updates:** 
+-   Made the following changes to support passing of Datatable output collections into my reactive Collection Processor screen components 
+-       Remove the "attributes" attribute from each record's details 
+-       Process all Datetime fields in each record even if they are not displayed in the Datatable
+
 ## 06/14/23 -  Eric Smith -    Version 4.1.4 
 **Bug Fixes:**  
 -   Fixed issue with tables showing as empty if row selection was disabled 
 
- ## 06/13/23 -  Eric Smith -    Version 4.1.3 
+## 06/13/23 -  Eric Smith -    Version 4.1.3 
 **Bug Fixes:**  
 -   Fixed issue where Datatables fed by DataFetcher were defaulting to single row selection only 
   
- ## 06/04/23 -  Eric Smith -    Version 4.1.1 
+## 06/04/23 -  Eric Smith -    Version 4.1.1 
 **Updates:** 
 -   Added reactivity for Apex-Defind objects (Pre-Selected Rows are not reactive) 
 -   Made the placeholder for 'Enter search term ...' a translatable label 

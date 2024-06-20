@@ -1,0 +1,49 @@
+@IsTest
+private without sharing class QueryWithLimitTest {
+
+    private static QueryWithLimit.QueryParameters buildRequest() {
+        QueryWithLimit.QueryParameters request = new QueryWithLimit.QueryParameters();
+
+        request.fieldsToQuery = 'Id, DeveloperName';
+        request.objectApiName = 'RecordType';
+        request.numberOfRecords = 5;
+        return (request);
+    }
+
+    @IsTest
+    private static void testGetNrecords() {
+        List<QueryWithLimit.QueryParameters> requests = new List<QueryWithLimit.QueryParameters>();
+        requests.add(buildRequest());
+        List<QueryWithLimit.QueryResults> results = QueryWithLimit.getNrecords(requests);
+        Assert.areEqual(1, results.size());
+        Assert.areEqual(5, results[0].records.size());
+    }
+
+    @IsTest static void testGetNrecordsException() {
+        List<QueryWithLimit.QueryParameters> requests = new List<QueryWithLimit.QueryParameters>();
+        QueryWithLimit.QueryParameters request = buildRequest();
+        request.objectApiName = '<Bogus>';
+        requests.add(request);
+
+        try {
+            QueryWithLimit.getNrecords(requests);
+            Assert.fail();
+        } catch (Exception exc) {
+            // nothing
+        }
+    }
+
+    @IsTest static void testGetNrecords50kException() {
+        List<QueryWithLimit.QueryParameters> requests = new List<QueryWithLimit.QueryParameters>();
+        QueryWithLimit.QueryParameters request = buildRequest();
+        request.numberOfRecords = 50001;
+        requests.add(request);
+
+        try {
+            QueryWithLimit.getNrecords(requests);
+            Assert.fail();
+        } catch (Exception exc) {
+            // nothing
+        }
+    }
+}

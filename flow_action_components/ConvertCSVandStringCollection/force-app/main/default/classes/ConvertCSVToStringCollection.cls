@@ -1,9 +1,9 @@
-public with sharing class ConvertCSVToStringCollection {
+global with sharing class ConvertCSVToStringCollection {
 
     @invocableMethod(label='Convert Comma-separated-values to String Collection'
                      description='Converts a Comma-separated-values string (eg, from a field) to a String Collection' 
                      category= 'Utilities')
-    public static List<Response> execute (List<Request> requests) {
+    global static List<Response> execute (List<Request> requests) {
 
         List<Response> responseList = new List<Response>();
         for (Request curRequest : requests) {
@@ -19,17 +19,17 @@ public with sharing class ConvertCSVToStringCollection {
         return responseList;
     }
 
-    public class Request {
+    global class Request {
         @invocableVariable(label='Input String' description='Input' required=true)
-        public String csvString;
+        global String csvString;
         
         @invocableVariable(label='Delimiter' description='Delimiter string; defaults to comma (,)' required=false)
-        public String delimiter;
+        global String delimiter;
     }
 
-    public class Response {
+    global class Response {
         @invocableVariable(label='String Collection' description='Collection variable to store output')
-        public List<String> stringCollection;
+        global List<String> stringCollection;
 
     }
 }

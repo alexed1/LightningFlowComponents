@@ -1,6 +1,7 @@
+@SuppressWarnings('PMD.AvoidGlobalModifier')
 global with sharing class DedupeRecordCollection {
 
-    @InvocableMethod
+    @InvocableMethod(Label='Dedupe Record Collection [USF Collection Processor]' Category='Util' IconName='resource:CollectionProcessorsSVG:colproc')
     global static List<FlowResponse> dedupe(List<FlowRequest> requests) {
         List<FlowResponse> flowResponses = new List<FlowResponse>();
         for (FlowRequest request : requests) {
@@ -11,6 +12,7 @@ global with sharing class DedupeRecordCollection {
         return flowResponses;
     }
 
+    @TestVisible
     private static List<SObject> getUniqueSObjectCollection(FlowRequest request) {
         Map<String, SObject> sobjectMap = new Map<String, SObject>();
         for (SObject record : request.inputRecordCollection) {
@@ -28,12 +30,11 @@ global with sharing class DedupeRecordCollection {
 
     global class FlowRequest {
 
-        @InvocableVariable(required=true)
+        @InvocableVariable(Required=true)
         global List<SObject> inputRecordCollection;
         
-        @InvocableVariable(required=true)
+        @InvocableVariable(Required=true)
         global String fieldToDedupeOn;
-        
     }
 
     global class FlowResponse {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>isOtherConnector__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Used for extra records to store a connector value for an element with fault or noMoreValues connectors</description>
+    <externalId>false</externalId>
+    <label>isOtherConnector</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

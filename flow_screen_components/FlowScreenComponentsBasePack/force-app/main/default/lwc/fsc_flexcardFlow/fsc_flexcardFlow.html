@@ -2,7 +2,7 @@
   @description       : 
   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
   @group             : 
-  @last modified on  : 02-23-2023
+  @last modified on  : 04-29-2024
   @last modified by  : Josh Dayment
 -->
 <template>
@@ -12,7 +12,7 @@
             <template for:each={recs} for:item="record">
                 <div class="slds-visual-picker slds-card" key={record.Id}>
                     <template lwc:if={allowMultiSelect}>
-                        <input type="checkbox" onchange={handleChange} name="flexCards" id={record.Id}
+                        <input type="checkbox" onclick={handleChange} name="flexCards" id={record.Id}
                             title={record.Name} value={record.Id} data-id={record.Id} />
                     </template>
 
@@ -31,7 +31,15 @@
                                     <template lwc:if={showIcon}>
                                         <lightning-avatar src={record.src_URL__c} fallback-icon-name={icon}
                                             class="slds-m-right_small"></lightning-avatar>
-                                    </template>{record.Name}
+                                    </template>
+
+                                    <lightning-record-view-form object-api-name={objectAPIName} record-id={record.Id}>
+
+                                        <lightning-output-field field-name={headerField} variant=label-hidden
+                                            field-class={headerFieldClass}>
+                                        </lightning-output-field>
+
+                                    </lightning-record-view-form>
 
                                 </header>
                             </div>

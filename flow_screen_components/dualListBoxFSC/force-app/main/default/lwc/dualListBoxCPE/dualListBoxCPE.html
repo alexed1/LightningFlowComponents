@@ -161,11 +161,21 @@
         <div class="slds-col slds-size_1-of-1 slds-panel__header-title slds-text-heading_small slds-p-top_small">
             Number of Selections
         </div>
+        <div class="slds-col slds-size_1-of-1">
+                <c-fsc_flow-checkbox
+                        name="select_selectAll"
+                        label={inputValues.selectAll.label}
+                        field-level-help={inputValues.selectAll.helpText}
+                        checked={inputValues.cb_selectAll.value}
+                        oncheckboxchanged={handleCheckboxChange}
+                ></c-fsc_flow-checkbox>
+        </div>
         <div class="slds-col slds-size_1-of-2">
             <lightning-input
                     type="number" label={inputValues.min.label} name="select_min"
                     value={inputValues.min.value}
                     onblur={handleValueChange}
+                    disabled={isSelectAllSelected}
             ></lightning-input>
         </div>
         <div class="slds-col slds-size_1-of-2 slds-p-left_x-small">
@@ -173,6 +183,7 @@
                     type="number" label={inputValues.max.label} name="select_max"
                     value={inputValues.max.value}
                     onblur={handleValueChange}
+                    disabled={isSelectAllSelected}
             ></lightning-input>
         </div>
         <div class="slds-col slds-size_1-of-1">

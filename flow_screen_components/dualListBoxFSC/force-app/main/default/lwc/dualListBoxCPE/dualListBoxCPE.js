@@ -14,6 +14,8 @@ export default class DualListBoxCpe extends LightningElement {
         sourceLabel: {value: null, valueDataType: null, isCollection: false, label: 'Available Choices Label'},
         fieldLevelHelp: {value: null, valueDataType: null, isCollection: false, label: 'Add a \'None\' choice'},
         selectedLabel: {value: null, valueDataType: null, isCollection: false, label: 'Selected Chocies Label'},
+        selectAll: {value: null, valueDataType: null, isCollection: false, label: 'Required to select all'},
+        cb_selectAll: {value: null, valueDataType: null, isCollection: false, label: '!Required to select all'},
         min: {value: null, valueDataType: null, isCollection: false, label: 'Min'},
         max: {value: null, valueDataType: null, isCollection: false, label: 'Max'},
         disableReordering: {value: null, valueDataType: null, isCollection: false, label: 'Disable Reordering'},
@@ -167,6 +169,14 @@ export default class DualListBoxCpe extends LightningElement {
 
     }
 
+    handleCheckboxChange(event) {
+        if (event.target && event.detail) {
+            let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
+            this.dispatchFlowValueChangeEvent(changedAttribute, event.detail.newValue, event.detail.newValueDataType);
+            this.dispatchFlowValueChangeEvent('cb_'+changedAttribute, event.detail.newStringValue, 'String');
+        }
+    }
+
     dispatchFlowValueChangeEvent(id, newValue, newValueDataType) {
         const valueChangedEvent = new CustomEvent('configuration_editor_input_value_changed', {
             bubbles: true,
@@ -216,6 +226,10 @@ export default class DualListBoxCpe extends LightningElement {
             return this.inputValues.allOptionsStringFormat.value === defaults.originalObject;
         }
 
+    }
+
+    get isSelectAllSelected() {
+        return this.inputValues.cb_selectAll.value == 'CB_TRUE';
     }
 
 }

@@ -13,6 +13,8 @@
             <property name="sourceLabel" type="String" role="inputOnly"/>
             <property name="fieldLevelHelp" type="String" role="inputOnly"/>
             <property name="selectedLabel" type="String" role="inputOnly"/>
+            <property name="selectAll" type="Boolean" role="inputOnly"/>
+            <property name="cb_selectAll" type="String" role="inputOnly"/>
             <property name="min" type="Integer" role="inputOnly"/>
             <property name="max" type="Integer" role="inputOnly"/>
             <property name="disableReordering" type="Boolean" role="inputOnly"/>

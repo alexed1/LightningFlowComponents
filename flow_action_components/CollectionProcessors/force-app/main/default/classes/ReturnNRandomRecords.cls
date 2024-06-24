@@ -75,7 +75,7 @@ global inherited sharing class ReturnNRandomRecords {
                 } else {
                     // Generate a list of random numbers
                     while (randomNumbers.size() < recordCount) {
-                        Integer randomNumber = (Integer)Math.round(Math.random() * (inputCollection.size()-1));
+                        Integer randomNumber = (Integer)Math.floor(Math.random() * (inputCollection.size()));
                         if( !randomNumbers.contains(randomNumber) ) {
                             randomNumbers.add(randomNumber);
                         }

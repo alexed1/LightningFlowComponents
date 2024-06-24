@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>46.0</apiVersion>
+    <apiVersion>60.0</apiVersion>
     <description>Pick Object And Field v3</description>
     <isExposed>true</isExposed>
     <masterLabel>Pick Object And Field v3</masterLabel>
@@ -22,7 +22,8 @@
             <property name="required" type="Boolean" role="inputOnly"> </property>
             <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
             <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
-            <property name="testproperty" type="String" role="inputOnly"> </property>
+            <!-- Christopher Strecker 06/06/2024 - removed property -->
+            <!-- <property name="testproperty" type="String" role="inputOnly"> </property> -->
             <property name="DataTypeFilter" type="String" role="inputOnly"> </property>
             <property name="allowFieldMultiselect" type="Boolean" role="inputOnly"></property>
         </targetConfig>

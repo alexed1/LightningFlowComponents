@@ -349,6 +349,11 @@ export default class Datatable extends LightningElement {
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
+    // Remove Row Action Attributes
+    // 🚀🚀🚀
+    @api removeLabel = 'Remove';
+    @api removeIcon = 'utility:delete';
+
     // Configuration Wizard Only - Input Attributes
     @api objectName;
 
@@ -1602,7 +1607,7 @@ export default class Datatable extends LightningElement {
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false,
                 flex: (flexAttrib) ? flexAttrib.flex : false
             });
-            console.log(DEBUG_INFO_PREFIX+'this.cols',this.cols);
+
 
             // Update Other Attributes attribute overrides by column
             this.parseAttributes('other',this.otherAttribs,columnNumber);
@@ -1611,8 +1616,37 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-        this.columns = this.cols;
+        this.addRemoveRowAction();  // 🚀🚀🚀
 
+        this.columns = this.cols;
+        console.log(DEBUG_INFO_PREFIX+'this.columns',this.columns);
+
+    }
+
+    addRemoveRowAction() {
+        // Add a special column with for a remove row action
+        this.cols.push({
+            type: "button-icon",
+            label: null,
+            typeAttributes: {
+                name: "removeRow",
+                alternativeText: this.removeLabel,
+                iconName: this.removeIcon,
+                tooltip: this.removeLabel,
+                variant: "border",
+                size: "medium"
+            },
+            cellAttributes: {
+                class: "remove-icon"
+            },      
+            editable: false,
+            actions: null,
+            sortable: false,
+            hideDefaultActions: true,  
+            initialWidth: 50,
+            wrapText: false,
+            flex: false
+        });
     }
 
     updatePreSelectedRows() {
@@ -1689,8 +1723,10 @@ export default class Datatable extends LightningElement {
     handleRowAction(event) {
         // Process the row actions here
         const action = event.detail.action;
+console.log("🚀 ~ handleRowAction ~ action:", action.name);
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
+console.log("🚀 ~ handleRowAction ~ keyValue:", keyValue);
         this.mydata = this._mydata.map(rowData => {
             if (rowData[this.keyField] === keyValue) {
                 switch (action.name) {

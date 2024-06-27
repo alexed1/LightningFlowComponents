@@ -351,8 +351,8 @@ export default class Datatable extends LightningElement {
     
     // Remove Row Action Attributes
     // 🚀🚀🚀
-    @api removeLabel = 'Remove';
-    @api removeIcon = 'utility:delete';
+    @api removeLabel = 'Remove Row';
+    @api removeIcon = 'utility:close';
 
     // Configuration Wizard Only - Input Attributes
     @api objectName;
@@ -1616,7 +1616,7 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-        this.addRemoveRowAction();  // 🚀🚀🚀
+        if (!this.isConfigMode) this.addRemoveRowAction();  // 🚀🚀🚀
 
         this.columns = this.cols;
         console.log(DEBUG_INFO_PREFIX+'this.columns',this.columns);
@@ -1722,22 +1722,68 @@ export default class Datatable extends LightningElement {
 
     handleRowAction(event) {
         // Process the row actions here
-        const action = event.detail.action;
-console.log("🚀 ~ handleRowAction ~ action:", action.name);
+        const action = event.detail.action.name;
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
-console.log("🚀 ~ handleRowAction ~ keyValue:", keyValue);
-        this.mydata = this._mydata.map(rowData => {
-            if (rowData[this.keyField] === keyValue) {
-                switch (action.name) {
-                    // case 'action': goes here
-                        //
-                        // break;
-                    default:
+        console.log(DEBUG_INFO_PREFIX+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
+
+        switch (action) {
+            case 'removeRow':
+                // remove record from collection
+                this.mydata = this.removeRowFromCollection(this._mydata, keyValue);
+
+                // handle editedrows
+                this.savePreEditData = [...this.removeRowFromCollection(this.savePreEditData, keyValue)];
+                this.outputEditedRows = [...this.removeRowFromCollection(this.outputEditedRows, keyValue)];
+                this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+                this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+
+                if (this.mydata.length == 0) {  // Last record was removed from the datatable
+                    // clear last selected row
+                    this.outputSelectedRows = [];
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+                    this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));  
+                    this.updateNumberOfRowsSelected(this.outputSelectedRows);
+                    // refresh table
+                    this.tableData = [];
                 }
+                break;
+            default:
+        }
+
+        // this.mydata = this._mydata.map(rowData => {
+        //     if (rowData[this.keyField] === keyValue) {
+        //         switch (action.name) {
+        //             // case 'action': goes here
+        //                 //
+        //                 // break;
+        //             default:
+        //         }
+        //     }
+        //     return rowData;
+        // });
+    }
+
+    removeRowFromCollection(collection, keyValue) {
+        const index = this.findRowIndexById(collection, keyValue);
+        let result = collection;
+        if (index !== -1) {
+            result = collection.slice(0, index).concat(collection.slice(index +1));
+        }
+        return result;
+    }
+
+    findRowIndexById(collection, id) {
+        let idx = -1;
+        collection.some((row, index) => {
+            if (row[this.keyField] === id) {
+                idx = index;
+                return true;
             }
-            return rowData;
+            return false;
         });
+        return idx;
     }
 
     //handle change on combobox
@@ -2499,11 +2545,11 @@ console.log("🚀 ~ handleRowAction ~ keyValue:", keyValue);
                             let match = false;
                             for (let col = 0; col < cols.length; col++) {
                                 let fieldName = cols[col].fieldName;
-                                if (fieldName.endsWith('_lookup')) {
+                                if (fieldName?.endsWith('_lookup')) {
                                     fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
                                 }
-                                
-                                if (cols[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
+
+                                if (cols[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is boolean or empty or it's a row action
                                     continue; 
                                 }                   
 
@@ -2749,7 +2795,7 @@ console.log("🚀 ~ handleRowAction ~ keyValue:", keyValue);
         }
 
         console.log(DEBUG_INFO_PREFIX+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
-        console.log(DEBUG_INFO_PREFIX+'outputEditedRows',this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
+        console.log(DEBUG_INFO_PREFIX+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

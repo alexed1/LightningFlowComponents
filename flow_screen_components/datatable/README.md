@@ -72,8 +72,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
-## 06/xx/24 -  Eric Smith -     Version 4.2.1  
+## 07/xx/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
+-   New Feature: Add a Remove Row action as the first or last column in a Datatable.  
+-       New outputs include a collection and a count of the removed rows.
 -   Implemented a default setting (SHOW_DEBUG_INFO = false) to hide record details from console and debug logs  
 -       Source code changes in ers_datatableUtils.js, ers_DatatableController.cls & ers_QueryNRecords.cls  
   

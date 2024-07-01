@@ -101,6 +101,10 @@ export default class Datatable extends LightningElement {
     @api outputEditedRows = [];
     @api tableIcon;
     
+    // Remove Row Action Attributes
+    @api outputRemovedRows = [];
+    @api numberOfRowsRemoved = 0;
+
     // v4.2.0 Make Table Header Label reactive
     // @api tableLabel;
     @api 
@@ -392,7 +396,6 @@ export default class Datatable extends LightningElement {
     @api columnWidthValues;
     @track columns = [];
     // @track mydata = [];
-    @track selectedRows = [];
     @track roundValueLabel;
     @track columnWidthsLabel;
     @track isAllEdit = false;
@@ -404,6 +407,28 @@ export default class Datatable extends LightningElement {
     // @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
     //     +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
     //     + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); margin: -1px;';
+
+    // Handle Selected Rows retention
+    @api allSelectedRows;       // Obsolete - No longer used but can't be removed
+    @api visibleSelectedRows;   // Obsolete - No longer used but can't be removed
+
+    @api
+    get allSelectedRowIds() {
+        return this._allSelectedRowIds;
+    }
+    set allSelectedRowIds(value) {
+        this._allSelectedRowIds = value;
+    }
+    _allSelectedRowIds = [];
+
+    @api
+    get visibleSelectedRowIds() {
+        return this._visibleSelectedRowIds;
+    }
+    set visibleSelectedRowIds(value) {
+        this._visibleSelectedRowIds = value;
+    }
+    _visibleSelectedRowIds = [];
 
     // Handle Lookup Field Variables   
     @api lookupId;
@@ -629,13 +654,27 @@ export default class Datatable extends LightningElement {
     }
     
     handlePagination() {
+console.log("🚀 ~ handlePagination ~ this.isPagination:", this.isPagination);
         if (this.isPagination) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
+            let sids = [];
+            this._allSelectedRowIds.forEach(srowid => {
+console.log("🚀 ~ handlePagination ~ srowid:", srowid);
+                const selRow = this._paginatedData.find(d => d[this.keyField] === srowid);
+console.log("🚀 ~ handlePagination ~ this._paginatedData:", this._paginatedData);
+console.log("🚀 ~ handlePagination ~ selRow, srowid:", selRow, srowid);
+                sids.push(srowid);
+            });
+            this.visibleSelectedRowIds = [...sids];
+console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", [...sids], this.visibleSelectedRowIds);
         } else {
             this.paginatedData = [...this._mydata];
+            this.visibleSelectedRowIds = this._allSelectedRowIds;
         }
+console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelectedRowIds);
+console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", this.visibleSelectedRowIds);
     }
     // End Pagination Methods
 
@@ -1325,7 +1364,7 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        console.log(DEBUG_INFO_PREFIX+'selectedRows',(SHOW_DEBUG_INFO) ? this.selectedRows : '***');
+        console.log(DEBUG_INFO_PREFIX+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this._allSelectedRowIds : '***');
         console.log(DEBUG_INFO_PREFIX+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(DEBUG_INFO_PREFIX+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         console.log(DEBUG_INFO_PREFIX+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
@@ -1666,7 +1705,9 @@ export default class Datatable extends LightningElement {
             selected.forEach(record => {
                 selectedKeys.push(record[this.keyField]);            
             });
-            this.selectedRows = selectedKeys;
+            this.allSelectedRowIds = selectedKeys;
+console.log("🚀 ~ updatePreSelectedRows ~ this.allSelectedRowIds:", this.allSelectedRowIds);
+            this.visibleSelectedRowIds = selectedKeys;
             this.preSelectedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
         }
@@ -1728,7 +1769,14 @@ export default class Datatable extends LightningElement {
         console.log(DEBUG_INFO_PREFIX+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
 
         switch (action) {
+            
             case 'removeRow':
+
+                // Add to removed row collection and update counter
+                this.outputRemovedRows = [...this.outputRemovedRows, row];
+                this.numberOfRowsRemoved ++;
+console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved, this.outputRemovedRows:", this.numberOfRowsRemoved, this.outputRemovedRows);
+
                 // remove record from collection
                 this.mydata = this.removeRowFromCollection(this._mydata, keyValue);
 
@@ -1741,14 +1789,18 @@ export default class Datatable extends LightningElement {
                 if (this.mydata.length == 0) {  // Last record was removed from the datatable
                     // clear last selected row
                     this.outputSelectedRows = [];
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-                    this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));  
+                    if (!this.isUserDefinedObject) {
+                        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+                    } else {
+                        this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
+                        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));  
+                    }
                     this.updateNumberOfRowsSelected(this.outputSelectedRows);
                     // refresh table
                     this.tableData = [];
                 }
                 break;
+
             default:
         }
 
@@ -1967,14 +2019,67 @@ export default class Datatable extends LightningElement {
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
-        this.updateNumberOfRowsSelected(currentSelectedRows);
+console.log("🚀 ~ handleRowSelection ~ currentSelectedRows:", currentSelectedRows);
+        let otherSelectedRowIds = [];
+        let currentSelectedRowIds = [];
+        let allSelectedRecs = [];
+        let index = -1;
+        currentSelectedRows.forEach(selrow => {
+console.log("🚀 ~ handleRowSelection ~ selrow:", selrow);
+console.log("🚀 ~ handleRowSelection ~ allSelectedRecs, allSelectedRecs.length:", allSelectedRecs, allSelectedRecs.length);
+            const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
+console.log("🚀 ~ handleRowSelection ~ prevsel:", prevsel);
+            if (!prevsel) {
+                this._allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
+            }
+        })
+        this._allSelectedRowIds.forEach(srowid => {
+console.log("🚀 ~ handleRowSelection ~ srowid:", srowid);
+console.log("🚀 ~ handleRowSelection ~ this._paginatedData:", this._paginatedData);
+            const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
+console.log("🚀 ~ handleRowSelection ~ found:", found);
+            if (!found) {
+console.log("🚀 ~ handleRowSelection ~ this.outputRemovedRows:", this.outputRemovedRows);
+                if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
+                        otherSelectedRowIds.push(srowid);
+                        index = this.findRowIndexById(this._paginatedData, srowid);
+                        allSelectedRecs.push(this._paginatedData[index]);
+console.log("🚀 ~ handleRowSelection ~ allSelectedRecs-PUSH:", allSelectedRecs);
+                    } else {    // Selected row was removed
+                        index = this.findRowIndexById(this._paginatedData, srowid);
+                        allSelectedRecs.pop(this._paginatedData[index]);
+console.log("🚀 ~ handleRowSelection ~ allSelectedRecs-POP:", allSelectedRecs);
+                    }
+                } else {
+                const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
+console.log("🚀 ~ handleRowSelection ~ stillSelected:", stillSelected);
+                if (stillSelected) {
+                    currentSelectedRowIds.push(srowid);
+                    index = this.findRowIndexById(currentSelectedRows, srowid);
+                    allSelectedRecs.push(currentSelectedRows[index]);
+                }
+            }
+        });
+        
+        this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
+console.log("🚀 ~ handleRowSelection ~ this.allSelectedRowIds:", this.allSelectedRowIds);
+console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !allSelectedRecs,allSelectedRecs);
+// this.outputSelectedRows = (!allSelectedRecs) ? this.outputSelectedRows.splice(0, this.outputSelectedRows.length) : [...allSelectedRecs];
+        this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
+
+console.log("🚀 ~ handleRowSelection ~ this.outputSelectedRows:", this.outputSelectedRows);
+
+//🚀 this.updateNumberOfRowsSelected(currentSelectedRows);
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+        this.updateNumberOfRowsSelected(this.outputSelectedRows);
         this.setIsInvalidFlag(false);
         if(this.isRequired && this.numberOfRowsSelected == 0) {
             this.setIsInvalidFlag(true);
         }
         // this.isUpdateTable = false;      // Commented out in v4.1.1
-        this.outputSelectedRows = [...currentSelectedRows];
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+//🚀 this.outputSelectedRows = [...currentSelectedRows];
+// this.outputSelectedRows = [...this.allSelectedRowIds];
+// this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       
     }
@@ -1995,8 +2100,9 @@ export default class Datatable extends LightningElement {
 
     handleClearSelection() {
         this.showClearButton = false;
-        this.selectedRows = [];
-        this.outputSelectedRows = this.selectedRows;
+        this.allSelectedRowIds = [];
+        this.visibleSelectedRowIds = [];
+        this.outputSelectedRows = [];
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         this.isUpdateTable = false;

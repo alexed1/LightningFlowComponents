@@ -354,7 +354,6 @@ export default class Datatable extends LightningElement {
     @api typeAttrib = [];
     
     // Remove Row Action Attributes
-    // 🚀🚀🚀
     @api removeLabel = 'Remove Row';
     @api removeIcon = 'utility:close';
 
@@ -654,27 +653,20 @@ export default class Datatable extends LightningElement {
     }
     
     handlePagination() {
-console.log("🚀 ~ handlePagination ~ this.isPagination:", this.isPagination);
         if (this.isPagination) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
             let sids = [];
             this._allSelectedRowIds.forEach(srowid => {
-console.log("🚀 ~ handlePagination ~ srowid:", srowid);
                 const selRow = this._paginatedData.find(d => d[this.keyField] === srowid);
-console.log("🚀 ~ handlePagination ~ this._paginatedData:", this._paginatedData);
-console.log("🚀 ~ handlePagination ~ selRow, srowid:", selRow, srowid);
                 sids.push(srowid);
             });
             this.visibleSelectedRowIds = [...sids];
-console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", [...sids], this.visibleSelectedRowIds);
         } else {
             this.paginatedData = [...this._mydata];
             this.visibleSelectedRowIds = this._allSelectedRowIds;
         }
-console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelectedRowIds);
-console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", this.visibleSelectedRowIds);
     }
     // End Pagination Methods
 
@@ -1655,7 +1647,7 @@ console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", this.visibl
             columnNumber += 1;
         });
 
-        if (!this.isConfigMode) this.addRemoveRowAction();  // 🚀🚀🚀
+if (!this.isConfigMode) this.addRemoveRowAction();
 
         this.columns = this.cols;
         console.log(DEBUG_INFO_PREFIX+'this.columns',this.columns);
@@ -1692,7 +1684,7 @@ console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", this.visibl
         // Handle pre-selected records
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
-// console.log("🚀🚀 ~ updatePreSelectedRows ~ this.outputSelectedRows :", this.outputSelectedRows );
+console.log("🚀🚀 ~ updatePreSelectedRows ~ this.outputSelectedRows :", this.outputSelectedRows );
         
             this.updateNumberOfRowsSelected(this.outputSelectedRows);
             if (this.isUserDefinedObject) {
@@ -1707,7 +1699,6 @@ console.log("🚀 ~ handlePagination ~ this.visibleSelectedRowIds:", this.visibl
                 selectedKeys.push(record[this.keyField]);            
             });
             this.allSelectedRowIds = selectedKeys;
-console.log("🚀 ~ updatePreSelectedRows ~ this.allSelectedRowIds:", this.allSelectedRowIds);
             this.visibleSelectedRowIds = selectedKeys;
             this.preSelectedRows = [];
             this.dispatchEvent(new FlowAttributeChangeEvent('preSelectedRows', this.preSelectedRows));
@@ -1776,7 +1767,6 @@ console.log("🚀 ~ updatePreSelectedRows ~ this.allSelectedRowIds:", this.allSe
                 // Add to removed row collection and update counter
                 this.outputRemovedRows = [...this.outputRemovedRows, row];
                 this.numberOfRowsRemoved ++;
-console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved, this.outputRemovedRows:", this.numberOfRowsRemoved, this.outputRemovedRows);
 
                 // handle selected rows
                 const index = this._allSelectedRowIds.indexOf(keyValue);
@@ -1796,7 +1786,7 @@ console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved, this.outputRemov
                 if (this.mydata.length == 0) {  // Last record was removed from the datatable
                     // clear last selected row
                     this.outputSelectedRows = [];
-// console.log("🚀🚀 ~ handleRowAction ~ this.outputSelectedRows:", this.outputSelectedRows);
+console.log("🚀🚀 ~ handleRowAction ~ this.outputSelectedRows:", this.outputSelectedRows);
                     if (!this.isUserDefinedObject) {
                         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
                     } else {
@@ -2027,42 +2017,31 @@ console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved, this.outputRemov
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
-console.log("🚀 ~ handleRowSelection ~ currentSelectedRows:", currentSelectedRows);
         let otherSelectedRowIds = [];
         let currentSelectedRowIds = [];
         let allSelectedRecs = [];
         let index = -1;
         currentSelectedRows.forEach(selrow => {
-console.log("🚀 ~ handleRowSelection ~ selrow:", selrow);
-// console.log("🚀 ~ handleRowSelection ~ allSelectedRecs, allSelectedRecs.length:", allSelectedRecs, allSelectedRecs.length);
             const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
-console.log("🚀 ~ handleRowSelection ~ prevsel:", prevsel);
             if (!prevsel) {
                 this._allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
             }
         })
         this._allSelectedRowIds.forEach(srowid => {
-console.log("🚀 ~ handleRowSelection ~ srowid:", srowid);
-console.log("🚀 ~ handleRowSelection ~ this._paginatedData:", this._paginatedData);
             const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
-console.log("🚀 ~ handleRowSelection ~ found:", found);
             if (!found) {
-console.log("🚀 ~ handleRowSelection ~ this.outputRemovedRows:", this.outputRemovedRows);
                 if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
                         index = this.findRowIndexById(this._paginatedData, srowid);
                         allSelectedRecs.push(this._paginatedData[index]);
-console.log("🚀 ~ handleRowSelection ~ allSelectedRecs-PUSH:", allSelectedRecs);
                     } else {    // Selected row was removed
 // index = this.findRowIndexById(this._paginatedData, srowid);
 // allSelectedRecs.pop(this._paginatedData[index]);
                         index = this.findRowIndexById(allSelectedRecs, srowid);
                         allSelectedRecs.splice(index, 1);
-console.log("🚀 ~ handleRowSelection ~ allSelectedRecs-POP:", allSelectedRecs);
                     }
                 } else {
                 const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
-console.log("🚀 ~ handleRowSelection ~ stillSelected:", stillSelected);
                 if (stillSelected) {
                     currentSelectedRowIds.push(srowid);
                     index = this.findRowIndexById(currentSelectedRows, srowid);
@@ -2072,13 +2051,10 @@ console.log("🚀 ~ handleRowSelection ~ stillSelected:", stillSelected);
         });
         
         this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
-console.log("🚀 ~ handleRowSelection ~ this.allSelectedRowIds:", this.allSelectedRowIds);
-console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !allSelectedRecs,allSelectedRecs);
 // this.outputSelectedRows = (!allSelectedRecs) ? this.outputSelectedRows.splice(0, this.outputSelectedRows.length) : [...allSelectedRecs];
         this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
-// console.log("🚀🚀 ~ handleRowSelection ~ this.outputSelectedRows:", this.outputSelectedRows);
+console.log("🚀🚀 ~ handleRowSelection ~ this.outputSelectedRows:", this.outputSelectedRows);
 
-//🚀 this.updateNumberOfRowsSelected(currentSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         this.setIsInvalidFlag(false);
@@ -2086,9 +2062,6 @@ console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !a
             this.setIsInvalidFlag(true);
         }
         // this.isUpdateTable = false;      // Commented out in v4.1.1
-//🚀 this.outputSelectedRows = [...currentSelectedRows];
-// this.outputSelectedRows = [...this.allSelectedRowIds];
-// this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));       
     }
@@ -2112,7 +2085,7 @@ console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !a
         this.allSelectedRowIds = [];
         this.visibleSelectedRowIds = [];
         this.outputSelectedRows = [];
-// console.log("🚀🚀 ~ handleClearSelection ~ this.outputSelectedRows:", this.outputSelectedRows);
+console.log("🚀🚀 ~ handleClearSelection ~ this.outputSelectedRows:", this.outputSelectedRows);
         this.outputSelectedRowsString = '';
         this.updateNumberOfRowsSelected(this.outputSelectedRows);
         this.isUpdateTable = false;
@@ -2865,7 +2838,7 @@ console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !a
 
         // Finalize Selected Records for Output
         let sdata = [];
-// console.log("🚀🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSelectedRows);
+console.log("🚀🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSelectedRows);
         this.outputSelectedRows.forEach(srow => {
             if (srow) {
                 const selData = this._tableData.find(d => d[this.keyField] == srow[this.keyField]);
@@ -2874,7 +2847,7 @@ console.log("🚀 ~ handleRowSelection ~ !allSelectedRecs, allSelectedRecs:", !a
         });
         this.isUpdateTable = false;
         this.outputSelectedRows = [...sdata]; // Set output attribute values
-// console.log("🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSelectedRows);
+console.log("🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);   // Winter '23 Patch 12 fix
         

@@ -2032,8 +2032,8 @@ console.log("🚀🚀 ~ handleRowAction ~ this.outputSelectedRows:", this.output
             if (!found) {
                 if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
-                        index = this.findRowIndexById(this._paginatedData, srowid);
-                        allSelectedRecs.push(this._paginatedData[index]);
+                        index = this.findRowIndexById(this._mydata, srowid);
+                        allSelectedRecs.push(this._mydata[index]);
                     } else {    // Selected row was removed
 // index = this.findRowIndexById(this._paginatedData, srowid);
 // allSelectedRecs.pop(this._paginatedData[index]);
@@ -2850,7 +2850,7 @@ console.log("🚀🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSel
 console.log("🚀🚀 ~ validate ~ this.outputSelectedRows:", this.outputSelectedRows);
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);   // Winter '23 Patch 12 fix
-        
+
 /*      // Validate Edited Rows
         let errorMessage = '';
         this.outputEditedRows.forEach(erow => {

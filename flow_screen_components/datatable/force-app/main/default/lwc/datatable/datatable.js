@@ -510,6 +510,7 @@ export default class Datatable extends LightningElement {
     @track columnFlexParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
+    isProcessed = false;
     
     get collectionSize() {
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
@@ -656,9 +657,9 @@ export default class Datatable extends LightningElement {
         if (this.isPagination) {
             let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
-            this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
+            this.paginatedData = this.mydata.slice(firstRecord,lastRecord);
             let sids = [];
-            this._allSelectedRowIds.forEach(srowid => {
+            this.allSelectedRowIds.forEach(srowid => {
                 const selRow = this._paginatedData.find(d => d[this.keyField] === srowid);
                 sids.push(srowid);
             });
@@ -720,13 +721,14 @@ export default class Datatable extends LightningElement {
             // All picklist values will be used instead of just those specified by the supplied Record Type Id
             console.log(DEBUG_INFO_PREFIX+'getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
         }
-        if (data != undefined || error != undefined) {
+        if (!this.isProcessed && (data != undefined || error != undefined)) {
             // Update row data for lookup, time, picklist and percent fields
             this.updateDataRows();
             // Custom column processing
             this.updateColumns();
             // Extract Keys for Pre-Selected Rows 
             this.updatePreSelectedRows();
+            this.isProcessed = true;        // Added in v4.2.1 so @wire won't run processing twice (remove row could occur before 2nd run through finished)
         }
     }
 
@@ -772,6 +774,8 @@ export default class Datatable extends LightningElement {
         console.log("%cDATATABLE VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log(DEBUG_INFO_PREFIX+'MYDOMAIN', MYDOMAIN);
         
+        this.isProcessed = false;
+
         // Picklist field processing
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
         
@@ -1356,7 +1360,7 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        console.log(DEBUG_INFO_PREFIX+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this._allSelectedRowIds : '***');
+        console.log(DEBUG_INFO_PREFIX+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
         console.log(DEBUG_INFO_PREFIX+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(DEBUG_INFO_PREFIX+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         console.log(DEBUG_INFO_PREFIX+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
@@ -2019,35 +2023,46 @@ if (!this.isConfigMode) this.addRemoveRowAction();
         let currentSelectedRowIds = [];
         let allSelectedRecs = [];
         let index = -1;
-        currentSelectedRows.forEach(selrow => {
-            const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
-            if (!prevsel) {
-                this._allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
-            }
-        })
-        this._allSelectedRowIds.forEach(srowid => {
-            const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
-            if (!found) {
-                if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
-                        otherSelectedRowIds.push(srowid);
-                        index = this.findRowIndexById(this._mydata, srowid);
-                        allSelectedRecs.push(this._mydata[index]);
-                    } else {    // Selected row was removed
-                        index = this.findRowIndexById(allSelectedRecs, srowid);
-                        allSelectedRecs.splice(index, 1);
+        this.isWorking = true;
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+
+                currentSelectedRows.forEach(selrow => {
+                    const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
+                    if (!prevsel) {
+                        this.allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
                     }
-                } else {
-                const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
-                if (stillSelected) {
-                    currentSelectedRowIds.push(srowid);
-                    index = this.findRowIndexById(currentSelectedRows, srowid);
-                    allSelectedRecs.push(currentSelectedRows[index]);
-                }
-            }
-        });
-        
-        this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
-        this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
+                })
+                this._allSelectedRowIds.forEach(srowid => {
+                    const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
+                    if (!found) {
+                        if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
+                                otherSelectedRowIds.push(srowid);
+                                index = this.findRowIndexById(this._mydata, srowid);
+                                allSelectedRecs.push(this._mydata[index]);
+                            } else {    // Selected row was removed
+                                index = this.findRowIndexById(allSelectedRecs, srowid);
+                                allSelectedRecs.splice(index, 1);
+                            }
+                        } else {
+                        const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
+                        if (stillSelected) {
+                            currentSelectedRowIds.push(srowid);
+                            index = this.findRowIndexById(currentSelectedRows, srowid);
+                            allSelectedRecs.push(currentSelectedRows[index]);
+                        }
+                    }
+                });
+                
+                this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
+                this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
+
+                resolve();
+            }, 0);
+        })
+        .then(
+            () => this.isWorking = false
+        );
 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);

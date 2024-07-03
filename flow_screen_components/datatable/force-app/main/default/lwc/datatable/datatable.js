@@ -510,7 +510,6 @@ export default class Datatable extends LightningElement {
     @track columnFlexParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
-    isProcessed = false;
     
     get collectionSize() {
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
@@ -721,14 +720,13 @@ export default class Datatable extends LightningElement {
             // All picklist values will be used instead of just those specified by the supplied Record Type Id
             console.log(DEBUG_INFO_PREFIX+'getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
         }
-        if (!this.isProcessed && (data != undefined || error != undefined)) {
+        if (data != undefined || error != undefined) {
             // Update row data for lookup, time, picklist and percent fields
             this.updateDataRows();
             // Custom column processing
             this.updateColumns();
             // Extract Keys for Pre-Selected Rows 
             this.updatePreSelectedRows();
-            this.isProcessed = true;        // Added in v4.2.1 so @wire won't run processing twice (remove row could occur before 2nd run through finished)
         }
     }
 
@@ -774,8 +772,6 @@ export default class Datatable extends LightningElement {
         console.log("%cDATATABLE VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log(DEBUG_INFO_PREFIX+'MYDOMAIN', MYDOMAIN);
         
-        this.isProcessed = false;
-
         // Picklist field processing
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
         

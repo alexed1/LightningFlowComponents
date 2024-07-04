@@ -130,6 +130,7 @@ export default class Datatable extends LightningElement {
             if (Array.isArray(data)) {
                 this._tableData = data;
                 if(this.columnFields) {
+console.log("🚀 ~ settableData ~ this.processDatatable:", data);
                     this.processDatatable();
                 }
             } else {
@@ -333,6 +334,7 @@ export default class Datatable extends LightningElement {
                 this._tableDataString = value;
                 if (this.columnFields) {
                     this.assignApexDefinedRecords();
+console.log("🚀 ~ settableDataString ~ this.processDatatable:", value);
                     this.processDatatable();
                 }
             } else {
@@ -658,6 +660,7 @@ export default class Datatable extends LightningElement {
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this.mydata.slice(firstRecord,lastRecord);
             let sids = [];
+console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelectedRowIds);
             this.allSelectedRowIds.forEach(srowid => {
                 const selRow = this._paginatedData.find(d => d[this.keyField] === srowid);
                 sids.push(srowid);
@@ -1647,7 +1650,7 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-if (!this.isConfigMode) this.addRemoveRowAction();
+if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
         this.columns = this.cols;
         console.log(DEBUG_INFO_PREFIX+'this.columns',this.columns);
@@ -1780,7 +1783,7 @@ if (!this.isConfigMode) this.addRemoveRowAction();
                 this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
 
                 // remove record from collection
-                this.mydata = this.removeRowFromCollection(this._mydata, keyValue);
+                this.mydata = this.removeRowFromCollection(this._mydata, keyValue); 
 
                 if (this.mydata.length == 0) {  // Last record was removed from the datatable
                     // clear last selected row
@@ -2019,46 +2022,36 @@ if (!this.isConfigMode) this.addRemoveRowAction();
         let currentSelectedRowIds = [];
         let allSelectedRecs = [];
         let index = -1;
-        this.isWorking = true;
-        new Promise((resolve, reject) => {
-            setTimeout(() => {
 
-                currentSelectedRows.forEach(selrow => {
-                    const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
-                    if (!prevsel) {
-                        this.allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
-                    }
-                })
-                this._allSelectedRowIds.forEach(srowid => {
-                    const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
-                    if (!found) {
-                        if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
-                                otherSelectedRowIds.push(srowid);
-                                index = this.findRowIndexById(this._mydata, srowid);
-                                allSelectedRecs.push(this._mydata[index]);
-                            } else {    // Selected row was removed
-                                index = this.findRowIndexById(allSelectedRecs, srowid);
-                                allSelectedRecs.splice(index, 1);
-                            }
-                        } else {
-                        const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
-                        if (stillSelected) {
-                            currentSelectedRowIds.push(srowid);
-                            index = this.findRowIndexById(currentSelectedRows, srowid);
-                            allSelectedRecs.push(currentSelectedRows[index]);
-                        }
-                    }
-                });
-                
-                this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
-                this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
-
-                resolve();
-            }, 0);
+        currentSelectedRows.forEach(selrow => {
+            const prevsel = this._allSelectedRowIds.some(id => id === selrow[this.keyField]);
+            if (!prevsel) {
+                this.allSelectedRowIds = [...this._allSelectedRowIds, selrow[this.keyField]];
+            }
         })
-        .then(
-            () => this.isWorking = false
-        );
+        this._allSelectedRowIds.forEach(srowid => {
+            const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
+            if (!found) {
+                if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
+                        otherSelectedRowIds.push(srowid);
+                        index = this.findRowIndexById(this._mydata, srowid);
+                        allSelectedRecs.push(this._mydata[index]);
+                    } else {    // Selected row was removed
+                        index = this.findRowIndexById(allSelectedRecs, srowid);
+                        allSelectedRecs.splice(index, 1);
+                    }
+                } else {
+                const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
+                if (stillSelected) {
+                    currentSelectedRowIds.push(srowid);
+                    index = this.findRowIndexById(currentSelectedRows, srowid);
+                    allSelectedRecs.push(currentSelectedRows[index]);
+                }
+            }
+        });
+        
+        this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
+        this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);

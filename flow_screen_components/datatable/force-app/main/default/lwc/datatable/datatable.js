@@ -105,6 +105,11 @@ export default class Datatable extends LightningElement {
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
 
+    // Console Log differentiation
+    get consoleLogPrefix() {
+        return `${DEBUG_INFO_PREFIX}(${this._tableLabel}) `;
+    }
+
     // v4.2.0 Make Table Header Label reactive
     // @api tableLabel;
     @api 
@@ -130,7 +135,6 @@ export default class Datatable extends LightningElement {
             if (Array.isArray(data)) {
                 this._tableData = data;
                 if(this.columnFields) {
-console.log("🚀 ~ settableData ~ this.processDatatable:", data);
                     this.processDatatable();
                 }
             } else {
@@ -334,7 +338,6 @@ console.log("🚀 ~ settableData ~ this.processDatatable:", data);
                 this._tableDataString = value;
                 if (this.columnFields) {
                     this.assignApexDefinedRecords();
-console.log("🚀 ~ settableDataString ~ this.processDatatable:", value);
                     this.processDatatable();
                 }
             } else {
@@ -660,7 +663,6 @@ console.log("🚀 ~ settableDataString ~ this.processDatatable:", value);
             let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
             this.paginatedData = this.mydata.slice(firstRecord,lastRecord);
             let sids = [];
-console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelectedRowIds);
             this.allSelectedRowIds.forEach(srowid => {
                 const selRow = this._paginatedData.find(d => d[this.keyField] === srowid);
                 sids.push(srowid);
@@ -721,7 +723,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         } else if (error) {
             // An error is expected here if the running user does not have Read access to the datatable SObject
             // All picklist values will be used instead of just those specified by the supplied Record Type Id
-            console.log(DEBUG_INFO_PREFIX+'getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
+            console.log(this.consoleLogPrefix+'getPicklistValuesByRecordType wire service returned error: ' + JSON.stringify(error));
         }
         if (data != undefined || error != undefined) {
             // Update row data for lookup, time, picklist and percent fields
@@ -773,7 +775,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         const logStyleText = 'color: green; font-size: 16px';
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cDATATABLE VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
-        console.log(DEBUG_INFO_PREFIX+'MYDOMAIN', MYDOMAIN);
+        console.log(this.consoleLogPrefix+'MYDOMAIN', MYDOMAIN);
         
         // Picklist field processing
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
@@ -792,22 +794,22 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
             this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
             this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
             this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnAlignments:", this.columnAlignments);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnEdits:", this.columnEdits);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFilters:", this.columnFilters);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnIcons:", this.columnIcons);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnLabels:", this.columnLabels);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnWidths:", this.columnWidths);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnWraps:", this.columnWraps);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFlexes:", this.columnFlexes);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnFields:", this.columnFields);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
-            console.log(DEBUG_INFO_PREFIX+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnEdits:", this.columnEdits);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFilters:", this.columnFilters);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnIcons:", this.columnIcons);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnLabels:", this.columnLabels);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnWidths:", this.columnWidths);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnWraps:", this.columnWraps);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFlexes:", this.columnFlexes);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFields:", this.columnFields);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
 
-        console.log(DEBUG_INFO_PREFIX+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***', this.isUserDefinedObject);
+        console.log(this.consoleLogPrefix+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***', this.isUserDefinedObject);
 
         if (this.isUserDefinedObject) {
             this.assignApexDefinedRecords();
@@ -821,7 +823,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         // Pagination Initiation
         this.initiatePagination();
 
-        console.log(DEBUG_INFO_PREFIX+'this._tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
+        console.log(this.consoleLogPrefix+'this._tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
 
         if (!this._tableData) {
             this.isUpdateTable = false;
@@ -839,7 +841,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         // Get array of column field API names
         this.columnArray = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '').split(',') : [];
         this.columnFieldParameter = this.columnArray.join(', ');
-        console.log(DEBUG_INFO_PREFIX+'columnArray - ',this.columnArray);  
+        console.log(this.consoleLogPrefix+'columnArray - ',this.columnArray);  
 
         // JSON Version - Build basicColumns default values
         if (this.isUserDefinedObject) {
@@ -1021,7 +1023,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         if (!this.allowOverflow) {
             this.tableHeightAttribute = 'height:' + this.tableHeight;
         }
-        console.log(DEBUG_INFO_PREFIX+'tableHeightAttribute',this.tableHeightAttribute);
+        console.log(this.consoleLogPrefix+'tableHeightAttribute',this.tableHeightAttribute);
 
         // Set table border display
         //this.borderClass = (this.tableBorder == true) ? 'slds-box' : ''; commented out to remove padding. replaced with below
@@ -1036,7 +1038,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
             // Set other initial values here
             this.wizColumnFields = this.columnFields;
 
-            console.log(DEBUG_INFO_PREFIX+'Processing Datatable');
+            console.log(this.consoleLogPrefix+'Processing Datatable');
             this.processDatatable();
             this.isUpdateTable = true;      // Added in v4.1.1 so Datatable will show records from Datafetcher upon initialization          
 
@@ -1048,7 +1050,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
 
     assignApexDefinedRecords() {
         // JSON input attributes
-        console.log(DEBUG_INFO_PREFIX+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***');
+        console.log(this.consoleLogPrefix+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***');
         if (!this._tableDataString || this._tableDataString?.length == 0) {
             this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
             this.columnFields = this.keyField;
@@ -1056,7 +1058,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
             this.columnScales = [];
         }
         this._tableData = JSON.parse(this._tableDataString);
-        console.log(DEBUG_INFO_PREFIX+'tableData - ',(SHOW_DEBUG_INFO) ? this._tableData : '***');
+        console.log(this.consoleLogPrefix+'tableData - ',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
     }
     
@@ -1168,7 +1170,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
             }
 
             let fieldList = (this.columnFields.length > 0) ? this.columnFields.replace(/\s/g, '') : ''; // Remove spaces
-            console.log(DEBUG_INFO_PREFIX+'Passing data to Apex Controller', (SHOW_DEBUG_INFO) ? data : '***');
+            console.log(this.consoleLogPrefix+'Passing data to Apex Controller', (SHOW_DEBUG_INFO) ? data : '***');
             getReturnResults({ records: data, fieldNames: fieldList, suppressCurrencyConversion: this.suppressCurrencyConversion })
             .then(result => {
                 let returnResults = JSON.parse(result);
@@ -1180,17 +1182,17 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
                 this.datetimeFieldArray = (returnResults.datetimeFieldList.length > 0) ? returnResults.datetimeFieldList.toString().split(',') : [];
-                console.log(DEBUG_INFO_PREFIX+"Datetime Fields ~ returnResults.datetimeFieldList.toString()", returnResults.datetimeFieldList.toString());
+                console.log(this.consoleLogPrefix+"Datetime Fields ~ returnResults.datetimeFieldList.toString()", returnResults.datetimeFieldList.toString());
                 this.picklistFieldArray = (returnResults.picklistFieldList.length > 0) ? returnResults.picklistFieldList.toString().split(',') : [];
                 this.picklistReplaceValues = (this.picklistFieldArray.length > 0);  // Flag value dependent on if there are any picklists in the datatable field list  
                 this.apex_picklistFieldMap = returnResults.picklistFieldMap;
-                console.log(DEBUG_INFO_PREFIX+"Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
+                console.log(this.consoleLogPrefix+"Picklist Fields ~ this.apex_picklistFieldMap", this.apex_picklistFieldMap);
                 this.dateFieldArray = (returnResults.dateFieldList.length > 0) ? returnResults.dateFieldList.toString().split(',') : [];
                 this.objectNameLookup = returnResults.objectName;
                 this.objectLinkField = returnResults.objectLinkField;
                 this.lookupFieldArray = JSON.parse('[' + returnResults.lookupFieldData + ']');
                 this.timezoneOffset = returnResults.timezoneOffset.replace(/[^\d-]/g, '');  // Numeric characters and - only
-                console.log(DEBUG_INFO_PREFIX+"Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
+                console.log(this.consoleLogPrefix+"Timezone Offset ~ this.timezoneOffset", this.timezoneOffset);
 
                 // Check for differences in picklist API Values vs Labels
                 if (this.picklistReplaceValues) {
@@ -1208,7 +1210,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
                 // Basic column info (label, fieldName, type) taken from the Schema in Apex
                 this.dtableColumnFieldDescriptorString = '[' + returnResults.dtableColumnFieldDescriptorString + ']';
                 this.basicColumns = JSON.parse(this.dtableColumnFieldDescriptorString);
-                console.log(DEBUG_INFO_PREFIX+'dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
+                console.log(this.consoleLogPrefix+'dtableColumnFieldDescriptorString',this.dtableColumnFieldDescriptorString, this.basicColumns);
                 this.noEditFieldArray = (returnResults.noEditFieldList.length > 0) ? returnResults.noEditFieldList.toString().split(',') : [];
                 
                 // *** Moved to @wire ***
@@ -1225,7 +1227,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
 
             })  // Handle any errors from the Apex Class
             .catch(error => {
-                console.log(DEBUG_INFO_PREFIX+'getReturnResults error is: ' + JSON.stringify(error));
+                console.log(this.consoleLogPrefix+'getReturnResults error is: ' + JSON.stringify(error));
                 if (error.body) {
                     this.errorApex = 'Apex Action error: ' + error.body.message;
                     alert(this.errorApex + '\n');  // Present the error to the user
@@ -1239,7 +1241,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
 
     updateDataRows() {
         // Process Incoming Data Collection
-        console.log(DEBUG_INFO_PREFIX+'Processing updateDataRows')
+        console.log(this.consoleLogPrefix+'Processing updateDataRows')
         let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData].slice(0,this.collectionSize))) : [];
         let lookupFields = this.lookups;
         let lufield = '';
@@ -1359,15 +1361,15 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        console.log(DEBUG_INFO_PREFIX+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
-        console.log(DEBUG_INFO_PREFIX+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
-        console.log(DEBUG_INFO_PREFIX+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
-        console.log(DEBUG_INFO_PREFIX+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
+        console.log(this.consoleLogPrefix+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
+        console.log(this.consoleLogPrefix+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
+        console.log(this.consoleLogPrefix+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
+        console.log(this.consoleLogPrefix+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
     }
 
     updateColumns() {
         // Parse column definitions
-        console.log(DEBUG_INFO_PREFIX+'Processing updateColumns')
+        console.log(this.consoleLogPrefix+'Processing updateColumns')
         this.cols = [];
         let columnNumber = 0;
         let lufield = '';
@@ -1653,7 +1655,7 @@ console.log("🚀 ~ handlePagination ~ this.allSelectedRowIds:", this.allSelecte
 if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
         this.columns = this.cols;
-        console.log(DEBUG_INFO_PREFIX+'this.columns',this.columns);
+        console.log(this.consoleLogPrefix+'this.columns',this.columns);
 
     }
 
@@ -1760,7 +1762,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         const action = event.detail.action.name;
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
-        console.log(DEBUG_INFO_PREFIX+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
+        console.log(this.consoleLogPrefix+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
 
         switch (action) {
             
@@ -1962,7 +1964,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                             }
                         }
                         catch(err) {
-                            console.log(DEBUG_INFO_PREFIX+"Date not in ISO format", date, field[date]);
+                            console.log(this.consoleLogPrefix+"Date not in ISO format", date, field[date]);
                         }
                     }
                 });
@@ -2129,7 +2131,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
     updateColumnSorting(event) {
         // Handle column sorting
-        console.log(DEBUG_INFO_PREFIX+'Sort:',event.detail.fieldName,event.detail.sortDirection);
+        console.log(this.consoleLogPrefix+'Sort:',event.detail.fieldName,event.detail.sortDirection);
         this.sortedBy = event.detail.fieldName;
         this.sortDirection = event.detail.sortDirection;
         this.isUpdateTable = false;
@@ -2835,7 +2837,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
     @api
     validate() {
-        console.log(DEBUG_INFO_PREFIX+"validate and exit");
+        console.log(this.consoleLogPrefix+"validate and exit");
 
         // Finalize Selected Records for Output
         let sdata = [];
@@ -2886,8 +2888,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
         }
 
-        console.log(DEBUG_INFO_PREFIX+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
-        console.log(DEBUG_INFO_PREFIX+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
+        console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
+        console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

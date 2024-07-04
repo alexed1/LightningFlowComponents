@@ -178,6 +178,10 @@ export default class Datatable extends LightningElement {
     get showPagination() {
         return (this.cb_showPagination == CB_TRUE) ? true : false;
     }
+    set showPagination(value) {
+        this._showPagination = value;
+    }
+    _showPagination;
     @api cb_showPagination;
 
     @api recordsPerPage = RECORDS_PER_PAGE;
@@ -186,12 +190,20 @@ export default class Datatable extends LightningElement {
     get showFirstLastButtons() {
         return (this.cb_showFirstLastButtons == CB_TRUE) ? true : false;
     }
+    set showFirstLastButtons(value) {
+        this._showFirstLastButtons = value;
+    }
+    _showFirstLastButtons;
     @api cb_showFirstLastButtons = CB_TRUE;
 
     @api 
     get showRecordCount() {
         return (this.cb_showRecordCount == CB_TRUE) ? true : false;
     }
+    set showRecordCount(value) {
+        this._showRecordCount = value;
+    }
+    _showRecordCount;
     @api cb_showRecordCount;
 
     @api 
@@ -228,12 +240,20 @@ export default class Datatable extends LightningElement {
     get isDisplayHeader() {
         return (this.cb_isDisplayHeader == CB_TRUE) ? true : false;
     }
+    set isDisplayHeader(value) {
+        this._isDisplayHeader = value;
+    }
+    _isDisplayHeader;
     @api cb_isDisplayHeader;
 
     @api 
     get isShowSearchBar() {
         return(this.cb_isShowSearchBar == CB_TRUE) ? true : false;
     }
+    set isShowSearchBar(value) {
+        this._isShowSearchBar = value;
+    }
+    _isShowSearchBar;
     @api cb_isShowSearchBar;
 
     searchTerm = '';

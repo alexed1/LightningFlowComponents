@@ -13,29 +13,37 @@ public with sharing class ListActionsTest {
     static void makeData() {
         Test.startTest();
         List<Account> testAccounts = new List<Account>();
+        List<Contact> testContacts = new List<Contact>(); // Added to create contacts
+
+        Boolean doNotCallFlag = true; // Initialize the flag
         for (Integer i = 0; i < NUMBER_OF_TEST_RECORDS; i++) {
-            testAccounts.add(
-                new Account(
-                    Name = TEST_RECORD_NAME + i,
-                    Website = '' + i,
-                    AnnualRevenue = 5000
-                )
+            Account acc = new Account(
+                Name = TEST_RECORD_NAME + i,
+                Website = '' + i,
+                AnnualRevenue = 5000
             );
+            testAccounts.add(acc);
+
+            // Create contacts with DoNotCall field set for boolean testing
+            Contact con = new Contact(
+                LastName = TEST_CONTACT_NAME + i,
+                AccountId = acc.Id,
+                DoNotCall = doNotCallFlag // Set the value based on the flag
+            );
+            testContacts.add(con);
+
+            // Toggle the flag
+            doNotCallFlag = !doNotCallFlag;
         }
+
         // Insert testAccounts without triggering duplicate rules
         Database.DMLOptions dml = new Database.DMLOptions();
         dml.DuplicateRuleHeader.AllowSave = true;
         Database.insert(testAccounts, dml);
+        insert testContacts; // Insert the test contacts
 
-        List<Contact> testContacts = new List<Contact>();
         List<Task> testTasks = new List<Task>();
         for (Integer i = 0; i < testAccounts.size(); i++) {
-            testContacts.add(
-                new Contact(
-                    LastName = TEST_CONTACT_NAME + i,
-                    AccountId = testAccounts[i].Id
-                )
-            );
             testTasks.add(
                 new Task(
                     Subject = TEST_RECORD_NAME + i,
@@ -43,7 +51,6 @@ public with sharing class ListActionsTest {
                 )
             );
         }
-        insert testContacts;
         insert testTasks;
         Test.stopTest();
     }
@@ -582,6 +589,20 @@ public with sharing class ListActionsTest {
         Assert.areEqual(responseWrapper.size(), 1);
         Assert.areEqual(1, responseWrapper[0].matchedNumber);
         Assert.areEqual(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
+
+        // Clear the requests list for the next test
+        requests.clear();
+
+        // Test counting by boolean field 'DoNotCall'
+        request.inputCollection = getContacts(NUMBER_OF_TEST_RECORDS);
+        request.fieldName = 'DoNotCall';
+        request.fieldValue = 'true';
+        requests.add(request);
+        
+        responseWrapper = CountRecordsAndFields.count(requests);
+        Assert.areEqual(responseWrapper.size(), 1);
+        Assert.areEqual(3, responseWrapper[0].matchedNumber); // Three records should match (even indices)
+        Assert.areEqual(NUMBER_OF_TEST_RECORDS, responseWrapper[0].totalNumber);
     }
 
     //this is incompatible with recent work done on this class. however, there's a new set of test classes in a separate file, so just going to comment this one out
@@ -743,7 +764,7 @@ public with sharing class ListActionsTest {
 
     private static List<Contact> getContacts(Integer numberOfRecords) {
         return [
-            SELECT Id, LastName, AccountId
+            SELECT Id, LastName, AccountId, DoNotCall
             FROM Contact
             ORDER BY LastName
             LIMIT :numberOfRecords

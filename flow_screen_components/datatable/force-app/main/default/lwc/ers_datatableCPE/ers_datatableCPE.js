@@ -21,6 +21,7 @@ const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER,
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
+const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 
 const defaults = {
     tableBorder: true,
@@ -210,6 +211,21 @@ export default class ers_datatableCPE extends LightningElement {
     @api
     get showHideColumnAttributes() {
         return this.showColumnAttributes ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get showHidePaginationAttributes() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get paginationClass() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
+    }
+
+    @api
+    get paginationCheckboxClass() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
     }
 
     @api
@@ -464,8 +480,16 @@ export default class ers_datatableCPE extends LightningElement {
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)  \n' +
             'NOTE: This value will be ignored if the Allow Overflow attribute is set to True.'},
-        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
-            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
+        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Include', 
+            helpText: 'Enter a number here if you want to restrict how many records will be included from the record collection.'},
+        showPagination: {value: null, valueDataType: null, isCollection: false, label: 'Add Pagination', 
+            helpText: 'When selected, an entry will be added to the header to select the number of records per page and a footer will be added to the Datatable allowing the user to select and navigate through the pages.'},
+        cb_showPagination: {value: null, valueDataType: null, isCollection: false, label: ''},
+        recordsPerPage: {value: null, valueDataType: null, isCollection: false, label: 'Number of Records per Page', 
+            helpText: 'Enter the maximum number of records to be displayed on each page.'},
+        showFirstLastButtons: {value: null, valueDataType: null, isCollection: false, label: 'Show First and Last Page Buttons', 
+            helpText: 'When selected, the footer will include buttons to jump to the First and Last pages.'},
+        cb_showFirstLastButtons: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},            
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field",                     // OBSOLETE as of v3.0.10
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
@@ -571,10 +595,6 @@ export default class ers_datatableCPE extends LightningElement {
         },
         {name: 'tableFormatting',
             attributes: [
-                {name: defaults.customHelpDefinition, 
-                    label: 'Configure Columns Button',
-                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
-                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},
                 {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
@@ -583,10 +603,17 @@ export default class ers_datatableCPE extends LightningElement {
                     helpText: 'Select More to show all Icon Types, Select an Icon Type tab to see a list of icons, Select any icon to update the Header Icon value, ' +
                     'Select SELECT TYPE to hide the list of icons.'},
                 {name: 'maxNumberOfRows'},
+                {name: 'showPagination'},
+                {name: 'recordsPerPage'},
+                {name: 'showFirstLastButtons'},
                 {name: 'showRowNumbers'},
                 {name: 'showRecordCount'},
                 {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'Configure Columns Button',
+                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
+                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},                
             ]
         },
         {name: 'tableBehavior',
@@ -775,7 +802,9 @@ export default class ers_datatableCPE extends LightningElement {
 
     handleDefaultAttributes() {
         console.log('handle default attributes');
-
+        if (this.inputValues.recordsPerPage.value == null) {
+            this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
+        }
     }
 
     handleBuildHelpInfo() {
@@ -1003,7 +1032,7 @@ export default class ers_datatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             let newType = event.detail.newValueDataType;
             let newValue = event.detail.newValue;
-            if (changedAttribute == 'maxNumberOfRows' && newType != 'reference') {
+            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
                 newType = 'Number';
             }
             this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);

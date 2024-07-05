@@ -33,7 +33,7 @@ console.log("DATATABLE isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder)
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.1.6',       // Current Source Code Version #
+        VERSION_NUMBER : '4.2.0',       // Current Source Code Version #
         MAXROWCOUNT : 2000,             // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,                 // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,                // Number of records to display in the Column Wizard datatable
@@ -45,6 +45,7 @@ const getConstants = () => {
         CB_ATTRIB_PREFIX : 'cb_',       // Used with fsc_flowCheckbox component
         MIN_SEARCH_TERM_SIZE : 2,       // Set the minimum number of characters required to start searching
         SEARCH_WAIT_TIME : 300,         // Set the delay to start searching while user is typing a search term
+        RECORDS_PER_PAGE : 9,          // Default number of records per page for pagination
     }
 }
 

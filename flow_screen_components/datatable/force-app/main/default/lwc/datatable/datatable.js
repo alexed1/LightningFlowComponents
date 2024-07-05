@@ -27,8 +27,16 @@ import LabelHeader from '@salesforce/label/c.ers_LabelHeader';
 import RequiredMessage from '@salesforce/label/c.ers_ErrorRequiredEntry';
 import EmptyMessage from '@salesforce/label/c.ers_EmptyTableMessage';
 import SearchPlaceholder from '@salesforce/label/c.ers_SearchPlaceholder';
+import FirstButton from '@salesforce/label/c.ers_FirstButton';
+import PreviousButton from '@salesforce/label/c.ers_PreviousButton';
+import NextButton from '@salesforce/label/c.ers_NextButton';
+import LastButton from '@salesforce/label/c.ers_LastButton';
+import RecordsPerPage from '@salesforce/label/c.ers_RecordsPerPage';
+import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
+import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
+import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME
+const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -36,6 +44,7 @@ const ISFLOWBUILDER = CONSTANTS.ISFLOWBUILDER;
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const MIN_SEARCH_TERM_SIZE = CONSTANTS.MIN_SEARCH_TERM_SIZE;
 const SEARCH_WAIT_TIME = CONSTANTS.SEARCH_WAIT_TIME;
+const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 
 export default class Datatable extends LightningElement {
 
@@ -52,7 +61,15 @@ export default class Datatable extends LightningElement {
         LabelHeader,
         RequiredMessage,
         EmptyMessage,
-        SearchPlaceholder
+        SearchPlaceholder,
+        FirstButton,
+        PreviousButton,
+        NextButton,
+        LastButton,
+        RecordsPerPage,
+        ShowingPagePrefix,
+        ShowingPageMiddle,
+        ShowingPageSuffix
     };
 
     // Component Input & Output Attributes
@@ -81,7 +98,18 @@ export default class Datatable extends LightningElement {
     @api outputSelectedRow;
     @api outputEditedRows = [];
     @api tableIcon;
-    @api tableLabel;
+    
+    // v4.2.0 Make Table Header Label reactive
+    // @api tableLabel;
+    @api 
+    get tableLabel() {
+        return this._tableLabel || '';
+    }
+    set tableLabel(value) {
+        this._tableLabel = value;
+    }
+    _tableLabel;
+
     @api recordTypeId;
 
     _tableData;
@@ -135,6 +163,20 @@ export default class Datatable extends LightningElement {
     }
     @api cb_showRowNumbers;
     
+    @api 
+    get showPagination() {
+        return (this.cb_showPagination == CB_TRUE) ? true : false;
+    }
+    @api cb_showPagination;
+
+    @api recordsPerPage = RECORDS_PER_PAGE;
+
+    @api 
+    get showFirstLastButtons() {
+        return (this.cb_showFirstLastButtons == CB_TRUE) ? true : false;
+    }
+    @api cb_showFirstLastButtons = CB_TRUE;
+
     @api 
     get showRecordCount() {
         return (this.cb_showRecordCount == CB_TRUE) ? true : false;
@@ -342,7 +384,7 @@ export default class Datatable extends LightningElement {
     @api errors;
     @api columnWidthValues;
     @track columns = [];
-    @track mydata = [];
+    // @track mydata = [];
     @track selectedRows = [];
     @track roundValueLabel;
     @track columnWidthsLabel;
@@ -437,6 +479,158 @@ export default class Datatable extends LightningElement {
     @track columnFlexParameter;
     @track columnEditParameter;
     @track columnFilterParameter;
+    
+    get collectionSize() {
+        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        return Math.min(this._tableData.length, max);
+    }
+
+    @api
+    get mydata() {
+        return this._mydata;
+    }
+    set mydata(value) {
+        this._mydata = value;
+        this.handlePagination();
+    }
+    _mydata = [];
+
+    // Pagination Attributes
+
+    @api
+    get recordCountPerPage() {
+        return this._recordCountPerPage;
+    }
+    set recordCountPerPage(value) {
+        this._recordCountPerPage = value;
+    }
+    _recordCountPerPage;
+
+    get recordCountTotal() {
+        return this.collectionSize;
+    }
+
+    @api
+    get pageCurrentNumber() {
+        return this._pageCurrentNumber;
+    }
+    set pageCurrentNumber(value) {
+        this._pageCurrentNumber = value;
+        this.handlePagination();
+    }
+    _pageCurrentNumber = 1;
+
+    get recordCountLabel() {
+        return this.label.RecordsPerPage;
+    }
+
+    get pageNumberLabel() {
+        return `${this.label.ShowingPagePrefix} ${this._pageCurrentNumber} ${this.label.ShowingPageMiddle} ${this.pageTotalCount} ${this.label.ShowingPageSuffix}`;
+    }
+
+    get buttonFirstLabel() {
+        return this.label.FirstButton;
+    }
+
+    get buttonLastLabel() {
+        return this.label.LastButton;
+    }
+    
+    get buttonPrevLabel() {
+        return this.label.PreviousButton;
+    }
+    
+    get buttonNextLabel() {
+        return this.label.NextButton;
+    }
+    
+    get pageTotalCount() {
+        return Math.ceil(Number(Math.min(this.recordCountTotal,this.filteredRecordCount))/Number(this._recordCountPerPage));
+    }
+
+    get isFirstPage() {
+        return (this.pageCurrentNumber === 1);
+    }
+
+    get isLastpage() {
+        return (this.pageCurrentNumber === this.pageTotalCount);
+    }
+
+    get isOnlyOnePage() {
+        return (this.pageTotalCount === 1);
+    }
+
+    get isShowButtonFirstLast() {
+        return this.showFirstLastButtons;
+    }
+
+    get isPagination() {
+        return this.showPagination;
+    }
+
+    get isShowNewheader() {
+        return (this.isShowSearchBar || this.showPagination);
+    }
+
+    get pageFooterAlignment() {
+        return 'Left';
+    }
+
+    @api
+    get paginatedData() {
+        return this._paginatedData;
+    }
+    set paginatedData(value = this._mydata) {
+        this._paginatedData = value;
+    }
+    _paginatedData;
+
+    @api paginatedSelectedRows = [];    //TODO: Figure out how to retain selected rows when paginating, sorting, filtering, searching
+    // End pagination Attributes
+
+    // Pagination Methods
+    initiatePagination() {
+        if (this.isPagination) {
+            this.recordCountPerPage = Math.max(this.recordsPerPage,1);
+        }
+    }
+
+    handleRecordCountChange(event) {
+        this.recordCountPerPage = event.detail.value;
+        this.pageCurrentNumber = 1; //TODO: Change to set to whatever the page would be to still display whatever the first record was previously
+        this.handlePagination();
+    }
+
+    handlePageChange(event) {
+        this.pageCurrentNumber = event.detail.value;
+    }
+
+    handleButtonFirst() {
+        this.pageCurrentNumber = 1;
+    }
+
+    handleButtonPrev() {
+        this.pageCurrentNumber--;
+    }
+    
+    handleButtonNext() {
+        this.pageCurrentNumber++;
+    }
+    
+    handleButtonLast() {
+        this.pageCurrentNumber = this.pageTotalCount;
+    }
+    
+    handlePagination() {
+        if (this.isPagination) {
+            let firstRecord = (this._pageCurrentNumber - 1) * this._recordCountPerPage;
+            let lastRecord = Math.min( (this._pageCurrentNumber * this._recordCountPerPage), this.recordCountTotal );
+            this.paginatedData = this._mydata.slice(firstRecord,lastRecord);
+        } else {
+            this.paginatedData = [...this._mydata];
+        }
+    }
+    // End Pagination Methods
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
@@ -452,7 +646,7 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         let filteredCount = (this.filteredRecordCount != this.tableRecordCount) ? `${this.filteredRecordCount} of ` : '';
-        return (this.showRecordCount) ? `${this.tableLabel} (${filteredCount}${this.tableRecordCount})` : this.tableLabel;
+        return (this.showRecordCount) ? `${this._tableLabel} (${filteredCount}${this.tableRecordCount})` : this._tableLabel;
     }
 
     get tableRecordCount() {
@@ -460,11 +654,11 @@ export default class Datatable extends LightningElement {
     }
 
     get filteredRecordCount() {
-        return this.mydata.length;
+        return this._mydata.length;
     }
 
     get isShowTable() {
-        return this.mydata.length > 0 || this.isFiltered;
+        return this._mydata.length > 0 || this.isFiltered;
         // return this._tableData.length > 0;
     }
 
@@ -539,7 +733,7 @@ export default class Datatable extends LightningElement {
         const logStyleNumber = 'color: red; font-size: 16px';
         console.log("%cdatatable VERSION_NUMBER: %c"+CONSTANTS.VERSION_NUMBER, logStyleText, logStyleNumber);
         console.log('MYDOMAIN', MYDOMAIN);
-
+        
         // Picklist field processing
         if (!this.recordTypeId) this.recordTypeId = this.masterRecordTypeId;
         
@@ -582,16 +776,19 @@ export default class Datatable extends LightningElement {
             this.maxNumberOfRows = CONSTANTS.MAXROWCOUNT;
         }
 
+        // Pagination Initiation
+        this.initiatePagination();
+
         console.log('this._tableData',this._tableData);
         if(!this._tableData) {
             this.isUpdateTable = false;
             this._tableData = [];
         }
 
-        let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
-        let cnt = Math.min(this._tableData.length, max);
+        // let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
+        // let cnt = Math.min(this._tableData.length, max);
         this.isUpdateTable = false;
-        this._tableData = [...this._tableData].slice(0,cnt);
+        this._tableData = [...this._tableData].slice(0,this.collectionSize);
 
         // Set roundValue for setting Column Widths in Config Mode
         this.roundValueLabel = `Snap each Column Width to the Nearest ${CONSTANTS.ROUNDWIDTH} pixel Boundary`;
@@ -1000,7 +1197,7 @@ export default class Datatable extends LightningElement {
     updateDataRows() {
         // Process Incoming Data Collection
         console.log('Processing updateDataRows')
-        let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData])) : [];
+        let data = (this.recordData) ? JSON.parse(JSON.stringify([...this.recordData].slice(0,this.collectionSize))) : [];
         let lookupFields = this.lookups;
         let lufield = '';
         let timeFields = this.timeFieldArray;
@@ -1029,8 +1226,8 @@ export default class Datatable extends LightningElement {
             // Adjust date with offset based on User's timezone
             dateFields.forEach(date => {
                 if (record[date]) {
-                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   //Set to Noon to avoid DST issues with the offset (v4.0.4)
-                    if (!isNaN(dt)) {
+                    let dt = Date.parse(record[date] + "T12:00:00.000Z");   // Set to Noon to avoid DST issues with the offset (v4.0.4)
+                    if (!isNaN(dt)) {   // Dates from External Objects are already formatted as Datetime (PR#1529)
                         let d = new Date();
                         record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
                     }
@@ -1059,7 +1256,9 @@ export default class Datatable extends LightningElement {
             lookupFields.forEach(lookup => {
                 if (this.isUserDefinedObject) {
                     lufield = lookup;
-                    record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];                    
+                    if(record[lufield]) {
+                        record[lufield + '_lookup'] = MYDOMAIN + record[lufield + '_lookup'];
+                    }                   
                 } else {
                     if(lookup.toLowerCase().endsWith('id')) {
                         lufield = lookup.replace(/Id$/gi,'');
@@ -1115,12 +1314,12 @@ export default class Datatable extends LightningElement {
 
         // Set table data attributes
         this.mydata = [...data];
-        this.savePreEditData = [...this.mydata];
+        this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
         console.log('selectedRows',this.selectedRows);
         console.log('keyField:',this.keyField);
         console.log('tableData',this._tableData);
-        console.log('mydata:',this.mydata);
+        console.log('mydata:',this._mydata);
     }
 
     updateColumns() {
@@ -1488,7 +1687,7 @@ export default class Datatable extends LightningElement {
         const action = event.detail.action;
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
-        this.mydata = this.mydata.map(rowData => {
+        this.mydata = this._mydata.map(rowData => {
             if (rowData[this.keyField] === keyValue) {
                 switch (action.name) {
                     // case 'action': goes here
@@ -1543,7 +1742,7 @@ export default class Datatable extends LightningElement {
         let editField = '';
 
         // Apply drafts to mydata
-        let data = [...this.mydata];
+        let data = [...this._mydata];
         data = data.map(item => {
             const draft = draftValues.find(d => d[this.keyField] == item[this.keyField]);
             if (draft != undefined) {
@@ -1678,6 +1877,7 @@ export default class Datatable extends LightningElement {
     }
 
     handleRowSelection(event) {
+        // TODO - Pagination - Persist previously selected rows that are not displayed on the currently visible page
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
@@ -1773,7 +1973,7 @@ export default class Datatable extends LightningElement {
         this.isWorking = true;
         new Promise((resolve, reject) => {
             setTimeout(() => {
-                this.mydata = [...this.mydata.sort(
+                this.mydata = [...this._mydata.sort(
                     (a,b)=>(a=fieldValue(a),b=fieldValue(b),reverse*((a>b)-(b>a)))
                 )];
                 resolve();
@@ -2232,7 +2432,7 @@ export default class Datatable extends LightningElement {
         })
         .then(
             () => {
-                this.filteredData = [...this.mydata];
+                this.filteredData = [...this._mydata];
                 if (this.searchTerm && this.searchTerm != null) {
                     this.searchRowData(this.searchTerm)
                 };
@@ -2478,7 +2678,7 @@ export default class Datatable extends LightningElement {
                 const basic = this.basicColumns.find(b => b.fieldName == fld);
                 if (basic?.type.includes("text")) {
                     if (erow[fld]?.length > basic.length) {
-                        let errorRow = this.mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
+                        let errorRow = this._mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
                         errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
                     }
                 }

@@ -2036,7 +2036,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
     }
 
     handleRowSelection(event) {
-        // TODO - Pagination - Persist previously selected rows that are not displayed on the currently visible page
+        // Added in v4.2.1 - Pagination - Persist previously selected rows that are not displayed on the currently visible page
         // Only used with row selection
         // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
@@ -2056,8 +2056,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             if (!found) {
                 if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
-                        index = this.findRowIndexById(this._mydata, srowid);
-                        allSelectedRecs.push(this._mydata[index]);
+                        index = this.findRowIndexById(this.savePreEditData, srowid);
+                        allSelectedRecs.push(this.savePreEditData[index]);
                     } else {    // Selected row was removed
                         index = this.findRowIndexById(allSelectedRecs, srowid);
                         allSelectedRecs.splice(index, 1);
@@ -2070,10 +2070,18 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     allSelectedRecs.push(currentSelectedRows[index]);
                 }
             }
-        });
-        
+        });       
+
         this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
-        this.outputSelectedRows = (!allSelectedRecs) ? [] : [...allSelectedRecs];
+        this.outputSelectedRows = [];
+        if (allSelectedRecs) {  // Keep selected rows in the same order as the original table
+            this.savePreEditData.forEach(rec => {   // Check all records - mydata would just be the filtered records here
+                const isSelected = allSelectedRecs.some(srec => srec[this.keyField] === rec[this.keyField]);
+                if (isSelected) {
+                    this.outputSelectedRows = [...this.outputSelectedRows, rec];
+                }
+            });
+        }
 
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);

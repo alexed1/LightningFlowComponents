@@ -104,6 +104,7 @@ export default class Datatable extends LightningElement {
     // Remove Row Action Attributes
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
+    @api outputRemainingRows = [];
 
     // Console Log differentiation
     get consoleLogPrefix() {
@@ -1989,7 +1990,10 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     }
                 });
 
-                this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
+                const isRemovedBeforeSave = this.outputRemovedRows.some(rr => rr[this.keyField] === eitem[this.keyField]);
+                if (!isRemovedBeforeSave) {
+                    this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
+                }
             }
             return eitem;
         }); 

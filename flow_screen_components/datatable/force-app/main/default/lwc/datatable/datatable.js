@@ -1709,7 +1709,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         // Handle pre-selected records
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
-        
+
             this.updateNumberOfRowsSelected(this.outputSelectedRows);
             if (this.isUserDefinedObject) {
                 this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
@@ -1717,7 +1717,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             } else {
                 this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
             }    
-            const selected = JSON.parse(JSON.stringify([...this.preSelectedRows]));
+            const selected = JSON.parse(JSON.stringify([...this.preSelectedRows.slice(0, this.maxNumberOfRows)]));
             let selectedKeys = [];
             selected.forEach(record => {
                 selectedKeys.push(record[this.keyField]);            
@@ -2870,10 +2870,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         // Finalize Selected Records for Output
         let sdata = [];
         this.outputSelectedRows.forEach(srow => {
-            if (srow) {
-                const selData = this._tableData.find(d => d[this.keyField] == srow[this.keyField]);
-                sdata.push(selData);
-            }
+            const selData = this._tableData.find(d => d[this.keyField] == srow[this.keyField]);
+            sdata.push(selData);
         });
         this.isUpdateTable = false;
         this.outputSelectedRows = [...sdata]; // Set output attribute values

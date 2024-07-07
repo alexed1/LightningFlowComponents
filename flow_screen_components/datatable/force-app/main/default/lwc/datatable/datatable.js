@@ -104,7 +104,7 @@ export default class Datatable extends LightningElement {
     // Remove Row Action Attributes
     @api removeLabel = 'Remove Row';
     @api removeIcon = 'utility:close';
-    @api maxRemovedRows = 3;
+    @api maxRemovedRows = 0;
     @api removeRowLeftOrRight = 'Right';
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;

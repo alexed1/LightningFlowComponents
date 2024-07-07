@@ -22,6 +22,10 @@
                 - NOTE: These records may not contain all of the edited values."/>
             <property name="outputSelectedRow" label="Output Selected Row (Object)" type="{T}" role="outputOnly" description="Record Object variable that contains the single record that was selected in the datatable. 
                 - NOTE: This is only provided when just a single record is selected."/>
+            <property name="outputRemovedRows" label="Output Removed Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain only the records that were removed from the datatable. 
+                - NOTE: These records will contain all saved edited values."/>   
+            <property name="outputRemainingRows" label="Output Remaining Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain all the original records that were not removed from the datatable. 
+                - NOTE: These records will contain all saved edited values."/>                   
     
             <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
             <!-- =========== Inputs =========== -->
@@ -43,7 +47,10 @@
             <!-- Additional Output Parameters -->
             <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
             <property name="numberOfRowsEdited" label="Output Number of Edited Records" type="Integer" role="outputOnly" description="Total count of the number of edited records"/>
+            <property name="numberOfRowsRemoved" label="Output Number of Removed Records" type="Integer" role="outputOnly" description="Total count of the number of removed records"/>
             <property name="selectedRowKeyValue" label="Selected Row Key Field Value" type="String" role="outputOnly" description="The value of the keyField(Id) of the selected row"/>
+            <property name="sortedBy" label="sortedBy" type="String"  role="outputOnly"/>
+            <property name="sortDirection" label="sortDirection" type="String" role="outputOnly"/>
 
             <!-- Configuration Mode Only - Inputs/Outputs -->
             <property name="objectName" label="Wizard Only - Selected SObject" type="String"/>
@@ -142,9 +149,13 @@
             <property name="allowOverflow" type="Boolean" role="inputOnly"/>
             <property name="cb_allowOverflow" type="String" role="inputOnly"/>
             <property name="suppressCurrencyConversion" type="Boolean" role="inputOnly"/>
-            <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>            
-            <property name="sortedBy" label="sortedBy" type="String"  role="outputOnly"/>
-            <property name="sortDirection" label="sortDirection" type="String" role="outputOnly"/>
+            <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>  
+            <property name="isRemoveRowAction" type="Boolean" role="inputOnly" default="false" description="Add a Remove Row Action Button"/>
+            <property name="cb_isRemoveRowAction" type="String" role="inputOnly"/>            
+            <property name="removeLabel" label="Remove Row Action Label" type="String" role="inputOnly" description="This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)"/>
+            <property name="removeIcon" label="Remove Row Action Icon" type="String" role="inputOnly" description="This is the icon that will be used for the Remove Row Action Button (Default: utility:close)"/>
+            <property name="maxRemovedRows" label="Maximum number of rows that can be removed" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)"/>
+            <property name="removeRowLeftOrRight" label="Remove Row Action Button Location" type="String" role="inputOnly" description="Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

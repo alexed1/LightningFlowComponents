@@ -1848,7 +1848,18 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         const index = this.findRowIndexById(collection, keyValue);
         let result = collection;
         if (index !== -1) {
-            result = collection.slice(0, index).concat(collection.slice(index +1));
+            result = collection.slice(0, index).concat(collection.slice(index+1));
+        }
+        return result;
+    }
+
+    replaceRowInCollection(original, updated, keyValue) {
+        // Replace the matching row in the original collection with the matching row from the updated collection
+        const oindex = this.findRowIndexById(original, keyValue);
+        const uindex = this.findRowIndexById(updated, keyValue);
+        let result = original;
+        if (oindex !== -1 && uindex !== -1) {
+            result = original.slice(0, oindex).concat(updated.slice(uindex,uindex+1)).concat(original.slice(oindex+1));
         }
         return result;
     }
@@ -1999,6 +2010,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 if (!isRemovedBeforeSave) {
                     this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
                 }
+
+                this.outputRemainingRows = this.replaceRowInCollection(this.outputRemainingRows, this.outputEditedRows, eitem[this.keyField]);
             }
             return eitem;
         }); 
@@ -2006,6 +2019,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
         if(this.isSerializedRecordData) {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));

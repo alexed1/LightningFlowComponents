@@ -12,7 +12,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
-import { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime } from 'c/ers_datatableUtils';
+import { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime, removeRowFromCollection, replaceRowInCollection, findRowIndexById } from 'c/ers_datatableUtils';
 
 // Translatable Custom Labels
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
@@ -1806,9 +1806,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     }
 
                     // handle edited & remaining rows
-                    this.savePreEditData = [...this.removeRowFromCollection(this.savePreEditData, keyValue)];
-                    this.outputEditedRows = [...this.removeRowFromCollection(this.outputEditedRows, keyValue)];
-                    this.outputRemainingRows = [...this.removeRowFromCollection(this.outputRemainingRows, keyValue)];
+                    this.savePreEditData = [...removeRowFromCollection(this, this.savePreEditData, keyValue)];
+                    this.outputEditedRows = [...removeRowFromCollection(this, this.outputEditedRows, keyValue)];
+                    this.outputRemainingRows = [...removeRowFromCollection(this, this.outputRemainingRows, keyValue)];
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
@@ -1816,7 +1816,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
 
                     // remove record from collection
-                    this.mydata = this.removeRowFromCollection(this._mydata, keyValue);
+                    this.mydata = removeRowFromCollection(this, this._mydata, keyValue);
 
                     if (this.mydata.length == 0) {  // Last record was removed from the datatable
                         // clear last selected row
@@ -1842,38 +1842,6 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             default:
         }
 
-    }
-
-    removeRowFromCollection(collection, keyValue) {
-        const index = this.findRowIndexById(collection, keyValue);
-        let result = collection;
-        if (index !== -1) {
-            result = collection.slice(0, index).concat(collection.slice(index+1));
-        }
-        return result;
-    }
-
-    replaceRowInCollection(original, updated, keyValue) {
-        // Replace the matching row in the original collection with the matching row from the updated collection
-        const oindex = this.findRowIndexById(original, keyValue);
-        const uindex = this.findRowIndexById(updated, keyValue);
-        let result = original;
-        if (oindex !== -1 && uindex !== -1) {
-            result = original.slice(0, oindex).concat(updated.slice(uindex,uindex+1)).concat(original.slice(oindex+1));
-        }
-        return result;
-    }
-
-    findRowIndexById(collection, id) {
-        let idx = -1;
-        collection.some((row, index) => {
-            if (row[this.keyField] === id) {
-                idx = index;
-                return true;
-            }
-            return false;
-        });
-        return idx;
     }
 
     //handle change on combobox
@@ -2011,7 +1979,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
                 }
 
-                this.outputRemainingRows = this.replaceRowInCollection(this.outputRemainingRows, this.outputEditedRows, eitem[this.keyField]);
+                this.outputRemainingRows = replaceRowInCollection(this, this.outputRemainingRows, this.outputEditedRows, eitem[this.keyField]);
             }
             return eitem;
         }); 
@@ -2063,21 +2031,21 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             }
         })
         this._allSelectedRowIds.forEach(srowid => {
-            const found = this.findRowIndexById(this._paginatedData, srowid) != -1;
+            const found = findRowIndexById(this, this._paginatedData, srowid) != -1;
             if (!found) {
-                if (this.findRowIndexById(this.outputRemovedRows, srowid) == -1) {
+                if (findRowIndexById(this, this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
-                        index = this.findRowIndexById(this.savePreEditData, srowid);
+                        index = findRowIndexById(this, this.savePreEditData, srowid);
                         allSelectedRecs.push(this.savePreEditData[index]);
                     } else {    // Selected row was removed
-                        index = this.findRowIndexById(allSelectedRecs, srowid);
+                        index = findRowIndexById(this, allSelectedRecs, srowid);
                         allSelectedRecs.splice(index, 1);
                     }
                 } else {
-                const stillSelected = this.findRowIndexById(currentSelectedRows, srowid) != -1;
+                const stillSelected = findRowIndexById(this, currentSelectedRows, srowid) != -1;
                 if (stillSelected) {
                     currentSelectedRowIds.push(srowid);
-                    index = this.findRowIndexById(currentSelectedRows, srowid);
+                    index = findRowIndexById(this, currentSelectedRows, srowid);
                     allSelectedRecs.push(currentSelectedRows[index]);
                 }
             }

@@ -124,4 +124,36 @@ const convertTime = (that, dtValue) => {
     return timeString;
 }
 
-export { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime };
+const removeRowFromCollection = (that, collection, keyValue) => {
+    const index = findRowIndexById(that, collection, keyValue);
+    let result = collection;
+    if (index !== -1) {
+        result = collection.slice(0, index).concat(collection.slice(index+1));
+    }
+    return result;
+}
+
+const replaceRowInCollection = (that, original, updated, keyValue) => {
+    // Replace the matching row in the original collection with the matching row from the updated collection
+    const oindex = findRowIndexById(that, original, keyValue);
+    const uindex = findRowIndexById(that, updated, keyValue);
+    let result = original;
+    if (oindex !== -1 && uindex !== -1) {
+        result = original.slice(0, oindex).concat(updated.slice(uindex,uindex+1)).concat(original.slice(oindex+1));
+    }
+    return result;
+}
+
+const findRowIndexById = (that, collection, id) => {
+    let idx = -1;
+    collection.some((row, index) => {
+        if (row[that.keyField] === id) {
+            idx = index;
+            return true;
+        }
+        return false;
+    });
+    return idx;
+}
+
+export { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime, removeRowFromCollection, replaceRowInCollection, findRowIndexById };

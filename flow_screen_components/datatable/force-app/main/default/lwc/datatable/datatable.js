@@ -1361,6 +1361,7 @@ export default class Datatable extends LightningElement {
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
         this.outputRemainingRows = [...this.editedData];
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
         console.log(this.consoleLogPrefix+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
         console.log(this.consoleLogPrefix+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(this.consoleLogPrefix+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
@@ -1491,9 +1492,9 @@ export default class Datatable extends LightningElement {
             }
 
             if (this.isConfigMode) { 
-                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
+                let wizardAlignLeft = (!alignmentAttrib) ? (convertType(type) != 'number') : (alignment == 'left');
                 let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
-                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
+                let wizardAlignRight = (!alignmentAttrib) ? (convertType(type) == 'number') : (alignment == 'right');
                 let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
                 let wizardFilter = filterAttrib.filter || false;
                 let wizardFlex = (!flexAttrib) ? false : (flexAttrib.flex || false);
@@ -1810,6 +1811,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     this.outputRemainingRows = [...this.removeRowFromCollection(this.outputRemainingRows, keyValue)];
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
 
                     // remove record from collection
                     this.mydata = this.removeRowFromCollection(this._mydata, keyValue);

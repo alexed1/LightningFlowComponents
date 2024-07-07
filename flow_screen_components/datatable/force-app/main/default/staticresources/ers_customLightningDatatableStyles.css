@@ -86,3 +86,6 @@ c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primi
 .remove-icon {
     --slds-c-icon-color-foreground: red;
 }
+.remove-icon-disabled {
+    --slds-c-icon-color-foreground: #E6E6E6;
+}

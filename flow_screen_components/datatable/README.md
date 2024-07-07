@@ -75,7 +75,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ## 07/xx/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
 -   New Feature: Add a Remove Row action as the first or last column in a Datatable.  
--       New outputs include a collection and a count of the removed rows.
+-       New outputs include a collection and a count of the removed rows.  
+-       You can specify the maximum number of rows that can be removed.  
+-   Selected Rows are now persistent when Paginating, Searching, Filtering, Sorting, and Removing!  
+-   A new output attribute (outputRemainingRows) will provide all records passed into the table with all edits made to those records, less all records (if any) that were removed  
 -   Implemented a default setting (SHOW_DEBUG_INFO = false) to hide record details from console and debug logs  
 -       Source code changes in ers_datatableUtils.js, ers_DatatableController.cls & ers_QueryNRecords.cls  
 -   Console.log statements are now identified with the Datatable's header label  

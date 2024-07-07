@@ -104,10 +104,18 @@ export default class Datatable extends LightningElement {
     // Remove Row Action Attributes
     @api removeLabel = 'Remove Row';
     @api removeIcon = 'utility:close';
+    @api maxRemovedRows = 3;
+    @api removeRowLeftOrRight = 'Right';
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
     @api outputRemainingRows = [];
-    @api maxRemovedRows = 0;
+    removeRowActionColNum;
+
+    @api 
+    get isRemoveRowAction() {
+        return (this.cb_isRemoveRowAction == CB_TRUE) ? true : false;
+    }
+    @api cb_isRemoveRowAction;
 
     // Console Log differentiation
     get consoleLogPrefix() {
@@ -301,22 +309,22 @@ export default class Datatable extends LightningElement {
         return JSON.stringify(this.tableData);
     }
     set serializedRecordData(value) {
-        // if(this.isSerializedRecordData && this.isUpdateTable) {
-        //     if(value) {
-        //         this._tableData = JSON.parse(value);
-        //     } else {
-        //         this._tableData = [];
-        //     }
-        //     this.outputEditedRows = [];
-        //     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-        //     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
-        //     this.outputEditedSerializedRows = '';
-        //     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
-        //     setTimeout(function() {
-        //         this.connectedCallback();
-        //     }.bind(this), 1000);
-        // }
-        // this.isUpdateTable = true;
+        if(this.isSerializedRecordData && this.isUpdateTable) {
+            if(value) {
+                this._tableData = JSON.parse(value);
+            } else {
+                this._tableData = [];
+            }
+            this.outputEditedRows = [];
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+            this.outputEditedSerializedRows = '';
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
+            setTimeout(function() {
+                this.connectedCallback();
+            }.bind(this), 1000);
+        }
+        this.isUpdateTable = true;
     }                                                                       //NEW
     
     isUpdateTable = true;
@@ -806,31 +814,31 @@ export default class Datatable extends LightningElement {
         
         // Decode config mode attributes
         if (this.isConfigMode) { 
-            // this.columnAlignments = decodeURIComponent(this.columnAlignments);
-            // this.columnEdits = decodeURIComponent(this.columnEdits);
-            // this.columnFilters = decodeURIComponent(this.columnFilters);
-            // this.columnIcons = decodeURIComponent(this.columnIcons);
-            // this.columnLabels = decodeURIComponent(this.columnLabels);
-            // this.columnWidths = decodeURIComponent(this.columnWidths);
-            // this.columnWraps = decodeURIComponent(this.columnWraps);
-            // this.columnFlexes = decodeURIComponent(this.columnFlexes);
-            // this.columnFields = decodeURIComponent(this.columnFields);
-            // this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
-            // this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
-            // this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnAlignments:", this.columnAlignments);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnEdits:", this.columnEdits);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnFilters:", this.columnFilters);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnIcons:", this.columnIcons);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnLabels:", this.columnLabels);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnWidths:", this.columnWidths);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnWraps:", this.columnWraps);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnFlexes:", this.columnFlexes);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnFields:", this.columnFields);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
-            // console.log(this.consoleLogPrefix+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
-            // this.not_suppressNameFieldLink = false;
+            this.columnAlignments = decodeURIComponent(this.columnAlignments);
+            this.columnEdits = decodeURIComponent(this.columnEdits);
+            this.columnFilters = decodeURIComponent(this.columnFilters);
+            this.columnIcons = decodeURIComponent(this.columnIcons);
+            this.columnLabels = decodeURIComponent(this.columnLabels);
+            this.columnWidths = decodeURIComponent(this.columnWidths);
+            this.columnWraps = decodeURIComponent(this.columnWraps);
+            this.columnFlexes = decodeURIComponent(this.columnFlexes);
+            this.columnFields = decodeURIComponent(this.columnFields);
+            this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
+            this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
+            this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnAlignments:", this.columnAlignments);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnEdits:", this.columnEdits);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFilters:", this.columnFilters);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnIcons:", this.columnIcons);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnLabels:", this.columnLabels);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnWidths:", this.columnWidths);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnWraps:", this.columnWraps);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFlexes:", this.columnFlexes);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnFields:", this.columnFields);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            console.log(this.consoleLogPrefix+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
+            this.not_suppressNameFieldLink = false;
         }
 
         console.log(this.consoleLogPrefix+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***', this.isUserDefinedObject);
@@ -1367,6 +1375,8 @@ export default class Datatable extends LightningElement {
         let columnNumber = 0;
         let lufield = '';
 
+        // if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
+
         this.basicColumns.forEach(colDef => {
 
             // Standard parameters
@@ -1676,6 +1686,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             wrapText: false,
             flex: false
         });
+        this.removeRowActionColNum = this.cols.length - 1;
     }
 
     updatePreSelectedRows() {
@@ -1816,7 +1827,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                         this.tableData = [];
                     }
 
-                } else {
+                    if (this.numberOfRowsRemoved === this.maxRemovedRows) {
+                        this.columns[this.removeRowActionColNum].cellAttributes["class"] = "remove-icon-disabled";
+                    }
                     
                 }
                 break;

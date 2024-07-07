@@ -12,7 +12,7 @@ import { LightningElement, api, track, wire } from 'lwc';
 import getReturnResults from '@salesforce/apex/ers_DatatableController.getReturnResults';
 import { FlowAttributeChangeEvent, FlowNavigationNextEvent } from 'lightning/flowSupport';
 import {getPicklistValuesByRecordType} from "lightning/uiObjectInfoApi";
-import { getConstants } from 'c/ers_datatableUtils';
+import { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime } from 'c/ers_datatableUtils';
 
 // Translatable Custom Labels
 import CancelButton from '@salesforce/label/c.ers_CancelButton';
@@ -102,9 +102,12 @@ export default class Datatable extends LightningElement {
     @api tableIcon;
     
     // Remove Row Action Attributes
+    @api removeLabel = 'Remove Row';
+    @api removeIcon = 'utility:close';
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
     @api outputRemainingRows = [];
+    @api maxRemovedRows = 0;
 
     // Console Log differentiation
     get consoleLogPrefix() {
@@ -217,6 +220,10 @@ export default class Datatable extends LightningElement {
     get suppressBottomBar() {
         return (this.cb_suppressBottomBar == CB_TRUE) ? true : false;
     }
+    set suppressBottomBar(value) {
+        this._suppressBottomBar = value;
+    }
+    _suppressBottomBar;
     @api cb_suppressBottomBar;
 
     @api 
@@ -294,22 +301,22 @@ export default class Datatable extends LightningElement {
         return JSON.stringify(this.tableData);
     }
     set serializedRecordData(value) {
-        if(this.isSerializedRecordData && this.isUpdateTable) {
-            if(value) {
-                this._tableData = JSON.parse(value);
-            } else {
-                this._tableData = [];
-            }
-            this.outputEditedRows = [];
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
-            this.outputEditedSerializedRows = '';
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
-            setTimeout(function() {
-                this.connectedCallback();
-            }.bind(this), 1000);
-        }
-        this.isUpdateTable = true;
+        // if(this.isSerializedRecordData && this.isUpdateTable) {
+        //     if(value) {
+        //         this._tableData = JSON.parse(value);
+        //     } else {
+        //         this._tableData = [];
+        //     }
+        //     this.outputEditedRows = [];
+        //     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+        //     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+        //     this.outputEditedSerializedRows = '';
+        //     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
+        //     setTimeout(function() {
+        //         this.connectedCallback();
+        //     }.bind(this), 1000);
+        // }
+        // this.isUpdateTable = true;
     }                                                                       //NEW
     
     isUpdateTable = true;
@@ -379,11 +386,7 @@ export default class Datatable extends LightningElement {
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
-    // Remove Row Action Attributes
-    @api removeLabel = 'Remove Row';
-    @api removeIcon = 'utility:close';
-
-    // Configuration Wizard Only - Input Attributes
+     // Configuration Wizard Only - Input Attributes
     @api objectName;
 
     // Configuration Wizard Only - Output Attributes
@@ -803,30 +806,30 @@ export default class Datatable extends LightningElement {
         
         // Decode config mode attributes
         if (this.isConfigMode) { 
-            this.columnAlignments = decodeURIComponent(this.columnAlignments);
-            this.columnEdits = decodeURIComponent(this.columnEdits);
-            this.columnFilters = decodeURIComponent(this.columnFilters);
-            this.columnIcons = decodeURIComponent(this.columnIcons);
-            this.columnLabels = decodeURIComponent(this.columnLabels);
-            this.columnWidths = decodeURIComponent(this.columnWidths);
-            this.columnWraps = decodeURIComponent(this.columnWraps);
-            this.columnFlexes = decodeURIComponent(this.columnFlexes);
-            this.columnFields = decodeURIComponent(this.columnFields);
-            this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
-            this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
-            this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnAlignments:", this.columnAlignments);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnEdits:", this.columnEdits);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnFilters:", this.columnFilters);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnIcons:", this.columnIcons);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnLabels:", this.columnLabels);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnWidths:", this.columnWidths);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnWraps:", this.columnWraps);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnFlexes:", this.columnFlexes);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnFields:", this.columnFields);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
-            console.log(this.consoleLogPrefix+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
+            // this.columnAlignments = decodeURIComponent(this.columnAlignments);
+            // this.columnEdits = decodeURIComponent(this.columnEdits);
+            // this.columnFilters = decodeURIComponent(this.columnFilters);
+            // this.columnIcons = decodeURIComponent(this.columnIcons);
+            // this.columnLabels = decodeURIComponent(this.columnLabels);
+            // this.columnWidths = decodeURIComponent(this.columnWidths);
+            // this.columnWraps = decodeURIComponent(this.columnWraps);
+            // this.columnFlexes = decodeURIComponent(this.columnFlexes);
+            // this.columnFields = decodeURIComponent(this.columnFields);
+            // this.columnCellAttribs = decodeURIComponent(this.columnCellAttribs);
+            // this.columnTypeAttribs = decodeURIComponent(this.columnTypeAttribs);
+            // this.columnOtherAttribs = decodeURIComponent(this.columnOtherAttribs);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnAlignments:", this.columnAlignments);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnEdits:", this.columnEdits);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnFilters:", this.columnFilters);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnIcons:", this.columnIcons);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnLabels:", this.columnLabels);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnWidths:", this.columnWidths);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnWraps:", this.columnWraps);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnFlexes:", this.columnFlexes);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnFields:", this.columnFields);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnCellAttribs:", this.columnCellAttribs);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnTypeAttribs:", this.columnTypeAttribs);
+            // console.log(this.consoleLogPrefix+"Config Mode Input columnOtherAttribs:", this.columnOtherAttribs);
             // this.not_suppressNameFieldLink = false;
         }
 
@@ -882,7 +885,7 @@ export default class Datatable extends LightningElement {
         parseAlignments.forEach(align => {
             this.alignments.push({
                 column: this.columnReference(align),
-                alignment: this.columnValue(align)
+                alignment: columnValue(align)
             });
         });
 
@@ -892,7 +895,7 @@ export default class Datatable extends LightningElement {
             this.attribCount = (parseEdits.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
             this.editAttribType = 'none';
             parseEdits.forEach(edit => {
-                let colEdit = (this.columnValue(edit).toLowerCase() == 'true') ? true : false;
+                let colEdit = (columnValue(edit).toLowerCase() == 'true') ? true : false;
                 this.edits.push({
                     column: this.columnReference(edit),
                     edit: colEdit
@@ -910,7 +913,7 @@ export default class Datatable extends LightningElement {
             this.attribCount = (parseFilters.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
             this.filterAttribType = 'none';
             parseFilters.forEach(filter => {
-                let colFilter = (this.columnValue(filter).toLowerCase() == 'true') ? true : false;
+                let colFilter = (columnValue(filter).toLowerCase() == 'true') ? true : false;
                 let col = this.columnReference(filter);
                 this.filters.push({
                     column: col,
@@ -933,42 +936,42 @@ export default class Datatable extends LightningElement {
         parseIcons.forEach(icon => {
             this.icons.push({
                 column: this.columnReference(icon),
-                icon: this.columnValue(icon)
+                icon: columnValue(icon)
             });
         });
 
         // Parse Column Label attribute
-        const parseLabels = (this.columnLabels.length > 0) ? this.removeSpaces(this.columnLabels).split(',') : [];
+        const parseLabels = (this.columnLabels.length > 0) ? removeSpaces(this.columnLabels).split(',') : [];
         this.attribCount = (parseLabels.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
         parseLabels.forEach(label => {
             this.labels.push({
                 column: this.columnReference(label),
-                label: this.columnValue(label)
+                label: columnValue(label)
             });
         });
 
         if (this.isUserDefinedObject) {
 
             // JSON Version - Parse Column Scale attribute
-            const parseScales = (this.columnScales.length > 0) ? this.removeSpaces(this.columnScales).split(',') : [];
+            const parseScales = (this.columnScales.length > 0) ? removeSpaces(this.columnScales).split(',') : [];
             this.attribCount = (parseScales.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
             parseScales.forEach(scale => {
                 this.scales.push({
                     column: this.columnReference(scale),
-                    scale: this.columnValue(scale)
+                    scale: columnValue(scale)
                 });
-                this.basicColumns[this.columnReference(scale)].scale = this.columnValue(scale);
+                this.basicColumns[this.columnReference(scale)].scale = columnValue(scale);
             });
 
             // JSON Version - Parse Column Type attribute
-            const parseTypes = (this.columnTypes.length > 0) ? this.removeSpaces(this.columnTypes).split(',') : [];
+            const parseTypes = (this.columnTypes.length > 0) ? removeSpaces(this.columnTypes).split(',') : [];
             this.attribCount = (parseTypes.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
             parseTypes.forEach(type => {
                 this.types.push({
                     column: this.columnReference(type),
-                    type: this.columnValue(type)
+                    type: columnValue(type)
                 });
-                this.basicColumns[this.columnReference(type)].type = this.columnValue(type);
+                this.basicColumns[this.columnReference(type)].type = columnValue(type);
             });
         }
 
@@ -978,7 +981,7 @@ export default class Datatable extends LightningElement {
         parseWidths.forEach(width => {
             this.widths.push({
                 column: this.columnReference(width),
-                width: parseInt(this.columnValue(width))
+                width: parseInt(columnValue(width))
             });
         });
 
@@ -988,7 +991,7 @@ export default class Datatable extends LightningElement {
             this.attribCount = (parseFlexes.findIndex(f => f.search(':') != -1) != -1) ? 0 : 1;
             this.flexAttribType = 'none';
             parseFlexes.forEach(flex => {
-                let colFlex = (this.columnValue(flex).toLowerCase() == 'true') ? true : false;
+                let colFlex = (columnValue(flex).toLowerCase() == 'true') ? true : false;
                 this.flexes.push({
                     column: this.columnReference(flex),
                     flex: colFlex
@@ -1006,37 +1009,37 @@ export default class Datatable extends LightningElement {
         parseWraps.forEach(wrap => {
             this.wraps.push({
                 column: this.columnReference(wrap),
-                wrap: (this.columnValue(wrap).toLowerCase() == 'true') ? true : false
+                wrap: (columnValue(wrap).toLowerCase() == 'true') ? true : false
             });
         });
 
         // Parse Column CellAttribute attribute (Because multiple attributes use , these are separated by ;)
-        const parseCellAttribs = (this.columnCellAttribs.length > 0) ? this.removeSpaces(this.columnCellAttribs).split(';') : [];
+        const parseCellAttribs = (this.columnCellAttribs.length > 0) ? removeSpaces(this.columnCellAttribs).split(';') : [];
         this.attribCount = 0;   // These attributes must specify a column number or field API name
         parseCellAttribs.forEach(cellAttrib => {
             this.cellAttribs.push({
                 column: this.columnReference(cellAttrib),
-                attribute: this.columnValue(cellAttrib)
+                attribute: columnValue(cellAttrib)
             });
         });
 
         // Parse Column Other Attributes attribute (Because multiple attributes use , these are separated by ;)
-        const parseOtherAttribs = (this.columnOtherAttribs.length > 0) ? this.removeSpaces(this.columnOtherAttribs).split(';') : [];
+        const parseOtherAttribs = (this.columnOtherAttribs.length > 0) ? removeSpaces(this.columnOtherAttribs).split(';') : [];
         this.attribCount = 0;   // These attributes must specify a column number or field API name
         parseOtherAttribs.forEach(otherAttrib => {
             this.otherAttribs.push({
                 column: this.columnReference(otherAttrib),
-                attribute: this.columnValue(otherAttrib)
+                attribute: columnValue(otherAttrib)
             });
         });
 
         // Parse Column TypeAttribute attribute (Because multiple attributes use , these are separated by ;)
-        const parseTypeAttribs = (this.columnTypeAttribs.length > 0) ? this.removeSpaces(this.columnTypeAttribs).split(';') : [];
+        const parseTypeAttribs = (this.columnTypeAttribs.length > 0) ? removeSpaces(this.columnTypeAttribs).split(';') : [];
         this.attribCount = 0;   // These attributes must specify a column number or field API name
         parseTypeAttribs.forEach(ta => {
             this.typeAttribs.push({
                 column: this.columnReference(ta),
-                attribute: this.columnValue(ta)
+                attribute: columnValue(ta)
             });
         });
 
@@ -1081,39 +1084,6 @@ export default class Datatable extends LightningElement {
         this._tableData = JSON.parse(this._tableDataString);
         console.log(this.consoleLogPrefix+'tableData - ',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         this.preSelectedRows = (this.preSelectedRowsString.length > 0) ? JSON.parse(this.preSelectedRowsString) : [];  
-    }
-    
-    removeSpaces(string) {
-        return string
-            .replace(/, | ,/g,',')
-            .replace(/: | :/g,':')
-            .replace(/{ | {/g,'{')
-            .replace(/} | }/g,'}')
-            .replace(/; | ;/g,';');
-    }
-
-    columnReference(attrib) {
-        // The column reference can be either the field API name or the column sequence number (1,2,3 ...)
-        // If no column reference is specified, the values are assigned to columns in order (There must be a value provided for each column)
-        // Return the actual column # (0,1,2 ...)
-        let colRef = 0;
-        if (this.attribCount == 0) {
-            let colDescriptor = attrib.split(':')[0];
-            colRef = Number(colDescriptor)-1;
-            if (isNaN(colRef)) {
-                colRef = this.columnArray.indexOf(colDescriptor);
-                colRef = (colRef != -1) ? colRef : 999; // If no match for the field name, set to non-existent column #
-            }
-        } else {
-            colRef = this.attribCount-1;
-            this.attribCount += 1;
-        }
-        return colRef;
-    }
-
-    columnValue(attrib) {
-        // Extract the value from the column attribute
-        return attrib.slice(attrib.search(':')+1);
     }
 
     processDatatable() {
@@ -1382,10 +1352,12 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
+        // this.outputRemainingRows = [...this.editedData];
         console.log(this.consoleLogPrefix+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
         console.log(this.consoleLogPrefix+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(this.consoleLogPrefix+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         console.log(this.consoleLogPrefix+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
+        // console.log(this.consoleLogPrefix+'outputRemainingRows:',(SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
     }
 
     updateColumns() {
@@ -1509,26 +1481,7 @@ export default class Datatable extends LightningElement {
             }
 
             if (this.isConfigMode) { 
-                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
-                let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
-                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
-                let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
-                let wizardFilter = filterAttrib.filter || false;
-                let wizardFlex = (!flexAttrib) ? false : (flexAttrib.flex || false);
-                filterAttrib.column = columnNumber; 
-                filterAttrib.filter = true;             
-                filterAttrib.actions = [
-                    {label: 'Align Left', checked: wizardAlignLeft, name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
-                    {label: 'Align Center', checked: wizardAlignCenter, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
-                    {label: 'Align Right', checked: wizardAlignRight, name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
-                    {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
-                    {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
-                    {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
-                    {label: 'Allow Edit', checked: wizardEdit, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
-                    {label: 'Allow Filter', checked: wizardFilter, name: 'afilter_' + columnNumber, iconName: 'utility:filter'},
-                    {label: 'Flex Width', checked: wizardFlex, name: 'flex_' + columnNumber, iconName: 'utility:full_width_view'}
-                ];
-                this.cellAttributes = { alignment: alignment };
+//🚀
             }
 
             // Update Icon attribute overrides by column
@@ -1730,12 +1683,31 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         }
     }
 
+    columnReference(attrib) {
+        // The column reference can be either the field API name or the column sequence number (1,2,3 ...)
+        // If no column reference is specified, the values are assigned to columns in order (There must be a value provided for each column)
+        // Return the actual column # (0,1,2 ...)
+        let colRef = 0;
+        if (this.attribCount == 0) {
+            let colDescriptor = attrib.split(':')[0];
+            colRef = Number(colDescriptor)-1;
+            if (isNaN(colRef)) {
+                colRef = this.columnArray.indexOf(colDescriptor);
+                colRef = (colRef != -1) ? colRef : 999; // If no match for the field name, set to non-existent column #
+            }
+        } else {
+            colRef = this.attribCount-1;
+            this.attribCount += 1;
+        }
+        return colRef;
+    }
+
     parseAttributes(propertyType,inputAttributes,columnNumber) {
         // Parse regular and nested name:value attribute pairs
         let result = [];
         let fullAttrib = inputAttributes.find(i => i['column'] == columnNumber);
         if (fullAttrib) {
-            let attribSplit = this.removeSpaces(fullAttrib.attribute.slice(1,-1)).split(',');
+            let attribSplit = removeSpaces(fullAttrib.attribute.slice(1,-1)).split(',');
             attribSplit.forEach(ca => {
                 let subAttribPos = ca.search('{');
                 if (subAttribPos != -1) {
@@ -1789,54 +1761,57 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             
             case 'removeRow':
 
-                // Add to removed row collection and update counter
-                this.outputRemovedRows = [...this.outputRemovedRows, row];
-                this.numberOfRowsRemoved ++;
+                // if (this.maxRemovedRows > 0 && this.numberOfRowsRemoved < this.maxRemovedRows) {
 
-                // handle selected rows
-                const index = this._allSelectedRowIds.indexOf(keyValue);
-                if (index != -1) {
-                    this._allSelectedRowIds.splice(index, 1);
-                }
+                    // Add to removed row collection and update counter
+                    const removedRows = [...this.outputRemovedRows, row];
+                    this.outputRemovedRows = [];
+                    this.savePreEditData.forEach(rec => {
+                        const isRemoved = removedRows.some(rrec => rrec[this.keyField] === rec[this.keyField]);
+                        if (isRemoved) {
+                            this.outputRemovedRows = [...this.outputRemovedRows, rec]
+                        }
+                    });
+                    this.numberOfRowsRemoved ++;
 
-                // handle edited rows
-                this.savePreEditData = [...this.removeRowFromCollection(this.savePreEditData, keyValue)];
-                this.outputEditedRows = [...this.removeRowFromCollection(this.outputEditedRows, keyValue)];
-                this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
-                this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
-
-                // remove record from collection
-                this.mydata = this.removeRowFromCollection(this._mydata, keyValue); 
-
-                if (this.mydata.length == 0) {  // Last record was removed from the datatable
-                    // clear last selected row
-                    this.outputSelectedRows = [];
-                    if (!this.isUserDefinedObject) {
-                        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
-                    } else {
-                        this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
-                        this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));  
+                    // handle selected rows
+                    const index = this._allSelectedRowIds.indexOf(keyValue);
+                    if (index != -1) {
+                        this._allSelectedRowIds.splice(index, 1);
                     }
-                    this.updateNumberOfRowsSelected(this.outputSelectedRows);
-                    // refresh table
-                    this.tableData = [];
-                }
+
+                    // handle edited & remaining rows
+                    this.savePreEditData = [...this.removeRowFromCollection(this.savePreEditData, keyValue)];
+                    this.outputEditedRows = [...this.removeRowFromCollection(this.outputEditedRows, keyValue)];
+                    // this.outputRemainingRows = [...this.removeRowFromCollection(this.outputRemainingRows, keyValue)];
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
+
+                    // remove record from collection
+                    this.mydata = this.removeRowFromCollection(this._mydata, keyValue);
+
+                    if (this.mydata.length == 0) {  // Last record was removed from the datatable
+                        // clear last selected row
+                        this.outputSelectedRows = [];
+                        if (!this.isUserDefinedObject) {
+                            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
+                        } else {
+                            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);
+                            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));  
+                        }
+                        this.updateNumberOfRowsSelected(this.outputSelectedRows);
+                        // refresh table
+                        this.tableData = [];
+                    }
+
+                // } else {
+                    
+                // }
                 break;
 
             default:
         }
 
-        // this.mydata = this._mydata.map(rowData => {
-        //     if (rowData[this.keyField] === keyValue) {
-        //         switch (action.name) {
-        //             // case 'action': goes here
-        //                 //
-        //                 // break;
-        //             default:
-        //         }
-        //     }
-        //     return rowData;
-        // });
     }
 
     removeRowFromCollection(collection, keyValue) {
@@ -1967,7 +1942,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 timefield.forEach(time => {
                     if (!this.suppressBottomBar || (time == editField)) {
                         if (field[time]) {
-                            field[time] = this.convertTime(field[time]);
+                            field[time] = convertTime(this, field[time]);
                         }
                     }
                 });                
@@ -2025,18 +2000,6 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
     cancelChanges(event) {
         // Only used with inline editing
         this.mydata = [...this.savePreEditData];
-    }
-
-    convertTime(dtValue) {
-        // Return a Salesforce formatted time value based a datetime value
-        const dtv = new Date(dtValue);
-        const hours = dtv.getHours() - (this.timezoneOffset / 2880000);
-        let timeString = ("00"+hours).slice(-2)+":";
-        timeString += ("00"+dtv.getMinutes()).slice(-2)+":";
-        timeString += ("00"+dtv.getSeconds()).slice(-2)+".";
-        timeString += ("000"+dtv.getMilliseconds()).slice(-3);
-        timeString += "Z";
-        return timeString;
     }
 
     handleRowSelection(event) {
@@ -2283,8 +2246,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 this.columnFilterValue = this.columnFilterValues[this.columnNumber];
                 this.columnFilterValue = (this.columnFilterValue) ? this.columnFilterValue : this.baseLabel;
                 this.columnType = 'richtext';
-                this.inputType = this.convertType(this.columnType);
-                this.inputFormat = (this.inputType == 'number') ? this.convertFormat(this.columnType) : null;
+                this.inputType = convertType(this.columnType);
+                this.inputFormat = (this.inputType == 'number') ? convertFormat(this.columnType) : null;
                 this.handleOpenFilterInput();
                 break;
 
@@ -2292,9 +2255,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 this.columnFilterValue = this.columnFilterValues[this.columnNumber];
                 this.columnFilterValue = (this.columnFilterValue) ? this.columnFilterValue : null;
                 this.columnType = colDef.type;
-                this.inputType = this.convertType(this.columnType);
+                this.inputType = convertType(this.columnType);
                 this.inputType = (this.inputType == 'url') ? 'text' : this.inputType;
-                this.inputFormat = (this.inputType == 'number') ? this.convertFormat(this.columnType) : null;
+                this.inputFormat = (this.inputType == 'number') ? convertFormat(this.columnType) : null;
                 this.handleOpenFilterInput();
                 break;
 
@@ -2327,53 +2290,6 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         }
 
         this.columns = [...this.filterColumns];
-    }
-
-    convertType(colType) {
-        // Set Input Type based on column Data Type
-        switch(colType) {
-            case 'boolean':
-                return 'text';
-            case 'date':
-                return 'date';
-            case 'date-local':
-                return 'date';
-            case 'datetime':
-                return 'datetime';
-            case 'time':
-                return 'time';
-            case 'email':
-                return 'email';
-            case 'phone':
-                return 'tel';
-            case 'url':
-                return 'url';
-            case 'number':
-                return 'number';
-            case 'currency':
-                return 'number';
-            case 'percent':
-                return 'number';
-            case 'number':
-                return 'number';                
-            case 'text':
-                return 'text';
-            default:
-                return 'richtext';
-        }
-    }
-
-    convertFormat(colType) {
-        // Set Input Formatter value for different number types
-        switch(colType) {
-            case 'currency':
-                return 'currency';
-            case 'percent':
-                // return 'percent-fixed';  // This would be to enter 35 to get 35% (0.35)
-                return 'percent';
-            default:
-                return null;
-        }
     }
 
     handleResize(event) {
@@ -2760,7 +2676,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
         // Create the Alignment Label parameter for Config Mode
         let colString = '';
         this.filterColumns.forEach(colDef => {
-            let configAlign = (this.convertType(colDef['type']) != 'number') ? 'left' : 'right';
+            let configAlign = (convertType(colDef['type']) != 'number') ? 'left' : 'right';
             let currentAlign = colDef['cellAttributes']['alignment'];
             if (currentAlign && (currentAlign != configAlign)) {
                 colString = colString + ', ' + colDef['fieldName'] + ':' + colDef['cellAttributes']['alignment'];
@@ -2920,6 +2836,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
+        // console.log(this.consoleLogPrefix+'outputRemovedRows', this.outputRemovedRows.length, (SHOW_DEBUG_INFO) ? this.outputRemovedRows : '***');
+        // console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

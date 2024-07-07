@@ -1,5 +1,5 @@
 /**
-* @description a util class for storing Constants
+* @description a util class for storing Constants & Functions
 */
 
 const reverse = str => str.split('').reverse().join('');    // Reverse all the characters in a string
@@ -51,4 +51,77 @@ const getConstants = () => {
     }
 }
 
-export { getConstants };
+const columnValue = (attrib) => {
+    // Extract the value from the column attribute
+    return attrib.slice(attrib.search(':')+1);
+};
+
+const removeSpaces = (string) => {
+    return string
+        .replace(/, | ,/g,',')
+        .replace(/: | :/g,':')
+        .replace(/{ | {/g,'{')
+        .replace(/} | }/g,'}')
+        .replace(/; | ;/g,';');
+}
+
+const convertFormat = (colType) => {
+    // Set Input Formatter value for different number types
+    switch(colType) {
+        case 'currency':
+            return 'currency';
+        case 'percent':
+            // return 'percent-fixed';  // This would be to enter 35 to get 35% (0.35)
+            return 'percent';
+        default:
+            return null;
+    }
+}
+
+const convertType = (colType) => {
+    // Set Input Type based on column Data Type
+    switch(colType) {
+        case 'boolean':
+            return 'text';
+        case 'date':
+            return 'date';
+        case 'date-local':
+            return 'date';
+        case 'datetime':
+            return 'datetime';
+        case 'time':
+            return 'time';
+        case 'email':
+            return 'email';
+        case 'phone':
+            return 'tel';
+        case 'url':
+            return 'url';
+        case 'number':
+            return 'number';
+        case 'currency':
+            return 'number';
+        case 'percent':
+            return 'number';
+        case 'number':
+            return 'number';                
+        case 'text':
+            return 'text';
+        default:
+            return 'richtext';
+    }
+}
+
+const convertTime = (that, dtValue) => {
+    // Return a Salesforce formatted time value based a datetime value
+    const dtv = new Date(dtValue);
+    const hours = dtv.getHours() - (that.timezoneOffset / 2880000);
+    let timeString = ("00"+hours).slice(-2)+":";
+    timeString += ("00"+dtv.getMinutes()).slice(-2)+":";
+    timeString += ("00"+dtv.getSeconds()).slice(-2)+".";
+    timeString += ("000"+dtv.getMilliseconds()).slice(-3);
+    timeString += "Z";
+    return timeString;
+}
+
+export { getConstants, columnValue, removeSpaces, convertFormat, convertType, convertTime };

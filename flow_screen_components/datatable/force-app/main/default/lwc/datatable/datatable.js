@@ -1673,7 +1673,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 iconName: this.removeIcon,
                 tooltip: this.removeLabel,
                 variant: "border",
-                size: "medium"
+                size: "medium",
+                disabled: false
             },
             cellAttributes: {
                 class: "remove-icon"
@@ -1828,9 +1829,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     }
 
                     if (this.numberOfRowsRemoved === this.maxRemovedRows) {
-                        this.columns[this.removeRowActionColNum].cellAttributes["class"] = "remove-icon-disabled";
+                        this.columns[this.removeRowActionColNum].typeAttributes["disabled"] = "";
                     }
-                    
+
                 }
                 break;
 

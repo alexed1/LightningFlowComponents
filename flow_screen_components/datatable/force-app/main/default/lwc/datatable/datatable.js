@@ -1352,12 +1352,12 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        // this.outputRemainingRows = [...this.editedData];
+        this.outputRemainingRows = [...this.editedData];
         console.log(this.consoleLogPrefix+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
         console.log(this.consoleLogPrefix+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(this.consoleLogPrefix+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         console.log(this.consoleLogPrefix+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
-        // console.log(this.consoleLogPrefix+'outputRemainingRows:',(SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
+        console.log(this.consoleLogPrefix+'outputRemainingRows:',(SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
     }
 
     updateColumns() {
@@ -1481,7 +1481,26 @@ export default class Datatable extends LightningElement {
             }
 
             if (this.isConfigMode) { 
-//🚀
+                let wizardAlignLeft = (!alignmentAttrib) ? (this.convertType(type) != 'number') : (alignment == 'left');
+                let wizardAlignCenter = (!alignmentAttrib) ? false : (alignment == 'center');
+                let wizardAlignRight = (!alignmentAttrib) ? (this.convertType(type) == 'number') : (alignment == 'right');
+                let wizardEdit = (!editAttrib) ? false : (editAttrib.edit || false);
+                let wizardFilter = filterAttrib.filter || false;
+                let wizardFlex = (!flexAttrib) ? false : (flexAttrib.flex || false);
+                filterAttrib.column = columnNumber; 
+                filterAttrib.filter = true;             
+                filterAttrib.actions = [
+                    {label: 'Align Left', checked: wizardAlignLeft, name: 'alignl_' + columnNumber, iconName: 'utility:left_align_text'},
+                    {label: 'Align Center', checked: wizardAlignCenter, name: 'alignc_' + columnNumber, iconName: 'utility:center_align_text'},
+                    {label: 'Align Right', checked: wizardAlignRight, name: 'alignr_' + columnNumber, iconName: 'utility:right_align_text'},
+                    {label: 'Select Icon', disabled: false, name: 'icon_' + columnNumber, iconName: 'utility:text'},
+                    {label: 'Change Label', disabled: false, name: 'label_' + columnNumber, iconName: 'utility:text'},
+                    {label: 'Cancel Change', disabled: true, name: 'clear_' + columnNumber, iconName: 'utility:clear'},
+                    {label: 'Allow Edit', checked: wizardEdit, name: 'aedit_' + columnNumber, iconName: 'utility:edit'},
+                    {label: 'Allow Filter', checked: wizardFilter, name: 'afilter_' + columnNumber, iconName: 'utility:filter'},
+                    {label: 'Flex Width', checked: wizardFlex, name: 'flex_' + columnNumber, iconName: 'utility:full_width_view'}
+                ];
+                this.cellAttributes = { alignment: alignment };
             }
 
             // Update Icon attribute overrides by column
@@ -1761,17 +1780,10 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
             
             case 'removeRow':
 
-                // if (this.maxRemovedRows > 0 && this.numberOfRowsRemoved < this.maxRemovedRows) {
+                if (this.maxRemovedRows == 0 || this.numberOfRowsRemoved < this.maxRemovedRows) {
 
                     // Add to removed row collection and update counter
-                    const removedRows = [...this.outputRemovedRows, row];
-                    this.outputRemovedRows = [];
-                    this.savePreEditData.forEach(rec => {
-                        const isRemoved = removedRows.some(rrec => rrec[this.keyField] === rec[this.keyField]);
-                        if (isRemoved) {
-                            this.outputRemovedRows = [...this.outputRemovedRows, rec]
-                        }
-                    });
+                    this.outputRemovedRows = [...this.outputRemovedRows, row];  // Removed row collection will be in order of removal, not original order
                     this.numberOfRowsRemoved ++;
 
                     // handle selected rows
@@ -1783,7 +1795,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                     // handle edited & remaining rows
                     this.savePreEditData = [...this.removeRowFromCollection(this.savePreEditData, keyValue)];
                     this.outputEditedRows = [...this.removeRowFromCollection(this.outputEditedRows, keyValue)];
-                    // this.outputRemainingRows = [...this.removeRowFromCollection(this.outputRemainingRows, keyValue)];
+                    this.outputRemainingRows = [...this.removeRowFromCollection(this.outputRemainingRows, keyValue)];
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
 
@@ -1804,9 +1816,9 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                         this.tableData = [];
                     }
 
-                // } else {
+                } else {
                     
-                // }
+                }
                 break;
 
             default:
@@ -2836,8 +2848,8 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
 
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
-        // console.log(this.consoleLogPrefix+'outputRemovedRows', this.outputRemovedRows.length, (SHOW_DEBUG_INFO) ? this.outputRemovedRows : '***');
-        // console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
+        console.log(this.consoleLogPrefix+'outputRemovedRows', this.outputRemovedRows.length, (SHOW_DEBUG_INFO) ? this.outputRemovedRows : '***');
+        console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

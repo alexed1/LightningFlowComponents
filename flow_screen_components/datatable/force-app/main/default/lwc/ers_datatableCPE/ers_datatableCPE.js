@@ -43,7 +43,9 @@ const COLORS = {
     green: '#659668',
     green_light: '#7E967F',
     red: '#966594',
-    red_light: '#967E95'
+    red_light: '#967E95',
+    orange: '#FFA45E',
+    orange_light: '#FEB97D'
 }
 
 export default class ers_datatableCPE extends LightningElement {
@@ -56,9 +58,11 @@ export default class ers_datatableCPE extends LightningElement {
     _defaultBannerColor = COLORS.blue;
     _colorWizardOverride = COLORS.green;
     _colorAdvancedOverride = COLORS.red;
+    _colorRowActionsOverride = COLORS.orange;
     _defaultModalHeaderColor = COLORS.blue_light;
     _modalHeaderColorWizardOverride = COLORS.green_light;
     _modalHeaderColorAdvancedOverride = COLORS.red_light;
+    _modalHeaderColorRowActionsOverride = COLORS.orange_light;
 
     _inputVariables = [];
     _builderContext = [];
@@ -181,6 +185,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get colorRowActionsOverride() { 
+        return this._colorRowActionsOverride;
+    }
+
+    @api
     get colorAdvancedOverride() { 
         return this._colorAdvancedOverride;
     }
@@ -198,6 +207,11 @@ export default class ers_datatableCPE extends LightningElement {
     @api
     get modalHeaderColorAdvancedOverride() {
         return this._modalHeaderColorAdvancedOverride;
+    }
+
+    @api
+    get modalHeaderColorRowActionsOverride() {
+        return this._modalHeaderColorRowActionsOverride;
     }
 
     @api

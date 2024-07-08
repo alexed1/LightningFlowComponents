@@ -44,7 +44,7 @@ const COLORS = {
     green_light: '#7E967F',
     red: '#966594',
     red_light: '#967E95',
-    orange: '#FFA45E',
+    orange: '#E79556',
     orange_light: '#FEB97D'
 }
 

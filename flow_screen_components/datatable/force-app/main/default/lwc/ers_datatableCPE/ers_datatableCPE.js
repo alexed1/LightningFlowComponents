@@ -216,6 +216,21 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get showHideRemoveRowAction() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get removeRowActionClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
+    }
+
+    @api
+    get removeRowActionCheckboxClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
+    }
+
+    @api
     get showHidePaginationAttributes() {
         return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
     }
@@ -563,6 +578,19 @@ export default class ers_datatableCPE extends LightningElement {
         isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
             helpText: 'Select if you want the datatable to be able to accept serialized data.'},
         cb_isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: ''},
+        isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: 'Add a Remove Row Action Button', 
+            helpText: 'Select if you want to add a Remove Row Action Button to each row of the datatable.'},
+        cb_isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: ''},
+        removeLabel: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Label', 
+            helpText: 'This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)'},
+        removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon', 
+            helpText: 'This is the icon that will be used for the Remove Row Action Button (Default: utility:close)'},
+        removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon Color', 
+            helpText: 'This is the color (red, green or black) for the icon that will be used for the Remove Row Action Button (Default: red)'},
+        maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum number of rows that can be removed', 
+            helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
+        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Button Location', 
+            helpText: 'Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)'},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -572,6 +600,7 @@ export default class ers_datatableCPE extends LightningElement {
         dataSource: {label: 'Data Source', info: []},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
+        rowActions: {label: 'Row Actions', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
     }
 
@@ -630,6 +659,16 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'navigateNextOnSave'},
                 {name: 'not_suppressNameFieldLink'},
                 {name: 'openLinkinSameTab'},
+            ]
+        },
+        {name: 'rowActions',
+            attributes: [
+                {name: 'isRemoveRowAction'},
+                {name: 'removeLabel'},                
+                {name: 'removeIcon'},
+                {name: 'removeColor'},                
+                {name: 'maxRemovedRows'},
+                {name: 'removeRowLeftOrRight'},
             ]
         },
         {name: 'advancedAttributes',

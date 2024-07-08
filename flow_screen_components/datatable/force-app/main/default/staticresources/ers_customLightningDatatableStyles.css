@@ -83,6 +83,15 @@ c-datatable c-ers_custom-lightning-datatable .dt-outer-container lightning-primi
 }
 
 /* v4.2.1 Remove Row Icon styling */
+:root{
+    --remove-icon-color: red;
+}
 .remove-icon {
-    --slds-c-icon-color-foreground: red;
+    --slds-c-icon-color-foreground: var(--remove-icon-color);
+}
+.remove-icon-green {
+    --slds-c-icon-color-foreground: green;
+}
+.remove-icon-black {
+    --slds-c-icon-color-foreground: black;
 }

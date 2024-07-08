@@ -104,6 +104,7 @@ export default class Datatable extends LightningElement {
     // Remove Row Action Attributes
     @api removeLabel = 'Remove Row';
     @api removeIcon = 'utility:close';
+    @api removeColor = 'remove-icon';   // Default red
     @api maxRemovedRows = 0;
     @api removeRowLeftOrRight = 'Right';
     @api outputRemovedRows = [];
@@ -1678,7 +1679,7 @@ if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
                 disabled: false
             },
             cellAttributes: {
-                class: "remove-icon"
+                class: this.removeColor
             },      
             editable: false,
             actions: null,

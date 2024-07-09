@@ -1142,7 +1142,8 @@ export default class Datatable extends LightningElement {
             // Custom column processing
             this.updateColumns();
 
-            if(this.cols[0]?.fieldName.endsWith('_lookup')) {
+            const firstCol = (this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") ? 1 : 0;
+            if(this.cols[firstCol]?.fieldName.endsWith('_lookup')) {
                 this.sortedBy = this.cols[0].fieldName;
                 this.doSort(this.sortedBy, 'asc');
             }

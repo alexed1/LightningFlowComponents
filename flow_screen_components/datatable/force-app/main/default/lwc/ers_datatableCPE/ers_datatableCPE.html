@@ -151,7 +151,7 @@
         </c-fsc_flow-combobox>
         <c-fsc_pick-icon
             mode="combobox"
-            oniconselection={handlePickIcon}>
+            oniconselection={handleTableIcon}>
         </c-fsc_pick-icon>
     </div>
 
@@ -413,27 +413,66 @@
 
         <div class={showHideRemoveRowAction}>
             <c-fsc_flow-combobox 
-                name="select_recordsPerPage" 
-                label={inputValues.recordsPerPage.label}
-                value={inputValues.recordsPerPage.value} 
-                value-type={inputValues.recordsPerPage.valueDataType}
-                field-level-help={inputValues.recordsPerPage.helpText}
-                builder-context-filter-type="Number"
-                builder-context-filter-collection-boolean={inputValues.recordsPerPage.isCollection}
+                name="select_removeLabel" 
+                label={inputValues.removeLabel.label}
+                value={inputValues.removeLabel.value} 
+                value-type={inputValues.removeLabel.valueDataType}
+                field-level-help={inputValues.removeLabel.helpText}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.removeLabel.isCollection}
                 builder-context={_builderContext} 
                 onvaluechanged={handleFlowComboboxValueChange}
                 automatic-output-variables={automaticOutputVariables}>
             </c-fsc_flow-combobox>
 
-            <div class="slds-m-top_xx-small">
-                <c-fsc_flow-checkbox
-                    name="select_showFirstLastButtons"
-                    label={inputValues.showFirstLastButtons.label} 
-                    checked={inputValues.cb_showFirstLastButtons.value} 
-                    field-level-help={inputValues.showFirstLastButtons.helpText}
-                    oncheckboxchanged={handleCheckboxChange}
-                ></c-fsc_flow-checkbox>
-            </div>
+            <c-fsc_flow-combobox 
+                name="select_removeIcon" 
+                label={inputValues.removeIcon.label}
+                value={inputValues.removeIcon.value} 
+                value-type={inputValues.removeIcon.valueDataType}
+                field-level-help={inputValues.removeIcon.helpText}
+                disabled={disallowHeaderChange}
+                builder-context-filter-collection-boolean={inputValues.removeIcon.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+            <c-fsc_pick-icon
+                mode="combobox"
+                oniconselection={handleRemoveIcon}>
+            </c-fsc_pick-icon>
+
+            <lightning-radio-group
+                name="select_removeColor"
+                label={inputValues.removeColor.label}
+                options={removeColorOptions}
+                value={inputValues.removeColor.value}
+                type="button"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
+            <lightning-radio-group
+                name="select_removeRowLeftOrRight"
+                label={inputValues.removeRowLeftOrRight.label}
+                options={removeLeftOrRightOptions}
+                value={inputValues.removeRowLeftOrRight.value}
+                type="button"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
+            <c-fsc_flow-combobox 
+                name="select_maxRemovedRows" 
+                label={inputValues.maxRemovedRows.label}
+                value={inputValues.maxRemovedRows.value} 
+                value-type={inputValues.maxRemovedRows.valueDataType}
+                field-level-help={inputValues.maxRemovedRows.helpText}
+                builder-context-filter-type="Number"
+                builder-context-filter-collection-boolean={inputValues.maxRemovedRows.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+
         </div>
     </div>
 

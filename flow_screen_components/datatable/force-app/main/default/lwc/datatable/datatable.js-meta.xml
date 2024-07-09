@@ -154,9 +154,9 @@
             <property name="cb_isRemoveRowAction" type="String" role="inputOnly"/>            
             <property name="removeLabel" label="Remove Row Action Label" type="String" role="inputOnly" description="This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)"/>
             <property name="removeIcon" label="Remove Row Action Icon" type="String" role="inputOnly" description="This is the icon that will be used for the Remove Row Action Button (Default: utility:close)"/>
-            <property name="removeColor" label="Remove Row Action Icon Color" type="String" role="inputOnly" description="This is the color (red, green or black) for the icon that will be used for the Remove Row Action Button (Default: red)"/>
-            <property name="maxRemovedRows" label="Maximum number of rows that can be removed" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)"/>
-            <property name="removeRowLeftOrRight" label="Remove Row Action Button Location" type="String" role="inputOnly" description="Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)"/>
+            <property name="removeColor" label="Remove Row Action Icon Color" type="String" role="inputOnly" description="This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)"/>
+            <property name="maxRemovedRows" label="Maximum # of rows that can be removed" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)"/>
+            <property name="removeRowLeftOrRight" label="Remove Row Action Column Location" type="String" role="inputOnly" description="Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

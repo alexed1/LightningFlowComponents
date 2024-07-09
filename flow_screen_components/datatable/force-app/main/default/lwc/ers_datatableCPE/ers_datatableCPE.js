@@ -17,11 +17,15 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/ers_DatatableController.getCPEReturnResults';
 import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, WIZROWCOUNT, SHOW_DEBUG_INFO, DEBUG_INFO_PREFIX 
+const CONSTANTS = getConstants();   // From ers_datatableUtils
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
+const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
+const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
+const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
+const REMOVE_ROW_SIDE = CONSTANTS.REMOVE_ROW_SIDE;
 const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
 const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 
@@ -600,10 +604,10 @@ export default class ers_datatableCPE extends LightningElement {
         removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon', 
             helpText: 'This is the icon that will be used for the Remove Row Action Button (Default: utility:close)'},
         removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon Color', 
-            helpText: 'This is the color (red, green or black) for the icon that will be used for the Remove Row Action Button (Default: red)'},
-        maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum number of rows that can be removed', 
+            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)'},
+        maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
             helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
-        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Button Location', 
+        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Column Location', 
             helpText: 'Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)'},
     };
 
@@ -678,11 +682,11 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'rowActions',
             attributes: [
                 {name: 'isRemoveRowAction'},
-                {name: 'removeLabel'},                
+                {name: 'removeLabel'},
                 {name: 'removeIcon'},
-                {name: 'removeColor'},                
-                {name: 'maxRemovedRows'},
+                {name: 'removeColor'},
                 {name: 'removeRowLeftOrRight'},
+                {name: 'maxRemovedRows'},
             ]
         },
         {name: 'advancedAttributes',
@@ -719,6 +723,32 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'tableHeight'},
                 {name: 'keyField'},
             ]
+        }
+    ]
+
+    removeColorOptions = [
+        {
+            label: 'Red',
+            value: 'remove-icon'
+        },
+        {
+            label: 'Green',
+            value: 'remove-icon-green'
+        },
+        {
+            label: 'Black',
+            value: 'remove-icon-black'
+        }
+    ]
+
+    removeLeftOrRightOptions = [
+        {
+            label: 'Left',
+            value: 'Left'
+        },
+        {
+            label: 'Right',
+            value: 'Right'
         }
     ]
 
@@ -859,6 +889,21 @@ export default class ers_datatableCPE extends LightningElement {
         console.log(DEBUG_INFO_PREFIX+'handle default attributes');
         if (this.inputValues.recordsPerPage.value == null) {
             this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
+        }
+        if (this.inputValues.removeLabel.value == null) {
+            this.inputValues.removeLabel.value = REMOVE_ROW_LABEL;
+        }
+        if (this.inputValues.removeIcon.value == null) {
+            this.inputValues.removeIcon.value = REMOVE_ROW_ICON;
+        }
+        if (this.inputValues.removeColor.value == null) {
+            this.inputValues.removeColor.value = REMOVE_ROW_COLOR;
+        }
+        if (this.inputValues.removeRowLeftOrRight.value == null) {
+            this.inputValues.removeRowLeftOrRight.value = REMOVE_ROW_SIDE;
+        }
+        if (this.inputValues.maxRemovedRows.value == null) {
+            this.inputValues.maxRemovedRows.value = 0;
         }
     }
 
@@ -1087,7 +1132,7 @@ export default class ers_datatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             let newType = event.detail.newValueDataType;
             let newValue = event.detail.newValue;
-            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
+            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'maxRemovedRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
                 newType = 'Number';
             }
             this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
@@ -1108,8 +1153,15 @@ export default class ers_datatableCPE extends LightningElement {
         }
     }
 
-    handlePickIcon(event) {
-        let changedAttribute = 'tableIcon';
+    handleTableIcon(event) {
+        this.setIconAttribute('tableIcon', event);
+    }
+
+    handleRemoveIcon(event) {
+        this.setIconAttribute('removeIcon', event);
+    }
+
+    setIconAttribute(changedAttribute, event) {
         this.inputValues[changedAttribute].value = event.detail;
         this.dispatchFlowValueChangeEvent(changedAttribute, event.detail, 'String');
     }

@@ -1377,7 +1377,7 @@ export default class Datatable extends LightningElement {
         let columnNumber = 0;
         let lufield = '';
 
-        // if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
+        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") this.addRemoveRowAction();
 
         this.basicColumns.forEach(colDef => {
 
@@ -1657,7 +1657,7 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-if (!this.isConfigMode) this.addRemoveRowAction(); //🚀
+        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight != "Left") this.addRemoveRowAction();
 
         this.columns = this.cols;
         console.log(this.consoleLogPrefix+'this.columns',this.columns);

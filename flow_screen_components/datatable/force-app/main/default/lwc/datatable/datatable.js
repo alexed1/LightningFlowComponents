@@ -116,6 +116,10 @@ export default class Datatable extends LightningElement {
     get isRemoveRowAction() {
         return (this.cb_isRemoveRowAction == CB_TRUE) ? true : false;
     }
+    set isRemoveRowAction(value) {
+        this._isRemoveRowAction = value;
+    }
+    _isRemoveRowAction;
     @api cb_isRemoveRowAction;
 
     // Console Log differentiation
@@ -223,6 +227,10 @@ export default class Datatable extends LightningElement {
     get singleRowSelection() {
         return (this.cb_singleRowSelection == CB_TRUE) ? true : false;
     }
+    set singleRowSelection(value) {
+        this._singleRowSelection = value;
+    }
+    _singleRowSelection;
     @api cb_singleRowSelection;
     
     @api 
@@ -304,6 +312,10 @@ export default class Datatable extends LightningElement {
     get isUserDefinedObject() {
         return (this.cb_isUserDefinedObject == CB_TRUE) ? true : false;
     }
+    set isUserDefinedObject(value) {
+        this._isUserDefinedObject = value;
+    }
+    _isUserDefinedObject;
     @api cb_isUserDefinedObject;
 
     @api get serializedRecordData() {

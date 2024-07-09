@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		2019 - 2023
+**Date:**		2019 - 2024
   
 LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.2.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZlHQAW)   
-[Version 4.2.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004XZlHQAW)
+[Version 4.2.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz7wQAA)   
+[Version 4.2.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz7wQAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -72,10 +72,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 ---
 # Release Notes 
 
-## 07/xx/24 -  Eric Smith -     Version 4.2.1  
+## 07/09/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
 -   New Feature: Add a Remove Row action as the first or last column in a Datatable.  
--       New outputs include a collection and a count of the removed rows.  
+-       New outputs include a collection and a count of the removed rows.
+-       You can specify the icon and color for the action button.  
 -       You can specify the maximum number of rows that can be removed.  
 -   Selected Rows are now persistent when Paginating, Searching, Filtering, Sorting, and Removing!  
 -   A new output attribute (outputRemainingRows) will provide all records passed into the table with all edits made to those records, less all records (if any) that were removed  

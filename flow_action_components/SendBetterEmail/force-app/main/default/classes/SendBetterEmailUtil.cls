@@ -306,4 +306,49 @@ public inherited sharing class SendBetterEmailUtil {
 
         return mapRecordIdByName;
     }
+
+  public static String renderTemplate(
+      String templateId,
+      String targetObjectId,
+      String whatId
+  ){
+    Messaging.SingleEmailMessage tempMail = new Messaging.SingleEmailMessage();
+
+    tempMail = Messaging.renderStoredEmailTemplate(templateID, targetObjectId, whatId);
+
+    Pattern pattern = Pattern.compile('###(.*?)###');
+    Matcher matcher = pattern.matcher(tempMail.htmlBody);
+    List<String> sObjectFields = new List<String>();
+    while (matcher.find()) {
+      sObjectFields.add(matcher.group(1));
+    }
+
+    String relatedEntityType = [SELECT RelatedEntityType FROM EmailTemplate WHERE Id = :templateID].RelatedEntityType;
+
+    Schema.SObjectType sObjectType = Schema.getGlobalDescribe().get(relatedEntityType);
+    if(sObjectFields.size() > 0 && whatId != null && sObjectType != null){
+      String query = 'SELECT ' + String.join(sObjectFields, ', ') + ' FROM ' + sObjectType + ' WHERE Id = \'' + whatId + '\'';
+      SObject sObjectRecord = Database.query(query);
+
+      matcher.reset();
+      while (matcher.find()) {
+        String field = matcher.group(1);
+        String[] fieldParts = field.split('\\.');
+        String fieldValue;
+
+        SObject obj = sObjectRecord;
+        for(Integer i = 0; i < fieldParts.size(); i++){
+          if(i + 1 != fieldParts.size()){
+            obj = sObjectRecord.getSObject(fieldParts[i]);
+          } else {
+            fieldValue = (String) obj.get(fieldParts[i]);
+          }
+        }
+
+        tempMail.htmlBody = tempMail.htmlBody.replace(matcher.group(), fieldValue);
+      }
+    }
+
+    return tempMail.htmlBody;
+  }
 }

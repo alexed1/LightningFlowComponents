@@ -50,7 +50,7 @@ const getConstants = () => {
         REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button
         REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button
         REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
-        SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
+        SHOW_DEBUG_INFO : true,            // Set to true to show sensitive debug info in the console and debug logs
         DEBUG_INFO_PREFIX : 'DATATABLE: '   // Prefix to be used for debug info in the console
     }
 }

@@ -71,7 +71,15 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
-
+  
+## 07/xx/24 -  Eric Smith -     Version 4.2.2  
+**Updates:**   
+-   Added additional output attributes for Apex Defined records (outputRemovedRowsString & outputRemainingRowsString)  
+-   Added an option to display the number of selected records in the table header 
+-  
+**Bug Fixes:** 
+-   Fixed bug where first column reference was off if the remove row action was on the left 
+-  
 ## 07/09/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
 -   New Feature: Add a Remove Row action as the first or last column in a Datatable.  

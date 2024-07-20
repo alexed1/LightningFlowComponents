@@ -76,7 +76,15 @@ export default class Datatable extends LightningElement {
 
     // Component Input & Output Attributes
     //@api tableData = []; see new version below
-    @api columnFields = '';
+    @api 
+    get columnFields() {
+        return (this.isEmptyUserDefinedObject) ? this.keyField : this._columnFields;
+    }
+    set columnFields(value) {
+        this._columnFields = value;
+    }
+    _columnFields;
+
     @api columnAlignments = [];
     @api columnCellAttribs = [];
     @api columnEdits = '';
@@ -171,6 +179,10 @@ export default class Datatable extends LightningElement {
     get hideCheckboxColumn() {
         return (this.cb_hideCheckboxColumn == CB_TRUE) ? true : false;
     }
+    set hideCheckboxColumn(value) {
+        this._hideCheckboxColumn = value;
+    }
+    _hideCheckboxColumn;
     @api cb_hideCheckboxColumn;
     
     @api 
@@ -222,6 +234,16 @@ export default class Datatable extends LightningElement {
     }
     _showRecordCount;
     @api cb_showRecordCount;
+
+    @api 
+    get showSelectedCount() {
+        return (this.cb_showSelectedCount == CB_TRUE) ? true : false;
+    }
+    set showSelectedCount(value) {
+        this._showSelectedCount = value;
+    }
+    _showSelectedCount;
+    @api cb_showSelectedCount;
 
     @api 
     get singleRowSelection() {
@@ -401,9 +423,27 @@ export default class Datatable extends LightningElement {
     @api outputSelectedRowsString = '';
     @api outputEditedRowsString = '';
     @api outputEditedSerializedRows = '';
+    @api outputRemovedRowsString = '';
+    @api outputRemainingRowsString = '';
     
-    @api columnScales = [];
-    @api columnTypes = [];
+    @api 
+    get columnScales() {
+        return (this.isEmptyUserDefinedObject) ? [] : this._columnScales;
+    }
+    set columnScales(value) {
+        this._columnScales = value;
+    }
+    _columnScales = [];
+
+    @api 
+    get columnTypes() {
+        return (this.isEmptyUserDefinedObject) ? [] : this._columnTypes;
+    }
+    set columnTypes(value) {
+        this._columnTypes = value;
+    }
+    _columnTypes = [];
+    
     @api scaleAttrib = [];
     @api typeAttrib = [];
     
@@ -453,9 +493,6 @@ export default class Datatable extends LightningElement {
     @track showClearButton = false;
     @track showClearFilterButton = false;
     @track tableHeightAttribute = 'height:';
-    // @track tableBorderStyle = 'border-left: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-    //     +' border-top: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229));' 
-    //     + ' border-right: var(--lwc-borderWidthThin,1px) solid var(--lwc-colorBorder,rgb(229, 229, 229)); margin: -1px;';
 
     // Handle Selected Rows retention
     @api allSelectedRows;       // Obsolete - No longer used but can't be removed
@@ -561,6 +598,10 @@ export default class Datatable extends LightningElement {
     @track columnEditParameter;
     @track columnFilterParameter;
     
+    get isEmptyUserDefinedObject() {
+        return this.isUserDefinedObject && (!this._tableDataString || this._tableDataString?.length == 0);
+    }
+
     get collectionSize() {
         let max = Math.min(CONSTANTS.MAXROWCOUNT, this.maxNumberOfRows);
         return Math.min(this._tableData.length, max);
@@ -666,7 +707,7 @@ export default class Datatable extends LightningElement {
     }
     _paginatedData;
 
-    @api paginatedSelectedRows = [];    //TODO: Figure out how to retain selected rows when paginating, sorting, filtering, searching
+    @api paginatedSelectedRows = [];
     // End pagination Attributes
 
     // Pagination Methods
@@ -734,7 +775,8 @@ export default class Datatable extends LightningElement {
 
     get formattedTableLabel() {
         let filteredCount = (this.filteredRecordCount != this.tableRecordCount) ? `${this.filteredRecordCount} of ` : '';
-        return (this.showRecordCount) ? `${this._tableLabel} (${filteredCount}${this.tableRecordCount})` : this._tableLabel;
+        let selectedCount = (this.showSelectedCount) ? ` • ${this.numberOfRowsSelected} selected` : '';
+        return (this.showRecordCount) ? `${this._tableLabel} (${filteredCount}${this.tableRecordCount}${selectedCount})` : this._tableLabel;
     }
 
     get tableRecordCount() {
@@ -747,7 +789,6 @@ export default class Datatable extends LightningElement {
 
     get isShowTable() {
         return this._mydata.length > 0 || this.isFiltered;
-        // return this._tableData.length > 0;
     }
 
     get haveRecords() {
@@ -1098,9 +1139,6 @@ export default class Datatable extends LightningElement {
         console.log(this.consoleLogPrefix+'tableDataString - ',(SHOW_DEBUG_INFO) ? this._tableDataString : '***');
         if (!this._tableDataString || this._tableDataString?.length == 0) {
             this._tableDataString = '[{"'+this.keyField+'":"(empty table)"}]';
-            this.columnFields = this.keyField;
-            this.columnTypes = [];
-            this.columnScales = [];
         }
         this._tableData = JSON.parse(this._tableDataString);
         console.log(this.consoleLogPrefix+'tableData - ',(SHOW_DEBUG_INFO) ? this._tableData : '***');
@@ -1342,13 +1380,15 @@ export default class Datatable extends LightningElement {
             }); 
             
             // Handle Lookup for the SObject's "Name" Field
-            record[this.objectLinkField + '_name'] = record[this.objectLinkField];
-            if (ISCOMMUNITY) {
-                record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
-            } else if (ISFLOWBUILDER) {
-                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '/' + record['Id'];
-            } else {
-                record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
+            if (!this.isUserDefinedObject || this.isConfigMode) {
+                record[this.objectLinkField + '_name'] = record[this.objectLinkField];
+                if (ISCOMMUNITY) {
+                    record[this.objectLinkField + '_lookup'] = MYDOMAIN + 'detail/' + record['Id'];
+                } else if (ISFLOWBUILDER) {
+                    record[this.objectLinkField + '_lookup'] = MYDOMAIN + '/' + record['Id'];
+                } else {
+                    record[this.objectLinkField + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + this.objectNameLookup + '/' + record['Id'] + '/view';                
+                }
             }
 
             // Handle replacement of Picklist API Names with Labels
@@ -1828,6 +1868,8 @@ export default class Datatable extends LightningElement {
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
+                    
+                    this.dispatchOutputs();
 
                     // remove record from collection
                     this.mydata = removeRowFromCollection(this, this._mydata, keyValue);
@@ -2809,6 +2851,26 @@ export default class Datatable extends LightningElement {
         this.isAllFilter = allSelected;
     }
 
+    dispatchOutputs() {
+        if (this.isUserDefinedObject) {
+            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
+            this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);   
+            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);                                         //JSON Version
+            this.outputRemovedRowsString = JSON.stringify(this.outputRemovedRows); 
+            this.outputRemainingRowsString = JSON.stringify(this.outputRemainingRows); 
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRowsString', this.outputRemovedRowsString));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRowsString', this.outputRemainingRowsString));
+        }
+
+        if(this.isSerializedRecordData) {
+            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
+        }
+    }
+
     @api
     validate() {
         console.log(this.consoleLogPrefix+"validate and exit");
@@ -2846,19 +2908,7 @@ export default class Datatable extends LightningElement {
             }; 
         } */
         
-        if (this.isUserDefinedObject) {
-            this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
-            this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);   
-            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);                                         //JSON Version
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
-        }
-
-        if(this.isSerializedRecordData) {
-            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
-        }
+        this.dispatchOutputs();
 
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');

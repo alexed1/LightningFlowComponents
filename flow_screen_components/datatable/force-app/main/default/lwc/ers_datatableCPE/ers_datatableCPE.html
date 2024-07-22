@@ -225,6 +225,15 @@
     ></c-fsc_flow-checkbox>
     
     <c-fsc_flow-checkbox
+        disabled={disableSelectCountSelection}
+        name="select_showSelectedCount"
+        label={inputValues.showSelectedCount.label} 
+        checked={inputValues.cb_showSelectedCount.value} 
+        field-level-help={inputValues.showSelectedCount.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
         disabled={disableSearchBarSelection}
         name="select_isShowSearchBar"
         label={inputValues.isShowSearchBar.label}

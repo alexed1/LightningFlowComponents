@@ -17,11 +17,17 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/ers_DatatableController.getCPEReturnResults';
 import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, WIZROWCOUNT
+const CONSTANTS = getConstants();   // From ers_datatableUtils
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
+const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
+const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
+const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
+const REMOVE_ROW_SIDE = CONSTANTS.REMOVE_ROW_SIDE;
+const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
+const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 
 const defaults = {
     tableBorder: true,
@@ -41,7 +47,9 @@ const COLORS = {
     green: '#659668',
     green_light: '#7E967F',
     red: '#966594',
-    red_light: '#967E95'
+    red_light: '#967E95',
+    orange: '#E79556',
+    orange_light: '#FEB97D'
 }
 
 export default class ers_datatableCPE extends LightningElement {
@@ -54,9 +62,11 @@ export default class ers_datatableCPE extends LightningElement {
     _defaultBannerColor = COLORS.blue;
     _colorWizardOverride = COLORS.green;
     _colorAdvancedOverride = COLORS.red;
+    _colorRowActionsOverride = COLORS.orange;
     _defaultModalHeaderColor = COLORS.blue_light;
     _modalHeaderColorWizardOverride = COLORS.green_light;
     _modalHeaderColorAdvancedOverride = COLORS.red_light;
+    _modalHeaderColorRowActionsOverride = COLORS.orange_light;
 
     _inputVariables = [];
     _builderContext = [];
@@ -179,6 +189,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get colorRowActionsOverride() { 
+        return this._colorRowActionsOverride;
+    }
+
+    @api
     get colorAdvancedOverride() { 
         return this._colorAdvancedOverride;
     }
@@ -199,6 +214,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get modalHeaderColorRowActionsOverride() {
+        return this._modalHeaderColorRowActionsOverride;
+    }
+
+    @api
     get showColumnAttributes() { 
         return (this.showColumnAttributesToggle || !this.isSObjectInput || this.inputValues.isSerializedRecordData.value);
     }
@@ -211,6 +231,21 @@ export default class ers_datatableCPE extends LightningElement {
     @api
     get showHideColumnAttributes() {
         return this.showColumnAttributes ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get showHideRemoveRowAction() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get removeRowActionClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
+    }
+
+    @api
+    get removeRowActionCheckboxClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
     }
 
     @api
@@ -561,6 +596,19 @@ export default class ers_datatableCPE extends LightningElement {
         isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
             helpText: 'Select if you want the datatable to be able to accept serialized data.'},
         cb_isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: ''},
+        isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: 'Add a Remove Row Action Button', 
+            helpText: 'Select if you want to add a Remove Row Action Button to each row of the datatable.'},
+        cb_isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: ''},
+        removeLabel: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Label', 
+            helpText: 'This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)'},
+        removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon', 
+            helpText: 'This is the icon that will be used for the Remove Row Action Button (Default: utility:close)'},
+        removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon Color', 
+            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)'},
+        maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
+            helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
+        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Column Location', 
+            helpText: 'Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)'},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -570,6 +618,7 @@ export default class ers_datatableCPE extends LightningElement {
         dataSource: {label: 'Data Source', info: []},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
+        rowActions: {label: 'Row Actions', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
     }
 
@@ -630,6 +679,16 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'openLinkinSameTab'},
             ]
         },
+        {name: 'rowActions',
+            attributes: [
+                {name: 'isRemoveRowAction'},
+                {name: 'removeLabel'},
+                {name: 'removeIcon'},
+                {name: 'removeColor'},
+                {name: 'removeRowLeftOrRight'},
+                {name: 'maxRemovedRows'},
+            ]
+        },
         {name: 'advancedAttributes',
             attributes: [
                 {name: 'isUserDefinedObject'},
@@ -664,6 +723,32 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'tableHeight'},
                 {name: 'keyField'},
             ]
+        }
+    ]
+
+    removeColorOptions = [
+        {
+            label: 'Red',
+            value: 'remove-icon'
+        },
+        {
+            label: 'Green',
+            value: 'remove-icon-green'
+        },
+        {
+            label: 'Black',
+            value: 'remove-icon-black'
+        }
+    ]
+
+    removeLeftOrRightOptions = [
+        {
+            label: 'Left',
+            value: 'Left'
+        },
+        {
+            label: 'Right',
+            value: 'Right'
         }
     ]
 
@@ -744,11 +829,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     initializeValues() {
-        console.log('ers_datatableCPE - initializeValues');
+        console.log(DEBUG_INFO_PREFIX+'ers_datatableCPE - initializeValues');
         this.isCheckboxColumnHidden = false;
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value != null) {
-                console.log('Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
+                console.log(DEBUG_INFO_PREFIX+'Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
 
                     try {
@@ -801,14 +886,29 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleDefaultAttributes() {
-        console.log('handle default attributes');
+        console.log(DEBUG_INFO_PREFIX+'handle default attributes');
         if (this.inputValues.recordsPerPage.value == null) {
             this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
+        }
+        if (this.inputValues.removeLabel.value == null) {
+            this.inputValues.removeLabel.value = REMOVE_ROW_LABEL;
+        }
+        if (this.inputValues.removeIcon.value == null) {
+            this.inputValues.removeIcon.value = REMOVE_ROW_ICON;
+        }
+        if (this.inputValues.removeColor.value == null) {
+            this.inputValues.removeColor.value = REMOVE_ROW_COLOR;
+        }
+        if (this.inputValues.removeRowLeftOrRight.value == null) {
+            this.inputValues.removeRowLeftOrRight.value = REMOVE_ROW_SIDE;
+        }
+        if (this.inputValues.maxRemovedRows.value == null) {
+            this.inputValues.maxRemovedRows.value = 0;
         }
     }
 
     handleBuildHelpInfo() {
-        console.log('build help info');
+        console.log(DEBUG_INFO_PREFIX+'build help info');
         this.helpSections.forEach(section => {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
@@ -822,11 +922,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleDynamicTypeMapping(event) { 
-        console.log('handling a dynamic type mapping');
-        console.log('event is ' + JSON.stringify(event));
+        console.log(DEBUG_INFO_PREFIX+'handling a dynamic type mapping');
+        console.log(DEBUG_INFO_PREFIX+'event is ' + JSON.stringify(event));
         let typeValue = event.detail.objectType;
         const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
-        console.log('typeValue is: ' + typeValue);
+        console.log(DEBUG_INFO_PREFIX+'typeValue is: ' + typeValue);
         const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
             composed: true,
             cancelable: false,
@@ -852,7 +952,7 @@ export default class ers_datatableCPE extends LightningElement {
     }    
 
     handleGetObjectDetails(objName) { 
-        console.log('Passing object name to Apex Controller', objName);
+        console.log(DEBUG_INFO_PREFIX+'Passing object name to Apex Controller', objName);
         getCPEReturnResults({ objName: objName })
         .then(result => {
             let returnResults = JSON.parse(result);
@@ -861,11 +961,11 @@ export default class ers_datatableCPE extends LightningElement {
             this.objectLabel = returnResults.objectLabel;
             this.objectPluralLabel = returnResults.objectPluralLabel;
             this.objectIconName = returnResults.objectIconName;
-            console.log(`Return Values for ${objName}, Label: ${this.objectLabel}, Plural: ${this.objectPluralLabel}, Icon: ${this.objectIconName}`);
+            console.log(`${DEBUG_INFO_PREFIX}Return Values for ${objName}, Label: ${this.objectLabel}, Plural: ${this.objectPluralLabel}, Icon: ${this.objectIconName}`);
 
         })  // Handle any errors from the Apex Class
         .catch(error => {
-            console.log('getCPEReturnResults error is: ' + JSON.stringify(error));
+            console.log(DEBUG_INFO_PREFIX+'getCPEReturnResults error is: ' + JSON.stringify(error));
             if (error.body) {
                 this.errorApex = 'Apex Action error: ' + error.body.message;
                 alert(this.errorApex + '\n');  // Present the error to the user
@@ -1032,7 +1132,7 @@ export default class ers_datatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             let newType = event.detail.newValueDataType;
             let newValue = event.detail.newValue;
-            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
+            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'maxRemovedRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
                 newType = 'Number';
             }
             this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
@@ -1053,8 +1153,15 @@ export default class ers_datatableCPE extends LightningElement {
         }
     }
 
-    handlePickIcon(event) {
-        let changedAttribute = 'tableIcon';
+    handleTableIcon(event) {
+        this.setIconAttribute('tableIcon', event);
+    }
+
+    handleRemoveIcon(event) {
+        this.setIconAttribute('removeIcon', event);
+    }
+
+    setIconAttribute(changedAttribute, event) {
         this.inputValues[changedAttribute].value = event.detail;
         this.dispatchFlowValueChangeEvent(changedAttribute, event.detail, 'String');
     }
@@ -1075,7 +1182,7 @@ export default class ers_datatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
-        console.log('dispatchFlowValueChangeEvent', id, newValue, newValueDataType);
+        console.log(DEBUG_INFO_PREFIX+'dispatchFlowValueChangeEvent', id, newValue, newValueDataType);
         if (!newValue) { 
             this.inputValues[id].value = newValue;  // You need to force any cleared values back to inputValues
         }                
@@ -1099,7 +1206,7 @@ export default class ers_datatableCPE extends LightningElement {
 
     updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
         // Set parameter values to pass to Wizard Flow
-        console.log('updateFlowParam:', name, value);        
+        console.log(DEBUG_INFO_PREFIX+'updateFlowParam:', name, value);        
         let currentValue = this.flowParams.find(param => param.name === name).value;
         if (value != currentValue) {
             if (noEncode) {
@@ -1135,15 +1242,15 @@ export default class ers_datatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        console.log('=== handleFlowStatusChange -', event.detail.status, '===');
+        console.log(DEBUG_INFO_PREFIX+'=== handleFlowStatusChange -', event.detail.status, '===');
         if (event.detail.status === "ERROR") { 
-            console.log('Flow Error: ',JSON.stringify(event));
+            console.log(DEBUG_INFO_PREFIX+'Flow Error: ',JSON.stringify(event));
         } else {      
             this.isFlowLoaded = true;
             event.detail.outputVariables.forEach(attribute => {
                 let name = attribute.name;
                 let value = attribute.value; 
-                console.log('Output from Wizard Flow: ', name, value);
+                console.log(DEBUG_INFO_PREFIX+'Output from Wizard Flow: ', name, value);
 
                 if (name == 'vSelectionMethod') { 
                     this.vSelectionMethod = value;
@@ -1240,15 +1347,15 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleWizardCancel() { 
-        console.log('handleWizardCancel');
+        console.log(DEBUG_INFO_PREFIX+'handleWizardCancel');
     }
 
     handleWizardRestart() { 
-        console.log('handleWizardRestart');
+        console.log(DEBUG_INFO_PREFIX+'handleWizardRestart');
     }
     
     handleWizardNext() { 
-        console.log('handleWizardNext');      
+        console.log(DEBUG_INFO_PREFIX+'handleWizardNext');      
         this.dispatchFlowActionEvent('next');
     }
 
@@ -1279,7 +1386,7 @@ export default class ers_datatableCPE extends LightningElement {
     handleKeyDown(event) { 
         var keycode = event.code;
         if(keycode == 'Escape'){
-            console.log('CPE ESC Key Pressed');
+            console.log(DEBUG_INFO_PREFIX+'CPE ESC Key Pressed');
             this.openModal = false;
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -1313,7 +1420,7 @@ export default class ers_datatableCPE extends LightningElement {
             allComboboxes.forEach(curCombobox => {
                 if (!curCombobox.reportValidity()) {
                     resultErrors.push('error');
-                    console.log('ComboBox Error:', error);
+                    console.log(DEBUG_INFO_PREFIX+'ComboBox Error:', error);
                 }
             });
         }
@@ -1328,7 +1435,7 @@ export default class ers_datatableCPE extends LightningElement {
             this.inputValues[key].isError = true;
             this.inputValues[key].errorMessage = errorString;
             this.inputValues[key].class += ' slds-has-error';
-            console.log('CPE generated error:', key, isError, errorString);
+            console.log(DEBUG_INFO_PREFIX+'CPE generated error:', key, isError, errorString);
         } else { 
             this.inputValues[key].isError = false;
         }

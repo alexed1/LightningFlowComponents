@@ -201,6 +201,10 @@ export default class Datatable extends LightningElement {
     get showRowNumbers() {
         return (this.cb_showRowNumbers == CB_TRUE) ? true : false;
     }
+    set showRowNumbers(value) {
+        this._showRowNumbers = value;
+    }
+    _showRowNumbers;
     @api cb_showRowNumbers;
     
     @api 

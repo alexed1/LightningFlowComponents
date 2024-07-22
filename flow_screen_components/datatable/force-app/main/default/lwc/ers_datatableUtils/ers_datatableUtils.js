@@ -33,7 +33,7 @@ console.log("DATATABLE: isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.2.2',           // Current Source Code Version #
+        VERSION_NUMBER : '4.3.0',           // Current Source Code Version #
         MAXROWCOUNT : 2000,                 // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,                     // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,                    // Number of records to display in the Column Wizard datatable
@@ -50,8 +50,8 @@ const getConstants = () => {
         REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button
         REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button
         REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
-        SHOW_DEBUG_INFO : true,            // Set to true to show sensitive debug info in the console and debug logs
-        DEBUG_INFO_PREFIX : 'DATATABLE: '   // Prefix to be used for debug info in the console
+        DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
+        SHOW_DEBUG_INFO : false             // Set to true to show sensitive debug info in the console and debug logs
     }
 }
 

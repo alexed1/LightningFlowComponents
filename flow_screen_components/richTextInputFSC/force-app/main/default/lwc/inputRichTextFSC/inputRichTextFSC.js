@@ -19,7 +19,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @api required = false;
     @api disabledCategories = '';
     @api enabledFormats;
-    @api includeHTMLCharacterCount = false;
+    @api excludeHTMLCharacterCount = false;
 
     formats = ['font', 'size', 'bold', 'italic', 'underline',
         'strike', 'list', 'indent', 'align', 'link',
@@ -196,10 +196,10 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.richText = event.target.value;
         }
 
-        //Regex <[^>]*> removes any HTML from the word count
-        this.characterCount = this.richText.replace(/<[^>]*>/ig, "").length;
-        if (this.includeHTMLCharacterCount) {
-            this.characterCount = this.richText.length;
+        this.characterCount = this.richText.length;
+        if (this.excludeHTMLCharacterCount) {
+            //Regex <[^>]*> removes any HTML from the word count
+            this.characterCount = this.richText.replace(/<[^>]*>/ig, "").length;
         }
 
         if(this.characterCap && this.characterCount > this.characterLimit){

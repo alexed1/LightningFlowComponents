@@ -6,14 +6,22 @@ global with sharing class CountRecordsAndFields {
             List<SObject> records = curRequest.inputCollection;
             String fieldName = curRequest.fieldName;
             String fieldValue = curRequest.fieldValue;
-    
+
             //Create a Results object to hold the return values
             Results response = new Results();
             try {
                 for (SObject record : records) {
                     if (!String.isBlank(fieldName) && !String.isBlank(fieldValue)) {
-                        if (record.get(fieldName) == fieldValue) {
-                            response.matchedNumber++;
+                        // Retrieve the field value from the record
+                        Object fieldVal = record.get(fieldName);
+                        if (fieldVal != null) {
+                            // Convert the field value to a string for comparison
+                            // Handle boolean fields by converting them to strings
+                            String fieldValStr = (fieldVal instanceof Boolean) ? String.valueOf(fieldVal) : fieldVal.toString();
+                            // Compare the field value string with the provided field value string
+                            if (fieldValStr == fieldValue) {
+                                response.matchedNumber++;
+                            }
                         }
                     }
     
@@ -22,12 +30,12 @@ global with sharing class CountRecordsAndFields {
             } catch (Exception ex) {
                 response.errors = ex.getMessage();
             }
-    
+
     //Wrap the Results object in a List container (an extra step added to allow this interface to also support bulkification)
           
             responseWrapper.add(response);
         }
-        
+
         return responseWrapper;
 
     }

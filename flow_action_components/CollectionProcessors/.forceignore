@@ -6,3 +6,7 @@ force-app/main/default/flows/Create_Accounts.flow-meta.xml
 /force-app/main/default/profiles/
 /force-app/main/default/settings/
 /force-app/main/default/appMenus/
+
+**/tsconfig.json
+
+**/*.ts

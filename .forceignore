@@ -1,3 +1,7 @@
 **/jsconfig.json
 
 **/.eslintrc.json
+
+**/tsconfig.json
+
+**/*.ts

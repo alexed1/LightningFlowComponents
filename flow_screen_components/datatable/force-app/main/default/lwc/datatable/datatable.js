@@ -2056,7 +2056,7 @@ export default class Datatable extends LightningElement {
         this.outputSelectedRows = [];
         if (allSelectedRecs) {  // Keep selected rows in the same order as the original table
             this.savePreEditData.forEach(rec => {   // Check all records - mydata would just be the filtered records here
-                const isSelected = allSelectedRecs.some(srec => srec[this.keyField] === rec[this.keyField]);
+                const isSelected = allSelectedRecs.some(srec => srec[this.keyField] === rec[this.keyField] && srec[this.keyField] !== undefined && rec[this.keyField] !== undefined );
                 if (isSelected) {
                     this.outputSelectedRows = [...this.outputSelectedRows, rec];
                 }

@@ -308,9 +308,9 @@ public inherited sharing class SendBetterEmailUtil {
     }
 
   public static String renderTemplate(
-      String templateId,
-      String targetObjectId,
-      String whatId
+          String templateId,
+          String targetObjectId,
+          String whatId
   ){
     Messaging.SingleEmailMessage tempMail = new Messaging.SingleEmailMessage();
 
@@ -339,16 +339,30 @@ public inherited sharing class SendBetterEmailUtil {
         SObject obj = sObjectRecord;
         for(Integer i = 0; i < fieldParts.size(); i++){
           if(i + 1 != fieldParts.size()){
-            obj = sObjectRecord.getSObject(fieldParts[i]);
+            obj = obj.getSObject(fieldParts[i]);
+
+            if(obj == null){
+              break;
+            }
           } else {
-            fieldValue = (String) obj.get(fieldParts[i]);
+            try{
+              fieldValue = (String) obj.get(fieldParts[i]);
+            } catch (TypeException e){
+              if (obj.get(fieldParts[i]) instanceof Date){
+                fieldValue = ((Date) obj.get(fieldParts[i])).format();
+              } else if(obj.get(fieldParts[i]) instanceof Datetime){
+                fieldValue = ((Datetime) obj.get(fieldParts[i])).format();
+              } else {
+                fieldValue = obj.get(fieldParts[i]).toString();
+              }
+            }
           }
         }
 
+        fieldValue = fieldValue == null ? '' : fieldValue;
         tempMail.htmlBody = tempMail.htmlBody.replace(matcher.group(), fieldValue);
       }
     }
-
     return tempMail.htmlBody;
   }
 }

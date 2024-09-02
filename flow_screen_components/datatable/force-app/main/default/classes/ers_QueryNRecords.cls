@@ -9,6 +9,10 @@
  */
 @SuppressWarnings('PMD.ClassNamingConventions')
 public inherited sharing class ers_QueryNRecords {
+
+    private static Boolean SHOW_DEBUG_INFO = false;
+    private static String DEBUG_INFO_PREFIX = 'DATATABLE: ';
+
     /**
      * Class definition for throwing custom exceptions
      */
@@ -34,10 +38,12 @@ public inherited sharing class ers_QueryNRecords {
                 queryParam.objectApiName +
                 ' LIMIT ' +
                 queryParam.numberOfRecords;
-            System.debug('QUERY: ' + query);
+            System.debug(DEBUG_INFO_PREFIX + 'QUERY: ' + query);
             try {
                 sObject[] recordList = database.query(query); //NOPMD
-                System.debug(recordList);
+                if (SHOW_DEBUG_INFO) {
+                    System.debug(DEBUG_INFO_PREFIX + 'Record List:' + recordList);
+                }
 
                 // Make sure there are the requested # of records
                 if (!recordList.isEmpty() && recordList.size() < 10) {
@@ -45,7 +51,7 @@ public inherited sharing class ers_QueryNRecords {
                         recordList.add(recordList[0]);
                     }
                 }
-                System.debug('Number of Records: ' + recordList.size());
+                System.debug(DEBUG_INFO_PREFIX + 'Number of Records: ' + recordList.size());
 
                 // Include null fields in the serialized result
                 List<Map<String, Object>> records = new List<Map<String, Object>>();
@@ -77,7 +83,7 @@ public inherited sharing class ers_QueryNRecords {
                 // qr.recordString = JSON.serialize(recordList);
                 result.add(qr);
             } catch (Exception e) {
-                System.debug('ers_QueryNRecords Error: ' + e);
+                System.debug(DEBUG_INFO_PREFIX + 'ers_QueryNRecords Error: ' + e);
                 throw e;
             }
         }

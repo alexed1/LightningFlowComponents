@@ -151,7 +151,7 @@
         </c-fsc_flow-combobox>
         <c-fsc_pick-icon
             mode="combobox"
-            oniconselection={handlePickIcon}>
+            oniconselection={handleTableIcon}>
         </c-fsc_pick-icon>
     </div>
 
@@ -390,6 +390,91 @@
         field-level-help={inputValues.openLinkinSameTab.helpText}
         oncheckboxchanged={handleCheckboxChange}
     ></c-fsc_flow-checkbox> 
+
+    <!-- =============== Row Actions Banner =============== -->
+    <c-fsc_flow-banner
+        banner-color={colorRowActionsOverride}
+        banner-label={sectionEntries.rowActions.label}
+        banner-info={sectionEntries.rowActions.info}
+        modal-header-color={modalHeaderColorRowActionsOverride}
+    ></c-fsc_flow-banner>
+
+    <!-- Remove Row Action -->
+    <div class={removeRowActionClass}>
+        <div class={removeRowActionCheckboxClass}>
+            <c-fsc_flow-checkbox
+                name="select_isRemoveRowAction"
+                label={inputValues.isRemoveRowAction.label} 
+                checked={inputValues.cb_isRemoveRowAction.value} 
+                field-level-help={inputValues.isRemoveRowAction.helpText}
+                oncheckboxchanged={handleCheckboxChange}
+            ></c-fsc_flow-checkbox>
+        </div>
+
+        <div class={showHideRemoveRowAction}>
+            <c-fsc_flow-combobox 
+                name="select_removeLabel" 
+                label={inputValues.removeLabel.label}
+                value={inputValues.removeLabel.value} 
+                value-type={inputValues.removeLabel.valueDataType}
+                field-level-help={inputValues.removeLabel.helpText}
+                builder-context-filter-type="String"
+                builder-context-filter-collection-boolean={inputValues.removeLabel.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+
+            <c-fsc_flow-combobox 
+                name="select_removeIcon" 
+                label={inputValues.removeIcon.label}
+                value={inputValues.removeIcon.value} 
+                value-type={inputValues.removeIcon.valueDataType}
+                field-level-help={inputValues.removeIcon.helpText}
+                disabled={disallowHeaderChange}
+                builder-context-filter-collection-boolean={inputValues.removeIcon.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+            <c-fsc_pick-icon
+                mode="combobox"
+                oniconselection={handleRemoveIcon}>
+            </c-fsc_pick-icon>
+
+            <lightning-radio-group
+                name="select_removeColor"
+                label={inputValues.removeColor.label}
+                options={removeColorOptions}
+                value={inputValues.removeColor.value}
+                type="button"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
+            <lightning-radio-group
+                name="select_removeRowLeftOrRight"
+                label={inputValues.removeRowLeftOrRight.label}
+                options={removeLeftOrRightOptions}
+                value={inputValues.removeRowLeftOrRight.value}
+                type="button"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
+            <c-fsc_flow-combobox 
+                name="select_maxRemovedRows" 
+                label={inputValues.maxRemovedRows.label}
+                value={inputValues.maxRemovedRows.value} 
+                value-type={inputValues.maxRemovedRows.valueDataType}
+                field-level-help={inputValues.maxRemovedRows.helpText}
+                builder-context-filter-type="Number"
+                builder-context-filter-collection-boolean={inputValues.maxRemovedRows.isCollection}
+                builder-context={_builderContext} 
+                onvaluechanged={handleFlowComboboxValueChange}
+                automatic-output-variables={automaticOutputVariables}>
+            </c-fsc_flow-combobox>
+
+        </div>
+    </div>
 
     <!-- =============== Advanced Attributes Banner =============== -->
     <c-fsc_flow-banner

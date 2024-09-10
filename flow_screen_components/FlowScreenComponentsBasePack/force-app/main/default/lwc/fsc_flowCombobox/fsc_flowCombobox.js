@@ -881,6 +881,9 @@ export default class FlowCombobox extends LightningElement {
                 return null;
         }
 
+        this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + value;
+        this.value = this._selectedFieldPath + '.';
+
         // Set the Options
         this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
 

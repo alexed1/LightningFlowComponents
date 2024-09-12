@@ -580,6 +580,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleSetSelectedRecord(event) {
+        event.stopPropagation(); // stops the window generic click handlers from firing 2x more times, not sure it makes a difference but it reduced my debugging here into a 3rd
         if (event.currentTarget.dataset) {
             if (this.value && this.value.endsWith(event.currentTarget.dataset.value) && event.currentTarget.dataset.objectType) {
                 this.doOpenObject(event, event.currentTarget.dataset.value, event.currentTarget.dataset.objectType);
@@ -732,8 +733,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -741,7 +742,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -778,8 +779,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -787,7 +788,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -805,8 +806,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -814,7 +815,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -832,8 +833,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -841,7 +842,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -859,8 +860,8 @@ export default class FlowCombobox extends LightningElement {
                         fields.forEach(field => {
                             tempOptions.push({
                                 type: field.type,
-                                label: field.label,
-                                value: field.name,
+                                label: value + '.' + field.label,
+                                value: value + '.' + field.name,
                                 isCollection: false,
                                 objectType: 'objectType',
                                 optionIcon: "utility:system_and_global_variable",
@@ -868,7 +869,7 @@ export default class FlowCombobox extends LightningElement {
                                 globalVariable: false,
                                 displayType: "String",
                                 key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                                flowType: 'refrence',
+                                flowType: 'reference',
                                 storeOutputAutomatically: false
                             });
                         });
@@ -880,9 +881,6 @@ export default class FlowCombobox extends LightningElement {
             default:
                 return null;
         }
-
-        this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + value;
-        this.value = this._selectedFieldPath + '.';
 
         // Set the Options
         this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
@@ -987,13 +985,13 @@ export default class FlowCombobox extends LightningElement {
 
     handleWindowClick(event) {
         if (event.path){
-            console.log('you are apparently using chrome, and can use event.path');
+            // console.log('you are apparently using chrome, and can use event.path');
             if (!event.path.includes(this.template.host) && !this.selfEvent) {
                 this.closeOptionDialog(true);
             }
         
         } else {
-            console.log('you are apparently not using chrome, so we can\'t test using event.path');
+            // console.log('you are apparently not using chrome, so we can\'t test using event.path');
             if (!this.selfEvent) {
                 this.closeOptionDialog(true);
             }

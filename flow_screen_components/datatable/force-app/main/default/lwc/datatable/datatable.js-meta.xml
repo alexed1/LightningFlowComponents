@@ -41,7 +41,8 @@
             <property name="outputSelectedRowsString" label="Output Selected Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were selected in the datatable. 
                 --  NOTE: These records may not contain all of the edited values."/>
             <property name="outputEditedRowsString" label="Output Edited Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were edited in the datatable."/>
-            
+            <property name="outputRemovedRowsString" label="Output Removed Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were removed from the datatable."/>
+            <property name="outputRemainingRowsString" label="Output Remaining Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain all the original records that were not removed from the datatable."/>
             <!-- ============================================================================================================================- -->  
             
             <!-- Additional Output Parameters -->
@@ -108,6 +109,8 @@
             <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
             <property name="showRecordCount" label="Show Record Count in Header" type="Boolean" default="false" role="inputOnly" description="Display the number of records in the table header.  This will match what is shown in a List View header."/>
             <property name="cb_showRecordCount" type="String" role="inputOnly"/>
+            <property name="showSelectedCount" label="Show Selected Record Count in Header" type="Boolean" default="false" role="inputOnly" description="Display the number of selected records in the table header."/>
+            <property name="cb_showSelectedCount" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
             <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
             <property name="cb_matchCaseOnFilters" type="String" role="inputOnly"/>

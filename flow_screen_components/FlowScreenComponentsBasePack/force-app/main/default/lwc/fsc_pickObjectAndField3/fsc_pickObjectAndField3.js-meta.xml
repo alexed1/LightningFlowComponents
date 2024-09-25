@@ -22,8 +22,7 @@
             <property name="required" type="Boolean" role="inputOnly"> </property>
             <property name="hideFieldPicklist" type="Boolean" role="inputOnly"> </property>
             <property name="displayFieldType" type="Boolean" role="inputOnly"> </property>
-            <!-- Christopher Strecker 06/06/2024 - removed property -->
-            <!-- <property name="testproperty" type="String" role="inputOnly"> </property> -->
+            <property name="testproperty" type="String" role="inputOnly"> </property>
             <property name="DataTypeFilter" type="String" role="inputOnly"> </property>
             <property name="allowFieldMultiselect" type="Boolean" role="inputOnly"></property>
         </targetConfig>

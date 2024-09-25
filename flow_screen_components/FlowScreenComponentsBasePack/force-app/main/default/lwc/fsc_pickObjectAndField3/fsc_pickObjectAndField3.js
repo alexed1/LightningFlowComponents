@@ -27,7 +27,9 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api hideObjectPicklist = false;
     @api hideFieldPicklist = false;
     @api displayFieldType = false;
-    //@api testproperty;        // Christopher Strecker 06/06/2024 - Removed this was not being used anywhere
+    @api testproperty;      // Christopher Strecker 09/25/2024 - This property does not do anything 
+                            // but it cannot be removed due to current managed package restrictions 
+                            // when using IsExposed is True
 
     @api allowFieldMultiselect = false;
 

@@ -36,7 +36,7 @@ import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
 import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
 import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE, SHOW_DEBUG_INFO, DEBUG_INFO_PREFIX, DEFAULT_COL_WIDTH
+const CONSTANTS = getConstants();   // From ers_datatableUtils
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -2366,6 +2366,7 @@ export default class Datatable extends LightningElement {
     handleResize(event) {
         // Save the current column widths and update the config parameter
         this.columnWidthValues = event.detail.columnWidths;
+console.log("🚀 ~ handleResize ~ this.columnWidthValues:", this.columnWidthValues);
         // v4.3.1 Winter '25 release now returns NaN instead of 0 for flex column width
         let widths = [];
         let hasNaN = false;
@@ -2402,7 +2403,10 @@ export default class Datatable extends LightningElement {
         this.basicColumns.forEach(colDef => {
             colFlexWidth = this.columns[colNum].actions?.find(a => a.name == 'flex_'+colNum)?.checked ? 0 : (sizes[colNum] == 0 && this.isConfigMode ? DEFAULT_COL_WIDTH : sizes[colNum]);   // v4.3.1 Reset column width when Flex is toggled off
             if (sizes[colNum] == 0 && this.isConfigMode) {
-                this.flexes.find(i => i['column'] == colNum).flex  = false;
+                this.flexes.push({
+                    column: colNum,
+                    flex: false
+                });
             }
             this.columns[colNum]['initialWidth'] = colFlexWidth;
             if (this.filterColumns) {

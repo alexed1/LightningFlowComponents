@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz81QAA)   
-[Version 4.3.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz81QAA)
+[Version 4.3.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)   
+[Version 4.3.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  
+## 09/29/24 -  Eric Smith -     Version 4.3.1  
+**Updates:**   
+-   Column headers will now Clip or Wrap based on the settings for the individual column 
+-   User's can no longer manually change the width of Flex enabled columns while interacting with the datatable  
+-  
+**Bug Fixes:** 
+-   Fixed bug introduced in Winter '25 affecting columns set with Flexible Widths enabled  
   
 ## 07/22/24 -  Eric Smith -     Version 4.3.0  
 **Updates:**   

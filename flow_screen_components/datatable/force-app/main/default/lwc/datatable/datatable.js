@@ -36,7 +36,7 @@ import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
 import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
 import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, ISFLOWBUILDER, MIN_SEARCH_TERM_SIZE, SEARCH_WAIT_TIME, RECORDS_PER_PAGE, SHOW_DEBUG_INFO, DEBUG_INFO_PREFIX
+const CONSTANTS = getConstants();   // From ers_datatableUtils
 
 const MYDOMAIN = CONSTANTS.MYDOMAIN;
 const ISCOMMUNITY = CONSTANTS.ISCOMMUNITY;
@@ -47,6 +47,7 @@ const SEARCH_WAIT_TIME = CONSTANTS.SEARCH_WAIT_TIME;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
 const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
+const DEFAULT_COL_WIDTH = CONSTANTS.DEFAULT_COL_WIDTH;
 
 export default class Datatable extends LightningElement {
 
@@ -497,6 +498,7 @@ export default class Datatable extends LightningElement {
     @track showClearButton = false;
     @track showClearFilterButton = false;
     @track tableHeightAttribute = 'height:';
+    @track wrapTableHeader = "by-column";       // v4.3.1 - Column Headers now follow column Clip/Wrap setting
 
     // Handle Selected Rows retention
     @api allSelectedRows;       // Obsolete - No longer used but can't be removed
@@ -1540,7 +1542,7 @@ export default class Datatable extends LightningElement {
             // Update Flex attribute overrides by column
             switch (this.flexAttribType) {
                 case 'cols':
-                    flexAttrib.flex = this.flexes.find(i => i['column'] == columnNumber);
+                    flexAttrib.flex = this.flexes.find(i => i['column'] == columnNumber)?.flex || false;
                     break;
                 case 'all': 
                     flexAttrib.flex = true;
@@ -1705,7 +1707,6 @@ export default class Datatable extends LightningElement {
                 wrapText: (wrapAttrib) ? wrapAttrib.wrap : false,
                 flex: (flexAttrib) ? flexAttrib.flex : false
             });
-
 
             // Update Other Attributes attribute overrides by column
             this.parseAttributes('other',this.otherAttribs,columnNumber);
@@ -2076,8 +2077,6 @@ export default class Datatable extends LightningElement {
 
     handleRowSelection(event) {
         // Added in v4.2.1 - Pagination - Persist previously selected rows that are not displayed on the currently visible page
-        // Only used with row selection
-        // Update values to be passed back to the Flow
         let currentSelectedRows = event.detail.selectedRows;
         let otherSelectedRowIds = [];
         let currentSelectedRowIds = [];
@@ -2367,7 +2366,21 @@ export default class Datatable extends LightningElement {
     handleResize(event) {
         // Save the current column widths and update the config parameter
         this.columnWidthValues = event.detail.columnWidths;
+console.log("🚀 ~ handleResize ~ this.columnWidthValues:", this.columnWidthValues);
+        // v4.3.1 Winter '25 release now returns NaN instead of 0 for flex column width
+        let widths = [];
+        let hasNaN = false;
+        let c = 0;
+        this.columnWidthValues.forEach(w => {
+            widths.push(isNaN(w) || this.flexes.find(i => i['column'] == c)?.flex ? 0 : w);
+            hasNaN = hasNaN || isNaN(w);
+            c++;
+        });
+        this.columnWidthValues = [...widths];
         this.setWidth(this.columnWidthValues);
+        if (!hasNaN ) {
+            this.columns = [...this.columns];   // Required for API v61.0 and earlier only
+        }
     }
 
     handleRoundWidths() {
@@ -2386,8 +2399,15 @@ export default class Datatable extends LightningElement {
         let colString = '';
         let colWidthsTotal = 0;
         let colFlexWidth = 0;
+        // TODO: Refactor & condense flex width logic from v4.3.1 
         this.basicColumns.forEach(colDef => {
-            colFlexWidth = this.columns[colNum].actions?.find(a => a.name == 'flex_'+colNum)?.checked ? 0 : sizes[colNum];
+            colFlexWidth = this.columns[colNum].actions?.find(a => a.name == 'flex_'+colNum)?.checked ? 0 : (sizes[colNum] == 0 && this.isConfigMode ? DEFAULT_COL_WIDTH : sizes[colNum]);   // v4.3.1 Reset column width when Flex is toggled off
+            if (sizes[colNum] == 0 && this.isConfigMode) {
+                this.flexes.push({
+                    column: colNum,
+                    flex: false
+                });
+            }
             this.columns[colNum]['initialWidth'] = colFlexWidth;
             if (this.filterColumns) {
                 this.filterColumns[colNum]['initialWidth'] = colFlexWidth;
@@ -2890,28 +2910,6 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);   // Winter '23 Patch 12 fix
 
-/*      // Validate Edited Rows
-        let errorMessage = '';
-        this.outputEditedRows.forEach(erow => {
-            let fieldNames = Object.keys(erow);
-            fieldNames.forEach(fld => {
-                const basic = this.basicColumns.find(b => b.fieldName == fld);
-                if (basic?.type.includes("text")) {
-                    if (erow[fld]?.length > basic.length) {
-                        let errorRow = this._mydata.findIndex(d => d[this.keyField] == erow[this.keyField]) + 1;
-                        errorMessage += `The value for ${fld} in Row #${errorRow} is ${erow[fld]?.length} characters long.  The maximum allowed length is ${basic.length} characters.\n`;                        
-                    }
-                }
-            });
-        });
-        if (errorMessage) {
-            this.setIsInvalidFlag(true);
-            return { 
-                isValid: false, 
-                errorMessage: errorMessage 
-            }; 
-        } */
-        
         this.dispatchOutputs();
 
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');

@@ -2,13 +2,25 @@
 // 07/02/21    Eric Smith       Added a Required * to the Input Label if Required is True
 // 04/04/23    Clifford Beul    Added disabled categories and optional overwrite of formats
 // 01/08/24    Declan Toohey    Modified character count calculation to not include HTML characters in character count
+// 14/10/24    Jeroen Burgers   Added reactivity
 
 import { LightningElement, api, track } from 'lwc';
 
 export default class inputRichTextFSC_LWC extends LightningElement {
 
     //Input and Output Attributes for Flow
-    @api value; //set empty in connectedCallback if undefined.
+    _value;
+    @api
+    set value(newValue) {
+        if (newValue !== this._value) {
+            this._value = newValue;
+            this.connectedCallback();
+        }
+    }
+    get value() {
+        return this._value;
+    }
+
     @api disableAdvancedTools = false;
     @api disallowedWordsList;
     @api disallowedSymbolsList;
@@ -84,13 +96,13 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     regTerm = '';
     applyTerm = '';
     instructions = '1)  Find and Replace:  Use Magnifying Glass, Enter Terms and Use Check Mark.  '+
-                    '2)  Auto Replace:  If your Admin has configured it, Use Merge Icon to replace suggested terms.';
+        '2)  Auto Replace:  If your Admin has configured it, Use Merge Icon to replace suggested terms.';
 
     //Begin functionality
 
     //Set initial values on load
     connectedCallback() {
-		
+
         //use sessionStorage to fetch and restore latest value before validation failure.
         if(sessionStorage){
             if(sessionStorage.getItem('tempValue')){
@@ -103,58 +115,57 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.formats = this.enabledFormats.split(',').map(function(item) {
                 return item.trim();
             });
-        } 
+        }
 
         if(!this.disableAdvancedTools){
-            console.log('disableAdvancedTools is false, in connected callback');
-			(this.value != undefined) ? this.richText = this.value : this.richText = '';
+            (this.value !== undefined) ? this.richText = this.value : this.richText = '';
             this.characterCount = this.richText.length;
-            if(this.disallowedSymbolsList != undefined){
+            if(this.disallowedSymbolsList !== undefined){
                 this.disallowedSymbolsArray = this.disallowedSymbolsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedSymbolsArray.length; i++){
                     if(i == 0){
-                        if(this.disallowedSymbolsArray.length != 1){
+                        if(this.disallowedSymbolsArray.length !== 1){
                             this.disallowedSymbols = '['+ this.disallowedSymbolsArray[i] + '|';
                         }else{
                             this.disallowedSymbols = '['+ this.disallowedSymbolsArray[i] + ']';
                         }
-                    } else if (i == (this.disallowedSymbolsArray.length - 1)){
+                    } else if (i === (this.disallowedSymbolsArray.length - 1)){
                         this.disallowedSymbols = this.disallowedSymbols.concat(this.disallowedSymbolsArray[i] + ']');
                     } else {
                         this.disallowedSymbols = this.disallowedSymbols.concat(this.disallowedSymbolsArray[i] + '|');
                     }
                 }
             }
-    
-            if(this.disallowedWordsList != undefined){
+
+            if(this.disallowedWordsList !== undefined){
                 this.disallowedWordsArray = this.disallowedWordsList.replace(/\s/g,'').split(',');
                 for(let i=0; i<this.disallowedWordsArray.length; i++){
                     if(i == 0){
-                        if(this.disallowedWordsArray.length != 1){
+                        if(this.disallowedWordsArray.length !== 1){
                             this.disallowedWords = '('+this.disallowedWordsArray[i] + '|';
                         }else{
                             this.disallowedWords = '('+this.disallowedWordsArray[i] + ')\b';
                         }
-                    } else if (i == (this.disallowedWordsArray.length - 1)){
+                    } else if (i === (this.disallowedWordsArray.length - 1)){
                         this.disallowedWords = this.disallowedWords.concat(this.disallowedWordsArray[i] + ')\\b');
                     } else {
                         this.disallowedWords = this.disallowedWords.concat(this.disallowedWordsArray[i] + '|');
                     }
                 }
             }
-            if(this.disallowedSymbols != undefined) this.symbolsNotAllowed = new RegExp(this.disallowedSymbols,'g');
-            if(this.disallowedWords != undefined) this.wordsNotAllowed = new RegExp(this.disallowedWords,'g');
-            if(this.autoReplaceMap != undefined){
+            if(this.disallowedSymbols !== undefined) this.symbolsNotAllowed = new RegExp(this.disallowedSymbols,'g');
+            if(this.disallowedWords !== undefined) this.wordsNotAllowed = new RegExp(this.disallowedWords,'g');
+            if(this.autoReplaceMap !== undefined){
                 this.replaceMap = JSON.parse(this.autoReplaceMap);
                 this.autoReplaceEnabled = true;
-            } 
+            }
             if(this.characterLimit > 0){
                 this.characterCap = true;
             }
         }
     }
-	
-	//Handle updates to Rich Text field with no enhanced features
+
+    //Handle updates to Rich Text field with no enhanced features
     handleValueChange(event) {
         this.value = event.target.value;
     }
@@ -163,12 +174,12 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     handleTextChange(event) {
         this.runningBlockedInput = [];
         this.isValidCheck = true;
-        if (this.symbolsNotAllowed != undefined || this.wordsNotAllowed != undefined) {
+        if (this.symbolsNotAllowed !== undefined || this.wordsNotAllowed !== undefined) {
             this.interimValue = (event.target.value).toLowerCase();
             this.interimValue = this.interimValue.replace(/(<([^>]+)>)/ig, "");
-            
+
             //Symbol check section
-            if (this.symbolsNotAllowed != undefined) {
+            if (this.symbolsNotAllowed !== undefined) {
                 let matchesSymbol = this.interimValue.match(this.symbolsNotAllowed);
                 if (matchesSymbol != null && matchesSymbol.length > 0) {
                     for(let i = 0; i < matchesSymbol.length; i++){
@@ -180,7 +191,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
                 }
             }
 
-            if (this.wordsNotAllowed != undefined) {
+            if (this.wordsNotAllowed !== undefined) {
                 let matchesWords = this.interimValue.match(this.wordsNotAllowed);
                 if (matchesWords != null && matchesWords.length > 0) {
                     for(let i = 0; i < matchesWords.length; i++){
@@ -213,7 +224,7 @@ export default class inputRichTextFSC_LWC extends LightningElement {
         }else{
             this.errorMessage = 'Warning - Invalid Symbols/Words found: '+this.runningBlockedInput.toString();
         }
-        
+
     }
 
     //Set css on Character count if passing character limit

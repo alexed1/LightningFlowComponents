@@ -2204,6 +2204,7 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('sortedBy', this.sortedBy));
         this.dispatchEvent(new FlowAttributeChangeEvent('sortDirection', this.sortDirection));
         this.doSort(this.sortedBy, this.sortDirection);
+        this.isUpdateTable = true;
     }
 
     doSort(sortField, sortDirection) {

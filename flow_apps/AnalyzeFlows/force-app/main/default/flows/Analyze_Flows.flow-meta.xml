@@ -1,14 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>AnalyzeFlows</name>
+        <label>AnalyzeFlows</label>
+        <locationX>50</locationX>
+        <locationY>878</locationY>
+        <actionName>AnalyzeFlows</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>GenerateReportFromFlowAnalysis</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Fault_in_Analyze_Flows</targetReference>
+        </faultConnector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>analyticalModulenames</name>
+            <value>
+                <stringValue>DetectElementModifications,DetectNewElements,DetectMissingElements</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>initFlow</name>
+            <value>
+                <elementReference>Get_Flow_1.flowMetadataJSON</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>secondFlow</name>
+            <value>
+                <elementReference>Get_Flow_2.flowMetadataJSON</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
+        <name>GenerateReportFromFlowAnalysis</name>
+        <label>GenerateReportFromFlowAnalysis</label>
+        <locationX>50</locationX>
+        <locationY>998</locationY>
+        <actionName>GenerateReportFromFlowAnalysis</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Result_Screen</targetReference>
+        </connector>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>headerStyleString</name>
+            <value>
+                <stringValue>background-color: #4CAF50; color : white;</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>hideHeader</name>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>inputCollection</name>
+            <value>
+                <elementReference>AnalyzeFlows.analysisResults</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>rowStyleString</name>
+            <value>
+                <stringValue>background-color: #ccddff</stringValue>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Get_Flow_1</name>
         <label>Get Flow 1</label>
-        <locationX>176</locationX>
+        <locationX>534</locationX>
         <locationY>398</locationY>
         <actionName>GetFlowMetadata</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Get_Flow_2</targetReference>
+            <targetReference>Valid_Return2</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -22,12 +93,12 @@
     <actionCalls>
         <name>Get_Flow_2</name>
         <label>Get Flow 2</label>
-        <locationX>176</locationX>
-        <locationY>518</locationY>
+        <locationX>314</locationX>
+        <locationY>638</locationY>
         <actionName>GetFlowMetadata</actionName>
         <actionType>apex</actionType>
         <connector>
-            <targetReference>Result_Screen</targetReference>
+            <targetReference>Copy_1_of_Valid_Return</targetReference>
         </connector>
         <flowTransactionModel>Automatic</flowTransactionModel>
         <inputParameters>
@@ -55,6 +126,56 @@
             <stringValue>Compare</stringValue>
         </value>
     </choices>
+    <decisions>
+        <name>Copy_1_of_Valid_Return</name>
+        <label>Copy 1 of Valid Return?</label>
+        <locationX>314</locationX>
+        <locationY>758</locationY>
+        <defaultConnector>
+            <targetReference>Get_Flow_Metadata1_Error_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Copy_1_of_Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Flow_2.errors</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AnalyzeFlows</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Valid_Return2</name>
+        <label>Valid Return?</label>
+        <locationX>534</locationX>
+        <locationY>518</locationY>
+        <defaultConnector>
+            <targetReference>Get_Flow_Metadata1_Error_Screen</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Flow_1.errors</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Flow_2</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
     <environments>Default</environments>
     <interviewLabel>Analyze Flows {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Analyze Flows</label>
@@ -80,7 +201,7 @@
     <screens>
         <name>Choose_Flows</name>
         <label>Choose Flows</label>
-        <locationX>176</locationX>
+        <locationX>534</locationX>
         <locationY>278</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -90,7 +211,7 @@
         </connector>
         <fields>
             <name>AnalyzeFlow</name>
-            <extensionName>c:flowsSelector</extensionName>
+            <extensionName>c:dualFlowsSelector</extensionName>
             <fieldType>ComponentInstance</fieldType>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
             <isRequired>true</isRequired>
@@ -102,7 +223,7 @@
     <screens>
         <name>Choose_Option</name>
         <label>Choose Option</label>
-        <locationX>176</locationX>
+        <locationX>534</locationX>
         <locationY>158</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
@@ -115,6 +236,7 @@
             <choiceReferences>Analyze</choiceReferences>
             <choiceReferences>Compare</choiceReferences>
             <dataType>String</dataType>
+            <defaultSelectedChoiceReference>Compare</defaultSelectedChoiceReference>
             <fieldText>Do you want to:</fieldText>
             <fieldType>RadioButtons</fieldType>
             <isRequired>false</isRequired>
@@ -123,23 +245,63 @@
         <showHeader>true</showHeader>
     </screens>
     <screens>
+        <name>Fault_in_Analyze_Flows</name>
+        <label>Fault in Analyze Flows</label>
+        <locationX>314</locationX>
+        <locationY>998</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Choose_Option</targetReference>
+        </connector>
+        <fields>
+            <name>disp1</name>
+            <fieldText>&lt;p&gt;Errors: {!AnalyzeFlows.errors}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Notes:&lt;/p&gt;&lt;p&gt;1) the most common initial error is failure to create a Remote Site Setting&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Get_Flow_Metadata1_Error_Screen</name>
+        <label>Get Flow Metadata1 Error Screen</label>
+        <locationX>534</locationX>
+        <locationY>1550</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <isGoTo>true</isGoTo>
+            <targetReference>Choose_Option</targetReference>
+        </connector>
+        <fields>
+            <name>Copy_1_of_disp1</name>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Errors&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;First Flow Retrieval: {!Get_Flow_1.errors}&lt;/p&gt;&lt;p&gt;Second Flow Retrieval: {!Get_Flow_2.errors}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Notes&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;1) the most common initial error is failure to create a Remote Site Setting&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
         <name>Result_Screen</name>
         <label>Result Screen</label>
-        <locationX>176</locationX>
-        <locationY>638</locationY>
+        <locationX>50</locationX>
+        <locationY>1118</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <fields>
             <name>result</name>
-            <fieldText>&lt;p&gt;{!AnalyzeFlow.selectedFlow1APIName}&lt;/p&gt;&lt;p&gt;{!AnalyzeFlow.selectedFlow2APIName}&lt;/p&gt;&lt;p&gt;{!Get_Flow_1.flowMetadataJSON}&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;{!GenerateReportFromFlowAnalysis.reportString}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!AnalyzeFlows.errors}&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
         </fields>
         <showFooter>true</showFooter>
         <showHeader>true</showHeader>
     </screens>
     <start>
-        <locationX>50</locationX>
+        <locationX>408</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Choose_Option</targetReference>

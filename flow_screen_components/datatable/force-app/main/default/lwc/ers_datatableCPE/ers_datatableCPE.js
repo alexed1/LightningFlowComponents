@@ -8,7 +8,7 @@
  * 
  * CREATED BY:          Eric Smith
  * 
- * VERSION:             3.x.x
+ * VERSION:             3.x.x & 4.x.x
  * 
  * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/datatable/README.md
 **/
@@ -17,10 +17,17 @@ import {LightningElement, track, api} from 'lwc';
 import getCPEReturnResults from '@salesforce/apex/ers_DatatableController.getCPEReturnResults';
 import { getConstants } from 'c/ers_datatableUtils';
 
-const CONSTANTS = getConstants();   // From ers_datatableUtils : VERSION_NUMBER, MAXROWCOUNT, ROUNDWIDTH, MYDOMAIN, ISCOMMUNITY, WIZROWCOUNT
+const CONSTANTS = getConstants();   // From ers_datatableUtils
 const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
+const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
+const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
+const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
+const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
+const REMOVE_ROW_SIDE = CONSTANTS.REMOVE_ROW_SIDE;
+const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
+const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 
 const defaults = {
     tableBorder: true,
@@ -40,7 +47,9 @@ const COLORS = {
     green: '#659668',
     green_light: '#7E967F',
     red: '#966594',
-    red_light: '#967E95'
+    red_light: '#967E95',
+    orange: '#E79556',
+    orange_light: '#FEB97D'
 }
 
 export default class ers_datatableCPE extends LightningElement {
@@ -53,9 +62,11 @@ export default class ers_datatableCPE extends LightningElement {
     _defaultBannerColor = COLORS.blue;
     _colorWizardOverride = COLORS.green;
     _colorAdvancedOverride = COLORS.red;
+    _colorRowActionsOverride = COLORS.orange;
     _defaultModalHeaderColor = COLORS.blue_light;
     _modalHeaderColorWizardOverride = COLORS.green_light;
     _modalHeaderColorAdvancedOverride = COLORS.red_light;
+    _modalHeaderColorRowActionsOverride = COLORS.orange_light;
 
     _inputVariables = [];
     _builderContext = [];
@@ -74,6 +85,7 @@ export default class ers_datatableCPE extends LightningElement {
     _wiz_columnLabels;
     _wiz_columnWidths;
     _wiz_columnWraps;
+    _wiz_columnFlexes;
     _wiz_columnCellAttribs;
     _wiz_columnTypeAttribs;
     _wiz_columnOtherAttribs;
@@ -177,6 +189,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get colorRowActionsOverride() { 
+        return this._colorRowActionsOverride;
+    }
+
+    @api
     get colorAdvancedOverride() { 
         return this._colorAdvancedOverride;
     }
@@ -197,6 +214,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get modalHeaderColorRowActionsOverride() {
+        return this._modalHeaderColorRowActionsOverride;
+    }
+
+    @api
     get showColumnAttributes() { 
         return (this.showColumnAttributesToggle || !this.isSObjectInput || this.inputValues.isSerializedRecordData.value);
     }
@@ -212,18 +234,62 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get showHideRemoveRowAction() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get removeRowActionClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
+    }
+
+    @api
+    get removeRowActionCheckboxClass() {
+        return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
+    }
+
+    @api
+    get showHidePaginationAttributes() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
+    }
+
+    @api
+    get paginationClass() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
+    }
+
+    @api
+    get paginationCheckboxClass() {
+        return (this.inputValues.cb_showPagination.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
+    }
+
+    @api
     get isNoLinks() {
         return (this.inputValues.cb_not_suppressNameFieldLink.value == CB_FALSE);
     }
 
     @api
     get isDisableNavigateNext() {
-        return (this.isNoEdits || this.inputValues.suppressBottomBar.value);
+        return this.isNoEdits || this.inputValues.suppressBottomBar.value;
+    }
+    set isDisableNavigateNext(value) {
+        this.inputValues.suppressBottomBar.value = value;
     }
 
     @api
     get isDisableSuppressBottomBar() {
-        return (this.isNoEdits || this.inputValues.navigateNextOnSave.value);
+        return this.isNoEdits || this.inputValues.navigateNextOnSave.value;
+    }
+    set isDisableSuppressBottomBar(value) {
+        this.inputValues.navigateNextOnSave.value = value;
+    }
+
+    get disableSearchBarSelection() {
+        return !this.inputValues.isDisplayHeader.value;
+    }
+
+    get disableSelectCountSelection() {
+        return this.inputValues.hideCheckboxColumn.value;
     }
 
     @api
@@ -333,6 +399,18 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     @api
+    get wiz_columnFlexes() { 
+        return this._wiz_columnFlexes;
+    }
+    set wiz_columnFlexes(value) { 
+        const name = 'columnFlexes';
+        this._wiz_columnFlexes = value;
+        this.dispatchValue = (value) ? decodeURIComponent(value) : '';
+        this.dispatchFlowValueChangeEvent(name, this.dispatchValue, 'String');
+        this.updateFlowParam(defaults.wizardAttributePrefix + name, value, '');
+    }
+
+    @api
     get wiz_columnCellAttribs() { 
         return this._wiz_columnCellAttribs;
     }
@@ -416,6 +494,9 @@ export default class ers_datatableCPE extends LightningElement {
         columnWraps: {value: null, valueDataType: null, isCollection: false, label: 'Column Wraps (Col#:true,...)', 
             helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
             "NOTE: ColIDs can be either the column number or the field API Name"},
+        columnFlexes: {value: null, valueDataType: null, isCollection: false, label: 'Column Flexes (Col#:true,...)', 
+            helpText: "Comma separated list of ColID:true or false (Default:false)  \n" + 
+            "NOTE: ColIDs can be either the column number or the field API Name"},
         columnCellAttribs: {value: null, valueDataType: null, isCollection: false, label: 'Special Cell Attributes',
             helpText: "(Col#:{name:value,...};...) Use ; as the separator -- \n" + 
             "EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"},
@@ -438,25 +519,41 @@ export default class ers_datatableCPE extends LightningElement {
         tableHeight: {value: null, valueDataType: null, isCollection: false, label: 'Table Height',
             helpText: 'CSS specification for the height of the datatable (Examples: 30rem, 200px, calc(50vh - 100px)  If you leave this blank, the datatable will expand to display all records.)  \n' +
             'NOTE: This value will be ignored if the Allow Overflow attribute is set to True.'},
-        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Display', 
-            helpText: 'Enter a number here if you want to restrict how many rows will be displayed in the datatable.'},
+        maxNumberOfRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum Number of Records to Include', 
+            helpText: 'Enter a number here if you want to restrict how many records will be included from the record collection.'},
+        showPagination: {value: null, valueDataType: null, isCollection: false, label: 'Add Pagination', 
+            helpText: 'When selected, an entry will be added to the header to select the number of records per page and a footer will be added to the Datatable allowing the user to select and navigate through the pages.'},
+        cb_showPagination: {value: null, valueDataType: null, isCollection: false, label: ''},
+        recordsPerPage: {value: null, valueDataType: null, isCollection: false, label: 'Number of Records per Page', 
+            helpText: 'Enter the maximum number of records to be displayed on each page.'},
+        showFirstLastButtons: {value: null, valueDataType: null, isCollection: false, label: 'Show First and Last Page Buttons', 
+            helpText: 'When selected, the footer will include buttons to jump to the First and Last pages.'},
+        cb_showFirstLastButtons: {value: CB_TRUE, valueDataType: null, isCollection: false, label: ''},            
         suppressNameFieldLink: {value: null, valueDataType: null, isCollection: false, label: "No link on 'Name field",                     // OBSOLETE as of v3.0.10
             helpText: "Suppress the default behavior of displaying the SObject's 'Name' field as a link to the record"},
         hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: 'Disallow row selection', 
             helpText: 'Select to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled.'},
         cb_hideCheckboxColumn: {value: null, valueDataType: null, isCollection: false, label: ''}, 
+        isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: 'Show search bar', 
+            helpText: 'Select to show a Search Bar in the table header.  Search will work together with Column Filters to identify the records to show in the Datatable. \n' +
+            'NOTE: The Search Bar option requires that "Display Table Header" be selected'},
+        cb_isShowSearchBar: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: 'Hide Column Header Actions', 
             helpText: 'Set to True to hide all column header actions including Sort, Clip Text, Wrap Text & Filter.'},
         cb_hideHeaderActions: {value: null, valueDataType: null, isCollection: false, label: ''}, 
-        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection Button', 
-            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table.'},
+        hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: 'Hide Clear Selection/Filter Buttons', 
+            helpText: 'Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table and the Clear Filter Button that would normally appear when any column has a filter applied. \n' +
+            'NOTE: The Clear Filter button will always appear when no matching records are available to display in a datatable.'},
         cb_hideClearSelectionButton: {value: null, valueDataType: null, isCollection: false, label: ''}, 
         showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: 'Show Row Numbers', 
             helpText: 'Display a row number column as the first column in the table.'}, 
         cb_showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: ''},    
         showRecordCount: {value: null, valueDataType: null, isCollection: false, label: 'Show Record Count in Header', 
             helpText: 'Display the number of records in the table header.  This will match what is shown in a List View header.'}, 
-        cb_showRecordCount: {value: null, valueDataType: null, isCollection: false, label: ''},         
+        cb_showRecordCount: {value: null, valueDataType: null, isCollection: false, label: ''},
+        showSelectedCount: {value: null, valueDataType: null, isCollection: false, label: 'Show Selected Count in Header', 
+            helpText: 'Display the number of selected records in the table header.'}, 
+        cb_showSelectedCount: {value: null, valueDataType: null, isCollection: false, label: ''},            
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
         cb_isRequired: {value: null, valueDataType: null, isCollection: false, label: ''},
@@ -506,6 +603,19 @@ export default class ers_datatableCPE extends LightningElement {
         isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
             helpText: 'Select if you want the datatable to be able to accept serialized data.'},
         cb_isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: ''},
+        isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: 'Add a Remove Row Action Button', 
+            helpText: 'Select if you want to add a Remove Row Action Button to each row of the datatable.'},
+        cb_isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: ''},
+        removeLabel: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Label', 
+            helpText: 'This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)'},
+        removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon', 
+            helpText: 'This is the icon that will be used for the Remove Row Action Button (Default: utility:close)'},
+        removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon Color', 
+            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)'},
+        maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
+            helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
+        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Column Location', 
+            helpText: 'Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)'},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '
@@ -515,6 +625,7 @@ export default class ers_datatableCPE extends LightningElement {
         dataSource: {label: 'Data Source', info: []},
         tableFormatting: {label: 'Table Formatting', info: []},
         tableBehavior: {label: 'Table Behavior', info: []},
+        rowActions: {label: 'Row Actions', info: []},
         advancedAttributes: {label: 'Advanced', info: []}
     }
 
@@ -540,10 +651,6 @@ export default class ers_datatableCPE extends LightningElement {
         },
         {name: 'tableFormatting',
             attributes: [
-                {name: defaults.customHelpDefinition, 
-                    label: 'Configure Columns Button',
-                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
-                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},
                 {name: 'isDisplayHeader'},    
                 {name: 'tableLabel'},
                 {name: 'tableIcon'},
@@ -552,9 +659,18 @@ export default class ers_datatableCPE extends LightningElement {
                     helpText: 'Select More to show all Icon Types, Select an Icon Type tab to see a list of icons, Select any icon to update the Header Icon value, ' +
                     'Select SELECT TYPE to hide the list of icons.'},
                 {name: 'maxNumberOfRows'},
+                {name: 'showPagination'},
+                {name: 'recordsPerPage'},
+                {name: 'showFirstLastButtons'},
                 {name: 'showRowNumbers'},
                 {name: 'showRecordCount'},
+                {name: 'showSelectedCount'},
+                {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
+                {name: defaults.customHelpDefinition, 
+                    label: 'Configure Columns Button',
+                    helpText: 'Click this button to select the columns(fields) to display.  Additionaly, the Configure Column Wizard will display\n' +
+                    'a sample datatable where you can manipulate it to create the attributes needed to reproduce the format you create.'},                
             ]
         },
         {name: 'tableBehavior',
@@ -569,6 +685,16 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'navigateNextOnSave'},
                 {name: 'not_suppressNameFieldLink'},
                 {name: 'openLinkinSameTab'},
+            ]
+        },
+        {name: 'rowActions',
+            attributes: [
+                {name: 'isRemoveRowAction'},
+                {name: 'removeLabel'},
+                {name: 'removeIcon'},
+                {name: 'removeColor'},
+                {name: 'removeRowLeftOrRight'},
+                {name: 'maxRemovedRows'},
             ]
         },
         {name: 'advancedAttributes',
@@ -593,6 +719,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'columnScales'},
                 {name: 'columnTypes'},
                 {name: 'columnWidths'},
+                {name: 'columnFlexes'},
                 {name: 'columnWraps'},
                 {name: 'columnCellAttribs'},
                 {name: 'columnTypeAttribs'},
@@ -604,6 +731,32 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'tableHeight'},
                 {name: 'keyField'},
             ]
+        }
+    ]
+
+    removeColorOptions = [
+        {
+            label: 'Red',
+            value: 'remove-icon'
+        },
+        {
+            label: 'Green',
+            value: 'remove-icon-green'
+        },
+        {
+            label: 'Black',
+            value: 'remove-icon-black'
+        }
+    ]
+
+    removeLeftOrRightOptions = [
+        {
+            label: 'Left',
+            value: 'Left'
+        },
+        {
+            label: 'Right',
+            value: 'Right'
         }
     ]
 
@@ -632,6 +785,7 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'wiz_columnIcons', type: 'String', value: ''},
         {name: 'wiz_columnWidths', type: 'String', value: ''},
         {name: 'wiz_columnWraps', type: 'String', value: ''},
+        {name: 'wiz_columnFlexes', type: 'String', value: ''},
         {name: 'wiz_columnCellAttribs', type: 'String', value: ''},
         {name: 'wiz_columnTypeAttribs', type: 'String', value: ''},
         {name: 'wiz_columnOtherAttribs', type: 'String', value: ''},
@@ -683,11 +837,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     initializeValues() {
-        console.log('ers_datatableCPE - initializeValues');
+        console.log(DEBUG_INFO_PREFIX+'ers_datatableCPE - initializeValues');
         this.isCheckboxColumnHidden = false;
         this._inputVariables.forEach(curInputParam => {
             if (curInputParam.name && curInputParam.value != null) {
-                console.log('Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
+                console.log(DEBUG_INFO_PREFIX+'Init:', curInputParam.name, curInputParam.valueDataType, curInputParam.value);             
                 if (curInputParam.name && this.inputValues[curInputParam.name] != null) {
 
                     try {
@@ -740,12 +894,29 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleDefaultAttributes() {
-        console.log('handle default attributes');
-
+        console.log(DEBUG_INFO_PREFIX+'handle default attributes');
+        if (this.inputValues.recordsPerPage.value == null) {
+            this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
+        }
+        if (this.inputValues.removeLabel.value == null) {
+            this.inputValues.removeLabel.value = REMOVE_ROW_LABEL;
+        }
+        if (this.inputValues.removeIcon.value == null) {
+            this.inputValues.removeIcon.value = REMOVE_ROW_ICON;
+        }
+        if (this.inputValues.removeColor.value == null) {
+            this.inputValues.removeColor.value = REMOVE_ROW_COLOR;
+        }
+        if (this.inputValues.removeRowLeftOrRight.value == null) {
+            this.inputValues.removeRowLeftOrRight.value = REMOVE_ROW_SIDE;
+        }
+        if (this.inputValues.maxRemovedRows.value == null) {
+            this.inputValues.maxRemovedRows.value = 0;
+        }
     }
 
     handleBuildHelpInfo() {
-        console.log('build help info');
+        console.log(DEBUG_INFO_PREFIX+'build help info');
         this.helpSections.forEach(section => {
             this.sectionEntries[section.name].info = [];
             section.attributes.forEach(attribute => {
@@ -759,11 +930,11 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleDynamicTypeMapping(event) { 
-        console.log('handling a dynamic type mapping');
-        console.log('event is ' + JSON.stringify(event));
+        console.log(DEBUG_INFO_PREFIX+'handling a dynamic type mapping');
+        console.log(DEBUG_INFO_PREFIX+'event is ' + JSON.stringify(event));
         let typeValue = event.detail.objectType;
         const typeName = this._elementType === "Screen" ? 'T' : 'T__record'; 
-        console.log('typeValue is: ' + typeValue);
+        console.log(DEBUG_INFO_PREFIX+'typeValue is: ' + typeValue);
         const dynamicTypeMapping = new CustomEvent('configuration_editor_generic_type_mapping_changed', {
             composed: true,
             cancelable: false,
@@ -789,7 +960,7 @@ export default class ers_datatableCPE extends LightningElement {
     }    
 
     handleGetObjectDetails(objName) { 
-        console.log('Passing object name to Apex Controller', objName);
+        console.log(DEBUG_INFO_PREFIX+'Passing object name to Apex Controller', objName);
         getCPEReturnResults({ objName: objName })
         .then(result => {
             let returnResults = JSON.parse(result);
@@ -798,11 +969,11 @@ export default class ers_datatableCPE extends LightningElement {
             this.objectLabel = returnResults.objectLabel;
             this.objectPluralLabel = returnResults.objectPluralLabel;
             this.objectIconName = returnResults.objectIconName;
-            console.log(`Return Values for ${objName}, Label: ${this.objectLabel}, Plural: ${this.objectPluralLabel}, Icon: ${this.objectIconName}`);
+            console.log(`${DEBUG_INFO_PREFIX}Return Values for ${objName}, Label: ${this.objectLabel}, Plural: ${this.objectPluralLabel}, Icon: ${this.objectIconName}`);
 
         })  // Handle any errors from the Apex Class
         .catch(error => {
-            console.log('getCPEReturnResults error is: ' + JSON.stringify(error));
+            console.log(DEBUG_INFO_PREFIX+'getCPEReturnResults error is: ' + JSON.stringify(error));
             if (error.body) {
                 this.errorApex = 'Apex Action error: ' + error.body.message;
                 alert(this.errorApex + '\n');  // Present the error to the user
@@ -849,6 +1020,7 @@ export default class ers_datatableCPE extends LightningElement {
                     this.dispatchFlowValueChangeEvent('tableLabel', this.inputValues.tableLabel.value, 'String');
                     this.inputValues.tableIcon.value = '';
                     this.dispatchFlowValueChangeEvent('tableIcon', this.inputValues.tableIcon.value, 'String');
+                    this.updateCheckboxValue('isShowSearchBar', false);
                 }
             }
 
@@ -932,7 +1104,14 @@ export default class ers_datatableCPE extends LightningElement {
                 if (this.isDisableSuppressBottomBar) {
                     this.updateCheckboxValue('suppressBottomBar', false);
                 }
-            }     
+            }
+            
+            // Clear Show Selected Count if Disallow Row Relection is selected
+            if (changedAttribute == 'hideCheckboxColumn') { 
+                if (event.detail.newValue) {
+                    this.updateCheckboxValue('showSelectedCount', false);
+                }
+            } 
 
         }
 
@@ -968,7 +1147,7 @@ export default class ers_datatableCPE extends LightningElement {
             let changedAttribute = event.target.name.replace(defaults.inputAttributePrefix, '');
             let newType = event.detail.newValueDataType;
             let newValue = event.detail.newValue;
-            if (changedAttribute == 'maxNumberOfRows' && newType != 'reference') {
+            if ((changedAttribute == 'maxNumberOfRows' || changedAttribute == 'maxRemovedRows' || changedAttribute == 'recordsPerPage') && newType != 'reference') {
                 newType = 'Number';
             }
             this.dispatchFlowValueChangeEvent(changedAttribute, newValue, newType);
@@ -989,8 +1168,15 @@ export default class ers_datatableCPE extends LightningElement {
         }
     }
 
-    handlePickIcon(event) {
-        let changedAttribute = 'tableIcon';
+    handleTableIcon(event) {
+        this.setIconAttribute('tableIcon', event);
+    }
+
+    handleRemoveIcon(event) {
+        this.setIconAttribute('removeIcon', event);
+    }
+
+    setIconAttribute(changedAttribute, event) {
         this.inputValues[changedAttribute].value = event.detail;
         this.dispatchFlowValueChangeEvent(changedAttribute, event.detail, 'String');
     }
@@ -1011,7 +1197,7 @@ export default class ers_datatableCPE extends LightningElement {
             }
         });
         this.dispatchEvent(valueChangedEvent);
-        console.log('dispatchFlowValueChangeEvent', id, newValue, newValueDataType);
+        console.log(DEBUG_INFO_PREFIX+'dispatchFlowValueChangeEvent', id, newValue, newValueDataType);
         if (!newValue) { 
             this.inputValues[id].value = newValue;  // You need to force any cleared values back to inputValues
         }                
@@ -1035,7 +1221,7 @@ export default class ers_datatableCPE extends LightningElement {
 
     updateFlowParam(name, value, ifEmpty=null, noEncode=false) {  
         // Set parameter values to pass to Wizard Flow
-        console.log('updateFlowParam:', name, value);        
+        console.log(DEBUG_INFO_PREFIX+'updateFlowParam:', name, value);        
         let currentValue = this.flowParams.find(param => param.name === name).value;
         if (value != currentValue) {
             if (noEncode) {
@@ -1059,7 +1245,7 @@ export default class ers_datatableCPE extends LightningElement {
         // Parameter value string to pass to Wizard Flow
         this.updateFlowParam('vWizRecordCount', CONSTANTS.WIZROWCOUNT);
         this.updateFlowParam('vSObject', this.inputValues.objectName.value);
-        return JSON.stringify(this.flowParams);
+        return this.flowParams;
     }
     
     // handlePickObjectAndFieldValueChange(event) { 
@@ -1071,15 +1257,15 @@ export default class ers_datatableCPE extends LightningElement {
 
     // These are values coming back from the Wizard Flow
     handleFlowStatusChange(event) {
-        console.log('=== handleFlowStatusChange ===');
-        if (event.detail.flowStatus == "ERROR") { 
-            console.log('Flow Error: ',JSON.stringify(event));
+        console.log(DEBUG_INFO_PREFIX+'=== handleFlowStatusChange -', event.detail.status, '===');
+        if (event.detail.status === "ERROR") { 
+            console.log(DEBUG_INFO_PREFIX+'Flow Error: ',JSON.stringify(event));
         } else {      
             this.isFlowLoaded = true;
-            event.detail.flowParams.forEach(attribute => {
+            event.detail.outputVariables.forEach(attribute => {
                 let name = attribute.name;
                 let value = attribute.value; 
-                console.log('Output from Wizard Flow: ', name, value);
+                console.log(DEBUG_INFO_PREFIX+'Output from Wizard Flow: ', name, value);
 
                 if (name == 'vSelectionMethod') { 
                     this.vSelectionMethod = value;
@@ -1101,7 +1287,8 @@ export default class ers_datatableCPE extends LightningElement {
 
                 if (name.substring(0,defaults.wizardAttributePrefix.length) == defaults.wizardAttributePrefix) {
                     let changedAttribute = name.replace(defaults.wizardAttributePrefix, '');                
-                    if (event.detail.flowExit && !this.isEarlyExit) { 
+                    if (event.detail.status === "FINISHED" && !this.isEarlyExit) { 
+
                         // Update the wizard variables to force passing the changed values back to the CPE which will then post to the Flow Builder
                         switch (changedAttribute) { 
                             case 'columnFields':
@@ -1140,6 +1327,9 @@ export default class ers_datatableCPE extends LightningElement {
                             case 'columnWraps':
                                 this.wiz_columnWraps = value;
                                 break;
+                            case 'columnFlexes':
+                                this.wiz_columnFlexes = value;
+                                break;
                             case 'columnCellAttribs': 
                                 this.wiz_columnCellAttribs = value;
                                 break;
@@ -1152,6 +1342,7 @@ export default class ers_datatableCPE extends LightningElement {
                             default:
                         }
                         this.isFlowLoaded = false;
+                        this.closeModal();
                     }
                 }
             });
@@ -1171,15 +1362,15 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     handleWizardCancel() { 
-        console.log('handleWizardCancel');
+        console.log(DEBUG_INFO_PREFIX+'handleWizardCancel');
     }
 
     handleWizardRestart() { 
-        console.log('handleWizardRestart');
+        console.log(DEBUG_INFO_PREFIX+'handleWizardRestart');
     }
     
     handleWizardNext() { 
-        console.log('handleWizardNext');      
+        console.log(DEBUG_INFO_PREFIX+'handleWizardNext');      
         this.dispatchFlowActionEvent('next');
     }
 
@@ -1210,7 +1401,7 @@ export default class ers_datatableCPE extends LightningElement {
     handleKeyDown(event) { 
         var keycode = event.code;
         if(keycode == 'Escape'){
-            console.log('CPE ESC Key Pressed');
+            console.log(DEBUG_INFO_PREFIX+'CPE ESC Key Pressed');
             this.openModal = false;
             event.preventDefault();
             event.stopImmediatePropagation();
@@ -1244,7 +1435,7 @@ export default class ers_datatableCPE extends LightningElement {
             allComboboxes.forEach(curCombobox => {
                 if (!curCombobox.reportValidity()) {
                     resultErrors.push('error');
-                    console.log('ComboBox Error:', error);
+                    console.log(DEBUG_INFO_PREFIX+'ComboBox Error:', error);
                 }
             });
         }
@@ -1259,7 +1450,7 @@ export default class ers_datatableCPE extends LightningElement {
             this.inputValues[key].isError = true;
             this.inputValues[key].errorMessage = errorString;
             this.inputValues[key].class += ' slds-has-error';
-            console.log('CPE generated error:', key, isError, errorString);
+            console.log(DEBUG_INFO_PREFIX+'CPE generated error:', key, isError, errorString);
         } else { 
             this.inputValues[key].isError = false;
         }

@@ -17,6 +17,35 @@ Additional components packaged with this LWC:
                                                 GetRecordTypeInfobyObject
                                                 GetRecordTypeInfobyObjectTest
                                                 QuickChoiceMockHttpResponseGenerator
+
+1/16/24 -   Eric Smith -    Version 2.44
+                            Implemented workaround for Spring '24 bug with dependent picklists and other reactivity issues
+
+12/12/23 -  Eric Smith -    Version 2.43
+                            Added reactivity for the Record Type Id
+
+12/04/23 -  Eric Smith -    Version 2.42
+                            Clear the selected value if the options change on a reactive screen
+                            ALlow "Add a 'None' Choice" option for all valid picklist methods
+                            Added clarification to an error message that could appear if the component has conditional visibility on a screen that can be revisited.
+                            Fix the "Need a valid Input Mode. Didn't get one." error introduced in the prior release.
+
+7/23/23 -   Eric Smith -    Version 2.41 
+                            Fixed default value being passed as output for reactivity
+                            Added reactivity for choiceLabels, choiceValues & choiceIcons input attributes (updates require a change to choiceValues)
+
+4/23/23 -   Eric Smith -    Version 2.40  
+                            Added an attribute for a Help Text hover to appear next to the Master Label for all input types 
+
+3/29/23 -   Eric Smith -    Version 2.39  
+                            Fixed dependent picklist bug (CB_TRUE not defined) 
+
+3/25/23 -   Eric Smith -    Version 2.38  
+                            Updated to support dependent picklists in the Reactive Screens Beta (Dependent picklists must include a Controlling Value attribute) 
+                            Added new attribute to support Rich Text for Visual Card descriptions
+
+11/08/22 -  Andy Haas  -    Versions 2.37
+                            Updated the cardSize to allow the height of the card to contain the content
                                                 
 10/12/22 -  Eric Smith -    Version 2.36  
                             Fixed backwards compatability bug from 2.34 when no controlling value attribute is provided for a controlled picklist field
@@ -72,9 +101,18 @@ Additional components packaged with this LWC:
     <template if:true={showPicklist}>
         <!-- Display Visual Card Pickers -->
         <template if:true={showVisual}>
-            <fieldset class="slds-form-element">
-                <label class="slds-form-element__legend slds-form-element__label">
-                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
+            <fieldset class="slds-form-element" style="margin-right:1rem;">
+                <div class="slds-grid">
+                    <div class="slds-col slds-grow-none">
+                        <label class="slds-form-element__legend slds-form-element__label">
+                            <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
+                    </div>
+                    <div class={showHelpText}>
+                        <div class="slds-col">
+                            <lightning-helptext content={helpText}></lightning-helptext>
+                        </div>
+                    </div>
+                </div>
                 <div class={gridClass} style={gridStyle}>
                     <template for:each={items} for:item="item">
                         <div key={item.name} class={columnClass} style={responsiveSize}>
@@ -97,7 +135,12 @@ Additional components packaged with this LWC:
                                         <div
                                             class="slds-media__body slds-border_left slds-p-left_small slds-p-top_xxx-small">
                                             <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
-                                            <span class="slds-text-title wrapped-content">{item.description}</span>
+                                            <template lwc:if={showAsRichText}>
+                                                <span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="slds-text-title wrapped-content">{item.description}</span>
+                                            </template>
                                         </div>
                                     </span>
                                 </template>
@@ -109,7 +152,12 @@ Additional components packaged with this LWC:
                                         style={cardSize}>
                                         <span>
                                             <span class="slds-text-heading_medium slds-m-bottom_x-small">{item.name}</span>
-                                            <span class="slds-text-title">{item.description}</span>
+                                            <template lwc:if={showAsRichText}>
+                                                <span class="slds-text-title"><lightning-formatted-rich-text value={item.description}></lightning-formatted-rich-text></span>
+                                            </template>
+                                            <template lwc:else>
+                                                <span class="slds-text-title">{item.description}</span>
+                                            </template>
                                         </span>
                                     </span>
                                 </template>
@@ -130,15 +178,24 @@ Additional components packaged with this LWC:
             <!-- Display Radio Buttons -->
             <template if:true={showRadio}>
                 <div style={inputStyle} class={inputClass}>
-                    <lightning-radio-group 
-                        name={radioGroup} 
-                        label={masterLabel} 
-                        value={selectedValue}
-                        options={options}
-                        required={required} 
-                        onchange={handleChange} 
-                        type="radio">
-                    </lightning-radio-group>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-grow-none">
+                            <lightning-radio-group 
+                                name={radioGroup} 
+                                label={masterLabel} 
+                                value={selectedValue}
+                                options={options}
+                                required={required} 
+                                onchange={handleChange} 
+                                type="radio">
+                            </lightning-radio-group>
+                        </div>
+                        <div class={showHelpText}>
+                            <div class="slds-col">
+                                <lightning-helptext content={helpText}></lightning-helptext>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </template>
 
@@ -151,6 +208,7 @@ Additional components packaged with this LWC:
                         value={selectedValue}
                         options={options}
                         required={required} 
+                        field-level-help={helpText}
                         onchange={handleChange}>
                     </lightning-combobox>
                 </div>

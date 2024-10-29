@@ -1,10 +1,17 @@
 <template>
     <div class="field-picker">
-        <template if:true={isError}>
-            <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
-                <h2> {errorMessage} </h2>
+        <!--  Christopher Strecker 06/06/2024 - Added missing section for the master label -->
+        <div class="slds-grid">
+            <div class="slds-col slds-grow-none">
+                <label class="slds-form-element__legend slds-form-element__label">
+                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
             </div>
-        </template>
+            <template if:true={isError}>
+                <div class="slds-col slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+                    <h2> {errorMessage} </h2>
+                </div>
+            </template>
+        </div>
         <template if:false={hideObjectPicklist}>
             <lightning-combobox
                     name="objectTypeField"
@@ -36,6 +43,7 @@
                     object-name={_objectType}
                     onfieldupdate={handleFieldUpdate}
                     allow-multiselect={allowFieldMultiselect}
+                    field-type-filter={fieldTypeFilter}
                     required={required}></c-fsc_field-selector-3>
             <c-fsc_flow-combobox
                     if:true={renderFlowCombobox}

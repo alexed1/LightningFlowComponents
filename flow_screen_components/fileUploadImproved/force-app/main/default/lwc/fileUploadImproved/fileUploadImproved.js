@@ -14,29 +14,62 @@ import updateFileName from '@salesforce/apex/FileUploadImprovedHelper.updateFile
 const MAX_FILE_SIZE = 4500000;
 const CHUNK_SIZE = 750000;
 
+// Convert CB values to a boolean
+function cbToBool(value) {
+    return value === "CB_TRUE";
+  }
+
 export default class FileUpload extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
-    @api allowMultiple;
+    @api
+     get allowMultiple() {
+    return cbToBool(this.cb_allowMultiple);
+    }
+    @api cb_allowMultiple;
     @api community; // deprecated
     @api communityDetails; // deprecated
     @api contentDocumentIds;
     @api contentVersionIds;
-    @api disableDelete;
-    @api embedExternally;
+    @api
+    get disableDelete() {
+    return cbToBool(this.cb_disableDelete);
+    }
+    @api cb_disableDelete;
+    @api
+    get embedExternally() {
+    return cbToBool(this.cb_embedExternally);
+    }
+    @api cb_embedExternally;
     @api helpText;
     @api icon;
     @api label;
-    @api overriddenFileName;
+    @api overriddenFileName;    
     @api recordId;
-    @api renderExistingFiles;
-    @api renderFilesBelow;
-    @api required;
+    @api
+    get renderExistingFiles() {
+    return cbToBool(this.cb_renderExistingFiles);
+    }
+    @api cb_renderExistingFiles;
+    @api
+    get renderFilesBelow() {
+    return cbToBool(this.cb_renderFilesBelow);
+    }
+    @api cb_renderFilesBelow;
+    @api
+    get required() {
+    return cbToBool(this.cb_required);
+    }
+    @api cb_required;
     @api requiredMessage;
     @api sessionKey;
     @api uploadedFileNames;
     @api uploadedlabel;
     @api uploadedLabel; // deprecated
-    @api visibleToAllUsers;
+    @api
+    get visibleToAllUsers() {
+    return cbToBool(this.cb_visibleToAllUsers);
+    }
+    @api cb_visibleToAllUsers;
     
     @track docIds =[];
     @track fileNames = [];
@@ -366,9 +399,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     communicateEvent(docIds, versIds, fileNames, objFiles){
-        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', docIds));
-        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', versIds));
-        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', fileNames));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentIds', [...docIds]));
+        this.dispatchEvent(new FlowAttributeChangeEvent('contentVersionIds', [...versIds]));
+        this.dispatchEvent(new FlowAttributeChangeEvent('uploadedFileNames', [...fileNames]));
 
         sessionStorage.setItem(this.sessionKey, JSON.stringify(objFiles));
     }

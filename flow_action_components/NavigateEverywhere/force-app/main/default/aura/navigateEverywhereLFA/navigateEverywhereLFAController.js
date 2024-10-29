@@ -49,7 +49,7 @@
                 }
             }
         var validActionValues = [];
-        var validTypeValues = ['object','record', 'app', 'url', 'tab', 'knowledge', 'namedpage', 'relatedlist'];
+        var validTypeValues = ['object','record', 'app', 'url', 'tab', 'knowledge', 'experiencepage','namedpage', 'relatedlist'];
         if (validTypeValues.includes(destinationType)) {
             switch (destinationType) {
                 case 'object' :
@@ -61,6 +61,9 @@
                             pageReference.type = 'standard__objectPage';
                             pageReference.attributes.objectApiName = destinationName;
                             pageReference.attributes.actionName = destinationAction.toLowerCase();
+                            if(destinationAction.toLowerCase()=='new'){ //NEW CODE credit Jonathan Muller
+                                pageReference.state.useRecordTypeCheck = 1; //NEW CODE - This is the key part that allows for selection of Record Type by the user
+                            }  
                             if(destinationActionFilter) {
                                 pageReference.state.filterName = destinationActionFilter;
                             }
@@ -116,7 +119,16 @@
                         pageReference.type = 'standard__namedPage';
                         pageReference.attributes.pageName = destinationName;                        
                     } else {
-                        throw new Error('Missing DestinationName. Since you have DestinationType set to namedPage, you need to pass in a valid name. valid targets are 1) for Lightning Experience and Salesforce Mobile: home, chatter, today, dataAssessment, filePreview and 2) for Communities: home, Account management, Contact support, Error, Login, Top Articles, Topic Catalog, Custom pages');
+                        throw new Error('Missing DestinationName. Since you have DestinationType set to namedpage, you need to pass in a valid name. valid targets are home, chatter, today, dataAssessment, filePreview. for Community/Experience pages, set the DestinationType to experiencepage');
+                    }
+                break;
+
+                case 'experiencepage' :
+                    if(destinationName) {
+                        pageReference.type = 'comm__namedPage';
+                        pageReference.attributes.name = destinationName;                        
+                    } else {
+                        throw new Error('Missing DestinationName. Since you have DestinationType set to experiencepage, you need to pass in a valid name. valid targets are home, Account management, Contact support, Error, Login, Top Articles, Topic Catalog, Custom page');
                     }
                 break;
                 

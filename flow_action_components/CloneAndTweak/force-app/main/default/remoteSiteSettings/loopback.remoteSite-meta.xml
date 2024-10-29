@@ -2,5 +2,5 @@
 <RemoteSiteSetting xmlns="http://soap.sforce.com/2006/04/metadata">
     <disableProtocolSecurity>false</disableProtocolSecurity>
     <isActive>true</isActive>
-    <url>https://customization-agility-5482-dev-ed.lightning.force.com</url>
+    <url>https://app-saas-8440-dev-ed--c.scratch.vf.force.com</url>
 </RemoteSiteSetting>

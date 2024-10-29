@@ -1,0 +1,12 @@
+<template>
+    <lightning-modal-header label={modalTitle}></lightning-modal-header>
+    <lightning-modal-body> 
+        <lightning-record-form
+            object-api-name={objectApiName}
+            layout-type="Full"
+            columns="2"
+            onsuccess={handleSuccess}
+            oncancel={handleCancel}
+        ></lightning-record-form>
+    </lightning-modal-body>
+</template>

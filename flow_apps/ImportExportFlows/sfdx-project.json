@@ -1,0 +1,39 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "dependencies": [
+        {
+          "package": "FlowActionsBasePack@3.0.0-0"
+        },
+        {
+          "package": "FlowScreenComponentsBasePack@3.0.7-0"
+        }
+      ],
+      "package": "ImportExportFlowsV2",
+      "versionName": "ver 0.1",
+      "versionDescription": "",
+      "versionNumber": "0.1.0.NEXT",
+      "name": "force-app",
+      "fullPath": "D:\\esmit\\Documents\\VSCode\\LightningFlowComponents\\flow_apps\\ImportExportFlows\\force-app\\"
+    },
+    {
+      "path": "force-app",
+      "package": "ImportExportFlowsV2",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "default": false
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "57.0",
+  "packageAliases": {
+    "FlowActionsBasePack@3.0.0-0": "04t8b000001Eh4YAAS",
+    "FlowScreenComponentsBasePack@3.0.7-0": "04t5G000003rUyAQAU",
+    "ImportExportFlowsV2": "0Ho5G000000KyzESAS",
+    "ImportExportFlowsV2@2.0.1": "04t5G000004C6v2QAC",
+    "ImportExportFlowsV2@2.0.2": "04t5G000004C6v7QAC"
+  }
+}

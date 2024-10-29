@@ -1,5 +1,5 @@
 global with sharing class CopyCollection {
-    @InvocableMethod
+    @InvocableMethod(label='Copy Collection [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> copyCollection(List<Requests> requestList) {
         
         List<Results> responseWrapper = new List<Results>();

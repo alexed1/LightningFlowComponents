@@ -1,22 +1,30 @@
+/**
+ * @author Eric Smith
+ * @group DataTable
+ */
+@SuppressWarnings('PMD')
 @IsTest
 private with sharing class ers_DatatableControllerTest {
-
     @TestSetup
-    private static void setup(){
-        Account a1 = new Account(Name='Test1',
-                AccountNumber='1',
-                AnnualRevenue=1000000,
-                Website='https://trailblazer.me/id/ericsmith',
-                Type='Type1',
-                Description='D1');
+    private static void setup() {
+        Account a1 = new Account(
+            Name = 'Test1',
+            AccountNumber = '1',
+            AnnualRevenue = 1000000,
+            Website = 'https://trailblazer.me/id/ericsmith',
+            Type = 'Type1',
+            Description = 'D1'
+        );
         insert a1;
 
-        Account a2 = new Account(Name='Test2',
-                AccountNumber='2',
-                AnnualRevenue=2000000,
-                Website='https://ericsplayground.wordpress.com/blog/',
-                Type='Type2',
-                Description='D2');
+        Account a2 = new Account(
+            Name = 'Test2',
+            AccountNumber = '2',
+            AnnualRevenue = 2000000,
+            Website = 'https://ericsplayground.wordpress.com/blog/',
+            Type = 'Type2',
+            Description = 'D2'
+        );
         insert a2;
     }
 
@@ -30,8 +38,12 @@ private with sharing class ers_DatatableControllerTest {
         System.assert(testResponse.contains('"lookupFieldList":["OwnerId"]'));
 
         String testCPEResponse = ers_DatatableController.getCPEReturnResults('Account');
-        
-        Account[] empty = [SELECT Id, Name, OwnerId FROM Account WHERE Name='NotInAccounts'];
+
+        Account[] empty = [
+            SELECT Id, Name, OwnerId
+            FROM Account
+            WHERE Name = 'NotInAccounts'
+        ];
         String testEmpty = ers_DatatableController.getReturnResults(empty, fieldnames, suppress);
         System.assert(testEmpty.contains('"objectName":"EmptyCollection"'));
     }
@@ -55,7 +67,10 @@ private with sharing class ers_DatatableControllerTest {
     @IsTest
     private static void testMultiCurrency() {
         String fieldNames = 'Id, Name, AnnualRevenue';
-        List<Account> accts = [SELECT Id, Name, OwnerId, AnnualRevenue FROM Account];
+        List<Account> accts = [
+            SELECT Id, Name, OwnerId, AnnualRevenue
+            FROM Account
+        ];
         Boolean suppress = false;
         ers_DatatableController.isMultiCurrencyOrganization = true;
         String testResponse = ers_DatatableController.getReturnResults(accts, fieldNames, suppress);
@@ -76,5 +91,4 @@ private with sharing class ers_DatatableControllerTest {
         System.assertEquals('standard:account', ers_DatatableController.getIconName('Account'));
         System.assertEquals('standard:contact', ers_DatatableController.getIconName('Contact'));
     }
-
 }

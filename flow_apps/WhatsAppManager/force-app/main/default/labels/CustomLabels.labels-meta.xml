@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>WhatsAppSecret</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>WhatsApp Secret</shortDescription>
+        <value>767e337b45491209a96de40fac47fd5c</value>
+    </labels>
+</CustomLabels>

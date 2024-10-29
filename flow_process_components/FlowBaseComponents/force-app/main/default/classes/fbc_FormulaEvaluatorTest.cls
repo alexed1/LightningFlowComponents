@@ -2,8 +2,6 @@
 public with sharing class fbc_FormulaEvaluatorTest {
     @IsTest
     static void parseFormulaTest() {
-        
-            static void parseFormulaTest() {
 
         Profile pfile = [select id from profile where Name='System Administrator' limit 1];
         User usr = new User( alias='utest', email='unitTester@UT.org', emailencodingkey='UTF-8',FirstName = 'beta',lastname='Tester',

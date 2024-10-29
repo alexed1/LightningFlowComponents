@@ -1,3 +1,10 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-29-2024
+  @last modified by  : Josh Dayment
+-->
 <template>
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Record and Object Information"
         banner-info={recordObjectInfo}></c-fsc_flow-banner>
@@ -20,34 +27,59 @@
         onvaluechanged={handleFlowComboboxValueChange} required=true>
     </c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="value" value={inputValues.value.value} builder-context-filter-type="String"
-        label={inputValues.value.label} onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_flow-combobox name="value" value={inputValues.value.value} label={inputValues.value.label}
+        onvaluechanged={handleFlowComboboxValueChange}
+        automatic-output-variables={automaticOutputVariables}></c-fsc_flow-combobox>
 
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Component Styling" banner-info={componentStyling}>
     </c-fsc_flow-banner>
 
-    <lightning-slider data-name="cardSizeString" value={inputValues.cardSizeString.value} max="500"
-        label={inputValues.cardSizeString.label} onchange={handlesliderChange}></lightning-slider>
+    <c-fsc_flow-combobox name="label" value={inputValues.label.value} label={inputValues.label.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="cardHeight" value={inputValues.cardHeight.value} label={inputValues.cardHeight.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-combobox name="cardWidth" value={inputValues.cardWidth.value} label={inputValues.cardWidth.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Header Styling" banner-info={headerStyling}>
+    </c-fsc_flow-banner>
 
     <c-fsc_flow-combobox name="headerStyle" value={inputValues.headerStyle.value} label={inputValues.headerStyle.label}
         builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
 
-    <c-fsc_flow-combobox name="label" value={inputValues.label.value} label={inputValues.label.label}
-        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+    <c-fsc_pick-object-and-field-3 field-label={inputValues.headerField.label} field={inputValues.headerField.value}
+        object-type={inputValues.objectAPIName.value} onfieldselected={handleHeaderFieldNameChange}
+        hide-object-picklist=true allow-multiselect=false>
+    </c-fsc_pick-object-and-field-3>
+
+    <lightning-combobox label="Apply SLDS class to header field?" options={fieldClassOptions}
+        onchange={handleHeaderFieldClassChange} value={inputValues.headerFieldClass.value}></lightning-combobox>
 
     <c-fsc_pick-icon name="icons" mode="combobox" oniconselection={handlePickIcon} icon-name={inputValues.icon.value}>
     </c-fsc_pick-icon>
+
+    <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Card Styling" banner-info={cardStyling}>
+    </c-fsc_flow-banner>
+
+    <c-fsc_flow-combobox name="subheadCSS" value={inputValues.subheadCSS.value} label={inputValues.subheadCSS.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
+
+    <lightning-combobox label="Apply SLDS class to field values?" options={fieldClassOptions}
+        onchange={handleFieldClassChange} value={inputValues.fieldClass.value}></lightning-combobox>
+
+    <lightning-combobox label="Show or hide field labels?" options={fieldVariants} onchange={handleFieldVariantChange}
+        value={inputValues.fieldVariant.value}></lightning-combobox>
 
     <c-fsc_flow-banner banner-color="#4C6E96" banner-label="Flex Card Actions" banner-info={flexCardActions}>
     </c-fsc_flow-banner>
     <lightning-combobox label="Display actions as list or menu?" value={inputValues.actionDisplayType.value}
         options={displayOptions} onchange={handleDisplayTypeChange} required></lightning-combobox>
 
-    <template if:true={isMenu}>
-        <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value}
-            label={inputValues.buttonLabel.label} builder-context-filter-type="String"
-            onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
-    </template>
+
+    <c-fsc_flow-combobox name="buttonLabel" value={inputValues.buttonLabel.value} label={inputValues.buttonLabel.label}
+        builder-context-filter-type="String" onvaluechanged={handleFlowComboboxValueChange}></c-fsc_flow-combobox>
 
     <c-fsc_flow-picker-3 label={inputValues.flows.label} show-active-flows-only onflowselect={handleFlowSelect}>
     </c-fsc_flow-picker-3>

@@ -1,8 +1,16 @@
-<template>  
+<!--
+  @description       : 
+  @author            : Josh Dayment
+  @group             : 
+  @last modified on  : 05-31-2023
+  @last modified by  : Josh Dayment
+-->
+<template>
+
     <template if:true={displayMenu}>
-        <lightning-button-menu label={buttonLabel} alternative-text="Actions"
+        <lightning-button-menu label={buttonLabel} alternative-text="Actions" menu-alignment="right"
             tooltip="List of available actions for this specific record click on the name of the action to launch"
-            onselect={launchFlowMenu}  aria-haspopup="modal">
+            onselect={handleMenuClick}>
 
             <template for:each={flowData} for:item="flow">
                 <lightning-menu-item id={flow.apiName} label={flow.label} value={flow.apiName} key={flow.label}>
@@ -13,12 +21,13 @@
     </template>
 
     <template if:true={displayList}>
-        <template for:each={flowData} for:item="flow">
-            <div key={flow.apiName} class="slds-m-top_medium slds-card__body slds-card__body_inner">
-                <div class="slds-m-top_xx-small">
-                    <a value={flow.apiName} aria-haspopup="modal" onclick={launchFlow}>{flow.label}</a>
-                </div>
-            </div>
-        </template>
+        <lightning-vertical-navigation onselect={handleListClick}>
+            <lightning-vertical-navigation-section label={buttonLabel}>
+                <template for:each={flowData} for:item="flow">
+                    <lightning-vertical-navigation-item id={flow.apiName} label={flow.label} name={flow.apiName}
+                        key={flow.label}></lightning-vertical-navigation-item>
+                </template>
+            </lightning-vertical-navigation-section>
+        </lightning-vertical-navigation>
     </template>
 </template>

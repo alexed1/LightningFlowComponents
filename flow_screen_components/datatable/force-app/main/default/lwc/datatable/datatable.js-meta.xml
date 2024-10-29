@@ -2,7 +2,7 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <masterLabel>Datatable</masterLabel>
     <description>This component allows the user to configure and display a datatable in a Flow screen.</description>
-    <apiVersion>53.0</apiVersion>
+    <apiVersion>60.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
         <target>lightning__FlowScreen</target>
@@ -22,6 +22,10 @@
                 - NOTE: These records may not contain all of the edited values."/>
             <property name="outputSelectedRow" label="Output Selected Row (Object)" type="{T}" role="outputOnly" description="Record Object variable that contains the single record that was selected in the datatable. 
                 - NOTE: This is only provided when just a single record is selected."/>
+            <property name="outputRemovedRows" label="Output Removed Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain only the records that were removed from the datatable. 
+                - NOTE: These records will contain all saved edited values."/>   
+            <property name="outputRemainingRows" label="Output Remaining Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain all the original records that were not removed from the datatable. 
+                - NOTE: These records will contain all saved edited values."/>                   
     
             <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
             <!-- =========== Inputs =========== -->
@@ -37,13 +41,17 @@
             <property name="outputSelectedRowsString" label="Output Selected Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were selected in the datatable. 
                 --  NOTE: These records may not contain all of the edited values."/>
             <property name="outputEditedRowsString" label="Output Edited Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were edited in the datatable."/>
-            
+            <property name="outputRemovedRowsString" label="Output Removed Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were removed from the datatable."/>
+            <property name="outputRemainingRowsString" label="Output Remaining Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain all the original records that were not removed from the datatable."/>
             <!-- ============================================================================================================================- -->  
             
             <!-- Additional Output Parameters -->
             <property name="numberOfRowsSelected" label="Output Number of Selected Records" type="Integer" role="outputOnly" description="Total count of the number of selected records"/>
             <property name="numberOfRowsEdited" label="Output Number of Edited Records" type="Integer" role="outputOnly" description="Total count of the number of edited records"/>
+            <property name="numberOfRowsRemoved" label="Output Number of Removed Records" type="Integer" role="outputOnly" description="Total count of the number of removed records"/>
             <property name="selectedRowKeyValue" label="Selected Row Key Field Value" type="String" role="outputOnly" description="The value of the keyField(Id) of the selected row"/>
+            <property name="sortedBy" label="sortedBy" type="String"  role="outputOnly"/>
+            <property name="sortDirection" label="sortDirection" type="String" role="outputOnly"/>
 
             <!-- Configuration Mode Only - Inputs/Outputs -->
             <property name="objectName" label="Wizard Only - Selected SObject" type="String"/>
@@ -56,6 +64,7 @@
             <property name="wizColumnLabels" label="Wizard Only - Column Labels" type="String" role="outputOnly"/>
             <property name="wizColumnWidths" label="Wizard Only - Column Widths" type="String" role="outputOnly"/>
             <property name="wizColumnWraps" label="Wizard Only - Column Wraps" type="String" role="outputOnly"/>
+            <property name="wizColumnFlexes" label="Wizard Only - Column Flexes" type="String" role="outputOnly"/>
             <property name="wizColumnCellAttribs" label="Wizard Only - Special Cell Attributes" type="String" role="outputOnly"/>
             <property name="wizColumnTypeAttributes" label="Wizard Only - Special Type Attributes" type="String" role="outputOnly"/>
             <property name="wizColumnOtherAttributes" label="Wizard Only - Special Other Attributes" type="String" role="outputOnly"/>
@@ -82,12 +91,16 @@
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnWraps" label="- Column Wraps (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
                 --  NOTE: ColIDs can be either the column number or the field API Name"/>
+            <property name="columnFlexes" label="- Column Flexes (Col#:true,...)" type="String" role="inputOnly" description="Comma separated list of ColID:true or false (Default:false)  
+                --  NOTE: ColIDs can be either the column number or the field API Name"/>
             <property name="columnCellAttribs" label=". Special: Column CellAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: FancyField__c:{class: 'slds-theme_shade slds-theme_alert-texture', iconName: {fieldName: IconValue__c}, iconPosition: left}"/>
             <property name="columnOtherAttribs" label=". Special: Column Other Attributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: Description:{wrapText: true, wrapTextMaxLines: 5}"/>
             <property name="columnTypeAttribs" label=". Special: Column TypeAttributes (Col#:{name:value,...};...) Use ; as separator" type="String" role="inputOnly" description="EXAMPLE: DateField__c:{year:'numeric', day:'2-digit', month:'long'}; NumberField__c:{minimumFractionDigits:4}"/>
             <property name="isConfigMode" label="Configuration Mode?" type="Boolean" default="false" role="inputOnly" description="Display the Field API Names and the Column Widths in a box below the table.  This parameter is designed to be used by the setup Flow."/>
             <property name="hideCheckboxColumn" label="Hide Checkbox Column?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the row selection column.  --  NOTE: The checkbox column will always display when inline editing is enabled."/>
             <property name="cb_hideCheckboxColumn" type="String" role="inputOnly"/>
+            <property name="isShowSearchBar" label="Show Search bar" type="Boolean" role="inputOnly"/>
+            <property name="cb_isShowSearchBar" type="String" role="inputOnly"/>
             <property name="hideHeaderActions" label="Hide Column Header Actions?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide all column header actions including Sort, Clip Text, Wrap Text + Filter."/>
             <property name="cb_hideHeaderActions" type="String" role="inputOnly"/>
             <property name="hideClearSelectionButton" label="Hide Clear Selection Button?" type="Boolean" default="false" role="inputOnly" description="Set to True to hide the Clear Selection Button that would normally appear on a radio button selection table."/>
@@ -96,10 +109,17 @@
             <property name="cb_showRowNumbers" type="String" role="inputOnly"/>
             <property name="showRecordCount" label="Show Record Count in Header" type="Boolean" default="false" role="inputOnly" description="Display the number of records in the table header.  This will match what is shown in a List View header."/>
             <property name="cb_showRecordCount" type="String" role="inputOnly"/>
+            <property name="showSelectedCount" label="Show Selected Record Count in Header" type="Boolean" default="false" role="inputOnly" description="Display the number of selected records in the table header."/>
+            <property name="cb_showSelectedCount" type="String" role="inputOnly"/>
             <property name="keyField" label="Key Field" type="String" default="Id" role="inputOnly" description="This is normally the Id field, but you can specify a different field if all field values are unique."/>
             <property name="matchCaseOnFilters" label="Match Case on Column Filters?" type="Boolean" default="false" role="inputOnly" description="Set to True is you want to force an exact match on case for column filter values."/>
             <property name="cb_matchCaseOnFilters" type="String" role="inputOnly"/>
             <property name="maxNumberOfRows" label="Maximum Number of Records to Display" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows will be displayed in the datatable."/>
+            <property name="showPagination" type="Boolean" role="inputOnly"/>
+            <property name="cb_showPagination" type="String" role="inputOnly"/>
+            <property name="recordsPerPage" type="Integer" role="inputOnly"/>
+            <property name="showFirstLastButtons" type="Boolean" role="inputOnly"/>
+            <property name="cb_showFirstLastButtons" type="String" role="inputOnly"/>
             <property name="isRequired" label="Required?" type="Boolean" default="false" role="inputOnly" description="Require at least 1 row to be selected?"/>
             <property name="cb_isRequired" type="String" role="inputOnly"/>
             <property name="singleRowSelection" label="Single Row Selection (Radio Buttons)?" type="Boolean" default="false" role="inputOnly" description="When set to True, Radio Buttons will be displayed and only a single row can be selected.  
@@ -132,9 +152,14 @@
             <property name="allowOverflow" type="Boolean" role="inputOnly"/>
             <property name="cb_allowOverflow" type="String" role="inputOnly"/>
             <property name="suppressCurrencyConversion" type="Boolean" role="inputOnly"/>
-            <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>            
-            <property name="sortedBy" label="sortedBy" type="String"  role="outputOnly"/>
-            <property name="sortDirection" label="sortDirection" type="String" role="outputOnly"/>
+            <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>  
+            <property name="isRemoveRowAction" type="Boolean" role="inputOnly" default="false" description="Add a Remove Row Action Button"/>
+            <property name="cb_isRemoveRowAction" type="String" role="inputOnly"/>            
+            <property name="removeLabel" label="Remove Row Action Label" type="String" role="inputOnly" description="This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)"/>
+            <property name="removeIcon" label="Remove Row Action Icon" type="String" role="inputOnly" description="This is the icon that will be used for the Remove Row Action Button (Default: utility:close)"/>
+            <property name="removeColor" label="Remove Row Action Icon Color" type="String" role="inputOnly" description="This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)"/>
+            <property name="maxRemovedRows" label="Maximum # of rows that can be removed" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)"/>
+            <property name="removeRowLeftOrRight" label="Remove Row Action Column Location" type="String" role="inputOnly" description="Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

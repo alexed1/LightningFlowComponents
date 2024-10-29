@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AuthProvider xmlns="http://soap.sforce.com/2006/04/metadata">
+    <authorizeUrl>https://webexapis.com/v1/authorize</authorizeUrl>
+    <consumerKey>C025c83f0bad36d4f343a80e5194f2dd9e1464ec2c101fbbf76f387b59239c677</consumerKey>
+    <consumerSecret>hNN/O/mLsTK6C6DyJO8p9u2gZgAZ5h6pU5NSCZR3FAl8OdiMcuCatckXMBVW0IZJH9S4/nVOjKR2M48jNl4QsHBBGPdiC2rX</consumerSecret>
+    <friendlyName>WebEx Connect</friendlyName>
+    <includeOrgIdInIdentifier>false</includeOrgIdInIdentifier>
+    <providerType>OpenIdConnect</providerType>
+    <sendAccessTokenInHeader>true</sendAccessTokenInHeader>
+    <sendClientCredentialsInHeader>false</sendClientCredentialsInHeader>
+    <sendSecretInApis>true</sendSecretInApis>
+    <tokenUrl>https://webexapis.com/v1/authorize</tokenUrl>
+</AuthProvider>

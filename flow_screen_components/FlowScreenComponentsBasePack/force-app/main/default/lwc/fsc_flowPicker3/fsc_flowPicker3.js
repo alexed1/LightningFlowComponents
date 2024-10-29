@@ -39,7 +39,8 @@ export default class flowPickerFSC extends LightningElement {
         }
         // Add filter for Search String
         if (this.searchString) {
-            filters['Label'] = ["\'%"+this.searchString+"%\'"];
+            // filters['Label'] = ["\'%"+this.searchString+"%\'"];
+            filters['Label'] = ['%'+this.searchString+'%'];         // v1.6
         }
         return JSON.stringify(filters);
     }

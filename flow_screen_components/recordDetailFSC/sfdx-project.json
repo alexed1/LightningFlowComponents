@@ -1,24 +1,30 @@
 {
-    "packageDirectories": [
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "recordDetail_1",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "dependencies": [
         {
-            "path": "force-app",
-            "default": true,
-            "package": "recordDetail_1",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT",
-            "dependencies": [
-                {
-                    "package": "FlowBaseComponents@1.2.2-0"
-                }
-            ]
+          "package": "FlowActionsBasePack@3.0.15-0"
+        },
+        {
+          "package": "FlowScreenComponentsBasePack@3.1.0-0"
         }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "47.0",
-    "packageAliases": {
-        "recordDetail_1": "0Hof4000000TN9iCAG",
-        "FlowBaseComponents@1.2.2-0": "04tf4000003RQxcAAG",
-        "recordDetail_1@1.7.0-0": "04tf4000003RQxrAAG"
+      ]
     }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "57.0",
+  "packageAliases": {
+    "recordDetail_1": "0Hof4000000TN9iCAG",
+    "FlowActionsBasePack@3.0.15-0": "04t8b000001BTgsAAG",
+    "FlowScreenComponentsBasePack@3.1.0-0": "04t5G000004J7JyQAK",
+    "recordDetail_1@1.7.0-0": "04tf4000003RQxrAAG",
+    "recordDetail_1@1.9.0": "04t5G000004J7MJQA0",
+    "recordDetail_1@1.9.1": "04t5G000003zgZBQAY"
+  }
 }

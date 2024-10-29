@@ -1,0 +1,47 @@
+@IsTest
+private without sharing class CollectionProcessorsUtilsTest {
+
+    @IsTest
+    private static void testGetLocalMonthNumbers() {
+        Map<String, String> results = CollectionProcessorsUtils.getLocalMonthNumbers();
+        Assert.areEqual(12, results.size());
+    }
+
+    // This does not cover getFormattedValue(fieldValue, fieldType, format) completely!
+    @IsTest
+    private static void testGetFormattedValue() {
+        String fieldType = 'datetime';
+        String fieldValue = Datetime.newInstance(2023, 1, 15, 10,0,0)
+                                .format('yyyy-MM-dd\'T\'HH:mm:ss\'Z\''); // pre-formatted
+        String result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('2023-01-15T10:00:00Z', result);
+
+        fieldValue = Datetime.newInstance(2023, 1, 15, 10,0,0)
+                        .format(); // in user's locale
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('15-01-2023', result);
+
+        fieldType = 'date';
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType, 'dd-MM-yyyy');
+        Assert.areEqual('15-01-2023', result);
+
+        // Overloaded method without format
+        result = CollectionProcessorsUtils.getFormattedValue(fieldValue, fieldType);
+        Assert.areEqual('2023-01-15 10:00:00', result);
+    }
+
+    @IsTest
+    private static void testReplaceConstants() {
+        String sourceString = 'My string $GlobalConstant.True to assert';
+        String result = CollectionProcessorsUtils.replaceConstants(sourceString);
+        Assert.areEqual('My string "true" to assert', result);
+    }
+
+    @IsTest
+    private static void testGetFieldTypes() {
+        Map<String, String> resultMap = new Map<String, String>();
+        Account acc = new Account();
+        resultMap = CollectionProcessorsUtils.getFieldTypes(acc, new List<String>{'Name', 'Site'});
+        Assert.areEqual('{"Site":"STRING","Name":"STRING"}', JSON.serialize(resultMap));
+    }
+}

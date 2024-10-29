@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
+    <masterLabel>CP - Find Common And Unique Records</masterLabel>
+
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+
+            <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
+            <propertyType name="S" extends="SObject" label="Source Object API Name" description="Select the API Name of the SObject for the Source Record Collection"/>
+            <property name="sourceRecordCollection" type="{S[]}" role="inputOnly" description="Collection of Source Records" required="true"/>
+            <property name="sourceUniqueID" type="String" role="inputOnly" description="The Source Record Unique ID (Field API Name) you want to compare against the Target Unique ID" required="true"/>
+            <property name="sourceUniqueRecordCollection" type="{S[]}" role="outputOnly" description="The unique records in the source collection when compared against the target collection"/>            
+            <property name="sourceCommonRecordCollection" type="{S[]}" role="outputOnly" description="The common records in the source collection when compared against the target collection"/>   
+            <propertyType name="T" extends="SObject" label="Target Object API Name" description="Select the API Name of the SObject for the Target Record Collection"/>
+            <property name="targetRecordCollection" type="{T[]}" role="inputOnly" description="Collection of Target Records" required="true"/>
+            <property name="targetUniqueID" type="String" role="inputOnly" description="The Target Record Unique ID (Field API Name) you want to compare against the Source Unique ID" required="true"/>
+            <property name="targetUniqueRecordCollection" type="{T[]}" role="outputOnly" description="The unique records in the target collection when compared against the source collection"/>            
+            <property name="targetCommonRecordCollection" type="{T[]}" role="outputOnly" description="The common records in the target collection when compared against the source collection"/>            
+            <property name="emptyListsReturnNull" type="Boolean" role="inputOnly" description="When false, empty Lists will be returned as is. When true, empty Lists will be returned as null."/>
+
+            <!-- Include an attribute to hold an error message -->
+            <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

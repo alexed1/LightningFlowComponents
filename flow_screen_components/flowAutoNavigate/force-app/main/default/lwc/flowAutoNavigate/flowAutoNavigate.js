@@ -9,6 +9,7 @@ export default class flowAutoNavigate extends LightningElement {
     @api timerLabel;
     @api availableActions = [];
     @api triggered = false;
+    @api showLoader = false;
     //set triggered to true if we auto navigated
 
     timeIntervalInstance;

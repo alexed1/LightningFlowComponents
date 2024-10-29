@@ -1,20 +1,22 @@
 {
-    "packageDirectories": [
-        {
-            "path": "force-app",
-            "default": true,
-            "package": "detectAndLaunch",
-            "versionName": "ver 0.1",
-            "versionNumber": "0.1.0.NEXT"
-        }
-    ],
-    "namespace": "",
-    "sfdcLoginUrl": "https://login.salesforce.com",
-    "sourceApiVersion": "48.0",
-    "packageAliases": {
-        "detectAndLaunch": "0Hof4000000XZMICA4",
-        "detectAndLaunch@1.0.0-0": "04tf4000004PuLrAAK",
-        "detectAndLaunch@1.1.0-0": "04tf4000004PuOMAA0",
-        "detectAndLaunch@1.2.1-0": "04t5G0000047xMIQAY"
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "detectAndLaunch",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT"
     }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "48.0",
+  "packageAliases": {
+    "detectAndLaunch": "0Hof4000000XZMICA4",
+    "detectAndLaunch@1.0.0-0": "04tf4000004PuLrAAK",
+    "detectAndLaunch@1.1.0-0": "04tf4000004PuOMAA0",
+    "detectAndLaunch@1.2.1-0": "04t5G0000047xMIQAY",
+    "detectAndLaunch@2.1.0": "04t5G0000043xtFQAQ",
+    "detectAndLaunch@2.2.0": "04t5G0000043xtUQAQ"
+  }
 }

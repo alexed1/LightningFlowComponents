@@ -2,23 +2,18 @@ public with sharing class GetFlowMetadata {
     @InvocableMethod
     public static List <Result> execute(List<Request> requestList) {
         List<Result> resultList  = new List<Result>();
+        Result res = new Result();
         for(Request req : requestList) {
             try {
-                usf3.MetadataService.MetadataPort service = usf3.MetadataService.createService();
-
-                List<usf3.MetadataService.Flow > flowList =
-                (List<usf3.MetadataService.Flow >) service.readMetadata('Flow', new List<String> {req.flowName}).getRecords();
-
+                List<usf3.MetadataService.Flow > flowList = Test.isRunningTest() ? new List<usf3.MetadataService.Flow >{AnalyzeFlowsTest.genereateFlowForTest1()} : usf3.MetadataUtils.getFlowMetadataFromName(req.flowName);
                 System.debug(flowList[0].fullName);
-                Result res = new Result();
+                
                 res.flowMetadataJSON = JSON.serialize(flowList[0]);
                 res.flowMetadata = flowList[0];
-                resultList.add(res);
             } catch(Exception e) {
-                Result res = new Result();
                 res.errors = e.getMessage();
-                resultList.add(res);
             }
+            resultList.add(res);
         }
         return resultList;
     }

@@ -8,6 +8,10 @@
     {
       "files": "*.{cmp,page,component}",
       "options": { "parser": "html" }
+    },
+    {
+      "files": "*.{cls,trigger}",
+      "options": { "parser": "apex", "tabWidth": 4 }
     }
   ]
 }

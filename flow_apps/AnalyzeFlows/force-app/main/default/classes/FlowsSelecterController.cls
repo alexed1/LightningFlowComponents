@@ -1,7 +1,6 @@
 public with sharing class FlowsSelecterController {
     @AuraEnabled
     public static List<FlowVersionView> getFlowVersions(String flowAPIName){
-        try {
             List<FlowVersionView> flowVersionViewList = [
             SELECT  Id, 
                     Label, 
@@ -20,8 +19,5 @@ public with sharing class FlowsSelecterController {
             ORDER BY VersionNumber];
             
             return flowVersionViewList;
-        } catch (Exception e) {
-            throw new AuraHandledException(e.getMessage());
-        }
     }
 }

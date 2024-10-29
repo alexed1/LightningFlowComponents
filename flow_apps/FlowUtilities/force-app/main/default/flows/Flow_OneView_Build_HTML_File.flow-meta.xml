@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Create_File</name>
+        <label>Create File</label>
+        <locationX>50</locationX>
+        <locationY>854</locationY>
+        <actionName>CreateFile</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>Automatic</flowTransactionModel>
+        <inputParameters>
+            <name>fileName</name>
+            <value>
+                <elementReference>fFileName</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>fileContent</name>
+            <value>
+                <elementReference>vContentResult</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>CreateFile</nameSegment>
+        <outputParameters>
+            <assignToReference>vContentDocumentId</assignToReference>
+            <name>documentId</name>
+        </outputParameters>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <assignments>
+        <name>Add_to_HTML_File</name>
+        <label>Add to HTML File</label>
+        <locationX>182</locationX>
+        <locationY>494</locationY>
+        <assignmentItems>
+            <assignToReference>vContentResult</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>vNewContent</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Is_Last</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Prior_Content</name>
+        <label>Assign Prior Content</label>
+        <locationX>314</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>vContentResult</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>vPriorContent</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_HTML_File</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>End_Build_HTML_File</name>
+        <label>End Build HTML File</label>
+        <locationX>50</locationX>
+        <locationY>734</locationY>
+        <assignmentItems>
+            <assignToReference>vContentResult</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>&lt;/div&gt;&lt;/html&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Create_File</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Start_Build_HTML_File</name>
+        <label>Start Build HTML File</label>
+        <locationX>50</locationX>
+        <locationY>278</locationY>
+        <assignmentItems>
+            <assignToReference>vContentResult</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>&lt;html&gt;&lt;div style=&quot;font-family:&apos;Salesforce Sans&apos;&quot;&gt;</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vPriorContent</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Add_to_HTML_File</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Is_First</name>
+        <label>Is First?</label>
+        <locationX>182</locationX>
+        <locationY>158</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Prior_Content</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>NOT FIRST (Default)</defaultConnectorLabel>
+        <rules>
+            <name>FIRST</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isFirst</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Start_Build_HTML_File</targetReference>
+            </connector>
+            <label>FIRST</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_Last</name>
+        <label>Is Last?</label>
+        <locationX>182</locationX>
+        <locationY>614</locationY>
+        <defaultConnectorLabel>NOT LAST (Default)</defaultConnectorLabel>
+        <rules>
+            <name>LAST</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>isLast</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>End_Build_HTML_File</targetReference>
+            </connector>
+            <label>LAST</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>fFileName</name>
+        <dataType>String</dataType>
+        <expression>IF( RIGHT( {!vFileName}, 5) &lt;&gt; &quot;.html&quot;, {!vFileName} + &quot;.html&quot;, {!vFileName} )</expression>
+    </formulas>
+    <interviewLabel>Flow OneView - Build HTML File {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Flow OneView - Build HTML File</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Is_First</targetReference>
+        </connector>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>ttIcon</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;span class=&quot;slds-icon_container slds-icon-utility-announcement&quot; title=&quot;Description of icon when needed&quot;&gt;
+  &lt;svg class=&quot;slds-icon slds-icon-text-default&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;use xlink:href=&quot;/assets/icons/utility-sprite/svg/symbols.svg#announcement&quot;&gt;&lt;/use&gt;
+  &lt;/svg&gt;
+  &lt;span class=&quot;slds-assistive-text&quot;&gt;Description of icon when needed&lt;/span&gt;
+&lt;/span&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ttTable</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;style&gt;
+table, th, td {
+  border:1px solid black;
+}
+&lt;/style&gt;
+&lt;body&gt;
+
+&lt;h2&gt;A basic HTML table&lt;/h2&gt;
+
+&lt;table style=&quot;width:100%&quot;&gt;
+  &lt;tr&gt;
+    &lt;th&gt;Company&lt;/th&gt;
+    &lt;th&gt;Contact&lt;/th&gt;
+    &lt;th&gt;Country&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Alfreds Futterkiste&lt;/td&gt;
+    &lt;td&gt;Maria Anders&lt;/td&gt;
+    &lt;td&gt;Germany&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Centro comercial Moctezuma&lt;/td&gt;
+    &lt;td&gt;Francisco Chang&lt;/td&gt;
+    &lt;td&gt;Mexico&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p&gt;To understand the example better, we have added borders to the table.&lt;/p&gt;
+
+&lt;/body&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ttTest1</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(20, 250, 100); font-size: 20px;&quot;&gt;LARGE Bold H﻿eader&lt;/strong&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ttTest2</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;This is the second line&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>isFirst</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <name>isLast</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vContentDocumentId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vContentResult</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vFileName</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vNewContent</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vPriorContent</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

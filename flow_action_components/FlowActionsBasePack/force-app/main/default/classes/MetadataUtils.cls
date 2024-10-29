@@ -1,16 +1,24 @@
 global with sharing class MetadataUtils {
-    global static MetadataService.Flow getFlowMetadata(String flowName) {
+    global static List<MetadataService.Flow> getFlowMetadataFromName(String flowName) {
+        return getFlowMetadataFromNameList(new List<String>{flowName});
+    }
+
+    global static List<MetadataService.Flow> getFlowMetadataFromNameList(List<String> flowNameList) {
         
         MetadataService.MetadataPort service = MetadataService.createService();
 
         List<MetadataService.Flow > flowList =  (List<MetadataService.Flow >) service.readMetadata(
                 'Flow', 
-                new List<String> {flowName}
+                flowNameList
         ).getRecords();
         System.debug('getFlowMetadata');
         System.debug(JSON.serialize(flowList[0]).replace(',', ',\n'));
         System.debug(flowList[0].startElementReference);
-        return flowList[0];
+        return flowList;
+    }
+
+    global static MetadataService.Flow getFlowMetadata(String flowName) {
+        throw new MetadataService.MetadataServiceExamplesException('getFlowMetadatahas been deprecated. Please use either getFlowMetadataFromName or getFlowMetadataFromNameList');
     }
 
     global static void createFlowMetadata(MetadataService.Flow flow) {
@@ -48,6 +56,29 @@ global with sharing class MetadataUtils {
 
     }
 
+    global static void DeleteFlowMetadata (List<String> flowNameList) {
+
+        MetadataService.MetadataPort service = MetadataService.createService();
+
+        List<MetadataService.DeleteResult>  deleteResultList = service.deleteMetadata(
+            'Flow', 
+            flowNameList
+        );
+        System.debug('upsertFlowMetadata');
+        System.debug(JSON.serialize(deleteResultList).replace(',', ',\n'));
+        for(MetadataService.DeleteResult deleteResult : deleteResultList) {
+            handleDeleteResults(deleteResult);
+        }
+    }
+
+    global static void DeleteFlowMetadata (String flowName) {
+        DeleteFlowMetadata(new List<String> {flowName});
+    }
+
+    global static String filterLabelToApiName(String flowName) {
+        return flowName.replaceAll('[^a-zA-Z0-9]+', '_');
+    }
+
     global static void handleUpsertResults(MetadataService.UpsertResult upsertResult){
 			// Nothing to see?
 			if(upsertResult==null || upsertResult.success) {
@@ -55,22 +86,19 @@ global with sharing class MetadataUtils {
 				return;
 			}
 		 
-			// Construct error message and throw an exception
-			if(upsertResult.errors!=null)
-			{
-				List<String> messages = new List<String>();
-				messages.add(
-					(upsertResult.errors.size()==1 ? 'Error ' : 'Errors ') +
-						'occured processing component ' + upsertResult.fullName + '.');
-				for(MetadataService.Error error : upsertResult.errors)
-					messages.add(
-						error.message + ' (' + error.statusCode + ').' +
-						( error.fields!=null && error.fields.size()>0 ?
-							' Fields ' + String.join(error.fields, ',') + '.' : '' ) );
-				if(messages.size()>0)
-					throw new MetadataService.MetadataServiceExamplesException(String.join(messages, ' '));
+			// Construct error message and throw an exception 
+            MetadataService.handleErrors( upsertResult.success, upsertResult.fullName, upsertResult.errors);
+		
+		}
+
+        global static void handleDeleteResults(MetadataService.DeleteResult deleteResult){
+			// Nothing to see?
+			if(deleteResult==null || deleteResult.success) {
+				System.debug('Metadata Delete completed successfully');
+				return;
 			}
-			if(!upsertResult.success)
-				throw new MetadataService.MetadataServiceExamplesException('Request failed with no specified error.');
+		 
+			// Construct error message and throw an exception
+            MetadataService.handleErrors( deleteResult.success, deleteResult.fullName, deleteResult.errors);
 		}
 }

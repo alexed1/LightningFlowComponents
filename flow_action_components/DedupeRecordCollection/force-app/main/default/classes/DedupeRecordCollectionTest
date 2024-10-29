@@ -1,0 +1,36 @@
+@IsTest
+private without sharing class DedupeRecordCollectionTest {
+
+    private static DedupeRecordCollection.FlowRequest buildRequest() {
+        DedupeRecordCollection.FlowRequest request = new DedupeRecordCollection.FlowRequest();
+        List<DedupeRecordCollection.FlowRequest> requests = new List<DedupeRecordCollection.FlowRequest>();
+        request.fieldToDedupeOn = 'Name';
+        Account account1 = new Account(Name = 'Duplicate');
+        Account account2 = new Account(Name = 'Duplicate');
+        Account account3 = new Account(Name = 'NoDuplicate');
+        List<Account> accounts = new List<Account>{account1, account2, account3};
+        request.inputRecordCollection = accounts;
+        return request;
+    }
+
+    @IsTest
+    private static void testGetUniqueSObjectCollection() {
+        DedupeRecordCollection.FlowRequest request = buildRequest();
+        List<SObject> results = DedupeRecordCollection.getUniqueSObjectCollection(request);
+        Assert.areEqual(2, results.size());
+
+        request.fieldToDedupeOn = '<<Bogus>>'; // now test exception
+        results = DedupeRecordCollection.getUniqueSObjectCollection(request);
+        Assert.areEqual(0, results.size());
+    }
+
+    @IsTest static void testInvocable() {
+        List<DedupeRecordCollection.FlowRequest> requests = new List<DedupeRecordCollection.FlowRequest>();
+        requests.add(buildRequest());
+        List<DedupeRecordCollection.FlowResponse> results = new List<DedupeRecordCollection.FlowResponse>();
+        results = DedupeRecordCollection.dedupe(requests);
+
+        Assert.areEqual(1, results.size());
+        Assert.areEqual(2, results[0].outputRecordCollection.size());
+    }
+}

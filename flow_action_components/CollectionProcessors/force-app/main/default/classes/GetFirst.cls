@@ -1,7 +1,7 @@
 global with sharing class GetFirst {
   
   
-    @InvocableMethod
+    @InvocableMethod(label='Get First [USF Collection Processor]' category='Util' iconName='resource:CollectionProcessorsSVG:colproc')
     global static List <Results> execute (List<Requests> requestList) {
         System.debug('entering getFirst');
         List<Results> responseWrapper = new List<Results>();

@@ -1,0 +1,176 @@
+<template>
+    <!-- Get Object -->
+    <c-fsc_pick-object-and-field-3 
+        id="objectName"
+        object-label={inputValues.objectName.label}
+        object-type={inputValues.objectName.value}
+        hide-field-picklist=true
+        builder-context={_builderContext}
+        onfieldselected={handleDynamicTypeMapping}
+        required
+    ></c-fsc_pick-object-and-field-3 >
+
+    <!-- Label -->
+    <c-fsc_flow-combobox 
+        name="inputLabel" 
+        value={inputValues.inputLabel.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.inputLabel.label}
+        field-level-help={inputValues.inputLabel.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- autoNavigateNext -->
+    <c-fsc_flow-combobox 
+        name="autoNavigateNext" 
+        value={inputValues.autoNavigateNext.value}
+        builder-context-filter-type="Boolean"
+        builder-context={_builderContext}
+        label={inputValues.autoNavigateNext.label}
+        field-level-help={inputValues.autoNavigateNext.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- PapaParse Inputs -->
+    <!-- Documentation Link -->
+    <div class="slds-box slds-theme_shade">
+        <p>For further details on the input values please visit the 
+          <a href="https://www.papaparse.com/docs#config"> PapaParse Documentation</a></p>
+    </div>
+
+    <!-- delimiter -->
+    <c-fsc_flow-combobox 
+        name="delimiter" 
+        value={inputValues.delimiter.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.delimiter.label}
+        field-level-help={inputValues.delimiter.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- newLine -->
+    <c-fsc_flow-combobox 
+        name="newLine" 
+        value={inputValues.newLine.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.newLine.label}
+        field-level-help={inputValues.newLine.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- quoteChar -->
+    <c-fsc_flow-combobox 
+        name="quoteChar" 
+        value={inputValues.quoteChar.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.quoteChar.label}
+        field-level-help={inputValues.quoteChar.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- escapeChar -->
+    <c-fsc_flow-combobox 
+        name="escapeChar" 
+        value={inputValues.escapeChar.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.escapeChar.label}
+        field-level-help={inputValues.escapeChar.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- transformHeader -->
+    <c-fsc_flow-combobox 
+        name="transformHeader" 
+        value={inputValues.transformHeader.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.transformHeader.label}
+        field-level-help={inputValues.transformHeader.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- dynamicTyping -->  
+    <c-fsc_flow-combobox 
+        name="dynamicTyping" 
+        value={inputValues.dynamicTyping.value}
+        builder-context-filter-type="Boolean"
+        builder-context={_builderContext}
+        label={inputValues.dynamicTyping.label}
+        field-level-help={inputValues.dynamicTyping.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- encoding -->
+    <c-fsc_flow-combobox 
+        name="encoding" 
+        value={inputValues.encoding.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.encoding.label}
+        field-level-help={inputValues.encoding.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- comments -->
+    <c-fsc_flow-combobox 
+        name="comments" 
+        value={inputValues.comments.value}
+        builder-context-filter-type="Boolean"
+        builder-context={_builderContext}
+        label={inputValues.comments.label}
+        field-level-help={inputValues.comments.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- fastMode -->
+    <c-fsc_flow-combobox 
+        name="fastMode" 
+        value={inputValues.fastMode.value}
+        builder-context-filter-type="Boolean"
+        builder-context={_builderContext}
+        label={inputValues.fastMode.label}
+        field-level-help={inputValues.fastMode.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- transform -->
+    <c-fsc_flow-combobox 
+        name="transform" 
+        value={inputValues.transform.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.transform.label}
+        field-level-help={inputValues.transform.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!-- delimitersToGuess -->
+    <c-fsc_flow-combobox 
+        name="delimitersToGuess" 
+        value={inputValues.delimitersToGuess.value}
+        builder-context-filter-type="String"
+        builder-context={_builderContext}
+        label={inputValues.delimitersToGuess.label}
+        field-level-help={inputValues.delimitersToGuess.fieldHelpText}
+        onvaluechanged={handleValueChange}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+</template>

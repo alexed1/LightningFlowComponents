@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		2019 - 2022
+**Date:**		2019 - 2024
   
 LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.0.11 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)   
-[Version 4.0.11 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000043wpmQAA)
+[Version 4.3.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)   
+[Version 4.3.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -70,8 +70,116 @@ In order to use **datatable**, permission must be given to access the following 
 A Permission Set (**USF Flow Screen Component - Datatable**) is included with the install package.  
     
 ---
-# Release Notes
+# Release Notes 
+  
+## 09/29/24 -  Eric Smith -     Version 4.3.1  
+**Updates:**   
+-   Column headers will now Clip or Wrap based on the settings for the individual column 
+-   User's can no longer manually change the width of Flex enabled columns while interacting with the datatable  
+-  
+**Bug Fixes:** 
+-   Fixed bug introduced in Winter '25 affecting columns set with Flexible Widths enabled  
+  
+## 07/22/24 -  Eric Smith -     Version 4.3.0  
+**Updates:**   
+-   Added additional output attributes for Apex Defined records (outputRemovedRowsString & outputRemainingRowsString)  
+-   Added an option to display the number of selected records in the table header 
+-  
+**Bug Fixes:** 
+-   Fixed bug where first column reference was off if the remove row action was on the left 
+-  
+## 07/09/24 -  Eric Smith -     Version 4.2.1  
+**Updates:** 
+-   New Feature: Add a Remove Row action as the first or last column in a Datatable.  
+-       New outputs include a collection and a count of the removed rows.
+-       You can specify the icon and color for the action button.  
+-       You can specify the maximum number of rows that can be removed.  
+-   Selected Rows are now persistent when Paginating, Searching, Filtering, Sorting, and Removing!  
+-   A new output attribute (outputRemainingRows) will provide all records passed into the table with all edits made to those records, less all records (if any) that were removed  
+-   Implemented a default setting (SHOW_DEBUG_INFO = false) to hide record details from console and debug logs  
+-       Source code changes in ers_datatableUtils.js, ers_DatatableController.cls & ers_QueryNRecords.cls  
+-   Console.log statements are now identified with the Datatable's header label  
+  
+**Bug Fixes:** 
+-   Fixed bug where hyperlinks would open the flow rather than the referenced record  
+-   Fixed bug where a column filter would hang if there was no filter on the first column     
+  
+## 04/06/24 -  Eric Smith -     Version 4.2.0  
+**Updates:** 
+-   Added optional pagination  
+-       Adds a selectable number of Records per Page input to the header - default value 10  
+-       Adds a navigation footer with a editable input showing the current page # and total number of pages  
+-       The footer also includes Prev & Next buttons as well as optional First & Last Buttons  
+-       The appropriate buttons are disabled if the user is on the first or the last page  
+-       New pagination input prompts and button labels are translatable Custom Labels
+-       (Initial release does not support retaining selected records when sorting, filtering, searching, paginating) 
+-   Made the Table Header Label reactive  
+-   Moved the Configure Columns button from the top to the bottom of the Table Formatting section of the CPE  
+  
+**Bug Fixes:**  
+-   Fixed bug where the maximum number of rows to be displayed gets cleared  
+-   Fixed bug where an invalid link would show when an Apex Defined Lookup field was empty (@spyros-michailidisspyros-michailidis PR#1524)
+-   Fixed install issue with ers_DatatableController.cls if the target org has a class named "Test" 
+-   Fixed a bug where Date fields from External Objects would show as blank (@philipnovak-pentair PR#1529) 
+  
+## 02/06/24 -  Eric Smith -     Version 4.1.6 
+**Bug Fixes:**  
+-   Fixed several Spring '24 "Cannot read properties of undefined..." errors
+-   Allow a full row search when empty cells are present (thanks to clev32 PR#1478)
+
+## 10/12/23 -  Eric Smith -    Version 4.1.5 
+**Updates:** 
+-   Made the following changes to support passing of Datatable output collections into my reactive Collection Processor screen components 
+-       Remove the "attributes" attribute from each record's details 
+-       Process all Datetime fields in each record even if they are not displayed in the Datatable
+
+## 06/14/23 -  Eric Smith -    Version 4.1.4 
+**Bug Fixes:**  
+-   Fixed issue with tables showing as empty if row selection was disabled 
+
+## 06/13/23 -  Eric Smith -    Version 4.1.3 
+**Bug Fixes:**  
+-   Fixed issue where Datatables fed by DataFetcher were defaulting to single row selection only 
+  
+## 06/04/23 -  Eric Smith -    Version 4.1.1 
+**Updates:** 
+-   Added reactivity for Apex-Defind objects (Pre-Selected Rows are not reactive) 
+-   Made the placeholder for 'Enter search term ...' a translatable label 
  
+**Bug Fixes:**  
+-   Fixed reactivity for DataFetcher on initial load of screen 
+ 
+## 05/21/23 -  Eric Smith -    Version 4.1.0 
+**Updates:** 
+-   Added new Column Wizard header action to allow a column width to have a fixed or floating width
+-       When the Flex option is selected, that column and all other flexed columns will evenly expand or contract to fill the available space
+-       This gives you more control over columns that you specifically want to be narrow or wide while allowing the other columns to find the best fit
+-       This option can be selected individually or can be applied to all columns at once
+-   Added a new Search Bar option
+-       The Datatable will support both a Search Bar and individual Column Filters
+-       NOTE: When the Search Bar is enabled, the Header is required and will appear slightly larger than a table without a Search Bar
+-       NOTE: When the Search Bar is enabled, the border can't be disabled and it will appear with rounded rather than square corners
+-   When the number of displayed records are filtered and/or reduced based on a search term, the header will show both the filtered count and the total record count
+-   Updated maximum record count from 1000 to 2000 
+-   Switched Column Wizard Flow in the CPE from Aura initiated to LWC
+-       Provides cleaner exit behavior and eliminates conflicts with development mode and clickjack protection
+-       NOTE: If debug mode is turned on, there will be no sample records in the Configuration Wizard datatable
+-       NOTE: Requires that the Datatable Configuration Wizard flow be Activated on installation
+-   Added a Clear All Filters button that is displayed when any column filters are applied
+-       NOTE: This can be disabled by selecting the Hide Clear Selection/Filter Buttons option in the Table Behavior section
+-   Display spinner instead of empty table message while processing the records
+-   Updated API versions to 57.0 
+  
+**Bug Fixes:**  
+-   Fixed invalid format error when entering a filter value for a Name column when it was shown as a hyperlink 
+-   Addressed occasional DST issues by changing the default date prepended to Time fields to be the current date 
+  
+ ## 11/02/22 -  Eric Smith -    Version 4.0.12
+**Bug Fixes:**  
+-   Fixed .slice is not a function error  
+-   PR #1229 - fix regression bug with disableNavigateNext and suppressBottomBar attributes (JonTronki)
+-   Fixed issue caused by the Winter 23 Patch 12 where a table with a Date column would cause an error if a single row was selected or any record was edited
+  
 ## 09/09/22 -  Eric Smith -     Version 4.0.11
 **Bug Fixes:**  
 -   Fixed Version # display in CPE  

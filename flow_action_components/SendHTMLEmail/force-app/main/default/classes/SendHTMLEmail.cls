@@ -55,7 +55,7 @@ public without sharing class SendHTMLEmail {
 				String emailMessageType = curRequest.emailMessageType == null?'singleEmail':curRequest.emailMessageType;
 				Boolean useSalesforceSignature = curRequest.useSalesforceSignature == null?true:curRequest.useSalesforceSignature;
 				Boolean bcc = curRequest.bcc == null?false:curRequest.bcc; // default to false
-				if (subject != null && (subject.length() == 0) ) subject = null;
+				if (subject != null && (subject.length() == 0) ) {subject = null;}
 				Response thisResponse = new Response();
                 curRequest.setSaveAsTask = curRequest.saveAsTask;
                 curRequest.setSaveAsActivity = curRequest.saveAsActivity;
@@ -111,7 +111,7 @@ public without sharing class SendHTMLEmail {
 						mmail.setReplyTo(replyEmailAddress);
 					}
 					//	setSaveAsActivity(saveAsActivity)
-					if (curRequest.setSaveAsActivity != NULL) mmail.setSaveAsActivity(curRequest.setSaveAsActivity);
+					if (curRequest.setSaveAsActivity != null) {mmail.setSaveAsActivity(curRequest.setSaveAsActivity);}
 					//	setSenderDisplayName(displayName)
 					if (thisResponse.errors == null){
 						mmail.setSenderDisplayName(senderDisplayName);
@@ -147,7 +147,7 @@ public without sharing class SendHTMLEmail {
 								TemplateId = getTemplateIdFromName(templateName, null);
 								if (TemplateId != null){
 									mmail.setTemplateID(TemplateId);
-								} else thisResponse.errors = 'An Email template with the specified template name could not be found';
+								} else{ thisResponse.errors = 'An Email template with the specified template name could not be found';}
 							}
 						} else {
 							mmail.setTemplateID(curRequest.TemplateID);
@@ -155,11 +155,11 @@ public without sharing class SendHTMLEmail {
 					}
 					//	setUseSignature(useSignature)
 					if (thisResponse.errors == null){
-						mmail.setUseSignature(curRequest.useSalesforceSignature == NULL?false:curRequest.useSalesforceSignature);
+						mmail.setUseSignature(curRequest.useSalesforceSignature == null?false:curRequest.useSalesforceSignature);
 					}
 					if (thisResponse.errors == null) {
 						mailMMList.add(mmail);
-					} else thisResponse.isSuccess = false;
+					} else {thisResponse.isSuccess = false;}
 					responseList.add(thisResponse);
 //				Single Email Segment
 				} else {
@@ -233,16 +233,16 @@ public without sharing class SendHTMLEmail {
 					
 					Boolean completed = true;
 					String error;
-					if (templateTargetObjectId != NULL) mail.setTargetObjectId(templateTargetObjectId);
+					if (templateTargetObjectId != null) {mail.setTargetObjectId(templateTargetObjectId);}
 					if (recordId != null) {
 						mail.setWhatId(ID.valueOf(recordId));
 					}
 	
 					// Specify the text content of the email.
-					if (plainTextBody != NULL) mail.setPlainTextBody(plainTextBody);
-					if (HTMLbody != NULL) mail.setHtmlBody(HTMLbody);
-					if (curRequest.setSaveAsActivity != NULL) mail.setSaveAsActivity(curRequest.setSaveAsActivity);
-					if (templateID != NULL){
+					if (plainTextBody != null) {mail.setPlainTextBody(plainTextBody);}
+					if (HTMLbody != null) {mail.setHtmlBody(HTMLbody);}
+					if (curRequest.setSaveAsActivity != null) {mail.setSaveAsActivity(curRequest.setSaveAsActivity);}
+					if (templateID != null){
 						try {
 							mail.setTemplateID(templateID);
 							thisResponse.templateUsed = templateID;
@@ -260,7 +260,7 @@ public without sharing class SendHTMLEmail {
 				}
 			}
 			List<Messaging.SendEmailResult> emailResults = new List<Messaging.SendEmailResult>();
-			if (mailMMList != NULL && mailMMList.size() > 0){
+			if (mailMMList != null && mailMMList.size() > 0){
 				try {
 					emailResults = Messaging.sendEmail(mailMMList,false);
 				} catch (Exception e){
@@ -274,7 +274,7 @@ public without sharing class SendHTMLEmail {
 				}
 				Integer replyPos = 0;
 				for (Messaging.SendEmailResult thisResult : emailResults){
-					while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail') replyPos++;
+					while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType != 'massEmail'){ replyPos++;}
 					if (thisResult.isSuccess() != true && 
 						!(test.isRunningTest() && requests[replyPos].setSaveAsTask && 
 						( (Id) requests[replyPos].whatIds[0]).getSObjectType().getDescribe().getName() == 'User')) {
@@ -298,7 +298,7 @@ public without sharing class SendHTMLEmail {
 					replyPos++;
 				}
 			}
-			if (mailList != NULL && mailList.size() > 0){
+			if (mailList != null && mailList.size() > 0){
 				try {
 					emailResults = Messaging.sendEmail(mailList,false);
 				} catch (Exception e){
@@ -312,7 +312,7 @@ public without sharing class SendHTMLEmail {
 				}
 				Integer replyPos = 0;
 				for (Messaging.SendEmailResult thisResult : emailResults){
-					while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') replyPos++;
+					while (responseList[replyPos].errors != null || requests[replyPos].emailMessageType == 'massEmail') {replyPos++;}
 					if (thisResult.isSuccess() != true && 
 						!(test.isRunningTest() && requests[replyPos].setSaveAsTask && 
 						( (Id) requests[replyPos].recordId).getSObjectType().getDescribe().getName() == 'User')) {
@@ -376,10 +376,10 @@ public without sharing class SendHTMLEmail {
                 while (j<recipientList.size()){
                     if (String.isBlank(recipientList[j])){
                         recipientList.remove(j);
-                    } else j++;
+                    } else {j++;}
                 }
 			}
-            for (Integer i=0;i<theseTargets.size();i++) theseTargets[i] = string.escapeSingleQuotes(theseTargets[i]);
+            for (Integer i=0;i<theseTargets.size();i++) {theseTargets[i] = string.escapeSingleQuotes(theseTargets[i]);}
             if (!theseTargets.isEmpty()) {
                 recipientListIds  = '\'' + string.join(theseTargets,'\',\'') + '\'';
                 String queryString = 'Select Name From ' +
@@ -471,7 +471,7 @@ public without sharing class SendHTMLEmail {
 				List<String> extractedEmailAddresses = new List<String>();
 				for (Contact curContact : curContacts) {
 					curEmail = curContact.email;
-					if (curEmail != null) extractedEmailAddresses.add(curEmail);
+					if (curEmail != null) {extractedEmailAddresses.add(curEmail);}
 				}
 				addressList.addAll(extractedEmailAddresses);
 			}
@@ -482,7 +482,7 @@ public without sharing class SendHTMLEmail {
 				List<String> extractedEmailAddresses = new List<String>();
 				for (User curUser : curUsers) {
 					curEmail = curUser.email;
-					if (curEmail != null) extractedEmailAddresses.add(curEmail);
+					if (curEmail != null) {extractedEmailAddresses.add(curEmail);}
 				}
 				addressList.addAll(extractedEmailAddresses);
 			}
@@ -493,7 +493,7 @@ public without sharing class SendHTMLEmail {
 				List<String> extractedEmailAddresses = new List<String>();
 				for (Lead curLead : curLeads) {
 					curEmail = curLead.email;
-					if (curEmail != null) extractedEmailAddresses.add(curEmail);
+					if (curEmail != null) {extractedEmailAddresses.add(curEmail);}
 				}
 				addressList.addAll(extractedEmailAddresses);
 			}
@@ -530,7 +530,7 @@ public without sharing class SendHTMLEmail {
 	
 			if (et.size() > 0){
 				String localeKey = [Select LanguageLocaleKey From Organization Limit 1].LanguageLocaleKey;
-				if (templateLanguage == NULL) templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;
+				if (templateLanguage == null) {templateLanguage = [Select LanguageLocaleKey From Organization limit 1].LanguageLocaleKey;}
 				for (EmailTemplate thisTemplate: et){
 					if (thisTemplate.Description.Contains('Language="')){
 						if (thisTemplate.Description.substringAfter('Language="').substringBefore('"') == templateLanguage){
@@ -538,11 +538,11 @@ public without sharing class SendHTMLEmail {
 							break;
 						}
 					}else{
-						blankTemplate = (blankTemplate == NULL) ? thisTemplate.Id : blankTemplate;
+						blankTemplate = (blankTemplate == null) ? thisTemplate.Id : blankTemplate;
 					}
 				}
 			}
-			return (retTemplateId == NULL)? blankTemplate : retTemplateId;
+			return (retTemplateId == null)? blankTemplate : retTemplateId;
 		}
 		private class TaskAttached {
 			private String errorMsg;

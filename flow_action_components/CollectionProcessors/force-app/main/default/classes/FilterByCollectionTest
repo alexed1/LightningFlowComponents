@@ -1,0 +1,54 @@
+@IsTest
+private without sharing class FilterByCollectionTest {
+
+    @IsTest
+    private static void testFilterWithBindFieldsAndReturnFields() {
+        FilterByCollection.Requests request = new FilterByCollection.Requests();
+        List<FilterByCollection.Requests> requests = new List<FilterByCollection.Requests>();
+
+        RecordType rtToAssert = [SELECT Id, DeveloperName FROM RecordType LIMIT 1];
+        request.objectName = 'RecordType';
+        request.returnFields = 'Id, DeveloperName';
+        request.bindField = 'Id';
+        request.containingCollection = new List<SObject>{rtToAssert};
+
+        requests.add(request);
+
+        List<FilterByCollection.Results> results = FilterByCollection.filter(requests);
+
+        Assert.areEqual(1, results.size());
+    }
+
+    @IsTest
+    private static void testFilterWithoutBindFieldsAndReturnFields() {
+        FilterByCollection.Requests request = new FilterByCollection.Requests();
+        List<FilterByCollection.Requests> requests = new List<FilterByCollection.Requests>();
+
+        RecordType rtToAssert = [SELECT Id, DeveloperName FROM RecordType LIMIT 1];
+        request.objectName = 'RecordType';
+        request.containingCollection = new List<SObject>{rtToAssert};
+
+        requests.add(request);
+        List<FilterByCollection.Results> results = FilterByCollection.filter(requests);
+
+        Assert.areEqual(1, results.size());
+    }
+
+    @IsTest
+    private static void testFilterException() {
+        FilterByCollection.Requests request = new FilterByCollection.Requests();
+        List<FilterByCollection.Requests> requests = new List<FilterByCollection.Requests>();
+
+        request.objectName = '<<Bogus>>';
+
+        requests.add(request);
+
+        try {
+            List<FilterByCollection.Results> results = FilterByCollection.filter(requests);
+        } catch (Exception exc) {
+            return;
+        }
+
+        Assert.fail();
+    }
+}

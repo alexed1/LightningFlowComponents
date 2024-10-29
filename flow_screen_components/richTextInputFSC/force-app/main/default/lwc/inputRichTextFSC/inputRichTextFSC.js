@@ -1,5 +1,7 @@
 // 06/25/21    Eric Smith       Added a Required attribute and increased the bottom margin to better match standard components
 // 07/02/21    Eric Smith       Added a Required * to the Input Label if Required is True
+// 04/04/23    Clifford Beul    Added disabled categories and optional overwrite of formats
+// 01/08/24    Declan Toohey    Modified character count calculation to not include HTML characters in character count
 
 import { LightningElement, api, track } from 'lwc';
 
@@ -15,6 +17,9 @@ export default class inputRichTextFSC_LWC extends LightningElement {
     @api label;
     @api characterLimit;
     @api required = false;
+    @api disabledCategories = '';
+    @api enabledFormats;
+    @api excludeHTMLCharacterCount = false;
 
     formats = ['font', 'size', 'bold', 'italic', 'underline',
         'strike', 'list', 'indent', 'align', 'link',
@@ -93,6 +98,12 @@ export default class inputRichTextFSC_LWC extends LightningElement {
                 sessionStorage.removeItem('tempValue'); //clear value after selection
             }
         }
+
+        if(this.enabledFormats){
+            this.formats = this.enabledFormats.split(',').map(function(item) {
+                return item.trim();
+            });
+        } 
 
         if(!this.disableAdvancedTools){
             console.log('disableAdvancedTools is false, in connected callback');
@@ -184,7 +195,13 @@ export default class inputRichTextFSC_LWC extends LightningElement {
             this.isValidCheck = true;
             this.richText = event.target.value;
         }
+
         this.characterCount = this.richText.length;
+        if (this.excludeHTMLCharacterCount) {
+            //Regex <[^>]*> removes any HTML from the word count
+            this.characterCount = this.richText.replace(/<[^>]*>/ig, "").length;
+        }
+
         if(this.characterCap && this.characterCount > this.characterLimit){
             this.isValidCheck = false;
         }

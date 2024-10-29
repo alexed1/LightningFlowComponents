@@ -1,0 +1,20 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "package": "IA_ConvertTextToBase64",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "versionDescription": ""
+    }
+  ],
+  "name": "ConvertTextToBase64",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "60.0",
+  "packageAliases": {
+    "IA_ConvertTextToBase64": "0Ho5G000000oLm1SAE",
+    "IA_ConvertTextToBase64@1.0.0": "04t5G000004XZkxQAG"
+  }
+}

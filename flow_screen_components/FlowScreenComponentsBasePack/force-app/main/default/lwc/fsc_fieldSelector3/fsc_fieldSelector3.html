@@ -43,17 +43,31 @@
                                     <template for:each={fields} for:item="field" for:index="index">
                                         <template if:false={field.hidden}>
                                             <li role="presentation" class="slds-listbox__item" key={field.name}
-                                                data-index={index} onmousedown={handleFieldSelect}>
-                                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
-                                                    role="option">
-                                                    <span class="slds-media__figure slds-listbox__option-icon"></span>
-                                                    <span class="slds-media__body">
-                                                        <span class="slds-truncate"
-                                                            title={field.label}>{field.label}</span>
-                                                        <span class="slds-listbox__option-meta">{field.name}</span>
+                                            data-index={index} onmousedown={handleFieldSelect}>
+                                            <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                                                role="option">
+                                                <span
+                                                    class="slds-media__figure slds-listbox__option-icon slds-align-middle">
+                                                    <template if:true={field.icon}>
+                                                        <lightning-icon icon-name={field.icon} size="x-small">
+                                                        </lightning-icon>
+                                                    </template>
+                                                </span>
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate" title={field.label}>{field.label}</span>
+                                                    <span class="slds-listbox__option-meta" title={field.name}><span
+                                                            class="slds-truncate">{field.name}</span></span>
+                                                </span>
+                                                <template if:true={field.isLookup}>
+                                                    <span
+                                                        class="slds-icon_container slds-icon-utility-chevronright slds-align-middle"
+                                                        title="Lookup field">
+                                                        <lightning-icon icon-name="utility:chevronright" size="x-small">
+                                                        </lightning-icon>
                                                     </span>
-                                                </div>
-                                            </li>
+                                                </template>
+                                            </div>
+                                        </li>
                                         </template>
                                     </template>
                                     <template if:true={noMatchFound}>

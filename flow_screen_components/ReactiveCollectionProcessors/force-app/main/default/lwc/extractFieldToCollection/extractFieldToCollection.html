@@ -1,0 +1,12 @@
+<template>
+
+    <!-- This template includes a standard 'error' output attribute that will be exposed on the flow screen -->
+    <template if:true={error}>
+        <!-- * insert the name of the action in the error message-->
+        The extractFieldToCollection screen component on this screen is reporting the following Error: {error}
+    </template>
+
+    <!-- Track, but do not display the reactive attribute(s) -->
+    <span hidden><lightning-formatted-text value={reactiveValue} onchange={handleOnChange}></lightning-formatted-text></span>
+
+</template>

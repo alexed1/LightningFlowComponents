@@ -1,0 +1,73 @@
+<template>
+
+    <!-- =============== Draw Line Sample =============== -->
+    <div class="slds-m-bottom_small">
+        <c-fsc_flow-banner
+            banner-color={colorAdvancedOverride}
+            banner-label={sectionEntries.sampleLine.label}
+            banner-info={sectionEntries.sampleLine.info}
+            modal-header-color={modalHeaderColorAdvancedOverride}
+        ></c-fsc_flow-banner>
+    </div>
+    <hr class={sldsClass} style={lineStyle}></hr>
+
+    <!-- =============== Draw Line Attributes =============== -->
+    <c-fsc_flow-banner
+        banner-color={defaultBannerColor}
+        banner-label={sectionEntries.drawLine.label}
+        banner-info={sectionEntries.drawLine.info}
+        modal-header-color={defaultModalHeaderColor}
+    ></c-fsc_flow-banner>
+
+    <div class="slds-m-bottom_x-small">
+        <lightning-combobox
+            name="select_marginTop"
+            label={inputValues.marginTop.label}
+            value={inputValues.marginTop.value}
+            field-level-help={inputValues.marginTop.helpText}
+            options={marginOptions}
+            onchange={handleStringChange}
+        ></lightning-combobox>
+    </div>
+    
+    <div class="slds-m-bottom_x-small">
+        <lightning-combobox
+            name="select_marginBottom"
+            label={inputValues.marginBottom.label}
+            value={inputValues.marginBottom.value}
+            field-level-help={inputValues.marginBottom.helpText}
+            options={marginOptions}
+            onchange={handleStringChange}
+        ></lightning-combobox>
+    </div>
+
+    <div class="slds-m-bottom_x-small">
+        <lightning-slider 
+            name="select_thickness"
+            label={inputValues.thickness.label}
+            value={thicknessPixels}
+            min="1"
+            max="30"
+            step="1"
+            type="horizontal"
+            size="small"
+            onchange={handleNumberChange}
+        ></lightning-slider>
+    </div>
+
+    <div class="slds-m-bottom_x-small">
+        <lightning-input
+            name="select_color"
+            type="color"
+            label={inputValues.color.label}
+            value={inputValues.color.value}
+            field-level-help={inputValues.color.helpText}
+            onchange={handleStringChange}
+        ></lightning-input>
+    </div>
+
+    <div class="slds-text-title slds-text-align_right slds-m-top_xx-small slds-p-bottom_small slds-text-color_success slds-border_top">
+        Draw Line Version #: {versionNumber}
+    </div>
+
+</template>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>55.0</apiVersion>
+    <apiVersion>58.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Textarea Plus!</masterLabel>
-    <description>Plain Text with a counter or Rich Text with a counter and search features</description>
+    <description>Advanced Text Input and Display Flow Screen Component</description>
     <targets>
         <target>lightning__FlowScreen</target>
     </targets>
@@ -15,8 +15,7 @@
             <property name="charsLeftTemplate" label="Chars Left Template" type="String" />
             <property name="label" label="Label" type="String" role="inputOnly" />
             <property name="placeHolder" label="Placeholder Text" type="String" role="inputOnly" />
-            <property name="textMode" label="Text Mode" type="String" default="rich" role="inputOnly" description="Choose between Rich or Plain text" />
-
+            <property name="textMode" label="Text Mode" type="String" default="Rich Text" role="inputOnly" description="Choose between Rich or Plain text" />
             <property label="Advanced Tools" name="advancedTools" type="Boolean" role="inputOnly" description="Enable Advanced Tools - Search/Replace, Auto-replace, and blocked words/symbols." />
             <property name="cb_advancedTools" type="String" role="inputOnly" />
             <property label="Blocked Words" name="disallowedWordsList" type="String" role="inputOnly" description="Comma-separated list of words to block.  Example: bad,worse,worst" />
@@ -28,6 +27,9 @@
             <property name="cb_required" type="String" role="inputOnly" />
             <property label="Show Counter" name="showCharCounter" type="Boolean" role="inputOnly" default="false" description="Display Character Counter" />
             <property name="cb_showCharCounter" type="String" role="inputOnly" />
+            <property name="slackOutput" label="Slack Formatted Output" type="String"/>
+            <property name="textAreaHeight" label="Text Area Height" type="String"/>
+            <property name="fieldLevelHelp" label="Help Text" type="String"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

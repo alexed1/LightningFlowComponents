@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <description>This displays a Salesforce icon in a flow</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="iconType" label="Icon Type" type="String" role="inputOnly" description="Include *type* of icon from https://www.lightningdesignsystem.com/icons/ EX: 'standard"/>
+            <property name="iconName" label="Icon Name" type="String" role="inputOnly" description="Include *name* of icon from https://www.lightningdesignsystem.com/icons/. EX: 'endorsement'"/>
+            <property name="foregroundColor" label="Foreground Color" type="String" role="inputOnly" description="Enter color name ('green'), HEX (#228C22), or leave blank for default."></property>
+            <property name="backgroundColor" label="Background Color" type="String" role="inputOnly" description="Enter color name ('green'), HEX (#228C22), or leave blank for default."></property>
+        </targetConfig>
+ </targetConfigs>
+</LightningComponentBundle>

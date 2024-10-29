@@ -1,0 +1,61 @@
+{
+  "packageDirectories": [
+    {
+      "path": "force-app",
+      "default": true,
+      "dependencies": [
+        {
+          "package": "FlowActionsBasePack@3.0.15-0"
+        },
+        {
+          "package": "FlowScreenComponentsBasePack@3.1.0-0"
+        },
+        {
+          "package": "clipboardButton@1.1.1"
+        },
+        {
+          "package": "datatable@4.1.0-0"
+        },
+        {
+          "package": "ImportExportFlowsV2@2.0.2"
+        },
+        {
+          "package": "NavigateEverywhereAction@1.1.1"
+        },
+        {
+          "package": "showToast@2.0.0"
+        }
+      ],
+      "package": "FlowOneView",
+      "versionName": "ver 0.1",
+      "versionDescription": "",
+      "versionNumber": "0.1.0.NEXT",
+      "name": "force-app",
+      "fullPath": "D:\\esmit\\Documents\\VSCode\\LightningFlowComponents\\flow_apps\\FlowUtilities\\force-app\\"
+    },
+    {
+      "path": "force-app",
+      "package": "FlowOneView",
+      "versionName": "ver 0.1",
+      "versionNumber": "0.1.0.NEXT",
+      "default": false
+    }
+  ],
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "59.0",
+  "packageAliases": {
+    "FlowActionsBasePack@3.0.15-0": "04t8b000001BTgsAAG",
+    "FlowScreenComponentsBasePack@3.1.0-0": "04t5G000004J7JyQAK",
+    "clipboardButton@1.1.1": "04t5G000004C6vvQAC",
+    "datatable@4.1.0-0": "04t5G000004J7LQQA0",
+    "ImportExportFlowsV2@2.0.2": "04t5G000004C6v7QAC",
+    "NavigateEverywhereAction@1.1.1": "04t5G000003rUhrQAE",
+    "showToast@2.0.0": "04t1K000002ikkf",
+    "FlowOneView": "0Ho5G000000PB7SSAW",
+    "FlowOneView@1.0.0": "04t5G000004J7M4QAK",
+    "FlowOneView@1.0.1": "04t5G000004XZi8QAG",
+    "FlowOneView@1.0.2": "04t5G000004XZiDQAW",
+    "FlowOneView@1.0.3": "04t5G000004XZiIQAW"
+  }
+}

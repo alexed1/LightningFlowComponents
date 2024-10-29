@@ -59,6 +59,12 @@
                                     <template for:each={_options} for:item="curOption">
                                         <li role="presentation" class="slds-listbox__item" key={curOption.type}>
                                             <div class="slds-p-around--xx-small custom-text-transform_uppercase">
+                                                <lightning-icon 
+                                                                icon-name="utility:chevronleft"
+                                                                class="slds-icon slds-icon_small slds-icon-text-default"
+                                                                size="x-small"
+                                                                onclick={resetData}
+                                                ></lightning-icon>
                                                 {curOption.type}
                                             </div>
                                             <template for:each={curOption.options} for:item="curOptionElement">
@@ -97,6 +103,15 @@
                                                                     size="x-small"
                                                                     onclick={handleOpenScreenComponent}
                                                     ></lightning-icon>
+
+                                                    <lightning-icon if:true={curOptionElement.globalVariable}
+                                                                    data-option-value={curOptionElement.value}
+                                                                    data-object-type={curOptionElement.objectType}
+                                                                    icon-name="utility:chevronright"
+                                                                    class="slds-float--right"
+                                                                    size="x-small"
+                                                                    onclick={handleOpenGlobalVariable}
+                                                    ></lightning-icon>
                                                 </div>
                                             </template>
                                         </li>
@@ -107,7 +122,7 @@
                     </div>
                 </div>
                 <template if:true={hasError}>
-                    <div class="slds-form-element__help">
+                    <div class="slds-form-element__help slds-m-top_large">
                         {labels.invalidReferenceError}
                     </div>
                 </template>

@@ -1,3 +1,10 @@
+/**
+ * @description       : 
+ * @author            : Josh Dayment
+ * @group             : 
+ * @last modified on  : 08-20-2023
+ * @last modified by  : Josh Dayment
+**/
 import { api, track, LightningElement } from "lwc";
 
 const DATA_TYPE = {
@@ -26,6 +33,7 @@ export default class textAreaPlusCPE extends LightningElement {
   _values = [];
   _flowVariables = [];
   _typeMappings = [];
+  //_automaticOutputVariables;
 
   rendered;
   // Help for Rich Text Options
@@ -66,7 +74,17 @@ export default class textAreaPlusCPE extends LightningElement {
       helpText:
         "$L - Characters Left, $M - Max Characters, $R - Remaining Characters"
     }
-  ];
+  ];  
+
+ // @api 
+  //get automaticOutputVariables () {
+  //    return this._automaticOutputVariables;
+ // }
+
+ // set automaticOutputVariables(value) {
+ //     this._automaticOutputVariables = value;
+ // }
+  
   @track inputValues = {
     value: {
       value: null,
@@ -193,7 +211,22 @@ export default class textAreaPlusCPE extends LightningElement {
       valueDataType: null,
       isCollection: false,
       label: ""
-    }
+    },
+    textAreaHeight: {
+      value: null,
+      valueDataType: null,
+      isCollection: false,
+      label: "Text Area Height",
+      helpText: "Set the minimum height of the text input area i.e. 800"
+    },
+    fieldLevelHelp: {
+      value: null,
+      valueDataType: null,
+      isCollection: false,
+      label: "Help Text",
+      helpText: "Help text detailing the purpose and function of the text editor."
+    },
+
   };
 
   get hasValidMaxLength() {
@@ -229,9 +262,11 @@ export default class textAreaPlusCPE extends LightningElement {
 
   @api get textOptions() {
     return [
-      { label: "Plain Text", value: "plain" },
-      { label: "Rich Text", value: "rich" },
-      { label: "Display Text", value: "display" }
+      { label: "Plain Text Area", value: "plain" },
+      { label: "Rich Text Area", value: "rich" },
+      { label: "Display Text", value: "display" },
+      { label: "Rich Text with Slack markdown", value: "slack" },
+      { label: "Text Input", value: "textInput" },
     ];
   }
 
@@ -268,7 +303,7 @@ export default class textAreaPlusCPE extends LightningElement {
     this.minlenErr =
       Number(this.inputValues.maxlen.value) > 0 &&
       Number(this.inputValues.minlen.value) >=
-        Number(this.inputValues.maxlen.value);
+      Number(this.inputValues.maxlen.value);
     if (this.minlenErr) {
       validity.push({
         key: "minlenTooSmall",
@@ -278,7 +313,7 @@ export default class textAreaPlusCPE extends LightningElement {
     return validity;
   }
   /* LIFECYCLE HOOKS */
-  connectedCallback() {}
+  connectedCallback() { }
   renderedCallback() {
     if (!this.rendered) {
       this.rendered = true;
@@ -299,9 +334,9 @@ export default class textAreaPlusCPE extends LightningElement {
         if (inputVal) {
           console.log(
             "in initializeValues: " +
-              curInputParam.name +
-              " = " +
-              curInputParam.value
+            curInputParam.name +
+            " = " +
+            curInputParam.value
           );
           if (inputVal.serialized) {
             inputVal.value = JSON.parse(curInputParam.value);
@@ -395,8 +430,12 @@ export default class textAreaPlusCPE extends LightningElement {
     return this.eq("textMode", "plain");
   }
 
+  get isTextInput() {
+    return this.eq("textMode", "textInput");
+  }
+
   get isRichText() {
-    return this.eq("textMode", "rich");
+    return (this.eq("textMode", "rich") || this.eq("textMode", "slack"));
   }
 
   get isDisplayText() {
@@ -410,7 +449,7 @@ export default class textAreaPlusCPE extends LightningElement {
   get showCounterSettings() {
     return (
       this.eq("cb_showCharCounter", "CB_TRUE") &&
-      (this.eq("textMode", "rich") || this.eq("textMode", "plain"))
+      (this.eq("textMode", "rich") || this.eq("textMode", "plain") || this.eq("textMode", "slack") || this.eq("textMode", "textInput"))
     );
   }
 }

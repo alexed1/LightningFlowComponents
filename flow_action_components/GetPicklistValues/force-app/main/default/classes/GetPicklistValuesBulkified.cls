@@ -2,8 +2,8 @@
 //see https://unofficialsf.com/flow-action-get-picklist-values/
 
 public with sharing class GetPicklistValuesBulkified {
-	private static final String SOBJECTNOTFOUNDERROR = 'No SObject found with name "{0}". Did you mean "{1}';
-	private static final String FIELDNOTFOUNDERROR = 'No Field found with name "{0}" on SObject "{1}({2})". Did you mean "{3}';
+	private static final String SOBJECTNOTFOUNDERROR = 'No SObject found with name "{0}". Did you mean "{1}"';
+	private static final String FIELDNOTFOUNDERROR = 'No Field found with name "{0}" on SObject "{1}({2})". Did you mean "{3}"';
 
 	@InvocableMethod(
 		label='Get Picklist Values'

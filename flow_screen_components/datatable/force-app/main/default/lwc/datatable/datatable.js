@@ -1538,14 +1538,11 @@ export default class Datatable extends LightningElement {
                     default:
                 }
             }
-console.log("🚀 ~ updateColumns ~ columnNumber. this.flexAttribType:", columnNumber, this.flexAttribType);
 
             // Update Flex attribute overrides by column
             switch (this.flexAttribType) {
                 case 'cols':
                     flexAttrib.flex = this.flexes.find(i => i['column'] == columnNumber)?.flex || false;
-console.log("🚀 ~ updateColumns ~ this.flexes:", this.flexes);
-console.log("🚀 ~ updateColumns ~ flexAttrib.flex:", flexAttrib.flex);
                     break;
                 case 'all': 
                     flexAttrib.flex = true;
@@ -1788,7 +1785,6 @@ console.log("🚀 ~ updateColumns ~ flexAttrib.flex:", flexAttrib.flex);
                 colDescriptor = colDescriptor.slice(0,colDescriptor.lastIndexOf('_lookup'));   
             } 
             colRef = Number(colDescriptor)-1;
-console.log("🚀 ~ columnReference ~ this.columnArray, colRef, colDescriptor:", this.columnArray, colRef, colDescriptor);
             if (isNaN(colRef)) {
                 colRef = this.columnArray.indexOf(colDescriptor);
                 colRef = (colRef != -1) ? colRef : 999; // If no match for the field name, set to non-existent column #
@@ -2373,21 +2369,7 @@ console.log("🚀 ~ columnReference ~ this.columnArray, colRef, colDescriptor:",
     handleResize(event) {
         // Save the current column widths and update the config parameter
         this.columnWidthValues = event.detail.columnWidths;
-console.log("🚀 ~ handleResize ~ this.columnWidthValues:", this.columnWidthValues);
-        // // v4.3.1 Winter '25 release now returns NaN instead of 0 for flex column width
-        // let widths = [];
-        // let hasNaN = false;
-        // let c = 0;
-        // this.columnWidthValues.forEach(w => {
-        //     widths.push(isNaN(w) || this.flexes.find(i => i['column'] == c)?.flex ? 0 : w);
-        //     hasNaN = hasNaN || isNaN(w);
-        //     c++;
-        // });
-        // this.columnWidthValues = [...widths];
         this.setWidth(this.columnWidthValues);
-        // if (!hasNaN ) {
-        //     this.columns = [...this.columns];   // Required for API v61.0 and earlier only
-        // }
     }
 
     handleRoundWidths() {
@@ -2401,7 +2383,6 @@ console.log("🚀 ~ handleResize ~ this.columnWidthValues:", this.columnWidthVal
     }
 
     setWidth(sizes) {
-console.log("🚀 ~ setWidth ~ sizes:", sizes);
         // Update the column width values and the Config Mode parameter
         let colNum = 0;
         let colString = '';

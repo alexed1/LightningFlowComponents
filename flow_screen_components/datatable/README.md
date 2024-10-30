@@ -71,6 +71,12 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  ## 11/01/24 -  Eric Smith -     Version 4.3.3  
+**Updates:**   
+-  
+**Bug Fixes:** 
+-   Removed processing from 4.3.1 and 4.3.2 related to Winter 25 base component bug for flexible width columns
+-   Fixed bug where lookup field columns were not holding the flex attribute  
   
 ## 09/29/24 -  Eric Smith -     Version 4.3.1  
 **Updates:**   

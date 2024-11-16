@@ -73,12 +73,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 # Release Notes 
   ## 11/01/24 -  Eric Smith -     Version 4.3.3  
 **Updates:**   
--  
+-   Changed the minimum number of characters in the search term box to start searching from 2 to 1   
+  
 **Bug Fixes:** 
 -   Removed processing from 4.3.1 and 4.3.2 related to Winter 25 base component bug for flexible width columns
 -   Fixed bug where lookup field columns were not holding the flex attribute  
+-   Fixed bug where changing or clearing a serach or filter value after an edit would't display all of the original records  
   
-## 09/29/24 -  Eric Smith -     Version 4.3.1  
+## 09/29/24 -  Eric Smith -     Version 4.3.1 & 4.3.2  
 **Updates:**   
 -   Column headers will now Clip or Wrap based on the settings for the individual column 
 -   User's can no longer manually change the width of Flex enabled columns while interacting with the datatable  

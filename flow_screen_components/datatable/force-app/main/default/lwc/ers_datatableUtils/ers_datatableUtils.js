@@ -43,7 +43,7 @@ const getConstants = () => {
         CB_TRUE : 'CB_TRUE',                // Used with fsc_flowCheckbox component
         CB_FALSE : 'CB_FALSE',              // Used with fsc_flowCheckbox component
         CB_ATTRIB_PREFIX : 'cb_',           // Used with fsc_flowCheckbox component
-        MIN_SEARCH_TERM_SIZE : 2,           // Set the minimum number of characters required to start searching
+        MIN_SEARCH_TERM_SIZE : 1,           // Set the minimum number of characters required to start searching
         SEARCH_WAIT_TIME : 300,             // Set the delay to start searching while user is typing a search term
         RECORDS_PER_PAGE : 10,              // Default number of records per page for pagination
         REMOVE_ROW_LABEL : 'Remove Row',    // Default label for the Remove Row button

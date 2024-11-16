@@ -118,7 +118,17 @@ export default class Datatable extends LightningElement {
     @api removeRowLeftOrRight = 'Right';
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
-    @api outputRemainingRows = [];
+
+    // @api outputRemainingRows = [];   // v4.3.3 - changed to get/set
+    @api
+    get outputRemainingRows() {
+        return this._outputRemainingRows;
+    }
+    set outputRemainingRows(value) {
+        this._outputRemainingRows = value;
+    }
+    _outputRemainingRows = [];
+
     removeRowActionColNum;
 
     @api 
@@ -543,15 +553,23 @@ export default class Datatable extends LightningElement {
     @track inputLabel;
     @track inputType = 'text';
     @track inputFormat = null;
-    filteredData = [];    
+    
+    @api    // v4.3.3 - changed to get/set
+    get filteredData() {
+        return this._filteredData;
+    }
+    set filteredData(value) {
+        this._filteredData = value;
+    }
+    _filteredData = [];
 
     // Other Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
     _picklistData;
 
     // Component working variables
-    @api savePreEditData = [];
-    @api editedData = [];
+    // @api savePreEditData = [];   // v4.3.3 - changed to get/set
+    // @api editedData = [];        // v4.3.3 - changed to get/set
     @api outputData = [];
     @api errorApex;
     @api dtableColumnFieldDescriptorString;
@@ -622,6 +640,24 @@ export default class Datatable extends LightningElement {
         this.handlePagination();
     }
     _mydata = [];
+
+    @api    // v4.3.3
+    get savePreEditData() {
+        return this._savePreEditData;
+    }
+    set savePreEditData(value) {
+        this._savePreEditData = value;
+    }
+    _savePreEditData = [];
+
+    @api    // v4.3.3
+    get editedData() {
+        return this._editedData;
+    }
+    set editedData(value) {
+        this._editedData = value;
+    }
+    _editedData = [];
 
     // Pagination Attributes
 
@@ -1420,13 +1456,13 @@ export default class Datatable extends LightningElement {
         this.mydata = [...data];
         this.savePreEditData = [...this._mydata];
         this.editedData = JSON.parse(JSON.stringify([...this._tableData]));  // Must clone because cached items are read-only
-        this.outputRemainingRows = [...this.editedData];
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
+        this.outputRemainingRows = [...this._editedData];
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
         console.log(this.consoleLogPrefix+'allSelectedRowIds',(SHOW_DEBUG_INFO) ? this.allSelectedRowIds : '***');
         console.log(this.consoleLogPrefix+'keyField:',(SHOW_DEBUG_INFO) ? this.keyField : '***');
         console.log(this.consoleLogPrefix+'tableData',(SHOW_DEBUG_INFO) ? this._tableData : '***');
         console.log(this.consoleLogPrefix+'mydata:',(SHOW_DEBUG_INFO) ? this._mydata : '***');
-        console.log(this.consoleLogPrefix+'outputRemainingRows:',(SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
+        console.log(this.consoleLogPrefix+'outputRemainingRows:',(SHOW_DEBUG_INFO) ? this._outputRemainingRows : '***');
     }
 
     updateColumns() {
@@ -1868,14 +1904,14 @@ export default class Datatable extends LightningElement {
                     }
 
                     // handle edited & remaining rows
-                    this.savePreEditData = [...removeRowFromCollection(this, this.savePreEditData, keyValue)];
+                    this.savePreEditData = [...removeRowFromCollection(this, this._savePreEditData, keyValue)];
                     this.outputEditedRows = [...removeRowFromCollection(this, this.outputEditedRows, keyValue)];
-                    this.outputRemainingRows = [...removeRowFromCollection(this, this.outputRemainingRows, keyValue)];
+                    this.outputRemainingRows = [...removeRowFromCollection(this, this._outputRemainingRows, keyValue)];
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
-                    this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
                     
                     this.dispatchOutputs();
 
@@ -1966,7 +2002,7 @@ export default class Datatable extends LightningElement {
         });
 
         // Apply drafts to editedData
-        let edata = [...this.editedData];
+        let edata = [...this._editedData];
         edata = edata.map(eitem => {
             const edraft = draftValues.find(d => d[this.keyField] == eitem[this.keyField]);
             if (edraft != undefined) {
@@ -2043,21 +2079,34 @@ export default class Datatable extends LightningElement {
                     this.outputEditedRows = [...this.outputEditedRows,eitem];     // Add to output attribute collection
                 }
 
-                this.outputRemainingRows = replaceRowInCollection(this, this.outputRemainingRows, this.outputEditedRows, eitem[this.keyField]);
+                this.outputRemainingRows = replaceRowInCollection(this, this._outputRemainingRows, this.outputEditedRows, eitem[this.keyField]);
             }
             return eitem;
         }); 
         
+        // Apply edits to savePreEditData - v4.3.3
+        let sdata = [...this._savePreEditData];
+        sdata = sdata.map(sitem => {
+            const sdraft = edata.find(d => d[this.keyField] == sitem[this.keyField]);
+            if (sdraft != undefined) {
+                let sfieldNames = Object.keys(sdraft);
+                sfieldNames.forEach(sf => {
+                    sitem[sf] = sdraft[sf];
+                });
+            }
+            return sitem;
+        });
+
         this.isUpdateTable = false;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this.outputRemainingRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
         if(this.isSerializedRecordData) {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
         }
 
-        this.savePreEditData = [...data];   // Resave the current table values
+        this.savePreEditData = [...sdata];   // Resave the current table values  // v4.3.3
         this.mydata = [...data];            // Reset the current table values
 
         if (!this.suppressBottomBar) {
@@ -2075,7 +2124,7 @@ export default class Datatable extends LightningElement {
 
     cancelChanges(event) {
         // Only used with inline editing
-        this.mydata = [...this.savePreEditData];
+        this.mydata = [...this._savePreEditData];
     }
 
     handleRowSelection(event) {
@@ -2097,8 +2146,8 @@ export default class Datatable extends LightningElement {
             if (!found) {
                 if (findRowIndexById(this, this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
-                        index = findRowIndexById(this, this.savePreEditData, srowid);
-                        allSelectedRecs.push(this.savePreEditData[index]);
+                        index = findRowIndexById(this, this._savePreEditData, srowid);
+                        allSelectedRecs.push(this._savePreEditData[index]);
                     } else {    // Selected row was removed
                         index = findRowIndexById(this, allSelectedRecs, srowid);
                         allSelectedRecs.splice(index, 1);
@@ -2116,7 +2165,7 @@ export default class Datatable extends LightningElement {
         this.allSelectedRowIds = [...currentSelectedRowIds, ...otherSelectedRowIds];
         this.outputSelectedRows = [];
         if (allSelectedRecs) {  // Keep selected rows in the same order as the original table
-            this.savePreEditData.forEach(rec => {   // Check all records - mydata would just be the filtered records here
+            this._savePreEditData.forEach(rec => {   // Check all records - mydata would just be the filtered records here
                 const isSelected = allSelectedRecs.some(srec => srec[this.keyField] === rec[this.keyField]);
                 if (isSelected) {
                     this.outputSelectedRows = [...this.outputSelectedRows, rec];
@@ -2558,7 +2607,7 @@ export default class Datatable extends LightningElement {
         new Promise((resolve, reject) => {
             setTimeout(() => {
                 if (!this.isConfigMode) {
-                    const rows = [...this.savePreEditData];
+                    const rows = [...this._savePreEditData];
                     const cols = this.columnFilterValues;
                     let filteredRows = [];
                     rows.forEach(row => {
@@ -2634,7 +2683,7 @@ export default class Datatable extends LightningElement {
                             filteredRows.push(row);
                         }
                     });
-                    this.mydata = filteredRows;
+                    this.mydata = [...filteredRows];    // v4.3.3
                 }
                 resolve();
             }, 0);
@@ -2659,7 +2708,7 @@ export default class Datatable extends LightningElement {
             new Promise((resolve, reject) => {
                 setTimeout(() => {
                     if (!this.isConfigMode) {
-                        const rows = this.filteredData.length > 0 ? [...this.filteredData] : [...this.savePreEditData];
+                        const rows = this._filteredData.length > 0 ? [...this._filteredData] : [...this._savePreEditData];
                         const cols = this.columns;
                         let filteredRows = [];
                         rows.forEach(row => {
@@ -2741,7 +2790,7 @@ export default class Datatable extends LightningElement {
         } else {    // Empty search term
             new Promise((resolve, reject) => {
                 setTimeout(() => {
-                    this.mydata = this.filteredData.length > 0 ? [...this.filteredData] : [...this.savePreEditData];
+                    this.mydata = this._filteredData.length > 0 ? [...this._filteredData] : [...this._savePreEditData];
                     resolve();
                 }, 0);
             })
@@ -2870,7 +2919,7 @@ export default class Datatable extends LightningElement {
             this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);   
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);                                         //JSON Version
             this.outputRemovedRowsString = JSON.stringify(this.outputRemovedRows); 
-            this.outputRemainingRowsString = JSON.stringify(this.outputRemainingRows); 
+            this.outputRemainingRowsString = JSON.stringify(this._outputRemainingRows); 
             this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
@@ -2904,7 +2953,7 @@ export default class Datatable extends LightningElement {
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
         console.log(this.consoleLogPrefix+'outputRemovedRows', this.outputRemovedRows.length, (SHOW_DEBUG_INFO) ? this.outputRemovedRows : '***');
-        console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this.outputRemainingRows : '***');
+        console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this._outputRemainingRows : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

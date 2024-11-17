@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)   
-[Version 4.3.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz99QAA)
+[Version 4.3.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fXXXXXX)   
+[Version 4.3.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fXXXXXX)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -78,7 +78,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:** 
 -   Removed processing from 4.3.1 and 4.3.2 related to Winter 25 base component bug for flexible width columns
 -   Fixed bug where lookup field columns were not holding the flex attribute  
--   Fixed bug where changing or clearing a serach or filter value after an edit would't display all of the original records  
+-   Fixed bug where changing or clearing a serach or filter value after an edit would't display all of the original records 
+-   Fixed bug where wrong record links could be generated in a developer org  ` 
   
 ## 09/29/24 -  Eric Smith -     Version 4.3.1 & 4.3.2  
 **Updates:**   

@@ -18,6 +18,9 @@ if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     /
     if (baseURL.includes('.sandbox.')) {        // Running in a sandbox with Enhanced Domain enabled
         myDomain += '.sandbox';
     }
+    if (baseURL.includes('.develop.')) {        // Running in a developer org - v4.3.3
+        myDomain += '.develop';
+    }
 } else {                                        // Running in a Community or Flow Builder
     myDomain = window.location.href;            // https://<domain>.<instance>.force.com/<site title>/s/
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)

@@ -35,6 +35,8 @@ import RecordsPerPage from '@salesforce/label/c.ers_RecordsPerPage';
 import ShowingPagePrefix from '@salesforce/label/c.ers_ShowingPagePrefix';
 import ShowingPageMiddle from '@salesforce/label/c.ers_ShowingPageMiddle';
 import ShowingPageSuffix from '@salesforce/label/c.ers_ShowingPageSuffix';
+import FilterBlankLabel from '@salesforce/label/c.ers_filterBlankLabel';
+import FilterBlankHelpText from '@salesforce/label/c.ers_filterBlankHelpText';
 
 const CONSTANTS = getConstants();   // From ers_datatableUtils
 
@@ -48,6 +50,7 @@ const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
 const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 const DEFAULT_COL_WIDTH = CONSTANTS.DEFAULT_COL_WIDTH;
+const FILTER_BLANKS = CONSTANTS.FILTER_BLANKS;
 
 export default class Datatable extends LightningElement {
 
@@ -72,7 +75,9 @@ export default class Datatable extends LightningElement {
         RecordsPerPage,
         ShowingPagePrefix,
         ShowingPageMiddle,
-        ShowingPageSuffix
+        ShowingPageSuffix,
+        FilterBlankLabel,
+        FilterBlankHelpText
     };
 
     // Component Input & Output Attributes
@@ -761,7 +766,7 @@ export default class Datatable extends LightningElement {
 
     handleRecordCountChange(event) {
         this.recordCountPerPage = event.detail.value;
-        this.pageCurrentNumber = 1; //TODO: Change to set to whatever the page would be to still display whatever the first record was previously
+        this.pageCurrentNumber = 1; // TODO: Change to set to whatever the page would be to still display whatever the first record was previously
         this.handlePagination();
     }
 
@@ -802,6 +807,12 @@ export default class Datatable extends LightningElement {
         }
     }
     // End Pagination Methods
+
+    // Filter Blanks Attributes v4.3.3
+    isFilterDialog = false;
+    isFilterBlankValues = false;
+    filterBlankLabel = this.label.FilterBlankLabel;
+    filterBlankHelpText = this.label.FilterBlankHelpText;
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
@@ -2371,6 +2382,7 @@ export default class Datatable extends LightningElement {
                 this.columnType = 'richtext';
                 this.inputType = convertType(this.columnType);
                 this.inputFormat = (this.inputType == 'number') ? convertFormat(this.columnType) : null;
+                this.isFilterDialog = false;
                 this.handleOpenFilterInput();
                 break;
 
@@ -2381,6 +2393,7 @@ export default class Datatable extends LightningElement {
                 this.inputType = convertType(this.columnType);
                 this.inputType = (this.inputType == 'url') ? 'text' : this.inputType;
                 this.inputFormat = (this.inputType == 'number') ? convertFormat(this.columnType) : null;
+                this.isFilterDialog = true;
                 this.handleOpenFilterInput();
                 break;
 
@@ -2553,19 +2566,27 @@ export default class Datatable extends LightningElement {
     handleOpenFilterInput() {
         // Display the input dialog for the filter value
         this.saveOriginalValue = this.columnFilterValue;
+        this.isFilterBlankValues = (this.columnFilterValue == FILTER_BLANKS) ? true : false;
         this.isOpenFilterInput = true;
     }
 
     handleCommit() {
         // Handle the filter input when the user clicks out of the input dialog
-        if (this.columnFilterValue != null) {
+        if (this.columnFilterValue != null || this.isFilterBlankValues) {
             this.handleCloseFilterInput();
         }
+    }
+
+    handleFilterBlankChange() {
+        this.isFilterBlankValues = !this.isFilterBlankValues;
+        this.columnFilterValue = (this.isFilterBlankValues) ? FILTER_BLANKS : '';
+        this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
     }
 
     handleCloseFilterInput() {
         // Close the input dialog and handle the new column filter value
         this.isOpenFilterInput = false; 
+        this.isFilterBlankValues = false;
         if (this.columnType == 'boolean') {
             let firstChar = this.columnFilterValue.substring(0, 1).toLowerCase();
             if (firstChar == 't' || firstChar == 'y' || firstChar == '1') { // True, Yes, 1 - allow multiple ways to select a True value
@@ -2582,7 +2603,10 @@ export default class Datatable extends LightningElement {
             this.filterColumns[this.columnNumber].label = this.columnFilterValue;
             this.updateLabelParam();
         } else {
-            this.filterColumns[this.columnNumber].label = this.baseLabel + ' [' + this.columnFilterValue + ']';
+            this.filterColumns[this.columnNumber].label = this.baseLabel;
+            if (this.columnFilterValue != null && this.columnFilterValue != '') {
+                this.filterColumns[this.columnNumber].label += ' [' + this.columnFilterValue + ']';
+            }
         }
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         // Force a redisplay of the datatable with the filter value shown in the column header
@@ -2618,59 +2642,64 @@ export default class Datatable extends LightningElement {
                                 fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
                             }
                             if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
-                                if (this.filterColumns[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // No match because the field is empty
-                                    match = false;
-                                    break; 
-                                }                   
-                                
-                                switch(this.filterColumns[col].type) {
-                                    case 'number':
-                                    case 'currency':
-                                    case 'percent':
-                                        if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
-                                            match = false;
-                                            break;                                
+                                if (this.filterColumns[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // The field is empty
+                                    if (this.columnFilterValues[col] != FILTER_BLANKS) { 
+                                        break; 
+                                    }
+                                } else {
+                                    if (this.columnFilterValues[col] != FILTER_BLANKS) { 
+                                        switch(this.filterColumns[col].type) {
+                                            case 'number':
+                                            case 'currency':
+                                            case 'percent':
+                                                if (row[fieldName] != this.columnFilterValues[col]) {    // Check for exact match on numeric fields
+                                                    match = false;
+                                                    break;                                
+                                                }
+                                                break;
+                                            case 'date-local':
+                                                let dl = row[fieldName];
+                                                let dtf = new Intl.DateTimeFormat('en', {
+                                                    year: 'numeric',
+                                                    month: '2-digit',
+                                                    day: '2-digit'
+                                                });
+                                                const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                                let formatedDate = `${ye}-${mo}-${da}`;
+                                                if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
+                                                    match = false;
+                                                    break;                                
+                                                }
+                                                break;
+                                            case 'date':
+                                            case 'datetime':
+                                            case 'time':
+                                                if (typeof(row[fieldName]) === typeof(+1)) { 
+                                                    match = false;
+                                                    break;  // TODO - Figure out a way to filter on Time fields
+                                                }
+                                                let dt = row[fieldName].slice(0,10);
+                                                if (dt != this.columnFilterValues[col]) {    // Check for date match on date & time fields
+                                                    match = false;
+                                                    break;                                
+                                                }
+                                                break;
+                                            default:
+                                                let fieldValue = row[fieldName]?.toString() + '';
+                                                let filterValue = this.columnFilterValues[col];
+                                                if (!this.matchCaseOnFilters) {
+                                                    fieldValue = fieldValue.toLowerCase();
+                                                    filterValue = filterValue.toLowerCase();
+                                                }
+                                                if (fieldValue.search(filterValue) == -1) {  // Check for filter value within field value
+                                                    match = false;
+                                                    break;
+                                                }                            
                                         }
-                                        break;
-                                    case 'date-local':
-                                        let dl = row[fieldName];
-                                        let dtf = new Intl.DateTimeFormat('en', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit'
-                                        });
-                                        const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
-                                        let formatedDate = `${ye}-${mo}-${da}`;
-                                        if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
-                                            match = false;
-                                            break;                                
-                                        }
-                                        break;
-                                    case 'date':
-                                    case 'datetime':
-                                    case 'time':
-                                        if (typeof(row[fieldName]) === typeof(+1)) { 
-                                            match = false;
-                                            break;  //TODO - Figure out a way to filter on Time fields
-                                        }
-                                        let dt = row[fieldName].slice(0,10);
-                                        if (dt != this.columnFilterValues[col]) {    // Check for date match on date & time fields
-                                            match = false;
-                                            break;                                
-                                        }
-                                        break;
-                                    default:
-                                        let fieldValue = row[fieldName].toString();
-                                        let filterValue = this.columnFilterValues[col];
-                                        if (!this.matchCaseOnFilters) {
-                                            fieldValue = fieldValue.toLowerCase();
-                                            filterValue = filterValue.toLowerCase();
-                                        }
-                                        if (fieldValue.search(filterValue) == -1) {  // Check for filter value within field value
-                                            match = false;
-                                            break;
-                                        }                            
-                                }
+                                    } else {
+                                        match = false;
+                                    }
+                                }                  
                                     this.isFiltered = true;
                                     this.filterColumns[col].actions.find(a => a.name == 'clear_'+col).disabled = false;
                             } else {
@@ -2750,7 +2779,7 @@ export default class Datatable extends LightningElement {
                                     case 'datetime':
                                     case 'time':
                                         if (typeof(row[fieldName]) === typeof(+1)) { 
-                                            break;  //TODO - Figure out a way to filter on Time fields
+                                            break;  // TODO - Figure out a way to filter on Time fields
                                         }
                                         let dt = row[fieldName].slice(0,10);
                                         if (dt == searchTerm) {    // Check for date match on date & time fields

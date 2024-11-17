@@ -55,7 +55,7 @@ Features:   The only required paramters are the SObject collection of records an
                                 oniconselection={handlePickIcon}>
                             </c-fsc_pick-icon>
                         </div>
-                        <footer class="slds-modal__footer">
+                        <footer class="slds-modal__footer slds-modal__footer_directional">
                             <button class="slds-button slds-button_neutral" onclick={handleCloseIconModal}>{label.CancelButton}</button>
                             <button class="slds-button slds-button_brand" onclick={handleCommitIconSelection}>{label.SaveButton}</button>
                         </footer>
@@ -84,8 +84,17 @@ Features:   The only required paramters are the SObject collection of records an
                                 value={columnFilterValue} 
                                 onchange={handleChange}
                             ></lightning-input>
+                            <template lwc:if={isFilterDialog}>
+                                <lightning-input
+                                    type="checkbox" 
+                                    label={filterBlankLabel}
+                                    checked={isFilterBlankValues}
+                                    field-level-help={filterBlankHelpText}
+                                    onchange={handleFilterBlankChange}
+                                ></lightning-input>
+                            </template>
                         </div>
-                        <footer class="slds-modal__footer">
+                        <footer class="slds-modal__footer slds-modal__footer_directional">
                             <button class="slds-button slds-button_neutral" onclick={handleCloseModal}>{label.CancelButton}</button>
                             <button class="slds-button slds-button_brand" onclick={handleCommit}>{label.SaveButton}</button>
                         </footer>

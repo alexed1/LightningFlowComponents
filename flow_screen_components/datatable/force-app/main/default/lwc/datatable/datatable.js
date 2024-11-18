@@ -568,6 +568,21 @@ export default class Datatable extends LightningElement {
     }
     _filteredData = [];
 
+    // Filter Blanks Attributes v4.3.3
+    isFilterDialog = false;
+    isFilterBlankValues = false;
+    filterBlankLabel = this.label.FilterBlankLabel;
+    filterBlankHelpText = this.label.FilterBlankHelpText;
+
+    @api
+    get headerFilterValue() {
+        let filterValue = this.columnFilterValue;
+        if (this.columnFilterValue == FILTER_BLANKS) {
+            filterValue = '_';
+        }
+        return ` [${filterValue}]`;
+    }
+
     // Other Picklist variables
     masterRecordTypeId = "012000000000000AAA";  // If a recordTypeId is not provided, use this one
     _picklistData;
@@ -807,12 +822,6 @@ export default class Datatable extends LightningElement {
         }
     }
     // End Pagination Methods
-
-    // Filter Blanks Attributes v4.3.3
-    isFilterDialog = false;
-    isFilterBlankValues = false;
-    filterBlankLabel = this.label.FilterBlankLabel;
-    filterBlankHelpText = this.label.FilterBlankHelpText;
 
     get formElementClass() {
         return this.isInvalid ? 'slds-form-element slds-has-error' : 'slds-form-element';
@@ -2605,7 +2614,7 @@ export default class Datatable extends LightningElement {
         } else {
             this.filterColumns[this.columnNumber].label = this.baseLabel;
             if (this.columnFilterValue != null && this.columnFilterValue != '') {
-                this.filterColumns[this.columnNumber].label += ' [' + this.columnFilterValue + ']';
+                this.filterColumns[this.columnNumber].label += this.headerFilterValue;
             }
         }
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;

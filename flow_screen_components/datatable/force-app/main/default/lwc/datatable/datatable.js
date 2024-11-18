@@ -2652,7 +2652,8 @@ export default class Datatable extends LightningElement {
                             }
                             if (this.columnFilterValues[col] && this.columnFilterValues[col] != null) {
                                 if (this.filterColumns[col].type != 'boolean' && (!row[fieldName] || row[fieldName] == null)) {    // The field is empty
-                                    if (this.columnFilterValues[col] != FILTER_BLANKS) { 
+                                    if (this.columnFilterValues[col] != FILTER_BLANKS) {
+                                        match = false;
                                         break; 
                                     }
                                 } else {

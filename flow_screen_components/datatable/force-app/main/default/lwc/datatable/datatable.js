@@ -819,6 +819,7 @@ export default class Datatable extends LightningElement {
         } else {
             this.paginatedData = [...this._mydata];
             this.visibleSelectedRowIds = this._allSelectedRowIds;
+            console.log("🚀 ~ handlePagination ~  this.visibleSelectedRowIds:",  this.visibleSelectedRowIds);
         }
     }
     // End Pagination Methods
@@ -1350,6 +1351,13 @@ export default class Datatable extends LightningElement {
             });
 
         }
+        
+        // Other processing for reactivity
+
+        // Clear all existing column filters
+        this.columnFilterValues = [];
+        this.showClearFilterButton = false;
+
     }
 
     updateDataRows() {
@@ -1808,6 +1816,7 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
+        console.log("🚀 ~ updatePreSelectedRows ~ this.outputSelectedRows:", this.outputSelectedRows);
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
 
@@ -1821,6 +1830,7 @@ export default class Datatable extends LightningElement {
             const selected = JSON.parse(JSON.stringify([...this.preSelectedRows.slice(0, this.maxNumberOfRows)]));
             let selectedKeys = [];
             selected.forEach(record => {
+                console.log("🚀 ~ updatePreSelectedRows ~ record:", record);
                 selectedKeys.push(record[this.keyField]);            
             });
             this.allSelectedRowIds = selectedKeys;
@@ -2167,7 +2177,9 @@ export default class Datatable extends LightningElement {
                 if (findRowIndexById(this, this.outputRemovedRows, srowid) == -1) {
                         otherSelectedRowIds.push(srowid);
                         index = findRowIndexById(this, this._savePreEditData, srowid);
-                        allSelectedRecs.push(this._savePreEditData[index]);
+                        if (index != -1) {  // Equals -1 if a previously selected row is no longer part of the current table data (reactivity)
+                            allSelectedRecs.push(this._savePreEditData[index]);
+                        }
                     } else {    // Selected row was removed
                         index = findRowIndexById(this, allSelectedRecs, srowid);
                         allSelectedRecs.splice(index, 1);
@@ -2210,6 +2222,10 @@ export default class Datatable extends LightningElement {
         // Handle updating output attribute for the number of selected rows
         this.numberOfRowsSelected = currentSelectedRows.length;
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
+        if (this.numberOfRowsSelected == 0) {
+            this.showClearButton = false;
+        }
+        console.log("🚀 ~ updateNumberOfRowsSelected ~ this.showClearButton:", this.showClearButton);
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
@@ -2217,6 +2233,7 @@ export default class Datatable extends LightningElement {
             this.selectedRowKeyValue = (this.outputSelectedRow[this.keyField]) ? this.outputSelectedRow[this.keyField] : '';
             this.dispatchEvent(new FlowAttributeChangeEvent('selectedRowKeyValue', this.selectedRowKeyValue));
             this.showClearButton = !this.hideCheckboxColumn && !this.hideClearSelectionButton;
+            console.log("🚀 ~ updateNumberOfRowsSelected ~ this.showClearButton:", this.showClearButton);
         }
     }
 
@@ -2243,16 +2260,17 @@ export default class Datatable extends LightningElement {
         });
 
         // Reapply filters (none in place)
+        this.filterColumnData();// v4.3.3 promise/resolve clears selected rows
         this.isWorking = true;
-        new Promise((resolve, reject) => {
-            setTimeout(() => {
-                this.filterColumnData();
-                resolve();
-            }, 0);
-        })
-        .then(
-            () => this.isWorking = false
-        );
+        // new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         this.filterColumnData();
+        //         resolve();
+        //     }, 0);
+        // })
+        // .then(
+        //     () => this.isWorking = false
+        // );
 
         colNumber = 0;
         this.columns.forEach(col => {   // Disable all column Clear header actions and reset Labels
@@ -2414,16 +2432,17 @@ export default class Datatable extends LightningElement {
                     this.updateLabelParam();
                 }
 
-                this.isWorking = true;
-                new Promise((resolve, reject) => {
-                    setTimeout(() => {
-                        this.filterColumnData();
-                        resolve();
-                    }, 0);
-                })
-                .then(
-                    () => this.isWorking = false
-                );
+                this.filterColumnData();    // v4.3.3 promise/resolve clears selected rows
+                // this.isWorking = true;
+                // new Promise((resolve, reject) => {
+                //     setTimeout(() => {
+                //         this.filterColumnData();
+                //         resolve();
+                //     }, 0);
+                // })
+                // .then(
+                //     () => this.isWorking = false
+                // );
 
                 this.filterColumns[this.columnNumber].actions.find(a => a.name == 'clear_'+this.columnNumber).disabled = true;
                 if (this.sortedBy != undefined) {
@@ -2482,7 +2501,7 @@ export default class Datatable extends LightningElement {
         this.columnWidthsLabel = `Column Data`;
     }
 
-    handleChange(event) {
+    handleFilterChange(event) {
         // Update the filter value as the user types it in
         this.columnFilterValue = event.target.value;
         this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
@@ -2606,6 +2625,7 @@ export default class Datatable extends LightningElement {
             this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         }
 
+        console.log("🚀 ~ handleCloseFilterInput ~ this.isFiltered:", this.isFiltered);
         if (!this.isFiltered) this.filterColumnData();
 
         if (this.isConfigMode) {

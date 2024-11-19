@@ -79,8 +79,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:** 
 -   Removed processing from 4.3.1 and 4.3.2 related to Winter 25 base component bug for flexible width columns
 -   Fixed bug where lookup field columns were not holding the flex attribute  
--   Fixed bug where changing or clearing a search or filter value after an edit would't display all of the original records 
--   Fixed bug where wrong record links could be generated in a developer org   
+-   Fixed bug where changing or clearing a search or filter value after an edit wouldn't display all of the original records 
+-   Fixed bug where wrong record links could be generated in a developer org  
+-   Fixed reactivity bug where an error could occur when a previously selected record was no longer included in the current record collection
+-   Fixed bug where record selections would be cleared when filters were cleared
   
 ## 09/29/24 -  Eric Smith -     Version 4.3.1 & 4.3.2  
 **Updates:**   

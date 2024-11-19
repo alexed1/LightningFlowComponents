@@ -54,7 +54,7 @@ const getConstants = () => {
         REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button
         REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
-        SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
+        SHOW_DEBUG_INFO : true,            // Set to true to show sensitive debug info in the console and debug logs
         DEFAULT_COL_WIDTH : 200,            // Default width to set a column when Flex is toggled off
         FILTER_BLANKS : '_FILTER_BLANKS_'   // Dummy filter value to use when filtering on blank values
     }

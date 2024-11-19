@@ -1291,6 +1291,7 @@ export default class Datatable extends LightningElement {
                 // Assign return results from the Apex callout
                 this.recordData = [...returnResults.rowData];
                 this.lookups = returnResults.lookupFieldList;
+                console.log(this.consoleLogPrefix+"Lookup Fields ~ returnResults.lookupFieldList.toString()", returnResults.lookupFieldList.toString());
                 this.percentFieldArray = (returnResults.percentFieldList.length > 0) ? returnResults.percentFieldList.toString().split(',') : [];
                 this.numberFieldArray = (returnResults.numberFieldList.length > 0) ? returnResults.numberFieldList.toString().split(',') : [];
                 this.timeFieldArray = (returnResults.timeFieldList.length > 0) ? returnResults.timeFieldList.toString().split(',') : [];
@@ -1445,6 +1446,8 @@ export default class Datatable extends LightningElement {
                             record[lufield + '_lookup'] = MYDOMAIN + '.lightning.force.com/lightning/r/' + lookupFieldObject['object'] + '/' + record[lufield + '_id'] + '/view';
                         }
                     }
+
+                    delete record[lufield];     // v4.3.3 remove object reference so selected rows output will work with reactive collection processors
                 }
             }); 
             

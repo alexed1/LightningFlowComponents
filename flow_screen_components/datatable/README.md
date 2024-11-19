@@ -84,6 +84,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fixed reactivity bug where an error could occur when a previously selected record was no longer included in the current record collection  
 -   Fixed bug where record selections would be cleared when filters were cleared  
 -   PR#1575 - Fernando-Fernandez - If keyfield is a field that doesn't actually exist, don't identify every record as selected  
+-   Fixed bug where reactive collection processors would fail trying to read the selected rows collection when a lookup field was included
   
 ## 09/29/24 -  Eric Smith -     Version 4.3.1 & 4.3.2  
 **Updates:**   

@@ -819,7 +819,6 @@ export default class Datatable extends LightningElement {
         } else {
             this.paginatedData = [...this._mydata];
             this.visibleSelectedRowIds = this._allSelectedRowIds;
-            console.log("🚀 ~ handlePagination ~  this.visibleSelectedRowIds:",  this.visibleSelectedRowIds);
         }
     }
     // End Pagination Methods
@@ -1816,7 +1815,6 @@ export default class Datatable extends LightningElement {
 
     updatePreSelectedRows() {
         // Handle pre-selected records
-        console.log("🚀 ~ updatePreSelectedRows ~ this.outputSelectedRows:", this.outputSelectedRows);
         if(!this.outputSelectedRows || this.outputSelectedRows.length === 0) {
             this.outputSelectedRows = this.preSelectedRows.slice(0, this.maxNumberOfRows);
 
@@ -1830,7 +1828,6 @@ export default class Datatable extends LightningElement {
             const selected = JSON.parse(JSON.stringify([...this.preSelectedRows.slice(0, this.maxNumberOfRows)]));
             let selectedKeys = [];
             selected.forEach(record => {
-                console.log("🚀 ~ updatePreSelectedRows ~ record:", record);
                 selectedKeys.push(record[this.keyField]);            
             });
             this.allSelectedRowIds = selectedKeys;
@@ -2225,7 +2222,6 @@ export default class Datatable extends LightningElement {
         if (this.numberOfRowsSelected == 0) {
             this.showClearButton = false;
         }
-        console.log("🚀 ~ updateNumberOfRowsSelected ~ this.showClearButton:", this.showClearButton);
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRow', this.outputSelectedRow));
@@ -2233,7 +2229,6 @@ export default class Datatable extends LightningElement {
             this.selectedRowKeyValue = (this.outputSelectedRow[this.keyField]) ? this.outputSelectedRow[this.keyField] : '';
             this.dispatchEvent(new FlowAttributeChangeEvent('selectedRowKeyValue', this.selectedRowKeyValue));
             this.showClearButton = !this.hideCheckboxColumn && !this.hideClearSelectionButton;
-            console.log("🚀 ~ updateNumberOfRowsSelected ~ this.showClearButton:", this.showClearButton);
         }
     }
 
@@ -2625,7 +2620,6 @@ export default class Datatable extends LightningElement {
             this.columnFilterValues[this.columnNumber] = this.columnFilterValue;
         }
 
-        console.log("🚀 ~ handleCloseFilterInput ~ this.isFiltered:", this.isFiltered);
         if (!this.isFiltered) this.filterColumnData();
 
         if (this.isConfigMode) {

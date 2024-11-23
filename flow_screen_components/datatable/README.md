@@ -71,6 +71,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  ## xx/xx/24 -  Eric Smith -     Version 4.3.4  
+**Updates:**  
+-    
+  
+**Bug Fixes:** 
+-   Fixed bug where error would occur when the remove row action was in the first column  
+  
   ## 11/21/24 -  Eric Smith -     Version 4.3.3  
 **Updates:**  
 -   Added option to column filters to filter rows where the value in that column is blank 

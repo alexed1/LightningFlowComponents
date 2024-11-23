@@ -1793,6 +1793,7 @@ export default class Datatable extends LightningElement {
         this.cols.push({
             type: "button-icon",
             label: null,
+            fieldName: "rowAction",
             typeAttributes: {
                 name: "removeRow",
                 alternativeText: this.removeLabel,

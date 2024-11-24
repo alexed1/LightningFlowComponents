@@ -408,6 +408,12 @@ export default class Datatable extends LightningElement {
     }
     @api cb_suppressCurrencyConversion;
 
+    @api 
+    get isCaseInsensitiveSort() {
+        return (this.cb_isCaseInsensitiveSort == CB_TRUE) ? true : false;
+    }
+    @api cb_isCaseInsensitiveSort;
+
     @api
     get emptyTableMessage() {
         return this.label.EmptyMessage;
@@ -2296,6 +2302,24 @@ export default class Datatable extends LightningElement {
     }
 
     doSort(sortField, sortDirection) {
+
+        // Determine if column type will allow field values to be converted to lower case
+        let isString = false;
+        if (this.isCaseInsensitiveSort) {
+            const colType = this.columns.find(c => c.fieldName == sortField).type;
+            switch (colType) {
+                case 'phone':
+                case 'text':
+                case 'email':
+                case 'url':
+                case 'richtext':
+                case 'combobox':
+                    isString = true;
+                    break;
+                default:
+            }
+        }
+        
         // Change sort field from Id to Name for lookups
         if (sortField.endsWith('_lookup')) {
             sortField = sortField.slice(0,sortField.lastIndexOf('_lookup')) + '_name';   
@@ -2306,9 +2330,15 @@ export default class Datatable extends LightningElement {
         this.isWorking = true;
         new Promise((resolve, reject) => {
             setTimeout(() => {
-                this.mydata = [...this._mydata.sort(
-                    (a,b)=>(a=fieldValue(a),b=fieldValue(b),reverse*((a>b)-(b>a)))
-                )];
+                if (this.isCaseInsensitiveSort && isString) {
+                    this.mydata = [...this._mydata.sort(
+                        (a,b)=>(a=fieldValue(a).toLowerCase(),b=fieldValue(b).toLowerCase(),reverse*((a>b)-(b>a)))
+                    )];
+                } else {
+                    this.mydata = [...this._mydata.sort(
+                        (a,b)=>(a=fieldValue(a),b=fieldValue(b),reverse*((a>b)-(b>a)))
+                    )];
+                }
                 resolve();
             }, 0);
         })

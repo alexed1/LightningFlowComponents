@@ -18,6 +18,9 @@ if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     /
     if (baseURL.includes('.sandbox.')) {        // Running in a sandbox with Enhanced Domain enabled
         myDomain += '.sandbox';
     }
+    if (baseURL.includes('.develop.')) {        // Running in a developer org - v4.3.3
+        myDomain += '.develop';
+    }
 } else {                                        // Running in a Community or Flow Builder
     myDomain = window.location.href;            // https://<domain>.<instance>.force.com/<site title>/s/
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)
@@ -33,7 +36,7 @@ console.log("DATATABLE: isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.3.2',           // Current Source Code Version #
+        VERSION_NUMBER : '4.3.3',           // Current Source Code Version #
         MAXROWCOUNT : 2000,                 // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,                     // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,                    // Number of records to display in the Column Wizard datatable
@@ -43,7 +46,7 @@ const getConstants = () => {
         CB_TRUE : 'CB_TRUE',                // Used with fsc_flowCheckbox component
         CB_FALSE : 'CB_FALSE',              // Used with fsc_flowCheckbox component
         CB_ATTRIB_PREFIX : 'cb_',           // Used with fsc_flowCheckbox component
-        MIN_SEARCH_TERM_SIZE : 2,           // Set the minimum number of characters required to start searching
+        MIN_SEARCH_TERM_SIZE : 1,           // Set the minimum number of characters required to start searching
         SEARCH_WAIT_TIME : 300,             // Set the delay to start searching while user is typing a search term
         RECORDS_PER_PAGE : 10,              // Default number of records per page for pagination
         REMOVE_ROW_LABEL : 'Remove Row',    // Default label for the Remove Row button
@@ -52,7 +55,8 @@ const getConstants = () => {
         REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
         SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
-        DEFAULT_COL_WIDTH : 200             // Default width to set a column when Flex is toggled off
+        DEFAULT_COL_WIDTH : 200,            // Default width to set a column when Flex is toggled off
+        FILTER_BLANKS : '_FILTER_BLANKS_'   // Dummy filter value to use when filtering on blank values
     }
 }
 

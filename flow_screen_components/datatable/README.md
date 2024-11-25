@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.3 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9dQAA)   
-[Version 4.3.3 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9dQAA)
+[Version 4.3.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)   
+[Version 4.3.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  ## 11/24/24 -  Eric Smith -     Version 4.3.4  
+**Updates:**  
+-   Add option to sort columns as case insensitive (AbC vs ACb) - default false for backwards compatibility
+-   Update component API versions from 60.0 to 62.0
+  
+**Bug Fixes:** 
+-   Fixed bug where error would occur when the remove row action was in the first column  
+  
   ## 11/21/24 -  Eric Smith -     Version 4.3.3  
 **Updates:**  
 -   Added option to column filters to filter rows where the value in that column is blank 

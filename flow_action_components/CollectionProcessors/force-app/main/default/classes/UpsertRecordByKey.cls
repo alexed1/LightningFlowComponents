@@ -103,7 +103,6 @@ global inherited sharing class UpsertRecordByKey {
         indexAction.setInvocationParameter('fieldValue', fieldValue);
 
         List<Invocable.Action.Result> results = indexAction.invoke();  
-        System.debug('results: '+results);
 
         getIndexResults gir = new getIndexResults();
 
@@ -111,14 +110,8 @@ global inherited sharing class UpsertRecordByKey {
         if (results.size() > 0 && results[0].isSuccess()) {
             gir.index = Integer.valueOf(results[0].getOutputParameters().get('index'));
         }
-        System.debug('gir.index: '+gir.index);
 
         return gir;
     }
-
-    // Convert an object to an integer
-    // private static Integer objToInteger(Object obj) {
-    //     return Integer.valueof(obj);
-    // }
 
 }

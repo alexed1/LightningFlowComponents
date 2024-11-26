@@ -62,8 +62,6 @@ global inherited sharing class GetIndexFromKey {
             if (fieldAPIName == '' || fieldAPIName == null) {
                 fieldAPIName = 'Id';
             }
-System.debug('fieldAPIName: '+fieldAPIName);
-System.debug('fieldValue: '+fieldValue);
 
             // Define working variables
             Integer index = -1;
@@ -77,7 +75,6 @@ System.debug('fieldValue: '+fieldValue);
                 }
                 counter++;
             }
-System.debug('counter: '+counter);
 
             // Set Output Values
             response.index = counter;

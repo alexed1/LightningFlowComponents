@@ -35,9 +35,9 @@ public with sharing class UpsertRecordByKeyTest {
         testUpsert.fieldAPIName = 'Name';
         testUpsertList.add(testUpsert);
         List<UpsertRecordByKey.Results> testResultList = UpsertRecordByKey.upsertRecordByKey(testUpsertList);
-        System.Assert.areEqual('Test Account1', testResultList[0].outputCollection[0].get('Name'));
-        System.Assert.areEqual('11', testResultList[0].outputCollection[0].get('AccountNumber'));
-        System.Assert.areEqual(3, testResultList[0].outputCollection.size());
+        Assert.areEqual('Test Account1', testResultList[0].outputCollection[0].get('Name'));
+        Assert.areEqual('11', testResultList[0].outputCollection[0].get('AccountNumber'));
+        Assert.areEqual(3, testResultList[0].outputCollection.size());
         testUpsertList.clear();
 
         // Test match of Id field by default
@@ -48,22 +48,35 @@ public with sharing class UpsertRecordByKeyTest {
         testUpsert.fieldAPIName = '';
         testUpsertList.add(testUpsert);
         testResultList = UpsertRecordByKey.upsertRecordByKey(testUpsertList);
-        System.Assert.areEqual(acct2Id, testResultList[0].outputCollection[1].Id);
-        System.Assert.areEqual('Test Account2', testResultList[0].outputCollection[1].get('Name'));
-        System.Assert.areEqual('22', testResultList[0].outputCollection[1].get('AccountNumber'));
-        System.Assert.areEqual(3, testResultList[0].outputCollection.size());
+        Assert.areEqual(acct2Id, testResultList[0].outputCollection[1].Id);
+        Assert.areEqual('Test Account2', testResultList[0].outputCollection[1].get('Name'));
+        Assert.areEqual('22', testResultList[0].outputCollection[1].get('AccountNumber'));
+        Assert.areEqual(3, testResultList[0].outputCollection.size());
+        Assert.isFalse(testResultList[0].noMatchFound);
         testUpsertList.clear();
 
-        // Test add new record when no match
+        // Test skip add new record when no match
         Account acct4 = new Account(Name='Test Account4', AccountNumber='4');
         insert acct4;
         testUpsert.inputCollection = accts;
         testUpsert.inputRecord = acct4;
         testUpsert.fieldAPIName = 'Name';
+        testUpsert.skipInsertIfNoMatchFound = true;
         testUpsertList.add(testUpsert);
         testResultList = UpsertRecordByKey.upsertRecordByKey(testUpsertList);
-        System.Assert.areEqual(4, testResultList[0].outputCollection.size());
+        Assert.areEqual(3, testResultList[0].outputCollection.size());
+        Assert.IsTrue(testResultList[0].noMatchFound);
+        testUpsertList.clear();
 
+        // Test add new record when no match        
+        testUpsert.inputCollection = accts;
+        testUpsert.inputRecord = acct4;
+        testUpsert.fieldAPIName = 'Name';
+        testUpsert.skipInsertIfNoMatchFound = false;
+        testUpsertList.add(testUpsert);
+        testResultList = UpsertRecordByKey.upsertRecordByKey(testUpsertList);
+        Assert.areEqual(4, testResultList[0].outputCollection.size());
+        Assert.IsTrue(testResultList[0].noMatchFound);
     }
 
 }

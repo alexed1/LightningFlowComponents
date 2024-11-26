@@ -8,7 +8,9 @@
  *  It takes for input a record collection, a single record and the API name of a key field.
  * 
  *  If it finds a matching record in the collection based on the value of the key field, it will replace that record in the collection.
- *  If a matching record is not found,the record will be added to the collection.
+ *  If a matching record is not found,the record will be added to the collection unless the option to skip the insert is set to True.
+ * 
+ *  The updated record colllection is returned by the action along with a noMatchFound flag which will be true if no matching record was found.
  * 
  *  The primary use case for this action is to update a record collection in a flow prior to saving the changes to the database.
  * 
@@ -28,6 +30,9 @@ global inherited sharing class UpsertRecordByKey {
         @InvocableVariable(label='API name of keyfield (Default = Id)')
         global String fieldAPIName;
 
+        @InvocableVariable(label='Do you want to skip insert if no match is found? (Default = False)')
+        global Boolean skipInsertIfNoMatchFound;
+
     }
 
     // Attributes passed back to the Flow
@@ -35,6 +40,9 @@ global inherited sharing class UpsertRecordByKey {
 
         @InvocableVariable(Label='Collection with upserted record')
         global List<SObject> outputCollection;
+
+        @InvocableVariable(Label='No matching record was found')
+        global Boolean noMatchFound;
 
     }
 
@@ -56,10 +64,14 @@ global inherited sharing class UpsertRecordByKey {
             List<SObject> inputCollection = curRequest.inputCollection;
             SObject inputRecord = curRequest.inputRecord;
             String fieldAPIName  = curRequest.fieldAPIName;
+            Boolean skipInsertIfNoMatchFound = curRequest.skipInsertIfNoMatchFound;
 
             // Process input attributes
             if (fieldAPIName == '' || fieldAPIName == null) {
                 fieldAPIName = 'Id';
+            }
+            if (skipInsertIfNoMatchFound == null) {
+                skipInsertIfNoMatchFound = false;
             }
             String fieldValue = inputRecord.get(fieldAPIName)?.toString();
 
@@ -71,8 +83,12 @@ global inherited sharing class UpsertRecordByKey {
             Integer index = idx.index;
 
             if (inputCollection != null && inputRecord != null) {
+                response.noMatchFound = false;
                 if (index == -1 || index == null || index >= inputCollection.size()) {
-                    inputCollection.add(inputRecord);
+                    response.noMatchFound = true;
+                    if (!skipInsertIfNoMatchFound) {
+                        inputCollection.add(inputRecord);                        
+                    }
                 } else {
                     inputCollection.remove(index);
                     inputCollection.add(index, inputRecord);

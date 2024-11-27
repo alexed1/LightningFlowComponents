@@ -31,8 +31,8 @@ Twitter: https://twitter.com/esmith35
 ---
 
 **Install ers_AutoNavigate_Refresh**  
-[Version 1.0.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xEYQAY)  
-[Version 1.0.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xEYQAY)
+[Version 1.0.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9nQAA)  
+[Version 1.0.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9nQAA)
 
 ---
 

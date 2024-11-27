@@ -55,6 +55,20 @@ public with sharing class UpsertRecordByKeyTest {
         Assert.isFalse(testResultList[0].noMatchFound);
         testUpsertList.clear();
 
+        // Test upsert last record in collection
+        Account upd_acct3 = accts[2];
+        upd_acct3.AccountNumber='33';
+        testUpsert.inputCollection = accts;
+        testUpsert.inputRecord = upd_acct3;
+        testUpsert.fieldAPIName = 'Name';
+        testUpsertList.add(testUpsert);
+        testResultList = UpsertRecordByKey.upsertRecordByKey(testUpsertList);
+        Assert.areEqual('Test Account3', testResultList[0].outputCollection[2].get('Name'));
+        Assert.areEqual('33', testResultList[0].outputCollection[2].get('AccountNumber'));
+        Assert.areEqual(3, testResultList[0].outputCollection.size());
+        Assert.isFalse(testResultList[0].noMatchFound);
+        testUpsertList.clear();
+
         // Test skip add new record when no match
         Account acct4 = new Account(Name='Test Account4', AccountNumber='4');
         insert acct4;

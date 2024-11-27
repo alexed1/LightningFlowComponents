@@ -14,6 +14,10 @@
  * 
  *  The primary use case for this action is to update a record collection in a flow prior to saving the changes to the database.
  * 
+ *  Release Notes: 
+ *  v1.0.0 - 11/26/24 - Initial Version 
+ *  v1.0.1 - 11/27/24 - Handle replacing last record in the collection
+ * 
 **/ 
 
 global inherited sharing class UpsertRecordByKey {
@@ -91,7 +95,11 @@ global inherited sharing class UpsertRecordByKey {
                     }
                 } else {
                     inputCollection.remove(index);
-                    inputCollection.add(index, inputRecord);
+                    if (index == inputCollection.size()) {   // Removed last record
+                        inputCollection.add(inputRecord); 
+                    } else {
+                        inputCollection.add(index, inputRecord);
+                    }
                 }
 
                 // Set Output Values

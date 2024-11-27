@@ -1,18 +1,41 @@
-# Salesforce DX Project: Next Steps
+# ers_AutoNavigate_Refresh
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+Lightning Web Component for Flow Screens: **ers_AutoNavigate_Refresh**
 
-## How Do You Plan to Deploy Your Changes?
+Lightning Flow Builder Name: **Auto Navigate + Console Tab Refresh**
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+** This component is designed to be used on a FLow Screen when you need to refresh the console tabs and/or **
+** automatically navigate to the previous or next screen.  The refresh and navigation can be further controlled **
+** by making this component conditionally visible so the action(s) will only occur when the conditional **
+** visibility is true.**
 
-## Configure Your Salesforce DX Project
+Additional components packaged with this LWC:
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+                    Lightning Web Components:   ers_AutoNavigate_RefreshCPE //TODO
 
-## Read All About It
+**Documentation:** https://unofficialsf.com/TODO/
 
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+**Created by:** Eric Smith  
+**Date:** November 27, 2024
+
+LinkedIn: https://www.linkedin.com/in/ericrsmith2  
+Salesforce: https://trailblazer.me/id/ericsmith  
+Blog: https://ericsplayground.wordpress.com/blog/  
+Twitter: https://twitter.com/esmith35
+
+---
+
+**You must install these components FIRST in order to install and use this component**  
+
+
+---
+
+**Install ers_AutoNavigate_Refresh**  
+[Version 1.0.0 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xEYQAY)  
+[Version 1.0.0 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G0000047xEYQAY)
+
+---
+
+# Release Notes
+
+## 11/27/24 - Eric Smith - Version 1.0.0

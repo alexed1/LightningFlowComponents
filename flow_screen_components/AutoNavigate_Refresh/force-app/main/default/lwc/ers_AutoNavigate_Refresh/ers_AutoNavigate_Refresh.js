@@ -13,8 +13,9 @@
  * CREATED BY:          Eric Smith
  * 
  * VERSION:             1.0.0
+ * DATE:                11/27/2024
  * 
- * RELEASE NOTES://TODO https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/ers_AutoNavigate_Refresh/README.md
+ * RELEASE NOTES:       https://github.com/alexed1/LightningFlowComponents/tree/master/flow_screen_components/ers_AutoNavigate_Refresh/README.md
  * 
 **/
 

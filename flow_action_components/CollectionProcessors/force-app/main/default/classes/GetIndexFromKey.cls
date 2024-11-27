@@ -13,6 +13,10 @@
  *  The primary use case for this action is to find the index of a record based on the value of a key field so it can be used in
  *  other collecion actions that require an index value such as Add or Insert Record or Remove Recod from Collection.
  * 
+ *  Release Notes: 
+ *  v1.0.0 - 11/26/24 - Initial Version 
+ *  v1.0.1 - 11/27/24 - Allow Field API value to be null
+ *
 **/ 
 
 global inherited sharing class GetIndexFromKey {
@@ -26,7 +30,7 @@ global inherited sharing class GetIndexFromKey {
         @InvocableVariable(label='Field API Name')
         global String fieldAPIName;
 
-        @InvocableVariable(label='Field API Value' required=true)
+        @InvocableVariable(label='Field API Value')
         global String fieldValue;
 
     }

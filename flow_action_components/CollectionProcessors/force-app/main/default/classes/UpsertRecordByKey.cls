@@ -25,10 +25,10 @@ global inherited sharing class UpsertRecordByKey {
     // Attributes passed in from the Flow
     global class Requests {
 
-        @InvocableVariable(label='Origginal record collection' required=true)
+        @InvocableVariable(label='Original record collection' required=true)
         global List<SObject> inputCollection;
 
-        @InvocableVariable(label='New or replacement record' required=true)
+        @InvocableVariable(label='New or replacement record')
         global SObject inputRecord;
 
         @InvocableVariable(label='API name of keyfield (Default = Id)')
@@ -101,10 +101,10 @@ global inherited sharing class UpsertRecordByKey {
                         inputCollection.add(index, inputRecord);
                     }
                 }
-
-                // Set Output Values
-                response.outputCollection = inputCollection.clone();
             }
+            
+            // Set Output Values
+            response.outputCollection = inputCollection.clone();
 
             responseWrapper.add(response);
 

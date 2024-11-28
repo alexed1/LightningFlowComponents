@@ -77,7 +77,7 @@ global inherited sharing class UpsertRecordByKey {
             if (skipInsertIfNoMatchFound == null) {
                 skipInsertIfNoMatchFound = false;
             }
-            String fieldValue = inputRecord.get(fieldAPIName)?.toString();
+            String fieldValue = inputRecord?.get(fieldAPIName)?.toString();
 
             // Set initial values
             getIndexResults idx = new getIndexResults();
@@ -86,6 +86,7 @@ global inherited sharing class UpsertRecordByKey {
             idx = getIndexFromKey(inputCollection, fieldAPIName, fieldValue);
             Integer index = idx.index;
 
+            response.noMatchFound = true;
             if (inputCollection != null && inputRecord != null) {
                 response.noMatchFound = false;
                 if (index == -1 || index == null || index >= inputCollection.size()) {
@@ -102,7 +103,7 @@ global inherited sharing class UpsertRecordByKey {
                     }
                 }
             }
-            
+
             // Set Output Values
             response.outputCollection = inputCollection.clone();
 

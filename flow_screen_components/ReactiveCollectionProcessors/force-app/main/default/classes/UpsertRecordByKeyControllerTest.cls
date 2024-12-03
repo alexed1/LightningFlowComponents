@@ -1,5 +1,5 @@
 @isTest
-public with sharing  class UpsertRecordByKeyControllerTest {
+public with sharing class UpsertRecordByKeyControllerTest {
 
     @isTest
     static void tryUpsertRecordByKey() {

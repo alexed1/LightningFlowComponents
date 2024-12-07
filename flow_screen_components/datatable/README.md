@@ -71,6 +71,13 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  ## 12/24/24 -  Eric Smith -     Version 4.3.5  
+**Updates:**  
+-   Improved reactivity for Remove Row action  
+  
+**Bug Fixes:** 
+-   
+  
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  
 -   Add option to sort columns as case insensitive (AbC vs ACb) - default false for backwards compatibility

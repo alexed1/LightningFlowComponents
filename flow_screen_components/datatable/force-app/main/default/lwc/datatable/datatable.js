@@ -1359,7 +1359,13 @@ export default class Datatable extends LightningElement {
         }
         
         // Other processing for reactivity
-
+        this.outputRemovedRows = [];
+        this.numberOfRowsRemoved = 0;
+        this.outputRemainingRows = [];
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
+        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
+        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
+        
         // Clear all existing column filters
         this.columnFilterValues = [];
         this.showClearFilterButton = false;

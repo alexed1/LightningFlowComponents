@@ -14,7 +14,7 @@
 
             <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
             <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collection"/>
-            <property name="inputCollection" type="{T[]}" role="inputOnly" label="Input Collection" description="An SObject collection. The record collection to be updated with the changed record" required="true"/>
+            <property name="inputCollection" type="{T[]}" role="inputOnly" label="Input Collection" description="The record collection to extract the first record from." required="true"/>
             <property name="enforceSingleMember" type="Boolean" role="inputOnly" label = "Enforce Single Member" description="Set to True if you want to throw an error if the input collection doesn't contain just a single record. (Not implemented)"/>
             <property name="outputMember" type="{T}" role="outputOnly" label="Output Record" description="The first record from the input record collection."/>            
 

@@ -27,7 +27,6 @@ export default class ReactiveRecordCollection_rsc extends LightningElement {
     @api inputCollection;
     @api alternateCollection;
     @api outputCollection;
-
     
     // Define the attribute used to store an error message
     @api error;   

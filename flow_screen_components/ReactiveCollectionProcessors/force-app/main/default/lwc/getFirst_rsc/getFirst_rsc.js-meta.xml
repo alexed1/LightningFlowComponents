@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
+    <masterLabel>CP - Get First Record</masterLabel>
+
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+
+            <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
+            <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collection"/>
+            <property name="inputCollection" type="{T[]}" role="inputOnly" label="Input Collection" description="The record collection to extract the first record from." required="true"/>
+            <property name="enforceSingleMember" type="Boolean" role="inputOnly" label = "Enforce Single Member" description="Set to True if you want to throw an error if the input collection doesn't contain just a single record. (Not implemented)"/>
+            <property name="outputMember" type="{T}" role="outputOnly" label="Output Record" description="The first record from the input record collection."/>            
+
+            <!-- Include an attribute to hold an error message -->
+            <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

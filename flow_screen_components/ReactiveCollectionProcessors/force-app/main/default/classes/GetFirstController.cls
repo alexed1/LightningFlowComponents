@@ -45,16 +45,19 @@ public with sharing class GetFirstController {
         action.setInvocationParameter('inputCollection', inputCollection); 
         action.setInvocationParameter('enforceSingleMember', enforceSingleMember); 
 
-        // Invoke the action
-        List<Invocable.Action.Result> results = action.invoke();
+        if (inputCollection.size() > 0) {   // * Custom check - not part of template
+            // Invoke the action
+            List<Invocable.Action.Result> results = action.invoke();
 
-        // If a result was returned ...
-        if (results.size() > 0 && results[0].isSuccess()) { 
-            
-            // * Assign each of the returned attributes to the corresponding value in the ReturnResultsWrapper
-            curRR.outputMember = objToRec(results[0].getOutputParameters().get('outputMember'));
-            
+            // If a result was returned ...
+            if (results.size() > 0 && results[0].isSuccess()) { 
+                
+                // * Assign each of the returned attributes to the corresponding value in the ReturnResultsWrapper
+                curRR.outputMember = objToRec(results[0].getOutputParameters().get('outputMember'));
+                
+            }
         }
+
         // Return the results wrapper to the calling LWC
         return JSON.serialize(curRR);
 

@@ -1929,6 +1929,7 @@ export default class Datatable extends LightningElement {
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
         console.log(this.consoleLogPrefix+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
+        console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved:", this.numberOfRowsRemoved);
 
         switch (action) {
             

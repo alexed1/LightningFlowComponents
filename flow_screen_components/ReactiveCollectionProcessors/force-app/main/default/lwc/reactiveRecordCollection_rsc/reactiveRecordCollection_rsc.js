@@ -71,7 +71,7 @@ export default class ReactiveRecordCollection_rsc extends LightningElement {
     _debounceHandler() {
         this._debounceTimer && clearTimeout(this._debounceTimer);
         if (this.reactiveValue){
-            this._debounceTimer = setTimeout(() => this._callAuraEnabledMethod(), 300);
+            this._debounceTimer = setTimeout(() => this._callReactiveMethod(), 300);
         }    
     }  
 

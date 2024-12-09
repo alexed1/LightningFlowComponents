@@ -1,7 +1,7 @@
 /**
  * Lightning Web Component for Flow Screens:            ers_AutoNavigate_Refresh
  * 
- * This component is designed to be used on a FLow Screen when you need to refresh the console tabs and/or 
+ * This component is designed to be used on a Flow Screen when you need to refresh the console tabs and/or 
  * automatically navigate to the previous or next screen.  The refresh and navigation can be further controlled 
  * by making this component conditionally visible so the action(s) will only occur when the conditional 
  * visibility is true.

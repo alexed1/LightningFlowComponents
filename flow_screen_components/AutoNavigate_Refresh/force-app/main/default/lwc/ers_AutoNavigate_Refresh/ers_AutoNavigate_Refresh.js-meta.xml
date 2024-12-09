@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Auto Navigate + Console Tab Refresh</masterLabel>
+    <description>Flow screen component to refresh the console tab and auto-navigate Previous or Next/Finish - By Eric Smith</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="navDirection" label="Navigation Direction (Default Next)" type="String" role="inputOnly"
+                description="Next, Forward, Previous or Back" />
+            <property name="skipRefresh" label="Skip Console Tab Refresh? (Default False)" type="Boolean" role="inputOnly"
+                description="Set to True to skip the console tab refresh step" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

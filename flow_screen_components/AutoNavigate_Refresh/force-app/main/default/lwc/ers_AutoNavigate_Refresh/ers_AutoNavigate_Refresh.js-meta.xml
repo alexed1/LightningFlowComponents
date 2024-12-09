@@ -10,7 +10,7 @@
     <targetConfigs>
         <targetConfig targets="lightning__FlowScreen">
             <property name="navDirection" label="Navigation Direction (Default Next)" type="String" role="inputOnly"
-                description="Input: Next, Forward, Previous or Back  Output: BACK, NEXT or FINISH" />
+                description="Next, Forward, Previous or Back" />
             <property name="skipRefresh" label="Skip Console Tab Refresh? (Default False)" type="Boolean" role="inputOnly"
                 description="Set to True to skip the console tab refresh step" />
         </targetConfig>

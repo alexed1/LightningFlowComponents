@@ -1407,7 +1407,8 @@ export default class Datatable extends LightningElement {
                     let dt = Date.parse(record[date] + "T12:00:00.000Z");   // Set to Noon to avoid DST issues with the offset (v4.0.4)
                     if (!isNaN(dt)) {   // Dates from External Objects are already formatted as Datetime (PR#1529)
                         let d = new Date();
-                        record[date] = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                        let doffset = new Date(d.setTime(Number(dt) - Number(this.timezoneOffset)));
+                        record[date] = doffset.toJSON().substring(0,10);    // v4.3.5 only store date as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
                     }
                 }
             });

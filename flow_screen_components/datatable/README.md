@@ -76,7 +76,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Improved reactivity for Remove Row action  
   
 **Bug Fixes:** 
--   
+-   Date field values that get adjusted by the timzoneeoffset now are stored as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  

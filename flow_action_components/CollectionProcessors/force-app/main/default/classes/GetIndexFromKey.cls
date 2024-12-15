@@ -61,6 +61,8 @@ global inherited sharing class GetIndexFromKey {
             List<SObject> inputCollection = curRequest.inputCollection;
             String fieldAPIName  = curRequest.fieldAPIName;
             Object fieldValue = curRequest.fieldValue;
+            system.debug('INDEX inputCollection: ' + inputCollection);
+            system.debug('INDEX fieldValue: ' + fieldValue);
 
             // Process input attributes
             if (fieldAPIName == '' || fieldAPIName == null) {

@@ -69,6 +69,8 @@ global inherited sharing class UpsertRecordByKey {
             SObject inputRecord = curRequest.inputRecord;
             String fieldAPIName  = curRequest.fieldAPIName;
             Boolean skipInsertIfNoMatchFound = curRequest.skipInsertIfNoMatchFound;
+            system.debug('CLASS inputCollection: ' + inputCollection);
+            system.debug('CLASS inputRecord: ' + inputRecord);
 
             // Process input attributes
             if (fieldAPIName == '' || fieldAPIName == null) {
@@ -126,6 +128,7 @@ global inherited sharing class UpsertRecordByKey {
         indexAction.setInvocationParameter('inputCollection', inputCollection);
         indexAction.setInvocationParameter('fieldAPIName', fieldAPIName);
         indexAction.setInvocationParameter('fieldValue', fieldValue);
+        system.debug('CLASS fieldValue: ' + fieldValue);
 
         List<Invocable.Action.Result> results = indexAction.invoke();  
 

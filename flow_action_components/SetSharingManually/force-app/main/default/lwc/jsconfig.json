@@ -19,6 +19,9 @@
             ],
             "c/setSharingFSC": [
                 "setSharingFSC/setSharingFSC.js"
+            ],
+            "c/*": [
+                "*"
             ]
         },
         "experimentalDecorators": true

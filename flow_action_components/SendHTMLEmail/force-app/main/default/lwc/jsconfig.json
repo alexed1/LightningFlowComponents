@@ -11,6 +11,9 @@
             ],
             "c/ucModal": [
                 "ucModal/ucModal.js"
+            ],
+            "c/*": [
+                "*"
             ]
         }
     },

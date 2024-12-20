@@ -7,6 +7,9 @@
             ],
             "c/transferMetadata": [
                 "transferMetadata/transferMetadata.js"
+            ],
+            "c/*": [
+                "*"
             ]
         },
         "experimentalDecorators": true

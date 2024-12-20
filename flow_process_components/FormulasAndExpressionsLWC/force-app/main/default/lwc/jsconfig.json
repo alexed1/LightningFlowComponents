@@ -28,6 +28,9 @@
             ],
             "c/updateFieldCPE": [
                 "updateFieldCPE/updateFieldCPE.js"
+            ],
+            "c/*": [
+                "*"
             ]
         },
         "experimentalDecorators": true

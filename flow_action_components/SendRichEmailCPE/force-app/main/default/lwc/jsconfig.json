@@ -19,6 +19,9 @@
             ],
             "c/sendHTMLEmail": [
                 "sendHTMLEmail/sendHTMLEmail.js"
+            ],
+            "c/*": [
+                "*"
             ]
         },
         "experimentalDecorators": true

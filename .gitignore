@@ -41,5 +41,6 @@ $RECYCLE.BIN/
 .gitignore
 package-lock.json
 jsconfig.json
+.lwc/jsconfig.json
 .sf/config.json
 .pmdCache

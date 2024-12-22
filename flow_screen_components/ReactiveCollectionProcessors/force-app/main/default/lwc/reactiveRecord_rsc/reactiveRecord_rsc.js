@@ -56,9 +56,9 @@ export default class ReactiveRecord_rsc extends LightningElement {
     _callReactiveMethod() {
 
         if(this.inputRecord && this.inputRecord != null) {
-            this.outputRecord = this.inputRecord;
+            this.outputRecord = {...this.inputRecord};
         } else {
-            this.outputRecord = this.alternateRecord;
+            this.outputRecord = {...this.alternateRecord};
         }
         this._fireFlowEvent("outputRecord", this.outputRecord);
 

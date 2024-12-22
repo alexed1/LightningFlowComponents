@@ -14,9 +14,9 @@
 
             <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
             <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Records"/>
-            <property name="inputRecord" type="{T[]}" role="inputOnly" label="Input Record" description="The record to be used unless it's empty"/>
-            <property name="alternateRecord" type="{T[]}" role="inputOnly" label="Alternate Record" description="The record to be used if the Input Record is empty"/>
-            <property name="outputRecord" type="{T[]}" role="outputOnly" label="Output Record" description="The Input Record or if it is empty, the Alternate Record."/>            
+            <property name="inputRecord" type="{T}" role="inputOnly" label="Input Record" description="The record to be used unless it's empty"/>
+            <property name="alternateRecord" type="{T}" role="inputOnly" label="Alternate Record" description="The record to be used if the Input Record is empty"/>
+            <property name="outputRecord" type="{T}" role="outputOnly" label="Output Record" description="The Input Record or if it is empty, the Alternate Record."/>            
 
             <!-- Include an attribute to hold an error message -->
             <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>

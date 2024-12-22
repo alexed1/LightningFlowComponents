@@ -48,8 +48,6 @@ export default class GetFirst_rsc extends LightningElement {
 
     // On rendering, check for a value or change in value of reactive attribute(s) and execute the handler
     renderedCallback() {
-        console.log("🚀 ~ GetFirst_rsc ~ renderedCallback ~ this.reactiveValue:", this.reactiveValue);
-        console.log("🚀 ~ GetFirst_rsc ~ renderedCallback ~ this.oldReactiveValue:", this.oldReactiveValue);
         if (this.reactiveValue && this.reactiveValue != this.oldReactiveValue) {
             this._callAuraEnabledMethod();
         }
@@ -62,7 +60,6 @@ export default class GetFirst_rsc extends LightningElement {
 
     // Call the Aura Enabled Method in the Controller
     _callAuraEnabledMethod() {
-        console.log("🚀 ~ GetFirst_rsc ~ _callAuraEnabledMethod ~ _callAuraEnabledMethod:");
         // * Identify the Aura Enabled Method
         getFirstRecord({ 
             // * For each attribute to be passed to the controller - methodAttributeName: value from LWC
@@ -75,7 +72,6 @@ export default class GetFirst_rsc extends LightningElement {
 
             // parse the result into individual attributes and fix the date format
             let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));
-            console.log("🚀 ~ GetFirst_rsc ~ _callAuraEnabledMethod ~ returnResults:", returnResults);
 
             // * LWC Output Attribute Name, value returned from the method
             // * If the attribute is a record collection, call the _removeAttr function on the result value

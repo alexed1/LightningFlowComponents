@@ -44,7 +44,6 @@ export default class UpsertRecordByKey_rsc extends LightningElement {
 
     // Get the Reactive Attribute Value
     get reactiveValue() { 
-        console.log("🚀 ~ UpsertRecordByKey_rsc ~ getreactiveValue ~ reactiveValue:", JSON.stringify(this.inputRecord));
         // * Return reactive attributes as a string to be used in tracking
         const rv = 
             (this.inputRecord) ? JSON.stringify(this.inputRecord) : '' + 
@@ -54,7 +53,6 @@ export default class UpsertRecordByKey_rsc extends LightningElement {
 
     // On rendering, check for a value or change in value of reactive attribute(s) and execute the handler
     renderedCallback() {
-        console.log("🚀 ~ UpsertRecordByKey_rsc ~ renderedCallback ~ this.reactiveValue, this.oldReactiveValue:", this.reactiveValue, this.oldReactiveValue);
         if (this.reactiveValue && this.reactiveValue != this.oldReactiveValue && this.inputRecord && this.inputCollection) {
             this._callAuraEnabledMethod();
         }
@@ -67,8 +65,7 @@ export default class UpsertRecordByKey_rsc extends LightningElement {
 
     // Call the Aura Enabled Method in the Controller
     _callAuraEnabledMethod() {
-        console.log("🚀 ~ UpsertRecordByKey_rsc ~ _callAuraEnabledMethod ~ this.inputRecord:", {...this.inputRecord});
-        console.log("🚀 ~ UpsertRecordByKey_rsc ~ _callAuraEnabledMethod ~ this.inputCollection.length:", this.inputCollection.length);
+
         // * Identify the Aura Enabled Method
         upsertByKey({ 
             // * For each attribute to be passed to the controller - methodAttributeName: value from LWC
@@ -80,7 +77,6 @@ export default class UpsertRecordByKey_rsc extends LightningElement {
 
         // If a valid result is returned,
         .then(result => { 
-            console.log("🚀 ~ UpsertRecordByKey_rsc ~ _callAuraEnabledMethod ~ result:", result);
 
             // parse the result into individual attributes and fix the date format
             let returnResults = JSON.parse(result.replace(/\+0000/g, "Z"));

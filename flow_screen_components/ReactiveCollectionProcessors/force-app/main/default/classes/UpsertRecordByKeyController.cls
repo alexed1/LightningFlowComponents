@@ -49,8 +49,6 @@ public with sharing class UpsertRecordByKeyController {
         action.setInvocationParameter('inputRecord', inputRecord); 
         action.setInvocationParameter('fieldAPIName', fieldAPIName); 
         action.setInvocationParameter('skipInsertIfNoMatchFound', skipInsertIfNoMatchFound); 
-system.debug('CONTROLLER inputCollection: ' + inputCollection);
-system.debug('CONTROLLER inputRecord: ' + inputRecord);
 
         // Invoke the action
         List<Invocable.Action.Result> results = action.invoke();

@@ -1,3 +1,9 @@
+/* 
+    12/26/24    Eric Smith  FlowScreenComponentsBasePack v3.3.5 or later
+    Updated to recognize the output from Action Buttons and Screen Actions
+    Added override option for CPEs to allow hard-coded references (Filter & TRansform element outputs)
+*/
+
 import {LightningElement, wire, api, track} from 'lwc';
 import {getObjectInfo} from 'lightning/uiObjectInfoApi';
 import {ShowToastEvent} from 'lightning/platformShowToastEvent';
@@ -8,10 +14,15 @@ import {
     removeFormatting,
     flowComboboxDefaults
 } from 'c/fsc_flowComboboxUtils';
-// import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';    // ***
-import getObjectFields from '@salesforce/apex/FieldSelectorController.getObjectFields';    // ***
+import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';    // ***
+// import getObjectFields from '@salesforce/apex/FieldSelectorController.getObjectFields';    // ***
 // TODO: Handle outputs from Filter and Transform
-
+/*  Filter Notes (Eric Smith)
+    Process a typeDescriptor of collectionProcessors where collectionProcessorType = FilterCollectionProcessor
+    isCollectionField will always be true
+    to find the value for objectTypeField you will need to recursively check the objectTypeField value for 
+    a typeDescriptor whose apiName matches the value for collectionReference
+*/
 
 const OUTPUTS_FROM_LABEL = 'Outputs from '; 
 export default class FlowCombobox extends LightningElement {
@@ -24,6 +35,16 @@ export default class FlowCombobox extends LightningElement {
     @api autocomplete = 'off';
     @api fieldLevelHelp;
     @api disabled;
+
+    @api 
+    get allowHardCodeReference() {
+        return this._allowHardCodeReference;
+    } 
+    set allowHardCodeReference(value) {
+        this._allowHardCodeReference = value;
+    }
+    _allowHardCodeReference = false;    // Set to true in the CPE to allow the user to hard code a reference like {!Filter_Element} or {!Transform_Output}
+
     @track _dataType;
     @track _value;
     @track allOptions;
@@ -1161,7 +1182,7 @@ export default class FlowCombobox extends LightningElement {
             this._value = removeFormatting(valueInput.value);
             if (isRef) {
                 let typeOption = this.getTypeOption(this._value);
-                if (!typeOption) {
+                if (!typeOption && !this._allowHardCodeReference) {
                     this.hasError = true;
                 }
                 this._dataType = flowComboboxDefaults.referenceDataType;

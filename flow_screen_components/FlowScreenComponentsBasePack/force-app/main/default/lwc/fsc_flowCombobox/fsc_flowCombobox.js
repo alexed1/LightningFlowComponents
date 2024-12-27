@@ -1,7 +1,8 @@
 /* 
     12/26/24    Eric Smith  FlowScreenComponentsBasePack v3.3.5 or later
     Updated to recognize the output from Action Buttons and Screen Actions
-    Added override option for CPEs to allow hard-coded references (Filter & TRansform element outputs)
+    Added override option for CPEs to allow hard-coded references (Filter & Transform element outputs)
+    Placeholder text is added to the input where the override is allowed
     Partial updates from PR#1581 (adamerstelle)
     Behaves more like standard input by having clicking on name now behave the same as clicking on the >
 */
@@ -16,6 +17,7 @@ import {
     removeFormatting,
     flowComboboxDefaults
 } from 'c/fsc_flowComboboxUtils';
+import Placeholder_Text from '@salesforce/label/c.fsc_Manual_Reference_Allowed';
 import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';    // Requires FlowActionsBasePack v3.17 or later
 
 // TODO: Handle outputs from Filter and Transform
@@ -44,8 +46,10 @@ export default class FlowCombobox extends LightningElement {
     } 
     set allowHardCodeReference(value) {
         this._allowHardCodeReference = value;
+        this.placeholderText = value ? Placeholder_Text : '';
     }
     _allowHardCodeReference = false;    // Set to true in the CPE to allow the user to hard code a reference like {!Filter_Element} or {!Transform_Output}
+    placeholderText;
 
     @track _dataType;
     @track _value;

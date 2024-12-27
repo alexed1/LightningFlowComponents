@@ -2,6 +2,7 @@
     12/26/24    Eric Smith  FlowScreenComponentsBasePack v3.3.5 or later
     Updated to recognize the output from Action Buttons and Screen Actions
     Added override option for CPEs to allow hard-coded references (Filter & TRansform element outputs)
+    Partial updates from PR#1581 (adamerstelle)
 */
 
 import {LightningElement, wire, api, track} from 'lwc';
@@ -14,8 +15,8 @@ import {
     removeFormatting,
     flowComboboxDefaults
 } from 'c/fsc_flowComboboxUtils';
-import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';    // ***
-// import getObjectFields from '@salesforce/apex/FieldSelectorController.getObjectFields';    // ***
+import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getObjectFields';    // Requires FlowActionsBasePack v3.17 or later
+
 // TODO: Handle outputs from Filter and Transform
 /*  Filter Notes (Eric Smith)
     Process a typeDescriptor of collectionProcessors where collectionProcessorType = FilterCollectionProcessor
@@ -619,6 +620,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     handleSetSelectedRecord(event) {
+        event.stopPropagation(); // stops the window generic click handlers from firing 2x more times
         if (event.currentTarget.dataset) {
             if (this.value && this.value.endsWith(event.currentTarget.dataset.value) && event.currentTarget.dataset.objectType) {
                 this.doOpenObject(event, event.currentTarget.dataset.value, event.currentTarget.dataset.objectType);
@@ -780,7 +782,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -826,7 +828,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -853,7 +855,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -880,7 +882,7 @@ export default class FlowCombobox extends LightningElement {
                             globalVariable: false,
                             displayType: "String",
                             key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                            flowType: 'refrence',
+                            flowType: 'reference',
                             storeOutputAutomatically: false
                         });
                     });
@@ -907,7 +909,7 @@ export default class FlowCombobox extends LightningElement {
                                 globalVariable: false,
                                 displayType: "String",
                                 key: flowComboboxDefaults.defaultGlobalVariableKeyPrefix + this.key++,
-                                flowType: 'refrence',
+                                flowType: 'reference',
                                 storeOutputAutomatically: false
                             });
                         });
@@ -919,6 +921,9 @@ export default class FlowCombobox extends LightningElement {
             default:
                 return null;
         }
+
+        this._selectedFieldPath = (this._selectedFieldPath ? this._selectedFieldPath + '.' : '') + value;
+        this.value = this._selectedFieldPath + '.';
 
         // Set the Options
         this.setOptions([{type: value + ' Outputs', options: tempOptions}]);
@@ -1029,13 +1034,13 @@ export default class FlowCombobox extends LightningElement {
 
     handleWindowClick(event) {
         if (event.path){
-            console.log('you are apparently using chrome, and can use event.path');
+            // console.log('you are apparently using chrome, and can use event.path');
             if (!event.path.includes(this.template.host) && !this.selfEvent) {
                 this.closeOptionDialog(true);
             }
         
         } else {
-            console.log('you are apparently not using chrome, so we can\'t test using event.path');
+            // console.log('you are apparently not using chrome, so we can\'t test using event.path');
             if (!this.selfEvent) {
                 this.closeOptionDialog(true);
             }

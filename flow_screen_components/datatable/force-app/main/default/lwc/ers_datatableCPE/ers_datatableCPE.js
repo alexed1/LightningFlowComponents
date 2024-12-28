@@ -288,6 +288,10 @@ export default class ers_datatableCPE extends LightningElement {
         return !this.inputValues.isDisplayHeader.value;
     }
 
+    get disableSelectCountSelection() {
+        return this.inputValues.hideCheckboxColumn.value;
+    }
+
     @api
     get wiz_columnFields() { 
         return this._wiz_columnFields;
@@ -546,7 +550,10 @@ export default class ers_datatableCPE extends LightningElement {
         cb_showRowNumbers: {value: null, valueDataType: null, isCollection: false, label: ''},    
         showRecordCount: {value: null, valueDataType: null, isCollection: false, label: 'Show Record Count in Header', 
             helpText: 'Display the number of records in the table header.  This will match what is shown in a List View header.'}, 
-        cb_showRecordCount: {value: null, valueDataType: null, isCollection: false, label: ''},         
+        cb_showRecordCount: {value: null, valueDataType: null, isCollection: false, label: ''},
+        showSelectedCount: {value: null, valueDataType: null, isCollection: false, label: 'Show Selected Count in Header', 
+            helpText: 'Display the number of selected records in the table header.'}, 
+        cb_showSelectedCount: {value: null, valueDataType: null, isCollection: false, label: ''},            
         isRequired: {value: null, valueDataType: null, isCollection: false, label: 'Require', 
             helpText: 'When this option is selected, the user will not be able to advance to the next Flow screen unless at least one row is selected in the datatable.'},
         cb_isRequired: {value: null, valueDataType: null, isCollection: false, label: ''},
@@ -591,6 +598,9 @@ export default class ers_datatableCPE extends LightningElement {
         suppressCurrencyConversion: {value: null, valueDataType: null, isCollection: false, label: 'Suppress Currency Conversion', 
             helpText: 'In multi-currency orgs, suppress the default conversion of currency fields to the User\'s currency'},
         cb_suppressCurrencyConversion: {value: null, valueDataType: null, isCollection: false, label: ''},
+        isCaseInsensitiveSort: {value: null, valueDataType: null, isCollection: false, label: 'Ignore character case when sorting', 
+            helpText: 'By default, string values will sort upper case characters before lower case characters (ACEbd).  Select this option to match the same sort sequence as standard List Views and Get Records queries (AbCdE)'},
+        cb_isCaseInsensitiveSort: {value: null, valueDataType: null, isCollection: false, label: ''},
         serializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input serialized data', 
             helpText: 'Select if you want the datatable to be able to accept serialized data.'},
         isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
@@ -657,6 +667,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'showFirstLastButtons'},
                 {name: 'showRowNumbers'},
                 {name: 'showRecordCount'},
+                {name: 'showSelectedCount'},
                 {name: 'isShowSearchBar'},
                 {name: 'tableBorder'},
                 {name: defaults.customHelpDefinition, 
@@ -719,6 +730,7 @@ export default class ers_datatableCPE extends LightningElement {
                 {name: 'recordTypeId'},
                 {name: 'allowNoneToBeChosen'},
                 {name: 'suppressCurrencyConversion'},
+                {name: 'isCaseInsensitiveSort'},
                 {name: 'allowOverflow'},
                 {name: 'tableHeight'},
                 {name: 'keyField'},
@@ -1096,7 +1108,14 @@ export default class ers_datatableCPE extends LightningElement {
                 if (this.isDisableSuppressBottomBar) {
                     this.updateCheckboxValue('suppressBottomBar', false);
                 }
-            }     
+            }
+            
+            // Clear Show Selected Count if Disallow Row Relection is selected
+            if (changedAttribute == 'hideCheckboxColumn') { 
+                if (event.detail.newValue) {
+                    this.updateCheckboxValue('showSelectedCount', false);
+                }
+            } 
 
         }
 

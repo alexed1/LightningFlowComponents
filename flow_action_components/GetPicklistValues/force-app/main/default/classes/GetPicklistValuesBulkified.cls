@@ -2,96 +2,123 @@
 //see https://unofficialsf.com/flow-action-get-picklist-values/
 
 public with sharing class GetPicklistValuesBulkified {
-    @TestVisible
-    private static final String MSG_OBJECT_OR_FIELD_NOT_PROVIDED = 'Object name or field name not provided.';
+	private static final String SOBJECTNOTFOUNDERROR = 'No SObject found with name "{0}". Did you mean "{1}"';
+	private static final String FIELDNOTFOUNDERROR = 'No Field found with name "{0}" on SObject "{1}({2})". Did you mean "{3}"';
 
-    @InvocableMethod(
-        label='Get Picklist Values'
-        description='Batchable version of GetPicklistValues'
-    )
-    public static List<Results> getPicklistVals(List<Requests> requestList) {
-        System.debug(LoggingLevel.DEBUG, 'entering getPicklistVals');
+	@InvocableMethod(
+		label='Get Picklist Values'
+		description='Batchable version of GetPicklistValues'
+		iconName='slds:standard:picklist_type'
+	)
+	public static List<Result> getPicklistValues(List<Request> reqs) {
+		List<Result> response = new List<Result>();
 
-        List<Results> responseWrapper = new List<Results>();
+		for (Request req : reqs) {
+			response.add(getPicklistValues(req));
+		}
+		return response;
+	}
 
-        for (Requests request : requestList) {
-            String objectName = request.objectName;
-            String fieldName = request.fieldName;
+	private static Result getPicklistValues(Request req) {
+		System.debug('entering getPicklistVals');
 
-            if (
-                String.isBlank(objectName) == null || String.isBlank(fieldName)
-            ) {
-                Results response = new Results();
-                response.picklistValues = new List<String>();
-                response.ok = false;
-                response.message = MSG_OBJECT_OR_FIELD_NOT_PROVIDED;
-                responseWrapper.add(response);
+		// this generates a special map that is case insensitive
+		Map<String, Schema.SObjectType> globalDesc = Schema.getGlobalDescribe();
 
-                continue;
-            }
+		Schema.SObjectType sObjType = globalDesc.get(req.objectName);
+		if (sObjType == null) {
+			throw new PicklistInvocableException(
+				String.format(
+					SOBJECTNOTFOUNDERROR,
+					new List<String>{ req.objectName, getBestLevMatch(globalDesc.keySet(), req.objectName) }
+				)
+			);
+		}
 
-            System.debug(
-                LoggingLevel.DEBUG,
-                'object and field are  :' +
-                objectName +
-                'and ' +
-                fieldName
-            );
+		// Describe the SObject using its object type.
+		Schema.DescribeSObjectResult objDescribe = sObjType.getDescribe();
+		// Get a map of fields for the SObject
+		map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
 
-            SObjectType objectType = ((SObject) Type.forName(objectName)
-                    .newInstance())
-                .getSObjectType(); //courtesy of cropredy and sfdcfox https://salesforce.stackexchange.com/a/250041/24822
+		Schema.SObjectField sObjField = fieldMap.get(req.fieldName);
+		// check if Field exists on SObject, else provide usefull feedback
+		if (sObjField == null) {
+			throw new PicklistInvocableException(
+				String.format(
+					FIELDNOTFOUNDERROR,
+					new List<String>{
+						req.fieldName,
+						objDescribe.getLabel(),
+						objDescribe.getLocalName(),
+						getBestLevMatch(fieldMap.keySet(), req.fieldName)
+					}
+				)
+			);
+		}
 
-            //General code below courtesy of sfdcmonkey http://sfdcmonkey.com/2016/12/05/how-to-fetch-picklist-value-from-sobject-and-set-in-uiinputselect/
+		return new Result(sObjField);
+	}
 
-            // Describe the SObject using its object type.
-            Schema.DescribeSObjectResult objDescribe = objectType.getDescribe();
+	public class PicklistInvocableException extends Exception {
+	}
 
-            // Get a map of fields for the SObject
-            Map<String, Schema.SObjectField> fieldMap = objDescribe.fields.getMap();
+	public class Request {
+		@InvocableVariable(
+			label='Object Name'
+			description='The API name of the object to retrieve picklist values for'
+			required=true
+		)
+		public String objectName;
 
-            // Get the list of picklist values for this field.
-            List<Schema.PicklistEntry> values = fieldMap.get(fieldName)
-                .getDescribe()
-                .getPickListValues();
+		@InvocableVariable(
+			label='Field Name'
+			description='The API name of the field to retrieve picklist values for'
+			required=true
+		)
+		public String fieldName;
+	}
 
-            List<String> picklistStringValues = new List<String>();
-            List<String> picklistStringLabels = new List<String>();
+	public class Result {
+		@InvocableVariable(label='Picklist Values' description='A list of API values for the picklist field')
+		public List<String> picklistValues;
 
-            //assemble the values into a List of strings
-            for (Schema.PicklistEntry a : values) {
-                picklistStringValues.add(a.getValue());
-                picklistStringLabels.add(a.getLabel());
-            }
+		@InvocableVariable(label='Picklist Labels' description='A list of labels corresponding to the picklist values')
+		public List<String> picklistLabels;
 
-            Results response = new Results();
-            response.picklistValues = picklistStringValues;
-            response.picklistLabels = picklistStringLabels;
-            response.ok = true;
+		public Result(Schema.SObjectField sObjField) {
+			List<Schema.PicklistEntry> values = sObjField.getDescribe().getPickListValues();
 
-            responseWrapper.add(response);
-        }
+			this.picklistValues = new List<String>();
+			this.picklistLabels = new List<String>();
 
-        return responseWrapper;
-    }
+			// Assemble the values into lists of strings
+			for (Schema.PicklistEntry ple : values) {
+				picklistValues.add(ple.getValue());
+				picklistLabels.add(ple.getLabel());
+			}
+		}
+	}
 
-    public class Requests {
-        @InvocableVariable(required=true label='Object\'s API name')
-        public String objectName;
-        @InvocableVariable(required=true label='Object\'s field API name')
-        public String fieldName;
-        @InvocableVariable(label='Record Type Developer Name')
-        public String recordTypeName;
-    }
-
-    public class Results {
-        @InvocableVariable
-        public List<String> picklistValues;
-        @InvocableVariable
-        public List<String> picklistLabels;
-        @InvocableVariable
-        public Boolean ok;
-        @InvocableVariable
-        public String message;
-    }
+	// function to get the closest match based on Levenshtein Distance calculation
+	public static string getBestLevMatch(set<string> possibilities, string value) {
+		return getBestLevMatch(new List<string>(possibilities), value);
+	}
+	public static string getBestLevMatch(list<string> possibilities, string value) {
+		if (possibilities.isempty()) {
+			return null;
+		}
+		string closestMatch = null;
+		Integer lowestLev = null;
+		for (string pos : possibilities) {
+			Integer levDistance = value.getLevenshteinDistance(pos);
+			if (lowestLev == null || levDistance < lowestLev) {
+				lowestLev = levDistance;
+				closestMatch = pos;
+				if (lowestLev == 0) {
+					return closestMatch;
+				}
+			}
+		}
+		return closestMatch;
+	}
 }

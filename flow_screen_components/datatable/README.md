@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.2.1 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz7wQAA)   
-[Version 4.2.1 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz7wQAA)
+[Version 4.3.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)   
+[Version 4.3.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,7 +71,45 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
-
+  ## 11/24/24 -  Eric Smith -     Version 4.3.4  
+**Updates:**  
+-   Add option to sort columns as case insensitive (AbC vs ACb) - default false for backwards compatibility
+-   Update component API versions from 60.0 to 62.0
+  
+**Bug Fixes:** 
+-   Fixed bug where error would occur when the remove row action was in the first column  
+  
+  ## 11/21/24 -  Eric Smith -     Version 4.3.3  
+**Updates:**  
+-   Added option to column filters to filter rows where the value in that column is blank 
+-   Changed the minimum number of characters in the search term box to start searching from 2 to 1   
+  
+**Bug Fixes:** 
+-   Removed processing from 4.3.1 and 4.3.2 related to Winter 25 base component bug for flexible width columns  
+-   Fixed bug where lookup field columns were not holding the flex attribute  
+-   Fixed bug where changing or clearing a search or filter value after an edit wouldn't display all of the original records 
+-   Fixed bug where record selections would be cleared when filters were cleared  
+-   Fixed bug where wrong record links could be generated in a developer org  
+-   Fixed reactivity bug where an error could occur when a previously selected record was no longer included in the current record collection  
+-   Fixed bug where reactive collection processors would fail trying to read the selected rows collection when a lookup field was included  
+-   PR#1575 - Fernando-Fernandez - If keyfield is a field that doesn't actually exist, don't identify every record as selected  
+  
+## 09/29/24 -  Eric Smith -     Version 4.3.1 & 4.3.2  
+**Updates:**   
+-   Column headers will now Clip or Wrap based on the settings for the individual column 
+-   User's can no longer manually change the width of Flex enabled columns while interacting with the datatable  
+-  
+**Bug Fixes:** 
+-   Fixed bug introduced in Winter '25 affecting columns set with Flexible Widths enabled  
+  
+## 07/22/24 -  Eric Smith -     Version 4.3.0  
+**Updates:**   
+-   Added additional output attributes for Apex Defined records (outputRemovedRowsString & outputRemainingRowsString)  
+-   Added an option to display the number of selected records in the table header 
+-  
+**Bug Fixes:** 
+-   Fixed bug where first column reference was off if the remove row action was on the left 
+-  
 ## 07/09/24 -  Eric Smith -     Version 4.2.1  
 **Updates:** 
 -   New Feature: Add a Remove Row action as the first or last column in a Datatable.  

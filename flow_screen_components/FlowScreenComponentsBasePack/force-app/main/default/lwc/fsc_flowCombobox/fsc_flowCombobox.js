@@ -4,7 +4,6 @@
     Added override option for CPEs to allow hard-coded references (Filter & Transform element outputs)
     Placeholder text is added to the input where the override is allowed
     Partial updates from PR#1581 (adamerstelle)
-    Behaves more like standard input by having clicking on name now behave the same as clicking on the >
 */
 
 import {LightningElement, wire, api, track} from 'lwc';

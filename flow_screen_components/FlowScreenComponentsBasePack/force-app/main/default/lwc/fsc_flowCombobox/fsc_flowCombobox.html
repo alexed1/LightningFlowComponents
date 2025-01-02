@@ -71,85 +71,47 @@
                                                 <div key={curOptionElement.key}
                                                      class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
                                                      role="option">
-                                                    <span class="slds-media__figure">
-                                                        <span class="slds-icon_container">
-                                                            <lightning-icon 
-                                                                icon-name={curOptionElement.optionIcon}
-                                                                class="slds-icon slds-icon_small slds-icon-text-default"
-                                                                size="x-small">
-                                                            </lightning-icon>
-                                                        </span>
+                                                <span class="slds-media__figure">
+                                                    <span class="slds-icon_container">
+                                                        <lightning-icon icon-name={curOptionElement.optionIcon}
+                                                                        class="slds-icon slds-icon_small slds-icon-text-default"
+                                                                        size="x-small"></lightning-icon>
                                                     </span>
-
-                                                    <template if:true={curOptionElement.isObject} >
-                                                        <span data-option-value={curOptionElement.value}
-                                                              data-object-type={curOptionElement.objectType}
-                                                              onclick={handleOpenObject}
-                                                              class="slds-media__body">
-                                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
-                                                        <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
-                                                        </span>
-                                                        <lightning-icon 
-                                                            data-option-value={curOptionElement.value}
-                                                            data-object-type={curOptionElement.objectType}
-                                                            icon-name="utility:chevronright"
-                                                            class="slds-float_right"
-                                                            size="x-small"
-                                                            onclick={handleOpenObject}
-                                                        ></lightning-icon>
-                                                    </template>
-
-                                                    <template if:true={curOptionElement.storeOutputAutomatically} >
-                                                        <span data-option-value={curOptionElement.value}
-                                                              data-object-type={curOptionElement.objectType}
-                                                              onclick={handleOpenScreenComponent}
-                                                              class="slds-media__body">
-                                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
-                                                        <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
-                                                        </span>
-                                                        <lightning-icon 
-                                                            data-option-value={curOptionElement.value}
-                                                            data-object-type={curOptionElement.objectType}
-                                                            icon-name="utility:chevronright"
-                                                            class="slds-float_right"
-                                                            size="x-small"
-                                                            onclick={handleOpenScreenComponent}
-                                                        ></lightning-icon>
-                                                    </template>
-
-                                                    <template if:true={curOptionElement.globalVariable} >
-                                                        <span data-option-value={curOptionElement.value}
-                                                              data-object-type={curOptionElement.objectType}
-                                                              onclick={handleOpenGlobalVariable}
-                                                              class="slds-media__body">
-                                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
-                                                        <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
-                                                        </span>
-                                                        <lightning-icon 
-                                                            data-option-value={curOptionElement.value}
-                                                            data-object-type={curOptionElement.objectType}
-                                                            icon-name="utility:chevronright"
-                                                            class="slds-float_right"
-                                                            size="x-small"
-                                                            onclick={handleOpenGlobalVariable}
-                                                        ></lightning-icon>
-                                                    </template>
-
-                                                    <template if:false={curOptionElement.isObject} >
-                                                        <template if:false={curOptionElement.storeOutputAutomatically} >
-                                                            <template if:false={curOptionElement.globalVariable} >
-                                                                <span data-value={curOptionElement.value}
-                                                                    data-flow-type={curOptionElement.flowType}
+                                                </span>
+                                                    <span data-value={curOptionElement.value}
+                                                          data-flow-type={curOptionElement.flowType}
+                                                          data-object-type={curOptionElement.objectType}
+                                                          onclick={handleSetSelectedRecord}
+                                                          class="slds-media__body">
+                                                    <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
+                                                    <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
+                                                </span>
+                                                    <lightning-icon if:true={curOptionElement.isObject}
+                                                                    data-option-value={curOptionElement.value}
                                                                     data-object-type={curOptionElement.objectType}
-                                                                    onclick={handleSetSelectedRecord}
-                                                                    class="slds-media__body">
-                                                                <span class="slds-listbox__option-text slds-listbox__option-text_entity">{curOptionElement.label}</span>
-                                                                <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">{curOptionElement.displayType}</span>
-                                                                </span>
-                                                            </template>
-                                                        </template>
-                                                    </template>
+                                                                    icon-name="utility:chevronright"
+                                                                    class="slds-float--right"
+                                                                    size="x-small"
+                                                                    onclick={handleOpenObject}
+                                                    ></lightning-icon>
 
+                                                    <lightning-icon if:true={curOptionElement.storeOutputAutomatically}
+                                                                    data-option-value={curOptionElement.value}
+                                                                    data-object-type={curOptionElement.objectType}
+                                                                    icon-name="utility:chevronright"
+                                                                    class="slds-float--right"
+                                                                    size="x-small"
+                                                                    onclick={handleOpenScreenComponent}
+                                                    ></lightning-icon>
+
+                                                    <lightning-icon if:true={curOptionElement.globalVariable}
+                                                                    data-option-value={curOptionElement.value}
+                                                                    data-object-type={curOptionElement.objectType}
+                                                                    icon-name="utility:chevronright"
+                                                                    class="slds-float--right"
+                                                                    size="x-small"
+                                                                    onclick={handleOpenGlobalVariable}
+                                                    ></lightning-icon>
                                                 </div>
                                             </template>
                                         </li>

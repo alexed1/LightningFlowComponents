@@ -27,13 +27,16 @@ export default class fsc_pickObjectAndField extends LightningElement {
     @api hideObjectPicklist = false;
     @api hideFieldPicklist = false;
     @api displayFieldType = false;
-    @api testproperty;
+    @api testproperty;      // Christopher Strecker 09/25/2024 - This property does not do anything 
+                            // but it cannot be removed due to current managed package restrictions 
+                            // when using IsExposed is True
 
     @api allowFieldMultiselect = false;
 
     @api required = false;
 
     @track _objectType;
+    @track _fields;
     @track _field;
     @track objectTypes = standardObjectOptions;
     @track fields;
@@ -59,6 +62,10 @@ export default class fsc_pickObjectAndField extends LightningElement {
 
     @api get field() {
         return this._field;
+    }
+
+    get requiredSymbol() {
+        return this.required ? '*' : '';
     }
 
     set field(value) {
@@ -96,6 +103,36 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
         } else if (data) {
             let fields = data.fields;
             let fieldResults = [];
+
+            // Christopher Strecker 06/06/2024 - Removed from for loop and updated to support multi select
+            if (this.fieldList && this.fieldList.length > 0) {
+
+                let foundFields = [];
+
+                let missingFields = [];
+
+                this.fieldList.forEach(fieldName => {
+
+                    if(fieldName && !isReference(fieldName) && !Object.prototype.hasOwnProperty.call(fields, fieldName)) {
+                        missingFields.push(fieldName)
+                    } else {
+                        foundFields.push(fieldName);
+                    }
+
+                });
+
+                if(foundFields && foundFields.length > 0) {
+                    this._field = foundFields.join(",");
+                } else {
+                    this._field = null;
+                }
+
+                if(missingFields && missingFields.length > 0) {
+                    this.errors.push(this.labels.fieldNotSupported + missingFields.join(","));
+                }
+                
+            }
+
             for (let field in this.fields = fields) {
                 if (Object.prototype.hasOwnProperty.call(fields, field)) {
                     if (this.isTypeSupported(fields[field]) && this.isFieldTypeSupported(fields[field])) {
@@ -111,10 +148,10 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
                         });
                     }
                 }
-                if (this._field && !isReference(this._field) && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
-                    this.errors.push(this.labels.fieldNotSupported + this._field);
-                    this._field = null;
-                }
+                // if (this._field && !isReference(this._field) && !Object.prototype.hasOwnProperty.call(fields, this._field)) {
+                //     this.errors.push(this.labels.fieldNotSupported + this._field);
+                //     this._field = null;
+                // }
             }
             this.fields = fieldResults;
             if (this.fields) {
@@ -169,6 +206,23 @@ console.log("🚀 ~ file: fsc_pickObjectAndField.js ~ line 75 ~ fsc_pickObjectAn
         } else {
             return [];
         }
+    }
+
+    // Christopher Strecker 06/06/2024 - Added function to return this._field
+    //                                   as a list in order to support multi select input
+    get fieldList() {
+
+        if (this._field) {
+
+            if(this.allowFieldMultiselect) {
+                return this.splitValues(this._field);
+            } else {
+                return [this._field];
+            }
+            
+        } 
+
+        return [];
     }
 
     get isError() {

@@ -10,11 +10,7 @@ global with sharing class ModifyFlowMetadata {
         for (Request curRequest: requestList ){
             try{
                 Result curResult = new Result();
-<<<<<<< Updated upstream
                 usf3.MetadataService.Flow flow = Test.isRunningTest() ? ModifyFlowMetadataTest.genereateFlowForTest() : usf3.MetadataUtils.getFlowMetadataFromName(curRequest.flowName)[0];
-=======
-                usf3.MetadataService.Flow flow = Test.isRunningTest() ? ModifyFlowMetadataTest.genereateFlowForTest() : usf3.MetadataUtils.GetFlowMetadataFromName(curRequest.flowName)[0];
->>>>>>> Stashed changes
 
                 if(String.isNotEmpty(curRequest.entityPath1)) {
                     modifyFlow(flow, curRequest.entityPath1, curRequest.value1);

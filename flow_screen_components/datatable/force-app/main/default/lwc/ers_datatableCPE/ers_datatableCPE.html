@@ -225,6 +225,15 @@
     ></c-fsc_flow-checkbox>
     
     <c-fsc_flow-checkbox
+        disabled={disableSelectCountSelection}
+        name="select_showSelectedCount"
+        label={inputValues.showSelectedCount.label} 
+        checked={inputValues.cb_showSelectedCount.value} 
+        field-level-help={inputValues.showSelectedCount.helpText}
+        oncheckboxchanged={handleCheckboxChange}
+    ></c-fsc_flow-checkbox>
+
+    <c-fsc_flow-checkbox
         disabled={disableSearchBarSelection}
         name="select_isShowSearchBar"
         label={inputValues.isShowSearchBar.label}
@@ -775,6 +784,17 @@
         ></c-fsc_flow-checkbox> 
     </div>
 
+    <!-- Case Insensitive Sort -->
+    <div class="slds-m-top_xx-small">
+        <c-fsc_flow-checkbox
+            name="select_isCaseInsensitiveSort"
+            label={inputValues.isCaseInsensitiveSort.label} 
+            field-level-help={inputValues.isCaseInsensitiveSort.helpText}
+            checked={inputValues.cb_isCaseInsensitiveSort.value} 
+            oncheckboxchanged={handleCheckboxChange}
+        ></c-fsc_flow-checkbox> 
+    </div>
+    
     <!-- Allow Container Overflow -->
     <div class="slds-m-top_xx-small">
         <c-fsc_flow-checkbox

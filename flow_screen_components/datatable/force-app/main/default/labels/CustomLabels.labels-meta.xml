@@ -159,5 +159,21 @@
         <protected>false</protected>
         <shortDescription>Search Term</shortDescription>
         <value>Enter search term ...</value>
-    </labels>       
+    </labels>
+    <labels>
+        <fullName>ers_filterBlankLabel</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Label for Filter Blank Checkbox</shortDescription>
+        <value>Filter Blank Values?</value>
+    </labels>  
+    <labels>
+        <fullName>ers_filterBlankHelpText</fullName>
+        <categories>messages</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Help Text for Filter Blank Checkbox</shortDescription>
+        <value>Check here if you want to filter rows where the value in this column is blank</value>
+    </labels>         
 </CustomLabels>

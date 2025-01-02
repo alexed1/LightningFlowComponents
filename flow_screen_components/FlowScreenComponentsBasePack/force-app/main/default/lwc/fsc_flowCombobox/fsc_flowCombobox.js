@@ -625,6 +625,7 @@ export default class FlowCombobox extends LightningElement {
 
     handleSetSelectedRecord(event) {
         event.stopPropagation(); // stops the window generic click handlers from firing 2x more times
+
         if (event.currentTarget.dataset) {
             if (this.value && this.value.endsWith(event.currentTarget.dataset.value) && event.currentTarget.dataset.objectType) {
                 this.doOpenObject(event, event.currentTarget.dataset.value, event.currentTarget.dataset.objectType);
@@ -777,8 +778,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -823,8 +824,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -850,8 +851,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -877,8 +878,8 @@ export default class FlowCombobox extends LightningElement {
                     fields.forEach(field => {
                         tempOptions.push({
                             type: field.type,
-                            label: field.label,
-                            value: field.name,
+                            label: value + '.' + field.label,
+                            value: value + '.' + field.name,
                             isCollection: false,
                             objectType: 'objectType',
                             optionIcon: "utility:system_and_global_variable",
@@ -904,8 +905,8 @@ export default class FlowCombobox extends LightningElement {
                         fields.forEach(field => {
                             tempOptions.push({
                                 type: field.type,
-                                label: field.label,
-                                value: field.name,
+                                label: value + '.' + field.label,
+                                value: value + '.' + field.name,
                                 isCollection: false,
                                 objectType: 'objectType',
                                 optionIcon: "utility:system_and_global_variable",

@@ -135,7 +135,7 @@
                 value={inputValues.masterLabel.value} onchange={handleValueChange}></lightning-input>
         <lightning-input type="text" label={inputValues.helpText.label} name="select_helpText"
                 value={inputValues.helpText.value} field-level-help={inputValues.helpText.helpText} onchange={handleValueChange}></lightning-input>
-        <template if:false={showControllingValues}>
+        <!-- <template if:false={showControllingValues}> -->
                 <c-fsc_flow-combobox name="select_value" label={inputValues.value.label} value={inputValues.value.value}
                         value-type={inputValues.value.valueDataType} builder-context-filter-type="String"
                         builder-context-filter-collection-boolean={inputValues.value.isCollection}
@@ -143,7 +143,7 @@
                         onvaluechanged={handleFlowComboboxValueChange}
                         automatic-output-variables={automaticOutputVariables}
                 ></c-fsc_flow-combobox>
-        </template>
+        <!-- </template> -->
         <lightning-input type="number" label={inputValues.style_width.label} name="select_style_width"
                 value={inputValues.style_width.value} onchange={handleValueChange}></lightning-input>
 

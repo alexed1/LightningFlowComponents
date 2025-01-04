@@ -113,7 +113,9 @@ export default class QuickChoiceFSC extends LightningElement {
             if (value != this.priorControllingValue) {
                 this.priorControllingValue = value;
                 this.setPicklistSelections(this.picklistFieldDetails);
-                this.clearSelectedValue();
+                if (this.isConnected) { // Don't clear default value of dependent picklist on initial load v2.45
+                    this.clearSelectedValue();
+                }
             }
         }
     }
@@ -130,7 +132,9 @@ export default class QuickChoiceFSC extends LightningElement {
             if (value != this.priorControllingValue) {
                 this.priorControllingValue = value;
                 this.setPicklistSelections(this.picklistFieldDetails);
-                this.clearSelectedValue();
+                if (this.isConnected) { // Don't clear default value of dependent picklist on initial load v2.45
+                    this.clearSelectedValue();
+                }
             }
         }
     }
@@ -547,9 +551,7 @@ export default class QuickChoiceFSC extends LightningElement {
                 this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
             }
         }
-        if (!this.showPicklist) {   // v2.45 Clear current selected value if picklist is hidden
-            this.selectedValue = "";
-        }
+
         // Output default value for reactivity
         if (this._selectedValue != null) {
             this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);

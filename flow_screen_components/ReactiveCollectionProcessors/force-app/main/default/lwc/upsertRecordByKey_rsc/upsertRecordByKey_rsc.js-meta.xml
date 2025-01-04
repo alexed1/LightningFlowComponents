@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <!-- * Assign a Label to show in the Custom Components section of the Flow Screen Editor -->
+    <masterLabel>CP - Upsert Record By Key</masterLabel>
+
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+
+            <!-- * Define all of the input and output attributes needed to pass from the LWC to the Invocable Action  -->
+            <propertyType name="T" extends="SObject" label="Object API Name" description="Select the API Name of the SObject for the Record Collections"/>
+            <property name="inputCollection" type="{T[]}" role="inputOnly" label="Input Collection" description="An SObject collection. The record collection to be updated with the changed record" required="true"/>
+            <property name="inputRecord" type="{T}" role="inputOnly" label="Input Record" description="An SObject record. The record with the changes to be upserted into the record collection"/>            
+            <property name="fieldAPIName" type="String" role="inputOnly" label = "Field API Name" description="The API name of the field to be matched against the collection records.  (Default=Id)"/>
+            <property name="skipInsertIfNoMatchFound" type="Boolean" role="inputOnly" label = "Skip inserting a new record if no match is found" description="If no matching record is found, do not insert a new record into the collection.  (Default=False)"/>
+            <property name="outputCollection" type="{T[]}" role="outputOnly" label="Output Collection" description="Updated record collection"/>                
+            <property name="noMatchFound" type="Boolean" role="outputOnly" label = "No Match Found" description="Set to True if no matching record was found in the input collection."/>
+            
+            <!-- Include an attribute to hold an error message -->
+            <property name="error" type="String" role="outputOnly" description="Error message when there is an error output from this component"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

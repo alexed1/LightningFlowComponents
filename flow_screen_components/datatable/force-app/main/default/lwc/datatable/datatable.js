@@ -124,6 +124,15 @@ export default class Datatable extends LightningElement {
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
 
+    @api 
+    get outputActionedRow() {
+        return this._outputActionedRow;
+    }
+    set outputActionedRow(value) {
+        this._outputActionedRow = value;
+    }
+    _outputActionedRow = {};
+
     // @api outputRemainingRows = [];   // v4.3.3 - changed to get/set
     @api
     get outputRemainingRows() {
@@ -451,6 +460,7 @@ export default class Datatable extends LightningElement {
     @api outputEditedSerializedRows = '';
     @api outputRemovedRowsString = '';
     @api outputRemainingRowsString = '';
+    @api outputActionedRowString = '';
     
     @api 
     get columnScales() {
@@ -1365,7 +1375,7 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
         this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
-        
+    
         // Clear all existing column filters
         this.columnFilterValues = [];
         this.showClearFilterButton = false;
@@ -1930,7 +1940,6 @@ export default class Datatable extends LightningElement {
         const row = JSON.parse(JSON.stringify(event.detail.row));
         const keyValue = row[this.keyField];
         console.log(this.consoleLogPrefix+"handleRowAction ~ action, keyValue:", action, (SHOW_DEBUG_INFO) ? keyValue : '***');
-        console.log("🚀 ~ handleRowAction ~ this.numberOfRowsRemoved:", this.numberOfRowsRemoved);
 
         switch (action) {
             
@@ -1940,6 +1949,7 @@ export default class Datatable extends LightningElement {
 
                     // Add to removed row collection and update counter
                     this.outputRemovedRows = [...this.outputRemovedRows, row];  // Removed row collection will be in order of removal, not original order
+                    this.outputActionedRow = {...row};
                     this.numberOfRowsRemoved ++;
 
                     // handle selected rows
@@ -1957,6 +1967,7 @@ export default class Datatable extends LightningElement {
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
+                    this.dispatchEvent(new FlowAttributeChangeEvent('outputActionedRow', this._outputActionedRow));
                     
                     this.dispatchOutputs();
 
@@ -3015,11 +3026,13 @@ export default class Datatable extends LightningElement {
             this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);                                         //JSON Version
             this.outputRemovedRowsString = JSON.stringify(this.outputRemovedRows); 
             this.outputRemainingRowsString = JSON.stringify(this._outputRemainingRows); 
+            this.outputActionedRowString = JSON.stringify(this._outputActionedRow);
             this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRowsString', this.outputSelectedRowsString));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRowsString', this.outputEditedRowsString));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRowsString', this.outputRemovedRowsString));
             this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRowsString', this.outputRemainingRowsString));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputActionedRowString', this.outputActionedRowString));
         }
 
         if(this.isSerializedRecordData) {
@@ -3049,6 +3062,7 @@ export default class Datatable extends LightningElement {
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');
         console.log(this.consoleLogPrefix+'outputRemovedRows', this.outputRemovedRows.length, (SHOW_DEBUG_INFO) ? this.outputRemovedRows : '***');
         console.log(this.consoleLogPrefix+'outputRemainingRows', this.outputRemainingRows.length, (SHOW_DEBUG_INFO) ? this._outputRemainingRows : '***');
+        console.log(this.consoleLogPrefix+'outputActionedRow', (SHOW_DEBUG_INFO) ? this._outputActionedRow : '***');
 
         // Validation logic to pass back to the Flow
         if(!this.isRequired || this.numberOfRowsSelected > 0) { 

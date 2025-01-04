@@ -26,7 +26,9 @@
                 - NOTE: These records will contain all saved edited values."/>   
             <property name="outputRemainingRows" label="Output Remaining Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain all the original records that were not removed from the datatable. 
                 - NOTE: These records will contain all saved edited values."/>                   
-    
+            <property name="outputActionedRow" label="Output Actioned Row (Object)" type="{T}" role="outputOnly" description="Record Object variable that contains the single record that was processed by the most recent datatable row action. 
+                - NOTE: This record will contain all saved edited values."/>   
+
             <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
             <!-- =========== Inputs =========== -->
             <property name="isUserDefinedObject" label="_ (User Defined)  Display User Defined Object?" type="Boolean" default="false" role="inputOnly" description="Set to True if you are providing a User Defined object rather than a Salesforce SObject."/>
@@ -43,6 +45,7 @@
             <property name="outputEditedRowsString" label="Output Edited Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were edited in the datatable."/>
             <property name="outputRemovedRowsString" label="Output Removed Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were removed from the datatable."/>
             <property name="outputRemainingRowsString" label="Output Remaining Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain all the original records that were not removed from the datatable."/>
+            <property name="outputActionedRowString" label="Output Actioned Row (User Defined)" type="String" role="outputOnly" description="Object string variable to contain only the record that was processed by the most recent datatable row action."/>
             <!-- ============================================================================================================================- -->  
             
             <!-- Additional Output Parameters -->

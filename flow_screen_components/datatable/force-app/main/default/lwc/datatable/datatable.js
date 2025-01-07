@@ -2250,6 +2250,10 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
         if (this.numberOfRowsSelected == 0) {
             this.showClearButton = false;
+            if (this.selectedRowKeyValue) {
+                this.selectedRowKeyValue = '';
+                this.dispatchEvent(new FlowAttributeChangeEvent('selectedRowKeyValue', this.selectedRowKeyValue));
+            }
         }
         // Return an SObject Record if just a single row is selected
         this.outputSelectedRow = (this.numberOfRowsSelected == 1) ? currentSelectedRows[0] : null;

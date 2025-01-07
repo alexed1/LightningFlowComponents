@@ -2767,7 +2767,7 @@ export default class Datatable extends LightningElement {
                                                 break;
                                             default:
                                                 let fieldValue = row[fieldName]?.toString() + '';
-                                                let filterValue = this.columnFilterValues[col];
+                                                let filterValue = this.columnFilterValues[col]?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');    // v4.3.5 escape special characters   ;
                                                 if (!this.matchCaseOnFilters) {
                                                     fieldValue = fieldValue.toLowerCase();
                                                     filterValue = filterValue.toLowerCase();
@@ -2870,7 +2870,7 @@ export default class Datatable extends LightningElement {
                                         break;
                                     default:
                                         let fieldValue = row[fieldName].toString();
-                                        let filterValue = searchTerm;
+                                        let filterValue = searchTerm?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');    // v4.3.5 escape special characters                                        
                                         if (!this.matchCaseOnFilters) {
                                             fieldValue = fieldValue.toLowerCase();
                                             filterValue = filterValue.toLowerCase();

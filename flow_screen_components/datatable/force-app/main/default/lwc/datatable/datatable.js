@@ -2184,6 +2184,11 @@ export default class Datatable extends LightningElement {
     }
 
     handleRowSelection(event) {
+        // Added in v4.3.5 - if pagination is enabled and is single row selection, clear prior selection before assigning new selection
+        if (this.isPagination && this.singleRowSelection && (event.detail.selectedRows.length != 0)) {
+            this.handleClearSelection();
+        }
+
         // Added in v4.2.1 - Pagination - Persist previously selected rows that are not displayed on the currently visible page
         let currentSelectedRows = event.detail.selectedRows;
         let otherSelectedRowIds = [];

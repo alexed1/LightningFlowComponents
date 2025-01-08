@@ -79,6 +79,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 **Bug Fixes:** 
 -   Date field values that get adjusted by the timzoneeoffset now are stored as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
 -   Clear SelectedRowKeyValue when no rows are selected  
+-   When both pagination and single row selection are enabled, clear prior selection before setting the new selection  
 -   Escape special characters in filter or search terms 
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  

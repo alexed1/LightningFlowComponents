@@ -15,6 +15,7 @@
   "sourceApiVersion": "61.0",
   "packageAliases": {
     "Base64ToFileConverter": "0Ho5G000000sXueSAE",
-    "Base64ToFileConverter@1.0.0": "04t5G000004fzAlQAI"
+    "Base64ToFileConverter@1.0.0": "04t5G000004fzAlQAI",
+    "Base64ToFileConverter@1.6.0": "04t5G000004fzAqQAI"
   }
 }

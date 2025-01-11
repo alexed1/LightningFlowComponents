@@ -2,10 +2,12 @@
     <div class="field-picker">
         <!--  Christopher Strecker 06/06/2024 - Added missing section for the master label -->
         <div class="slds-grid">
-            <div class="slds-col slds-grow-none">
-                <label class="slds-form-element__legend slds-form-element__label">
-                    <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
-            </div>
+            <template if:true={hasMasterLabel}>
+                <div class="slds-col slds-grow-none">
+                    <label class="slds-form-element__legend slds-form-element__label">
+                        <abbr class="slds-required" title="required">{requiredSymbol}</abbr>{masterLabel}</label>
+                </div>
+            </template>
             <template if:true={isError}>
                 <div class="slds-col slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
                     <h2> {errorMessage} </h2>

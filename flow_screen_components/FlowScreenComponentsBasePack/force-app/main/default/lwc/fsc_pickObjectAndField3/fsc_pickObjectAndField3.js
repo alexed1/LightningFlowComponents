@@ -52,6 +52,10 @@ export default class fsc_pickObjectAndField extends LightningElement {
         dataTypeNotSupported: FieldTypeNotSuportedMessage
     };
 
+    get hasMasterLabel() {  // Fix artifact introduced by Christopher Strecker changes in v3.3.7
+        return this.masterLabel && this.masterLabel.length > 0;
+    }
+
     @api get objectType() {
         return this._objectType;
     }

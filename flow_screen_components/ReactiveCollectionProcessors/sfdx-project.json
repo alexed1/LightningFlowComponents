@@ -11,7 +11,7 @@
           "subscriberPackageVersionId": "04t5G000003zgZLQAY"
         },
         {
-          "subscriberPackageVersionId": "04t5G000004XZirQAG"
+          "subscriberPackageVersionId": "04t5G000004fzACQAY"
         }
       ],
       "package": "ReactiveCollectionProcessors",
@@ -23,11 +23,12 @@
   "name": "ReactiveCollectionProcessors",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "59.0",
+  "sourceApiVersion": "62.0",
   "packageAliases": {
     "ReactiveCollectionProcessors": "0Ho5G000000GmyBSAS",
     "ReactiveCollectionProcessors@1.0.0": "04t5G000003zgaJQAQ",
     "ReactiveCollectionProcessors@1.0.1": "04t5G000004XZheQAG",
-    "ReactiveCollectionProcessors@1.0.2": "04t5G000004XZiwQAG"
+    "ReactiveCollectionProcessors@1.0.2": "04t5G000004XZiwQAG",
+    "ReactiveCollectionProcessors@1.0.3": "04t5G000004fzAHQAY"
   }
 }

@@ -91,6 +91,7 @@ export default class QuickChoiceFSC extends LightningElement {
     priorOptions = [];
     firstPassCompleted = false; 
     isConnected = false;
+    @api isRendered = false;
 
     @api
     get dependentPicklist() {
@@ -112,6 +113,9 @@ export default class QuickChoiceFSC extends LightningElement {
             if (value != this.priorControllingValue) {
                 this.priorControllingValue = value;
                 this.setPicklistSelections(this.picklistFieldDetails);
+                if (this.isConnected) { // Don't clear default value of dependent picklist on initial load v2.45
+                    this.clearSelectedValue();
+                }
             }
         }
     }
@@ -125,14 +129,20 @@ export default class QuickChoiceFSC extends LightningElement {
         if (value != null) {
             this._controllingPicklistValue = value;
             this.controllingValue = value;
-            if (value != this.priorControllingValue && this.priorControllingValue == null) {
+            if (value != this.priorControllingValue) {
                 this.priorControllingValue = value;
                 this.setPicklistSelections(this.picklistFieldDetails);
-            }else if(value != this.priorControllingValue){
-                this.setPicklistSelections(this.picklistFieldDetails);
+                if (this.isConnected) { // Don't clear default value of dependent picklist on initial load v2.45
+                    this.clearSelectedValue();
                 }
             }
         }
+    }
+
+    clearSelectedValue() {  // v2.45 Clear current selected value if controlling value changes
+        this.selectedValue = "";
+        this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
+    }
 
     //-------------For inputMode = Visual Text Box (Card)
     @api 
@@ -257,7 +267,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     set isControlled(value) {
-        this_isControlled = value;
+        this._isControlled = value;
     }
 
     @api 
@@ -350,10 +360,6 @@ export default class QuickChoiceFSC extends LightningElement {
             if (Object.keys(data.controllerValues).length > 0) {
                 this._isControlled = true;
                 this._showPicklist = true;
-                if (this.controllingValue != this.priorControllingValue){
-                    this.value = null;
-                    this.priorControllingValue = this.controllingValue;
-                }
                 this.isControlledByCheckbox = ((Object.keys(data.controllerValues)[0] === 'false') && (Object.keys(data.controllerValues).length = 2)) ? true : false;
                 if ((this.controllingValue == undefined) && this.isControlledByCheckbox) {
                     this.controllingValue = 'false';    // Start checkbox controlled picklists with a controlling value of false
@@ -473,7 +479,7 @@ export default class QuickChoiceFSC extends LightningElement {
         let options = [];
         if (this.legitInputModes.includes(this._inputMode)) {
 
-            // v2.42 ALlow "Add a 'None' Choice" option for all valid picklist methods
+            // v2.42 Allow "Add a 'None' Choice" option for all valid picklist methods
             if (this.allowNoneToBeChosen) {
                 options.push({label: "--None--", value: "None"});
             }
@@ -545,10 +551,12 @@ export default class QuickChoiceFSC extends LightningElement {
                 this.template.querySelector('[data-id="' + this.value + '"]').checked = true;
             }
         }
+
         // Output default value for reactivity
         if (this._selectedValue != null) {
             this.dispatchFlowAttributeChangedEvent('value', this._selectedValue);
         }
+        this.isRendered = true;
     }
 
     @api

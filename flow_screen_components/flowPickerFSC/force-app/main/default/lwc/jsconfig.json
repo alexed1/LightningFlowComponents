@@ -5,6 +5,9 @@
         "paths": {
             "c/flowPickerFSC": [
                 "flowPickerFSC/flowPickerFSC.js"
+            ],
+            "c/*": [
+                "*"
             ]
         }
     },

@@ -5,6 +5,9 @@
         "paths": {
             "c/lightningMapFSC": [
                 "lightningMapFSC/lightningMapFSC.js"
+            ],
+            "c/*": [
+                "*"
             ]
         }
     },

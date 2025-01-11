@@ -276,4 +276,11 @@
         <shortDescription>Value Label</shortDescription>
         <value>Value</value>
     </labels>
+    <labels>
+        <fullName>fsc_Manual_Reference_Allowed</fullName>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>ComboBox Placeholder Txxt</shortDescription>
+        <value>Manual reference allowed</value>
+    </labels>
 </CustomLabels>

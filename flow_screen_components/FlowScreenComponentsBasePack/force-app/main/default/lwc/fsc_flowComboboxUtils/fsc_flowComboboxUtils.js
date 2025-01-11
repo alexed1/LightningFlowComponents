@@ -9,7 +9,8 @@ const flowComboboxDefaults = {
     dataTypeSObject: 'SObject',
     isCollectionField: 'isCollection',
     actionType: 'actionCalls',
-    screenComponentType: 'screenComponent'
+    screenComponentType: 'screenComponent',
+    screenActionType: 'screenAction',
 
 }
 

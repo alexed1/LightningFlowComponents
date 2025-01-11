@@ -8,6 +8,9 @@
             ],
             "c/sortCollectionLine": [
                 "sortCollectionLine/sortCollectionLine.js"
+            ],
+            "c/*": [
+                "*"
             ]
         }
     },

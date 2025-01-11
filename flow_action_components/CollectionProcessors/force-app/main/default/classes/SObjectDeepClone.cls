@@ -109,10 +109,12 @@ public with sharing class SObjectDeepClone {
 
         for (String curFieldName : fieldsToCheck) {
             if (this.sObjectFields.get(curType).containsKey(curFieldName.toLowerCase())) {
-                if (so.get(curFieldName) != null && this.sObjectFields.get(curType).get(curFieldName.toLowerCase()).getDescribe().isUpdateable()) {
-                    String curName = (String) so.get(curFieldName);
-                    so.put(curFieldName, curName + ' Clone ' + Datetime.now().format('MM/dd/yyyy H:mm'));
-                    break;
+                if (curType.getDescribe().getLabel() != 'Contact' && curFieldName != 'Name') {  // Needed for > API 43.0
+                    if (so.get(curFieldName) != null && this.sObjectFields.get(curType).get(curFieldName.toLowerCase()).getDescribe().isUpdateable()) {
+                        String curName = (String) so.get(curFieldName);
+                        so.put(curFieldName, curName + ' Clone ' + Datetime.now().format('MM/dd/yyyy H:mm'));
+                        break;
+                    }
                 }
             }
         }

@@ -714,11 +714,17 @@ export default class ers_datatableCPE extends LightningElement {
         {name: 'rowActions',
             attributes: [
                 {name: 'isRemoveRowAction'},
+                {name: 'rowActionType'},
+                {name: 'rowActionDisplay'},
                 {name: 'removeLabel'},
+                {name: 'removeRowLeftOrRight'},
                 {name: 'removeIcon'},
                 {name: 'removeColor'},
-                {name: 'removeRowLeftOrRight'},
                 {name: 'maxRemovedRows'},
+                {name: 'rowActionButtonLabel'},
+                {name: 'rowActionButtonIcon'},
+                {name: 'rowActionButtonIconPosition'},
+                {name: 'rowActionButtonVariant'},
             ]
         },
         {name: 'advancedAttributes',

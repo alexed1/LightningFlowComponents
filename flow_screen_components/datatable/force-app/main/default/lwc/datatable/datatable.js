@@ -143,7 +143,7 @@ export default class Datatable extends LightningElement {
     }
     _outputRemainingRows = [];
 
-    removeRowActionColNum;
+    rowActionColNum;
 
     @api 
     get isRemoveRowAction() {
@@ -1525,7 +1525,7 @@ export default class Datatable extends LightningElement {
         let columnNumber = 0;
         let lufield = '';
 
-        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") this.addRemoveRowAction();
+        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") this.addRowAction();
 
         this.basicColumns.forEach(colDef => {
 
@@ -1804,15 +1804,15 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight != "Left") this.addRemoveRowAction();
+        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight != "Left") this.addRowAction();
 
         this.columns = this.cols;
         console.log(this.consoleLogPrefix+'this.columns',this.columns);
 
     }
 
-    addRemoveRowAction() {
-        // Add a special column with for a remove row action
+    addRowAction() {
+        // Add a special column for a row action
         this.cols.push({
             type: "button-icon",
             label: null,
@@ -1837,7 +1837,7 @@ export default class Datatable extends LightningElement {
             wrapText: false,
             flex: false
         });
-        this.removeRowActionColNum = this.cols.length - 1;
+        this.rowActionColNum = this.cols.length - 1;
     }
 
     updatePreSelectedRows() {
@@ -1989,7 +1989,7 @@ export default class Datatable extends LightningElement {
                     }
 
                     if (this.numberOfRowsRemoved === this.maxRemovedRows) {
-                        this.columns[this.removeRowActionColNum].typeAttributes["disabled"] = "";
+                        this.columns[this.rowActionColNum].typeAttributes["disabled"] = "";
                     }
 
                 }

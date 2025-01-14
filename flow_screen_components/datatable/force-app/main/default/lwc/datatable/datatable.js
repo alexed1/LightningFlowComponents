@@ -155,6 +155,14 @@ export default class Datatable extends LightningElement {
     _isRemoveRowAction;
     @api cb_isRemoveRowAction;
 
+    get hasRowAction() {            // v4.3.5 isRemoveRowAction (as hasRowAction) is now used to track if any type of row action was configured
+        return this._isRemoveRowAction;
+    }
+
+    get rowActionLeftOrRight() {    // v4.3.5 removeRowLeftOrRight (as rowActionLeftOrRight) is now used to track whick column the action shows in
+        return this.removeRowLeftOrRight
+    }
+
     // Console Log differentiation
     get consoleLogPrefix() {
         return `${DEBUG_INFO_PREFIX}(${this._tableLabel}) `;
@@ -1270,7 +1278,7 @@ export default class Datatable extends LightningElement {
             // Custom column processing
             this.updateColumns();
 
-            const firstCol = (this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") ? 1 : 0;
+            const firstCol = (this.hasRowAction && this.rowActionLeftOrRight == "Left") ? 1 : 0;
             if(this.cols[firstCol]?.fieldName.endsWith('_lookup')) {
                 this.sortedBy = this.cols[0].fieldName;
                 this.doSort(this.sortedBy, 'asc');
@@ -1525,7 +1533,7 @@ export default class Datatable extends LightningElement {
         let columnNumber = 0;
         let lufield = '';
 
-        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight == "Left") this.addRowAction();
+        if (!this.isConfigMode && this.hasRowAction && this.rowActionLeftOrRight == "Left") this.addRowAction();
 
         this.basicColumns.forEach(colDef => {
 
@@ -1804,7 +1812,7 @@ export default class Datatable extends LightningElement {
             columnNumber += 1;
         });
 
-        if (!this.isConfigMode && this.isRemoveRowAction && this.removeRowLeftOrRight != "Left") this.addRowAction();
+        if (!this.isConfigMode && this.hasRowAction && this.rowActionLeftOrRight != "Left") this.addRowAction();
 
         this.columns = this.cols;
         console.log(this.consoleLogPrefix+'this.columns',this.columns);

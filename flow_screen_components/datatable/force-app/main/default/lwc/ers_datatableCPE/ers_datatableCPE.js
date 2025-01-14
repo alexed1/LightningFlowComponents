@@ -606,8 +606,8 @@ export default class ers_datatableCPE extends LightningElement {
         isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: 'Input data is Serialized', 
             helpText: 'Select if you want the datatable to be able to accept serialized data.'},
         cb_isSerializedRecordData: {value: null, valueDataType: null, isCollection: false, label: ''},
-        isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: 'Add a Remove Row Action Button', 
-            helpText: 'Select if you want to add a Remove Row Action Button to each row of the datatable.'},
+        isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: 'Add a Row Action', 
+            helpText: 'Select if you want to add a Row Action to each row of the datatable.'},
         cb_isRemoveRowAction: {value: null, valueDataType: null, isCollection: false, label: ''},
         removeLabel: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Label', 
             helpText: 'This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)'},
@@ -617,8 +617,8 @@ export default class ers_datatableCPE extends LightningElement {
             helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)'},
         maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
             helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
-        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Column Location', 
-            helpText: 'Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)'},
+        removeRowLeftOrRight: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Column Location', 
+            helpText: 'Specify if the Row Action column should be on the Left or the Right (Default: Right)'},
     };
 
     wizardHelpText = 'The Column Wizard Button runs a special Flow where you can select your column fields, manipulate the table to change column widths, '

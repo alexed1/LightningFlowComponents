@@ -237,15 +237,24 @@ export default class ers_datatableCPE extends LightningElement {
     get showHideRemoveRowAction() {
         return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
     }
+    get showHideRowAction() {               // v4.3.5 Use for any row action
+        return this.showHideRemoveRowAction;
+    }
 
     @api
     get removeRowActionClass() {
         return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
     }
+    get rowActionClass() {                  // v4.3.5 Use for any row action
+        return this.removeRowActionClass;
+    }
 
     @api
     get removeRowActionCheckboxClass() {
         return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? '' : 'slds-m-top_xx-small';
+    }
+    get rowActionCheckboxClass() {          // v4.3.5 Use for any row action
+        return this.removeRowActionCheckboxClass;
     }
 
     @api

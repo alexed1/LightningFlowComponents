@@ -412,9 +412,9 @@
         modal-header-color={modalHeaderColorRowActionsOverride}
     ></c-fsc_flow-banner>
 
-    <!-- Remove Row Action -->
-    <div class={removeRowActionClass}>
-        <div class={removeRowActionCheckboxClass}>
+    <!-- Row Actions -->
+    <div class={rowActionClass}>
+        <div class={rowActionCheckboxClass}>
             <c-fsc_flow-checkbox
                 name="select_isRemoveRowAction"
                 label={inputValues.isRemoveRowAction.label} 
@@ -424,7 +424,7 @@
             ></c-fsc_flow-checkbox>
         </div>
 
-        <div class={showHideRemoveRowAction}>
+        <div class={showHideRowAction}>
             <c-fsc_flow-combobox 
                 name="select_removeLabel" 
                 label={inputValues.removeLabel.label}

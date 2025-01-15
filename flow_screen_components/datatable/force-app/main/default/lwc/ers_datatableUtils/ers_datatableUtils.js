@@ -53,8 +53,11 @@ const getConstants = () => {
         PERFORM_ACTION_LABEL: 'Perform Action',    // Default label for the Perform Action button
         REMOVE_ROW_LABEL : 'Remove Row',    // Default label for the Remove Row button
         RUN_FLOW_LABEL : 'Run Flow',        // Default label for the Run Flow button
-        REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button
-        REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button
+        DEFAULT_ICON : 'utility:close',     // Default Icon for the Row Action button-icon
+        PERFORM_ACTION_ICON : 'utility:touch_action',  // Default Icon for the Perform Row Action button-icon
+        REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button-icon
+        RUN_FLOW_ICON : 'utility:flow',     // Default Icon for the Run Flow Action button-icon
+        REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button-icon
         REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
         SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs

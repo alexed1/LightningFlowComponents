@@ -435,6 +435,7 @@
                 onchange={handleValueChange}
             ></lightning-radio-group>
 
+            <!-- v4.3.5 now used for Action Label -->
             <c-fsc_flow-combobox 
                 name="select_removeLabel" 
                 label={inputValues.removeLabel.label}
@@ -448,6 +449,7 @@
                 automatic-output-variables={automaticOutputVariables}>
             </c-fsc_flow-combobox>
 
+            <!-- v4.3.5 now used for Action Icon -->
             <c-fsc_flow-combobox 
                 name="select_removeIcon" 
                 label={inputValues.removeIcon.label}
@@ -462,9 +464,10 @@
             </c-fsc_flow-combobox>
             <c-fsc_pick-icon
                 mode="combobox"
-                oniconselection={handleRemoveIcon}>
+                oniconselection={handleActionIcon}>
             </c-fsc_pick-icon>
 
+            <!-- v4.3.5 now used for Action Icon Color -->
             <lightning-radio-group
                 name="select_removeColor"
                 label={inputValues.removeColor.label}

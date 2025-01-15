@@ -50,6 +50,7 @@ const getConstants = () => {
         SEARCH_WAIT_TIME : 300,             // Set the delay to start searching while user is typing a search term
         RECORDS_PER_PAGE : 10,              // Default number of records per page for pagination
         DEFAULT_ACTION : 'Remove Row',      // Default Row Action Type
+        DEFAULT_DISPLAY_TYPE : 'Icon',      // Default Row Action Display Type
         PERFORM_ACTION_LABEL: 'Perform Action', // Default label for the Perform Action button
         REMOVE_ROW_LABEL : 'Remove Row',    // Default label for the Remove Row button
         RUN_FLOW_LABEL : 'Run Flow',        // Default label for the Run Flow button

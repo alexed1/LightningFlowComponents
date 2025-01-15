@@ -435,6 +435,15 @@
                 onchange={handleValueChange}
             ></lightning-radio-group>
 
+            <lightning-radio-group
+                name="select_rowActionDisplay"
+                label={inputValues.rowActionDisplay.label}
+                options={rowActionDisplayOptions}
+                value={inputValues.rowActionDisplay.value}
+                type="radio"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
             <!-- v4.3.5 now used for Action Label -->
             <c-fsc_flow-combobox 
                 name="select_removeLabel" 
@@ -468,19 +477,32 @@
             </c-fsc_pick-icon>
 
             <!-- v4.3.5 now used for Action Icon Color -->
-            <lightning-radio-group
-                name="select_removeColor"
-                label={inputValues.removeColor.label}
-                options={actionButtonIconColorOptions}
-                value={inputValues.removeColor.value}
-                type="button"
-                onchange={handleValueChange}
-            ></lightning-radio-group>
+            <div class={showRowActionIconColor}>
+                <lightning-radio-group
+                    name="select_removeColor"
+                    label={inputValues.removeColor.label}
+                    options={actionButtonIconColorOptions}
+                    value={inputValues.removeColor.value}
+                    type="button"
+                    onchange={handleValueChange}
+                ></lightning-radio-group>
+            </div>
+
+            <div class={showButtonIconPosition}>
+                <lightning-radio-group
+                    name="select_rowActionButtonIconPosition"
+                    label={inputValues.rowActionButtonIconPosition.label}
+                    options={actionLeftOrRightOptions}
+                    value={inputValues.rowActionButtonIconPosition.value}
+                    type="button"
+                    onchange={handleValueChange}
+                ></lightning-radio-group>
+            </div>
 
             <lightning-radio-group
                 name="select_removeRowLeftOrRight"
                 label={inputValues.removeRowLeftOrRight.label}
-                options={actionColumnLeftOrRightOptions}
+                options={actionLeftOrRightOptions}
                 value={inputValues.removeRowLeftOrRight.value}
                 type="button"
                 onchange={handleValueChange}

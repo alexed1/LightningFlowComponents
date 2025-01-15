@@ -23,6 +23,7 @@ const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 const DEFAULT_ACTION = CONSTANTS.DEFAULT_ACTION;
+const DEFAULT_DISPLAY_TYPE = CONSTANTS.DEFAULT_DISPLAY_TYPE;
 const PERFORM_ACTION_LABEL = CONSTANTS.PERFORM_ACTION_LABEL;
 const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
 const RUN_FLOW_LABEL = CONSTANTS.RUN_FLOW_LABEL;
@@ -250,6 +251,14 @@ export default class ers_datatableCPE extends LightningElement {
         return this.showHideRemoveRowAction;
     }
 
+    get showRowActionIconColor() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-show' : 'slds-hide';
+    }
+
+    get showButtonIconPosition() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-hide' : 'slds-show';
+    }
+    
     @api
     get removeRowActionClass() {
         return (this.inputValues.cb_isRemoveRowAction.value == CB_TRUE) ? 'slds-box slds-box_x-small slds-m-top_small' : '';
@@ -782,10 +791,26 @@ export default class ers_datatableCPE extends LightningElement {
         {
             label: 'Remove Row',
             value: 'Remove Row'
+        // TODO: Add code needed to support a Run Flow row action
+        // },
+        // {
+        //     label: 'Run Flow',
+        //     value: 'Flow'
+        }
+    ]
+
+    rowActionDisplayOptions = [
+        {
+            label: 'Icon Only',
+            value: 'Icon'
         },
         {
-            label: 'Run Flow',
-            value: 'Flow'
+            label: 'Button Only',
+            value: 'Button'
+        },
+        {
+            label: 'Button with Icon',
+            value: 'Both'
         }
     ]
 
@@ -804,7 +829,7 @@ export default class ers_datatableCPE extends LightningElement {
         }
     ]
 
-    actionColumnLeftOrRightOptions = [
+    actionLeftOrRightOptions = [
         {
             label: 'Left',
             value: 'Left'
@@ -958,6 +983,9 @@ export default class ers_datatableCPE extends LightningElement {
             this.inputValues.rowActionType.value = DEFAULT_ACTION;
             this.updateActionDefaults(DEFAULT_ACTION);
         }
+        if (this.inputValues.rowActionDisplay.value == null) {
+            this.inputValues.rowActionDisplay.value = DEFAULT_DISPLAY_TYPE;
+        }
         if (this.inputValues.removeLabel.value == null) {
             this.inputValues.removeLabel.value = DEFAULT_ACTION;
         }
@@ -966,6 +994,9 @@ export default class ers_datatableCPE extends LightningElement {
         }
         if (this.inputValues.removeColor.value == null) {
             this.inputValues.removeColor.value = DEFAULT_COLOR;
+        }
+        if (this.inputValues.rowActionButtonIconPosition.value == null) {
+            this.inputValues.rowActionButtonIconPosition.value = 'Left';
         }
         if (this.inputValues.removeRowLeftOrRight.value == null) {
             this.inputValues.removeRowLeftOrRight.value = ACTION_BUTTON_SIDE;

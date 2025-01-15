@@ -425,6 +425,16 @@
         </div>
 
         <div class={showHideRowAction}>
+
+            <lightning-radio-group
+                name="select_rowActionType"
+                label={inputValues.rowActionType.label}
+                options={rowActionTypeOptions}
+                value={inputValues.rowActionType.value}
+                type="radio"
+                onchange={handleValueChange}
+            ></lightning-radio-group>
+
             <c-fsc_flow-combobox 
                 name="select_removeLabel" 
                 label={inputValues.removeLabel.label}

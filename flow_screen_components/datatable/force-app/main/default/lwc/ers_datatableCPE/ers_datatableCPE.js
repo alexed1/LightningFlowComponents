@@ -22,7 +22,10 @@ const CB_TRUE = CONSTANTS.CB_TRUE;
 const CB_FALSE = CONSTANTS.CB_FALSE;
 const CB_PREFIX = CONSTANTS.CB_ATTRIB_PREFIX;
 const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
+const DEFAULT_ACTION = CONSTANTS.DEFAULT_ACTION;
+const PERFORM_ACTION_LABEL = CONSTANTS.PERFORM_ACTION_LABEL;
 const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
+const RUN_FLOW_LABEL = CONSTANTS.RUN_FLOW_LABEL;
 const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
 const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
 const REMOVE_ROW_SIDE = CONSTANTS.REMOVE_ROW_SIDE;
@@ -765,6 +768,21 @@ export default class ers_datatableCPE extends LightningElement {
         }
     ]
 
+    rowActionTypeOptions = [
+        {
+            label: 'Standard',
+            value: 'Standard'
+        },
+        {
+            label: 'Remove Row',
+            value: 'Remove Row'
+        },
+        {
+            label: 'Run Flow',
+            value: 'Flow'
+        }
+    ]
+
     removeColorOptions = [
         {
             label: 'Red',
@@ -926,11 +944,16 @@ export default class ers_datatableCPE extends LightningElement {
 
     handleDefaultAttributes() {
         console.log(DEBUG_INFO_PREFIX+'handle default attributes');
+        console.log("🚀 ~ ers_datatableCPE ~ handleDefaultAttributes ~ this.inputValues.rowActionType.value:", this.inputValues.rowActionType.value);
         if (this.inputValues.recordsPerPage.value == null) {
             this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
         }
+        if (this.inputValues.rowActionType.value == null) {
+            this.inputValues.rowActionType.value = DEFAULT_ACTION;
+            this.updateActionDefaults(DEFAULT_ACTION);
+        }
         if (this.inputValues.removeLabel.value == null) {
-            this.inputValues.removeLabel.value = REMOVE_ROW_LABEL;
+            this.inputValues.removeLabel.value = DEFAULT_ACTION;
         }
         if (this.inputValues.removeIcon.value == null) {
             this.inputValues.removeIcon.value = REMOVE_ROW_ICON;
@@ -944,6 +967,21 @@ export default class ers_datatableCPE extends LightningElement {
         if (this.inputValues.maxRemovedRows.value == null) {
             this.inputValues.maxRemovedRows.value = 0;
         }
+    }
+
+    updateActionDefaults(actionType) {
+        console.log("🚀 ~ ers_datatableCPE ~ updateActionDefaults ~ actionType:", actionType);
+        let newValue = DEFAULT_ACTION;
+        if (actionType == 'Standard') {
+            newValue = PERFORM_ACTION_LABEL;
+        }
+        if (actionType == 'Remove Row') {
+            newValue = REMOVE_ROW_LABEL;
+        }
+        if (actionType == 'Flow') {
+            newValue = RUN_FLOW_LABEL;
+        }
+        this.dispatchFlowValueChangeEvent('removeLabel', newValue, 'String');
     }
 
     handleBuildHelpInfo() {
@@ -1030,6 +1068,10 @@ export default class ers_datatableCPE extends LightningElement {
                     curAttributeType = 'String';
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
+            if (curAttributeName == 'rowActionType') {
+                console.log("🚀 ~ ers_datatableCPE ~ handleValueChange ~ curAttributeName, curAttributeValue:", curAttributeName, curAttributeValue);
+                this.updateActionDefaults(curAttributeValue);
+            }
         }
     }
 

@@ -124,6 +124,14 @@ export default class Datatable extends LightningElement {
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
 
+    // v4.5.3 Adding Standard Row Action & Button Option
+    @api rowActionType = 'Remove Row';
+    @api rowActionDisplay;
+    @api rowActionButtonLabel;
+    @api rowActionButtonIcon;
+    @api rowActionButtonIconPosition;
+    @api rowActionButtonVariant;
+
     @api 
     get outputActionedRow() {
         return this._outputActionedRow;

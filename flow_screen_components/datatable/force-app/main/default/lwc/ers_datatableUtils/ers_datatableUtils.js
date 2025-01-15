@@ -50,15 +50,18 @@ const getConstants = () => {
         SEARCH_WAIT_TIME : 300,             // Set the delay to start searching while user is typing a search term
         RECORDS_PER_PAGE : 10,              // Default number of records per page for pagination
         DEFAULT_ACTION : 'Remove Row',      // Default Row Action Type
-        PERFORM_ACTION_LABEL: 'Perform Action',    // Default label for the Perform Action button
+        PERFORM_ACTION_LABEL: 'Perform Action', // Default label for the Perform Action button
         REMOVE_ROW_LABEL : 'Remove Row',    // Default label for the Remove Row button
         RUN_FLOW_LABEL : 'Run Flow',        // Default label for the Run Flow button
         DEFAULT_ICON : 'utility:close',     // Default Icon for the Row Action button-icon
         PERFORM_ACTION_ICON : 'utility:touch_action',  // Default Icon for the Perform Row Action button-icon
         REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button-icon
         RUN_FLOW_ICON : 'utility:flow',     // Default Icon for the Run Flow Action button-icon
-        REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button-icon
-        REMOVE_ROW_SIDE : 'Right',          // Default Side for the Remove Row button
+        DEFAULT_COLOR : 'remove-icon',      // Default Color for the Row Action button-icon color
+        PERFORM_ACTION_COLOR : 'remove-icon-black', // Default Color for the Perform Row Action button-icon color
+        REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button-icon color
+        RUN_FLOW_COLOR : 'remove-icon-green',   // Default Color for the Run Flow Action button-icon color
+        ACTION_BUTTON_SIDE : 'Right',       // Default Side for the Row Action button
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
         SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
         DEFAULT_COL_WIDTH : 200,            // Default width to set a column when Flex is toggled off

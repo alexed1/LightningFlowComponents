@@ -30,8 +30,11 @@ const DEFAULT_ICON = CONSTANTS.DEFAULT_ICON;
 const PERFORM_ACTION_ICON = CONSTANTS.PERFORM_ACTION_ICON;
 const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
 const RUN_FLOW_ICON = CONSTANTS.RUN_FLOW_ICON;
+const DEFAULT_COLOR = CONSTANTS.DEFAULT_COLOR;
+const PERFORM_ACTION_COLOR = CONSTANTS.PERFORM_ACTION_COLOR;
 const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
-const REMOVE_ROW_SIDE = CONSTANTS.REMOVE_ROW_SIDE;
+const RUN_FLOW_COLOR = CONSTANTS.RUN_FLOW_COLOR;
+const ACTION_BUTTON_SIDE = CONSTANTS.ACTION_BUTTON_SIDE;
 const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
 const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 
@@ -634,8 +637,8 @@ export default class ers_datatableCPE extends LightningElement {
                 helpText: 'Specify if the Row Action column should be on the Left or the Right (Default: Right)'},
         removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Icon', 
             helpText: 'This is the icon that will be used for the Row Action Button (Default: utility:touch_action, utility:close or utility:flow)'},
-        removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Remove Row Action Icon Color', 
-            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)'},
+        removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Icon Color', 
+            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Row Action Icon Button (Default: Black, Red or Green)'},
         maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
             helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
         rowActionButtonLabel: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Label', 
@@ -786,7 +789,7 @@ export default class ers_datatableCPE extends LightningElement {
         }
     ]
 
-    removeColorOptions = [
+    actionButtonIconColorOptions = [
         {
             label: 'Red',
             value: 'remove-icon'
@@ -801,7 +804,7 @@ export default class ers_datatableCPE extends LightningElement {
         }
     ]
 
-    removeLeftOrRightOptions = [
+    actionColumnLeftOrRightOptions = [
         {
             label: 'Left',
             value: 'Left'
@@ -962,10 +965,10 @@ export default class ers_datatableCPE extends LightningElement {
             this.inputValues.removeIcon.value = DEFAULT_ICON;
         }
         if (this.inputValues.removeColor.value == null) {
-            this.inputValues.removeColor.value = REMOVE_ROW_COLOR;
+            this.inputValues.removeColor.value = DEFAULT_COLOR;
         }
         if (this.inputValues.removeRowLeftOrRight.value == null) {
-            this.inputValues.removeRowLeftOrRight.value = REMOVE_ROW_SIDE;
+            this.inputValues.removeRowLeftOrRight.value = ACTION_BUTTON_SIDE;
         }
         if (this.inputValues.maxRemovedRows.value == null) {
             this.inputValues.maxRemovedRows.value = 0;
@@ -976,20 +979,25 @@ export default class ers_datatableCPE extends LightningElement {
         console.log("🚀 ~ ers_datatableCPE ~ updateActionDefaults ~ actionType:", actionType);
         let newLabelValue = DEFAULT_ACTION;
         let newIconValue = DEFAULT_ICON;
+        let newColorValue = DEFAULT_COLOR;
         if (actionType == 'Standard') {
             newLabelValue = PERFORM_ACTION_LABEL;
             newIconValue = PERFORM_ACTION_ICON;
+            newColorValue = PERFORM_ACTION_COLOR;
         }
         if (actionType == 'Remove Row') {
             newLabelValue = REMOVE_ROW_LABEL;
             newIconValue = REMOVE_ROW_ICON;
+            newColorValue = REMOVE_ROW_COLOR;
         }
         if (actionType == 'Flow') {
             newLabelValue = RUN_FLOW_LABEL;
             newIconValue = RUN_FLOW_ICON;
+            newColorValue = RUN_FLOW_COLOR;
         }
         this.dispatchFlowValueChangeEvent('removeLabel', newLabelValue, 'String');
         this.dispatchFlowValueChangeEvent('removeIcon', newIconValue, 'String');
+        this.dispatchFlowValueChangeEvent('removeColor', newColorValue, 'String');
     }
 
     handleBuildHelpInfo() {

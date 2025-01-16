@@ -426,6 +426,30 @@
 
         <div class={showHideRowAction}>
 
+            <div class={sampleActionClass}>
+                <lightning-formatted-rich-text value="&lt;strong&gt;Sample Action Button&lt;/strong&gt;"></lightning-formatted-rich-text>
+                <div class={showRowActionIconColor}>
+                    <div class={inputValues.removeColor.value}>
+                        <lightning-button-icon
+                            icon-name={inputValues.removeIcon.value}
+                            tooltip={inputValues.removeLabel.value}
+                            alternative-text={inputValues.removeLabel.value}
+                            size="medium"
+                            variant="border"
+                        ></lightning-button-icon>
+                    </div>
+                </div>
+                <div class={showButtonOptions}>
+                    <lightning-button 
+                        label={inputValues.rowActionButtonLabel.value}
+                        title={inputValues.rowActionButtonLabel.value}
+                        variant={inputValues.rowActionButtonVariant.value}
+                        icon-name={inputValues.rowActionButtonIcon.value}
+                        icon-position={inputValues.rowActionButtonIconPosition.value}
+                    ></lightning-button>
+                </div>
+            </div>
+
             <lightning-radio-group
                 name="select_rowActionType"
                 label={inputValues.rowActionType.label}
@@ -434,6 +458,21 @@
                 type="radio"
                 onchange={handleValueChange}
             ></lightning-radio-group>
+
+            <div class={showHideMaxNumberRows}>
+                <c-fsc_flow-combobox 
+                    name="select_maxRemovedRows" 
+                    label={inputValues.maxRemovedRows.label}
+                    value={inputValues.maxRemovedRows.value} 
+                    value-type={inputValues.maxRemovedRows.valueDataType}
+                    field-level-help={inputValues.maxRemovedRows.helpText}
+                    builder-context-filter-type="Number"
+                    builder-context-filter-collection-boolean={inputValues.maxRemovedRows.isCollection}
+                    builder-context={_builderContext} 
+                    onvaluechanged={handleFlowComboboxValueChange}
+                    automatic-output-variables={automaticOutputVariables}>
+                </c-fsc_flow-combobox>
+            </div>
 
             <lightning-radio-group
                 name="select_rowActionDisplay"
@@ -488,7 +527,7 @@
                 ></lightning-radio-group>
             </div>
 
-            <div class={showButtonIconPosition}>
+            <div class={showButtonOptions}>
                 <lightning-radio-group
                     name="select_rowActionButtonIconPosition"
                     label={inputValues.rowActionButtonIconPosition.label}
@@ -497,6 +536,14 @@
                     type="button"
                     onchange={handleValueChange}
                 ></lightning-radio-group>
+
+                <lightning-combobox
+                    name="select_rowActionButtonVariant"
+                    label={inputValues.rowActionButtonVariant.label}
+                    options={buttonVariantOptions}
+                    value={inputValues.rowActionButtonVariant.value}
+                    onchange={handleValueChange}
+                ></lightning-combobox>
             </div>
 
             <lightning-radio-group
@@ -507,19 +554,6 @@
                 type="button"
                 onchange={handleValueChange}
             ></lightning-radio-group>
-
-            <c-fsc_flow-combobox 
-                name="select_maxRemovedRows" 
-                label={inputValues.maxRemovedRows.label}
-                value={inputValues.maxRemovedRows.value} 
-                value-type={inputValues.maxRemovedRows.valueDataType}
-                field-level-help={inputValues.maxRemovedRows.helpText}
-                builder-context-filter-type="Number"
-                builder-context-filter-collection-boolean={inputValues.maxRemovedRows.isCollection}
-                builder-context={_builderContext} 
-                onvaluechanged={handleFlowComboboxValueChange}
-                automatic-output-variables={automaticOutputVariables}>
-            </c-fsc_flow-combobox>
 
         </div>
     </div>

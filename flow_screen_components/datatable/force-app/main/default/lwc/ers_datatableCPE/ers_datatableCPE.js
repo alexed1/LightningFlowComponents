@@ -251,11 +251,15 @@ export default class ers_datatableCPE extends LightningElement {
         return this.showHideRemoveRowAction;
     }
 
+    get showHideMaxNumberRows() {
+        return (this.inputValues.rowActionType.value == 'Remove Row') ? 'slds-show' : 'slds-hide';
+    }
+
     get showRowActionIconColor() {
         return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-show' : 'slds-hide';
     }
 
-    get showButtonIconPosition() {
+    get showButtonOptions() {
         return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-hide' : 'slds-show';
     }
     
@@ -273,6 +277,10 @@ export default class ers_datatableCPE extends LightningElement {
     }
     get rowActionCheckboxClass() {          // v4.3.5 Use for any row action
         return this.removeRowActionCheckboxClass;
+    }
+
+    get sampleActionClass() {
+        return 'slds-box slds-box_x-small slds-m-top_xx-small';
     }
 
     @api
@@ -733,16 +741,16 @@ export default class ers_datatableCPE extends LightningElement {
             attributes: [
                 {name: 'isRemoveRowAction'},
                 {name: 'rowActionType'},
+                {name: 'maxRemovedRows'},
                 {name: 'rowActionDisplay'},
                 {name: 'removeLabel'},
-                {name: 'removeRowLeftOrRight'},
                 {name: 'removeIcon'},
-                {name: 'removeColor'},
-                {name: 'maxRemovedRows'},
                 {name: 'rowActionButtonLabel'},
                 {name: 'rowActionButtonIcon'},
                 {name: 'rowActionButtonIconPosition'},
                 {name: 'rowActionButtonVariant'},
+                {name: 'removeColor'},
+                {name: 'removeRowLeftOrRight'},
             ]
         },
         {name: 'advancedAttributes',
@@ -827,6 +835,17 @@ export default class ers_datatableCPE extends LightningElement {
             label: 'Black',
             value: 'remove-icon-black'
         }
+    ]
+
+    buttonVariantOptions = [
+        {value: 'base', label: 'Base'},
+        {value: 'neutral', label: 'Neutral'},
+        {value: 'brand', label: 'Brand'},
+        {value: 'brand-outline', label: 'Brand Outline'},
+        {value: 'destructive', label: 'Destructive'},
+        {value: 'destructive-text', label: 'Destructive Text'},
+        {value: 'inverse', label: 'Inverse'},
+        {value: 'success', label: 'Success'}
     ]
 
     actionLeftOrRightOptions = [
@@ -952,6 +971,9 @@ export default class ers_datatableCPE extends LightningElement {
                     if ((curInputParam.name == 'hideCheckboxColumn') && curInputParam.value) {
                         this.isCheckboxColumnHidden = true;
                     }
+                    if ((curInputParam.name == 'rowActionButtonIcon') && this.inputValues.rowActionDisplay.value == 'Button') {
+                        this.inputValues.rowActionButtonIcon.value = "";
+                    }
 
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
@@ -975,13 +997,8 @@ export default class ers_datatableCPE extends LightningElement {
 
     handleDefaultAttributes() {
         console.log(DEBUG_INFO_PREFIX+'handle default attributes');
-        console.log("🚀 ~ ers_datatableCPE ~ handleDefaultAttributes ~ this.inputValues.rowActionType.value:", this.inputValues.rowActionType.value);
         if (this.inputValues.recordsPerPage.value == null) {
             this.inputValues.recordsPerPage.value = RECORDS_PER_PAGE.toString();
-        }
-        if (this.inputValues.rowActionType.value == null) {
-            this.inputValues.rowActionType.value = DEFAULT_ACTION;
-            this.updateActionDefaults(DEFAULT_ACTION);
         }
         if (this.inputValues.rowActionDisplay.value == null) {
             this.inputValues.rowActionDisplay.value = DEFAULT_DISPLAY_TYPE;
@@ -989,14 +1006,27 @@ export default class ers_datatableCPE extends LightningElement {
         if (this.inputValues.removeLabel.value == null) {
             this.inputValues.removeLabel.value = DEFAULT_ACTION;
         }
+        if (this.inputValues.rowActionButtonLabel.value == null) {
+            this.inputValues.rowActionButtonLabel.value = DEFAULT_ACTION;
+        }
         if (this.inputValues.removeIcon.value == null) {
             this.inputValues.removeIcon.value = DEFAULT_ICON;
+        }
+        if (this.inputValues.rowActionButtonIcon.value == null) {
+            this.inputValues.rowActionButtonIcon.value = DEFAULT_ICON;
+        }
+        if (this.inputValues.rowActionType.value == null) {
+            this.inputValues.rowActionType.value = DEFAULT_ACTION;
+            this.updateActionDefaults(DEFAULT_ACTION);
         }
         if (this.inputValues.removeColor.value == null) {
             this.inputValues.removeColor.value = DEFAULT_COLOR;
         }
         if (this.inputValues.rowActionButtonIconPosition.value == null) {
             this.inputValues.rowActionButtonIconPosition.value = 'Left';
+        }
+        if (this.inputValues.rowActionButtonVariant.value == null) {
+            this.inputValues.rowActionButtonVariant.value = 'brand-outline';
         }
         if (this.inputValues.removeRowLeftOrRight.value == null) {
             this.inputValues.removeRowLeftOrRight.value = ACTION_BUTTON_SIDE;
@@ -1007,7 +1037,6 @@ export default class ers_datatableCPE extends LightningElement {
     }
 
     updateActionDefaults(actionType) {
-        console.log("🚀 ~ ers_datatableCPE ~ updateActionDefaults ~ actionType:", actionType);
         let newLabelValue = DEFAULT_ACTION;
         let newIconValue = DEFAULT_ICON;
         let newColorValue = DEFAULT_COLOR;
@@ -1029,6 +1058,11 @@ export default class ers_datatableCPE extends LightningElement {
         this.dispatchFlowValueChangeEvent('removeLabel', newLabelValue, 'String');
         this.dispatchFlowValueChangeEvent('removeIcon', newIconValue, 'String');
         this.dispatchFlowValueChangeEvent('removeColor', newColorValue, 'String');
+        this.dispatchFlowValueChangeEvent('rowActionButtonLabel', newLabelValue, 'String');
+        if (this.inputValues.rowActionDisplay.value == 'Button') {
+            newIconValue = "";
+        }
+        this.dispatchFlowValueChangeEvent('rowActionButtonIcon', newIconValue, 'String');
     }
 
     handleBuildHelpInfo() {
@@ -1116,8 +1150,15 @@ export default class ers_datatableCPE extends LightningElement {
             }
             this.dispatchFlowValueChangeEvent(curAttributeName, curAttributeValue, curAttributeType);
             if (curAttributeName == 'rowActionType') {
-                console.log("🚀 ~ ers_datatableCPE ~ handleValueChange ~ curAttributeName, curAttributeValue:", curAttributeName, curAttributeValue);
                 this.updateActionDefaults(curAttributeValue);
+            }
+            if (curAttributeName == 'rowActionDisplay') {  // Clear or reset button icon if switching between button only & both
+                this.inputValues.rowActionButtonIcon.value = (curAttributeValue == 'Button') ? "" : this.inputValues.removeIcon.value;
+                this.dispatchFlowValueChangeEvent('rowActionButtonIcon', this.inputValues.rowActionButtonIcon.value, 'String');
+            }
+            if (curAttributeName == 'rowActionType') {  // Clear or reset button icon if switching between action types
+                this.inputValues.rowActionButtonIcon.value = (this.inputValues.rowActionDisplay.value == 'Button') ? "" : this.inputValues.removeIcon.value;
+                this.dispatchFlowValueChangeEvent('rowActionButtonIcon', this.inputValues.rowActionButtonIcon.value, 'String');
             }
         }
     }
@@ -1323,6 +1364,11 @@ export default class ers_datatableCPE extends LightningElement {
         }                
         if (newValue) {
             this.inputValues[id].isError = false;   // Clear any prior error before validating again if the field has any value
+        }
+        if (id == 'removeLabel' || id == 'removeIcon') {
+            let otherAttribute = 'rowActionButton'.concat(id.substr(6));
+            this.inputValues[otherAttribute].value = newValue;
+            this.dispatchFlowValueChangeEvent(otherAttribute, newValue, newValueDataType);
         }
     }
 

@@ -255,8 +255,12 @@ export default class ers_datatableCPE extends LightningElement {
         return (this.inputValues.rowActionType.value == 'Remove Row') ? 'slds-show' : 'slds-hide';
     }
 
-    get showRowActionIconColor() {
+    get showRowActionIcon() {
         return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-show' : 'slds-hide';
+    }
+
+    get showRowActionButtonIconColor() {
+        return (this.inputValues.rowActionDisplay.value != 'Button') ? 'slds-show' : 'slds-hide';
     }
 
     get showRowActionButtonIconPosition() {
@@ -659,7 +663,7 @@ export default class ers_datatableCPE extends LightningElement {
         removeIcon: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Icon', 
             helpText: 'This is the icon that will be used for the Row Action Button (Default: utility:touch_action, utility:close or utility:flow)'},
         removeColor: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Icon Color', 
-            helpText: 'This is the color (Red, Green or Black) for the icon that will be used for the Row Action Icon Button (Default: Black, Red or Green)'},
+            helpText: 'This is the color (Dafault, Red, Green or Black) for the icon that will be used for the Row Action Icon'},
         maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
             helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
         rowActionButtonLabel: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Label', 
@@ -827,6 +831,10 @@ export default class ers_datatableCPE extends LightningElement {
     ]
 
     actionButtonIconColorOptions = [
+        {
+            label: 'Default',
+            value: ''
+        },
         {
             label: 'Red',
             value: 'remove-icon'

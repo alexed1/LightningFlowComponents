@@ -62,7 +62,7 @@ const getConstants = () => {
         REMOVE_ROW_ICON : 'utility:close',  // Default Icon for the Remove Row button-icon
         RUN_FLOW_ICON : 'utility:flow',     // Default Icon for the Run Flow Action button-icon
         DEFAULT_COLOR : 'remove-icon',      // Default Color for the Row Action button-icon color
-        PERFORM_ACTION_COLOR : 'remove-icon-black', // Default Color for the Perform Row Action button-icon color
+        PERFORM_ACTION_COLOR : '',          // Default Color for the Perform Row Action button-icon color
         REMOVE_ROW_COLOR : 'remove-icon',   // Default Color for the Remove Row button-icon color
         RUN_FLOW_COLOR : 'remove-icon-green',   // Default Color for the Run Flow Action button-icon color
         ACTION_BUTTON_SIDE : 'Right',       // Default Side for the Row Action button

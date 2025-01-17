@@ -1829,18 +1829,33 @@ export default class Datatable extends LightningElement {
 
     addRowAction() {
         // Add a special column for a row action
-        let actionType = "button";
+        let actionDisplay = "button";
         let actionTypeAttributes = {};
         let actionIcon = "";
         let actionIconPosition = "";
         let actionColumnWidth = 50;
         let actionButtonIconWidth = 22;
         let addCharacterCountWidth = 7;
+        let actionType = "";
+        switch (this.rowActionType) {
+            case 'Standard':
+                actionType = "standard";
+                break;
+            case 'Remove Row':
+                actionType = "removeRow";
+                break;
+            case 'Flow':
+                // TODO add Flow Row Action
+                actionType = "flow";
+                break;
+            default:
+                break;   
+        }
         switch (this.rowActionDisplay) {
             case 'Icon':
-                actionType = "button-icon";
+                actionDisplay = "button-icon";
                 actionTypeAttributes = {
-                    name: "removeRow",
+                    name: actionType,
                     alternativeText: this.removeLabel,
                     iconName: this.removeIcon,
                     tooltip: this.removeLabel,
@@ -1856,7 +1871,7 @@ export default class Datatable extends LightningElement {
             case 'Button':
                 actionColumnWidth += (addCharacterCountWidth * this.rowActionButtonLabel.length);
                 actionTypeAttributes = {
-                    name: "rowAction",
+                    name: actionType,
                     label: this.rowActionButtonLabel,
                     title: this.rowActionButtonLabel,
                     iconName: actionIcon,
@@ -1869,7 +1884,7 @@ export default class Datatable extends LightningElement {
                 break;
         }
         this.cols.push({
-            type: actionType,
+            type: actionDisplay,
             label: null,    // Column Label
             fieldName: "rowAction",
             typeAttributes: actionTypeAttributes,
@@ -1991,6 +2006,12 @@ export default class Datatable extends LightningElement {
 
         switch (action) {
             
+            case 'standard':
+                this.outputActionedRow = {...row};
+                this.dispatchEvent(new FlowAttributeChangeEvent('outputActionedRow', this._outputActionedRow));
+                this.dispatchOutputs();
+                break;
+
             case 'removeRow':
 
                 if (this.maxRemovedRows == 0 || this.numberOfRowsRemoved < this.maxRemovedRows) {
@@ -2041,6 +2062,10 @@ export default class Datatable extends LightningElement {
                     }
 
                 }
+                break;
+
+            case 'flow':
+                // TODO - Add Flow Row Action    
                 break;
 
             default:

@@ -428,8 +428,8 @@
 
             <div class={sampleActionClass}>
                 <lightning-formatted-rich-text value="&lt;strong&gt;Sample Action Button&lt;/strong&gt;"></lightning-formatted-rich-text>
-                <div class={showRowActionIconColor}>
-                    <div class={inputValues.removeColor.value}>
+                <div class={inputValues.removeColor.value}>
+                    <div class={showRowActionIconColor}>
                         <lightning-button-icon
                             icon-name={inputValues.removeIcon.value}
                             tooltip={inputValues.removeLabel.value}
@@ -438,15 +438,15 @@
                             variant="border"
                         ></lightning-button-icon>
                     </div>
-                </div>
-                <div class={showButtonOptions}>
-                    <lightning-button 
-                        label={inputValues.rowActionButtonLabel.value}
-                        title={inputValues.rowActionButtonLabel.value}
-                        variant={inputValues.rowActionButtonVariant.value}
-                        icon-name={inputValues.rowActionButtonIcon.value}
-                        icon-position={inputValues.rowActionButtonIconPosition.value}
-                    ></lightning-button>
+                    <div class={showButtonOptions}>
+                        <lightning-button 
+                            label={inputValues.rowActionButtonLabel.value}
+                            title={inputValues.rowActionButtonLabel.value}
+                            variant={inputValues.rowActionButtonVariant.value}
+                            icon-name={inputValues.rowActionButtonIcon.value}
+                            icon-position={inputValues.rowActionButtonIconPosition.value}
+                        ></lightning-button>
+                    </div>
                 </div>
             </div>
 
@@ -528,14 +528,16 @@
             </div>
 
             <div class={showButtonOptions}>
-                <lightning-radio-group
-                    name="select_rowActionButtonIconPosition"
-                    label={inputValues.rowActionButtonIconPosition.label}
-                    options={actionLeftOrRightOptions}
-                    value={inputValues.rowActionButtonIconPosition.value}
-                    type="button"
-                    onchange={handleValueChange}
-                ></lightning-radio-group>
+                <div class={showRowActionButtonIconPosition}>
+                    <lightning-radio-group
+                        name="select_rowActionButtonIconPosition"
+                        label={inputValues.rowActionButtonIconPosition.label}
+                        options={actionLeftOrRightOptions}
+                        value={inputValues.rowActionButtonIconPosition.value}
+                        type="button"
+                        onchange={handleValueChange}
+                    ></lightning-radio-group>
+                </div>
 
                 <lightning-combobox
                     name="select_rowActionButtonVariant"

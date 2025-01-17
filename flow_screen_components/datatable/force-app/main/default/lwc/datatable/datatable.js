@@ -124,7 +124,7 @@ export default class Datatable extends LightningElement {
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
 
-    // v4.5.3 Adding Standard Row Action & Button Option
+    // v4.3.5 Adding Standard Row Action & Button Option
     @api rowActionType = 'Remove Row';
     @api rowActionDisplay;
     @api rowActionButtonLabel;
@@ -1829,27 +1829,59 @@ export default class Datatable extends LightningElement {
 
     addRowAction() {
         // Add a special column for a row action
+        let actionType = "button";
+        let actionTypeAttributes = {};
+        let actionIcon = "";
+        let actionIconPosition = "";
+        let actionColumnWidth = 50;
+        let actionButtonIconWidth = 22;
+        let addCharacterCountWidth = 7;
+        switch (this.rowActionDisplay) {
+            case 'Icon':
+                actionType = "button-icon";
+                actionTypeAttributes = {
+                    name: "removeRow",
+                    alternativeText: this.removeLabel,
+                    iconName: this.removeIcon,
+                    tooltip: this.removeLabel,
+                    variant: "border",
+                    size: "medium",
+                    disabled: false
+                };
+                break;
+            case 'Both':
+                actionIcon = this.rowActionButtonIcon;
+                actionIconPosition = this.rowActionButtonIconPosition;
+                actionColumnWidth += actionButtonIconWidth;
+            case 'Button':
+                actionColumnWidth += (addCharacterCountWidth * this.rowActionButtonLabel.length);
+                actionTypeAttributes = {
+                    name: "rowAction",
+                    label: this.rowActionButtonLabel,
+                    title: this.rowActionButtonLabel,
+                    iconName: actionIcon,
+                    iconPosition: actionIconPosition,
+                    variant: this.rowActionButtonVariant,
+                    disabled: false
+                };
+            break;            
+            default:
+                break;
+        }
         this.cols.push({
-            type: "button-icon",
-            label: null,
+            type: actionType,
+            label: null,    // Column Label
             fieldName: "rowAction",
-            typeAttributes: {
-                name: "removeRow",
-                alternativeText: this.removeLabel,
-                iconName: this.removeIcon,
-                tooltip: this.removeLabel,
-                variant: "border",
-                size: "medium",
-                disabled: false
-            },
+            typeAttributes: actionTypeAttributes,
             cellAttributes: {
-                class: this.removeColor
+                class: this.removeColor,
+                alignment: 'center'
             },      
             editable: false,
             actions: null,
             sortable: false,
             hideDefaultActions: true,  
-            initialWidth: 50,
+            initialWidth: actionColumnWidth,
             wrapText: false,
             flex: false
         });

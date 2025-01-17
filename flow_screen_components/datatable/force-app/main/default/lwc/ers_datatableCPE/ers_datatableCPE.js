@@ -259,6 +259,10 @@ export default class ers_datatableCPE extends LightningElement {
         return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-show' : 'slds-hide';
     }
 
+    get showRowActionButtonIconPosition() {
+        return (this.inputValues.rowActionDisplay.value == 'Both') ? 'slds-show' : 'slds-hide';
+    }
+
     get showButtonOptions() {
         return (this.inputValues.rowActionDisplay.value == 'Icon') ? 'slds-hide' : 'slds-show';
     }

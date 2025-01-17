@@ -486,10 +486,10 @@
             <!-- v4.3.5 now used for Action Label -->
             <c-fsc_flow-combobox 
                 name="select_removeLabel" 
-                label={inputValues.removeLabel.label}
+                label={rowActionInputLabel}
                 value={inputValues.removeLabel.value} 
                 value-type={inputValues.removeLabel.valueDataType}
-                field-level-help={inputValues.removeLabel.helpText}
+                field-level-help={rowActionInputLabelHelp}
                 builder-context-filter-type="String"
                 builder-context-filter-collection-boolean={inputValues.removeLabel.isCollection}
                 builder-context={_builderContext} 
@@ -500,10 +500,10 @@
             <!-- v4.3.5 now used for Action Icon -->
             <c-fsc_flow-combobox 
                 name="select_removeIcon" 
-                label={inputValues.removeIcon.label}
+                label={rowActionInputIcon}
                 value={inputValues.removeIcon.value} 
                 value-type={inputValues.removeIcon.valueDataType}
-                field-level-help={inputValues.removeIcon.helpText}
+                field-level-help={rowActionInputIconHelp}
                 disabled={disallowHeaderChange}
                 builder-context-filter-collection-boolean={inputValues.removeIcon.isCollection}
                 builder-context={_builderContext} 

@@ -291,6 +291,22 @@ export default class ers_datatableCPE extends LightningElement {
         return 'slds-box slds-box_x-small slds-m-top_xx-small';
     }
 
+    get rowActionInputLabel() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? this.inputValues.removeLabel.label : this.inputValues.rowActionButtonLabel.label;
+    }
+
+    get rowActionInputLabelHelp() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? this.inputValues.removeLabel.helpText : this.inputValues.rowActionButtonLabel.helpText;
+    }
+
+    get rowActionInputIcon() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? this.inputValues.removeIcon.label : this.inputValues.rowActionButtonIcon.label;
+    }
+
+    get rowActionInputIconHelp() {
+        return (this.inputValues.rowActionDisplay.value == 'Icon') ? this.inputValues.removeIcon.helpText : this.inputValues.rowActionButtonIcon.helpText;
+    }
+
     @api
     get showHidePaginationAttributes() {
         return (this.inputValues.cb_showPagination.value == CB_TRUE) ? 'slds-show' : 'slds-hide';
@@ -667,9 +683,9 @@ export default class ers_datatableCPE extends LightningElement {
         maxRemovedRows: {value: null, valueDataType: null, isCollection: false, label: 'Maximum # of rows that can be removed', 
             helpText: 'Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)'},
         rowActionButtonLabel: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Label', 
-            helpText: 'Select the label for the row action button.'},
+            helpText: 'This value will be used as the button text for the Row Action Button (Default: Perform Action, Remove Row or Run Flow)'},
         rowActionButtonIcon: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Icon', 
-            helpText: 'Select the icon for the row action button (optional).'},        
+            helpText: 'Select an optional icon for the Row Action Button (Default: utility:touch_action, utility:close or utility:flow)'},        
         rowActionButtonIconPosition: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Icon Position', 
             helpText: 'Specify if the Row Action Button Icon should be on the Left or the Right of the label (Default: Left)'},
         rowActionButtonVariant: {value: null, valueDataType: null, isCollection: false, label: 'Row Action Button Variant', 

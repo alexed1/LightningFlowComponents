@@ -81,6 +81,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Clear SelectedRowKeyValue when no rows are selected  
 -   When both pagination and single row selection are enabled, clear prior selection before setting the new selection  
 -   Escape special characters in filter or search terms 
+-   Generate correct url for record hyperlinks when running in a playground org  
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  

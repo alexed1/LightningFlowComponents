@@ -21,6 +21,9 @@ if (baseURL.includes('--c.visualforce.') || baseURL.includes('--c.vf.')) {     /
     if (baseURL.includes('.develop.')) {        // Running in a developer org - v4.3.3
         myDomain += '.develop';
     }
+    if (baseURL.includes('.trailblaze.')) {     // Running in a playground org - v4.3.5
+        myDomain += '.trailblaze';
+    }
 } else {                                        // Running in a Community or Flow Builder
     myDomain = window.location.href;            // https://<domain>.<instance>.force.com/<site title>/s/
     myDomain = myDomain.split('/s/')[0] + '/s/';    // v3.4.5 Remove everything after the /s/ (non-home pages)

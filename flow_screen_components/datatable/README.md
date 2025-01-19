@@ -71,10 +71,10 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
-  ## 1/4/25 -  Eric Smith -     Version 4.3.5  
+  ## 1/20/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  
--   Added a new OutputActionedRow attribute which provides the record with the most recent row action performed on it  
--   Row Actions can now be displayed as either an Icon or a Button with or without an Icon  
+-   Added a new OutputActionedRow attribute which provides the record that has the most recent row action performed on it  
+-   Row Actions can now be displayed as either an Icon or a configurable Button with or without an Icon  
 -   Improved reactivity for the row actions  
   
 **Bug Fixes:** 

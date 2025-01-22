@@ -50,6 +50,8 @@ const RECORDS_PER_PAGE = CONSTANTS.RECORDS_PER_PAGE;
 const SHOW_DEBUG_INFO = CONSTANTS.SHOW_DEBUG_INFO;
 const DEBUG_INFO_PREFIX = CONSTANTS.DEBUG_INFO_PREFIX;
 const DEFAULT_COL_WIDTH = CONSTANTS.DEFAULT_COL_WIDTH;
+const MIN_COLUMN_WIDTH = CONSTANTS.MIN_COLUMN_WIDTH;
+const MAX_COLUMN_WIDTH = CONSTANTS.MAX_COLUMN_WIDTH;
 const FILTER_BLANKS = CONSTANTS.FILTER_BLANKS;
 
 export default class Datatable extends LightningElement {
@@ -546,6 +548,8 @@ export default class Datatable extends LightningElement {
     @track showClearFilterButton = false;
     @track tableHeightAttribute = 'height:';
     @track wrapTableHeader = "by-column";       // v4.3.1 - Column Headers now follow column Clip/Wrap setting
+    minColumnWidth = MIN_COLUMN_WIDTH;
+    maxColumnWidth = MAX_COLUMN_WIDTH;
 
     // Handle Selected Rows retention
     @api allSelectedRows;       // Obsolete - No longer used but can't be removed

@@ -69,6 +69,8 @@ const getConstants = () => {
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
         SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
         DEFAULT_COL_WIDTH : 200,            // Default width to set a column when Flex is toggled off
+        MIN_COLUMN_WIDTH : 80,              // Minimum width allowed for a column, system default is 80px
+        MAX_COLUMN_WIDTH : 1500,            // Maximum width allowed for a column, system default is 1000px
         FILTER_BLANKS : '_FILTER_BLANKS_'   // Dummy filter value to use when filtering on blank values
     }
 }

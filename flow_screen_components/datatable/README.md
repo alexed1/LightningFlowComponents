@@ -77,12 +77,14 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Row Actions can now be displayed as either an Icon or a configurable Button with or without an Icon  
 -   Improved reactivity for the row actions  
 -   Increased the maximum column width from 1000px to 1500px  
+-   Updated the CPE to allow hard-coded references for the record collection and pre-selected records so outputs from the Filter and Transform elements can be referenced directly  
+-     (This requires v3.3.7 or later of the FlowScreenComponentsBasePack)  
   
 **Bug Fixes:** 
 -   Date field values that get adjusted by the timzoneeoffset now are stored as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
 -   Clear SelectedRowKeyValue when no rows are selected  
 -   When both pagination and single row selection are enabled, clear prior selection before setting the new selection  
--   Escape special characters in filter or search terms 
+-   Fixed search/filter errors when using special characters by escaping special characters in filter or search terms 
 -   Generate correct url for record hyperlinks when running in a playground org  
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  

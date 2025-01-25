@@ -87,6 +87,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fixed search/filter errors when using special characters by escaping special characters in filter or search terms 
 -   Generate correct url for record hyperlinks when running in a playground org  
 -   Output edited ApexDefined rows when changes are saved (Issue #1565)  
+-   Force preselected rows to a single row when single row selection is enabled  
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  

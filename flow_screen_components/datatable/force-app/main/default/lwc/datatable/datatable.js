@@ -2326,7 +2326,7 @@ export default class Datatable extends LightningElement {
 
     updateNumberOfRowsSelected(currentSelectedRows) {
         // Handle updating output attribute for the number of selected rows
-        this.numberOfRowsSelected = (this.singleRowSelection) ? 1 : currentSelectedRows.length; 
+        this.numberOfRowsSelected = (this.singleRowSelection) ? Math.min(1,currentSelectedRows.length) : currentSelectedRows.length; 
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsSelected', this.numberOfRowsSelected));
         if (this.numberOfRowsSelected == 0) {
             this.showClearButton = false;

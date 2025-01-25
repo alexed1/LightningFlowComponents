@@ -2013,7 +2013,7 @@ export default class Datatable extends LightningElement {
             case 'standard':
                 this.outputActionedRow = {...row};
                 this.dispatchEvent(new FlowAttributeChangeEvent('outputActionedRow', this._outputActionedRow));
-                this.dispatchOutputs();
+                this.dispatchStringOutputs();
                 break;
 
             case 'removeRow':
@@ -2042,7 +2042,7 @@ export default class Datatable extends LightningElement {
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
                     this.dispatchEvent(new FlowAttributeChangeEvent('outputActionedRow', this._outputActionedRow));
                     
-                    this.dispatchOutputs();
+                    this.dispatchStringOutputs();
 
                     // remove record from collection
                     this.mydata = removeRowFromCollection(this, this._mydata, keyValue);
@@ -2234,10 +2234,8 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedRows', this.outputEditedRows));
         this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsEdited', this.outputEditedRows.length));
         this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
-        if(this.isSerializedRecordData) {
-            this.outputEditedSerializedRows = JSON.stringify(this.outputEditedRows);
-            this.dispatchEvent(new FlowAttributeChangeEvent('outputEditedSerializedRows', this.outputEditedSerializedRows));
-        }
+        
+        this.dispatchStringOutputs();
 
         this.savePreEditData = [...sdata];   // Resave the current table values  // v4.3.3
         this.mydata = [...data];            // Reset the current table values
@@ -3105,7 +3103,7 @@ export default class Datatable extends LightningElement {
         this.isAllFilter = allSelected;
     }
 
-    dispatchOutputs() {
+    dispatchStringOutputs() {
         if (this.isUserDefinedObject) {
             this.outputSelectedRowsString = JSON.stringify(this.outputSelectedRows);                                        //JSON Version
             this.outputEditedRowsString = JSON.stringify(this.outputEditedRows);   
@@ -3142,7 +3140,7 @@ export default class Datatable extends LightningElement {
         this.dispatchEvent(new FlowAttributeChangeEvent('outputSelectedRows', this.outputSelectedRows));
         this.updateNumberOfRowsSelected(this.outputSelectedRows);   // Winter '23 Patch 12 fix
 
-        this.dispatchOutputs();
+        this.dispatchStringOutputs();
 
         console.log(this.consoleLogPrefix+'outputSelectedRows', this.outputSelectedRows.length, (SHOW_DEBUG_INFO) ? this.outputSelectedRows : '***');
         console.log(this.consoleLogPrefix+'outputEditedRows', this.outputEditedRows.length, (SHOW_DEBUG_INFO) ? this.outputEditedRows : '***');

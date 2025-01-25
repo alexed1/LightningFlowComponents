@@ -71,7 +71,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
-  ## 1/20/25 -  Eric Smith -     Version 4.3.5  
+  ## 1/25/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  
 -   Added a new OutputActionedRow attribute which provides the record that has the most recent row action performed on it  
 -   Row Actions can now be displayed as either an Icon or a configurable Button with or without an Icon  
@@ -86,6 +86,7 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   When both pagination and single row selection are enabled, clear prior selection before setting the new selection  
 -   Fixed search/filter errors when using special characters by escaping special characters in filter or search terms 
 -   Generate correct url for record hyperlinks when running in a playground org  
+-   Output edited ApexDefined rows when changes are saved (Issue #1565)  
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  

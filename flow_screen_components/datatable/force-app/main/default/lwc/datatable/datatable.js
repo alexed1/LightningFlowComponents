@@ -128,7 +128,7 @@ export default class Datatable extends LightningElement {
 
     // v4.3.5 Adding Standard Row Action & Button Option
     @api rowActionType = 'Remove Row';
-    @api rowActionDisplay;
+    @api rowActionDisplay = 'Icon';
     @api rowActionButtonLabel;
     @api rowActionButtonIcon;
     @api rowActionButtonIconPosition;

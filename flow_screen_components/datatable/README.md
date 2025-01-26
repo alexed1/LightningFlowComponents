@@ -44,15 +44,15 @@ Twitter: 	https://twitter.com/esmith35
 ---
 **You must install these components FIRST in order to install and use the Datatable component**     
 FlowActionsBasePack Version 3.18.0 or later  
-FlowScreenComponentsBasePack Version 3.3.7 or later  
+FlowScreenComponentsBasePack Version 3.3.8 or later  
   
 Both Base Packs are available here:   
 https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.4 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)   
-[Version 4.3.4 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fz9iQAA)
+[Version 4.3.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzBFQAY)   
+[Version 4.3.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzBFQAY)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -73,21 +73,23 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 # Release Notes 
   ## 1/25/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  
+-   Added a Standard Row Action in addition to the existing Remove Row action
 -   Added a new OutputActionedRow attribute which provides the record that has the most recent row action performed on it  
+-     (Using this reactive attribute along with components like Screen Actions and Flow Launcher, you can perform almost anything you want when clicking on a row action)
 -   Row Actions can now be displayed as either an Icon or a configurable Button with or without an Icon  
 -   Improved reactivity for the row actions  
 -   Increased the maximum column width from 1000px to 1500px  
 -   Updated the CPE to allow hard-coded references for the record collection and pre-selected records so outputs from the Filter and Transform elements can be referenced directly  
--     (This requires v3.3.7 or later of the FlowScreenComponentsBasePack)  
+-     (This requires v3.3.8 or later of the FlowScreenComponentsBasePack)  
   
 **Bug Fixes:** 
--   Date field values that get adjusted by the timzoneeoffset now are stored as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
+-   Date field values that get adjusted by the timzoneoffset now are stored as YYYY-MM-DD - prior versions stored as a datetime which caused issues with collection processors and action butttons
 -   Clear SelectedRowKeyValue when no rows are selected  
 -   When both pagination and single row selection are enabled, clear prior selection before setting the new selection  
 -   Fixed search/filter errors when using special characters by escaping special characters in filter or search terms 
 -   Generate correct url for record hyperlinks when running in a playground org  
 -   Output edited ApexDefined rows when changes are saved (Issue #1565)  
--   Force preselected rows to a single row when single row selection is enabled  
+-   Force preselected rows to the first record in the collection when single row selection is enabled  
   
   ## 11/24/24 -  Eric Smith -     Version 4.3.4  
 **Updates:**  

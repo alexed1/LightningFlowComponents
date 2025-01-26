@@ -8,7 +8,7 @@
           "subscriberPackageVersionId": "04t8b000001ZxNVAA0"
         },
         {
-          "subscriberPackageVersionId": "04t5G000003rUyAQAU"
+          "subscriberPackageVersionId": "04t5G000004fzAgQAI"
         }
       ],
       "package": "datatable",
@@ -97,6 +97,8 @@
     "datatable@4.3.1": "04t5G000004fz99QAA",
     "datatable@4.3.2": "04t5G000004fz9EQAQ",
     "datatable@4.3.3": "04t5G000004fz9dQAA",
-    "datatable@4.3.4": "04t5G000004fz9iQAA"
+    "datatable@4.3.4": "04t5G000004fz9iQAA",
+    "FlowScreenComponentsBasePack@3.3.8": "04t5G000004fzAgQAI",
+    "datatable@4.3.5": "04t5G000004fzBFQAY"
   }
 }

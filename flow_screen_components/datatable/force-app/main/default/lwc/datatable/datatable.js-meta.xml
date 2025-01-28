@@ -26,7 +26,9 @@
                 - NOTE: These records will contain all saved edited values."/>   
             <property name="outputRemainingRows" label="Output Remaining Rows (Collection)" type="{T[]}" role="outputOnly" description="Record Collection variable to contain all the original records that were not removed from the datatable. 
                 - NOTE: These records will contain all saved edited values."/>                   
-    
+            <property name="outputActionedRow" label="Output Actioned Row (Object)" type="{T}" role="outputOnly" description="Record Object variable that contains the single record that was processed by the most recent datatable row action. 
+                - NOTE: This record will contain all saved edited values."/>   
+
             <!-- ============== These parameters are used when providing a User Defined object rather than a Salesforce SObject ============== -->  
             <!-- =========== Inputs =========== -->
             <property name="isUserDefinedObject" label="_ (User Defined)  Display User Defined Object?" type="Boolean" default="false" role="inputOnly" description="Set to True if you are providing a User Defined object rather than a Salesforce SObject."/>
@@ -43,6 +45,7 @@
             <property name="outputEditedRowsString" label="Output Edited Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were edited in the datatable."/>
             <property name="outputRemovedRowsString" label="Output Removed Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain only the records that were removed from the datatable."/>
             <property name="outputRemainingRowsString" label="Output Remaining Rows (User Defined)" type="String" role="outputOnly" description="Object Collection string variable to contain all the original records that were not removed from the datatable."/>
+            <property name="outputActionedRowString" label="Output Actioned Row (User Defined)" type="String" role="outputOnly" description="Object string variable to contain only the record that was processed by the most recent datatable row action."/>
             <!-- ============================================================================================================================- -->  
             
             <!-- Additional Output Parameters -->
@@ -155,13 +158,20 @@
             <property name="cb_suppressCurrencyConversion" type="String" role="inputOnly"/>
             <property name="isCaseInsensitiveSort" type="Boolean" role="inputOnly"/>
             <property name="cb_isCaseInsensitiveSort" type="String" role="inputOnly"/>
-            <property name="isRemoveRowAction" type="Boolean" role="inputOnly" default="false" description="Add a Remove Row Action Button"/>
+            <property name="isRemoveRowAction" type="Boolean" role="inputOnly" default="false" description="Add a Row Action"/>
             <property name="cb_isRemoveRowAction" type="String" role="inputOnly"/>            
             <property name="removeLabel" label="Remove Row Action Label" type="String" role="inputOnly" description="This value will be used as the text that appears when hovering on the Remove Row Action Button (Default: Remove Row)"/>
             <property name="removeIcon" label="Remove Row Action Icon" type="String" role="inputOnly" description="This is the icon that will be used for the Remove Row Action Button (Default: utility:close)"/>
             <property name="removeColor" label="Remove Row Action Icon Color" type="String" role="inputOnly" description="This is the color (Red, Green or Black) for the icon that will be used for the Remove Row Action Button (Default: Red)"/>
             <property name="maxRemovedRows" label="Maximum # of rows that can be removed" type="Integer" role="inputOnly" description="Enter a number here if you want to restrict how many rows can be removed from the datatable (Default: 0 - no limit)"/>
-            <property name="removeRowLeftOrRight" label="Remove Row Action Column Location" type="String" role="inputOnly" description="Specify if the Remove Row Action column should be on the Left or the Right (Default: Right)"/>
+            <property name="removeRowLeftOrRight" label="Row Action Column Location" type="String" role="inputOnly" description="Specify if the Row Action column should be on the Left or the Right (Default: Right)"/>
+            <property name="rowActionType" label="Row Action Type" type="String" role="inputOnly" description="Select the type of row action.  Current options are Standard and Remove Row.  A Flow row action will be added in the future."/>
+            <property name="rowActionDisplay" label="Row Action Display Type" type="String" role="inputOnly" description="Select how you want the row action to appear.  It can be a clickable Icon or a Button with a Label and an optional Icon"/>            
+            <property name="rowActionButtonLabel" label="Row Action Button Label" type="String" role="inputOnly" description="Select the label for the row action button."/>
+            <property name="rowActionButtonIcon" label="Row Action Button Icon" type="String" role="inputOnly" description="Select the icon for the row action button (optional)."/>
+            <property name="rowActionButtonIconPosition" label="Row Action Button Icon Position" type="String" role="inputOnly" description="Specify if the Row Action Button Icon should be on the Left or the Right of the label (Default: Left)"/>
+            <property name="rowActionButtonVariant" label="Row Action Button Variant" type="String" role="inputOnly" description="Select the Row Action Button Variant.  This determines the visual appearance of the button."/>
+            <!-- NOTE: Input property Labels and Descriptions are overridden by the values in ers_datatableCPE.js inputValues -->
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

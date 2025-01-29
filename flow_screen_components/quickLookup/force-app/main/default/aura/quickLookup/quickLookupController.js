@@ -2,9 +2,7 @@
     doInit: function (component, event, helper) {
         helper.hlpCheckValidity(component, event);
     },
-    handleScanSuccess: function (component, event, helper) {
-        component.set('v.errorMessage', '');
-        //component.set("v.filterFieldValue", scannedBarcode);
+    handleScanSuccess: function (component, event, helper) {        
         const componentA = component.find('QuickLightningLookup');
         const scannedBarcode = event.getParam('value');
         componentA.invokeLookup(scannedBarcode);

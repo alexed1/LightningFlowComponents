@@ -59,12 +59,12 @@
                                     <template for:each={_options} for:item="curOption">
                                         <li role="presentation" class="slds-listbox__item" key={curOption.type}>
                                             <div class="slds-p-around_xx-small custom-text-transform_uppercase">
-                                                <!-- <lightning-icon 
+                                                <lightning-icon 
                                                                 icon-name="utility:chevronleft"
                                                                 class="slds-icon slds-icon_small slds-icon-text-default"
                                                                 size="x-small"
                                                                 onclick={resetData}
-                                                ></lightning-icon> -->
+                                                ></lightning-icon>
                                                 {curOption.type}
                                             </div>
                                             <template for:each={curOption.options} for:item="curOptionElement">

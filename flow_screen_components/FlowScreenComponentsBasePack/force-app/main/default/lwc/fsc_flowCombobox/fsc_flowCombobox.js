@@ -656,8 +656,8 @@ export default class FlowCombobox extends LightningElement {
                 tempOptions.push(
                     {
                         type: 'String',
-                        label: '$Flow.ActiveStages',
-                        value: '$Flow.ActiveStages',      
+                        label: 'ActiveStages',
+                        value: 'ActiveStages',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -670,8 +670,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'String', 
-                        label: '$Flow.CurrentStage',
-                        value: '$Flow.CurrentStage',
+                        label: 'CurrentStage',
+                        value: 'CurrentStage',
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -684,8 +684,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'Date',
-                        label: '$Flow.CurrentDate',
-                        value: '$Flow.CurrentDate',      
+                        label: 'CurrentDate',
+                        value: 'CurrentDate',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -698,8 +698,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'DateTime',
-                        label: '$Flow.CurrentDateTime',
-                        value: '$Flow.CurrentDateTime',      
+                        label: 'CurrentDateTime',
+                        value: 'CurrentDateTime',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -712,8 +712,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'String',
-                        label: '$Flow.CurrentRecord',
-                        value: '$Flow.CurrentRecord',      
+                        label: 'CurrentRecord',
+                        value: 'CurrentRecord',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -726,8 +726,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'String',
-                        label: '$Flow.FaultMessage',
-                        value: '$Flow.FaultMessage',      
+                        label: 'FaultMessage',
+                        value: 'FaultMessage',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -740,8 +740,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'String',
-                        label: '$Flow.InterviewGuid',
-                        value: '$Flow.InterviewGuid',      
+                        label: 'InterviewGuid',
+                        value: 'InterviewGuid',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -754,8 +754,8 @@ export default class FlowCombobox extends LightningElement {
                     },
                     {
                         type: 'Time',
-                        label: '$Flow.InterviewStartTime',
-                        value: '$Flow.InterviewStartTime',      
+                        label: 'InterviewStartTime',
+                        value: 'InterviewStartTime',      
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",
@@ -800,8 +800,8 @@ export default class FlowCombobox extends LightningElement {
                 tempOptions.push(
                     {
                         type: 'String',
-                        label: '$System.OriginDateTime',
-                        value: '$System.OriginDateTime',
+                        label: 'OriginDateTime',
+                        value: 'OriginDateTime',
                         isCollection: false,
                         objectType: 'objectType',
                         optionIcon: "utility:system_and_global_variable",

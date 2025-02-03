@@ -26,6 +26,7 @@ import getObjectFields from '@salesforce/apex/usf3.FieldSelectorController.getOb
     to find the value for objectTypeField you will need to recursively check the objectTypeField value for 
     a typeDescriptor whose apiName matches the value for collectionReference
 */
+// TODO: Figure out how to not include Action Buttons and Sections in the Screen Components section
 
 const OUTPUTS_FROM_LABEL = 'Outputs from '; 
 export default class FlowCombobox extends LightningElement {
@@ -109,6 +110,8 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'textTemplates', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'stages', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'screens.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},
+        // {apiName: 'screens.fields.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},      //RegionContainer
+        {apiName: 'screens.fields.fields.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},  //Region
         // {
         //     apiName: 'screens.fields.inputParameters',
         //     label: 'Screen Components',
@@ -370,21 +373,21 @@ export default class FlowCombobox extends LightningElement {
                         if (Array.isArray(objectToExamine)) {
                             let allObjectToExamine = [];
                             objectToExamine.forEach(curObjToExam => {
-                                if (curObjToExam.storeOutputAutomatically) {
-                                    // console.log('curObjToExam: ', JSON.stringify(curObjToExam));
-                                    //TODO: Uncomment when it is clear how to get output parameters from actions and flow screens
-                                    // allObjectToExamine.push({
-                                    //     varApiName: curObjToExam.name,
-                                    //     varLabel: curObjToExam.label
-                                    // });
-                                } else {
-                                    allObjectToExamine = [...allObjectToExamine, ...curObjToExam[curTypePart].map(curItem => {
-                                        return {
-                                            ...curItem, varApiName: curObjToExam.name + '.' + curItem.name,
-                                            varLabel: (curObjToExam.label ? curObjToExam.label : parentNodeLabel) + ': ' + curItem.name
-                                        }
-                                    })];
-                                }
+                                    if (curObjToExam.storeOutputAutomatically) {
+                                        // console.log('curObjToExam: ', JSON.stringify(curObjToExam));
+                                        //TODO: Uncomment when it is clear how to get output parameters from actions and flow screens
+                                        // allObjectToExamine.push({
+                                        //     varApiName: curObjToExam.name,
+                                        //     varLabel: curObjToExam.label
+                                        // });
+                                    } else {
+                                        allObjectToExamine = [...allObjectToExamine, ...curObjToExam[curTypePart].map(curItem => {
+                                            return {
+                                                ...curItem, varApiName: curObjToExam.name + '.' + curItem.name,
+                                                varLabel: (curObjToExam.label ? curObjToExam.label : parentNodeLabel) + ': ' + curItem.name
+                                            }
+                                        })];
+                                    }
                             });
                             objectToExamine = allObjectToExamine;
                         }

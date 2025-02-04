@@ -340,6 +340,7 @@ export default class FlowCombobox extends LightningElement {
     }
 
     generateMergeFieldsFromBuilderContext(builderContext) {
+        console.log("🚀 ~ generateMergeFieldsFromBuilderContext ~ builderContext:", JSON.stringify(builderContext));
         // console.log('generateMergeFieldsFromBuilderContext: ', JSON.stringify(builderContext));
         let optionsByType = {};
         let key = 0;

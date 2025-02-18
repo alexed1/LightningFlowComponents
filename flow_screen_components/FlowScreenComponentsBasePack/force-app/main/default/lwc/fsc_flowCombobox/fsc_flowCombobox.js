@@ -1,4 +1,9 @@
 /* 
+    2/18/24     Eric Smith  FlowScreenComponentsBasePack v3.3.9 or later
+    Fixed Global variables
+    Custom components in Sections are now selectable
+    Removed Screen Sections from component list
+
     12/26/24    Eric Smith  FlowScreenComponentsBasePack v3.3.5 or later
     Updated to recognize the output from Action Buttons and Screen Actions
     Added override option for CPEs to allow hard-coded references (Filter & Transform element outputs)
@@ -110,7 +115,7 @@ export default class FlowCombobox extends LightningElement {
         {apiName: 'textTemplates', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'stages', label: 'Variables', dataType: flowComboboxDefaults.stringDataType},
         {apiName: 'screens.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},
-        // {apiName: 'screens.fields.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},      //RegionContainer
+        // {apiName: 'screens.fields.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},      //RegionContainer (Section Columns)
         {apiName: 'screens.fields.fields.fields', label: 'Screen Components', dataType: flowComboboxDefaults.screenComponentType},  //Region
         // {
         //     apiName: 'screens.fields.inputParameters',
@@ -340,7 +345,6 @@ export default class FlowCombobox extends LightningElement {
     }
 
     generateMergeFieldsFromBuilderContext(builderContext) {
-        console.log("🚀 ~ generateMergeFieldsFromBuilderContext ~ builderContext:", JSON.stringify(builderContext));
         // console.log('generateMergeFieldsFromBuilderContext: ', JSON.stringify(builderContext));
         let optionsByType = {};
         let key = 0;
@@ -558,11 +562,12 @@ export default class FlowCombobox extends LightningElement {
             let isActionCall = (typeDescriptor.apiName === flowComboboxDefaults.actionType);
             let isScreenAction = typeDescriptor.dataType === flowComboboxDefaults.screenActionType;
             let isScreenComponent = (typeDescriptor.dataType === flowComboboxDefaults.screenComponentType) && curObject.storeOutputAutomatically;
+            let isSection = (curObject['name']?.startsWith(flowComboboxDefaults.regionContainerName));
             let curDataType = isScreenAction ? flowComboboxDefaults.screenActionType : (isActionCall) ? flowComboboxDefaults.actionType :  isScreenComponent ? flowComboboxDefaults.screenComponentType : this.getTypeByDescriptor(curObject[typeField], typeDescriptor);
             let label = isActionCall||isScreenAction ?  OUTPUTS_FROM_LABEL + curObject['name'] : curObject[labelField] ? curObject[labelField] : curObject[valueField];
             let curIsCollection = this.isCollection(curObject, isCollectionField);
             const storeOutputAutomatically = (curObject.storeOutputAutomatically && typeDescriptor.dataType !== 'SObject') || typeDescriptor.dataType === flowComboboxDefaults.screenActionType;
-            if (!isScreenAction || this.automaticOutputVariables[curObject.name]) {
+            if (!isSection && (!isScreenAction || this.automaticOutputVariables[curObject.name])) {
                 typeOptions.push(this.generateOptionLine(
                     curDataType,
                     label,//curObject[labelField] ? curObject[labelField] : curObject[valueField],

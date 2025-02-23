@@ -134,6 +134,9 @@ export default class Datatable extends LightningElement {
     @api rowActionButtonIconPosition;
     @api rowActionButtonVariant;
 
+    // v4.3.6 Fix for not clearing removed rows after last one is removed
+    haveProcessedReactivity = false;
+
     @api 
     get outputActionedRow() {
         return this._outputActionedRow;
@@ -1389,13 +1392,16 @@ export default class Datatable extends LightningElement {
         }
         
         // Other processing for reactivity
-        this.outputRemovedRows = [];
-        this.numberOfRowsRemoved = 0;
-        this.outputRemainingRows = [];
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
-        this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
-        this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
-    
+        if (!this.haveProcessedReactivity) {
+            this.outputRemovedRows = [];
+            this.numberOfRowsRemoved = 0;
+            this.outputRemainingRows = [];
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputRemovedRows', this.outputRemovedRows));
+            this.dispatchEvent(new FlowAttributeChangeEvent('numberOfRowsRemoved', this.numberOfRowsRemoved));
+            this.dispatchEvent(new FlowAttributeChangeEvent('outputRemainingRows', this._outputRemainingRows));
+            this.haveProcessedReactivity = true;
+        }
+
         // Clear all existing column filters
         this.columnFilterValues = [];
         this.showClearFilterButton = false;

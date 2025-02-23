@@ -2230,7 +2230,11 @@ export default class Datatable extends LightningElement {
             if (sdraft != undefined) {
                 let sfieldNames = Object.keys(sdraft);
                 sfieldNames.forEach(sf => {
-                    sitem[sf] = sdraft[sf];
+                    if (this.percentFieldArray.indexOf(sf) != -1) {
+                        sitem[sf] = parseFloat(sdraft[sf])/100;
+                    } else {
+                        sitem[sf] = sdraft[sf];
+                    }
                 });
             }
             return sitem;

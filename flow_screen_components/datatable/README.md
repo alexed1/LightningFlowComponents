@@ -75,7 +75,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
   ## 3/xx/25 -  Eric Smith -     Version 4.3.6  
 **Updates:**  
 **Bug Fixes:** 
--   Fix bug where table gets reset after removing the last row  
+-   Fixed bug where table gets reset after removing the last row  
+-   Fixed bug introduced in v4.3.3 affecting percent fields when inline editing  
   
   ## 1/25/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  

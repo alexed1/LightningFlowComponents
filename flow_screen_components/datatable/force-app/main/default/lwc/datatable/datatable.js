@@ -2918,10 +2918,11 @@ export default class Datatable extends LightningElement {
                         const rows = this._filteredData.length > 0 ? [...this._filteredData] : [...this._savePreEditData];
                         const cols = this.columns;
                         let filteredRows = [];
-                        let colCount = cols.length + this.rowActionColumnOffset;
+                        let colCount = cols.length;
                         rows.forEach(row => {
                             let match = false;
-                            for (let col = this.rowActionColumnOffset; col < colCount; col++) {
+                            // for (let col = this.rowActionColumnOffset; col < colCount; col++) {
+                            for (let col = 0; col < colCount; col++) {
                                 let fieldName = cols[col].fieldName;
                                 if (fieldName?.endsWith('_lookup')) {
                                     fieldName = fieldName.slice(0,fieldName.lastIndexOf('_lookup')) + '_name';   
@@ -2968,7 +2969,7 @@ export default class Datatable extends LightningElement {
                                         break;
                                     default:
                                         let fieldValue = row[fieldName].toString();
-                                        let filterValue = searchTerm?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');    // v4.3.5 escape special characters                                        
+                                        let filterValue = searchTerm?.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');    // v4.3.5 escape special characters  
                                         if (!this.matchCaseOnFilters) {
                                             fieldValue = fieldValue.toLowerCase();
                                             filterValue = filterValue.toLowerCase();

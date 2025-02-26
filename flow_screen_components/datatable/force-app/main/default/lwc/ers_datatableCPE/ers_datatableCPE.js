@@ -1002,6 +1002,9 @@ export default class ers_datatableCPE extends LightningElement {
                     if ((curInputParam.name == 'rowActionButtonIcon') && this.inputValues.rowActionDisplay.value == 'Button') {
                         this.inputValues.rowActionButtonIcon.value = "";
                     }
+                    if ((curInputParam.name == 'rowActionDisplay') && curInputParam.value == 'Button') {
+                        this.inputValues.rowActionButtonIcon.value = "";
+                    }
 
                     // Handle Wizard Attributes
                     let wizName = defaults.wizardAttributePrefix + curInputParam.name;
@@ -1061,6 +1064,9 @@ export default class ers_datatableCPE extends LightningElement {
         }
         if (this.inputValues.maxRemovedRows.value == null) {
             this.inputValues.maxRemovedRows.value = 0;
+        }
+        if (this.inputValues.rowActionDisplay.value == 'Button') {
+            this.inputValues.rowActionButtonIcon.value = "";
         }
     }
 

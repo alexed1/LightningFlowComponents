@@ -79,6 +79,8 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
 -   Fixed bug introduced in v4.3.3 affecting percent fields when inline editing  
 -   Fixed bug where clearing a column filter crashed when a row action column was enabled  
 -   Fixed bug where row action button preview was showing an incorrect icon  
+-   Fixed Filter/Search bug introduced in 4.3.5 when a Date field column was present  
+-     NOTE: Enter dates in the search box in the YYYY-MM-DD format  
   
   ## 1/25/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  

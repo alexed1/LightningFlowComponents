@@ -2835,20 +2835,20 @@ export default class Datatable extends LightningElement {
                                                     break;                                
                                                 }
                                                 break;
-                                            case 'date-local':
-                                                let dl = row[fieldName];
-                                                let dtf = new Intl.DateTimeFormat('en', {
-                                                    year: 'numeric',
-                                                    month: '2-digit',
-                                                    day: '2-digit'
-                                                });
-                                                const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
-                                                let formatedDate = `${ye}-${mo}-${da}`;
-                                                if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
-                                                    match = false;
-                                                    break;                                
-                                                }
-                                                break;
+                                            case 'date-local':  // v4.3.6 - Handle like regular date due to changes made in v4.3.5
+                                                // let dl = row[fieldName];
+                                                // let dtf = new Intl.DateTimeFormat('en', {
+                                                //     year: 'numeric',
+                                                //     month: '2-digit',
+                                                //     day: '2-digit'
+                                                // });
+                                                // const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                                // let formatedDate = `${ye}-${mo}-${da}`;
+                                                // if (formatedDate != this.columnFilterValues[col]) {    // Check for date match on date & time fields
+                                                //     match = false;
+                                                //     break;                                
+                                                // }
+                                                // break;
                                             case 'date':
                                             case 'datetime':
                                             case 'time':
@@ -2941,20 +2941,20 @@ export default class Datatable extends LightningElement {
                                             break;                                
                                         }
                                         break;
-                                    case 'date-local':
-                                        let dl = row[fieldName];
-                                        let dtf = new Intl.DateTimeFormat('en', {
-                                            year: 'numeric',
-                                            month: '2-digit',
-                                            day: '2-digit'
-                                        });
-                                        const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
-                                        let formatedDate = `${ye}-${mo}-${da}`;
-                                        if (formatedDate == searchTerm) {    // Check for date match on date & time fields
-                                            match = true;
-                                            break;                                
-                                        }
-                                        break;
+                                    case 'date-local':  // v4.3.6 - Handle like regular date due to changes made in v4.3.5
+                                        // let dl = row[fieldName]";
+                                        // let dtf = new Intl.DateTimeFormat('en', {
+                                        //     year: 'numeric',
+                                        //     month: '2-digit',
+                                        //     day: '2-digit'
+                                        // });
+                                        // const [{value: mo}, , {value: da}, , {value: ye}] = dtf.formatToParts(dl);
+                                        // let formatedDate = `${ye}-${mo}-${da}`;
+                                        // if (formatedDate == searchTerm) {    // Check for date match on date & time fields
+                                        //     match = true;
+                                        //     break;                                
+                                        // }
+                                        // break;
                                     case 'date':
                                     case 'datetime':
                                     case 'time':

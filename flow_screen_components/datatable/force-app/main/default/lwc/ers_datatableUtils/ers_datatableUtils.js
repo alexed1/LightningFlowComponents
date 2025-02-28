@@ -67,7 +67,7 @@ const getConstants = () => {
         RUN_FLOW_COLOR : 'remove-icon-green',   // Default Color for the Run Flow Action button-icon color
         ACTION_BUTTON_SIDE : 'Right',       // Default Side for the Row Action button
         DEBUG_INFO_PREFIX : 'DATATABLE: ',  // Prefix to be used for debug info in the console
-        SHOW_DEBUG_INFO : true,            // Set to true to show sensitive debug info in the console and debug logs
+        SHOW_DEBUG_INFO : false,            // Set to true to show sensitive debug info in the console and debug logs
         DEFAULT_COL_WIDTH : 200,            // Default width to set a column when Flex is toggled off
         MIN_COLUMN_WIDTH : 80,              // Minimum width allowed for a column, system default is 80px
         MAX_COLUMN_WIDTH : 1500,            // Maximum width allowed for a column, system default is 1000px

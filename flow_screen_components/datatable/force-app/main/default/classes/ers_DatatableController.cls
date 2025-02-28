@@ -54,7 +54,7 @@
 public with sharing class ers_DatatableController {
     @TestVisible
     private static Boolean isMultiCurrencyOrganization = UserInfo.isMultiCurrencyOrganization();
-    private static Boolean SHOW_DEBUG_INFO = true;
+    private static Boolean SHOW_DEBUG_INFO = false;
     private static String DEBUG_INFO_PREFIX = 'DATATABLE: ';
 
     /**

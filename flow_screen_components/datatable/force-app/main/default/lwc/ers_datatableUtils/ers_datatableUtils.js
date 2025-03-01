@@ -39,7 +39,7 @@ console.log("DATATABLE: isCommunity, isFlowBuilder:", isCommunity, isFlowBuilder
 
 const getConstants = () => {
     return {
-        VERSION_NUMBER : '4.3.5',           // Current Source Code Version #
+        VERSION_NUMBER : '4.3.6',           // Current Source Code Version #
         MAXROWCOUNT : 2000,                 // Limit the total number of records to be handled by this component
         ROUNDWIDTH : 5,                     // Used to round off the column widths during Config Mode to nearest value
         WIZROWCOUNT : 6,                    // Number of records to display in the Column Wizard datatable

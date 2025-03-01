@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.5 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzBFQAY)   
-[Version 4.3.5 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzBFQAY)
+[Version 4.3.6 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcQAI)   
+[Version 4.3.6 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcQAI)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,17 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  
+  ## 2/28/25 -  Eric Smith -     Version 4.3.6  
+**Updates:**  
+**Bug Fixes:** 
+-   Fixed bug where table gets reset after removing the last row  
+-   Fixed bug introduced in v4.3.3 affecting percent fields when inline editing  
+-   Fixed bug where clearing a column filter crashed when a row action column was enabled  
+-   Fixed bug where row action button preview was showing an incorrect icon  
+-   Fixed Filter/Search bug introduced in 4.3.5 when a Date field column was present  
+-     NOTE: Enter dates in the search box in the YYYY-MM-DD format  
+  
   ## 1/25/25 -  Eric Smith -     Version 4.3.5  
 **Updates:**  
 -   Added a Standard Row Action in addition to the existing Remove Row action

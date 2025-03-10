@@ -13,6 +13,7 @@
             <property name="queryId" type="String" />
             <property name="retrievedRecords" type="{T[]}" role="outputOnly" />
             <property name="error" type="String" role="outputOnly" description="API Name of the metadata"/>
+            <property name="runInitialQueryImmediately" type="Boolean" default="false" label="Run Initial Query Immediately" description="Set to true to execute the first query immediately when the component is initialized." />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

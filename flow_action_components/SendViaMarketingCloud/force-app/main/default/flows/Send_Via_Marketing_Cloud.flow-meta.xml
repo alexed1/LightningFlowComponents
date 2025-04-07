@@ -32,7 +32,7 @@
         <inputParameters>
             <name>clientSecret</name>
             <value>
-                <stringValue>[insert secret]</stringValue>
+                <stringValue>[insert secret] </stringValue>
             </value>
         </inputParameters>
         <inputParameters>

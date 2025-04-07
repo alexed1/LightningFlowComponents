@@ -26,13 +26,13 @@
         <inputParameters>
             <name>clientId</name>
             <value>
-                <stringValue>cixe19w9bj3watg2u8zftmo1</stringValue>
+                <stringValue>[insert id]</stringValue>
             </value>
         </inputParameters>
         <inputParameters>
             <name>clientSecret</name>
             <value>
-                <stringValue>kfIXTk9KURL8DnySzhNFfUNZ</stringValue>
+                <stringValue>[insert secret]</stringValue>
             </value>
         </inputParameters>
         <inputParameters>

@@ -11,3 +11,17 @@
     max-width: 800rem !important;
     width: 120% !important;
 } */
+
+/* v4.3.5 Row Action Icon styling */
+{
+    --remove-icon-color: red;
+}
+.remove-icon {
+    --slds-c-icon-color-foreground: var(--remove-icon-color);
+}
+.remove-icon-green {
+    --slds-c-icon-color-foreground: green;
+}
+.remove-icon-black {
+    --slds-c-icon-color-foreground: black;
+}

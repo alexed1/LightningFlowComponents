@@ -6,7 +6,7 @@ const CB_ATTRIB_PREFIX = 'cb_';       // Used with fsc_flowCheckbox component
 
 export default class QuickChoiceCpe extends LightningElement {
     static delegatesFocus = true;
-    versionNumber = '2.45';
+    versionNumber = '2.46';
     staticChoicesModalClass = 'staticChoicesModal';
     _builderContext;
     _values;

@@ -374,6 +374,11 @@ export default class QuickChoiceFSC extends LightningElement {
                         label: key.label,
                         value: key.value
                     });
+                    if (this.displayMode === "Card" || this.displayMode === "Visual") {
+                        this._choiceLabels.push(key.label);
+                        this._choiceValues.push(key.value);
+                        this.items.push({name: key.label, description: null, icon: null});
+                    }
                     this._allLabels.push(key.label);
                     this._allValues.push(key.value);
                 }
@@ -440,7 +445,7 @@ export default class QuickChoiceFSC extends LightningElement {
     }
 
     _handleChoiceCollections() {
-
+        console.log(this._masterLabel + ": ", "entering _handleChoiceCollections");
         // Visual Card Selection
         let items = [];	//parameters for visual picker selection
         let index = 0;

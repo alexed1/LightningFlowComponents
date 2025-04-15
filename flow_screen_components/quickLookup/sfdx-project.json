@@ -11,7 +11,7 @@
   ],
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "52.0",
+  "sourceApiVersion": "63.0",
   "packageAliases": {
     "quickLookup": "0Ho5G000000CaiDSAS",
     "quickLookup@1.0.0-0": "04t5G0000047xKMQAY",

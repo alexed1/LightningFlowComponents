@@ -1,4 +1,4 @@
 @echo off
+set packageName=quickLookup
 echo Package Name: %packageName%
-echo Version: %version%
 @echo on

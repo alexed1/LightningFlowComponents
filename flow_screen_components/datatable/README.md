@@ -34,7 +34,7 @@ Additional components packaged with this LWC:
 **Documentation:**  https://unofficialsf.com/datatable-lightning-web-component-for-flow-screens-2/ 
   
 **Created by:**	Eric Smith  
-**Date:**		2019 - 2024
+**Date:**		2019 - 2025
   
 LinkedIn: 	https://www.linkedin.com/in/ericrsmith2  
 Salesforce: https://trailblazer.me/id/ericsmith  
@@ -51,8 +51,8 @@ https://unofficialsf.com/flow-action-and-screen-component-basepacks/
   
 ---
 **Install Datatable**  
-[Version 4.3.6 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcQAI)   
-[Version 4.3.6 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcQAI)
+[Version 4.3.7 (Production or Developer)](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcXXX)   
+[Version 4.3.7 (Sandbox)](https://test.salesforce.com/packaging/installPackage.apexp?p0=04t5G000004fzCcXXX)
  
 ---
 **Starting with the Winter '21 Release, Salesforce requires that a User's Profile or Permission Set is given specific permission to access any @AuraEnabled Apex Method.**  
@@ -71,6 +71,11 @@ A Permission Set (**USF Flow Screen Component - Datatable**) is included with th
     
 ---
 # Release Notes 
+  
+  ## 2/28/25 -  Eric Smith -     Version 4.3.7    
+**Updates:**  
+**Bug Fixes:** 
+-   Fixed bug where table won't display when the Row Action button has the default label  
   
   ## 2/28/25 -  Eric Smith -     Version 4.3.6  
 **Updates:**  

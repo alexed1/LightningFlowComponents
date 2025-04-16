@@ -53,6 +53,20 @@ const DEFAULT_COL_WIDTH = CONSTANTS.DEFAULT_COL_WIDTH;
 const MIN_COLUMN_WIDTH = CONSTANTS.MIN_COLUMN_WIDTH;
 const MAX_COLUMN_WIDTH = CONSTANTS.MAX_COLUMN_WIDTH;
 const FILTER_BLANKS = CONSTANTS.FILTER_BLANKS;
+const DEFAULT_ACTION = CONSTANTS.DEFAULT_ACTION;
+const DEFAULT_DISPLAY_TYPE = CONSTANTS.DEFAULT_DISPLAY_TYPE;
+const PERFORM_ACTION_LABEL = CONSTANTS.PERFORM_ACTION_LABEL;
+const REMOVE_ROW_LABEL = CONSTANTS.REMOVE_ROW_LABEL;
+const RUN_FLOW_LABEL = CONSTANTS.RUN_FLOW_LABEL;
+const DEFAULT_ICON = CONSTANTS.DEFAULT_ICON;
+const PERFORM_ACTION_ICON = CONSTANTS.PERFORM_ACTION_ICON;
+const REMOVE_ROW_ICON = CONSTANTS.REMOVE_ROW_ICON;
+const RUN_FLOW_ICON = CONSTANTS.RUN_FLOW_ICON;
+const DEFAULT_COLOR = CONSTANTS.DEFAULT_COLOR;
+const PERFORM_ACTION_COLOR = CONSTANTS.PERFORM_ACTION_COLOR;
+const REMOVE_ROW_COLOR = CONSTANTS.REMOVE_ROW_COLOR;
+const RUN_FLOW_COLOR = CONSTANTS.RUN_FLOW_COLOR;
+const ACTION_BUTTON_SIDE = CONSTANTS.ACTION_BUTTON_SIDE;
 
 export default class Datatable extends LightningElement {
 
@@ -118,21 +132,21 @@ export default class Datatable extends LightningElement {
     @api tableIcon;
     
     // Remove Row Action Attributes
-    @api removeLabel = 'Remove Row';
-    @api removeIcon = 'utility:close';
-    @api removeColor = 'remove-icon';   // Default red
+    @api removeLabel = DEFAULT_ACTION;
+    @api removeIcon = DEFAULT_ICON;
+    @api removeColor = DEFAULT_COLOR;
     @api maxRemovedRows = 0;
-    @api removeRowLeftOrRight = 'Right';
+    @api removeRowLeftOrRight = ACTION_BUTTON_SIDE;
     @api outputRemovedRows = [];
     @api numberOfRowsRemoved = 0;
 
     // v4.3.5 Adding Standard Row Action & Button Option
-    @api rowActionType = 'Remove Row';
-    @api rowActionDisplay = 'Icon';
-    @api rowActionButtonLabel;
-    @api rowActionButtonIcon;
-    @api rowActionButtonIconPosition;
-    @api rowActionButtonVariant;
+    @api rowActionType = DEFAULT_ACTION;
+    @api rowActionDisplay = DEFAULT_DISPLAY_TYPE;
+    @api rowActionButtonLabel = DEFAULT_ACTION;
+    @api rowActionButtonIcon = DEFAULT_ICON;
+    @api rowActionButtonIconPosition = 'Left';
+    @api rowActionButtonVariant = 'brand-outline';
 
     // v4.3.6 Fix for not clearing removed rows after last one is removed
     haveProcessedReactivity = false;

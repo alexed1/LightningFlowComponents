@@ -6,6 +6,7 @@
  * Created By:  Eric Smith
  * 
  *              11/27/24    Version: 1.0.0  Initial Release
+ *              04/27/25    Version: 1.0.4  Allow starting collection to be empty
  * 
  * LWC:         upsertRecordByKey_rsc
  * Controller:  UpsertRecordByKeyController, UpsertRecordByKeyControllerTest
@@ -29,7 +30,7 @@ import upsertByKey from '@salesforce/apex/UpsertRecordByKeyController.upsertByKe
 export default class UpsertRecordByKey_rsc extends LightningElement {
 
     // * Define each of the LWC's attributes, with defaults if needed
-    @api inputCollection;
+    @api inputCollection = [];
     @api inputRecord;
     @api fieldAPIName = 'Id';
     @api skipInsertIfNoMatchFound = false;
@@ -53,7 +54,8 @@ export default class UpsertRecordByKey_rsc extends LightningElement {
 
     // On rendering, check for a value or change in value of reactive attribute(s) and execute the handler
     renderedCallback() {
-        if (this.reactiveValue && this.reactiveValue != this.oldReactiveValue && this.inputRecord && this.inputCollection) {
+        if (this.reactiveValue && this.reactiveValue != this.oldReactiveValue && (this.inputRecord || this.inputCollection)) {
+            this.inputCollection = this.inputCollection || [];
             this._callAuraEnabledMethod();
         }
     }

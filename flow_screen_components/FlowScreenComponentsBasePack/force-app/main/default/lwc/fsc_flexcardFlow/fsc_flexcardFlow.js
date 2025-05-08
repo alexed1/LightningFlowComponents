@@ -2,7 +2,7 @@
  * @description       : 
  * @author            : Josh Dayment
  * @group             : 
- * @last modified on  : 04-29-2024
+ * @last modified on  : 05-08-2025
  * @last modified by  : Josh Dayment
 **/
 import { LightningElement, api, track, wire } from 'lwc';
@@ -48,16 +48,11 @@ export default class FlexcardFlow extends LightningElement {
         return (this.cb_allowMultiSelect == 'CB_TRUE') ? true : false;
     }
     @api cb_allowMultiSelect;
-    @api recordValue;
-    //@api
-    //get selectedRecordIds() {
-    //    return this._selectedRecordIds;
-   // }
-    //set selectedRecordIds(selectedRecordIds = []) {
-    //    this._selectedRecordIds = selectedRecordIds;
-   // }
+    @api recordValue;    
     @api selectedRecordIds;
     @track _selectedRecordIds = new Set();
+    @api selectedRecords = [];
+    @api selectedRecord;
     @api label;
     @api subheadCSS;
     @api
@@ -147,6 +142,7 @@ export default class FlexcardFlow extends LightningElement {
 
         this.recs = JSON.parse(JSON.stringify(this._records));
 
+
     }
 
     retrieveFieldLabels(item, index) {
@@ -186,14 +182,29 @@ export default class FlexcardFlow extends LightningElement {
     handleChange(event) {
         //console.log(event.target.checked);
         this.recordValue = event.target.value;
+        const recordId = this.recordValue;
+        const fullRecord = this.recs.find(record => record.Id === recordId);
+        
         if (event.target.checked) {
-            this._selectedRecordIds.add(this.recordValue);
+            this._selectedRecordIds.add(recordId);
+            // Add the full record to selectedRecords if it's not already there
+            if (!this.selectedRecords.some(record => record.Id === recordId)) {
+                this.selectedRecords = [...this.selectedRecords, fullRecord];
+            }
         } else {
-            this._selectedRecordIds.delete(this.recordValue);
+            this._selectedRecordIds.delete(recordId);
+            // Remove the record from selectedRecords
+            this.selectedRecords = this.selectedRecords.filter(record => record.Id !== recordId);
         }
-        this.selectedRecordIds = Array.from(this._selectedRecordIds)
-        const attributeChangeEvent = new FlowAttributeChangeEvent('selectedRecordIds', this.selectedRecordIds);
-        this.dispatchEvent(attributeChangeEvent);
+        
+        this.selectedRecordIds = Array.from(this._selectedRecordIds);
+        
+        // Dispatch events for both the IDs and the full records
+        const idsChangeEvent = new FlowAttributeChangeEvent('selectedRecordIds', this.selectedRecordIds);
+        this.dispatchEvent(idsChangeEvent);
+        
+        const recordsChangeEvent = new FlowAttributeChangeEvent('selectedRecords', this.selectedRecords);
+        this.dispatchEvent(recordsChangeEvent);
     }
     
     
@@ -203,10 +214,18 @@ export default class FlexcardFlow extends LightningElement {
             if (record.Id === event.currentTarget.dataset.id && this.isClickable == true) {
                 this.selectedRecord = event.currentTarget.dataset.id;
                 this.value = this.selectedRecord;
+                
+                // Add the selected record to the selectedRecords array
+                const recordId = event.currentTarget.dataset.id;
+                const fullRecord = this.recs.find(rec => rec.Id === recordId);
+                this.selectedRecord = fullRecord; // For single select, replace the array
+                
                 const attributeChangeEvent = new FlowAttributeChangeEvent('value', this.value);
                 this.dispatchEvent(attributeChangeEvent);
+                
+                const recordChangeEvent = new FlowAttributeChangeEvent('selectedRecord', this.selectedRecord);
+                this.dispatchEvent(recordChangeEvent);
             }
-
         });
 
         // navigate to the next screen or (if last element) terminate the flow
@@ -220,6 +239,4 @@ export default class FlexcardFlow extends LightningElement {
             }
         }
     }
-
-
 }

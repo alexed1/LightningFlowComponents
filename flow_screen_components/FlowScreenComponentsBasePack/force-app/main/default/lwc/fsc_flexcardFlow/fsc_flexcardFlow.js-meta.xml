@@ -42,6 +42,10 @@
             <property name="cb_allowMultiSelect" type="String" role="inputOnly" />
             <property name="selectedRecordIds" label="Selected Record Ids" type="String[]"
                 role="outputOnly" description="String Collection of selected Record ID's" />
+            <property name="selectedRecords" label="Selected Records" type="{T[]}"
+                role="outputOnly" description="Collection of complete selected record objects" />
+            <property name="selectedRecord" label="Selected Record" type="{T}" role="outputOnly"
+                description="Selected record variable" />
             <property name="objectAPIName" label="Object API Name" type="String" role="inputOnly"
                 default="Account" required="true"
                 description="The SObject API Name used to query fields and values must be the same object selected in Flexcard Object API Name" />

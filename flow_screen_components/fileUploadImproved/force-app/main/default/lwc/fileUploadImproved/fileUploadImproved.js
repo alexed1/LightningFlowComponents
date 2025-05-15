@@ -1,7 +1,8 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, api, wire, track } from 'lwc';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { CurrentPageReference } from 'lightning/navigation';
 import getKey from '@salesforce/apex/FileUploadImprovedHelper.getKey';
 import encrypt from '@salesforce/apex/FileUploadImprovedHelper.encrypt';
 import createContentVers from '@salesforce/apex/FileUploadImprovedHelper.createContentVers';
@@ -11,15 +12,30 @@ import deleteContentDoc from '@salesforce/apex/FileUploadImprovedHelper.deleteCo
 import getExistingFiles from '@salesforce/apex/FileUploadImprovedHelper.getExistingFiles';
 import updateFileName from '@salesforce/apex/FileUploadImprovedHelper.updateFileName';
 
+// Constants
 const MAX_FILE_SIZE = 4500000;
 const CHUNK_SIZE = 750000;
+const FILE_TYPE_ICONS = {
+    'csv': 'doctype:csv',
+    'pdf': 'doctype:pdf',
+    'pps': 'doctype:ppt',
+    'ppt': 'doctype:ppt',
+    'pptx': 'doctype:ppt',
+    'xls': 'doctype:excel',
+    'xlsx': 'doctype:excel',
+    'doc': 'doctype:word',
+    'docx': 'doctype:word',
+    'txt': 'doctype:txt',
+    'png': 'doctype:image',
+    'jpeg': 'doctype:image',
+    'jpg': 'doctype:image',
+    'gif': 'doctype:image'
+};
 
 // Convert CB values to a boolean
-function cbToBool(value) {
-    return value === "CB_TRUE";
-  }
+const cbToBool = (value) => value === "CB_TRUE";
 
-export default class FileUpload extends NavigationMixin(LightningElement) {
+export default class FileUploadImproved extends NavigationMixin(LightningElement) {
     @api acceptedFormats;
     @api
      get allowMultiple() {
@@ -116,6 +132,9 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
         }
     }
 
+    @wire(CurrentPageReference)
+    pageRef;
+
     connectedCallback(){
         let cachedSelection = sessionStorage.getItem(this.sessionKey);
         if(cachedSelection){
@@ -136,6 +155,25 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
             this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
         }
     }
+
+     handleRecordIdChange(){
+        console.log("Getting Files")
+        if(this.recordId && this.renderExistingFiles) {
+            getExistingFiles({recordId: this.recordId})
+                .then((files) => {
+                    if(files != undefined && files.length > 0){
+                        this.processFiles(files);
+                    } else {
+                        this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+                    }
+                })
+                .catch((error) => {
+                    this.showErrors(this.reduceErrors(error).toString());
+                })
+        } else {
+            this.communicateEvent(this.docIds,this.versIds,this.fileNames,this.objFiles);
+        }
+     }
 
     numberOfFilesToUpload = 0;
     loading = false;
@@ -407,15 +445,16 @@ export default class FileUpload extends NavigationMixin(LightningElement) {
     }
 
     openFile(event) {
+        console.log(event.target.dataset.docid);
         let docId = event.target.dataset.docid;
-        event.preventDefault();
         this[NavigationMixin.Navigate]({
             type: 'standard__namedPage',
             attributes: {
                 pageName: 'filePreview'
             },
             state: {
-                recordIds: docId
+                recordIds: docId,
+                selectedRecordId: docId,
             }
         });
     }
